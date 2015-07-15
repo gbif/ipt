@@ -17,8 +17,7 @@ import java.io.UnsupportedEncodingException;
  */
 public class DCATAction extends ActionSupport {
 
-    private final AppConfig cfg;
-    private final ResourceManager resourceManager;
+    private GenerateDCAT generateDCAT;
 
     /**
      * Variable used to print the feed
@@ -26,9 +25,8 @@ public class DCATAction extends ActionSupport {
     private InputStream dcatInfo;
 
     @Inject
-    public DCATAction(AppConfig cfg, ResourceManager resourceManager) {
-        this.cfg = cfg;
-        this.resourceManager = resourceManager;
+    public DCATAction(GenerateDCAT generateDCAT) {
+        this.generateDCAT = generateDCAT;
     }
 
     /**
@@ -39,8 +37,7 @@ public class DCATAction extends ActionSupport {
      */
     @Override
     public String execute() {
-        GenerateDCAT dc = new GenerateDCAT(cfg,resourceManager);
-        String out = dc.createDCATFeed();
+        String out = generateDCAT.createDCATFeed();
         try {
             dcatInfo = new ByteArrayInputStream(out.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {

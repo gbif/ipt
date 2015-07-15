@@ -219,6 +219,7 @@ public class GenerateDCATTest {
         RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
         GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
         Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
+        GenerateDCAT mockGenerateDCAT = mock(GenerateDCAT.class);
         VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
         SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
         BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
@@ -274,7 +275,7 @@ public class GenerateDCATTest {
         ResourceManagerImpl resourceManager =
                 new ResourceManagerImpl(mockAppConfig, mockDataDir, mockEmailConverter, mockOrganisationKeyConverter,
                         extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager, mockRegistryManager,
-                        conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockVocabulariesManager,
+                        conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockGenerateDCAT, mockVocabulariesManager,
                         mockSimpleTextProvider, mockRegistrationManager);
 
         // create a new resource.

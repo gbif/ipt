@@ -1,6 +1,7 @@
 package org.gbif.ipt.task;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
 
@@ -20,6 +21,7 @@ import org.gbif.metadata.eml.*;
 /**
  * Class to generate a DCAT feed of the data
  */
+@Singleton
 public class GenerateDCAT {
 
     private AppConfig cfg;
@@ -58,15 +60,12 @@ public class GenerateDCAT {
     /**
      * Write a new file with information in it
      *
-     * @param informations Information
+     * @param information Information
      */
-    private static void writeFile(ArrayList<String> informations) {
-        File fnew = new File("/home/sylvain/Documents/datadir/dcat.txt");//Need to be fix HARDCODING
+    private void writeFile(String path, String information) {
         try {
-            PrintWriter pwnew = new PrintWriter(new BufferedWriter(new FileWriter(fnew)));
-            for (String info : informations) {
-                pwnew.println(info);
-            }
+            PrintWriter pwnew = new PrintWriter(new BufferedWriter(new FileWriter(new File(path))));
+            pwnew.println(information);
             pwnew.close();
         } catch (IOException exception) {
             System.out.println("Writing error " + exception.getMessage());
@@ -78,7 +77,7 @@ public class GenerateDCAT {
      *
      * @return String Prefixes
      */
-    public String createPrefixes() {
+    private String createPrefixes() {
         prefixes = new HashMap<String, String>();
         prefixes.put("dct:", "http://purl.org/dc/terms/");
         prefixes.put("dcat:", "http://www.w3.org/ns/dcat#");
@@ -260,7 +259,7 @@ public class GenerateDCAT {
         //dct:publisher
         if (resource.getOrganisation() != null && resource.getOrganisation().getKey() != null) {
             addPredicateToBuilder(datasetBuilder, "dct:publisher");
-            String publisher = "http://www.gbif.org/publisher/" + resource.getOrganisation().getKey();
+            String publisher = "http://www.gbif.org/publisher/" + resource.getOrganisation().getKey() + "#Organization";
             String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + resource.getOrganisation().getName() + "\" .";
             organisations.add(organisation);
             addObjectToBuilder(datasetBuilder, publisher, ObjectTypes.RESOURCE);

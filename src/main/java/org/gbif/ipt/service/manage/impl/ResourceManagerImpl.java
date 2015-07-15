@@ -118,1521 +118,1504 @@ import org.xml.sax.SAXException;
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
 
-  // key=shortname in lower case, value=resource
-  private Map<String, Resource> resources = new HashMap<String, Resource>();
-  public static final String PERSISTENCE_FILE = "resource.xml";
-  private static final int MAX_PROCESS_FAILURES = 3;
-  private final XStream xstream = new XStream();
-  private SourceManager sourceManager;
-  private ExtensionManager extensionManager;
-  private RegistryManager registryManager;
-  private ThreadPoolExecutor executor;
-  private GenerateDwcaFactory dwcaFactory;
-  private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
-  private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
-  private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
-  private Eml2Rtf eml2Rtf;
-  //TODO
-  private GenerateDCAT generateDCAT;
-  private VocabulariesManager vocabManager;
-  private SimpleTextProvider textProvider;
-  private RegistrationManager registrationManager;
+    // key=shortname in lower case, value=resource
+    private Map<String, Resource> resources = new HashMap<String, Resource>();
+    public static final String PERSISTENCE_FILE = "resource.xml";
+    private static final int MAX_PROCESS_FAILURES = 3;
+    private final XStream xstream = new XStream();
+    private SourceManager sourceManager;
+    private ExtensionManager extensionManager;
+    private RegistryManager registryManager;
+    private ThreadPoolExecutor executor;
+    private GenerateDwcaFactory dwcaFactory;
+    private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
+    private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
+    private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
+    private Eml2Rtf eml2Rtf;
+    //TODO
+    private GenerateDCAT generateDCAT;
+    private VocabulariesManager vocabManager;
+    private SimpleTextProvider textProvider;
+    private RegistrationManager registrationManager;
 
-  @Inject
-  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
-    OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
-    JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
-    RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-    PasswordConverter passwordConverter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
-    SimpleTextProvider textProvider, RegistrationManager registrationManager) {
-    super(cfg, dataDir);
-    this.sourceManager = sourceManager;
-    this.extensionManager = extensionManager;
-    this.registryManager = registryManager;
-    this.dwcaFactory = dwcaFactory;
-    this.eml2Rtf = eml2Rtf;
-    this.vocabManager = vocabManager;
-    this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
-    defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
-      passwordConverter);
-    this.textProvider = textProvider;
-    this.registrationManager = registrationManager;
-  }
-
-  private void addResource(Resource res) {
-    resources.put(res.getShortname().toLowerCase(), res);
-  }
-
-  public boolean cancelPublishing(String shortname, BaseAction action) {
-    boolean canceled = false;
-    // get future
-    Future<Integer> f = processFutures.get(shortname);
-    if (f != null) {
-      // cancel job, even if it's running
-      canceled = f.cancel(true);
-      if (canceled) {
-        // remove process from locking list
-        processFutures.remove(shortname);
-      } else {
-        log.warn("Canceling publication of resource " + shortname + " failed");
-      }
+    @Inject
+    public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
+                               OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
+                               JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
+                               RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
+                               PasswordConverter passwordConverter, Eml2Rtf eml2Rtf, GenerateDCAT generateDCAT, VocabulariesManager vocabManager,
+                               SimpleTextProvider textProvider, RegistrationManager registrationManager) {
+        super(cfg, dataDir);
+        this.sourceManager = sourceManager;
+        this.extensionManager = extensionManager;
+        this.registryManager = registryManager;
+        this.dwcaFactory = dwcaFactory;
+        this.eml2Rtf = eml2Rtf;
+        this.generateDCAT = generateDCAT;
+        this.vocabManager = vocabManager;
+        this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
+        defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
+                passwordConverter);
+        this.textProvider = textProvider;
+        this.registrationManager = registrationManager;
     }
-    return canceled;
-  }
 
-  /**
-   * Close file writer if the writer is not null.
-   *
-   * @param writer file writer
-   */
-  private void closeWriter(Writer writer) {
-    if (writer != null) {
-      try {
-        writer.close();
-      } catch (IOException e) {
-        log.error(e);
-      }
+    private void addResource(Resource res) {
+        resources.put(res.getShortname().toLowerCase(), res);
     }
-  }
 
-  /**
-   * Populate an Eml instance from a Dataset object that was created from a Dublin Core metadata document, or
-   * another basic metadata format. Note: only a small number of fields actually contain data.
-   *
-   * @param metadata Dataset object
-   *
-   * @return Eml instance
-   */
-  private Eml convertMetadataToEml(Dataset metadata) {
-    Eml eml = new Eml();
-    if (metadata != null) {
-      // copy properties
-      eml.setTitle(metadata.getTitle());
-
-      if (metadata.getDescription() != null) {
-        // split description into paragraphs
-        for (String para : Splitter.onPattern("\r?\n").trimResults().omitEmptyStrings()
-          .split(metadata.getDescription())) {
-          eml.addDescriptionPara(para);
+    public boolean cancelPublishing(String shortname, BaseAction action) {
+        boolean canceled = false;
+        // get future
+        Future<Integer> f = processFutures.get(shortname);
+        if (f != null) {
+            // cancel job, even if it's running
+            canceled = f.cancel(true);
+            if (canceled) {
+                // remove process from locking list
+                processFutures.remove(shortname);
+            } else {
+                log.warn("Canceling publication of resource " + shortname + " failed");
+            }
         }
-      }
-
-      if (metadata.getHomepage() != null) {
-        eml.setDistributionUrl(metadata.getHomepage().toString());
-      }
-      if (metadata.getLogoUrl() != null) {
-        eml.setLogoUrl(metadata.getLogoUrl().toString());
-      }
-      eml.setPubDate(metadata.getPubDate());
-    }
-    return eml;
-  }
-
-  /**
-   * Copies incoming eml file to data directory with name eml.xml.
-   * </br>
-   * This method retrieves a file handle to the eml.xml file in data directory. It then copies the incoming emlFile to
-   * over to this file. From this file an Eml instance is then populated and returned.
-   *
-   * @param shortname shortname
-   * @param emlFile   eml file
-   *
-   * @return populated Eml instance
-   *
-   * @throws ImportException if eml file could not be read/parsed
-   */
-  private Eml copyMetadata(String shortname, File emlFile) throws ImportException {
-    File emlFile2 = dataDir.resourceEmlFile(shortname);
-    try {
-      FileUtils.copyFile(emlFile, emlFile2);
-    } catch (IOException e1) {
-      log.error("Unnable to copy EML File", e1);
-    }
-    Eml eml;
-    try {
-      InputStream in = new FileInputStream(emlFile2);
-      eml = EmlFactory.build(in);
-    } catch (FileNotFoundException e) {
-      eml = new Eml();
-    } catch (IOException e) {
-      log.error(e);
-      throw new ImportException("Invalid EML document");
-    } catch (SAXException e) {
-      log.error("Invalid EML document", e);
-      throw new ImportException("Invalid EML document");
-    } catch (ParserConfigurationException e) {
-      log.error("Invalid EML document", e);
-      throw new ImportException("Invalid EML document");
-    }
-    return eml;
-  }
-
-  public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
-    throws AlreadyExistingException, ImportException, InvalidFilenameException {
-    ActionLogger alog = new ActionLogger(this.log, action);
-    Resource resource;
-    // decompress archive
-    List<File> decompressed = null;
-    File dwcaDir = dataDir.tmpDir();
-    try {
-      decompressed = CompressionUtil.decompressFile(dwcaDir, dwca, true);
-    } catch (UnsupportedCompressionType e) {
-      log.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
-      // try again as single gzip file
-      try {
-        decompressed = CompressionUtil.ungzipFile(dwcaDir, dwca, false);
-      } catch (Exception e2) {
-        log.debug("2nd attempt to decompress file failed: " + e.getMessage(), e);
-      }
-    } catch (Exception e) {
-      log.debug("Decompression failed: " + e.getMessage(), e);
+        return canceled;
     }
 
-    // create resource:
-    // if decompression failed, create resource from single eml file
-    if (decompressed == null) {
-      resource = createFromEml(shortname, dwca, creator, alog);
-    }
-    // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
-    else {
-      resource = (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
-        : createFromArchive(shortname, dwcaDir, creator, alog);
-    }
-
-    // set resource type, if it hasn't been set already
-    if (type != null && Strings.isNullOrEmpty(resource.getCoreType())) {
-      resource.setCoreType(type);
-    }
-
-    return resource;
-  }
-
-  /**
-   * Creates a resource from an IPT Resource folder. The purpose is to preserve the original source files and mappings.
-   * The managers, created date, last publication date, version history, version number, DOI(s), publication status,
-   * and registration info is all cleared. The creator and modifier are set to the current creator.
-   * </p>
-   * This method must ensure that the folder has a unique name relative to the other resource's shortnames, otherwise
-   * it tries to rename the folder using the supplied shortname. If neither of these yield a unique shortname,
-   * an exception is thrown alerting the user they should try again with a unique name.
-   *
-   * @param shortname resource shortname
-   * @param folder    IPT resource folder
-   * @param creator   Creator
-   * @param alog      action logging
-   *
-   * @return Resource created or null if it was unsuccessful
-   *
-   * @throws AlreadyExistingException if a unique shortname could not be determined
-   * @throws ImportException          if a problem occurred trying to create the new Resource
-   */
-  private Resource createFromIPTResourceFolder(String shortname, File folder, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException {
-    Resource res;
-    try {
-
-      // shortname supplied is unique?
-      if (resources.containsKey(shortname)) {
-        throw new AlreadyExistingException();
-      }
-
-      // copy folder (renamed using shortname) to resources directory in data_dir
-      File dest = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
-      FileUtils.copyDirectory(folder, dest);
-
-      // proceed with resource creation (using destination folder in data_dir)
-      res = loadFromDir(dest, alog);
-
-      // ensure this resource is safe to import!
-      if (res != null) {
-        // remove all managers associated to resource
-        res.getManagers().clear();
-        // change creator to the User that uploaded resource
-        res.setCreator(creator);
-        // change modifier to User that uploaded resource
-        res.setModifier(creator);
-        // change creation date
-        res.setCreated(new Date());
-        // resource has never been published - set last published date to null
-        res.setLastPublished(null);
-        // reset organization
-        res.setOrganisation(null);
-        // clear registration
-        res.setKey(null);
-        // set publication status to Private
-        res.setStatus(PublicationStatus.PRIVATE);
-        // set number of records published to 0
-        res.setRecordsPublished(0);
-        // reset version number
-        res.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
-        // reset DOI
-        res.setDoi(null);
-        res.setIdentifierStatus(IdentifierStatus.UNRESERVED);
-        res.setDoiOrganisationKey(null);
-        // reset change summary
-        res.setChangeSummary(null);
-        // remove all VersionHistory
-        res.getVersionHistory().clear();
-        // turn off auto-publication
-        res.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
-        res.setUpdateFrequency(null);
-        res.setNextPublished(null);
-        // reset other last modified dates
-        res.setMetadataModified(null);
-        res.setMappingsModified(null);
-        res.setSourcesModified(null);
-        // add resource to IPT
-        save(res);
-      }
-
-    } catch (InvalidConfigException e) {
-      alog.error(e.getMessage(), e);
-      throw new ImportException(e);
-    } catch (IOException e) {
-      alog.error("Could not copy resource folder into data directory: " + e.getMessage(), e);
-      throw new ImportException(e);
-    }
-
-    return res;
-  }
-
-  /**
-   * Determine whether the directory represents an IPT Resource directory or not. To qualify, directory must contain
-   * at least a resource.xml and eml.xml file.
-   *
-   * @param dir directory where compressed file was decompressed
-   *
-   * @return true if it is an IPT Resource folder or false otherwise
-   */
-  private boolean isIPTResourceFolder(File dir) {
-    if (dir.exists() && dir.isDirectory()) {
-      File persistenceFile = new File(dir, PERSISTENCE_FILE);
-      File emlFile = new File(dir, DataDir.EML_XML_FILENAME);
-      return persistenceFile.isFile() && emlFile.isFile();
-    }
-    return false;
-  }
-
-  /**
-   * Filter those files with suffixes ending in .xml.
-   */
-  private static class XmlFilenameFilter implements FilenameFilter {
-
-    public boolean accept(File dir, String name) {
-      return name != null && name.toLowerCase().endsWith(".xml");
-    }
-  }
-
-  public Resource create(String shortname, String type, User creator) throws AlreadyExistingException {
-    Resource res = null;
-    if (shortname != null) {
-      // convert short name to lower case
-      String lower = shortname.toLowerCase();
-      // check if existing already
-      if (resources.containsKey(lower)) {
-        throw new AlreadyExistingException();
-      }
-      res = new Resource();
-      res.setShortname(lower);
-      res.setCreated(new Date());
-      res.setCreator(creator);
-      if (type != null) {
-        res.setCoreType(type);
-      }
-      // create dir
-      try {
-        save(res);
-        log.info("Created resource " + res.getShortname());
-      } catch (InvalidConfigException e) {
-        log.error("Error creating resource", e);
-        return null;
-      }
-    }
-    return res;
-  }
-
-  private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException, InvalidFilenameException {
-    Resource resource;
-    try {
-      // try to read dwca
-      Archive arch = ArchiveFactory.openArchive(dwca);
-
-      if (arch.getCore() == null) {
-        alog.warn("manage.resource.create.core.invalid");
-        throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
-      }
-
-      if (arch.getCore().getRowType() == null) {
-        alog.warn("manage.resource.create.core.invalid.rowType");
-        throw new ImportException("Darwin core archive is invalid, core mapping has no rowType");
-      }
-
-      // keep track of source files as a dwca might refer to the same source file multiple times
-      Map<String, TextFileSource> sources = new HashMap<String, TextFileSource>();
-
-      // determine core type for the resource based on the rowType
-      Term rowType = arch.getCore().getRowType();
-      CoreRowType type;
-      if (rowType.equals(DwcTerm.Taxon)) {
-        type = CoreRowType.CHECKLIST;
-      } else if (rowType.equals(DwcTerm.Occurrence)) {
-        type = CoreRowType.OCCURRENCE;
-      } else if (rowType.equals(DwcTerm.Event)) {
-        type = CoreRowType.SAMPLINGEVENT;
-      } else {
-        type = CoreRowType.OTHER;
-      }
-
-      // create new resource
-      resource = create(shortname, type.toString().toUpperCase(Locale.ENGLISH), creator);
-
-      // read core source+mappings
-      TextFileSource s = importSource(resource, arch.getCore());
-      sources.put(arch.getCore().getLocation(), s);
-      ExtensionMapping map = importMappings(alog, arch.getCore(), s);
-      resource.addMapping(map);
-
-      // read extension sources+mappings
-      for (ArchiveFile ext : arch.getExtensions()) {
-        if (sources.containsKey(ext.getLocation())) {
-          s = sources.get(ext.getLocation());
-          log.debug("SourceBase " + s.getName() + " shared by multiple extensions");
-        } else {
-          s = importSource(resource, ext);
-          sources.put(ext.getLocation(), s);
+    /**
+     * Close file writer if the writer is not null.
+     *
+     * @param writer file writer
+     */
+    private void closeWriter(Writer writer) {
+        if (writer != null) {
+            try {
+                writer.close();
+            } catch (IOException e) {
+                log.error(e);
+            }
         }
-        map = importMappings(alog, ext, s);
-        resource.addMapping(map);
-      }
-
-      // try to read metadata
-      Eml eml = readMetadata(resource.getShortname(), arch, alog);
-      if (eml != null) {
-        resource.setEml(eml);
-      }
-
-      // finally persist the whole thing
-      save(resource);
-
-      alog.info("manage.resource.create.success",
-        new String[] {resource.getCoreRowType(), String.valueOf(resource.getSources().size()),
-          String.valueOf(resource.getMappings().size())});
-    } catch (UnsupportedArchiveException e) {
-      alog.warn(e.getMessage(), e);
-      throw new ImportException(e);
-    } catch (IOException e) {
-      alog.warn(e.getMessage(), e);
-      throw new ImportException(e);
     }
 
-    return resource;
-  }
+    /**
+     * Populate an Eml instance from a Dataset object that was created from a Dublin Core metadata document, or
+     * another basic metadata format. Note: only a small number of fields actually contain data.
+     *
+     * @param metadata Dataset object
+     * @return Eml instance
+     */
+    private Eml convertMetadataToEml(Dataset metadata) {
+        Eml eml = new Eml();
+        if (metadata != null) {
+            // copy properties
+            eml.setTitle(metadata.getTitle());
 
-  /**
-   * Create new resource from eml file.
-   *
-   * @param shortname resource shortname
-   * @param emlFile   eml file
-   * @param creator   User creating resource
-   * @param alog      ActionLogger
-   *
-   * @return resource created
-   *
-   * @throws AlreadyExistingException if the resource created uses a shortname that already exists
-   * @throws ImportException          if the eml file could not be read/parsed
-   */
-  private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException {
-    Eml eml;
-    try {
-      // copy eml file to data directory (with name eml.xml) and populate Eml instance
-      eml = copyMetadata(shortname, emlFile);
-    } catch (ImportException e) {
-      alog.error("manage.resource.create.failed");
-      throw e;
-    }
-    // create resource of type metadata, with Eml instance
-    Resource resource = create(shortname, Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
-    resource.setEml(eml);
-    return resource;
-  }
-
-  private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
-    ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
-    JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
-    xstream.alias("resource", Resource.class);
-    xstream.alias("user", User.class);
-    xstream.alias("filesource", TextFileSource.class);
-    xstream.alias("excelsource", ExcelFileSource.class);
-    xstream.alias("sqlsource", SqlSource.class);
-    xstream.alias("mapping", ExtensionMapping.class);
-    xstream.alias("field", PropertyMapping.class);
-    xstream.alias("versionhistory", VersionHistory.class);
-    xstream.alias("doi", DOI.class);
-
-    // transient properties
-    xstream.omitField(Resource.class, "shortname");
-    xstream.omitField(Resource.class, "eml");
-    xstream.omitField(Resource.class, "type");
-    // make files transient to allow moving the datadir
-    xstream.omitField(TextFileSource.class, "file");
-
-    // persist only emails for users
-    xstream.registerConverter(userConverter);
-    // persist only rowtype
-    xstream.registerConverter(extensionConverter);
-    // persist only qualified concept name
-    xstream.registerConverter(conceptTermConverter);
-    // encrypt passwords
-    xstream.registerConverter(passwordConverter);
-
-    xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
-    xstream.addDefaultImplementation(DwcTerm.class, Term.class);
-    xstream.addDefaultImplementation(DcTerm.class, Term.class);
-    xstream.addDefaultImplementation(GbifTerm.class, Term.class);
-    xstream.addDefaultImplementation(IucnTerm.class, Term.class);
-    xstream.registerConverter(orgConverter);
-    xstream.registerConverter(jdbcInfoConverter);
-  }
-
-  public void delete(Resource resource, boolean remove) throws IOException, DeletionNotAllowedException {
-    // deregister resource?
-    if (resource.isRegistered()) {
-      try {
-        registryManager.deregister(resource);
-      } catch (RegistryException e) {
-        log.error("Failed to deregister resource: " + e.getMessage(), e);
-        throw new DeletionNotAllowedException(Reason.REGISTRY_ERROR, e.getMessage());
-      }
-    }
-
-    // remove from data dir?
-    if (remove) {
-      FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
-      // remove object
-      resources.remove(resource.getShortname().toLowerCase());
-    }
-  }
-
-  /**
-   * @see #isLocked(String, BaseAction) for removing jobs from internal maps
-   */
-  private void generateDwca(Resource resource) {
-    // use threads to run in the background as sql sources might take a long time
-    GenerateDwca worker = dwcaFactory.create(resource, this);
-    Future<Integer> f = executor.submit(worker);
-    processFutures.put(resource.getShortname(), f);
-    // make sure we have at least a first report for this resource
-    worker.report();
-  }
-
-  public Resource get(String shortname) {
-    if (shortname == null) {
-      return null;
-    }
-    return resources.get(shortname.toLowerCase());
-  }
-
-  private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
-    ExtensionMapping map = new ExtensionMapping();
-    map.setSource(source);
-    Extension ext = extensionManager.get(af.getRowType().qualifiedName());
-    if (ext == null) {
-      alog.warn("manage.resource.create.rowType.null", new String[] {af.getRowType().qualifiedName()});
-      return null;
-    }
-    map.setExtension(ext);
-
-    // set ID column
-    map.setIdColumn(af.getId().getIndex());
-
-    Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
-    // iterate over each field to make sure its part of the extension we know
-    for (ArchiveField f : af.getFields().values()) {
-      if (ext.hasProperty(f.getTerm())) {
-        fields.add(new PropertyMapping(f));
-      } else {
-        alog.warn("manage.resource.create.mapping.concept.skip",
-          new String[] {f.getTerm().qualifiedName(), ext.getRowType()});
-      }
-    }
-    map.setFields(fields);
-
-    return map;
-  }
-
-  private TextFileSource importSource(Resource config, ArchiveFile af)
-    throws ImportException, InvalidFilenameException {
-    File extFile = af.getLocationFile();
-    TextFileSource s = (TextFileSource) sourceManager.add(config, extFile, af.getLocation());
-    SourceManagerImpl.copyArchiveFileProperties(af, s);
-
-    // the number of rows was calculated using the standard file importer
-    // make an adjustment now that the exact number of header rows are known
-    if (s.getIgnoreHeaderLines() != 1) {
-      log.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
-               + " since header count is declared as " + s.getIgnoreHeaderLines());
-    }
-    s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
-
-    return s;
-  }
-
-  public boolean isEmlExisting(String shortName) {
-    File emlFile = dataDir.resourceEmlFile(shortName);
-    return emlFile.exists();
-  }
-
-  public boolean isLocked(String shortname, BaseAction action) {
-    if (processFutures.containsKey(shortname)) {
-      Resource resource = get(shortname);
-      BigDecimal version = resource.getEmlVersion();
-
-      // is listed as locked but task might be finished, check
-      Future<Integer> f = processFutures.get(shortname);
-      // if this task finished
-      if (f.isDone()) {
-        // remove process from locking list immediately! Fixes Issue 1141
-        processFutures.remove(shortname);
-        boolean succeeded = false;
-        String reasonFailed = null;
-        Throwable cause = null;
-        try {
-          // retrieve resource record count (number of records published in DwC-A)
-          Integer recordCount = f.get();
-          // set number of records published
-          resource.setRecordsPublished(recordCount);
-          // finish publication (update registration, persist resource changes)
-          publishEnd(resource, action, version);
-          // important: indicate publishing finished successfully!
-          succeeded = true;
-        } catch (ExecutionException e) {
-          // getCause holds the actual exception our callable (GenerateDwca) threw
-          cause = e.getCause();
-          if (cause instanceof GeneratorException) {
-            reasonFailed = action.getText("dwca.failed", new String[] {shortname, cause.getMessage()});
-          } else if (cause instanceof InterruptedException) {
-            reasonFailed = action.getText("dwca.interrupted", new String[] {shortname, cause.getMessage()});
-          } else {
-            reasonFailed = action.getText("dwca.failed", new String[] {shortname, cause.getMessage()});
-          }
-        } catch (InterruptedException e) {
-          reasonFailed = action.getText("dwca.interrupted", new String[] {shortname, e.getMessage()});
-          cause = e;
-        } catch (PublicationException e) {
-          reasonFailed = action.getText("publishing.error", new String[] {e.getType().toString(), e.getMessage()});
-          cause = e;
-          // this type of exception happens outside GenerateDwca - so add reason to StatusReport
-          getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
-        } finally {
-          // if publication was successful..
-          if (succeeded) {
-            // update StatusReport on publishing page
-            String msg =
-              action.getText("publishing.success", new String[] {version.toPlainString(), resource.getShortname()});
-            StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
-            processReports.put(shortname, updated);
-          } else {
-            // alert user publication failed
-            String msg =
-              action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, reasonFailed});
-            action.addActionError(msg);
-
-            // update StatusReport on publishing page
-            if (cause != null) {
-              StatusReport updated = new StatusReport(new Exception(cause), msg, getTaskMessages(shortname));
-              processReports.put(shortname, updated);
+            if (metadata.getDescription() != null) {
+                // split description into paragraphs
+                for (String para : Splitter.onPattern("\r?\n").trimResults().omitEmptyStrings()
+                        .split(metadata.getDescription())) {
+                    eml.addDescriptionPara(para);
+                }
             }
 
-            // the previous version needs to be rolled back
-            restoreVersion(resource, version, resource.getReplacedEmlVersion(), action);
+            if (metadata.getHomepage() != null) {
+                eml.setDistributionUrl(metadata.getHomepage().toString());
+            }
+            if (metadata.getLogoUrl() != null) {
+                eml.setLogoUrl(metadata.getLogoUrl().toString());
+            }
+            eml.setPubDate(metadata.getPubDate());
+        }
+        return eml;
+    }
 
-            // keep track of how many failures on auto publication have happened
-            processFailures.put(resource.getShortname(), new Date());
-          }
+    /**
+     * Copies incoming eml file to data directory with name eml.xml.
+     * </br>
+     * This method retrieves a file handle to the eml.xml file in data directory. It then copies the incoming emlFile to
+     * over to this file. From this file an Eml instance is then populated and returned.
+     *
+     * @param shortname shortname
+     * @param emlFile   eml file
+     * @return populated Eml instance
+     * @throws ImportException if eml file could not be read/parsed
+     */
+    private Eml copyMetadata(String shortname, File emlFile) throws ImportException {
+        File emlFile2 = dataDir.resourceEmlFile(shortname);
+        try {
+            FileUtils.copyFile(emlFile, emlFile2);
+        } catch (IOException e1) {
+            log.error("Unnable to copy EML File", e1);
+        }
+        Eml eml;
+        try {
+            InputStream in = new FileInputStream(emlFile2);
+            eml = EmlFactory.build(in);
+        } catch (FileNotFoundException e) {
+            eml = new Eml();
+        } catch (IOException e) {
+            log.error(e);
+            throw new ImportException("Invalid EML document");
+        } catch (SAXException e) {
+            log.error("Invalid EML document", e);
+            throw new ImportException("Invalid EML document");
+        } catch (ParserConfigurationException e) {
+            log.error("Invalid EML document", e);
+            throw new ImportException("Invalid EML document");
+        }
+        return eml;
+    }
+
+    public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
+            throws AlreadyExistingException, ImportException, InvalidFilenameException {
+        ActionLogger alog = new ActionLogger(this.log, action);
+        Resource resource;
+        // decompress archive
+        List<File> decompressed = null;
+        File dwcaDir = dataDir.tmpDir();
+        try {
+            decompressed = CompressionUtil.decompressFile(dwcaDir, dwca, true);
+        } catch (UnsupportedCompressionType e) {
+            log.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
+            // try again as single gzip file
+            try {
+                decompressed = CompressionUtil.ungzipFile(dwcaDir, dwca, false);
+            } catch (Exception e2) {
+                log.debug("2nd attempt to decompress file failed: " + e.getMessage(), e);
+            }
+        } catch (Exception e) {
+            log.debug("Decompression failed: " + e.getMessage(), e);
+        }
+
+        // create resource:
+        // if decompression failed, create resource from single eml file
+        if (decompressed == null) {
+            resource = createFromEml(shortname, dwca, creator, alog);
+        }
+        // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
+        else {
+            resource = (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
+                    : createFromArchive(shortname, dwcaDir, creator, alog);
+        }
+
+        // set resource type, if it hasn't been set already
+        if (type != null && Strings.isNullOrEmpty(resource.getCoreType())) {
+            resource.setCoreType(type);
+        }
+
+        return resource;
+    }
+
+    /**
+     * Creates a resource from an IPT Resource folder. The purpose is to preserve the original source files and mappings.
+     * The managers, created date, last publication date, version history, version number, DOI(s), publication status,
+     * and registration info is all cleared. The creator and modifier are set to the current creator.
+     * </p>
+     * This method must ensure that the folder has a unique name relative to the other resource's shortnames, otherwise
+     * it tries to rename the folder using the supplied shortname. If neither of these yield a unique shortname,
+     * an exception is thrown alerting the user they should try again with a unique name.
+     *
+     * @param shortname resource shortname
+     * @param folder    IPT resource folder
+     * @param creator   Creator
+     * @param alog      action logging
+     * @return Resource created or null if it was unsuccessful
+     * @throws AlreadyExistingException if a unique shortname could not be determined
+     * @throws ImportException          if a problem occurred trying to create the new Resource
+     */
+    private Resource createFromIPTResourceFolder(String shortname, File folder, User creator, ActionLogger alog)
+            throws AlreadyExistingException, ImportException {
+        Resource res;
+        try {
+
+            // shortname supplied is unique?
+            if (resources.containsKey(shortname)) {
+                throw new AlreadyExistingException();
+            }
+
+            // copy folder (renamed using shortname) to resources directory in data_dir
+            File dest = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
+            FileUtils.copyDirectory(folder, dest);
+
+            // proceed with resource creation (using destination folder in data_dir)
+            res = loadFromDir(dest, alog);
+
+            // ensure this resource is safe to import!
+            if (res != null) {
+                // remove all managers associated to resource
+                res.getManagers().clear();
+                // change creator to the User that uploaded resource
+                res.setCreator(creator);
+                // change modifier to User that uploaded resource
+                res.setModifier(creator);
+                // change creation date
+                res.setCreated(new Date());
+                // resource has never been published - set last published date to null
+                res.setLastPublished(null);
+                // reset organization
+                res.setOrganisation(null);
+                // clear registration
+                res.setKey(null);
+                // set publication status to Private
+                res.setStatus(PublicationStatus.PRIVATE);
+                // set number of records published to 0
+                res.setRecordsPublished(0);
+                // reset version number
+                res.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
+                // reset DOI
+                res.setDoi(null);
+                res.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+                res.setDoiOrganisationKey(null);
+                // reset change summary
+                res.setChangeSummary(null);
+                // remove all VersionHistory
+                res.getVersionHistory().clear();
+                // turn off auto-publication
+                res.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
+                res.setUpdateFrequency(null);
+                res.setNextPublished(null);
+                // reset other last modified dates
+                res.setMetadataModified(null);
+                res.setMappingsModified(null);
+                res.setSourcesModified(null);
+                // add resource to IPT
+                save(res);
+            }
+
+        } catch (InvalidConfigException e) {
+            alog.error(e.getMessage(), e);
+            throw new ImportException(e);
+        } catch (IOException e) {
+            alog.error("Could not copy resource folder into data directory: " + e.getMessage(), e);
+            throw new ImportException(e);
+        }
+
+        return res;
+    }
+
+    /**
+     * Determine whether the directory represents an IPT Resource directory or not. To qualify, directory must contain
+     * at least a resource.xml and eml.xml file.
+     *
+     * @param dir directory where compressed file was decompressed
+     * @return true if it is an IPT Resource folder or false otherwise
+     */
+    private boolean isIPTResourceFolder(File dir) {
+        if (dir.exists() && dir.isDirectory()) {
+            File persistenceFile = new File(dir, PERSISTENCE_FILE);
+            File emlFile = new File(dir, DataDir.EML_XML_FILENAME);
+            return persistenceFile.isFile() && emlFile.isFile();
         }
         return false;
-      }
-      return true;
-    }
-    return false;
-  }
-
-  public boolean isLocked(String shortname) {
-    return isLocked(shortname, new BaseAction(textProvider, cfg, registrationManager));
-  }
-
-  public List<Resource> latest(int startPage, int pageSize) {
-    List<Resource> resourceList = new ArrayList<Resource>();
-    for (Resource resource : resources.values()) {
-      if (!resource.getStatus().equals(PublicationStatus.PRIVATE)) {
-        resourceList.add(resource);
-      }
-    }
-    Collections.sort(resourceList, new Comparator<Resource>() {
-
-      public int compare(Resource r1, Resource r2) {
-        if (r1 == null || r1.getModified() == null) {
-          return 1;
-        }
-        if (r2 == null || r2.getModified() == null) {
-          return -1;
-        }
-        if (r1.getModified().before(r2.getModified())) {
-          return 1;
-        } else {
-          return -1;
-        }
-      }
-    });
-    return resourceList;
-  }
-
-  public List<Resource> list() {
-    return new ArrayList<Resource>(resources.values());
-  }
-
-  public List<Resource> list(PublicationStatus status) {
-    List<Resource> result = new ArrayList<Resource>();
-    for (Resource r : resources.values()) {
-      if (r.getStatus() == status) {
-        result.add(r);
-      }
-    }
-    return result;
-  }
-
-  public List<Resource> listPublishedPublicVersions() {
-    List<Resource> result = new ArrayList<Resource>();
-    for (Resource r : resources.values()) {
-      List<VersionHistory> history = r.getVersionHistory();
-      if (!history.isEmpty()) {
-        VersionHistory latestVersion = history.get(0);
-        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) && !latestVersion
-          .getPublicationStatus().equals(PublicationStatus.PRIVATE)) {
-          result.add(r);
-        }
-      } else if (r.isRegistered()) { // for backwards compatibility with resources published prior to v2.2
-        result.add(r);
-      }
-    }
-    return result;
-  }
-
-  public List<Resource> list(User user) {
-    List<Resource> result = new ArrayList<Resource>();
-    // select basedon user rights - for testing return all resources for now
-    for (Resource res : resources.values()) {
-      if (RequireManagerInterceptor.isAuthorized(user, res)) {
-        result.add(res);
-      }
-    }
-    return result;
-  }
-
-  public int load() {
-    File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
-    resources.clear();
-    int counter = 0;
-    File[] files = resourcesDir.listFiles();
-    if (files != null) {
-      for (File resourceDir : files) {
-        if (resourceDir.isDirectory()) {
-          try {
-            addResource(loadFromDir(resourceDir));
-            counter++;
-          } catch (InvalidConfigException e) {
-            log.error("Cant load resource " + resourceDir.getName(), e);
-          }
-        }
-      }
-      log.info("Loaded " + counter + " resources into memory altogether.");
-    } else {
-      log.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
-    }
-    return counter;
-  }
-
-  /**
-   * Loads a resource's metadata from its eml.xml file located inside its resource directory. If no eml.xml file was
-   * found, the resource is loaded with an empty EML instance.
-   *
-   * @param resource resource
-   */
-  private void loadEml(Resource resource) {
-    File emlFile = dataDir.resourceEmlFile(resource.getShortname());
-    // load resource metadata, use US Locale to interpret it because uses '.' for decimal separator
-    Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
-    resource.setEml(eml);
-  }
-
-  /**
-   * Calls loadFromDir(File, ActionLogger), inserting a new instance of ActionLogger.
-   *
-   * @param resourceDir resource directory
-   *
-   * @return loaded Resource
-   */
-  @VisibleForTesting
-  protected Resource loadFromDir(File resourceDir) {
-    return loadFromDir(resourceDir, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
-  }
-
-  /**
-   * Reads a complete resource configuration (resource config & eml) from the resource config folder
-   * and returns the Resource instance for the internal in memory cache.
-   */
-  private Resource loadFromDir(File resourceDir, ActionLogger alog) throws InvalidConfigException {
-    if (resourceDir.exists()) {
-      // load full configuration from resource.xml and eml.xml files
-      String shortname = resourceDir.getName();
-      try {
-        File cfgFile = dataDir.resourceFile(shortname, PERSISTENCE_FILE);
-        InputStream input = new FileInputStream(cfgFile);
-        Resource resource = (Resource) xstream.fromXML(input);
-        // non existing users end up being a NULL in the set, so remove them
-        // shouldnt really happen - but people can even manually cause a mess
-        resource.getManagers().remove(null);
-
-        // 1. Non existent Extension end up being NULL
-        // E.g. a user is trying to import a resource from one IPT to another without all required exts installed.
-        // 2. Auto-generating IDs is only available for Taxon core extension since IPT v2.1,
-        // therefore if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
-        for (ExtensionMapping ext : resource.getMappings()) {
-          Extension x = ext.getExtension();
-          if (x == null) {
-            alog.warn("manage.resource.create.extension.null");
-            throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-existent extension");
-          } else if (extensionManager.get(x.getRowType()) == null) {
-            alog.warn("manage.resource.create.rowType.null", new String[] {x.getRowType()});
-            throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
-          }
-          // is the ExtensionMapping of core type, not taxon core type, and uses a coreIdColumn mapping?
-          if (ext.isCore() && !ext.isTaxonCore() && ext.getIdColumn() != null) {
-            if (ext.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER) || ext.getIdColumn()
-              .equals(ExtensionMapping.IDGEN_UUID)) {
-              ext.setIdColumn(ExtensionMapping.NO_ID);
-            }
-          }
-        }
-
-        // shortname persists as folder name, so xstream doesnt handle this:
-        resource.setShortname(shortname);
-
-        // infer coreType if null
-        if (resource.getCoreType() == null) {
-          inferCoreType(resource);
-        }
-
-        // standardize subtype if not null
-        if (resource.getSubtype() != null) {
-          standardizeSubtype(resource);
-        }
-
-        // add proper source file pointer
-        for (Source src : resource.getSources()) {
-          src.setResource(resource);
-          if (src instanceof FileSource) {
-            FileSource frSrc = (FileSource) src;
-            frSrc.setFile(dataDir.sourceFile(resource, frSrc));
-          }
-        }
-
-        // pre v2.2 resources: set IdentifierStatus if null
-        if (resource.getIdentifierStatus() == null) {
-          resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
-        }
-
-        // load eml (this must be done before trying to convert version below)
-        loadEml(resource);
-
-        // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
-        // also convert/rename eml, rtf, and dwca versioned files also
-        BigDecimal converted = convertVersion(resource);
-        if (converted != null) {
-          updateResourceVersion(resource, resource.getEmlVersion(), converted);
-        }
-
-        // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
-        VersionHistory history = constructVersionHistoryForLastPublishedVersion(resource);
-        if (history != null) {
-          resource.addVersionHistory(history);
-        }
-
-        // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
-        if (resource.getLastPublishedVersionsVersion() != null) {
-          renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
-        }
-
-        // update EML with latest resource basics (version and GUID)
-        syncEmlWithResource(resource);
-
-        log.debug("Read resource configuration for " + shortname);
-        return resource;
-      } catch (FileNotFoundException e) {
-        log.error("Cannot read resource configuration for " + shortname, e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-          "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Convert integer version number to major_version.minor_version version number. Please note IPTs before v2.2 used
-   * integer-based version numbers.
-   *
-   * @param resource resource
-   *
-   * @return converted version number, or null if no conversion happened
-   */
-  protected BigDecimal convertVersion(Resource resource) {
-    if (resource.getEmlVersion() != null) {
-      BigDecimal version = resource.getEmlVersion();
-      // special conversion: 0 -> 1.0
-      if (version.equals(BigDecimal.ZERO)) {
-        return Constants.INITIAL_RESOURCE_VERSION;
-      } else if (version.scale() == 0) {
-        BigDecimal majorMinorVersion = version.setScale(1, RoundingMode.CEILING);
-        log.debug("Converted version [" + version.toPlainString() + "] to [" + majorMinorVersion.toPlainString() + "]");
-        return majorMinorVersion;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Update a resource's version, and rename its eml, rtf, and dwca versioned files to have the new version also.
-   *
-   * @param resource   resource to update
-   * @param oldVersion old version number
-   * @param newVersion new version number
-   *
-   * @return resource whose version number and files' version numbers have been updated
-   */
-  protected Resource updateResourceVersion(Resource resource, BigDecimal oldVersion, BigDecimal newVersion) {
-    Preconditions.checkNotNull(resource);
-    Preconditions.checkNotNull(oldVersion);
-    Preconditions.checkNotNull(newVersion);
-    // proceed if old and new versions are not equal in both value and scale - comparison done using .equals
-    if (!oldVersion.equals(newVersion)) {
-      try {
-        // rename e.g. eml-18.xml to eml-18.0.xml (if eml-18.xml exists)
-        File oldEml = dataDir.resourceEmlFile(resource.getShortname(), oldVersion);
-        File newEml = dataDir.resourceEmlFile(resource.getShortname(), newVersion);
-        if (oldEml.exists() && !newEml.exists()) {
-          Files.move(oldEml, newEml);
-        }
-
-        // rename e.g. zvv-18.rtf to zvv-18.0.rtf
-        File oldRtf = dataDir.resourceRtfFile(resource.getShortname(), oldVersion);
-        File newRtf = dataDir.resourceRtfFile(resource.getShortname(), newVersion);
-        if (oldRtf.exists() && !newRtf.exists()) {
-          Files.move(oldRtf, newRtf);
-        }
-
-        // rename e.g. dwca-18.zip to dwca-18.0.zip
-        File oldDwca = dataDir.resourceDwcaFile(resource.getShortname(), oldVersion);
-        File newDwca = dataDir.resourceDwcaFile(resource.getShortname(), newVersion);
-        if (oldDwca.exists() && !newDwca.exists()) {
-          Files.move(oldDwca, newDwca);
-        }
-
-        // if all renames were successful (didn't throw an exception), set new version
-        resource.setEmlVersion(newVersion);
-      } catch (IOException e) {
-        log.error("Failed to update version number for " + resource.getShortname(), e);
-        throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-          "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
-      }
-    }
-    return resource;
-  }
-
-  /**
-   * Rename a resource's dwca.zip to have the last published version, e.g. dwca-18.0.zip
-   *
-   * @param resource resource to update
-   * @param version  last published version number
-   */
-  protected void renameDwcaToIncludeVersion(Resource resource, BigDecimal version) {
-    Preconditions.checkNotNull(resource);
-    Preconditions.checkNotNull(version);
-    File unversionedDwca = dataDir.resourceDwcaFile(resource.getShortname());
-    File versionedDwca = dataDir.resourceDwcaFile(resource.getShortname(), version);
-    // proceed if resource has previously been published, and versioned dwca does not exist
-    if (unversionedDwca.exists() && !versionedDwca.exists()) {
-      try {
-        Files.move(unversionedDwca, versionedDwca);
-        log.debug("Renamed dwca.zip to " + versionedDwca.getName());
-      } catch (IOException e) {
-        log.error("Failed to rename dwca.zip file name with version number for " + resource.getShortname(), e);
-        throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-          "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
-      }
-    }
-  }
-
-  /**
-   * Construct VersionHistory for last published version of resource, if resource has been published but had no
-   * VersionHistory. Please note IPTs before v2.2 had no list of VersionHistory.
-   *
-   * @param resource resource
-   *
-   * @return VersionHistory, or null if no VersionHistory needed to be created.
-   */
-  protected VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
-    if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
-      VersionHistory vh =
-        new VersionHistory(resource.getEmlVersion(), resource.getLastPublished(), resource.getStatus());
-      vh.setRecordsPublished(resource.getRecordsPublished());
-      return vh;
-    }
-    return null;
-  }
-
-  /**
-   * The resource's coreType could be null. This could happen because before 2.0.3 it was not saved to resource.xml.
-   * During upgrades to 2.0.3, a bug in MetadataAction would (wrongly) automatically set the coreType:
-   * Checklist resources became Occurrence, and vice versa. This method will try to infer the coreType by matching
-   * the coreRowType against the taxon and occurrence rowTypes.
-   *
-   * @param resource Resource
-   *
-   * @return resource with coreType set if it could be inferred, or unchanged if it couldn't be inferred.
-   */
-  Resource inferCoreType(Resource resource) {
-    if (resource != null && resource.getCoreRowType() != null) {
-      if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(resource.getCoreRowType())) {
-        resource.setCoreType(CoreRowType.OCCURRENCE.toString().toLowerCase());
-      } else if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(resource.getCoreRowType())) {
-        resource.setCoreType(CoreRowType.CHECKLIST.toString().toLowerCase());
-      } else if (Constants.DWC_ROWTYPE_EVENT.equalsIgnoreCase(resource.getCoreRowType())) {
-        resource.setCoreType(CoreRowType.SAMPLINGEVENT.toString().toLowerCase());
-      }
-    }
-    return resource;
-  }
-
-  /**
-   * The resource's subType might not have been set using a standardized term from the dataset_subtype vocabulary.
-   * All versions before 2.0.4 didn't use the vocabulary, so this method is particularly important during upgrades
-   * to 2.0.4 and later. Basically, if the subType isn't recognized as belonging to the vocabulary, it is reset as
-   * null. That would mean the user would then have to reselect the subtype from the Basic Metadata page.
-   *
-   * @param resource Resource
-   *
-   * @return resource with subtype set using term from dataset_subtype vocabulary (assuming it has been set).
-   */
-  Resource standardizeSubtype(Resource resource) {
-    if (resource != null && resource.getSubtype() != null) {
-      // the vocabulary key names are identifiers and standard across Locales
-      // it's this key we want to persist as the subtype
-      Map<String, String> subtypes =
-        vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, Locale.ENGLISH.getLanguage(), false);
-      boolean usesVocab = false;
-      for (Map.Entry<String, String> entry : subtypes.entrySet()) {
-        // remember to do comparison regardless of case, since the subtype is stored in lowercase
-        if (resource.getSubtype().equalsIgnoreCase(entry.getKey())) {
-          usesVocab = true;
-        }
-      }
-      // if the subtype doesn't use a standardized term from the vocab, it's reset to null
-      if (!usesVocab) {
-        resource.setSubtype(null);
-      }
-    }
-    return resource;
-  }
-
-  public boolean publish(Resource resource, BigDecimal version, BaseAction action)
-    throws PublicationException, InvalidConfigException {
-    // prevent null action from being handled
-    if (action == null) {
-      action = new BaseAction(textProvider, cfg, registrationManager);
-    }
-    // publish EML
-    publishEml(resource, version);
-    // publish RTF
-    publishRtf(resource, version);
-    //TODO GENERATE DCAT
-    publishDCAT(resource, version);
-
-    // (re)generate dwca asynchronously
-    boolean dwca = false;
-    if (resource.hasMappedData()) {
-      generateDwca(resource);
-      dwca = true;
-    } else {
-      // set number of records published
-      resource.setRecordsPublished(0);
-      // finish publication now
-      publishEnd(resource, action, version);
-    }
-    return dwca;
-  }
-
-  /**
-   * Update the resource's registration (if registered) and persist any changes to the resource.
-   * </br>
-   * Publishing is split into 2 parts because DwC-A generation is asynchronous. This 2nd part of publishing can only
-   * be called after DwC-A has completed successfully.
-   *
-   * @param resource resource
-   * @param action   action
-   * @param version  version number to finalize publishing
-   *
-   * @throws PublicationException   if publication was unsuccessful
-   * @throws InvalidConfigException if resource configuration could not be saved
-   */
-  private void publishEnd(Resource resource, BaseAction action, BigDecimal version)
-    throws PublicationException, InvalidConfigException {
-    // prevent null action from being handled
-    if (action == null) {
-      action = new BaseAction(textProvider, cfg, registrationManager);
-    }
-    // update the resource's registration (if registered), even if it is a metadata-only resource.
-    updateRegistration(resource, action);
-    // set last published date
-    resource.setLastPublished(new Date());
-    // set next published date (if resource configured for auto-publishing)
-    updateNextPublishedDate(resource);
-    // register/update DOI
-    executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
-    // save the version history
-    saveVersionHistory(resource, version, action);
-    // persist resource object changes
-    save(resource);
-    // if archival mode is NOT turned on, don't keep former archive version (version replaced)
-    if (!cfg.isArchivalMode() && version.compareTo(resource.getReplacedEmlVersion()) != 0) {
-      removeArchiveVersion(resource.getShortname(), resource.getReplacedEmlVersion());
-    }
-    // final logging
-    String msg = action
-      .getText("publishing.success", new String[] {String.valueOf(resource.getEmlVersion()), resource.getShortname()});
-    action.addActionMessage(msg);
-    log.info(msg);
-  }
-
-  /**
-   * Depending on the state of the resource and its DOI, execute one of the following operations:
-   * - Register DOI
-   * - Update DOI
-   * - Register DOI and replace previous DOI
-   *
-   * @param resource        resource published
-   * @param version         resource version being published
-   * @param versionReplaced resource version being replaced
-   * @param action          action
-   *
-   * @throws PublicationException thrown if any part of DOI workflow failed
-   */
-  private void executeDoiWorkflow(Resource resource, BigDecimal version, BigDecimal versionReplaced, BaseAction action)
-    throws PublicationException {
-    // All DOI operations require resource be publicly available, and resource DOI be PUBLIC/PUBLIC_PENDING_PUBLICATION
-    if (resource.getDoi() != null && resource.isPubliclyAvailable() && (
-      resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || resource
-        .getIdentifierStatus().equals(IdentifierStatus.PUBLIC))) {
-      if (resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION)) {
-        if (resource.isAlreadyAssignedDoi()) {
-          // another new major version that replaces previous version
-          doReplaceDoi(resource, version, versionReplaced);
-          String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion.replaces",
-            new String[] {resource.getDoi().toString()});
-          log.info(msg);
-          action.addActionMessage(msg);
-        } else {
-          // initial major version
-          doRegisterDoi(resource, null);
-          String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion",
-            new String[] {resource.getDoi().toString()});
-          log.info(msg);
-          action.addActionMessage(msg);
-        }
-      } else {
-        // minor version increment
-        doUpdateDoi(resource);
-        String msg = action.getText("manage.overview.publishing.doi.publish.newMinorVersion",
-          new String[] {resource.getDoi().toString()});
-        log.info(msg);
-        action.addActionMessage(msg);
-      }
-    }
-  }
-
-  /**
-   * Register DOI. Corresponds to a major version change.
-   *
-   * @param resource resource whose DOI will be registered
-   */
-  @VisibleForTesting
-  protected void doRegisterDoi(Resource resource, @Nullable DOI replaced) {
-    Preconditions.checkNotNull(resource);
-
-    if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
-      DataCiteMetadata dataCiteMetadata = null;
-      DOI doi = resource.getDoi();
-      try {
-        // DOI resolves to IPT public resource page
-        URI uri = cfg.getResourceUri(resource.getShortname());
-        dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
-
-        // if this resource (DOI) replaces a former resource version (DOI) add isNewVersionOf RelatedIdentifier
-        if (replaced != null) {
-          DataCiteMetadataBuilder.addIsNewVersionOfDOIRelatedIdentifier(dataCiteMetadata, replaced);
-        }
-
-        registrationManager.getDoiService().register(doi, uri, dataCiteMetadata);
-        resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-        resource.updateAlternateIdentifierForDOI();
-        resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
-      } catch (DoiExistsException e) {
-        log.warn(
-          "Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead",
-          e);
-        try {
-          registrationManager.getDoiService().update(doi, dataCiteMetadata);
-          resource.setIdentifierStatus(
-            IdentifierStatus.PUBLIC); // must transition reused (registered DOI) from public_pending_publication to public
-          resource.updateAlternateIdentifierForDOI();
-          resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
-        } catch (DoiException e2) {
-          String errorMsg = "Failed to update existing DOI  " + doi.toString() + ": " + e2.getMessage();
-          log.error(errorMsg, e2);
-          throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e2);
-        }
-      } catch (InvalidMetadataException e) {
-        String errorMsg =
-          "Failed to register " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
-        log.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      } catch (DoiException e) {
-        String errorMsg = "Failed to register " + doi.toString() + ": " + e.getMessage();
-        log.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      }
-    } else {
-      throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION,
-        "Resource not in required state to register DOI!");
-    }
-  }
-
-  /**
-   * Update DOI metadata. The DOI URI isn't changed. This is done for each minor version change.
-   *
-   * @param resource resource whose DOI will be updated
-   */
-  @VisibleForTesting
-  protected void doUpdateDoi(Resource resource) {
-    Preconditions.checkNotNull(resource);
-
-    if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
-      DOI doi = resource.getDoi();
-      try {
-        DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
-        registrationManager.getDoiService().update(doi, dataCiteMetadata);
-      } catch (InvalidMetadataException e) {
-        String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
-        log.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      } catch (DoiException e) {
-        String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
-        log.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      }
-    } else {
-      throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION, "Resource not in required state to update DOI!");
-    }
-  }
-
-  /**
-   * Replace DOI currently assigned to resource with new DOI that has been reserved for resource.
-   * This corresponds to a new major version change.
-   *
-   * @param resource resource whose DOI will be registered
-   */
-  @VisibleForTesting
-  protected void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion) {
-    Preconditions.checkNotNull(resource);
-
-    DOI doiToRegister = resource.getDoi();
-    DOI doiToReplace = resource.getAssignedDoi();
-    BigDecimal versionToReplace = resource.getLastPublishedVersionsVersion();
-    if (doiToRegister != null && resource.isPubliclyAvailable() && doiToReplace != null
-        && resource.getEmlVersion() != null && resource.getEmlVersion().compareTo(version) == 0
-        && versionToReplace != null && versionToReplace.compareTo(replacedVersion) == 0) {
-
-      // register new DOI first, indicating it replaces former DOI
-      doRegisterDoi(resource, doiToReplace);
-
-      // update previously assigned DOI, indicating it has been replaced by new DOI
-      try {
-        // reconstruct last published version (version being replaced)
-        File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
-        Resource lastPublishedVersion = ResourceUtils
-          .reconstructVersion(replacedVersion, resource.getShortname(), doiToReplace, resource.getOrganisation(),
-            resource.findVersionHistory(versionToReplace), replacedVersionEmlFile, resource.getKey());
-
-        DataCiteMetadata assignedDoiMetadata =
-          DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
-
-        // add isPreviousVersionOf new resource version registered above
-        DataCiteMetadataBuilder.addIsPreviousVersionOfDOIRelatedIdentifier(assignedDoiMetadata, doiToRegister);
-
-        // update its URI first
-        URI resourceVersionUri = cfg.getResourceVersionUri(resource.getShortname(), replacedVersion);
-        registrationManager.getDoiService().update(doiToReplace, resourceVersionUri);
-        // then update its metadata
-        registrationManager.getDoiService().update(doiToReplace, assignedDoiMetadata);
-
-      } catch (InvalidMetadataException e) {
-        String errorMsg = "Failed to update " + doiToReplace.toString() + " metadata: " + e.getMessage();
-        log.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      } catch (DoiException e) {
-        String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
-        log.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      } catch (IllegalArgumentException e) {
-        String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
-        log.error(errorMsg, e);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      }
-    } else {
-      throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION, "Resource not in required state to replace DOI!");
-    }
-  }
-
-  public void restoreVersion(Resource resource, BigDecimal rollingBack, BigDecimal restoring, BaseAction action) {
-    // prevent null action from being handled
-    if (action == null) {
-      action = new BaseAction(textProvider, cfg, registrationManager);
-    }
-    String shortname = resource.getShortname();
-    log.info(
-      "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + restoring.toPlainString()
-      + " of resource " + shortname);
-
-    if (restoring.compareTo(BigDecimal.ZERO) >= 0) {
-      try {
-        // delete eml-1.xml if it exists (eml.xml must remain)
-        File versionedEMLFile = dataDir.resourceEmlFile(shortname, rollingBack);
-        if (versionedEMLFile.exists()) {
-          FileUtils.forceDelete(versionedEMLFile);
-        }
-        // delete shortname-1.rtf if it exists
-        File versionedRTFFile = dataDir.resourceRtfFile(shortname, rollingBack);
-        if (versionedRTFFile.exists()) {
-          FileUtils.forceDelete(versionedRTFFile);
-        }
-        // delete dwca-1.zip if it exists
-        File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, rollingBack);
-        if (versionedDwcaFile.exists()) {
-          FileUtils.forceDelete(versionedDwcaFile);
-        }
-        // dwca-rollingBack.zip should be replaced with dwca-restoring.zip - if it exists
-        File versionedDwcaFileToRestore = dataDir.resourceDwcaFile(shortname, restoring);
-        if (versionedDwcaFileToRestore.exists()) {
-          // proceed with overwriting/replacing dwca-rollingBack.zip with dwca-restoring.zip
-          File versionedDwcaFileToRollback = dataDir.resourceDwcaFile(resource.getShortname(), rollingBack);
-          FileUtils.copyFile(versionedDwcaFileToRestore, versionedDwcaFileToRollback);
-        }
-        // ensure version history removed
-        resource.removeVersionHistory(rollingBack);
-
-        // ensure recordsPublished count gets reset
-        VersionHistory restoredVersionVersionHistory = resource.findVersionHistory(restoring);
-        if (restoredVersionVersionHistory != null) {
-          resource.setRecordsPublished(restoredVersionVersionHistory.getRecordsPublished());
-        }
-
-        // update resource.xml
-        resource.setEmlVersion(restoring);
-        save(resource);
-
-        // update eml.xml and persist changes
-        resource.getEml().setPubDate(resource.getLastPublished());
-        saveEml(resource);
-
-      } catch (IOException e) {
-        String msg = action
-          .getText("restore.resource.failed", new String[] {restoring.toPlainString(), shortname, e.getMessage()});
-        log.error(msg, e);
-        action.addActionError(msg);
-      }
-      // alert user version rollback was successful
-      String msg = action.getText("restore.resource.success", new String[] {restoring.toPlainString(), shortname});
-      log.info(msg);
-      action.addActionMessage(msg);
-      // update StatusReport on publishing page
-      // Warning: don't retrieve status report using status() otherwise a cyclical call to isLocked results
-      StatusReport report = processReports.get(shortname);
-      if (report != null) {
-        report.getMessages().add(new TaskMessage(Level.INFO, msg));
-      }
-    }
-  }
-
-  /**
-   * Updates the resource's alternate identifier for its corresponding Registry UUID and saves the EML.
-   * If called on a resource that is already registered, the method ensures that it won't be added a second time.
-   * To accommodate updates from older versions of the IPT, the identifier is added by calling this method every
-   * time the resource gets re-published.
-   *
-   * @param resource resource
-   *
-   * @return resource with Registry UUID for the resource updated
-   */
-  public Resource updateAlternateIdentifierForRegistry(Resource resource) {
-    Eml eml = resource.getEml();
-    if (eml != null) {
-      // retrieve a list of the resource's alternate identifiers
-      List<String> currentIds = eml.getAlternateIdentifiers();
-      if (currentIds != null) {
-        // make new list of alternative identifiers in lower case so comparison is done in lower case only
-        List<String> ids = new ArrayList<String>();
-        for (String id : currentIds) {
-          ids.add(id.toLowerCase());
-        }
-        if (resource.isRegistered()) {
-          // GBIF Registry UUID
-          UUID key = resource.getKey();
-          // has the Registry UUID been added as an alternative identifier yet? If not, add it!
-          if (key != null && !ids.contains(key.toString().toLowerCase())) {
-            currentIds.add(key.toString());
-            // save all changes to Eml
-            saveEml(resource);
-            if (cfg.debug()) {
-              log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
-            }
-          }
-        }
-      }
-    } else {
-      resource.setEml(new Eml());
     }
 
-    return resource;
-  }
-
-  public Resource updateAlternateIdentifierForIPTURLToResource(Resource resource) {
-    // retrieve a list of the resource's alternate identifiers
-    List<String> ids = null;
-    if (resource.getEml() != null) {
-      ids = resource.getEml().getAlternateIdentifiers();
-    } else {
-      resource.setEml(new Eml());
-    }
-
-    if (ids != null) {
-      // has this been added before, perhaps with a different baseURL?
-      boolean exists = false;
-      String existingId = null;
-      for (String id : ids) {
-        // try to match "resource"
-        if (id.contains(Constants.REQ_PATH_RESOURCE)) {
-          exists = true;
-          existingId = id;
-        }
-      }
-      // if the resource is PUBLIC, or REGISTERED
-      if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) != 0) {
-        String url = cfg.getResourceUrl(resource.getShortname());
-        // if identifier does not exist yet - add it!
-        // if it already exists, then replace it just in case the baseURL has changed, for example
-        if (exists) {
-          ids.remove(existingId);
-        }
-        // lastly, be sure to add it
-        ids.add(url);
-        // save all changes to Eml
-        saveEml(resource);
-        if (cfg.debug()) {
-          log.info("IPT URL to resource added to (or updated in) Resource's list of alt ids");
-        }
-      }
-      // otherwise if the resource is PRIVATE
-      else if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) == 0) {
-        // no public resource alternate identifier can exist if the resource visibility is private - remove it if app.
-        if (exists) {
-          ids.remove(existingId);
-          // save all changes to Eml
-          saveEml(resource);
-          if (cfg.debug()) {
-            log.info("Following visibility change, IPT URL to resource was removed from Resource's list of alt ids");
-          }
-        }
-      }
-    }
-    return resource;
-  }
-
-  /**
-   * Publishes a new version of the EML file for the given resource.
-   *
-   * @param resource Resource
-   * @param version  version number to publish
-   *
-   * @throws PublicationException if resource was already being published, or if publishing failed for any reason
-   */
-  private void publishEml(Resource resource, BigDecimal version) throws PublicationException {
-    // check if publishing task is already running
-    if (isLocked(resource.getShortname())) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED,
-        "Resource " + resource.getShortname() + " is currently locked by another process");
-    }
-
-    // ensure alternate identifier for Registry UUID is set - if resource is registered
-    updateAlternateIdentifierForRegistry(resource);
-    // ensure alternate identifier for IPT URL to resource is set - if resource is public
-    updateAlternateIdentifierForIPTURLToResource(resource);
-    // update eml version
-    resource.setEmlVersion(version);
-    // update eml pubDate (represents date when the resource was last published)
-    resource.getEml().setPubDate(new Date());
-    // update resource citation with auto generated citation (if auto-generation has been turned on)
-    if (resource.isCitationAutoGenerated()) {
-      URI homepage = cfg.getResourceVersionUri(resource.getShortname(), version); // potential citation identifier
-      String citation = resource.generateResourceCitation(version, homepage);
-      resource.getEml().getCitation().setCitation(citation);
-    }
-
-    // save all changes to Eml
-    saveEml(resource);
-
-    // create versioned eml file
-    File trunkFile = dataDir.resourceEmlFile(resource.getShortname());
-    File versionedFile = dataDir.resourceEmlFile(resource.getShortname(), version);
-    try {
-      FileUtils.copyFile(trunkFile, versionedFile);
-    } catch (IOException e) {
-      throw new PublicationException(PublicationException.TYPE.EML,
-        "Can't publish eml file for resource " + resource.getShortname(), e);
-    }
-  }
-    //TODO Create DCAT feed
     /**
-     * Publishes a new version of the DCAT file for the given resource.
+     * Filter those files with suffixes ending in .xml.
+     */
+    private static class XmlFilenameFilter implements FilenameFilter {
+
+        public boolean accept(File dir, String name) {
+            return name != null && name.toLowerCase().endsWith(".xml");
+        }
+    }
+
+    public Resource create(String shortname, String type, User creator) throws AlreadyExistingException {
+        Resource res = null;
+        if (shortname != null) {
+            // convert short name to lower case
+            String lower = shortname.toLowerCase();
+            // check if existing already
+            if (resources.containsKey(lower)) {
+                throw new AlreadyExistingException();
+            }
+            res = new Resource();
+            res.setShortname(lower);
+            res.setCreated(new Date());
+            res.setCreator(creator);
+            if (type != null) {
+                res.setCoreType(type);
+            }
+            // create dir
+            try {
+                save(res);
+                log.info("Created resource " + res.getShortname());
+            } catch (InvalidConfigException e) {
+                log.error("Error creating resource", e);
+                return null;
+            }
+        }
+        return res;
+    }
+
+    private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
+            throws AlreadyExistingException, ImportException, InvalidFilenameException {
+        Resource resource;
+        try {
+            // try to read dwca
+            Archive arch = ArchiveFactory.openArchive(dwca);
+
+            if (arch.getCore() == null) {
+                alog.warn("manage.resource.create.core.invalid");
+                throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
+            }
+
+            if (arch.getCore().getRowType() == null) {
+                alog.warn("manage.resource.create.core.invalid.rowType");
+                throw new ImportException("Darwin core archive is invalid, core mapping has no rowType");
+            }
+
+            // keep track of source files as a dwca might refer to the same source file multiple times
+            Map<String, TextFileSource> sources = new HashMap<String, TextFileSource>();
+
+            // determine core type for the resource based on the rowType
+            Term rowType = arch.getCore().getRowType();
+            CoreRowType type;
+            if (rowType.equals(DwcTerm.Taxon)) {
+                type = CoreRowType.CHECKLIST;
+            } else if (rowType.equals(DwcTerm.Occurrence)) {
+                type = CoreRowType.OCCURRENCE;
+            } else if (rowType.equals(DwcTerm.Event)) {
+                type = CoreRowType.SAMPLINGEVENT;
+            } else {
+                type = CoreRowType.OTHER;
+            }
+
+            // create new resource
+            resource = create(shortname, type.toString().toUpperCase(Locale.ENGLISH), creator);
+
+            // read core source+mappings
+            TextFileSource s = importSource(resource, arch.getCore());
+            sources.put(arch.getCore().getLocation(), s);
+            ExtensionMapping map = importMappings(alog, arch.getCore(), s);
+            resource.addMapping(map);
+
+            // read extension sources+mappings
+            for (ArchiveFile ext : arch.getExtensions()) {
+                if (sources.containsKey(ext.getLocation())) {
+                    s = sources.get(ext.getLocation());
+                    log.debug("SourceBase " + s.getName() + " shared by multiple extensions");
+                } else {
+                    s = importSource(resource, ext);
+                    sources.put(ext.getLocation(), s);
+                }
+                map = importMappings(alog, ext, s);
+                resource.addMapping(map);
+            }
+
+            // try to read metadata
+            Eml eml = readMetadata(resource.getShortname(), arch, alog);
+            if (eml != null) {
+                resource.setEml(eml);
+            }
+
+            // finally persist the whole thing
+            save(resource);
+
+            alog.info("manage.resource.create.success",
+                    new String[]{resource.getCoreRowType(), String.valueOf(resource.getSources().size()),
+                            String.valueOf(resource.getMappings().size())});
+        } catch (UnsupportedArchiveException e) {
+            alog.warn(e.getMessage(), e);
+            throw new ImportException(e);
+        } catch (IOException e) {
+            alog.warn(e.getMessage(), e);
+            throw new ImportException(e);
+        }
+
+        return resource;
+    }
+
+    /**
+     * Create new resource from eml file.
+     *
+     * @param shortname resource shortname
+     * @param emlFile   eml file
+     * @param creator   User creating resource
+     * @param alog      ActionLogger
+     * @return resource created
+     * @throws AlreadyExistingException if the resource created uses a shortname that already exists
+     * @throws ImportException          if the eml file could not be read/parsed
+     */
+    private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
+            throws AlreadyExistingException, ImportException {
+        Eml eml;
+        try {
+            // copy eml file to data directory (with name eml.xml) and populate Eml instance
+            eml = copyMetadata(shortname, emlFile);
+        } catch (ImportException e) {
+            alog.error("manage.resource.create.failed");
+            throw e;
+        }
+        // create resource of type metadata, with Eml instance
+        Resource resource = create(shortname, Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
+        resource.setEml(eml);
+        return resource;
+    }
+
+    private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
+                                      ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
+                                      JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
+        xstream.alias("resource", Resource.class);
+        xstream.alias("user", User.class);
+        xstream.alias("filesource", TextFileSource.class);
+        xstream.alias("excelsource", ExcelFileSource.class);
+        xstream.alias("sqlsource", SqlSource.class);
+        xstream.alias("mapping", ExtensionMapping.class);
+        xstream.alias("field", PropertyMapping.class);
+        xstream.alias("versionhistory", VersionHistory.class);
+        xstream.alias("doi", DOI.class);
+
+        // transient properties
+        xstream.omitField(Resource.class, "shortname");
+        xstream.omitField(Resource.class, "eml");
+        xstream.omitField(Resource.class, "type");
+        // make files transient to allow moving the datadir
+        xstream.omitField(TextFileSource.class, "file");
+
+        // persist only emails for users
+        xstream.registerConverter(userConverter);
+        // persist only rowtype
+        xstream.registerConverter(extensionConverter);
+        // persist only qualified concept name
+        xstream.registerConverter(conceptTermConverter);
+        // encrypt passwords
+        xstream.registerConverter(passwordConverter);
+
+        xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
+        xstream.addDefaultImplementation(DwcTerm.class, Term.class);
+        xstream.addDefaultImplementation(DcTerm.class, Term.class);
+        xstream.addDefaultImplementation(GbifTerm.class, Term.class);
+        xstream.addDefaultImplementation(IucnTerm.class, Term.class);
+        xstream.registerConverter(orgConverter);
+        xstream.registerConverter(jdbcInfoConverter);
+    }
+
+    public void delete(Resource resource, boolean remove) throws IOException, DeletionNotAllowedException {
+        // deregister resource?
+        if (resource.isRegistered()) {
+            try {
+                registryManager.deregister(resource);
+            } catch (RegistryException e) {
+                log.error("Failed to deregister resource: " + e.getMessage(), e);
+                throw new DeletionNotAllowedException(Reason.REGISTRY_ERROR, e.getMessage());
+            }
+        }
+
+        // remove from data dir?
+        if (remove) {
+            FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
+            // remove object
+            resources.remove(resource.getShortname().toLowerCase());
+        }
+    }
+
+    /**
+     * @see #isLocked(String, BaseAction) for removing jobs from internal maps
+     */
+    private void generateDwca(Resource resource) {
+        // use threads to run in the background as sql sources might take a long time
+        GenerateDwca worker = dwcaFactory.create(resource, this);
+        Future<Integer> f = executor.submit(worker);
+        processFutures.put(resource.getShortname(), f);
+        // make sure we have at least a first report for this resource
+        worker.report();
+    }
+
+    public Resource get(String shortname) {
+        if (shortname == null) {
+            return null;
+        }
+        return resources.get(shortname.toLowerCase());
+    }
+
+    private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
+        ExtensionMapping map = new ExtensionMapping();
+        map.setSource(source);
+        Extension ext = extensionManager.get(af.getRowType().qualifiedName());
+        if (ext == null) {
+            alog.warn("manage.resource.create.rowType.null", new String[]{af.getRowType().qualifiedName()});
+            return null;
+        }
+        map.setExtension(ext);
+
+        // set ID column
+        map.setIdColumn(af.getId().getIndex());
+
+        Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
+        // iterate over each field to make sure its part of the extension we know
+        for (ArchiveField f : af.getFields().values()) {
+            if (ext.hasProperty(f.getTerm())) {
+                fields.add(new PropertyMapping(f));
+            } else {
+                alog.warn("manage.resource.create.mapping.concept.skip",
+                        new String[]{f.getTerm().qualifiedName(), ext.getRowType()});
+            }
+        }
+        map.setFields(fields);
+
+        return map;
+    }
+
+    private TextFileSource importSource(Resource config, ArchiveFile af)
+            throws ImportException, InvalidFilenameException {
+        File extFile = af.getLocationFile();
+        TextFileSource s = (TextFileSource) sourceManager.add(config, extFile, af.getLocation());
+        SourceManagerImpl.copyArchiveFileProperties(af, s);
+
+        // the number of rows was calculated using the standard file importer
+        // make an adjustment now that the exact number of header rows are known
+        if (s.getIgnoreHeaderLines() != 1) {
+            log.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
+                    + " since header count is declared as " + s.getIgnoreHeaderLines());
+        }
+        s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
+
+        return s;
+    }
+
+    public boolean isEmlExisting(String shortName) {
+        File emlFile = dataDir.resourceEmlFile(shortName);
+        return emlFile.exists();
+    }
+
+    public boolean isLocked(String shortname, BaseAction action) {
+        if (processFutures.containsKey(shortname)) {
+            Resource resource = get(shortname);
+            BigDecimal version = resource.getEmlVersion();
+
+            // is listed as locked but task might be finished, check
+            Future<Integer> f = processFutures.get(shortname);
+            // if this task finished
+            if (f.isDone()) {
+                // remove process from locking list immediately! Fixes Issue 1141
+                processFutures.remove(shortname);
+                boolean succeeded = false;
+                String reasonFailed = null;
+                Throwable cause = null;
+                try {
+                    // retrieve resource record count (number of records published in DwC-A)
+                    Integer recordCount = f.get();
+                    // set number of records published
+                    resource.setRecordsPublished(recordCount);
+                    // finish publication (update registration, persist resource changes)
+                    publishEnd(resource, action, version);
+                    // important: indicate publishing finished successfully!
+                    succeeded = true;
+                } catch (ExecutionException e) {
+                    // getCause holds the actual exception our callable (GenerateDwca) threw
+                    cause = e.getCause();
+                    if (cause instanceof GeneratorException) {
+                        reasonFailed = action.getText("dwca.failed", new String[]{shortname, cause.getMessage()});
+                    } else if (cause instanceof InterruptedException) {
+                        reasonFailed = action.getText("dwca.interrupted", new String[]{shortname, cause.getMessage()});
+                    } else {
+                        reasonFailed = action.getText("dwca.failed", new String[]{shortname, cause.getMessage()});
+                    }
+                } catch (InterruptedException e) {
+                    reasonFailed = action.getText("dwca.interrupted", new String[]{shortname, e.getMessage()});
+                    cause = e;
+                } catch (PublicationException e) {
+                    reasonFailed = action.getText("publishing.error", new String[]{e.getType().toString(), e.getMessage()});
+                    cause = e;
+                    // this type of exception happens outside GenerateDwca - so add reason to StatusReport
+                    getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
+                } finally {
+                    // if publication was successful..
+                    if (succeeded) {
+                        // update StatusReport on publishing page
+                        String msg =
+                                action.getText("publishing.success", new String[]{version.toPlainString(), resource.getShortname()});
+                        StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
+                        processReports.put(shortname, updated);
+                    } else {
+                        // alert user publication failed
+                        String msg =
+                                action.getText("publishing.failed", new String[]{version.toPlainString(), shortname, reasonFailed});
+                        action.addActionError(msg);
+
+                        // update StatusReport on publishing page
+                        if (cause != null) {
+                            StatusReport updated = new StatusReport(new Exception(cause), msg, getTaskMessages(shortname));
+                            processReports.put(shortname, updated);
+                        }
+
+                        // the previous version needs to be rolled back
+                        restoreVersion(resource, version, resource.getReplacedEmlVersion(), action);
+
+                        // keep track of how many failures on auto publication have happened
+                        processFailures.put(resource.getShortname(), new Date());
+                    }
+                }
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isLocked(String shortname) {
+        return isLocked(shortname, new BaseAction(textProvider, cfg, registrationManager));
+    }
+
+    public List<Resource> latest(int startPage, int pageSize) {
+        List<Resource> resourceList = new ArrayList<Resource>();
+        for (Resource resource : resources.values()) {
+            if (!resource.getStatus().equals(PublicationStatus.PRIVATE)) {
+                resourceList.add(resource);
+            }
+        }
+        Collections.sort(resourceList, new Comparator<Resource>() {
+
+            public int compare(Resource r1, Resource r2) {
+                if (r1 == null || r1.getModified() == null) {
+                    return 1;
+                }
+                if (r2 == null || r2.getModified() == null) {
+                    return -1;
+                }
+                if (r1.getModified().before(r2.getModified())) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        return resourceList;
+    }
+
+    public List<Resource> list() {
+        return new ArrayList<Resource>(resources.values());
+    }
+
+    public List<Resource> list(PublicationStatus status) {
+        List<Resource> result = new ArrayList<Resource>();
+        for (Resource r : resources.values()) {
+            if (r.getStatus() == status) {
+                result.add(r);
+            }
+        }
+        return result;
+    }
+
+    public List<Resource> listPublishedPublicVersions() {
+        List<Resource> result = new ArrayList<Resource>();
+        for (Resource r : resources.values()) {
+            List<VersionHistory> history = r.getVersionHistory();
+            if (!history.isEmpty()) {
+                VersionHistory latestVersion = history.get(0);
+                if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) && !latestVersion
+                        .getPublicationStatus().equals(PublicationStatus.PRIVATE)) {
+                    result.add(r);
+                }
+            } else if (r.isRegistered()) { // for backwards compatibility with resources published prior to v2.2
+                result.add(r);
+            }
+        }
+        return result;
+    }
+
+    public List<Resource> list(User user) {
+        List<Resource> result = new ArrayList<Resource>();
+        // select basedon user rights - for testing return all resources for now
+        for (Resource res : resources.values()) {
+            if (RequireManagerInterceptor.isAuthorized(user, res)) {
+                result.add(res);
+            }
+        }
+        return result;
+    }
+
+    public int load() {
+        File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
+        resources.clear();
+        int counter = 0;
+        File[] files = resourcesDir.listFiles();
+        if (files != null) {
+            for (File resourceDir : files) {
+                if (resourceDir.isDirectory()) {
+                    try {
+                        addResource(loadFromDir(resourceDir));
+                        counter++;
+                    } catch (InvalidConfigException e) {
+                        log.error("Cant load resource " + resourceDir.getName(), e);
+                    }
+                }
+            }
+            log.info("Loaded " + counter + " resources into memory altogether.");
+        } else {
+            log.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
+        }
+        return counter;
+    }
+
+    /**
+     * Loads a resource's metadata from its eml.xml file located inside its resource directory. If no eml.xml file was
+     * found, the resource is loaded with an empty EML instance.
+     *
+     * @param resource resource
+     */
+    private void loadEml(Resource resource) {
+        File emlFile = dataDir.resourceEmlFile(resource.getShortname());
+        // load resource metadata, use US Locale to interpret it because uses '.' for decimal separator
+        Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
+        resource.setEml(eml);
+    }
+
+    /**
+     * Calls loadFromDir(File, ActionLogger), inserting a new instance of ActionLogger.
+     *
+     * @param resourceDir resource directory
+     * @return loaded Resource
+     */
+    @VisibleForTesting
+    protected Resource loadFromDir(File resourceDir) {
+        return loadFromDir(resourceDir, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
+    }
+
+    /**
+     * Reads a complete resource configuration (resource config & eml) from the resource config folder
+     * and returns the Resource instance for the internal in memory cache.
+     */
+    private Resource loadFromDir(File resourceDir, ActionLogger alog) throws InvalidConfigException {
+        if (resourceDir.exists()) {
+            // load full configuration from resource.xml and eml.xml files
+            String shortname = resourceDir.getName();
+            try {
+                File cfgFile = dataDir.resourceFile(shortname, PERSISTENCE_FILE);
+                InputStream input = new FileInputStream(cfgFile);
+                Resource resource = (Resource) xstream.fromXML(input);
+                // non existing users end up being a NULL in the set, so remove them
+                // shouldnt really happen - but people can even manually cause a mess
+                resource.getManagers().remove(null);
+
+                // 1. Non existent Extension end up being NULL
+                // E.g. a user is trying to import a resource from one IPT to another without all required exts installed.
+                // 2. Auto-generating IDs is only available for Taxon core extension since IPT v2.1,
+                // therefore if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
+                for (ExtensionMapping ext : resource.getMappings()) {
+                    Extension x = ext.getExtension();
+                    if (x == null) {
+                        alog.warn("manage.resource.create.extension.null");
+                        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-existent extension");
+                    } else if (extensionManager.get(x.getRowType()) == null) {
+                        alog.warn("manage.resource.create.rowType.null", new String[]{x.getRowType()});
+                        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
+                    }
+                    // is the ExtensionMapping of core type, not taxon core type, and uses a coreIdColumn mapping?
+                    if (ext.isCore() && !ext.isTaxonCore() && ext.getIdColumn() != null) {
+                        if (ext.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER) || ext.getIdColumn()
+                                .equals(ExtensionMapping.IDGEN_UUID)) {
+                            ext.setIdColumn(ExtensionMapping.NO_ID);
+                        }
+                    }
+                }
+
+                // shortname persists as folder name, so xstream doesnt handle this:
+                resource.setShortname(shortname);
+
+                // infer coreType if null
+                if (resource.getCoreType() == null) {
+                    inferCoreType(resource);
+                }
+
+                // standardize subtype if not null
+                if (resource.getSubtype() != null) {
+                    standardizeSubtype(resource);
+                }
+
+                // add proper source file pointer
+                for (Source src : resource.getSources()) {
+                    src.setResource(resource);
+                    if (src instanceof FileSource) {
+                        FileSource frSrc = (FileSource) src;
+                        frSrc.setFile(dataDir.sourceFile(resource, frSrc));
+                    }
+                }
+
+                // pre v2.2 resources: set IdentifierStatus if null
+                if (resource.getIdentifierStatus() == null) {
+                    resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
+                }
+
+                // load eml (this must be done before trying to convert version below)
+                loadEml(resource);
+
+                // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
+                // also convert/rename eml, rtf, and dwca versioned files also
+                BigDecimal converted = convertVersion(resource);
+                if (converted != null) {
+                    updateResourceVersion(resource, resource.getEmlVersion(), converted);
+                }
+
+                // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
+                VersionHistory history = constructVersionHistoryForLastPublishedVersion(resource);
+                if (history != null) {
+                    resource.addVersionHistory(history);
+                }
+
+                // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
+                if (resource.getLastPublishedVersionsVersion() != null) {
+                    renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
+                }
+
+                // update EML with latest resource basics (version and GUID)
+                syncEmlWithResource(resource);
+
+                log.debug("Read resource configuration for " + shortname);
+                return resource;
+            } catch (FileNotFoundException e) {
+                log.error("Cannot read resource configuration for " + shortname, e);
+                throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
+                        "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Convert integer version number to major_version.minor_version version number. Please note IPTs before v2.2 used
+     * integer-based version numbers.
+     *
+     * @param resource resource
+     * @return converted version number, or null if no conversion happened
+     */
+    protected BigDecimal convertVersion(Resource resource) {
+        if (resource.getEmlVersion() != null) {
+            BigDecimal version = resource.getEmlVersion();
+            // special conversion: 0 -> 1.0
+            if (version.equals(BigDecimal.ZERO)) {
+                return Constants.INITIAL_RESOURCE_VERSION;
+            } else if (version.scale() == 0) {
+                BigDecimal majorMinorVersion = version.setScale(1, RoundingMode.CEILING);
+                log.debug("Converted version [" + version.toPlainString() + "] to [" + majorMinorVersion.toPlainString() + "]");
+                return majorMinorVersion;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Update a resource's version, and rename its eml, rtf, and dwca versioned files to have the new version also.
+     *
+     * @param resource   resource to update
+     * @param oldVersion old version number
+     * @param newVersion new version number
+     * @return resource whose version number and files' version numbers have been updated
+     */
+    protected Resource updateResourceVersion(Resource resource, BigDecimal oldVersion, BigDecimal newVersion) {
+        Preconditions.checkNotNull(resource);
+        Preconditions.checkNotNull(oldVersion);
+        Preconditions.checkNotNull(newVersion);
+        // proceed if old and new versions are not equal in both value and scale - comparison done using .equals
+        if (!oldVersion.equals(newVersion)) {
+            try {
+                // rename e.g. eml-18.xml to eml-18.0.xml (if eml-18.xml exists)
+                File oldEml = dataDir.resourceEmlFile(resource.getShortname(), oldVersion);
+                File newEml = dataDir.resourceEmlFile(resource.getShortname(), newVersion);
+                if (oldEml.exists() && !newEml.exists()) {
+                    Files.move(oldEml, newEml);
+                }
+
+                // rename e.g. zvv-18.rtf to zvv-18.0.rtf
+                File oldRtf = dataDir.resourceRtfFile(resource.getShortname(), oldVersion);
+                File newRtf = dataDir.resourceRtfFile(resource.getShortname(), newVersion);
+                if (oldRtf.exists() && !newRtf.exists()) {
+                    Files.move(oldRtf, newRtf);
+                }
+
+                // rename e.g. dwca-18.zip to dwca-18.0.zip
+                File oldDwca = dataDir.resourceDwcaFile(resource.getShortname(), oldVersion);
+                File newDwca = dataDir.resourceDwcaFile(resource.getShortname(), newVersion);
+                if (oldDwca.exists() && !newDwca.exists()) {
+                    Files.move(oldDwca, newDwca);
+                }
+
+                // if all renames were successful (didn't throw an exception), set new version
+                resource.setEmlVersion(newVersion);
+            } catch (IOException e) {
+                log.error("Failed to update version number for " + resource.getShortname(), e);
+                throw new InvalidConfigException(TYPE.CONFIG_WRITE,
+                        "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
+            }
+        }
+        return resource;
+    }
+
+    /**
+     * Rename a resource's dwca.zip to have the last published version, e.g. dwca-18.0.zip
+     *
+     * @param resource resource to update
+     * @param version  last published version number
+     */
+    protected void renameDwcaToIncludeVersion(Resource resource, BigDecimal version) {
+        Preconditions.checkNotNull(resource);
+        Preconditions.checkNotNull(version);
+        File unversionedDwca = dataDir.resourceDwcaFile(resource.getShortname());
+        File versionedDwca = dataDir.resourceDwcaFile(resource.getShortname(), version);
+        // proceed if resource has previously been published, and versioned dwca does not exist
+        if (unversionedDwca.exists() && !versionedDwca.exists()) {
+            try {
+                Files.move(unversionedDwca, versionedDwca);
+                log.debug("Renamed dwca.zip to " + versionedDwca.getName());
+            } catch (IOException e) {
+                log.error("Failed to rename dwca.zip file name with version number for " + resource.getShortname(), e);
+                throw new InvalidConfigException(TYPE.CONFIG_WRITE,
+                        "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Construct VersionHistory for last published version of resource, if resource has been published but had no
+     * VersionHistory. Please note IPTs before v2.2 had no list of VersionHistory.
+     *
+     * @param resource resource
+     * @return VersionHistory, or null if no VersionHistory needed to be created.
+     */
+    protected VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
+        if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
+            VersionHistory vh =
+                    new VersionHistory(resource.getEmlVersion(), resource.getLastPublished(), resource.getStatus());
+            vh.setRecordsPublished(resource.getRecordsPublished());
+            return vh;
+        }
+        return null;
+    }
+
+    /**
+     * The resource's coreType could be null. This could happen because before 2.0.3 it was not saved to resource.xml.
+     * During upgrades to 2.0.3, a bug in MetadataAction would (wrongly) automatically set the coreType:
+     * Checklist resources became Occurrence, and vice versa. This method will try to infer the coreType by matching
+     * the coreRowType against the taxon and occurrence rowTypes.
      *
      * @param resource Resource
+     * @return resource with coreType set if it could be inferred, or unchanged if it couldn't be inferred.
+     */
+    Resource inferCoreType(Resource resource) {
+        if (resource != null && resource.getCoreRowType() != null) {
+            if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(resource.getCoreRowType())) {
+                resource.setCoreType(CoreRowType.OCCURRENCE.toString().toLowerCase());
+            } else if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(resource.getCoreRowType())) {
+                resource.setCoreType(CoreRowType.CHECKLIST.toString().toLowerCase());
+            } else if (Constants.DWC_ROWTYPE_EVENT.equalsIgnoreCase(resource.getCoreRowType())) {
+                resource.setCoreType(CoreRowType.SAMPLINGEVENT.toString().toLowerCase());
+            }
+        }
+        return resource;
+    }
+
+    /**
+     * The resource's subType might not have been set using a standardized term from the dataset_subtype vocabulary.
+     * All versions before 2.0.4 didn't use the vocabulary, so this method is particularly important during upgrades
+     * to 2.0.4 and later. Basically, if the subType isn't recognized as belonging to the vocabulary, it is reset as
+     * null. That would mean the user would then have to reselect the subtype from the Basic Metadata page.
      *
+     * @param resource Resource
+     * @return resource with subtype set using term from dataset_subtype vocabulary (assuming it has been set).
+     */
+    Resource standardizeSubtype(Resource resource) {
+        if (resource != null && resource.getSubtype() != null) {
+            // the vocabulary key names are identifiers and standard across Locales
+            // it's this key we want to persist as the subtype
+            Map<String, String> subtypes =
+                    vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, Locale.ENGLISH.getLanguage(), false);
+            boolean usesVocab = false;
+            for (Map.Entry<String, String> entry : subtypes.entrySet()) {
+                // remember to do comparison regardless of case, since the subtype is stored in lowercase
+                if (resource.getSubtype().equalsIgnoreCase(entry.getKey())) {
+                    usesVocab = true;
+                }
+            }
+            // if the subtype doesn't use a standardized term from the vocab, it's reset to null
+            if (!usesVocab) {
+                resource.setSubtype(null);
+            }
+        }
+        return resource;
+    }
+
+    public boolean publish(Resource resource, BigDecimal version, BaseAction action)
+            throws PublicationException, InvalidConfigException {
+        // prevent null action from being handled
+        if (action == null) {
+            action = new BaseAction(textProvider, cfg, registrationManager);
+        }
+        // publish EML
+        publishEml(resource, version);
+        // publish RTF
+        publishRtf(resource, version);
+        //TODO GENERATE DCAT
+        publishDCAT(resource, version);
+
+        // (re)generate dwca asynchronously
+        boolean dwca = false;
+        if (resource.hasMappedData()) {
+            generateDwca(resource);
+            dwca = true;
+        } else {
+            // set number of records published
+            resource.setRecordsPublished(0);
+            // finish publication now
+            publishEnd(resource, action, version);
+        }
+        return dwca;
+    }
+
+    /**
+     * Update the resource's registration (if registered) and persist any changes to the resource.
+     * </br>
+     * Publishing is split into 2 parts because DwC-A generation is asynchronous. This 2nd part of publishing can only
+     * be called after DwC-A has completed successfully.
+     *
+     * @param resource resource
+     * @param action   action
+     * @param version  version number to finalize publishing
+     * @throws PublicationException   if publication was unsuccessful
+     * @throws InvalidConfigException if resource configuration could not be saved
+     */
+    private void publishEnd(Resource resource, BaseAction action, BigDecimal version)
+            throws PublicationException, InvalidConfigException {
+        // prevent null action from being handled
+        if (action == null) {
+            action = new BaseAction(textProvider, cfg, registrationManager);
+        }
+        // update the resource's registration (if registered), even if it is a metadata-only resource.
+        updateRegistration(resource, action);
+        // set last published date
+        resource.setLastPublished(new Date());
+        // set next published date (if resource configured for auto-publishing)
+        updateNextPublishedDate(resource);
+        // register/update DOI
+        executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
+        // save the version history
+        saveVersionHistory(resource, version, action);
+        // persist resource object changes
+        save(resource);
+        // if archival mode is NOT turned on, don't keep former archive version (version replaced)
+        if (!cfg.isArchivalMode() && version.compareTo(resource.getReplacedEmlVersion()) != 0) {
+            removeArchiveVersion(resource.getShortname(), resource.getReplacedEmlVersion());
+        }
+        // final logging
+        String msg = action
+                .getText("publishing.success", new String[]{String.valueOf(resource.getEmlVersion()), resource.getShortname()});
+        action.addActionMessage(msg);
+        log.info(msg);
+    }
+
+    /**
+     * Depending on the state of the resource and its DOI, execute one of the following operations:
+     * - Register DOI
+     * - Update DOI
+     * - Register DOI and replace previous DOI
+     *
+     * @param resource        resource published
+     * @param version         resource version being published
+     * @param versionReplaced resource version being replaced
+     * @param action          action
+     * @throws PublicationException thrown if any part of DOI workflow failed
+     */
+    private void executeDoiWorkflow(Resource resource, BigDecimal version, BigDecimal versionReplaced, BaseAction action)
+            throws PublicationException {
+        // All DOI operations require resource be publicly available, and resource DOI be PUBLIC/PUBLIC_PENDING_PUBLICATION
+        if (resource.getDoi() != null && resource.isPubliclyAvailable() && (
+                resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || resource
+                        .getIdentifierStatus().equals(IdentifierStatus.PUBLIC))) {
+            if (resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION)) {
+                if (resource.isAlreadyAssignedDoi()) {
+                    // another new major version that replaces previous version
+                    doReplaceDoi(resource, version, versionReplaced);
+                    String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion.replaces",
+                            new String[]{resource.getDoi().toString()});
+                    log.info(msg);
+                    action.addActionMessage(msg);
+                } else {
+                    // initial major version
+                    doRegisterDoi(resource, null);
+                    String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion",
+                            new String[]{resource.getDoi().toString()});
+                    log.info(msg);
+                    action.addActionMessage(msg);
+                }
+            } else {
+                // minor version increment
+                doUpdateDoi(resource);
+                String msg = action.getText("manage.overview.publishing.doi.publish.newMinorVersion",
+                        new String[]{resource.getDoi().toString()});
+                log.info(msg);
+                action.addActionMessage(msg);
+            }
+        }
+    }
+
+    /**
+     * Register DOI. Corresponds to a major version change.
+     *
+     * @param resource resource whose DOI will be registered
+     */
+    @VisibleForTesting
+    protected void doRegisterDoi(Resource resource, @Nullable DOI replaced) {
+        Preconditions.checkNotNull(resource);
+
+        if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
+            DataCiteMetadata dataCiteMetadata = null;
+            DOI doi = resource.getDoi();
+            try {
+                // DOI resolves to IPT public resource page
+                URI uri = cfg.getResourceUri(resource.getShortname());
+                dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+
+                // if this resource (DOI) replaces a former resource version (DOI) add isNewVersionOf RelatedIdentifier
+                if (replaced != null) {
+                    DataCiteMetadataBuilder.addIsNewVersionOfDOIRelatedIdentifier(dataCiteMetadata, replaced);
+                }
+
+                registrationManager.getDoiService().register(doi, uri, dataCiteMetadata);
+                resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
+                resource.updateAlternateIdentifierForDOI();
+                resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
+            } catch (DoiExistsException e) {
+                log.warn(
+                        "Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead",
+                        e);
+                try {
+                    registrationManager.getDoiService().update(doi, dataCiteMetadata);
+                    resource.setIdentifierStatus(
+                            IdentifierStatus.PUBLIC); // must transition reused (registered DOI) from public_pending_publication to public
+                    resource.updateAlternateIdentifierForDOI();
+                    resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
+                } catch (DoiException e2) {
+                    String errorMsg = "Failed to update existing DOI  " + doi.toString() + ": " + e2.getMessage();
+                    log.error(errorMsg, e2);
+                    throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e2);
+                }
+            } catch (InvalidMetadataException e) {
+                String errorMsg =
+                        "Failed to register " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
+                log.error(errorMsg);
+                throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+            } catch (DoiException e) {
+                String errorMsg = "Failed to register " + doi.toString() + ": " + e.getMessage();
+                log.error(errorMsg);
+                throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+            }
+        } else {
+            throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION,
+                    "Resource not in required state to register DOI!");
+        }
+    }
+
+    /**
+     * Update DOI metadata. The DOI URI isn't changed. This is done for each minor version change.
+     *
+     * @param resource resource whose DOI will be updated
+     */
+    @VisibleForTesting
+    protected void doUpdateDoi(Resource resource) {
+        Preconditions.checkNotNull(resource);
+
+        if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
+            DOI doi = resource.getDoi();
+            try {
+                DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+                registrationManager.getDoiService().update(doi, dataCiteMetadata);
+            } catch (InvalidMetadataException e) {
+                String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
+                log.error(errorMsg);
+                throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+            } catch (DoiException e) {
+                String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
+                log.error(errorMsg);
+                throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+            }
+        } else {
+            throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION, "Resource not in required state to update DOI!");
+        }
+    }
+
+    /**
+     * Replace DOI currently assigned to resource with new DOI that has been reserved for resource.
+     * This corresponds to a new major version change.
+     *
+     * @param resource resource whose DOI will be registered
+     */
+    @VisibleForTesting
+    protected void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion) {
+        Preconditions.checkNotNull(resource);
+
+        DOI doiToRegister = resource.getDoi();
+        DOI doiToReplace = resource.getAssignedDoi();
+        BigDecimal versionToReplace = resource.getLastPublishedVersionsVersion();
+        if (doiToRegister != null && resource.isPubliclyAvailable() && doiToReplace != null
+                && resource.getEmlVersion() != null && resource.getEmlVersion().compareTo(version) == 0
+                && versionToReplace != null && versionToReplace.compareTo(replacedVersion) == 0) {
+
+            // register new DOI first, indicating it replaces former DOI
+            doRegisterDoi(resource, doiToReplace);
+
+            // update previously assigned DOI, indicating it has been replaced by new DOI
+            try {
+                // reconstruct last published version (version being replaced)
+                File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
+                Resource lastPublishedVersion = ResourceUtils
+                        .reconstructVersion(replacedVersion, resource.getShortname(), doiToReplace, resource.getOrganisation(),
+                                resource.findVersionHistory(versionToReplace), replacedVersionEmlFile, resource.getKey());
+
+                DataCiteMetadata assignedDoiMetadata =
+                        DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
+
+                // add isPreviousVersionOf new resource version registered above
+                DataCiteMetadataBuilder.addIsPreviousVersionOfDOIRelatedIdentifier(assignedDoiMetadata, doiToRegister);
+
+                // update its URI first
+                URI resourceVersionUri = cfg.getResourceVersionUri(resource.getShortname(), replacedVersion);
+                registrationManager.getDoiService().update(doiToReplace, resourceVersionUri);
+                // then update its metadata
+                registrationManager.getDoiService().update(doiToReplace, assignedDoiMetadata);
+
+            } catch (InvalidMetadataException e) {
+                String errorMsg = "Failed to update " + doiToReplace.toString() + " metadata: " + e.getMessage();
+                log.error(errorMsg);
+                throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+            } catch (DoiException e) {
+                String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
+                log.error(errorMsg);
+                throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+            } catch (IllegalArgumentException e) {
+                String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
+                log.error(errorMsg, e);
+                throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
+            }
+        } else {
+            throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION, "Resource not in required state to replace DOI!");
+        }
+    }
+
+    public void restoreVersion(Resource resource, BigDecimal rollingBack, BigDecimal restoring, BaseAction action) {
+        // prevent null action from being handled
+        if (action == null) {
+            action = new BaseAction(textProvider, cfg, registrationManager);
+        }
+        String shortname = resource.getShortname();
+        log.info(
+                "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + restoring.toPlainString()
+                        + " of resource " + shortname);
+
+        if (restoring.compareTo(BigDecimal.ZERO) >= 0) {
+            try {
+                // delete eml-1.xml if it exists (eml.xml must remain)
+                File versionedEMLFile = dataDir.resourceEmlFile(shortname, rollingBack);
+                if (versionedEMLFile.exists()) {
+                    FileUtils.forceDelete(versionedEMLFile);
+                }
+                // delete shortname-1.rtf if it exists
+                File versionedRTFFile = dataDir.resourceRtfFile(shortname, rollingBack);
+                if (versionedRTFFile.exists()) {
+                    FileUtils.forceDelete(versionedRTFFile);
+                }
+                // delete dwca-1.zip if it exists
+                File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, rollingBack);
+                if (versionedDwcaFile.exists()) {
+                    FileUtils.forceDelete(versionedDwcaFile);
+                }
+                // dwca-rollingBack.zip should be replaced with dwca-restoring.zip - if it exists
+                File versionedDwcaFileToRestore = dataDir.resourceDwcaFile(shortname, restoring);
+                if (versionedDwcaFileToRestore.exists()) {
+                    // proceed with overwriting/replacing dwca-rollingBack.zip with dwca-restoring.zip
+                    File versionedDwcaFileToRollback = dataDir.resourceDwcaFile(resource.getShortname(), rollingBack);
+                    FileUtils.copyFile(versionedDwcaFileToRestore, versionedDwcaFileToRollback);
+                }
+                // ensure version history removed
+                resource.removeVersionHistory(rollingBack);
+
+                // ensure recordsPublished count gets reset
+                VersionHistory restoredVersionVersionHistory = resource.findVersionHistory(restoring);
+                if (restoredVersionVersionHistory != null) {
+                    resource.setRecordsPublished(restoredVersionVersionHistory.getRecordsPublished());
+                }
+
+                // update resource.xml
+                resource.setEmlVersion(restoring);
+                save(resource);
+
+                // update eml.xml and persist changes
+                resource.getEml().setPubDate(resource.getLastPublished());
+                saveEml(resource);
+
+            } catch (IOException e) {
+                String msg = action
+                        .getText("restore.resource.failed", new String[]{restoring.toPlainString(), shortname, e.getMessage()});
+                log.error(msg, e);
+                action.addActionError(msg);
+            }
+            // alert user version rollback was successful
+            String msg = action.getText("restore.resource.success", new String[]{restoring.toPlainString(), shortname});
+            log.info(msg);
+            action.addActionMessage(msg);
+            // update StatusReport on publishing page
+            // Warning: don't retrieve status report using status() otherwise a cyclical call to isLocked results
+            StatusReport report = processReports.get(shortname);
+            if (report != null) {
+                report.getMessages().add(new TaskMessage(Level.INFO, msg));
+            }
+        }
+    }
+
+    /**
+     * Updates the resource's alternate identifier for its corresponding Registry UUID and saves the EML.
+     * If called on a resource that is already registered, the method ensures that it won't be added a second time.
+     * To accommodate updates from older versions of the IPT, the identifier is added by calling this method every
+     * time the resource gets re-published.
+     *
+     * @param resource resource
+     * @return resource with Registry UUID for the resource updated
+     */
+    public Resource updateAlternateIdentifierForRegistry(Resource resource) {
+        Eml eml = resource.getEml();
+        if (eml != null) {
+            // retrieve a list of the resource's alternate identifiers
+            List<String> currentIds = eml.getAlternateIdentifiers();
+            if (currentIds != null) {
+                // make new list of alternative identifiers in lower case so comparison is done in lower case only
+                List<String> ids = new ArrayList<String>();
+                for (String id : currentIds) {
+                    ids.add(id.toLowerCase());
+                }
+                if (resource.isRegistered()) {
+                    // GBIF Registry UUID
+                    UUID key = resource.getKey();
+                    // has the Registry UUID been added as an alternative identifier yet? If not, add it!
+                    if (key != null && !ids.contains(key.toString().toLowerCase())) {
+                        currentIds.add(key.toString());
+                        // save all changes to Eml
+                        saveEml(resource);
+                        if (cfg.debug()) {
+                            log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
+                        }
+                    }
+                }
+            }
+        } else {
+            resource.setEml(new Eml());
+        }
+
+        return resource;
+    }
+
+    public Resource updateAlternateIdentifierForIPTURLToResource(Resource resource) {
+        // retrieve a list of the resource's alternate identifiers
+        List<String> ids = null;
+        if (resource.getEml() != null) {
+            ids = resource.getEml().getAlternateIdentifiers();
+        } else {
+            resource.setEml(new Eml());
+        }
+
+        if (ids != null) {
+            // has this been added before, perhaps with a different baseURL?
+            boolean exists = false;
+            String existingId = null;
+            for (String id : ids) {
+                // try to match "resource"
+                if (id.contains(Constants.REQ_PATH_RESOURCE)) {
+                    exists = true;
+                    existingId = id;
+                }
+            }
+            // if the resource is PUBLIC, or REGISTERED
+            if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) != 0) {
+                String url = cfg.getResourceUrl(resource.getShortname());
+                // if identifier does not exist yet - add it!
+                // if it already exists, then replace it just in case the baseURL has changed, for example
+                if (exists) {
+                    ids.remove(existingId);
+                }
+                // lastly, be sure to add it
+                ids.add(url);
+                // save all changes to Eml
+                saveEml(resource);
+                if (cfg.debug()) {
+                    log.info("IPT URL to resource added to (or updated in) Resource's list of alt ids");
+                }
+            }
+            // otherwise if the resource is PRIVATE
+            else if (resource.getStatus().compareTo(PublicationStatus.PRIVATE) == 0) {
+                // no public resource alternate identifier can exist if the resource visibility is private - remove it if app.
+                if (exists) {
+                    ids.remove(existingId);
+                    // save all changes to Eml
+                    saveEml(resource);
+                    if (cfg.debug()) {
+                        log.info("Following visibility change, IPT URL to resource was removed from Resource's list of alt ids");
+                    }
+                }
+            }
+        }
+        return resource;
+    }
+
+    /**
+     * Publishes a new version of the EML file for the given resource.
+     *
+     * @param resource Resource
+     * @param version  version number to publish
      * @throws PublicationException if resource was already being published, or if publishing failed for any reason
      */
-    private void publishDCAT (Resource resource, BigDecimal version) throws PublicationException {
+    private void publishEml(Resource resource, BigDecimal version) throws PublicationException {
         // check if publishing task is already running
         if (isLocked(resource.getShortname())) {
             throw new PublicationException(PublicationException.TYPE.LOCKED,
                     "Resource " + resource.getShortname() + " is currently locked by another process");
         }
-     //   Document doc = new Document();
 
-        File DCATFile = dataDir.resourceDCATFile(resource.getShortname()) ;
+        // ensure alternate identifier for Registry UUID is set - if resource is registered
+        updateAlternateIdentifierForRegistry(resource);
+        // ensure alternate identifier for IPT URL to resource is set - if resource is public
+        updateAlternateIdentifierForIPTURLToResource(resource);
+        // update eml version
+        resource.setEmlVersion(version);
+        // update eml pubDate (represents date when the resource was last published)
+        resource.getEml().setPubDate(new Date());
+        // update resource citation with auto generated citation (if auto-generation has been turned on)
+        if (resource.isCitationAutoGenerated()) {
+            URI homepage = cfg.getResourceVersionUri(resource.getShortname(), version); // potential citation identifier
+            String citation = resource.generateResourceCitation(version, homepage);
+            resource.getEml().getCitation().setCitation(citation);
+        }
+
+        // save all changes to Eml
+        saveEml(resource);
+
+        // create versioned eml file
+        File trunkFile = dataDir.resourceEmlFile(resource.getShortname());
+        File versionedFile = dataDir.resourceEmlFile(resource.getShortname(), version);
+        try {
+            FileUtils.copyFile(trunkFile, versionedFile);
+        } catch (IOException e) {
+            throw new PublicationException(PublicationException.TYPE.EML,
+                    "Can't publish eml file for resource " + resource.getShortname(), e);
+        }
+    }
+    //TODO Create DCAT feed
+
+    /**
+     * Publishes a new version of the DCAT file for the given resource.
+     *
+     * @param resource Resource
+     * @throws PublicationException if resource was already being published, or if publishing failed for any reason
+     */
+    private void publishDCAT(Resource resource, BigDecimal version) throws PublicationException {
+        // check if publishing task is already running
+        if (isLocked(resource.getShortname())) {
+            throw new PublicationException(PublicationException.TYPE.LOCKED,
+                    "Resource " + resource.getShortname() + " is currently locked by another process");
+        }
+        //   Document doc = new Document();
+
+        File DCATFile = dataDir.resourceDCATFile(resource.getShortname());
         log.warn("PATH " + DCATFile.getAbsolutePath());
         OutputStream out = null;
         try {
-            GenerateDCAT gen = new GenerateDCAT();
-            gen.create(resource,DCATFile.getAbsolutePath());
+            //GenerateDCAT gen = new GenerateDCAT();
+            //gen.create(resource,DCATFile.getAbsolutePath());
             /*RtfWriter2.getInstance(doc, out);
             eml2Rtf.writeEmlIntoRtf(doc, resource);*/
 
@@ -1645,7 +1628,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         } catch (Exception e) {
             throw new PublicationException(PublicationException.TYPE.DCAT,
                     "An unexpected error occurred while writing DCAT file: " + e.getMessage(), e);
-        } */finally {
+        } */ finally {
             if (out != null) {
                 try {
                     out.close();
@@ -1655,585 +1638,579 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
         }
     }
-  /**
-   * Publishes a new version of the RTF file for the given resource.
-   *
-   * @param resource Resource
-   * @param version  version number to publish
-   *
-   * @throws PublicationException if resource was already being published, or if publishing failed for any reason
-   */
-  private void publishRtf(Resource resource, BigDecimal version) throws PublicationException {
-    // check if publishing task is already running
-    if (isLocked(resource.getShortname())) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED,
-        "Resource " + resource.getShortname() + " is currently locked by another process");
-    }
 
-    Document doc = new Document();
-    File rtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
-    OutputStream out = null;
-    try {
-      out = new FileOutputStream(rtfFile);
-      RtfWriter2.getInstance(doc, out);
-      eml2Rtf.writeEmlIntoRtf(doc, resource);
-    } catch (FileNotFoundException e) {
-      throw new PublicationException(PublicationException.TYPE.RTF,
-        "Can't find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
-    } catch (DocumentException e) {
-      throw new PublicationException(PublicationException.TYPE.RTF,
-        "RTF DocumentException while writing to file: " + rtfFile.getAbsolutePath(), e);
-    } catch (Exception e) {
-      throw new PublicationException(PublicationException.TYPE.RTF,
-        "An unexpected error occurred while writing RTF file: " + e.getMessage(), e);
-    } finally {
-      if (out != null) {
-        try {
-          out.close();
-        } catch (IOException e) {
-          log.warn("FileOutputStream to RTF file could not be closed");
+    /**
+     * Publishes a new version of the RTF file for the given resource.
+     *
+     * @param resource Resource
+     * @param version  version number to publish
+     * @throws PublicationException if resource was already being published, or if publishing failed for any reason
+     */
+    private void publishRtf(Resource resource, BigDecimal version) throws PublicationException {
+        // check if publishing task is already running
+        if (isLocked(resource.getShortname())) {
+            throw new PublicationException(PublicationException.TYPE.LOCKED,
+                    "Resource " + resource.getShortname() + " is currently locked by another process");
         }
-      }
+
+        Document doc = new Document();
+        File rtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(rtfFile);
+            RtfWriter2.getInstance(doc, out);
+            eml2Rtf.writeEmlIntoRtf(doc, resource);
+        } catch (FileNotFoundException e) {
+            throw new PublicationException(PublicationException.TYPE.RTF,
+                    "Can't find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
+        } catch (DocumentException e) {
+            throw new PublicationException(PublicationException.TYPE.RTF,
+                    "RTF DocumentException while writing to file: " + rtfFile.getAbsolutePath(), e);
+        } catch (Exception e) {
+            throw new PublicationException(PublicationException.TYPE.RTF,
+                    "An unexpected error occurred while writing RTF file: " + e.getMessage(), e);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    log.warn("FileOutputStream to RTF file could not be closed");
+                }
+            }
+        }
     }
-  }
 
-  /**
-   * Try to read metadata file for a DwC-Archive.
-   *
-   * @param shortname resource shortname
-   * @param archive   archive
-   * @param alog      ActionLogger
-   *
-   * @return Eml instance or null if none could be created because the metadata file did not exist or was invalid
-   */
-  @Nullable
-  private Eml readMetadata(String shortname, Archive archive, ActionLogger alog) {
-    Eml eml;
-    File emlFile = archive.getMetadataLocationFile();
-    try {
-      if (emlFile == null || !emlFile.exists()) {
-        // some archives dont indicate the name of the eml metadata file
-        // so we also try with the default eml.xml name
-        emlFile = new File(archive.getLocation(), DataDir.EML_XML_FILENAME);
-      }
-      if (emlFile.exists()) {
-        // read metadata and populate Eml instance
-        eml = copyMetadata(shortname, emlFile);
-        alog.info("manage.resource.read.eml.metadata");
-        return eml;
-      } else {
-        log.warn("Cant find any eml metadata to import");
-      }
-    } catch (ImportException e) {
-      String msg = "Cant read basic archive metadata: " + e.getMessage();
-      log.warn(msg);
-      alog.warn(msg);
-      return null;
-    } catch (Exception e) {
-      log.warn("Cant read archive eml metadata", e);
+    /**
+     * Try to read metadata file for a DwC-Archive.
+     *
+     * @param shortname resource shortname
+     * @param archive   archive
+     * @param alog      ActionLogger
+     * @return Eml instance or null if none could be created because the metadata file did not exist or was invalid
+     */
+    @Nullable
+    private Eml readMetadata(String shortname, Archive archive, ActionLogger alog) {
+        Eml eml;
+        File emlFile = archive.getMetadataLocationFile();
+        try {
+            if (emlFile == null || !emlFile.exists()) {
+                // some archives dont indicate the name of the eml metadata file
+                // so we also try with the default eml.xml name
+                emlFile = new File(archive.getLocation(), DataDir.EML_XML_FILENAME);
+            }
+            if (emlFile.exists()) {
+                // read metadata and populate Eml instance
+                eml = copyMetadata(shortname, emlFile);
+                alog.info("manage.resource.read.eml.metadata");
+                return eml;
+            } else {
+                log.warn("Cant find any eml metadata to import");
+            }
+        } catch (ImportException e) {
+            String msg = "Cant read basic archive metadata: " + e.getMessage();
+            log.warn(msg);
+            alog.warn(msg);
+            return null;
+        } catch (Exception e) {
+            log.warn("Cant read archive eml metadata", e);
+        }
+        // try to read other metadata formats like dc
+        try {
+            eml = convertMetadataToEml(archive.getMetadata());
+            alog.info("manage.resource.read.basic.metadata");
+            return eml;
+        } catch (Exception e) {
+            log.warn("Cant read basic archive metadata: " + e.getMessage());
+        }
+        alog.warn("manage.resource.read.problem");
+        return null;
     }
-    // try to read other metadata formats like dc
-    try {
-      eml = convertMetadataToEml(archive.getMetadata());
-      alog.info("manage.resource.read.basic.metadata");
-      return eml;
-    } catch (Exception e) {
-      log.warn("Cant read basic archive metadata: " + e.getMessage());
-    }
-    alog.warn("manage.resource.read.problem");
-    return null;
-  }
 
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation)
-   */
-  public void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action)
-    throws RegistryException {
-    ActionLogger alog = new ActionLogger(this.log, action);
+    /*
+     * (non-Javadoc)
+     * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
+     * org.gbif.ipt.model.Organisation)
+     */
+    public void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action)
+            throws RegistryException {
+        ActionLogger alog = new ActionLogger(this.log, action);
 
-    if (PublicationStatus.REGISTERED != resource.getStatus() && PublicationStatus.PUBLIC == resource.getStatus()) {
+        if (PublicationStatus.REGISTERED != resource.getStatus() && PublicationStatus.PUBLIC == resource.getStatus()) {
 
-      // Check: is there a chance this resource is meant to update an existing registered resource?
-      // Populate set of UUIDs from eml.alternateIdentifiers that could represent existing registered resource UUIDs
-      Set<UUID> candidateResourceUUIDs = collectCandidateResourceUUIDsFromAlternateIds(resource);
+            // Check: is there a chance this resource is meant to update an existing registered resource?
+            // Populate set of UUIDs from eml.alternateIdentifiers that could represent existing registered resource UUIDs
+            Set<UUID> candidateResourceUUIDs = collectCandidateResourceUUIDsFromAlternateIds(resource);
 
-      // there can be max 1 candidate UUID. This safeguards against migration errors
-      if (candidateResourceUUIDs.size() > 1) {
-        String reason =
-          action.getText("manage.resource.migrate.failed.multipleUUIDs", new String[] {organisation.getName()});
-        String help = action.getText("manage.resource.migrate.failed.help");
-        throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
-      }
-      // resource migration can happen if a single UUID corresponding to the resource UUID of an existing registered
-      // resource owned by the specified organization has been found in the resource's alternate ids
-      else if (candidateResourceUUIDs.size() == 1) {
+            // there can be max 1 candidate UUID. This safeguards against migration errors
+            if (candidateResourceUUIDs.size() > 1) {
+                String reason =
+                        action.getText("manage.resource.migrate.failed.multipleUUIDs", new String[]{organisation.getName()});
+                String help = action.getText("manage.resource.migrate.failed.help");
+                throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
+            }
+            // resource migration can happen if a single UUID corresponding to the resource UUID of an existing registered
+            // resource owned by the specified organization has been found in the resource's alternate ids
+            else if (candidateResourceUUIDs.size() == 1) {
 
-        // there cannot be any public res with the same alternate identifier UUID, or registered res with the same UUID
-        UUID candidate = Iterables.getOnlyElement(candidateResourceUUIDs);
-        List<String> duplicateUses = detectDuplicateUsesOfUUID(candidate, resource.getShortname());
-        if (duplicateUses.isEmpty()) {
-          if (organisation.getKey() != null && organisation.getName() != null) {
-            boolean matched = false;
-            // collect list of registered resources associated to organization
-            List<Resource> existingResources =
-              registryManager.getOrganisationsResources(organisation.getKey().toString());
-            for (Resource entry : existingResources) {
-              // is the candidate UUID equal to the UUID from an existing registered resource owned by the
-              // organization? There should only be one match, and the first one encountered will be used for migration.
-              if (entry.getKey() != null && candidate.equals(entry.getKey())) {
-                log.debug("Resource matched to existing registered resource, UUID=" + entry.getKey().toString());
+                // there cannot be any public res with the same alternate identifier UUID, or registered res with the same UUID
+                UUID candidate = Iterables.getOnlyElement(candidateResourceUUIDs);
+                List<String> duplicateUses = detectDuplicateUsesOfUUID(candidate, resource.getShortname());
+                if (duplicateUses.isEmpty()) {
+                    if (organisation.getKey() != null && organisation.getName() != null) {
+                        boolean matched = false;
+                        // collect list of registered resources associated to organization
+                        List<Resource> existingResources =
+                                registryManager.getOrganisationsResources(organisation.getKey().toString());
+                        for (Resource entry : existingResources) {
+                            // is the candidate UUID equal to the UUID from an existing registered resource owned by the
+                            // organization? There should only be one match, and the first one encountered will be used for migration.
+                            if (entry.getKey() != null && candidate.equals(entry.getKey())) {
+                                log.debug("Resource matched to existing registered resource, UUID=" + entry.getKey().toString());
 
-                // fill in registration info - we've found the original resource being migrated to the IPT
+                                // fill in registration info - we've found the original resource being migrated to the IPT
+                                resource.setStatus(PublicationStatus.REGISTERED);
+                                resource.setKey(entry.getKey());
+                                resource.setOrganisation(organisation);
+
+                                // display update about migration to user
+                                alog.info("manage.resource.migrate", new String[]{entry.getKey().toString(), organisation.getName()});
+
+                                // update the resource, adding the new service(s)
+                                updateRegistration(resource, action);
+
+                                // indicate a match was found
+                                matched = true;
+
+                                // just in case, ensure only a single existing resource is updated
+                                break;
+                            }
+                        }
+                        // if no match was ever found, this is considered a failed resource migration
+                        if (!matched) {
+                            String reason =
+                                    action.getText("manage.resource.migrate.failed.badUUID", new String[]{organisation.getName()});
+                            String help = action.getText("manage.resource.migrate.failed.help");
+                            throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
+                        }
+                    }
+                } else {
+                    String reason = action.getText("manage.resource.migrate.failed.duplicate",
+                            new String[]{candidate.toString(), duplicateUses.toString()});
+                    String help1 = action.getText("manage.resource.migrate.failed.help");
+                    String help2 = action.getText("manage.resource.migrate.failed.duplicate.help");
+                    throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help1 + " " + help2);
+                }
+            } else {
+                UUID key = registryManager.register(resource, organisation, ipt);
+                if (key == null) {
+                    throw new RegistryException(RegistryException.TYPE.MISSING_METADATA,
+                            "No key returned for registered resource");
+                }
+                // display success to user
+                alog.info("manage.overview.resource.registered", new String[]{organisation.getName()});
+
+                // change status to registered
                 resource.setStatus(PublicationStatus.REGISTERED);
-                resource.setKey(entry.getKey());
-                resource.setOrganisation(organisation);
 
-                // display update about migration to user
-                alog.info("manage.resource.migrate", new String[] {entry.getKey().toString(), organisation.getName()});
-
-                // update the resource, adding the new service(s)
-                updateRegistration(resource, action);
-
-                // indicate a match was found
-                matched = true;
-
-                // just in case, ensure only a single existing resource is updated
-                break;
-              }
+                // ensure alternate identifier for Registry UUID set
+                updateAlternateIdentifierForRegistry(resource);
             }
-            // if no match was ever found, this is considered a failed resource migration
-            if (!matched) {
-              String reason =
-                action.getText("manage.resource.migrate.failed.badUUID", new String[] {organisation.getName()});
-              String help = action.getText("manage.resource.migrate.failed.help");
-              throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
-            }
-          }
+            // save all changes to resource
+            save(resource);
         } else {
-          String reason = action.getText("manage.resource.migrate.failed.duplicate",
-            new String[] {candidate.toString(), duplicateUses.toString()});
-          String help1 = action.getText("manage.resource.migrate.failed.help");
-          String help2 = action.getText("manage.resource.migrate.failed.duplicate.help");
-          throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help1 + " " + help2);
+            log.error("Registration request failed: the resource must be public. Status=" + resource.getStatus().toString());
         }
-      } else {
-        UUID key = registryManager.register(resource, organisation, ipt);
-        if (key == null) {
-          throw new RegistryException(RegistryException.TYPE.MISSING_METADATA,
-            "No key returned for registered resource");
-        }
-        // display success to user
-        alog.info("manage.overview.resource.registered", new String[] {organisation.getName()});
-
-        // change status to registered
-        resource.setStatus(PublicationStatus.REGISTERED);
-
-        // ensure alternate identifier for Registry UUID set
-        updateAlternateIdentifierForRegistry(resource);
-      }
-      // save all changes to resource
-      save(resource);
-    } else {
-      log.error("Registration request failed: the resource must be public. Status=" + resource.getStatus().toString());
     }
-  }
 
-  /**
-   * For a candidate UUID, find out:
-   * -how many public resources have a matching alternate identifier UUID
-   * -how many registered resources have the same UUID
-   *
-   * @param candidate UUID
-   * @param shortname shortname of resource to exclude from matching
-   *
-   * @return list of names of resources that have matched candidate UUID
-   */
-  @VisibleForTesting
-  protected List<String> detectDuplicateUsesOfUUID(UUID candidate, String shortname) {
-    ListMultimap<UUID, String> duplicateUses = ArrayListMultimap.create();
-    for (Resource other : resources.values()) {
-      // only resources having a different shortname should be matched against
-      if (!other.getShortname().equalsIgnoreCase(shortname)) {
-        // are there public resources with this alternate identifier?
-        if (other.getStatus().equals(PublicationStatus.PUBLIC)) {
-          Set<UUID> otherCandidateUUIDs = collectCandidateResourceUUIDsFromAlternateIds(other);
-          if (!otherCandidateUUIDs.isEmpty()) {
-            for (UUID otherCandidate : otherCandidateUUIDs) {
-              if (otherCandidate.equals(candidate)) {
-                duplicateUses.put(candidate, other.getTitleAndShortname());
-              }
+    /**
+     * For a candidate UUID, find out:
+     * -how many public resources have a matching alternate identifier UUID
+     * -how many registered resources have the same UUID
+     *
+     * @param candidate UUID
+     * @param shortname shortname of resource to exclude from matching
+     * @return list of names of resources that have matched candidate UUID
+     */
+    @VisibleForTesting
+    protected List<String> detectDuplicateUsesOfUUID(UUID candidate, String shortname) {
+        ListMultimap<UUID, String> duplicateUses = ArrayListMultimap.create();
+        for (Resource other : resources.values()) {
+            // only resources having a different shortname should be matched against
+            if (!other.getShortname().equalsIgnoreCase(shortname)) {
+                // are there public resources with this alternate identifier?
+                if (other.getStatus().equals(PublicationStatus.PUBLIC)) {
+                    Set<UUID> otherCandidateUUIDs = collectCandidateResourceUUIDsFromAlternateIds(other);
+                    if (!otherCandidateUUIDs.isEmpty()) {
+                        for (UUID otherCandidate : otherCandidateUUIDs) {
+                            if (otherCandidate.equals(candidate)) {
+                                duplicateUses.put(candidate, other.getTitleAndShortname());
+                            }
+                        }
+                    }
+                }
+                // are there registered resources with this UUID?
+                else if (other.getStatus().equals(PublicationStatus.REGISTERED)) {
+                    if (other.getKey().equals(candidate)) {
+                        duplicateUses.put(candidate, other.getTitleAndShortname());
+                    }
+                }
             }
-          }
         }
-        // are there registered resources with this UUID?
-        else if (other.getStatus().equals(PublicationStatus.REGISTERED)) {
-          if (other.getKey().equals(candidate)) {
-            duplicateUses.put(candidate, other.getTitleAndShortname());
-          }
-        }
-      }
+        return duplicateUses.get(candidate);
     }
-    return duplicateUses.get(candidate);
-  }
 
-  /**
-   * Collect a set of UUIDs from the resource's list of alternate identifiers that could qualify as GBIF Registry
-   * Dataset UUIDs.
-   *
-   * @param resource resource
-   *
-   * @return set of UUIDs that could qualify as GBIF Registry Dataset UUIDs
-   */
-  private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
-    Set<UUID> ls = new HashSet<UUID>();
-    if (resource.getEml() != null) {
-      List<String> ids = resource.getEml().getAlternateIdentifiers();
-      for (String id : ids) {
+    /**
+     * Collect a set of UUIDs from the resource's list of alternate identifiers that could qualify as GBIF Registry
+     * Dataset UUIDs.
+     *
+     * @param resource resource
+     * @return set of UUIDs that could qualify as GBIF Registry Dataset UUIDs
+     */
+    private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
+        Set<UUID> ls = new HashSet<UUID>();
+        if (resource.getEml() != null) {
+            List<String> ids = resource.getEml().getAlternateIdentifiers();
+            for (String id : ids) {
+                try {
+                    UUID uuid = UUID.fromString(id);
+                    ls.add(uuid);
+                } catch (IllegalArgumentException e) {
+                    // skip, isn't a candidate UUID
+                }
+            }
+        }
+        return ls;
+    }
+
+    public synchronized void report(String shortname, StatusReport report) {
+        processReports.put(shortname, report);
+    }
+
+    /**
+     * Construct the VersionHistory for version v of resource, and add it to the resource's
+     * VersionHistory List.
+     *
+     * @param resource resource published
+     * @param version  version of resource published
+     * @param action   action
+     */
+    protected synchronized void saveVersionHistory(Resource resource, BigDecimal version, BaseAction action) {
+        VersionHistory versionHistory = new VersionHistory(version, new Date(), resource.getStatus());
+        // DOI
+        versionHistory.setDoi(resource.getDoi());
+        // DOI status
+        versionHistory.setStatus(resource.getIdentifierStatus());
+        // change summary
+        versionHistory.setChangeSummary(resource.getChangeSummary());
+        // records published
+        versionHistory.setRecordsPublished(resource.getRecordsPublished());
+        // modifiedBy
+        User modifiedBy = action.getCurrentUser();
+        if (modifiedBy != null) {
+            versionHistory.setModifiedBy(modifiedBy);
+        }
+        resource.addVersionHistory(versionHistory);
+    }
+
+    public synchronized void save(Resource resource) throws InvalidConfigException {
+        File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
+        Writer writer = null;
         try {
-          UUID uuid = UUID.fromString(id);
-          ls.add(uuid);
-        } catch (IllegalArgumentException e) {
-          // skip, isn't a candidate UUID
+            // make sure resource dir exists
+            FileUtils.forceMkdir(cfgFile.getParentFile());
+            // persist data
+            writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
+            xstream.toXML(resource, writer);
+            // add to internal map
+            addResource(resource);
+        } catch (IOException e) {
+            log.error(e);
+            throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write mapping configuration");
+        } finally {
+            if (writer != null) {
+                closeWriter(writer);
+            }
         }
-      }
     }
-    return ls;
-  }
 
-  public synchronized void report(String shortname, StatusReport report) {
-    processReports.put(shortname, report);
-  }
-
-  /**
-   * Construct the VersionHistory for version v of resource, and add it to the resource's
-   * VersionHistory List.
-   *
-   * @param resource resource published
-   * @param version  version of resource published
-   * @param action   action
-   */
-  protected synchronized void saveVersionHistory(Resource resource, BigDecimal version, BaseAction action) {
-    VersionHistory versionHistory = new VersionHistory(version, new Date(), resource.getStatus());
-    // DOI
-    versionHistory.setDoi(resource.getDoi());
-    // DOI status
-    versionHistory.setStatus(resource.getIdentifierStatus());
-    // change summary
-    versionHistory.setChangeSummary(resource.getChangeSummary());
-    // records published
-    versionHistory.setRecordsPublished(resource.getRecordsPublished());
-    // modifiedBy
-    User modifiedBy = action.getCurrentUser();
-    if (modifiedBy != null) {
-      versionHistory.setModifiedBy(modifiedBy);
+    /*
+     * (non-Javadoc)
+     * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
+     */
+    public synchronized void saveEml(Resource resource) throws InvalidConfigException {
+        // update EML with latest resource basics (version and GUID)
+        syncEmlWithResource(resource);
+        // set modified date
+        resource.setModified(new Date());
+        // save into data dir
+        File emlFile = dataDir.resourceEmlFile(resource.getShortname());
+        // Locale.US it's used because uses '.' as the decimal separator
+        EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
+        log.debug("Updated EML file for " + resource);
     }
-    resource.addVersionHistory(versionHistory);
-  }
 
-  public synchronized void save(Resource resource) throws InvalidConfigException {
-    File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
-    Writer writer = null;
-    try {
-      // make sure resource dir exists
-      FileUtils.forceMkdir(cfgFile.getParentFile());
-      // persist data
-      writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
-      xstream.toXML(resource, writer);
-      // add to internal map
-      addResource(resource);
-    } catch (IOException e) {
-      log.error(e);
-      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write mapping configuration");
-    } finally {
-      if (writer != null) {
-        closeWriter(writer);
-      }
+    public StatusReport status(String shortname) {
+        isLocked(shortname);
+        return processReports.get(shortname);
     }
-  }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
-   */
-  public synchronized void saveEml(Resource resource) throws InvalidConfigException {
-    // update EML with latest resource basics (version and GUID)
-    syncEmlWithResource(resource);
-    // set modified date
-    resource.setModified(new Date());
-    // save into data dir
-    File emlFile = dataDir.resourceEmlFile(resource.getShortname());
-    // Locale.US it's used because uses '.' as the decimal separator
-    EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
-    log.debug("Updated EML file for " + resource);
-  }
-
-  public StatusReport status(String shortname) {
-    isLocked(shortname);
-    return processReports.get(shortname);
-  }
-
-  /**
-   * Updates the EML version and EML GUID. The GUID is set to the Registry UUID if the resource is
-   * registered, otherwise it is set to the resource URL.
-   * </br>
-   * This method also updates the EML list of KeywordSet with the dataset type and subtype.
-   * </br>
-   * This method must be called before persisting the EML file to ensure that the EML file and resource are in sync.
-   *
-   * @param resource Resource
-   */
-  private void syncEmlWithResource(Resource resource) {
-    // set EML version
-    resource.getEml().setEmlVersion(resource.getEmlVersion());
-    // we need some GUID: use the registry key if resource is registered, otherwise use the resource URL
-    if (resource.getKey() != null) {
-      resource.getEml().setGuid(resource.getKey().toString());
-    } else {
-      resource.getEml().setGuid(cfg.getResourceGuid(resource.getShortname()));
-    }
-    // add/update KeywordSet for dataset type and subtype
-    updateKeywordsWithDatasetTypeAndSubtype(resource);
-  }
-
-  public void updateRegistration(Resource resource, BaseAction action) throws PublicationException {
-    if (resource.isRegistered()) {
-      // prevent null action from being handled
-      if (action == null) {
-        action = new BaseAction(textProvider, cfg, registrationManager);
-      }
-      try {
-        log.debug("Updating registration of resource with key: " + resource.getKey().toString());
-
-        // get IPT key
-        String iptKey = null;
-        if (registrationManager.getIpt() != null) {
-          iptKey =
-            (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().getKey().toString();
+    /**
+     * Updates the EML version and EML GUID. The GUID is set to the Registry UUID if the resource is
+     * registered, otherwise it is set to the resource URL.
+     * </br>
+     * This method also updates the EML list of KeywordSet with the dataset type and subtype.
+     * </br>
+     * This method must be called before persisting the EML file to ensure that the EML file and resource are in sync.
+     *
+     * @param resource Resource
+     */
+    private void syncEmlWithResource(Resource resource) {
+        // set EML version
+        resource.getEml().setEmlVersion(resource.getEmlVersion());
+        // we need some GUID: use the registry key if resource is registered, otherwise use the resource URL
+        if (resource.getKey() != null) {
+            resource.getEml().setGuid(resource.getKey().toString());
+        } else {
+            resource.getEml().setGuid(cfg.getResourceGuid(resource.getShortname()));
         }
-
-        // perform update
-        registryManager.updateResource(resource, iptKey);
-
-        // log
-        String msg = action.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()});
-        action.addActionMessage(msg);
-        log.debug(msg);
-      } catch (RegistryException e) {
-        // log as specific error message as possible about why the Registry error occurred
-        String msg = RegistryException.logRegistryException(e.getType(), action);
-        action.addActionError(msg);
-        log.error(msg);
-
-        // add error message that explains the consequence of the Registry error to user
-        msg = action.getText("admin.config.updateMetadata.resource.fail.registry", new String[] {cfg.getRegistryUrl()});
-        action.addActionError(msg);
-        log.error(msg);
-        throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
-      } catch (InvalidConfigException e) {
-        String msg = action.getText("manage.overview.failed.resource.update", new String[] {e.getMessage()});
-        action.addActionError(msg);
-        log.error(msg);
-        throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
-      }
+        // add/update KeywordSet for dataset type and subtype
+        updateKeywordsWithDatasetTypeAndSubtype(resource);
     }
-  }
 
-  public void visibilityToPrivate(Resource resource, BaseAction action) throws InvalidConfigException {
-    if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
-        "The resource is already registered with GBIF");
-    } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
-      // update visibility to public
-      resource.setStatus(PublicationStatus.PRIVATE);
+    public void updateRegistration(Resource resource, BaseAction action) throws PublicationException {
+        if (resource.isRegistered()) {
+            // prevent null action from being handled
+            if (action == null) {
+                action = new BaseAction(textProvider, cfg, registrationManager);
+            }
+            try {
+                log.debug("Updating registration of resource with key: " + resource.getKey().toString());
 
-      // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL
-      updateAlternateIdentifierForIPTURLToResource(resource);
+                // get IPT key
+                String iptKey = null;
+                if (registrationManager.getIpt() != null) {
+                    iptKey =
+                            (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().getKey().toString();
+                }
 
-      // save all changes to resource
-      save(resource);
-    }
-  }
+                // perform update
+                registryManager.updateResource(resource, iptKey);
 
-  public void visibilityToPublic(Resource resource, BaseAction action) throws InvalidConfigException {
-    if (PublicationStatus.REGISTERED == resource.getStatus()) {
-      throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
-        "The resource is already registered with GBIF");
-    } else if (PublicationStatus.PRIVATE == resource.getStatus()) {
-      // update visibility to public
-      resource.setStatus(PublicationStatus.PUBLIC);
+                // log
+                String msg = action.getText("manage.overview.resource.update.registration", new String[]{resource.getTitle()});
+                action.addActionMessage(msg);
+                log.debug(msg);
+            } catch (RegistryException e) {
+                // log as specific error message as possible about why the Registry error occurred
+                String msg = RegistryException.logRegistryException(e.getType(), action);
+                action.addActionError(msg);
+                log.error(msg);
 
-      // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL
-      updateAlternateIdentifierForIPTURLToResource(resource);
-
-      // save all changes to resource
-      save(resource);
-    }
-  }
-
-  /**
-   * Return a resource's StatusReport's list of TaskMessage. If no report exists for the resource, return an empty
-   * list of TaskMessage.
-   *
-   * @param shortname resource shortname
-   *
-   * @return resource's StatusReport's list of TaskMessage or an empty list if no StatusReport exists for resource
-   */
-  private List<TaskMessage> getTaskMessages(String shortname) {
-    return ((processReports.get(shortname)) == null) ? new ArrayList<TaskMessage>()
-      : processReports.get(shortname).getMessages();
-  }
-
-  /**
-   * Updates the date the resource is scheduled to be published next. The resource must have been configured with
-   * a maintenance update frequency that is suitable for auto-publishing (annually, biannually, monthly, weekly,
-   * daily), and have auto-publishing mode turned on for this update to take place.
-   *
-   * @param resource resource
-   *
-   * @throws PublicationException if the next published date cannot be set for any reason
-   */
-  private void updateNextPublishedDate(Resource resource) throws PublicationException {
-    if (resource.usesAutoPublishing()) {
-      try {
-        log.debug("Updating next published date of resource: " + resource.getShortname());
-
-        // get the time now, from this the next published date will be calculated
-        Date now = new Date();
-
-        // get update period in days
-        int days = resource.getUpdateFrequency().getPeriodInDays();
-
-        // calculate next published date
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(now);
-        cal.add(Calendar.DATE, days);
-        Date nextPublished = cal.getTime();
-
-        // alert user that auto publishing has been turned on
-        if (resource.getNextPublished() == null) {
-          log.debug("Auto-publishing turned on");
+                // add error message that explains the consequence of the Registry error to user
+                msg = action.getText("admin.config.updateMetadata.resource.fail.registry", new String[]{cfg.getRegistryUrl()});
+                action.addActionError(msg);
+                log.error(msg);
+                throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
+            } catch (InvalidConfigException e) {
+                String msg = action.getText("manage.overview.failed.resource.update", new String[]{e.getMessage()});
+                action.addActionError(msg);
+                log.error(msg);
+                throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
+            }
         }
-
-        // set next published date
-        resource.setNextPublished(nextPublished);
-
-        // log
-        log.debug("The next publication date is: " + nextPublished.toString());
-      } catch (Exception e) {
-        // add error message that explains the consequence of the error to user
-        String msg = "Auto-publishing failed: " + e.getMessage();
-        log.error(msg, e);
-        throw new PublicationException(PublicationException.TYPE.SCHEDULING, msg, e);
-      }
-    } else {
-      log.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
     }
-  }
 
-  public void publicationModeToOff(Resource resource) {
-    if (PublicationMode.AUTO_PUBLISH_OFF == resource.getPublicationMode()) {
-      throw new InvalidConfigException(TYPE.AUTO_PUBLISHING_ALREADY_OFF,
-        "Auto-publishing mode has already been switched off");
-    } else if (PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode()) {
-      // update publicationMode to OFF
-      resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
-      // clear frequency
-      resource.setUpdateFrequency(null);
-      // clear next published date
-      resource.setNextPublished(null);
-      log.debug("Auto-publishing turned off");
-      // save change to resource
-      save(resource);
-    }
-  }
+    public void visibilityToPrivate(Resource resource, BaseAction action) throws InvalidConfigException {
+        if (PublicationStatus.REGISTERED == resource.getStatus()) {
+            throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
+                    "The resource is already registered with GBIF");
+        } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
+            // update visibility to public
+            resource.setStatus(PublicationStatus.PRIVATE);
 
-  /**
-   * Try to add/update/remove KeywordSet for dataset type and subtype.
-   *
-   * @param resource resource
-   *
-   * @return resource whose Eml list of KeywordSet has been updated depending on presence of dataset type or subtype
-   */
-  protected Resource updateKeywordsWithDatasetTypeAndSubtype(Resource resource) {
-    Eml eml = resource.getEml();
-    if (eml != null) {
-      // retrieve a list of the resource's KeywordSet
-      List<KeywordSet> keywords = eml.getKeywords();
-      if (keywords != null) {
-        // add or update KeywordSet for dataset type
-        String type = resource.getCoreType();
-        if (!Strings.isNullOrEmpty(type)) {
-          EmlUtils.addOrUpdateKeywordSet(keywords, type, Constants.THESAURUS_DATASET_TYPE);
-          log.debug("GBIF Dataset Type Vocabulary added/updated to Resource's list of keywords");
+            // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL
+            updateAlternateIdentifierForIPTURLToResource(resource);
+
+            // save all changes to resource
+            save(resource);
         }
-        // its absence means that it must removed (if it exists)
-        else {
-          EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_TYPE);
-          log.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
-        }
-
-        // add or update KeywordSet for dataset subtype
-        String subtype = resource.getSubtype();
-        if (!Strings.isNullOrEmpty(subtype)) {
-          EmlUtils.addOrUpdateKeywordSet(keywords, subtype, Constants.THESAURUS_DATASET_SUBTYPE);
-          log.debug("GBIF Dataset Subtype Vocabulary added/updated to Resource's list of keywords");
-        }
-        // its absence means that it must be removed (if it exists)
-        else {
-          EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_SUBTYPE);
-          log.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
-        }
-      }
     }
-    return resource;
-  }
 
-  public ThreadPoolExecutor getExecutor() {
-    return executor;
-  }
+    public void visibilityToPublic(Resource resource, BaseAction action) throws InvalidConfigException {
+        if (PublicationStatus.REGISTERED == resource.getStatus()) {
+            throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
+                    "The resource is already registered with GBIF");
+        } else if (PublicationStatus.PRIVATE == resource.getStatus()) {
+            // update visibility to public
+            resource.setStatus(PublicationStatus.PUBLIC);
 
-  public Map<String, Future<Integer>> getProcessFutures() {
-    return processFutures;
-  }
+            // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL
+            updateAlternateIdentifierForIPTURLToResource(resource);
 
-  public ListMultimap<String, Date> getProcessFailures() {
-    return processFailures;
-  }
-
-  public boolean hasMaxProcessFailures(Resource resource) {
-    if (processFailures.containsKey(resource.getShortname())) {
-      List<Date> failures = processFailures.get(resource.getShortname());
-      log.debug("Publication has failed " + String.valueOf(failures.size()) + " time(s) for resource: " + resource
-        .getTitleAndShortname());
-      if (failures.size() >= MAX_PROCESS_FAILURES) {
-        return true;
-      }
+            // save all changes to resource
+            save(resource);
+        }
     }
-    return false;
-  }
 
-  @VisibleForTesting
-  public GenerateDwcaFactory getDwcaFactory() {
-    return dwcaFactory;
-  }
-
-  /**
-   * Remove an archive version from the file system (because it has been replaced by a new published version for
-   * example).
-   *
-   * @param version of archive to remove
-   */
-  @VisibleForTesting
-  public void removeArchiveVersion(String shortname, BigDecimal version) {
-    File dwcaFile = dataDir.resourceDwcaFile(shortname, version);
-    if (dwcaFile != null && dwcaFile.exists()) {
-      boolean deleted = FileUtils.deleteQuietly(dwcaFile);
-      if (deleted) {
-        log.debug(dwcaFile.getAbsolutePath() + " has been successfully deleted.");
-      }
+    /**
+     * Return a resource's StatusReport's list of TaskMessage. If no report exists for the resource, return an empty
+     * list of TaskMessage.
+     *
+     * @param shortname resource shortname
+     * @return resource's StatusReport's list of TaskMessage or an empty list if no StatusReport exists for resource
+     */
+    private List<TaskMessage> getTaskMessages(String shortname) {
+        return ((processReports.get(shortname)) == null) ? new ArrayList<TaskMessage>()
+                : processReports.get(shortname).getMessages();
     }
-  }
+
+    /**
+     * Updates the date the resource is scheduled to be published next. The resource must have been configured with
+     * a maintenance update frequency that is suitable for auto-publishing (annually, biannually, monthly, weekly,
+     * daily), and have auto-publishing mode turned on for this update to take place.
+     *
+     * @param resource resource
+     * @throws PublicationException if the next published date cannot be set for any reason
+     */
+    private void updateNextPublishedDate(Resource resource) throws PublicationException {
+        if (resource.usesAutoPublishing()) {
+            try {
+                log.debug("Updating next published date of resource: " + resource.getShortname());
+
+                // get the time now, from this the next published date will be calculated
+                Date now = new Date();
+
+                // get update period in days
+                int days = resource.getUpdateFrequency().getPeriodInDays();
+
+                // calculate next published date
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(now);
+                cal.add(Calendar.DATE, days);
+                Date nextPublished = cal.getTime();
+
+                // alert user that auto publishing has been turned on
+                if (resource.getNextPublished() == null) {
+                    log.debug("Auto-publishing turned on");
+                }
+
+                // set next published date
+                resource.setNextPublished(nextPublished);
+
+                // log
+                log.debug("The next publication date is: " + nextPublished.toString());
+            } catch (Exception e) {
+                // add error message that explains the consequence of the error to user
+                String msg = "Auto-publishing failed: " + e.getMessage();
+                log.error(msg, e);
+                throw new PublicationException(PublicationException.TYPE.SCHEDULING, msg, e);
+            }
+        } else {
+            log.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
+        }
+    }
+
+    public void publicationModeToOff(Resource resource) {
+        if (PublicationMode.AUTO_PUBLISH_OFF == resource.getPublicationMode()) {
+            throw new InvalidConfigException(TYPE.AUTO_PUBLISHING_ALREADY_OFF,
+                    "Auto-publishing mode has already been switched off");
+        } else if (PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode()) {
+            // update publicationMode to OFF
+            resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
+            // clear frequency
+            resource.setUpdateFrequency(null);
+            // clear next published date
+            resource.setNextPublished(null);
+            log.debug("Auto-publishing turned off");
+            // save change to resource
+            save(resource);
+        }
+    }
+
+    /**
+     * Try to add/update/remove KeywordSet for dataset type and subtype.
+     *
+     * @param resource resource
+     * @return resource whose Eml list of KeywordSet has been updated depending on presence of dataset type or subtype
+     */
+    protected Resource updateKeywordsWithDatasetTypeAndSubtype(Resource resource) {
+        Eml eml = resource.getEml();
+        if (eml != null) {
+            // retrieve a list of the resource's KeywordSet
+            List<KeywordSet> keywords = eml.getKeywords();
+            if (keywords != null) {
+                // add or update KeywordSet for dataset type
+                String type = resource.getCoreType();
+                if (!Strings.isNullOrEmpty(type)) {
+                    EmlUtils.addOrUpdateKeywordSet(keywords, type, Constants.THESAURUS_DATASET_TYPE);
+                    log.debug("GBIF Dataset Type Vocabulary added/updated to Resource's list of keywords");
+                }
+                // its absence means that it must removed (if it exists)
+                else {
+                    EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_TYPE);
+                    log.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
+                }
+
+                // add or update KeywordSet for dataset subtype
+                String subtype = resource.getSubtype();
+                if (!Strings.isNullOrEmpty(subtype)) {
+                    EmlUtils.addOrUpdateKeywordSet(keywords, subtype, Constants.THESAURUS_DATASET_SUBTYPE);
+                    log.debug("GBIF Dataset Subtype Vocabulary added/updated to Resource's list of keywords");
+                }
+                // its absence means that it must be removed (if it exists)
+                else {
+                    EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_SUBTYPE);
+                    log.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
+                }
+            }
+        }
+        return resource;
+    }
+
+    public ThreadPoolExecutor getExecutor() {
+        return executor;
+    }
+
+    public Map<String, Future<Integer>> getProcessFutures() {
+        return processFutures;
+    }
+
+    public ListMultimap<String, Date> getProcessFailures() {
+        return processFailures;
+    }
+
+    public boolean hasMaxProcessFailures(Resource resource) {
+        if (processFailures.containsKey(resource.getShortname())) {
+            List<Date> failures = processFailures.get(resource.getShortname());
+            log.debug("Publication has failed " + String.valueOf(failures.size()) + " time(s) for resource: " + resource
+                    .getTitleAndShortname());
+            if (failures.size() >= MAX_PROCESS_FAILURES) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @VisibleForTesting
+    public GenerateDwcaFactory getDwcaFactory() {
+        return dwcaFactory;
+    }
+
+    /**
+     * Remove an archive version from the file system (because it has been replaced by a new published version for
+     * example).
+     *
+     * @param version of archive to remove
+     */
+    @VisibleForTesting
+    public void removeArchiveVersion(String shortname, BigDecimal version) {
+        File dwcaFile = dataDir.resourceDwcaFile(shortname, version);
+        if (dwcaFile != null && dwcaFile.exists()) {
+            boolean deleted = FileUtils.deleteQuietly(dwcaFile);
+            if (deleted) {
+                log.debug(dwcaFile.getAbsolutePath() + " has been successfully deleted.");
+            }
+        }
+    }
 }
