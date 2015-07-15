@@ -7,14 +7,10 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
 
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Logger;
 
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -38,6 +34,39 @@ public class GenerateDCAT {
         this.cfg = cfg;
         this.regMgr = regMgr;
         this.rscMgr = rscMgr;
+    }
+
+    public  String readingDCAT(){
+        String DCATCatalog ="";
+        String CurrentLine;
+        BufferedReader br = null;
+        for(Resource res : rscMgr.listPublishedPublicVersions()){
+           try
+           {
+               String path = rscMgr.isDCATExisting(res.getShortname());
+               if(path != null){
+                br = new BufferedReader(new FileReader(path));
+                while ((CurrentLine = br.readLine()) != null) {
+                    DCATCatalog += CurrentLine + "\n";
+                }
+               }
+               else {//TODO Create a DCAT feed for this dataset ?
+                };
+        }
+        catch (FileNotFoundException e){
+            System.out.println("404 : DCAT-DATASET file not found : "+ e);
+        }catch(IOException e){
+                System.out.println("error" + e);
+            } finally {
+            try {
+                if (br != null)br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+       }
+       System.out.println("CATALOG \n" + DCATCatalog);
+        return DCATCatalog;
     }
 
     /**
@@ -86,7 +115,6 @@ public class GenerateDCAT {
      */
     public String createDCATDataset() {
         StringBuilder datasetBuilder = new StringBuilder();
-
         return datasetBuilder.toString();
     }
 
@@ -232,6 +260,7 @@ public class GenerateDCAT {
         } else {
             Logger.getGlobal().info("No spatial data defined for the IPT");
         }
+
 
         catalogBuilder.append(" .\n");
         return catalogBuilder.toString();
