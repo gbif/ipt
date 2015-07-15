@@ -249,7 +249,7 @@ public class DataDir {
    *
    * @return RTF file having specific version, defaulting to latest published version if no version specified
    */
-  public File resourceDCATFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+  public File resourceRtfFile(@NotNull String resourceName,@NotNull BigDecimal version) {
     String fn = resourceName + "-" + version.toPlainString() + ".rtf";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
@@ -257,14 +257,14 @@ public class DataDir {
      * Retrieves published DCAT file for a specific version of a resource.
      *
      * @param resourceName resource short name
-     * @param version      version
+    // * @param version      version
      *
-     * @return DCAT file having specific version, defaulting to latest published version if no version specified
+     * @return DCAT file
      */
-  public File resourceRtfFile(@NotNull String resourceName, @NotNull BigDecimal version) {
-    String fn = resourceName + "-" + version.toPlainString() + ".rtf";
-    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
-  }
+    //TODO
+    public File resourceDCATFile(@NotNull String resourceName) {
+        return dataFile(RESOURCES_DIR + "/" + resourceName + "/dcat.txt");
+    }
 
   /**
    * Sets the path to the data directory for the entire application and persists it in the /WEB-INF folder. This method

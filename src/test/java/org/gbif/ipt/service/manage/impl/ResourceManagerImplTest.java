@@ -244,13 +244,13 @@ public class ResourceManagerImplTest {
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     // mock finding eml.xml file
     when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
-
-    // create instance of manager
+      // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
+
+
 
     // retrieve sample zipped resource folder
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
-
     // create a new resource.
     resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
 
@@ -992,7 +992,7 @@ public class ResourceManagerImplTest {
     // configure turning auto-publishing daily
     resource.setUpdateFrequency("daily");
     resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_ON);
-/*
+
     // make a few pre-publication assertions
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
     Date created = resource.getCreated();
@@ -1002,7 +1002,7 @@ public class ResourceManagerImplTest {
     Date lastPublished = resource.getLastPublished();
     assertNull(lastPublished);
     assertNull(resource.getNextPublished());
-    assertEquals(Constants.DATASET_TYPE_METADATA_IDENTIFIER, resource.getCoreType());*/
+    assertEquals(Constants.DATASET_TYPE_METADATA_IDENTIFIER, resource.getCoreType());
 
     // publish
     resourceManager.publish(resource, BigDecimal.valueOf(3.1), baseAction);
@@ -1010,9 +1010,11 @@ public class ResourceManagerImplTest {
     // make some post-publication assertions
     assertEquals(BigDecimal.valueOf(3.1), resource.getEml().getEmlVersion());
     assertNotNull(resource.getNextPublished());
-    /*assertEquals(created.toString(), resource.getCreated().toString());
-    assertNotEquals(pubDate.toString(), resource.getEml().getPubDate());*/
+    assertEquals(created.toString(), resource.getCreated().toString());
+    assertNotEquals(pubDate.toString(), resource.getEml().getPubDate());
     assertNotNull(resource.getLastPublished().toString());
+
+
     assertTrue(new File(resourceDir, DataDir.EML_XML_FILENAME).exists());
     assertTrue(new File(resourceDir, "eml-3.1.xml").exists());
     assertTrue(new File(resourceDir, "rtf-res2.rtf").exists());
@@ -1313,9 +1315,14 @@ public class ResourceManagerImplTest {
     // mock finding versioned rtf-res2-4.0.xml file
     when(mockedDataDir.resourceRtfFile(anyString(), eq(BigDecimal.valueOf(4.0)))).thenReturn(versionFourRtfXML);
 
+    //TODO DCAT
+    // mock new saved dcat.txt file being versioned for every new version
+    File dcatFile = new File(resourceDir, "dcat.txt");
+    // mock finding versioned dcat.txt file
+    when(mockedDataDir.resourceDCATFile(anyString())).thenReturn(dcatFile);
+
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
-
     // create a new resource.
     Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, copiedEmlXML, creator, baseAction);
     resource.setEmlVersion(BigDecimal.valueOf(3.0));
