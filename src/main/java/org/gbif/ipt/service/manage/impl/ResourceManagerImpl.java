@@ -1154,11 +1154,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // publish EML
     publishEml(resource, version);
-
     // publish RTF
     publishRtf(resource, version);
     //TODO GENERATE DCAT
     publishDCAT(resource, version);
+
     // (re)generate dwca asynchronously
     boolean dwca = false;
     if (resource.hasMappedData()) {
@@ -1625,29 +1625,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             throw new PublicationException(PublicationException.TYPE.LOCKED,
                     "Resource " + resource.getShortname() + " is currently locked by another process");
         }
+     //   Document doc = new Document();
 
-        Document doc = new Document();
-        File DCATFile = dataDir.resourceDCATFile(resource.getShortname(), version);
-        log.warn("RS :" + DCATFile.getAbsolutePath());
+        File DCATFile = dataDir.resourceDCATFile(resource.getShortname()) ;
+        log.warn("PATH " + DCATFile.getAbsolutePath());
         OutputStream out = null;
         try {
-          //generateDCAT.write(resource,DCATFile);
+            GenerateDCAT gen = new GenerateDCAT();
+            gen.create(resource,DCATFile.getAbsolutePath());
+            /*RtfWriter2.getInstance(doc, out);
+            eml2Rtf.writeEmlIntoRtf(doc, resource);*/
 
-            File fnew = new File ("d");//Need to be fix HARDCODING
-            String warn = new String("DCAT FILE PATH" +fnew.getAbsolutePath());
-            log.warn(warn);
-            PrintWriter pwnew = new PrintWriter (new BufferedWriter (new FileWriter (fnew)));
-            pwnew.println("HELLO WORLD");
-            pwnew.close();
-
-
-        } catch (FileNotFoundException e) {
+        }/* catch (FileNotFoundException e) {
             throw new PublicationException(PublicationException.TYPE.DCAT,
                     "Can't find DCAT file to write metadata to: " + DCATFile.getAbsolutePath(), e);
+        } catch (DocumentException e) {
+            throw new PublicationException(PublicationException.TYPE.DCAT,
+                    "DCAT DocumentException while writing to file: " + DCATFile.getAbsolutePath(), e);
         } catch (Exception e) {
             throw new PublicationException(PublicationException.TYPE.DCAT,
                     "An unexpected error occurred while writing DCAT file: " + e.getMessage(), e);
-        } finally {
+        } */finally {
             if (out != null) {
                 try {
                     out.close();
@@ -1673,10 +1671,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     Document doc = new Document();
-    log.warn("NAME = " +  version.toPlainString());
     File rtfFile = dataDir.resourceRtfFile(resource.getShortname(), version);
-    log.warn("FILE :::::::::::" + rtfFile.getAbsolutePath());
-
     OutputStream out = null;
     try {
       out = new FileOutputStream(rtfFile);
