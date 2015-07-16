@@ -39,8 +39,14 @@ public class GenerateDCAT {
     private AppConfig cfg;
     private RegistrationManager regMgr;
     private ResourceManager rscMgr;
-    private Set<String> organisations;
-    private HashSet<String> themes;
+    /**
+     * By creating a dataset, this set gets filled with the organisation string
+     */
+    private Set<String> organisations = new HashSet<String>();
+    /**
+     * By creating a dataset, this set gets filled with the themes for the datasets
+     */
+    private Set<String> themes = new HashSet<String>();
 
 
     @Inject
@@ -96,11 +102,15 @@ public class GenerateDCAT {
         StringBuilder feed = new StringBuilder();
         organisations = new HashSet<String>();
         themes = new HashSet<String>();
+
+        //Prefixes
         feed.append(createPrefixesInformation());
         feed.append("\n");
+        //Catalog
         feed.append(createDCATCatalogInformation());
         feed.append("\n");
 
+        //Datasets and Distributions
         for (Resource res : rscMgr.list()) {
             feed.append(createDCATDatasetInformation(res));
             feed.append("\n");
@@ -108,12 +118,14 @@ public class GenerateDCAT {
             feed.append("\n");
         }
 
+        //Organisations
         for (String org : organisations) {
             feed.append(org);
             feed.append("\n");
         }
         feed.append("\n");
 
+        //Themes
         for (String theme : themes) {
             feed.append(theme);
             feed.append("\n");
@@ -374,11 +386,15 @@ public class GenerateDCAT {
             addObjectToBuilder(datasetBuilder, agent, ObjectTypes.OBJECT);
         }
         //dct:issued
-        addPredicateToBuilder(datasetBuilder, "dct:issued");
-        addObjectToBuilder(datasetBuilder, parseToIsoDate(resource.getCreated()), ObjectTypes.LITERAL);
+        if (resource.getCreated() != null) {
+            addPredicateToBuilder(datasetBuilder, "dct:issued");
+            addObjectToBuilder(datasetBuilder, parseToIsoDate(resource.getCreated()), ObjectTypes.LITERAL);
+        }
         //dct:modified
-        addPredicateToBuilder(datasetBuilder, "dct:modified");
-        addObjectToBuilder(datasetBuilder, parseToIsoDate(resource.getLastPublished()), ObjectTypes.LITERAL);
+        if (resource.getLastPublished() != null) {
+            addPredicateToBuilder(datasetBuilder, "dct:modified");
+            addObjectToBuilder(datasetBuilder, parseToIsoDate(resource.getLastPublished()), ObjectTypes.LITERAL);
+        }
         //dct:spatial
         //Uses geoJSON to represent the geospatial coverage
         //This can easily be verified at http://geojsonlint.com/
@@ -598,7 +614,11 @@ public class GenerateDCAT {
      */
     private static String parseToIsoDate(Date dateStamp) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
-        return df.format(dateStamp);
+        String ret = df.format(dateStamp);
+        if (ret == null) {
+            LOG.error("Date not defined");
+        }
+        return ret;
     }
 
 }

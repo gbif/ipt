@@ -27,13 +27,13 @@ public class DCATAction extends ActionSupport {
 
     /**
      * Method called when this action is called
-     * Fills the stream with the DCAT feed
+     * Regenerates the DCAT feed
      *
      * @return String whether the method has been executed with success
      */
     @Override
     public String execute() {
-        String out = "DCATTest";
+        String out = generateDCAT.createDCATFeed();
         try {
             dcatInfo = new ByteArrayInputStream(out.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -50,21 +50,4 @@ public class DCATAction extends ActionSupport {
     public InputStream getDcatInfo() {
         return dcatInfo;
     }
-
-    /**
-     * Method called by $(baseURL)/newdcat
-     * Regenerates the DCAT feed
-     *
-     * @return
-     */
-    public String createNewDCAT() {
-        String out = generateDCAT.createDCATFeed();
-        try {
-            dcatInfo = new ByteArrayInputStream(out.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return SUCCESS;
-    }
-
 }
