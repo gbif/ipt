@@ -284,7 +284,7 @@ public class GenerateDCAT {
         //dcat:themeTaxonomy
         addPredicateToBuilder(catalogBuilder, "dcat:themeTaxonomy");
         String themeTaxonomy = THEME_TAXONOMY_URI;
-        themeTaxonomies.add(encapsulateObject(THEME_TAXONOMY_URI, ObjectTypes.RESOURCE) + " a skos:ConceptScheme ; dct:title \"" + CATALOG_THEME_TITLE + "\" .");
+        themeTaxonomies.add(encapsulateObject(THEME_TAXONOMY_URI, ObjectTypes.RESOURCE) + " a skos:ConceptScheme ; dct:title \"" + CATALOG_THEME_TITLE + "\"@en .");
         addObjectToBuilder(catalogBuilder, themeTaxonomy, ObjectTypes.RESOURCE);
         //dct:rights
         addPredicateToBuilder(catalogBuilder, "dct:rights");
