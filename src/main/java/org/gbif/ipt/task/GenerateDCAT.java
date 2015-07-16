@@ -3,6 +3,7 @@ package org.gbif.ipt.task;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
@@ -11,10 +12,10 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Logger;
 
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.metadata.eml.*;
 
 /**
@@ -23,10 +24,24 @@ import org.gbif.metadata.eml.*;
 @Singleton
 public class GenerateDCAT {
 
+    private static final Logger LOG = Logger.getLogger(GenerateDCAT.class);
+    /**
+     * URL used when no URL is defined for the object
+     */
+    private static final String DUMMY_URL = "localhost:8080";
+    private static final String CATALOG_RIGHTS = "https://creativecommons.org/publicdomain/zero/1.0/";
+    private static final String CATALOG_THEME_TITLE = "biodiversity";
+    private static final String THEME_TAXONOMY_URI = "http://eurovoc.europa.eu/218403";
+    private static final String DATASET_THEME_LABEL = "biodiversity";
+    private static final String THEME_URI = "http://eurovoc.europa.eu/5463";
+    private static final String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";
+
     private AppConfig cfg;
     private RegistrationManager regMgr;
     private ResourceManager rscMgr;
     private Set<String> organisations;
+    private HashSet<String> themes;
+
 
     @Inject
     public GenerateDCAT(AppConfig cfg, RegistrationManager regMgr, ResourceManager rscMgr) {
@@ -80,6 +95,7 @@ public class GenerateDCAT {
     public String createDCATFeed() {
         StringBuilder feed = new StringBuilder();
         organisations = new HashSet<String>();
+        themes = new HashSet<String>();
         feed.append(createPrefixesInformation());
         feed.append("\n");
         feed.append(createDCATCatalogInformation());
@@ -96,6 +112,13 @@ public class GenerateDCAT {
             feed.append(org);
             feed.append("\n");
         }
+        feed.append("\n");
+
+        for (String theme : themes) {
+            feed.append(theme);
+            feed.append("\n");
+        }
+
         return feed.toString();
     }
 
@@ -104,7 +127,7 @@ public class GenerateDCAT {
      *
      * @return String
      */
-    public String createDCATDataset(Resource resource) {
+    public String createDCATResource(Resource resource) {
         StringBuilder datasetBuilder = new StringBuilder();
         datasetBuilder.append(createDCATDatasetInformation(resource));
         datasetBuilder.append("\n");
@@ -114,48 +137,51 @@ public class GenerateDCAT {
     }
 
     /**
-     * Create a new file and write the information in it
-     *
-     * @param path        the path of the file
-     * @param information information to be put in the file
-     */
-    private void writeToFile(String path, String information) {
-        try {
-            PrintWriter pwnew = new PrintWriter(new BufferedWriter(new FileWriter(new File(path))));
-            pwnew.println(information);
-            pwnew.close();
-        } catch (IOException e) {
-            //System.out.println("Writing error " + e.getMessage());
-        }
-    }
-
-    /**
      * Write all the prefixes needed in a String representation
+     * Prefixes are hardcoded in this method
      *
      * @return String Prefixes
      */
     @VisibleForTesting
     protected String createPrefixesInformation() {
-        HashMap<String, String> prefixes = new HashMap<String, String>();
-        prefixes.put("dct:", "http://purl.org/dc/terms/");
-        prefixes.put("dcat:", "http://www.w3.org/ns/dcat#");
-        prefixes.put("xsd:", "http://www.w3.org/2001/XMLSchema#");
-        prefixes.put("skos:", "http://www.w3.org/2004/02/skos/core#");
-        prefixes.put("rdfs:", "http://www.w3.org/2000/01/rdf-schema#");
-        prefixes.put("foaf:", "http://xmlns.com/foaf/0.1/");
-        prefixes.put("schema:", "http://schema.org/");
-        prefixes.put("adms:", "http://www.w3.org/ns/adms#");
-        prefixes.put("locn:", "http://www.w3.org/ns/locn#");
-        prefixes.put("vcard:", "http://www.w3.org/2006/vcard/ns#");
-
         StringBuilder prefixBuilder = new StringBuilder();
+        HashMap<String, String> prefixes = new HashMap<String, String>();
+        InputStreamUtils streamUtils = new InputStreamUtils();
+        InputStream configStream = streamUtils.classpathStream(PREFIXES_PROPERTIES);
+        try {
+            Properties props = new Properties();
+            if (configStream == null) {
+                LOG.error("Could not load prefixes");
+                /*
+                prefixes.put("dct:", "http://purl.org/dc/terms/");
+                prefixes.put("dcat:", "http://www.w3.org/ns/dcat#");
+                prefixes.put("xsd:", "http://www.w3.org/2001/XMLSchema#");
+                prefixes.put("skos:", "http://www.w3.org/2004/02/skos/core#");
+                prefixes.put("rdfs:", "http://www.w3.org/2000/01/rdf-schema#");
+                prefixes.put("foaf:", "http://xmlns.com/foaf/0.1/");
+                prefixes.put("schema:", "http://schema.org/");
+                prefixes.put("adms:", "http://www.w3.org/ns/adms#");
+                prefixes.put("locn:", "http://www.w3.org/ns/locn#");
+                prefixes.put("vcard:", "http://www.w3.org/2006/vcard/ns#");
+                */
+            } else {
+                props.load(configStream);
+                for (String pre : props.stringPropertyNames()) {
+                    prefixes.put(pre, props.getProperty(pre));
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
         for (String pre : prefixes.keySet()) {
             prefixBuilder.append("@prefix ");
             prefixBuilder.append(pre);
-            prefixBuilder.append(" <");
+            prefixBuilder.append(": <");
             prefixBuilder.append(prefixes.get(pre));
             prefixBuilder.append("> .\n");
         }
+
         return prefixBuilder.toString();
     }
 
@@ -183,6 +209,7 @@ public class GenerateDCAT {
     protected String createDCATCatalogInformation() {
 
         StringBuilder catalogBuilder = new StringBuilder();
+        List<String> themeTaxonomies = new ArrayList<String>();
         Ipt ipt = regMgr.getIpt();
 
         //Run over resources
@@ -201,12 +228,13 @@ public class GenerateDCAT {
         }
 
         //Base
-        String url = "localhost:8080#catalog";
+        String url = DUMMY_URL;
         if (cfg != null) {
-            url = cfg.getBaseUrl() + "#catalog";
+            url = cfg.getBaseUrl();
         } else {
-            Logger.getGlobal().info("Couldn't load catalog URL");
+            LOG.info("Couldn't load catalog URL, using dummy");
         }
+        url += "#catalog";
         catalogBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE));
         catalogBuilder.append("\n");
         catalogBuilder.append(" a dcat:Catalog");
@@ -226,8 +254,10 @@ public class GenerateDCAT {
             addObjectToBuilder(catalogBuilder, publisher, ObjectTypes.RESOURCE);
         }
         //dcat:dataset
-        addPredicateToBuilder(catalogBuilder, "dcat:dataset");
-        addObjectsToBuilder(catalogBuilder, uris, ObjectTypes.RESOURCE);
+        if (!uris.isEmpty()) {
+            addPredicateToBuilder(catalogBuilder, "dcat:dataset");
+            addObjectsToBuilder(catalogBuilder, uris, ObjectTypes.RESOURCE);
+        }
         //foaf:homepage
         if (ipt.getHomepageURL() != null) {
             addPredicateToBuilder(catalogBuilder, "foaf:homepage");
@@ -241,10 +271,12 @@ public class GenerateDCAT {
         addObjectToBuilder(catalogBuilder, parseToIsoDate(lastModification), ObjectTypes.LITERAL);
         //dcat:themeTaxonomy
         addPredicateToBuilder(catalogBuilder, "dcat:themeTaxonomy");
-        addObjectToBuilder(catalogBuilder, "http://eurovoc.europa.eu/5463", ObjectTypes.RESOURCE);
+        String themeTaxonomy = THEME_TAXONOMY_URI;
+        themeTaxonomies.add(encapsulateObject(THEME_TAXONOMY_URI, ObjectTypes.RESOURCE) + " a skos:ConceptScheme ; dct:title \"" + CATALOG_THEME_TITLE + "\" .");
+        addObjectToBuilder(catalogBuilder, themeTaxonomy, ObjectTypes.RESOURCE);
         //dct:rights
         addPredicateToBuilder(catalogBuilder, "dct:rights");
-        addObjectToBuilder(catalogBuilder, "https://creativecommons.org/publicdomain/zero/1.0/", ObjectTypes.RESOURCE);
+        addObjectToBuilder(catalogBuilder, CATALOG_RIGHTS, ObjectTypes.RESOURCE);
         //dct:spatial
         if (cfg.getLongitude() != null && cfg.getLatitude() != null) {
             addPredicateToBuilder(catalogBuilder, "dct:spatial");
@@ -253,11 +285,15 @@ public class GenerateDCAT {
                     + " ] }\" ";
             addObjectToBuilder(catalogBuilder, spatial, ObjectTypes.OBJECT);
         } else {
-            Logger.getGlobal().info("No spatial data defined for the IPT");
+            LOG.info("No spatial data defined for the IPT");
         }
 
-
         catalogBuilder.append(" .\n");
+        catalogBuilder.append("\n");
+        for (String tax : themeTaxonomies) {
+            catalogBuilder.append(tax);
+            catalogBuilder.append("\n");
+        }
         return catalogBuilder.toString();
     }
 
@@ -280,6 +316,7 @@ public class GenerateDCAT {
      * <li>foaf:homepage</li>
      * <li>dct:identifier</li>
      * <li>dct:publisher</li>
+     * <li>dcat:distribution</li>
      * </ul>
      * </p>
      * For every publisher it comes along it creates a foaf:agent with the name of the organisation
@@ -299,7 +336,7 @@ public class GenerateDCAT {
         if (cfg != null) {
             url = cfg.getResourceUrl(resource.getShortname()) + "#dataset";
         } else {
-            Logger.getGlobal().info("Couldn't load URL of the resource:" + resource.getShortname());
+            LOG.info("Couldn't load URL of the resource:" + resource.getShortname());
         }
         datasetBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE));
         datasetBuilder.append("\n");
@@ -324,7 +361,9 @@ public class GenerateDCAT {
         }
         //dcat:theme
         addPredicateToBuilder(datasetBuilder, "dcat:theme");
-        addObjectToBuilder(datasetBuilder, "http://eurovoc.europa.eu/5463", ObjectTypes.RESOURCE);
+        String theme = THEME_URI;
+        themes.add(encapsulateObject(THEME_URI, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + DATASET_THEME_LABEL + "\"@en ; skos:inScheme <" + THEME_TAXONOMY_URI + "> .");
+        addObjectToBuilder(datasetBuilder, theme, ObjectTypes.RESOURCE);
         //adms:contactPoint
         for (Agent contact : eml.getContacts()) {
             addPredicateToBuilder(datasetBuilder, "adms:contactPoint");
@@ -370,7 +409,7 @@ public class GenerateDCAT {
         if (cfg != null) {
             landingPage = cfg.getResourceUrl(resource.getShortname());
         } else {
-            Logger.getGlobal().info("Couldn't load URL for landingPage of " + resource.getShortname());
+            LOG.info("Couldn't load URL for landingPage of " + resource.getShortname());
         }
         addPredicateToBuilder(datasetBuilder, "dcat:landingPage");
         addObjectToBuilder(datasetBuilder, landingPage, ObjectTypes.RESOURCE);
@@ -391,6 +430,12 @@ public class GenerateDCAT {
             String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + resource.getOrganisation().getName() + "\" .";
             organisations.add(organisation);
             addObjectToBuilder(datasetBuilder, publisher, ObjectTypes.RESOURCE);
+        }
+        //dcat:Distribution
+        if (cfg != null) {
+            addPredicateToBuilder(datasetBuilder, "dcat:distribution");
+            String dist = cfg.getResourceArchiveUrl(resource.getShortname());
+            addObjectToBuilder(datasetBuilder, dist, ObjectTypes.RESOURCE);
         }
 
         datasetBuilder.append(" .\n");
@@ -422,7 +467,7 @@ public class GenerateDCAT {
         if (cfg != null) {
             url = cfg.getResourceArchiveUrl(resource.getShortname());
         } else {
-            Logger.getGlobal().info("Couldn't load URL of the distribution:" + resource.getShortname());
+            LOG.info("Couldn't load URL of the distribution:" + resource.getShortname());
         }
         distributionBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE));
         distributionBuilder.append("\n");
@@ -435,7 +480,7 @@ public class GenerateDCAT {
             addPredicateToBuilder(distributionBuilder, "dct:license");
             addObjectToBuilder(distributionBuilder, eml.parseLicenseUrl(), ObjectTypes.RESOURCE);
         } else {
-            Logger.getGlobal().info("Can't parse licenseURL for the distribution of " + resource.getShortname());
+            LOG.info("Can't parse licenseURL for the distribution of " + resource.getShortname());
         }
         //dct:format
         addPredicateToBuilder(distributionBuilder, "dct:format");
@@ -448,7 +493,7 @@ public class GenerateDCAT {
             addPredicateToBuilder(distributionBuilder, "dcat:downloadURL");
             addObjectToBuilder(distributionBuilder, cfg.getResourceArchiveUrl(resource.getShortname()), ObjectTypes.RESOURCE);
         } else {
-            Logger.getGlobal().info("Couldn't get downloadURL for the distribution of " + resource.getShortname());
+            LOG.info("Couldn't get downloadURL for the distribution of " + resource.getShortname());
         }
 
         distributionBuilder.append(" .\n");

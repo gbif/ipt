@@ -149,7 +149,7 @@ public class GenerateDCATTest {
 
     @Test
     public void testCreatePrefixes() {
-        //System.out.println(mockGenerateDCAT.createPrefixesInformation());
+        System.out.println(mockGenerateDCAT.createPrefixesInformation());
     }
 
     @Test
@@ -164,7 +164,7 @@ public class GenerateDCATTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //System.out.println(mockGenerateDCAT.createDCATDatasetInformation(res));
+        System.out.println(mockGenerateDCAT.createDCATDatasetInformation(res));
     }
 
     @Test
