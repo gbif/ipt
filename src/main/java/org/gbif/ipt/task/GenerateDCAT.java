@@ -183,7 +183,7 @@ public class GenerateDCAT {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         for (String pre : prefixes.keySet()) {
