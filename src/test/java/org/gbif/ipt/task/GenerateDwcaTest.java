@@ -485,7 +485,7 @@ public class GenerateDwcaTest {
     ResourceManagerImpl resourceManager =
       new ResourceManagerImpl(mockAppConfig, mockDataDir, mockEmailConverter, mockOrganisationKeyConverter,
         extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager, mockRegistryManager,
-        conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockGenerateDCAT, mockVocabulariesManager,
+        conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockVocabulariesManager,
         mockSimpleTextProvider, mockRegistrationManager);
 
     // create a new resource.

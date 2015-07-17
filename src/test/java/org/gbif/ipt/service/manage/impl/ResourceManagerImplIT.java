@@ -151,7 +151,7 @@ public class ResourceManagerImplIT {
         ResourceManagerImpl managerDataCite = new ResourceManagerImpl(mockAppConfig, MOCK_DATA_DIR, mockEmailConverter,
                 new OrganisationKeyConverter(mockRegistrationManagerDataCite), mockExtensionRowTypeConverter, mockJdbcConverter,
                 mockSourceManager, mockExtensionManager, mockRegistryManager, mockConceptTermConverter, mockDwcaFactory,
-                mockPasswordConverter, mockEml2Rtf, mockGenerateDCAT, mockVocabulariesManager, mockSimpleTextProvider,
+                mockPasswordConverter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider,
                 mockRegistrationManagerDataCite);
 
 
@@ -185,7 +185,7 @@ public class ResourceManagerImplIT {
         ResourceManagerImpl managerEZID = new ResourceManagerImpl(mockAppConfig, MOCK_DATA_DIR, mockEmailConverter,
                 new OrganisationKeyConverter(mockRegistrationManagerEZID), mockExtensionRowTypeConverter, mockJdbcConverter,
                 mockSourceManager, mockExtensionManager, mockRegistryManager, mockConceptTermConverter, mockDwcaFactory,
-                mockPasswordConverter, mockEml2Rtf, mockGenerateDCAT, mockVocabulariesManager, mockSimpleTextProvider, mockRegistrationManagerEZID);
+                mockPasswordConverter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider, mockRegistrationManagerEZID);
 
         return Arrays.asList(new Object[][]{{managerDataCite, DOIRegistrationAgency.DATACITE,
                 DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite}
