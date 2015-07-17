@@ -179,7 +179,7 @@ public class GenerateDCATTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //System.out.println(mockGenerateDCAT.createDCATDistributionInformation(res));
+        System.out.println(mockGenerateDCAT.createDCATDistributionInformation(res));
     }
 
 
