@@ -127,7 +127,6 @@ public class ResourceManagerImplTest {
     private GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
     private PasswordConverter mockPasswordConverter = mock(PasswordConverter.class);
     private Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
-    private GenerateDCAT mockGenerateDCAT = mock(GenerateDCAT.class);
     private VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     private SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
 
@@ -226,7 +225,7 @@ public class ResourceManagerImplTest {
 
         return new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
                 extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager, mockRegistryManager,
-                conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockGenerateDCAT, mockVocabulariesManager,
+                conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockVocabulariesManager,
                 mockSimpleTextProvider, mockRegistrationManager);
     }
 
@@ -736,7 +735,7 @@ public class ResourceManagerImplTest {
 
         manager = new ResourceManagerImpl(mockAppConfig, mockedDataDir, mockEmailConverter, mockOrganisationKeyConverter,
                 mock(ExtensionRowTypeConverter.class), mockJdbcConverter, mockSourceManager, mock(ExtensionManager.class),
-                mockRegistryManager, mock(ConceptTermConverter.class), mockDwcaFactory, mockPasswordConverter, mockEml2Rtf, mockGenerateDCAT,
+                mockRegistryManager, mock(ConceptTermConverter.class), mockDwcaFactory, mockPasswordConverter, mockEml2Rtf,
                 mockVocabulariesManager, mockSimpleTextProvider, mockRegistrationManager);
 
         // update alt. id
@@ -1020,8 +1019,6 @@ public class ResourceManagerImplTest {
         assertTrue(new File(resourceDir, "eml-3.1.xml").exists());
         assertTrue(new File(resourceDir, "rtf-res2.rtf").exists());
         assertTrue(new File(resourceDir, "rtf-res2-3.1.rtf").exists());
-        //TODO DCAT GENERATOR TEST
-        assertTrue(new File(resourceDir, "dcat.txt").exists());
     }
 
     /**
@@ -1315,12 +1312,6 @@ public class ResourceManagerImplTest {
         org.apache.commons.io.FileUtils.copyFile(rtfXML, versionFourRtfXML);
         // mock finding versioned rtf-res2-4.0.xml file
         when(mockedDataDir.resourceRtfFile(anyString(), eq(BigDecimal.valueOf(4.0)))).thenReturn(versionFourRtfXML);
-
-        //TODO DCAT
-        // mock new saved dcat.txt file being versioned for every new version
-        File dcatFile = new File(resourceDir, "dcat-dataset.txt");
-        // mock finding versioned dcat.txt file
-        when(mockedDataDir.resourceDCATFile(anyString())).thenReturn(dcatFile);
 
         // create ResourceManagerImpl
         ResourceManagerImpl resourceManager = getResourceManagerImpl();

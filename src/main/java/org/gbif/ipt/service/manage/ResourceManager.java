@@ -97,15 +97,6 @@ public interface ResourceManager {
      * @return true if EML File exists, and false otherwise.
      */
     boolean isEmlExisting(String shortName);
-
-    /**
-     * Validate if the DCAT file exists for a specific resource in the data directory.
-     *
-     * @param shortName Resource shortname
-     * @return the path to the DCAT file if it exists, and null otherwise.
-     */
-    String isDCATExisting(String shortName);
-
     /**
      * Checks whether the resource is currently locked or not. It then checks if the task is done or not. If done
      * successfully, the remaining steps in publishing are executed. If it failed for any reason,

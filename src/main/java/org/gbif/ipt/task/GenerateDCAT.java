@@ -68,7 +68,8 @@ public class GenerateDCAT {
         BufferedReader br = null;
         for (Resource res : rscMgr.listPublishedPublicVersions()) {
             try {
-                String path = rscMgr.isDCATExisting(res.getShortname());
+                //String path = rscMgr.isDCATExisting(res.getShortname());
+                String path = null;
                 if (path != null) {
                     br = new BufferedReader(new FileReader(path));
                     while ((CurrentLine = br.readLine()) != null) {

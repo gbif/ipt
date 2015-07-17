@@ -132,8 +132,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
     private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
     private Eml2Rtf eml2Rtf;
-    //TODO
-    private GenerateDCAT generateDCAT;
     private VocabulariesManager vocabManager;
     private SimpleTextProvider textProvider;
     private RegistrationManager registrationManager;
@@ -143,7 +141,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                                OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
                                JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
                                RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-                               PasswordConverter passwordConverter, Eml2Rtf eml2Rtf, GenerateDCAT generateDCAT, VocabulariesManager vocabManager,
+                               PasswordConverter passwordConverter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
                                SimpleTextProvider textProvider, RegistrationManager registrationManager) {
         super(cfg, dataDir);
         this.sourceManager = sourceManager;
@@ -151,7 +149,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         this.registryManager = registryManager;
         this.dwcaFactory = dwcaFactory;
         this.eml2Rtf = eml2Rtf;
-        this.generateDCAT = generateDCAT;
         this.vocabManager = vocabManager;
         this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
         defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
@@ -677,14 +674,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         return emlFile.exists();
     }
 
-    public String isDCATExisting(String shortName){
-        File DCATFile = dataDir.resourceDCATFile(shortName);
-        if(DCATFile.exists()){
-            return DCATFile.getAbsolutePath();
-        }
-        return null;
-    }
-
     public boolean isLocked(String shortname, BaseAction action) {
         if (processFutures.containsKey(shortname)) {
             Resource resource = get(shortname);
@@ -1151,8 +1140,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         publishEml(resource, version);
         // publish RTF
         publishRtf(resource, version);
-        // publish DCAT
-        publishDCAT(resource);
 
         // (re)generate dwca asynchronously
         boolean dwca = false;
@@ -1600,49 +1587,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         } catch (IOException e) {
             throw new PublicationException(PublicationException.TYPE.EML,
                     "Can't publish eml file for resource " + resource.getShortname(), e);
-        }
-    }
-
-    /**
-     * Publishes a new version of the DCAT file for the given resource.
-     *
-     * @param resource Resource
-     * @throws PublicationException if resource was already being published, or if publishing failed for any reason
-     */
-    private void publishDCAT(Resource resource) throws PublicationException {
-        // check if publishing task is already running
-        if (isLocked(resource.getShortname())) {
-            throw new PublicationException(PublicationException.TYPE.LOCKED,
-                    "Resource " + resource.getShortname() + " is currently locked by another process");
-        }
-        //   Document doc = new Document();
-
-        File DCATFile = dataDir.resourceDCATFile(resource.getShortname());
-        log.warn("PATH " + DCATFile.getAbsolutePath());
-        OutputStream out = null;
-        try {
-            //GenerateDCAT gen = new GenerateDCAT();
-            //gen.create(resource,DCATFile.getAbsolutePath());
-            /*RtfWriter2.getInstance(doc, out);
-            eml2Rtf.writeEmlIntoRtf(doc, resource);*/
-
-        }/* catch (FileNotFoundException e) {
-            throw new PublicationException(PublicationException.TYPE.DCAT,
-                    "Can't find DCAT file to write metadata to: " + DCATFile.getAbsolutePath(), e);
-        } catch (DocumentException e) {
-            throw new PublicationException(PublicationException.TYPE.DCAT,
-                    "DCAT DocumentException while writing to file: " + DCATFile.getAbsolutePath(), e);
-        } catch (Exception e) {
-            throw new PublicationException(PublicationException.TYPE.DCAT,
-                    "An unexpected error occurred while writing DCAT file: " + e.getMessage(), e);
-        } */ finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    log.warn("FileOutputStream to DCAT file could not be closed");
-                }
-            }
         }
     }
 

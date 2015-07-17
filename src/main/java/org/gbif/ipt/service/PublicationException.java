@@ -19,11 +19,6 @@ public class PublicationException extends RuntimeException {
      * Exception occurred while publishing either the RTF file.
      */
     RTF,
-    //TODO DCAT
-    /**
-     * Exception occured while communication with the DCAT file.
-     */
-    DCAT,
     /**
      * Exception occurred while communicating with the GBIF Registry.
      */
