@@ -33,7 +33,7 @@ public class DCATAction extends ActionSupport {
      */
     @Override
     public String execute() {
-        String out = generateDCAT.createDCATFeed();
+        String out = generateDCAT.getDCAT();
         try {
             dcatInfo = new ByteArrayInputStream(out.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {

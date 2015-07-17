@@ -114,7 +114,6 @@ public class Eml2Rtf {
       p.clear();
     }
   }
-
   /**
    * Add resource citation section. This corresponds to combination of resource's citation and citation identifier.
    * 

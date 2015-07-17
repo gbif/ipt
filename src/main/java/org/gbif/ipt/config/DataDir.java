@@ -253,15 +253,6 @@ public class DataDir {
     String fn = resourceName + "-" + version.toPlainString() + ".rtf";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
-    /**
-     * Retrieves published DCAT file for a specific resource.
-     *
-     * @param resourceName resource short name
-     * @return File DCAT file
-     */
-    public File resourceDCATFile(@NotNull String resourceName) {
-        return dataFile(RESOURCES_DIR + "/" + resourceName + "/dcat-dataset.txt");
-    }
 
   /**
    * Sets the path to the data directory for the entire application and persists it in the /WEB-INF folder. This method
