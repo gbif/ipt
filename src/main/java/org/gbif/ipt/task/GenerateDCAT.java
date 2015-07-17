@@ -36,6 +36,10 @@ public class GenerateDCAT {
     private static final String THEME_URI = "http://eurovoc.europa.eu/5463";
     private static final String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";
 
+    private String DCAT = "";
+    private long time = 0;
+    private static final long cachingTime = 60000;
+
     private AppConfig cfg;
     private RegistrationManager regMgr;
     private ResourceManager rscMgr;
@@ -94,12 +98,27 @@ public class GenerateDCAT {
     }
 
     /**
+     * Return the DCAT feed or update to a new one,
+     * if it exceed the caching time
+     * @return DCAT feed
+     */
+    public String getDCAT(){
+        long now = System.currentTimeMillis();
+        if(time <= (now-cachingTime)){
+            LOG.info("Updating DCAT feed");
+            time = now;
+            DCAT += createDCATFeed();
+        }
+        return DCAT;
+    }
+
+    /**
      * Create and regenerate the entire DCAT feed
      * The Prefixes, Catalog, all datasets, all Distributions and the organizations
      *
      * @return DCAT feed
      */
-    public String createDCATFeed() {
+    private String createDCATFeed() {
         StringBuilder feed = new StringBuilder();
         organisations = new HashSet<String>();
         themes = new HashSet<String>();
