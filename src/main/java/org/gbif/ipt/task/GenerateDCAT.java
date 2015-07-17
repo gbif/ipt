@@ -229,7 +229,7 @@ public class GenerateDCAT {
         Date firstCreation = new Date();
         Date lastModification = new Date();
         for (Resource res : rscMgr.list()) {
-            String uri = cfg.getResourceUrl(res.getShortname()) + "#dataset";
+            String uri = cfg.getResourceUrl(res.getShortname()) + "/#dataset";
             uris.add(uri);
             if (res.getCreated().before(firstCreation)) {
                 firstCreation = res.getCreated();
@@ -246,7 +246,7 @@ public class GenerateDCAT {
         } else {
             LOG.info("Couldn't load catalog URL, using dummy");
         }
-        url += "#catalog";
+        url += "/#catalog";
         catalogBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE));
         catalogBuilder.append("\n");
         catalogBuilder.append(" a dcat:Catalog");
@@ -260,7 +260,7 @@ public class GenerateDCAT {
         //dct:publisher
         if (ipt.getKey() != null) {
             addPredicateToBuilder(catalogBuilder, "dct:publisher");
-            String publisher = "http://www.gbif.org/publisher/" + ipt.getKey() + "#Organization";
+            String publisher = "http://www.gbif.org/publisher/" + ipt.getKey() + "/#Organization";
             String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + ipt.getName() + "\" .";
             organisations.add(organisation);
             addObjectToBuilder(catalogBuilder, publisher, ObjectTypes.RESOURCE);
@@ -344,9 +344,9 @@ public class GenerateDCAT {
         Eml eml = resource.getEml();
 
         //Base
-        String url = "localhost:8080#dataset";
+        String url = "localhost:8080/#dataset";
         if (cfg != null) {
-            url = cfg.getResourceUrl(resource.getShortname()) + "#dataset";
+            url = cfg.getResourceUrl(resource.getShortname()) + "/#dataset";
         } else {
             LOG.info("Couldn't load URL of the resource:" + resource.getShortname());
         }
@@ -442,7 +442,7 @@ public class GenerateDCAT {
         //dct:publisher
         if (resource.getOrganisation() != null && resource.getOrganisation().getKey() != null) {
             addPredicateToBuilder(datasetBuilder, "dct:publisher");
-            String publisher = "http://www.gbif.org/publisher/" + resource.getOrganisation().getKey() + "#Organization";
+            String publisher = "http://www.gbif.org/publisher/" + resource.getOrganisation().getKey() + "/#Organization";
             String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + resource.getOrganisation().getName() + "\" .";
             organisations.add(organisation);
             addObjectToBuilder(datasetBuilder, publisher, ObjectTypes.RESOURCE);
@@ -479,7 +479,7 @@ public class GenerateDCAT {
         Eml eml = resource.getEml();
 
         //Base
-        String url = "localhost:8080#distribution";
+        String url = "localhost:8080/#distribution";
         if (cfg != null) {
             url = cfg.getResourceArchiveUrl(resource.getShortname());
         } else {
