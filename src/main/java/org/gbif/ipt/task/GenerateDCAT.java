@@ -61,50 +61,14 @@ public class GenerateDCAT {
     }
 
     /**
-     * Get the DCAT feed
-     * The prefixes, Catalog, all Datasets, all Distributions and the organizations
+     * Return the DCAT feed or update to a new one,
+     * if it exceed the caching time
      *
      * @return DCAT feed
      */
-    public String getDCATFeed() {
-        String DCATCatalog = "";
-        String CurrentLine;
-        BufferedReader br = null;
-        for (Resource res : rscMgr.listPublishedPublicVersions()) {
-            try {
-                //String path = rscMgr.isDCATExisting(res.getShortname());
-                String path = null;
-                if (path != null) {
-                    br = new BufferedReader(new FileReader(path));
-                    while ((CurrentLine = br.readLine()) != null) {
-                        DCATCatalog += CurrentLine + "\n";
-                    }
-                } else {//TODO Create a DCAT feed for this dataset ?
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println("404 : DCAT-DATASET file not found : " + e);
-            } catch (IOException e) {
-                System.out.println("error" + e);
-            } finally {
-                try {
-                    if (br != null) br.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        System.out.println("CATALOG \n" + DCATCatalog);
-        return DCATCatalog;
-    }
-
-    /**
-     * Return the DCAT feed or update to a new one,
-     * if it exceed the caching time
-     * @return DCAT feed
-     */
-    public String getDCAT(){
+    public String getDCAT() {
         long now = System.currentTimeMillis();
-        if(time <= (now-cachingTime)){
+        if (time <= (now - cachingTime)) {
             LOG.info("Updating DCAT feed");
             time = now;
             DCAT += createDCATFeed();
@@ -634,11 +598,10 @@ public class GenerateDCAT {
      */
     private static String parseToIsoDate(Date dateStamp) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
-        String ret = df.format(dateStamp);
-        if (ret == null) {
+        if (dateStamp == null) {
             LOG.error("Date not defined");
         }
-        return ret;
+        return df.format(dateStamp);
     }
 
 }
