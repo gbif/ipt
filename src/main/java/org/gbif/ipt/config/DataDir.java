@@ -226,6 +226,7 @@ public class DataDir {
   public File resourceFile(String resourceName, String path) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + path);
   }
+
   /**
    * @param suffix the logo file suffix, indicating the format. E.g. jpeg or gif
    */
@@ -249,7 +250,7 @@ public class DataDir {
    *
    * @return RTF file having specific version, defaulting to latest published version if no version specified
    */
-  public File resourceRtfFile(@NotNull String resourceName,@NotNull BigDecimal version) {
+  public File resourceRtfFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = resourceName + "-" + version.toPlainString() + ".rtf";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
   }
