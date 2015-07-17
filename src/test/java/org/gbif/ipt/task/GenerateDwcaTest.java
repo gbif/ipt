@@ -429,7 +429,6 @@ public class GenerateDwcaTest {
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
     GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
     Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
-    GenerateDCAT mockGenerateDCAT = mock(GenerateDCAT.class);
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
