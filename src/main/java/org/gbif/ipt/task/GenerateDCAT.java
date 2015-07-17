@@ -20,6 +20,10 @@ import org.gbif.metadata.eml.*;
 
 /**
  * Class to generate a DCAT feed of the data
+ *
+ * Project homepage: https://github.com/oSoc15/ipt-dcat
+ * Fork: https://github.com/oSoc15/ipt
+ * @author Simon Van Cauter, Sylvain Delbauve
  */
 @Singleton
 public class GenerateDCAT {
