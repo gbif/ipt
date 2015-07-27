@@ -23,10 +23,7 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.mock.*;
-import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.FileSource;
-import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.*;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -66,11 +63,14 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.xml.sax.SAXException;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -115,6 +115,11 @@ public class GenerateDCATTest {
 
     @Before
     public void setup() throws IOException {
+        //URLs
+        when(mockAppConfig.getResourceArchiveUrl("res1")).thenReturn("distributionURL");
+        when(mockAppConfig.getBaseUrl()).thenReturn("baseURL");
+        when(mockAppConfig.getResourceUrl("res1")).thenReturn("resourceURL");
+
         // create resource, version 3.0
         resource = new Resource();
         resource.setShortname(RESOURCE_SHORTNAME);
@@ -148,8 +153,45 @@ public class GenerateDCATTest {
     }
 
     @Test
+    public void testCreateCatalog() throws ParserConfigurationException, SAXException {
+        RegistrationManager mockRegMgr = MockRegistrationManager.buildMock();
+
+        //Return URLs
+        when(mockAppConfig.getResourceArchiveUrl("res1")).thenReturn("distributionURL");
+        when(mockAppConfig.getBaseUrl()).thenReturn("baseURL");
+        when(mockAppConfig.getResourceUrl("res1")).thenReturn("resourceURL");
+
+        //create IPT
+        Ipt ipt = new Ipt();
+        ipt.setDescription("Test IPT for testing");
+        ipt.setName("Test IPT");
+        when(mockRegMgr.getIpt()).thenReturn(ipt);
+
+        //System.out.println(mockGenerateDCAT.createDCATCatalogInformation());
+        String dcat = mockGenerateDCAT.createDCATCatalogInformation();
+        assertTrue(dcat.contains("a dcat:Catalog"));
+        assertTrue(dcat.contains("dct:title \"Test IPT\""));
+        assertTrue(dcat.contains("dct:description \"Test IPT for testing\""));
+        assertTrue(dcat.contains("dcat:themeTaxonomy <http://eurovoc.europa.eu/218403>"));
+        assertTrue(dcat.contains("dct:rights <https://creativecommons.org/publicdomain/zero/1.0/>"));
+        assertTrue(dcat.contains("dct:spatial [ a dct:Location ; locn:geometry \"{ \\\"type\\\": \\\"Point\\\", \\\"coordinates\\\": [ 0.0,0.0 ] }\" ]"));
+        assertTrue(dcat.contains("a skos:ConceptScheme"));
+    }
+
+    @Test
     public void testCreatePrefixes() {
-        System.out.println(mockGenerateDCAT.createPrefixesInformation());
+        //System.out.println(mockGenerateDCAT.createPrefixesInformation());
+        String prefixes = mockGenerateDCAT.createPrefixesInformation();
+        assertTrue(prefixes.contains("@prefix schema: <http://schema.org/>"));
+        assertTrue(prefixes.contains("@prefix dct: <http://purl.org/dc/terms/>"));
+        assertTrue(prefixes.contains("@prefix adms: <http://www.w3.org/ns/adms#>"));
+        assertTrue(prefixes.contains("@prefix xsd: <http://www.w3.org/2001/XMLSchema#>"));
+        assertTrue(prefixes.contains("@prefix skos: <http://www.w3.org/2004/02/skos/core#>"));
+        assertTrue(prefixes.contains("@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"));
+        assertTrue(prefixes.contains("@prefix vcard: <http://www.w3.org/2006/vcard/ns#>"));
+        assertTrue(prefixes.contains("@prefix dcat: <http://www.w3.org/ns/dcat#>"));
+        assertTrue(prefixes.contains("@prefix locn: <http://www.w3.org/ns/locn#>"));
+        assertTrue(prefixes.contains("@prefix foaf: <http://xmlns.com/foaf/0.1/>"));
     }
 
     @Test
@@ -164,7 +206,15 @@ public class GenerateDCATTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(mockGenerateDCAT.createDCATDatasetInformation(res));
+        //System.out.println(mockGenerateDCAT.createDCATDatasetInformation(res));
+        String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
+        assertTrue(dcat.contains("a dcat:Dataset"));
+        assertTrue(dcat.contains("dct:title \"TEST RESOURCE\""));
+        assertTrue(dcat.contains("dct:description \"Test description\""));
+        assertTrue(dcat.contains("dcat:keyword \"Phytosociology\" , \"Vegetation\" , \"India\""));
+        assertTrue(dcat.contains("dcat:theme <http://eurovoc.europa.eu/5463>"));
+        assertTrue(dcat.contains("adms:contactPoint [ a vcard:Kind ; vcard:fn \"Braak2\" ]"));
+        assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
     }
 
     @Test
@@ -179,7 +229,13 @@ public class GenerateDCATTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(mockGenerateDCAT.createDCATDistributionInformation(res));
+        //System.out.println(mockGenerateDCAT.createDCATDistributionInformation(res));
+        String dcat = mockGenerateDCAT.createDCATDistributionInformation(res);
+        assertTrue(dcat.contains("a dcat:Distribution"));
+        assertTrue(dcat.contains("dct:description \"Darwin Core Archive\""));
+        assertTrue(dcat.contains("dct:format \"dwc-a\""));
+        assertTrue(dcat.contains("dcat:mediaType \"application/zip\""));
+        assertTrue(dcat.contains("dcat:downloadURL <distributionURL>"));
     }
 
 

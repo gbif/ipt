@@ -20,9 +20,10 @@ import org.gbif.metadata.eml.*;
 
 /**
  * Class to generate a DCAT feed of the data
- *
+ * <p>
  * Project homepage: https://github.com/oSoc15/ipt-dcat
  * Fork: https://github.com/oSoc15/ipt
+ *
  * @author Simon Van Cauter, Sylvain Delbauve
  */
 @Singleton
@@ -240,13 +241,21 @@ public class GenerateDCAT {
         catalogBuilder.append(" a dcat:Catalog");
 
         //dct:title
-        addPredicateToBuilder(catalogBuilder, "dct:title");
-        addObjectToBuilder(catalogBuilder, ipt.getName(), ObjectTypes.LITERAL);
+        if (ipt != null) {
+            addPredicateToBuilder(catalogBuilder, "dct:title");
+            addObjectToBuilder(catalogBuilder, ipt.getName(), ObjectTypes.LITERAL);
+        } else {
+            LOG.error("IPT is null, can't get title");
+        }
         //dct:description
-        addPredicateToBuilder(catalogBuilder, "dct:description");
-        addObjectToBuilder(catalogBuilder, ipt.getDescription(), ObjectTypes.LITERAL);
+        if (ipt != null) {
+            addPredicateToBuilder(catalogBuilder, "dct:description");
+            addObjectToBuilder(catalogBuilder, ipt.getDescription(), ObjectTypes.LITERAL);
+        } else {
+            LOG.error("IPT is null, can't get description");
+        }
         //dct:publisher
-        if (ipt.getKey() != null) {
+        if (ipt != null && ipt.getKey() != null) {
             addPredicateToBuilder(catalogBuilder, "dct:publisher");
             String publisher = "http://www.gbif.org/publisher/" + ipt.getKey() + "/#Organization";
             String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + ipt.getName() + "\" .";
@@ -259,7 +268,7 @@ public class GenerateDCAT {
             addObjectsToBuilder(catalogBuilder, uris, ObjectTypes.RESOURCE);
         }
         //foaf:homepage
-        if (ipt.getHomepageURL() != null) {
+        if (ipt != null && ipt.getHomepageURL() != null) {
             addPredicateToBuilder(catalogBuilder, "foaf:homepage");
             addObjectToBuilder(catalogBuilder, ipt.getHomepageURL(), ObjectTypes.RESOURCE);
         }
