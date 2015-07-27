@@ -209,11 +209,11 @@ public class GenerateDCATTest {
         //System.out.println(mockGenerateDCAT.createDCATDatasetInformation(res));
         String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
         assertTrue(dcat.contains("a dcat:Dataset"));
-        assertTrue(dcat.contains("dct:title \"TEST RESOURCE\""));
-        assertTrue(dcat.contains("dct:description \"Test description\""));
-        assertTrue(dcat.contains("dcat:keyword \"Phytosociology\" , \"Vegetation\" , \"India\""));
+        assertTrue(dcat.contains("dct:title \"" + res.getTitle() + "\""));
+        assertTrue(dcat.contains("dct:description"));
+        assertTrue(dcat.contains("dcat:keyword"));
         assertTrue(dcat.contains("dcat:theme <http://eurovoc.europa.eu/5463>"));
-        assertTrue(dcat.contains("adms:contactPoint [ a vcard:Kind ; vcard:fn \"Braak2\" ]"));
+        assertTrue(dcat.contains("adms:contactPoint [ a vcard:Kind ; vcard:fn \"" + res.getEml().getContacts().get(0).getFullName() + "\" ]"));
         assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
     }
 
