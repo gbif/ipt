@@ -20,6 +20,7 @@ import org.gbif.metadata.eml.*;
 
 /**
  * Class to generate a DCAT feed of the data
+ * Only resources that are published and public will be in the DCAT feed
  * <p>
  * Project homepage: https://github.com/oSoc15/ipt-dcat
  * Fork: https://github.com/oSoc15/ipt
@@ -34,15 +35,37 @@ public class GenerateDCAT {
      * URL used when no URL is defined for the object
      */
     private static final String DUMMY_URL = "localhost:8080";
+    /**
+     * Rights of the catalog
+     */
     private static final String CATALOG_RIGHTS = "https://creativecommons.org/publicdomain/zero/1.0/";
+    /**
+     * Title of the theme of the catalog
+     */
     private static final String CATALOG_THEME_TITLE = "biodiversity";
+    /**
+     * Toxonomy URI
+     */
     private static final String THEME_TAXONOMY_URI = "http://eurovoc.europa.eu/218403";
+    /**
+     * Label for the theme of the datatset
+     */
     private static final String DATASET_THEME_LABEL = "biodiversity";
+    /**
+     * Theme of the dataset
+     */
     private static final String THEME_URI = "http://eurovoc.europa.eu/5463";
+    /**
+     * Location of the prefixes
+     */
     private static final String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";
 
     private String DCAT = "";
     private long time = 0;
+    /**
+     * Time the DCAT feed is kept the same
+     * If the DCAT feed exist longer then the cashing time, the feed is regenerated
+     */
     private static final long cachingTime = 60000;
 
     private AppConfig cfg;
@@ -100,7 +123,7 @@ public class GenerateDCAT {
         feed.append("\n");
 
         //Datasets and Distributions
-        for (Resource res : rscMgr.list()) {
+        for (Resource res : rscMgr.listPublishedPublicVersions()) {
             feed.append(createDCATDatasetInformation(res));
             feed.append("\n");
             feed.append(createDCATDistributionInformation(res));
@@ -217,13 +240,13 @@ public class GenerateDCAT {
         List<String> uris = new ArrayList<String>();
         Date firstCreation = new Date();
         Date lastModification = new Date();
-        for (Resource res : rscMgr.list()) {
+        for (Resource res : rscMgr.listPublishedPublicVersions()) {
             String uri = cfg.getResourceUrl(res.getShortname()) + "/#dataset";
             uris.add(uri);
-            if (res.getCreated().before(firstCreation)) {
+            if (res.getCreated() != null && res.getCreated().before(firstCreation)) {
                 firstCreation = res.getCreated();
             }
-            if (res.getLastPublished().after(lastModification)) {
+            if (res.getLastPublished() != null && res.getLastPublished().after(lastModification)) {
                 lastModification = res.getLastPublished();
             }
         }
@@ -465,6 +488,7 @@ public class GenerateDCAT {
      * <li>dct:format</li>
      * <li>dcat:mediaType</li>
      * <li>dcat:downloadURL</li>
+     * <li>dcat:accessURL</li>
      * </ul>
      *
      * @param resource resource to create he DCAT Distribution from
@@ -508,8 +532,20 @@ public class GenerateDCAT {
         } else {
             LOG.info("Couldn't get downloadURL for the distribution of " + resource.getShortname());
         }
+        //dcat:accessURL
+        String accessURLClass = null;
+        if (cfg != null) {
+            addPredicateToBuilder(distributionBuilder, "dcat:accessURL");
+            accessURLClass = encapsulateObject(cfg.getResourceUrl(resource.getShortname()), ObjectTypes.RESOURCE) + " a rdfs:Resource .";
+            addObjectToBuilder(distributionBuilder, cfg.getResourceUrl(resource.getShortname()), ObjectTypes.RESOURCE);
+        } else {
+            LOG.error("No accessURL available for" + resource.getShortname());
+        }
 
         distributionBuilder.append(" .\n");
+        if (accessURLClass != null) {
+            distributionBuilder.append(accessURLClass + "\n");
+        }
         return distributionBuilder.toString();
     }
 
