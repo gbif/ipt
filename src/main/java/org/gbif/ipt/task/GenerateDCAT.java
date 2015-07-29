@@ -10,7 +10,6 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 
 import java.io.*;
-import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -158,20 +157,6 @@ public class GenerateDCAT {
         }
 
         return feed.toString();
-    }
-
-    /**
-     * Create the DCAT information for one resource
-     *
-     * @return String
-     */
-    public String createDCATResource(Resource resource) {
-        StringBuilder datasetBuilder = new StringBuilder();
-        datasetBuilder.append(createDCATDatasetInformation(resource));
-        datasetBuilder.append("\n");
-        datasetBuilder.append(createDCATDistributionInformation(resource));
-        datasetBuilder.append("\n");
-        return datasetBuilder.toString();
     }
 
     /**
@@ -571,7 +556,8 @@ public class GenerateDCAT {
 
         distributionBuilder.append(" .\n");
         if (accessURLClass != null) {
-            distributionBuilder.append(accessURLClass + "\n");
+            distributionBuilder.append(accessURLClass);
+            distributionBuilder.append("\n");
         }
         return distributionBuilder.toString();
     }
