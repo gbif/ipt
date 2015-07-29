@@ -9,9 +9,11 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
 
 import java.io.*;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -80,6 +82,9 @@ public class GenerateDCAT {
      */
     private Set<String> themes = new HashSet<String>();
 
+    private static boolean firstPublishedDatePresent = false;
+    private static boolean lastPublishedDatePresent = false;
+
 
     @Inject
     public GenerateDCAT(AppConfig cfg, RegistrationManager regMgr, ResourceManager rscMgr) {
@@ -90,7 +95,7 @@ public class GenerateDCAT {
 
     /**
      * Return the DCAT feed or update to a new one,
-     * if it exceed the caching time
+     * if it exceeds the caching time
      *
      * @return DCAT feed
      */
@@ -239,15 +244,19 @@ public class GenerateDCAT {
         //Run over resources
         List<String> uris = new ArrayList<String>();
         Date firstCreation = new Date();
-        Date lastModification = new Date();
+        firstPublishedDatePresent = false;
+        Date lastModification = new Date(0);
+        lastPublishedDatePresent = false;
         for (Resource res : rscMgr.listPublishedPublicVersions()) {
             String uri = cfg.getResourceUrl(res.getShortname()) + "/#dataset";
             uris.add(uri);
             if (res.getCreated() != null && res.getCreated().before(firstCreation)) {
                 firstCreation = res.getCreated();
+                firstPublishedDatePresent = true;
             }
             if (res.getLastPublished() != null && res.getLastPublished().after(lastModification)) {
                 lastModification = res.getLastPublished();
+                lastPublishedDatePresent = true;
             }
         }
 
@@ -296,11 +305,15 @@ public class GenerateDCAT {
             addObjectToBuilder(catalogBuilder, ipt.getHomepageURL(), ObjectTypes.RESOURCE);
         }
         //dct:issued
-        addPredicateToBuilder(catalogBuilder, "dct:issued");
-        addObjectToBuilder(catalogBuilder, parseToIsoDate(firstCreation), ObjectTypes.LITERAL);
+        if (firstPublishedDatePresent) {
+            addPredicateToBuilder(catalogBuilder, "dct:issued");
+            addObjectToBuilder(catalogBuilder, parseToIsoDate(firstCreation), ObjectTypes.LITERAL);
+        }
         //dct:modified
-        addPredicateToBuilder(catalogBuilder, "dct:modified");
-        addObjectToBuilder(catalogBuilder, parseToIsoDate(lastModification), ObjectTypes.LITERAL);
+        if (lastPublishedDatePresent) {
+            addPredicateToBuilder(catalogBuilder, "dct:modified");
+            addObjectToBuilder(catalogBuilder, parseToIsoDate(lastModification), ObjectTypes.LITERAL);
+        }
         //dcat:themeTaxonomy
         addPredicateToBuilder(catalogBuilder, "dcat:themeTaxonomy");
         String themeTaxonomy = THEME_TAXONOMY_URI;
