@@ -99,7 +99,7 @@ public class GenerateDCAT {
         if (time <= (now - cachingTime)) {
             LOG.info("Updating DCAT feed");
             time = now;
-            DCAT += createDCATFeed();
+            DCAT = createDCATFeed();
         }
         return DCAT;
     }
