@@ -101,7 +101,7 @@ public class GenerateDCAT {
      */
     public String getDCAT() {
         long now = System.currentTimeMillis();
-        if (time <= (now - cachingTime)) {
+        if (time <= (now - cachingTime) || cfg.devMode()) {
             LOG.info("Updating DCAT feed");
             time = now;
             DCAT = createDCATFeed();
