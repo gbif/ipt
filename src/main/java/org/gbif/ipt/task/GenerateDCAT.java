@@ -23,7 +23,7 @@ import org.gbif.metadata.eml.*;
 
 /**
  * Class to generate a DCAT feed of the data
- * Only resources that are published and public will be in the DCAT feed
+ * Only resources that are published, public and have a license will be in the DCAT feed
  * <p>
  * Project homepage: https://github.com/oSoc15/ipt-dcat
  * Fork: https://github.com/oSoc15/ipt
@@ -118,24 +118,28 @@ public class GenerateDCAT {
         feed.append("\n");
 
         //add organisation of Catalog
-        Organisation org = regMgr.getHostingOrganisation();
-        String publisher = "http://www.gbif.org/publisher/" + org.getKey() + "#Organization";
-        String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\" .";
-        organisations.add(organisation);
+        if (regMgr.getHostingOrganisation() != null) {
+            Organisation org = regMgr.getHostingOrganisation();
+            String publisher = "http://www.gbif.org/publisher/" + org.getKey() + "#Organization";
+            String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\" .";
+            organisations.add(organisation);
+        }
 
         //Datasets and Distributions
-        for (Resource res : rscMgr.list(PublicationStatus.REGISTERED)) {
-            feed.append(createDCATDatasetInformation(res));
-            feed.append("\n");
-            feed.append(createDCATDistributionInformation(res));
-            feed.append("\n");
+        for (Resource res : rscMgr.listPublishedPublicVersions()) {
+            if (res.getEml().parseLicenseUrl() != null) {
+                feed.append(createDCATDatasetInformation(res));
+                feed.append("\n");
+                feed.append(createDCATDistributionInformation(res));
+                feed.append("\n");
 
-            //add Organisation of Dataset
-            publisher = "http://www.gbif.org/publisher/" + res.getOrganisation().getKey() + "#Organization";
-            organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + res.getOrganisation().getName() + "\" .";
-            organisations.add(organisation);
-            //add Themes of datasets
-            themes.add(encapsulateObject(THEME_URI, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + DATASET_THEME_LABEL + "\"@en ; skos:inScheme <" + THEME_TAXONOMY_URI + "> .");
+                //add Organisation of Dataset
+                String publisher = "http://www.gbif.org/publisher/" + res.getOrganisation().getKey() + "#Organization";
+                String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + res.getOrganisation().getName() + "\" .";
+                organisations.add(organisation);
+                //add Themes of datasets
+                themes.add(encapsulateObject(THEME_URI, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + DATASET_THEME_LABEL + "\"@en ; skos:inScheme <" + THEME_TAXONOMY_URI + "> .");
+            }
         }
 
         //Organisations
@@ -243,16 +247,18 @@ public class GenerateDCAT {
         boolean firstPublishedDatePresent = false;
         Date lastModification = new Date(0);
         boolean lastPublishedDatePresent = false;
-        for (Resource res : rscMgr.list(PublicationStatus.REGISTERED)) {
-            String uri = cfg.getResourceUrl(res.getShortname()) + "#Dataset";
-            uris.add(uri);
-            if (res.getCreated() != null && res.getCreated().before(firstCreation)) {
-                firstCreation = res.getCreated();
-                firstPublishedDatePresent = true;
-            }
-            if (res.getLastPublished() != null && res.getLastPublished().after(lastModification)) {
-                lastModification = res.getLastPublished();
-                lastPublishedDatePresent = true;
+        for (Resource res : rscMgr.listPublishedPublicVersions()) {
+            if (res.getEml().parseLicenseUrl() != null) {
+                String uri = cfg.getResourceUrl(res.getShortname()) + "#Dataset";
+                uris.add(uri);
+                if (res.getCreated() != null && res.getCreated().before(firstCreation)) {
+                    firstCreation = res.getCreated();
+                    firstPublishedDatePresent = true;
+                }
+                if (res.getLastPublished() != null && res.getLastPublished().after(lastModification)) {
+                    lastModification = res.getLastPublished();
+                    lastPublishedDatePresent = true;
+                }
             }
         }
 
