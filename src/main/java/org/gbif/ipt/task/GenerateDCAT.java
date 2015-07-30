@@ -6,13 +6,16 @@ import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.InputStreamUtils;
@@ -20,7 +23,7 @@ import org.gbif.metadata.eml.*;
 
 /**
  * Class to generate a DCAT feed of the data
- * Only resources that are published and public will be in the DCAT feed
+ * Only resources that are published, public and have a license will be in the DCAT feed
  * <p>
  * Project homepage: https://github.com/oSoc15/ipt-dcat
  * Fork: https://github.com/oSoc15/ipt
@@ -59,6 +62,7 @@ public class GenerateDCAT {
      * Location of the prefixes
      */
     private static final String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";
+    private static final String LANGUAGE_LINK = "http://id.loc.gov/vocabulary/iso639-1/";
 
     private String DCAT = "";
     private long time = 0;
@@ -71,15 +75,6 @@ public class GenerateDCAT {
     private AppConfig cfg;
     private RegistrationManager regMgr;
     private ResourceManager rscMgr;
-    /**
-     * By creating a dataset, this set gets filled with the organisation string
-     */
-    private Set<String> organisations = new HashSet<String>();
-    /**
-     * By creating a dataset, this set gets filled with the themes for the datasets
-     */
-    private Set<String> themes = new HashSet<String>();
-
 
     @Inject
     public GenerateDCAT(AppConfig cfg, RegistrationManager regMgr, ResourceManager rscMgr) {
@@ -90,16 +85,16 @@ public class GenerateDCAT {
 
     /**
      * Return the DCAT feed or update to a new one,
-     * if it exceed the caching time
+     * if it exceeds the caching time
      *
      * @return DCAT feed
      */
     public String getDCAT() {
         long now = System.currentTimeMillis();
-        if (time <= (now - cachingTime)) {
+        if (time <= (now - cachingTime) || cfg.devMode()) {
             LOG.info("Updating DCAT feed");
             time = now;
-            DCAT += createDCATFeed();
+            DCAT = createDCATFeed();
         }
         return DCAT;
     }
@@ -112,8 +107,8 @@ public class GenerateDCAT {
      */
     private String createDCATFeed() {
         StringBuilder feed = new StringBuilder();
-        organisations = new HashSet<String>();
-        themes = new HashSet<String>();
+        Set<String> organisations = new HashSet<String>();
+        Set<String> themes = new HashSet<String>();
 
         //Prefixes
         feed.append(createPrefixesInformation());
@@ -122,17 +117,43 @@ public class GenerateDCAT {
         feed.append(createDCATCatalogInformation());
         feed.append("\n");
 
+        //add organisation of Catalog
+        if (regMgr.getHostingOrganisation() != null) {
+            Organisation org = regMgr.getHostingOrganisation();
+            String publisher = "http://www.gbif.org/publisher/" + org.getKey() + "#Organization";
+            String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\"";
+            if (org.getHomepageURL() != null) {
+                organisation += " ; foaf:homepage " + encapsulateObject(org.getHomepageURL(), ObjectTypes.RESOURCE);
+            }
+            organisation += " .";
+            organisations.add(organisation);
+        }
+
         //Datasets and Distributions
         for (Resource res : rscMgr.listPublishedPublicVersions()) {
-            feed.append(createDCATDatasetInformation(res));
-            feed.append("\n");
-            feed.append(createDCATDistributionInformation(res));
-            feed.append("\n");
+            if (res.getEml().parseLicenseUrl() != null) {
+                feed.append(createDCATDatasetInformation(res));
+                feed.append("\n");
+                feed.append(createDCATDistributionInformation(res));
+                feed.append("\n");
+
+                //add Organisation of Dataset
+                String publisher = "http://www.gbif.org/publisher/" + res.getOrganisation().getKey() + "#Organization";
+                String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + res.getOrganisation().getName() + "\"";
+                if (res.getOrganisation().getHomepageURL() != null) {
+                    organisation += " ; foaf:homepage " + encapsulateObject(res.getOrganisation().getHomepageURL(), ObjectTypes.RESOURCE);
+                }
+                organisation += " .";
+                organisations.add(organisation);
+
+                //add Themes of datasets
+                themes.add(encapsulateObject(THEME_URI, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + DATASET_THEME_LABEL + "\"@en ; skos:inScheme <" + THEME_TAXONOMY_URI + "> .");
+            }
         }
 
         //Organisations
-        for (String org : organisations) {
-            feed.append(org);
+        for (String orgs : organisations) {
+            feed.append(orgs);
             feed.append("\n");
         }
         feed.append("\n");
@@ -143,21 +164,12 @@ public class GenerateDCAT {
             feed.append("\n");
         }
 
-        return feed.toString();
-    }
+        if (rscMgr.listPublishedPublicVersions().size() > 0) {
+        } else {
+            feed.append("\n#No published resources, a valid DCAT feed needs at least one dataset\n");
+        }
 
-    /**
-     * Create the DCAT information for one resource
-     *
-     * @return String
-     */
-    public String createDCATResource(Resource resource) {
-        StringBuilder datasetBuilder = new StringBuilder();
-        datasetBuilder.append(createDCATDatasetInformation(resource));
-        datasetBuilder.append("\n");
-        datasetBuilder.append(createDCATDistributionInformation(resource));
-        datasetBuilder.append("\n");
-        return datasetBuilder.toString();
+        return feed.toString();
     }
 
     /**
@@ -222,8 +234,9 @@ public class GenerateDCAT {
      * <li>dct:issued</li>
      * <li>dct:modified</li>
      * <li>dcat:themeTaxonomy</li>
-     * <li>dct:rights</li>
+     * <li>dct:license</li>
      * <li>dct:spatial</li>
+     * <li>dct:language</li>
      * </ul>
      * </p>
      *
@@ -235,19 +248,26 @@ public class GenerateDCAT {
         StringBuilder catalogBuilder = new StringBuilder();
         List<String> themeTaxonomies = new ArrayList<String>();
         Ipt ipt = regMgr.getIpt();
+        Organisation org = regMgr.getHostingOrganisation();
 
         //Run over resources
         List<String> uris = new ArrayList<String>();
         Date firstCreation = new Date();
-        Date lastModification = new Date();
+        boolean firstPublishedDatePresent = false;
+        Date lastModification = new Date(0);
+        boolean lastPublishedDatePresent = false;
         for (Resource res : rscMgr.listPublishedPublicVersions()) {
-            String uri = cfg.getResourceUrl(res.getShortname()) + "/#dataset";
-            uris.add(uri);
-            if (res.getCreated() != null && res.getCreated().before(firstCreation)) {
-                firstCreation = res.getCreated();
-            }
-            if (res.getLastPublished() != null && res.getLastPublished().after(lastModification)) {
-                lastModification = res.getLastPublished();
+            if (res.getEml().parseLicenseUrl() != null) {
+                String uri = cfg.getResourceUrl(res.getShortname()) + "#Dataset";
+                uris.add(uri);
+                if (res.getCreated() != null && res.getCreated().before(firstCreation)) {
+                    firstCreation = res.getCreated();
+                    firstPublishedDatePresent = true;
+                }
+                if (res.getLastPublished() != null && res.getLastPublished().after(lastModification)) {
+                    lastModification = res.getLastPublished();
+                    lastPublishedDatePresent = true;
+                }
             }
         }
 
@@ -258,7 +278,7 @@ public class GenerateDCAT {
         } else {
             LOG.info("Couldn't load catalog URL, using dummy");
         }
-        url += "/#catalog";
+        url += "#Catalog";
         catalogBuilder.append(encapsulateObject(url, ObjectTypes.RESOURCE));
         catalogBuilder.append("\n");
         catalogBuilder.append(" a dcat:Catalog");
@@ -266,23 +286,21 @@ public class GenerateDCAT {
         //dct:title
         if (ipt != null) {
             addPredicateToBuilder(catalogBuilder, "dct:title");
-            addObjectToBuilder(catalogBuilder, ipt.getName(), ObjectTypes.LITERAL);
+            addObjectToBuilder(catalogBuilder, org.getName(), ObjectTypes.LITERAL);
         } else {
             LOG.error("IPT is null, can't get title");
         }
         //dct:description
         if (ipt != null) {
             addPredicateToBuilder(catalogBuilder, "dct:description");
-            addObjectToBuilder(catalogBuilder, ipt.getDescription(), ObjectTypes.LITERAL);
+            addObjectToBuilder(catalogBuilder, org.getDescription(), ObjectTypes.LITERAL);
         } else {
             LOG.error("IPT is null, can't get description");
         }
         //dct:publisher
         if (ipt != null && ipt.getKey() != null) {
             addPredicateToBuilder(catalogBuilder, "dct:publisher");
-            String publisher = "http://www.gbif.org/publisher/" + ipt.getKey() + "/#Organization";
-            String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + ipt.getName() + "\" .";
-            organisations.add(organisation);
+            String publisher = "http://www.gbif.org/publisher/" + org.getKey() + "#Organization";
             addObjectToBuilder(catalogBuilder, publisher, ObjectTypes.RESOURCE);
         }
         //dcat:dataset
@@ -291,23 +309,27 @@ public class GenerateDCAT {
             addObjectsToBuilder(catalogBuilder, uris, ObjectTypes.RESOURCE);
         }
         //foaf:homepage
-        if (ipt != null && ipt.getHomepageURL() != null) {
+        if (cfg != null && cfg.getBaseUrl() != null) {
             addPredicateToBuilder(catalogBuilder, "foaf:homepage");
-            addObjectToBuilder(catalogBuilder, ipt.getHomepageURL(), ObjectTypes.RESOURCE);
+            addObjectToBuilder(catalogBuilder, cfg.getBaseUrl(), ObjectTypes.RESOURCE);
         }
         //dct:issued
-        addPredicateToBuilder(catalogBuilder, "dct:issued");
-        addObjectToBuilder(catalogBuilder, parseToIsoDate(firstCreation), ObjectTypes.LITERAL);
+        if (firstPublishedDatePresent) {
+            addPredicateToBuilder(catalogBuilder, "dct:issued");
+            addObjectToBuilder(catalogBuilder, parseToIsoDate(firstCreation), ObjectTypes.LITERAL);
+        }
         //dct:modified
-        addPredicateToBuilder(catalogBuilder, "dct:modified");
-        addObjectToBuilder(catalogBuilder, parseToIsoDate(lastModification), ObjectTypes.LITERAL);
+        if (lastPublishedDatePresent) {
+            addPredicateToBuilder(catalogBuilder, "dct:modified");
+            addObjectToBuilder(catalogBuilder, parseToIsoDate(lastModification), ObjectTypes.LITERAL);
+        }
         //dcat:themeTaxonomy
         addPredicateToBuilder(catalogBuilder, "dcat:themeTaxonomy");
         String themeTaxonomy = THEME_TAXONOMY_URI;
         themeTaxonomies.add(encapsulateObject(THEME_TAXONOMY_URI, ObjectTypes.RESOURCE) + " a skos:ConceptScheme ; dct:title \"" + CATALOG_THEME_TITLE + "\"@en .");
         addObjectToBuilder(catalogBuilder, themeTaxonomy, ObjectTypes.RESOURCE);
         //dct:rights
-        addPredicateToBuilder(catalogBuilder, "dct:rights");
+        addPredicateToBuilder(catalogBuilder, "dct:license");
         addObjectToBuilder(catalogBuilder, CATALOG_RIGHTS, ObjectTypes.RESOURCE);
         //dct:spatial
         if (cfg.getLongitude() != null && cfg.getLatitude() != null) {
@@ -319,6 +341,9 @@ public class GenerateDCAT {
         } else {
             LOG.info("No spatial data defined for the IPT");
         }
+        //dct:language
+        addPredicateToBuilder(catalogBuilder, "dct:language");
+        addObjectToBuilder(catalogBuilder, LANGUAGE_LINK + "en", ObjectTypes.RESOURCE);
 
         catalogBuilder.append(" .\n");
         catalogBuilder.append("\n");
@@ -349,6 +374,7 @@ public class GenerateDCAT {
      * <li>dct:identifier</li>
      * <li>dct:publisher</li>
      * <li>dcat:distribution</li>
+     * <li>dct:language</li>
      * </ul>
      * </p>
      * For every publisher it comes along it creates a foaf:agent with the name of the organisation
@@ -364,9 +390,9 @@ public class GenerateDCAT {
         Eml eml = resource.getEml();
 
         //Base
-        String url = "localhost:8080/#dataset";
+        String url = "localhost:8080#Dataset";
         if (cfg != null) {
-            url = cfg.getResourceUrl(resource.getShortname()) + "/#dataset";
+            url = cfg.getResourceUrl(resource.getShortname()) + "#Dataset";
         } else {
             LOG.info("Couldn't load URL of the resource:" + resource.getShortname());
         }
@@ -394,12 +420,11 @@ public class GenerateDCAT {
         //dcat:theme
         addPredicateToBuilder(datasetBuilder, "dcat:theme");
         String theme = THEME_URI;
-        themes.add(encapsulateObject(THEME_URI, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + DATASET_THEME_LABEL + "\"@en ; skos:inScheme <" + THEME_TAXONOMY_URI + "> .");
         addObjectToBuilder(datasetBuilder, theme, ObjectTypes.RESOURCE);
         //adms:contactPoint
         for (Agent contact : eml.getContacts()) {
-            addPredicateToBuilder(datasetBuilder, "adms:contactPoint");
-            String agent = " a vcard:Kind ; vcard:fn \"" + contact.getFullName() + "\" ";
+            addPredicateToBuilder(datasetBuilder, "dcat:contactPoint");
+            String agent = " a vcard:Individual ; vcard:fn \"" + contact.getFullName() + "\" ";
             if (contact.getEmail() != null) {
                 agent += " ; vcard:hasEmail <mailto:" + contact.getEmail() + "> ";
             }
@@ -462,9 +487,7 @@ public class GenerateDCAT {
         //dct:publisher
         if (resource.getOrganisation() != null && resource.getOrganisation().getKey() != null) {
             addPredicateToBuilder(datasetBuilder, "dct:publisher");
-            String publisher = "http://www.gbif.org/publisher/" + resource.getOrganisation().getKey() + "/#Organization";
-            String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + resource.getOrganisation().getName() + "\" .";
-            organisations.add(organisation);
+            String publisher = "http://www.gbif.org/publisher/" + resource.getOrganisation().getKey() + "#Organization";
             addObjectToBuilder(datasetBuilder, publisher, ObjectTypes.RESOURCE);
         }
         //dcat:Distribution
@@ -473,6 +496,10 @@ public class GenerateDCAT {
             String dist = cfg.getResourceArchiveUrl(resource.getShortname());
             addObjectToBuilder(datasetBuilder, dist, ObjectTypes.RESOURCE);
         }
+        //dct:language
+        addPredicateToBuilder(datasetBuilder, "dct:language");
+        Locale loc = new Locale(eml.getMetadataLanguage());
+        addObjectToBuilder(datasetBuilder, LANGUAGE_LINK + loc.toLanguageTag(), ObjectTypes.RESOURCE);
 
         datasetBuilder.append(" .\n");
         return datasetBuilder.toString();
@@ -500,7 +527,7 @@ public class GenerateDCAT {
         Eml eml = resource.getEml();
 
         //Base
-        String url = "localhost:8080/#distribution";
+        String url = "localhost:8080#Distribution";
         if (cfg != null) {
             url = cfg.getResourceArchiveUrl(resource.getShortname());
         } else {
@@ -544,7 +571,8 @@ public class GenerateDCAT {
 
         distributionBuilder.append(" .\n");
         if (accessURLClass != null) {
-            distributionBuilder.append(accessURLClass + "\n");
+            distributionBuilder.append(accessURLClass);
+            distributionBuilder.append("\n");
         }
         return distributionBuilder.toString();
     }
