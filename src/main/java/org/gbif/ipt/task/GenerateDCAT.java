@@ -121,7 +121,11 @@ public class GenerateDCAT {
         if (regMgr.getHostingOrganisation() != null) {
             Organisation org = regMgr.getHostingOrganisation();
             String publisher = "http://www.gbif.org/publisher/" + org.getKey() + "#Organization";
-            String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\" .";
+            String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\"";
+            if (org.getHomepageURL() != null) {
+                organisation += " ; foaf:homepage " + encapsulateObject(org.getHomepageURL(), ObjectTypes.RESOURCE);
+            }
+            organisation += " .";
             organisations.add(organisation);
         }
 
@@ -135,8 +139,13 @@ public class GenerateDCAT {
 
                 //add Organisation of Dataset
                 String publisher = "http://www.gbif.org/publisher/" + res.getOrganisation().getKey() + "#Organization";
-                String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + res.getOrganisation().getName() + "\" .";
+                String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + res.getOrganisation().getName() + "\"";
+                if (res.getOrganisation().getHomepageURL() != null) {
+                    organisation += " ; foaf:homepage " + encapsulateObject(res.getOrganisation().getHomepageURL(), ObjectTypes.RESOURCE);
+                }
+                organisation += " .";
                 organisations.add(organisation);
+
                 //add Themes of datasets
                 themes.add(encapsulateObject(THEME_URI, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + DATASET_THEME_LABEL + "\"@en ; skos:inScheme <" + THEME_TAXONOMY_URI + "> .");
             }
@@ -300,9 +309,9 @@ public class GenerateDCAT {
             addObjectsToBuilder(catalogBuilder, uris, ObjectTypes.RESOURCE);
         }
         //foaf:homepage
-        if (ipt != null && ipt.getHomepageURL() != null) {
+        if (cfg != null && cfg.getBaseUrl() != null) {
             addPredicateToBuilder(catalogBuilder, "foaf:homepage");
-            addObjectToBuilder(catalogBuilder, org.getHomepageURL(), ObjectTypes.RESOURCE);
+            addObjectToBuilder(catalogBuilder, cfg.getBaseUrl(), ObjectTypes.RESOURCE);
         }
         //dct:issued
         if (firstPublishedDatePresent) {
@@ -489,7 +498,7 @@ public class GenerateDCAT {
         }
         //dct:language
         addPredicateToBuilder(datasetBuilder, "dct:language");
-        Locale loc = new Locale(eml.getLanguage());
+        Locale loc = new Locale(eml.getMetadataLanguage());
         addObjectToBuilder(datasetBuilder, LANGUAGE_LINK + loc.toLanguageTag(), ObjectTypes.RESOURCE);
 
         datasetBuilder.append(" .\n");
