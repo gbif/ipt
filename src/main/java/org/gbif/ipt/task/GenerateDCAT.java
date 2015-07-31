@@ -15,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
 
-import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.InputStreamUtils;
@@ -35,37 +34,53 @@ public class GenerateDCAT {
 
     private static final Logger LOG = Logger.getLogger(GenerateDCAT.class);
     /**
-     * URL used when no URL is defined for the object
+     * Settings file for the DCAT
      */
-    private static final String DUMMY_URL = "localhost:8080";
-    /**
-     * Rights of the catalog
-     */
-    private static final String CATALOG_RIGHTS = "https://creativecommons.org/publicdomain/zero/1.0/";
-    /**
-     * Title of the theme of the catalog
-     */
-    private static final String CATALOG_THEME_TITLE = "biodiversity";
-    /**
-     * Toxonomy URI
-     */
-    private static final String THEME_TAXONOMY_URI = "http://eurovoc.europa.eu/218403";
-    /**
-     * Label for the theme of the datatset
-     */
-    private static final String DATASET_THEME_LABEL = "biodiversity";
-    /**
-     * Theme of the dataset
-     */
-    private static final String THEME_URI = "http://eurovoc.europa.eu/5463";
+    private static String DCAT_SETTINGS = "org/gbif/metadata/eml/dcatsettings.properties";
     /**
      * Location of the prefixes
      */
-    private static final String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";
-    private static final String LANGUAGE_LINK = "http://id.loc.gov/vocabulary/iso639-1/";
+    private static String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";
 
-    private String DCAT = "";
-    private long time = 0;
+    //Static contstants
+    /**
+     * URL used when no URL is defined for the object
+     */
+    private static String DUMMY_URL;
+    /**
+     * Rights of the catalog
+     */
+    private static String CATALOG_RIGHTS;
+    /**
+     * Title of the theme of the catalog
+     */
+    private static String CATALOG_THEME_TITLE;
+    /**
+     * Toxonomy URI
+     */
+    private static String THEME_TAXONOMY_URI;
+    /**
+     * Label for the theme of the datatset
+     */
+    private static String DATASET_THEME_LABEL;
+    /**
+     * Theme of the dataset
+     */
+    private static String THEME_URI;
+    /**
+     * URI for the language, the language needs to be appended
+     */
+    private static String LANGUAGE_LINK;
+    /**
+     * Publisher baselink of GBIF, key of organisation needs to be appended
+     */
+    private static String PUBLISHER_BASELINK;
+
+    /**
+     * String used to cache the feed
+     */
+    private static String DCAT = "";
+    private static long time = 0;
     /**
      * Time the DCAT feed is kept the same
      * If the DCAT feed exist longer then the cashing time, the feed is regenerated
@@ -106,6 +121,7 @@ public class GenerateDCAT {
      * @return DCAT feed
      */
     private String createDCATFeed() {
+        loadDCATSettings();
         StringBuilder feed = new StringBuilder();
         Set<String> organisations = new HashSet<String>();
         Set<String> themes = new HashSet<String>();
@@ -120,7 +136,7 @@ public class GenerateDCAT {
         //add organisation of Catalog
         if (regMgr.getHostingOrganisation() != null) {
             Organisation org = regMgr.getHostingOrganisation();
-            String publisher = "http://www.gbif.org/publisher/" + org.getKey() + "#Organization";
+            String publisher = PUBLISHER_BASELINK + org.getKey() + "#Organization";
             String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\"";
             if (org.getHomepageURL() != null) {
                 organisation += " ; foaf:homepage " + encapsulateObject(org.getHomepageURL(), ObjectTypes.RESOURCE);
@@ -138,7 +154,7 @@ public class GenerateDCAT {
                 feed.append("\n");
 
                 //add Organisation of Dataset
-                String publisher = "http://www.gbif.org/publisher/" + res.getOrganisation().getKey() + "#Organization";
+                String publisher = PUBLISHER_BASELINK + res.getOrganisation().getKey() + "#Organization";
                 String organisation = encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + res.getOrganisation().getName() + "\"";
                 if (res.getOrganisation().getHomepageURL() != null) {
                     organisation += " ; foaf:homepage " + encapsulateObject(res.getOrganisation().getHomepageURL(), ObjectTypes.RESOURCE);
@@ -165,11 +181,38 @@ public class GenerateDCAT {
         }
 
         if (rscMgr.listPublishedPublicVersions().size() > 0) {
+            LOG.info("Resources appended to DCAT feed.");
         } else {
             feed.append("\n#No published resources, a valid DCAT feed needs at least one dataset\n");
         }
 
         return feed.toString();
+    }
+
+    /**
+     * This method loads the static string with the values defined in dcatsettings.properties
+     */
+    private void loadDCATSettings() {
+        InputStreamUtils streamUtils = new InputStreamUtils();
+        InputStream configStream = streamUtils.classpathStream(DCAT_SETTINGS);
+        try {
+            Properties props = new Properties();
+            if (configStream == null) {
+                LOG.error("Could not load DCAT settings");
+            } else {
+                props.load(configStream);
+                DUMMY_URL = props.getProperty("DUMMY_URL");
+                CATALOG_RIGHTS = props.getProperty("CATALOG_RIGHTS");
+                CATALOG_THEME_TITLE = props.getProperty("CATALOG_THEME_TITLE");
+                THEME_TAXONOMY_URI = props.getProperty("THEME_TAXONOMY_URI");
+                DATASET_THEME_LABEL = props.getProperty("DATASET_THEME_LABEL");
+                THEME_URI = props.getProperty("THEME_URI");
+                LANGUAGE_LINK = props.getProperty("LANGUAGE_LINK");
+                PUBLISHER_BASELINK = props.getProperty("PUBLISHER_BASELINK");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -188,18 +231,6 @@ public class GenerateDCAT {
             Properties props = new Properties();
             if (configStream == null) {
                 LOG.error("Could not load prefixes");
-                /*
-                prefixes.put("dct:", "http://purl.org/dc/terms/");
-                prefixes.put("dcat:", "http://www.w3.org/ns/dcat#");
-                prefixes.put("xsd:", "http://www.w3.org/2001/XMLSchema#");
-                prefixes.put("skos:", "http://www.w3.org/2004/02/skos/core#");
-                prefixes.put("rdfs:", "http://www.w3.org/2000/01/rdf-schema#");
-                prefixes.put("foaf:", "http://xmlns.com/foaf/0.1/");
-                prefixes.put("schema:", "http://schema.org/");
-                prefixes.put("adms:", "http://www.w3.org/ns/adms#");
-                prefixes.put("locn:", "http://www.w3.org/ns/locn#");
-                prefixes.put("vcard:", "http://www.w3.org/2006/vcard/ns#");
-                */
             } else {
                 props.load(configStream);
                 for (String pre : props.stringPropertyNames()) {
@@ -300,7 +331,7 @@ public class GenerateDCAT {
         //dct:publisher
         if (ipt != null && ipt.getKey() != null) {
             addPredicateToBuilder(catalogBuilder, "dct:publisher");
-            String publisher = "http://www.gbif.org/publisher/" + org.getKey() + "#Organization";
+            String publisher = PUBLISHER_BASELINK + org.getKey() + "#Organization";
             addObjectToBuilder(catalogBuilder, publisher, ObjectTypes.RESOURCE);
         }
         //dcat:dataset
@@ -487,7 +518,7 @@ public class GenerateDCAT {
         //dct:publisher
         if (resource.getOrganisation() != null && resource.getOrganisation().getKey() != null) {
             addPredicateToBuilder(datasetBuilder, "dct:publisher");
-            String publisher = "http://www.gbif.org/publisher/" + resource.getOrganisation().getKey() + "#Organization";
+            String publisher = PUBLISHER_BASELINK + resource.getOrganisation().getKey() + "#Organization";
             addObjectToBuilder(datasetBuilder, publisher, ObjectTypes.RESOURCE);
         }
         //dcat:Distribution
