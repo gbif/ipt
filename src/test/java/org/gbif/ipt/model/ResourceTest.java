@@ -816,4 +816,28 @@ public class ResourceTest {
   public void testGetLastPublishedVersionsVersion() {
     assertEquals(new BigDecimal("3.0"), getResource().getLastPublishedVersionsVersion());
   }
+
+  @Test
+  public void testHasOccurrenceMapping() {
+    // no extension to start with
+    Resource r = getResource();
+    assertFalse(r.hasOccurrenceMapping());
+
+    // add core mapping to occurrence core
+    r.addMapping(getOccExtensionMapping());
+    assertTrue(r.hasOccurrenceMapping());
+
+    // replace core mapping to use taxon core
+    r.getMappings().clear();
+    r.addMapping(getTaxExtensionMapping());
+    assertFalse(r.hasOccurrenceMapping());
+
+    // add non-occurrence extension
+    r.addMapping(getExtExtensionMapping());
+    assertFalse(r.hasOccurrenceMapping());
+
+    // add occurrence extension
+    r.addMapping(getOccExtensionMapping());
+    assertTrue(r.hasOccurrenceMapping());
+  }
 }

@@ -37,6 +37,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
+import com.sun.tools.internal.jxc.ap.Const;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -1232,5 +1233,15 @@ public class Resource implements Serializable, Comparable<Resource> {
         log.debug("DOI=" + doi.getUrl().toString() + " unset as resource's citation identifier");
       }
     }
+  }
+
+  /**
+   * Determine if this resource has at least one mapping to the occurrence core extension, no matter if the mapping
+   * is a core or extension mapping.
+   *
+   * @return true if resource has at least one mapping to the occurrence core extension, false otherwise
+   */
+  public boolean hasOccurrenceMapping() {
+    return !getMappings(Constants.DWC_ROWTYPE_OCCURRENCE).isEmpty();
   }
 }

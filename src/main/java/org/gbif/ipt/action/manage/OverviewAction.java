@@ -55,14 +55,12 @@ import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
-import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
-import org.gbif.metadata.eml.EmlWriter;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 
 import java.io.File;
@@ -1216,7 +1214,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return INPUT;
     }
     // prevent registration if last published version was not assigned a GBIF-supported license
-    if (!isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
+    // this requirement applies to occurrence datasets, or datasets with associated occurrence records
+    if (resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
       String msg = getText("manage.overview.prevented.resource.registration.noGBIFLicense");
       addActionError(msg);
       LOG.error(msg);
@@ -1312,7 +1311,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
     }
     return false;
-  } //getLastPublishedVersionAssignedLicense()
+  }
 
   /**
    * @return license URL assigned to the last published version or null if none was assigned
