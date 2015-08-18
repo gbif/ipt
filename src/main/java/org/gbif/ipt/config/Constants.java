@@ -1,9 +1,9 @@
 package org.gbif.ipt.config;
 
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.terms.Term;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -50,6 +50,7 @@ public final class Constants {
   public static final String DATASET_TYPE_METADATA_IDENTIFIER = "metadata";
   public static final String TEST_DOI_PREFIX = "10.5072";
   public static final String EZID_TEST_DOI_SHOULDER = "10.5072/FK2";
+  public static final UUID DEFAULT_ORG_KEY = UUID.fromString("625a5522-1886-4998-be46-52c66dd566c9");
 
   // First published version number
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");

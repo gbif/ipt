@@ -397,6 +397,13 @@ $(document).ready(function(){
             <div class="info autop">
               <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
             </div>
+          <#elseif missingValidPublishingOrganisation?string == "true">
+            <!-- Disable register button and show warning: user must assign valid publishing organisation -->
+            <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="true"/>
+            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+            <div class="info autop">
+              <@s.text name="manage.overview.visibility.missing.organisation"/>
+            </div>
           <#elseif missingRegistrationMetadata?string == "true">
             <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
             <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="true"/>
@@ -412,7 +419,7 @@ $(document).ready(function(){
               <@s.text name="manage.overview.prevented.resource.registration.notPublic"/>
             </div>
           <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
-            <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register -->
+            <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
             <@s.submit cssClass="confirmRegistration" name="register" key="button.register" disabled="true"/>
             <img class="infoImg" src="${baseURL}/images/warning.gif"/>
             <div class="info autop">

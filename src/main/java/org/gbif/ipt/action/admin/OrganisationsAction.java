@@ -3,6 +3,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
@@ -17,6 +18,7 @@ import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -184,6 +186,15 @@ public class OrganisationsAction extends POSTAction {
       }
     }
     linkedOrganisations = registrationManager.listAll();
+
+    // remove default organisation named "no organisation" from list of editable organisations
+    for (Iterator<Organisation> iter = linkedOrganisations.listIterator(); iter.hasNext(); ) {
+      Organisation entry = iter.next();
+      if (entry.getKey().equals(Constants.DEFAULT_ORG_KEY)) {
+        iter.remove();
+      }
+    }
+
     if (id == null) {
       //  if no id was submitted we wanted to create a new organisation
       organisation = new Organisation();

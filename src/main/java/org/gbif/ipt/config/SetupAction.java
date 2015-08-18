@@ -3,6 +3,7 @@ package org.gbif.ipt.config;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig.REGISTRY_TYPE;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -346,6 +347,17 @@ public class SetupAction extends BaseAction {
         addActionWarning(getText("admin.extension.couldnt.install.coreTypes"), e);
       }
     }
+
+    // install default organisation "No organisation" used to indicate resource has no publishing organisation
+    if (registrationManager.getIpt() == null || getDefaultOrganisation() == null) {
+      try {
+        registrationManager.addAssociatedOrganisation(createDefaultOrganisation());
+        registrationManager.save();
+      } catch (Exception e) {
+        LOG.error(e);
+        addActionWarning(getText("admin.error.invalidConfiguration", new String[] {e.getMessage()}), e);
+      }
+    }
     return INPUT;
   }
 
@@ -417,5 +429,23 @@ public class SetupAction extends BaseAction {
 
   public void setReadDisclaimer(boolean readDisclaimer) {
     this.readDisclaimer = readDisclaimer;
+  }
+
+  /**
+   * Construct and return a default organisation. This can be used for example, to populate the IPT with at least
+   * one organisation
+   *
+   * @return default organisation
+   */
+  private Organisation createDefaultOrganisation() {
+    Organisation organisation = new Organisation();
+    String name = getText("eml.publishingOrganisation.none");
+    organisation.setName(name);
+    organisation.setAlias(name);
+    organisation.setCanHost(true);
+    organisation.setDescription("Installed by default, used to indicate resource is not published by any organisation");
+    organisation.setKey(Constants.DEFAULT_ORG_KEY.toString());
+    organisation.setPassword("password");
+    return organisation;
   }
 }

@@ -15,13 +15,7 @@
     <div class="actions">
       <form action='metadata-basic.do' method='get'>
         <input name="r" type="hidden" value="${resource.shortname}"/>
-        <#if organisations?size==0>
-            <@s.submit name="edit" key="button.edit" disabled="true"/>
-            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
-            <div class="info autop">
-              <@s.text name="manage.metadata.no.organisations"/>
-            </div>
-        <#elseif missingMetadata>
+        <#if missingMetadata>
             <@s.submit name="edit" key="button.edit"/>
             <img class="infoImg" src="${baseURL}/images/warning.gif"/>
             <div class="info autop">

@@ -207,6 +207,7 @@
 <!-- /#sidebar-wrapper -->
   <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
   <#assign updateFrequencyTitle><@s.text name='eml.updateFrequency'/></#assign>
+  <#assign publishedOnText><@s.text name='manage.overview.published.released'/></#assign>
   <#assign download_dwca_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
   <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
   <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
@@ -242,12 +243,18 @@
                               <#-- the existence of parameter version means the version is not equal to the latest published version -->
                               <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                                 <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.medium}</span>
                               <#else>
                                 <@s.text name='portal.resource.latest.version'/>
-                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.medium}</span>
                               </#if>
-                              <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
+
+                              <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
+                                ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.medium}</span>
+                                <br><em class="warn"><@s.text name='manage.home.not.registered.verbose'/></em>
+                              <#else>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.medium}</span>
+                                <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
+                              </#if>
+
                           <#else>
                             <@s.text name='portal.resource.published.never.long'/>
                           </#if>

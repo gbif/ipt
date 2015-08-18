@@ -113,6 +113,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final EmlValidator emlValidator;
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
+  private boolean missingValidPublishingOrganisation;
   private boolean metadataModifiedSinceLastPublication;
   private boolean mappingsModifiedSinceLastPublication;
   private boolean sourcesModifiedSinceLastPublication;
@@ -579,10 +580,17 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * @return true if there are something missing metadata. False otherwise.
+   * @return true if there are something missing metadata, false otherwise.
    */
   public boolean getMissingRegistrationMetadata() {
     return missingRegistrationMetadata;
+  }
+
+  /**
+   * @return true if resource is missing valid publishing organisation, false otherwise.
+   */
+  public boolean isMissingValidPublishingOrganisation() {
+    return missingValidPublishingOrganisation;
   }
 
   public Date getNow() {
@@ -610,8 +618,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * Checks if the resource meets all the conditions required in order to be registered. For example, the resource needs
-   * to be published prior to registering with the GBIF Network.
+   * Checks if the resource currently has minimum mandatory metadata filled in, and has been published prior. This
+   * check is performed before registering with the GBIF Network.
    *
    * @param resource resource
    * @return true if the resource meets the minimum requirements to be published
@@ -621,6 +629,23 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return false;
     }
     return resource.isPublished();
+  }
+
+  /**
+   * Checks if the resource's publishing organisation is a valid organisation. The default
+   * organisation named "No organisation" can only be used to designate the resource has no publishing organisation,
+   * and cannot be used during registration.
+   *
+   * @return true if resource has a valid publishing organisation, or false otherwise
+   */
+  public boolean hasValidPublishingOrganisation(Resource resource) {
+    if (resource.getOrganisation() == null) {
+      return false;
+    } else if (resource.getOrganisation().getKey().equals(Constants.DEFAULT_ORG_KEY)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   public boolean isMissingMetadata() {
@@ -1034,6 +1059,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       // check EML
       missingMetadata = !emlValidator.isValid(resource, null);
+      // check resource has been assigned a valid publishing organisation
+      missingValidPublishingOrganisation = !hasValidPublishingOrganisation(resource);
       // check resource meets all the conditions required in order to be registered
       missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
       // check the metadata has been modified since the last publication

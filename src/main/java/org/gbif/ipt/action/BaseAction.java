@@ -3,6 +3,7 @@ package org.gbif.ipt.action;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.common.base.Strings;
@@ -293,5 +295,14 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    */
   public Ipt getRegisteredIpt() {
     return registrationManager.getIpt();
+  }
+
+  /**
+   * @return default organisation named "No organisation" or null if it doesn't exist
+   */
+  @Nullable
+  public Organisation getDefaultOrganisation() {
+    Organisation noOrganisation = registrationManager.get(Constants.DEFAULT_ORG_KEY);
+    return (noOrganisation == null) ? null : noOrganisation;
   }
 }

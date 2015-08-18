@@ -171,7 +171,7 @@ public class MetadataAction extends ManagerBaseAction {
    * Returns a Map containing dataset subtype entries. The entries returned depending on the core type.
    * For example, if the core type is Occurrence, the Map will only contain occurrence dataset subtypes.
    * This method is called by Struts.
-   * 
+   *
    * @return Map of dataset subtypes
    */
   public Map<String, String> getListSubtypes() {
@@ -294,6 +294,12 @@ public class MetadataAction extends ManagerBaseAction {
 
         // load organisations map
         loadOrganisations();
+
+        // if IPT isn't registered there are no publishing organisations to choose from, so set to "No organisation"
+        if (getRegisteredIpt() == null && getDefaultOrganisation() != null) {
+          resource.setOrganisation(getDefaultOrganisation());
+          addActionWarning(getText("manage.overview.visibility.missing.organisation"));
+        }
 
         if (isHttpPost()) {
           resource.getEml().getDescription().clear();
@@ -472,7 +478,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * A list of dataset subtypes used to populate the dataset subtype dropdown on the Basic Metadata page.
-   * 
+   *
    * @return list of dataset subtypes
    */
   public Map<String, String> getDatasetSubtypes() {
@@ -482,7 +488,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * Exclude all known Checklist subtypes from the complete Map of Occurrence dataset subtypes, and return it. To
    * exclude a newly added Checklist subtype, just extend the static list above. Called from Struts, so must be public.
-   * 
+   *
    * @return Occurrence subtypes Map
    */
   public Map<String, String> getOccurrenceSubtypesMap() {
@@ -500,7 +506,7 @@ public class MetadataAction extends ManagerBaseAction {
    * Exclude all known Occurrence subtypes from the complete Map of Checklist dataset subtypes, and return it. To
    * exclude a newly added Occurrence subtype, just extend the static list above. Called from Struts, so must be
    * public.
-   * 
+   *
    * @return Checklist subtypes Map
    */
   public Map<String, String> getChecklistSubtypesMap() {
@@ -517,7 +523,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * Returns a Map representing with only a single entry indicating that there is no subtype to choose from. Called
    * from Struts, so must be public.
-   * 
+   *
    * @return a Map representing an empty set of dataset subtypes.
    */
   public Map<String, String> getEmptySubtypeMap() {
@@ -564,7 +570,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * On the basic metadata page, this variable determines whether the core type dropdown is
    * disabled or not.
-   * 
+   *
    * @return "true" or "false" - does the resource have a core mapping yet?
    */
   public String getResourceHasCore() {
@@ -574,7 +580,7 @@ public class MetadataAction extends ManagerBaseAction {
   /**
    * On the basic metadata page, this map populates the update frequencies dropdown. The map is derived from the
    * vocabulary {@link -linkoffline http://rs.gbif.org/vocabulary/eml/update_frequency.xml}.
-   * 
+   *
    * @return update frequencies map
    */
   public Map<String, String> getFrequencies() {
@@ -841,13 +847,19 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * Populate organisations dropdown options/list, with placeholder option, followed by list of organisations able to
-   * host resources.
+   * host resources. There must be more than the default organisation "No organisation" in order to include the
+   * placeholder option.
    */
   private void loadOrganisations() {
     List<Organisation> associatedOrganisations = registrationManager.list();
     organisations = Maps.newLinkedHashMap();
     if (!associatedOrganisations.isEmpty()) {
-      organisations.put("", getText("admin.organisation.name.select"));
+
+      // there must be more than the default organisation "No organisation" in order to include the placeholder option
+      if (associatedOrganisations.size() > 1) {
+        organisations.put("", getText("admin.organisation.name.select"));
+      }
+
       for (Organisation o : associatedOrganisations) {
         organisations.put(o.getKey().toString(), o.getName());
       }
