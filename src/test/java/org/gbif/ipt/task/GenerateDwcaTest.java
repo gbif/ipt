@@ -170,7 +170,7 @@ public class GenerateDwcaTest {
   public void testGenerateCoreFromSingleSourceFile() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
-    // create resource from single source file
+    // create resource from single source file (with empty line as last line)
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence.txt");
     Resource resource = getResource(resourceXML, occurrence);
 
@@ -218,15 +218,20 @@ public class GenerateDwcaTest {
     assertEquals("occurrence", row[4]);
     reader.close();
 
-    // since basisOfRecord was occurrence, and this is ambiguous, there should be two warning messages
-    boolean foundWarning = false;
+    // since basisOfRecord was occurrence, and this is ambiguous, there should be a warning message!
+    boolean foundWarningAboutAmbiguousBOR = false;
+    // since there was an empty line at bottom of file, there should be a warning message!
+    boolean foundWarningAboutEmptyLine = false;
     for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
       TaskMessage msg = iter.next();
       if (msg.getMessage().startsWith("2 line(s) use ambiguous basisOfRecord")) {
-        foundWarning = true;
+         foundWarningAboutAmbiguousBOR = true;
+      } else if (msg.getMessage().startsWith("1 empty line(s) skipped")) {
+        foundWarningAboutEmptyLine = true;
       }
     }
-    assertTrue(foundWarning);
+    assertTrue(foundWarningAboutAmbiguousBOR);
+    assertTrue(foundWarningAboutEmptyLine);
   }
 
   /**

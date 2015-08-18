@@ -48,6 +48,7 @@ import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Ordering;
@@ -230,7 +231,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // how many records were skipped?
     if (currRecordsSkipped > 0) {
       addMessage(Level.WARN, "!!! " + currRecordsSkipped + " records were skipped for " + currExtension
-        + " due to errors interpreting line");
+        + " due to errors interpreting line, or because the line was empty");
     }
   }
 
@@ -1056,6 +1057,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
+    int emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
     int line = 0;
     try {
@@ -1077,6 +1079,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         if (iter.hasRowError()) {
           writePublicationLogMessage("Error reading line #" + line + "\n" + iter.getErrorMessage());
           recordsWithError++;
+          currRecordsSkipped++;
+        }
+        // empty line was encountered, meaning record only contains empty values and not written
+        else if (isEmptyLine(in)) {
+          writePublicationLogMessage("Empty line was skipped. SourceBase:"
+                                     + mapping.getSource().getName() + " Line #" + line + ": " + printLine(in));
+          emptyLines++;
           currRecordsSkipped++;
         } else {
 
@@ -1166,14 +1175,21 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // add lines incomplete message
     if (recordsWithError > 0) {
-      addMessage(Level.WARN, String.valueOf(recordsWithError) + " records were skipped due to errors" + mp);
+      addMessage(Level.WARN, String.valueOf(recordsWithError) + " record(s) skipped due to errors" + mp);
+    } else {
+      writePublicationLogMessage("No lines were skipped due to errors" + mp);
+    }
+
+    // add empty lines message
+    if (emptyLines > 0) {
+      addMessage(Level.WARN, String.valueOf(emptyLines) + " empty line(s) skipped" + mp);
     } else {
       writePublicationLogMessage("No lines were skipped due to errors" + mp);
     }
 
     // add wrong lines user message
     if (linesWithWrongColumnNumber > 0) {
-      addMessage(Level.WARN, String.valueOf(linesWithWrongColumnNumber) + " lines with fewer columns than mapped" + mp);
+      addMessage(Level.WARN, String.valueOf(linesWithWrongColumnNumber) + " line(s) with fewer columns than mapped" + mp);
     } else {
       writePublicationLogMessage("No lines with fewer columns than mapped" + mp);
     }
@@ -1181,7 +1197,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // add filter message
     if (recordsFiltered > 0) {
       addMessage(Level.INFO, String.valueOf(recordsFiltered)
-        + " lines did not match the filter criteria and were skipped " + mp);
+        + " line(s) did not match the filter criteria and got skipped " + mp);
     } else {
       writePublicationLogMessage("All lines match the filter criteria" + mp);
     }
@@ -1465,5 +1481,18 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    */
   public void setArchive(Archive archive) {
     this.archive = archive;
+  }
+
+  /**
+   * Check if each string in array is empty. Method joins each string together and then checks if it is blank. A
+   * blank string represents an empty line in a source data file.
+   *
+   * @param line string array
+   *
+   * @return true if each string in array is empty, false otherwise
+   */
+  private boolean isEmptyLine(String[] line) {
+    String joined = Joiner.on("").join(line);
+    return StringUtils.isBlank(joined);
   }
 }
