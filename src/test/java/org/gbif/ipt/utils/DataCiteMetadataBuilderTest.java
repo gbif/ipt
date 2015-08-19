@@ -8,6 +8,7 @@ import org.gbif.doi.metadata.datacite.DescriptionType;
 import org.gbif.doi.metadata.datacite.RelatedIdentifierType;
 import org.gbif.doi.metadata.datacite.RelationType;
 import org.gbif.doi.service.InvalidMetadataException;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -353,6 +354,19 @@ public class DataCiteMetadataBuilderTest {
   @Test(expected = InvalidMetadataException.class)
   public void testGetPublisherNotExisting() throws InvalidMetadataException {
     Resource resource = new Resource();
+    DataCiteMetadataBuilder.getPublisher(resource);
+  }
+
+  /**
+   * Publisher does not exist, because default organisation "No organisation" has been assigned to resource.
+   */
+  @Test(expected = InvalidMetadataException.class)
+  public void testGetPublisherDefaultAssigned() throws InvalidMetadataException {
+    Resource resource = new Resource();
+    Organisation o = new Organisation();
+    o.setKey(Constants.DEFAULT_ORG_KEY.toString());
+    o.setName("No organisation");
+    resource.setOrganisation(o);
     DataCiteMetadataBuilder.getPublisher(resource);
   }
 

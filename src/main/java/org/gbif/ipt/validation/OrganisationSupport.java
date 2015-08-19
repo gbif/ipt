@@ -29,6 +29,7 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.metadata.eml.Agent;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -181,6 +182,7 @@ public class OrganisationSupport {
     creator.setLastName("Smith");
     testResource.getEml().addCreator(creator);
     Organisation testOrganisation = new Organisation();
+    testOrganisation.setKey(UUID.randomUUID().toString());
     testOrganisation.setName("Test Organisation");
     testResource.setOrganisation(testOrganisation);
     testResource.getEml().setDateStamp(new Date());
