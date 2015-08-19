@@ -206,6 +206,7 @@ public class OverviewActionIT {
     // publisher
     Organisation o = new Organisation();
     o.setName("GBIF");
+    o.setKey(UUID.randomUUID().toString());
     r.setOrganisation(o);
 
     // resource must be publicly available

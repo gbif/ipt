@@ -52,6 +52,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 import javax.ws.rs.core.UriBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -220,6 +221,7 @@ public class ResourceManagerImplIT {
     // publisher
     Organisation o = new Organisation();
     o.setName("GBIF");
+    o.setKey(UUID.randomUUID().toString());
     r.setOrganisation(o);
 
     r.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
