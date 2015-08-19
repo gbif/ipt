@@ -1,11 +1,17 @@
 package org.gbif.ipt.xss;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class with utility methods for XSS filtering.
+ * TODO: replace with class from gbif-common-ws when upgrading to version 0.25 or higher
  */
 public class XSSUtil {
+  private static final Logger LOG = LoggerFactory.getLogger(XSSUtil.class);
 
   private XSSUtil() {
     // empty private constructor
@@ -34,8 +40,14 @@ public class XSSUtil {
     Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL)
   };
 
-
-  public static String stripXSS(String value) {
+  /**
+   * Method tests whether a string contains malicious XSS script or not.
+   *
+   * @param value decoded string to test
+   *
+   * @return true if string matches at least one XSS pattern, or false otherwise
+   */
+  public static boolean containsXSS(String value) {
     if (value != null) {
 
       // Avoid null characters
@@ -43,9 +55,13 @@ public class XSSUtil {
 
       // Remove all sections that match a pattern
       for (Pattern scriptPattern : PATTERNS) {
-        value = scriptPattern.matcher(value).replaceAll("");
+        Matcher matcher = scriptPattern.matcher(value);
+        if (matcher.find()) {
+          LOG.warn("Malicious XSS script found: {}", value);
+          return true;
+        }
       }
     }
-    return value;
+    return false;
   }
 }
