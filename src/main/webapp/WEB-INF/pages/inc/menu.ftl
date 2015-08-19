@@ -14,7 +14,7 @@
               <div class="branding-data clearfix">
                 <div class="logo-img">
                   <a href="${baseURL}" rel="home" title="GBIF Logo" class="active">
-                    <img src="${baseURL}/images/logo-2015.png" />
+                    <img src="${baseURL}/images/GBIF-2015-standard-ipt.png" />
                   </a>
                 </div>
                 <hgroup class="site-name-slogan">

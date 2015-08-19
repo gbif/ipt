@@ -245,10 +245,10 @@ form#login-form {  display: inline-block; }
   background-color: #fff;
 }
 .site-name {
-  font-size: 1.50em;
-  margin-top: -2px;
+  font-size: 18px;
+  margin-top: 12px;
   margin-bottom: 0px;
-  line-height: 2.0em;
+  line-height: 20px;
   color: #333;
   text-transform: uppercase;
 	font-family: "DINOT-Medium", sans-serif;
@@ -262,7 +262,7 @@ form#login-form {  display: inline-block; }
 
 .logoSuperscript {
 	vertical-align: top;
-	font-size: 0.7em;
+	font-size: 12px;
 	float:right;
 	margin-top: -5px;
 	margin-left: 2px;
@@ -270,11 +270,12 @@ form#login-form {  display: inline-block; }
 }
 
 .site-slogan {
-  font-size: 1.0em;
+  font-size: 12px;
   font-weight: normal;
   font-family: Arial, Helvetica, sans-serif;
-  margin-top: -10px;
+  margin-top: -2px;
   margin-bottom: 0px;
+  margin-left: 1px;
   color: #333;
   opacity: .5;
 }
@@ -295,7 +296,7 @@ img#logo {
 
 img.testmode {
   margin-top: -50px;
-  margin-left: 300px;
+  margin-left: 250px;
   position: absolute;
   float:left;
 }
