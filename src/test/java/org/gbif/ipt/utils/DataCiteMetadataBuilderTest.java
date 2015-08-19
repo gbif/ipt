@@ -28,11 +28,10 @@ import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.UserId;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
@@ -57,6 +56,7 @@ public class DataCiteMetadataBuilderTest {
 
     Organisation organisation = new Organisation();
     organisation.setName("Natural History Museum");
+    organisation.setKey(UUID.randomUUID().toString());
     resource.setOrganisation(organisation);
 
     Eml eml = new Eml();

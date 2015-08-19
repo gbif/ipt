@@ -174,9 +174,33 @@ public class ExtensionManagerImplTest {
     assertTrue(ext.getDescription().startsWith("The category"));
     assertEquals("http://rs.tdwg.org/dwc/terms/index.htm#Occurrence", ext.getLink().toString());
     assertNotNull(ext.getIssued());
-    assertEquals("http://rs.tdwg.org/dwc/terms/Taxon http://rs.tdwg.org/dwc/terms/Event", ext.getSubject());
+    assertEquals("dwc:Taxon dwc:Event", ext.getSubject());
     assertNull(ext.getUrl());
     assertFalse(ext.isLatest()); // this isn't persisted, only populated when deserialising JSON list from registry
+  }
+
+  @Test
+  public void testListCore() {
+    extensionManager.installCoreTypes();
+    assertEquals(3, extensionManager.list().size());
+
+    // of the three cores, only the occurrence core is suitable for use on the taxon core
+    List<Extension> results = extensionManager.listCore(Constants.DWC_ROWTYPE_TAXON);
+    assertEquals(1, results.size());
+
+    // of the three cores, only the occurrence core is suitable for use on the event core
+    results = extensionManager.listCore(Constants.DWC_ROWTYPE_EVENT);
+    assertEquals(1, results.size());
+  }
+
+  @Test
+  public void testList() {
+    extensionManager.installCoreTypes();
+    assertEquals(3, extensionManager.list().size());
+
+    // search excludes core types, otherwise it would return the occurrence core which is suitable for use on taxon core
+    List<Extension> results = extensionManager.list(Constants.DWC_ROWTYPE_TAXON);
+    assertEquals(0, results.size());
   }
 
   /**

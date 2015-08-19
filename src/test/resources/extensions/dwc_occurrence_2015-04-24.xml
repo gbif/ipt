@@ -8,7 +8,7 @@
            name='Occurrence' namespace='http://rs.tdwg.org/dwc/terms/'
            rowType='http://rs.tdwg.org/dwc/terms/Occurrence'
            dc:issued="2015-04-24"
-           dc:subject="http://rs.tdwg.org/dwc/terms/Taxon http://rs.tdwg.org/dwc/terms/Event"
+           dc:subject="dwc:Taxon dwc:Event"
            dc:relation='http://rs.tdwg.org/dwc/terms/index.htm#Occurrence'
            dc:description='The category of information pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.). Released April 2015, this version removes terms dcterms:source, dcterms:rights, dwc:individualID, dwc:occurrenceDetails, and adds dcterms:license, dwc:organismQuantity, dwc:organismQuantityType, dwc:organismID, dwc:organismName, dwc:organismScope, dwc:associatedOrganisms, dwc:organismRemarks, dwc:parentEventID, dwc:sampleSizeValue, dwc:sampleSizeUnit.'>
 

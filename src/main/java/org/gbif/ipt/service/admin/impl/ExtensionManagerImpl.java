@@ -614,10 +614,13 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   /**
    * List all available extensions matching a registered keyword.
+   * </br>
+   * For example, searching by keyword "dwc:Taxon" will return a list of extensions that have "dwc:Taxon" in their
+   * subject.
    *
-   * @param keyword               to filter by, e.g. dwc:Taxon for all taxonomic extensions
-   * @param includeEmptySubject   must the subject be empty
-   * @param includeCoreExtensions must the extension be a core type
+   * @param keyword               keyword to filter extensions by
+   * @param includeEmptySubject   true to include extensions with empty subject, false otherwise. An extension with an empty subject indicates the extension is suitable for all core extensions.
+   * @param includeCoreExtensions true to include core type extensions, false otherwise.
    */
   private List<Extension> search(String keyword, boolean includeEmptySubject, boolean includeCoreExtensions) {
     List<Extension> list = new ArrayList<Extension>();
