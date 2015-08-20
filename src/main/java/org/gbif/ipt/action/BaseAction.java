@@ -143,7 +143,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     if (getLocale() != null) {
       String requestedLocale = Strings.emptyToNull(getLocale().getLanguage());
       if (requestedLocale != null && !XSSUtil.containsXSS(requestedLocale)) {
-        ResourceBundle resourceBundle = textProvider.getTexts(new Locale(requestedLocale.trim()));
+        ResourceBundle resourceBundle = textProvider.getTexts(new Locale(requestedLocale));
         return resourceBundle.getLocale().getLanguage();
       }
     }
