@@ -13,7 +13,7 @@
 	<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/960_24_col.css" />
  	<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
   <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/jquery/dataTable.css"/>
- 	<link rel="shortcut icon" href="${baseURL}/images/icons/favicon.ico" type="image/x-icon" />
+ 	<link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
 	<link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
   <link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui.min-1.11.0.css" rel="stylesheet" />
   <!-- for css overrides needed for customizations -->
