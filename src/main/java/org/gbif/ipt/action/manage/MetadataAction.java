@@ -855,13 +855,20 @@ public class MetadataAction extends ManagerBaseAction {
     organisations = Maps.newLinkedHashMap();
     if (!associatedOrganisations.isEmpty()) {
 
-      // there must be more than the default organisation "No organisation" in order to include the placeholder option
+      // add placeholder if there is more than the default organisation "No organisation"
       if (associatedOrganisations.size() > 1) {
         organisations.put("", getText("admin.organisation.name.select"));
       }
 
+      // add default organisation "No organisation" as first option
+      Organisation noOrganisation = getDefaultOrganisation();
+      organisations.put(noOrganisation.getKey().toString(), getText("eml.publishingOrganisation.none"));
+
+      // then add remaining organisations in the order they have been sorted, excluding the default organisation
       for (Organisation o : associatedOrganisations) {
-        organisations.put(o.getKey().toString(), o.getName());
+        if (!o.getKey().equals(noOrganisation.getKey())) {
+          organisations.put(o.getKey().toString(), o.getName());
+        }
       }
     }
   }
