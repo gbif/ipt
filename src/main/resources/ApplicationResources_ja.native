@@ -414,7 +414,7 @@ admin.config.setup.title=IPTの設定
 admin.config.setup.welcome=IPTを使うためには設定ファイルがあるデイレクトリ（IPTデータデイレクトリ）を選ぶ必要があります。
 admin.config.setup.instructions=書き込み可能な空のフォルダ、あるいは既存のIPTデイレクトリを選んでください。システムの再起動の際に削除される/tmpのような他のプロセスに影響を与えるフォルダは決して選ばないようにしてください。このフォルダは障害時の復旧に備えて定期的にバックアップをとるべきです。
 admin.config.setup.examples=たとえば、Windowd環境なら"C\:\\datadir", Linux, Mac OS XのようなUnix系の環境なら"/usr/datadir"がよいでしょう。
-admin.config.setup.disclaimerPart1=このバージョンから、パブリッシャーは、自分のデータを 3 つの機械可読な権利宣言のうちの１つを割り当てる必要があります。CC0 1.0、CC BY 4.0 または CC による NC 4.0 宣言下でデータを公開することに同意できない場合は、今のところ、旧バージョンのIPTを使い続けることをお勧めします。
+admin.config.setup.disclaimerPart1=このバージョンから、パブリッシャーは、自分のデータを 3 つの機械可読な権利宣言のうちの１つを割り当てる必要があります。CC0 1.0、CC BY 4.0 または CC による NC 4.0 宣言下でデータを公開することに同意できない場合は、今のところ、version 2.1.1のIPTを使い続けることをお勧めします。
 admin.config.setup.disclaimerPart2=GBIF は既存のパブリーシャーと共に、以下の要件を適用することを2015年のうちに開始します。もしも3 つのオプションのいずれも選択できない場合は、GBIF へのデータセットの登録または GBIF.org を通じて世界に公開することはできません。この決定の背景について知りたいときは<a href\="http\://www.gbif.org/terms/licences"target\="_blank"> ここをクリック</a>してください。
 admin.config.setup.read=私は免責事項を読み、理解しています。
 admin.config.setup.read.error=続行する前に免責事項を必ず読んで、理解してください。
@@ -872,9 +872,7 @@ mapping.preview.bad.request=不正なリクエスト\: rowType とマッピン�
 manage.overview.visibility=公開状況
 manage.overview.visibility.description=リソースの可視性とは、それを見ることのできる人を決めることで、privateならマネージャーのみ、publicならば誰もが、registeredはGBIFウェブサイトから世界中に見てもらう、deleted but publicとは削除されているがDOIを割り当てられているので誰もが見ることができる、ことになります。既定では、各リソースを見ることができるのは、それを作成した利用者とそのリソースを作成したIPTでAdmin role(管理責任者）を設定されている人です。
 manage.overview.visibility.missing.metadata=GBIFネットワークに登録する前にリソースは公開されている必要があります。
-manage.overview.visibility.missing.registration.metadata=このデータをGBIFに登録する場合にはメタデータが必要です。
-manage.overview.visibility.no.organisations=このデータをGBIFに登録する場合には、IPT管理責任者(Administrator)は最初に機関をこのIPTに関連づける必要があります。
-manage.metadata.no.organisations=メタデータを入力する前に、IPT管理責任者はこのリソースの公開に責任を持つ組織をIPTに関連づける必要があります。
+manage.overview.visibility.missing.organisation=このリソースには発行組織名がないためGBIF に登録することはできません。正しい発行組織を関連付けるためにヘルプが必要なら IPT 管理者に問い合わせてください。
 manage.overview.identifierStatus.no.organisations=DOIを登録するためにはIPT管理者が最初に組織（DOI登録機関のアカウントを持つ）とこのIPTを関連付ける必要があります。
 manage.overview.identifierStatus.missing.metadata=リソース用のDOIを予約する前に必要な基本メタデータを提供する必要があります。
 manage.overview.visibility.resource.key=リソースキー
@@ -1079,6 +1077,7 @@ eml.publishingOrganisation=公開（発行）機関
 eml.publishingOrganisation.help=パブリッシュ（作成、リリース、保管）を担当する組織を選択してください。それは、このリソースをGBIFに登録する時や、DOIの登録時にメタデータを登録する時、リソースのパブリッシング組織となります。それは、リソースの引用を自動生成する時（自動生成がONになっていれば）にも使われます。したがって、役割の重要性を認識してください。リソースをGBIFに一旦登録したら、あるいはDOIを割り当てたなら、この選択を変えることができませんので、注意してください。
 eml.publishingOrganisation.required=機関/組織名が必要です。
 eml.publishingOrganisation.notFound=機関/組織名 (キー \={0}) が見つかりません ！
+eml.publishingOrganisation.none=組織名がありません。
 
 eml.resourceCreator=リソース　作成者
 eml.resourceCreator.plural=リソース作成者
@@ -1293,7 +1292,7 @@ eml.alternateIdentifier.help=このエンティティに追加する二次識別
 
 eml.intellectualRights.simple=権利
 eml.intellectualRights.license=データライセンス
-eml.intellectualRights.license.help=データセットに採用したライセンスにようって、あなたのデータの正しい利用方法が標準化された方法で利用者に提供されます。GBIFはパプブリッシャーに対して、機械可読可能な３つのオプション（CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0）のうち最も制限の少ないライセンスを採用することをお勧めします。詳細は<a href\="http\://www.gbif.org/terms/licences" target\="_blank">こちら</a>を参照してください。もしも３つの選択肢のいずれも選ぶことができないと感じたならば、participation@gbif.orgのGBIF Secretariatまでお問い合わせください。
+eml.intellectualRights.license.help=データセットに採用したライセンスにしたがって、あなたのデータの正しい利用方法が標準化された方法で利用者に提供されます。GBIFはパプブリッシャーに対して、機械可読可能な３つのオプション（CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0）のうち最も制限の少ないライセンスを採用することをお勧めします。詳細は<a href\="http\://www.gbif.org/terms/licences" target\="_blank">こちら</a>を参照してください。もしも３つの選択肢のいずれも選ぶことができず、しかもデータセットに観察データが含まれている場合にはGBIF.orgからデータを公開することはできません。いずれの選択肢も選ぶことができないと感じたら、participation@gbif.orgのGBIF Secretariatまでお問い合わせください。
 eml.intellectualRights.nolicenses=No license selected
 eml.intellectualRights.license.disclaimer=You should only apply a license to your own work unless you have the necessary rights to apply it to another person''s.
 
