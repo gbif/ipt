@@ -112,4 +112,19 @@ public class MetadataActionTest {
     assertEquals(5, action.getUserIdDirectories().size()); // includes "select a license"
     assertEquals("Select a directory", action.getUserIdDirectories().get(""));
   }
+
+  @Test
+  public void testRemoveNewlineCharacters() {
+    String withNewline = "Copyright Creative Commons Attribution-Share Alike License © 2011. \n"
+                         + "http://creativecommons.org/licenses/by-sa/3.0/";
+    assertEquals("Copyright Creative Commons Attribution-Share Alike License © 2011.  http://creativecommons.org/licenses/by-sa/3.0/", action.removeNewlineCharacters(withNewline));
+
+    withNewline = "Copyright Creative Commons Attribution-Share Alike License © 2011. \r\n"
+                         + "http://creativecommons.org/licenses/by-sa/3.0/";
+    assertEquals("Copyright Creative Commons Attribution-Share Alike License © 2011.  http://creativecommons.org/licenses/by-sa/3.0/", action.removeNewlineCharacters(withNewline));
+
+    withNewline = "Copyright Creative Commons Attribution-Share Alike License © 2011. \r"
+                  + "http://creativecommons.org/licenses/by-sa/3.0/";
+    assertEquals("Copyright Creative Commons Attribution-Share Alike License © 2011.  http://creativecommons.org/licenses/by-sa/3.0/", action.removeNewlineCharacters(withNewline));
+  }
 }

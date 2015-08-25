@@ -88,10 +88,8 @@
           return (typeof value != 'undefined' && value);
       };
 
-      if (exists("${eml.intellectualRights!}") && exists("${licenseKeySelected!}")) {
+      if (exists("${eml.intellectualRights!}")) {
           $("#intellectualRightsDiv").show();
-      } else if (exists("${eml.intellectualRights!}") && !exists("${licenseKeySelected!}")) {
-          $("#intellectualRightsDiv").hide();
       } else {
           $("#intellectualRights").val('');
           $("#intellectualRightsDiv").hide();

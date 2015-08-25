@@ -275,6 +275,12 @@ public class MetadataAction extends ManagerBaseAction {
         frequencies = new LinkedHashMap<String, String>();
         frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
 
+
+        // sanitize intellectualRights - pre-v2.2 text was manually entered and may have characters that break js
+        if (getEml().getIntellectualRights() != null) {
+          getEml().setIntellectualRights(removeNewlineCharacters(getEml().getIntellectualRights()));
+        }
+
         // populate agent vocabularies
         loadAgentVocabularies();
 
@@ -871,5 +877,17 @@ public class MetadataAction extends ManagerBaseAction {
         }
       }
     }
+  }
+
+  /**
+   * Remove all newline characters from string. Used to sanitize string for javascript, otherwise an
+   * "Unexpected Token ILLEGAL" error may occur.
+   */
+  @VisibleForTesting
+  protected String removeNewlineCharacters(String s) {
+    if (s != null) {
+      s = s.replaceAll("\\r\\n|\\r|\\n", " ");
+    }
+    return s;
   }
 }
