@@ -868,7 +868,9 @@ public class MetadataAction extends ManagerBaseAction {
 
       // add default organisation "No organisation" as first option
       Organisation noOrganisation = getDefaultOrganisation();
-      organisations.put(noOrganisation.getKey().toString(), getText("eml.publishingOrganisation.none"));
+      if (noOrganisation != null) {
+        organisations.put(noOrganisation.getKey().toString(), getText("eml.publishingOrganisation.none"));
+      }
 
       // then add remaining organisations in the order they have been sorted, excluding the default organisation
       for (Organisation o : associatedOrganisations) {
