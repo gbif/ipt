@@ -20,6 +20,7 @@ The core XML definition has to comply with the [GBIF Extension Schema](http://rs
 While the core definition is still undergoing changes, it gets registered into the GBIF Sandbox Registry. To register your core, email your formatted and validated XML definition to the GBIF development team (dev@gbif.org). If it passes inspection, it will be uploaded to [http://rs.gbif.org/sandbox/core/](http://rs.gbif.org/sandbox/core/), and included in the [Sandbox Registry's list of extensions](http://gbrdsdev.gbif.org/registry/extensions.json). When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at [http://rs.gbif.org/core/](http://rs.gbif.org/core/) and included in the [Live Registry's list of extensions](http://gbrds.gbif.org/registry/extensions.json) The same process applies to registering non-core extensions and vocabularies.
   3. Configure IPT
 To configure the IPT to use the [Material Sample Core](http://rs.gbif.org/sandbox/core/dwc_material_sample.xml) for example, add the following 2 lines to $IPT\_DATA\_DIR/config/ipt.properties. **Note: be sure to escape any colons like above** 
+  
   ```
   ipt.core_rowTypes=http\://rs.tdwg.org/dwc/terms/MaterialSample 
   ipt.core_idTerms=http\://rs.tdwg.org/dwc/terms/materialSampleID
