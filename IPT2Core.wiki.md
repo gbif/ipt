@@ -21,7 +21,9 @@ While the core definition is still undergoing changes, it gets registered into t
   3. Configure IPT
 To configure the IPT to use the [Material Sample Core](http://rs.gbif.org/sandbox/core/dwc_material_sample.xml) for example, add the following 2 lines to $IPT\_DATA\_DIR/config/ipt.properties.
 ```
-ipt.core_rowTypes=http://rs.tdwg.org/dwc/terms/MaterialSample 
-ipt.core_idTerms=http://rs.tdwg.org/dwc/terms/materialSampleID
+ipt.core_rowTypes=http\://rs.tdwg.org/dwc/terms/MaterialSample 
+ipt.core_idTerms=http\://rs.tdwg.org/dwc/terms/materialSampleID
 ```
+**Note: be sure to escape any colons like above** 
+
 This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe (|) character. The first entry of ipt.core\_idTerms is the ID for the first entry of core\_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then [install the core](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#install-extension). The core is now available to use in the IPT.
