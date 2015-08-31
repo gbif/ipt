@@ -320,11 +320,9 @@ public class AppConfig {
   }
 
   /**
-   * @return true if the datadir is linked to the production registry
+   * @return true if the datadir is linked to the test registry, false otherwise
    *
-   * @deprecated Deprecated in favor of {@link #getRegistryType()}
    */
-  @Deprecated
   public boolean isTestInstallation() {
     return REGISTRY_TYPE.DEVELOPMENT == type;
   }

@@ -855,7 +855,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             addResource(loadFromDir(resourceDir));
             counter++;
           } catch (InvalidConfigException e) {
-            log.error("Cant load resource " + resourceDir.getName(), e);
+            log.error("Can't load resource " + resourceDir.getName(), e);
           }
         }
       }

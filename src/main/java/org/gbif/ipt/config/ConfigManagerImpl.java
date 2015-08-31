@@ -173,6 +173,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     log.info("Loading vocabularies ...");
     vocabManager.load();
 
+    log.info("Ensure latest versions of default vocabularies are installed...");
+    vocabManager.installOrUpdateDefaults();
+
     File vocabDir = dataDir.configFile(VocabulariesManagerImpl.CONFIG_FOLDER);
     File deprecatedVocabFile = new File(vocabDir, DEPRECATED_VOCAB_PERSISTENCE_FILE);
     if (deprecatedVocabFile.exists()) {

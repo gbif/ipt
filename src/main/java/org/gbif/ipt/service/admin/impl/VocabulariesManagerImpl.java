@@ -257,32 +257,35 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   @Override
   public int load() {
     Map<String, Vocabulary> fileNameToVocabulary = getFileNameToVocabularyMap();
-    // now iterate over all vocab files and load them
-    File dir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;
-    if (dir.isDirectory()) {
-      List<File> files = new ArrayList<File>();
-      FilenameFilter ff = new SuffixFileFilter(VOCAB_FILE_SUFFIX, IOCase.INSENSITIVE);
-      files.addAll(Arrays.asList(dir.listFiles(ff)));
-      for (File vf : files) {
-        try {
-          Vocabulary v = loadFromFile(vf);
-          if (fileNameToVocabulary.containsKey(vf.getName())) {
-            if (!vocabulariesById.containsKey(v.getUriString())) {
-              // populate vocabulary's resolvable URI (needed in order to properly uninstall vocabulary later)
-              v.setUriResolvable(fileNameToVocabulary.get(vf.getName()).getUriResolvable());
-              // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
-              vocabulariesById.put(v.getUriString(), v);
-              counter++;
+    if (!fileNameToVocabulary.isEmpty()) {
+      // now iterate over all vocab files and load them
+      File dir = dataDir.configFile(CONFIG_FOLDER);
+      if (dir.isDirectory()) {
+        List<File> files = new ArrayList<File>();
+        FilenameFilter ff = new SuffixFileFilter(VOCAB_FILE_SUFFIX, IOCase.INSENSITIVE);
+        files.addAll(Arrays.asList(dir.listFiles(ff)));
+        for (File vf : files) {
+          try {
+            Vocabulary v = loadFromFile(vf);
+            if (fileNameToVocabulary.containsKey(vf.getName())) {
+              if (!vocabulariesById.containsKey(v.getUriString())) {
+                // populate vocabulary's resolvable URI (needed in order to properly uninstall vocabulary later)
+                v.setUriResolvable(fileNameToVocabulary.get(vf.getName()).getUriResolvable());
+                // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
+                vocabulariesById.put(v.getUriString(), v);
+                counter++;
+              } else {
+                // skip - was loaded already
+                counter++;
+              }
             } else {
-              // skip - was loaded already
-              counter++;
+              log.warn("An invalid vocabulary has been encountered and will be deleted: " + vf.getAbsolutePath());
+              FileUtils.deleteQuietly(vf);
             }
-          } else {
-            warnings.addStartupError("Unknown vocabulary found: " + v.getUriString());
+          } catch (InvalidConfigException e) {
+            warnings.addStartupError("Failed to load vocabulary definition file: " + vf.getAbsolutePath(), e);
           }
-        } catch (InvalidConfigException e) {
-          warnings.addStartupError("Failed to load vocabulary definition file: " + vf.getAbsolutePath(), e);
         }
       }
     }
@@ -290,10 +293,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   /**
-   * Iterate through all registered vocabularies an populate a map where each key is the name of the file if it were
+   * Iterate through all registered vocabularies and populate a map where each key is the name of the file if it were
    * persisted, and the value is the Vocabulary object.
    *
-   * @return map containig all registered vocabularies
+   * @return map containing all registered vocabularies
    */
   private Map<String, Vocabulary> getFileNameToVocabularyMap() {
     Map<String, Vocabulary> map = Maps.newHashMap();

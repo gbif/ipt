@@ -148,7 +148,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       extensionsByRowtype.remove(rowType);
       File f = getExtensionFile(rowType);
       if (f.exists()) {
-        f.delete();
+        FileUtils.deleteQuietly(f);
       } else {
         log.warn("Extension doesnt exist locally, cant delete " + rowType);
       }
@@ -564,7 +564,18 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
           extensionsByRowtype.put(extension.getRowType(), extension);
           counter++;
         } catch (InvalidConfigException e) {
-          warnings.addStartupError("Cant load local extension definition " + ef.getAbsolutePath(), e);
+          // when IPT is in test mode, remove/uninstall invalid extension definition and prompt admin to reinstall it
+          if (cfg.isTestInstallation()) {
+            FileUtils.deleteQuietly(ef);
+            warnings.addStartupError("Extension " + ef.getAbsolutePath()
+                                     + " has been deleted from the IPT data directory because it was invalid or out-of-date."
+                                     + " Please install the latest version of this extension if needed and restart your web server."
+                                     + " Cause: " + e.getMessage(), e);
+          }
+          // when IPT is in production mode, just warn user invalid extension was encountered while trying to load it
+          else {
+            warnings.addStartupError("Can't load local extension definition: " + e.getMessage(), e);
+          }
         }
       }
     }
@@ -598,7 +609,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't access local extension file");
     } catch (SAXException e) {
       log.error("Can't parse local extension file (" + localFile.getAbsolutePath() + ")", e);
-      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't parse local extension file");
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't parse local extension file: " + e.getMessage());
     } catch (ParserConfigurationException e) {
       log.error("Can't create sax parser", e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't create sax parser");
