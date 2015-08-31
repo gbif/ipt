@@ -304,7 +304,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   /**
    * Migrate an ExtensionMapping to use a newer version of that extension:
    * 1. Migrate property mappings for deprecated terms that have been replaced by another term. Careful, the replacing
-   * term must be included in the newer extension version.
+   * term must be included in the newer extension version, and cannot already be mapped
    * 2. Remove property mappings for deprecated terms that have NOT been replaced by another term
    *
    * @param extensionMapping ExtensionMapping to migrate to use newer version of Extension
@@ -318,26 +318,18 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     extensionMapping.setExtension(newer);
     // migrate or remove property mappings to deprecated terms
     for (ExtensionProperty deprecatedProperty : deprecated) {
-      if (TERMS_REPLACED_BY_ANOTHER_TERM.containsKey(deprecatedProperty.qualifiedName())) {
-        Term replacedBy = TERMS_REPLACED_BY_ANOTHER_TERM.get(deprecatedProperty.qualifiedName());
-        if (newer.getProperty(replacedBy) != null) {
-          PropertyMapping pm =
-            (extensionMapping.getField(deprecatedProperty.qualifiedName()) == null) ? extensionMapping
-              .getField(replacedBy.qualifiedName()) : extensionMapping.getField(deprecatedProperty.qualifiedName());
-          if (pm != null) {
-            if (extensionMapping.isMapped(replacedBy)) { // cannot have two property mapping for same term
-              log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName()
-                        + " been already been automatically replaced by mapping to term " + replacedBy.qualifiedName());
-            } else {
-              pm.setTerm(replacedBy);
-              log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName()
-                        + " has been replaced by mapping to term " + replacedBy.qualifiedName());
-            }
-          }
-        }
+      Term replacedBy = TERMS_REPLACED_BY_ANOTHER_TERM.get(deprecatedProperty.qualifiedName());
+      // replacing term must exist in new extension, and it cannot already be mapped!
+      if (replacedBy != null && newer.getProperty(replacedBy) != null && !extensionMapping.isMapped(replacedBy)) {
+        PropertyMapping pm = extensionMapping.getField(deprecatedProperty.qualifiedName());
+        pm.setTerm(replacedBy);
+        log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName()
+                  + " has been migrated to term " + replacedBy.qualifiedName());
       }
       // otherwise simply remove the property mapping
       else {
+        log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName()
+                  + " cannot be migrated therefore it is being removed!");
         PropertyMapping pm = extensionMapping.getField(deprecatedProperty.qualifiedName());
         removePropertyMapping(extensionMapping, pm);
       }
