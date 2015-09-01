@@ -241,10 +241,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Copies incoming eml file to data directory with name eml.xml.
+   * Copies incoming eml file to resource directory with name eml.xml.
    * </br>
-   * This method retrieves a file handle to the eml.xml file in data directory. It then copies the incoming emlFile to
+   * This method retrieves a file handle to the eml.xml file in resource directory. It then copies the incoming emlFile
    * over to this file. From this file an Eml instance is then populated and returned.
+   * </br>
+   * If the incoming eml file was invalid, meaning a valid eml.xml failed to be created, this method deletes the
+   * resource directory. To be safe, the resource directory will only be deleted if it exclusively contained the invalid
+   * eml.xml file.
    *
    * @param shortname shortname
    * @param emlFile   eml file
@@ -258,7 +262,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       FileUtils.copyFile(emlFile, emlFile2);
     } catch (IOException e1) {
-      log.error("Unnable to copy EML File", e1);
+      log.error("Unable to copy EML File", e1);
     }
     Eml eml;
     try {
@@ -266,17 +270,31 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       eml = EmlFactory.build(in);
     } catch (FileNotFoundException e) {
       eml = new Eml();
-    } catch (IOException e) {
-      log.error(e);
-      throw new ImportException("Invalid EML document");
-    } catch (SAXException e) {
-      log.error("Invalid EML document", e);
-      throw new ImportException("Invalid EML document");
-    } catch (ParserConfigurationException e) {
-      log.error("Invalid EML document", e);
-      throw new ImportException("Invalid EML document");
+    } catch (Exception e) {
+      deleteDirectoryContainingSingleFile(emlFile2);
+      throw new ImportException("Invalid EML document", e);
     }
     return eml;
+  }
+
+  /**
+   * Method deletes entire directory if it exclusively contains a single file. This method can be to cleanup
+   * a resource directory containing an invalid eml.xml.
+   *
+   * @param file file enclosed in a resource directory
+   */
+  @VisibleForTesting
+  protected void deleteDirectoryContainingSingleFile(File file) {
+    File parent = file.getParentFile();
+    File[] files = parent.listFiles();
+    if (files != null && files.length == 1 && files[0].equals(file)) {
+      try {
+        FileUtils.deleteDirectory(parent);
+        log.info("Deleted directory: " + parent.getAbsolutePath());
+      } catch (IOException e) {
+        log.error("Failed to delete directory " + parent.getAbsolutePath() + ": " + e.getMessage(), e);
+      }
+    }
   }
 
   public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)

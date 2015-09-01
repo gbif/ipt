@@ -1638,4 +1638,30 @@ public class ResourceManagerImplTest {
     assertEquals(new BigDecimal("3.0"), resource.getEmlVersion());
     assertEquals(released30, resource.getLastPublished());
   }
+
+  @Test
+  public void testDeleteDirectoryContainingSingleFile() throws IOException, ParserConfigurationException, SAXException {
+    // mock resource directory with single file
+    File resourceDir = FileUtils.createTempDir();
+    assertTrue(resourceDir.isDirectory());
+    File emlFile = new File(resourceDir, "eml.xml");
+    assertTrue(emlFile.createNewFile());
+    getResourceManagerImpl().deleteDirectoryContainingSingleFile(emlFile);
+    // ensure method deleted resource directory and its file
+    assertFalse(resourceDir.exists());
+    assertFalse(emlFile.exists());
+
+    // mock another resource directory with two files
+    resourceDir = FileUtils.createTempDir();
+    assertTrue(resourceDir.isDirectory());
+    emlFile = new File(resourceDir, "eml.xml");
+    assertTrue(emlFile.createNewFile());
+    File metaFile = new File(resourceDir, "meta.xml");
+    assertTrue(metaFile.createNewFile());
+    getResourceManagerImpl().deleteDirectoryContainingSingleFile(emlFile);
+    // ensure method didn't delete resource directory and its files
+    assertTrue(resourceDir.exists());
+    assertTrue(emlFile.exists());
+    assertTrue(metaFile.exists());
+  }
 }
