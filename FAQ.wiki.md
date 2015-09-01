@@ -1,8 +1,19 @@
-In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
-
-
-
 # FAQ
+
+## Table of Contents
++ [[Introduction|FAQ.wiki#introduction]]
++ [[Installation|FAQ.wiki#installation]]
+  + [[1. What is the best way to move my IPT to another server without losing any data?|FAQ.wiki#1-what-is-the-best-way-to-move-my-ipt-to-another-server-without-losing-any-data]]
+  + [[2. My GBIF IPT instance is slow. What can I do to improve performance?|FAQ.wiki#2-my-gbif-ipt-instance-is-slow-what-can-i-do-to-improve-performance]]
+  + [[3. After installing the IPT, I receive a message "FAIL - Application at context path /ipt could not be started" and the application does not launch. What should I do?|FAQ.wiki#3-after-installing-the-ipt-i-receive-a-message-fail---application-at-context-path-ipt-could-not-be-started-and-the-application-does-not-launch-what-should-i-do]]
+  + [[4. I get the following error: "The data directory '/directory' is not writable. What should I do?|FAQ.wiki#4-i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do]]
+  + [[5. How can I change the IPT's default language?|FAQ.wiki#5-how-can-i-change-the-ipts-default-language]]
++ [[Usage|FAQ.wiki#usage]]
+  + [[1. Why do published files contain broken lines?|FAQ.wiki#1-why-do-published-files-contain-broken-lines]]
+  + [[2. Why do published files not include all records?|FAQ.wiki#2-why-do-published-files-not-include-all-records]]
+
+## Introduction
+In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
 
 ## Installation
 
