@@ -11,7 +11,7 @@ Please make sure the following conditions (software and version) are met before 
 
 2) The latest security upgrades.
 
-3) JAVA 5 or JAVA 6 Framework installed. Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in c:\\Program Files\Java\jre6.
+3) JAVA 6 Framework installed. Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in c:\\Program Files\Java\jre6.
 
 4) Logged in as an administrator.
 
