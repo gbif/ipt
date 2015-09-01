@@ -5,12 +5,12 @@ This tutorial explains how to install the Apache Tomcat Java Servlet 6 on Window
 ## Table of Contents
 + [[Prerequisites|TomcatInstallationWindows7.wiki#prerequisites]]
 + [[Steps|TomcatInstallationWindows7.wiki#steps]]
-  + [[1. Download Tomcat 6.x|TomcatInstallationWindows7.wiki#steps]]
-  + [[2. Install Tomcat 6.x|TomcatInstallationWindows7.wiki#steps]]
-  + [[3. Run Tomcat|TomcatInstallationWindows7.wiki#steps]]
-  + [[4. Test Tomcat|TomcatInstallationWindows7.wiki#steps]]
-  + [[5. Shut down Tomcat|TomcatInstallationWindows7.wiki#steps]]
-  + [[6. References|TomcatInstallationWindows7.wiki#steps]]
+  + [[1. Download Tomcat 6.x|TomcatInstallationWindows7.wiki#1-download-tomcat-6x]]
+  + [[2. Install Tomcat 6.x|TomcatInstallationWindows7.wiki#2-install-tomcat-6x]]
+  + [[3. Run Tomcat|TomcatInstallationWindows7.wiki#3-run-tomcat]]
+  + [[4. Test Tomcat|TomcatInstallationWindows7.wiki#4-test-tomcat]]
+  + [[5. Shut down Tomcat|TomcatInstallationWindows7.wiki#5-shut-down-tomcat]]
+  + [[6. References|TomcatInstallationWindows7.wiki#6-references]]
 
 ## Prerequisites
 Please make sure the following conditions (software and version) are met before you continue.
