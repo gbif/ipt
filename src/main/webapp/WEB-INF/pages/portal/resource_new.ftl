@@ -682,8 +682,9 @@
                               </table>
                           </#list>
 
-                          <table>
+
                               <#if eml.specimenPreservationMethods?? && (eml.specimenPreservationMethods?size>0) && eml.specimenPreservationMethods[0]?has_content >
+                                <table>
                                   <tr>
                                     <th><@s.text name='eml.specimenPreservationMethod.plural'/></th>
                                     <td>
@@ -692,29 +693,30 @@
                                       </#list>
                                     </td>
                                   </tr>
+                                </table>
                               </#if>
-                          </table>
 
-                          <table>
-
+                            <#if eml.jgtiCuratorialUnits?? && (eml.jgtiCuratorialUnits?size>0) && eml.jgtiCuratorialUnits[0]?has_content>
+                              <table>
                                 <tr>
                                     <th><@s.text name='manage.metadata.collections.curatorialUnits.title'/></th>
                                     <td>
-                                    <#list eml.jgtiCuratorialUnits as item>
-                                    <#if item.type=="COUNT_RANGE">
-                                              <@s.text name='eml.jgtiCuratorialUnits.rangeStart'/>&nbsp;${eml.jgtiCuratorialUnits[item_index].rangeStart}
-                                              <@s.text name='eml.jgtiCuratorialUnits.rangeEnd'/>&nbsp;${eml.jgtiCuratorialUnits[item_index].rangeEnd}
-                                              ${eml.jgtiCuratorialUnits[item_index].unitType}
-                                          <#else>
-                                              <@s.text name='eml.jgtiCuratorialUnits.rangeMean'/>&nbsp;${eml.jgtiCuratorialUnits[item_index].rangeMean}
-                                              <@s.text name='eml.jgtiCuratorialUnits.uncertaintyMeasure'/>&nbsp;${eml.jgtiCuratorialUnits[item_index].uncertaintyMeasure}
-                                              ${eml.jgtiCuratorialUnits[item_index].unitType}
-                                          </#if>
-                                      <#if item_has_next>,&nbsp;</#if>
-                                    </#list>
+                                      <#list eml.jgtiCuratorialUnits as item>
+                                        <#if item.type=="COUNT_RANGE">
+                                          <@s.text name='eml.jgtiCuratorialUnits.rangeStart'/>&nbsp;${eml.jgtiCuratorialUnits[item_index].rangeStart}
+                                          <@s.text name='eml.jgtiCuratorialUnits.rangeEnd'/>&nbsp;${eml.jgtiCuratorialUnits[item_index].rangeEnd}
+                                        ${eml.jgtiCuratorialUnits[item_index].unitType}
+                                        <#else>
+                                          <@s.text name='eml.jgtiCuratorialUnits.rangeMean'/>&nbsp;${eml.jgtiCuratorialUnits[item_index].rangeMean}
+                                          <@s.text name='eml.jgtiCuratorialUnits.uncertaintyMeasure'/>&nbsp;${eml.jgtiCuratorialUnits[item_index].uncertaintyMeasure}
+                                        ${eml.jgtiCuratorialUnits[item_index].unitType}
+                                        </#if>
+                                        <#if item_has_next>,&nbsp;</#if>
+                                      </#list>
                                     </td>
                                 </tr>
-                          </table>
+                              </table>
+                            </#if>
                       </div>
                   </div>
                 </#if>

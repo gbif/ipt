@@ -19,10 +19,10 @@
     </div>
 </#macro>
 
-<#macro textinline name value="-99999" i18nkey="" errorfield="" help="">
+<#macro textinline name value="-99999" i18nkey="" errorfield="" help="" requiredField=false>
 	<div class="textinline">
 		<#include "/WEB-INF/pages/macros/help_icon.ftl">
-		<h2 class="headerLine"><span><@s.text name="${name}"/></span></h2>
+		<h2 class="headerLine"><span><@s.text name="${name}"/><#if requiredField>&#42;</#if></span></h2>
 	</div>
 </#macro>
 

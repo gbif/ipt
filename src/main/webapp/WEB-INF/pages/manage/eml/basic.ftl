@@ -174,7 +174,7 @@
 
     <!-- Intellectual Rights -->
     <div class="twenty_top">
-      <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" />
+      <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" requiredField=true/>
 
         <div id="intellectualRightsDiv" class="howtocite">
           <@licenseLogoClass eml.intellectualRights!/>
@@ -195,7 +195,7 @@
 
         <!-- Descriptions, broken into one or more paragraphs -->
         <div class="listBlock grid_17 suffix_1">
-          <@textinline name="eml.description" help="i18n"/>
+          <@textinline name="eml.description" help="i18n" requiredField=true/>
             <div id="items">
               <#list eml.description as item>
                   <div id="item-${item_index}" class="item paragraphk">
@@ -229,7 +229,7 @@
 
   	<!-- Resource Contacts -->
   	<div class="listBlock grid_17 suffix_1">
-      <@textinline name="eml.contact.plural" help="i18n"/>
+      <@textinline name="eml.contact.plural" help="i18n" requiredField=true/>
       <div id="contact-items">
         <#list eml.contacts as contact>
           <div id="contact-item-${contact_index}" class="item clearfix">
@@ -298,7 +298,7 @@
 
         <!-- Resource Creators -->
 	<div class="listBlock grid_17 suffix_1">
-    <@textinline name="eml.resourceCreator.plural" help="i18n"/>
+    <@textinline name="eml.resourceCreator.plural" help="i18n" requiredField=true/>
     <div id="creator-items">
       <#list eml.creators as creator>
         <div id="creator-item-${creator_index}" class="item clearfix">
@@ -369,7 +369,7 @@
 
         <!-- Metadata Providers -->
 	<div class="listBlock grid_17 suffix_1">
-    <@textinline name="eml.metadataProvider.plural" help="i18n"/>
+    <@textinline name="eml.metadataProvider.plural" help="i18n" requiredField=true/>
     <div id="metadataProvider-items">
       <#list eml.metadataProviders as metadataProvider>
         <div id="metadataProvider-item-${metadataProvider_index}" class="item clearfix">
