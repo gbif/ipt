@@ -54,12 +54,14 @@ You can also start Tomcat (in Windows 8.1) from the Task Manager > Services tab.
 If Tomcat is running successfully following step 5, above, you should be able to see the Tomcat Welcome page at the following URL:
 
 http://localhost:8080/
+![Tomcat Welcome Page](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/screenshots/Capturetomcat2.JPG)
 
 With the admin credentials you entered during the setup wizard, you can access:
 
 http://localhost:8080/manager/html
 
 Where you can upload the ipt.war file to install IPT.
+![Tomcat Manager Page](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/screenshots/Capturetomcat4.JPG)
 
 ### 5. Shut down Tomcat
 Close the terminal windows will shut down Tomcat.
