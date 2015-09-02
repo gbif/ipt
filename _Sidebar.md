@@ -18,6 +18,7 @@
     - [[Server Preparation|IPTServerPreparation.wiki]]
       - [[Install Tomcat on Mac OS X|TomcatInstallationMacOSX.wiki]]
       - [[Install Tomcat on Windows 7|TomcatInstallationWindows7.wiki]]
+      - [[Install Tomcat on Windows 8|TomcatInstallationWindows8.wiki]]
       - [[Install Tomcat on CentOS 5|TomcatInstallationCentOS.wiki]]
     - [[Supported Databases|IPT2DatabaseConnection.wiki]]
     - [[Dataset Versioning Policy|IPT2Versioning.wiki]]

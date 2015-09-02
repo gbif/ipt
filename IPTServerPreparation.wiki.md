@@ -1,6 +1,16 @@
 # How To Prepare Your IPT Server
 
+## Table of Contents
++ [[Introduction|IPTServerPreparation.wiki#introduction]]
++ [[Servlet Containers|IPTServerPreparation.wiki#servlet-containers]]
+  + [[Tomcat |IPTServerPreparation.wiki#tomcat]]
+  + [[Jetty |IPTServerPreparation.wiki#jetty]]
+  + [[Wildfly8 (JBoss)|IPTServerPreparation.wiki#wildfly8-jboss]]
++ [[Virtual Host Name|IPTServerPreparation.wiki#virtual-host-name]]
+  + [[Define Virtual Host Name|IPTServerPreparation.wiki#define-virtual-host-name]]
+  + [[Configure Apache Reverse Proxy|IPTServerPreparation.wiki#configure-apache-reverse-proxy]]
 
+---
 
 ## Introduction
 
