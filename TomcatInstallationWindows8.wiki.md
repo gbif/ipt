@@ -32,7 +32,7 @@ Download the latest stable Tomcat 8 Binary Distribution Core (32-bit/64-bit Wind
 ### 2. Install Tomcat 8.x
 Double click the executable to start installation wizard. **Do** fill information to specify **the connector port**, **Tomcat administrator login credentials** without changing the Roles. If you forget to provide the credential information, you'll have to edit the [tomcat\_home](tomcat_home.md)/conf/tomcat-users.xml file and restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested **connector port** settings worked).
 
-![Apache Tomcat Setup Config Options](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/screenshots/Capturetomcat1.JPG =200x)
+![Apache Tomcat Setup Config Options](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/screenshots/Capturetomcat1.JPG =100x100)
 
 ### 3. Run Tomcat
 Go to C:\Program Files (x86)\Apache Software Foundation\Tomcat 8.0\bin
