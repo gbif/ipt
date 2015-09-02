@@ -1,6 +1,8 @@
 # IPT Dataset Versioning Policy
 
-
+## Table of Contents
++ [[Introduction|IPT2Versioning.wiki#introduction]]
++ [[Versioning Policy|IPT2Versioning.wiki#versioning-policy]]
 
 ## Introduction
 
