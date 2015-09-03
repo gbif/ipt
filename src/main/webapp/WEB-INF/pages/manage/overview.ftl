@@ -332,7 +332,7 @@ $(document).ready(function(){
               </tr>
               <#if resource.lastPublished??>
               <tr>
-                  <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
+                  <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
               </tr>
               </#if>
             <#if report??>
@@ -348,7 +348,7 @@ $(document).ready(function(){
                       <div class="report">
                           <ul class="simple">
                             <#list report.messages as msg>
-                                <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
+                                <li class="${msg.level}">${msg.message} <span class="small">${msg.date?time?string}</span></li>
                             </#list>
                           </ul>
                         <#if cfg.debug() && report.hasException()>

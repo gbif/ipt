@@ -1,0 +1,3 @@
+sampleSizeValue	sampleSizeUnit	samplingProtocol
+5	metre	mist net
+5	metre	mist net

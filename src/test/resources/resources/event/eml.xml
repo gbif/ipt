@@ -1,0 +1,91 @@
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+         packageId="http://localhost:8080/resource?id=event/v1.0" system="http://gbif.org" scope="system"
+         xml:lang="eng">
+
+<dataset>
+  <title xml:lang="eng">Test resource</title>
+      <creator>
+    <individualName>
+        <givenName>Kyle</givenName>
+      <surName>Braak</surName>
+    </individualName>
+    <address>
+        <deliveryPoint>Universitetsparken 15, co GBIF</deliveryPoint>
+        <city>Copenhagen</city>
+        <administrativeArea>Not Applicable</administrativeArea>
+        <postalCode>2100</postalCode>
+        <country>DK</country>
+    </address>
+    <phone>+4523921710</phone>
+      </creator>
+      <metadataProvider>
+    <individualName>
+        <givenName>Kyle</givenName>
+      <surName>Braak</surName>
+    </individualName>
+    <address>
+        <deliveryPoint>Universitetsparken 15, co GBIF</deliveryPoint>
+        <city>Copenhagen</city>
+        <administrativeArea>Not Applicable</administrativeArea>
+        <postalCode>2100</postalCode>
+        <country>DK</country>
+    </address>
+    <phone>+4523921710</phone>
+    <electronicMailAddress>kbraak@gbif.org</electronicMailAddress>
+      </metadataProvider>
+      <associatedParty>
+    <individualName>
+        <givenName>Kyle</givenName>
+      <surName>Braak</surName>
+    </individualName>
+    <electronicMailAddress>kbraak@gbif.org</electronicMailAddress>
+    <role>user</role>
+      </associatedParty>
+  <pubDate>
+      2015-09-03
+  </pubDate>
+  <language>eng</language>
+  <abstract>
+    <para>Test sampling event resource.</para>
+  </abstract>
+      <keywordSet>
+            <keyword>Samplingevent</keyword>
+        <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+      </keywordSet>
+  <intellectualRights>
+    <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url="http://creativecommons.org/publicdomain/zero/1.0/legalcode"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction.</para>
+  </intellectualRights>
+  <maintenance>
+    <description>
+      <para></para>
+    </description>
+    <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+  </maintenance>
+
+      <contact>
+    <individualName>
+        <givenName>Kyle</givenName>
+      <surName>Braak</surName>
+    </individualName>
+    <address>
+        <deliveryPoint>Universitetsparken 15</deliveryPoint>
+        <city>Copenhagen</city>
+        <postalCode>2100</postalCode>
+        <country>DK</country>
+    </address>
+    <phone>23921710</phone>
+    <electronicMailAddress>kyle.braak@gmail.com</electronicMailAddress>
+      </contact>
+</dataset>
+  <additionalMetadata>
+    <metadata>
+      <gbif>
+          <dateStamp>2015-09-03T05:13:52.910+02:00</dateStamp>
+          <hierarchyLevel>dataset</hierarchyLevel>
+      </gbif>
+    </metadata>
+  </additionalMetadata>
+</eml:eml>

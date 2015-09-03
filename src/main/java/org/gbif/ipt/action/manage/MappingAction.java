@@ -551,4 +551,14 @@ public class MappingAction extends ManagerBaseAction {
   public Map<String, Integer> getFieldsTermIndices() {
     return fieldsTermIndices;
   }
+
+  /**
+   * @return true if mapping is a core mapping, false if mapping is an extension mapping
+   */
+  public boolean isCoreMapping() {
+    if (mapping.isCore()) {
+      return resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType());
+    }
+    return false;
+  }
 }

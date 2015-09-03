@@ -1,0 +1,4 @@
+id	scientificName	basisOfRecord	kingdom
+1	puma concolor	occurrence	animalia
+2	pumm:concolor	occurrence	animalia
+ 	 	 	 

@@ -15,7 +15,7 @@
         <p class="errorMessage">${report.state}</p>
     </#if>
     <p><@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text></p>
-    <p><@s.text name='portal.publication.download.log'/> <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a></p>
+    <p><@s.text name='portal.publication.download.log'/> <a target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a></p>
   <#else>
       <p><@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?id=${resource.shortname}</@s.param></@s.text></p>
       <p class="warnMessage">${report.state}</p>
@@ -25,7 +25,7 @@
   <strong><@s.text name='manage.report.logMessage'/></strong>
   <ul class="simple">
     <#list report.messages as msg>
-      <li>${msg.message} <span class="small">${msg.date?time?string}</span></li>
+      <li class="${msg.level}">${msg.message} <span class="small">${msg.date?time?string}</span></li>
     </#list>
   </ul>
 

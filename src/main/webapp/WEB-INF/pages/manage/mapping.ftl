@@ -321,7 +321,7 @@ $(document).ready(function(){
               <@s.text name='manage.mapping.title'/>
             </h2>
             <!-- Is this extension mapped as a core? -->
-            <#if mapping.isCore()>
+            <#if action.isCoreMapping()>
               <#assign extensionType><@s.text name='extension.core'/></#assign>
             <#else>
               <#assign extensionType><@s.text name='extension'/></#assign>
@@ -359,8 +359,8 @@ $(document).ready(function(){
                       </div>
 
                       <div class="body">
-                        <select name="mapping.idColumn" id="idColumn">
-                              <#if mapping.isCore()>
+                          <select name="mapping.idColumn" id="idColumn">
+                              <#if action.isCoreMapping()>
                                   <option value="" <#if !mapping.idColumn??> selected="selected"<#elseif (mapping.idColumn!-99)==-3> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
                               </#if>
                                 <!-- auto generating identifiers is only available for the Taxon core -->

@@ -496,13 +496,15 @@ public class GenerateDwcaTest {
     resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);
 
     // copy source file to tmp folder
-    File copied = new File(resourceDir, "source.txt");
+    File copied = new File(resourceDir, "occurrence.txt");
 
     // mock file to which source file gets copied to
     when(mockDataDir.sourceFile(any(Resource.class), any(FileSource.class))).thenReturn(copied);
-
     // mock log file
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(new File(resourceDir, "log.txt"));
+    // add SourceBase.TextFileSource fileSource to test Resource
+    FileSource fileSource = mockSourceManager.add(resource, sourceFile, "occurrence.txt");
+    resource.getMappings().get(0).setSource(fileSource);
 
     // mock creation of zipped dwca in temp directory - this later becomes the actual archive generated
     when(mockDataDir.tmpFile(anyString(), anyString())).thenReturn(new File(tmpDataDir, "dwca.zip"));
@@ -511,9 +513,6 @@ public class GenerateDwcaTest {
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class)))
       .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
 
-    // add SourceBase.TextFileSource fileSource to test Resource
-    FileSource fileSource = mockSourceManager.add(resource, sourceFile, "occurrence.txt");
-    resource.getMappings().get(0).setSource(fileSource);
     return resource;
   }
 
@@ -642,33 +641,28 @@ public class GenerateDwcaTest {
   }
 
   /**
-   * A generated DwC-a with event core, but missing occurrence mapping, is expected to throw a GeneratorException.
+   * A generated DwC-a with event core, but not having associated occurrences, is expected to show a warning message
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testValidateEventCoreFromSingleSourceFileMissingOccurrenceExtension() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_event_1.xml");
-    // create resource, with single source file that is missing occurrenceIDs
+    // create sampling event resource, with single source file
     File event = FileUtils.getClasspathFile("resources/res1/event.txt");
     Resource resource = getResource(resourceXML, event);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mock(VocabulariesManager.class));
     generateDwca.call();
-  }
 
-  /**
-   * Confirm event core with rows missing basisOfRecord throws GeneratorException.
-   */
-  @Test(expected = GeneratorException.class)
-  public void testGenerateEventCoreFromSingleSourceFileMissingBasisOfRecord() throws Exception {
-    // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
-    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_event_2.xml");
-    // create resource from single source file
-    File occurrence = FileUtils.getClasspathFile("resources/res1/event_missing_bor.txt");
-    Resource resource = getResource(resourceXML, occurrence);
-    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
-    generateDwca.call();
+    // check for warning message
+    boolean foundWarning = false;
+    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
+      TaskMessage msg = iter.next();
+      if (msg.getMessage().equals("The sampling event resource has no associated occurrences.")) {
+        foundWarning = true;
+      }
+    }
+    assertTrue(foundWarning);
   }
 }

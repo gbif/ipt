@@ -62,13 +62,13 @@ Header {
 
 
 /* MESSAGING CLASS*/
-.warn{
+.warn, .WARN{
 	color: red;
 }
 .green{
 	color: green;
 }
-.red{
+.red, .ERROR{
 	color: red;
 }
 tr.rowInError {

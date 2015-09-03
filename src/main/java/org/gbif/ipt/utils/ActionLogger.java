@@ -1,9 +1,7 @@
 package org.gbif.ipt.utils;
 
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.task.TaskMessage;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 public class ActionLogger {
@@ -92,16 +90,6 @@ public class ActionLogger {
       action.addActionMessage(t.getMessage());
     }
     log.info(t);
-  }
-
-  public void log(TaskMessage msg) {
-    if (Level.ERROR.equals(msg.level)) {
-      action.addActionWarning(action.getText(msg.message, msg.params));
-      log.error(action.getText(msg.message) == null ? msg.getMessage() : action.getText(msg.message, msg.params));
-    } else {
-      action.addActionMessage(action.getText(msg.message, msg.params));
-      log.log(msg.level, action.getText(msg.message) == null ? msg.message : action.getText(msg.message, msg.params));
-    }
   }
 
   public void warn(String message) {

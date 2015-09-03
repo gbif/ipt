@@ -1,3 +1,0 @@
-id	sampleSizeValue	sampleSizeUnit	eventDate
-1	5	metre	2014-10-16
-2	5	metre	2014-10-17

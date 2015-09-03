@@ -28,6 +28,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -151,8 +152,7 @@ public class MappingActionTest {
     // perform save
     action.save();
     // assert the resource's core type remains as Occurrence Core Type
-    assertEquals(Resource.CoreRowType.OCCURRENCE.toString(),
-      StringUtils.capitalize(action.getResource().getCoreType()));
+    assertEquals(Resource.CoreRowType.OCCURRENCE.toString(), StringUtils.capitalize(action.getResource().getCoreType()));
   }
 
   @Test
@@ -160,5 +160,11 @@ public class MappingActionTest {
     List<String> nonMapped = action.getNonMappedColumns();
     assertEquals(1, nonMapped.size());
     assertEquals("unknown", nonMapped.get(0));
+  }
+
+  @Test
+  public void testIsCoreMapping() {
+    action.prepare();
+    assertTrue(action.isCoreMapping());
   }
 }
