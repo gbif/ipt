@@ -467,7 +467,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     throws GeneratorException, InterruptedException, IOException {
     addMessage(Level.INFO, "Validating the extension file: " + extFile.getTitle()
                            + ". Depending on the number of records, this can take a while.");
-
+    // get the core record ID term
+    Term id = TERM_FACTORY.findTerm(AppConfig.coreIdTerm(resource.getCoreRowType()));
     Term occurrenceId = TERM_FACTORY.findTerm(Constants.DWC_OCCURRENCE_ID);
     Term basisOfRecord = TERM_FACTORY.findTerm(Constants.DWC_BASIS_OF_RECORD);
 
@@ -487,6 +488,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
       if (extFile.hasTerm(occurrenceId)) {
         addMessage(Level.INFO, "? Validating the occurrenceId in occurrence extension data file is always present and unique. ");
+      } else {
+        addMessage(Level.WARN,
+          "No occurrenceId found in occurrence extension. To be indexed by GBIF, each occurrence record within a resource must have a unique record level identifier.");
       }
       // find index of basisOfRecord
       basisOfRecordIndex = extFile.getField(basisOfRecord).getIndex();
@@ -494,13 +498,13 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // validate the extension ID has been mapped
     if (extFile.getId() == null) {
-      addMessage(Level.ERROR, "Archive validation failed, because the record ID was not mapped in the extension data file: "
+      addMessage(Level.ERROR, "Archive validation failed, because the ID field " + id.simpleName() + "was not mapped in the extension data file: "
         + extFile.getTitle());
       throw new GeneratorException("Can't validate DwC-A for resource " + resource.getShortname()
-                                   + ". The record ID was not mapped in the extension data file: "
+                                   + ". The ID field was not mapped in the extension data file: "
                                    + extFile.getTitle());
     }
-    addMessage(Level.INFO, "? Validating the record ID is always present in extension data file. ");
+    addMessage(Level.INFO, "? Validating the ID field " + id.simpleName() + " is always present in extension data file. ");
 
     // find index of column to sort file by - use occurrenceId term index if mapped, ID column otherwise
     int sortColumnIndex = (extFile.hasTerm(occurrenceId)) ? extFile.getField(occurrenceId).getIndex() : ID_COLUMN_INDEX;
@@ -581,12 +585,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     // some final reporting..
     if (recordsWithNoId > 0) {
       addMessage(Level.ERROR, String.valueOf(recordsWithNoId)
-                              + " line(s) in extension missing an ID, which is required when linking the extension record and core record together");
+                              + " line(s) in extension missing an ID " + id.simpleName() + ", which is required when linking the extension record and core record together");
       throw new GeneratorException(
-        "Can't validate DwC-A for resource " + resource.getShortname() + ". Each line in extension must have an ID, which is required in order to link the extension to the core ");
+        "Can't validate DwC-A for resource " + resource.getShortname() + ". Each line in extension must have an ID " + id.simpleName() + ", which is required in order to link the extension to the core ");
     } else {
-      addMessage(Level.INFO, "\u2713 Validated each line in extension has an ID");
-      writePublicationLogMessage("No lines in extension are missing an ID");
+      addMessage(Level.INFO, "\u2713 Validated each line in extension has an ID " + id.simpleName());
+      writePublicationLogMessage("No lines in extension are missing an ID" + id.simpleName());
     }
 
     if (isOccurrenceFile(extFile)) {
@@ -642,9 +646,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
     // validate the core ID / record identifier (e.g. occurrenceID, taxonID) if it has been mapped
     if (coreFile.hasTerm(id) || archiveHasExtensions) {
-      String msg = "? Validating the core record ID " + id.simpleName() + " is always present and unique.";
+      String msg = "? Validating the core ID field " + id.simpleName() + " is always present and unique.";
       if (archiveHasExtensions) {
-        msg = msg + " Note: the core record ID is required to link core records and extension records together. ";
+        msg = msg + " Note: the core ID field is required to link core records and extension records together. ";
       }
       addMessage(Level.INFO, msg);
     }

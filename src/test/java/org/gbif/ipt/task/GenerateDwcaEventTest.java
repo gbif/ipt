@@ -188,16 +188,21 @@ public class GenerateDwcaEventTest {
     boolean foundWarningAboutAmbiguousBOR = false;
     // since there was an empty line at bottom of file, there should be a warning message!
     boolean foundWarningAboutEmptyLine = false;
+    // since occurrenceId isn't mapped in occurrence extension, there should be a warning message!
+    boolean foundWarningAboutUnmappedOccurrenceId = false;
     for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
       TaskMessage msg = iter.next();
       if (msg.getMessage().startsWith("2 line(s) use ambiguous basisOfRecord")) {
         foundWarningAboutAmbiguousBOR = true;
       } else if (msg.getMessage().startsWith("1 empty line(s) skipped")) {
         foundWarningAboutEmptyLine = true;
+      } else if (msg.getMessage().startsWith("No occurrenceId found in occurrence extension.")) {
+        foundWarningAboutUnmappedOccurrenceId = true;
       }
     }
     assertTrue(foundWarningAboutAmbiguousBOR);
     assertTrue(foundWarningAboutEmptyLine);
+    assertTrue(foundWarningAboutUnmappedOccurrenceId);
   }
 
   /**
