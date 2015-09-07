@@ -1,53 +1,61 @@
 package org.gbif.ipt.action.portal;
 
-import com.google.inject.Inject;
-import com.opensymphony.xwork2.ActionSupport;
 import org.gbif.ipt.task.GenerateDCAT;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import com.google.common.io.Closer;
+import com.google.inject.Inject;
+import com.opensymphony.xwork2.ActionSupport;
+import org.apache.log4j.Logger;
+
 /**
- * Action to create the DCAT feed
+ * Action to create the DCAT feed.
  */
 public class DCATAction extends ActionSupport {
 
-    private GenerateDCAT generateDCAT;
+  // logging
+  private static final Logger LOG = Logger.getLogger(DCATAction.class);
 
-    /**
-     * Variable used to print the feed
-     */
-    private InputStream dcatInfo;
+  private GenerateDCAT generateDCAT;
 
-    @Inject
-    public DCATAction(GenerateDCAT generateDCAT) {
-        this.generateDCAT = generateDCAT;
+  // used to print the feed
+  private InputStream dcatInfo;
+
+  @Inject
+  public DCATAction(GenerateDCAT generateDCAT) {
+    this.generateDCAT = generateDCAT;
+  }
+
+  /**
+   * Regenerates the DCAT feed.
+   *
+   * @return Struts2 result string
+   */
+  @Override
+  public String execute() throws Exception {
+    Closer closer = Closer.create();
+    try {
+      dcatInfo = closer.register(new ByteArrayInputStream(generateDCAT.getFeed().getBytes("UTF-8")));
+    } catch (UnsupportedEncodingException e) {
+      LOG.error("Error generating DCAT feed: " + e.getMessage(), e);
+    } finally {
+      try {
+        closer.close();
+      } catch (IOException e) {
+        LOG.error("Failed to close input stream on DCAT feed", e);
+      }
     }
+    return SUCCESS;
+  }
 
-    /**
-     * Method called when this action is called
-     * Regenerates the DCAT feed
-     *
-     * @return String whether the method has been executed with success
-     */
-    @Override
-    public String execute() {
-        String out = generateDCAT.getDCAT();
-        try {
-            dcatInfo = new ByteArrayInputStream(out.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return SUCCESS;
-    }
-
-    /**
-     * Getter for the feed
-     *
-     * @return DCAT feed
-     */
-    public InputStream getDcatInfo() {
-        return dcatInfo;
-    }
+  /**
+   * @return DCAT feed
+   */
+  public InputStream getDcatInfo() {
+    return dcatInfo;
+  }
 }

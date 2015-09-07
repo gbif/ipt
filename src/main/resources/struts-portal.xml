@@ -8,7 +8,7 @@
 	some of the resources will only be accessible to the owning user or the administrator
  -->
 <struts>
-  <!-- The entry to the administration section -->
+  <!-- The entry to the public section -->
   <package name="portal" extends="ipt-default" namespace="/">
     <default-interceptor-ref name="portalStack"/>
     <default-action-ref name="home"/>
@@ -86,6 +86,13 @@
         <param name="inputName">inputStream</param>
         <param name="contentDisposition">filename="${filename}"</param>
         <param name="bufferSize">1024</param>
+      </result>
+    </action>
+    <action name="dcat" class="org.gbif.ipt.action.portal.DCATAction">
+      <result type="stream">
+        <param name="noCache">true</param>
+        <param name="contentType">text</param>
+        <param name="inputName">dcatInfo</param>
       </result>
     </action>
   </package>

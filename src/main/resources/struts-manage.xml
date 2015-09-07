@@ -11,7 +11,7 @@
 <struts>
 
 
-  <!-- The entry to the administration section -->
+  <!-- The entry to the manage section -->
   <package name="manage" extends="ipt-default" namespace="/manage">
     <default-interceptor-ref name="managerStack"/>
     <default-action-ref name="home"/>

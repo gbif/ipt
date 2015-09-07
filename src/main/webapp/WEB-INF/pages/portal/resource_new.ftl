@@ -224,10 +224,7 @@
                     <#if action.isPreview()?string == "true">
                         <div id="watermark"><@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text></div>
                     </#if>
-                    <div resource="${baseURL}/dcat"><meta property="foaf:topic" resource="${baseURL}/resource?=${resource.shortname}/#dataset"/></div>
-                    <div typeof="dcat:Dataset" resource="${baseURL}/resource?=${resource.shortname}/#dataset">
-                    <meta property="foaf:isPrimaryTopicOf" resource="${baseURL}/resource?=${resource.shortname}">
-                    <meta property="rdfs:seeAlso" resource="${baseURL}/dcat"/>
+                    <div>
                         <h1 property="dc:title" class="rtitle">${eml.title!resource.shortname}</h1>
                         <div>
                           <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
@@ -384,7 +381,7 @@
                 <!-- citation section -->
                 <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
                     <div id="citation" class="row">
-                        <div resource="${baseURL}/resource?=${resource.shortname}/#dataset">
+                        <div>
                             <h1><@s.text name='portal.resource.cite.howTo'/></h1>
                             <p>
                               <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>

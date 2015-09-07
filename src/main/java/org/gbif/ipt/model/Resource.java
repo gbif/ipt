@@ -431,7 +431,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public String getLastPublishedVersionsChangeSummary() {
     if (!getVersionHistory().isEmpty()) {
-      System.out.print(Strings.emptyToNull(getVersionHistory().get(0).getChangeSummary()));
       return Strings.emptyToNull(getVersionHistory().get(0).getChangeSummary());
     }
     return null;

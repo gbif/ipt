@@ -8,9 +8,6 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 -->
 <#macro resourcesTable shownPublicly numResourcesShown sEmptyTable columnToSortOn sortOrder>
 
-<!--DCAT link-->
-<div typeof="dcat:Catalog" resource="${baseURL}/#Catalog"><meta property="foaf:seeAlso" resource="${baseURL}/dcat"/></div>
-
 <script type="text/javascript" charset="utf-8">
     <#assign emptyString="--">
     <#assign dotDot="..">
