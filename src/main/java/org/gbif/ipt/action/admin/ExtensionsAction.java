@@ -196,13 +196,17 @@ public class ExtensionsAction extends POSTAction {
               if (issuedOne == null && issuedTwo != null) {
                 setUpToDate(false);
                 extension.setLatest(false);
+                LOG.debug("Installed extension with rowType " + extension.getRowType() + " has no issued date. A newer version issued " + issuedTwo.toString() + " exists.");
               } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
                 setUpToDate(false);
                 extension.setLatest(false);
+                LOG.debug("Installed extension with rowType " + extension.getRowType() + " was issued " + issuedOne.toString() + ". A newer version issued " + issuedTwo.toString() + " exists.");
+              } else {
+                LOG.debug("Installed extension with rowType " + extension.getRowType() + " is the latest version");
               }
+              break;
             }
           }
-          LOG.debug("Installed extension with rowType " + extension.getRowType() + " latest=" + extension.isLatest());
         }
         // warn user if updates to installed extensions are available
         if (isUpToDate()) {

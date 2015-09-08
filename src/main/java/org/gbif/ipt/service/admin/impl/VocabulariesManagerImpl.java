@@ -163,7 +163,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
     if (map.isEmpty()) {
-      log.debug("Empty i18n map for vocabulary " + identifier + " and language " + lang);
+      log.error("Empty i18n map for vocabulary " + identifier + " and language " + lang);
     }
     return map;
   }
@@ -200,10 +200,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   /**
-   * Move and rename temporary file to final version. Update vocabularies loaded into local lookup.
+   * Move and rename temporary file to final version. Update vocabulary loaded into local lookup.
    *
    * @param tmpFile    downloaded vocabulary file (in temporary location with temporary filename)
-   * @param vocabulary vocabulary being installed
+   * @param vocabulary vocabulary from JSON (excluding concepts)
    *
    * @throws IOException if moving file fails
    */
@@ -218,8 +218,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       if (!installedFile.exists()) {
         FileUtils.moveFile(tmpFile, installedFile);
       }
+
+      // build Vocabulary from file, so it includes concepts
+      Vocabulary fromFile = loadFromFile(installedFile);
+
       // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
-      vocabulariesById.put(vocabulary.getUriString(), vocabulary);
+      vocabulariesById.put(vocabulary.getUriString(), fromFile);
     } catch (IOException e) {
       log.error("Installing vocabulary failed, while trying to move and rename vocabulary file: " + e.getMessage(), e);
       throw e;
@@ -485,9 +489,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     // identify installed vocabulary by identifier
     Vocabulary installed = get(identifier);
     if (installed != null) {
+      // match vocabulary by identifier and issued date
       Vocabulary matched = null;
       for (Vocabulary v : registryManager.getVocabularies()) {
-        if (v.getUriString() != null && v.getUriString().equalsIgnoreCase(identifier)) {
+        if (v.getUriString() != null && v.getUriString().equalsIgnoreCase(identifier)
+            && installed.getIssued() != null && v.getIssued() != null && installed.getIssued().compareTo(v.getIssued()) == 0) {
           matched = v;
           break;
         }

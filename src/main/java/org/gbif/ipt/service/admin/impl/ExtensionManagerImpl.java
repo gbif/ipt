@@ -220,9 +220,11 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     // identify installed extension by rowType
     Extension installed = get(rowType);
     if (installed != null) {
+      // match extension by rowType and issued date
       Extension matched = null;
       for (Extension ex : registryManager.getExtensions()) {
-        if (ex.getRowType() != null && ex.getRowType().equalsIgnoreCase(rowType)) {
+        if (ex.getRowType() != null && ex.getRowType().equalsIgnoreCase(rowType)
+            && installed.getIssued() != null && ex.getIssued() != null && installed.getIssued().compareTo(ex.getIssued()) == 0) {
           matched = ex;
           break;
         }
@@ -322,16 +324,17 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       // replacing term must exist in new extension, and it cannot already be mapped!
       if (replacedBy != null && newer.getProperty(replacedBy) != null && !extensionMapping.isMapped(replacedBy)) {
         PropertyMapping pm = extensionMapping.getField(deprecatedProperty.qualifiedName());
-        pm.setTerm(replacedBy);
-        log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName()
-                  + " has been migrated to term " + replacedBy.qualifiedName());
+        if (pm != null) {
+          pm.setTerm(replacedBy);
+          log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName() + " has been migrated to term "
+                    + replacedBy.qualifiedName());
+        }
       }
       // otherwise simply remove the property mapping
       else {
         log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName()
                   + " cannot be migrated therefore it is being removed!");
-        PropertyMapping pm = extensionMapping.getField(deprecatedProperty.qualifiedName());
-        removePropertyMapping(extensionMapping, pm);
+        removePropertyMapping(extensionMapping, deprecatedProperty.qualifiedName());
       }
     }
     return extensionMapping;
@@ -341,13 +344,14 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    * Remove a PropertyMapping from an ExtensionMapping.
    *
    * @param extensionMapping ExtensionMapping
-   * @param propertyMapping  PropertyMapping
+   * @param qualifiedName    of PropertyMapping term to remove
    */
-  private void removePropertyMapping(ExtensionMapping extensionMapping, PropertyMapping propertyMapping) {
+  private void removePropertyMapping(ExtensionMapping extensionMapping, String qualifiedName) {
+    PropertyMapping pm = extensionMapping.getField(qualifiedName);
     Set<PropertyMapping> propertyMappings = extensionMapping.getFields();
-    if (propertyMapping != null && propertyMappings.contains(propertyMapping)) {
-      propertyMappings.remove(propertyMapping);
-      log.debug("Removed mapping to term " + propertyMapping.getTerm().qualifiedName());
+    if (pm != null && propertyMappings.contains(pm)) {
+      propertyMappings.remove(pm);
+      log.debug("Removed mapping to term " + pm.getTerm().qualifiedName());
     }
   }
 
@@ -622,7 +626,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    * subject.
    *
    * @param keyword               keyword to filter extensions by
-   * @param includeEmptySubject   true to include extensions with empty subject, false otherwise. An extension with an empty subject indicates the extension is suitable for all core extensions.
+   * @param includeEmptySubject   true to include extensions with empty subject, false otherwise. An extension with an
+   *                              empty subject indicates the extension is suitable for all core extensions.
    * @param includeCoreExtensions true to include core type extensions, false otherwise.
    */
   private List<Extension> search(String keyword, boolean includeEmptySubject, boolean includeCoreExtensions) {

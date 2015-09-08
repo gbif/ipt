@@ -40,9 +40,8 @@ public class HomeAction extends BaseAction {
   public String execute() {
     resources = resourceManager.list(getCurrentUser());
 
-    // Dataset core type list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
+    // Dataset core type list, derived from XML vocabulary
     types = new LinkedHashMap<String, String>();
-    types.put("", getText("manage.resource.create.coreType.selection"));
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
 
