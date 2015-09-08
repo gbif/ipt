@@ -21,7 +21,7 @@ Please make sure the following conditions (software and version) are met before 
 
 2) The latest security upgrades.
 
-3) JAVA 8 Framework installed. This tutorial is written based on version jre1.8.0_60 (Java Version 8 Update 60). Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in c:\\Program Files\Java\jre8.
+3) JAVA 8 Framework installed. This tutorial is written based on version jre1.8.0_60 (Java Version 8 Update 60). Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in C:\\Program Files (x86)\Java\jre8. (Note from tester on Windows 8.1, I tried to install Java in the C:\\Program Files directory and it would not work. I had to put it in the (x86) folder).
 
 4) Logged in as an administrator.
 
