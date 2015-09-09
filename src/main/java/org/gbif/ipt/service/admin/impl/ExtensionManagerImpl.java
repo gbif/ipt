@@ -324,8 +324,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       // replacing term must exist in new extension, and it cannot already be mapped!
       if (replacedBy != null && newer.getProperty(replacedBy) != null && !extensionMapping.isMapped(replacedBy)) {
         PropertyMapping pm = extensionMapping.getField(deprecatedProperty.qualifiedName());
-        if (pm != null) {
-          pm.setTerm(replacedBy);
+        ExtensionProperty ep = newer.getProperty(replacedBy);
+        if (pm != null && ep != null) {
+          pm.setTerm(ep);
           log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName() + " has been migrated to term "
                     + replacedBy.qualifiedName());
         }
