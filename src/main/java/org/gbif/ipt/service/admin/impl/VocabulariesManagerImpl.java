@@ -221,6 +221,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
       // build Vocabulary from file, so it includes concepts
       Vocabulary fromFile = loadFromFile(installedFile);
+      // don't forget to set vocabulary URL (only available from JSON)
+      fromFile.setUriResolvable(vocabulary.getUriResolvable());
 
       // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
       vocabulariesById.put(vocabulary.getUriString(), fromFile);
