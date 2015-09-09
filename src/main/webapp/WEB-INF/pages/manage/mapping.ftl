@@ -288,7 +288,7 @@ $(document).ready(function(){
           </#list>
         </#if>
         <#if (nonMapped?size>0)>
-          <li><a class="sidebar-anchor" href="#nonmapped"><@s.text name='manage.mapping.nonmapped'/></a></li>
+          <li><a class="sidebar-anchor" href="#nonmapped"><@s.text name='manage.mapping.no.mapped.title'/></a></li>
         </#if>
         <#if (redundants?size>0)>
             <li><a class="sidebar-anchor" href="#redundant"><@s.text name='manage.mapping.redundant'/></a></li>
