@@ -38,9 +38,9 @@ An upgrade can be performed in 3 steps:
 
 ### B. Post-upgrade instructions
 
-Once the upgrade is complete, the IPT administrator should visit the Core Types and Extensions page and update the list of installed core types and extensions to the latest versions. This will allow publishers to take advantage of any new terms and vocabularies included in the latest versions.
+New in IPT 2.3 is the ability to publish sample-based data. In order to enable this feature, the IPT administrator must install the Darwin Core Event Core. Note the Darwin Core Event Core is installed by default in new installations.
 
-New in IPT 2.3 is the ability to publish sample-based data. In order to enable this feature, the IPT administrator must install the Darwin Core Event Core. Note the Darwin Core Event Core is installed by default in new installations. 
+Once the upgrade is complete, the IPT administrator should visit the Core Types and Extensions page and update the list of installed core types and extensions to the latest versions. This will allow publishers to take advantage of any new terms and vocabularies included in the latest versions. 
 
 ### C. New Features / Other
   * IPT 2.3 supports publishing sample-based resources (resources pertaining to a sampling event). Sample-based datasets use the new Darwin Core Event Core, installed by default in new installations. Note: IPT administrators upgrading to IPT 2.3 need to install this new Core. Please see these [[instructions|IPT2ManualNotes.wiki#install-extension]] for help installing a new Core.
