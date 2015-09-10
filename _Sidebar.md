@@ -1,4 +1,4 @@
-+ [[Release Notes|IPTReleaseNotes22.wiki]]
++ [[Release Notes|IPTReleaseNotes23.wiki]]
 + [[User Manual|IPT2ManualNotes.wiki]]
     - [[Table of Contents|IPT2ManualNotes.wiki#table-of-contents]]
     - [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
