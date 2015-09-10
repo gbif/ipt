@@ -51,7 +51,7 @@ Additionally, the IPT administrator should update all installed cores and extens
 
 ## Dependency Notes
 
-This new version has been tested and designed to work on Tomcat 6.0, 7.0, and 8.0. IPT 2.3 will be the last version designed to run on Java 6. Future versions of the IPT will be designed to run on Java 8, so please be proactive and plan a Java upgrade on your server soon.
+This new version has been tested and designed to work on Tomcat 6.0, 7.0, and 8.0. IPT 2.3 can still run on servers with Java 6, however, future versions will be designed to run on Java 8 so please be proactive and plan a Java upgrade on your server soon.
 
 ## Viewing the IPT change log
 
