@@ -201,7 +201,7 @@
         <configuration>
           <doCheck>false</doCheck>
           <doUpdate>false</doUpdate>
-	  <shortrevisionlength>7</shortrevisionlength>
+	        <shortRevisionLength>7</shortRevisionLength>
         </configuration>
       </plugin>
 
