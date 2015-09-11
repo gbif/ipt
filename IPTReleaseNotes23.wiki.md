@@ -60,4 +60,4 @@ These are detailed in the [issue tracking system](https://github.com/gbif/ipt/is
 
 ## When all else fails
 
-See the [FAQ](FAQ), which continues to be updated with good questions.
+See the [FAQ](FAQ.wiki), which continues to be updated with good questions.
