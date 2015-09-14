@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.inject.Singleton;
 
 /**
- * Request filter that detects XSS in paramater, header or querystring values and responds with a 400 bad request in
+ * Request filter that detects XSS in parameter, header or querystring values and responds with a 400 bad request in
  * such cases.
  * TODO: replace with class from gbif-common-ws when upgrading to version 0.25 or higher
  */

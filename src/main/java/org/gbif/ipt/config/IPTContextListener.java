@@ -12,6 +12,7 @@
  ***************************************************************************/
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.struts2.CharacterEncodingFilter;
 import org.gbif.ipt.xss.XSSFilter;
 
 import com.google.inject.Guice;
@@ -31,6 +32,7 @@ public class IPTContextListener extends GuiceServletContextListener {
 
       @Override
       protected void configureServlets() {
+        filter("/*").through(CharacterEncodingFilter.class);
         filter("/*").through(XSSFilter.class);
         super.configureServlets();
       }
