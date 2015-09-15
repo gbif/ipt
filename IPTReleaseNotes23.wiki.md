@@ -30,11 +30,12 @@ and limitations under the License.
 
 **Warning 3**: IPT 2.3 will be the last version that supports running on a server with Java 6. Since Java 7 reached its end of life in April 2015, the GBIF development team is now in the process of upgrading its projects to use Java 8 instead. This will include the next version of the IPT. 
 
-An upgrade can be performed in 3 steps:
+An upgrade can be performed in 4 steps:
 
   1. Replace the previous .war file with the latest edition having the same name (e.g. ipt.war)
-  1. Backup the existing data directory
-  1. Reuse the existing data directory during setup
+  2. Backup the existing data directory
+  3. Reuse the existing data directory during setup
+  4. Login after completing the setup (restart Tomcat if cached version still appears)
 
 ### B. Post-upgrade instructions
 
