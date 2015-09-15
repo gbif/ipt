@@ -35,7 +35,7 @@ An upgrade can be performed in 4 steps:
   1. Replace the previous .war file with the latest edition having the same name (e.g. ipt.war)
   2. Backup the existing data directory
   3. Reuse the existing data directory during setup
-  4. Login after completing the setup (restart Tomcat if cached version still appears)
+  4. To be sure the upgrade worked, try logging in and look for the new version number in the footer (**restart Tomcat if cached version still appears**)
 
 ### B. Post-upgrade instructions
 
