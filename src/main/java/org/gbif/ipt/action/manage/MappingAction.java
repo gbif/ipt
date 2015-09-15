@@ -227,14 +227,20 @@ public class MappingAction extends ManagerBaseAction {
   }
 
   /**
-   * @return list of columns in the source data that have not been mapped to field(s) yet.
+   * @return list of columns in the source data that have not been mapped to field(s) yet, or an empty list if the
+   * source data has no columns
    */
   public List<String> getNonMappedColumns() {
     List<String> mapped = Lists.newArrayList();
 
+    // return empty list if source data has no columns
+    if (columns.isEmpty()) {
+      return mapped;
+    }
+
     // get list of all columns mapped to fields
     for (PropertyMapping field : fields) {
-      if (field.getIndex() != null) {
+      if (field.getIndex() != null && field.getIndex() < columns.size()) {
         String sourceColumn = columns.get(field.getIndex());
         if (sourceColumn != null) {
           mapped.add(sourceColumn);
@@ -243,7 +249,8 @@ public class MappingAction extends ManagerBaseAction {
     }
 
     // get column mapped to coreId field
-    if (mappingCoreid.getIndex() != null && columns.get(mappingCoreid.getIndex()) != null) {
+    if (mappingCoreid.getIndex() != null && mappingCoreid.getIndex() < columns.size()
+        && columns.get(mappingCoreid.getIndex()) != null) {
       mapped.add(columns.get(mappingCoreid.getIndex()));
     }
 
@@ -452,6 +459,11 @@ public class MappingAction extends ManagerBaseAction {
         columns = mapping.getColumns(peek);
       } else {
         columns = sourceManager.columns(mapping.getSource());
+      }
+      if (columns.isEmpty() && mapping.getSource().getName() != null) {
+        // TODO: i18n
+        addActionWarning("Source " + mapping.getSource().getName()
+                         + " has no columns available to map. Please check that it has been configured correctly.");
       }
     }
   }
