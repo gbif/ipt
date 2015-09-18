@@ -41,7 +41,7 @@ If the installation doesn't start please check the catalina.out logfile, and ref
 
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
-<wiki:gadget url="https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/vimeoSupport/gcVideo.xml" up\_video="https://vimeo.com/116142276" width="640" height="384"/>
+<a href="https://vimeo.com/116142276" target="_blank"><img src="https://i.vimeocdn.com/video/502401133_640.jpg" alt="How to install the IPT screencast" width="640" height="384" border="10" /></a>
 
 ### Jetty
 
