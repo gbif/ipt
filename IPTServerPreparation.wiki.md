@@ -28,10 +28,10 @@ The most common servlet containers used to deploy the IPT are Tomcat, Jetty, and
 
 The IPT has been tested and works well with Tomcat 5.5, Tomcat 6.0 and Tomcat 7.0. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages:
 
-  * [Tomcat on Mac OS X](TomcatInstallationMacOSX.md)
+  * [Tomcat on Mac OS X](TomcatInstallationMacOSX.wiki)
   * [Tomcat on Windows 7](TomcatInstallationWindows7.wiki)
   * [Tomcat on Windows 8](TomcatInstallationWindows8.wiki)
-  * [Tomcat on Cent OS 5](TomcatInstallationCentOS.md)
+  * [Tomcat on Cent OS 5](TomcatInstallationCentOS.wiki)
 
 Download the ipt.war file of the latest release of the IPT from http://www.gbif.org/ipt or from http://code.google.com/p/gbif-providertoolkit/. Copy the ipt.war file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL:
 
