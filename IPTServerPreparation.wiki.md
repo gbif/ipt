@@ -26,7 +26,7 @@ The most common servlet containers used to deploy the IPT are Tomcat, Jetty, and
 
 ### Tomcat
 
-The IPT has been tested and works well with Tomcat 6, 7 and 8. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages:
+The IPT has been tested and works well with Tomcat 6.0, 7.0 and 8.0. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages:
 
   * [Tomcat on Mac OS X](TomcatInstallationMacOSX.wiki)
   * [Tomcat on Windows 7](TomcatInstallationWindows7.wiki)
