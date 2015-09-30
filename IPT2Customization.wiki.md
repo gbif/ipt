@@ -1,6 +1,8 @@
 # How to Style Your IPT
 
-
+## Table of Contents
++ [[Introduction|IPT2Customization.wiki#introduction]]
++ [[Instructions|IPT2Customization.wiki#Instructions]]
 
 ## Introduction
 
@@ -16,6 +18,7 @@ In short, customization can be achieved by applying CSS overrides. Continue read
 Take a look at the before and after screenshots below showing the effects of the default custom.css file.
 
 **Before applying custom.css**
-![http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTDefaultStyle.png](http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTDefaultStyle.png)
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTDefaultStyle.png' />
+
 **After applying custom.css**
-![http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTCustomizedStyle.png](http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v205/IPTCustomizedStyle.png)
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTDefaultStyle.png' />
