@@ -1573,7 +1573,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @return true if each string in array is empty, false otherwise
    */
   private boolean isEmptyLine(String[] line) {
-    String joined = Joiner.on("").join(line);
+    String joined = Joiner.on("").useForNull("").join(line);
     return StringUtils.isBlank(joined);
   }
 }
