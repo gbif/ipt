@@ -271,6 +271,15 @@ $(document).ready(function(){
 </div>
 </#macro>
 
+<#-- return struts param: an HTML anchor to the extension link, or the extension title if no link exists -->
+<#macro linkOrNameParam ext>
+  <#if ext.link?has_content>
+    <@s.param><a href="${ext.link}">${ext.title!}</a></@s.param>
+  <#else>
+    <@s.param>${ext.title!}</@s.param>
+  </#if>
+</#macro>
+
 <h1><span class="superscript"><@s.text name='manage.overview.title.label'/></span>
   <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
 </h1>
@@ -327,7 +336,7 @@ $(document).ready(function(){
               <#assign extensionType><@s.text name='extension'/></#assign>
             </#if>
             <p>
-              <@s.text name='manage.mapping.intro1'><@s.param><a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></@s.param><@s.param>${extensionType?lower_case}:</@s.param><@s.param><a href="${mapping.extension.link}">${mapping.extension.title}</a></@s.param></@s.text>
+              <@s.text name='manage.mapping.intro1'><@s.param><a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></@s.param><@s.param>${extensionType?lower_case}:</@s.param><@linkOrNameParam mapping.extension/></@s.text>
             </p>
 
                 <div>
