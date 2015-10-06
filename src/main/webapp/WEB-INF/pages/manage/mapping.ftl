@@ -400,7 +400,7 @@ $(document).ready(function(){
 
                             <div class="title" id="filter">
                               <@s.text name='manage.mapping.filter'/>
-                              <select id="mapping.filter.filterTime" size="1">
+                              <select name="mapping.filter.filterTime" id="mapping.filter.filterTime" size="1">
                                 <#list mapping.filter.filterTimes?keys as filterTime>
                                     <option value="${filterTime}" <#if (mapping.filter.filterTime!"")==filterTime> selected="selected"</#if>>${filterTime}</option>
                                 </#list>
