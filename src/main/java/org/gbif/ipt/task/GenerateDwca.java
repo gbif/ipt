@@ -590,7 +590,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
         "Can't validate DwC-A for resource " + resource.getShortname() + ". Each line in extension must have an ID " + id.simpleName() + ", which is required in order to link the extension to the core ");
     } else {
       addMessage(Level.INFO, "\u2713 Validated each line in extension has an ID " + id.simpleName());
-      writePublicationLogMessage("No lines in extension are missing an ID" + id.simpleName());
+      writePublicationLogMessage("No lines in extension are missing an ID " + id.simpleName());
     }
 
     if (isOccurrenceFile(extFile)) {
