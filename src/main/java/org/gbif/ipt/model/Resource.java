@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -224,16 +225,37 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return if deletion was successful or not
    */
   public boolean deleteMapping(ExtensionMapping mapping) {
-    boolean result = false;
-    if (mapping != null) {
-      // what's the core row type? store it before deleting the mapping, just in case this is the last core mapping!
+    if (mapping != null && mappings.contains(mapping)) {
+      // what's the core row type?
       String coreRowType = getCoreRowType();
-      result = mappings.remove(mapping);
-      if (result && mapping.isCore() && getCoreMappings(coreRowType).isEmpty()) {
-        mappings.clear();
+      // is this the resource's core mapping?
+      if (coreRowType != null && coreRowType.equalsIgnoreCase(mapping.getExtension().getRowType())) {
+        // are there multiple core mappings?
+        List<ExtensionMapping> coreMappings = getMappings(coreRowType);
+        if (coreMappings.size() > 1) {
+          // if it's the first mapping in the list, swap it with next mapping to retain coreType
+          if (mappings.indexOf(mapping) == 0) {
+            ExtensionMapping next = coreMappings.get(1);
+            int nextIndex = mappings.indexOf(next);
+            log.debug("Swapping first core mapping with next core mapping with index#" + String.valueOf(nextIndex));
+            Collections.swap(mappings, 0, nextIndex);
+          }
+          log.debug("Deleting core mapping...");
+          return mappings.remove(mapping);
+        }
+        // if this was the only core mapping, delete all mappings
+        else {
+          log.debug("Deleting only core mapping and thus clearing all mappings...");
+          mappings.clear();
+          return true;
+        }
+      } else {
+        log.debug("Deleting non-core mapping...");
+        return mappings.remove(mapping);
       }
     }
-    return result;
+    log.debug("Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
+    return false;
   }
 
   public boolean deleteSource(Source src) {

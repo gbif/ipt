@@ -160,7 +160,7 @@ public class ResourceTest {
     assertEquals(4, res.getMappings().size());
     assertEquals(1, res.getCoreMappings().size());
 
-    // try againt to remove the same ext - should not work
+    // try again to remove the same ext - should not work
     assertFalse(res.deleteMapping(em1));
     assertEquals(4, res.getMappings().size());
     assertEquals(1, res.getCoreMappings().size());
