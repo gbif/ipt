@@ -37,7 +37,7 @@ versionsTable macro: Generates a data table that has pagination.
             "oLanguage": {
                 "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
                 "sZeroRecords": "<@s.text name="dataTables.sZeroRecords"/>",
-                "sInfo": "<@s.text name="dataTables.sInfo.versions"/>",
+                "sInfo": "<@s.text name="dataTables.sInfo"/>",
                 "sInfoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
                 "sInfoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
                 "oPaginate": {

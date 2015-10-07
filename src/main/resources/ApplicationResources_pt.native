@@ -1389,8 +1389,7 @@ format.date={yyyy-MM-dd}
 xwork.default.invalid.fieldvalue=Valor inválido
 
 # Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
-dataTables.sInfo=Visualizando _START_ até _END_ de _TOTAL_ recursos
-dataTables.sInfo.versions=Mostrando _START_ to_END_of_TOTAL_ versões
+dataTables.sInfo=Visualizando _START_ até _END_ de _TOTAL_
 dataTables.sInfoEmpty=Visualizando 0 até 0 de 0 recursos
 dataTables.sInfoFiltered=(filtrado de _MAX_ totais)
 dataTables.sEmptyTable.resources=Nenhum recurso está disponível atualmente
