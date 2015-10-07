@@ -177,6 +177,45 @@ public class ResourceTest {
     assertEquals(0, res.getCoreMappings().size());
   }
 
+  /**
+   * The first mapping determines the core type. This test ensures that if multiple core type mappings exist, and the
+   * first mapping gets deleted, the core type is properly preserved if the second mapping isn't a core mapping.
+   */
+  @Test
+  public void testDeleteMapping2() {
+    Resource res = getResource();
+    ExtensionMapping em1 = getOccExtensionMapping(); // core
+    ExtensionMapping em2 = getExtExtensionMapping();
+    ExtensionMapping em3 = getExtExtensionMapping();
+    ExtensionMapping em4 = getOccExtensionMapping(); // core
+
+    res.addMapping(em1); // core
+    res.addMapping(em2);
+    res.addMapping(em3);
+    res.addMapping(em4); // core
+
+    assertEquals(4, res.getMappings().size());
+    assertEquals(2, res.getCoreMappings().size());
+
+    // delete first core
+    assertTrue(res.deleteMapping(em1));
+    assertEquals(3, res.getMappings().size());
+    assertEquals(1, res.getCoreMappings().size());
+
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, res.getCoreRowType());
+
+    // remove extension
+    assertTrue(res.deleteMapping(em2));
+    assertEquals(2, res.getMappings().size());
+    assertEquals(1, res.getCoreMappings().size());
+
+    // remove the last core, should remove all
+    assertTrue(res.deleteMapping(em4));
+    assertFalse(res.hasCore());
+    assertEquals(0, res.getMappings().size());
+    assertEquals(0, res.getCoreMappings().size());
+  }
+
   @Test
   public void testDeleteSource() throws AlreadyExistingException {
     Resource res = getResource();
