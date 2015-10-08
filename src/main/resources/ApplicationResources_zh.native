@@ -1390,7 +1390,7 @@ xwork.default.invalid.fieldvalue=無效的欄位值
 
 # Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
 dataTables.sInfo=顯示 _START_ 至 _END_ 共 _TOTAL_
-dataTables.sInfoEmpty=顯示 0 至 0 共 0 資料集
+dataTables.sInfoEmpty=顯示 0 至 0 共 0
 dataTables.sInfoFiltered=(過濾自 _MAX_ 總數)
 dataTables.sEmptyTable.resources=目前沒有任何資源
 dataTables.sEmptyTable.organisations=目前沒有任何單位組織

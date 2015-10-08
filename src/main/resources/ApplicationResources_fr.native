@@ -1390,7 +1390,7 @@ xwork.default.invalid.fieldvalue=Valeur de champ invalide
 
 # Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
 dataTables.sInfo=Voici _START_ à _END_ de _TOTAL_
-dataTables.sInfoEmpty=Voici 0 à 0 de 0 ressources
+dataTables.sInfoEmpty=Voici 0 à 0 de 0
 dataTables.sInfoFiltered=(filtré de _MAX_ total)
 dataTables.sEmptyTable.resources=Aucune ressource n''est disponible actuellement
 dataTables.sEmptyTable.organisations=Aucune organisation n''est disponible actuellement
