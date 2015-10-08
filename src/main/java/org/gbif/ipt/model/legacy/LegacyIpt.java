@@ -106,7 +106,7 @@ public class LegacyIpt extends AgentBase implements Serializable {
    * @param organisationKey the organisationKey to set
    */
   public void setOrganisationKey(@Nullable String organisationKey) {
-    this.organisationKey = UUID.fromString(organisationKey);
+    this.organisationKey = (organisationKey == null) ? null : UUID.fromString(organisationKey);
   }
 
   /**

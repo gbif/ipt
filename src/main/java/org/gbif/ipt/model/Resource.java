@@ -573,7 +573,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     return Ordering.natural().nullsLast().onResultOf(new Function<Source, String>() {
       @Nullable
       public String apply(@Nullable Source src) {
-        return src.getName();
+        return (src == null) ? null : src.getName();
       }
     }).sortedCopy(sources);
   }

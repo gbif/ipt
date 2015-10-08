@@ -582,7 +582,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     log.info("Registering IPT instance...");
 
     // populate params for ws
-    String orgKey = (org != null && org.getKey() != null) ? org.getKey().toString() : null;
+    String orgKey = org.getKey().toString();
     List<NameValuePair> data = buildIPTParameters(ipt, orgKey);
 
     // add IPT password used for updating the IPT's own metadata & issuing atomic updateURL operations

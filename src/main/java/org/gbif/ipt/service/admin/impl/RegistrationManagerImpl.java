@@ -174,7 +174,9 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     if (ipt != null) {
       i = new Ipt();
       String key = (ipt.getKey() == null) ? null : ipt.getKey().toString();
-      i.setKey(key);
+      if (key != null) {
+        i.setKey(key);
+      }
       i.setDescription(Strings.emptyToNull(ipt.getDescription()));
       i.setWsPassword(Strings.emptyToNull(ipt.getWsPassword()));
       i.setName(Strings.emptyToNull(ipt.getName()));
@@ -207,7 +209,9 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     if (organisation != null) {
       o = new Organisation();
       String key = (organisation.getKey() == null) ? null : organisation.getKey().toString();
-      o.setKey(key);
+      if (key != null) {
+        o.setKey(key);
+      }
       o.setName(organisation.getName());
       o.setAlias(organisation.getAlias());
       o.setCanHost(organisation.isCanHost());
