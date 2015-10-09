@@ -48,7 +48,7 @@ basic.showMore=增加顯示內容
 basic.showLess=減少顯示內容
 basic.show=顯示
 basic.hide=隱藏
-basic.none=None
+basic.none=無
 basic.issued=Issued
 
 # buttons
@@ -89,7 +89,7 @@ button.install=安裝
 ####
 # footer
 footer.version=版本
-footer.projectHome=About the IPT
+footer.projectHome=關於 IPT
 footer.useManual=使用手冊
 footer.bugReport=回報程式錯誤
 footer.featureRequest=建議新功能
@@ -229,7 +229,7 @@ validation.short={0} 至少需要 {1} 字母。
 validation.contains=文字不可包含 "{0}" 符號。
 validation.field.required=欄位
 validation.field.blank={0} 必須多於 2 個字元，不可有空白字元。
-validation.field.invalidSize={0} must have a length between {1} and {2} characters, check there are no blank spaces.
+validation.field.invalidSize={0} 必需有 {1} 至 {2} 長度的字元，請確認無空白字元。
 validation.wrong.datatype={0} 對應至錯誤資料類型的值。
 validation.column.multipleTranslations=來源欄位 {0} 有多種翻譯名稱。為避免翻譯衝突，請選用一種翻譯。
 
@@ -238,7 +238,7 @@ validation.email.required=需要填寫電子郵址。
 validation.email.invalid=電子郵件無效。
 validation.firstname.required=需填寫名字。
 validation.lastname.required=需填寫姓氏。
-validation.password.reentered=Please reenter a valid password
+validation.password.reentered=請重新輸入有效的密碼。
 validation.password.required=密碼至少需要 4 個字元。
 validation.password2.wrong=輸入密碼不一致。
 validation.baseURL.required=需要 IPT base URL。
@@ -253,7 +253,7 @@ validation.organisation.doiRegistrationAgency.required=需要DOI註冊組織
 validation.organisation.agencyAccountUsername.required=需要註冊組織的使用者帳號
 validation.organisation.agencyAccountPassword.required=需要註冊組織的使用者密碼
 validation.organisation.doiPrefix.required=需要DOI前置字元
-validation.organisation.doiPrefix.invalid=DOI prefix must start with "10."
+validation.organisation.doiPrefix.invalid=DOI前置字元必須以"10."起始。
 validation.organisation.doiPrefix.ezid.invalid=EZID prefix must contain shoulder, e.g. "/FOO" in "10.1234/FOO"
 validation.organisation.doiPrefix.invalid.testMode=In test mode, typically the test DOI prefix is used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
 validation.organisation.doiPrefix.invalid.productionMode=In production mode, the test DOI prefix cannot be used\: 10.5072 for DataCite or 10.5072/FK2 for EZID
@@ -769,7 +769,6 @@ manage.mapping.noid=無識別碼
 manage.mapping.lineNumber=行號
 manage.mapping.uuid=UUID 產生器
 manage.mapping.hideEmpty=隱藏未對應之欄位
-manage.mapping.nonmapped=Unmapped fields
 manage.mapping.hideGroups=Hide redundant classes
 manage.mapping.redundant=Redundant classes
 manage.mapping.showAll=Show all fields
@@ -1396,7 +1395,10 @@ dataTables.sEmptyTable.resources=目前沒有任何資源
 dataTables.sEmptyTable.organisations=目前沒有任何單位組織
 dataTables.sEmptyTable.versions=目前沒有任何版本
 dataTables.sEmptyTable.users=目前沒有任何使用者
-dataTables.sZeroRecords=沒有找到任何資料集
+dataTables.sZeroRecords.resources=沒有找到任何資料集
+dataTables.sZeroRecords.organisations=No organisations were found
+dataTables.sZeroRecords.versions=No versions were found
+dataTables.sZeroRecords.users=No users were found
 
 dwca.failed=資料集 {0} 壓縮檔產生失敗：{1}
 dwca.interrupted=資料集 {0} 壓縮檔產生中斷：{1}
