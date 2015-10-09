@@ -39,12 +39,11 @@ public class ResourceUtils {
    *
    * @return published version reconstructed
    */
-  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull DOI doi,
+  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @Nullable DOI doi,
     @Nullable Organisation organisation, @Nullable VersionHistory versionHistory, @Nullable File versionEmlFile,
     @Nullable UUID key) {
     Preconditions.checkNotNull(version);
     Preconditions.checkNotNull(shortname);
-    Preconditions.checkNotNull(doi);
 
     if (organisation == null || versionHistory == null || versionEmlFile == null) {
       throw new IllegalArgumentException(

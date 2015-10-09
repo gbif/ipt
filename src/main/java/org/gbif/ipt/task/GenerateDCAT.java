@@ -11,14 +11,17 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.InputStreamUtils;
+import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -162,21 +165,32 @@ public class GenerateDCAT {
     for (Resource resource : resourceManager.listPublishedPublicVersions()) {
       if (resource.getRecordsPublished() > 0 && resource.getEml() != null && resource.getEml().parseLicenseUrl() != null
           && themeUri != null && datasetThemeLabel != null && themeTaxonomyUri != null && publisherBaselink != null) {
-        feed.append(createDCATDatasetInformation(resource));
+
+        BigDecimal v = resource.getLastPublishedVersionsVersion();
+        String shortname = resource.getShortname();
+        File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+
+        // make sure the last published public version gets used
+        Resource publishedPublicVersion = ResourceUtils.reconstructVersion(v, resource.getShortname(),
+          resource.getAssignedDoi(), resource.getOrganisation(), resource.findVersionHistory(v), versionEmlFile,
+          resource.getKey());
+
+        feed.append(createDCATDatasetInformation(publishedPublicVersion));
         feed.append("\n");
-        feed.append(createDCATDistributionInformation(resource));
+        feed.append(createDCATDistributionInformation(publishedPublicVersion));
         feed.append("\n");
         foundDatasets = true;
 
         //add Organisation of Dataset (optional)
-        if (resource.getOrganisation() != null) {
-          String publisher = publisherBaselink + resource.getOrganisation().getKey() + "#Organization";
+        if (publishedPublicVersion.getOrganisation() != null) {
+          String publisher = publisherBaselink + publishedPublicVersion.getOrganisation().getKey() + "#Organization";
           String organisation =
-            encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + resource
+            encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + publishedPublicVersion
               .getOrganisation().getName() + "\"";
-          if (resource.getOrganisation().getHomepageURL() != null) {
-            organisation += " ; foaf:homepage " + encapsulateObject(resource.getOrganisation().getHomepageURL(),
-              ObjectTypes.RESOURCE);
+          if (publishedPublicVersion.getOrganisation().getHomepageURL() != null) {
+            organisation +=
+              " ; foaf:homepage " + encapsulateObject(publishedPublicVersion.getOrganisation().getHomepageURL(),
+                ObjectTypes.RESOURCE);
           }
           organisation += " .";
           organisations.add(organisation);
