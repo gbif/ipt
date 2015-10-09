@@ -140,12 +140,13 @@ public class GenerateDCATTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
     Resource res = getResource(resourceXML);
     assertNotNull(res.getTitle());
-    assertEquals("TEST RESOURCE", res.getTitle());
+    assertEquals("TEST \"RESOURCE\"", res.getTitle());
 
     String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
     assertTrue(dcat.contains("a dcat:Dataset"));
-    assertTrue(dcat.contains("dct:title \"" + res.getTitle() + "\""));
-    assertTrue(dcat.contains("dct:description"));
+    // ensure literals (e.g. title, description) are properly escaped
+    assertTrue(dcat.contains("dct:title \"" + "TEST \\\"RESOURCE\\\"" + "\""));
+    assertTrue(dcat.contains("dct:description \"" + "Test \\\"description\\\"" + "\""));
     assertTrue(dcat.contains("dcat:keyword"));
     assertTrue(dcat.contains("dcat:theme <http://eurovoc.europa.eu/5463>"));
     assertTrue(dcat.contains(
@@ -249,6 +250,10 @@ public class GenerateDCATTest {
 
     // create a new resource.
     Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);
+
+    // update resource title, to have double quotation marks which need to be escaped
+    resource.setTitle("TEST \"RESOURCE\"");
+    resource.getEml().getDescription().set(0, "Test \"description\"");
 
     // CCO
     resource.getEml().setIntellectualRights(

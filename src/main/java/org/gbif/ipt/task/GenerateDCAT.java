@@ -759,7 +759,7 @@ public class GenerateDCAT {
         ret += "[";
         break;
     }
-    ret += object;
+    ret += (ObjectTypes.LITERAL == type) ? escapeString(object) : object;
     switch (type) {
       case LITERAL:
         ret += "\"";
@@ -783,5 +783,17 @@ public class GenerateDCAT {
    */
   private String parseToIsoDate(@NotNull Date dateStamp) {
     return DATE_FORMAT.format(dateStamp);
+  }
+
+  /**
+   * This method ensures a string uses \-escape sequences where necessary (e.g. double quotation marks).
+   * Escape sequence specified in <a href="http://www.w3.org/TeamSubmission/turtle/#sec-strings">Turtle specification</a>.
+   *
+   * @param s string
+   *
+   * @return escaped string
+   */
+  private String escapeString(String s) {
+    return (s == null) ? null : s.replaceAll("\"","\\\\\"");
   }
 }
