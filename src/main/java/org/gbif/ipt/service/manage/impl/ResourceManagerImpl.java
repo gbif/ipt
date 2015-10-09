@@ -235,7 +235,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (metadata.getLogoUrl() != null) {
         eml.setLogoUrl(metadata.getLogoUrl().toString());
       }
-      eml.setPubDate(metadata.getPubDate());
+      if (metadata.getPubDate() != null) {
+        eml.setPubDate(metadata.getPubDate());
+      } else {
+        eml.setPubDate(new Date());
+        log.debug("pubDate set to today, because incoming pubDate was null");
+      }
     }
     return eml;
   }
@@ -1480,8 +1485,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.setEmlVersion(restoring);
         save(resource);
 
-        // update eml.xml and persist changes
-        resource.getEml().setPubDate(resource.getLastPublished());
+        // restore EML pubDate to last published date (provided last published date exists)
+        if (resource.getLastPublished() != null) {
+          resource.getEml().setPubDate(resource.getLastPublished());
+        }
+
+        // persist EML changes
         saveEml(resource);
 
       } catch (IOException e) {
