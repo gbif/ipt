@@ -769,7 +769,6 @@ manage.mapping.noid=IDがありません。
 manage.mapping.lineNumber=行番号
 manage.mapping.uuid=UUID Generator
 manage.mapping.hideEmpty=マップされていないフィールドを表示しない。
-manage.mapping.nonmapped=マップされていないフィールド
 manage.mapping.hideGroups=冗長なクラスを非表示しない。
 manage.mapping.redundant=冗長クラス
 manage.mapping.showAll=すべてのフィールドを表示。
@@ -1389,14 +1388,17 @@ format.date={yyyy-MM-dd}
 xwork.default.invalid.fieldvalue=無効な値
 
 # Data Tables. Warning: don't translate any word beginning and ending in underscores, e.g. _MENU_
-dataTables.sInfo=_TOTAL_の_START_から_END_まで表示する。
-dataTables.sInfoEmpty=０リソースの０番目から０番目までを表示する。
+dataTables.sInfo=全_TOTAL_ の  _start _から_END_までを表示する。
+dataTables.sInfoEmpty=全0 の 0 から 0 までを表示する。
 dataTables.sInfoFiltered=(filtered from _MAX_ total)
 dataTables.sEmptyTable.resources=利用できるリソースはありません。
 dataTables.sEmptyTable.organisations=組織がありません。
 dataTables.sEmptyTable.versions=バージョンがありません。
 dataTables.sEmptyTable.users=ユーザーがありません。
-dataTables.sZeroRecords=リソースが見つかりません。
+dataTables.sZeroRecords.resources=リソースが見つかりません。
+dataTables.sZeroRecords.organisations=組織が見つかりませんでした。
+dataTables.sZeroRecords.versions=バージョンが見つかりませんでした。
+dataTables.sZeroRecords.users=ユーザーが見つかりませんでした。
 
 dwca.failed=リソース{1}のヴァージョン\#{0}のアーカイブ作成は失敗しました。
 dwca.interrupted=リソース{1}のヴァージョン\#{0}のアーカイブ作成が中断しました。
