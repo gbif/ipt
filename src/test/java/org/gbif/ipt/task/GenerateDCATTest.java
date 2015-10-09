@@ -51,6 +51,7 @@ import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Agent;
+import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
@@ -147,7 +148,8 @@ public class GenerateDCATTest {
     // ensure literals (e.g. title, description) are properly escaped
     assertTrue(dcat.contains("dct:title \"" + "TEST \\\"RESOURCE\\\"" + "\""));
     assertTrue(dcat.contains("dct:description \"" + "Test \\\"description\\\"" + "\""));
-    assertTrue(dcat.contains("dcat:keyword"));
+    // ensure duplicate keywords have been removed
+    assertTrue(dcat.contains("dcat:keyword \"" + "Phytosociology" + "\"" + " , " + "\"" + "Occurrence" + "\"" + " , " + "\"" + "Observation" + "\"" + " ;"));
     assertTrue(dcat.contains("dcat:theme <http://eurovoc.europa.eu/5463>"));
     assertTrue(dcat.contains(
       "dcat:contactPoint [ a vcard:Individual ; vcard:fn \"Eric Stienen\"; vcard:hasEmail <mailto:eric.stienen@inbo.be> ]"));
@@ -251,9 +253,30 @@ public class GenerateDCATTest {
     // create a new resource.
     Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);
 
-    // update resource title, to have double quotation marks which need to be escaped
+    // update resource title and description, to have double quotation marks which need to be escaped
     resource.setTitle("TEST \"RESOURCE\"");
     resource.getEml().getDescription().set(0, "Test \"description\"");
+
+    // update keyword sets: should be three, with "Occurrence" and "Observation" repeating more than once which breaks the feed
+    resource.getEml().getKeywords().clear();
+
+    KeywordSet keywordSet1 = new KeywordSet();
+    keywordSet1.add("Phytosociology");
+    keywordSet1.add("Occurrence");
+    keywordSet1.add("Observation");
+    keywordSet1.setKeywordThesaurus("n/a");
+
+    KeywordSet keywordSet2 = new KeywordSet();
+    keywordSet2.add("Occurrence");
+    keywordSet2.setKeywordThesaurus("http://rs.gbif.org/vocabulary/gbif/dataset_type.xml");
+
+    KeywordSet keywordSet3 = new KeywordSet();
+    keywordSet3.add("Observation");
+    keywordSet3.setKeywordThesaurus("http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml");
+
+    resource.getEml().addKeywordSet(keywordSet1);
+    resource.getEml().addKeywordSet(keywordSet2);
+    resource.getEml().addKeywordSet(keywordSet3);
 
     // CCO
     resource.getEml().setIntellectualRights(

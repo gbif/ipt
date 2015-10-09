@@ -36,6 +36,7 @@ import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -524,10 +525,15 @@ public class GenerateDCAT {
     }
 
     //dcat:keyword
+    // note: duplicate keywords cannot exist, see issue #1210
     if (!eml.getKeywords().isEmpty()) {
       List<String> keywords = Lists.newArrayList();
       for (KeywordSet keywordSet : eml.getKeywords()) {
-        keywords.addAll(keywordSet.getKeywords());
+        for (String keyword : keywordSet.getKeywords()) {
+          if (!Strings.isNullOrEmpty(keyword) && !keywords.contains(keyword)) {
+            keywords.add(keyword);
+          }
+        }
       }
       addPredicateToBuilder(datasetBuilder, "dcat:keyword");
       addObjectsToBuilder(datasetBuilder, keywords, ObjectTypes.LITERAL);
