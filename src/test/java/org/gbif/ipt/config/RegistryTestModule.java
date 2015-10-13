@@ -1,5 +1,6 @@
 package org.gbif.ipt.config;
 
+import org.gbif.checklistbank.ws.client.guice.ChecklistBankWsClientModule;
 import org.gbif.metrics.ws.client.guice.MetricsWsClientModule;
 import org.gbif.registry.ws.client.guice.RegistryWsClientModule;
 import org.gbif.ws.client.guice.AnonymousAuthModule;
@@ -30,6 +31,7 @@ public class RegistryTestModule {
   private static Injector webserviceClient;
   private static Injector webserviceClientReadOnly;
   private static Properties properties;
+  private static Properties clbProperties;
 
   /**
    * Load the Properties needed to configure the webservice client from the registry.properties file.
@@ -47,6 +49,24 @@ public class RegistryTestModule {
       }
     }
     return properties;
+  }
+
+  /**
+   * Load the Properties needed to configure the clb webservice client from the clb.properties file.
+   */
+  @Singleton
+  public static synchronized Properties clbProperties() {
+    if (clbProperties == null) {
+      Properties p = new Properties();
+      try {
+        p.load(RegistryTestModule.class.getResourceAsStream("/config/clb.properties"));
+      } catch (IOException e) {
+        throw Throwables.propagate(e);
+      } finally {
+        clbProperties = p;
+      }
+    }
+    return clbProperties;
   }
 
   /**
@@ -68,9 +88,9 @@ public class RegistryTestModule {
   public static synchronized Injector webserviceClientReadOnly() {
     if (webserviceClientReadOnly == null) {
       // Anonymous authentication module used, webservice client will be read-only
-      webserviceClientReadOnly =
-        Guice.createInjector(new MetricsWsClientModule(properties()),
-          new RegistryWsClientModule(properties()), new AnonymousAuthModule());
+      webserviceClientReadOnly = Guice
+        .createInjector(new MetricsWsClientModule(properties()), new RegistryWsClientModule(properties()),
+          new AnonymousAuthModule(), new ChecklistBankWsClientModule(clbProperties(), true, true));
     }
     return webserviceClientReadOnly;
   }

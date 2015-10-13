@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.registry.impl;
 
+import org.gbif.api.model.checklistbank.DatasetMetrics;
 import org.gbif.api.model.common.paging.PagingRequest;
 import org.gbif.api.model.common.paging.PagingResponse;
 import org.gbif.api.model.metrics.cube.OccurrenceCube;
@@ -7,6 +8,7 @@ import org.gbif.api.model.metrics.cube.ReadBuilder;
 import org.gbif.api.model.registry.Dataset;
 import org.gbif.api.model.registry.Installation;
 import org.gbif.api.model.registry.Organization;
+import org.gbif.api.service.checklistbank.DatasetMetricsService;
 import org.gbif.api.service.metrics.CubeService;
 import org.gbif.api.service.registry.DatasetService;
 import org.gbif.api.service.registry.InstallationService;
@@ -53,13 +55,17 @@ public class RegistryWsClientTest {
    * Gather statistics needed to update IPT statistics on http://www.gbif.org/ipt/stats.
    * Iterates through all installations, looking for IPT installations. For each IPT installation, it counts the
    * number of occurrence, checklist, and metadata-only datasets hosted by that installation.
+   * For each occurrence dataset it counts the number of records. For each checklist, it counts the number of usages
+   * and the number of occurrence records.
+   * </br>
    * Remember to configure registry.properties to connect to the desired service URLs.
    */
-  @Ignore
+  @Test
   public void gatherStatistics() {
     InstallationService installationService = webserviceClientReadOnly().getInstance(InstallationService.class);
     CubeService occurrenceCubeService = webserviceClientReadOnly().getInstance(CubeService.class);
     OrganizationService organizationService = webserviceClientReadOnly().getInstance(OrganizationService.class);
+    DatasetMetricsService datasetMetricsService = webserviceClientReadOnly().getInstance(DatasetMetricsService.class);
 
     int installationCount = 0;
     int iptInstallationCount = 0;
@@ -68,6 +74,8 @@ public class RegistryWsClientTest {
     int iptOccurrenceDatasetCount = 0;
     int iptMetadataDatasetCount = 0;
     long totalOccurrenceRecords = 0;
+    long totalNameUsages = 0;
+    long totalOccurrenceRecordsFromChecklists = 0;
     Set<Country> countriesRepresented = Sets.newHashSet();
     Set<UUID> checklistDatasetPublisherKeys = Sets.newHashSet();
     Set<UUID> occurrenceDatasetPublisherKeys = Sets.newHashSet();
@@ -99,6 +107,20 @@ public class RegistryWsClientTest {
               if (dataset.getType().equals(DatasetType.CHECKLIST)) {
                 iptChecklistDatasetCount++;
                 checklistDatasetPublisherKeys.add(dataset.getPublishingOrganizationKey());
+                // how many name usages?
+                DatasetMetrics metrics = datasetMetricsService.get(dataset.getKey());
+                if (metrics != null) {
+                  long numNameUsages = metrics.getUsagesCount();
+                  //LOG.info("Checklist [" + dataset.getKey() + "] has " + numNameUsages + " usages");
+                  totalNameUsages = totalNameUsages + numNameUsages;
+                }
+                // how many occurrence records
+                long numOccurrencesForChecklist =
+                  occurrenceCubeService.get(new ReadBuilder().at(OccurrenceCube.DATASET_KEY, dataset.getKey()));
+                if (numOccurrencesForChecklist > 0 && !dataset.getInstallationKey().equals(UUID.fromString("9afa1395-6e93-4848-a42d-bce896f5195e"))) {
+                  //LOG.info("Checklist [" + dataset.getKey() + "] has " + numOccurrencesForChecklist + " occurrence records");
+                  totalOccurrenceRecordsFromChecklists = totalOccurrenceRecordsFromChecklists + numOccurrencesForChecklist;
+                }
               }
               // how many datasets are Occurrence datasets, and how many different publishers share them?
               else if (dataset.getType().equals(DatasetType.OCCURRENCE)) {
@@ -129,9 +151,9 @@ public class RegistryWsClientTest {
       iptInstallationCount + " IPTs hosted in " + countriesRepresented.size() + " countries serve " + iptDatasetCount
       + " datasets");
     LOG.info(iptChecklistDatasetCount + " checklist datasets published by " + checklistDatasetPublisherKeys.size()
-             + " publishers");
+             + " publishers totalling " + totalNameUsages + " usages and " + totalOccurrenceRecordsFromChecklists + " occurrence records");
     LOG.info(iptOccurrenceDatasetCount + " occurrence datasets published by " + occurrenceDatasetPublisherKeys.size()
-             + " publishers totalling " + totalOccurrenceRecords + " records");
+             + " publishers totalling " + totalOccurrenceRecords + " occurrence records");
     LOG.info(iptMetadataDatasetCount + " metadata-only datasets published by " + metadataDatasetPublisherKeys.size()
              + " publishers");
   }
