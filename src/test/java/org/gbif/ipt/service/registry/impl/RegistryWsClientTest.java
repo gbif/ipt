@@ -60,7 +60,7 @@ public class RegistryWsClientTest {
    * </br>
    * Remember to configure registry.properties to connect to the desired service URLs.
    */
-  @Test
+  @Ignore
   public void gatherStatistics() {
     InstallationService installationService = webserviceClientReadOnly().getInstance(InstallationService.class);
     CubeService occurrenceCubeService = webserviceClientReadOnly().getInstance(CubeService.class);
