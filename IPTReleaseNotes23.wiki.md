@@ -32,9 +32,9 @@ and limitations under the License.
 
 An upgrade can be performed in 4 steps:
 
-  1. Replace the previous .war file with the latest edition having the same name (e.g. ipt.war)
+  1. Replace the previous .war file with the latest edition having the same name (e.g. ipt.war). **Note**: If you replace the .war file while Tomcat is stopped, be sure to delete the associated expanded directory (e.g. /ipt) before restarting Tomcat, so that the updated WAR file will be re-expanded when Tomcat restarts.
   2. Backup the existing data directory
-  3. Reuse the existing data directory during setup
+  3. Immediately open the IPT in a web browser, and reuse the existing data directory on the initial IPT setup page
   4. To be sure the upgrade worked, try logging in and look for the new version number in the footer (**restart Tomcat if cached version still appears**)
 
 ### B. Post-upgrade instructions
