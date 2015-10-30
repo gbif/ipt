@@ -29,6 +29,11 @@ public class VersionHistory {
     this.publicationStatus = publicationStatus;
   }
 
+  public VersionHistory(BigDecimal version, PublicationStatus publicationStatus) {
+    this.version = version.toPlainString();
+    this.publicationStatus = publicationStatus;
+  }
+
   /**
    * @return the doi of this version, always in prefix/suffix format excluding "doi:", e.g. 10.1234/qu83ng
    */
@@ -56,7 +61,6 @@ public class VersionHistory {
   /**
    * @return the date this version was released
    */
-  @NotNull
   public Date getReleased() {
     return released;
   }

@@ -98,7 +98,7 @@ public class PublishAllResourcesActionTest {
     assertEquals("success", result);
 
     // PublicationException logged in ActionError
-    assertEquals(1, action.getActionErrors().size());
+    assertEquals(2, action.getActionErrors().size());
     // # of publish event failures for resource captured
     assertEquals(1, action.resourceManager.getProcessFailures().size());
     assertFalse(action.resourceManager.hasMaxProcessFailures(resource));

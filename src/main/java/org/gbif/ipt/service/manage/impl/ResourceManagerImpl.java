@@ -109,7 +109,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
@@ -127,7 +127,6 @@ import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
-import org.xml.sax.SAXException;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -781,7 +780,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
 
             // the previous version needs to be rolled back
-            restoreVersion(resource, version, resource.getReplacedEmlVersion(), action);
+            restoreVersion(resource, version, action);
 
             // keep track of how many failures on auto publication have happened
             processFailures.put(resource.getShortname(), new Date());
@@ -844,8 +843,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       List<VersionHistory> history = r.getVersionHistory();
       if (!history.isEmpty()) {
         VersionHistory latestVersion = history.get(0);
-        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) && !latestVersion
-          .getPublicationStatus().equals(PublicationStatus.PRIVATE)) {
+        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
+            !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
+            latestVersion.getReleased() != null) {
           result.add(r);
         }
       } else if (r.isRegistered()) { // for backwards compatibility with resources published prior to v2.2
@@ -1187,6 +1187,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
+    // add new version history
+    addOrUpdateVersionHistory(resource, version, false, action);
+
     // publish EML
     publishEml(resource, version);
 
@@ -1234,8 +1237,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     updateNextPublishedDate(resource);
     // register/update DOI
     executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
-    // save the version history
-    saveVersionHistory(resource, version, action);
+    // finalise/update version history
+    addOrUpdateVersionHistory(resource, version, true, action);
     // persist resource object changes
     save(resource);
     // if archival mode is NOT turned on, don't keep former archive version (version replaced)
@@ -1385,6 +1388,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * This corresponds to a new major version change.
    *
    * @param resource resource whose DOI will be registered
+   * @param version new version
+   * @param replacedVersion previous version being replaced
    */
   @VisibleForTesting
   protected void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion) {
@@ -1392,10 +1397,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     DOI doiToRegister = resource.getDoi();
     DOI doiToReplace = resource.getAssignedDoi();
-    BigDecimal versionToReplace = resource.getLastPublishedVersionsVersion();
+
     if (doiToRegister != null && resource.isPubliclyAvailable() && doiToReplace != null
         && resource.getEmlVersion() != null && resource.getEmlVersion().compareTo(version) == 0
-        && versionToReplace != null && versionToReplace.compareTo(replacedVersion) == 0) {
+        && replacedVersion != null && resource.findVersionHistory(replacedVersion) != null) {
 
       // register new DOI first, indicating it replaces former DOI
       doRegisterDoi(resource, doiToReplace);
@@ -1406,7 +1411,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
         Resource lastPublishedVersion = ResourceUtils
           .reconstructVersion(replacedVersion, resource.getShortname(), doiToReplace, resource.getOrganisation(),
-            resource.findVersionHistory(versionToReplace), replacedVersionEmlFile, resource.getKey());
+            resource.findVersionHistory(replacedVersion), replacedVersionEmlFile, resource.getKey());
 
         DataCiteMetadata assignedDoiMetadata =
           DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
@@ -1438,51 +1443,79 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public void restoreVersion(Resource resource, BigDecimal rollingBack, BigDecimal restoring, BaseAction action) {
+  /**
+   * After ensuring the version being rolled back is equal to the last version of the resource attempted to be
+   * published, the method returns the last successfully published version, which is the version to restore.
+   *
+   * @param resource   resource
+   * @param toRollBack version to rollback
+   *
+   * @return the version to restore, or null if version history is invalid
+   */
+  private BigDecimal getVersionToRestore(@NotNull Resource resource, @NotNull BigDecimal toRollBack) {
+    BigDecimal lastVersion = resource.getLastVersionHistoryVersion();
+    BigDecimal penultimateVersion = resource.getLastPublishedVersionsVersion();
+
+    // return penultimate version if all checks pass
+    if (penultimateVersion != null && penultimateVersion.compareTo(Constants.INITIAL_RESOURCE_VERSION) >= 0
+        && lastVersion != null && lastVersion.compareTo(toRollBack) == 0
+        && penultimateVersion.compareTo(lastVersion) != 0) {
+      return penultimateVersion;
+    }
+    return null;
+  }
+
+  public void restoreVersion(Resource resource, BigDecimal rollingBack, BaseAction action) {
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
-    String shortname = resource.getShortname();
-    log.info(
-      "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + restoring.toPlainString()
-      + " of resource " + shortname);
 
-    if (restoring.compareTo(BigDecimal.ZERO) >= 0) {
+    // determine version to restore (looking at version history)
+    BigDecimal toRestore = getVersionToRestore(resource, rollingBack);
+
+    if (toRestore != null) {
+      String shortname = resource.getShortname();
+      log.info(
+        "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + toRestore.toPlainString()
+        + " of resource " + shortname);
+
       try {
-        // delete eml-1.xml if it exists (eml.xml must remain)
+        // delete eml-1.1.xml if it exists (eml.xml must remain)
         File versionedEMLFile = dataDir.resourceEmlFile(shortname, rollingBack);
         if (versionedEMLFile.exists()) {
           FileUtils.forceDelete(versionedEMLFile);
         }
-        // delete shortname-1.rtf if it exists
+        // delete shortname-1.1.rtf if it exists
         File versionedRTFFile = dataDir.resourceRtfFile(shortname, rollingBack);
         if (versionedRTFFile.exists()) {
           FileUtils.forceDelete(versionedRTFFile);
         }
-        // delete dwca-1.zip if it exists
+        // delete dwca-1.1.zip if it exists
         File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, rollingBack);
         if (versionedDwcaFile.exists()) {
           FileUtils.forceDelete(versionedDwcaFile);
         }
-        // dwca-rollingBack.zip should be replaced with dwca-restoring.zip - if it exists
-        File versionedDwcaFileToRestore = dataDir.resourceDwcaFile(shortname, restoring);
-        if (versionedDwcaFileToRestore.exists()) {
-          // proceed with overwriting/replacing dwca-rollingBack.zip with dwca-restoring.zip
-          File versionedDwcaFileToRollback = dataDir.resourceDwcaFile(resource.getShortname(), rollingBack);
-          FileUtils.copyFile(versionedDwcaFileToRestore, versionedDwcaFileToRollback);
-        }
-        // ensure version history removed
+
+        // remove VersionHistory of version being rolled back
         resource.removeVersionHistory(rollingBack);
 
-        // ensure recordsPublished count gets reset
-        VersionHistory restoredVersionVersionHistory = resource.findVersionHistory(restoring);
+        // reset recordsPublished count from restored VersionHistory
+        VersionHistory restoredVersionVersionHistory = resource.findVersionHistory(toRestore);
         if (restoredVersionVersionHistory != null) {
           resource.setRecordsPublished(restoredVersionVersionHistory.getRecordsPublished());
         }
 
-        // update resource.xml
-        resource.setEmlVersion(restoring);
+        // update version
+        resource.setEmlVersion(toRestore);
+
+        // update replaced version with next last version
+        if (resource.getVersionHistory().size() > 1) {
+          BigDecimal replacedVersion = new BigDecimal(resource.getVersionHistory().get(1).getVersion());
+          resource.setReplacedEmlVersion(replacedVersion);
+        }
+
+        // persist resource.xml changes
         save(resource);
 
         // restore EML pubDate to last published date (provided last published date exists)
@@ -1495,12 +1528,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       } catch (IOException e) {
         String msg = action
-          .getText("restore.resource.failed", new String[] {restoring.toPlainString(), shortname, e.getMessage()});
+          .getText("restore.resource.failed", new String[] {toRestore.toPlainString(), shortname, e.getMessage()});
         log.error(msg, e);
         action.addActionError(msg);
       }
       // alert user version rollback was successful
-      String msg = action.getText("restore.resource.success", new String[] {restoring.toPlainString(), shortname});
+      String msg = action.getText("restore.resource.success", new String[] {toRestore.toPlainString(), shortname});
       log.info(msg);
       action.addActionMessage(msg);
       // update StatusReport on publishing page
@@ -1509,6 +1542,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (report != null) {
         report.getMessages().add(new TaskMessage(Level.INFO, msg));
       }
+    } else {
+      // TODO: i18n
+      String msg =
+        "Failed to roll back version #" + rollingBack.toPlainString() + ". Could not find version to restore";
+      log.error(msg);
+      action.addActionError(msg);
     }
   }
 
@@ -1903,15 +1942,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Construct the VersionHistory for version v of resource, and add it to the resource's
+   * Construct or update the VersionHistory for version v of resource, and make sure that it is added to the resource's
    * VersionHistory List.
    *
    * @param resource resource published
    * @param version  version of resource published
+   * @param published true if this version has been published successfully, false otherwise
    * @param action   action
    */
-  protected synchronized void saveVersionHistory(Resource resource, BigDecimal version, BaseAction action) {
-    VersionHistory versionHistory = new VersionHistory(version, new Date(), resource.getStatus());
+  protected synchronized void addOrUpdateVersionHistory(Resource resource, BigDecimal version, boolean published,
+    BaseAction action) {
+    log.info("Adding or updating version: " + version.toPlainString());
+
+    VersionHistory versionHistory;
+    // Construct new VersionHistory, or update existing one if it exists
+    VersionHistory existingVersionHistory = resource.findVersionHistory(version);
+    if (existingVersionHistory == null) {
+      versionHistory = new VersionHistory(version, resource.getStatus());
+      resource.addVersionHistory(versionHistory);
+      log.info("Adding VersionHistory for version " + version.toPlainString());
+    } else {
+      versionHistory = existingVersionHistory;
+      log.info("Updating VersionHistory for version " + version.toPlainString());
+    }
+
     // DOI
     versionHistory.setDoi(resource.getDoi());
     // DOI status
@@ -1925,7 +1979,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (modifiedBy != null) {
       versionHistory.setModifiedBy(modifiedBy);
     }
-    resource.addVersionHistory(versionHistory);
+    // released - only set when version was published successfully
+    if (published) {
+      versionHistory.setReleased(new Date());
+    }
   }
 
   public synchronized void save(Resource resource) throws InvalidConfigException {

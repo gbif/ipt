@@ -81,7 +81,6 @@ public class PublishingMonitor {
             for (Resource resource : resources) {
               Date next = resource.getNextPublished();
               BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
-              BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
               if (next != null) {
                 // ensure resource is due to be auto-published
                 if (next.before(now)) {
@@ -105,7 +104,7 @@ public class PublishingMonitor {
                               + resource.getTitleAndShortname()
                               + " failed: " + e.getMessage());
                           // restore the previous version since publication was unsuccessful
-                          resourceManager.restoreVersion(resource, nextVersion, replacedVersion, null);
+                          resourceManager.restoreVersion(resource, nextVersion, null);
                           // keep track of how many failures on auto publication have happened
                           resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
                         }

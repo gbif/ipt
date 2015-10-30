@@ -304,7 +304,8 @@ public class ResourceTest {
     resource.removeVersionHistory(BigDecimal.valueOf(1.5));
 
     assertEquals(1, resource.getVersionHistory().size());
-    assertEquals(BigDecimal.valueOf(1.4).toPlainString(), resource.getVersionHistory().get(0).getVersion());
+    assertNotNull(resource.getLastPublishedVersionsVersion());
+    assertEquals(BigDecimal.valueOf(1.4).toPlainString(), resource.getLastPublishedVersionsVersion().toPlainString());
   }
 
   @Test
@@ -333,20 +334,26 @@ public class ResourceTest {
   public void testFindVersionHistory() {
     Resource resource = new Resource();
 
-    VersionHistory vh1 = new VersionHistory(BigDecimal.valueOf(1.4), new Date(), PublicationStatus.PUBLIC);
+    VersionHistory vh1 = new VersionHistory(new BigDecimal("1.8"), new Date(), PublicationStatus.PUBLIC);
     vh1.setModifiedBy(USER);
-    VersionHistory vh2 = new VersionHistory(BigDecimal.valueOf(1.5), new Date(), PublicationStatus.PUBLIC);
+    VersionHistory vh2 = new VersionHistory(new BigDecimal("1.9"), new Date(), PublicationStatus.PUBLIC);
     vh2.setModifiedBy(USER);
+    VersionHistory vh3 = new VersionHistory(new BigDecimal("1.10"), new Date(), PublicationStatus.PUBLIC);
+    vh3.setModifiedBy(USER);
 
     resource.addVersionHistory(vh1);
     resource.addVersionHistory(vh2);
+    resource.addVersionHistory(vh3);
 
-    VersionHistory foundVh1 = resource.findVersionHistory(BigDecimal.valueOf(1.4));
-    assertEquals(BigDecimal.valueOf(1.4).toPlainString(), foundVh1.getVersion());
+    VersionHistory foundVh1 = resource.findVersionHistory(new BigDecimal("1.8"));
+    assertEquals(new BigDecimal("1.8").toPlainString(), foundVh1.getVersion());
     assertEquals("jc@gbif.org", foundVh1.getModifiedBy().getEmail());
-    VersionHistory foundVh2 = resource.findVersionHistory(BigDecimal.valueOf(1.5));
-    assertEquals(BigDecimal.valueOf(1.5).toPlainString(), foundVh2.getVersion());
+    VersionHistory foundVh2 = resource.findVersionHistory(new BigDecimal("1.9"));
+    assertEquals(new BigDecimal("1.9").toPlainString(), foundVh2.getVersion());
     assertEquals("jc@gbif.org", foundVh2.getModifiedBy().getEmail());
+    VersionHistory foundVh3 = resource.findVersionHistory(new BigDecimal("1.10"));
+    assertEquals(new BigDecimal("1.10").toPlainString(), foundVh3.getVersion());
+    assertEquals("jc@gbif.org", foundVh3.getModifiedBy().getEmail());
   }
 
   @Test

@@ -51,7 +51,11 @@
                         </tr>
                         <tr>
                             <th>${releasedTitle?cap_first}</th>
-                            <td>${history.released?date!}</td>
+                            <#if history.released??>
+                              <td>${history.released?date!}</td>
+                            <#else>
+                              <td>${emptyPlaceholder}</td>
+                            </#if>
                         </tr>
                         <tr>
                             <th>${recordsTitle?cap_first}</th>

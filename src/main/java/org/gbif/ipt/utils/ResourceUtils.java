@@ -72,4 +72,32 @@ public class ResourceUtils {
     return resource;
   }
 
+  /**
+   * Assert that version b is greater than version a. Comparison must take into account major_version.minor_version
+   * scheme, e.g. version 2.0 is greater than version 1.100, and version 1.100 is greater than 1.99.
+   *
+   * @param b version
+   * @param a version
+   *
+   * @return true if version a is greater than version b, false otherwise
+   */
+  public static boolean assertVersionOrder(BigDecimal b, BigDecimal a) {
+    if (a != null && b != null) {
+      // comparison on major_version
+      if (b.intValue() > a.intValue()) {
+        return true;
+      }
+      // comparison on minor_version, if major_version was the same
+      else if (b.intValue() == a.intValue()) {
+        int scaleB = b.scale(); // 0.10 has a scale of 2
+        BigDecimal scaledB = b.scaleByPowerOfTen(scaleB); // 0.10 * 10(2) = 10
+
+        int scaleA = a.scale(); // 0.9 has a scale of 1
+        BigDecimal scaledA = a.scaleByPowerOfTen(scaleA); // 0.9 * 10(1) = 9
+
+        return scaledB.compareTo(scaledA) > 0;
+      }
+    }
+    return false;
+  }
 }

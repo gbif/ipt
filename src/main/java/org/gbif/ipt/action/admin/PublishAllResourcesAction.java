@@ -60,7 +60,6 @@ public class PublishAllResourcesAction extends BaseAction {
     for (Resource resource : resources) {
       // next version number - the version of newly published eml/rtf/archive
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
-      BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
       try {
         if (!resourceManager.hasMaxProcessFailures(resource)) {
           // publish a new version of the resource - dwca gets published asynchronously
@@ -76,9 +75,9 @@ public class PublishAllResourcesAction extends BaseAction {
         } else {
           // alert user publication failed
           addActionError(
-            getText("publishing.failed", new String[] {replacedVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
+            getText("publishing.failed", new String[] {nextVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
-          resourceManager.restoreVersion(resource, nextVersion, replacedVersion, this);
+          resourceManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
           resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
         }

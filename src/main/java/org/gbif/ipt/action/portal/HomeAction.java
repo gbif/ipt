@@ -4,7 +4,6 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -61,7 +60,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * A list of all public or registered resources.
-   * 
+   *
    * @return a list of resources
    */
   public List<Resource> getResources() {
@@ -70,7 +69,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * A map of dataset types keys to internationalized values.
-   * 
+   *
    * @return map of dataset subtypes
    */
   public Map<String, String> getTypes() {
@@ -79,7 +78,7 @@ public class HomeAction extends BaseAction {
 
   /**
    * A map of dataset subtypes keys to internationalized values.
-   * 
+   *
    * @return map of dataset subtypes
    */
   public Map<String, String> getDatasetSubtypes() {

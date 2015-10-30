@@ -8,6 +8,7 @@ import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
@@ -117,16 +118,14 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public void addVersionHistory(VersionHistory history) {
     Preconditions.checkNotNull(history);
-    if (versionHistory == null) {
-      versionHistory = Lists.newLinkedList();
-    }
     boolean exists = false;
-    for (VersionHistory vh : versionHistory) {
-      if (vh.getVersion().compareTo(history.getVersion()) == 0) {
+    for (VersionHistory vh : getVersionHistory()) {
+      if (vh.getVersion().equals(history.getVersion())) {
         exists = true;
       }
     }
     if (!exists) {
+      log.debug("Adding new version history: " + history.getVersion());
       versionHistory.add(0, history);
     }
   }
@@ -137,11 +136,8 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param version version of VersionHistory to remove
    */
   public void removeVersionHistory(BigDecimal version) {
-    if (versionHistory == null) {
-      versionHistory = Lists.newArrayList();
-    }
     if (version != null) {
-      Iterator<VersionHistory> iter = versionHistory.iterator();
+      Iterator<VersionHistory> iter = getVersionHistory().iterator();
       while (iter.hasNext()) {
         BigDecimal historyVersion = new BigDecimal(iter.next().getVersion());
         if (version.compareTo(historyVersion) == 0) {
@@ -160,8 +156,8 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public VersionHistory findVersionHistory(BigDecimal version) {
     if (version != null) {
-      for (VersionHistory vh : versionHistory) {
-        if (version.compareTo(new BigDecimal(vh.getVersion())) == 0) {
+      for (VersionHistory vh : getVersionHistory()) {
+        if (version.toPlainString().equals(new BigDecimal(vh.getVersion()).toPlainString())) {
           return vh;
         }
       }
@@ -301,21 +297,6 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * @param coreRowType core rowType
-   *
-   * @return all core mappings, excluding extension mappings with core row types
-   */
-  public List<ExtensionMapping> getCoreMappings(String coreRowType) {
-    List<ExtensionMapping> cores = new ArrayList<ExtensionMapping>();
-    for (ExtensionMapping m : mappings) {
-      if (m.isCore() && coreRowType != null && coreRowType.equalsIgnoreCase(m.getExtension().getRowType())) {
-        cores.add(m);
-      }
-    }
-    return cores;
-  }
-
-  /**
    * @return the row type of the first core extension mapping, which always determines the core row type
    */
   public String getCoreRowType() {
@@ -413,9 +394,10 @@ public class Resource implements Serializable, Comparable<Resource> {
    * have officially been assigned/registered.
    */
   public boolean isAlreadyAssignedDoi() {
-    if (!getVersionHistory().isEmpty()) {
-      DOI doi = getVersionHistory().get(0).getDoi();
-      IdentifierStatus status = getVersionHistory().get(0).getStatus();
+    VersionHistory last = getLastPublishedVersion();
+    if (last != null) {
+      DOI doi = last.getDoi();
+      IdentifierStatus status = last.getStatus();
       if (doi != null && status == IdentifierStatus.PUBLIC) {
         return true;
       }
@@ -428,22 +410,21 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   @Nullable
   public DOI getAssignedDoi() {
-    if (isAlreadyAssignedDoi()) {
-      DOI doi = getVersionHistory().get(0).getDoi();
-      IdentifierStatus status = getVersionHistory().get(0).getStatus();
-      if (doi != null && status == IdentifierStatus.PUBLIC) {
-        return doi;
-      }
+    VersionHistory last = getLastPublishedVersion();
+    if (isAlreadyAssignedDoi() && last != null) {
+      return last.getDoi();
     }
     return null;
   }
 
   /**
-   * @return version number of last published resource, or null if last published version had none
+   * @return version number of last published version, or null if last published version doesn't exist
    */
+  @Nullable
   public BigDecimal getLastPublishedVersionsVersion() {
-    if (!getVersionHistory().isEmpty()) {
-      return new BigDecimal(getVersionHistory().get(0).getVersion());
+    VersionHistory last = getLastPublishedVersion();
+    if (last != null) {
+      return new BigDecimal(last.getVersion());
     }
     return null;
   }
@@ -451,9 +432,51 @@ public class Resource implements Serializable, Comparable<Resource> {
   /**
    * @return change summary of last published resource, or null if last published version had none
    */
+  @Nullable
   public String getLastPublishedVersionsChangeSummary() {
+    VersionHistory last = getLastPublishedVersion();
+    if (last != null) {
+      return Strings.emptyToNull(last.getChangeSummary());
+    }
+    return null;
+  }
+
+  /**
+   * @return publication status of last published version, defaulting to status=private if it is not definitively known
+   */
+  @NotNull
+  public PublicationStatus getLastPublishedVersionsPublicationStatus() {
+    VersionHistory last = getLastPublishedVersion();
+    if (last != null) {
+      return last.getPublicationStatus();
+    } else if (status.equals(PublicationStatus.REGISTERED)) {
+      return PublicationStatus.REGISTERED;
+    } else {
+      return PublicationStatus.PRIVATE;
+    }
+  }
+
+  /**
+   * @return VersionHistory of last published version, or null if last published version doesn't exist
+   */
+  @Nullable
+  public VersionHistory getLastPublishedVersion() {
+    // first version history with released date represents last published version
+    for (VersionHistory vh : getVersionHistory()) {
+      if (vh.getReleased() != null) {
+        return vh;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return version number of last version (VersionHistory), or null if last version doesn't exist
+   */
+  @Nullable
+  public BigDecimal getLastVersionHistoryVersion() {
     if (!getVersionHistory().isEmpty()) {
-      return Strings.emptyToNull(getVersionHistory().get(0).getChangeSummary());
+      return new BigDecimal(getVersionHistory().get(0).getVersion());
     }
     return null;
   }
@@ -711,12 +734,9 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if the last published version is public, false otherwise
    */
   public boolean isLastPublishedVersionPublic() {
-    List<VersionHistory> history = getVersionHistory();
-    if (!history.isEmpty()) {
-      VersionHistory latestVersion = history.get(0);
-      if (latestVersion.getPublicationStatus().equals(PublicationStatus.PUBLIC)) {
-        return true;
-      }
+    VersionHistory last = getLastPublishedVersion();
+    if (last != null) {
+      return last.getPublicationStatus().equals(PublicationStatus.PUBLIC);
     }
     return false;
   }
@@ -728,21 +748,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean isAssignedGBIFSupportedLicense() {
     return eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
-  }
-
-  /**
-   * @return publication status of last published version, defaulting to status=private if it is not definitively known
-   */
-  @NotNull
-  public PublicationStatus getLastPublishedVersionsPublicationStatus() {
-    List<VersionHistory> history = getVersionHistory();
-    if (!history.isEmpty()) {
-      return history.get(0).getPublicationStatus();
-    } else if (status.equals(PublicationStatus.REGISTERED)) {
-      return PublicationStatus.REGISTERED;
-    } else {
-      return PublicationStatus.PRIVATE;
-    }
   }
 
   public boolean isRegistered() {
@@ -780,21 +785,11 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param v new eml (resource) version
    */
   public void setEmlVersion(BigDecimal v) {
-    if (v != null && emlVersion != null) {
-      int scale = v.scale(); // 0.10 has a scale of 2
-      BigDecimal scaled = v.scaleByPowerOfTen(scale); // 0.10 * 10(2) = 10
-
-      int scale2 = emlVersion.scale(); // 0.9 has a scale of 1
-      BigDecimal scaled2 = emlVersion.scaleByPowerOfTen(scale2); // 0.9 * 10(1) = 9
-
-      if (scaled.compareTo(scaled2) > 0) { // 10 > 9
-        setReplacedEmlVersion(new BigDecimal(emlVersion.toPlainString()));
-      }
+    if (ResourceUtils.assertVersionOrder(v, emlVersion)) {
+      setReplacedEmlVersion(new BigDecimal(emlVersion.toPlainString()));
     }
     emlVersion = v;
-    if (eml != null) {
-      eml.setEmlVersion(v);
-    }
+    eml.setEmlVersion(v);
   }
 
   public void setKey(UUID key) {
@@ -912,9 +907,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   /**
    * @return the version history
    */
+  @NotNull
   public List<VersionHistory> getVersionHistory() {
     if (versionHistory == null) {
-      return Lists.newLinkedList();
+      versionHistory = Lists.newLinkedList();
     }
     return versionHistory;
   }
@@ -933,19 +929,17 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Set the replacedEmlVersion. This must match the last published version, if the versionHistory is not empty.
+   * Set the replacedEmlVersion, only if that version exists in VersionHistory.
    *
-   * @param replacedEmlVersion version to be replace, or that has been replaced
+   * @param replacedEmlVersion version to be replaced, or that has been replaced
    */
   public void setReplacedEmlVersion(BigDecimal replacedEmlVersion) {
-    // safeguard, assuming VersionHistory not empty
-    if (!getVersionHistory().isEmpty()) {
-      BigDecimal lastVersion = getLastPublishedVersionsVersion();
-      if (replacedEmlVersion != null && lastVersion != null && replacedEmlVersion.compareTo(lastVersion) != 0) {
-        throw new IllegalArgumentException("Version replaced should be equal to last published version!");
-      }
+    VersionHistory vh = findVersionHistory(replacedEmlVersion);
+    if (vh == null) {
+      log.error("Replaced version (" + replacedEmlVersion.toPlainString() + ") does not exist in version history!");
+    } else {
+      this.replacedEmlVersion = replacedEmlVersion;
     }
-    this.replacedEmlVersion = replacedEmlVersion;
   }
 
   /**

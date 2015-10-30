@@ -261,23 +261,19 @@ public interface ResourceManager {
   void visibilityToPublic(Resource resource, BaseAction action) throws InvalidConfigException;
 
   /**
-   * This method:
-   * 1) replaces the current (published) DwC-A with the previous version
-   * 2) replaces the current (published) RTF file with the previous version
-   * 3) replaces the current (published) eml.xml file with the previous version. The interim eml.xml is unchanged.
-   * 4) removes the archived version.
-   * This method must be called when publication fails, for whatever reason. A new published version can only be
-   * created, when all stages of publication were successful (metadata, and DwC-A).
+   * This method rolls back a pending version (a version being published that can't finish successfully). This method
+   * must be called when publication fails, for whatever reason.
    * </br>
-   * The resource's version and last publication date must be updated, and persisted to the eml.xml and resource.xml
-   * file. Don't replace the existing interim eml.xml file, only update it.
+   * This method deletes the pending version's DwC-A, RTF, and EML files.
+   * </br>
+   * This method then restores the resource (version) back to the last successfully published version. This includes
+   * updating the resource's version history, last publication date, version, etc.
    *
    * @param resource resource
-   * @param version version to rollback
-   * @param version  version to restore
+   * @param rollingBack version to rollback
    * @param action   action
    */
-  void restoreVersion(Resource resource, BigDecimal rollingBack, BigDecimal version, @Nullable BaseAction action);
+  void restoreVersion(Resource resource, BigDecimal rollingBack, @Nullable BaseAction action);
 
   /**
    * Turn resource publicationMode to OFF.

@@ -1575,6 +1575,8 @@ public class ResourceManagerImplTest {
 
   /**
    * Test trying to restore last published version works.
+   * Test starts by configuring a resource that is in middle of publishing version 3.1: the eml-3.1.xml,
+   * and shortname-3.1.rtf have been written.
    * TODO: test resource with persisted dwca files
    */
   @Test
@@ -1586,18 +1588,19 @@ public class ResourceManagerImplTest {
     // prepare resource
     Resource resource = getNonRegisteredMetadataOnlyResource();
 
-    // configure resource that is in middle of publication
-    DOI doi = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
-    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-    resource.setDoi(doi);
-    resource.setStatus(PublicationStatus.PUBLIC);
-    resource.setEmlVersion(new BigDecimal("3.1"));
-    Date released30 = new Date();
-    Date released31 = new Date();
-    resource.setLastPublished(released31);
-    resource.setRecordsPublished(400);
+    // add versionHistory for version 2.0
+    Date released20 = new Date();
+    VersionHistory history20 =
+      new VersionHistory(new BigDecimal("2.0"), resource.getLastPublished(), PublicationStatus.PUBLIC);
+    history20.setModifiedBy(resource.getModifier());
+    history20.setDoi(null);
+    history20.setStatus(IdentifierStatus.UNAVAILABLE);
+    history20.setReleased(released20);
+    history20.setRecordsPublished(100);
+    resource.addVersionHistory(history20);
 
-    // versionHistory for version 3.0
+    // add versionHistory for version 3.0
+    Date released30 = new Date();
     VersionHistory history30 =
       new VersionHistory(new BigDecimal("3.0"), resource.getLastPublished(), PublicationStatus.PUBLIC);
     history30.setModifiedBy(resource.getModifier());
@@ -1607,29 +1610,37 @@ public class ResourceManagerImplTest {
     history30.setRecordsPublished(200);
     resource.addVersionHistory(history30);
 
-    // versionHistory for version 3.1
+    // add versionHistory for version 3.1
+    DOI doi = DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX);
     VersionHistory history31 =
       new VersionHistory(new BigDecimal("3.1"), resource.getLastPublished(), PublicationStatus.PUBLIC);
     history31.setModifiedBy(resource.getModifier());
     history31.setDoi(doi);
     history31.setStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-    history31.setReleased(released31);
     history31.setRecordsPublished(400);
     resource.addVersionHistory(history31);
 
+    // configure resource to reflect it is in middle of publishing version 3.1
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    resource.setDoi(doi);
+    resource.setStatus(PublicationStatus.PUBLIC);
+    resource.setEmlVersion(new BigDecimal("3.1"));
+    resource.setLastPublished(released30);
+    resource.setRecordsPublished(400);
+
     // make some assertions
     assertEquals(new BigDecimal("3.1"), resource.getEml().getEmlVersion());
-    assertEquals(new BigDecimal("3.1"), resource.getLastPublishedVersionsVersion());
+    assertEquals(new BigDecimal("3.0"), resource.getLastPublishedVersionsVersion());
+    assertEquals(released30, resource.getLastPublished());
+    assertEquals(400, resource.getRecordsPublished());
 
     File emlFile31 = mockedDataDir.resourceEmlFile(resource.getShortname(), new BigDecimal("3.1"));
     assertTrue(emlFile31.exists());
     File rtfFile31 = mockedDataDir.resourceRtfFile(resource.getShortname(), new BigDecimal("3.1"));
     assertTrue(rtfFile31.exists());
-    assertEquals(400, resource.getRecordsPublished());
-    assertEquals(released31, resource.getLastPublished());
 
     // publish, will try to update DOI, triggering exception
-    resourceManager.restoreVersion(resource, new BigDecimal("3.1"), new BigDecimal("3.0"), baseAction);
+    resourceManager.restoreVersion(resource, new BigDecimal("3.1"), baseAction);
 
     // make some assertions
     assertFalse(emlFile31.exists());
@@ -1637,6 +1648,7 @@ public class ResourceManagerImplTest {
     assertEquals(200, resource.getRecordsPublished());
     assertEquals(new BigDecimal("3.0"), resource.getEmlVersion());
     assertEquals(released30, resource.getLastPublished());
+    assertEquals(new BigDecimal("2.0"), resource.getReplacedEmlVersion());
   }
 
   @Test

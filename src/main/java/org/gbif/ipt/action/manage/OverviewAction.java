@@ -186,7 +186,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       addActionError(msg);
 
       // restore the previous version of the resource
-      resourceManager.restoreVersion(resource, version, resource.getReplacedEmlVersion(), this);
+      resourceManager.restoreVersion(resource, version, this);
 
       // Struts finishes before callable has a finish to update status report, therefore,
       // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
@@ -1181,7 +1181,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
 
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
-      BigDecimal replacedVersion = new BigDecimal(resource.getEmlVersion().toPlainString());
 
       // set resource's change summary as entered in confirm popup (defaults to empty string)
       resource.setChangeSummary(getSummary());
@@ -1211,7 +1210,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           addActionError(getText("publishing.failed",
             new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
-          resourceManager.restoreVersion(resource, nextVersion, replacedVersion, this);
+          resourceManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
           resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
         }
