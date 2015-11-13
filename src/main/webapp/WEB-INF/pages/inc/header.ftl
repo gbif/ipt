@@ -5,9 +5,11 @@
 [#setting locale="en"]
 [#setting url_escaping_charset="UTF-8"]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:dc="http://purl.org/dc/elements/1.1/"
-      xmlns:foaf="http://xmlns.com/foaf/0.1/">
+<html prefix="dct: http://purl.org/dc/terms/
+              rdfs: http://www.w3.org/2000/01/rdf-schema#
+              foaf: http://xmlns.com/foaf/0.1/"
+      xmlns="http://www.w3.org/1999/xhtml"
+      >
   <head>
   <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />
 	<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />
@@ -53,8 +55,8 @@
       [#if eml.subject?has_content]
         <meta name="keywords" content="${eml.subject?replace(";", ",")}" charset="UTF-8" />
       [/#if]
-      <meta name="foaf:topic" content="${cfg.getResourceUri(resource.shortname)}/#dataset"/>
-      <meta name="foaf:isPrimaryTopicOf" content="${cfg.getResourceUri(resource.shortname)}">
+      <meta property="foaf:topic" resource="${cfg.getResourceUri(resource.shortname)}/#dataset"/>
+      <meta property="foaf:isPrimaryTopicOf" resource="${cfg.getResourceUri(resource.shortname)}">
     [#elseif registeredIpt?has_content]
       <meta name="description" content="${registeredIpt.description!}" charset="UTF-8" />
       <meta name="keywords" content="${metaKeywords}" charset="UTF-8" />
@@ -64,7 +66,7 @@
     [/#if]
     <meta name="generator" content="IPT ${cfg.version!}" />
     <meta name="inventory" content="${baseURL}/inventory/dataset"/>
-    <meta name="foaf:seeAlso" content="${baseURL}/dcat"/>
+    <meta property="rdfs:seeAlso" resource="${baseURL}/dcat"/>
 
 <script type="text/javascript">
 $(document).ready(function(){
