@@ -11,6 +11,7 @@
 + [[Usage|FAQ.wiki#usage]]
   + [[1. Why do published files contain broken lines?|FAQ.wiki#1-why-do-published-files-contain-broken-lines]]
   + [[2. Why do published files not include all records?|FAQ.wiki#2-why-do-published-files-not-include-all-records]]
+  + [[3. What does the error "No space left on device" mean and how do I fix it?|FAQ.wiki#3-what-does-the-error-no-space-left-on-device-mean-and-how-do-i-fix-it]]
 
 ## Introduction
 In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
@@ -95,3 +96,17 @@ To solve this, you can update the value with "Null" value, and update the resour
 Usually, you can rely on the log message to identify the column of interest, like in the example above, it says "column 65," which is the 65th column in the data source.
 
 The "0000-00-00 00:00:00" value in your SQL table could be resulted when importing, while having defined the column with "Not Null" and default value as "0000-00-00 00:00:00."
+
+### 3. What does the error "No space left on device" mean and how do I fix it?
+If you found an exception such as:
+
+```
+Caused by: java.io.IOException: No space left on device
+```
+
+in your publication log file, it means there is no space left in the disk partition that contains your IPT data directory. 
+
+To solve this, you can:
+- Allocate more space to this partition. 
+- Move your IPT data directory to another partition where there is more space available. Note, this requires you to [[reinstall|IPT2ManualNotes.wiki#starting-over]] your IPT. 
+- Free up disk space (e.g. deleting temporary files, remove unused applications, etc) 
