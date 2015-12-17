@@ -18,7 +18,7 @@ The DOI will get registered the next time the resource is published, provided th
 
 Until the reserved DOI gets registered it can still be deleted. A graphical representation of this workflow is below:
 
-![http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/AssignNewDOI.png](http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/AssignNewDOI.png)
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/AssignNewDOI.png' />
 
 ### Letting the IPT manage an existing DOI for a Dataset
 
@@ -34,4 +34,4 @@ The DOI will get updated the next time the resource is published, provided the r
 
 A graphical representation of this workflow is below:
 
-![http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/AssignExistingDOI.png](http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/AssignExistingDOI.png)
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/AssignExistingDOI.png' />
