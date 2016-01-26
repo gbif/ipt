@@ -6,35 +6,38 @@ This guide also explains how to publish the data through GBIF.org using the IPT.
 
 ### What types of biodiversity datasets can be published through GBIF.org?
 
-GBIF supports publication, discovery and use of four classes of data:
+GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. 
 
 * [Resource metadata](howToPublish#resource-metadata)
   * [Required fields](howToPublish#required-fields)
   * [Recommended fields](howToPublish#recommended-fields)
-  * [Spreadsheet template](howToPublish#spreadsheet-template)
+  * [Template](howToPublish#template)
+  * [Exemplar datasets](howToPublish#exemplar-datasets)
 * [Resource metadata](howToPublish#resource-metadata)
   * [Required fields](howToPublish#required-fields)
   * [Recommended fields](howToPublish#recommended-fields)
-  * [Spreadsheet template](howToPublish#spreadsheet-template)
+  * [Template](howToPublish#template)
+  * [Exemplar datasets](howToPublish#exemplar-datasets)
 * [Resource metadata](howToPublish#resource-metadata)
   * [Required fields](howToPublish#required-fields)
   * [Recommended fields](howToPublish#recommended-fields)
-  * [Spreadsheet template](howToPublish#spreadsheet-template)
+  * [Template](howToPublish#template)
+  * [Exemplar datasets](howToPublish#exemplar-datasets)
 * [Resource metadata](howToPublish#resource-metadata)
   * [Required fields](howToPublish#required-fields)
   * [Recommended fields](howToPublish#recommended-fields)
-  * [Spreadsheet template](howToPublish#spreadsheet-template)
+  * [Template](howToPublish#template)
+  * [Exemplar datasets](howToPublish#exemplar-datasets)
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes.png' />
 
-At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
+Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
 #### Resource metadata
 
 Description and contact details for a biodiversity information resource where no digital data can currently be shared.  All other classes of GBIF data also include this basic information.  Such metadata may be a valuable tool for researchers to discover resources which are not yet available online.  This is also a useful way to assess the importance and value of non-digital resources for future digitization. GBIF ensures that every dataset is associated with a Digital Object Identifier (DOI) to facilitate citation.
 
 #### Checklist Data
-##### Introduction:
 Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitised collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as [Occurrence Data (below)](howToPublish#occurrence-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
 
 ##### Required fields: 
@@ -47,11 +50,14 @@ Resources comprising a list of species belonging to some category (e.g. taxonomi
 * [parentNameUsageID](http://rs.tdwg.org/dwc/terms/#parentNameUsageID) - in case a taxonomy is meant to be published
 * [acceptedNameUsageID](http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID) - in case a taxonomy is meant to be published
 
-##### Spreadsheet template: 
+##### Template: 
 [![Download Checklist Data Template][2]][1]
 
   [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Checklist Data Template)
+
+##### Exemplar datasets: 
+* Database of Vascular Plants of Canada (VASCAN): [DwC-A](http://data.canadensys.net/ipt/archive.do?r=vascan) / [IPT homepage](http://data.canadensys.net/ipt/resource.do?r=vascan)
 
 #### Occurrence Data
 
@@ -70,10 +76,14 @@ Resources which present evidence of the occurrence of a species at a particular 
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
 * [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) & [organismQuantityType](http://rs.tdwg.org/dwc/terms/#organismQuantityType) / [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) - to record the quantity of a species occurrence
 
+##### Template: 
 [![Download Occurrence Data Template][2]][1]
 
   [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Occurrence Data Template)
+
+##### Exemplar datasets: 
+* CUMV Amphibian Collection (Arctos): [DwC-A](http://data.canadensys.net/ipt/archive.do?r=vascan) / [IPT homepage](http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph)
 
 #### Sample Event Data
 
@@ -92,6 +102,7 @@ Resources which present evidence not only of the occurrence of a species at a pa
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
 * [footprintWKT](http://rs.tdwg.org/dwc/terms/#footprintWKT) - to provide a specific shape location
 
+##### Template: 
 [![Download Sample Event Data Template][2]][1]
 
   [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
