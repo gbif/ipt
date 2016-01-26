@@ -50,7 +50,7 @@ Resources which present evidence of the occurrence of a species at a particular 
 ##### Recommended fields: 
 * [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank) - to substantiate scientificName 
 * [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) / [phylum](http://rs.tdwg.org/dwc/terms/#phylum) / [class](http://rs.tdwg.org/dwc/terms/#class) / [order](http://rs.tdwg.org/dwc/terms/#order) / [family](http://rs.tdwg.org/dwc/terms/#family) / [genus](http://rs.tdwg.org/dwc/terms/#family) - to substantiate scientificName 
-* [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a point specific location
+* [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
 * [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) & [organismQuantityType](http://rs.tdwg.org/dwc/terms/#organismQuantityType) / [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) - to record the quantity of a species occurrence
 [![Download Occurrence Data Template][2]][1]
 
