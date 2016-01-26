@@ -11,25 +11,25 @@ GBIF supports publication, discovery and use of four classes of data. At the sim
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes.png' />
 
 * [Resource metadata](howToPublish#resource-metadata)
-  * [Required fields](howToPublish#required-fields)
-  * [Recommended fields](howToPublish#recommended-fields)
-  * [Template](howToPublish#template)
-  * [Exemplar datasets](howToPublish#exemplar-datasets)
+  * Required fields
+  * Recommended fields
+  * Template
+  * Exemplar datasets
 * [Checklist Data](howToPublish#checklist-data)
-  * [Required fields](howToPublish#required-fields)
-  * [Recommended fields](howToPublish#recommended-fields)
-  * [Template](howToPublish#template)
-  * [Exemplar datasets](howToPublish#exemplar-datasets)
+  * Required fields
+  * Recommended fields
+  * Template
+  * Exemplar datasets
 * [Occurrence Data](howToPublish#occurrence-data)
-  * [Required fields](howToPublish#required-fields)
-  * [Recommended fields](howToPublish#recommended-fields)
-  * [Template](howToPublish#template)
-  * [Exemplar datasets](howToPublish#exemplar-datasets)
+  * Required fields
+  * Recommended fields
+  * Template
+  * Exemplar datasets
 * [Sample Event Data](howToPublish#sample-event-data)
-  * [Required fields](howToPublish#required-fields)
-  * [Recommended fields](howToPublish#recommended-fields)
-  * [Template](howToPublish#template)
-  * [Exemplar datasets](howToPublish#exemplar-datasets)
+  * Required fields
+  * Recommended fields
+  * Template
+  * Exemplar datasets
 
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
