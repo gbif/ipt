@@ -12,9 +12,9 @@ To publish your data, follow these steps:
 4. Use the IPT to publish your dataset, and register it with GBIF
   1. Try to use the IPT offered by a data hosting centre close to you:
     - Canada: [Canadensys IPT](http://data.canadensys.net/explorer/en/search)
-    - Denmark: [DanBIF](http://danbif.au.dk/ipt/)
-    - Spain: [GBIF-Spain](http://www.gbif.es:8080/ipt/)
-    - US: [USGS](http://bison.ornl.gov/ipt/)
+    - Denmark: [DanBIF IPT](http://danbif.au.dk/ipt/)
+    - Spain: [GBIF-Spain IPT](http://www.gbif.es:8080/ipt/)
+    - US: [USGS-BISON IPT](http://bison.ornl.gov/ipt/)
   2. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
 
 ### Four classes of biodiversity data
