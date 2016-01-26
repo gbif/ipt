@@ -50,8 +50,7 @@ Resources which present evidence of the occurrence of a species at a particular 
 ##### Recommended fields: 
 * [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank) - to substantiate scientificName 
 * [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) / [phylum](http://rs.tdwg.org/dwc/terms/#phylum) / [class](http://rs.tdwg.org/dwc/terms/#class) / [order](http://rs.tdwg.org/dwc/terms/#order) / [family](http://rs.tdwg.org/dwc/terms/#family) / [genus](http://rs.tdwg.org/dwc/terms/#family) - to substantiate scientificName 
-* [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) / [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) / [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific location
-* [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) - to record number of occurrences represented
+* [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a point specific location
 
 [![Download Occurrence Data Template][2]][1]
 
@@ -61,6 +60,19 @@ Resources which present evidence of the occurrence of a species at a particular 
 #### Sample Event Data
 
 Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, ecogenomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata) and the same standard elements as in [Occurrence Data (above)](howToPublish#occurrence-data).
+
+##### Required fields: 
+* [eventID](http://rs.tdwg.org/dwc/terms/#eventID)
+* [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
+* [samplingProtocol](http://rs.tdwg.org/dwc/terms/#samplingProtocol)
+* [sampleSizeValue](http://rs.tdwg.org/dwc/terms/#sampleSizeValue) & [sampleSizeUnit](http://rs.tdwg.org/dwc/terms/#sampleSizeUnit)
+
+##### Recommended fields: 
+* [parentEventID](http://rs.tdwg.org/dwc/terms/#parentEventID) - to identify the event as part of an event series
+* [samplingEffort](http://rs.tdwg.org/dwc/terms/#samplingEffort) - to provide evidence of rigour of sampling event
+* [locationID](http://rs.tdwg.org/dwc/terms/#locationID) - in case the location being sampled can be uniquely identified
+* [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) / [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) / [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
+* [footprintWKT](http://rs.tdwg.org/dwc/terms/#footprintWKT) - to provide a specific shape location
 
 [![Download Sample Event Data Template][2]][1]
 
