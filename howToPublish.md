@@ -2,8 +2,10 @@
 
 This guide explains [what classes of biodiversity data can be published through GBIF.org](#what-types-of-biodiversity-datasets-can-be-published-through-gbiforg). For each data class you will find:
 
-* A **description**, including its **recommended fields**
-* A **spreadsheet template** used to capture this type of data, for upload to the IPT
+* A description
+* A list of its required fields 
+* A list of recommended fields
+* A spreadsheet template used to capture this type of data, for upload to the IPT
 
 This guide also explains how to publish the data through GBIF.org using the IPT.
 
