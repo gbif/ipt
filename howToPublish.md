@@ -10,7 +10,7 @@ To publish your data, follow these steps:
   2. Refer to the exemplar datasets for additional guidance
 3. Register your organisation with GBIF by filling in this [form](http://www.gbif.org/publishing-data/how-to-publish#/intro)
 4. Use the IPT to publish your dataset, and register it with GBIF
-  1. Try to use the IPT offered by a data hosting centre close to you:
+  1. Try to use a data hosting centre IPT close to you:
     - Australia: [ALA IPT](http://ipt.ala.org.au/)
     - Canada: [Canadensys IPT](http://data.canadensys.net/explorer/en/search)
     - Denmark: [DanBIF IPT](http://danbif.au.dk/ipt/)
