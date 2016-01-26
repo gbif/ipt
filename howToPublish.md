@@ -1,6 +1,6 @@
 ## How to guide: Publishing Biodiversity Datasets through GBIF.org
 
-This guide explains [what classes of biodiversity data can be published through GBIF.org](#what-types-of-biodiversity-datasets-can-be-published-through-gbiforg). For each data class you will find:
+This guide explains [what classes of biodiversity data can be published through GBIF.org](#what-types-of-biodiversity-datasets-can-be-published-through-gbiforg). Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. For each data class you will find:
 
 * A **description**, including its **recommended fields**
 * A **spreadsheet template** used to capture this type of data, for upload to the IPT
@@ -9,7 +9,7 @@ This guide also explains how to publish the data through GBIF.org using the IPT.
 
 ### What types of biodiversity datasets can be published through GBIF.org?
 
-GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. The richer the data is, the more valuable it is for scientific research. 
+GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes.png' />
 
