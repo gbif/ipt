@@ -1,26 +1,40 @@
 ## How to guide: Publishing Biodiversity Datasets through GBIF.org
 
-This guide explains [what classes of biodiversity data can be published through GBIF.org](#what-types-of-biodiversity-datasets-can-be-published-through-gbiforg). For each data class you will find:
-
-* A description
-* A list of its required fields 
-* A list of recommended fields
-* A spreadsheet template used to capture this type of data, for upload to the IPT
+This guide explains [what classes of biodiversity data can be published through GBIF.org](#what-types-of-biodiversity-datasets-can-be-published-through-gbiforg).
 
 This guide also explains how to publish the data through GBIF.org using the IPT.
 
 ### What types of biodiversity datasets can be published through GBIF.org?
 
-GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
+GBIF supports publication, discovery and use of four classes of data:
+
+* [Resource metadata](howToPublish#resource-metadata)
+  * [Required fields](howToPublish#required-fields)
+  * [Recommended fields](howToPublish#recommended-fields)
+  * [Spreadsheet template](howToPublish#spreadsheet-template)
+* [Resource metadata](howToPublish#resource-metadata)
+  * [Required fields](howToPublish#required-fields)
+  * [Recommended fields](howToPublish#recommended-fields)
+  * [Spreadsheet template](howToPublish#spreadsheet-template)
+* [Resource metadata](howToPublish#resource-metadata)
+  * [Required fields](howToPublish#required-fields)
+  * [Recommended fields](howToPublish#recommended-fields)
+  * [Spreadsheet template](howToPublish#spreadsheet-template)
+* [Resource metadata](howToPublish#resource-metadata)
+  * [Required fields](howToPublish#required-fields)
+  * [Recommended fields](howToPublish#recommended-fields)
+  * [Spreadsheet template](howToPublish#spreadsheet-template)
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes.png' />
+
+At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
 #### Resource metadata
 
 Description and contact details for a biodiversity information resource where no digital data can currently be shared.  All other classes of GBIF data also include this basic information.  Such metadata may be a valuable tool for researchers to discover resources which are not yet available online.  This is also a useful way to assess the importance and value of non-digital resources for future digitization. GBIF ensures that every dataset is associated with a Digital Object Identifier (DOI) to facilitate citation.
 
 #### Checklist Data
-
+##### Introduction:
 Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitised collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as [Occurrence Data (below)](howToPublish#occurrence-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
 
 ##### Required fields: 
@@ -33,6 +47,7 @@ Resources comprising a list of species belonging to some category (e.g. taxonomi
 * [parentNameUsageID](http://rs.tdwg.org/dwc/terms/#parentNameUsageID) - in case a taxonomy is meant to be published
 * [acceptedNameUsageID](http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID) - in case a taxonomy is meant to be published
 
+##### Spreadsheet template: 
 [![Download Checklist Data Template][2]][1]
 
   [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
