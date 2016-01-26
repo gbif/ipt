@@ -1,4 +1,4 @@
-## How to guide: Publishing Biodiversity Datasets through GBIF.org
+## How to guide: Publishing biodiversity data through GBIF.org
 
 GBIF supports publication, discovery and use of four classes of data. 
 
