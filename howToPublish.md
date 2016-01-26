@@ -68,9 +68,9 @@ Resources which present evidence not only of the occurrence of a species at a pa
 * [sampleSizeValue](http://rs.tdwg.org/dwc/terms/#sampleSizeValue) & [sampleSizeUnit](http://rs.tdwg.org/dwc/terms/#sampleSizeUnit)
 
 ##### Recommended fields: 
-* [parentEventID](http://rs.tdwg.org/dwc/terms/#parentEventID) - to identify the event as part of an event series
+* [parentEventID](http://rs.tdwg.org/dwc/terms/#parentEventID) - in case the event is part of an event series
 * [samplingEffort](http://rs.tdwg.org/dwc/terms/#samplingEffort) - to provide evidence of rigour of sampling event
-* [locationID](http://rs.tdwg.org/dwc/terms/#locationID) - in case the location being sampled can be uniquely identified
+* [locationID](http://rs.tdwg.org/dwc/terms/#locationID) - in case the plot/transect being sampled has a unique identifier
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
 * [footprintWKT](http://rs.tdwg.org/dwc/terms/#footprintWKT) - to provide a specific shape location
 
