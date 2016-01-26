@@ -9,7 +9,7 @@ This guide also explains how to publish the data through GBIF.org using the IPT.
 
 ### What types of biodiversity datasets can be published through GBIF.org?
 
-GBIF supports publication, discovery and use of four classes of data. The richer the class of data, the more valuable it is for scientific research. At the simplest, GBIF enables institutions to share information describing a natural history collection of biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance.
+GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. The richer the data is, the more valuable it is for scientific research. 
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes.png' />
 
@@ -21,10 +21,25 @@ Description and contact details for a biodiversity information resource where no
 
 Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitised collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as Occurrence Data (below).  These datasets include the same basic descriptive information included under Resource Metadata.
 
+[![Download Checklist Data Template][2]][1]
+
+  [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
+  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Checklist Data Template)
+
 #### Occurrence Data
 
 Resources which present evidence of the occurrence of a species at a particular place and normally on a specified date.  These datasets expand on most Checklist Data because they contribute to mapping the historical or current distribution of a species. At the most basic, such datasets may provide only general locality information (even limited to a country identifier).  Ideally they also include coordinates and a coordinate precision to support fine scale mapping.  In many cases, these datasets may separately record multiple individuals of the same species. Examples of such datasets include databases of specimens in natural history collections, citizen science observations, data from species atlas projects, etc.  If sufficient information exists in the source dataset (or applies consistently to all occurrences in the dataset), it is recommended that these datasets are presented as Sample Event Data (below).  These datasets include the same basic descriptive information included under Resource Metadata.
 
+[![Download Occurrence Data Template][2]][1]
+
+  [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
+  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Occurrence Data Template)
+
 #### Sample Event Data
 
 Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, ecogenomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under Resource Metadata and the same standard elements as in Occurrence Data.
+
+[![Download Sample Event Data Template][2]][1]
+
+  [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
+  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Sample Event Data Template)
