@@ -8,28 +8,28 @@ This guide also explains how to publish the data through GBIF.org using the IPT.
 
 GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. 
 
-* [Resource metadata](howToPublish#resource-metadata)
-  * [Required fields](howToPublish#required-fields)
-  * [Recommended fields](howToPublish#recommended-fields)
-  * [Template](howToPublish#template)
-  * [Exemplar datasets](howToPublish#exemplar-datasets)
-* [Resource metadata](howToPublish#resource-metadata)
-  * [Required fields](howToPublish#required-fields)
-  * [Recommended fields](howToPublish#recommended-fields)
-  * [Template](howToPublish#template)
-  * [Exemplar datasets](howToPublish#exemplar-datasets)
-* [Resource metadata](howToPublish#resource-metadata)
-  * [Required fields](howToPublish#required-fields)
-  * [Recommended fields](howToPublish#recommended-fields)
-  * [Template](howToPublish#template)
-  * [Exemplar datasets](howToPublish#exemplar-datasets)
-* [Resource metadata](howToPublish#resource-metadata)
-  * [Required fields](howToPublish#required-fields)
-  * [Recommended fields](howToPublish#recommended-fields)
-  * [Template](howToPublish#template)
-  * [Exemplar datasets](howToPublish#exemplar-datasets)
-
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes.png' />
+
+* [Resource metadata](howToPublish#resource-metadata)
+  * [Required fields](howToPublish#required-fields)
+  * [Recommended fields](howToPublish#recommended-fields)
+  * [Template](howToPublish#template)
+  * [Exemplar datasets](howToPublish#exemplar-datasets)
+* [Resource metadata](howToPublish#resource-metadata)
+  * [Required fields](howToPublish#required-fields)
+  * [Recommended fields](howToPublish#recommended-fields)
+  * [Template](howToPublish#template)
+  * [Exemplar datasets](howToPublish#exemplar-datasets)
+* [Resource metadata](howToPublish#resource-metadata)
+  * [Required fields](howToPublish#required-fields)
+  * [Recommended fields](howToPublish#recommended-fields)
+  * [Template](howToPublish#template)
+  * [Exemplar datasets](howToPublish#exemplar-datasets)
+* [Resource metadata](howToPublish#resource-metadata)
+  * [Required fields](howToPublish#required-fields)
+  * [Recommended fields](howToPublish#recommended-fields)
+  * [Template](howToPublish#template)
+  * [Exemplar datasets](howToPublish#exemplar-datasets)
 
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
