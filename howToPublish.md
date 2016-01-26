@@ -21,6 +21,16 @@ Description and contact details for a biodiversity information resource where no
 
 Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitised collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as [Occurrence Data (below)](howToPublish#occurrence-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
 
+##### Required fields: 
+* [taxonID](http://rs.tdwg.org/dwc/terms/#taxonID)
+* [scientificName](http://rs.tdwg.org/dwc/terms/#scientificName)
+* [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank)
+
+##### Recommended fields: 
+* [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom)
+* [parentNameUsageID](http://rs.tdwg.org/dwc/terms/#parentNameUsageID) - in case a taxonomy is meant to be published
+* [acceptedNameUsageID](http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID) - in case a taxonomy is meant to be published
+
 [![Download Checklist Data Template][2]][1]
 
   [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
