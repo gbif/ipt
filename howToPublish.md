@@ -51,21 +51,43 @@ Data publishers are strongly encouraged to share their data using the richest ap
 
 Description and contact details for a biodiversity information resource where no digital data can currently be shared.  All other classes of GBIF data also include this basic information.  Such metadata may be a valuable tool for researchers to discover resources which are not yet available online.  This is also a useful way to assess the importance and value of non-digital resources for future digitization. GBIF ensures that every dataset is associated with a Digital Object Identifier (DOI) to facilitate citation.
 
+##### Required EML fields: 
+* title
+* description
+* publishing organisation
+* type
+* license
+* contact(s)
+* creator(s)
+* metadata provider(s)
+
+##### Recommended EML fields: 
+* sampling methodology - in case describing sample event data
+* citation - to ensure your dataset gets cited the way you want
+
+##### Template: 
+No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata.
+
+##### Exemplar datasets: 
+* Inter-Valley Soil Comparative Survey of the McMurdo Dry Valleys: [EML](http://ipt.biodiversity.aq/eml.do?r=ictar_ivscs&v=1) / [IPT homepage](http://ipt.biodiversity.aq/resource.do?r=ictar_ivscs)
+
 #### Checklist Data
 Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitised collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as [Occurrence Data (below)](howToPublish#occurrence-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
 
-##### Required fields: 
+##### Required DwC fields: 
 * [taxonID](http://rs.tdwg.org/dwc/terms/#taxonID)
 * [scientificName](http://rs.tdwg.org/dwc/terms/#scientificName)
 * [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank)
 
-##### Recommended fields: 
+##### Recommended DwC fields: 
 * [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) - and other higher taxonomy if possible
 * [parentNameUsageID](http://rs.tdwg.org/dwc/terms/#parentNameUsageID) - in case a taxonomy is meant to be published
 * [acceptedNameUsageID](http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID) - in case a taxonomy is meant to be published
 
 ##### Template: 
 [![Download Checklist Data Template][2]][1]
+
+Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
 
   [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Checklist Data Template)
@@ -77,14 +99,14 @@ Resources comprising a list of species belonging to some category (e.g. taxonomi
 
 Resources which present evidence of the occurrence of a species at a particular place and normally on a specified date.  These datasets expand on most Checklist Data because they contribute to mapping the historical or current distribution of a species. At the most basic, such datasets may provide only general locality information (even limited to a country identifier).  Ideally they also include coordinates and a coordinate precision to support fine scale mapping.  In many cases, these datasets may separately record multiple individuals of the same species. Examples of such datasets include databases of specimens in natural history collections, citizen science observations, data from species atlas projects, etc.  If sufficient information exists in the source dataset (or applies consistently to all occurrences in the dataset), it is recommended that these datasets are presented as [Sample Event Data (below)](howToPublish#sample-event-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
 
-##### Required fields: 
+##### Required DwC fields: 
 * [occurrenceID](http://rs.tdwg.org/dwc/terms/#occurrenceID)
 * [basisOfRecord](http://rs.tdwg.org/dwc/terms/#basisOfRecord)
 * [scientificName](http://rs.tdwg.org/dwc/terms/#scientificName)
 * [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
 * [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
 
-##### Recommended fields: 
+##### Recommended DwC fields: 
 * [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank) - to substantiate scientificName 
 * [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) / [phylum](http://rs.tdwg.org/dwc/terms/#phylum) / [class](http://rs.tdwg.org/dwc/terms/#class) / [order](http://rs.tdwg.org/dwc/terms/#order) / [family](http://rs.tdwg.org/dwc/terms/#family) / [genus](http://rs.tdwg.org/dwc/terms/#family) - to substantiate scientificName 
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
@@ -92,6 +114,8 @@ Resources which present evidence of the occurrence of a species at a particular 
 
 ##### Template: 
 [![Download Occurrence Data Template][2]][1]
+
+Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
 
   [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Occurrence Data Template)
@@ -103,13 +127,13 @@ Resources which present evidence of the occurrence of a species at a particular 
 
 Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, ecogenomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata) and the same standard elements as in [Occurrence Data (above)](howToPublish#occurrence-data).
 
-##### Required fields: 
+##### Required DwC fields: 
 * [eventID](http://rs.tdwg.org/dwc/terms/#eventID)
 * [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
 * [samplingProtocol](http://rs.tdwg.org/dwc/terms/#samplingProtocol)
 * [sampleSizeValue](http://rs.tdwg.org/dwc/terms/#sampleSizeValue) & [sampleSizeUnit](http://rs.tdwg.org/dwc/terms/#sampleSizeUnit)
 
-##### Recommended fields: 
+##### Recommended DwC fields: 
 * [parentEventID](http://rs.tdwg.org/dwc/terms/#parentEventID) - in case the event is part of an event series
 * [samplingEffort](http://rs.tdwg.org/dwc/terms/#samplingEffort) - to provide evidence of rigour of sampling event
 * [locationID](http://rs.tdwg.org/dwc/terms/#locationID) - in case the plot/transect being sampled has a unique identifier
@@ -118,6 +142,8 @@ Resources which present evidence not only of the occurrence of a species at a pa
 
 ##### Template: 
 [![Download Sample Event Data Template][2]][1]
+
+Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
 
   [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Sample Event Data Template)
