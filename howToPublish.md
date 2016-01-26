@@ -27,7 +27,7 @@ Resources comprising a list of species belonging to some category (e.g. taxonomi
 * [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank)
 
 ##### Recommended fields: 
-* [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom)
+* [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) - and other higher taxonomy if possible
 * [parentNameUsageID](http://rs.tdwg.org/dwc/terms/#parentNameUsageID) - in case a taxonomy is meant to be published
 * [acceptedNameUsageID](http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID) - in case a taxonomy is meant to be published
 
@@ -39,6 +39,18 @@ Resources comprising a list of species belonging to some category (e.g. taxonomi
 #### Occurrence Data
 
 Resources which present evidence of the occurrence of a species at a particular place and normally on a specified date.  These datasets expand on most Checklist Data because they contribute to mapping the historical or current distribution of a species. At the most basic, such datasets may provide only general locality information (even limited to a country identifier).  Ideally they also include coordinates and a coordinate precision to support fine scale mapping.  In many cases, these datasets may separately record multiple individuals of the same species. Examples of such datasets include databases of specimens in natural history collections, citizen science observations, data from species atlas projects, etc.  If sufficient information exists in the source dataset (or applies consistently to all occurrences in the dataset), it is recommended that these datasets are presented as [Sample Event Data (below)](howToPublish#sample-event-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
+
+##### Required fields: 
+* [occurrenceID](http://rs.tdwg.org/dwc/terms/#occurrenceID)
+* [basisOfRecord](http://rs.tdwg.org/dwc/terms/#basisOfRecord)
+* [scientificName](http://rs.tdwg.org/dwc/terms/#scientificName)
+* [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
+* [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
+
+##### Recommended fields: 
+* [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank) - to substantiate scientificName 
+* [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) / [phylum](http://rs.tdwg.org/dwc/terms/#phylum) / [class](http://rs.tdwg.org/dwc/terms/#class) / [order](http://rs.tdwg.org/dwc/terms/#order) / [family](http://rs.tdwg.org/dwc/terms/#family) / [genus](http://rs.tdwg.org/dwc/terms/#family) - to substantiate scientificName 
+* [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) / [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) / [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific location
 
 [![Download Occurrence Data Template][2]][1]
 
