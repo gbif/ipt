@@ -14,6 +14,7 @@ To publish your data, follow these steps:
     - Australia: [ALA IPT](http://ipt.ala.org.au/)
     - Canada: [Canadensys IPT](http://data.canadensys.net/explorer/en/search)
     - Denmark: [DanBIF IPT](http://danbif.au.dk/ipt/)
+    - France: [GBIF-France IPT](http://www.gbif.fr/ipt/)
     - Spain: [GBIF-Spain IPT](http://www.gbif.es:8080/ipt/)
     - US: [USGS-BISON IPT](http://bison.ornl.gov/ipt/)
   2. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
