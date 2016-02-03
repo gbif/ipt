@@ -25,8 +25,7 @@ GBIF supports publication, discovery and use of four classes of data. At the sim
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes-no-text.png' />
 
-[**Resource metadata**](howToPublish#resource-metadata) &nbsp;&nbsp;&nbsp;``—>``&nbsp;&nbsp;&nbsp; [**Checklist Data**](howToPublish#checklist-data) &nbsp;&nbsp;&nbsp;``—>``&nbsp;&nbsp;&nbsp; [**Occurrence Data**](howToPublish#occurrence-data) &nbsp;&nbsp;&nbsp;``—>``&nbsp;&nbsp;&nbsp; [**Sample Event Data**](howToPublish#sample-event-data)
-
+[**Resource metadata**](howToPublish#resource-metadata) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Checklist Data**](howToPublish#checklist-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Occurrence Data**](howToPublish#occurrence-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Sample Event Data**](howToPublish#sample-event-data)
 
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
