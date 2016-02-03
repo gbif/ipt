@@ -92,7 +92,7 @@ Resources which present evidence of the occurrence of a species at a particular 
 * [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank) - to substantiate scientificName 
 * [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) - and other higher taxonomy if possible 
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
-* [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) & [organismQuantityType](http://rs.tdwg.org/dwc/terms/#organismQuantityType) / [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) - to record the quantity of a species occurrence
+* [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) / [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) & [organismQuantityType](http://rs.tdwg.org/dwc/terms/#organismQuantityType) - to record the quantity of a species occurrence
 
 ##### Template: 
 [![Download Occurrence Data Template][2]][1]
