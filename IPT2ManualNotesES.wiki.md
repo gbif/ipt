@@ -197,15 +197,15 @@ Si el paso inicial de asignación de directorio de datos se realizó correctamen
     * **URL Base para este IPT** - La URL que dirige a la raíz de instalación de este IPT. La dirección URL es detectada automáticamente en la medida de lo posible, pero debe ser cambiada en los sistemas de producción para ser accesible a través de Internet, de manera que el IPT pueda funcionar plenamente. Configurando la URL base del IPT para utilizar el localhost, por ejemplo, no permitirá que la instancia del IPT sea registrada en GBIF, no permitirá que el IPT esté asociado con una organización y que los recursos sean de acceso público.
     * **Dirección del Proxy** - Si el servidor en el que ha sido instalado el IPT es dirigido a través de un servidor proxy o un host virtual. Ingrese la dirección del host y el número de puerto mediante los cuales se puede acceder al IPT vía Internet, usando una URL en el formato protocolo:host:puerto, por ejemplo, http://proxy.gbif.org:8080.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTSetup2.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTSetup2.png' />
 
 Cuando toda la información en la página esté completa y correcta, haga clic en el botón "Guardar" para completar el proceso de instalación del IPT. Si se presenta algún problema, aparecerá un mensaje de error en la parte superior de la página con recomendaciones acerca de cómo resolverlo. Siempre y cuando el problema haya sido resuelto, al reiniciar el servidor web este mensaje de error desaparecerá. Si la configuración fue exitosa, aparecerá una página de confirmación de la configuración.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTSetupFinished.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTSetupFinished.png' />
 
 Haga clic en el botón "Continuar" para abrir la página de Administración del IPT (véase a continuación la imagen de la pantalla), en la que se pueden realizar configuraciones adicionales. Por favor revise la explicación de todas las funciones de Administración antes de continuar. Detalles sobre las opciones presentadas en esta pantalla se muestran en la sección “Menú Administración" de la Guía de Referencia Rápida. Antes de añadir fuentes de datos al IPT, el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF, y asociar el IPT con una organización. El botón “Organizaciones” estará desactivado predeterminadamente hasta que se hayan establecido las opciones de registro en GBIF.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminBeforeRegistration.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminBeforeRegistration.png' />
 
 Una vez se hayan completado los pasos de esta "Guía de Instalación", el IPT estará listo para agregar recursos (conjuntos de datos y metadatos). Es recomendable revisar los tutoriales para entender cómo se llevan a cabo las tareas comunes del IPT. Para una explicación detallada de cualquier otro aspecto del IPT, consulte la "Guía de Referencia Rápida" de este manual de usuario.
 
@@ -230,39 +230,39 @@ La mayoría de los controles de la interfaz del usuario tienen los modos “habi
 
 Barra de menú antes de iniciar sesión o después de que un usuario sin una función especial inicia sesión, con el "Menú Inicio" activo:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeAbout.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeAbout.png' />
 
 Menú después de que inicie sesión, un usuario con función de Administrador con o sin derechos para registrar recursos, con el "Menú Gestión de Recursos" activo:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeManageAbout.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeManageAbout.png' />
 
 Menú después de que inicie sesión, un usuario con función de Administrador, con el "Menú Administración" activo:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeManageAdminAbout.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeManageAdminAbout.png' />
 
 **Cuadros de texto** - Permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).
 
 Ejemplo de cuadros de verificación y de etiqueta para indicar que el IPT puede publicar los recursos:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-CheckboxExample.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-CheckboxExample.png' />
 
 **Cuadros de verificación** - Permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).
 
 Ejemplo de cuadros de verificación y de etiqueta para indicar que el IPT puede publicar los recursos:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-CheckboxExample.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-CheckboxExample.png' />
 
 **Cuadros de selección** - Permiten visualizar o seleccionar un valor de una lista de valores predefinidos. Un cuadro de selección puede contener un texto explicativo acerca de la escogencia de un valor seleccionable. En este caso, la selección iniciará con la palabra "Seleccione" (por ejemplo, "Seleccione un país, territorio o isla"). Haga clic en el cuadro de selección para desplegar la lista de posibles valores. Haga clic en una de las opciones para fijar ese valor.
 
 Ejemplo de cuadro de selección y de etiqueta para el rol del usuario, con la opción Administrador seleccionada:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-SelectBoxExample.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-SelectBoxExample.png' />
 
 **Enlaces** - Abre una página diferente a la que contiene el enlace. Los enlaces pueden abrir la nueva página en la misma ventana del navegador (o pestaña) o en una ventana separada (o pestaña).
 
 Ejemplo de enlace a la página de información de la cuenta del usuario conectado:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-LinkExample.PNG' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-LinkExample.png' />
 
 **Ícono de Información** - Muestra un mensaje que explica la intención del control junto al que aparece. Haga clic en el ícono situado junto a cualquier elemento para ver un mensaje de ayuda acerca de ese control. Haga clic de nuevo para que el mensaje desaparezca. Algunos mensajes de información incluyen un enlace, que de ser seleccionado, ingresará el valor apropiado para la selección.
 
