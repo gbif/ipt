@@ -125,11 +125,11 @@ Resources which present evidence not only of the occurrence of a species at a pa
 * [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus) - only for associated occurrence data to record presence/absence data.
 
 ##### Template: 
-[![Download Sample Event Data Template][2]][1]
+[![Download Sample Event Data Template][2]][4]
 
 Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
 
-  [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1.xlsx
+  [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Sample Event Data Template)
 
 ##### Exemplar datasets: 
