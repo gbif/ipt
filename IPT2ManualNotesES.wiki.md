@@ -293,9 +293,9 @@ Ejemplo de tabla ordenable en orden descendente según la columna etiquetada "Ti
 #### Carga de archivos
 La carga de archivos al IPT se puede hacer por medio de dos acciones: [[creando un nuevo recurso|IPT2ManualNotesES.wiki#Creación de un Nuevo Recurso]], o cuando se [[agregan nuevos archivos de conjuntos de datos|IPT2ManualNotesES.wiki#Conjunto de datos desde un Archivo]].
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/es/Control-UploadCreateResource.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-UploadCreateResource.png' />
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/es/Control-UploadSourceData.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-UploadSourceData.png' />
 
 El IPT tiene un límite de 100MB para la carga de archivos. Sin embargo no se tienen límites de tamaño para los Archivos Darwin Core que se deseen exportar o publicar a través del IPT. Para la carga en el IPT de conjuntos de datos de un tamaño mayor a los 100MB, se recomiendan las siguientes alternativas:
 * Comprimir el archivo (con zip o gzip)
