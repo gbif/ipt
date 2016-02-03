@@ -110,7 +110,7 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, ecogenomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata) and the same standard elements as in [Occurrence Data (above)](howToPublish#occurrence-data).
 
 ##### Required DwC fields: 
-* [eventID](http://rs.tdwg.org/dwc/terms/#eventID)
+* [eventID](http://rs.tdwg.org/dwc/terms/#eventID) - also required for associated occurrence data (to link them together)
 * [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
 * [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
 * [samplingProtocol](http://rs.tdwg.org/dwc/terms/#samplingProtocol)
@@ -122,6 +122,7 @@ Resources which present evidence not only of the occurrence of a species at a pa
 * [locationID](http://rs.tdwg.org/dwc/terms/#locationID) - in case the plot/transect being sampled has a unique identifier
 * [footprintWKT](http://rs.tdwg.org/dwc/terms/#footprintWKT) - to provide a specific shape location
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
+* [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus) - only for associated occurrence data to record presence/absence data.
 
 ##### Template: 
 [![Download Sample Event Data Template][2]][1]
