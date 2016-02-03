@@ -230,11 +230,11 @@ La mayoría de los controles de la interfaz del usuario tienen los modos “habi
 
 Barra de menú antes de iniciar sesión o después de que un usuario sin una función especial inicia sesión, con el "Menú Inicio" activo:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeAbout.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeAbout.PNG' />
 
 Menú después de que inicie sesión, un usuario con función de Administrador con o sin derechos para registrar recursos, con el "Menú Gestión de Recursos" activo:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeManageAbout.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTMenuBarHomeManageAbout.PNG' />
 
 Menú después de que inicie sesión, un usuario con función de Administrador, con el "Menú Administración" activo:
 
@@ -311,11 +311,11 @@ La sección "Encabezado" del IPT aparece en la esquina superior derecha de la ma
 
 Encabezado, no ha iniciado sesión, idioma español seleccionado para la interfaz de usuario:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v205/es/IPTHeaderNotLoggedIn.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTHeaderNotLoggedIn.png' />
 
 Encabezado, sesión iniciada, idioma español seleccionado para la interfaz de usuario:
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v205/es/IPTHeaderLoggedIn.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTHeaderLoggedIn.png' />
 
 * **Iniciar sesión** - Un usuario que se ha creado en esta instancia del IPT, puede iniciar sesión ingresando la dirección de correo electrónico y contraseña en la esquina superior derecha de la página, y haciendo clic en el vínculo "Iniciar sesión". Nuevos usuarios podrán ser creados únicamente por un usuario existente que tiene el rol Administrador. El proceso de creación de los nuevos usuarios se explica en el encabezado "Configurar Cuentas de Usuario" en la sección "Menú Administración". El proceso de iniciar el IPT asignará el rol Administrador al primer usuario.
 * **Cerrar sesión** - Si alguien inicia sesión en el IPT, la dirección de correo electrónico de la persona que se registra se mostrará en la esquina superior derecha de la página, junto con el enlace "Cerrar sesión".
@@ -341,7 +341,7 @@ La sección "Pie de Página" del IPT aparece en la parte inferior de la mayoría
 Esta página permite a los usuarios ver una lista de los recursos públicos, si los hay, y ver los metadatos detallados de cualquier recurso en la lista.
 
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v205/es/IPTHome.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTHome.png' />
 
 ### Tabla de Recursos Públicos
 Si hay recursos públicos, estos serán relacionados en una tabla que tiene las siguientes columnas:
@@ -920,11 +920,11 @@ Al hacer clic en el botón "Eliminar" en la página "Vista General del Recurso",
 
 Esta sección describe cada una de las funciones que están disponibles desde el "Menú Administración". Haciendo clic sobre Administración, se abre una página (ver imagen a continuación) desde la cual cada una de estas tareas administrativas puede ser revisada, haciendo clic sobre el botón apropiado. Note que el botón marcado como “Organizaciones”, predeterminadamente permanecerá deshabilitado hasta que las opciones de Registro GBIF hayan sido establecidas.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v205/es/IPTAdminBeforeRegistration.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminBeforeRegistration.png' />
 
 ### Configuración de las opciones del IPT
 Esta página permite a los usuarios con el rol Administrador, realizar y cambiar la configuración del IPT.
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v205/es/IPTAdminConfigIPT.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminConfigIPT.png' />
 
 * **URL Base** -  Esta es la URL que indica la raíz de instalación de este IPT. La URL se establece automáticamente durante la instalación del IPT. Para que el IPT funcione completamente, la URL Base debe estar disponible vía Internet. Si la URL Base se configura para usar un localhost, no permitirá que el IPT sea registrado en GBIF, tampoco permitirá que pueda ser asociado con una organización y que los recursos estén disponibles al público.
 * **Nota:** Cuando la configuración del IPT es guardada, el IPT prueba la disponibilidad de la URL Base desde el computador del cliente. Si el IPT no está disponible en la URL Base establecida, el IPT mostrará un mensaje de advertencia y los cambios no podrán ser guardados. Si la nueva URL aún no es funcional (tal como un cambio de puerto que requiere un reinicio del IPT), a continuación se explica el procedimiento para cambiar la URL Base:
