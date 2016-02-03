@@ -453,7 +453,7 @@ El IPT puede importar archivos de texto delimitado no comprimidos (csv, tab, y a
 
 Haga clic en el botón "Limpiar" para eliminar el archivo seleccionado y volver al estado anterior a la selección del archivo fuente. Haga clic en el botón "Agregar" para abrir la página detallada "Archivo de Fuente de Datos" (si existe el riesgo de sobrescribir un archivo con el mismo nombre, se abre un diálogo que pide al usuario confirmar que realmente desea sobrescribir). Esta página mostrará el nombre del recurso, junto con un resumen de las características del archivo (opción de lectura, número de columnas detectadas, ruta absoluta de acceso al archivo, tamaño del archivo, tamaño de filas, y fecha en la que el archivo se cargó en el IPT). El archivo de fuente de datos de la página de detalles permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y obtener una vista previa del archivo.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceSourceDataFormat.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceSourceDataFormat.png' />
 
 * **Nombre de la Fuente** - El nombre del archivo seleccionado, sin la extensión de archivo.
 **Se puede leer ** - Este ícono indica si los datos están disponibles utilizando la información de formato del archivo provisto en esta página.
@@ -485,7 +485,7 @@ El IPT puede utilizar conexiones de bases de datos para importar datos de tablas
 
 La página detallada de Fuente de Base de Datos muestra el nombre del recurso, junto con un resumen de las características de la base de datos (opción de lectura, número de columnas detectadas) y permite al usuario ver y editar los parámetros que describen cómo acceder a los datos de la base de datos, y utilizar estas opciones para analizar y obtener una vista previa de los datos.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceSourceDatabase.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceSourceDatabase.png' />
 
 * **Nombre de la Fuente** - El nombre de la fuente de datos. A diferencia de una fuente de datos de archivo, esto puede ser editado y dado cualquier nombre por el usuario.
 * **Se puede leer** - Este ícono indica si los datos están disponibles usando la información de conexión proporcionada en esta página.
@@ -510,7 +510,7 @@ Esta área de la página "Vista General del Recurso", permite al usuario mapear 
 
 Una vez cumplidas estas condiciones, la columna de la izquierda del área de Mapeo Darwin Core contendrá un cuadro de selección con una lista de Estándares y Extensiones que hayan sido instaladas. Seleccione un Estándar y realice el enlace antes de seleccionar una extensión para mapear. Seleccione la extensión adecuada que contenga los elementos que coincidan con aquellos a mapear en la fuente de los datos. Si el estándar o la extensión adecuada no aparecen en el cuadro de selección, tendrá que ser instalado antes de proceder. Consulte la información del encabezado "Configuración de Estándares y Extensiones" en la sección "Menú Administración" para obtener una explicación de cómo instalar las extensiones.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceDwCMapping.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceDwCMapping.png' />
 
 Después de que el estándar o la extensión deseada haya sido seleccionada, haga clic en el botón "Agregar" para abrir la [[Página de selección del Conjunto de Datos|IPT2ManualNotesES.wiki#Página de selección del Conjunto de Datos]]. 
 
@@ -519,18 +519,18 @@ Esta página ofrece una explicación del tipo de datos que la extensión soporta
 **Nota 1**: Un recurso debe usar solamente un tipo de core: Elija "Lista de Chequeo Darwin Core" cuando la base del recurso sean nombres de taxones o elija "Darwin Core Ocurrence" cuando la base del recurso sean observaciones en campo o especímenes en una colección. Sólo cuando el core deseado haya sido mapeado, será posible mapear otras extensiones. 
 **Nota 2**: Es posible mapear otro tipo de core como una extensión, siempre y cuando éste sea diferente al tipo del core mapeado inicialmente.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceSourceSelect.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceSourceSelect.png' />
 
 Seleccione el conjunto de datos a mapear y luego haga clic en el botón "Guardar". Esto abrirá la Página inicial de Mapeo del Conjunto de Datos (ver [[Página de vista general del Mapeo del Conjunto de Datos|IPT2ManualNotesES.wiki#Página de vista general del Mapeo del Conjunto de Datos]] abajo para ayuda acerca del mapeo).
 
 Luego de que se ha agregado un nuevo mapeo, éste será visible en la columna de la derecha del área Mapeo Darwin Core. Esta área tendrá una lista de todos los mapeos del recurso, divididos en mapeos del estándar y mapeos de las extensiones. Haga clic en el botón "Editar" junto a un mapeo para modificarlo o haga clic en el ícono de " Vista previa"<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/preview.png' /> para tener una vista preliminar del mapeo. Se recomienda que el administrador del recurso utilice la vista previa para hacer una revisión del mapeo antes de publicar una nueva versión. 
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceDwCMapping2.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceDwCMapping2.png' />
 
 ##### Página de vista general del Mapeo del Conjunto de Datos
 Después de que se ha realizado el mapeo entre el conjunto de datos y los elementos del Core o la extensión, se abrirá esta página. En ésta se mostrará un mensaje de estado indicando cuántos elementos de la fuente de los datos se mapearon automáticamente a los elementos de las extensiones.  Los elementos se mapearán automáticamente, si los nombres de los elementos, convertidos a minúsculas, coinciden entre sí.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceSourceMapping.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceSourceMapping.png' />
 
 La página Mapeo de Datos permite al usuario especificar exactamente cómo se configuran los datos disponibles a través de este recurso IPT, con base en la extensión seleccionada.  El nombre del conjunto de datos es un enlace a la página de edición del conjunto de datos. Por otra parte el nombre de la extensión es un enlace a la descripción de la extensión.
 
@@ -571,10 +571,10 @@ Adicional a la información explicativa acerca de la extensión en la parte supe
 * **Eliminar** - Hacer clic en este botón eliminará el enlace de una fuente de datos, no sólo los elementos mapeados, y volverá a la página "Vista General del Recurso".
 * **Volver** - al hacer clic en este botón, se abandonará todos los cambios que se han hecho en esta página desde que fue guardada por última vez y volverá a la página "Vista General del Recurso".
 * **Columnas sin mapear** - Esta sección contiene una lista de las columnas del conjunto o tabla de datos que no han sido mapeados. Esta lista puede ayudar a determinar si todos los datos que estaban destinados a ser mapeados lo lograron.
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceMappingUnmappedColumns.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceMappingUnmappedColumns.png' />
 * **Clases con terminos redundantes** - Esta sección contiene una lista de las clases cuyos terminos son redundantes, esto significa que estas clases ya aparecen en la extensión del core. Idealmente un termino que ha sido mapeado en la extensión del core no necesita ser mapeado de nuevo en una extensión. Ocultar los terminos redundantes tiene el beneficio adicional de hacer la página de mapeo más sencilla para el usuario.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceMappingRedundantClasses.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceMappingRedundantClasses.png' />
 
 ##### Página de Traducción del Valor
 Cuando está página se abre por primera vez, se muestra un mensaje en la parte superior que indica el número de valores de los elementos seleccionados en la fuente de datos, hasta 1000 valores. La página muestra el nombre y la descripción de la extensión de campo para el que se están realizando traducciones. Si el elemento se rige por un vocabulario controlado, aparecerá en la descripción del elemento, información sobre dicho vocabulario y un ícono para abrir una página de Detalle del Vocabulario (vea la explicación del botón Detalle del Vocabulario, arriba). Debajo de la descripción del elemento hay una tabla que muestra los distintos valores del elemento que se encuentra en la fuente de datos con el encabezado "Fuente del Valor" con cuadros de texto con el encabezado "Valor Traducido". Ingrese el valor al que debe ser traducido la Fuente del Valor en el cuadro de texto. El ícono en la izquierda del valor traducido del cuadro de texto indica si un valor suministrado existe en el vocabulario para este término. 
@@ -591,7 +591,7 @@ Vinculando la tabla de arriba y abajo con el siguiente conjunto de botones:
 ##### Página de Conceptos del Vocabulario
 Esta página muestra una lista de los conceptos que se encuentran dentro del vocabulario. En el contexto del mapeo de los datos, muestra una lista de valores aceptados que pueden ser utilizados para los campos de la extensión. Cada concepto contiene una descripción, elementos Preferidos (en varios idiomas),  además de elementos alternativos (en varios idiomas).
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceVocabularyDetail.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceVocabularyDetail.png' />
 
 #### Metadatos
 Esta área de la página "Vista General del Recurso" permite al usuario ver en el panel de la derecha la información básica de los metadatos del recurso, además de examinar y editar estos y otros metadatos en detalle, haciendo clic sobre el botón “Editar” que se encuentra en el panel izquierdo. Para más información acerca de los metadatos del recurso en el contexto GBIF, véase http://www.gbif.org/informatics/discoverymetadata/. Para ser publicados en la Red GBIF, todos los recursos requieren de un conjunto mínimo de metadatos descriptivos. Si falta alguno de los metadatos requeridos, la página "Vista General del Recurso" se abrirá con un mensaje de advertencia en el área de los "Metadatos".
@@ -608,7 +608,7 @@ A continuación se encuentra una lista de las páginas de metadatos y sus conten
 Esta es la única página de metadatos que contiene campos que son obligatorios para el IPT. El título y la descripción del recurso son obligatorios. Los tres principales contactos del recurso también deben ser descritos aquí: Contacto del Recurso, Creador del Recurso y Proveedor de los Metadatos. Para cada contacto, se debe suministrar mínimo el apellido, una posición o una organización, antes de lograr hacer público el recurso. Para que el recurso sea publicado efectivamente, la(s) persona(s) u organización(es) responsable(s) de la creación del recurso, también deben ser adicionadas como una parte asociada bajo el rol “publicador”.
 Todos los campos de esta página deben ser completados. Por favor note que para cada contacto se debe proporcionar al menos un apellido, una posición o una organización.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTManageResourceMetadataBasicMetadata.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceMetadataBasicMetadata.png' />
 
 * **Título (obligatorio)** - El título del recurso. Este título aparecerá como el Nombre del recurso en todo el IPT. El título también aparecerá en el Registro GBIF.
 * **Organización Publicadora** - La organización responsable de la publicación (producción, liberación, mantenimiento) este recurso. Se utilizará como organización publicadora del recurso cuando se haga el registro en GBIF y al someter los metadatos durante el registro de los DOI. También se utilizará para generar la referencia del recurso (si la generación automática está activada), así que considere la importancia de este rol. Por favor tenga en cuenta que su selección no puede ser cambiada después de que el recurso haya sido registrado en GBIF o que le haya sido asignado un DOI.
@@ -1048,7 +1048,7 @@ Los vocabularios contienen una lista de valores válidos que un elemento particu
 
 Luego de la lista de estándares y extensiones instaladas, se encuentra la sección "Sincronizar extensiones y Vocabularios" con un solo botón: "Sincronizar". Las versiones más recientes existentes en el Registro de GBIF de los estándares y las extensiones pero que aún no han sido instaladas, se encuentran listadas debajo de la sección de vocabularios. 
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTAdminExtensions.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminExtensions.png' />
 
 Cada lista de extensiones (instaladas y no instaladas) tiene dos columnas. La columna de la izquierda muestra el nombre de la extensión como un enlace y un botón “Instalar” o “Eliminar”. Si la extensión esta desactualizada, aparecerá otro botón con la etiqueta "Actualizar". En la columna de la derecha hay un resumen de la información acerca de la extensión, el número de propiedades (campos, elementos) en la extensión, el nombre de la extensión, su espacio de nombres, tipo de fila y palabras clave. Para más información acerca de estos atributos de una extensión, véase la documentación sobre Archivos Darwin Core en   <a href='http://rs.tdwg.org/dwc/terms/guides/text/'>http://rs.tdwg.org/dwc/terms/guides/text/</a>.
 A continuación están las acciones que pueden ser tomadas respecto a las extensiones.
@@ -1059,11 +1059,11 @@ Una extensión puede utilizar una lista de términos de valores predefinidos, co
 ### Ver Detalles de una Extensión
 En la primera columna, el título de cada extensión es un enlace a una página de detalles para aquella extensión. La página de detalles muestra toda la información resumida que puede ser vista en la columna de la derecha de la lista de extensiones, así como la descripción detallada, referencias y ejemplos para cada una de las propiedades de la extensión.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTAdminExtensionsDetail.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminExtensionsDetail.png' />
 
 Para propiedades que tienen vocabularios controlados, la información sobre las propiedades, en la columna de la derecha, contendrá el nombre del vocabulario como un enlace al lado de "Vocabulario". Haciendo clic sobre este enlace, se abrirá una página de detalles para el vocabulario, con un resumen de este en la parte superior y una tabla de valores válidos con información más detallada, como los términos preferidos y alternos y, los identificadores.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTAdminExtensionsDetailVocabulary.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminExtensionsDetailVocabulary.png' />
 
 ### Instalar una Extensión
 Para cualquiera de las extensiones que aún no ha sido instalada en el IPT, hay un botón “Instalar” debajo del nombre de la extensión en la columna de la izquierda. Haga clic sobre este botón para adquirir la extensión desde el Registro GBIF e instalarla en el IPT.
@@ -1071,12 +1071,12 @@ Para cualquiera de las extensiones que aún no ha sido instalada en el IPT, hay 
 ### Eliminar una Extensión
 Cualquiera de las extensiones que ya haya sido instalada en el IPT, puede ser eliminada haciendo clic en el botón “Eliminar”. Las extensiones que estén siendo usadas para mapear los datos de algún recurso en el IPT, no pueden ser eliminadas. Cualquier intento mostrará un mensaje de error y una lista de recursos que están usando la extensión.
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTAdminExtensionsDetailVocabulary.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminExtensionsDetailVocabulary.png' />
 
 ### Actualizar una extensión
 Cualquiera de las extensiones que ya haya sido instalada en el IPT, y que esté desactualizada, puede ser actualizada haciendo clic en el botón "Actualizar". Actualizar una extensión permite tomar ventaja de nuevos términos y vocabularios. Durante la actualización, los mapeos existentes que contengan términos depreciados serán eliminados, y reemplazados automáticamente por los términos actualizados. Luego de la actualización, todos los recursos afectados deben ser revisados y publicados nuevamente. 
 
-<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/v23/IPTAdminExtensionsUpdate.png' />
+<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminExtensionsUpdate.png' />
 
 ## Ver Actividad del Sistema del IPT
 Mensajes generados de las acciones tomadas mientras se estaba corriendo el IPT, son registradas por referencia en archivos, en el directorio llamado logs dentro del directorio de datos del IPT (véase la información bajo el encabezado “Configuración del IPT” en la sección “Menú Administración"). La página de la Actividad del Sistema muestra mensajes desde el archivo llamado admin.log, el cual contiene solamente aquellos mensajes que tienen una severidad mayor o igual a “ADVERTENCIA”. Los mensajes completos (contenidos en el archivo llamado debug.log) pueden ser abiertos o visualizados, haciendo clic sobre el enlace “archivo log completo”. El contenido del archivo log completo, puede ser útil cuando se reporte un aparente error.
