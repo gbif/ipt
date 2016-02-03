@@ -112,6 +112,7 @@ Resources which present evidence not only of the occurrence of a species at a pa
 ##### Required DwC fields: 
 * [eventID](http://rs.tdwg.org/dwc/terms/#eventID)
 * [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
+* [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
 * [samplingProtocol](http://rs.tdwg.org/dwc/terms/#samplingProtocol)
 * [sampleSizeValue](http://rs.tdwg.org/dwc/terms/#sampleSizeValue) & [sampleSizeUnit](http://rs.tdwg.org/dwc/terms/#sampleSizeUnit)
 
