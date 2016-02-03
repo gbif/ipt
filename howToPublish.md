@@ -12,7 +12,7 @@ To publish your data, follow these steps:
 4. Use the IPT to publish your dataset, and register it with GBIF
   1. Try to use a data hosting centre IPT close to you:
     - Australia: [ALA IPT](http://ipt.ala.org.au/)
-    - Canada: [Canadensys IPT](http://data.canadensys.net/explorer/en/search)
+    - Canada: [Canadensys IPT](http://data.canadensys.net/ipt)
     - Denmark: [DanBIF IPT](http://danbif.au.dk/ipt/)
     - France: [GBIF-France IPT](http://www.gbif.fr/ipt/)
     - Spain: [GBIF-Spain IPT](http://www.gbif.es:8080/ipt/)
