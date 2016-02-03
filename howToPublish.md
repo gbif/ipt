@@ -95,11 +95,11 @@ Resources which present evidence of the occurrence of a species at a particular 
 * [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) / [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) & [organismQuantityType](http://rs.tdwg.org/dwc/terms/#organismQuantityType) - to record the quantity of a species occurrence
 
 ##### Template: 
-[![Download Occurrence Data Template][2]][1]
+[![Download Occurrence Data Template][2]][3]
 
 Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
 
-  [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1.xlsx
+  [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/occurrence_ipt_template_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Occurrence Data Template)
 
 ##### Exemplar datasets: 
