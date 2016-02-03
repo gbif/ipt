@@ -25,26 +25,8 @@ GBIF supports publication, discovery and use of four classes of data. At the sim
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes.png' />
 
-* [Resource metadata](howToPublish#resource-metadata)
-  * Required fields
-  * Recommended fields
-  * Template
-  * Exemplar datasets
-* [Checklist Data](howToPublish#checklist-data)
-  * Required fields
-  * Recommended fields
-  * Template
-  * Exemplar datasets
-* [Occurrence Data](howToPublish#occurrence-data)
-  * Required fields
-  * Recommended fields
-  * Template
-  * Exemplar datasets
-* [Sample Event Data](howToPublish#sample-event-data)
-  * Required fields
-  * Recommended fields
-  * Template
-  * Exemplar datasets
+[Resource metadata](howToPublish#resource-metadata) ->->->->-> [Checklist Data](howToPublish#checklist-data) ->->->->->   [Occurrence Data](howToPublish#occurrence-data) ->->->->-> [Sample Event Data](howToPublish#sample-event-data)
+
 
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
@@ -90,7 +72,7 @@ Resources comprising a list of species belonging to some category (e.g. taxonomi
 
 Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
 
-  [1]: https://gbif-spreadsheet-processor.googlecode.com/svn/trunk/templates/checklist/checklist-3_v1.xlsx
+  [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Checklist Data Template)
 
 ##### Exemplar datasets: 
