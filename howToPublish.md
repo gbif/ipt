@@ -103,7 +103,7 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Occurrence Data Template)
 
 ##### Exemplar datasets: 
-* CUMV Amphibian Collection (Arctos): [DwC-A](http://data.canadensys.net/ipt/archive.do?r=vascan) / [IPT homepage](http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph)
+* CUMV Amphibian Collection (Arctos): [DwC-A](http://ipt.vertnet.org:8080/ipt/archive.do?r=cumv_amph) / [IPT homepage](http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph)
 
 ### Sample Event Data
 
