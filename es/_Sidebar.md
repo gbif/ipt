@@ -1,3 +1,7 @@
+_[[Para la versión en español|Inicio]]_
+
+---
+
 + [[Release Notes|IPTReleaseNotes23.wiki]]
 + [[Manual del Usario|IPT2ManualNotesES.wiki]]
     - [[Table of Contents|IPT2ManualNotes.wiki#table-of-contents]]
