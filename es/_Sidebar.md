@@ -1,4 +1,4 @@
-_[[For the version in English|Inicio]]_
+_[[For the version in English|Home]]_
 
 ---
 
