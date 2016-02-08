@@ -1,5 +1,5 @@
 + [[Release Notes|IPTReleaseNotes23.wiki]]
-+ [[Manual del Usario|IPT2ManualNotes.wiki]]
++ [[Manual del Usario|IPT2ManualNotesES.wiki]]
     - [[Table of Contents|IPT2ManualNotes.wiki#table-of-contents]]
     - [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
     - [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]]
