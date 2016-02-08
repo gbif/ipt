@@ -1,5 +1,4 @@
-In other languages
-* [[Español|Inicio]]
+[[Español|Inicio]]
 
 ---
 
