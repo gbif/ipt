@@ -2,6 +2,8 @@
 
 **IPT Version: 2.3**
 
+_Para la versión en español de este manual [[ingrese aqui.|IPT2ManualNotesES.wiki]]_
+
 _For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
 
 # Table of Contents
