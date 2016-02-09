@@ -5,9 +5,10 @@ GBIF supports publication, discovery and use of four classes of data.
 To publish your data, follow these steps:
 
 1. Use this guide to determine what class of data you have
-2. Construct your dataset using the Excel template provided for that class of data
-  1. Try to add as many recommended terms as possible
-  2. Refer to the exemplar datasets for additional guidance
+2. Construct your dataset
+  1. Try using an Excel template (see below) to collect your data
+  2. Try to add as many recommended Darwin Core (DwC) terms as possible
+  3. Refer to the exemplar datasets (see below) for additional guidance
 3. Register your organisation with GBIF by filling in this [form](http://www.gbif.org/publishing-data/how-to-publish#/intro). 
 4. Use the GBIF Integrated Publishing Toolkit (IPT) to fill in metadata for your dataset metadata and publish it in a standardised (Darwin Core Archive) format: 
   1. Try to use a data hosting centre IPT close to you:
