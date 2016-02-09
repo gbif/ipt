@@ -3,112 +3,112 @@
 **Versión del IPT: 2.3**
 
 # Tabla de contenidos
-+ [[Introducción|IPT2ManualNotesES.wiki#introducción]]
-  + [[Acerca del IPT de GBIF|IPT2ManualNotesES.wiki#acerca-del-ipt-de-gbif]]
-  + [[¿Cómo usar este manual?|IPT2ManualNotesES.wiki#cómo-usar-este-manual]]
-+ [[Guía de Instalación|IPT2ManualNotesES.wiki#guía-de-instalación]]
-  + [[Requerimientos|IPT2ManualNotesES.wiki#requerimientos]]
-    + [[Conexión a Internet|IPT2ManualNotesES.wiki#conexión-a-internet]]
-    + [[URL fija|IPT2ManualNotesES.wiki#url-fija]]
-    + [[Memoria|IPT2ManualNotesES.wiki#memoria]]
-    + [[Espacio en disco|IPT2ManualNotesES.wiki#espacio-en-disco]]
-    + [[Java|IPT2ManualNotesES.wiki#java]]
-    + [[Contenedor de servlet|IPT2ManualNotesES.wiki#contenedor-de-servlet]]
-  + [[Instalación del IPT|IPT2ManualNotesES.wiki#instalación-del-ipt]]
-    + [[Preparar el Servidor|IPT2ManualNotesES.wiki#preparar-el-servidor]]
-    + [[Descargar el IPT|IPT2ManualNotesES.wiki#descargar-el-ipt]]
-    + [[Desplegar el IPT en el contenedor de servlet|IPT2ManualNotesES.wiki#desplegar-el-ipt-en-el-contenedor-de-servlet]]
-    + [[Ejecutar la aplicación del IPT|IPT2ManualNotesES.wiki#ejecutar-la-aplicación-del-ipt]]
-  + [[Configuración inicial del IPT|IPT2ManualNotesES.wiki#configuración-inicial-del-ipt]]
-    + [[Configuración del IPT I|IPT2ManualNotesES.wiki#configuración-del-ipt-i]]
-    + [[Configuración del IPT II|IPT2ManualNotesES.wiki#configuración-del-ipt-ii]]
-  + [[Reiniciar el IPT|IPT2ManualNotesES.wiki#reiniciar]]
-+ [[Guía de referencia rápida|IPT2ManualNotesES.wiki#guía-de-referencia-rápida]]
-  + [[Antes de iniciar|IPT2ManualNotesES.wiki#antes-de-iniciar]]
-  + [[Características comunes|IPT2ManualNotesES.wiki#características-comunes]]
-    + [[Controles de la interfaz del usuario|IPT2ManualNotesES.wiki#controles-de-la-interfaz-del-usuario]]
-      + [[Carga de archivos|IPT2ManualNotesES.wiki#carga-de-archivos]]
-    + [[Controles que aparecen en todas las páginas|IPT2ManualNotesES.wiki#controles-que-aparecen-en-todas-las-páginas]]
-      + [[Encabezado|IPT2ManualNotesES.wiki#encabezado]]
-      + [[Pie de página|IPT2ManualNotesES.wiki#pie-de-página]]
-  + [[Menú Inicio (visible para todos los usuarios)|IPT2ManualNotesES.wiki#menú-inicio-visible-para-todos-los-usuarios]]
-    + [[Tabla de recursos Públicos|IPT2ManualNotesES.wiki#tabla-de-recursos-públicos]]
-    + [[RSS feed|IPT2ManualNotesES.wiki#rss-feed]]
-    + [[Inventario de Recursos registrados|IPT2ManualNotesES.wiki#inventario-de-recursos-registrados]]
-    + [[Página principal del Recurso|IPT2ManualNotesES.wiki#página-principal-del-recurso]]
-      + [[Página de historial de versiones|IPT2ManualNotesES.wiki#página-de-historial-de-versiones]]
-  + [[Menú Gestión de Recursos (visible para usuarios con el rol Administrador)|IPT2ManualNotesES.wiki#menú-gestión-de-recursos-visible-para-usuarios-con-el-rol-administrador]]
-    + [[Tabla de Recursos que puede administrar|IPT2ManualNotesES.wiki#tabla-gestión-de-recursos]]
-    + [[Creación un Nuevo Recurso|IPT2ManualNotesES.wiki#creación-de-un-nuevo-recurso]]
-      + [[Cargar un Archivo Darwin Core|IPT2ManualNotesES.wiki#cargar-un-archivo-darwin-core]]
-      + [[Cargar una carpeta comprimida con un recurso IPT configurado|IPT2ManualNotesES.wiki#cargar-una-carpeta-comprimida con-un-recurso-ipt-configurado]]
-      + [[Cargar un archivo de Metadatos|IPT2ManualNotesES.wiki#cargar-un-archivo-de-metadatos]]
-    + [[Editar un Recurso existente|IPT2ManualNotesES.wiki#edición-de-un-recurso-existente]]
-    + [[Vista General del Recurso|IPT2ManualNotesES.wiki#vista general del recurso]]
-      + [[Conjunto de datos|IPT2ManualNotesES.wiki#conjunto-de-datos]]
-        + [[Conjunto de datos desde un Archivo|IPT2ManualNotesES.wiki#archivo-como-fuente-de-datos]]
-        + [[Conjunto de datos desde una Base de datos|IPT2ManualNotesES.wiki#base-de-datos-como-fuente-de-datos]]
-      + [[Mapeo Darwin Core|IPT2ManualNotesES.wiki#mapeo-darwin-core]]
-        + [[Página de vista general del Conjunto de datos|IPT2ManualNotesES.wiki#página-de-selección-del-conjunto-de-datos]]
-        + [[Página de vista general del Mapeo del Conjunto de datos|IPT2ManualNotesES.wiki#página-de-vista-general-del-mapeo-del-conjunto-de-datos]]
-        + [[Página de Traducción del Valor|IPT2ManualNotesES.wiki#página de-traducción-del-valor]]
-        + [[Página de Vocabulario Controlado|IPT2ManualNotesES.wiki#página-de-conceptos-del-vocabulario]]
-      + [[Metadatos|IPT2ManualNotesES.wiki#metadatos]]
-        + [[Metadatos Básicos|IPT2ManualNotesES.wiki#metadatos-básicos]]
-        + [[Cobertura Geográfica|IPT2ManualNotesES.wiki#cobertura-geográfica]]
-        + [[Cobertura Taxonómica|IPT2ManualNotesES.wiki#cobertura-taxonómica]]
-        + [[Cobertura Temporal|IPT2ManualNotesES.wiki#cobertura-temporal]]
-        + [[Palabras Clave|IPT2ManualNotesES.wiki#palabras-clave]]
-        + [[Partes Asociadas|IPT2ManualNotesES.wiki#partes-asociadas]]
-        + [[Datos del Proyecto|IPT2ManualNotesES.wiki#datos-del-proyecto]]
-        + [[Métodos de Muestreo|IPT2ManualNotesES.wiki#métodos-de-muestreo]]
-        + [[Referencias|IPT2ManualNotesES.wiki#referencias]]
-        + [[Datos de la Colección|IPT2ManualNotesES.wiki#datos-de-la-colección]]
-        + [[Enlaces Externos|IPT2ManualNotesES.wiki#enlaces-externos]]
-        + [[Metadatos Adicionales|IPT2ManualNotesES.wiki#metadatos-adicionales]]
-      + [[Versiones del Archivo Darwin Core|IPT2ManualNotesES.wiki#versiones-publicadas]]
-      + [[Visibilidad|IPT2ManualNotesES.wiki#visibilidad]]
-      + [[Migración de un Recurso|IPT2ManualNotesES.wiki#migración-de-un-recurso]]
-      + [[Administradores de Recursos|IPT2ManualNotesES.wiki#administradores-de-recursos]]
-      + [[Eliminar un Recurso|IPT2ManualNotesES.wiki#eliminar-un-recurso]]
-  + [[Menú Administración (visible únicamente para usuarios con el rol Administrador)|IPT2ManualNotesES.wiki#menú-administración-visible-únicamente-para-usuarios-con-el-rol-administrador]]
-    + [[Configuración de las opciones del IPT|IPT2ManualNotesES.wiki#configuración-de-las-opciones-del-ipt]]
-    + [[Publicar todos los Recursos|IPT2ManualNotesES.wiki#publicar-todos-los-recursos]]
-    + [[Configurar Cuentas de Usuario|IPT2ManualNotesES.wiki#configurar-cuentas-de-usuario]]
-      + [[Crear un Nuevo Usuario|IPT2ManualNotesES.wiki#crear-un-nuevo-usuario]]
-      + [[Modificar un Usuario existente|IPT2ManualNotesES.wiki#modificar-un-usuario-existente]]
-      + [[Eliminar un Usuario|IPT2ManualNotesES.wiki#eliminar-un-usuario]]
-  + [[Configurar opciones del Registro GBIF|IPT2ManualNotesES.wiki#configurar-opciones-para-el-registro-gbif]]
-  + [[Editar el Registro GBIF|IPT2ManualNotesES.wiki#editar-el-registro-gbif]]
-  + [[Configurar Organizaciones|IPT2ManualNotesES.wiki#configurar-organizaciones]]
-    + [[Editar una Organización|IPT2ManualNotesES.wiki#editar-una-organización]]
-    + [[Agregar una Organización|IPT2ManualNotesES.wiki#adicionar-una-organización]]
-  + [[Configurar Estándares y Extensiones|IPT2ManualNotesES.wiki#configurar-estándares-y-extensiones]]
-    + [[Sincronizar Extensiones y Vocabularios|IPT2ManualNotesES.wiki#sincronizar-extensiones-y-vocabularios]]
-    + [[Ver detalles de una Extensión|IPT2ManualNotesES.wiki#ver-detalles-de-una-extensión]]
-    + [[Instalar una Extensión|IPT2ManualNotesES.wiki#instalar-una-extensión]]
-    + [[Eliminar una Extensión|IPT2ManualNotesES.wiki#eliminar-una-extensión]]
-    + [[Actualizar una Extensión|IPT2ManualNotesES.wiki#actualizar-una-extensión]]
-  + [[Ver actividad del Sistema del IPT|IPT2ManualNotesES.wiki#ver-actividad-del-sistema-del-ipt]]
-  + [[Menú Acerca de (visible para todos los usuarios)|IPT2ManualNotesES.wiki#menú-acerca-de visible para todos los usuarios]]
-+ [[Acerca del IPT|IPT2ManualNotesES.wiki#acerca-del-ipt]]
-  + [[¿Cómo citar este manual?|IPT2ManualNotesES.wiki#cómo-citar-este-manual]]
-  + [[Derechos de Autor|IPT2ManualNotesES.wiki#derechos-de-autor]]
-  + [[Licencia|IPT2ManualNotesES.wiki#licencia]]
-+ [[Recursos|IPT2ManualNotesES.wiki#recursos]]
-  + [[Documentación de un Archivo Darwin Core|IPT2ManualNotesES.wiki#documentación-de-un-archivo-darwin-core]]
-  + [[Mesa de Ayuda GBIF|IPT2ManualNotesES.wiki#mesa-de-ayuda-gbif]]
-  + [[Registro GBIF|IPT2ManualNotesES.wiki#registro-gbif]]
-  + [[Sitio del Código IPT|IPT2ManualNotesES.wiki#sitio-del-código-ipt]]
-  + [[Documentación para Desarrolladores del IPT|IPT2ManualNotesES.wiki#documentación-para-desarrolladores-del-ipt]]
-  + [[Grupo de expertos del IPT en el sitio web de la Comunidad GBIF|IPT2ManualNotesES.wiki#grupo-de-expertos-del-ipt-en-el sitio-web-de-la-comunidad-gbif]]
-  + [[Seguimiento a problemas del IPT|IPT2ManualNotesES.wiki#seguimiento-a-problemas-del-ipt]]
-  + [[Lista de correos del IPT|IPT2ManualNotesES.wiki#lista-de-correos-del-ipt]]
-  + [[Preparación del servidor del IPT|IPT2ManualNotesES.wiki#preparación-del-servidor-del-ipt]]
-  + [[Bases de Datos soportadas por el IPT|IPT2ManualNotesES.wiki#bases-de-datos-del-ipt-soportadas]]
-  + [[Instalación de Prueba del IPT|IPT2ManualNotesES.wiki#instalación-de-prueba-del-ipt]]
-+ [[Referencias|IPT2ManualNotesES.wiki#referencias]]
-+ [[Glosario|IPT2ManualNotesES.wiki#glosario]]
++ [[Introducción|IPT2ManualNotes_ES.wiki#introducción]]
+  + [[Acerca del IPT de GBIF|IPT2ManualNotes_ES.wiki#acerca-del-ipt-de-gbif]]
+  + [[¿Cómo usar este manual?|IPT2ManualNotes_ES.wiki#cómo-usar-este-manual]]
++ [[Guía de Instalación|IPT2ManualNotes_ES.wiki#guía-de-instalación]]
+  + [[Requerimientos|IPT2ManualNotes_ES.wiki#requerimientos]]
+    + [[Conexión a Internet|IPT2ManualNotes_ES.wiki#conexión-a-internet]]
+    + [[URL fija|IPT2ManualNotes_ES.wiki#url-fija]]
+    + [[Memoria|IPT2ManualNotes_ES.wiki#memoria]]
+    + [[Espacio en disco|IPT2ManualNotes_ES.wiki#espacio-en-disco]]
+    + [[Java|IPT2ManualNotes_ES.wiki#java]]
+    + [[Contenedor de servlet|IPT2ManualNotes_ES.wiki#contenedor-de-servlet]]
+  + [[Instalación del IPT|IPT2ManualNotes_ES.wiki#instalación-del-ipt]]
+    + [[Preparar el Servidor|IPT2ManualNotes_ES.wiki#preparar-el-servidor]]
+    + [[Descargar el IPT|IPT2ManualNotes_ES.wiki#descargar-el-ipt]]
+    + [[Desplegar el IPT en el contenedor de servlet|IPT2ManualNotes_ES.wiki#desplegar-el-ipt-en-el-contenedor-de-servlet]]
+    + [[Ejecutar la aplicación del IPT|IPT2ManualNotes_ES.wiki#ejecutar-la-aplicación-del-ipt]]
+  + [[Configuración inicial del IPT|IPT2ManualNotes_ES.wiki#configuración-inicial-del-ipt]]
+    + [[Configuración del IPT I|IPT2ManualNotes_ES.wiki#configuración-del-ipt-i]]
+    + [[Configuración del IPT II|IPT2ManualNotes_ES.wiki#configuración-del-ipt-ii]]
+  + [[Reiniciar el IPT|IPT2ManualNotes_ES.wiki#reiniciar]]
++ [[Guía de referencia rápida|IPT2ManualNotes_ES.wiki#guía-de-referencia-rápida]]
+  + [[Antes de iniciar|IPT2ManualNotes_ES.wiki#antes-de-iniciar]]
+  + [[Características comunes|IPT2ManualNotes_ES.wiki#características-comunes]]
+    + [[Controles de la interfaz del usuario|IPT2ManualNotes_ES.wiki#controles-de-la-interfaz-del-usuario]]
+      + [[Carga de archivos|IPT2ManualNotes_ES.wiki#carga-de-archivos]]
+    + [[Controles que aparecen en todas las páginas|IPT2ManualNotes_ES.wiki#controles-que-aparecen-en-todas-las-páginas]]
+      + [[Encabezado|IPT2ManualNotes_ES.wiki#encabezado]]
+      + [[Pie de página|IPT2ManualNotes_ES.wiki#pie-de-página]]
+  + [[Menú Inicio (visible para todos los usuarios)|IPT2ManualNotes_ES.wiki#menú-inicio-visible-para-todos-los-usuarios]]
+    + [[Tabla de recursos Públicos|IPT2ManualNotes_ES.wiki#tabla-de-recursos-públicos]]
+    + [[RSS feed|IPT2ManualNotes_ES.wiki#rss-feed]]
+    + [[Inventario de Recursos registrados|IPT2ManualNotes_ES.wiki#inventario-de-recursos-registrados]]
+    + [[Página principal del Recurso|IPT2ManualNotes_ES.wiki#página-principal-del-recurso]]
+      + [[Página de historial de versiones|IPT2ManualNotes_ES.wiki#página-de-historial-de-versiones]]
+  + [[Menú Gestión de Recursos (visible para usuarios con el rol Administrador)|IPT2ManualNotes_ES.wiki#menú-gestión-de-recursos-visible-para-usuarios-con-el-rol-administrador]]
+    + [[Tabla de Recursos que puede administrar|IPT2ManualNotes_ES.wiki#tabla-gestión-de-recursos]]
+    + [[Creación un Nuevo Recurso|IPT2ManualNotes_ES.wiki#creación-de-un-nuevo-recurso]]
+      + [[Cargar un Archivo Darwin Core|IPT2ManualNotes_ES.wiki#cargar-un-archivo-darwin-core]]
+      + [[Cargar una carpeta comprimida con un recurso IPT configurado|IPT2ManualNotes_ES.wiki#cargar-una-carpeta-comprimida con-un-recurso-ipt-configurado]]
+      + [[Cargar un archivo de Metadatos|IPT2ManualNotes_ES.wiki#cargar-un-archivo-de-metadatos]]
+    + [[Editar un Recurso existente|IPT2ManualNotes_ES.wiki#edición-de-un-recurso-existente]]
+    + [[Vista General del Recurso|IPT2ManualNotes_ES.wiki#vista general del recurso]]
+      + [[Conjunto de datos|IPT2ManualNotes_ES.wiki#conjunto-de-datos]]
+        + [[Conjunto de datos desde un Archivo|IPT2ManualNotes_ES.wiki#archivo-como-fuente-de-datos]]
+        + [[Conjunto de datos desde una Base de datos|IPT2ManualNotes_ES.wiki#base-de-datos-como-fuente-de-datos]]
+      + [[Mapeo Darwin Core|IPT2ManualNotes_ES.wiki#mapeo-darwin-core]]
+        + [[Página de vista general del Conjunto de datos|IPT2ManualNotes_ES.wiki#página-de-selección-del-conjunto-de-datos]]
+        + [[Página de vista general del Mapeo del Conjunto de datos|IPT2ManualNotes_ES.wiki#página-de-vista-general-del-mapeo-del-conjunto-de-datos]]
+        + [[Página de Traducción del Valor|IPT2ManualNotes_ES.wiki#página de-traducción-del-valor]]
+        + [[Página de Vocabulario Controlado|IPT2ManualNotes_ES.wiki#página-de-conceptos-del-vocabulario]]
+      + [[Metadatos|IPT2ManualNotes_ES.wiki#metadatos]]
+        + [[Metadatos Básicos|IPT2ManualNotes_ES.wiki#metadatos-básicos]]
+        + [[Cobertura Geográfica|IPT2ManualNotes_ES.wiki#cobertura-geográfica]]
+        + [[Cobertura Taxonómica|IPT2ManualNotes_ES.wiki#cobertura-taxonómica]]
+        + [[Cobertura Temporal|IPT2ManualNotes_ES.wiki#cobertura-temporal]]
+        + [[Palabras Clave|IPT2ManualNotes_ES.wiki#palabras-clave]]
+        + [[Partes Asociadas|IPT2ManualNotes_ES.wiki#partes-asociadas]]
+        + [[Datos del Proyecto|IPT2ManualNotes_ES.wiki#datos-del-proyecto]]
+        + [[Métodos de Muestreo|IPT2ManualNotes_ES.wiki#métodos-de-muestreo]]
+        + [[Referencias|IPT2ManualNotes_ES.wiki#referencias]]
+        + [[Datos de la Colección|IPT2ManualNotes_ES.wiki#datos-de-la-colección]]
+        + [[Enlaces Externos|IPT2ManualNotes_ES.wiki#enlaces-externos]]
+        + [[Metadatos Adicionales|IPT2ManualNotes_ES.wiki#metadatos-adicionales]]
+      + [[Versiones del Archivo Darwin Core|IPT2ManualNotes_ES.wiki#versiones-publicadas]]
+      + [[Visibilidad|IPT2ManualNotes_ES.wiki#visibilidad]]
+      + [[Migración de un Recurso|IPT2ManualNotes_ES.wiki#migración-de-un-recurso]]
+      + [[Administradores de Recursos|IPT2ManualNotes_ES.wiki#administradores-de-recursos]]
+      + [[Eliminar un Recurso|IPT2ManualNotes_ES.wiki#eliminar-un-recurso]]
+  + [[Menú Administración (visible únicamente para usuarios con el rol Administrador)|IPT2ManualNotes_ES.wiki#menú-administración-visible-únicamente-para-usuarios-con-el-rol-administrador]]
+    + [[Configuración de las opciones del IPT|IPT2ManualNotes_ES.wiki#configuración-de-las-opciones-del-ipt]]
+    + [[Publicar todos los Recursos|IPT2ManualNotes_ES.wiki#publicar-todos-los-recursos]]
+    + [[Configurar Cuentas de Usuario|IPT2ManualNotes_ES.wiki#configurar-cuentas-de-usuario]]
+      + [[Crear un Nuevo Usuario|IPT2ManualNotes_ES.wiki#crear-un-nuevo-usuario]]
+      + [[Modificar un Usuario existente|IPT2ManualNotes_ES.wiki#modificar-un-usuario-existente]]
+      + [[Eliminar un Usuario|IPT2ManualNotes_ES.wiki#eliminar-un-usuario]]
+  + [[Configurar opciones del Registro GBIF|IPT2ManualNotes_ES.wiki#configurar-opciones-para-el-registro-gbif]]
+  + [[Editar el Registro GBIF|IPT2ManualNotes_ES.wiki#editar-el-registro-gbif]]
+  + [[Configurar Organizaciones|IPT2ManualNotes_ES.wiki#configurar-organizaciones]]
+    + [[Editar una Organización|IPT2ManualNotes_ES.wiki#editar-una-organización]]
+    + [[Agregar una Organización|IPT2ManualNotes_ES.wiki#adicionar-una-organización]]
+  + [[Configurar Estándares y Extensiones|IPT2ManualNotes_ES.wiki#configurar-estándares-y-extensiones]]
+    + [[Sincronizar Extensiones y Vocabularios|IPT2ManualNotes_ES.wiki#sincronizar-extensiones-y-vocabularios]]
+    + [[Ver detalles de una Extensión|IPT2ManualNotes_ES.wiki#ver-detalles-de-una-extensión]]
+    + [[Instalar una Extensión|IPT2ManualNotes_ES.wiki#instalar-una-extensión]]
+    + [[Eliminar una Extensión|IPT2ManualNotes_ES.wiki#eliminar-una-extensión]]
+    + [[Actualizar una Extensión|IPT2ManualNotes_ES.wiki#actualizar-una-extensión]]
+  + [[Ver actividad del Sistema del IPT|IPT2ManualNotes_ES.wiki#ver-actividad-del-sistema-del-ipt]]
+  + [[Menú Acerca de (visible para todos los usuarios)|IPT2ManualNotes_ES.wiki#menú-acerca-de visible para todos los usuarios]]
++ [[Acerca del IPT|IPT2ManualNotes_ES.wiki#acerca-del-ipt]]
+  + [[¿Cómo citar este manual?|IPT2ManualNotes_ES.wiki#cómo-citar-este-manual]]
+  + [[Derechos de Autor|IPT2ManualNotes_ES.wiki#derechos-de-autor]]
+  + [[Licencia|IPT2ManualNotes_ES.wiki#licencia]]
++ [[Recursos|IPT2ManualNotes_ES.wiki#recursos]]
+  + [[Documentación de un Archivo Darwin Core|IPT2ManualNotes_ES.wiki#documentación-de-un-archivo-darwin-core]]
+  + [[Mesa de Ayuda GBIF|IPT2ManualNotes_ES.wiki#mesa-de-ayuda-gbif]]
+  + [[Registro GBIF|IPT2ManualNotes_ES.wiki#registro-gbif]]
+  + [[Sitio del Código IPT|IPT2ManualNotes_ES.wiki#sitio-del-código-ipt]]
+  + [[Documentación para Desarrolladores del IPT|IPT2ManualNotes_ES.wiki#documentación-para-desarrolladores-del-ipt]]
+  + [[Grupo de expertos del IPT en el sitio web de la Comunidad GBIF|IPT2ManualNotes_ES.wiki#grupo-de-expertos-del-ipt-en-el sitio-web-de-la-comunidad-gbif]]
+  + [[Seguimiento a problemas del IPT|IPT2ManualNotes_ES.wiki#seguimiento-a-problemas-del-ipt]]
+  + [[Lista de correos del IPT|IPT2ManualNotes_ES.wiki#lista-de-correos-del-ipt]]
+  + [[Preparación del servidor del IPT|IPT2ManualNotes_ES.wiki#preparación-del-servidor-del-ipt]]
+  + [[Bases de Datos soportadas por el IPT|IPT2ManualNotes_ES.wiki#bases-de-datos-del-ipt-soportadas]]
+  + [[Instalación de Prueba del IPT|IPT2ManualNotes_ES.wiki#instalación-de-prueba-del-ipt]]
++ [[Referencias|IPT2ManualNotes_ES.wiki#referencias]]
++ [[Glosario|IPT2ManualNotes_ES.wiki#glosario]]
 
 ---
 
@@ -145,7 +145,7 @@ Se invita a todos los usuarios a revisar esta sección introductoria y a que pos
 ---
 
 # Guía de Instalación
-Esta "Guía de Instalación" está dirigida a aquellos interesados quienes por primera vez, instalarán y ejecutarán una instancia IPT. Si desea ver una instalación funcional del IPT, puede utilizar el ejemplo de prueba para el público de la última versión general en http://ipt.gbif.org/. De ser así, deberán consultar la [[Guía de referencia rápida|IPT2ManualNotesES.wiki#guía-de-referencia-rápida]] para obtener detalles sobre cómo utilizar las pantallas que visualizarán. Los desarrolladores que deseen trabajar con la última revisión del código fuente deberán consultar la sección [Cómo contribuir (en inglés)](http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute) del sitio de la wiki del IPT de GBIF en Google Code. 
+Esta "Guía de Instalación" está dirigida a aquellos interesados quienes por primera vez, instalarán y ejecutarán una instancia IPT. Si desea ver una instalación funcional del IPT, puede utilizar el ejemplo de prueba para el público de la última versión general en http://ipt.gbif.org/. De ser así, deberán consultar la [[Guía de referencia rápida|IPT2ManualNotes_ES.wiki#guía-de-referencia-rápida]] para obtener detalles sobre cómo utilizar las pantallas que visualizarán. Los desarrolladores que deseen trabajar con la última revisión del código fuente deberán consultar la sección [Cómo contribuir (en inglés)](http://code.google.com/p/gbif-providertoolkit/wiki/HowToContribute) del sitio de la wiki del IPT de GBIF en Google Code. 
 
 ## Requerimientos
 ### Conexión a Internet
@@ -291,7 +291,7 @@ Ejemplo de tabla ordenable en orden descendente según la columna etiquetada "Ti
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-TableSortedDescending.png' />
 
 #### Carga de archivos
-La carga de archivos al IPT se puede hacer por medio de dos acciones: [[creando un nuevo recurso|IPT2ManualNotesES.wiki#Creación de un Nuevo Recurso]], o cuando se [[agregan nuevos archivos de conjuntos de datos|IPT2ManualNotesES.wiki#Conjunto de datos desde un Archivo]].
+La carga de archivos al IPT se puede hacer por medio de dos acciones: [[creando un nuevo recurso|IPT2ManualNotes_ES.wiki#Creación de un Nuevo Recurso]], o cuando se [[agregan nuevos archivos de conjuntos de datos|IPT2ManualNotes_ES.wiki#Conjunto de datos desde un Archivo]].
 
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/Control-UploadCreateResource.png' />
 
@@ -349,8 +349,8 @@ Si hay recursos públicos, estos serán relacionados en una tabla que tiene las 
 * **Logo** - El logo del recurso (se puede configurar en la página "Metadatos Adicionales" de los metadatos del recurso).
 * **Nombre** - El título del recurso tal como figura en el Título de la entrada de los metadatos del recurso. El nombre aparece como un enlace, que abrirá una "Página Visualización de Metadatos" (ver más adelante) para el recurso seleccionado.
 * **Organización** - La organización bajo la cual el recurso ha sido registrado. Si el recurso no está registrado, el valor en la columna de Organización será "No registrado". Revise la información en el encabezado “Organizaciones”, en la sección de "Menú Administración" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.
-* **Tipo** - El tipo de recurso como figura en la lista desplegable de Tipo en la página [[Metadatos Básicos|IPT2ManualNotesES.wiki#metadatos-básicos]] de los metadatos del recurso.
-* **Subtype** - El subtipo del recurso como figura en la lista desplegable de Subtipo en la página [[Metadatos Básicos|IPT2ManualNotesES.wiki#metadatos-básicos]] de los metadatos del recurso.
+* **Tipo** - El tipo de recurso como figura en la lista desplegable de Tipo en la página [[Metadatos Básicos|IPT2ManualNotes_ES.wiki#metadatos-básicos]] de los metadatos del recurso.
+* **Subtype** - El subtipo del recurso como figura en la lista desplegable de Subtipo en la página [[Metadatos Básicos|IPT2ManualNotes_ES.wiki#metadatos-básicos]] de los metadatos del recurso.
 * **Registros** - El número de filas de datos de la última publicación del Archivo Darwin Core para el recurso.
 **Última modificación** - Ya sea la fecha en la que fue creado el recurso o la fecha en la que los datos o los metadatos fueron modificados, aquella que sea más reciente.
 * **Última publicación**- La fecha en la que el recurso fue publicado por última vez.
@@ -372,7 +372,7 @@ Por favor recuerde que sólo usuarios con el rol de Administrador u otros tipos 
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTHomeMetadataOverview.png' />
 
 #### Página de historial de versiones
-La tabla del historial de versiones muestra todas las versiones de un recurso que han sido publicadas, permitiéndole a los usuarios hacer el seguimiento de los cambios en el recurso a lo largo del tiempo y descargar las versiones previas de datos/metadatos. Tenga en cuenta que el Modo Archivo del IPT debe estar activado para que las versiones anteriores del DWCA sean guardadas (véase la sección [[Configuración de las opciones del IPT|IPT2ManualNotesES.wiki#Configuración de las opciones del IPT]]).Solo las versiones con acceso al público pueden ser vistas por usuarios externos, mientras que los administradores del recurso podrán ver todas las versiones. A continuación encontrará más información acerca de las columnas de la tabla. 
+La tabla del historial de versiones muestra todas las versiones de un recurso que han sido publicadas, permitiéndole a los usuarios hacer el seguimiento de los cambios en el recurso a lo largo del tiempo y descargar las versiones previas de datos/metadatos. Tenga en cuenta que el Modo Archivo del IPT debe estar activado para que las versiones anteriores del DWCA sean guardadas (véase la sección [[Configuración de las opciones del IPT|IPT2ManualNotes_ES.wiki#Configuración de las opciones del IPT]]).Solo las versiones con acceso al público pueden ser vistas por usuarios externos, mientras que los administradores del recurso podrán ver todas las versiones. A continuación encontrará más información acerca de las columnas de la tabla. 
 
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTVersionHistoryTable.png' />
 
@@ -391,14 +391,14 @@ Esta página permite, a usuarios que cumplan el rol que corresponde (Administrad
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResources.png' />
 
 ### Tabla Gestión de Recursos
-Cuando la página "Gestión de Recursos" se abre por primera vez, muestra una tabla de los recursos existentes que el usuario actual tiene permiso para modificar, incluidos los creados por este usuario y aquellos que este usuario pueda administrar por invitación de otros usuarios. Consulte la información en la sección [[Tabla de recursos Públicos|IPT2ManualNotesES.wiki#tabla-de-recursos-disponibles]] para obtener una explicación detallada acerca de las columnas Nombre, Organización, Tipo, Subtipo, Registros, Última modificación, Última publicación y Próxima publicación. Además, la "Tabla Gestión de Recursos" incluye las siguientes columnas de información básica sobre los recursos:
+Cuando la página "Gestión de Recursos" se abre por primera vez, muestra una tabla de los recursos existentes que el usuario actual tiene permiso para modificar, incluidos los creados por este usuario y aquellos que este usuario pueda administrar por invitación de otros usuarios. Consulte la información en la sección [[Tabla de recursos Públicos|IPT2ManualNotes_ES.wiki#tabla-de-recursos-disponibles]] para obtener una explicación detallada acerca de las columnas Nombre, Organización, Tipo, Subtipo, Registros, Última modificación, Última publicación y Próxima publicación. Además, la "Tabla Gestión de Recursos" incluye las siguientes columnas de información básica sobre los recursos:
 
-* **Visibilidad** - Una categoría que establece quién tiene acceso a la visualización del recurso. Si el recurso es "Público", todos los usuarios podrán verlo en la [[Tabla de recursos Públicos|IPT2ManualNotesES.wiki#tabla-de-recursos-disponibles]] en la página de Inicio. Si el recurso es "Privado", será visible en la "Tabla Gestión de Recursos" sólo para el usuario que lo creó, para quienes han sido invitados a administrarlo, y para los usuarios que tienen el rol Administrador. Detalles acerca de cómo invitar a otros a administrar un recurso se encuentran en la sección "Administradores de Recursos" bajo el encabezado "Vista General del Recurso" en la sección "Gestión de Recursos".
+* **Visibilidad** - Una categoría que establece quién tiene acceso a la visualización del recurso. Si el recurso es "Público", todos los usuarios podrán verlo en la [[Tabla de recursos Públicos|IPT2ManualNotes_ES.wiki#tabla-de-recursos-disponibles]] en la página de Inicio. Si el recurso es "Privado", será visible en la "Tabla Gestión de Recursos" sólo para el usuario que lo creó, para quienes han sido invitados a administrarlo, y para los usuarios que tienen el rol Administrador. Detalles acerca de cómo invitar a otros a administrar un recurso se encuentran en la sección "Administradores de Recursos" bajo el encabezado "Vista General del Recurso" en la sección "Gestión de Recursos".
 
 * **Autor** - El usuario del IPT que creó el recurso.
 
 ### Creación de un Nuevo Recurso
-Debajo de la "Tabla Gestión de Recursos" hay un formulario que puede ser utilizado para crear un nuevo recurso. Antes que nada, se deberá proporcionar un "nombre corto" único para el recurso. Este nombre corto se utilizará para identificar de manera única, el recurso en la instancia del IPT, y será utilizado en la URL para acceder al recurso a través de Internet. El nombre corto deberá contener al menos tres caracteres, estos podrán ser caracteres alfanuméricos, pero no deberá incluir espacios en blanco o puntuación, excepto guiones o guiones bajos (por ejemplo, "primerrecurso" o "primer_recurso", pero no "primer recurso" o “primerrecurso!"). Segundo, un tipo de recurso (opcional) puede ser indicado. Tenga en cuenta que cuando un recurso DWCA es cargado, (véase a continuación) el tipo será determinado automáticamente y se sobrescribe sobre el tipo seleccionado previamente. Tercero, un recurso que ya esté en formato DWCA (.zip) puede ser cargado. Las siguientes secciones describen los 3 tipos diferentes de recursos archivados, de los cuales puede ser derivado un nuevo recurso: [[un archivo Darwin Core|IPT2ManualNotesES.wiki#Cargar un Archivo Darwin Core]], [[una carpeta comprimida (.zip) con un recurso IPT configurado|IPT2ManualNotesES.wiki#Cargar una carpeta comprimida con un recurso IPT configurado]] o [[un archivo de metadatos|IPT2ManualNotesES.wiki#Cargar un archivo de metadatos]].
+Debajo de la "Tabla Gestión de Recursos" hay un formulario que puede ser utilizado para crear un nuevo recurso. Antes que nada, se deberá proporcionar un "nombre corto" único para el recurso. Este nombre corto se utilizará para identificar de manera única, el recurso en la instancia del IPT, y será utilizado en la URL para acceder al recurso a través de Internet. El nombre corto deberá contener al menos tres caracteres, estos podrán ser caracteres alfanuméricos, pero no deberá incluir espacios en blanco o puntuación, excepto guiones o guiones bajos (por ejemplo, "primerrecurso" o "primer_recurso", pero no "primer recurso" o “primerrecurso!"). Segundo, un tipo de recurso (opcional) puede ser indicado. Tenga en cuenta que cuando un recurso DWCA es cargado, (véase a continuación) el tipo será determinado automáticamente y se sobrescribe sobre el tipo seleccionado previamente. Tercero, un recurso que ya esté en formato DWCA (.zip) puede ser cargado. Las siguientes secciones describen los 3 tipos diferentes de recursos archivados, de los cuales puede ser derivado un nuevo recurso: [[un archivo Darwin Core|IPT2ManualNotes_ES.wiki#Cargar un Archivo Darwin Core]], [[una carpeta comprimida (.zip) con un recurso IPT configurado|IPT2ManualNotes_ES.wiki#Cargar una carpeta comprimida con un recurso IPT configurado]] o [[un archivo de metadatos|IPT2ManualNotes_ES.wiki#Cargar un archivo de metadatos]].
 
 De igual forma, siempre se puede crear un recurso completamente nuevo sin tener que cargar un recurso existente. Con esta opción, la configuración del recurso tendrá que ser creada en su totalidad a través del IPT, incluyendo la carga de un archivo fuente de datos (limite 100MB) o una base de datos y mapear los nombres de las columnas con la extensión o extensiones apropiadas. **Por favor note que el IPT tiene un límite de carga para archivos de 100MB** sin embargo, **no existe un límite para el tamaño de los Archivos Darwin Core que pueden ser exportados/publicados en el IPT. Consulte la sección 
 
@@ -433,7 +433,7 @@ El IPT puede importar y exportar archivos válidos de metadatos de conjuntos de 
 
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceUploadEml.png' />
 
-Haga clic sobre el botón "Crear". Si existe un problema importando el archivo seleccionado, un mensaje de error alertará al usuario. Si la importación es exitosa, la página vista General del Recurso aparecerá con los metadatos que habían sido documentados. Las secciones de fuente de datos y mapeo permanecerán ocultas debido a que es un recurso de solo metadatos. Si usted más adelante decide agregar un conjunto de datos primarios, sólo cambie el tipo de recurso en la página de Metadatos en la sección de los[[Metadatos Básicos|IPT2ManualNotesES.wiki#Metadatos Básicos]].
+Haga clic sobre el botón "Crear". Si existe un problema importando el archivo seleccionado, un mensaje de error alertará al usuario. Si la importación es exitosa, la página vista General del Recurso aparecerá con los metadatos que habían sido documentados. Las secciones de fuente de datos y mapeo permanecerán ocultas debido a que es un recurso de solo metadatos. Si usted más adelante decide agregar un conjunto de datos primarios, sólo cambie el tipo de recurso en la página de Metadatos en la sección de los[[Metadatos Básicos|IPT2ManualNotes_ES.wiki#Metadatos Básicos]].
 
 ### Edición de un Recurso Existente
 La tabla de recursos existentes muestra sólo aquellos recursos que pueden ser editados por el usuario actual. Para editar un recurso, haga clic en el nombre del recurso en la "Tabla Gestión de Recursos". El enlace abrirá la página "Vista General del Recurso" del recurso seleccionado. Consulte las descripciones en el encabezado "Vista General del Recurso", de la sección "Menú Gestión de Recursos" para conocer los detalles acerca de cómo editar diversos aspectos del recurso.
@@ -512,7 +512,7 @@ Una vez cumplidas estas condiciones, la columna de la izquierda del área de Map
 
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceDwCMapping.png' />
 
-Después de que el estándar o la extensión deseada haya sido seleccionada, haga clic en el botón "Agregar" para abrir la [[Página de selección del Conjunto de Datos|IPT2ManualNotesES.wiki#Página de selección del Conjunto de Datos]]. 
+Después de que el estándar o la extensión deseada haya sido seleccionada, haga clic en el botón "Agregar" para abrir la [[Página de selección del Conjunto de Datos|IPT2ManualNotes_ES.wiki#Página de selección del Conjunto de Datos]]. 
 
 ##### Página de selección del Conjunto de Datos
 Esta página ofrece una explicación del tipo de datos que la extensión soporta, y muestra un cuadro de selección que contiene una lista de todas las fuentes de datos configuradas.
@@ -521,7 +521,7 @@ Esta página ofrece una explicación del tipo de datos que la extensión soporta
 
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceSourceSelect.png' />
 
-Seleccione el conjunto de datos a mapear y luego haga clic en el botón "Guardar". Esto abrirá la Página inicial de Mapeo del Conjunto de Datos (ver [[Página de vista general del Mapeo del Conjunto de Datos|IPT2ManualNotesES.wiki#Página de vista general del Mapeo del Conjunto de Datos]] abajo para ayuda acerca del mapeo).
+Seleccione el conjunto de datos a mapear y luego haga clic en el botón "Guardar". Esto abrirá la Página inicial de Mapeo del Conjunto de Datos (ver [[Página de vista general del Mapeo del Conjunto de Datos|IPT2ManualNotes_ES.wiki#Página de vista general del Mapeo del Conjunto de Datos]] abajo para ayuda acerca del mapeo).
 
 Luego de que se ha agregado un nuevo mapeo, éste será visible en la columna de la derecha del área Mapeo Darwin Core. Esta área tendrá una lista de todos los mapeos del recurso, divididos en mapeos del estándar y mapeos de las extensiones. Haga clic en el botón "Editar" junto a un mapeo para modificarlo o haga clic en el ícono de " Vista previa"<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/preview.png' /> para tener una vista preliminar del mapeo. Se recomienda que el administrador del recurso utilice la vista previa para hacer una revisión del mapeo antes de publicar una nueva versión. 
 
@@ -551,7 +551,7 @@ La columna de la derecha contiene íconos de información y controles (cuadros d
 * **Botón Detalle del Vocabulario** - los elementos de extensión que se rigen por un vocabulario controlado, tendrán un ícono entre el ícono de información y el cuadro de selección del elemento fuente. Haga clic en este ícono para abrir una página de Detalle de Vocabulario en una nueva ventana del navegador (o pestaña) en la que se encuentra una lista de los valores aceptados para el elemento de extensión con explicaciones y sinónimos alternativos en varios idiomas.
 * **Muestra de los datos** - esta área muestra los valores reales de los primeros registros del elemento seleccionado de la fuente de datos, separados por espacios y el carácter “|”. Esto ayuda al usuario a comprender si el contenido del elemento de la fuente de datos es apropiado para el elemento de extensión al que ha sido mapeado.
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceMappingSourceSample.png' />
-* **Traducción** - haga clic en el botón "Agregar" para abrir una página de Traducción del Valor, en la que distintos valores del elemento seleccionado de la fuente de datos, pueden ser traducidos a nuevos valores en el archivo generado por el IPT para este recurso de datos. Después de que las traducciones se han ingresado y guardado, la página Mapeo de Datos volverá a aparecer, y mostrará el texto como un enlace en lugar del botón "Agregar" para mostrar el número de valores que han sido traducidos con valores diferentes de los originales. Haga clic en este enlace para volver a abrir la página de , [[Traducción del Valor|IPT2ManualNotesES.wiki#Traducción del Valor]] para este elemento de extensión.
+* **Traducción** - haga clic en el botón "Agregar" para abrir una página de Traducción del Valor, en la que distintos valores del elemento seleccionado de la fuente de datos, pueden ser traducidos a nuevos valores en el archivo generado por el IPT para este recurso de datos. Después de que las traducciones se han ingresado y guardado, la página Mapeo de Datos volverá a aparecer, y mostrará el texto como un enlace en lugar del botón "Agregar" para mostrar el número de valores que han sido traducidos con valores diferentes de los originales. Haga clic en este enlace para volver a abrir la página de , [[Traducción del Valor|IPT2ManualNotes_ES.wiki#Traducción del Valor]] para este elemento de extensión.
 
 * **Filtro** - el filtro permite al usuario incluir sólo los registros que coincidan con un criterio establecido para uno de los elementos de la fuente de datos. Para utilizar el filtro, primero seleccione en la lista desplegable, si desea que el filtro se aplique **Después de traducción** o **Antes de traducción** (en otras palabras, después de aplicar la traducción en la fuente de datos, o antes – consulte la sección Traducción para obtener más detalles acerca de la traducción). A continuación, seleccione el elemento en el que se basa el criterio, utilizando el cuadro de selección a la izquierda. El cuadro de texto a la derecha puede contener un valor para comparar el valor del elemento en la fuente de datos. No incluya el valor con signos de puntuación. El segundo cuadro de selección permite al usuario elegir un operador de comparación entre los que figuran:
   * **IsNull** - Este operador es verdadero si el elemento de la fuente de datos está vacío. En este caso no se necesita un valor en el cuadro de texto de la derecha. Si hay un valor en el cuadro de texto, se ignorará.
@@ -692,7 +692,7 @@ Esta página de metadatos permite a los usuarios crear uno o más conjuntos de p
 * **Añadir nuevo(a) conjunto de palabras clave** - Haciendo clic sobre este enlace, se adiciona un nuevo conjunto de palabras clave.
 
 #### Partes Asociadas
-Esta página de metadatos contiene información acerca de una o más personas u organizaciones asociadas con el recurso, además de las ya incluidas en la página "Metadatos Básicos". Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de[[Metadatos Básicos|IPT2ManualNotesES.wiki#Metadatos Básicos]]. Las explicaciones para el resto de los campos son dadas a continuación.
+Esta página de metadatos contiene información acerca de una o más personas u organizaciones asociadas con el recurso, además de las ya incluidas en la página "Metadatos Básicos". Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de[[Metadatos Básicos|IPT2ManualNotes_ES.wiki#Metadatos Básicos]]. Las explicaciones para el resto de los campos son dadas a continuación.
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceMetadataAssociatedParties.png' />
 * **Copiar datos del contacto** - Si esta persona u organización es la misma del Contacto del Recurso en la página "Metadatos Básicos", entonces haciendo clic sobre este enlace pueden ser copiados en los campos equivalentes, todos los detalles para la parte asociada.
 * **Eliminar parte asociada** - Haciendo clic sobre este enlace, se elimina la parte asociada que está inmediatamente debajo del enlace.
@@ -793,12 +793,12 @@ Esta página de metadatos contiene enlaces a la página web del recurso, así co
 Esta página de metadatos contiene información acerca de otros aspectos del recurso que no fueron capturados con las otras páginas de metadatos, incluyendo identificadores alternativos para este. Antes que sea ingresado algún identificador alternativo, la página mostrará campos de texto para los metadatos adicionales, un encabezado para el área de identificadores alternativos y un enlace llamado “Añadir nuevo Identificador Alternativo”.
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceMetadataAdditionalMetadata.png' />
 * **Fecha de creación** - La fecha en la cual la primera versión del recurso fue publicada o disponible al público. Se utilizará como el año de publicación en la referencia del recurso. Este valor se genera automáticamente cuando se realiza la publicación y no puede ser editado.
-* **Última fecha de publicación** - La fecha en la que el recurso fue publicado por última vez. Este elemento se actualiza de manera automática cada vez que el recurso es actualizado. (Ver la sección[[ Versión del Archivo DwC|IPT2ManualNotesES.wiki#Versión del Archivo DwC]]).
+* **Última fecha de publicación** - La fecha en la que el recurso fue publicado por última vez. Este elemento se actualiza de manera automática cada vez que el recurso es actualizado. (Ver la sección[[ Versión del Archivo DwC|IPT2ManualNotes_ES.wiki#Versión del Archivo DwC]]).
 * **URL del logo del recurso** - Un logo que represente al recurso. La URL del logo puede ser usada para cargar el recurso. Si no se posee una URL para el logo del recurso, se puede subir un archivo de imagen desde el disco duro.
 * **Propósito** - Resumen de los propósitos por los cuales se consolidó el conjunto de datos. Incluye los objetivos de la creación del conjunto de datos y el alcance esperado del mismo.
 * **Descripción de mantenimiento** - Una descripción de la frecuencia de mantenimiento de este recurso. Esta descripción complementa la frecuencia de actualización seleccionada en la sección de Metadatos Básicos.
 * **Información adicional** - Cualquier información que no esté descrita en los demás campos de los metadatos, p. ej.: historia del proyecto, publicaciones que han usado estos datos, información sobre datos relacionados publicados en otro lugar, etc.
-* **Identificador Alternativo** - Esta sección contiene una lista de identificadores alternos o adicionales para el recurso. Cuando el recurso es publicado, la URL del IPT del recurso es adicionada a la lista de identificadores. Cuando un recurso es registrado en el Registro GBIF, el registro único del recurso también es adicionado a la lista de identificadores. Si el recurso representa un recurso existente ya registrado en el Registro GBIF, el UUID del recurso ya registrado puede ser adicionado a la lista de identificadores. Esto permitirá al recurso del IPT actualizar el recurso existente durante el registro, en vez de registrar un recurso completamente nuevo. Para más información sobre cómo migrar un recurso, véase la sección [[Migración de un Recurso|IPT2ManualNotesES.wiki#Migración de un Recurso]].
+* **Identificador Alternativo** - Esta sección contiene una lista de identificadores alternos o adicionales para el recurso. Cuando el recurso es publicado, la URL del IPT del recurso es adicionada a la lista de identificadores. Cuando un recurso es registrado en el Registro GBIF, el registro único del recurso también es adicionado a la lista de identificadores. Si el recurso representa un recurso existente ya registrado en el Registro GBIF, el UUID del recurso ya registrado puede ser adicionado a la lista de identificadores. Esto permitirá al recurso del IPT actualizar el recurso existente durante el registro, en vez de registrar un recurso completamente nuevo. Para más información sobre cómo migrar un recurso, véase la sección [[Migración de un Recurso|IPT2ManualNotes_ES.wiki#Migración de un Recurso]].
   * **Añadir nuevo identificador alternativo** -  Haciendo clic sobre este enlace, se adicionan en la sección los cuadros de texto requeridos para agregar un identificador alternativo 
   * **Identificador Alternativo** - El texto para el identificador alterno del recurso (e.g., una URL, UUID o cualquier otro valor clave único).
   * **Eliminar este identificador alternativo** -  Haciendo clic sobre este enlace, se eliminará el  identificador alternativo inmediatamente abajo. 
@@ -844,7 +844,7 @@ La acción de publicar consiste de los pasos descritos enseguida. La publicació
 1. Los metadatos actuales se escriben en un archivo eml.xml. Una versión posterior llamada eml-n.xml siempre es guardada (donde n es el número de la versión, reflejando la versión de la publicación).
 2. Un documento de publicación de datos en Formato de Texto Enriquecido (RTF) es guardado en el archivo nombrecorto.rtf. Una versión posterior del archivo RTF siempre es guardada, llamada nombrecorto-n.rtf.
 3. Los datos de recursos primarios actuales como fueron configurados a través del mapeo se escriben en el archivo Darwin Core Archive llamado dwca.zip. Los archivos de datos contenidos en el Archivo Darwin Core son luego validados (vea la sección "validación de datos" abajo).
-4. Si el Modo Archivo del IPT está activado ver la sección[[ Configuración de las opciones del IPT|IPT2ManualNotesES.wiki#Configuración de las opciones del IPT]] , una versión posterior del archivo Darwin Core Archive se guardará, llamada dwca-n.zip.
+4. Si el Modo Archivo del IPT está activado ver la sección[[ Configuración de las opciones del IPT|IPT2ManualNotes_ES.wiki#Configuración de las opciones del IPT]] , una versión posterior del archivo Darwin Core Archive se guardará, llamada dwca-n.zip.
 5. La información acerca del recurso se actualiza en el Registro GBIF, si el recurso se ha registrado.
 6. El DOI de metadatos sobre el recurso se actualiza y se propaga al DOI de los solucionadores si se le asigna un DOI al recurso usando el IPT.
 
@@ -883,8 +883,8 @@ El área "Visibilidad" de la página "Recursos" permite a los usuarios, que teng
 * **Privado** - Un recurso privado es visible sólo para aquellos que lo crearon, o aquellos a quienes se concede permiso para administrarlo en el IPT, o por un usuario que tiene el rol Administrador. El objetivo es mantener el recurso como privado hasta que haya sido completamente y correctamente configurado. Tenga en cuenta que un DOI puede ser reservado para un recurso privado, pero ese DOI no podrá ser registrado sino hasta que el recurso tenga visibilidad Pública. Cuando el recurso esté listo para ser público, haga clic en el botón "Publicar". Aparecerá un mensaje en la parte superior de la página diciendo que el estado ha cambiado a "Público".
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceVisibilityPrivate.png' />
 * **Público** - Un recurso público es visible para cualquier persona que utilice la instancia del IPT, donde se instala el recurso (en la "Tabla de Recursos Públicos" en la página de Inicio del IPT). Si el recurso tiene un DOI reservado, ese DOI será registrado la próxima vez que el recurso sea publicado. El recurso también está disponible a través de Internet para cualquier persona que conozca la URL de la página principal o el DOI. Sin embargo, el recurso puede ser detectado una vez haya sido inscrito en el Registro GBIF. Tenga en cuenta que la visibilidad de un recurso al cual ya se le ha asignado un DOI, no puede ser cambiada a privada.<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceVisibilityPublicNeedToPublish.png' /> 
-En la parte izquierda del área de la sección de visibilidad encontrará dos botones.  Al hacer clic en el botón "privado" se retirará por completo el recurso de la visibilidad pública y lo devolverá al estado privado. El botón "Registro" se activará si: 1) los metadatos necesarios para el recurso están completos, 2) el recurso ha sido publicado (ver explicación en la sección [[ Versiones Publicadas|IPT2ManualNotesES.wiki#Versiones Publicadas]] de la página "Vista General del Recurso", más adelante, y 3) el usuario tiene el rol "Administrador con derechos de registro" (ver explicación de Función en la sección "Crear un Nuevo Usuario" en el encabezado "Configuración de Cuentas de Usuario" de la sección "Menú Administración”). Un usuario que tiene el rol Administrador puede otorgar la posición "Administrador con Derechos de Registro" a cualquier usuario.<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceVisibilityPublic.png' /> 
-Por último, haga clic en el botón "Registro" para registrar el recurso en el Registro GBIF.(**Nota**: Si desea que este recurso se actualice un recurso preexistente en DiGIR, BioCASE, o TAPIR, por favor consulte la sección [[Migración de un Recurso|IPT2ManualNotesES.wiki#Migración de un Recurso]] abajo.) Al hacer clic en este botón, se abrirá un cuadro de diálogo con el que se confirma que usted ha leído y entendido el acuerdo de intercambio de datos de GBIF, al cual se da un enlace. Haga clic en el cuadro de verificación para indicar que está de acuerdo con estos términos. Si lo hace, un botón "Sí" aparecerá en la parte inferior del cuadro de diálogo. Haga clic en "Sí" para registrar el recurso, o en "No" para aplazar la decisión y cerrar el cuadro de diálogo. <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceVisibilityRegisterAgreement.png' />Si el intento de registro es exitoso, aparecerá un mensaje en la parte superior de la página especificando que el estado ha cambiado a "Registrado".
+En la parte izquierda del área de la sección de visibilidad encontrará dos botones.  Al hacer clic en el botón "privado" se retirará por completo el recurso de la visibilidad pública y lo devolverá al estado privado. El botón "Registro" se activará si: 1) los metadatos necesarios para el recurso están completos, 2) el recurso ha sido publicado (ver explicación en la sección [[ Versiones Publicadas|IPT2ManualNotes_ES.wiki#Versiones Publicadas]] de la página "Vista General del Recurso", más adelante, y 3) el usuario tiene el rol "Administrador con derechos de registro" (ver explicación de Función en la sección "Crear un Nuevo Usuario" en el encabezado "Configuración de Cuentas de Usuario" de la sección "Menú Administración”). Un usuario que tiene el rol Administrador puede otorgar la posición "Administrador con Derechos de Registro" a cualquier usuario.<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceVisibilityPublic.png' /> 
+Por último, haga clic en el botón "Registro" para registrar el recurso en el Registro GBIF.(**Nota**: Si desea que este recurso se actualice un recurso preexistente en DiGIR, BioCASE, o TAPIR, por favor consulte la sección [[Migración de un Recurso|IPT2ManualNotes_ES.wiki#Migración de un Recurso]] abajo.) Al hacer clic en este botón, se abrirá un cuadro de diálogo con el que se confirma que usted ha leído y entendido el acuerdo de intercambio de datos de GBIF, al cual se da un enlace. Haga clic en el cuadro de verificación para indicar que está de acuerdo con estos términos. Si lo hace, un botón "Sí" aparecerá en la parte inferior del cuadro de diálogo. Haga clic en "Sí" para registrar el recurso, o en "No" para aplazar la decisión y cerrar el cuadro de diálogo. <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceVisibilityRegisterAgreement.png' />Si el intento de registro es exitoso, aparecerá un mensaje en la parte superior de la página especificando que el estado ha cambiado a "Registrado".
 
 * **Registrado** - Un recurso que ha sido registrado en la red de GBIF, se puede detectar a través de ese sistema y los datos de los recursos pueden ser indexados y se puede acceder a estos desde el portal de GBIF. Un resumen de la información registrada en GBIF aparecerá en la columna de la derecha cuando el registro se haya completado.<img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceVisibilityRegistered.png' />
 Si el recurso ya ha sido registrado, cada vez que se haga clic en el botón "Publicar", enviará nueva información sobre el recurso al Registro GBIF, para que el registro sea actualizado. La visibilidad de un recurso registrado no puede ser cambiada a privada. Si un recurso debe ser eliminado del Registro GBIF, siga el procedimiento descrito en la sección "Eliminar un Recurso" del encabezado "Vista General del Recurso" de la sección "Menú Gestión de Recursos".
@@ -977,14 +977,14 @@ La información acerca de los usuarios puede ser cambiada en la página de los d
 Las cuentas de los usuarios que dejan de ser necesarias, pueden ser eliminadas usando la página detalles del usuario, disponible cuando se selecciona de la lista el nombre del usuario que se desea eliminar. Al final de la página detalles del usuario, hacer clic en el botón “Eliminar” para remover esta cuenta de usuario. Existen varias condiciones bajo las cuales un usuario no puede ser eliminado. Un usuario no puede eliminar una cuenta mientras esté conectado con esa cuenta. Esta cuenta debe ser eliminada desde otra cuenta que tenga el rol Administrador. Igualmente, la instalación del IPT siempre debe tener al menos un usuario con el rol Administrador, de tal forma que el último Administrador no pueda ser eliminado. Para eliminar aquel usuario, primero se debe crear un nuevo usuario con el rol Administrador, e ingresar con este nuevo usuario para eliminar la otra cuenta de Administrador. Finalmente, cada recurso debe tener al menos un usuario asociado que tenga el rol Administrador o uno de los otros roles de Administrador, de tal forma que el último Administrador de un recurso no pueda ser eliminado. Para eliminar aquel usuario, primero se debe asociar otro usuario que tenga uno de los roles de Administrador, con el recurso al cual el usuario desea eliminarle el último administrador del mismo. Para saber cómo pueden ser asignados los nuevos administradores, consulte la información de “Administradores del recurso” en la sección “Editar un recurso existente”.
 
 ## Configurar Opciones para el Registro GBIF
-Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección "Menú Administración") o publicarlo (véase la sección[[Versiones Publicadas|IPT2ManualNotesES.wiki#Versiones Publicadas]]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página “Editar Registro GBIF”.
+Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección "Menú Administración") o publicarlo (véase la sección[[Versiones Publicadas|IPT2ManualNotes_ES.wiki#Versiones Publicadas]]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página “Editar Registro GBIF”.
 
 El primer paso para registrar un recurso ante GBIF, es probar que el IPT tenga una URL valida que pueda ser localizada por los servicios del GBIF. Para correr esta prueba, haga clic sobre el botón llamado “Validar”.
 
 Si la prueba de validación no es exitosa, un mensaje de error sugerirá la naturaleza del problema con la comunicación entre el Registro GBIF y el IPT. Las causas de un error incluyen:
 
 * **No hay conexión a Internet** - Para un funcionamiento apropiado, el IPT requiere una conexión activa a Internet. Ocurrirá un error, si la conexión a Internet se interrumpe cuando se haga clic sobre el botón “Validar”. Restaure la conexión a Internet antes de intentar el registro.
-* **URL Base o Dirección del Proxy Incorrecta** - La URL Base es detectada automáticamente y configurada durante el proceso de instalación del IPT (véase la sección “Configurar el IPT (II)”). Modificaciones en la configuración del servidor sobre el cual fue instalado el IPT, puede requerir un cambio en la URL Base o en la Dirección del Proxy. La URL Base y la Dirección del Proxy, pueden ser cambiadas en la página "Configurar Opciones del IPT" (véase las explicaciones para la URL Base y Dirección del Proxy en la sección "[[Configuración de las opciones del IPT|IPT2ManualNotesES.wiki#Configuración de las opciones del IPT]]".
+* **URL Base o Dirección del Proxy Incorrecta** - La URL Base es detectada automáticamente y configurada durante el proceso de instalación del IPT (véase la sección “Configurar el IPT (II)”). Modificaciones en la configuración del servidor sobre el cual fue instalado el IPT, puede requerir un cambio en la URL Base o en la Dirección del Proxy. La URL Base y la Dirección del Proxy, pueden ser cambiadas en la página "Configurar Opciones del IPT" (véase las explicaciones para la URL Base y Dirección del Proxy en la sección "[[Configuración de las opciones del IPT|IPT2ManualNotes_ES.wiki#Configuración de las opciones del IPT]]".
 * **Firewall** - Si la conexión a Internet es correcta, un firewall puede estar evitando las conexiones a la URL Base o el Proxy. Cambie la configuración del firewall o proxy para todas las conexiones externas.
 * **Registro GBIF sin acceso** - Si un mensaje de error sugiere que ninguno de los errores previos ha ocurrido y aún hay una falla con la comunicación al Registro GBIF, por favor reporte a la "Mesa de Ayuda" que hay problemas con la conexión al Registro GBIF (helpdesk@gbif.org).
 
@@ -1015,7 +1015,7 @@ Una vez el IPT haya sido registrado en el Registro GBIF, la página permitirá a
 ## Configurar Organizaciones
 La página no está disponible hasta que el IPT haya sido registrado exitosamente en el Registro GBIF (véase información bajo el encabezado “Configurar Opciones para el Registro GBIF” de la sección “Menú Administración”). Una vez registrado, esta página muestra una lista de organizaciones que pueden ser asociadas con los recursos en este IPT. Un IPT tiene datos alojados para otras organizaciones y para que estas puedan ser asociadas, deben configurarse antes que puedan ser usadas. 
 
-Un IPT capaz de asignar DOIs a los recursos, para esto debe tener las organizaciones configuradas con una cuenta en DataCite o EZID. Para que la organización sea configurada con las cuentas de DataCite o EZID, no es necesario que la organización esté en capacidad de publicar recursos (estar asociada a algún recurso). Solo puede utilizarse una cuenta de DataCite o EZID a la vez para realizar el registro de los DOIs, y el modo de archivo del IPT debe estar encendido (por favor consulte la sección [[Configuración de las opciones del IPT|IPT2ManualNotesES.wiki#Configuración de las opciones del IPT]] ) para más información acerca del modo de archivo). La lista de organizaciones muestra cuales han sido configuradas con una cuenta en DataCite o EZID, y cuál ha  sido seleccionada para el registro de los DOIs para todos los recursos correspondientes en este IPT.
+Un IPT capaz de asignar DOIs a los recursos, para esto debe tener las organizaciones configuradas con una cuenta en DataCite o EZID. Para que la organización sea configurada con las cuentas de DataCite o EZID, no es necesario que la organización esté en capacidad de publicar recursos (estar asociada a algún recurso). Solo puede utilizarse una cuenta de DataCite o EZID a la vez para realizar el registro de los DOIs, y el modo de archivo del IPT debe estar encendido (por favor consulte la sección [[Configuración de las opciones del IPT|IPT2ManualNotes_ES.wiki#Configuración de las opciones del IPT]] ) para más información acerca del modo de archivo). La lista de organizaciones muestra cuales han sido configuradas con una cuenta en DataCite o EZID, y cuál ha  sido seleccionada para el registro de los DOIs para todos los recursos correspondientes en este IPT.
 
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTAdminOrgs.png' />
 
@@ -1124,7 +1124,7 @@ La traducción de esta versión al español es una contribución del equipo Coor
 
 La citación recomendada para esta traducción al español es la siguiente:
 
-Wieczorek & Braak (2015). Manual de usuario para el Integrated Publishing Toolkit - Global Biodiversity Information Facility. (Beltran, N. & Dean, V., trad.). Bogotá: Sistema de Información Sobre Biodiversidad de Colombia. Disponible en Internet en https://github.com/gbif/ipt/wiki/IPT2ManualNotesES.wiki.
+Wieczorek & Braak (2015). Manual de usuario para el Integrated Publishing Toolkit - Global Biodiversity Information Facility. (Beltran, N. & Dean, V., trad.). Bogotá: Sistema de Información Sobre Biodiversidad de Colombia. Disponible en Internet en https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki.
 
 ## Derechos de Autor
 El Integrated Publishing Toolkit de GBIF y este manual de usuario son Copyright 2011 de la Secretaría de Global Biodiversity Information Facility.
