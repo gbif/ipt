@@ -5,11 +5,11 @@ GBIF supports publication, discovery and use of four classes of data.
 To publish your data, follow these steps:
 
 1. Use this guide to determine what class of data you have
-2. Construct your dataset
+2. Register your organisation with GBIF by filling in this [form](http://www.gbif.org/publishing-data/how-to-publish#/intro). 
+3. Construct your dataset
   1. Try using an Excel template (see below) to collect your data
   2. Try to add as many recommended Darwin Core (DwC) terms as possible
   3. Refer to the exemplar datasets (see below) for additional guidance
-3. Register your organisation with GBIF by filling in this [form](http://www.gbif.org/publishing-data/how-to-publish#/intro). 
 4. Use the GBIF Integrated Publishing Toolkit (IPT) to fill in metadata for your dataset metadata and publish it in a standardised (Darwin Core Archive) format: 
   1. Try to use a data hosting centre IPT close to you:
     - Australia: [ALA IPT](http://ipt.ala.org.au/)
@@ -19,7 +19,7 @@ To publish your data, follow these steps:
     - Spain: [GBIF-Spain IPT](http://www.gbif.es:8080/ipt/)
     - US: [USGS-BISON IPT](http://bison.ornl.gov/ipt/)
   2. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
-5. Use the IPT to register your dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #3 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
+5. Use the IPT to register your dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #2 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
 
 ### Four classes of biodiversity data
 
