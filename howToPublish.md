@@ -21,7 +21,7 @@ To publish your data, follow these steps:
     - [Spain](http://www.gbif.es:8080/ipt/) - contact GBIF-Spain <info@gbif.es>
   2. Don't find your country in the above list?
     * Setup your own IPT - if your organisation has the technical capacity
-    * Otherwise, contact the GBIF Helpdesk for help - <helpdesk@gbif.org>
+    * Otherwise - contact the GBIF Helpdesk <helpdesk@gbif.org>
   2. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
 5. Use the IPT to register your dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #2 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
 
