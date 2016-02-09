@@ -5,7 +5,7 @@ GBIF supports publication, discovery and use of four classes of data.
 To publish your data, follow these steps:
 
 1. Use this guide to determine what class of data you have
-2. Register your organisation with GBIF by filling in this [form](http://www.gbif.org/publishing-data/how-to-publish#/intro). 
+2. Register your organisation with GBIF by filling in this [form](http://www.gbif.org/publishing-data/how-to-publish#/intro)
 3. Construct your dataset
   1. Try using an Excel template (see below) to collect your data
   2. Try to add as many recommended Darwin Core (DwC) terms as possible
