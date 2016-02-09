@@ -9,7 +9,7 @@ To publish your data, follow these steps:
   1. Try to add as many recommended terms as possible
   2. Refer to the exemplar datasets for additional guidance
 3. Register your organisation with GBIF by filling in this [form](http://www.gbif.org/publishing-data/how-to-publish#/intro)
-4. Use the GBIF Integrated Publishing Toolkit (IPT) to fill in your dataset metadata, publish your dataset in a standardised Darwin Core format, and make it globally discoverable on http://www.GBIF.org
+4. Use the GBIF Integrated Publishing Toolkit (IPT) to fill in your dataset metadata, publish your dataset in the (standard) Darwin Core Archive (DwC-A) format, and make it globally discoverable on http://www.GBIF.org
   1. Try to use a data hosting centre IPT close to you:
     - Australia: [ALA IPT](http://ipt.ala.org.au/)
     - Canada: [Canadensys IPT](http://data.canadensys.net/ipt)
