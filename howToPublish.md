@@ -12,8 +12,8 @@ To publish your data, follow these steps:
   3. Add as many recommended DwC terms as possible
   4. As a bonus, try to add as many additional DwC terms as possible
   3. Refer to the exemplar datasets for additional guidance
-4. Upload your dataset to the GBIF Integrated Publishing Toolkit (IPT) where you can fill in metadata for your dataset metadata and publish it in a standardised (Darwin Core Archive) format: 
-  1. Try to use a data hosting centre IPT close to you:
+4. Upload your dataset to an online instance of the GBIF Integrated Publishing Toolkit (IPT) where you can fill in metadata for your dataset metadata and publish it in a standardised (Darwin Core Archive) format: 
+  1. Save yourself time - use a data hosting centre IPT from the list below:
     - Australia: [ALA IPT](http://ipt.ala.org.au/)
     - Canada: [Canadensys IPT](http://data.canadensys.net/ipt)
     - Denmark: [DanBIF IPT](http://danbif.au.dk/ipt/)
