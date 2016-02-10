@@ -48,4 +48,5 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 #### FAQ: 
 
 **Q.** What should I do if my data cannot be made freely available (yet)?
+
 **A.** Publicise its existence by publishing metadata about it! 
