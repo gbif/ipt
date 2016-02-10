@@ -1,8 +1,8 @@
-#Resource Metadata
-
 **Resource metadata** &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Checklist Data**](howToPublish#checklist-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Occurrence Data**](howToPublish#occurrence-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Sample Event Data**](howToPublish#sample-event-data)
 
 ---
+
+#Resource Metadata
 
 Description and contact details for a biodiversity information resource where no digital data can currently be shared.  All other classes of GBIF data also include this basic information.  Such metadata may be a valuable tool for researchers to discover resources which are not yet available online.  This is also a useful way to assess the importance and value of non-digital resources for future digitization. GBIF ensures that every dataset is associated with a Digital Object Identifier (DOI) to facilitate citation.
 
