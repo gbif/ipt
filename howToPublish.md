@@ -1,5 +1,14 @@
-## How to guide: Publishing biodiversity data through GBIF.org
+# How to guide: Publishing biodiversity data through GBIF.org
 
+## Table of Contents
++ [[Instructions|howToPublish#installation]]
++ [[Four Classes of Biodiversity Data|howToPublish#four-classes-of-biodiversity-data]]
+  + [[Resource Metadata|howToPublish#resource-metadata]]
+  + [[Checklist Data|howToPublish#checklist-data]]
+  + [[Occurrence Data|howToPublish#occurrence-data]]
+  + [[Sampling Event Data|howToPublish#sample-event-data]]
+
+### Instructions
 GBIF supports publication, discovery and use of four classes of data. 
 
 To publish your data, follow these steps:
