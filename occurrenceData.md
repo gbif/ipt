@@ -6,6 +6,18 @@
 
 Resources which present evidence of the occurrence of a species at a particular place and normally on a specified date.  These datasets expand on most Checklist Data because they contribute to mapping the historical or current distribution of a species. At the most basic, such datasets may provide only general locality information (even limited to a country identifier).  Ideally they also include coordinates and a coordinate precision to support fine scale mapping.  In many cases, these datasets may separately record multiple individuals of the same species. Examples of such datasets include databases of specimens in natural history collections, citizen science observations, data from species atlas projects, etc.  If sufficient information exists in the source dataset (or applies consistently to all occurrences in the dataset), it is recommended that these datasets are presented as [Sample Event Data (below)](howToPublish#sample-event-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
 
+### How to transform your data into occurrence data
+
+Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names. 
+
+Try putting your data into the [Excel template](occurrenceData#template), which includes all [required DwC fields](occurrenceData#required-dwc-fields) and [recommended DwC fields](occurrenceData#recommended-dwc-fields). 
+
+Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write an SQL table (view) using DwC column names. Be careful to include all [required DwC fields](occurrenceData#required-dwc-fields) and add as many [recommended DwC fields](occurrenceData#recommended-dwc-fields) as possible. 
+
+For extra guidance, you can look at the [exemplar datasets](occurrenceData#exemplar-datasets). 
+
+You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml).
+
 #### Required DwC fields: 
 * [occurrenceID](http://rs.tdwg.org/dwc/terms/#occurrenceID)
 * [basisOfRecord](http://rs.tdwg.org/dwc/terms/#basisOfRecord)
