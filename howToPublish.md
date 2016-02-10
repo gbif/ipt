@@ -26,7 +26,7 @@ To publish your data, follow the steps below. If you would like to register your
 4. Choose which GBIF Integrated Publishing Toolkit (IPT) you will use to publish your data:
   1. Save yourself time and money, and use a [[data hosting centre IPT|dataHostingCentres]] located in your country.
   2. Or, setup your own IPT if your organisation has the technical capacity
-  3. If all else fails - contact the GBIF Helpdesk <helpdesk@gbif.org>
+  3. If all else fails - contact the GBIF Helpdesk <helpdesk@gbif.org> for help finding a host for your data
 5. Upload your data to the IPT
   1. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
 6. Map the data to Darwin Core
