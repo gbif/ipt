@@ -28,11 +28,11 @@ For extra guidance, you can look at the [exemplar datasets](sampleEventData#exem
 You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_event_2015_05_29.xml).
 
 #### Template: 
-[![Download Sample Event Data Template][2]][4]
+[![Download Sample Event Data Template][2]][1]
 
-Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
+Populate it and upload it to the IPT. 
 
-  [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v1.xlsx
+  [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Sample Event Data Template)
 
 #### Required DwC fields: 
