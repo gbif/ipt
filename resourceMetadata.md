@@ -14,6 +14,14 @@
 
 Description and contact details for a biodiversity information resource where no digital data can currently be shared.  All other classes of GBIF data also include this basic information.  Such metadata may be a valuable tool for researchers to discover resources which are not yet available online.  This is also a useful way to assess the importance and value of non-digital resources for future digitization. GBIF ensures that every dataset is associated with a Digital Object Identifier (DOI) to facilitate citation.
 
+### How to write resource metadata
+
+Ultimately your metadata needs to be transformed into an XML metadata document. The XML must conform to the GBIF Metadata Schema, which is based on the Ecological Metadata Language (EML). 
+
+No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata. The IPT makes sure it's in the proper valid XML format. 
+
+Alternatively if your metadata is already in EML or Dublin Core, you can upload it in these formats to the IPT. Guidance on how to do that can be found [here](IPT2ManualNotes.wiki#upload-a-metadata-file).
+
 #### Template: 
 No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata.
 
