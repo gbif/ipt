@@ -4,7 +4,18 @@
 
 #Resource Metadata
 
+## Table of contents
++ [Introduction](resourceMetadata#introduction)
++ [How to transform your data into checklist data](resourceMetadata#how-to-transform-your-data-into-checklist-data)
++ [Template](resourceMetadata#template)
++ [Required DwC fields](resourceMetadata#required-dwc-fields)
++ [Recommended DwC fields](resourceMetadata#recommended-dwc-fields)
++ [Exemplar datasets](resourceMetadata#exemplar-datasets)
+
 Description and contact details for a biodiversity information resource where no digital data can currently be shared.  All other classes of GBIF data also include this basic information.  Such metadata may be a valuable tool for researchers to discover resources which are not yet available online.  This is also a useful way to assess the importance and value of non-digital resources for future digitization. GBIF ensures that every dataset is associated with a Digital Object Identifier (DOI) to facilitate citation.
+
+#### Template: 
+No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata.
 
 #### Required EML fields: 
 * title
@@ -19,9 +30,6 @@ Description and contact details for a biodiversity information resource where no
 #### Recommended EML fields: 
 * sampling methodology - in case describing sample event data
 * citation - to ensure your dataset gets cited the way you want
-
-#### Template: 
-No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata.
 
 #### Exemplar datasets: 
 * Inter-Valley Soil Comparative Survey of the McMurdo Dry Valleys: [EML](http://ipt.biodiversity.aq/eml.do?r=ictar_ivscs&v=1) / [IPT homepage](http://ipt.biodiversity.aq/resource.do?r=ictar_ivscs)
