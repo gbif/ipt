@@ -1,21 +1,27 @@
 # How to guide: Publishing biodiversity data through GBIF.org
 
 ## Table of Contents
-+ [[Instructions|howToPublish#installation]]
-+ [[Four Classes of Biodiversity Data|howToPublish#four-classes-of-biodiversity-data]]
-  + [[Resource Metadata|howToPublish#resource-metadata]]
-  + [[Checklist Data|howToPublish#checklist-data]]
-  + [[Occurrence Data|howToPublish#occurrence-data]]
-  + [[Sampling Event Data|howToPublish#sample-event-data]]
++ [[Introduction|howToPublish#introduction]]
++ [[Instructions|howToPublish#instructions]]
+
+## Introduction
+
+GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. 
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes-no-text.png' />
+
+[**Resource metadata**](howToPublish#resource-metadata) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Checklist Data**](howToPublish#checklist-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Occurrence Data**](howToPublish#occurrence-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Sample Event Data**](howToPublish#sample-event-data)
+
+Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
 ## Instructions
 GBIF supports publication, discovery and use of four classes of data. 
 
 To publish your data, follow these steps:
 
-1. Determine which of the [[four classes of biodiversity data|howToPublish#four-classes-of-biodiversity-data]] you have
+1. Determine the class of biodiversity data you have: [[Resource metadata|resourceMetadata]], [[Checklist Data|checklistData]], [[Occurrence Data|occurrenceData]], [[Sample Event Data|sampleEventData]]  
 2. Ensure your organisation is registered with GBIF by completing [this online questionnaire](http://www.gbif.org/publishing-data/how-to-publish#/intro)
-3. Use this guide to construct your dataset
+3. Construct your dataset
   1. Try using an Excel template to collect your data
   2. Make sure you supply all required Darwin Core (DwC) terms
   3. Add as many recommended DwC terms as possible
@@ -29,12 +35,3 @@ To publish your data, follow these steps:
   1. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
 6. Use the IPT to register your dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #2 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
 
-## Four classes of biodiversity data
-
-GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support increasingly rich sharing of information on species, their distributions and abundance. 
-
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes-no-text.png' />
-
-[**Resource metadata**](howToPublish#resource-metadata) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Checklist Data**](howToPublish#checklist-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Occurrence Data**](howToPublish#occurrence-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Sample Event Data**](howToPublish#sample-event-data)
-
-Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
