@@ -2,9 +2,26 @@
 
 ---
 
-### Sample Event Data
+# Sample Event Data
+
+## Table of contents
++ [Introduction](sampleEventData#introduction)
++ [How to transform your data into checklist data](sampleEventData#how-to-transform-your-data-into-checklist-data)
++ [Template](sampleEventData#template)
++ [Required DwC fields](sampleEventData#required-dwc-fields)
++ [Recommended DwC fields](sampleEventData#recommended-dwc-fields)
++ [Exemplar datasets](sampleEventData#exemplar-datasets)
 
 Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, ecogenomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata) and the same standard elements as in [Occurrence Data (above)](howToPublish#occurrence-data).
+
+
+#### Template: 
+[![Download Sample Event Data Template][2]][4]
+
+Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
+
+  [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v1.xlsx
+  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Sample Event Data Template)
 
 #### Required DwC fields: 
 * [eventID](http://rs.tdwg.org/dwc/terms/#eventID) - also required for associated occurrence data (to link them together)
@@ -20,14 +37,6 @@ Resources which present evidence not only of the occurrence of a species at a pa
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
 * [footprintWKT](http://rs.tdwg.org/dwc/terms/#footprintWKT) - to provide a specific shape location
 * [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus) - only for associated occurrence data to record presence/absence data.
-
-#### Template: 
-[![Download Sample Event Data Template][2]][4]
-
-Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
-
-  [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v1.xlsx
-  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Sample Event Data Template)
 
 #### Exemplar datasets: 
 * Israeli Butterfly Monitoring Scheme (BMS-IL): [DwC-A](http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il&v=6.12) / [IPT homepage](http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il)
