@@ -11,6 +11,7 @@
 + [Required DwC fields](checklistData#required-dwc-fields)
 + [Recommended DwC fields](checklistData#recommended-dwc-fields)
 + [Exemplar datasets](checklistData#exemplar-datasets)
++ [FAQ](checklistData#faq)
 
 ### Introduction
 Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitised collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as [Occurrence Data (below)](howToPublish#occurrence-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
@@ -46,3 +47,8 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 
 #### Exemplar datasets: 
 * Database of Vascular Plants of Canada (VASCAN): [DwC-A](http://data.canadensys.net/ipt/archive.do?r=vascan) / [IPT homepage](http://data.canadensys.net/ipt/resource.do?r=vascan)
+
+#### FAQ: 
+**Q.** **How do I add common names to a taxon record?** 
+
+**A.** Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this [list](http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml). You can upload this table to the IPT, and map it to the [Vernacular Name extension](http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml). 
