@@ -11,6 +11,7 @@
 + [Required DwC fields](occurrenceData#required-dwc-fields)
 + [Recommended DwC fields](occurrenceData#recommended-dwc-fields)
 + [Exemplar datasets](occurrenceData#exemplar-datasets)
++ [FAQ](occurrenceData#faq)
 
 ### Introduction
 Resources which present evidence of the occurrence of a species at a particular place and normally on a specified date.  These datasets expand on most Checklist Data because they contribute to mapping the historical or current distribution of a species. At the most basic, such datasets may provide only general locality information (even limited to a country identifier).  Ideally they also include coordinates and a coordinate precision to support fine scale mapping.  In many cases, these datasets may separately record multiple individuals of the same species. Examples of such datasets include databases of specimens in natural history collections, citizen science observations, data from species atlas projects, etc.  If sufficient information exists in the source dataset (or applies consistently to all occurrences in the dataset), it is recommended that these datasets are presented as [Sample Event Data (below)](howToPublish#sample-event-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
@@ -50,3 +51,9 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 
 #### Exemplar datasets: 
 * CUMV Amphibian Collection (Arctos): [DwC-A](http://ipt.vertnet.org:8080/ipt/archive.do?r=cumv_amph) / [IPT homepage](http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph)
+
+#### FAQ: 
+
+**Q.** **How do I indicate a species was absent?**
+
+**A.** Set [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus)=["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml). In addition, [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) and [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) should be equal to 0. 
