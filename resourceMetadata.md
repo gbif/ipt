@@ -41,7 +41,7 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 * metadata provider(s)
 
 #### Recommended EML fields: 
-* sampling methodology - in case describing sample event data
+* sampling methodology - in situations where data comes from a sampling event
 * citation - to ensure your dataset gets cited the way you want
 
 #### Exemplar datasets: 
