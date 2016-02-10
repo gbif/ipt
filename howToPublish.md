@@ -31,7 +31,7 @@ To publish your data, follow the 7 steps below.
   2. It is possible to use data stored in a [[supported database|IPT2DatabaseConnection.wiki]]
 3. Upload your data to the IPT
   1. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
-4. Map the data (e.g. Checklist data gets mapped to the [Taxon Core](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml), Occurrence data gets mapped to the [Occurrence Core](http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml), Sample Event data gets mapped to the [Event Core](http://rs.gbif.org/core/dwc_event_2015_05_29.xml). 
+4. Map the data (e.g. [[Checklist Data|checklistData]] gets mapped to the [Taxon Core](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml), [[Occurrence Data|occurrenceData]] gets mapped to the [Occurrence Core](http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml), [[Sample Event Data|sampleEventData]] gets mapped to the [Event Core](http://rs.gbif.org/core/dwc_event_2015_05_29.xml). 
 5. Fill in resource metadata using the IPT's metadata editor
 6. Publish the dataset (share it publicly online):
 7. Register the dataset with GBIF. **Note**: your organisation must be registered with GBIF and added to your IPT by the IPT administrator. Otherwise, the organisation will not be available to choose from in the IPT. 
