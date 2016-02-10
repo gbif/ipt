@@ -5,6 +5,16 @@
 # Checklist Data
 Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitised collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as [Occurrence Data (below)](howToPublish#occurrence-data).  These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata).
 
+## How to publish
+
+Transform your data into a table structure, using Darwin Core (DwC) terms as column names. 
+
+Try using the [Excel template](checklistData#template) to structure your data into a table format. The template includes all [required DwC fields](checklistData#required-dwc-fields) and [recommended DwC fields](checklistData#recommended-dwc-fields). 
+
+If your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can easily structure your data into a table format by constructing an SQL view. 
+
+For extra guidance, you can look at the [exemplar datasets](checklistData#exemplar-datasets). 
+
 #### Required DwC fields: 
 * [taxonID](http://rs.tdwg.org/dwc/terms/#taxonID)
 * [scientificName](http://rs.tdwg.org/dwc/terms/#scientificName)
