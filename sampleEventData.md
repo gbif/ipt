@@ -6,7 +6,7 @@
 
 ## Table of contents
 + [Introduction](sampleEventData#introduction)
-+ [How to transform your data into sample event data](sampleEventData#how-to-transform-your-data-into-sampe-event-data)
++ [How to transform your data into sample event data](sampleEventData#how-to-transform-your-data-into-sample-event-data)
 + [Template](sampleEventData#template)
 + [Required DwC fields](sampleEventData#required-dwc-fields)
 + [Recommended DwC fields](sampleEventData#recommended-dwc-fields)
