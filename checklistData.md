@@ -44,8 +44,8 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 
 #### Recommended DwC fields: 
 * [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) - and other higher taxonomy if possible
-* [parentNameUsageID](http://rs.tdwg.org/dwc/terms/#parentNameUsageID) - in case a taxonomy is meant to be published
-* [acceptedNameUsageID](http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID) - in case a taxonomy is meant to be published
+* [parentNameUsageID](http://rs.tdwg.org/dwc/terms/#parentNameUsageID) - in situations where a taxonomy is meant to be published
+* [acceptedNameUsageID](http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID) - in situations where a taxonomy is meant to be published
 
 #### Exemplar datasets: 
 * Database of Vascular Plants of Canada (VASCAN): [DwC-A](http://data.canadensys.net/ipt/archive.do?r=vascan) / [IPT homepage](http://data.canadensys.net/ipt/resource.do?r=vascan)
