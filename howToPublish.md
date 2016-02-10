@@ -15,8 +15,6 @@ GBIF supports publication, discovery and use of four classes of data. At the sim
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
 ## Instructions
-GBIF supports publication, discovery and use of four classes of data. 
-
 To publish your data, follow these steps:
 
 1. Determine the class of biodiversity data you have: [[Resource metadata|resourceMetadata]], [[Checklist Data|checklistData]], [[Occurrence Data|occurrenceData]], [[Sample Event Data|sampleEventData]]  
