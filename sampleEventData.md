@@ -1,4 +1,4 @@
-[**Resource metadata**](howToPublish#resource-metadata) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Checklist Data**](howToPublish#checklist-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; [**Occurrence Data**](howToPublish#occurrence-data) &nbsp;&nbsp;``—>``&nbsp;&nbsp; **Sample Event Data**
+[[Resource metadata|resourceMetadata]] &nbsp;&nbsp;``—>``&nbsp;&nbsp; [[Checklist Data|checklistData]] &nbsp;&nbsp;``—>``&nbsp;&nbsp; [[Occurrence Data|occurrenceData]] &nbsp;&nbsp;``—>``&nbsp;&nbsp; **Sample Event Data**
 
 ---
 
