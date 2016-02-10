@@ -21,19 +21,13 @@ To publish your data, follow these steps:
   3. Add as many recommended DwC terms as possible
   4. As a bonus, try to add as many additional DwC terms as possible
   3. Refer to the exemplar datasets for additional guidance
-4. Upload your dataset to an instance of the GBIF Integrated Publishing Toolkit (IPT) hosted online where you can fill in metadata for your dataset metadata and publish it in a standardised (Darwin Core Archive) format: 
-  1. Save yourself time, and use a data hosting centre IPT located in your country:
-    - [Australia](http://ipt.ala.org.au/) - contact ALA <david.martin@csiro.au>
-    - [Canada](http://data.canadensys.net/ipt) - contact Canadensys <david.shorthouse@umontreal.ca>
-    - [Colombia](http://ipt.sibcolombia.net/sib/) - contact SiB Colombia <sib@humboldt.org.co>
-    - [Denmark](http://danbif.au.dk/ipt/) - contact DanBIF <icalabuig@snm.ku.dk>
-    - [France](http://www.gbif.fr/ipt/) - contact GBIF-France <archambeau@gbif.fr>
-    - [Spain](http://www.gbif.es:8080/ipt/) - contact GBIF-Spain <info@gbif.es>
-  2. Don't find your country in the above list?
-    * Setup your own IPT - if your organisation has the technical capacity
-    * Otherwise - contact the GBIF Helpdesk <helpdesk@gbif.org>
-  2. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
-5. Use the IPT to register your dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #2 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
+4. Choose which GBIF Integrated Publishing Toolkit (IPT) you will use:
+  1. Save yourself time and money, and use a [[data hosting centre IPT|dataHostingCentres]] located in your country.
+  2. Or, setup your own IPT if your organisation has the technical capacity
+  3. If all else fails - contact the GBIF Helpdesk <helpdesk@gbif.org>
+5. Upload your dataset to an instance of the GBIF Integrated Publishing Toolkit (IPT) hosted online where you can fill in metadata for your dataset metadata and publish it in a standardised (Darwin Core Archive) format:
+  1. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
+6. Use the IPT to register your dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #2 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
 
 ### Four classes of biodiversity data
 
