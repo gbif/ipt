@@ -30,7 +30,7 @@ You can augment your table with extra DwC columns, but only DwC terms from this 
 #### Template: 
 [![Download Sample Event Data Template][2]][1]
 
-Populate it and upload it to the IPT. 
+Populate it and upload it to the IPT.
 
   [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Sample Event Data Template)
