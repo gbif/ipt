@@ -22,6 +22,8 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 
 Alternatively if your metadata is already in EML or Dublin Core, you can upload it in these formats to the IPT. Guidance on how to do that can be found [here](IPT2ManualNotes.wiki#upload-a-metadata-file).
 
+For extra guidance, you can look at the [exemplar datasets](resourceMetadata#exemplar-datasets). 
+
 #### Template: 
 No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata.
 
