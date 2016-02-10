@@ -19,17 +19,13 @@ To publish your data, follow these steps:
 
 1. Determine the class of biodiversity data you have: [[Resource metadata|resourceMetadata]], [[Checklist Data|checklistData]], [[Occurrence Data|occurrenceData]], [[Sample Event Data|sampleEventData]]  
 2. Ensure your organisation is registered with GBIF by completing [this online questionnaire](http://www.gbif.org/publishing-data/how-to-publish#/intro)
-3. Construct your dataset
-  1. Try using an Excel template to collect your data
-  2. Make sure you supply all required Darwin Core (DwC) terms
-  3. Add as many recommended DwC terms as possible
-  4. As a bonus, try to add as many additional DwC terms as possible
-  3. Refer to the exemplar datasets for additional guidance
-4. Choose which GBIF Integrated Publishing Toolkit (IPT) you will use:
+3. Transform your data into a table structure, using Darwin Core terms as column names
+  1. Try using an Excel template to structure your data 
+4. Choose which GBIF Integrated Publishing Toolkit (IPT) you will use to publish your data:
   1. Save yourself time and money, and use a [[data hosting centre IPT|dataHostingCentres]] located in your country.
   2. Or, setup your own IPT if your organisation has the technical capacity
   3. If all else fails - contact the GBIF Helpdesk <helpdesk@gbif.org>
-5. Upload your dataset to an instance of the GBIF Integrated Publishing Toolkit (IPT) hosted online where you can fill in metadata for your dataset metadata and publish it in a standardised (Darwin Core Archive) format:
+5. Upload your data to the IPT, fill in resource metadata, and publish it (share it publicly online):
   1. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
 6. Use the IPT to register your dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #2 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
 
