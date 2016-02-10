@@ -22,7 +22,7 @@ To publish your data, follow the steps below. If you would like to register your
 1. Select the class of biodiversity data you have: [[Resource metadata|resourceMetadata]], [[Checklist Data|checklistData]], [[Occurrence Data|occurrenceData]], [[Sample Event Data|sampleEventData]]  
 3. Transform your data into a table structure, using Darwin Core (DwC) terms as column names
   1. Try using an Excel template to structure your data, and understand what DwC terms are required and recommended
-  2. It is possible to use data stored in a [[supported database|IPT2DatabaseConnection.wiki]], but ensure your table(s) included all DwC required terms 
+  2. It is possible to use data stored in a [[supported database|IPT2DatabaseConnection.wiki]]
 4. Choose which GBIF Integrated Publishing Toolkit (IPT) you will use to publish your data:
   1. Save yourself time and money, and use a [[data hosting centre IPT|dataHostingCentres]] located in your country.
   2. Or, setup your own IPT if your organisation has the technical capacity
