@@ -26,7 +26,10 @@ To publish your data, follow these steps:
   1. Save yourself time and money, and use a [[data hosting centre IPT|dataHostingCentres]] located in your country.
   2. Or, setup your own IPT if your organisation has the technical capacity
   3. If all else fails - contact the GBIF Helpdesk <helpdesk@gbif.org>
-5. Upload your data to the IPT, fill in resource metadata, and publish it (share it publicly online):
+5. Upload your data to the IPT
   1. Refer to the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) for additional guidance
-6. Use the IPT to register your dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #2 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
+6. Map the data to Darwin Core
+7. Fill in resource metadata
+8. Publish the dataset (share it publicly online):
+9. Register the dataset with GBIF, and make it globally discoverable on http://www.GBIF.org. Note: Step #2 (registration of your organisation with GBIF) must be completed first. This can take days or weeks in some cases, so please be patient.  
 
