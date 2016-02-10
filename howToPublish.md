@@ -1,4 +1,4 @@
-# How to guide: Publishing biodiversity data through GBIF.org
+# How to publish biodiversity data through GBIF.org
 
 ## Table of Contents
 + [[Introduction|howToPublish#introduction]]
