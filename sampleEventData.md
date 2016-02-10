@@ -14,6 +14,17 @@
 
 Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, ecogenomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under [Resource Metadata (above)](howToPublish#resource-metadata) and the same standard elements as in [Occurrence Data (above)](howToPublish#occurrence-data).
 
+### How to transform your data into sample event data
+
+Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names. 
+
+Try putting your data into the [Excel template](sampleEventData#template), which includes all [required DwC fields](sampleEventData#required-dwc-fields) and [recommended DwC fields](sampleEventData#recommended-dwc-fields). 
+
+Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write an SQL table (view) using DwC column names. Be careful to include all [required DwC fields](sampleEventData#required-dwc-fields) and add as many [recommended DwC fields](sampleEventData#recommended-dwc-fields) as possible. 
+
+For extra guidance, you can look at the [exemplar datasets](sampleEventData#exemplar-datasets). 
+
+You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_event_2015_05_29.xml).
 
 #### Template: 
 [![Download Sample Event Data Template][2]][4]
