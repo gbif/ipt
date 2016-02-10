@@ -6,7 +6,7 @@
 
 ## Table of contents
 + [Introduction](occurrenceData#introduction)
-+ [How to transform your data into checklist data](occurrenceData#how-to-transform-your-data-into-occurrence-data)
++ [How to transform your data into occurrence data](occurrenceData#how-to-transform-your-data-into-occurrence-data)
 + [Template](occurrenceData#template)
 + [Required DwC fields](occurrenceData#required-dwc-fields)
 + [Recommended DwC fields](occurrenceData#recommended-dwc-fields)
