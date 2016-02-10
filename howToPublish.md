@@ -30,5 +30,5 @@ To publish your data, follow the steps below. If you would like to register your
 6. Map the data to Darwin Core
 7. Fill in resource metadata
 8. Publish the dataset (share it publicly online):
-9. Register the dataset with GBIF. Note your organisation must be registered with GBIF and added to your IPT by the IPT administrator. Otherwise, the organisation will not be available to choose from in the IPT. 
+9. Register the dataset with GBIF. **Note**: your organisation must be registered with GBIF and added to your IPT by the IPT administrator. Otherwise, the organisation will not be available to choose from in the IPT. 
 
