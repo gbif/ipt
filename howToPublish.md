@@ -15,7 +15,7 @@ GBIF supports publication, discovery and use of four classes of data. At the sim
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users. 
 
 ## Instructions
-To publish your data, follow the steps below. If you would like to register your dataset with GBIF and make it globally discoverable via http://www.gbif.org, please ensure your organisation is registered with GBIF by completing [this online questionnaire](http://www.gbif.org/publishing-data/how-to-publish#/intro). The registration process can take days, so in parallel you should work to publish your data: 
+To publish your data, follow the steps below. If you would like to register your dataset with GBIF and make it globally discoverable via http://www.gbif.org, please ensure your organisation is registered with GBIF by completing [this online questionnaire](http://www.gbif.org/publishing-data/how-to-publish#/intro). The registration process can take days, so in parallel you can proceed to publish your data: 
 
 1. Determine the class of biodiversity data you have: [[Resource metadata|resourceMetadata]], [[Checklist Data|checklistData]], [[Occurrence Data|occurrenceData]], [[Sample Event Data|sampleEventData]]  
 3. Transform your data into a table structure, using Darwin Core (DwC) terms as column names
