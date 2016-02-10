@@ -47,6 +47,6 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 
 #### FAQ: 
 
-**Q.** What should I do if my data cannot be made freely available (yet)?
+**Q.** What should I do if my data cannot be made freely available?
 
-**A.** Publicise its existence by publishing metadata about it! 
+**A.** You should publicise its existence by publishing metadata about it. You can indicate the data can be made available by request, to encourage future collaboration and meta-analysis. 
