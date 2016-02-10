@@ -16,7 +16,7 @@ Description and contact details for a biodiversity information resource where no
 
 ### How to write resource metadata
 
-Ultimately your metadata needs to be transformed into an XML metadata document. The XML must conform to the GBIF Metadata Schema, which is based on the Ecological Metadata Language (EML). 
+Ultimately your metadata needs to be transformed into an XML metadata document. The XML must conform to the GBIF Metadata Profile, which is based on the Ecological Metadata Language (EML). 
 
 No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata. The IPT makes sure it's in the proper valid XML format. 
 
