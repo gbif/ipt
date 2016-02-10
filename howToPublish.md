@@ -14,7 +14,7 @@ GBIF supports publication, discovery and use of four classes of data.
 To publish your data, follow these steps:
 
 1. Determine which of the [[four classes of biodiversity data|howToPublish#four-classes-of-biodiversity-data]] you have
-2. Register your organisation with GBIF by filling in this [form](http://www.gbif.org/publishing-data/how-to-publish#/intro)
+2. Ensure your organisation is registered with GBIF by completing [this online questionnaire](http://www.gbif.org/publishing-data/how-to-publish#/intro)
 3. Use this guide to construct your dataset
   1. Try using an Excel template to collect your data
   2. Make sure you supply all required Darwin Core (DwC) terms
