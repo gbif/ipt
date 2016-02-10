@@ -7,7 +7,7 @@ Resources comprising a list of species belonging to some category (e.g. taxonomi
 
 ### How to transform your data into checklist data
 
-Transform your data into a table structure using Darwin Core (DwC) terms as column names. 
+Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names. 
 
 Try putting your data into the [Excel template](checklistData#template), which includes all [required DwC fields](checklistData#required-dwc-fields) and [recommended DwC fields](checklistData#recommended-dwc-fields). 
 
