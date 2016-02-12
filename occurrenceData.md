@@ -20,6 +20,8 @@ Resources which present evidence of the occurrence of a species at a particular 
 
 ### How to transform your data into occurrence data
 
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/flow-od.png' />
+
 Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names. 
 
 Try putting your data into the [Excel template](occurrenceData#template), which includes all [required DwC fields](occurrenceData#required-dwc-fields) and [recommended DwC fields](occurrenceData#recommended-dwc-fields). 
