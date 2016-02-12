@@ -20,6 +20,8 @@ Resources which present evidence not only of the occurrence of a species at a pa
 
 ### How to transform your data into sample event data
 
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/flow-sed.png' />
+
 Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names. 
 
 Try putting your data into the [Excel template](sampleEventData#template), which includes all [required DwC fields](sampleEventData#required-dwc-fields) and [recommended DwC fields](sampleEventData#recommended-dwc-fields). 
