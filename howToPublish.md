@@ -23,7 +23,7 @@ Data publishers are strongly encouraged to share their data using the richest ap
 
 To publish your data, follow the 7 steps below. 
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/publishing-flow.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/flow-all.png' />
 
 1. Select the class of biodiversity data you have: [[Resource metadata|resourceMetadata]], [[Checklist Data|checklistData]], [[Occurrence Data|occurrenceData]], [[Sample Event Data|sampleEventData]]  
 2. Transform your data into a table structure, using Darwin Core (DwC) terms as column names
