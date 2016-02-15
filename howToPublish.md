@@ -9,7 +9,7 @@
 
 GBIF supports publication, discovery and use of four classes of data:
 
-* [[Resource metadata|resourceMetadata]], 
+* [[Resource metadata|resourceMetadata]]
 * [[Checklist Data|checklistData]] 
 * [[Occurrence Data|occurrenceData]] 
 * [[Sample Event Data|sampleEventData]]  
