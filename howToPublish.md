@@ -7,9 +7,14 @@
 
 ## Introduction
 
-GBIF supports publication, discovery and use of four classes of data. At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support an increasingly richer and wider range of information on species, their distributions and abundance.
+GBIF supports publication, discovery and use of four classes of data:
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/4classes-chart.png' />
+* [[Resource metadata|resourceMetadata]], 
+* [[Checklist Data|checklistData]] 
+* [[Occurrence Data|occurrenceData]] 
+* [[Sample Event Data|sampleEventData]]  
+
+At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support an increasingly richer and wider range of information on species, their distributions and abundance.
 
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users.
 
