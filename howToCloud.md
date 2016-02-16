@@ -3,8 +3,8 @@
 ## Table of Contents
 
 + [[Introduction|howToCloud#introduction]]
-  + [[How much does it cost?|howToCloud#how-much-does-it-cost?]]
-  + [[How easy is it to use?|howToCloud#how-easy-is-it-to-use?]]
+  + [[How much does it cost?|howToCloud#how-much-does-it-cost]]
+  + [[How easy is it to use?|howToCloud#how-easy-is-it-to-use]]
 
 ### Introduction
 
