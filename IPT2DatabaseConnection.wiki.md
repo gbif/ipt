@@ -33,7 +33,7 @@ pgsql.url=jdbc:postgresql://{host}/{database}?compatible=7.2
 pgsql.limitType=LIMIT
 ```
 
-There are 3 properties that you need to add for each driver, all 3 have to start with the same prefix that you can freely chose without any further meaning:
+There are 4 properties that you need to add for each driver. All 4 have to start with the same prefix that you can freely choose without any further meaning:
 
   * **title**: The title to be displayed in the IPT for this driver
   * **driver**: The driver java class to be used when connecting
