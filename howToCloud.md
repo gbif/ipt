@@ -30,4 +30,6 @@ Installation is quite straightforward, but the IPT instance will still require r
 
 ### Instructions
 
-TODO
+1. Follow the ["Getting Started"](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html) instructions provided by Amazon to launch a new instance and connect to it. 
+2. Install the latest version of Tomcat on your instance
+3. Install the latest version of the IPT on your instance
