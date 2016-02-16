@@ -3,6 +3,7 @@
 ## Table of Contents
 
 + [[Introduction|howToCloud#introduction]]
+  + [[What are the benefits?|howToCloud#what-are-the-benefits]]
   + [[How much does it cost?|howToCloud#how-much-does-it-cost]]
   + [[How easy is it to use?|howToCloud#how-easy-is-it-to-use]]
 + [[Instructions|howToCloud#instructions]]
