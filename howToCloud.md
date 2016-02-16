@@ -5,6 +5,7 @@
 + [[Introduction|howToCloud#introduction]]
   + [[How much does it cost?|howToCloud#how-much-does-it-cost]]
   + [[How easy is it to use?|howToCloud#how-easy-is-it-to-use]]
++ [[Instructions|howToCloud#instructions]]
 
 ### Introduction
 
@@ -19,3 +20,7 @@ New customers will get free usage for one year as part of [AWS Free Tier](http:/
 #### How easy is it to use?
 
 Installation is quite straightforward, but the IPT instance will still require regular administration and backups similar to running the IPT on a normal server. Backups of the IPT data directory could be stored for example on an [Amazon Simple Storage Service (S3)](http://aws.amazon.com/s3/) directory that is both secure and low-cost.
+
+### Instructions
+
+TODO
