@@ -1,6 +1,6 @@
 # How to setup an IPT using Amazon EC2 cloud service
 
-I recently installed the IPT in a cloud deployment using Amazon EC2 Web Services. EC2 allowed me to obtain and boot a new server instance running Tomcat in minutes, on which I could install the IPT normally.
+It is possible to install the IPT in a cloud deployment using Amazon EC2 Web Services. EC2 allows you to obtain and boot a new server instance running Tomcat in minutes, on which you can install the IPT normally.
 
 ## How much does it cost?
 
