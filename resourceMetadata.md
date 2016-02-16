@@ -8,7 +8,7 @@
 
 ## Table of contents
 + [Introduction](resourceMetadata#introduction)
-+ [How to transform your data into checklist data](resourceMetadata#how-to-transform-your-data-into-checklist-data)
++ [How to write resource metadata](resourceMetadata#how-to-write-resource-metadata)
 + [Template](resourceMetadata#template)
 + [Required DwC fields](resourceMetadata#required-dwc-fields)
 + [Recommended DwC fields](resourceMetadata#recommended-dwc-fields)
