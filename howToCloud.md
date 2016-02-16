@@ -8,7 +8,7 @@
 
 ### Introduction
 
-It is possible to install the IPT in a cloud deployment using Amazon EC2 Web Services. EC2 allows you to obtain and boot a new server instance running Tomcat in minutes, on which you can install the IPT normally.
+It is possible to install the IPT in a cloud deployment using Amazon EC2 Web Services. EC2 allows you to obtain and boot a new server instance running Tomcat in minutes, on which you can install the IPT normally. As long as you remember to pay your bills, it can be a more sustainable way of hosting your IPT.
  
 #### How much does it cost?
 
