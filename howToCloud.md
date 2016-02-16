@@ -12,6 +12,8 @@ It is possible to install the IPT in a cloud deployment using Amazon EC2 Web Ser
 
 New customers will get free usage for one year as part of AWS Free Tier. Afterwards, I estimated the monthly cost to be about $15 using the monthly calculator, however, this will obviously vary depending on how much storage is required. Fortunately Amazon EC2 allows you to pay only for capacity that you are actually using to minimize cost. A screenshot showing my monthly estimate is included below.
 
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/ec2-calculator.png' />
+
 #### How easy is it to use?
 
 Installation is quite straightforward, but the IPT instance will still require regular administration and backups similar to running the IPT on a normal server. Backups of the IPT data directory could be stored for example on an Amazon Simple Storage Service (S3) directory that is both secure and low-cost.
