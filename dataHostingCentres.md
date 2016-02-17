@@ -6,3 +6,7 @@
 - [Denmark](http://danbif.au.dk/ipt/) - contact DanBIF <icalabuig@snm.ku.dk>
 - [France](http://www.gbif.fr/ipt/) - contact GBIF-France <archambeau@gbif.fr>
 - [Spain](http://www.gbif.es/ipt/) - contact GBIF-Spain <info@gbif.es>
+
+## Spain
+
+Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact info@gbif.es for assistance. 
