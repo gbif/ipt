@@ -1,11 +1,11 @@
 #Data Hosting Centers
 
-- [Australia](http://ipt.ala.org.au/) - contact ALA <david.martin@csiro.au>
-- [Canada](http://data.canadensys.net/ipt) - contact Canadensys <david.shorthouse@umontreal.ca>
-- [Colombia](http://ipt.sibcolombia.net/sib/) - contact SiB Colombia <sib@humboldt.org.co>
-- [Denmark](http://danbif.au.dk/ipt/) - contact DanBIF <icalabuig@snm.ku.dk>
-- [France](http://www.gbif.fr/ipt/) - contact GBIF-France <archambeau@gbif.fr>
-- [Spain](http://www.gbif.es/ipt/) - contact GBIF-Spain <info@gbif.es>
+- [[Australia|australia]] 
+- [[Canada|canada]]
+- [[Colombia|colombia]]
+- [[Denmark|denmark]]
+- [[France|france]]
+- [[Spain|spain]]
 
 ## Australia
 
@@ -17,15 +17,15 @@ Canadensys provides helpdesk support to new publishers in Canada, and hosting su
 
 ## Colombia
 
-Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact info@gbif.es for assistance. 
+Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
 
 ## Denmark
 
-Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact info@gbif.es for assistance. 
+Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [DanBIF IPT](http://danbif.au.dk/ipt/). Please contact DanBIF <icalabuig@snm.ku.dk> for assistance. 
 
 ## France
 
-Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact info@gbif.es for assistance. 
+Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France <archambeau@gbif.fr> for assistance. 
 
 ## Spain
 
