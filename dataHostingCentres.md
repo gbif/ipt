@@ -17,7 +17,7 @@ A DHC must meet the following set of strict requirements in order to be recommen
 - Their IPT is online near 100% of the time
 - They can properly administer their IPT: 
   - Keeping it up-to-date with latest version
-  - Ensure the IPT data directory gets regularly backed-up
+  - Ensuring the IPT data directory gets regularly backed-up
   - Managing user accounts
   - Managing IPT cores and extensions
 - They have a proven track-record of hosting data for publishers in their country
