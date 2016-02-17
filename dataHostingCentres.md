@@ -5,13 +5,14 @@
 There are strict requirements for being a data hosting centre:
 
 - Able to keep their IPT online near 100% of the time
-- Able to properly administer their IPT and keep it up-to-date: 
-  - Upgrade to latest versions having security updates, bug fixes, and new features
-  - Manager user accounts
-  - Manage IPT extensions
-- Able to provide publishers with high-quality helpdesk support
-  - Knowledgeable about IPT and biodiversity data standards in general
-  - Knowledgeable about data papers
+- Able to properly administer their IPT: 
+  - Keep it up-to-date with latest version having security updates, bug fixes, and new features
+  - Manage user accounts
+  - Manage extensions
+- Able to provide publishers with high-quality helpdesk support:
+  - Knowledgeable about how to publish data using the IPT
+  - Knowledgeable about biodiversity data standards in general
+  - Knowledgeable about how to publish data papers
 
 ## Data Hosting Centres by Country
 
