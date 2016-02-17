@@ -54,6 +54,14 @@ The Atlas of Living Australia provides helpdesk support to new publishers in Aus
 
 BeBIF provides helpdesk support to publishers in Belgium, and hosting support for datasets on the [BeBIF IPT](http://ipt.biodiversity.be/). Please contact BeBIF <aheugheb@ulb.ac.be> for assistance.
 
+Note: BeBIF website is down: http://www.be.gbif.net/
+
+## Brazil
+
+SiBBr provides helpdesk support to publishers in Brazil, and hosting support for datasets on the [SiBBr IPT](http://ipt.sibbr.gov.br/sibbr/). Please contact SiBBr <dvelez@sibbr.gov.br> for assistance. 
+
+Note: http://ipt.sibbr.gov.br/sibbr/ http://ipt.sibbr.gov.br/peld/ http://ipt.sibbr.gov.br/mnrj/ http://ipt.sibbr.gov.br/taxonline/ http://ipt.sibbr.gov.br/repatriados/ are down. List of other IPTs: http://www.sibbr.gov.br/internal/index.php?area=servicos&subarea=lista-dos-ipts
+
 ## Canada
 
 Canadensys provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <david.shorthouse@umontreal.ca> for assistance.
