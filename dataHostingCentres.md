@@ -2,14 +2,13 @@
 
 ## Introduction
 
-You can use a data hosting centre (DHC) in your country to host your dataset on their IPT. They will provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through [GBIF.org](http://www.gbif.org).
+A data hosting centre (DHC) can provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through [GBIF.org](http://www.gbif.org).
 
-Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language.  
+Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language. 
 
-To qualify as a DHC, a GBIF member must meet a strict set of [criteria](dataHostingCentres#data-hosting-centre-criteria).
+Please use this page to discover a trusted DCH in your own country. If none exists in your country, please contact the [GBIF Helpdesk](helpdesk@gbif.org) for assistance.  
 
-A DHC  can trust the DHC to keep their IPT online near 100% of the time and to ensure that your dataset gets backed up. 
-
+Please note that to qualify as a trusted DHC, the centre must meet a strict set of [criteria](dataHostingCentres#data-hosting-centre-criteria). Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset gets backed-up. 
 
 ## Data Hosting Centre Criteria
 
@@ -18,6 +17,7 @@ A DHC must meet the following set of strict requirements in order to be recommen
 - Their IPT is online near 100% of the time
 - They can properly administer their IPT: 
   - Keeping it up-to-date with latest version having security updates, bug fixes, and new features
+  - Keep the IPT data directory backed-up
   - Managing user accounts
   - Managing IPT cores and extensions
 - They have a proven track-record of hosting data for publishers in their country
