@@ -2,14 +2,14 @@
 
 ## Introduction
 
-You can use a data hosting centre (DHC) in your country to host your dataset on their IPT. They will provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through [GBIF.org](http://www.gbif.org). 
+You can use a data hosting centre (DHC) in your country to host your dataset on their IPT. They will provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through [GBIF.org](http://www.gbif.org).
 
-To be recommended, a DHC must meets a strict set of criteria. In this way, you can trust them to keep their IPT online near 100% of the time, and to ensure that your dataset gets backed up. 
+Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language.  
 
-Using a DHC is highly recommended because:
+To qualify as a DHC, a GBIF member must meet a strict set of [criteria](dataHostingCentres#data-hosting-centre-criteria).
 
-- It will save you time and money setting up your own IPT instance
-- You can receive helpdesk support in your own language 
+A DHC  can trust the DHC to keep their IPT online near 100% of the time and to ensure that your dataset gets backed up. 
+
 
 ## Data Hosting Centre Criteria
 
@@ -20,10 +20,11 @@ A DHC must meet the following set of strict requirements in order to be recommen
   - Keeping it up-to-date with latest version having security updates, bug fixes, and new features
   - Managing user accounts
   - Managing IPT cores and extensions
-- They can provide publishers with prompt helpdesk support:
-  - Transferring knowledge about how to use the IPT to publish data through GBIF.org
-  - Transferring knowledge about biodiversity data standards in general
-  - Transferring knowledge about how to publish data papers
+- They have a proven track-record of hosting data for publishers in their country
+- They can provide prompt and knowledgeable helpdesk support:
+  - They know how to use the IPT to publish data through GBIF.org
+  - They know about biodiversity data standards in general
+  - They know how to publish data papers
 
 ## Data Hosting Centres by Country
 
