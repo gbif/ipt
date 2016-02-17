@@ -50,6 +50,10 @@ A DHC must meet the following set of strict requirements in order to be recommen
 
 The Atlas of Living Australia provides helpdesk support to new publishers in Australia, and hosting support for datasets on the [ALA IPT](http://ipt.ala.org.au/). Please contact ALA <david.martin@csiro.au> for assistance. 
 
+## Belgium
+
+BeBIF provides helpdesk support to publishers in Belgium, and hosting support for datasets on the [BeBIF IPT](http://ipt.biodiversity.be/). Please contact BeBIF <aheugheb@ulb.ac.be> for assistance.
+
 ## Canada
 
 Canadensys provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <david.shorthouse@umontreal.ca> for assistance.
