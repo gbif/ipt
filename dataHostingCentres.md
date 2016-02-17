@@ -17,16 +17,16 @@ Canadensys provides helpdesk support to new publishers in Canada, and hosting su
 
 ## Colombia
 
-Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
+SiB Colombia provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
 
 ## Denmark
 
-Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [DanBIF IPT](http://danbif.au.dk/ipt/). Please contact DanBIF <icalabuig@snm.ku.dk> for assistance. 
+DanBIF provides helpdesk support to new publishers in Denmark, and hosting support for datasets on the [DanBIF IPT](http://danbif.au.dk/ipt/). Please contact DanBIF <icalabuig@snm.ku.dk> for assistance. 
 
 ## France
 
-Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France <archambeau@gbif.fr> for assistance. 
+GBIF France provides helpdesk support to new publishers in France, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France <archambeau@gbif.fr> for assistance. 
 
 ## Spain
 
-Provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact info@gbif.es for assistance. 
+GBIF Spain provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact info@gbif.es for assistance. 
