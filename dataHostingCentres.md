@@ -1,11 +1,11 @@
 #Data Hosting Centers
 
-- [[Australia|#australia]] 
-- [[Canada|#canada]]
-- [[Colombia|#colombia]]
-- [[Denmark|#denmark]]
-- [[France|#france]]
-- [[Spain|#spain]]
+- [[Australia|dataHostingCentres#australia]] 
+- [[Canada|dataHostingCentres#canada]]
+- [[Colombia|dataHostingCentres#colombia]]
+- [[Denmark|dataHostingCentres#denmark]]
+- [[France|dataHostingCentres#france]]
+- [[Spain|dataHostingCentres#spain]]
 
 ## Australia
 
