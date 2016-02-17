@@ -2,17 +2,24 @@
 
 ## Introduction
 
-There are strict requirements for being a data hosting centre:
+You can use a data hosting centre (DHC) IPT in your country to host and publish your dataset through [GBIF.org](http://www.gbif.org). 
 
-- Able to keep their IPT online near 100% of the time
-- Able to properly administer their IPT: 
-  - Keep it up-to-date with latest version having security updates, bug fixes, and new features
-  - Manage user accounts
-  - Manage extensions
-- Able to provide publishers with high-quality helpdesk support:
-  - Knowledgeable about how to publish data using the IPT
-  - Knowledgeable about biodiversity data standards in general
-  - Knowledgeable about how to publish data papers
+Using a DHC is highly recommended because:
+
+- It will save you time and money setting up your own IPT instance
+- You can receive helpdesk support in your own language 
+
+Here you will find a list of DHCs organised by country. Please note that a DHC is only included in this list if it meets the following strict requirements:  
+
+- Their IPT is online near 100% of the time
+- They can properly administer their IPT: 
+  - Keeping it up-to-date with latest version having security updates, bug fixes, and new features
+  - Managing user accounts
+  - Managing IPT cores and extensions
+- They can provide publishers with prompt helpdesk support:
+  - Transferring knowledge about how to use the IPT to publish data through GBIF.org
+  - Transferring knowledge about biodiversity data standards in general
+  - Transferring knowledge about how to publish data papers
 
 ## Data Hosting Centres by Country
 
