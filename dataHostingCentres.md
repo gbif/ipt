@@ -29,11 +29,22 @@ A DHC must meet the following set of strict requirements in order to be recommen
 ## Data Hosting Centres by Country
 
 - [[Australia|dataHostingCentres#australia]] 
+- [[Belgium|dataHostingCentres#belgium]] 
+- [[Brazil|dataHostingCentres#brazil]] 
 - [[Canada|dataHostingCentres#canada]]
 - [[Colombia|dataHostingCentres#colombia]]
 - [[Denmark|dataHostingCentres#denmark]]
-- [[France|dataHostingCentres#france]]
+- [[Finland|dataHostingCentres#finland]]
+- [[Japan|dataHostingCentres#japan]]
+- [[Finland|dataHostingCentres#finland]]
+- [[Norway|dataHostingCentres#norway]]
+- [[Portugal|dataHostingCentres#portugal]]
 - [[Spain|dataHostingCentres#spain]]
+- [[Sweden|dataHostingCentres#sweden]]
+- [[Taiwan|dataHostingCentres#taiwan]]
+- [[USA|dataHostingCentres#usa]]
+  - [[USGS|dataHostingCentres#usgs]] 
+  - [[VertNet|dataHostingCentres#vertnet]]
 
 ## Australia
 
