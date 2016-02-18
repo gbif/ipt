@@ -76,6 +76,10 @@ The [Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcol
 
 The [Danish Biodiversity Information Facility (DanBIF)](http://danbif.dk/english/) provides helpdesk support to new publishers in Denmark, and hosting support for datasets on the [DanBIF IPT](http://danbif.au.dk/ipt/). Please contact DanBIF <icalabuig@snm.ku.dk> for assistance. 
 
+## Finland
+
+The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=en) provides helpdesk support to new publishers in Finland, and hosting support for datasets on the [Digitarium IPT](http://ipt.digitarium.fi/). Please contact the Digitarium <hannu.saarenmaa@uef.fi> for assistance. 
+
 ## France
 
 GBIF France provides helpdesk support to new publishers in France, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France <archambeau@gbif.fr> for assistance. 
