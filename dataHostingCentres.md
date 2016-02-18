@@ -96,4 +96,4 @@ The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en)
 
 ## USA
 
-[VertNet](http://vertnet.org/) provides helpdesk support to new publishers in the United States, and hosting support for datasets on the [VertNet IPT](http://ipt.vertnet.org/). Please contact Laura Russell <	larussell@vertnet.org> for assistance. 
+[VertNet](http://vertnet.org/) provides helpdesk support to new publishers in the United States, and hosting support for datasets on the [VertNet IPT](http://ipt.vertnet.org/). Please contact Laura Russell <larussell@vertnet.org> for assistance. 
