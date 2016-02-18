@@ -26,6 +26,8 @@ A DHC must meet the following set of strict requirements in order to be recommen
   - They know about biodiversity data standards in general
   - They know how to publish data papers
 
+If you believe your DHC meets these standards, please email <helpdesk@gbif.org> to request to be added to this page. 
+
 ## Data Hosting Centres by Country
 
 - [[Australia|dataHostingCentres#australia]] 
