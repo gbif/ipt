@@ -45,19 +45,21 @@ The following screencast also explains how to install the IPT using Tomcat, assu
 
 ### Jetty
 
-The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 6 (minimum), Maven, and Subversion installed (Mac OSX comes with all of these installed by default).
+The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 6 (minimum), Maven, and Git installed (Mac OSX comes with all of these installed by default).
 
-First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands (please check if 2.1.1 is still the latest stable version):
+First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands (please check if 2.3.2 is still the latest stable version):
 
-`$ svn checkout http://gbif-providertoolkit.googlecode.com/svn/tags/ipt-2.1.1 gbif-ipt`<br>
-<code>$ cd gbif-ipt</code><br>
-<code>$ mvn -Dmaven.test.skip=true</code><br>
++ git clone https://github.com/gbif/ipt.git
++ cd ipt
++ git tag -l
++ git checkout ipt-2.3.2 (or newer tag if available)
++ mvn -Dmaven.test.skip=true
 
-The last "mvn" command should start the IPT with a local jetty instance on port 8080. Please note, this launches the IPT in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "<a href='http://gbrdsdev.gbif.org'>http://gbrdsdev.gbif.org</a>" and not the live registry "<a href='http://gbrds.gbif.org'>http://gbrds.gbif.org</a>".<br>
-<br>
-To run in production mode, in place of the last "mvn" command use:<br>
-<br>
-<code>$ mvn -Dmaven.test.skip=true -P release</code><br>
+The last "mvn" command should start the IPT with a local jetty instance on port 8080. Please note, this launches the IPT in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "<a href='http://gbrdsdev.gbif.org'>http://gbrdsdev.gbif.org</a>" and not the live registry "<a href='http://gbrds.gbif.org'>http://gbrds.gbif.org</a>".
+
+To run in production mode, in place of the last "mvn" command use:
+
++ mvn -Dmaven.test.skip=true -P release
 
 This makes the checkbox "Production use" on Setup page II appear. It must be checked obviously to run in production. What this means is that registrations will be against the live registry "<a href='http://gbrds.gbif.org'>http://gbrds.gbif.org</a>" and not the test registry "<a href='http://gbrdsdev.gbif.org'>http://gbrdsdev.gbif.org</a>",<br>
 <br>
