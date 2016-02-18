@@ -60,7 +60,7 @@ Note: BeBIF website is down: http://www.be.gbif.net/
 
 The [Brazilian Biodiversity Information System (SiB Brazil)](http://sibbr.gov.br/) provides helpdesk support to publishers in Brazil, and hosting support for datasets on the [SiBBr IPT](http://ipt.sibbr.gov.br/sibbr/). Please contact SiBBr <dvelez@sibbr.gov.br> for assistance. 
 
-Note: http://ipt.sibbr.gov.br/sibbr/ http://ipt.sibbr.gov.br/peld/ http://ipt.sibbr.gov.br/mnrj/ http://ipt.sibbr.gov.br/taxonline/ http://ipt.sibbr.gov.br/repatriados/ were down on 17 February 2016. List of other IPTs: http://www.sibbr.gov.br/internal/index.php?area=servicos&subarea=lista-dos-ipts
+Note: SiBBr's IPTs were all offline on 17 February 2016. Here is a [list of all IPTs in Brazil](http://www.sibbr.gov.br/internal/index.php?area=servicos&subarea=lista-dos-ipts).
 
 ## Canada
 
