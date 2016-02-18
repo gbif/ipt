@@ -43,8 +43,6 @@ If you believe your DHC meets these standards, and would like to offer your serv
 - [[Sweden|dataHostingCentres#sweden]]
 - [[Taiwan|dataHostingCentres#taiwan]]
 - [[USA|dataHostingCentres#usa]]
-  - [[USGS|dataHostingCentres#usgs]] 
-  - [[VertNet|dataHostingCentres#vertnet]]
 
 ## Australia
 
@@ -95,3 +93,7 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 ## Taiwan
 
 The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en) provides helpdesk support to new publishers in Taiwan, and hosting support for datasets on the [TaiBIF IPT](http://taibif.tw/ipt/). Please contact Yu-Huang Wang <yuhuangwang@gmail.com> for assistance. 
+
+## USA
+
+[VertNet](http://vertnet.org/) provides helpdesk support to new publishers in the United States, and hosting support for datasets on the [VertNet IPT](http://ipt.vertnet.org/). Please contact Laura Russell <	larussell@vertnet.org> for assistance. 
