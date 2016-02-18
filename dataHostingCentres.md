@@ -58,17 +58,19 @@ Note: BeBIF website is down: http://www.be.gbif.net/
 
 ## Brazil
 
-SiBBr provides helpdesk support to publishers in Brazil, and hosting support for datasets on the [SiBBr IPT](http://ipt.sibbr.gov.br/sibbr/). Please contact SiBBr <dvelez@sibbr.gov.br> for assistance. 
+[Brazilian Biodiversity Information System (SiB Brazil)](http://sibbr.gov.br/) provides helpdesk support to publishers in Brazil, and hosting support for datasets on the [SiBBr IPT](http://ipt.sibbr.gov.br/sibbr/). Please contact SiBBr <dvelez@sibbr.gov.br> for assistance. 
 
-Note: http://ipt.sibbr.gov.br/sibbr/ http://ipt.sibbr.gov.br/peld/ http://ipt.sibbr.gov.br/mnrj/ http://ipt.sibbr.gov.br/taxonline/ http://ipt.sibbr.gov.br/repatriados/ are down. List of other IPTs: http://www.sibbr.gov.br/internal/index.php?area=servicos&subarea=lista-dos-ipts
+Note: http://ipt.sibbr.gov.br/sibbr/ http://ipt.sibbr.gov.br/peld/ http://ipt.sibbr.gov.br/mnrj/ http://ipt.sibbr.gov.br/taxonline/ http://ipt.sibbr.gov.br/repatriados/ were down on 17 February 2016. List of other IPTs: http://www.sibbr.gov.br/internal/index.php?area=servicos&subarea=lista-dos-ipts
 
 ## Canada
 
-Canadensys provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <david.shorthouse@umontreal.ca> for assistance.
+The [Canadian Biodiversity Information Facility (CBIF)](http://www.cbif.gc.ca/) does not run an IPT.  
+
+Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <david.shorthouse@umontreal.ca> for assistance.
 
 ## Colombia
 
-SiB Colombia provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
+[Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcolombia.net/web/sib/home) provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
 
 ## Denmark
 
