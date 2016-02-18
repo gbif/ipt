@@ -52,13 +52,13 @@ The Atlas of Living Australia provides helpdesk support to new publishers in Aus
 
 ## Belgium
 
-BeBIF provides helpdesk support to publishers in Belgium, and hosting support for datasets on the [BeBIF IPT](http://ipt.biodiversity.be/). Please contact BeBIF <aheugheb@ulb.ac.be> for assistance.
+The [Belgian Biodiversity Information Facility (BeBIF)](http://www.be.gbif.net/) provides helpdesk support to publishers in Belgium, and hosting support for datasets on the [BeBIF IPT](http://ipt.biodiversity.be/). Please contact BeBIF <aheugheb@ulb.ac.be> for assistance.
 
 Note: BeBIF website is down: http://www.be.gbif.net/
 
 ## Brazil
 
-[Brazilian Biodiversity Information System (SiB Brazil)](http://sibbr.gov.br/) provides helpdesk support to publishers in Brazil, and hosting support for datasets on the [SiBBr IPT](http://ipt.sibbr.gov.br/sibbr/). Please contact SiBBr <dvelez@sibbr.gov.br> for assistance. 
+The [Brazilian Biodiversity Information System (SiB Brazil)](http://sibbr.gov.br/) provides helpdesk support to publishers in Brazil, and hosting support for datasets on the [SiBBr IPT](http://ipt.sibbr.gov.br/sibbr/). Please contact SiBBr <dvelez@sibbr.gov.br> for assistance. 
 
 Note: http://ipt.sibbr.gov.br/sibbr/ http://ipt.sibbr.gov.br/peld/ http://ipt.sibbr.gov.br/mnrj/ http://ipt.sibbr.gov.br/taxonline/ http://ipt.sibbr.gov.br/repatriados/ were down on 17 February 2016. List of other IPTs: http://www.sibbr.gov.br/internal/index.php?area=servicos&subarea=lista-dos-ipts
 
@@ -70,11 +70,11 @@ Therefore you are recommended to contact Canadensys, which provides helpdesk sup
 
 ## Colombia
 
-[Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcolombia.net/web/sib/home) provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
+The [Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcolombia.net/web/sib/home) provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
 
 ## Denmark
 
-DanBIF provides helpdesk support to new publishers in Denmark, and hosting support for datasets on the [DanBIF IPT](http://danbif.au.dk/ipt/). Please contact DanBIF <icalabuig@snm.ku.dk> for assistance. 
+The [Danish Biodiversity Information Facility (DanBIF)](http://danbif.dk/english/) provides helpdesk support to new publishers in Denmark, and hosting support for datasets on the [DanBIF IPT](http://danbif.au.dk/ipt/). Please contact DanBIF <icalabuig@snm.ku.dk> for assistance. 
 
 ## France
 
