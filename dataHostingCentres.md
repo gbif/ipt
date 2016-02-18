@@ -52,15 +52,7 @@ The Atlas of Living Australia provides helpdesk support to new publishers in Aus
 
 ## Belgium
 
-The [Belgian Biodiversity Information Facility (BeBIF)](http://www.be.gbif.net/) provides helpdesk support to publishers in Belgium, and hosting support for datasets on the [BeBIF IPT](http://ipt.biodiversity.be/). Please contact BeBIF <aheugheb@ulb.ac.be> for assistance.
-
-Note: BeBIF website is down: http://www.be.gbif.net/
-
-## Brazil
-
-The [Brazilian Biodiversity Information System (SiB Brazil)](http://sibbr.gov.br/) provides helpdesk support to publishers in Brazil, and hosting support for datasets on the [SiBBr IPT](http://ipt.sibbr.gov.br/sibbr/). Please contact SiBBr <dvelez@sibbr.gov.br> for assistance. 
-
-Note: SiBBr's IPTs were all offline on 17 February 2016. Here is a [list of all IPTs in Brazil](http://www.sibbr.gov.br/internal/index.php?area=servicos&subarea=lista-dos-ipts).
+The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdesk support to publishers in Belgium, and hosting support for datasets on the [Belgian BIF IPT](http://ipt.biodiversity.be/). Please contact BeBIF <aheugheb@ulb.ac.be> for assistance.
 
 ## Canada
 
@@ -83,11 +75,6 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 ## France
 
 GBIF France provides helpdesk support to new publishers in France, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France <archambeau@gbif.fr> for assistance. 
-
-## Japan
-
-[GBIF Japan (JBIF)](http://www.gbif.jp/v2/en/) provides helpdesk support to new publishers in France, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France <archambeau@gbif.fr> for assistance. 
- http://www.gbif.jp/v2/regist/index.html
 
 ## Spain
 
