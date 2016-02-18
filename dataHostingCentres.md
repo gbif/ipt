@@ -90,4 +90,8 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 
 ## Sweden
 
-[GBIF Sweden](http://www.gbif.se/) provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Sweden IPT](http://www.gbif.se/ipt/). Please contact Anders Telenius <anders.telenius@nrm.se> for assistance. 
+[GBIF Sweden](http://www.gbif.se/) provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Sweden IPT](http://www.gbif.se/ipt/). Please contact Anders Telenius <anders.telenius@nrm.se> for assistance.
+
+## Taiwan
+
+The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en) provides helpdesk support to new publishers in Taiwan, and hosting support for datasets on the [TaiBIF IPT](http://taibif.tw/ipt/). Please contact Yu-Huang Wang <yuhuangwang@gmail.com> for assistance. 
