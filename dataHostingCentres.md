@@ -72,7 +72,11 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 
 ## France
 
-GBIF France provides helpdesk support to new publishers in France, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France <archambeau@gbif.fr> for assistance. 
+[GBIF France](http://www.gbif.fr/) provides helpdesk support to new publishers in France, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France <archambeau@gbif.fr> for assistance. 
+
+## Norway
+
+[GBIF Norway](http://www.gbif.no/) provides helpdesk support to new publishers in Norway, and hosting support for datasets on the [GBIF Norway IPT](http://data.gbif.no/ipt/). Please contact GBIF Norway <gbif-drift@nhm.uio.no> for assistance. 
 
 ## Spain
 
