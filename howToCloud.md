@@ -4,6 +4,7 @@
 
 + [[Introduction|howToCloud#introduction]]
   + [[What are the benefits?|howToCloud#what-are-the-benefits]]
+  + [[What are the limitations?|howToCloud#what-are-the-limitations]]
   + [[How much does it cost?|howToCloud#how-much-does-it-cost]]
   + [[How easy is it to use?|howToCloud#how-easy-is-it-to-use]]
 + [[Instructions|howToCloud#instructions]]
@@ -16,7 +17,11 @@ It is possible to install the IPT in a cloud deployment using Amazon EC2 Web Ser
 
 If power cuts or bad Internet connectivity are problems in your area, using EC2 will allow you to keep your IPT online more reliably. 
 
-If your server is within a network that has restrictions against public access, using EC2 is a secure alternative that can save you time and effort configuring a proxy server just to access to your IPT.  
+If your server is within a network that has restrictions against public access, using EC2 is a secure alternative that can save you time and effort configuring a proxy server just to access to your IPT. 
+
+#### What are the limitations? 
+
+If your source data is stored in a database within your network, the database administrator will have to allow external access from your cloud instance. Otherwise, your IPT (in the cloud) may not be able to connect to your database any more.
  
 #### How much does it cost?
 
