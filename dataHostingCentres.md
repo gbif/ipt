@@ -56,7 +56,7 @@ The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdes
 
 The [Canadian Biodiversity Information Facility (CBIF)](http://www.cbif.gc.ca/) does not run an IPT.  
 
-Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <david.shorthouse@umontreal.ca> for assistance.
+Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <olivier.norvez@umontreal.ca> for assistance.
 
 ## Colombia
 
