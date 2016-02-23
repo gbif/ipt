@@ -60,7 +60,7 @@ Therefore you are recommended to contact Canadensys, which provides helpdesk sup
 
 ## Colombia
 
-The [Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcolombia.net/web/sib/home) provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
+The [Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcolombia.net/web/sib/home) provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib+ipt@humboldt.org.co> for assistance.  
 
 ## Denmark
 
