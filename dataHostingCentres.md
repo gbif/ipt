@@ -32,16 +32,21 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 - [[Australia|dataHostingCentres#australia]] 
 - [[Belgium|dataHostingCentres#belgium]] 
+- [[Benin|dataHostingCentres#france]] 
+- [[Burkina Faso|dataHostingCentres#france]]
+- [[Cameroon|dataHostingCentres#france]]
 - [[Canada|dataHostingCentres#canada]]
 - [[Colombia|dataHostingCentres#colombia]]
 - [[Denmark|dataHostingCentres#denmark]]
 - [[Finland|dataHostingCentres#finland]]
 - [[France|dataHostingCentres#france]]
+- [[Madagascar|dataHostingCentres#france]]
 - [[Norway|dataHostingCentres#norway]]
 - [[Portugal|dataHostingCentres#portugal]]
 - [[Spain|dataHostingCentres#spain]]
 - [[Sweden|dataHostingCentres#sweden]]
 - [[Taiwan|dataHostingCentres#taiwan]]
+- [[Togo|dataHostingCentres#france]]
 - [[USA|dataHostingCentres#usa]]
 
 ## Australia
@@ -72,7 +77,16 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 
 ## France
 
-[GBIF France](http://www.gbif.fr/) provides helpdesk support to new publishers in France, and hosting support for datasets on the [GBIF France IPT](http://www.gbif.fr/ipt/). Please contact GBIF-France < gbif@gbif.fr> for assistance. 
+[GBIF France](http://www.gbif.fr/) provides helpdesk support to new publishers in *Benin*, *Burkina Faso*, *Cameroon*, *France*, *Madagascar*, and *Togo*. GBIF France also hosts an IPT for each of these contries:
+
++ [GBIF Benin IPT](http://lis-02.snv.jussieu.fr/ipt_benin/)
++ [GBIF Burkina Faso IPT](http://lis-02.snv.jussieu.fr/ipt_burkina/)
++ [GBIF Cameroon IPT](http://lis-02.snv.jussieu.fr/ipt_cameroun/)
++ [GBIF France IPT](http://www.gbif.fr/ipt/)
++ [MadBIF IPT](http://www.gbif.fr/ipt_madagascar/)
++ [GBIF Togo IPT](http://lis-02.snv.jussieu.fr/ipt_togo/)
+
+Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues please write to <dev@gbif.fr> instead.
 
 ## Norway
 
