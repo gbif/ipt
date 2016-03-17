@@ -99,7 +99,7 @@ Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues p
 
 ## South Africa
 
-The [South African National Biodiversity Institute (SANBI)](http://www.sanbi.org/) provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the [SANBI IPT](http://197.189.235.147:8080/iptsanbi/). Please contact <F.Ramwashe@sanbi.org.za> for assistance. 
+The [South African National Biodiversity Institute (SANBI)](http://www.sanbi.org/) provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the [SANBI IPT](http://197.189.235.147:8080/iptsanbi/). Please contact <f.ramwashe@sanbi.org.za> for assistance. 
 
 ## Spain
 
