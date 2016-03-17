@@ -43,6 +43,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 - [[Madagascar|dataHostingCentres#france]]
 - [[Norway|dataHostingCentres#norway]]
 - [[Portugal|dataHostingCentres#portugal]]
+- [[South Africa|dataHostingCentres#south-africa]]
 - [[Spain|dataHostingCentres#spain]]
 - [[Sweden|dataHostingCentres#sweden]]
 - [[Taiwan|dataHostingCentres#taiwan]]
@@ -96,9 +97,13 @@ Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues p
 
 [GBIF Portugal](http://www.gbif.pt/) provides helpdesk support to new publishers in Portugal, and hosting support for datasets on the [GBIF Portugal IPT](http://ipt.gbif.pt/ipt/). Please contact GBIF Portugal <node@gbif.pt> for assistance. 
 
+## South Africa
+
+The [South African National Biodiversity Institute (SANBI)](http://www.sanbi.org/) provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the [SANBI IPT](http://197.189.235.147:8080/iptsanbi/). Please contact <F.Ramwashe@sanbi.org.za> for assistance. 
+
 ## Spain
 
-[GBIF Spain](http://www.gbif.es/) provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact info@gbif.es for assistance. 
+[GBIF Spain](http://www.gbif.es/) provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact <info@gbif.es> for assistance. 
 
 ## Sweden
 
