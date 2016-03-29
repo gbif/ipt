@@ -456,7 +456,7 @@ Haga clic en el botón "Limpiar" para eliminar el archivo seleccionado y volver 
 <img src='https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/ipt2/v23/es/IPTManageResourceSourceDataFormat.png' />
 
 * **Nombre de la Fuente** - El nombre del archivo seleccionado, sin la extensión de archivo.
-**Se puede leer ** - Este ícono indica si los datos están disponibles utilizando la información de formato del archivo provisto en esta página.
+* **Se puede leer** - Este ícono indica si los datos están disponibles utilizando la información de formato del archivo provisto en esta página.
 * **Columnas** - El número de columnas en el conjunto de datos como se ha configurado usando los parámetros en esta página.
 * **Archivo** - La ruta completa a la ubicación del archivo que desea utilizar como fuente de datos.
 * **Tamaño** - El tamaño del archivo.
