@@ -10,8 +10,8 @@
 + [Introduction](resourceMetadata#introduction)
 + [How to write resource metadata](resourceMetadata#how-to-write-resource-metadata)
 + [Template](resourceMetadata#template)
-+ [Required EML fields](resourceMetadata#required-dwc-fields)
-+ [Recommended EML fields](resourceMetadata#recommended-dwc-fields)
++ [Required EML fields](resourceMetadata#required-eml-fields)
++ [Recommended EML fields](resourceMetadata#recommended-eml-fields)
 + [Exemplar datasets](resourceMetadata#exemplar-datasets)
 + [FAQ](resourceMetadata#faq)
 
