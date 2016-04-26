@@ -10,8 +10,8 @@
 + [Introduction](resourceMetadata#introduction)
 + [How to write resource metadata](resourceMetadata#how-to-write-resource-metadata)
 + [Template](resourceMetadata#template)
-+ [Required EML fields](resourceMetadata#required-eml-fields)
-+ [Recommended EML fields](resourceMetadata#recommended-eml-fields)
++ [Required metadata fields](resourceMetadata#required-metadata-fields)
++ [Recommended metadata fields](resourceMetadata#recommended-metadata-fields)
 + [Exemplar datasets](resourceMetadata#exemplar-datasets)
 + [FAQ](resourceMetadata#faq)
 
@@ -33,7 +33,7 @@ For extra guidance, you can look at the [exemplar datasets](resourceMetadata#exe
 #### Template: 
 No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata.
 
-#### Required EML fields: 
+#### Required metadata fields: 
 * title
 * description
 * publishing organisation
@@ -43,7 +43,7 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 * creator(s)
 * metadata provider(s)
 
-#### Recommended EML fields: 
+#### Recommended metadata fields: 
 * sampling methodology - in situations where data comes from a sampling event
 * citation - to ensure your dataset gets cited the way you want
 
