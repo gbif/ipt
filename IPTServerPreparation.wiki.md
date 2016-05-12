@@ -49,11 +49,11 @@ The IPT comes equipped with a Jetty web server and servlet container. The IPT ca
 
 First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands (please check if 2.3.2 is still the latest stable version):
 
-+ git clone https://github.com/gbif/ipt.git
-+ cd ipt
-+ git tag -l
-+ git checkout ipt-2.3.2 (or newer tag if available)
-+ mvn -Dmaven.test.skip=true
+</code>$ git clone https://github.com/gbif/ipt.git </code><br>
+</code>$ cd ipt </code><br>
+</code>$ git tag -l </code><br>
+</code>$ git checkout ipt-2.3.2 (or newer tag if available) </code><br>
+</code>$ mvn -Dmaven.test.skip=true </code><br>
 
 The last "mvn" command should start the IPT with a local jetty instance on port 8080. Please note, this launches the IPT in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "<a href='http://gbrdsdev.gbif.org'>http://gbrdsdev.gbif.org</a>" and not the live registry "<a href='http://gbrds.gbif.org'>http://gbrds.gbif.org</a>".
 
