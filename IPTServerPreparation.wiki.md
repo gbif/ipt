@@ -59,7 +59,7 @@ The last "mvn" command should start the IPT with a local jetty instance on port 
 
 To run in production mode, in place of the last "mvn" command use:
 
-+ mvn -Dmaven.test.skip=true -P release
+<code>$ mvn -Dmaven.test.skip=true -P release</code><br>
 
 This makes the checkbox "Production use" on Setup page II appear. It must be checked obviously to run in production. What this means is that registrations will be against the live registry "<a href='http://gbrds.gbif.org'>http://gbrds.gbif.org</a>" and not the test registry "<a href='http://gbrdsdev.gbif.org'>http://gbrdsdev.gbif.org</a>",<br>
 <br>
