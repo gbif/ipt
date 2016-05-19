@@ -62,4 +62,4 @@ Populate it and upload it to the IPT.
 
 **Q.** How do indicate that a sample event was part of a time series?
 
-**A.** Populate [parentEventID](http://rs.tdwg.org/dwc/terms/#parentEventID) with an ID common to all sampling events at the same location.  
+**A.** All sample events at the same location must share the same [locationID](http://rs.tdwg.org/dwc/terms/#locationID).
