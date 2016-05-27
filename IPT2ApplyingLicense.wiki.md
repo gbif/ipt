@@ -2,7 +2,13 @@
 
 ## Introduction
 
-In accordance with the [GBIF licensing policy](http://www.gbif.org/terms/licences), a dataset should be made available for use under CC0, CC-BY, or CC-BY-NC. This page describes how to properly apply a license to a dataset, ensuring consistency at the dataset level and the record level.
+In accordance with the [GBIF licensing policy](http://www.gbif.org/terms/licences), a dataset should be made available for use under CC0, CC-BY, or CC-BY-NC. GBIF's recommended best practice is to use the most recent version, which 4.0 for CC-BY and CC-BY-NC. This is in line with Creative Commons' recommendation that: 
+
+> [y]ou should always use the latest version of the Creative Commons licenses in order to take advantage of the many improvements described on the [license versions page](https://wiki.creativecommons.org/wiki/License_Versions). In particular, 4.0 is meant to be better suited to international use, and use in many different contexts, including [sharing data](https://blog.creativecommons.org/2011/08/23/data-governance-our-idea-for-the-moore-foundation/).
+
+More information about what's new in the 4.0 CC license suite can be found [here](https://creativecommons.org/version4/). This is the version supported by the latest version of the IPT (v2.3.2).
+
+The remainder of this page describes how to properly apply a license to a dataset, and how to ensure consistency at the dataset level and the record level.
 
 Please note that CC0 is technically a waiver.
 
