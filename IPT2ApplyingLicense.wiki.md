@@ -12,7 +12,7 @@ The license chosen must apply to the dataset as a whole. Only one license should
 
 To apply a license at the **dataset level** in the IPT, choose a license from the drop down on the basic metadata page:
 
-![http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/LicenseDropdownWide.png](http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/ipt2/v22/LicenseDropdownWide.png)
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/LicenseDropdownWide.png' />
 
 In case different licenses apply to separate components of a dataset, the recommended best practice is to publish each component separately having their own metadata and identifier (e.g. DOI). This recommendation is in compliance with DataCite's recommended practice for such cases.
 
