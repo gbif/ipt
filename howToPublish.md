@@ -20,7 +20,7 @@ Data publishers are strongly encouraged to share their data using the richest ap
 
 ## Prerequisites
 1. You require an account on a GBIF Integrated Publishing Toolkit (IPT) to publish your data. It is highly recommended that you save yourself time and money by requesting an account on a [[data hosting centre IPT|dataHostingCentres]] that is located in your country. Otherwise if your organisation has the technical capacity you can setup your own IPT instance. If no data hosting centre exists in your country, and your organisation doesn't have the technical capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. 
-2. Assuming that you would like to register your dataset with GBIF and make it globally discoverable via http://www.gbif.org, you must ensure your organisation is registered with GBIF by completing [this online questionnaire](http://www.gbif.org/publishing-data/how-to-publish#/intro). The registration process can take days, so in parallel you can proceed to publish your data. 
+2. Assuming that you would like to register your dataset with GBIF and make it globally discoverable via http://www.gbif.org, you must ensure your organisation is registered with GBIF by completing [this online questionnaire](http://www.gbif.org/publishing-data/request-endorsement#/intro). The registration process can take days, so in parallel you can proceed to publish your data. 
 
 ## Instructions 
 
