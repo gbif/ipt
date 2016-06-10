@@ -60,6 +60,10 @@ Populate it and upload it to the IPT.
 
 #### FAQ:
 
-**Q.** How do indicate that a sample event was part of a time series?
+**Q.** How do I indicate that a sample event was part of a time series?
 
 **A.** All sample events at the same location must share the same [locationID](http://rs.tdwg.org/dwc/terms/#locationID).
+
+**Q.** How do I publish a hierarchy of events (recursive data type) using parentEventID?
+
+**A.** The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, the (parent) sampling event record must be defined in the same dataset. Otherwise, the parentEventID must be globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references. 
