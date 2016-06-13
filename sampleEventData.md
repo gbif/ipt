@@ -78,7 +78,7 @@ Alternatively, you can make species absences explicit by adding a species occurr
 * [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount)="0"
 * [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity)"0"
 
-**Warning**: Currently GBIF indexes all species occurrences no matter if they ["present"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml) or ["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml). Until this [issue](http://dev.gbif.org/issues/browse/POR-2864) is fixed, GBIF recommends applying the following filter on the IPT’s Occurrence Mapping page:
+**Warning**: Currently GBIF indexes all species occurrences no matter if they ["present"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml) or ["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml). Until this [issue](http://dev.gbif.org/issues/browse/POR-2864) is fixed, GBIF recommends excluding all species absences by using the following filter on the IPT’s Occurrence Mapping page:
 
 ```Filter: afterTranslation -> occurrenceStatus -> NotEquals -> absent```
 
