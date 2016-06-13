@@ -72,7 +72,7 @@ Populate it and upload it to the IPT.
 
 **A.** Include sample event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This [example sample event dataset from Norway](http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013) demonstrates how this looks.  
 
-Alternatively, if you can make species absences explicit by adding a species occurrence record for each species that could be observed at the time and place of sampling and by setting:
+Alternatively, you can make species absences explicit by adding a species occurrence record for each species that could be observed at the time and place of sampling by setting the following fields:
 
 * [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus)=["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml)
 * [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount)="0"
