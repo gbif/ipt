@@ -72,13 +72,13 @@ Populate it and upload it to the IPT.
 
 **A.** Include sample event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This [example sample event dataset from Norway](http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013) demonstrates how this looks.  
 
-Alternatively, you can make species absences explicit by adding a species occurrence record for each species that could be observed at the time and place of sampling by setting the following fields:
+Alternatively, you can make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:
 
 * [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus)=["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml)
 * [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount)="0"
 * [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity)"0"
 
-**Warning**: Currently GBIF indexes all species occurrences no matter if they "present" or "absent". Until this [issue](http://dev.gbif.org/issues/browse/POR-2864) is fixed, GBIF recommends applying the following filter on the IPT’s Occurrence Mapping page:
+**Warning**: Currently GBIF indexes all species occurrences no matter if they ["present"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml) or ["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml). Until this [issue](http://dev.gbif.org/issues/browse/POR-2864) is fixed, GBIF recommends applying the following filter on the IPT’s Occurrence Mapping page:
 
 ```Filter: afterTranslation -> occurrenceStatus -> NotEquals -> absent```
 
