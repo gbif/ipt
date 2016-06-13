@@ -67,3 +67,21 @@ Populate it and upload it to the IPT.
 **Q.** How do I publish a hierarchy of events (recursive data type) using parentEventID?
 
 **A.** The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, all parentEventIDs must reference eventIDs of records defined in the same dataset. Otherwise, the parentEventID must be globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references. 
+
+**Q.** How do I publish absence data?
+
+**A.** Include sample event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This [example sample event dataset from Norway](http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013) demonstrates how this looks.  
+
+Alternatively, if you can make species absences explicit by adding a species occurrence record for each species that could be observed at the time and place of sampling and by setting:
+
+* [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus)=["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml)
+* [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount)="0"
+* [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity)"0"
+
+**Warning**: Currently GBIF indexes all species occurrences no matter if they "present" or "absent". Until this [issue](http://dev.gbif.org/issues/browse/POR-2864) is fixed, GBIF recommends applying the following filter on the IPT’s Occurrence Mapping page:
+
+```Filter: afterTranslation -> occurrenceStatus -> NotEquals -> absent```
+
+More information about how to apply a filter can be found in the IPT User Manual [here](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#data-mapping-detail-page).
+
+To define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sample event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data being recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sample event dataset. An investigation is needed how best to publish both datasets together since multiple DwC-As cannot be bundled together in the same .zip folder. 
