@@ -74,9 +74,12 @@ Populate it and upload it to the IPT.
 
 Alternatively, you can make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:
 
+Mandatory:
 * [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus)=["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml)
+
+Optional (provide one or both):
 * [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount)="0"
-* [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity)"0"
+* [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) & [organismQuantityType](http://rs.tdwg.org/dwc/terms/#organismQuantityType) pair. "e.g. 0 individuals"
 
 **Warning**: Currently GBIF indexes all species occurrences no matter if they ["present"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml) or ["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml). Until this [issue](http://dev.gbif.org/issues/browse/POR-2864) is fixed, GBIF recommends excluding all species absences by using the following filter on the IPT’s Occurrence Mapping page:
 
