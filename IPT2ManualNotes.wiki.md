@@ -1078,7 +1078,7 @@ This IPT installation has not been registered yet.<br>
 ## Citation
 This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:
 
-Wieczorek & Braak (2015). The GBIF Integrated Publishing Toolkit User Manual, version 2.2. Copenhagen: Global Biodiversity Information Facility.
+Wieczorek & Braak (2015). The GBIF Integrated Publishing Toolkit User Manual, version 2.3. Copenhagen: Global Biodiversity Information Facility.
 
 ## Copyright
 The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2015 by the Global Biodiversity Information Facility Secretariat.
