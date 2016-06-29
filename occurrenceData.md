@@ -58,6 +58,6 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 
 #### FAQ: 
 
-**Q.** **How do I indicate a species was absent?**
+##### Q. How do I indicate a species was absent?
 
 **A.** Set [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus)=["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml). In addition, [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) and [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) should be equal to 0. 
