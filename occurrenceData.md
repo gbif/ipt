@@ -61,3 +61,25 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 ##### Q. How do I indicate a species was absent?
 
 **A.** Set [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus)=["absent"](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml). In addition, [individualCount](http://rs.tdwg.org/dwc/terms/#individualCount) and [organismQuantity](http://rs.tdwg.org/dwc/terms/#organismQuantity) should be equal to 0. 
+
+##### Q. How can I generalize sensitive species occurrence data?
+
+**A.** How you generalize sensitive species data (e.g. restrict the resolution of the data) depends on the species' category of sensitivity. Note it is the responsibility of the publisher to protect sensitive species occurrence data. For guidance, please refer to this [best-practice guide](http://www.gbif.org/resource/80512). 
+
+When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term [informationWithheld](http://rs.tdwg.org/dwc/terms/#informationWithheld). 
+
+As indicated in the [best-practice guide](http://www.gbif.org/resource/80512), you should also publish a checklist of the sensitive species being generalized. For each species you should explain: 
+* the rationale for inclusion in the list
+* the geographic coverage of sensitivity
+* its sensitivity category
+* the date to review its sensitivity
+
+This will help alert other data custodians that these species are regarded as potentially sensitive in a certain area and that they should take the sensitivity into account when publishing the results of their analyses, etc. 
+
+###### Helpful formulas for generalizing point location  
+
+A. The following formula obscures a latitude/longitude point by a factor of 5000m. Note pointX and pointY must be provided in 'length in meters' and TRUNC truncates the number to an integer by removing the decimal part:
+```
+pointX = TRUNC(pointX / 5000) * 5000
+pointY = TRUNC(pointY / 5000) * 5000
+```
