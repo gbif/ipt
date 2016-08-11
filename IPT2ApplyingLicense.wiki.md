@@ -41,7 +41,7 @@ Please note the Darwin Core term [rights](http://rs.tdwg.org/dwc/terms/history/#
 
 ### How To Manually Apply a License
 
-Resource metadata can be populated automatically from an EML or Dublin Core metadata document during resource creation. Licenses supplied in the EML document are interpretable provided they are supplied in a machine readable format. 
+Resource metadata can be populated automatically from an EML metadata document during resource creation. Licenses supplied in the EML document are interpretable provided they are supplied in a machine readable format. 
 
 To supply a license in EML in a machine readable format, use the `<ulink>` element inside `<intellectualRights><para>`. Be aware that documents complying with the GBIF Metadata Profile must use the latest version of the schema (v1.1) for this to be valid XML. 
 
