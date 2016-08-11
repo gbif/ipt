@@ -43,7 +43,7 @@ Please note the Darwin Core term [rights](http://rs.tdwg.org/dwc/terms/history/#
 
 Resource metadata can be populated automatically from an EML metadata document during resource creation. Licenses supplied in the EML document are interpretable provided they are supplied in a machine readable format. 
 
-To supply a license in EML in a machine readable format, use the `<ulink>` element inside `<intellectualRights><para>`. Be aware that documents complying with the GBIF Metadata Profile must use the latest version of the schema (v1.1) for this to be valid XML. 
+To supply a license in EML in a machine readable format, use the `<ulink>` element inside `<intellectualRights><para>` to specify both the title and URL of the license. Be aware that documents complying with the GBIF Metadata Profile must use the latest version of the schema (v1.1) for this to be valid XML. 
 
 Below is an example `<intellectualRights>` for the three licenses that GBIF supports demonstrating how to provide them in machine readable format. To apply, simply replace the `<intellectualRights>` block in your EML document with the `<intellectualRights>` below corresponding to the license of your choice.
 
