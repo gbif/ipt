@@ -1,5 +1,11 @@
 # How To Apply a License To a Dataset
 
+## Table of Contents
++ [[Introduction| IPT2ApplyingLicense.wiki#introduction]]
++ [[Dataset Level| IPT2ApplyingLicense.wiki#dataset-level]]
++ [[Record Level| IPT2ApplyingLicense.wiki#record-level]]
+
+
 ## Introduction
 
 In accordance with the [GBIF licensing policy](http://www.gbif.org/terms/licences), a dataset should be made available for use under CC0, CC-BY, or CC-BY-NC. GBIF's recommended best practice is to use the most recent version, which 4.0 for CC-BY and CC-BY-NC. This is in line with Creative Commons' recommendation that: 
