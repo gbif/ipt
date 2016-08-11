@@ -4,7 +4,8 @@
 + [[Introduction| IPT2ApplyingLicense.wiki#introduction]]
 + [[Dataset Level| IPT2ApplyingLicense.wiki#dataset-level]]
 + [[Record Level| IPT2ApplyingLicense.wiki#record-level]]
-
++ [[Supplementary Information| IPT2ApplyingLicense.wiki#supplementary-information]]
+  + [[How To Manually Apply a License| IPT2ApplyingLicense.wiki#how-to-manually-apply-a-license]]
 
 ## Introduction
 
@@ -35,3 +36,34 @@ All licenses specified at the **record level** should comply with the license at
 To apply a license at the **record level** using the IPT, publishers should use/map to the Darwin Core term [license](http://rs.tdwg.org/dwc/terms/index.htm#dcterms:license). As per Darwin Core's recommendation, the URI of the license should be used to populate the license. Be careful not to add contradictory usage restrictions in the Darwin Core term [accessRights](http://rs.tdwg.org/dwc/terms/index.htm#dcterms:accessRights). In theory, the license should provide sufficient access rights information without having to specify them in accessRights also.
 
 Please note the Darwin Core term [rights](http://rs.tdwg.org/dwc/terms/history/#dcterms:rights) has now been deprecated and should no longer be used.
+
+## Supplementary Information
+
+### How To Manually Apply a License
+
+Resource metadata can be populated automatically from an EML or Dublin Core metadata document during resource creation when supplied as either as a standalone file or inside a Darwin Core Archive (DwC-A). Please note only licenses supplied in a machine readable format are actually interpretable. 
+
+It is possible to supply a machine readable license in EML using the `<ulink>` element inside `<intellectualRights><para>`. Be aware that documents complying with the GBIF Metadata Profile must use the latest version of the schema (v1.1) for this to be valid XML. 
+
+Below are the three licenses that GBIF supports in machine readable format. To use, simply cut the `<intellectualRights>` block and paste into your own EML document, updating the XML schema location if necessary. 
+
+##### Public Domain (CC0 1.0)
+```
+<intellectualRights>
+   <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url="http://creativecommons.org/publicdomain/zero/1.0/legalcode"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction</para>
+</intellectualRights>
+```
+ 
+##### Creative Commons Attribution (CC-BY) 4.0
+``` 
+<intellectualRights>
+  <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+</intellectualRights>
+```
+
+##### Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0
+``` 
+<intellectualRights>
+  <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+</intellectualRights>
+```
