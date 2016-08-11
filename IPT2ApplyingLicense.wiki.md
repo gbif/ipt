@@ -45,7 +45,7 @@ Resource metadata can be populated automatically from an EML metadata document d
 
 To supply a license in EML in a machine readable format, use the `<ulink>` element inside `<intellectualRights><para>`. Be aware that documents complying with the GBIF Metadata Profile must use the latest version of the schema (v1.1) for this to be valid XML. 
 
-Below are the three licenses that GBIF supports in machine readable format. To use, simply replace the `<intellectualRights>` block in your EML document with the `<intellectualRights>` below corresponding to the license of your choice.
+Below is an example `<intellectualRights>` for the three licenses that GBIF supports demonstrating how to provide them in machine readable format. To apply, simply replace the `<intellectualRights>` block in your EML document with the `<intellectualRights>` below corresponding to the license of your choice.
 
 ##### Public Domain (CC0 1.0)
 ```
