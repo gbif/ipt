@@ -52,6 +52,17 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 
 #### FAQ: 
 
-**Q.** What should I do if my data cannot be made freely available?
+##### Q. What should I do if my data cannot be made freely available?
 
-**A.** You should publicise its existence by publishing metadata about it. You can indicate the data can be made available by request, to encourage future collaboration and meta-analysis. 
+**A.** You should publicise its existence by publishing metadata about it. You can indicate the data can be made available by request, to encourage future collaboration and meta-analysis.
+
+##### Q. How can I apply a license to my dataset?
+
+**A.** Simply use the IPT's built-in metadata editor following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ApplyingLicense.wiki#dataset-level).  
+
+Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ApplyingLicense.wiki#supplementary-information)
+
+
+
+
+
