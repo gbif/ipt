@@ -110,3 +110,25 @@ To solve this, you can:
 - Allocate more space to this partition. 
 - Move your IPT data directory to another partition where there is more space available. Note, this requires you to [[reinstall|IPT2ManualNotes.wiki#starting-over]] your IPT. 
 - Free up disk space (e.g. deleting temporary files, remove unused applications, etc) 
+
+### 4. How do I change the publishing organisation of my resource? The dropdown on the Basic Metadata page is disabled.
+Please be aware the publishing organisation cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
+
+In order to change the publishing organisation, you need to republish the resource and then reset the desired publishing organisation. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found [here](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder). 
+
+Do not "delete" the old resource via the IPT user interface, as this will delete the registered resource in GBIF.
+
+Instead, you should migrate the resource from the old publishing organisation to the new publishing organisation by following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#migrate-a-resource). Please pay careful attention to step #5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry. 
+
+Lastly, you can delete the old resource by removing its IPT resource folder inside the IPT Data Directory. Restart Tomcat for the deletion to take effect.
+
+
+
+
+
+in your publication log file, it means there is no space left in the disk partition that contains your IPT data directory. 
+
+To solve this, you can:
+- Allocate more space to this partition. 
+- Move your IPT data directory to another partition where there is more space available. Note, this requires you to [[reinstall|IPT2ManualNotes.wiki#starting-over]] your IPT. 
+- Free up disk space (e.g. deleting temporary files, remove unused applications, etc) 
