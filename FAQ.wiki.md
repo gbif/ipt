@@ -12,6 +12,7 @@
   + [[1. Why do published files contain broken lines?|FAQ.wiki#1-why-do-published-files-contain-broken-lines]]
   + [[2. Why do published files not include all records?|FAQ.wiki#2-why-do-published-files-not-include-all-records]]
   + [[3. What does the error "No space left on device" mean and how do I fix it?|FAQ.wiki#3-what-does-the-error-no-space-left-on-device-mean-and-how-do-i-fix-it]]
+  + [[4. How do I change the publishing organisation of my resource? The dropdown on the Basic Metadata page is disabled.|FAQ.wiki#4-how-do-i-change-the-publishing-organisation-of-my-resource-the-dropdown-on-the-basic-metadata-page-is-disabled]]
 
 ## Introduction
 In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
@@ -121,14 +122,3 @@ Do not "delete" the old resource via the IPT user interface, as this will delete
 Instead, you should migrate the resource from the old publishing organisation to the new publishing organisation by following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#migrate-a-resource). Please pay careful attention to step #5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry. 
 
 Lastly, you can delete the old resource by removing its IPT resource folder inside the IPT Data Directory. Restart Tomcat for the deletion to take effect.
-
-
-
-
-
-in your publication log file, it means there is no space left in the disk partition that contains your IPT data directory. 
-
-To solve this, you can:
-- Allocate more space to this partition. 
-- Move your IPT data directory to another partition where there is more space available. Note, this requires you to [[reinstall|IPT2ManualNotes.wiki#starting-over]] your IPT. 
-- Free up disk space (e.g. deleting temporary files, remove unused applications, etc) 
