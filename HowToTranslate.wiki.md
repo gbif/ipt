@@ -16,6 +16,7 @@ The preferred way of translating the user interface is using an online translati
   * Russian (pending)
   * Spanish
   * Traditional Chinese
+
 If you want to translate the user interface into another language, please email helpdesk@gbif.org.
 
 ## How To Translate the User Manual
