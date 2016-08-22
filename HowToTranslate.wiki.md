@@ -16,10 +16,10 @@ The preferred way of translating the user interface is using an online translati
   * Russian (pending)
   * Spanish
   * Traditional Chinese
-If you want to translate the user interface into another language, please email dev@gbif.org.
+If you want to translate the user interface into another language, please email helpdesk@gbif.org.
 
 ## How To Translate the User Manual
-The easiest way to translate the user manual is through the Google Code wiki. Please email dev@gbif.org to get added to the project with sufficient privileges to edit the wiki. Don't worry, a project manager will help you get started.
+The easiest way to translate the user manual is through the GitHub wiki. Please email helpdesk@gbif.org to get added to the project with sufficient privileges to edit the wiki. Don't worry, a project manager will help you get started.
 
 For new languages, a project manager needs to create a new directory under /svn/wiki using the 2-letter ISO 639-1 code as the directory name. Then the project manager will copy the English wiki page corresponding to the User Manual to this directory. That page can then be translated/edited directly through the wiki.
 
