@@ -21,9 +21,9 @@ If you want to translate the user interface into another language, please email 
 ## How To Translate the User Manual
 The easiest way to translate the user manual is through the GitHub wiki. Please email helpdesk@gbif.org to get added to the project with sufficient privileges to edit the wiki. Don't worry, a project manager will help you get started.
 
-For new languages, a project manager needs to create a new directory under /svn/wiki using the 2-letter ISO 639-1 code as the directory name. Then the project manager will copy the English wiki page corresponding to the User Manual to this directory. That page can then be translated/edited directly through the wiki.
+For new languages, a project manager needs to create a new directory under ipt.wiki using the 2-letter ISO 639-1 code as the directory name, e.g. ipt.wiki/es. Then the project manager will create a home page, table of contents and copy the English wiki page corresponding to the User Manual to this directory, e.g. IPT2ManualNotes_ES.wiki.md. That page can then be translated/edited directly through the wiki. Additional files can simply be added to the new directory. 
 
-Screenshots throughout the user manual should show the translated language. Screenshots are committed to a separate repository called [gbif-ipt-docs](https://code.google.com/p/gbif-providertoolkit/source/browse/#svn%2Ftrunk%2Fgbif-ipt-docs) again using the 2-letter ISO 639-1 code to store screenshots for that language.
+Screenshots throughout the user manual should show the translated language. Screenshots are committed to a separate repository in ipt.wiki called gbif-ipt-docs again using the 2-letter ISO 639-1 code to store screenshots for that language, e.g. gbif-ipt-docs/ipt2/v23/es.
 
 ### Languages
 
