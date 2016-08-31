@@ -39,7 +39,7 @@ You can augment your table with extra DwC columns, but only DwC terms from this 
 Populate it and upload it to the IPT.
 
   [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v2.xlsx
-  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Sampling Event Data Template)
+  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template2.png (Download Sampling Event Data Template)
   [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v2_sample_data.xlsx
   [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template-data.png (Download Sampling Event Data Template)
 
