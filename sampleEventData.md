@@ -43,7 +43,6 @@ Populate it and upload it to the IPT.
 #### Required DwC fields: 
 * [eventID](http://rs.tdwg.org/dwc/terms/#eventID) - also required for associated occurrence data (to link them together)
 * [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
-* [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
 * [samplingProtocol](http://rs.tdwg.org/dwc/terms/#samplingProtocol)
 * [sampleSizeValue](http://rs.tdwg.org/dwc/terms/#sampleSizeValue) & [sampleSizeUnit](http://rs.tdwg.org/dwc/terms/#sampleSizeUnit)
 
@@ -53,6 +52,7 @@ Populate it and upload it to the IPT.
 * [locationID](http://rs.tdwg.org/dwc/terms/#locationID) - in situations where the plot/transect being sampled has a unique identifier
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
 * [footprintWKT](http://rs.tdwg.org/dwc/terms/#footprintWKT) - to provide a specific shape location
+* [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
 * [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus) - only for associated occurrence data to record presence/absence data.
 
 #### Exemplar datasets: 
