@@ -9,7 +9,7 @@
 ## Table of contents
 + [Introduction](samplingEventData#introduction)
 + [How to transform your data into sampling event data](samplingEventData#how-to-transform-your-data-into-sampling-event-data)
-+ [Template](samplingEventData#template)
++ [Templates](samplingEventData#templates)
 + [Required DwC fields](samplingEventData#required-dwc-fields)
 + [Recommended DwC fields](samplingEventData#recommended-dwc-fields)
 + [Exemplar datasets](samplingEventData#exemplar-datasets)
@@ -32,7 +32,7 @@ For extra guidance, you can look at the [exemplar datasets](samplingEventData#ex
 
 You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_event_2015_05_29.xml).
 
-#### Template: 
+#### Templates: 
 [![Download Sampling Event Data Template][2]][1]
 
 Populate it and upload it to the IPT.
