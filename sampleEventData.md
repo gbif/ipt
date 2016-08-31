@@ -44,9 +44,9 @@ Populate it and upload it to the IPT.
 * [eventID](http://rs.tdwg.org/dwc/terms/#eventID) - also required for associated occurrence data (to link them together)
 * [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
 * [samplingProtocol](http://rs.tdwg.org/dwc/terms/#samplingProtocol)
-* [sampleSizeValue](http://rs.tdwg.org/dwc/terms/#sampleSizeValue) & [sampleSizeUnit](http://rs.tdwg.org/dwc/terms/#sampleSizeUnit)
 
 #### Recommended DwC fields: 
+* [sampleSizeValue](http://rs.tdwg.org/dwc/terms/#sampleSizeValue) & [sampleSizeUnit](http://rs.tdwg.org/dwc/terms/#sampleSizeUnit)
 * [parentEventID](http://rs.tdwg.org/dwc/terms/#parentEventID) - in situations where the event is part of an event series
 * [samplingEffort](http://rs.tdwg.org/dwc/terms/#samplingEffort) - to provide evidence of rigour of sampling event
 * [locationID](http://rs.tdwg.org/dwc/terms/#locationID) - in situations where the plot/transect being sampled has a unique identifier
