@@ -9,7 +9,7 @@
 ## Table of contents
 + [Introduction](occurrenceData#introduction)
 + [How to transform your data into occurrence data](occurrenceData#how-to-transform-your-data-into-occurrence-data)
-+ [Template](occurrenceData#template)
++ [Templates](occurrenceData#templates)
 + [Required DwC fields](occurrenceData#required-dwc-fields)
 + [Recommended DwC fields](occurrenceData#recommended-dwc-fields)
 + [Exemplar datasets](occurrenceData#exemplar-datasets)
@@ -32,7 +32,7 @@ For extra guidance, you can look at the [exemplar datasets](occurrenceData#exemp
 
 You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml).
 
-#### Template: 
+#### Templates: 
 [![Download Occurrence Data Template][2]][3]
 [![Download Occurrence Data Template][4]][5]
 
