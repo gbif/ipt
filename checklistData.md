@@ -9,7 +9,7 @@
 ## Table of contents
 + [Introduction](checklistData#introduction)
 + [How to transform your data into checklist data](checklistData#how-to-transform-your-data-into-checklist-data)
-+ [Template](checklistData#template)
++ [Templates](checklistData#templates)
 + [Required DwC fields](checklistData#required-dwc-fields)
 + [Recommended DwC fields](checklistData#recommended-dwc-fields)
 + [Exemplar datasets](checklistData#exemplar-datasets)
@@ -32,13 +32,16 @@ For extra guidance, you can look at the [exemplar datasets](checklistData#exempl
 
 You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml).
 
-#### Template: 
+#### Templates: 
 [![Download Checklist Data Template][2]][1]
+[![Download Checklist Data Template][4]][3]
 
 Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
 
   [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1.xlsx
-  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Checklist Data Template)
+  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template2.png (Download Checklist Data Template)
+  [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1_sample_data.xlsx
+  [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template-data.png (Download Checklist Data Template)
 #### Required DwC fields: 
 * [taxonID](http://rs.tdwg.org/dwc/terms/#taxonID)
 * [scientificName](http://rs.tdwg.org/dwc/terms/#scientificName)
