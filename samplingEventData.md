@@ -34,6 +34,7 @@ You can augment your table with extra DwC columns, but only DwC terms from this 
 
 #### Templates: 
 [![Download Sampling Event Data Template][2]][1]
+[![Download Sampling Event Data Template][4]][3]
 
 Populate it and upload it to the IPT.
 
