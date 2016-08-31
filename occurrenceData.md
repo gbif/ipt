@@ -38,7 +38,7 @@ You can augment your table with extra DwC columns, but only DwC terms from this 
 Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
 
   [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/occurrence_ipt_template_v2.xlsx
-  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template.png (Download Occurrence Data Template)
+  [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template2.png (Download Occurrence Data Template)
 
 #### Required DwC fields: 
 * [occurrenceID](http://rs.tdwg.org/dwc/terms/#occurrenceID)
