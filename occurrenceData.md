@@ -45,9 +45,9 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 * [basisOfRecord](http://rs.tdwg.org/dwc/terms/#basisOfRecord)
 * [scientificName](http://rs.tdwg.org/dwc/terms/#scientificName)
 * [eventDate](http://rs.tdwg.org/dwc/terms/#eventDate)
-* [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
 
 #### Recommended DwC fields: 
+* [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
 * [taxonRank](http://rs.tdwg.org/dwc/terms/#taxonRank) - to substantiate scientificName 
 * [kingdom](http://rs.tdwg.org/dwc/terms/#kingdom) - and other higher taxonomy if possible 
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
