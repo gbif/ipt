@@ -51,7 +51,7 @@ Populate it and upload it to the IPT.
 * [samplingEffort](http://rs.tdwg.org/dwc/terms/#samplingEffort) - to provide evidence of rigour of sampling event
 * [locationID](http://rs.tdwg.org/dwc/terms/#locationID) - in situations where the plot/transect being sampled has a unique identifier
 * [decimalLatitude](http://rs.tdwg.org/dwc/terms/#decimalLatitude) & [decimalLongitude](http://rs.tdwg.org/dwc/terms/#decimalLongitude) & [geodeticDatum](http://rs.tdwg.org/dwc/terms/#geodeticDatum) - to provide a specific point location
-* [footprintWKT](http://rs.tdwg.org/dwc/terms/#footprintWKT) - to provide a specific shape location
+* [footprintWKT](http://rs.tdwg.org/dwc/terms/#footprintWKT) & [footprintSRS](http://rs.tdwg.org/dwc/terms/#footprintSRS) - to provide a specific shape location
 * [countryCode](http://rs.tdwg.org/dwc/terms/#countryCode)
 * [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus) - only for associated occurrence data to record presence/absence data.
 
