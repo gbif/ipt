@@ -22,15 +22,19 @@ Resources which present evidence not only of the occurrence of a species at a pa
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/flow-sed.png' />
 
-Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names. 
+Ultimately your data needs to be transformed into two tables using Darwin Core (DwC) term names as column names: one table of sampling events and another table of associated species occurrences.
 
-Try putting your data into the [Excel template](samplingEventData#template), which includes all [required DwC fields](samplingEventData#required-dwc-fields) and [recommended DwC fields](samplingEventData#recommended-dwc-fields). 
+Try putting your data into the [Excel template](samplingEventData#templates), which includes two sheets: one for sampling events and another for associated species occurrences. All required DwC fields](samplingEventData#required-dwc-fields) and [recommended DwC fields](samplingEventData#recommended-dwc-fields). 
 
-Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write an SQL table (view) using DwC column names. Be careful to include all [required DwC fields](samplingEventData#required-dwc-fields) and add as many [recommended DwC fields](samplingEventData#recommended-dwc-fields) as possible. 
+Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write two SQL tables (views) using DwC column names: one for sampling event and another for associated species occurrences.
 
-For extra guidance, you can look at the [exemplar datasets](samplingEventData#exemplar-datasets). 
+Each sampling event record should include all [required DwC fields](samplingEventData#required-dwc-fields) and as many [recommended DwC fields](samplingEventData#recommended-dwc-fields) as possible.
 
-You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_event_2015_05_29.xml).
+Similarly each species occurrence record should include all [required DwC fields](occurrenceData#required-dwc-fields) and as many [recommended DwC fields](occurrenceData#recommended-dwc-fields) as possible. 
+
+You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_event_2015_05_29.xml). Some DwC terms can be added to both sampling event and species occurrence records. For example you could define a location of the event and an more specific locations for individual occurrences. Unless more specific locations were recorded for individual occurrences, however, you should avoid filling in redundant terms with the same values. When the location of individual occurrences isn't supplied, its location gets inherited from the location of the event.
+
+For extra guidance, you can look at the [template populated with example data](samplingEventData#templates) or the list of [exemplar datasets](samplingEventData#exemplar-datasets).
 
 #### Templates: 
 [![Download Sampling Event Data Template][2]][1]
