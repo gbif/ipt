@@ -28,11 +28,9 @@ Try putting your data into the [Excel template](samplingEventData#templates), wh
 
 Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write two SQL tables (views) using DwC column names: one for sampling events and another for associated species occurrences.
 
-Each sampling event record should include all [required DwC fields](samplingEventData#required-dwc-fields) and as many [recommended DwC fields](samplingEventData#recommended-dwc-fields) as possible.
+Each sampling event record should include all [required DwC fields](samplingEventData#required-dwc-fields) and as many [recommended DwC fields](samplingEventData#recommended-dwc-fields) as possible. You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_event_2015_05_29.xml).
 
-Similarly each species occurrence record should include all [required DwC fields](occurrenceData#required-dwc-fields) and as many [recommended DwC fields](occurrenceData#recommended-dwc-fields) as possible. 
-
-You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_event_2015_05_29.xml). Some DwC terms can be added to both sampling event and species occurrence records. For example you could define a location of the event and an more specific locations for individual occurrences. Unless more specific locations were recorded for individual occurrences, however, you should avoid filling in redundant terms with the same values. When the location of individual occurrences isn't supplied, its location gets inherited from the location of the event.
+Similarly each species occurrence record should include all [required DwC fields](occurrenceData#required-dwc-fields) and as many [recommended DwC fields](occurrenceData#recommended-dwc-fields) as possible. You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml). Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. However it is fine for example, if you wanted to define a location of the event and then define more specific locations for individual occurrences. Otherwise if the location of individual occurrences isn't supplied, its location gets inherited from the location of the event.
 
 For extra guidance, you can look at the [template populated with example data](samplingEventData#templates) or the list of [exemplar datasets](samplingEventData#exemplar-datasets).
 
