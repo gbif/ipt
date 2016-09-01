@@ -24,7 +24,7 @@ Resources which present evidence of the occurrence of a species at a particular 
 
 Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names. 
 
-Try putting your data into the [Excel template](occurrenceData#template), which includes all [required DwC fields](occurrenceData#required-dwc-fields) and [recommended DwC fields](occurrenceData#recommended-dwc-fields). 
+Try putting your data into the [Excel template](occurrenceData#templates), which includes all [required DwC fields](occurrenceData#required-dwc-fields) and [recommended DwC fields](occurrenceData#recommended-dwc-fields). 
 
 Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write an SQL table (view) using DwC column names. Be careful to include all [required DwC fields](occurrenceData#required-dwc-fields) and add as many [recommended DwC fields](occurrenceData#recommended-dwc-fields) as possible. 
 
