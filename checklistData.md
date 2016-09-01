@@ -24,7 +24,7 @@ Resources comprising a list of species belonging to some category (e.g. taxonomi
 
 Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names. 
 
-Try putting your data into the [Excel template](checklistData#template), which includes all [required DwC fields](checklistData#required-dwc-fields) and [recommended DwC fields](checklistData#recommended-dwc-fields). 
+Try putting your data into the [Excel template](checklistData#templates), which includes all [required DwC fields](checklistData#required-dwc-fields) and [recommended DwC fields](checklistData#recommended-dwc-fields). 
 
 Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write an SQL table (view) using DwC column names. Be careful to include all [required DwC fields](checklistData#required-dwc-fields) and add as many [recommended DwC fields](checklistData#recommended-dwc-fields) as possible. 
 
