@@ -22,7 +22,7 @@ Resources which present evidence not only of the occurrence of a species at a pa
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/flow-sed.png' />
 
-Ultimately your data needs to be transformed into two tables using Darwin Core (DwC) term names as column names: one table of sampling events and another table of associated species occurrences.
+Ultimately your data needs to be transformed into two tables using Darwin Core (DwC) term names as column names: one table of sampling events and another table of species occurrences derived from (associated to) each sampling event.
 
 Try putting your data into the [Excel template](samplingEventData#templates), which includes two sheets: one for sampling events and another for associated species occurrences. 
 
