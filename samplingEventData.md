@@ -24,7 +24,7 @@ Resources which present evidence not only of the occurrence of a species at a pa
 
 Ultimately your data needs to be transformed into two tables using Darwin Core (DwC) term names as column names: one table of sampling events and another table of associated species occurrences.
 
-Try putting your data into the [Excel template](samplingEventData#templates), which includes two sheets: one for sampling events and another for associated species occurrences. All required DwC fields](samplingEventData#required-dwc-fields) and [recommended DwC fields](samplingEventData#recommended-dwc-fields). 
+Try putting your data into the [Excel template](samplingEventData#templates), which includes two sheets: one for sampling events and another for associated species occurrences. 
 
 Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write two SQL tables (views) using DwC column names: one for sampling event and another for associated species occurrences.
 
