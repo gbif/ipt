@@ -26,7 +26,7 @@ Ultimately your data needs to be transformed into two tables using Darwin Core (
 
 Try putting your data into the [Excel template](samplingEventData#templates), which includes two sheets: one for sampling events and another for associated species occurrences. 
 
-Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write two SQL tables (views) using DwC column names: one for sampling event and another for associated species occurrences.
+Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write two SQL tables (views) using DwC column names: one for sampling events and another for associated species occurrences.
 
 Each sampling event record should include all [required DwC fields](samplingEventData#required-dwc-fields) and as many [recommended DwC fields](samplingEventData#recommended-dwc-fields) as possible.
 
