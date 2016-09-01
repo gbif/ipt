@@ -41,7 +41,7 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
   [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/occurrence_ipt_template_v2.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template2.png (Download Occurrence Data Template)
   [5]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/occurrence_ipt_template_v2_sample_data.xlsx
-  [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template-data.png (Download Occurrence Data Template)
+  [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template-data2.png (Download Occurrence Data Template)
 
 
 #### Required DwC fields: 
