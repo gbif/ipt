@@ -42,7 +42,7 @@ Populate it and upload it to the IPT.
 
   [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v2.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template2.png (Download Sampling Event Data Template)
-  [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v2_sample_data.xlsx
+  [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/event_ipt_template_v2_example_data.xlsx
   [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template-data2.png (Download Sampling Event Data Template)
 
 #### Required DwC fields: 
