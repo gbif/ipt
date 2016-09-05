@@ -40,7 +40,7 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 
   [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template2.png (Download Checklist Data Template)
-  [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1_sample_data.xlsx
+  [3]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1_example_data.xlsx
   [4]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template-data2.png (Download Checklist Data Template)
 #### Required DwC fields: 
 * [taxonID](http://rs.tdwg.org/dwc/terms/#taxonID)
