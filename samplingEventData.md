@@ -61,7 +61,9 @@ Populate it and upload it to the IPT.
 * [occurrenceStatus](http://rs.tdwg.org/dwc/terms/#occurrenceStatus) - only for associated occurrence data to record presence/absence data.
 
 #### Exemplar datasets: 
-* Israeli Butterfly Monitoring Scheme (BMS-IL): [DwC-A](http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il&v=6.12) / [IPT homepage](http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il)
+* Israeli Butterfly Monitoring Scheme (BMS-IL): [DwC-A](http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il) / [IPT homepage](http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il)
+* Dutch Vegetation Database (LVD): [DwC-A](http://cloud.gbif.org/eubon/archive.do?r=lvd) / [IPT homepage](http://cloud.gbif.org/eubon/resource?r=lvd)
+* Reef Life Survey: Global reef fish dataset: [DwC-A](http://ipt.ala.org.au/archive.do?r=global) / [IPT homepage](http://ipt.ala.org.au/resource?r=global)
 
 #### FAQ:
 
