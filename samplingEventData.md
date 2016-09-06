@@ -64,6 +64,8 @@ Populate it and upload it to the IPT.
 * Israeli Butterfly Monitoring Scheme (BMS-IL): [DwC-A](http://cloud.gbif.org/eubon/archive.do?r=butterflies-monitoring-scheme-il) / [IPT homepage](http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il)
 * Dutch Vegetation Database (LVD): [DwC-A](http://cloud.gbif.org/eubon/archive.do?r=lvd) / [IPT homepage](http://cloud.gbif.org/eubon/resource?r=lvd)
 * Reef Life Survey: Global reef fish dataset: [DwC-A](http://ipt.ala.org.au/archive.do?r=global) / [IPT homepage](http://ipt.ala.org.au/resource?r=global)
+* Lepidurus arcticus survey Northeast Greenland 2013: [DwC-A](http://gbif.vm.ntnu.no/ipt/archive.do?r=lepidurus-arcticus-survey_northeast-greenland_2013) / [IPT homepage](http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013)
+
 
 #### FAQ:
 
