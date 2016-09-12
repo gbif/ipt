@@ -2,17 +2,15 @@
 
 ## Introduction
 
-Use this checklist to help review a dataset and ensure it is both complete and valid.
+Use this checklist to help review a dataset. 
 
-To be complete, the data should contain answers the five Ws: 
+To be complete, the data should contain valid answers to the five Ws: 
 
 * [x] [What happened?](dataQualityChecklist#what-happened)
 * [x] [Who did that?](dataQualityChecklist#who-did-that)
 * [x] [When did it take place?](dataQualityChecklist#when-did-it-take-place)
 * [x] [Where did it take place?](dataQualityChecklist#where-did-it-take-place)
 * [x] [Why did that happen?](dataQualityChecklist#why-did-that-happen)
-
-When information for one or more Ws is missing, a plausible explanation should still be provided. Otherwise users will think data is missing for lack of effort, not because it doesn't exist for example. 
 
 To facilitate reuse of the data, complimentary answers to the five Ws must also be provided in the [dataset metadata](dataQualityChecklist#dataset-metadata). 
 
@@ -31,5 +29,13 @@ The dataset metadata should contain enough information to facilitate reuse of th
 ### What happened?
 ### Who did that?
 ### When did it take place?
+
+When information is missing or incomplete, a explanation should always be provided.
+
+| Field | Requirements | Example |
+|:--------------- |:---------------|:---------------|
+| `**eventDate**`, `verbatimEventDate`, `year`, `month`, `day`, `eventTime`, `startDayOfYear`, `endDayOfYear` | The date, date-time, date range, or date-time range during which the Event occurred in ISO 8601 format. If the original value has to be converted into ISO 8601 `verbatimEventDate` should be filled in. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, 'eventTime', 'startDayOfYear' and 'endDayOfYear' for single dates/date-times. If no eventDate can be filled in, an explanation should be provided in 'eventRemarks' | _"2007-03-01", "2016-09-12T15:28:48Z", "2007-03", "2007-03-01/2007-05-01", "2016-09-12T15:00:00Z/2016-10-12T15:00:00Z"_|
+
+
 ### Where did it take place?
 ### Why did that happen?
