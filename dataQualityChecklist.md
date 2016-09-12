@@ -14,7 +14,7 @@ To be complete, the data should contain answers the five Ws:
 
 When information for one or more Ws is missing, a plausible explanation should still be provided. Otherwise users will think data is missing for lack of effort, not because it doesn't exist for example. 
 
-In parallel, answers to the five Ws should also be provided in the [dataset metadata](dataQualityChecklist#dataset-metadata). 
+To facilitate reuse of the data, complimentary answers to the five Ws must also be provided in the [dataset metadata](dataQualityChecklist#dataset-metadata). 
 
 ## Checklist
 
