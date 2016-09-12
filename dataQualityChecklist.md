@@ -4,11 +4,11 @@
 
 Use this checklist to help review your dataset before publishing. To get the whole story, the five Ws should be filled in: 
 
-[What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#what-happened)
-[What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#who-did-that)
-[What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#when-did-it-take-place)
-[What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#where-did-it-take-place)
-[What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#why-did-that-happen)
+* [] [What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#what-happened)
+* [] [What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#who-did-that)
+* [] [What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#when-did-it-take-place)
+* [] [What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#where-did-it-take-place)
+* [] [What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#why-did-that-happen)
 
 ## Checklist
 
