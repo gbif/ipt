@@ -6,19 +6,21 @@ Use this checklist to help review a dataset and ensure it is both complete and v
 
 To be complete, the data should contain answers the five Ws: 
 
-* [x] [What happened?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#what-happened)
-* [x] [Who did that?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#who-did-that)
-* [x] [When did it take place?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#when-did-it-take-place)
-* [x] [Where did it take place?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#where-did-it-take-place)
-* [x] [Why did that happen?](https://github.com/gbif/ipt/wiki/dataQualityChecklist#why-did-that-happen)
+* [x] [What happened?](dataQualityChecklist#what-happened)
+* [x] [Who did that?](dataQualityChecklist#who-did-that)
+* [x] [When did it take place?](dataQualityChecklist#when-did-it-take-place)
+* [x] [Where did it take place?](dataQualityChecklist#where-did-it-take-place)
+* [x] [Why did that happen?](dataQualityChecklist#why-did-that-happen)
 
 When information for one or more Ws is missing, a plausible explanation should still be provided. Otherwise users will think data is missing for lack of effort, not because it doesn't exist for example. 
 
-In parallel, answers to the five Ws should also be provided in the dataset metadata. The more complete the metadata is, the more it will facilitate reuse of the dataset while preventing misinterpretation of the data. Provide evidence of the rigor that went into producing the data and acknowledge its various contributors and funders. Who knows, it may also lead to new sources of collaboration and funding if others' are impressed by your work.
+In parallel, answers to the five Ws should also be provided in the [dataset metadata](dataQualityChecklist#dataset-metadata). 
 
 ## Checklist
 
-### Metadata
+### Dataset Metadata
+
+The dataset metadata should contain enough information to facilitate reuse of the data while preventing misinterpretation. Publishers should also provide evidence of the rigor that went into producing the data while acknowledging its various contributors and funders. Ultimately this may lead to new sources of collaboration and funding.
 
 | Field | Requirements | Example |
 |:--------------- |:---------------|:---------------|
