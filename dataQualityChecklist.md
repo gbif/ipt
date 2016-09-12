@@ -6,7 +6,7 @@ Use this checklist to help review your dataset before publishing.
 
 ## Checklist:
 
-### Metadata:
+### Metadata
 
 | Field | Requirements | Example |
 |:--------------- |:---------------|:---------------|
