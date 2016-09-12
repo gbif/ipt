@@ -8,6 +8,6 @@ Use this checklist to help review your dataset before publishing.
 
 ### Metadata:
 
-* [ ] **Title**: the title is a short and concise description of the contents of the dataset  
-* [ ] **Description**: is at least a short paragraph describing the content of the dataset
-* [ ] **Project identifier**: has been filled in properly. Note BID project identifiers should start with "BID-YYYY"
+* [ ] **Title**: is concise name that describes the contents of the dataset and that distinguishes it from others  
+* [ ] **Description**: is a short paragraph describing the content of the dataset
+* [ ] **Project identifier**: is a GUID or a 'near' globally unique identifier. _Note this is required for BID projects._
