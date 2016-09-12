@@ -34,8 +34,7 @@ When information is missing or incomplete, a explanation should always be provid
 
 | Field | Requirements | Example |
 |:--------------- |:---------------|:---------------|
-| `eventDate`, `verbatimEventDate`, `year`, `month`, `day`, `eventTime`, `startDayOfYear`, `endDayOfYear` | The date, date-time, date range, or date-time range during which the Event occurred in ISO 8601 format. If the original value has to be converted into ISO 8601 `verbatimEventDate` should be filled in. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, 'eventTime', 'startDayOfYear' and 'endDayOfYear' for single dates/date-times. If no eventDate can be filled in, an explanation should be provided in 'eventRemarks' | _"2007-03-01", "2016-09-12T15:28:48Z", "2007-03", "2007-03-01/2007-05-01", "2016-09-12T15:00:00Z/2016-10-12T15:00:00Z"_|
-
+| `eventDate`, `verbatimEventDate`, `year`, `month`, `day`, `eventTime`, `startDayOfYear`, `endDayOfYear` | The date, date-time, date range, or date-time range during which the Event occurred in ISO 8601 format. If the original value has to be converted into ISO 8601 `verbatimEventDate` should be filled in. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime`, `startDayOfYear` and `endDayOfYear` for single dates/date-times. If no eventDate can be filled in, an explanation should be provided in `eventRemarks` | _"2007-03-01", "2016-09-12T15:28:48Z", "2007-03", "2007-03-01/2007-05-01", "2016-09-12T15:00:00Z/2016-10-12T15:00:00Z"_|
 
 ### Where did it take place?
 ### Why did that happen?
