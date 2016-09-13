@@ -62,17 +62,17 @@ TODO
 | `decimalLatitude`, `decimalLongitude`, `geodeticDatum`, `coordinateUncertaintyInMeters`, `dataGeneralizations`, `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS`, `informationWitheld`, `georeferenceRemarks` | The point location coordinates should be entered in `decimalLatitude` and `decimalLongitude`. The spatial reference system upon which the coordinates are based must be entered in `geodeticDatum` using the EPSG code, e.g. "EPSG:4326". If the uncertainty of the GPS reading is known, use `coordinateUncertaintyInMeters` to express the uncertainty in meters, but make sure the value is reasonable. For large uncertainties check 'dataGeneralizations' to see if the location was generalized on purpose, e.g. to protect sensitive species. If the original point location coordinates had to be converted from another coordinate system such as 'degrees minutes seconds' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` should be filled in with the original coordinates of the Location. If actions were taken to make the point location less specific than in its original form an explanation should be provided in `dataGeneralizations`. If the point location exists, but has not been entered, an explanation should be provided in `informationWitheld`. If the point location does not exist, or the point location is calculated from the center of a grid cell (versus from GPS reading) an explanation should be provided in `georeferenceRemarks`. |
 
 #### Case 1: Point location converted from degrees minutes seconds to decimal degrees
-| Field | Value |
-|:--------------- |:---------------|
-| `decimalLatitude` | 42.4566 |
-| `decimalLongitude` | -76.45442 |
-| `geodeticDatum` | "EPSG:4326" |
-| `coordinateUncertaintyInMeters` | 500 |
-| `verbatimCoordinates` | 42° 27' 23.76", -76° 27' 15.91" |
-| `verbatimLatitude` | 42° 27' 23.76" |
-| `verbatimLongitude` | -76° 27' 15.91" |
-| `verbatimCoordinateSystem` | "degrees minutes seconds" | 
-| `verbatimSRS` | "NAD83" | 
+| Field | Value | Constraint |
+|:--------------- |:---------------|:---------------|
+| `decimalLatitude` | 42.4566 | Must be between -90 and 90, inclusive |
+| `decimalLongitude` | -76.45442 | Must be between -180 and 180, inclusive |
+| `geodeticDatum` | "EPSG:4326" | Must be an [EPSG code](http://spatialreference.org/ref/epsg/wgs-84/) |
+| `coordinateUncertaintyInMeters` | 500 | Zero is NOT a valid value |
+| `verbatimCoordinates` | 42° 27' 23.76", -76° 27' 15.91" | |
+| `verbatimLatitude` | 42° 27' 23.76" | |
+| `verbatimLongitude` | -76° 27' 15.91" | |
+| `verbatimCoordinateSystem` | "degrees minutes seconds" | |
+| `verbatimSRS` | "NAD83" | |
 
 #### Case 2: Point location that was generalized
 | Field | Value |
