@@ -48,20 +48,48 @@ To facilitate reuse of the data, complimentary answers to the five Ws must also 
 | `month` | 3 |
 | `eventRemarks` | "Exact collection day was never recorded" |
 
-#### Case 3: Missing date
+#### Case 4: Missing date
 | Field | Value |
 |:--------------- |:---------------|
 | `eventRemarks` | "Event date was not found in legacy data" |
 
 ## Where did it take place?
 
-| Fields | Requirements | Examples |
-|:--------------- |:---------------|:---------------|
-| `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | The point location coordinates should be entered in `decimalLatitude` and `decimalLongitude`. The spatial reference system upon which the coordinates are based must be entered in `geodeticDatum` using the EPSG code, e.g. "EPSG:4326". If the uncertainty of the GPS reading is known, use `coordinateUncertaintyInMeters` to express the uncertainty in meters, but make sure the value is reasonable. If the original point location coordinates had to be converted from another coordinate system such as 'degrees minutes seconds' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` should be filled in with the original coordinates of the Location. If actions were taken to make the point location less specific than in its original form an explanation should be provided in 'dataGeneralizations'. If the point location exists, but has not been entered, an explanation should be provided in `georeferenceRemarks`. | _"EPSG:4326", "WGS84"_|
+| Fields | Requirements |
+|:--------------- |:---------------|
+| `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | The point location coordinates should be entered in `decimalLatitude` and `decimalLongitude`. The spatial reference system upon which the coordinates are based must be entered in `geodeticDatum` using the EPSG code, e.g. "EPSG:4326". If the uncertainty of the GPS reading is known, use `coordinateUncertaintyInMeters` to express the uncertainty in meters, but make sure the value is reasonable. If the original point location coordinates had to be converted from another coordinate system such as 'degrees minutes seconds' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` should be filled in with the original coordinates of the Location. If actions were taken to make the point location less specific than in its original form an explanation should be provided in 'dataGeneralizations'. If the point location exists, but has not been entered, an explanation should be provided in `informationWitheld`. If the point location does not exist, an explanation should be provided in `georeferenceRemarks`. |
 
+#### Case 1: Point location converted from degrees minutes seconds to decimal degrees
+| Field | Value |
+|:--------------- |:---------------|
+| `decimalLatitude` | 42.4566 |
+| `decimalLongitude` | -76.45442 |
+| `geodeticDatum` | "EPSG:4326" |
+| `coordinateUncertaintyInMeters` | 500 |
+| `verbatimCoordinates` | 42° 27' 23.76", -76° 27' 15.91" |
+| `verbatimLatitude` | 42° 27' 23.76" |
+| `verbatimLongitude` | -76° 27' 15.91" |
+| `verbatimCoordinateSystem` | "degrees minutes seconds" | 
+| `verbatimSRS` | "NAD83" | 
 
+#### Case 2: Point location that was generalized
+| Field | Value |
+|:--------------- |:---------------|
+| `decimalLatitude` | 42.44 |
+| `decimalLongitude` | -76.33 |
+| `geodeticDatum` | "EPSG:4326" |
+| `coordinateUncertaintyInMeters` | 5000 |
+| `dataGeneralizations` | "Point location obscured by a factor of 5000m" |
 
+#### Case 3: Point location exists but not provided
+| Field | Value |
+|:--------------- |:---------------|
+| `informationWitheld` | "Point location hidden to protect sensitive species. Available upon request." |
 
+#### Case 4: Point location does not exist
+| Field | Value |
+|:--------------- |:---------------|
+| `dataGeneralizations` | "Point location was not found in legacy data" |
 
 ## Why did that happen?
 
