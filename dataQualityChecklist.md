@@ -83,8 +83,8 @@ TODO
 | `verbatimLatitude` | 42° 27' 23.76" | |
 | `verbatimLongitude` | -76° 27' 15.91" | |
 | `verbatimCoordinateSystem` | "degrees minutes seconds" | |
-| `continent` | "North America" | Must be preferred name according to [Getty Thesauraus of Georgraphic Names](http://www.getty.edu/research/tools/vocabularies/tgn/) |
-| `country` | "United States" | Must be preferred name according to [Getty Thesauraus of Georgraphic Names](http://www.getty.edu/research/tools/vocabularies/tgn/) |
+| `continent` | "North America" | Must be preferred English name according to [Getty Thesauraus of Georgraphic Names](http://www.getty.edu/research/tools/vocabularies/tgn/) |
+| `country` | "United States" | Must be preferred English name according to [Getty Thesauraus of Georgraphic Names](http://www.getty.edu/research/tools/vocabularies/tgn/) |
 | `countryCode` | "US" | Must be [ISO 3166-1-alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) |
 | `stateProvince` | "New York" | |
 | `county` | "Tomkins County" | |
