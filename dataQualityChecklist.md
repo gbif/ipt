@@ -70,6 +70,7 @@ TODO
 | `dataGeneralizations` | If actions were taken to make the point location less specific than in its original form an explanation should be provided in `dataGeneralizations`. |
 |`informationWitheld` | If the point location exists, but has not been entered, an explanation should be provided in `informationWitheld`. |
 | `georeferenceRemarks` | If the point location does not exist, or the point location is calculated from the center of a grid cell (versus from GPS reading) an explanation should be provided in `georeferenceRemarks`. |
+| `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | As much supplementary information as possible about the location should also be provided. If no `country` and `countryCode` can be provided then an explanation as to why should be entered in `locationRemarks` |
 
 #### Case 1: Point location converted from degrees minutes seconds to decimal degrees
 | Field | Value | Constraint |
