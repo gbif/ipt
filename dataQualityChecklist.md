@@ -6,21 +6,21 @@ Use this checklist to help review a dataset.
 
 To be complete, the data should contain valid answers to the five Ws: 
 
-* [x] [What happened?](dataQualityChecklist#what-happened)
-* [x] [Who did that?](dataQualityChecklist#who-did-that)
-* [x] [When did it take place?](dataQualityChecklist#when-did-it-take-place)
-* [x] [Where did it take place?](dataQualityChecklist#where-did-it-take-place)
-* [x] [Why did that happen?](dataQualityChecklist#why-did-that-happen)
+* [x] [What event happened?](dataQualityChecklist#what-event-happened)
+* [x] [Who performed the event?](dataQualityChecklist#who-performed-the-event)
+* [x] [When did the event take place?](dataQualityChecklist#when-did-the-event-take-place)
+* [x] [Where did the event take place?](dataQualityChecklist#where-did-the-event-take-place)
+* [x] [Why did the event happen?](dataQualityChecklist#why-did-the-event-happen)
 
 To facilitate reuse of the data, complimentary answers to the five Ws must also be provided in the [dataset metadata](dataQualityChecklist#dataset-metadata). 
 
 ## Checklist
 
-## What happened?
+## What event happened?
 TODO
-## Who did that?
+## Who performed the event?
 TODO
-## When did it take place?
+## When did the event take place?
 
 | Fields | Requirements |
 |:--------------- |:---------------|
@@ -59,7 +59,7 @@ TODO
 |:--------------- |:---------------|
 | `eventRemarks` | "Event date was not found in legacy data" |
 
-## Where did it take place?
+## Where did the event take place?
 
 | Fields | Requirements |
 |:--------------- |:---------------|
@@ -109,7 +109,7 @@ TODO
 |:--------------- |:---------------|
 | `dataGeneralizations` | "Point location was not found in legacy data" |
 
-## Why did that happen?
+## Why did the event happen?
 TODO
 
 ## Dataset Metadata
