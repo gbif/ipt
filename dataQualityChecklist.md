@@ -24,7 +24,11 @@ TODO
 
 | Fields | Requirements |
 |:--------------- |:---------------|
-| `eventDate`, `eventTime`, `year`, `month`, `day`, , `startDayOfYear`, `verbatimEventDate`, `eventRemarks` | The date, date-time, date range, or date-time range during which the Event occurred should be entered in `eventDate` in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. If the original value has to be converted into [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) `verbatimEventDate` should be filled in with the original value. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks` |
+| `eventDate` | The date, date-time, date range, or date-time range during which the Event occurred should be entered in `eventDate` in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". |
+| `verbatimEventDate` | If the original value has to be converted into [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) `verbatimEventDate` should be filled in with the original value. |
+| `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. |
+| `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks` |
+
 #### Case 1: Single date
 | Field | Value | Constraint |
 |:--------------- |:---------------|:---------------|
