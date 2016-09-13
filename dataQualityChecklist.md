@@ -17,7 +17,9 @@ To facilitate reuse of the data, complimentary answers to the five Ws must also 
 ## Checklist
 
 ## What happened?
+TODO
 ## Who did that?
+TODO
 ## When did it take place?
 
 | Fields | Requirements |
@@ -92,6 +94,7 @@ To facilitate reuse of the data, complimentary answers to the five Ws must also 
 | `dataGeneralizations` | "Point location was not found in legacy data" |
 
 ## Why did that happen?
+TODO
 
 ## Dataset Metadata
 
