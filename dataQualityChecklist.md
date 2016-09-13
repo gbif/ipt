@@ -12,6 +12,8 @@ To be complete, the data should contain valid answers to the five Ws:
 * [x] [Where did the event take place?](dataQualityChecklist#where-did-the-event-take-place)
 * [x] [Why did the event happen?](dataQualityChecklist#why-did-the-event-happen)
 
+Examples of events include a species observation, a physical specimen being collected, or a biological sampling event.
+
 To facilitate reuse of the data, complimentary answers to the five Ws must also be provided in the [dataset metadata](dataQualityChecklist#dataset-metadata). 
 
 ## Checklist
