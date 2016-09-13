@@ -83,7 +83,12 @@ TODO
 | `verbatimLatitude` | 42° 27' 23.76" | |
 | `verbatimLongitude` | -76° 27' 15.91" | |
 | `verbatimCoordinateSystem` | "degrees minutes seconds" | |
-| `verbatimSRS` | "NAD83" | |
+| `continent` | "North America" | Must be preferred name according to [Getty Thesauraus of Georgraphic Names](http://www.getty.edu/research/tools/vocabularies/tgn/) |
+| `country` | "United States" | Must be preferred name according to [Getty Thesauraus of Georgraphic Names](http://www.getty.edu/research/tools/vocabularies/tgn/) |
+| `countryCode` | "US" | Must be [ISO 3166-1-alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) |
+| `stateProvince` | "New York" | |
+| `county` | "Tomkins County" | |
+| `locality` | "Ithaca, Forest Home, CU Rifle Range" | Must be a specific description of the place |
 
 #### Case 2: Point location that was generalized
 | Field | Value |
