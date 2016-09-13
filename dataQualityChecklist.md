@@ -25,6 +25,12 @@ To facilitate reuse of the data, complimentary answers to the five Ws must also 
 | `eventDate`, `verbatimEventDate`, `year`, `month`, `day`, `eventTime`, `startDayOfYear`, `endDayOfYear` | The date, date-time, date range, or date-time range during which the Event occurred should be entered in `eventDate` in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. If the original value has to be converted into [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) `verbatimEventDate` should be filled in with the original value. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime`, `startDayOfYear` and `endDayOfYear` for single dates/date-times. If no eventDate can be filled in, an explanation should be provided in `eventRemarks` | _"2007-03-01", "2016-09-12T15:28:48Z", "2007-03", "2007-03-01/2007-05-01"_|
 
 ### Where did it take place?
+
+| Fields | Requirements | Examples |
+|:--------------- |:---------------|:---------------|
+| `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | The point location coordinates should be entered in `decimalLatitude` and `decimalLongitude`. The spatial reference system upon which the coordinates are based must be entered in `geodeticDatum` using the EPSG code, e.g. "EPSG:4326". If the uncertainty of the GPS reading is known, use `coordinateUncertaintyInMeters` to express the uncertainty in meters, but make sure the value is reasonable. If the original point location coordinates had to be converted from another coordinate system such as 'degrees minutes seconds' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` should be filled in with the original coordinates of the Location. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime`, `startDayOfYear` and `endDayOfYear` for single dates/date-times. If no eventDate can be filled in, an explanation should be provided in `eventRemarks` | _"EPSG:4326", "WGS84"_|
+
+
 ### Why did that happen?
 
 ### Dataset Metadata
