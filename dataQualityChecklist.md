@@ -59,7 +59,7 @@ TODO
 | `year` | 2007 | Must be four-digit year |
 | `month` | 3 | Must be between 1-12 | 
 | `day` | 20 | Must be between 1-31 |
-| `startDayOfYear` | 60 | Must be between 1-365 |
+| `startDayOfYear` | 60 | Must be between 1-366 |
 | `verbatimEventDate` | "Mar 20, 07" | Original date or date description |
 
 #### Case 2: Date-time range
