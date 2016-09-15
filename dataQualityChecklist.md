@@ -13,7 +13,7 @@
 
 ## Introduction
 
-Use this checklist to help review occurrence and sampling event datasets. 
+Use this checklist to help review biodiveristy datasets. Note it is particularly suited for checking occurrence and sampling event datasets.
 
 The checklist will help ensures that the data is complete meaning it contain valid answers to the five Ws: 
 
