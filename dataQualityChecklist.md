@@ -24,7 +24,7 @@ TODO
 TODO
 ## When did the event take place?
 
-| Check # | Fields | Requirements |
+| Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
 | when#1 | `eventDate` | The date, date-time, date range, or date-time range during which the Event occurred should be entered in `eventDate` in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". |
 | when#2 | `verbatimEventDate` | If the original value has to be converted into [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) `verbatimEventDate` should be filled in with the original value. |
