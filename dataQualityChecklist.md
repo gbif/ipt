@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Use this checklist to help review a dataset. 
+Use this checklist to help review occurrence and sampling event datasets. 
 
-To be complete, the data should contain valid answers to the five Ws: 
+The checklist will help ensures that the data is complete meaning it contain valid answers to the five Ws: 
 
 * [x] [What event happened?](dataQualityChecklist#what-event-happened)
 * [x] [Who performed the event?](dataQualityChecklist#who-performed-the-event)
@@ -14,7 +14,17 @@ To be complete, the data should contain valid answers to the five Ws:
 
 Examples of events include a species observation, a physical specimen being collected, or a biological sampling event.
 
-To facilitate reuse of the data, complimentary answers to the five Ws must also be provided in the [dataset metadata](dataQualityChecklist#dataset-metadata). 
+Additionally, the checklist ensures that the [dataset metadata](dataQualityChecklist#dataset-metadata) also contains answers to the five Ws in order to facilitate reuse of the data.
+
+## Introduction
+
+To start, read the dataset metadata to get a better understanding about the data. 
+
+Next, load the data into [OpenRefine](http://openrefine.org/). This will allow [faceted browsing](https://github.com/OpenRefine/OpenRefine/wiki/Faceting) to get the big picture of the data. 
+
+There are various ways each of the five Ws can be answered. Each 'check' relates to one or more Darwin Core fields. Therefore try to perform as many checks as possible based on the Darwin Core fields present in the dataset. 
+
+Compile a list of all checks that fail and report them back to the data publisher, referring to each check by its 'Check-ID'. This will make providing feeeback a less time consuming and verbose process.   
 
 ## Checklist
 
