@@ -16,7 +16,7 @@ Examples of events include a species observation, a physical specimen being coll
 
 Additionally, the checklist ensures that the [dataset metadata](dataQualityChecklist#dataset-metadata) also contains answers to the five Ws in order to facilitate reuse of the data.
 
-## Introduction
+## Instructions
 
 To start, read the dataset metadata to get a better understanding about the data. 
 
