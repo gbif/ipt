@@ -26,10 +26,10 @@ TODO
 
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
-| when#1 | `eventDate` | The date, date-time, date range, or date-time range during which the Event occurred should be entered in `eventDate` in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". |
-| when#2 | `verbatimEventDate` | If the original value has to be converted into [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) `verbatimEventDate` should be filled in with the original value. |
-| when#3 | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. |
-| when#4 | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks` |
+| **when#1** | `eventDate` | The date, date-time, date range, or date-time range during which the Event occurred should be entered in `eventDate` in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". |
+| **when#2** | `verbatimEventDate` | If the original value has to be converted into [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) `verbatimEventDate` should be filled in with the original value. |
+| **when#3** | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. |
+| **when#4** | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks` |
 
 #### Case 1: Single date
 | Field | Value | Constraint |
@@ -63,16 +63,16 @@ TODO
 
 ## Where did the event take place?
 
-| Fields | Requirements |
-|:--------------- |:---------------|
-| `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | The point location coordinates should be entered in decimal degrees in `decimalLatitude` and `decimalLongitude`. The spatial reference system upon which the coordinates are based must be entered in `geodeticDatum` using the EPSG code, e.g. "EPSG:4326". |
-|`footprintWKT`, `footprintSRS` | To provide a specific shape location enter a well-Known Text (WKT) representation of the shape in `footprintWKT`. The corresponding spatial reference system upon which the shape is based must be entered in `footprintSRS` using the EPSG code, e.g. "EPSG:4326". | 
-|`coordinateUncertaintyInMeters`, `dataGeneralizations` | If the uncertainty of the GPS reading is known, use `coordinateUncertaintyInMeters` to express the uncertainty in meters, but make sure the value is reasonable. For large uncertainties check `dataGeneralizations` to see if the location was generalized on purpose, e.g. to protect sensitive species. |
-|`verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` | If the original point location coordinates had to be converted from another coordinate system such as 'degrees minutes seconds' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` should be filled in with the original coordinates of the Location. |
-| `dataGeneralizations` | If actions were taken to make the point location less specific than in its original form an explanation should be provided in `dataGeneralizations`. |
-|`informationWitheld` | If the point location exists, but has not been entered, an explanation should be provided in `informationWitheld`. |
-| `georeferenceRemarks` | If the point location does not exist, or the point location is calculated from the center of a grid cell (versus from GPS reading) an explanation should be provided in `georeferenceRemarks`. |
-| `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | As much supplementary information as possible about the location should also be provided. If no `country` and `countryCode` can be provided then an explanation as to why should be entered in `locationRemarks` |
+| Check-ID | Fields | Requirements |
+|:--------------- |:--------------- |:---------------|
+| **where#1** | `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | The point location coordinates should be entered in decimal degrees in `decimalLatitude` and `decimalLongitude`. The spatial reference system upon which the coordinates are based must be entered in `geodeticDatum` using the EPSG code, e.g. "EPSG:4326". |
+| **where#2** |`footprintWKT`, `footprintSRS` | To provide a specific shape location enter a well-Known Text (WKT) representation of the shape in `footprintWKT`. The corresponding spatial reference system upon which the shape is based must be entered in `footprintSRS` using the EPSG code, e.g. "EPSG:4326". | 
+| **where#3** |`coordinateUncertaintyInMeters`, `dataGeneralizations` | If the uncertainty of the GPS reading is known, use `coordinateUncertaintyInMeters` to express the uncertainty in meters, but make sure the value is reasonable. For large uncertainties check `dataGeneralizations` to see if the location was generalized on purpose, e.g. to protect sensitive species. |
+| **where#4** |`verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` | If the original point location coordinates had to be converted from another coordinate system such as 'degrees minutes seconds' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` should be filled in with the original coordinates of the Location. |
+| **where#5** | `dataGeneralizations` | If actions were taken to make the point location less specific than in its original form an explanation should be provided in `dataGeneralizations`. |
+| **where#6** |`informationWitheld` | If the point location exists, but has not been entered, an explanation should be provided in `informationWitheld`. |
+| **where#7** | `georeferenceRemarks` | If the point location does not exist, or the point location is calculated from the center of a grid cell (versus from GPS reading) an explanation should be provided in `georeferenceRemarks`. |
+| **where#8** | `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | As much supplementary information as possible about the location should also be provided. If no `country` and `countryCode` can be provided then an explanation as to why should be entered in `locationRemarks` |
 
 #### Case 1: Point location converted from degrees minutes seconds to decimal degrees
 | Field | Value | Constraint |
