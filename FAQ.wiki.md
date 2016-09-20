@@ -76,7 +76,7 @@ Please note the two-letter language code must match the code used by the IPT. Ot
 
 Please note that every time you upgrade to a new version of the IPT, you will have to apply the same change.
 
-### 5. How can I switch the IPT from test mode to production mode?
+### 6. How can I switch the IPT from test mode to production mode?
 
 Switching the IPT from test mode to production mode cannot be done automatically. This is by design, because each mode connects to a different registry (test mode uses the GBIF Sandbox Registry while production mode uses the GBIF Live Registry). 
 
