@@ -23,7 +23,7 @@ In this page you will find answers to the most frequently asked questions about 
 
 There is one important directory that contains all the IPT's configuration and resources: the IPT's data directory. If you ensure this directory is regularly backed-up somewhere safe, you'll never lose any data.
 
-To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, all you have to do is follow the [Starting Over](https://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?tm=6#Starting_Over) instructions. As it says: "If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored".
+To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, all you have to do is follow the [Starting Over](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#starting-over) instructions. As it says: "If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored".
 
 ### 2. My GBIF IPT instance is slow. What can I do to improve performance?
 
