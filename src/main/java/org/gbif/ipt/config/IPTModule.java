@@ -122,9 +122,7 @@ public class IPTModule extends AbstractModule {
 
   @Provides
   @Inject
-  public HttpUtil provideHttpUtil() {
-    // Retrieve the same client instance as configured in this module
-    DefaultHttpClient client = provideHttpClient();
+  public HttpUtil provideHttpUtil(DefaultHttpClient client) {
     // Return a singleton instance of HttpUtil
     return new HttpUtil(client);
   }
