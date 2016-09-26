@@ -71,6 +71,8 @@ TODO
 | `year` | 2007 |
 | `month` | 3 | 
 | `day` |  | 
+| `startDayOfYear` | 79 |
+| `endDayOfYear` | 86 |
 | `verbatimEventDate` | "The third week in March 07, for 6 hours starting at midnight." |
 
 #### Case 3: Partial date
