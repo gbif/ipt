@@ -111,7 +111,7 @@ TODO
 |:--------------- |:---------------|:---------------|
 | `decimalLatitude` | 42.4566 | Must be between -90 and 90, inclusive |
 | `decimalLongitude` | -76.45442 | Must be between -180 and 180, inclusive |
-| `geodeticDatum` | "EPSG:4326" | Must be an [EPSG code](http://spatialreference.org/ref/epsg/wgs-84/) |
+| `geodeticDatum` | "EPSG:4326" | Ideally an [EPSG code](http://spatialreference.org/ref/epsg/wgs-84/) or from a controlled vocabulary otherwise "unknown" |
 | `coordinateUncertaintyInMeters` | 500 | Zero is NOT a valid value |
 | `verbatimCoordinates` | 42° 27' 23.76", -76° 27' 15.91" | |
 | `verbatimLatitude` | 42° 27' 23.76" | |
