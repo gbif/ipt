@@ -13,9 +13,9 @@
 
 ## Introduction
 
-Use this checklist to help review biodiveristy datasets. Note it is particularly suited for checking occurrence and sampling event datasets.
+Use this checklist to help review biodiversity datasets. Note it is particularly suited for checking occurrence and sampling event datasets.
 
-The checklist will help ensures that the data is complete meaning it contain valid answers to the five Ws: 
+The checklist will help ensure that the data is complete, meaning it contains valid answers to the five Ws: 
 
 * [x] [What event happened?](dataQualityChecklist#what-event-happened)
 * [x] [Who performed the event?](dataQualityChecklist#who-performed-the-event)
