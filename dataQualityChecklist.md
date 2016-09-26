@@ -5,7 +5,7 @@
 + [[Instructions| dataQualityChecklist#instructions]]
 + [[Checklist| dataQualityChecklist#checklist]]
   + [What event happened?](dataQualityChecklist#what-event-happened)
-  + [Who performed the event?](dataQualityChecklist#who-performed-the-event)
+  + [Who acted in the event?](dataQualityChecklist#who-performed-the-event)
   + [When did the event take place?](dataQualityChecklist#when-did-the-event-take-place)
   + [Where did the event take place?](dataQualityChecklist#where-did-the-event-take-place)
   + [Why did the event happen?](dataQualityChecklist#why-did-the-event-happen)
