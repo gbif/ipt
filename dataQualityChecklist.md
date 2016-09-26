@@ -35,7 +35,7 @@ Next, load the data into [OpenRefine](http://openrefine.org/). This will allow [
 
 There are various ways each of the five Ws can be answered. Each 'check' relates to one or more Darwin Core fields. Therefore try to perform as many checks as possible based on the Darwin Core fields present in the dataset. 
 
-Compile a list of all checks that fail and report them back to the data publisher, referring to each check by its 'Check-ID'. This will make providing feeeback a less time consuming and verbose process.   
+Compile a list of all checks that fail and report them back to the data publisher, referring to each check by its 'Check-ID'. This will make providing feedback a less time consuming and verbose process.   
 
 ## Checklist
 
