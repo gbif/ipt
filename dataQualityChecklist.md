@@ -29,11 +29,11 @@ Additionally, the checklist ensures that the [dataset metadata](dataQualityCheck
 
 ## Instructions
 
-To start, read the dataset metadata to get a better understanding about the data. 
+If the dataset has been registered with GBIF, give yourself a running start by reviewing the dataset's 'Stats' page. Here you can find the set of issues that GBIF discovered while interpreting the dataset: 
 
-If the dataset has been registered with GBIF, review the dataset's 'Stats' page. Here you can find the set of issues that GBIF discovered while interpreting the dataset: 
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/InterpretationIssues2.png' />
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/InterpretationIssues2.png' /> 
+Next, read the dataset metadata to get a better understanding about the data.  
 
 Next, load the data into [OpenRefine](http://openrefine.org/). This will allow [faceted browsing](https://github.com/OpenRefine/OpenRefine/wiki/Faceting) to get the big picture of the data. 
 
