@@ -50,7 +50,8 @@ TODO
 | **when#1** | `eventDate` | The date, date-time, date range, or date-time range during which the Event occurred should be entered in `eventDate` in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Partial dates can be provided if they have at least a year and month, e.g. "2007-03". |
 | **when#2** | `verbatimEventDate` | If the original value has to be converted into [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) `verbatimEventDate` should be filled in with the original value. |
 | **when#3** | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. |
-| **when#4** | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks` |
+| **when#4** | `startDayOfYear` and `endDayOfYear` | Although it appears redundant, it is recommended trying to fill in `startDayOfYear` and `endDayOfYear` for date ranges as long as date resolution is specific to the day for the start date and the end date.|
+| **when#5** | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks` |
 
 #### Case 1: Single date
 | Field | Value | Constraint |
@@ -59,7 +60,7 @@ TODO
 | `year` | 2007 | Must be four-digit year |
 | `month` | 3 | Must be between 1-12 | 
 | `day` | 20 | Must be between 1-31 |
-| `startDayOfYear` | 60 | Must be between 1-366 |
+| `startDayOfYear` | 79 | Must be between 1-366 |
 | `verbatimEventDate` | "Mar 20, 07" | Original date or date description |
 
 #### Case 2: Date-time range
