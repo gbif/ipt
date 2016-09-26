@@ -63,14 +63,14 @@ TODO
 | `startDayOfYear` | 79 | Must be between 1-366 |
 | `verbatimEventDate` | "Mar 20, 07" | Original date or date description |
 
-#### Case 2: Date-time range
+#### Case 2: Date-time range spanning days
 | Field | Value |
 |:--------------- |:---------------|
 | `eventDate` | 2007-03-20T00:00:00Z/2007-03-27T06:00:00Z |
 | `eventTime` | 00:00:00Z/06:00:00Z |
-| `year` | 2007 | Must be four-digit year |
-| `month` | 3 | Must be between 1-12 | 
-| `day` |  | If there is a date range spanning days, `day` is left blank. |
+| `year` | 2007 |
+| `month` | 3 | 
+| `day` |  | 
 | `verbatimEventDate` | "The third week in March 07, for 6 hours starting at midnight." |
 
 #### Case 3: Partial date
@@ -79,6 +79,7 @@ TODO
 | `eventDate` | 2007-03 |
 | `year` | 2007 |
 | `month` | 3 |
+| `day` |  | 
 | `eventRemarks` | "Exact collection day was never recorded" |
 
 #### Case 4: Missing date
