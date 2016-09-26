@@ -8,6 +8,7 @@
   + [[3. After installing the IPT, I receive a message "FAIL - Application at context path /ipt could not be started" and the application does not launch. What should I do?|FAQ.wiki#3-after-installing-the-ipt-i-receive-a-message-fail---application-at-context-path-ipt-could-not-be-started-and-the-application-does-not-launch-what-should-i-do]]
   + [[4. I get the following error: "The data directory '/directory' is not writable. What should I do?|FAQ.wiki#4-i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do]]
   + [[5. How can I change the IPT's default language?|FAQ.wiki#5-how-can-i-change-the-ipts-default-language]]
+  + [[6. How can I switch the IPT from test mode to production mode?|FAQ.wiki#6-how-can-i-switch-the-ipt-from-test-mode-to-production-mode]]
 + [[Usage|FAQ.wiki#usage]]
   + [[1. Why do published files contain broken lines?|FAQ.wiki#1-why-do-published-files-contain-broken-lines]]
   + [[2. Why do published files not include all records?|FAQ.wiki#2-why-do-published-files-not-include-all-records]]
@@ -23,7 +24,7 @@ In this page you will find answers to the most frequently asked questions about 
 
 There is one important directory that contains all the IPT's configuration and resources: the IPT's data directory. If you ensure this directory is regularly backed-up somewhere safe, you'll never lose any data.
 
-To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, all you have to do is follow the [Starting Over](https://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes?tm=6#Starting_Over) instructions. As it says: "If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored".
+To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, all you have to do is follow the [Starting Over](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#starting-over) instructions. As it says: "If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored".
 
 ### 2. My GBIF IPT instance is slow. What can I do to improve performance?
 
@@ -74,6 +75,14 @@ Restart Tomcat, and the IPT will startup in Portuguese.
 Please note the two-letter language code must match the code used by the IPT. Other languages currently supported include Japanese (ja), French (fr), Spanish (es), and Traditional Chinese (zh).
 
 Please note that every time you upgrade to a new version of the IPT, you will have to apply the same change.
+
+### 6. How can I switch the IPT from test mode to production mode?
+
+Switching the IPT from test mode to production mode cannot be done automatically. This is by design, because each mode connects to a different registry (test mode uses the GBIF Sandbox Registry while production mode uses the GBIF Live Registry). 
+
+Therefore to switch to production mode you need to setup an entirely new IPT instance in production mode. 
+
+To save time recreating resources, you can try transferring your 'test' resources to the production IPT. To do this simply "upload an existing IPT resource using its zipped resource configuration folder." There are complete instructions on how to do this [here](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder).
 
 ## Usage
 
