@@ -31,6 +31,10 @@ Additionally, the checklist ensures that the [dataset metadata](dataQualityCheck
 
 To start, read the dataset metadata to get a better understanding about the data. 
 
+If the dataset has been registered with GBIF, review the dataset's 'Stats' page. Here you can find the set of issues that GBIF discovered while interpreting the dataset: 
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/InterpretationIssues2.png' /> 
+
 Next, load the data into [OpenRefine](http://openrefine.org/). This will allow [faceted browsing](https://github.com/OpenRefine/OpenRefine/wiki/Faceting) to get the big picture of the data. 
 
 There are various ways each of the five Ws can be answered. Each 'check' relates to one or more Darwin Core fields. Therefore try to perform as many checks as possible based on the Darwin Core fields present in the dataset. 
