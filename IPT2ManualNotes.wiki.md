@@ -1016,7 +1016,7 @@ The lists of extensions (installed and not installed) each have two columns. The
 Following are the actions that can be taken with respect to extensions:
 
 ### Synchronise Extensions and Vocabularies
-An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change (e.g. if new translations have been added) and require updating the in the IPT. Click on the button labeled "Synchronise" to synchronise existing vocabularies with the GBIF Registry. After the update is complete, a message will indicate if the synchronisation was successful or if there were any errors.
+An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change (e.g. if new translations have been added) and require updating in the IPT. Click on the button labeled "Synchronise" to synchronise existing vocabularies with the GBIF Registry. After the update is complete, a message will indicate if the synchronisation was successful or if there were any errors.
 
 ### View extension details
 The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension.
