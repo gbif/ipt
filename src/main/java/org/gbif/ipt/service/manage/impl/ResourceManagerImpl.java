@@ -800,7 +800,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public List<Resource> latest(int startPage, int pageSize) {
     List<Resource> resourceList = new ArrayList<Resource>();
     for (Resource resource : resources.values()) {
-      if (!resource.getStatus().equals(PublicationStatus.PRIVATE)) {
+      if (!resource.getStatus().equals(PublicationStatus.PRIVATE) && resource.isPublished()) {
         resourceList.add(resource);
       }
     }
