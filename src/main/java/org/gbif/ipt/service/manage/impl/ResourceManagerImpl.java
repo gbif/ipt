@@ -678,8 +678,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     map.setExtension(ext);
 
-    // set ID column
-    map.setIdColumn(af.getId().getIndex());
+    // set ID column (warning: handmade DwC-A can be missing id index)
+    if (af.getId() != null) {
+      map.setIdColumn(af.getId().getIndex());
+    }
 
     Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
     // iterate over each field to make sure its part of the extension we know
