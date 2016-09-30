@@ -56,7 +56,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
-| **how#1** | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and `organismQuantity` / `organismQuantityType`. For relative abundance only `organismQuantity` / `organismQuantityType` should be used with values for `organismQuantityType` coming from the GBIF Quantity Type Vocabulary. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to absentas per the GBIF Occurrence Status Vocabulary. |
+| **how#1** | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and `organismQuantity` / `organismQuantityType`. For relative abundance only `organismQuantity` / `organismQuantityType` should be used with values for `organismQuantityType` coming from the GBIF Quantity Type Vocabulary. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to absence per the GBIF Occurrence Status Vocabulary. |
 
 ## Who acted in the event?
 TODO
