@@ -44,7 +44,13 @@ Compile a list of all checks that fail and report them back to the data publishe
 ## Checklist
 
 ## What event happened?
-TODO
+
+| Check-ID | Fields | Requirements |
+|:---------------|:--------------- |:---------------|
+| **what#1** | `occurrenceID`, `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus`, `occurrenceRemarks`, `references`  | The species observation event. |
+| **what#2** | `materialSampleID`, `occurrenceID`, `catalogNumber`, `collectionCode`, `individualCount`, `preparations`, `occurrenceRemarks`, `references`  | The specimen preservation event. |
+| **what#3** | `eventID`, `parentEventID`, `fieldNumber`, `samplingProtocol`, `samplingEffort`, `sampleSizeValue`, `sampleSizeUnit`, `eventRemarks`, `references`  | The sampling event. |
+
 ## Who performed the event?
 TODO
 ## When did the event take place?
