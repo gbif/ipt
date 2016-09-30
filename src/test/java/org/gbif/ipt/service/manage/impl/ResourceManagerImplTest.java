@@ -1676,4 +1676,37 @@ public class ResourceManagerImplTest {
     assertTrue(emlFile.exists());
     assertTrue(metaFile.exists());
   }
+
+
+  /**
+   * Ensure that the RSS feed does not return public but unpublished resources.
+   */
+  @Test
+  public void testLatest() throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
+
+    ResourceManagerImpl manager = getResourceManagerImpl();
+
+    // public but not yet published
+    Resource resource = manager.create("test", null, creator);
+    VersionHistory version1 = new VersionHistory(new BigDecimal("1.0"), PublicationStatus.PUBLIC);
+    version1.setReleased(null);
+    resource.addVersionHistory(version1);
+    assertEquals(manager.latest(1, 25).size(), 0);
+
+    // public and published
+    version1.setReleased(new Date());
+    assertEquals(manager.latest(1, 25).size(), 1);
+
+    // private but not yet published
+    VersionHistory version2 = new VersionHistory(new BigDecimal("2.0"), PublicationStatus.PRIVATE);
+    version2.setReleased(null);
+    resource.addVersionHistory(version2);
+    assertEquals(manager.latest(1, 25).size(), 1);
+
+    // private and published
+    version2.setReleased(new Date());
+    assertEquals(manager.latest(1, 25).size(), 0);
+
+  }
+
 }

@@ -801,13 +801,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public List<Resource> latest(int startPage, int pageSize) {
     List<Resource> resourceList = new ArrayList<Resource>();
-    for (Resource resource : resources.values()) {
-      if (!resource.getStatus().equals(PublicationStatus.PRIVATE)) {
-        resourceList.add(resource);
+    for (Resource r : resources.values()) {
+      VersionHistory latestVersion = r.getLastPublishedVersion();
+      if (latestVersion != null) {
+        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
+            !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE)) {
+          resourceList.add(r);
+        }
       }
     }
     Collections.sort(resourceList, new Comparator<Resource>() {
-
       public int compare(Resource r1, Resource r2) {
         if (r1 == null || r1.getModified() == null) {
           return 1;
