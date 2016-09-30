@@ -47,12 +47,18 @@ Compile a list of all checks that fail and report them back to the data publishe
 
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
-| **what#1** | `occurrenceID`, `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus`, `occurrenceRemarks`, `references`  | The species observation event. |
-| **what#2** | `materialSampleID`, `occurrenceID`, `catalogNumber`, `collectionCode`, `individualCount`, `preparations`, `occurrenceRemarks`, `references`  | The specimen preservation event. |
-| **what#3** | `eventID`, `parentEventID`, `fieldNumber`, `samplingProtocol`, `samplingEffort`, `sampleSizeValue`, `sampleSizeUnit`, `eventRemarks`, `references`  | The sampling event. |
+| **what#1** | `occurrenceID`, `basisOfRecord`, `eventID`  | The species observation event uniquely identified by `occurrenceID' and having `basisOfRecord` equal to `HumanObservation` or `MachineObservation` indicating whether the observation was performed by a machine or by one or more people. If this observation was derived from a sampling event, it must have the `eventID` of the sampling event filled in. |
+| **what#2** | `occurrenceID`, `basisOfRecord`, `catalogNumber`, `collectionCode`, `eventID`  | The specimen preservation event uniquely identified by `occurrenceID' and having `basisOfRecord` equal to `PreservedSpecimen`, `FossilSpecimen` or `LivingSpecimen` indicating its specific type. Ideally a specimen is deposited in a collection and therefore can be assigned both a `catalogNumber` and `collectionCode`.  If this specimen was derived from a sampling event, it must have the `eventID` of the sampling event filled in. |
+| **what#3** | `occurrenceID`, `basisOfRecord`, `materialSampleID`, `catalogNumber`, `collectionCode`, `eventID`  | The physical result of a sampling event uniquely identified by both `occurrenceID' and having `basisOfRecord` equal to `MaterialSample`. If the sample was preserved (vs destructively processed) as a specimen and deposited in a collection it will ideally be assigned both a `catalogNumber` and `collectionCode`. The `eventID` of the sampling event must be filled in. |
+| **what#4** | `eventID`, `parentEventID`, `fieldNumber`, `references`  | The sampling event uniquely identified by `eventID' |
 
-## Who performed the event?
+#### How many species were there?
+
+| **how#1** | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and `organismQuantity` / `organismQuantityType`. For relative abundance only `organismQuantity` / `organismQuantityType` should be used with values for `organismQuantityType` coming from the GBIF Quantity Type Vocabulary. An abundance of 0 should be coupled with `occurrenceStatus` absent to indicate the absence of the species. The values for `occurrenceStatus` must come from the GBIF Occurrence Status Vocabulary. |
+
+## Who acted in the event?
 TODO
+
 ## When did the event take place?
 
 | Check-ID | Fields | Requirements |
