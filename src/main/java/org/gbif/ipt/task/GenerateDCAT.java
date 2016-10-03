@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -162,45 +163,49 @@ public class GenerateDCAT {
     String themeTaxonomyUri = settings.get(THEME_TAXONOMY_URI_KEY);
     boolean foundDatasets = false;
 
-    // iterate through all published public versions with a license and DwC-A
+    // iterate through all published public versions
     for (Resource resource : resourceManager.listPublishedPublicVersions()) {
-      if (resource.getRecordsPublished() > 0 && resource.getEml() != null && resource.getEml().parseLicenseUrl() != null
-          && themeUri != null && datasetThemeLabel != null && themeTaxonomyUri != null && publisherBaselink != null) {
+      if (themeUri != null && datasetThemeLabel != null && themeTaxonomyUri != null && publisherBaselink != null) {
 
+        // reconstruct the last published public version
         BigDecimal v = resource.getLastPublishedVersionsVersion();
         String shortname = resource.getShortname();
         File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
-
-        // make sure the last published public version gets used
         Resource publishedPublicVersion = ResourceUtils.reconstructVersion(v, resource.getShortname(),
           resource.getAssignedDoi(), resource.getOrganisation(), resource.findVersionHistory(v), versionEmlFile,
           resource.getKey());
 
-        feed.append(createDCATDatasetInformation(publishedPublicVersion));
-        feed.append("\n");
-        feed.append(createDCATDistributionInformation(publishedPublicVersion));
-        feed.append("\n");
-        foundDatasets = true;
+        // make sure it has a license and records published
+        if (publishedPublicVersion.getRecordsPublished() > 0 && publishedPublicVersion.getEml() != null
+            && publishedPublicVersion.getEml().parseLicenseUrl() != null) {
 
-        //add Organisation of Dataset (optional)
-        if (publishedPublicVersion.getOrganisation() != null) {
-          String publisher = publisherBaselink + publishedPublicVersion.getOrganisation().getKey() + "#Organization";
-          String organisation =
-            encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + publishedPublicVersion
-              .getOrganisation().getName() + "\"";
-          if (publishedPublicVersion.getOrganisation().getHomepageURL() != null) {
-            organisation +=
-              " ; foaf:homepage " + encapsulateObject(publishedPublicVersion.getOrganisation().getHomepageURL(),
-                ObjectTypes.RESOURCE);
+          feed.append(createDCATDatasetInformation(publishedPublicVersion));
+          feed.append("\n");
+          feed.append(createDCATDistributionInformation(publishedPublicVersion));
+          feed.append("\n");
+          foundDatasets = true;
+
+          //add Organisation of Dataset (optional)
+          if (publishedPublicVersion.getOrganisation() != null) {
+            String publisher = publisherBaselink + publishedPublicVersion.getOrganisation().getKey() + "#Organization";
+            String organisation =
+              encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + publishedPublicVersion
+                .getOrganisation().getName() + "\"";
+            if (publishedPublicVersion.getOrganisation().getHomepageURL() != null) {
+              organisation +=
+                " ; foaf:homepage " + encapsulateObject(publishedPublicVersion.getOrganisation().getHomepageURL(),
+                  ObjectTypes.RESOURCE);
+            }
+            organisation += " .";
+            organisations.add(organisation);
           }
-          organisation += " .";
-          organisations.add(organisation);
-        }
 
-        //add Themes of datasets
-        themes.add(
-          encapsulateObject(themeUri, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + datasetThemeLabel
-          + "\"@en ; skos:inScheme <" + themeTaxonomyUri + "> .");
+          //add Themes of datasets
+          themes.add(
+            encapsulateObject(themeUri, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + datasetThemeLabel
+            + "\"@en ; skos:inScheme <" + themeTaxonomyUri + "> .");
+
+        }
       }
     }
 
@@ -516,11 +521,17 @@ public class GenerateDCAT {
     if (!eml.getDescription().isEmpty()) {
       addPredicateToBuilder(datasetBuilder, "dct:description");
       StringBuilder description = new StringBuilder();
-      for (String des : eml.getDescription()) {
-        description.append(des);
-        description.append("\n");
+      Iterator<String> iter = eml.getDescription().iterator();
+      while (iter.hasNext()) {
+        String des = Strings.emptyToNull(iter.next());
+        if (des != null) {
+          description.append(des);
+        }
+        // turtle format requires line breaks to be escaped
+        if (iter.hasNext()) {
+          description.append("\\n");
+        }
       }
-      description.deleteCharAt(description.length() - 1);
       addObjectToBuilder(datasetBuilder, description.toString(), ObjectTypes.LITERAL);
     }
 
