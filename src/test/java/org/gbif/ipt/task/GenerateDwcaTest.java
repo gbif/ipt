@@ -665,4 +665,29 @@ public class GenerateDwcaTest {
     }
     assertTrue(foundWarning);
   }
+
+  @Test
+  public void testTabRow() throws IOException {
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
+
+    String[] elements = new String[] {"1", "humanObservation", "Panthera tigris"};
+    String tabRow = generateDwca.tabRow(elements);
+    assertEquals("1\thumanObservation\tPanthera tigris\n", tabRow);
+
+    // with line breaking characters replaced with empty space
+    elements = new String[] {"OBS\t1", "human\rObservation", "Panthera ti\ngris"};
+    tabRow = generateDwca.tabRow(elements);
+    assertEquals("OBS 1\thuman Observation\tPanthera ti gris\n", tabRow);
+
+    // check column with null value is still represented
+    elements = new String[] {"1", null, "humanObservation"};
+    tabRow = generateDwca.tabRow(elements);
+    assertEquals("1\t\thumanObservation\n", tabRow);
+
+    // with null values
+    elements = new String[] {null, null, null};
+    tabRow = generateDwca.tabRow(elements);
+    assertNull(tabRow);
+  }
 }

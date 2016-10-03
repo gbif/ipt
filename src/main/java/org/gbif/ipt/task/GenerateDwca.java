@@ -49,7 +49,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Ordering;
@@ -1305,8 +1307,20 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     report();
   }
 
-  private String tabRow(String[] columns) {
-    // escape \t \n \r chars !!!
+  /**
+   * Generates a single tab delimited row from the list of values of the provided array.
+   * </br>
+   * Note all line breaking characters in the value get replaced with an empty string before its added to the row.
+   * </br>
+   * The row ends in a newline character.
+   *
+   * @param columns the array of values to join together, may not be null
+   *
+   * @return the tab delimited String, {@code null} if provided array only contained null values
+   */
+  @VisibleForTesting
+  protected String tabRow(String[] columns) {
+    Preconditions.checkNotNull(columns);
     boolean empty = true;
     for (int i = 0; i < columns.length; i++) {
       if (columns[i] != null) {
@@ -1315,7 +1329,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       }
     }
     if (empty) {
-      // dont create a row at all!
       return null;
     }
     return StringUtils.join(columns, '\t') + "\n";
