@@ -819,7 +819,9 @@ The publish action consists of the steps described below. Publication is all or 
 
 ##### Data Validation
 
-The IPT performs the following validations on the data files inside the DWCA:
+The IPT writes data files inside the DWCA as tab delimited files void of line breaking characters (**note: line breaking characters found in the original data are replaced with an empty string**). 
+
+After writing, the IPT also validates their content in the following ways:
 * If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique.
 * The Darwin Core term <a href='http://rs.tdwg.org/dwc/terms/#basisOfRecord'>basisOfRecord</a> is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the <a href='http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml'>Darwin Core Type vocabulary</a>.
 
