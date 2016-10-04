@@ -70,16 +70,16 @@ Compile a list of all checks that fail and report them back to the data publishe
 | `organismQuantity` | 1 | Must pair with `organismQuantityType`  |
 | `organismQuantityType` | "individuals" | Must match [GBIF Quantity Type Vocabulary](http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml) |
 | `occurrenceStatus` | "present" | Must match [GBIF Occurrence Status Vocabulary](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml) |
-| `scientificName` | "Canis aureus Linnaeus, 1758" | Must be in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format |
-| `taxonRank` | 2007 | Must be four-digit year |
-| `kingdom` | "Animalia" | Must be full scientific name of the kingdom in which the taxon is classified. | 
-| `phylum` | "Chordata" | Must be full scientific name of the phylum or division in which the taxon is classified. |
-| `class` | "Mammalia" | Must be full scientific name of the class in which the taxon is classified. |
-| `order` | "Carnivora" | Must be full scientific name of the order in which the taxon is classified. |
-| `family` | "Canidae" | Must be full scientific name of the family in which the taxon is classified. |
-| `genus` | "Canis Linnaeus, 1758" | Must be full scientific name of the genus in which the taxon is classified. |
+| `scientificName` | "Canis aureus Linnaeus, 1758" | Must be the full scientific name, with authorship and date information if known. |
+| `taxonRank` | "species" | Must match [GBIF Taxon Rank Vocabulary](http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml) |
+| `kingdom` | "Animalia" | Must be the full scientific name of the kingdom in which the taxon is classified. | 
+| `phylum` | "Chordata" | Must be the full scientific name of the phylum or division in which the taxon is classified. |
+| `class` | "Mammalia" | Must be the full scientific name of the class in which the taxon is classified. |
+| `order` | "Carnivora" | Must be the full scientific name of the order in which the taxon is classified. |
+| `family` | "Canidae" | Must be the full scientific name of the family in which the taxon is classified. |
+| `genus` | "Canis Linnaeus, 1758" | Must be the full scientific name of the genus in which the taxon is classified. |
 | `taxonID` | 5219219 | Must be a GUID or an identifier related to the source |
-| `nameAccordingTo` | "GBIF Backbone Taxonomy, 2016" | Must be reference including date  |
+| `nameAccordingTo` | "GBIF Backbone Taxonomy, May 2016" | Must be reference including date  |
 | `nameAccordingToID` | "http://www.gbif.org/species/5219219" | Must be a GUID or an identifier related to the source |
 
 ## Who acted in the event?
