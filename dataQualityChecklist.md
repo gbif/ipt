@@ -59,12 +59,14 @@ Compile a list of all checks that fail and report them back to the data publishe
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
 | **what#6** | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the [GBIF Taxonomic Rank Vocabulary](http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml). Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`. |
+| **what#7** | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source. |
 
 ## Who acted in the event?
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
 | **who#1** | `recordedBy` | The full names of each person responsible for acting in the event should be entered in `recordedBy` using the vertical bar as a separator.  |
 | **who#2** | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen. |
+| **who#3** | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.  |
 
 ## When did the event take place?
 
@@ -163,7 +165,9 @@ Compile a list of all checks that fail and report them back to the data publishe
 | `dataGeneralizations` | "Point location was not found in legacy data" |
 
 ## Why did the event happen?
-TODO
+| Check-ID | Fields | Requirements |
+|:---------------|:--------------- |:---------------|
+| **why#1** | `samplingProtocol`, `eventRemarks`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. Lengthy method descriptions should be replaced with a URL referencing the description.  |
 
 ## Dataset Metadata
 
