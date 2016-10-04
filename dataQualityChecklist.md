@@ -47,16 +47,19 @@ Compile a list of all checks that fail and report them back to the data publishe
 
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
+#### What type of event was it?
 | **what#1** | `occurrenceID`, `basisOfRecord`, `eventID`  | The species observation event uniquely identified by `occurrenceID` and having `basisOfRecord` equal to `HumanObservation` or `MachineObservation` indicating whether the observation was performed by a machine or by one or more people. If this observation was derived from a sampling event, it must have the `eventID` of the sampling event filled in. |
 | **what#2** | `occurrenceID`, `basisOfRecord`, `catalogNumber`, `collectionCode`, `eventID`  | The specimen preservation event uniquely identified by `occurrenceID` and having `basisOfRecord` equal to `PreservedSpecimen`, `FossilSpecimen` or `LivingSpecimen` indicating its specific type. Ideally a specimen is deposited in a collection and therefore can be assigned both a `catalogNumber` and `collectionCode`.  If this specimen was derived from a sampling event, it must have the `eventID` of the sampling event filled in. |
 | **what#3** | `occurrenceID`, `basisOfRecord`, `materialSampleID`, `catalogNumber`, `collectionCode`, `eventID`  | The physical result of a sampling event uniquely identified by both `occurrenceID` and having `basisOfRecord` equal to `MaterialSample`. If the sample was preserved (vs destructively processed) as a specimen and deposited in a collection it will ideally be assigned both a `catalogNumber` and `collectionCode`. The `eventID` of the sampling event must be filled in. |
 | **what#4** | `eventID`, `fieldNumber`, `parentEventID`   | The actual sampling event uniquely identified by `eventID`. The `eventID` should be a GUID, otherwise it should reuse the `fieldNumber`. The `parentEventID` indicates the event is a sub-sampling event. To be valid, all `parentEventIDs` must reference `eventIDs` of records defined in the same dataset. Otherwise, the `parentEventID` must be a globally unique identifier (e.g. DOI, HTTP, URI, etc) that resolves to an event record described elsewhere. Ideally all sub-sampling events share the same data and location as the parent event. |
-
-#### How many species were there?
-
+#### If it was a species occurrence related event - how many species were there?
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
-| **how#1** | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and `organismQuantity` / `organismQuantityType`. For relative abundance only `organismQuantity` / `organismQuantityType` should be used with values for `organismQuantityType` coming from the GBIF Quantity Type Vocabulary. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to absence per the GBIF Occurrence Status Vocabulary. |
+| **what#5** | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the [GBIF Quantity Type Vocabulary](http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml). Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to "absence" per the [GBIF Occurrence Status Vocabulary](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml). |
+#### If it was a species occurrence related event - what species was it?
+| Check-ID | Fields | Requirements |
+|:---------------|:--------------- |:---------------|
+| **what#6** | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus`, `scientificNameAuthorship` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the name's `taxonRank` should be supplied as per the [GBIF Taxonomic Rank Vocabulary](http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml). Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`. |
 
 ## Who acted in the event?
 TODO
