@@ -90,7 +90,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 | **who#3** | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.  |
 
 
-#### Case 1: Specimen that was collected and then identified
+#### Case 1: Two different people collecting and identifying a specimen
 | Field | Value | Constraint |
 |:--------------- |:---------------|:---------------|
 | `recordedBy` | "Ole Karsholt" | Must be one or more persons' names |
