@@ -89,7 +89,6 @@ Compile a list of all checks that fail and report them back to the data publishe
 | **who#2** | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen. |
 | **who#3** | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.  |
 
-
 #### Case 1: Two different people collecting and identifying a specimen
 | Field | Value | Constraint |
 |:--------------- |:---------------|:---------------|
@@ -198,6 +197,15 @@ Compile a list of all checks that fail and report them back to the data publishe
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
 | **why#1** | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the [Unit of Measurement Vocabulary](http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml). More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why. |
+
+#### Case 1: Because of a butterfly monitoring scheme
+| Field | Value | Constraint |
+|:--------------- |:---------------|:---------------|
+| `samplingProtocol` | "Pollard walks" | Must be a short name or URL referencing a method or sampling protocol |
+| `sampleSizeValue` | "250" | Must pair with `sampleSizeUnit` |
+| `sampleSizeUnit` | "square_metre" | Must match [GBIF Quantity Type Vocabulary](http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml) |
+| `samplingEffort` | "Average of 30 Minutes walk along transect" | A free-text description |
+| `eventRemarks` | "No occurrences of Lepidoptera recorded for entire transect" | A free-text description |
 
 ## Dataset Metadata
 
