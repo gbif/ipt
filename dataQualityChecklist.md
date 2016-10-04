@@ -89,6 +89,15 @@ Compile a list of all checks that fail and report them back to the data publishe
 | **who#2** | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen. |
 | **who#3** | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.  |
 
+
+#### Case 1: Specimen that was collected and then identified
+| Field | Value | Constraint |
+|:--------------- |:---------------|:---------------|
+| `recordedBy` | "Ole Karsholt" | Must be one or more persons' full names |
+| `institutionCode` | "ZMUC" | Must be an acronym or name of an institution |
+| `ownerInstitutionCode` | "ZMUC" | Must be an acronym or name of an institution |
+| `identifiedBy` | "Ole Karsholt" | Must be names of one or more persons, groups or organizations |
+
 ## When did the event take place?
 
 | Check-ID | Fields | Requirements |
