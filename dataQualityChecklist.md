@@ -5,8 +5,9 @@
 + [[Instructions| dataQualityChecklist#instructions]]
 + [[Checklist| dataQualityChecklist#checklist]]
   + [What event happened?](dataQualityChecklist#what-event-happened)
-    + [Case 1](https://github.com/gbif/ipt/wiki/dataQualityChecklist#case-1-species-observation-from-a-camera-trap)
+    + [Case 1](dataQualityChecklist#case-1-species-observation-from-a-camera-trap)
   + [Who acted in the event?](dataQualityChecklist#who-acted-in-the-event)
+    + [Case 1](dataQualityChecklist#case-1-two-different-people-collecting-and-identifying-a-specimen) 
   + [When did the event take place?](dataQualityChecklist#when-did-the-event-take-place)
   + [Where did the event take place?](dataQualityChecklist#where-did-the-event-take-place)
   + [Why did the event happen?](dataQualityChecklist#why-did-the-event-happen)
