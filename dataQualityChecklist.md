@@ -59,7 +59,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
 | **what#6** | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the [GBIF Taxonomic Rank Vocabulary](http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml). Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`. |
-| **what#7** | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source. |
+| **what#7** | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`). |
 
 ## Who acted in the event?
 | Check-ID | Fields | Requirements |
