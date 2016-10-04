@@ -213,7 +213,7 @@ The dataset metadata should contain enough information to facilitate reuse of th
 
 | Field | Requirements | Example |
 |:--------------- |:---------------|:---------------|
-| `Title` | is a concise name that describes the contents of the dataset and that distinguishes it from others| _"Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen"_|
+| `Title` | is a concise name that describes the contents of the dataset and that distinguishes it from others| _"Reef Life Survey: Global reef fish dataset"_|
 | `Description` | is a short paragraph (abstract) describing the content of the dataset. | _"This dataset contains records of bony fishes and elasmobranchs collected by Reef Life Survey (RLS) divers along 50 m transects on shallow rocky and coral reefs, worldwide. Abundance information is available for all records found within quantitative survey limits (50 x 5 m swathes during a single swim either side of the transect line, each distinguished as a Block), and out-of-survey records are identified as presence-only (Method 0)."_ |
 | `Publishing Organisation` | the organization responsible for publishing (producing, releasing, holding) this resource. | _"Reef Life Survey"_|
 | `License` | must be one of ﻿three machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0), which provide a standardized way to define appropriate uses of the dataset. | _"This work is licensed under a [Creative Commons Attribution (CC-BY) 4.0 License](http://creativecommons.org/licenses/by/4.0/legalcode)."_|
