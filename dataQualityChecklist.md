@@ -5,7 +5,7 @@
 + [[Instructions| dataQualityChecklist#instructions]]
 + [[Checklist| dataQualityChecklist#checklist]]
   + [What event happened?](dataQualityChecklist#what-event-happened)
-  + [Who acted in the event?](dataQualityChecklist#who-performed-the-event)
+  + [Who acted in the event?](dataQualityChecklist#who-acted-in-the-event)
   + [When did the event take place?](dataQualityChecklist#when-did-the-event-take-place)
   + [Where did the event take place?](dataQualityChecklist#where-did-the-event-take-place)
   + [Why did the event happen?](dataQualityChecklist#why-did-the-event-happen)
@@ -63,7 +63,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 ## Who acted in the event?
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
-| **who#1** | `recordedBy` | The full names of each person responsible for acting in the event should be entered in `recordedBy` using the vertical bar (' | ') as the separator.  |
+| **who#1** | `recordedBy` | The full names of each person responsible for acting in the event should be entered in `recordedBy` using the vertical bar as a separator.  |
 | **who#2** | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen. |
 
 ## When did the event take place?
