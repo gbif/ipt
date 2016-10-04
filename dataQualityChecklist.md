@@ -93,10 +93,10 @@ Compile a list of all checks that fail and report them back to the data publishe
 #### Case 1: Specimen that was collected and then identified
 | Field | Value | Constraint |
 |:--------------- |:---------------|:---------------|
-| `recordedBy` | "Ole Karsholt" | Must be one or more persons' full names |
+| `recordedBy` | "Ole Karsholt" | Must be one or more persons' names |
 | `institutionCode` | "ZMUC" | Must be an acronym or name of an institution |
 | `ownerInstitutionCode` | "ZMUC" | Must be an acronym or name of an institution |
-| `identifiedBy` | " Jan Pedersen" | Must be names of one or more persons, groups or organizations |
+| `identifiedBy` | "Jan Pedersen" | Must be names of one or more persons, groups or organizations |
 
 ## When did the event take place?
 
