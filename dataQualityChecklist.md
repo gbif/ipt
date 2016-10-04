@@ -202,7 +202,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 | Field | Value | Constraint |
 |:--------------- |:---------------|:---------------|
 | `samplingProtocol` | "Pollard walks" | Must be a short name or URL referencing a method or sampling protocol |
-| `sampleSizeValue` | "250" | Must pair with `sampleSizeUnit` |
+| `sampleSizeValue` | 250 | Must pair with `sampleSizeUnit` |
 | `sampleSizeUnit` | "square_metre" | Must match [Unit of Measurement Vocabulary](http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml) |
 | `samplingEffort` | "Average of 30 Minutes walk along transect" | A free-text description |
 | `eventRemarks` | "No occurrences of Lepidoptera recorded for entire transect" | A free-text description |
