@@ -9,6 +9,7 @@
   + [When did the event take place?](dataQualityChecklist#when-did-the-event-take-place)
   + [Where did the event take place?](dataQualityChecklist#where-did-the-event-take-place)
   + [Why did the event happen?](dataQualityChecklist#why-did-the-event-happen)
+    + [Case 1](dataQualityChecklist#case-1-because-of-a-butterfly-monitoring-scheme)
   + [Dataset metadata](dataQualityChecklist#dataset-metadata)
 
 ## Introduction
