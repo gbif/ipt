@@ -96,7 +96,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 | `recordedBy` | "Ole Karsholt" | Must be one or more persons' full names |
 | `institutionCode` | "ZMUC" | Must be an acronym or name of an institution |
 | `ownerInstitutionCode` | "ZMUC" | Must be an acronym or name of an institution |
-| `identifiedBy` | "Ole Karsholt" | Must be names of one or more persons, groups or organizations |
+| `identifiedBy` | " Jan Pedersen" | Must be names of one or more persons, groups or organizations |
 
 ## When did the event take place?
 
