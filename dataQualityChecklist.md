@@ -14,6 +14,10 @@
     + [Case 3](dataQualityChecklist#case-3-partial-date)
     + [Case 4](dataQualityChecklist#case-4-missing-date)
   + [Where did the event take place?](dataQualityChecklist#where-did-the-event-take-place)
+    + [Case 1](dataQualityChecklist#case-1-point-location-converted-from-degrees-minutes-seconds-to-decimal-degrees)
+    + [Case 2](dataQualityChecklist#case-2-date-time-range-spanning-days)
+    + [Case 3](dataQualityChecklist#case-3-partial-date)
+    + [Case 4](dataQualityChecklist#case-4-missing-date)https://github.com/gbif/ipt/wiki/dataQualityChecklist#case-1-point-location-converted-from-degrees-minutes-seconds-to-decimal-degrees
   + [Why did the event happen?](dataQualityChecklist#why-did-the-event-happen)
     + [Case 1](dataQualityChecklist#case-1-because-of-a-butterfly-monitoring-scheme)
   + [Dataset metadata](dataQualityChecklist#dataset-metadata)
