@@ -85,7 +85,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 ## Who acted in the event?
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
-| **who#1** | `recordedBy` | The full names of each person responsible for acting in the event should be entered in `recordedBy` using the vertical bar as a separator.  |
+| **who#1** | `recordedBy` | The full names of each person acting in the event (e.g. collecting, observing, etc) should be entered in `recordedBy` using the vertical bar as a separator. Note there is a separate field for capturing the person(s) making the identification (see below). |
 | **who#2** | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen. |
 | **who#3** | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.  |
 
