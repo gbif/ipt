@@ -61,6 +61,27 @@ Compile a list of all checks that fail and report them back to the data publishe
 | **what#6** | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the [GBIF Taxonomic Rank Vocabulary](http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml). Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`. |
 | **what#7** | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`). |
 
+#### Case 1: Species observation from a camera trap
+| Field | Value | Constraint |
+|:--------------- |:---------------|:---------------|
+| `occurrenceID` | "HAMAARAG:T0_L_049:6199" | Must be a GUID or an identifier that is near globally unique. Integer identifiers are not allowed. |
+| `basisOfRecord` | "MachineObservation" | Must match [Darwin Core Type Vocabulary](http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml) |
+| `individualCount` | 1 | Must be an integer, 0 or greater |
+| `organismQuantity` | 1 | Must pair with `organismQuantityType`  |
+| `organismQuantityType` | "individuals" | Must match [GBIF Quantity Type Vocabulary](http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml) |
+| `occurrenceStatus` | "present" | Must match [GBIF Occurrence Status Vocabulary](http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml) |
+| `scientificName` | "Canis aureus Linnaeus, 1758" | Must be in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format |
+| `taxonRank` | 2007 | Must be four-digit year |
+| `kingdom` | "Animalia" | Must be full scientific name of the kingdom in which the taxon is classified. | 
+| `phylum` | "Chordata" | Must be full scientific name of the phylum or division in which the taxon is classified. |
+| `class` | "Mammalia" | Must be full scientific name of the class in which the taxon is classified. |
+| `order` | "Carnivora" | Must be full scientific name of the order in which the taxon is classified. |
+| `family` | "Canidae" | Must be full scientific name of the family in which the taxon is classified. |
+| `genus` | "Canis Linnaeus, 1758" | Must be full scientific name of the genus in which the taxon is classified. |
+| `taxonID` | 5219219 | Must be a GUID or an identifier related to the source |
+| `nameAccordingTo` | "GBIF Backbone Taxonomy, 2016" | Must be reference including date  |
+| `nameAccordingToID` | "http://www.gbif.org/species/5219219" | Must be a GUID or an identifier related to the source |
+
 ## Who acted in the event?
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
