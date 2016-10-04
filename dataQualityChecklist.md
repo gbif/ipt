@@ -10,7 +10,7 @@
     + [Case 1](dataQualityChecklist#case-1-two-different-people-collecting-and-identifying-a-specimen) 
   + [When did the event take place?](dataQualityChecklist#when-did-the-event-take-place)
     + [Case 1](dataQualityChecklist#case-1-single-date)
-    + [Case 2](dataQualityChecklist#case-1-single-date)
+    + [Case 2](dataQualityChecklist#case-2-date-time-range-spanning-days)
     + [Case 3](dataQualityChecklist#case-1-single-date)
   + [Where did the event take place?](dataQualityChecklist#where-did-the-event-take-place)
   + [Why did the event happen?](dataQualityChecklist#why-did-the-event-happen)
