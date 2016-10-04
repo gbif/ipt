@@ -78,9 +78,9 @@ Compile a list of all checks that fail and report them back to the data publishe
 | `order` | "Carnivora" | Must be the full scientific name of the order in which the taxon is classified. |
 | `family` | "Canidae" | Must be the full scientific name of the family in which the taxon is classified. |
 | `genus` | "Canis Linnaeus, 1758" | Must be the full scientific name of the genus in which the taxon is classified. |
-| `taxonID` | 5219219 | Must be a GUID or an identifier related to the source |
+| `taxonID` | http://www.gbif.org/species/5219219 | Must be a GUID or an identifier related to the source |
 | `nameAccordingTo` | "GBIF Backbone Taxonomy, May 2016" | Must be reference including date  |
-| `nameAccordingToID` | "http://www.gbif.org/species/5219219" | Must be a GUID or an identifier related to the source |
+| `nameAccordingToID` | "http://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c" | Must be a GUID or an identifier related to the source |
 
 ## Who acted in the event?
 | Check-ID | Fields | Requirements |
