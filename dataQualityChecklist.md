@@ -167,7 +167,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 ## Why did the event happen?
 | Check-ID | Fields | Requirements |
 |:---------------|:--------------- |:---------------|
-| **why#1** | `samplingProtocol`, `eventRemarks`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. Lengthy method descriptions should be replaced with a URL referencing the description.  |
+| **why#1** | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the [Unit of Measurement Vocabulary](http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml). More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why. |
 
 ## Dataset Metadata
 
