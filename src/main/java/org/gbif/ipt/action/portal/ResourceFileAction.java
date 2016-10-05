@@ -1,5 +1,11 @@
 package org.gbif.ipt.action.portal;
 
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -13,11 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import java.util.Enumeration;
 
 /**
  * The Action responsible for serving datadir resource files.
@@ -40,6 +42,55 @@ public class ResourceFileAction extends PortalBaseAction {
     DataDir dataDir, ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.dataDir = dataDir;
+  }
+
+  /**
+   * Handles DwC-A internal file download request.
+   *
+   * @return Struts2 result string
+   */
+  public String dwcaIn() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    String internalFilename = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_FILE));
+
+    // if no specific version is requested, use the latest published version
+    if (version == null) {
+      BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
+      if (latestVersion == null) {
+        return NOT_FOUND;
+      } else {
+        version = latestVersion;
+      }
+    }
+
+    // serve file
+    File dwcaFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
+    try {
+      ZipFile dwcaZip = new ZipFile(dwcaFile);
+      ZipArchiveEntry entry = dwcaZip.getEntry(internalFilename);
+      if(entry != null) {
+        inputStream = dwcaZip.getInputStream(entry);
+      } else {
+        return NOT_FOUND;
+      }
+    }catch(Exception e) {
+      LOG.warn("failed to get internal file", e);
+      return ERROR;
+    }
+
+    // construct download filename
+    StringBuilder sb = new StringBuilder();
+    sb.append("dwca-" + resource.getShortname());
+    if (version != null) {
+      sb.append("-v" + version.toPlainString());
+    }
+    sb.append("-"+internalFilename);
+    filename = sb.toString();
+
+    mimeType = "text/plain";
+    return SUCCESS;
   }
 
   /**
