@@ -15,6 +15,7 @@ public final class Constants {
   public static final String SESSION_FILE_NAME = "fileName";
   public static final String SESSION_FILE_CONTENT_TYPE = "contentType";
   public static final String REQ_PATH_RESOURCE = "resource";
+  public static final String REQ_PATH_API = "api";
   public static final String REQ_PATH_EML = "eml.do";
   public static final String REQ_PATH_DWCA = "archive.do";
   public static final String REQ_PATH_LOGO = "logo.do";
