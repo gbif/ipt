@@ -4,6 +4,9 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.compress.compressors.deflate.DeflateCompressorInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
@@ -20,6 +23,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Enumeration;
+import java.util.zip.GZIPOutputStream;
+
+import javax.servlet.ServletOutputStream;
 
 /**
  * The Action responsible for serving datadir resource files.
@@ -55,6 +61,10 @@ public class ResourceFileAction extends PortalBaseAction {
     }
     String internalFilename = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_FILE));
 
+    if(internalFilename == null || internalFilename.trim().isEmpty()) {
+      return NOT_FOUND;
+    }
+
     // if no specific version is requested, use the latest published version
     if (version == null) {
       BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
@@ -65,13 +75,18 @@ public class ResourceFileAction extends PortalBaseAction {
       }
     }
 
+    boolean deflate = internalFilename.endsWith(".gz");
+    if(deflate) {
+      internalFilename = internalFilename.replace(".gz","");
+    }
+
     // serve file
     File dwcaFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
     try {
       ZipFile dwcaZip = new ZipFile(dwcaFile);
       ZipArchiveEntry entry = dwcaZip.getEntry(internalFilename);
       if(entry != null) {
-        inputStream = dwcaZip.getInputStream(entry);
+          inputStream = dwcaZip.getInputStream(entry);
       } else {
         return NOT_FOUND;
       }
@@ -87,10 +102,30 @@ public class ResourceFileAction extends PortalBaseAction {
       sb.append("-v" + version.toPlainString());
     }
     sb.append("-"+internalFilename);
+    if(deflate) sb.append(".gz");
     filename = sb.toString();
 
-    mimeType = "text/plain";
-    return SUCCESS;
+    if(deflate){
+      try {
+        res.setContentType("application/x-gzip");
+        res.addHeader("Content-Disposition", "attachment; filename=\""+filename+"\"");
+
+        ServletOutputStream sos = res.getOutputStream();
+        GZIPOutputStream zos = new GZIPOutputStream(sos);
+        IOUtils.copy(inputStream, zos);
+        zos.flush();
+        inputStream.close();
+        zos.close();
+        sos.close();
+      } catch (Exception e){
+        LOG.warn("error sending gzip",e);
+      }
+      return NONE;
+    } else {
+      mimeType = "application/octet-stream";
+      return SUCCESS;
+
+    }
   }
 
   /**
