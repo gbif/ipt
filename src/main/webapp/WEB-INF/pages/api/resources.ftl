@@ -1,7 +1,7 @@
 {"ipt":{
 "name":"${ipt.name!}",
 "link":"${baseURL!}",
-"root":"${baseURL!}/${REQ_PATH_API!"api"}"
+"root":"${baseURL!}/${REQ_PATH_API!"api"}/resources"
 },
 "resources": [
     <#list resources as resource>
