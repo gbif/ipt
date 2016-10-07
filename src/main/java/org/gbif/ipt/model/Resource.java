@@ -1,33 +1,27 @@
 package org.gbif.ipt.model;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import org.gbif.api.model.common.DOI;
-import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.terms.TermFactory;
+import org.gbif.dwc.terms.*;
+import org.gbif.dwca.io.ArchiveField;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.utils.ResourceUtils;
-import org.gbif.metadata.eml.Agent;
-import org.gbif.metadata.eml.Citation;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.*;
 
+import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
@@ -41,6 +35,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.gbif.metadata.eml.Collection;
 
 import static com.google.common.base.Objects.equal;
 
@@ -1257,5 +1252,113 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean hasOccurrenceMapping() {
     return !getMappings(Constants.DWC_ROWTYPE_OCCURRENCE).isEmpty();
+  }
+
+  /**
+   * Return JSON representation of object
+   * @return string
+   */
+  public String toJSONSimple() {
+    //return (new GsonBuilder().create()).toJson(this);
+    // Using a allow first approach to avoid recursive classes
+    Class[] classes = new Class[]{
+            String.class
+            ,Date.class
+            ,BigDecimal.class
+            ,Resource.class
+            ,Collection.class
+    };
+    final Set<Class> allowedClasses = new HashSet<Class>(Arrays.asList(classes));
+    return (new GsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategy() {
+      @Override
+      public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+        return fieldAttributes.getName().equals("resource");
+      }
+
+      @Override
+      public boolean shouldSkipClass(Class<?> aClass) {
+        return !allowedClasses.contains(aClass);
+      }
+    }).create()).toJson(this);
+  }
+
+  /**
+   * Return JSON representation of object
+   * @return string
+   */
+  public String toJSON() {
+    //return (new GsonBuilder().create()).toJson(this);
+    // Using a allow first approach to avoid recursive classes
+    Class[] classes = new Class[]{
+             String.class
+            ,Date.class
+            ,BigDecimal.class
+            ,Resource.class
+            ,Eml.class
+            ,KeywordSet.class
+            ,Agent.class
+            ,UserId.class
+            ,UUID.class
+            ,User.class
+            ,BibliographicCitationSet.class
+            ,Citation.class
+            ,Collection.class
+            ,Project.class
+            ,PhysicalData.class
+            ,MaintenanceUpdateFrequency.class
+            ,PublicationMode.class
+            ,PublicationStatus.class
+            ,TemporalCoverage.class
+            ,TaxonomicCoverage.class
+            ,GeospatialCoverage.class
+            ,TaxonKeyword.class
+            ,Organisation.class
+            ,IdentifierStatus.class
+            ,User.class
+            ,List.class
+            ,Set.class
+            ,Source.class
+            ,SourceBase.class
+            ,SqlSource.class
+            ,FileSource.class
+            ,TextFileSource.class
+            ,ExcelFileSource.class
+            ,File.class
+            ,Source.class
+            ,ExtensionMapping.class
+            ,VersionHistory.class
+            ,PropertyMapping.class
+            ,Map.class
+            ,ArchiveField.class
+            ,Integer.class
+            ,Boolean.class
+            ,Term.class
+            ,VocabularyTerm.class
+            ,AcTerm.class
+            ,EolReferenceTerm.class
+            ,IucnTerm.class
+            ,GbifInternalTerm.class
+            ,GbifTerm.class
+            ,XmpTerm.class
+            ,XmpRightsTerm.class
+            ,UnknownTerm.class
+            ,DcTerm.class
+            ,DwcTerm.class
+            ,DcElement.class
+            ,UnknownTerm.class
+            ,ArchiveField.DataType.class
+    };
+    final Set<Class> allowedClasses = new HashSet<Class>(Arrays.asList(classes));
+    return (new GsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategy() {
+      @Override
+      public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+        return fieldAttributes.getName().equals("resource");
+      }
+
+      @Override
+      public boolean shouldSkipClass(Class<?> aClass) {
+        return !allowedClasses.contains(aClass);
+      }
+    }).create()).toJson(this);
   }
 }

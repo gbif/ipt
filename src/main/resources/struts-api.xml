@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+  "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!--
+	Actions related to the data browse/search area of the IPT
+	These will be accessible by everyone for resources that have been published, but
+	some of the resources will only be accessible to the owning user or the administrator
+ -->
+<struts>
+  <!-- The entry to the public section -->
+  <package name="api" extends="ipt-default" namespace="/api">
+    <default-interceptor-ref name="portalStack"/>
+    <default-action-ref name="resources"/>
+    <global-results>
+      <result name="404">
+        <param name="location">/WEB-INF/pages/api/404.ftl</param>
+      </result>
+      <result name="410">
+        <param name="location">/WEB-INF/pages/api/410.ftl</param>
+      </result>
+    </global-results>
+
+    <action name="resources"
+            class="org.gbif.ipt.action.portal.ResourceAction" method="apiResources">
+      <result name="success" type="freemarker">
+        <param name="location">/WEB-INF/pages/api/resources.ftl</param>
+        <param name="contentType">application/json</param>
+      </result>
+    </action>
+
+    <action name="resource"
+            class="org.gbif.ipt.action.portal.ResourceAction" method="apiResource">
+      <result name="success" type="freemarker">
+        <param name="location">/WEB-INF/pages/api/resource.ftl</param>
+        <param name="contentType">application/json</param>
+      </result>
+    </action>
+  </package>
+</struts>

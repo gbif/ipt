@@ -267,6 +267,14 @@ public class ResourceAction extends PortalBaseAction {
     return SUCCESS;
   }
 
+  public String apiResources() {
+    resources = resourceManager.list(PublicationStatus.PUBLIC);
+    return SUCCESS;
+  }
+
+  public String apiResource() {
+    return detail();
+  }
   /**
    * Finish loading all details shown on resource homepage.
    *

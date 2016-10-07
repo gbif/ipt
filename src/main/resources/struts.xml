@@ -120,7 +120,7 @@
       <result name="setupIncomplete" type="redirect">/setup.do</result>
       <result name="login" type="redirect">${baseURL}/login.do</result>
       <result name="home" type="redirect">${baseURL}/home.do</result>
-
+      <result name="api" type="redirect">${baseURL}/api/resources</result>
     </global-results>
 
     <global-exception-mappings>
@@ -188,4 +188,5 @@
   <include file="struts-portal.xml"/>
   <include file="struts-manage.xml"/>
   <include file="struts-admin.xml"/>
+  <include file="struts-api.xml"/>
 </struts>

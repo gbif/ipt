@@ -259,6 +259,18 @@ public class AppConfig {
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build();
   }
+  /**
+   * @return URI to resource default homepage (no version number) used in DOI registration
+   */
+  @NotNull
+  public URI getResourceApiUrl(@NotNull String shortname) {
+    Preconditions.checkNotNull(getBaseUrl());
+
+    return UriBuilder.fromPath(getBaseUrl())
+            .path(Constants.REQ_PATH_API)
+            .path("resource")
+            .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build();
+  }
 
   /**
    * @return String URI used as resource EML GUID, similar to resource homepage URI but with id param versus r param
