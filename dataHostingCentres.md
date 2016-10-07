@@ -56,7 +56,10 @@ The Atlas of Living Australia provides helpdesk support to new publishers in Aus
 
 ## Belgium
 
-The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdesk support to publishers in Belgium and hosting support for datasets on the [Belgian BIF IPT](http://ipt.biodiversity.be/). Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance.
+The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdesk support to publishers in Belgium and hosting support for datasets on the [Belgian BIF IPT](http://ipt.biodiversity.be/). Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity Platform also hosts an IPT for each of these countries/insitutions:
++ [GBIF Mauritania IPT](http://ipt-mrbif.bebif.be/)
++ [Antabif IPT](http://ipt.biodiversity.aq/)
++ [Biofresh IPT](http://data.freshwaterbiodiversity.eu/ipt/)
 
 ## Canada
 
@@ -78,7 +81,7 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 
 ## France
 
-[GBIF France](http://www.gbif.fr/) provides helpdesk support to new publishers in *Benin*, *Burkina Faso*, *Cameroon*, *France*, *Madagascar*, and *Togo*. GBIF France also hosts an IPT for each of these contries:
+[GBIF France](http://www.gbif.fr/) provides helpdesk support to new publishers in *Benin*, *Burkina Faso*, *Cameroon*, *France*, *Madagascar*, and *Togo*. GBIF France also hosts an IPT for each of these countries:
 
 + [GBIF Benin IPT](http://lis-02.snv.jussieu.fr/ipt_benin/)
 + [GBIF Burkina Faso IPT](http://lis-02.snv.jussieu.fr/ipt_burkina/)
