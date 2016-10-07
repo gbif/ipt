@@ -75,10 +75,11 @@ public class ResourceFileAction extends PortalBaseAction {
       }
     }
 
-    boolean deflate = internalFilename.endsWith(".gz");
-    if(deflate) {
+    boolean gz = internalFilename.endsWith(".gz");
+    if(gz) {
       internalFilename = internalFilename.replace(".gz","");
     }
+    boolean compress = gz || (req.getHeader("Accept-Encoding") != null && req.getHeader("Accept-Encoding").contains("gzip"));
 
     // serve file
     File dwcaFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
@@ -102,12 +103,18 @@ public class ResourceFileAction extends PortalBaseAction {
       sb.append("-v" + version.toPlainString());
     }
     sb.append("-"+internalFilename);
-    if(deflate) sb.append(".gz");
+    if(gz) sb.append(".gz");
     filename = sb.toString();
 
-    if(deflate){
+    if(compress){
       try {
-        res.setContentType("application/x-gzip");
+        if(gz) {
+          res.setContentType("application/x-gzip");
+        } else {
+          res.setContentType("application/octet-stream");
+          res.addHeader("Content-Encoding", "gzip");
+
+        }
         res.addHeader("Content-Disposition", "attachment; filename=\""+filename+"\"");
 
         ServletOutputStream sos = res.getOutputStream();
