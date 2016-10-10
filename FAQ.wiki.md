@@ -9,6 +9,7 @@
   + [[4. I get the following error: "The data directory '/directory' is not writable. What should I do?|FAQ.wiki#4-i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do]]
   + [[5. How can I change the IPT's default language?|FAQ.wiki#5-how-can-i-change-the-ipts-default-language]]
   + [[6. How can I switch the IPT from test mode to production mode?|FAQ.wiki#6-how-can-i-switch-the-ipt-from-test-mode-to-production-mode]]
+  + [[7. What outgoing connections does the IPT make?|FAQ.wiki#7-what-outgoing-connections-does-the-ipt-make
 + [[Usage|FAQ.wiki#usage]]
   + [[1. Why do published files contain broken lines?|FAQ.wiki#1-why-do-published-files-contain-broken-lines]]
   + [[2. Why do published files not include all records?|FAQ.wiki#2-why-do-published-files-not-include-all-records]]
@@ -83,6 +84,12 @@ Switching the IPT from test mode to production mode cannot be done automatically
 Therefore to switch to production mode you need to setup an entirely new IPT instance in production mode. 
 
 To save time recreating resources, you can try transferring your 'test' resources to the production IPT. To do this simply "upload an existing IPT resource using its zipped resource configuration folder." There are complete instructions on how to do this [here](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder).
+
+### 7. What outgoing connections does the IPT make?
+
+In production mode, the IPT makes outgoing connections to http://gbrds.gbif.org. In case you need to update your firewall rules, note you will also need to cater for a “non-proxyfied” redirection to http://apps2.gbif.org. 
+
+In test mode, the IPT makes outgoing connections to http://gbrdsdev.gbif.org. In case you need to update your firewall rules, note you will also need to cater for a “non-proxyfied” redirection to http://apps2.gbif-uat.org. 
 
 ## Usage
 
