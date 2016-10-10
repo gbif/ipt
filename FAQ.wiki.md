@@ -9,7 +9,7 @@
   + [[4. I get the following error: "The data directory '/directory' is not writable. What should I do?|FAQ.wiki#4-i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do]]
   + [[5. How can I change the IPT's default language?|FAQ.wiki#5-how-can-i-change-the-ipts-default-language]]
   + [[6. How can I switch the IPT from test mode to production mode?|FAQ.wiki#6-how-can-i-switch-the-ipt-from-test-mode-to-production-mode]]
-  + [[7. What outgoing connections does the IPT make?|FAQ.wiki#7-what-outgoing-connections-does-the-ipt-make
+  + [[7. What outgoing connections does the IPT make?|FAQ.wiki#7-what-outgoing-connections-does-the-ipt-make]]
 + [[Usage|FAQ.wiki#usage]]
   + [[1. Why do published files contain broken lines?|FAQ.wiki#1-why-do-published-files-contain-broken-lines]]
   + [[2. Why do published files not include all records?|FAQ.wiki#2-why-do-published-files-not-include-all-records]]
