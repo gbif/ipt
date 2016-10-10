@@ -3,7 +3,7 @@
 ## Table of Contents
 + [[Introduction| dataQualityChecklist#introduction]]
 + [[Instructions| dataQualityChecklist#instructions]]
-+ [[Checklist| dataQualityChecklist#checklist]]
++ [[Quality checks| dataQualityChecklist#quality-checks]]
   + [What event happened?](dataQualityChecklist#what-event-happened)
     + [Case 1: Species observation from a camera trap](dataQualityChecklist#case-1-species-observation-from-a-camera-trap)
   + [Who acted in the event?](dataQualityChecklist#who-acted-in-the-event)
@@ -52,7 +52,7 @@ There are various ways each of the five Ws can be answered. Each 'check' relates
 
 Compile a list of all checks that fail and report them back to the data publisher, referring to each check by its 'Check-ID'. This will make providing feedback a less time consuming and verbose process.   
 
-## Checklist
+## Quality checks
 
 ## What event happened?
 #### What type of event was it?
