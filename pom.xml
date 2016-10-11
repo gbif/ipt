@@ -576,7 +576,7 @@
       <version>${itextpdf.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.lowagie</groupId>
+      <groupId>com.itextpdf</groupId>
       <artifactId>itext-rtf</artifactId>
       <version>${itext-rtf.version}</version>
     </dependency>
