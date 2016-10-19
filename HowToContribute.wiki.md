@@ -15,12 +15,12 @@ Please be aware the IPT uses the following core frameworks:
 We use Maven extensively to manage dependencies and the build process.
 To checkout the source code and setup an eclipse project simply do the following (it will create an eclipse project folder _gbif-ipt_ in your current dir):
 
-$ git clone https://github.com/gbif/ipt.git
-$ cd ipt
-$ git tag -l
-$ git checkout ipt-2.3.2 (or newer tag if available)
-$ mvn eclipse:eclipse
-$ mvn
+<code>$ git clone https://github.com/gbif/ipt.git </code><br>
+<code>$ cd ipt </code><br>
+<code>$ git tag -l </code><br>
+<code>$ git checkout ipt-2.3.2 (or newer tag if available) </code><br>
+<code>$ mvn eclipse:eclipse </code><br>
+<code>$ mvn -Dmaven.test.skip=true </code><br>
 
 The command mvn eclipse:eclipse should have created the project artifacts for eclipse so you can import this folder into your eclipse editor if that is what you are using.
 
