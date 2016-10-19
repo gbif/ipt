@@ -1,5 +1,12 @@
-
 # How to Contribute
+
+## Table of Contents
++ [[Introduction|HowToContribute.wiki#introduction]]
++ [[Source Code Dependencies|HowToContribute.wiki#versioning-policy]]
++ [[Getting the source code|HowToContribute.wiki#versioning-policy]]
++ [[Opening the source code in Eclipse|HowToContribute.wiki#versioning-policy]]
++ [[Opening the source code in IntelliJ|HowToContribute.wiki#versioning-policy]]
++ [[Running the application in Jetty|HowToContribute.wiki#versioning-policy]]
 
 ## Introduction
 The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a [pull request](https://help.github.com/articles/creating-a-pull-request/) using a branch or fork of the repository. 
@@ -11,14 +18,14 @@ We use Maven extensively to manage dependencies and the build process. Please be
   * [Freemarker](http://freemarker.sourceforge.net/docs/) templating
   * [JQuery](http://jquery.com/) for javascript and ajax
 
-## Getting the source code: Git
+## Getting the source code
 
 Use Git to checkout the latest version of the code:
 
 <code>$ git clone https://github.com/gbif/ipt.git </code><br>
 <code>$ cd ipt </code><br>
 
-## Opening the source in Eclipse
+## Opening the source code in Eclipse
 
 After checking out the source code, you can open the source code in Eclipse by setting up an Eclipse project. To do so, run the following maven commands:
 
@@ -26,7 +33,7 @@ After checking out the source code, you can open the source code in Eclipse by s
 
 The command mvn eclipse:eclipse should have created the project artifacts for eclipse so you can import this folder into your Eclipse editor.
 
-## Opening the source in IntelliJ
+## Opening the source code in IntelliJ
 
 After checking out the source code, you can open the project in IntelliJ by simply opening the IPT directory in Intellij. 
 
