@@ -2,7 +2,7 @@
 
 ## Table of Contents
 + [[Introduction|HowToContribute.wiki#introduction]]
-+ [[Source Code Dependencies|HowToContribute.wiki#versioning-policy]]
++ [[Source Code Dependencies|HowToContribute.wiki#source-code-dependencies]]
 + [[Getting the source code|HowToContribute.wiki#source-code-dependencies]]
 + [[Opening the source code in Eclipse|HowToContribute.wiki#versioning-policy]]
 + [[Opening the source code in IntelliJ|HowToContribute.wiki#versioning-policy]]
