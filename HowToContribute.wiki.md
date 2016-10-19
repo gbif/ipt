@@ -5,7 +5,7 @@
 + [[Source Code Dependencies|HowToContribute.wiki#source-code-dependencies]]
 + [[Getting the source code|HowToContribute.wiki#getting-the-source-code]]
 + [[Opening the source code in Eclipse|HowToContribute.wiki#opening-the-source-code-in-eclipse]]
-+ [[Opening the source code in IntelliJ|HowToContribute.wiki#versioning-policy]]
++ [[Opening the source code in IntelliJ|HowToContribute.wiki#opening-the-source-code-in-intellij]]
 + [[Running the application in Jetty|HowToContribute.wiki#versioning-policy]]
 
 ## Introduction
