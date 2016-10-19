@@ -23,12 +23,12 @@ We use Maven extensively to manage dependencies and the build process. Please be
 Use Git to checkout the latest version of the code:
 
 <code>$ git clone https://github.com/gbif/ipt.git </code><br>
-<code>$ cd ipt </code><br>
 
 ## Opening the source code in Eclipse
 
 After checking out the source code, you can open the source code in Eclipse by setting up an Eclipse project. To do so, run the following maven commands:
 
+<code>$ cd ipt </code><br>
 <code>$ mvn eclipse:eclipse </code><br>
 
 The command mvn eclipse:eclipse should have created the project artifacts for eclipse so you can import this folder into your Eclipse editor.
@@ -39,6 +39,7 @@ After checking out the source code, you can open the project in IntelliJ by simp
 
 ## Running the application in Jetty
 
+<code>$ cd ipt </code><br>
 <code>$ mvn -Dmaven.test.skip=true </code><br>
 
 This command starts up the IPT via the Jetty plugin on port 8080. You should be able to see the IPT running by opening http://localhost:8080 in your web browser.
