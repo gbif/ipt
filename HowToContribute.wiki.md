@@ -2,7 +2,7 @@
 # How to Contribute
 
 ## Introduction
-The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches be submitted by branching or forking the latest version of the repository and creating a [pull request](https://help.github.com/articles/creating-a-pull-request/). 
+The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a [pull request](https://help.github.com/articles/creating-a-pull-request/) using a branch or fork of the repository. 
 
 ## Source Code Dependencies
 We use Maven extensively to manage dependencies and the build process. Please be aware the IPT uses the following core frameworks:
