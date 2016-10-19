@@ -2,27 +2,36 @@
 # How to Contribute
 
 ## Introduction
-The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches.
+The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches be submitted by branching or forking the latest version of the repository and creating a [pull request](https://help.github.com/articles/creating-a-pull-request/). 
 
 ## Source Code
-Please be aware the IPT uses the following core frameworks:
+We use Maven extensively to manage dependencies and the build process. Please be aware the IPT uses the following core frameworks:
   * [Struts2](http://struts.apache.org/2.x/index.html)
   * [Google Guice](http://code.google.com/p/google-guice/)
   * [Freemarker](http://freemarker.sourceforge.net/docs/) templating
   * [JQuery](http://jquery.com/) for javascript and ajax
 
-## Getting the source, Maven & Eclipse
-We use Maven extensively to manage dependencies and the build process.
-To checkout the source code and setup an eclipse project simply do the following (it will create an eclipse project folder _gbif-ipt_ in your current dir):
+## Getting the source code: Git
+
+Use Git to checkout the latest version of the code:
 
 <code>$ git clone https://github.com/gbif/ipt.git </code><br>
 <code>$ cd ipt </code><br>
-<code>$ git tag -l </code><br>
-<code>$ git checkout ipt-2.3.2 (or newer tag if available) </code><br>
+
+## Opening the source in Eclipse
+
+After checking out the source code, you can open the source code in Eclipse by setting up an Eclipse project. To do so, run the following maven commands:
+
 <code>$ mvn eclipse:eclipse </code><br>
+
+The command mvn eclipse:eclipse should have created the project artifacts for eclipse so you can import this folder into your Eclipse editor.
+
+## Opening the source in IntelliJ
+
+After checking out the source code, you can open the project in IntelliJ by simply opening the IPT directory in Intellij. 
+
+## Running the application in Jetty
+
 <code>$ mvn -Dmaven.test.skip=true </code><br>
 
-The command mvn eclipse:eclipse should have created the project artifacts for eclipse so you can import this folder into your eclipse editor if that is what you are using.
-
-The last command starts up the IPT via the Jetty plugin on port 8080.
-You should be able to see the IPT running by opening the address http://localhost:8080 in your browser.
+This command starts up the IPT via the Jetty plugin on port 8080. You should be able to see the IPT running by opening http://localhost:8080 in your web browser.
