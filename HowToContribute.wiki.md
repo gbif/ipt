@@ -35,7 +35,7 @@ The command mvn eclipse:eclipse should have created the project artifacts for ec
 
 ## Opening the source code in IntelliJ
 
-After checking out the source code, you can open the project in IntelliJ by simply opening the IPT directory in Intellij. 
+After checking out the source code, you can open the project in IntelliJ by simply opening the `ipt/` directory in Intellij. 
 
 ## Running the application in Jetty
 
