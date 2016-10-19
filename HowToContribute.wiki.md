@@ -6,7 +6,7 @@
 + [[Getting the source code|HowToContribute.wiki#getting-the-source-code]]
 + [[Opening the source code in Eclipse|HowToContribute.wiki#opening-the-source-code-in-eclipse]]
 + [[Opening the source code in IntelliJ|HowToContribute.wiki#opening-the-source-code-in-intellij]]
-+ [[Running the application in Jetty|HowToContribute.wiki#versioning-policy]]
++ [[Running the application in Jetty|HowToContribute.wiki#running-the-application-in-jetty]]
 
 ## Introduction
 The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a [pull request](https://help.github.com/articles/creating-a-pull-request/) using a branch or fork of the repository. 
