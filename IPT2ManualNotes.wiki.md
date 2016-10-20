@@ -1153,7 +1153,7 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 * **Resource Managers** - IPT users having a role that allows them to create, change, and remove resources.
 * **RowType** - the category of information represented in an extension. The RowType is generally the URI of the Class that best fits the information contained in the extension.
 * **RSS** - the acronym for Really Simple Syndication, a type of subscription format for tracking changes to a web site.
-* **Sampling Event Resource** - a resource having information about a sampling event as defined in the Darwin Core.
+* **Sampling Event Resource** - A resource where the basis of the resource is sampling events as defined in the Darwin Core.
 * **Shortname** - a short unique name used for resource identification within the IPT and services that access the IPT.
 * **Source Data** - in this user manual, the source data are the data that are mapped to core types and extensions within a resource and may consist of text files or a database.
 * **Visibility** - a term describing how a resource may be viewed (private, public, or registered).
