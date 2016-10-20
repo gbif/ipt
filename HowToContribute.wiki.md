@@ -20,7 +20,7 @@ Please be aware the IPT uses the following core frameworks:
   * [JQuery](http://jquery.com/) for javascript and ajax
 
 ## Prerequisites
-The IPT uses Maven to manage dependencies and the build process. MacOS users can use the [Homebrew](http://brewformulas.org/Maven) package manager to install Maven. For users of other operating systems please refer to [these instructions](http://maven.apache.org/install.html) on how to install Maven.
+The IPT uses Maven to manage dependencies and the build process. MacOS users can use the [Homebrew](http://brewformulas.org/Maven) package manager to install Maven. Users of other operating systems can refer to [Maven's own installation instructions](http://maven.apache.org/install.html) for help.
 
 ## Getting the source code
 
