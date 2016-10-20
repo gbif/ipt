@@ -2,7 +2,8 @@
 
 ## Table of Contents
 + [[Introduction|HowToContribute.wiki#introduction]]
-+ [[Source Code Dependencies|HowToContribute.wiki#source-code-dependencies]]
++ [[Source Code Frameworks|HowToContribute.wiki#source-code-frameworks]]
++ [[Prerequisites|HowToContribute.wiki#prerequisites]]
 + [[Getting the source code|HowToContribute.wiki#getting-the-source-code]]
 + [[Opening the source code in Eclipse|HowToContribute.wiki#opening-the-source-code-in-eclipse]]
 + [[Opening the source code in IntelliJ|HowToContribute.wiki#opening-the-source-code-in-intellij]]
@@ -11,12 +12,15 @@
 ## Introduction
 The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a [pull request](https://help.github.com/articles/creating-a-pull-request/) using a branch or fork of the repository. 
 
-## Source Code Dependencies
-We use Maven extensively to manage dependencies and the build process. Please be aware the IPT uses the following core frameworks:
+## Source Code Frameworks
+Please be aware the IPT uses the following core frameworks:
   * [Struts2](http://struts.apache.org/2.x/index.html)
   * [Google Guice](http://code.google.com/p/google-guice/)
   * [Freemarker](http://freemarker.sourceforge.net/docs/) templating
   * [JQuery](http://jquery.com/) for javascript and ajax
+
+## Prerequisites
+The IPT uses Maven to manage dependencies and the build process. MacOS users can use the [Homebrew](http://brewformulas.org/Maven) package manager to install Maven. For users of other operating systems please refer to [these instructions](http://maven.apache.org/install.html) on how to install Maven.
 
 ## Getting the source code
 
