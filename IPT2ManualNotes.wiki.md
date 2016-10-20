@@ -1147,7 +1147,7 @@ Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version
 * **Occurrence Resource** - a resource having information about Occurrences as defined in the Darwin Core.
 * **Private** - a state of a resource in which only the creator, invited managers, and IPT administrators can view it.
 * **Public** - a state of a resource in which anyone can view it.
-* **Published Release** - the latest version of the Darwin Core Archive produced for a resource in the IPT and registered in the GBIF Registry.
+* **Published Release** - a version of the resource that has been produced by the IPT.
 * **Registered** - a state of a public resource or of an IPT instance in which anyone can discover it through the GBIF Registry.
 * **Resource** - in this user manual, resource refers to a data set and the metadata about it.
 * **Resource Managers** - IPT users having a role that allows them to create, change, and remove resources.
