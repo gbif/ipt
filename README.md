@@ -25,3 +25,14 @@ The core development of the IPT is directed by GBIF, but the coding is a communi
 ### Wiki @Translators
 
 The IPT user interface and wiki both need internationalisation, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found [here](HowToTranslate.wiki).
+
+Thanks to an enormous community effort, and by leveraging the power of the [Crowdin](https://crowdin.com/project/gbif-ipt) localisation tool, the user interface has already been translated into six different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, and Japanese. 
+
+Thanks to the dedicatee
+
+####Acknowledgements
+
+[JetBrains](http://www.jetbrains.com/) is kindly supporting this open source project by giving GBIF free open source licenses for its full-featured Java IDE - [IntelliJ](http://www.jetbrains.com/idea/). [JetBrains](http://www.jetbrains.com/) is the creator of a wide range of tools have been helping software developers be more efficient, no matter what technologies they use. Take a second now to look at their [leading software products](http://www.jetbrains.com/).
+
+[Crowdin](https://crowdin.com/) is kindly supporting this open source project by giving GBIF a free access to its localisation management platform. Crowdin makes it possible to manage a large number of concurrent translations.
+
