@@ -62,8 +62,7 @@
     <guice.version>3.0</guice.version>
     <httpclient.version>4.3.6</httpclient.version>
     <httpcore.version>4.3.3</httpcore.version>
-    <itext.version>4.2.1</itext.version>
-    <itext-rtf.version>2.1.7</itext-rtf.version>
+    <itext.version>2.1.7</itext.version>
     <javassist.version>3.12.1.GA</javassist.version>
     <jetty-maven-plugin.version>7.6.12.v20130726</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
@@ -569,7 +568,12 @@
       <version>${commons-io.version}</version>
     </dependency>
 
-    <!-- rtf generation -->
+    <!--
+      RTF generation.
+      Version frozen at 2.1.7 - do not upgrade!
+      RTF writing is no longer supported in itext v5.
+      Warning itext v4 cannot be used either because it has a distribution relocation to v5 in its POM.
+    -->
     <dependency>
       <groupId>com.lowagie</groupId>
       <artifactId>itext</artifactId>
@@ -578,7 +582,7 @@
     <dependency>
       <groupId>com.lowagie</groupId>
       <artifactId>itext-rtf</artifactId>
-      <version>${itext-rtf.version}</version>
+      <version>${itext.version}</version>
     </dependency>
     <!-- UriBuilder -->
     <dependency>
