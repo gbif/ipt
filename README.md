@@ -8,7 +8,7 @@ The Integrated Publishing Toolkit (IPT) is a free open source software tool writ
 
 ### @Users
 
-If you're only interested in trying out the IPT please request an account on the [Demo IPT instance](http://ipt.gbif.org) by sending an email to helpdesk@gbif.org. 
+If you're only interested in trying out the IPT please request an account on the [Demo IPT](http://ipt.gbif.org) by sending an email to helpdesk@gbif.org. 
 
 The simplest way to begin using the IPT is to request a free account on a [data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
 
