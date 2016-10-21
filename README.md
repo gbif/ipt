@@ -20,4 +20,4 @@ The core development of the IPT is directed by GBIF, but the coding is a communi
 
 ### @Translators
 
-The IPT user interface and user manual both need internationalisation. Internationalisation is a community effort, and everyone is welcome to join. Full instructions aimed at translators can be found [here](HowToTranslate.wiki).
+The IPT user interface and wiki both need internationalisation, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found [here](HowToTranslate.wiki).
