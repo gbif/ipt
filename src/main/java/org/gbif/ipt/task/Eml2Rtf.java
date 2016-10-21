@@ -36,7 +36,6 @@ import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 
 import java.awt.Color;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -399,12 +398,7 @@ public class Eml2Rtf {
         p.add(getText("rtf.unknown"));
       }
       p.add(Chunk.NEWLINE);
-      if (exists(eml.getIntellectualRights())) {
-        p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
-        p.add(eml.getIntellectualRights().replace("\r\n", "\n"));
-        p.add(Chunk.NEWLINE);
-      }
-
+      addLicense(p, eml);
       doc.add(p);
     } else {
       // If no data is uploaded/published through the IPT but there are one or more "External links"
@@ -424,17 +418,32 @@ public class Eml2Rtf {
           p.add(getText("rtf.unknown"));
         }
         p.add(Chunk.NEWLINE);
-        if (exists(eml.getIntellectualRights())) {
-          p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
-          p.add(eml.getIntellectualRights());
-          p.add(Chunk.NEWLINE);
-        }
+        addLicense(p, eml);
         doc.add(p);
       }
     }
     // Add external datasets
     addExternalLinks(doc, eml);
     p.clear();
+  }
+
+  /**
+   * Add license to a Paragraph, where title of license links out to license text. E.g.
+   * "Licences of use: Public Domain (CC0 1.0)"
+   *
+   * @param p Paragraph
+   * @param eml Eml
+   */
+  private void addLicense(Paragraph p, Eml eml) throws DocumentException {
+    String licenseTitle = eml.parseLicenseTitle();
+    String licenseUrl = eml.parseLicenseUrl();
+    if (!Strings.isNullOrEmpty(licenseTitle) && !Strings.isNullOrEmpty(licenseUrl)) {
+      p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
+      Anchor licenseLink = new Anchor(eml.parseLicenseTitle(), fontLink);
+      licenseLink.setReference(eml.parseLicenseUrl());
+      p.add(licenseLink);
+      p.add(Chunk.NEWLINE);
+    }
   }
 
   /**
