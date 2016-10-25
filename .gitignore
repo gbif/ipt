@@ -1,0 +1,13 @@
+*.class
+*.iml
+target/
+.idea/
+.DS_Store
+
+# Package Files #
+*.jar
+*.war
+*.ear
+.classpath
+.project
+.settings/org.eclipse.jdt.core.prefs
