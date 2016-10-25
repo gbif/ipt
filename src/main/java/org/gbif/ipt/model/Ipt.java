@@ -32,7 +32,7 @@ public class Ipt extends AgentBase implements Serializable {
   private Password wsPassword = new Password();
 
   /**
-   * @return the created
+   * @return the created date, meaning the date the IPT was registered with GBIF
    */
   @Nullable
   public Date getCreated() {
@@ -84,7 +84,7 @@ public class Ipt extends AgentBase implements Serializable {
   }
 
   /**
-   * @param created the created to set
+   * @param created the created date to set, meaning the date the IPT was registered with GBIF
    */
   public void setCreated(@Nullable Date created) {
     this.created = created;
