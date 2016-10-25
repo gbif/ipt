@@ -4,7 +4,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwca.io.Archive;
 import org.gbif.dwca.io.ArchiveFactory;
 import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.io.CSVReader;
+import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;

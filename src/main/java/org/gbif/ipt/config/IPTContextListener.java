@@ -13,7 +13,7 @@
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.struts2.CharacterEncodingFilter;
-import org.gbif.ipt.xss.XSSFilter;
+import org.gbif.ws.server.filter.XSSFilter;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

@@ -33,6 +33,7 @@ import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.ClosableReportingIterator;
+import org.gbif.utils.file.csv.UnkownDelimitersException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -330,6 +331,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     } catch (UnsupportedArchiveException e) {
       // fine, cant read it with dwca library, but might still be a valid file for manual setup
       log.warn(e.getMessage());
+    } catch (UnkownDelimitersException e) {
+      // this file is invalid
+      log.warn(e.getMessage());
+      throw new ImportException(e);
     }
     return src;
   }

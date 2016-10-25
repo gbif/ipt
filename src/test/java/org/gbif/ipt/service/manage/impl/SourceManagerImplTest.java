@@ -120,26 +120,12 @@ public class SourceManagerImplTest {
     assertEquals("\t", ((TextFileSource) fileSource).getFieldsTerminatedBy());
   }
 
-  @Test
-  public void testAnalyzeEmptyFile() throws ImportException, IOException, InvalidFilenameException {
+  @Test(expected = ImportException.class)
+  public void testAnalyzeEmptyFile() throws InvalidFilenameException, ImportException {
     // analyze individual source file absolutely no data inside at all
     File srcFile = FileUtils.getClasspathFile("data/image_empty.txt");
     // add source file to test Resource
-    FileSource src = manager.add(resource, srcFile, srcFile.getName());
-    assertEquals("image_empty", src.getName());
-
-    assertTrue(src.isFileSource());
-    TextFileSource fileSource = (TextFileSource) src;
-
-    // ensure all properties reflect the fact there is no data in this file
-    assertEquals(0, fileSource.getIgnoreHeaderLines());
-    assertEquals(0, fileSource.getColumns());
-    assertEquals(0, fileSource.getRows());
-    assertEquals(0, fileSource.getFileSize());
-    assertTrue(fileSource.isReadable());
-    assertTrue(fileSource.isFileSource());
-    assertEquals(null, ((TextFileSource) fileSource).getFieldsEnclosedBy());
-    assertEquals("\t", ((TextFileSource) fileSource).getFieldsTerminatedBy());
+    manager.add(resource, srcFile, srcFile.getName());
   }
 
   @Test

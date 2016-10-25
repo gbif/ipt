@@ -7,7 +7,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.xss.XSSUtil;
+import org.gbif.ws.util.XSSUtil;
 
 import java.util.ArrayList;
 import java.util.List;

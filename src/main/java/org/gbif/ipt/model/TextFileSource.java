@@ -1,6 +1,7 @@
 package org.gbif.ipt.model;
 
-import org.gbif.io.CSVReader;
+import org.gbif.utils.file.csv.CSVReader;
+import org.gbif.utils.file.csv.CSVReaderFactory;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 
@@ -82,7 +83,7 @@ public class TextFileSource extends SourceBase implements FileSource {
   }
 
   private CSVReader getReader() throws IOException {
-    return CSVReader.build(file, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
+    return CSVReaderFactory.build(file, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
   }
 
   public int getRows() {
