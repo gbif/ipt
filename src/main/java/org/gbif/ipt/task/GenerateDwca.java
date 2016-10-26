@@ -9,8 +9,6 @@ import org.gbif.dwca.io.ArchiveFactory;
 import org.gbif.dwca.io.ArchiveField;
 import org.gbif.dwca.io.ArchiveFile;
 import org.gbif.dwca.io.MetaDescriptorWriter;
-import org.gbif.utils.file.csv.CSVReader;
-import org.gbif.utils.file.csv.CSVReaderFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -25,6 +23,8 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
+import org.gbif.utils.file.csv.CSVReader;
+import org.gbif.utils.file.csv.CSVReaderFactory;
 import org.gbif.utils.text.LineComparator;
 
 import java.io.File;
@@ -509,7 +509,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
     addMessage(Level.INFO, "? Validating the ID field " + id.simpleName() + " is always present in extension data file. ");
 
     // find index of column to sort file by - use occurrenceId term index if mapped, ID column otherwise
-    int sortColumnIndex = (extFile.hasTerm(occurrenceId)) ? extFile.getField(occurrenceId).getIndex() : ID_COLUMN_INDEX;
+    int sortColumnIndex = (extFile.hasTerm(occurrenceId) && extFile.getField(occurrenceId).getIndex() != null) ?
+      extFile.getField(occurrenceId).getIndex() : ID_COLUMN_INDEX;
 
     // create a sorted data file
     File sortedFile = sortCoreDataFile(extFile, sortColumnIndex);
