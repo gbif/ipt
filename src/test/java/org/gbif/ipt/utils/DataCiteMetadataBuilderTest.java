@@ -425,6 +425,32 @@ public class DataCiteMetadataBuilderTest {
   }
 
   /**
+   * First agent in list only had position name.
+   */
+  @Test(expected = InvalidMetadataException.class)
+  public void testConvertEmlCreatorsWithPositionName() throws InvalidMetadataException {
+    Agent creator1 = new Agent();
+    creator1.setPosition("President");
+    List<Agent> creators = Lists.newArrayList();
+    creators.add(creator1);
+    DataCiteMetadataBuilder.convertEmlCreators(creators);
+  }
+
+  /**
+   * First agent in list only had organization name.
+   */
+  @Test
+  public void testConvertEmlCreatorsWithOrganisationName() throws InvalidMetadataException {
+    Agent creator1 = new Agent();
+    creator1.setOrganisation("NHM London");
+    List<Agent> creators = Lists.newArrayList();
+    creators.add(creator1);
+    DataCiteMetadata.Creators ls = DataCiteMetadataBuilder.convertEmlCreators(creators);
+    DataCiteMetadata.Creators.Creator c = ls.getCreator().get(0);
+    assertEquals("NHM London", c.getCreatorName());
+  }
+
+  /**
    * Scheme not recognized - only ORCID and ResearcherId are supported.
    */
   @Test

@@ -109,7 +109,7 @@ public class OverviewActionIT {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     InputStream dc = FileUtils.classpathStream("datacite.yaml");
     ServiceConfig dcCfg = mapper.readValue(dc, ServiceConfig.class);
-    LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
+    //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
     oDataCite.setKey(ORGANISATION_KEY.toString());

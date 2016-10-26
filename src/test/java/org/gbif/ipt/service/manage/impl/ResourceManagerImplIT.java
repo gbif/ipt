@@ -128,7 +128,7 @@ public class ResourceManagerImplIT {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     InputStream dc = FileUtils.classpathStream("datacite.yaml");
     ServiceConfig dcCfg = mapper.readValue(dc, ServiceConfig.class);
-    LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
+    //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
     oDataCite.setAgencyAccountPrimary(true);

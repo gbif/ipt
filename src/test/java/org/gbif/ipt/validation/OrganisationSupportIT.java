@@ -72,7 +72,7 @@ public class OrganisationSupportIT {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     InputStream dc = FileUtils.classpathStream("datacite.yaml");
     ServiceConfig dcCfg = mapper.readValue(dc, ServiceConfig.class);
-    LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
+    //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     // organisation with valid DataCite account
     Organisation o1 = new Organisation();

@@ -372,7 +372,7 @@ public class DataCiteMetadataBuilder {
 
   /**
    * Convert list of EML creators into DataCite creators. DataCite metadata schema (v3.0) requires at least one
-   * creator.
+   * creator. The DataCite metadata schema allows the creator to "be a corporate/institutional or personal name."
    *
    * @param agents EML agents list
    *
@@ -383,7 +383,7 @@ public class DataCiteMetadataBuilder {
   @VisibleForTesting
   protected static DataCiteMetadata.Creators convertEmlCreators(List<Agent> agents) throws InvalidMetadataException {
     DataCiteMetadata.Creators creators = FACTORY.createDataCiteMetadataCreators();
-    if (!agents.isEmpty() && !Strings.isNullOrEmpty(agents.get(0).getFullName())) {
+    if (!agents.isEmpty()) {
       for (Agent agent : agents) {
         DataCiteMetadata.Creators.Creator creator = FACTORY.createDataCiteMetadataCreatorsCreator();
         // name is mandatory, in order of priority:
@@ -409,18 +409,11 @@ public class DataCiteMetadataBuilder {
         else if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
           creator.setCreatorName(agent.getOrganisation());
         }
-        // 3. try position name
-        else if (!Strings.isNullOrEmpty(agent.getPosition())) {
-          creator.setCreatorName(agent.getPosition());
-          // affiliation is optional
-          if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
-            creator.getAffiliation().add(agent.getOrganisation());
-          }
-        }
         // otherwise if no name, organisation name, or position name found, throw exception
         else {
           throw new InvalidMetadataException(
-            "DataCite schema (v3) requires creator have a name! Check creator/agent: " + agent.toString());
+            "DataCite schema (v3) requires creator have a name! Creator can be an organisation or person. Check creator/agent: "
+            + agent.toString());
         }
         // add to list
         creators.getCreator().add(creator);
