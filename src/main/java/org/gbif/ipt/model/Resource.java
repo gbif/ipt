@@ -173,7 +173,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @throws IllegalArgumentException if no core mapping exists when adding a non core mapping
    */
-  public Integer addMapping(ExtensionMapping mapping) throws IllegalArgumentException {
+  public Integer addMapping(@Nullable ExtensionMapping mapping) throws IllegalArgumentException {
     if (mapping != null && mapping.getExtension() != null) {
       if (!mapping.isCore() && !hasCore()) {
         throw new IllegalArgumentException("Cannot add extension mapping before a core mapping exists");
@@ -754,7 +754,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     return key != null && status.equals(PublicationStatus.REGISTERED);
   }
 
-  public void setCoreType(String coreType) {
+  public void setCoreType(@Nullable String coreType) {
     this.coreType = Strings.isNullOrEmpty(coreType) ? null : coreType;
   }
 

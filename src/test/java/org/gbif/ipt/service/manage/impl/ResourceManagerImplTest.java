@@ -30,6 +30,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
@@ -96,7 +97,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
@@ -209,10 +209,16 @@ public class ResourceManagerImplTest {
     // construct occurrence core Extension
     InputStream occurrenceCoreIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/dwc_occurrence.xml");
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
+
+    // construct occurrence core Extension
+    InputStream eventCoreIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/dwc_event_2015-04-24.xml");
+    Extension eventCore = extensionFactory.build(eventCoreIs);
+
     ExtensionManager extensionManager = mock(ExtensionManager.class);
 
-    // mock ExtensionManager returning occurrence core Extension
+    // mock ExtensionManager returning different Extensions
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event")).thenReturn(eventCore);
     when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
       .thenReturn(occurrenceCore);
 
@@ -500,6 +506,172 @@ public class ResourceManagerImplTest {
 
     // create a new resource.
     resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
+  }
+
+  /**
+   * Test resource creation from zipped sampling-event DwC-A where occurrence extension uses a RowType/Extension
+   * that hasn't been installed yet.
+   */
+  @Test(expected = ImportException.class)
+  public void testExtensionRowTypeNotInstalled()
+    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
+    AlreadyExistingException {
+
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // retrieve zipped DwC-A file
+    File dwca = FileUtils.getClasspathFile("resources/dwca-extensionnotinstalled.zip");
+
+    // create copy of DwC-A file in tmp dir, used to mock saving source resource filesource
+    File tmpDir = FileUtils.createTempDir();
+    List<File> files = CompressionUtil.unzipFile(tmpDir, dwca, false);
+
+    // core event.txt file
+    File uncompressedEvent = files.get(0);
+    TextFileSource fileSourceEvent = new TextFileSource();
+    fileSourceEvent.setFile(uncompressedEvent);
+    fileSourceEvent.setName("event.txt");
+
+    // extension occurrence.txt file
+    File uncompressedOccurrence = files.get(2);
+    TextFileSource fileSourceOccurrence = new TextFileSource();
+    fileSourceOccurrence.setFile(uncompressedOccurrence);
+    fileSourceOccurrence.setName("occurrence.txt");
+
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSourceEvent)
+      .thenReturn(fileSourceOccurrence);
+
+    // create a new resource.
+    resourceManager.create("res-extension", null, dwca, creator, baseAction);
+  }
+
+  /**
+   * Test resource creation from zipped sampling-event DwC-A where event core is missing the id element.
+   * The test ensures that an ImportException gets thrown, as the id element is mandatory with extensions.
+   */
+  @Test(expected = ImportException.class)
+  public void testMissingIdElementInCoreMapping()
+    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
+    AlreadyExistingException {
+
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // retrieve zipped DwC-A file
+    File dwca = FileUtils.getClasspathFile("resources/dwca-noidelementincoremapping.zip");
+
+    // create copy of DwC-A file in tmp dir, used to mock saving source resource filesource
+    File tmpDir = FileUtils.createTempDir();
+    List<File> files = CompressionUtil.unzipFile(tmpDir, dwca, false);
+
+    // core event.txt file
+    File uncompressedEvent = files.get(0);
+    TextFileSource fileSourceEvent = new TextFileSource();
+    fileSourceEvent.setFile(uncompressedEvent);
+    fileSourceEvent.setName("event.txt");
+
+    // extension occurrence.txt file
+    File uncompressedOccurrence = files.get(2);
+    TextFileSource fileSourceOccurrence = new TextFileSource();
+    fileSourceOccurrence.setFile(uncompressedOccurrence);
+    fileSourceOccurrence.setName("occurrence.txt");
+
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSourceEvent)
+      .thenReturn(fileSourceOccurrence);
+
+    // create a new resource.
+    resourceManager.create("res-extension", null, dwca, creator, baseAction);
+  }
+
+  /**
+   * Test resource creation from zipped sampling-event DwC-A where occurrence extension is missing coreId term
+   * mapping. The test ensures that the coreId term mapping is added.
+   */
+  @Test
+  public void testMissingCoreIdTermMappingInExtension()
+    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
+    AlreadyExistingException {
+
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // retrieve zipped DwC-A file
+    File dwca = FileUtils.getClasspathFile("resources/dwca-nocoreidtermmapping.zip");
+
+    // create copy of DwC-A file in tmp dir, used to mock saving source resource filesource
+    File tmpDir = FileUtils.createTempDir();
+    List<File> files = CompressionUtil.unzipFile(tmpDir, dwca, false);
+
+    // core event.txt file
+    File uncompressedEvent = files.get(0);
+    TextFileSource fileSourceEvent = new TextFileSource();
+    fileSourceEvent.setFile(uncompressedEvent);
+    fileSourceEvent.setName("event.txt");
+
+    // extension occurrence.txt file
+    File uncompressedOccurrence = files.get(2);
+    TextFileSource fileSourceOccurrence = new TextFileSource();
+    fileSourceOccurrence.setFile(uncompressedOccurrence);
+    fileSourceOccurrence.setName("occurrence.txt");
+
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSourceEvent)
+      .thenReturn(fileSourceOccurrence);
+
+    // create a new resource.
+    Resource resource = resourceManager.create("res-nocoreidtermmapping", null, dwca, creator, baseAction);
+
+    ExtensionMapping extensionMapping = resource.getMapping(Constants.DWC_ROWTYPE_OCCURRENCE, 0);
+    assertEquals(29, extensionMapping.getFields().size());
+    PropertyMapping coreIdTermPropertyMapping = extensionMapping.getField(Constants.DWC_EVENT_ID);
+    assertNotNull(coreIdTermPropertyMapping);
+    assertNotNull(coreIdTermPropertyMapping.getIndex());
+    assertEquals(Integer.valueOf(0), coreIdTermPropertyMapping.getIndex());
+  }
+
+  /**
+   * Test resource creation from zipped sampling-event DwC-A where occurrence extension coreId element index and coreId
+   * term mapping index are different. The test ensures that the coreId element index is set to that of the core term mapping index.
+   */
+  @Test
+  public void testDifferentCoreIdTermIndexInExtension()
+    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
+    AlreadyExistingException {
+
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // retrieve zipped DwC-A file
+    File dwca = FileUtils.getClasspathFile("resources/dwca-differentcoreidtermindex.zip");
+
+    // create copy of DwC-A file in tmp dir, used to mock saving source resource filesource
+    File tmpDir = FileUtils.createTempDir();
+    List<File> files = CompressionUtil.unzipFile(tmpDir, dwca, false);
+
+    // core event.txt file
+    File uncompressedEvent = files.get(0);
+    TextFileSource fileSourceEvent = new TextFileSource();
+    fileSourceEvent.setFile(uncompressedEvent);
+    fileSourceEvent.setName("event.txt");
+
+    // extension occurrence.txt file
+    File uncompressedOccurrence = files.get(2);
+    TextFileSource fileSourceOccurrence = new TextFileSource();
+    fileSourceOccurrence.setFile(uncompressedOccurrence);
+    fileSourceOccurrence.setName("occurrence.txt");
+
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSourceEvent)
+      .thenReturn(fileSourceOccurrence);
+
+    // create a new resource.
+    Resource resource = resourceManager.create("res-differentcoreidtermindex", null, dwca, creator, baseAction);
+
+    ExtensionMapping extensionMapping = resource.getMapping(Constants.DWC_ROWTYPE_OCCURRENCE, 0);
+    assertEquals(28, extensionMapping.getFields().size());
+    PropertyMapping coreIdTermPropertyMapping = extensionMapping.getField(Constants.DWC_EVENT_ID);
+    assertNotNull(coreIdTermPropertyMapping);
+    assertNotNull(coreIdTermPropertyMapping.getIndex());
+    assertEquals(Integer.valueOf(16), coreIdTermPropertyMapping.getIndex());
   }
 
   /**

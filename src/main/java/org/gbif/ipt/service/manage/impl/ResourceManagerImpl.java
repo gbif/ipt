@@ -11,6 +11,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.GbifTerm;
 import org.gbif.dwc.terms.IucnTerm;
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwca.io.Archive;
 import org.gbif.dwca.io.ArchiveFactory;
 import org.gbif.dwca.io.ArchiveField;
@@ -135,6 +136,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, Resource> resources = new HashMap<String, Resource>();
   public static final String PERSISTENCE_FILE = "resource.xml";
   private static final int MAX_PROCESS_FAILURES = 3;
+  private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final XStream xstream = new XStream();
   private SourceManager sourceManager;
   private ExtensionManager extensionManager;
@@ -470,9 +472,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       res.setShortname(lower);
       res.setCreated(new Date());
       res.setCreator(creator);
-      if (type != null) {
-        res.setCoreType(type);
-      }
+      res.setCoreType(type);
       // create dir
       try {
         save(res);
@@ -493,12 +493,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Archive arch = ArchiveFactory.openArchive(dwca);
 
       if (arch.getCore() == null) {
-        alog.warn("manage.resource.create.core.invalid");
+        alog.error("manage.resource.create.core.invalid");
         throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
       }
 
       if (arch.getCore().getRowType() == null) {
-        alog.warn("manage.resource.create.core.invalid.rowType");
+        alog.error("manage.resource.create.core.invalid.rowType");
         throw new ImportException("Darwin core archive is invalid, core mapping has no rowType");
       }
 
@@ -506,20 +506,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Map<String, TextFileSource> sources = new HashMap<String, TextFileSource>();
 
       // determine core type for the resource based on the rowType
-      Term rowType = arch.getCore().getRowType();
-      CoreRowType type;
-      if (rowType.equals(DwcTerm.Taxon)) {
-        type = CoreRowType.CHECKLIST;
-      } else if (rowType.equals(DwcTerm.Occurrence)) {
-        type = CoreRowType.OCCURRENCE;
-      } else if (rowType.equals(DwcTerm.Event)) {
-        type = CoreRowType.SAMPLINGEVENT;
+      Term coreRowType = arch.getCore().getRowType();
+      CoreRowType resourceType;
+      if (coreRowType.equals(DwcTerm.Taxon)) {
+        resourceType = CoreRowType.CHECKLIST;
+      } else if (coreRowType.equals(DwcTerm.Occurrence)) {
+        resourceType = CoreRowType.OCCURRENCE;
+      } else if (coreRowType.equals(DwcTerm.Event)) {
+        resourceType = CoreRowType.SAMPLINGEVENT;
       } else {
-        type = CoreRowType.OTHER;
+        resourceType = CoreRowType.OTHER;
       }
 
       // create new resource
-      resource = create(shortname, type.toString().toUpperCase(Locale.ENGLISH), creator);
+      resource = create(shortname, resourceType.toString().toUpperCase(Locale.ENGLISH), creator);
 
       // read core source+mappings
       TextFileSource s = importSource(resource, arch.getCore());
@@ -527,17 +527,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       ExtensionMapping map = importMappings(alog, arch.getCore(), s);
       resource.addMapping(map);
 
-      // read extension sources+mappings
-      for (ArchiveFile ext : arch.getExtensions()) {
-        if (sources.containsKey(ext.getLocation())) {
-          s = sources.get(ext.getLocation());
-          log.debug("SourceBase " + s.getName() + " shared by multiple extensions");
-        } else {
-          s = importSource(resource, ext);
-          sources.put(ext.getLocation(), s);
+      // if extensions are being used..
+      // the core must contain an id element that indicates the identifier for a record
+      if (!arch.getExtensions().isEmpty()) {
+        if (map.getIdColumn() == null) {
+          alog.error("manage.resource.create.core.invalid.id");
+          throw new ImportException("Darwin core archive is invalid, core mapping has no id element");
         }
-        map = importMappings(alog, ext, s);
-        resource.addMapping(map);
+
+        // read extension sources+mappings
+        for (ArchiveFile ext : arch.getExtensions()) {
+          if (sources.containsKey(ext.getLocation())) {
+            s = sources.get(ext.getLocation());
+            log.debug("SourceBase " + s.getName() + " shared by multiple extensions");
+          } else {
+            s = importSource(resource, ext);
+            sources.put(ext.getLocation(), s);
+          }
+          map = importMappings(alog, ext, s);
+          if (map.getIdColumn() == null) {
+            alog.error("manage.resource.create.core.invalid.coreid");
+            throw new ImportException("Darwin core archive is invalid, extension mapping has no coreId element");
+          }
+
+          // ensure the extension contain a coreId term mapping with the correct coreId index
+          updateExtensionCoreIdMapping(map, resource.getCoreRowType());
+          resource.addMapping(map);
+        }
       }
 
       // try to read metadata
@@ -555,12 +571,40 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (UnsupportedArchiveException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
+    } catch (InvalidConfigException e) {
+      alog.warn(e.getMessage(), e);
+      throw new ImportException(e);
     } catch (IOException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
     }
 
     return resource;
+  }
+
+  /**
+   * Method ensures an Extension's mapping:
+   * a) always contains the coreId term mapping (if it doesn't exist yet)
+   * b) coreId element's index is always the same as the coreId term's index (see issue #1229)
+   *
+   * @param mapping             an extension's mapping (ExtensionMapping)
+   * @param resourceCoreRowType resource's core row type
+   */
+  private void updateExtensionCoreIdMapping(ExtensionMapping mapping, String resourceCoreRowType) {
+    Preconditions.checkNotNull(mapping.getIdColumn(), "The extension must contain a coreId element");
+
+    String coreIdTermQName = AppConfig.coreIdTerm(resourceCoreRowType);
+    PropertyMapping coreIdTermPropertyMapping = mapping.getField(coreIdTermQName);
+    if (coreIdTermPropertyMapping == null) {
+      Term coreIdTerm = TERM_FACTORY.findTerm(coreIdTermQName);
+      PropertyMapping coreIdTermMapping = new PropertyMapping(new ArchiveField(mapping.getIdColumn(), coreIdTerm));
+      mapping.getFields().add(coreIdTermMapping);
+    } else {
+      if (coreIdTermPropertyMapping.getIndex() != null && !coreIdTermPropertyMapping.getIndex()
+        .equals(mapping.getIdColumn())) {
+        mapping.setIdColumn(coreIdTermPropertyMapping.getIndex());
+      }
+    }
   }
 
   /**
@@ -668,13 +712,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resources.get(shortname.toLowerCase());
   }
 
+  /**
+   * Creates an ExtensionMapping from an ArchiveFile, which encapsulates information about a file contained
+   * within a Darwin Core Archive.
+   *
+   * @param alog ActionLogger
+   * @param af ArchiveFile
+   * @param source source file corresponding to ArchiveFile
+   *
+   * @return ExtensionMapping created from ArchiveFile
+   * @throws InvalidConfigException if ExtensionMapping could not be created because the ArchiveFile uses
+   * an extension that has not been installed yet.
+   */
+  @NotNull
   private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
     ExtensionMapping map = new ExtensionMapping();
     map.setSource(source);
     Extension ext = extensionManager.get(af.getRowType().qualifiedName());
     if (ext == null) {
       alog.warn("manage.resource.create.rowType.null", new String[] {af.getRowType().qualifiedName()});
-      return null;
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
     }
     map.setExtension(ext);
 
