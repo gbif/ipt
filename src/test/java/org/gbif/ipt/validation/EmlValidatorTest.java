@@ -27,6 +27,7 @@ import org.gbif.metadata.eml.Collection;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.UserId;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.IOException;
@@ -263,6 +264,11 @@ public class EmlValidatorTest {
     }
   }
 
+  /**
+   * The Basic section requires at least one contact. This test ensures the validation for contact is working
+   * checking that each contact has a last name and if a user id has been specified, that it contains both parts:
+   * directory and identifier.
+   */
   @Test
   public void testBasicPartContactIncomplete() {
     // invalid
@@ -271,8 +277,38 @@ public class EmlValidatorTest {
     badAgent.setLastName("Smith");
     // valid
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+
+    // no user ids to begin
+    assertTrue(badAgent.getUserIds().isEmpty());
+
+    // set invalid user id, because it doesn't contain directory
+    UserId invalidId = new UserId("", "1234-5678-9101-1213");
+    badAgent.getUserIds().add(invalidId);
+    assertFalse(badAgent.getUserIds().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // make user id valid by setting its directory
+    badAgent.getUserIds().get(0).setDirectory("http://orcid.org");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+
+    // clear user ids
+    badAgent.getUserIds().clear();
+    assertTrue(badAgent.getUserIds().isEmpty());
+
+    // this time, set invalid user id, because it doesn't contain identifier
+    invalidId = new UserId("http://orcid.org", "");
+    badAgent.getUserIds().add(invalidId);
+    assertFalse(badAgent.getUserIds().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // make user id valid by setting its identifier
+    badAgent.getUserIds().get(0).setIdentifier("1234-5678-9101-1213");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
+  /**
+   * The Basic section requires at least one creator. This test ensures the validation for creator is working
+   * checking that each creator has a last name and if a user id has been specified, that it contains both parts:
+   * directory and identifier.
+   */
   @Test
   public void testBasicPartCreatorIncomplete() {
     // invalid
@@ -281,8 +317,38 @@ public class EmlValidatorTest {
     badAgent.setLastName("Smith");
     // valid
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+
+    // no user ids to begin
+    assertTrue(badAgent.getUserIds().isEmpty());
+
+    // set invalid user id, because it doesn't contain directory
+    UserId invalidId = new UserId("", "1234-5678-9101-1213");
+    badAgent.getUserIds().add(invalidId);
+    assertFalse(badAgent.getUserIds().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // make user id valid by setting its directory
+    badAgent.getUserIds().get(0).setDirectory("http://orcid.org");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+
+    // clear user ids
+    badAgent.getUserIds().clear();
+    assertTrue(badAgent.getUserIds().isEmpty());
+
+    // this time, set invalid user id, because it doesn't contain identifier
+    invalidId = new UserId("http://orcid.org", "");
+    badAgent.getUserIds().add(invalidId);
+    assertFalse(badAgent.getUserIds().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // make user id valid by setting its identifier
+    badAgent.getUserIds().get(0).setIdentifier("1234-5678-9101-1213");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
+  /**
+   * The Basic section requires at least one metadata provider. This test ensures the validation for metadata provider
+   * is working checking that each metadata provider has a last name and if a user id has been specified, that it
+   * contains both parts: directory and identifier.
+   */
   @Test
   public void testBasicPartMetaProviderIncomplete() {
     // invalid
@@ -290,6 +356,31 @@ public class EmlValidatorTest {
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     badAgent.setLastName("Smith");
     // valid
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+
+    // no user ids to begin
+    assertTrue(badAgent.getUserIds().isEmpty());
+
+    // set invalid user id, because it doesn't contain directory
+    UserId invalidId = new UserId("", "1234-5678-9101-1213");
+    badAgent.getUserIds().add(invalidId);
+    assertFalse(badAgent.getUserIds().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // make user id valid by setting its directory
+    badAgent.getUserIds().get(0).setDirectory("http://orcid.org");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+
+    // clear user ids
+    badAgent.getUserIds().clear();
+    assertTrue(badAgent.getUserIds().isEmpty());
+
+    // this time, set invalid user id, because it doesn't contain identifier
+    invalidId = new UserId("http://orcid.org", "");
+    badAgent.getUserIds().add(invalidId);
+    assertFalse(badAgent.getUserIds().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // make user id valid by setting its identifier
+    badAgent.getUserIds().get(0).setIdentifier("1234-5678-9101-1213");
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
@@ -407,10 +498,58 @@ public class EmlValidatorTest {
   }
 
   @Test
-  public void testProjectPartPersonnelIncomplete() {
-    // invalid
-    eml.getProject().addProjectPersonnel(badAgent);
+  public void testProjectPartPersonnelMissing() {
+    assertNotNull(eml.getProject().getTitle());
+    eml.getProject().getPersonnel().clear();
+    assertTrue(eml.getProject().getPersonnel().isEmpty());
     assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+  }
+
+  @Test
+  public void testProjectPartPersonnelNameIncomplete() {
+    assertNotNull(eml.getProject().getTitle());
+    eml.getProject().getPersonnel().clear();
+    assertTrue(eml.getProject().getPersonnel().isEmpty());
+    // invalid, because agent is missing last name
+    eml.getProject().addProjectPersonnel(badAgent);
+    assertFalse(eml.getProject().getPersonnel().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+  }
+
+  /**
+   * The Project section requires at least one personnel. This test ensures the validation for personnel is working
+   * checking that each personnel has a last name and if a user id has been specified, that it contains both parts:
+   * directory and identifier.
+   */
+  @Test
+  public void testProjectPartPersonnelUseridIncomplete() {
+    assertNotNull(eml.getProject().getTitle());
+    assertEquals(1, eml.getProject().getPersonnel().size());
+    Agent personnel = eml.getProject().getPersonnel().get(0);
+    // no user ids to begin
+    assertTrue(personnel.getUserIds().isEmpty());
+
+    // set invalid user id, because it doesn't contain directory
+    UserId invalidId = new UserId("", "1234-5678-9101-1213");
+    personnel.getUserIds().add(invalidId);
+    assertFalse(personnel.getUserIds().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+    // make user id valid by setting its directory
+    personnel.getUserIds().get(0).setDirectory("http://orcid.org");
+    assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+
+    // clear user ids
+    personnel.getUserIds().clear();
+    assertTrue(personnel.getUserIds().isEmpty());
+
+    // this time, set invalid user id, because it doesn't contain identifier
+    invalidId = new UserId("http://orcid.org", "");
+    personnel.getUserIds().add(invalidId);
+    assertFalse(personnel.getUserIds().isEmpty());
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+    // make user id valid by setting its identifier
+    personnel.getUserIds().get(0).setIdentifier("1234-5678-9101-1213");
+    assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
   }
 
   @Test

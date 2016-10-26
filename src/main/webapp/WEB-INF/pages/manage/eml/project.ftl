@@ -33,7 +33,7 @@
 	<@text name="eml.project.designDescription" help="i18n" />
   <!-- List of personnel -->
   <div class="listBlock grid_17 suffix_1">
-  <@textinline name="eml.project.personnel" help="i18n"/>
+  <@textinline name="eml.project.personnel" help="i18n" requiredField=true/>
       <div id="personnel-items">
         <#list eml.project.personnel as item>
             <div id="personnel-item-${item_index}" class="item clearfix">
