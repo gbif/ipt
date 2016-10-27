@@ -79,8 +79,9 @@ $(document).ready(function(){
       $(this).hide();
     });
   }
-	
-	initHelp();
+
+  initHelp();
+  mirrorCoreIdElementMapping();
 	showHideIdSuffix();
 	showHideFilter();
 	showHideFilterName();
@@ -129,8 +130,35 @@ $(document).ready(function(){
     }
   });
 
+  /**
+   * Ensures coreId term mapping (e.g. eventID) always mirrors id mapping at top of page. Otherwise it
+   * would be possible for the user to specify two different mappings for the term.
+   * This method also disables the term's select and constant value input, source examples and
+   * translation button.
+   */
+  function mirrorCoreIdElementMapping() {
+    var index = $("#coreIdTermFieldsIndex").val();
+    if (index != null && index != '') {
+     // value of coreId element mapping
+     var coreIdElementValueSelected = $("#idColumn").val();
+     // ensure value of coreId term mapping mirrors coreId element mapping
+     var coreIdTerm = $("#fIdx"+index);
+     coreIdTerm.val(coreIdElementValueSelected);
+
+     // disable coreId term mapping select
+     coreIdTerm.css({"pointer-events": "none", "cursor": "default"});
+     // deactivate coreId term constant value input
+     $("#fVal"+index).attr('disabled', true);
+     // hide coreId term mapping source sample
+     $("#fSIdx"+index).hide();
+     // hide coreId term mapping translation section
+     $("#fTIdx"+index).hide();
+     }
+  }
+
 	$("#idColumn").change(function() {
 		showHideIdSuffix();
+    mirrorCoreIdElementMapping()
 	});
 	
 	$("#filterComp").change(function() {
@@ -172,8 +200,8 @@ $(document).ready(function(){
   <@s.submit cssClass="button" name="cancel" key="button.back"/>
 </#macro>
 
-<#macro sourceSample index>
-  <div class="sample mappingText">
+<#macro sourceSample index fieldsIndex>
+  <div id="fSIdx${fieldsIndex}" class="sample mappingText">
     <@s.text name='manage.mapping.sourceSample' />:
       <em>
         <#list peek as row>
@@ -255,8 +283,8 @@ $(document).ready(function(){
           </div>
         </#if>
     <#if field.index??>
-      <@sourceSample field.index/>
-      <div class="sample mappingText">
+      <@sourceSample field.index fieldsIndex/>
+      <div id="fTIdx${fieldsIndex}" class="sample mappingText">
         <@s.text name='manage.mapping.translation' />:
           <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
             <#if (((field.translation?size)!0)>0)>
@@ -385,7 +413,7 @@ $(document).ready(function(){
                         </div>
 
                       <#if ((mapping.idColumn!-99)>=0)>
-                        <@sourceSample mapping.idColumn/>
+                        <@sourceSample mapping.idColumn "idColumn"/>
                       </#if>
                   </div>
 
@@ -452,6 +480,14 @@ $(document).ready(function(){
                 <@threeButtons/>
               </div>
             </#if>
+
+          <#-- store coreId term mapping field index, used to mirror coreId element mapping -->
+          <#if !action.isCoreMapping() && coreid??>
+            <#assign coreIdTermFieldsIndex = action.getFieldsTermIndices().get(coreid.qualname)/>
+            <#if coreIdTermFieldsIndex?has_content>
+              <input id="coreIdTermFieldsIndex" type="hidden" value="${coreIdTermFieldsIndex}" />
+            </#if>
+          </#if>
 
           <#if (nonMapped?size>0)>
             <div>
