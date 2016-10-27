@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -148,9 +149,17 @@ public class SourceAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  /**
+   * Add new file source to resource, replacing existing source if they have the exact same name.
+   *
+   * @param f file source
+   * @param filename filename
+   *
+   * @throws InvalidFilenameException
+   */
   private void addDataFile(File f, String filename) throws InvalidFilenameException {
-    // create a new file source
-    boolean replaced = resource.getSource(filename) != null;
+    Source existingSource = resource.getSource(filename);
+    boolean replaced = existingSource != null;
     try {
       source = sourceManager.add(resource, f, filename);
       // set sources modified date
@@ -160,6 +169,9 @@ public class SourceAction extends ManagerBaseAction {
       id = source.getName();
       if (replaced) {
         addActionMessage(getText("manage.source.replaced.existing", new String[] {source.getName()}));
+        // alert user if the number of columns changed
+        alertColumnNumberChange(resource.hasMappedSource(existingSource), source.getColumns(),
+          existingSource.getColumns());
       } else {
         addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
       }
@@ -172,6 +184,27 @@ public class SourceAction extends ManagerBaseAction {
       removeSessionFile();
       throw e;
     }
+  }
+
+  /**
+   * Alert user if the number of columns changed, when the existing source has already been mapped.
+   *
+   * @param sourceIsMapped true if source is mapped, false otherwise
+   * @param number         current number of columns in source
+   * @param originalNumber original number of columns in source
+   *
+   * @return true if alert was sent, false otherwise
+   */
+  @VisibleForTesting
+  protected boolean alertColumnNumberChange(boolean sourceIsMapped, int number, int originalNumber) {
+    if (sourceIsMapped) {
+      if (Integer.compare(originalNumber, number) != 0) {
+        addActionWarning(getText("manage.source.numColumns.changed",
+          new String[] {source.getName(), String.valueOf(originalNumber), String.valueOf(number)}));
+      return true;
+      }
+    }
+    return false;
   }
 
   public String cancelOverwrite() {
@@ -261,11 +294,17 @@ public class SourceAction extends ManagerBaseAction {
   @Override
   public void prepare() {
     super.prepare();
+    if (session.containsKey(Constants.SESSION_FILE_NUMBER_COLUMNS)) {
+      session.remove(Constants.SESSION_FILE_NUMBER_COLUMNS);
+    }
     if (id != null) {
       source = resource.getSource(id);
       if (source == null) {
         LOG.error("No source with id " + id + " found!");
         addActionError(getText("manage.source.cannot.load", new String[] {id}));
+      } else {
+        // store original number of columns, in case they change the user should be warned to update its mappings
+        session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
       }
     } else if (file == null) {
       // prepare a new, empty sql source
@@ -431,11 +470,13 @@ public class SourceAction extends ManagerBaseAction {
           addFieldError("sqlSource.database",
             getText("validation.short", new String[] {getText("sqlSource.database"), "2"}));
         }
-      } // else {
-      // FILE SOURCE
-      // TextFileSource src = (TextFileSource) source;
-      // TODO validate file source
-      // }
+      }
+      // alert user if the number of columns changed
+      Integer originalNumberColumns = (Integer) session.get(Constants.SESSION_FILE_NUMBER_COLUMNS);
+      if (originalNumberColumns != null) {
+        alertColumnNumberChange(resource.hasMappedSource(source), sourceManager.columns(source).size(),
+          originalNumberColumns);
+      }
     }
   }
 }

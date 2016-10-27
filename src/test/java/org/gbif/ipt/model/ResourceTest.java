@@ -255,6 +255,41 @@ public class ResourceTest {
   }
 
   @Test
+  public void testHasMappedSource() throws AlreadyExistingException {
+    Resource res = getResource();
+
+    Source src1 = new TextFileSource();
+    src1.setName("events");
+    res.addSource(src1, false);
+
+    Source src2 = new TextFileSource();
+    src2.setName("occurrences");
+    res.addSource(src2, false);
+
+    Source src3 = new TextFileSource();
+    src3.setName("images");
+    res.addSource(src3, false);
+
+    // add 2 mappings to events (core) and occurrences (extension), but don't map the third source images
+    ExtensionMapping emOcc = getOccExtensionMapping();
+    emOcc.setSource(src1);
+    ExtensionMapping emE1 = getExtExtensionMapping();
+    emE1.setSource(src2);
+
+    res.addMapping(emOcc);
+    res.addMapping(emE1);
+
+    assertEquals(2, res.getMappings().size());
+    assertEquals(1, res.getCoreMappings().size());
+
+    // assert sources "events" and "occurrences" are declared mapped
+    assertTrue(res.hasMappedSource(src1));
+    assertTrue(res.hasMappedSource(src2));
+    // and that source "images" is not declared mapped
+    assertFalse(res.hasMappedSource(src3));
+  }
+
+  @Test
   public void testCoreRowTypeSet() {
     // create test resource
     Resource resource = new Resource();

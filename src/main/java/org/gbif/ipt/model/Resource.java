@@ -270,6 +270,21 @@ public class Resource implements Serializable, Comparable<Resource> {
     return result;
   }
 
+  /**
+   * @return true if Source is mapped, false otherwise
+   */
+  public boolean hasMappedSource(Source src) {
+    if (src != null) {
+      for (ExtensionMapping em : new ArrayList<ExtensionMapping>(mappings)) {
+        if (em.getSource() != null && src.equals(em.getSource())) {
+          log.debug("Source mapped to " + em.getExtension().getTitle());
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   @Override
   public boolean equals(Object other) {
     if (this == other) {
