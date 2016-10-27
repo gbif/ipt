@@ -483,7 +483,7 @@ $(document).ready(function(){
 
           <#-- store coreId term mapping field index, used to mirror coreId element mapping -->
           <#if !action.isCoreMapping() && coreid??>
-            <#assign coreIdTermFieldsIndex = action.getFieldsTermIndices().get(coreid.qualname)/>
+            <#assign coreIdTermFieldsIndex = action.getFieldsTermIndices().get(coreid.qualname)!/>
             <#if coreIdTermFieldsIndex?has_content>
               <input id="coreIdTermFieldsIndex" type="hidden" value="${coreIdTermFieldsIndex}" />
             </#if>
