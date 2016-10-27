@@ -133,8 +133,8 @@ $(document).ready(function(){
   /**
    * Ensures coreId term mapping (e.g. eventID) always mirrors id mapping at top of page. Otherwise it
    * would be possible for the user to specify two different mappings for the term.
-   * This method also disables the term's select and constant value input, source examples and
-   * translation button.
+   * This method also makes the term's select unselectable, disables its constant value input and hides its source
+   * examples and translation button.
    */
   function mirrorCoreIdElementMapping() {
     var index = $("#coreIdTermFieldsIndex").val();
@@ -145,9 +145,9 @@ $(document).ready(function(){
      var coreIdTerm = $("#fIdx"+index);
      coreIdTerm.val(coreIdElementValueSelected);
 
-     // disable coreId term mapping select
+     // make coreId term mapping select unselectable (warning - do not make disabled or won't get submitted)
      coreIdTerm.css({"pointer-events": "none", "cursor": "default"});
-     // deactivate coreId term constant value input
+     // disable coreId term constant value input
      $("#fVal"+index).attr('disabled', true);
      // hide coreId term mapping source sample
      $("#fSIdx"+index).hide();
