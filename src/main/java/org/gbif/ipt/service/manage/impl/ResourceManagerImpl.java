@@ -143,7 +143,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private RegistryManager registryManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
-  private Map<String, Future<Integer>> processFutures = new HashMap<String, Future<Integer>>();
+  private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<String, Future<Map<String, Integer>>>();
   private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
   private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
   private Eml2Rtf eml2Rtf;
@@ -179,7 +179,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public boolean cancelPublishing(String shortname, BaseAction action) {
     boolean canceled = false;
     // get future
-    Future<Integer> f = processFutures.get(shortname);
+    Future<Map<String, Integer>> f = processFutures.get(shortname);
     if (f != null) {
       // cancel job, even if it's running
       canceled = f.cancel(true);
@@ -699,7 +699,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void generateDwca(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDwca worker = dwcaFactory.create(resource, this);
-    Future<Integer> f = executor.submit(worker);
+    Future<Map<String, Integer>> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
     // make sure we have at least a first report for this resource
     worker.report();
@@ -783,7 +783,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       BigDecimal version = resource.getEmlVersion();
 
       // is listed as locked but task might be finished, check
-      Future<Integer> f = processFutures.get(shortname);
+      Future<Map<String, Integer>> f = processFutures.get(shortname);
       // if this task finished
       if (f.isDone()) {
         // remove process from locking list immediately! Fixes Issue 1141
@@ -792,10 +792,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         String reasonFailed = null;
         Throwable cause = null;
         try {
-          // retrieve resource record count (number of records published in DwC-A)
-          Integer recordCount = f.get();
-          // set number of records published
-          resource.setRecordsPublished(recordCount);
+          // store record counts by extension
+          resource.setRecordsByExtension(f.get());
+          // populate core record count
+          Integer recordCount = resource.getRecordsByExtension().get(Strings.nullToEmpty(resource.getCoreRowType()));
+          resource.setRecordsPublished(recordCount == null ? 0 : recordCount);
           // finish publication (update registration, persist resource changes)
           publishEnd(resource, action, version);
           // important: indicate publishing finished successfully!
@@ -2034,8 +2035,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     versionHistory.setStatus(resource.getIdentifierStatus());
     // change summary
     versionHistory.setChangeSummary(resource.getChangeSummary());
-    // records published
+    // core records published
     versionHistory.setRecordsPublished(resource.getRecordsPublished());
+    // record published by extension
+    versionHistory.setRecordsByExtension(resource.getRecordsByExtension());
     // modifiedBy
     User modifiedBy = action.getCurrentUser();
     if (modifiedBy != null) {
@@ -2309,7 +2312,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return executor;
   }
 
-  public Map<String, Future<Integer>> getProcessFutures() {
+  public Map<String, Future<Map<String, Integer>>> getProcessFutures() {
     return processFutures;
   }
 

@@ -54,6 +54,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -63,7 +64,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 
-public class GenerateDwca extends ReportingTask implements Callable<Integer> {
+public class GenerateDwca extends ReportingTask implements Callable<Map<String, Integer>> {
 
   private enum STATE {
     WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, ARCHIVING, VALIDATING, CANCELLED, FAILED
@@ -71,7 +72,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
   private final Resource resource;
-  private int coreRecords = 0;
+  // record counts by extension <rowType, count>
+  private Map<String, Integer> recordsByExtension = Maps.newHashMap();
   private Archive archive;
   private File dwcaFolder;
   // status reporting
@@ -206,10 +208,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
 
         // write data (records) to file
         dumpData(writer, inCols, m, totalColumns, rowLimit, resource.getDoi());
-        // remember core record number
-        if (resource.getCoreRowType().equalsIgnoreCase(ext.getRowType())) {
-          coreRecords = currRecords;
-        }
+        // store record number by extension rowType
+        recordsByExtension.put(ext.getRowType(), currRecords);
       }
     } catch (IOException e) {
       // some error writing this file, report
@@ -930,7 +930,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
    * @return number of records published in core file
    * @throws GeneratorException if DwC-A generation fails for any reason
    */
-  public Integer call() throws Exception {
+  public Map<String, Integer> call() throws Exception {
     try {
       checkForInterruption();
       setState(STATE.STARTED);
@@ -963,7 +963,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Integer> {
       // set final state
       setState(STATE.COMPLETED);
 
-      return coreRecords;
+      return recordsByExtension;
     } catch (GeneratorException e) {
       // set last error report!
       setState(e);

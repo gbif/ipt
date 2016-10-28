@@ -308,7 +308,7 @@ public interface ResourceManager {
    *
    * @return the Futures map
    */
-  Map<String, Future<Integer>> getProcessFutures();
+  Map<String, Future<Map<String, Integer>>> getProcessFutures();
 
   /**
    * Return the failures map, representing all publishing jobs that have failed.

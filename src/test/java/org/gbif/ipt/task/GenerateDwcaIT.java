@@ -148,9 +148,14 @@ public class GenerateDwcaIT {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    int recordCount = generateDwca.call();
+    Map<String, Integer> recordsByExtension = generateDwca.call();
+    // count for occurrence core only
+    assertEquals(1, recordsByExtension.size());
 
     // 1 row in result set
+    String coreRowType = resource.getCoreRowType();
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, coreRowType);
+    int recordCount = recordsByExtension.get(resource.getCoreRowType());
     assertEquals(1, recordCount);
 
     // confirm existence of versioned (archived) DwC-A "dwca-3.0.zip"
