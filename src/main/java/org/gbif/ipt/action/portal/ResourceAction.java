@@ -10,12 +10,14 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.MapUtils;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
@@ -39,8 +41,11 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -51,6 +56,7 @@ public class ResourceAction extends PortalBaseAction {
   private static final Logger LOG = Logger.getLogger(ResourceAction.class);
 
   private VocabulariesManager vocabManager;
+  private ExtensionManager extensionManager;
   private List<Resource> resources;
   private Integer page = 1;
   // for conveniently displaying taxonomic coverages in freemarker template
@@ -65,6 +71,7 @@ public class ResourceAction extends PortalBaseAction {
   private boolean metadataOnly;
   private boolean preview;
   private Map<String, String> frequencies;
+  private Map<String, String> types;
   private int recordsPublishedForVersion;
   private String dwcaSizeForVersion;
   private String emlSizeForVersion;
@@ -72,10 +79,12 @@ public class ResourceAction extends PortalBaseAction {
 
   @Inject
   public ResourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager, DataDir dataDir) {
+    ResourceManager resourceManager, VocabulariesManager vocabManager, DataDir dataDir,
+    ExtensionManager extensionManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.dataDir = dataDir;
+    this.extensionManager = extensionManager;
   }
 
   @Override
@@ -333,6 +342,11 @@ public class ResourceAction extends PortalBaseAction {
     // update frequencies list, derived from XML vocabulary, and displayed on Basic Metadata Page
     frequencies = new LinkedHashMap<String, String>();
     frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
+
+    // Dataset core type list, derived from XML vocabulary
+    types = new LinkedHashMap<String, String>();
+    types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
+    types = MapUtils.getMapWithLowercaseKeys(types);
   }
 
   /**
@@ -710,5 +724,45 @@ public class ResourceAction extends PortalBaseAction {
    */
   public void setPreview(boolean preview) {
     this.preview = preview;
+  }
+
+  /**
+   * A map of dataset types keys to internationalized values.
+   *
+   * @return map of dataset subtypes
+   */
+  public Map<String, String> getTypes() {
+    return types;
+  }
+
+  /**
+   * @return ExtensionManager, to retrieve Extension by rowType in template
+   */
+  public ExtensionManager getExtensionManager() {
+    return extensionManager;
+  }
+
+  /**
+   * @return the largest number of records found in any extension, excluding the core extension
+   */
+  public int getMaxRecordsInExtension() {
+    int count = 0;
+    if (!resource.getRecordsByExtension().isEmpty()) {
+      for (String rowType : resource.getRecordsByExtension().keySet()) {
+        if (!rowType.equalsIgnoreCase(resource.getCoreRowType())) {
+          int extensionCount = resource.getRecordsByExtension().get(rowType);
+          count = (extensionCount > count) ? extensionCount : count;
+        }
+      }
+    }
+    return count;
+  }
+
+  /**
+   * @return map of record counts by extension ordered by count
+   */
+  public ImmutableSortedMap<String, Integer> getRecordsByExtensionOrdered() {
+    return ImmutableSortedMap.copyOf(resource.getRecordsByExtension(),
+      Ordering.natural().reverse().onResultOf(Functions.forMap(resource.getRecordsByExtension())));
   }
 }

@@ -115,8 +115,13 @@
         <li>
             <a class="sidebar-anchor work" href="#"><@s.text name='portal.resource.summary'/></a>
         </li>
-        <!-- Dataset must have been published to show versions, downloads, and how to cite sections -->
+        <!-- Dataset must have been published to show data records, versions, downloads, and how to cite sections -->
         <#if resource.lastPublished??>
+          <#if metadataOnly != true>
+              <li>
+                  <a class="sidebar-anchor" href="#dataRecords"><@s.text name='portal.resource.dataRecords'/></a>
+              </li>
+          </#if>
         <li>
           <a class="sidebar-anchor" href="#downloads"><@s.text name='portal.resource.downloads'/></a>
         </li>
@@ -313,6 +318,33 @@
 
               <!-- Dataset must have been published for versions, downloads, and how to cite sections to show -->
               <#if resource.lastPublished??>
+
+                <!-- data records section, not shown for metadata-only resources -->
+                <#assign recordsByExtensionOrdered = action.getRecordsByExtensionOrdered()/>
+                <#if recordsByExtensionOrdered?size gt 0 && metadataOnly != true>
+                  <div id="dataRecords" class="row">
+                    <div>
+                      <h1><@s.text name='portal.resource.dataRecords'/></h1>
+                      <p>
+                        <@s.text name='portal.resource.dataRecords.intro'><@s.param>${resource.recordsPublished!0?c}</@s.param><@s.param>${types[resource.coreType?lower_case]}</@s.param></@s.text>
+                        <#if recordsByExtensionOrdered?size gt 1>
+                          <@s.text name='portal.resource.dataRecords.extensions'/>
+                        </#if>
+                      </p>
+                      <div id="record_graph">
+                        <ul class="no_bullets horizontal_graph">
+                          <#list recordsByExtensionOrdered?keys as k>
+                            <#assign ext = action.getExtensionManager().get(k)!/>
+                            <#assign coreRowType = resource.getCoreRowType()!/>
+                            <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content>
+                              <li><span href="#">${ext.name}&nbsp;<@s.text name='portal.resource.records'/></span><div class="grey_bar">${(recordsByExtensionOrdered.get(k)!0)?c}</div></li>
+                            </#if>
+                          </#list>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </#if>
 
                   <!-- downloads section -->
                   <div id="downloads" class="row">
@@ -788,9 +820,11 @@
     <script type="text/javascript" src="${baseURL}/js/jquery/jquery-1.11.1.min.js"></script>
     <!-- DataTables v1.9.4 -->
     <script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.dataTables.js"></script>
+    <!-- data record line chart -->
+    <script type="text/javascript" src="${baseURL}/js/graphs.js"></script>
 
     <!-- Menu Toggle Script -->
-    <script>
+    <script type="text/javascript">
         $("#menu-toggle").click(function(e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
@@ -815,6 +849,16 @@
         $(".contactName").next().hide();
         $(".contactName").click(function(e){
             $(this).next().slideToggle("fast");
+        });
+
+        $(function() {
+          <#if resource.recordsByExtension?size gt 0>
+              var graph = $("#record_graph");
+              graph.append("<div id='coreCount' style='display:none'>${resource.recordsPublished?c}</div>");
+              var maxRecords = ${action.getMaxRecordsInExtension()?c!5000};
+              // max 350px
+              graph.bindGreyBars( (350-((maxRecords+"").length)*10) / maxRecords);
+          </#if>
         });
 
     </script>

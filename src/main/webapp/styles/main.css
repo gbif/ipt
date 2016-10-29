@@ -1709,3 +1709,38 @@ div.mappingFiler {
   margin-left: -100px !important;
 }
 /* End mapping page */
+
+/* Start charts on resource homepage */
+
+ul.no_bullets li {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  padding-left: 0;
+  margin-left: 0;
+}
+ul.horizontal_graph {
+  margin: 0;
+}
+ul.horizontal_graph .grey_bar {
+  background-color: #a9e4ba;
+  border-radius: 1px;
+  display: inline-block;
+  height: 3px;
+  margin: 0 0 2px;
+}
+ul.horizontal_graph li span {
+  display: inline-block;
+  width: 250px;
+  font-size: 0.9em;
+  word-wrap: break-word;
+}
+ul.no_bullets {
+  list-style: outside none none;
+}
+ul.horizontal_graph .value_label {
+  color: #cccccc;
+  display: inline-block;
+  font-size: 0.9em;
+  margin: 0 0 0 10px;
+  padding: 0;
+}
+/* End charts */

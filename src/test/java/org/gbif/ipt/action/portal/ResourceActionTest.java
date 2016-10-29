@@ -10,6 +10,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -27,8 +28,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
+import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.Maps;
 import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
@@ -133,7 +137,7 @@ public class ResourceActionTest {
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class))).thenReturn(nonExistingDwca);
 
     action = new ResourceAction(textProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
-      mockDataDir);
+      mockDataDir, mock(ExtensionManager.class));
     action.setResource(resource);
   }
 
@@ -255,5 +259,32 @@ public class ResourceActionTest {
     // ensure warning was generated:
     // 1. warning about this resource being private and not available to everyone
     assertEquals(1, action.getActionWarnings().size());
+  }
+
+  @Test
+  public void testGetRecordsByExtensionOrdered() {
+    Map<String, Integer> counts = Maps.newLinkedHashMap();
+    counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
+    counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
+    counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);
+    action.resource.setRecordsByExtension(counts);
+
+    // do ordering
+    ImmutableSortedMap<String, Integer> orderedCounts = action.getRecordsByExtensionOrdered();
+    orderedCounts.firstEntry().getValue();
+    assertEquals(100, orderedCounts.firstEntry().getValue().intValue());
+    assertEquals(10, orderedCounts.lastEntry().getValue().intValue());
+  }
+
+  @Test
+  public void testGetMaxRecordsInExtension() {
+    Map<String, Integer> counts = Maps.newLinkedHashMap();
+    counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
+    counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
+    counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);
+    action.resource.setRecordsByExtension(counts);
+
+    // do ordering
+    assertEquals(100, action.getMaxRecordsInExtension());
   }
 }
