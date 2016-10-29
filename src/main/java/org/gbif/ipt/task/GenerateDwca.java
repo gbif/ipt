@@ -222,7 +222,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     }
 
     // add archive file to archive
-    if (resource.getCoreRowType().equalsIgnoreCase(ext.getRowType())) {
+    if (resource.getCoreRowType() != null && resource.getCoreRowType().equalsIgnoreCase(ext.getRowType())) {
       archive.setCore(af);
     } else {
       archive.addExtension(af);
@@ -467,6 +467,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    */
   private void validateExtensionDataFile(ArchiveFile extFile)
     throws GeneratorException, InterruptedException, IOException {
+    Preconditions.checkNotNull(resource.getCoreRowType());
     addMessage(Level.INFO, "Validating the extension file: " + extFile.getTitle()
                            + ". Depending on the number of records, this can take a while.");
     // get the core record ID term
@@ -623,6 +624,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @throws java.io.IOException  if a problem occurred sorting core file, or opening iterator on it for example
    */
   private void validateCoreDataFile(ArchiveFile coreFile, boolean archiveHasExtensions) throws GeneratorException, InterruptedException, IOException {
+    Preconditions.checkNotNull(resource.getCoreRowType());
     addMessage(Level.INFO, "Validating the core file: " + coreFile.getTitle()
                            + ". Depending on the number of records, this can take a while.");
 

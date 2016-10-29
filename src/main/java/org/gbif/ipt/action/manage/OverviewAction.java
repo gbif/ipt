@@ -1028,7 +1028,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       // Does the resource already have a source mapped to core type?
       // The core type can be set from the basic metadata page, and determines which core extensions to show
-      String coreRowType = Strings.emptyToNull(resource.getCoreRowType());
+      String coreRowType = resource.getCoreRowType();
       potentialCores = Lists.newArrayList();
       potentialExtensions = Lists.newArrayList();
 

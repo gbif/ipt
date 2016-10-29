@@ -550,8 +550,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             throw new ImportException("Darwin core archive is invalid, extension mapping has no coreId element");
           }
 
-          // ensure the extension contain a coreId term mapping with the correct coreId index
-          updateExtensionCoreIdMapping(map, resource.getCoreRowType());
+          // ensure the extension contains a coreId term mapping with the correct coreId index
+          if (resource.getCoreRowType() != null) {
+            updateExtensionCoreIdMapping(map, resource.getCoreRowType());
+          }
           resource.addMapping(map);
         }
       }
@@ -566,7 +568,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       save(resource);
 
       alog.info("manage.resource.create.success",
-        new String[] {resource.getCoreRowType(), String.valueOf(resource.getSources().size()),
+        new String[] {Strings.nullToEmpty(resource.getCoreRowType()), String.valueOf(resource.getSources().size()),
           String.valueOf(resource.getMappings().size())});
     } catch (UnsupportedArchiveException e) {
       alog.warn(e.getMessage(), e);

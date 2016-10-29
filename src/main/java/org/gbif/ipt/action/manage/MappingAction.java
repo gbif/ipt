@@ -484,7 +484,8 @@ public class MappingAction extends ManagerBaseAction {
       }
       // save coreid field (e.g. occurrenceID) so that it is included in mapping, despite being a duplicate of coreid
       // Careful: only save coreid field for core extension mappings, not for extension mapping
-      if (resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
+      if (resource.getCoreRowType() != null &&
+          resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
         mappingCoreid.setIndex(mapping.getIdColumn());
         mappingCoreid.setDefaultValue(mapping.getIdSuffix());
         Integer index = MoreObjects.firstNonNull(mappingCoreid.getIndex(), -9999);
@@ -568,7 +569,7 @@ public class MappingAction extends ManagerBaseAction {
    * @return true if mapping is a core mapping, false if mapping is an extension mapping
    */
   public boolean isCoreMapping() {
-    if (mapping.isCore()) {
+    if (mapping.isCore() && resource.getCoreRowType() != null) {
       return resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType());
     }
     return false;
