@@ -72,6 +72,12 @@ public class CreateResourceAction extends POSTAction {
 
   @Override
   public String save() throws IOException {
+    // validation already checked that shortname was not null and valid
+    if (resourceManager.get(shortname) != null) {
+      addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[] {shortname}));
+      return INPUT;
+    }
+
     Date start = new Date();
     // 10 seconds subtracted to accommodate differences in file system date resolution (e.g. Mac HFS has 1s resolution)
     long startTimeInMs = start.getTime() - 10000;

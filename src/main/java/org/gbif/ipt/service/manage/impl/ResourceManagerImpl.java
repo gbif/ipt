@@ -305,6 +305,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
+    Preconditions.checkNotNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
     ActionLogger alog = new ActionLogger(this.log, action);
     Resource resource;
     // decompress archive
@@ -460,33 +465,34 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public Resource create(String shortname, String type, User creator) throws AlreadyExistingException {
-    Resource res = null;
-    if (shortname != null) {
-      // convert short name to lower case
-      String lower = shortname.toLowerCase();
-      // check if existing already
-      if (resources.containsKey(lower)) {
-        throw new AlreadyExistingException();
-      }
-      res = new Resource();
-      res.setShortname(lower);
-      res.setCreated(new Date());
-      res.setCreator(creator);
-      res.setCoreType(type);
-      // create dir
-      try {
-        save(res);
-        log.info("Created resource " + res.getShortname());
-      } catch (InvalidConfigException e) {
-        log.error("Error creating resource", e);
-        return null;
-      }
+    Preconditions.checkNotNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
+    Resource res = new Resource();
+    res.setShortname(shortname.toLowerCase());
+    res.setCreated(new Date());
+    res.setCreator(creator);
+    res.setCoreType(type);
+    // create dir
+    try {
+      save(res);
+      log.info("Created resource " + res.getShortname());
+    } catch (InvalidConfigException e) {
+      log.error("Error creating resource", e);
+      return null;
     }
     return res;
   }
 
   private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
+    Preconditions.checkNotNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
     Resource resource;
     try {
       // try to read dwca
@@ -624,6 +630,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException {
+    Preconditions.checkNotNull(shortname);
+    // check if existing already
+    if (get(shortname) != null) {
+      throw new AlreadyExistingException();
+    }
     Eml eml;
     try {
       // copy eml file to data directory (with name eml.xml) and populate Eml instance
@@ -931,23 +942,38 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
-  public int load() {
-    File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
+  public int load(File resourcesDir) {
     resources.clear();
     int counter = 0;
+    int counterDeleted = 0;
     File[] files = resourcesDir.listFiles();
     if (files != null) {
       for (File resourceDir : files) {
         if (resourceDir.isDirectory()) {
-          try {
-            addResource(loadFromDir(resourceDir));
-            counter++;
-          } catch (InvalidConfigException e) {
-            log.error("Can't load resource " + resourceDir.getName(), e);
+          File[] resourceDirFiles = resourceDir.listFiles();
+          if (resourceDirFiles == null) {
+            log.error("Resource directory " + resourceDir.getName() + " could not be read. Please verify its content");
+          } else if (resourceDirFiles.length == 0) {
+            log.warn("Cleaning up empty resource directory " + resourceDir.getName());
+            FileUtils.deleteQuietly(resourceDir);
+            counterDeleted++;
+          } else if (resourceDirFiles.length == 1) {
+            log.warn("Cleaning up invalid resource directory " + resourceDir.getName() + " with single file: " + resourceDirFiles[0].getName());
+            FileUtils.deleteQuietly(resourceDir);
+            counterDeleted++;
+          } else {
+            try {
+              log.debug("Loading resource from directory " + resourceDir.getName());
+              addResource(loadFromDir(resourceDir));
+              counter++;
+            } catch (InvalidConfigException e) {
+              log.error("Can't load resource " + resourceDir.getName(), e);
+            }
           }
         }
       }
       log.info("Loaded " + counter + " resources into memory altogether.");
+      log.info("Cleaned up " + counterDeleted + " resources altogether.");
     } else {
       log.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
     }

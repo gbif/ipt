@@ -76,11 +76,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -1887,4 +1890,71 @@ public class ResourceManagerImplTest {
 
   }
 
+  @Test
+  public void testLoad() throws ParserConfigurationException, SAXException, IOException {
+    ResourceManagerImpl manager = getResourceManagerImpl();
+    // mock finding resource.xml file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
+
+    // construct resource directory with a few resources
+    File resourceDirectory = FileUtils.createTempDir();
+    assertTrue(resourceDirectory.exists());
+
+    // valid resource
+    File res1 = new File (resourceDirectory, "res1");
+    res1.mkdir();
+    File eml = new File (res1, "eml.xml");
+    eml.createNewFile();
+    File cfg = new File (res1, "resource.xml");
+    cfg.createNewFile();
+    assertTrue(res1.exists());
+    assertTrue(eml.exists());
+    assertTrue(cfg.exists());
+    assertEquals(2, res1.listFiles().length);
+
+    // invalid resource
+    File res2 = new File (resourceDirectory, "res2");
+    res2.mkdir();
+    File eml2 = new File (res2, "eml.xml");
+    eml2.createNewFile();
+    assertTrue(res2.exists());
+    assertTrue(eml2.exists());
+    assertEquals(1, res2.listFiles().length);
+
+    // invalid resource
+    File res3 = new File (resourceDirectory, "res3");
+    res3.mkdir();
+    File cfg3 = new File (res3, "resource.xml");
+    cfg3.createNewFile();
+    assertTrue(res3.exists());
+    assertTrue(cfg3.exists());
+    assertEquals(1, res3.listFiles().length);
+
+    // empty resource directory
+    File res4 = new File (resourceDirectory, "res4");
+    res4.mkdir();
+    assertEquals(0, res4.listFiles().length);
+
+    // valid resource
+    File res5 = new File (resourceDirectory, "res5");
+    res5.mkdir();
+    File cfg5 = new File (res5, "resource.xml");
+    cfg5.createNewFile();
+    File eml5 = new File (res5, "eml.xml");
+    eml5.createNewFile();
+    assertTrue(res5.exists());
+    assertTrue(cfg5.exists());
+    assertTrue(eml5.exists());
+    assertEquals(2, res5.listFiles().length);
+
+    assertEquals(5, resourceDirectory.listFiles().length);
+
+    // load resource, ensure invalid and empty directories are cleaned up
+    manager.load(resourceDirectory);
+    assertEquals(2, resourceDirectory.listFiles().length);
+    Set<String> mySet = new HashSet<String>(Arrays.asList(resourceDirectory.list()));
+    assertTrue("res1", mySet.contains("res1"));
+    assertTrue("res5", mySet.contains("res5"));
+  }
 }

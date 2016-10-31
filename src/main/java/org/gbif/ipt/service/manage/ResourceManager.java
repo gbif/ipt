@@ -172,13 +172,15 @@ public interface ResourceManager {
   List<Resource> list(User user);
 
   /**
-   * Load all configured resources from the datadir into memory.
+   * Load all configured resources from the data directory into memory.
    * We do not keep the EML or mapping configuration in memory for all resources, but we
    * maintain a map of the basic metadata and authorisation information in this manager.
    *
-   * @return number of configured resource loaded into memory
+   * @param resourcesDir resources directory (inside data directory)
+   *
+   * @return number of configured resources loaded into memory
    */
-  int load();
+  int load(File resourcesDir);
 
   /**
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
