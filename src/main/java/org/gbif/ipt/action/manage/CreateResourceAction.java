@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.manage;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.annotations.VisibleForTesting;
+
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -22,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +72,9 @@ public class CreateResourceAction extends POSTAction {
 
   @Override
   public String save() throws IOException {
+    Date start = new Date();
+    // 10 seconds subtracted to accommodate differences in file system date resolution (e.g. Mac HFS has 1s resolution)
+    long startTimeInMs = start.getTime() - 10000;
     try {
       File tmpFile = uploadToTmp();
       if (tmpFile == null) {
@@ -83,12 +88,28 @@ public class CreateResourceAction extends POSTAction {
     } catch (ImportException e) {
       LOG.error("Error importing the dwc archive: " + e.getMessage(), e);
       addActionError(getText("validation.resource.import.exception"));
+      cleanupResourceFolder(new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname), startTimeInMs);
       return INPUT;
     } catch (InvalidFilenameException e) {
       addActionError(getText("manage.source.invalidFileName"));
       return INPUT;
     }
     return SUCCESS;
+  }
+
+  /**
+   * Recursively delete resource folder. As a safeguard, the resource folder must have been created after the provided
+   * start time in milliseconds.
+   *
+   * @param directory resource directory
+   * @param startTimeInMs date when resource creation started in milliseconds
+   */
+  @VisibleForTesting
+  protected void cleanupResourceFolder(File directory, long startTimeInMs) {
+    if (directory.exists() && directory.isDirectory() && directory.lastModified() > startTimeInMs) {
+      LOG.debug("Deleting resource folder: " + directory);
+      org.apache.commons.io.FileUtils.deleteQuietly(directory);
+    }
   }
 
   public void setFile(File file) {

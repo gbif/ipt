@@ -10,17 +10,22 @@ import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CreateResourceActionTest {
-
+  private static final Logger LOG = Logger.getLogger(CreateResourceActionTest.class);
   private CreateResourceAction action;
 
   @Before
@@ -49,5 +54,31 @@ public class CreateResourceActionTest {
     assertEquals("input", result);
     // ImportException logged in ActionError
     assertEquals(1, action.getActionErrors().size());
+  }
+
+  @Test
+  public void testCleanupResourceFolder() throws IOException, InterruptedException {
+    Date start = new Date();
+    long startTimeInMs = start.getTime() - 5000;
+    LOG.info("Start in milliseconds: " + startTimeInMs);
+
+    File resourceDirectory = FileUtils.createTempDir();
+    File sources = new File (resourceDirectory, "sources");
+    sources.mkdir();
+    File occurrences = new File (sources, "occurrences.txt");
+    occurrences.createNewFile();
+    LOG.info("Resource directory last modified: " + resourceDirectory.lastModified());
+
+    assertTrue(resourceDirectory.exists());
+    assertTrue(sources.exists());
+    assertTrue(occurrences.exists());
+    assertEquals(1, resourceDirectory.listFiles().length);
+    assertTrue(resourceDirectory.lastModified() > startTimeInMs);
+
+    action.cleanupResourceFolder(resourceDirectory, startTimeInMs);
+    assertFalse(resourceDirectory.exists());
+    assertFalse(sources.exists());
+    assertFalse(occurrences.exists());
+    assertNull(resourceDirectory.listFiles());
   }
 }
