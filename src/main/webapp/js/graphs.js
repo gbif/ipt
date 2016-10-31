@@ -8,8 +8,7 @@ function drawGreyBars(ob, scale) {
   jQuery("ul li", ob).each(function() {
     var bar = $(this).find("div.grey_bar");
     var value = bar.html();
-    var coverage = Math.floor(value / totalValue * 100) / 100;
-    $(this).append("<div class='value_label'>" + coverage + "x (" + value + ")" + "</div>");
+    $(this).append("<div class='value_label'>" + value + "</div>");
     bar.empty();
     bar.css({width: value * scale});
     bar.show();

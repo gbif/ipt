@@ -321,16 +321,17 @@
 
                 <!-- data records section, not shown for metadata-only resources -->
                 <#assign recordsByExtensionOrdered = action.getRecordsByExtensionOrdered()/>
-                <#if recordsByExtensionOrdered?size gt 0 && metadataOnly != true>
+                <#assign recordsByExtensionOrderedNumber = recordsByExtensionOrdered?keys?size -1/>
+                <#if metadataOnly != true>
                   <div id="dataRecords" class="row">
                     <div>
                       <h1><@s.text name='portal.resource.dataRecords'/></h1>
                       <p>
-                        <@s.text name='portal.resource.dataRecords.intro'><@s.param>${resource.recordsPublished!0?c}</@s.param><@s.param>${types[resource.coreType?lower_case]}</@s.param></@s.text>
-                        <#if recordsByExtensionOrdered?size gt 1>
-                          <@s.text name='portal.resource.dataRecords.extensions'/>
+                        <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
+                        <@s.text name='portal.resource.dataRecords.core'><@s.param>${recordsPublishedForVersion!0?c}</@s.param></@s.text>
+                        <#if recordsByExtensionOrderedNumber gt 1>
+                          <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
                         </#if>
-                      </p>
                       <div id="record_graph">
                         <ul class="no_bullets horizontal_graph">
                           <#list recordsByExtensionOrdered?keys as k>
@@ -342,6 +343,10 @@
                           </#list>
                         </ul>
                       </div>
+                      </p>
+                      <p>
+                        <@s.text name='portal.resource.dataRecords.repository'/>
+                      </p>
                     </div>
                   </div>
                 </#if>
@@ -364,12 +369,12 @@
                                 <tr>
                                     <th><@s.text name='portal.resource.dwca.verbose'/></th>
                                     <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
-                                      <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion?c!0} ]);"><@s.text name='portal.resource.download'/></a>
-                                        ${recordsPublishedForVersion?c!0} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                      <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion!0?c} ]);"><@s.text name='portal.resource.download'/></a>
+                                        ${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                       </td>
                                     <#else>
-                                      <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished?c!0} ]);"><@s.text name='portal.resource.download'/></a>
-                                        ${resource.recordsPublished?c!0} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                      <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished!0?c} ]);"><@s.text name='portal.resource.download'/></a>
+                                        ${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                       </td>
                                     </#if>
                                 </tr>
@@ -852,9 +857,9 @@
         });
 
         $(function() {
-          <#if resource.recordsByExtension?size gt 0>
+          <#if action.getRecordsByExtensionOrdered()?size gt 1>
               var graph = $("#record_graph");
-              graph.append("<div id='coreCount' style='display:none'>${resource.recordsPublished?c}</div>");
+              graph.append("<div id='coreCount' style='display:none'>${recordsPublishedForVersion!0?c}</div>");
               var maxRecords = ${action.getMaxRecordsInExtension()?c!5000};
               // max 350px
               graph.bindGreyBars( (350-((maxRecords+"").length)*10) / maxRecords);

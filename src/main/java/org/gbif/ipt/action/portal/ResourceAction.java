@@ -45,6 +45,7 @@ import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -73,6 +74,8 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, String> frequencies;
   private Map<String, String> types;
   private int recordsPublishedForVersion;
+  private Map<String, Integer> recordsByExtensionForVersion = Maps.newHashMap();
+  private String coreType;
   private String dwcaSizeForVersion;
   private String emlSizeForVersion;
   private String rtfSizeForVersion;
@@ -301,10 +304,11 @@ public class ResourceAction extends PortalBaseAction {
     File rtfFile = dataDir.resourceRtfFile(name, version);
     rtfSizeForVersion = FileUtils.formatSize(rtfFile.length(), 0);
 
-    // find record count for published version
+    // find record counts for published version
     for (VersionHistory history : resource.getVersionHistory()) {
       if (version.compareTo(new BigDecimal(history.getVersion())) == 0) {
         recordsPublishedForVersion = history.getRecordsPublished();
+        setRecordsByExtensionForVersion(history.getRecordsByExtension());
       }
     }
 
@@ -347,6 +351,8 @@ public class ResourceAction extends PortalBaseAction {
     types = new LinkedHashMap<String, String>();
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
+    coreType = (resource.getCoreType() != null && types.containsKey(resource.getCoreType().toLowerCase())) ? types
+      .get(resource.getCoreType().toLowerCase()) : Resource.CoreRowType.OTHER.toString();
   }
 
   /**
@@ -743,14 +749,22 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
+   * @param recordsByExtensionForVersion map of record counts by extension for published version (specified from version
+   *                                     parameter)
+   */
+  public void setRecordsByExtensionForVersion(Map<String, Integer> recordsByExtensionForVersion) {
+    this.recordsByExtensionForVersion = recordsByExtensionForVersion;
+  }
+
+  /**
    * @return the largest number of records found in any extension, excluding the core extension
    */
   public int getMaxRecordsInExtension() {
     int count = 0;
-    if (!resource.getRecordsByExtension().isEmpty()) {
-      for (String rowType : resource.getRecordsByExtension().keySet()) {
+    if (!recordsByExtensionForVersion.isEmpty()) {
+      for (String rowType : recordsByExtensionForVersion.keySet()) {
         if (!rowType.equalsIgnoreCase(resource.getCoreRowType())) {
-          int extensionCount = resource.getRecordsByExtension().get(rowType);
+          int extensionCount = recordsByExtensionForVersion.get(rowType);
           count = (extensionCount > count) ? extensionCount : count;
         }
       }
@@ -759,10 +773,17 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * @return map of record counts by extension ordered by count
+   * @return map of record counts by extension for published version (specified from version parameter)
    */
   public ImmutableSortedMap<String, Integer> getRecordsByExtensionOrdered() {
-    return ImmutableSortedMap.copyOf(resource.getRecordsByExtension(),
-      Ordering.natural().reverse().onResultOf(Functions.forMap(resource.getRecordsByExtension())));
+    return ImmutableSortedMap.copyOf(recordsByExtensionForVersion,
+      Ordering.natural().reverse().onResultOf(Functions.forMap(recordsByExtensionForVersion)));
+  }
+
+  /**
+   * @return the core type of the resource
+   */
+  public String getCoreType() {
+    return coreType;
   }
 }

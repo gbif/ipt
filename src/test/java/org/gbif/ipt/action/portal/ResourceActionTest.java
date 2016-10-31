@@ -267,7 +267,7 @@ public class ResourceActionTest {
     counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
     counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
     counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);
-    action.resource.setRecordsByExtension(counts);
+    action.setRecordsByExtensionForVersion(counts);
 
     // do ordering
     ImmutableSortedMap<String, Integer> orderedCounts = action.getRecordsByExtensionOrdered();
@@ -282,7 +282,7 @@ public class ResourceActionTest {
     counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
     counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
     counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);
-    action.resource.setRecordsByExtension(counts);
+    action.setRecordsByExtensionForVersion(counts);
 
     // do ordering
     assertEquals(100, action.getMaxRecordsInExtension());

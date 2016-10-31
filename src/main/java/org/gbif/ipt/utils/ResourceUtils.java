@@ -61,6 +61,7 @@ public class ResourceUtils {
     resource.setIdentifierStatus(versionHistory.getStatus());
     resource.setRecordsPublished(versionHistory.getRecordsPublished());
     resource.setLastPublished(versionHistory.getReleased());
+    resource.setRecordsByExtension(versionHistory.getRecordsByExtension());
 
     if (versionEmlFile.exists()) {
       Eml eml = EmlUtils.loadWithLocale(versionEmlFile, Locale.US);

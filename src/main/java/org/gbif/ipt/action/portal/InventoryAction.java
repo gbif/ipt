@@ -1,17 +1,26 @@
 package org.gbif.ipt.action.portal;
 
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.utils.ResourceUtils;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.json.annotations.JSON;
@@ -61,7 +70,8 @@ public class InventoryAction extends ActionSupport {
     private String gbifKey;
     private String eml;
     private String dwca;
-    private List<String> extensions;
+    private BigDecimal version;
+    private Map<String, Integer> recordsByExtension = Maps.newHashMap();
 
     /**
      * @return the dataset title
@@ -142,42 +152,72 @@ public class InventoryAction extends ActionSupport {
     }
 
     /**
-     * @return the extension rowTypes of the extensions used in the last published DwC-A file, or an empty list
+     * @return map containing record counts (map value) by extension (map key) used in the last published DwC-A file,
+     * or an empty map
      */
-    public List<String> getExtensions() {
-      if (extensions == null) {
-        extensions = Lists.newArrayList();
-      }
-      return extensions;
+    public Map getRecordsByExtension() {
+      return recordsByExtension;
     }
 
-    public void setExtensions(List<String> extensions) {
-      this.extensions = extensions;
+    /**
+     * @param recordsByExtension map of record counts (map value) by extension rowType (map key)
+     */
+    public void setRecordsByExtension(Map<String, Integer> recordsByExtension) {
+      this.recordsByExtension = ImmutableMap.copyOf(recordsByExtension);
+    }
+
+    /**
+     * Get last published version of resource.
+     *
+     * @return resource version
+     */
+    @NotNull
+    public BigDecimal getVersion() {
+      return version;
+    }
+
+    /**
+     * Set the last published version of the resource.
+     *
+     * @param version
+     */
+    public void setVersion(BigDecimal version) {
+      this.version = version;
     }
   }
 
   /**
-   * Populate and set the list/inventory of DatasetItem. Each DatasetItem is populated from a registered Resource.
+   * Populate and set the list/inventory of DatasetItem from a list of registered resources.
+   * Note a DatasetItem represents the last published version of a resource.
    *
-   * @param resources registered resources list
+   * @param resources list of registered resources
    */
   public void populateInventory(List<Resource> resources) {
     List<DatasetItem> items = Lists.newArrayList();
     for (Resource r : resources) {
       DatasetItem item = new DatasetItem();
-      item.setTitle(Strings.nullToEmpty(r.getTitle()));
+
+      // reconstruct the last published version of the resource
+      BigDecimal version = r.getLastPublishedVersionsVersion();
+      String shortname = r.getShortname();
+      VersionHistory versionHistory = r.getLastPublishedVersion();
+      DOI doi = versionHistory.getDoi();
+      File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, version);
+      UUID gbifKey = r.getKey();
+      Resource lastPublished = ResourceUtils
+        .reconstructVersion(version, shortname, doi, r.getOrganisation(), versionHistory, versionEmlFile, gbifKey);
+
+      // populate DatasetItem representing last published version of the registered dataset
+      item.setTitle(Strings.nullToEmpty(lastPublished.getTitle()));
+      item.setRecords(lastPublished.getRecordsPublished());
+      item.setLastPublished(lastPublished.getLastPublished());
+      item.setGbifKey(lastPublished.getKey().toString());
+      item.setRecordsByExtension(lastPublished.getRecordsByExtension());
+
+      item.setEml(cfg.getResourceEmlUrl(shortname));
+      item.setDwca(cfg.getResourceArchiveUrl(shortname));
+      item.setVersion(version);
       item.setType(Strings.nullToEmpty(r.getCoreType()));
-      item.setRecords(r.getRecordsPublished());
-      item.setLastPublished(r.getLastPublished());
-      item.setGbifKey(r.getKey().toString());
-      item.setEml(cfg.getResourceEmlUrl(r.getShortname()));
-      item.setDwca(cfg.getResourceArchiveUrl(r.getShortname()));
-      // populate list of extension rowTypes (excluding core extensions)
-      for (Extension extension: r.getMappedExtensions()) {
-        if (!extension.isCore()) {
-          item.getExtensions().add(extension.getRowType());
-        }
-      }
       items.add(item);
     }
     setInventory(items);

@@ -1526,7 +1526,13 @@ public class ResourceManagerImplTest {
     assertEquals(doi.toString(), historyForVersionOnePointOne.getDoi().toString());
     assertEquals(IdentifierStatus.PUBLIC, historyForVersionOnePointOne.getStatus());
     assertEquals(PublicationStatus.PUBLIC, historyForVersionOnePointOne.getPublicationStatus());
+    assertEquals(2, historyForVersionOnePointOne.getRecordsByExtension().size());
+    assertEquals(2, historyForVersionOnePointOne.getRecordsByExtension().get(Constants.DWC_ROWTYPE_OCCURRENCE).intValue());
+    assertEquals(500, historyForVersionOnePointOne.getRecordsByExtension().get("http://rs.tdwg.org/dwc/terms/MeasurementOrFact").intValue());
     assertEquals(2, resource.getRecordsPublished());
+    assertEquals(2, resource.getRecordsByExtension().size());
+    assertEquals(2, resource.getRecordsByExtension().get(Constants.DWC_ROWTYPE_OCCURRENCE).intValue());
+    assertEquals(500, resource.getRecordsByExtension().get("http://rs.tdwg.org/dwc/terms/MeasurementOrFact").intValue());
     Organisation organisation = new Organisation();
     organisation.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
     assertNull(resource.getOrganisation());
