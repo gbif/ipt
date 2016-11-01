@@ -10,6 +10,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
@@ -21,12 +22,16 @@ import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.ipt.validation.AgentValidator;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.HttpUtil.Response;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
@@ -40,6 +45,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -105,6 +111,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     if (doi != null) {
       data.add(new BasicNameValuePair("doi", doi.toString()));
       log.debug("Including registry param doi=" + doi.toString());
+    }
+    // otherwise try using the DOI citation identifier of the last published public version, see issue #1276
+    else {
+      DOI existingDoi = getLastPublishedVersionExistingDoi(resource);
+      if (existingDoi != null) {
+        data.add(new BasicNameValuePair("doi", existingDoi.toString()));
+        log.debug("Including registry param doi=" + existingDoi.toString());
+      }
     }
 
     data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
@@ -723,5 +737,33 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         e);
     }
     return false;
+  }
+
+  /**
+   * @return DOI citation identifier of last published version or null if no DOI citation identifier was assigned
+   */
+  @VisibleForTesting
+  protected DOI getLastPublishedVersionExistingDoi(Resource resource) {
+    VersionHistory lastPublishedVersion = resource.getLastPublishedVersion();
+    if (lastPublishedVersion != null) {
+      BigDecimal version = new BigDecimal(lastPublishedVersion.getVersion());
+      File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), version);
+      if (emlFile.exists()) {
+        try {
+          log.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+          InputStream in = new FileInputStream(emlFile);
+          Eml eml = EmlFactory.build(in);
+          if (eml.getCitation() != null && !Strings.isNullOrEmpty(eml.getCitation().getIdentifier())) {
+            String identifier = StringUtils.trimToNull(eml.getCitation().getIdentifier());
+            if (DOI.isParsable(identifier)) {
+              return new DOI(identifier);
+            }
+          }
+        } catch (Exception e) {
+          log.error("Failed to check last published version citation identifier: " + e.getMessage(), e);
+        }
+      }
+    }
+    return null;
   }
 }

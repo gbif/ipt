@@ -13,6 +13,7 @@
 
 package org.gbif.ipt.service.registry.impl;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -20,17 +21,23 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.utils.HttpUtil;
+import org.gbif.utils.file.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -44,6 +51,9 @@ import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -274,5 +284,50 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     assertEquals("Paul J. Morris ", organisation.getPrimaryContactName());
     assertEquals("mole@morris.net", organisation.getPrimaryContactEmail());
     assertEquals("1-215-299-1161", organisation.getPrimaryContactPhone());
+  }
+
+  @Test
+  public void testGetLastPublishedVersionExistingDoi() throws ParserConfigurationException, SAXException {
+    // construct public resource having one public published version 5.0
+    Resource p = new Resource();
+    p.setShortname("res1");
+    p.setTitle("Danish Lepidoptera");
+    Date lastPublished = new Date();
+    p.setModified(lastPublished);
+    BigDecimal version = new BigDecimal("5.0");
+    p.setEmlVersion(version);
+    p.setStatus(PublicationStatus.PUBLIC);
+    VersionHistory vh = new VersionHistory(version, lastPublished, PublicationStatus.PUBLIC);
+    p.addVersionHistory(vh);
+
+    AppConfig appConfig = mock(AppConfig.class);
+    DataDir dataDir = mock(DataDir.class);
+    // retrieve eml.xml file for version 5.0 with DOI citation identifier
+    File eml = FileUtils.getClasspathFile("resources/res1/eml-5.0.xml");
+    when(dataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(eml);
+    when(appConfig.getDataDir()).thenReturn(dataDir);
+
+    // create instance of RegistryManager
+    RegistryManagerImpl manager =
+      new RegistryManagerImpl(appConfig, dataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider, mockRegistrationManager);
+
+    DOI expectedDOI = new DOI("http://doi.org/10.5072/fk22zu2ds");
+    DOI existingDOI = manager.getLastPublishedVersionExistingDoi(p);
+    assertTrue(expectedDOI.equals(existingDOI));
+
+    // retrieve eml.xml file for version 5.0 WITHOUT citation identifier
+    eml = FileUtils.getClasspathFile("resources/res1/eml.xml");
+    when(dataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(eml);
+    when(appConfig.getDataDir()).thenReturn(dataDir);
+    existingDOI = manager.getLastPublishedVersionExistingDoi(p);
+    assertNull(existingDOI);
+
+    // retrieve eml.xml file for version 5.0 with citation identifier but not DOI
+    eml = FileUtils.getClasspathFile("data/eml.xml");
+    when(dataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(eml);
+    when(appConfig.getDataDir()).thenReturn(dataDir);
+    existingDOI = manager.getLastPublishedVersionExistingDoi(p);
+    assertNull(existingDOI);
   }
 }
