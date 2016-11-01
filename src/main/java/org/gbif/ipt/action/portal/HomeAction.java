@@ -9,12 +9,16 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.ResourceUtils;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
@@ -40,11 +44,36 @@ public class HomeAction extends BaseAction {
     return SUCCESS;
   }
 
+  /**
+   * Ensure resource table shows properties coming from last published versions of resources where applicable (e.g.
+   * resource title should be the title assigned to last published version, not the title of current
+   * (unpublished) version that may still be under editing.
+   */
   @Override
   public void prepare() {
     super.prepare();
-    resources = resourceManager.listPublishedPublicVersions();
-    // sort alphabetically
+    resources = Lists.newArrayList();
+
+    for (Resource resource : resourceManager.listPublishedPublicVersions()) {
+      // reconstruct the last published public version
+      BigDecimal v = resource.getLastPublishedVersionsVersion();
+      String shortname = resource.getShortname();
+      File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+      Resource publishedPublicVersion = ResourceUtils
+        .reconstructVersion(v, resource.getShortname(), resource.getAssignedDoi(), resource.getOrganisation(),
+          resource.findVersionHistory(v), versionEmlFile, resource.getKey());
+
+      // set properties only existing on current (unpublished) version
+      Resource current = resourceManager.get(shortname);
+      publishedPublicVersion.setModified(current.getModified());
+      publishedPublicVersion.setNextPublished(current.getNextPublished());
+      publishedPublicVersion.setCoreType(current.getCoreType());
+      publishedPublicVersion.setSubtype(current.getSubtype());
+
+      resources.add(publishedPublicVersion);
+    }
+
+    // sort alphabetically (A to Z)
     Collections.sort(resources);
 
     // Dataset core type list, derived from XML vocabulary
@@ -59,7 +88,7 @@ public class HomeAction extends BaseAction {
   }
 
   /**
-   * A list of all public or registered resources.
+   * A list of last published versions for all public or registered resources.
    *
    * @return a list of resources
    */
