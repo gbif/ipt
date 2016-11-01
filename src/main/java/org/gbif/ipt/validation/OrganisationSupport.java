@@ -85,9 +85,19 @@ public class OrganisationSupport {
     String agencyUsername = StringUtils.trimToNull(organisation.getAgencyAccountUsername());
     String agencyPassword = StringUtils.trimToNull(organisation.getAgencyAccountPassword());
     String prefix = StringUtils.trimToNull(organisation.getDoiPrefix());
+    boolean isAgencyAccountPrimary = organisation.isAgencyAccountPrimary();
 
     // validate that if any DOI registration agency account fields were entered, that they are all present
-    if (agency != null || agencyUsername != null || agencyPassword != null || prefix != null) {
+    if (agency != null || agencyUsername != null || agencyPassword != null || prefix != null || isAgencyAccountPrimary) {
+
+      // ensure archival mode is turned ON, otherwise ensure activation of agency account fails
+      if (isAgencyAccountPrimary) {
+        if (!cfg.isArchivalMode()) {
+          valid = false;
+          action.addFieldError("organisation.agencyAccountPrimary",
+            action.getText("admin.organisation.doiAccount.activated.failed"));
+        }
+      }
 
       if (agency == null) {
         valid = false;

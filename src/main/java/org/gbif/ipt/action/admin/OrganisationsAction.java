@@ -271,11 +271,6 @@ public class OrganisationsAction extends POSTAction {
             break;
           }
         }
-        // ensure archival mode is turned ON, otherwise ensure activation of agency account fails
-        if (!cfg.isArchivalMode()) {
-          validated = false;
-          addActionError(getText("admin.organisation.doiAccount.activated.failed"));
-        }
       }
       // if organisation doesn't validate prevent DOI account from being selected as primary!
       if (!organisationValidation.validate(this, organisation)) {
