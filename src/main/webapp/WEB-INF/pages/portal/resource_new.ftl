@@ -438,7 +438,12 @@
                         <h1><@s.text name='eml.intellectualRights.simple'/></h1>
                         <p><@s.text name='portal.resource.rights.help'/>:</p>
                         <@licenseLogoClass eml.intellectualRights!/>
-                        <p property="dc:license"><#noescape>${eml.intellectualRights!}</#noescape></p>
+                        <p property="dc:license">
+                          <#if resource.organisation?? && action.getDefaultOrganisation()?? && resource.organisation.key.toString() != action.getDefaultOrganisation().key.toString()>
+                            <@s.text name='portal.resource.rights.organisation'><@s.param>${resource.organisation.name}</@s.param></@s.text>
+                          </#if>
+                          <#noescape>${eml.intellectualRights!}</#noescape>
+                        </p>
                     </div>
                 </div>
                 </#if>
