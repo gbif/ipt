@@ -683,15 +683,20 @@
                                     <td><@textWithFormattedLink eml.qualityControl/></td>
                                 </tr>
                             </#if>
-                            <#list eml.methodSteps as item>
-                              <#if (eml.methodSteps[item_index]?has_content) >
-                                  <tr>
-                                      <th><@s.text name='eml.methodSteps'/> ${item_index+1}</th>
-                                      <td><@textWithFormattedLink eml.methodSteps[item_index]/></td>
-                                  </tr>
-                              </#if>
-                            </#list>
                           </table>
+
+                          <#if (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content)>
+                            <p class="twenty_top"><@s.text name='rtf.methods.description'/>&#58;</p>
+                            <ol>
+                              <#list eml.methodSteps as item>
+                                <#if (eml.methodSteps[item_index]?has_content)>
+                                  <li>
+                                    <@textWithFormattedLink eml.methodSteps[item_index]/>
+                                  </li>
+                                </#if>
+                              </#list>
+                            </ol>
+                          </#if>
                       </div>
                   </div>
                   </#if>
