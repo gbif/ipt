@@ -312,6 +312,12 @@ public class ResourceAction extends PortalBaseAction {
       }
     }
 
+    // ensure record counts by extension always exists, defaulting to empty map
+    if (recordsByExtensionForVersion == null) {
+      Map<String, Integer> m = Maps.newHashMap();
+      setRecordsByExtensionForVersion(m);
+    }
+
     // if the record count for this published version is greater than 0, but no dwca was found, it must have been
     // deleted which means that archival mode was not turned on when the proceeding version was published
     if (metadataOnly && recordsPublishedForVersion > 0) {
