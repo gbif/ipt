@@ -79,7 +79,7 @@
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.7.21</slf4j.version>
     <struts2.version>2.3.31</struts2.version>
-    <xstream.version>1.4.9</xstream.version>
+    <xstream.version>1.4.8</xstream.version>
     <jsr305.version>3.0.1</jsr305.version>
     <httputils.version>0.10</httputils.version>
     <jackson2.version>2.8.4</jackson2.version>
@@ -561,7 +561,10 @@
       <version>${commons-digester.version}</version>
     </dependency>
 
-    <!-- XStream for resource config data persistency (could be replaced by JAXB in the future) -->
+    <!--
+      XStream for resource config data persistency (could be replaced by JAXB in the future)
+      Version frozen at 1.4.8 - do not upgrade! See issue #1297
+    -->
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
