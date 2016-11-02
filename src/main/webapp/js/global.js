@@ -33,7 +33,7 @@ function langs(localLanguage,baseUrl) {
 	if(location.indexOf("?") != -1){
 		request = '&request_locale';		
 	}
-  	var lan=  ["en","fr","es", "zh", "pt", "ja"];
+  	var lan=  ["en","fr","es", "zh", "pt", "ja", "ru"];
 	$.each(lan, function() {
 	  if ( localLanguage != this){
 	  	$("#languages").append('<li><a href="'+location+request+'='+this+'"><img src="'+baseUrl+'/images/flags/flag_'+this+'.png"/></a></li>');
