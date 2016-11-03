@@ -4,7 +4,7 @@
  <#assign sideMenuEml=true />
  <#assign currentMenu="manage"/>
 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
