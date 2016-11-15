@@ -69,7 +69,7 @@
   		}
         map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-        var markerIcon = 'http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png';
+        var markerIcon = '//www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png';
 
 	    // Plot two markers to represent the Rectangle's bounds.
 	    marker1 = new google.maps.Marker({
