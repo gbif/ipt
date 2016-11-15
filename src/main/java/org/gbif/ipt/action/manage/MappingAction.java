@@ -249,7 +249,7 @@ public class MappingAction extends ManagerBaseAction {
     }
 
     // get column mapped to coreId field
-    if (mappingCoreid.getIndex() != null && mappingCoreid.getIndex() < columns.size()
+    if (mappingCoreid.getIndex() != null && mappingCoreid.getIndex() >= 0 && mappingCoreid.getIndex() < columns.size()
         && columns.get(mappingCoreid.getIndex()) != null) {
       mapped.add(columns.get(mappingCoreid.getIndex()));
     }
