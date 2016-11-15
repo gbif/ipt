@@ -48,7 +48,7 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 * citation - to ensure your dataset gets cited the way you want
 
 #### Exemplar datasets: 
-* Inter-Valley Soil Comparative Survey of the McMurdo Dry Valleys: [EML](http://ipt.biodiversity.aq/eml.do?r=ictar_ivscs&v=1) / [IPT homepage](http://ipt.biodiversity.aq/resource.do?r=ictar_ivscs)
+* Inter-Valley Soil Comparative Survey of the McMurdo Dry Valleys: [EML](http://ipt.biodiversity.aq/eml.do?r=ictar_ivscs&v=1.0) / [IPT homepage](http://ipt.biodiversity.aq/resource.do?r=ictar_ivscs)
 
 #### FAQ: 
 
