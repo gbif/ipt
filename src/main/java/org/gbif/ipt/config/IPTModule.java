@@ -68,15 +68,21 @@ public class IPTModule extends AbstractModule {
   @Singleton
   @Inject
   public DataDir provideDataDir(ServletContext ctx) {
-    File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
-    LOG.info("provide servlet context data dir location file at " + dataDirSettingFile.getAbsolutePath());
-    DataDir dd = DataDir.buildFromLocationFile(dataDirSettingFile);
+    DataDir dd;
+    if (System.getenv("IPT_DATA_DIR") == null) {
+      File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
+      LOG.info("provide servlet context data dir location file at " + dataDirSettingFile.getAbsolutePath());
+      dd = DataDir.buildFromLocationFile(dataDirSettingFile);
+    } else {
+      LOG.info("Using environment variable IPT_DATA_DIR for data directory location: " + System.getenv("IPT_DATA_DIR"));
+      dd = DataDir.buildFromString(System.getenv("IPT_DATA_DIR"));
+    }
     try {
       if (dd != null && dd.isConfigured()) {
         dd.clearTmp();
       }
     } catch (IOException e) {
-      LOG.warn("Couldnt clear temporary data dir folder", e);
+      LOG.warn("Couldn't clear temporary data dir folder", e);
     }
     return dd;
   }

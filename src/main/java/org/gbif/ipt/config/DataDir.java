@@ -65,6 +65,14 @@ public class DataDir {
     return dd;
   }
 
+  public static DataDir buildFromString(String dataDirPath) {
+    DataDir dd = new DataDir();
+    if (dataDirPath != null) {
+      log.info("IPT Data Directory configured at " + dataDirPath);
+      dd.dataDir = new File(dataDirPath);
+    }
+    return dd;
+  }
 
   private void assureDirExists(File f) {
     if (f != null && !f.exists()) {
