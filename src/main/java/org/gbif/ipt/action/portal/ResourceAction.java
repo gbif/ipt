@@ -763,16 +763,14 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * @return the largest number of records found in any extension, excluding the core extension
+   * @return the largest number of records found in any extension, including the core extension
    */
   public int getMaxRecordsInExtension() {
     int count = 0;
     if (!recordsByExtensionForVersion.isEmpty()) {
       for (String rowType : recordsByExtensionForVersion.keySet()) {
-        if (!rowType.equalsIgnoreCase(resource.getCoreRowType())) {
-          int extensionCount = recordsByExtensionForVersion.get(rowType);
-          count = (extensionCount > count) ? extensionCount : count;
-        }
+        int extensionCount = recordsByExtensionForVersion.get(rowType);
+        count = (extensionCount > count) ? extensionCount : count;
       }
     }
     return count;

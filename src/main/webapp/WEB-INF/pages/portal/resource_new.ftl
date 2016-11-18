@@ -322,27 +322,37 @@
                 <!-- data records section, not shown for metadata-only resources -->
                 <#assign recordsByExtensionOrdered = action.getRecordsByExtensionOrdered()/>
                 <#assign recordsByExtensionOrderedNumber = recordsByExtensionOrdered?keys?size -1/>
+                <#assign coreRowType = resource.getCoreRowType()!""/>
+                <#assign coreExt = action.getExtensionManager().get(coreRowType)!/>
+                <#assign coreCount = recordsByExtensionOrdered.get(coreRowType)!0?c/>
                 <#if metadataOnly != true>
                   <div id="dataRecords" class="row">
                     <div>
                       <h1><@s.text name='portal.resource.dataRecords'/></h1>
                       <p>
                         <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
-                        <@s.text name='portal.resource.dataRecords.core'><@s.param>${recordsPublishedForVersion!0?c}</@s.param></@s.text>
+                        <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
+                          <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount?c}&nbsp;${coreExt.name}</@s.param></@s.text>
+                        </#if>
                         <#if recordsByExtensionOrderedNumber gt 1>
                           <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
+                          <div id="record_graph">
+                            <ul class="no_bullets horizontal_graph">
+                              <!-- at top, show bar for core record count to enable comparison against extensions -->
+                              <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
+                                <li><span href="#">${coreExt.name}&nbsp;<@s.text name='portal.resource.records'/></span><div class="grey_bar">${coreCount?c}</div></li>
+                              </#if>
+                              <!-- below bar for core record count, show bars for extension record counts -->
+                              <#list recordsByExtensionOrdered?keys as k>
+                                <#assign ext = action.getExtensionManager().get(k)!/>
+                                <#assign extCount = recordsByExtensionOrdered.get(k)!/>
+                                <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content && extCount?has_content>
+                                  <li><span href="#">${ext.name}&nbsp;<@s.text name='portal.resource.records'/></span><div class="grey_bar">${extCount?c}</div></li>
+                                </#if>
+                              </#list>
+                            </ul>
+                          </div>
                         </#if>
-                      <div id="record_graph">
-                        <ul class="no_bullets horizontal_graph">
-                          <#list recordsByExtensionOrdered?keys as k>
-                            <#assign ext = action.getExtensionManager().get(k)!/>
-                            <#assign coreRowType = resource.getCoreRowType()!/>
-                            <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content>
-                              <li><span href="#">${ext.name}&nbsp;<@s.text name='portal.resource.records'/></span><div class="grey_bar">${(recordsByExtensionOrdered.get(k)!0)?c}</div></li>
-                            </#if>
-                          </#list>
-                        </ul>
-                      </div>
                       </p>
                       <p>
                         <@s.text name='portal.resource.dataRecords.repository'/>
@@ -869,7 +879,6 @@
         $(function() {
           <#if action.getRecordsByExtensionOrdered()?size gt 1>
               var graph = $("#record_graph");
-              graph.append("<div id='coreCount' style='display:none'>${recordsPublishedForVersion!0?c}</div>");
               var maxRecords = ${action.getMaxRecordsInExtension()?c!5000};
               // max 350px
               graph.bindGreyBars( (350-((maxRecords+"").length)*10) / maxRecords);
