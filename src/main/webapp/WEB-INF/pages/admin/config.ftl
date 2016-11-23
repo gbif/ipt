@@ -1,27 +1,36 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title><@s.text name="title"/></title>	
+	<title><@s.text name="title"/></title>
+
+<link rel="stylesheet" href="/styles/leaflet/leaflet.css" />
+<link rel="stylesheet" href="/styles/leaflet/locationfilter.css" />
+<script type="text/javascript" src="/js/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="/js/leaflet/cartodb.core.js"></script>
+<script type="text/javascript" src="/js/leaflet/locationfilter.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   initHelp();	
 });
 </script>	
   <#if latitude?? && longitude??>	
-	<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
-    var latlng = new google.maps.LatLng(${latitude}, ${longitude});
-    var myOptions = {
-      zoom: 3,
-      center: latlng,
-      disableDefaultUI: true,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("locationMap"), myOptions);
-    var marker = new google.maps.Marker({
-        position: latlng, 
-        map: map,
-        title:"IPT Server"
-    });
+      var map = L.map('locationMap', {crs: L.CRS.EPSG4326}).setView([${latitude}, ${longitude}], 2).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
+      // Using cartodb to get a baselayer.
+      // TODO: Consider a better service?
+      var sqlWGS84 = "SELECT ST_SCALE(the_geom, 111319.44444444444444, 111319.44444444444444) AS the_geom_webmercator FROM world_borders";
+      // style it here
+      var cartoCssGBIF = "#layer { polygon-fill: #02393D; polygon-opacity: 1; line-width:0}";
+      cartodb.Tiles.getTiles({
+          user_name: 'gbif', sublayers: [{
+              sql: sqlWGS84, cartocss: cartoCssGBIF
+          }]
+      }, function (tileTemplate) {
+          L.tileLayer(tileTemplate.tiles[0], {
+              attribution: 'Natural Earth data, map by CartoDB',
+          }).addTo(map);
+      });
+      L.Icon.Default.imagePath = '/images/leaflet';
+      var marker = L.marker([${latitude}, ${longitude}], {iconUrl: 'marker-icon-2x.png'}).addTo(map);
 	});
 	</script>
   </#if>
