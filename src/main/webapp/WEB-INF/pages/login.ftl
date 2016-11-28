@@ -1,4 +1,4 @@
-<#escape x as x?html>
+<#ftl output_format="HTML">
 <#include "/WEB-INF/pages/inc/header.ftl"/>
 <title><@s.text name="login.title"/></title>
 <#assign currentMenu = "account"/>
@@ -26,4 +26,3 @@
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl"/>
-</#escape>

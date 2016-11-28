@@ -95,7 +95,7 @@ public class IPTModule extends AbstractModule {
   @Singleton
   @Inject
   public Configuration provideFreemarker(DataDir datadir) {
-    Configuration fm = new Configuration();
+    Configuration fm = new Configuration(Configuration.VERSION_2_3_25);
     // load templates from classpath by prefixing /templates
     List<TemplateLoader> tLoader = new ArrayList<TemplateLoader>();
     tLoader.add(new ClassTemplateLoader(AppConfig.class, "/templates"));
@@ -106,7 +106,7 @@ public class IPTModule extends AbstractModule {
       LOG.warn("Cannot load custom templates from data dir: " + e.getMessage(), e);
     }
     TemplateLoader tl = new MultiTemplateLoader(tLoader.toArray(new TemplateLoader[tLoader.size()]));
-    fm.setDefaultEncoding("utf8");
+    fm.setDefaultEncoding("UTF-8");
     fm.setTemplateLoader(tl);
 
     return fm;

@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 
 <div class="grid_18 suffix_6">

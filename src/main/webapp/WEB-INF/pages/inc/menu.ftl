@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML"]
 <script type="text/javascript">
 	$(document).ready(function(){
   		langs("${localeLanguage}","${baseURL}");

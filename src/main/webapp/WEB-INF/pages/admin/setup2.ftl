@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 <div class="grid_18">
 <h1 class="twenty_top">[@s.text name="admin.config.setup2.title"/]</h1>

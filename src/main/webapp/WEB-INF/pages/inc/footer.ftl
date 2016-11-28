@@ -1,4 +1,5 @@
-			</div>
+<#ftl output_format="HTML">
+</div>
 			</div>
 			</section>
 			<footer id="section-footer" class="section section-footer">

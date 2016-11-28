@@ -1,4 +1,4 @@
-<#escape x as x?html>
+<#ftl output_format="HTML">
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="account.title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -27,4 +27,3 @@
 </@s.form>
 </div>
 <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

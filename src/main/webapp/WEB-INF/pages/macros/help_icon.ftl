@@ -1,3 +1,4 @@
+<#ftl output_format="HTML">
 <#if help?has_content>
 <img class="infoImg" src="${baseURL}/images/info.gif" />
 <div class="info">

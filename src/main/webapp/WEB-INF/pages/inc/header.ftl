@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML"]
 [#setting date_format="yyyy-MM-dd"]
 [#setting time_format="hh:mm:ss"]
 [#setting datetime_format="iso"]

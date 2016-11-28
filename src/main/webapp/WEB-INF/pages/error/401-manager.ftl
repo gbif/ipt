@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header.ftl"/]
  <title>Login Required</title>
 [#include "/WEB-INF/pages/inc/menu.ftl"/]

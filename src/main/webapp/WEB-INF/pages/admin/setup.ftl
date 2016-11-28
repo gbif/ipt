@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms.ftl"]
 

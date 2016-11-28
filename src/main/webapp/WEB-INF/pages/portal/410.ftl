@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header.ftl"/]
 <title>[@s.text name="410.title"/]</title>
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
