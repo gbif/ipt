@@ -1,5 +1,5 @@
 ## Table of Contents
-+ [[Introduction|HowToContribute.wiki#introduction]]
++ [[Introduction|How-to-write-your-own-EML-XML-file#introduction]]
 + [[Instructions|HowToContribute.wiki#source-code-frameworks]]
 + [[Example file(s)|HowToContribute.wiki#prerequisites]]
 + [[What changed in the version 1.1 of the GBIF Metadata Profile since 1.0.2?|HowToContribute.wiki#getting-the-source-code]]
