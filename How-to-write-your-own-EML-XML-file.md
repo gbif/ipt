@@ -1,3 +1,9 @@
+## Table of Contents
++ [[Introduction|HowToContribute.wiki#introduction]]
++ [[Instructions|HowToContribute.wiki#source-code-frameworks]]
++ [[Example file(s)|HowToContribute.wiki#prerequisites]]
++ [[What changed in the version 1.1 of the GBIF Metadata Profile since 1.0.2?|HowToContribute.wiki#getting-the-source-code]]
+
 ## Introduction
 
 The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. 
