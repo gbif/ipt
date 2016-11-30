@@ -1730,7 +1730,7 @@ ul.horizontal_graph .grey_bar {
 }
 ul.horizontal_graph li span {
   display: inline-block;
-  width: 250px;
+  width: 200px;
   font-size: 0.9em;
   word-wrap: break-word;
 }

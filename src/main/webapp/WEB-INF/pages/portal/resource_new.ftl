@@ -101,6 +101,17 @@
     </#list>
   </#macro>
 
+  <#-- Displays the name of an extension inside a span, with title set to extension description (if it exists) in order to display it in tooltip -->
+  <#macro extensionLink ext>
+    <#if ext?? && ext.name?has_content>
+      <#if ext.description?has_content>
+        <span class="ext-tooltip" title="${ext.description}">${ext.name}</span>
+      <#else>
+        <span>${ext.name}</span>
+      </#if>
+    </#if>
+  </#macro>
+
   <#assign anchor_versions>#versions</#assign>
   <#assign anchor_rights>#rights</#assign>
   <#assign anchor_citation>#citation</#assign>
@@ -332,7 +343,7 @@
                       <p>
                         <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
                         <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                          <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount?c}&nbsp;${coreExt.name}</@s.param></@s.text>
+                          <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount?c}</@s.param></@s.text>
                         </#if>
                         <#if recordsByExtensionOrderedNumber gt 1>
                           <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
@@ -340,14 +351,14 @@
                             <ul class="no_bullets horizontal_graph">
                               <!-- at top, show bar for core record count to enable comparison against extensions -->
                               <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                                <li><span href="#">${coreExt.name}&nbsp;<@s.text name='portal.resource.records'/></span><div class="grey_bar">${coreCount?c}</div></li>
+                                <li><@extensionLink coreExt/><div class="grey_bar">${coreCount?c}</div></li>
                               </#if>
                               <!-- below bar for core record count, show bars for extension record counts -->
                               <#list recordsByExtensionOrdered?keys as k>
                                 <#assign ext = action.getExtensionManager().get(k)!/>
                                 <#assign extCount = recordsByExtensionOrdered.get(k)!/>
                                 <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content && extCount?has_content>
-                                  <li><span href="#">${ext.name}&nbsp;<@s.text name='portal.resource.records'/></span><div class="grey_bar">${extCount?c}</div></li>
+                                  <li><@extensionLink ext/><div class="grey_bar">${extCount?c}</div></li>
                                 </#if>
                               </#list>
                             </ul>
@@ -883,6 +894,11 @@
               // max 350px
               graph.bindGreyBars( (350-((maxRecords+"").length)*10) / maxRecords);
           </#if>
+        });
+
+        // show extension description in tooltip in data records section
+        $(function() {
+            $('.ext-tooltip').tooltip({track: true});
         });
 
     </script>

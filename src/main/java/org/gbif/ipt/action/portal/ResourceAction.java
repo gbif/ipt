@@ -777,11 +777,13 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * @return map of record counts by extension for published version (specified from version parameter)
+   * @return map of record counts by extension for published version (specified from version parameter), sorted by
+   * count then by extension name for uniqueness (as two extensions can have the same count)
    */
   public ImmutableSortedMap<String, Integer> getRecordsByExtensionOrdered() {
     return ImmutableSortedMap.copyOf(recordsByExtensionForVersion,
-      Ordering.natural().reverse().onResultOf(Functions.forMap(recordsByExtensionForVersion)));
+      Ordering.natural().reverse().onResultOf(Functions.forMap(recordsByExtensionForVersion))
+        .compound(Ordering.<String> natural()));
   }
 
   /**
