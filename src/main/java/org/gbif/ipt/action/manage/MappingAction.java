@@ -240,7 +240,7 @@ public class MappingAction extends ManagerBaseAction {
 
     // get list of all columns mapped to fields
     for (PropertyMapping field : fields) {
-      if (field.getIndex() != null && field.getIndex() < columns.size()) {
+      if (field.getIndex() != null && field.getIndex() >=0 && field.getIndex() < columns.size()) {
         String sourceColumn = columns.get(field.getIndex());
         if (sourceColumn != null) {
           mapped.add(sourceColumn);
