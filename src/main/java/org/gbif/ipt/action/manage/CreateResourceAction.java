@@ -7,7 +7,9 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -29,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -94,7 +97,8 @@ public class CreateResourceAction extends POSTAction {
     } catch (ImportException e) {
       LOG.error("Error importing the dwc archive: " + e.getMessage(), e);
       addActionError(getText("validation.resource.import.exception"));
-      cleanupResourceFolder(new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname), startTimeInMs);
+      // remove resource and its resource folder from data directory
+      cleanupResourceFolder(shortname, startTimeInMs);
       return INPUT;
     } catch (InvalidFilenameException e) {
       addActionError(getText("manage.source.invalidFileName"));
@@ -104,17 +108,28 @@ public class CreateResourceAction extends POSTAction {
   }
 
   /**
-   * Recursively delete resource folder. As a safeguard, the resource folder must have been created after the provided
-   * start time in milliseconds.
+   * Delete resource and recursively delete its resource folder from data directory.
+   * As a safeguard, the resource folder must have been created after the provided start time in milliseconds.
    *
-   * @param directory resource directory
+   * @param shortname shortname of resource to delete
    * @param startTimeInMs date when resource creation started in milliseconds
    */
   @VisibleForTesting
-  protected void cleanupResourceFolder(File directory, long startTimeInMs) {
-    if (directory.exists() && directory.isDirectory() && directory.lastModified() > startTimeInMs) {
-      LOG.debug("Deleting resource folder: " + directory);
-      org.apache.commons.io.FileUtils.deleteQuietly(directory);
+  protected void cleanupResourceFolder(String shortname, long startTimeInMs) {
+    Preconditions.checkNotNull(shortname);
+    Preconditions.checkNotNull(startTimeInMs);
+
+    Resource resource = resourceManager.get(shortname);
+    File directory = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
+    if (resource != null && directory.exists() && directory.isDirectory() && directory.lastModified() > startTimeInMs) {
+      LOG.info("Deleting resource and its folder from data directory: " + directory);
+      try {
+        resourceManager.delete(resource, true);
+      } catch (IOException e) {
+        LOG.error("Deleting resource failed: " + e.getMessage(), e);
+      } catch (DeletionNotAllowedException e) {
+        LOG.error("Deleting resource not allowed", e);
+      }
     }
   }
 
@@ -212,5 +227,13 @@ public class CreateResourceAction extends POSTAction {
    */
   public List<Organisation> getOrganisations() {
     return organisations;
+  }
+
+  /**
+   * @return DataDir
+   */
+  @VisibleForTesting
+  public DataDir getDataDir() {
+    return dataDir;
   }
 }

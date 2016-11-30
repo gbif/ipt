@@ -2,6 +2,8 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -15,6 +17,9 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,18 +31,37 @@ import static org.mockito.Mockito.when;
 
 public class CreateResourceActionTest {
   private static final Logger LOG = Logger.getLogger(CreateResourceActionTest.class);
+  private static final String SHORTNAME = "bugs";
   private CreateResourceAction action;
+  private static final File RESOURCES_DIRECTORY = getResourceDirectory();
 
   @Before
-  public void setup() throws IOException {
-    // mock data dir
+  public void setup() throws IOException, DeletionNotAllowedException {
+    // mock DataDir returning temp file (needed during import stage)
     DataDir mockDataDir =  mock(DataDir.class);
     when(mockDataDir.tmpFile(anyString(), anyString())).thenReturn(FileUtils.createTempDir());
+
+    // mock DataDir returning resources directory
+    when(mockDataDir.dataFile(anyString())).thenReturn(RESOURCES_DIRECTORY);
+
+    // mock resource manager that returns resource with shortname "bugs"
+    Resource res = new Resource();
+    res.setShortname(SHORTNAME);
+    ResourceManager mockResourceManager = mock(ResourceManager.class);
+    when(mockResourceManager.get(SHORTNAME)).thenReturn(res);
+
+    // mock resource manager that deletes resource directory "bugs"
+    Mockito.doAnswer(new Answer() {
+      public Object answer(InvocationOnMock invocation) {
+        return org.apache.commons.io.FileUtils.deleteQuietly(new File(RESOURCES_DIRECTORY, SHORTNAME));
+      }
+    })
+      .when(mockResourceManager).delete(res, true);
+
     // mock action
     action =
       new CreateResourceAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-        mock(ResourceManager.class), mockDataDir, mock(VocabulariesManager.class));
-
+        mockResourceManager, mockDataDir, mock(VocabulariesManager.class));
   }
 
   /**
@@ -47,7 +71,7 @@ public class CreateResourceActionTest {
   @Test
   public void testSaveImportException() throws IOException {
     action.setFile(File.createTempFile("archive", "zip"));
-    action.setShortname("shortname");
+    action.setShortname("otherShortname");
     action.setFileFileName("archive.zip");
     String result = action.save();
 
@@ -62,23 +86,36 @@ public class CreateResourceActionTest {
     long startTimeInMs = start.getTime() - 5000;
     LOG.info("Start in milliseconds: " + startTimeInMs);
 
-    File resourceDirectory = FileUtils.createTempDir();
+    DataDir dataDir = action.getDataDir();
+    File resourcesDirectory = dataDir.dataFile(DataDir.RESOURCES_DIR);
+    File resourceDirectory = new File(resourcesDirectory, SHORTNAME);
+    resourceDirectory.mkdir();
+    assertTrue(resourceDirectory.exists());
     File sources = new File (resourceDirectory, "sources");
     sources.mkdir();
+    assertTrue(sources.exists());
+    assertEquals(1, resourceDirectory.listFiles().length);
     File occurrences = new File (sources, "occurrences.txt");
     occurrences.createNewFile();
-    LOG.info("Resource directory last modified: " + resourceDirectory.lastModified());
-
-    assertTrue(resourceDirectory.exists());
-    assertTrue(sources.exists());
     assertTrue(occurrences.exists());
-    assertEquals(1, resourceDirectory.listFiles().length);
+
+    LOG.info("Resource directory last modified: " + resourceDirectory.lastModified());
     assertTrue(resourceDirectory.lastModified() > startTimeInMs);
 
-    action.cleanupResourceFolder(resourceDirectory, startTimeInMs);
+    action.cleanupResourceFolder(SHORTNAME, startTimeInMs);
     assertFalse(resourceDirectory.exists());
     assertFalse(sources.exists());
     assertFalse(occurrences.exists());
     assertNull(resourceDirectory.listFiles());
+  }
+
+  private static File getResourceDirectory() {
+    File f = null;
+    try {
+      f = FileUtils.createTempDir();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return f;
   }
 }
