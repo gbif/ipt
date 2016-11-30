@@ -110,7 +110,7 @@
 
     <ul class="sidebar-nav">
         <li>
-          <input href="#menu-toggle" class="contract" type="submit" id="menu-toggle" name="submit" alt="expand" value=""/>
+          <input class="contract" type="button" id="menu-toggle" name="contract-sidebar" value=""/>
         </li>
         <li>
             <a class="sidebar-anchor work" href="#"><@s.text name='portal.resource.summary'/></a>
@@ -219,7 +219,7 @@
 
     <div id="wrapper">
         <#if managerRights><a href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if>
-        <input href="#menu-toggle2" style="display:none" class="expand" type="submit" id="menu-toggle2" name="submit" alt="expand" value=""/>
+        <input style="display:none" class="expand" type="button" id="menu-toggle2" name="expand-sidebar" value=""/>
         <img class="latestVersion"/>
         <!-- Page Content -->
         <div id="page-content-wrapper">
