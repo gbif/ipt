@@ -1183,7 +1183,6 @@ eml.geospatialCoverages.description=描述
 eml.geospatialCoverages.globalCoverage=設定範圍為全球
 eml.geospatialCoverages.globalCoverage.help=設定地理範圍以含括整個地球
 eml.geospatialCoverages.boundingCoordinates=界定座標範圍
-eml.geospatialCoverages.boundingCoordinates.indicator=（最小或最大緯度 / 最小或最大經度）
 eml.geospatialCoverages.boundingCoordinates.min.latitude=緯度南界
 eml.geospatialCoverages.boundingCoordinates.max.latitude=緯度北界
 eml.geospatialCoverages.boundingCoordinates.min.longitude=經度西界
