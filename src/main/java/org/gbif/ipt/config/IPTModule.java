@@ -41,6 +41,7 @@ import org.apache.log4j.Logger;
 public class IPTModule extends AbstractModule {
 
   private static final Logger LOG = Logger.getLogger(IPTModule.class);
+  private static final String DATA_DIR_ENV_VAR = "IPT_DATA_DIR";
   // 2 minute timeout
   protected static final int CONNECTION_TIMEOUT_MSEC = 120000;
   protected static final int MAX_CONNECTIONS = 100;
@@ -69,13 +70,15 @@ public class IPTModule extends AbstractModule {
   @Inject
   public DataDir provideDataDir(ServletContext ctx) {
     DataDir dd;
-    if (System.getenv("IPT_DATA_DIR") == null) {
+    String dataDirectoryLocation = System.getenv(DATA_DIR_ENV_VAR);
+    if (dataDirectoryLocation == null) {
       File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
-      LOG.info("provide servlet context data dir location file at " + dataDirSettingFile.getAbsolutePath());
+      LOG.info("Using location settings file for data directory location at: " + dataDirSettingFile.getAbsolutePath());
       dd = DataDir.buildFromLocationFile(dataDirSettingFile);
     } else {
-      LOG.info("Using environment variable IPT_DATA_DIR for data directory location: " + System.getenv("IPT_DATA_DIR"));
-      dd = DataDir.buildFromString(System.getenv("IPT_DATA_DIR"));
+      LOG.info(
+        "Using environment variable " + DATA_DIR_ENV_VAR + " for data directory location: " + dataDirectoryLocation);
+      dd = DataDir.buildFromString(dataDirectoryLocation);
     }
     try {
       if (dd != null && dd.isConfigured()) {

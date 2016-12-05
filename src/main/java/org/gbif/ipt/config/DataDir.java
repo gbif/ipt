@@ -43,28 +43,41 @@ public class DataDir {
   private DataDir() {
   }
 
+  /**
+   * Build and configure new IPT Data Directory instance from location settings file.
+   *
+   * @param dataDirSettingFile location settings file specifying location of existing IPT data directory
+   *
+   * @return IPT Data Directory instance
+   */
   public static DataDir buildFromLocationFile(File dataDirSettingFile) {
     DataDir dd = new DataDir();
     dd.dataDirSettingFile = dataDirSettingFile;
     if (dataDirSettingFile != null && dataDirSettingFile.exists()) {
-      // a datadir has been configured already. Lets see where that is
       String dataDirPath = null;
       try {
-        dataDirPath = StringUtils.trimToNull(FileUtils.readFileToString(dataDirSettingFile));
+        dataDirPath = StringUtils.trimToNull(FileUtils.readFileToString(dataDirSettingFile, "UTF-8"));
         if (dataDirPath != null) {
           log.info("IPT Data Directory configured at " + dataDirPath);
           dd.dataDir = new File(dataDirPath);
         }
       } catch (IOException e) {
         log.error(
-          "Failed to read the datadir location settings file in WEB-INF at " + dataDirSettingFile.getAbsolutePath(), e);
+          "Failed to read the IPT Data Directory location settings file in WEB-INF at " + dataDirSettingFile.getAbsolutePath(), e);
       }
     } else {
-      log.warn("Datadir location settings file in WEB-INF not found. Continue without data directory.");
+      log.warn("IPT Data Directory location settings file in WEB-INF not found. Continue without data directory.");
     }
     return dd;
   }
 
+  /**
+   * Build and configure new IPT Data Directory instance from specified path.
+   *
+   * @param dataDirPath location of existing IPT Data Directory
+   *
+   * @return IPT Data Directory instance
+   */
   public static DataDir buildFromString(String dataDirPath) {
     DataDir dd = new DataDir();
     if (dataDirPath != null) {
