@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
+import org.gbif.utils.HttpUtil.Response;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
@@ -54,6 +55,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -331,5 +333,26 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     when(appConfig.getDataDir()).thenReturn(dataDir);
     existingDOI = manager.getLastPublishedVersionExistingDoi(p);
     assertNull(existingDOI);
+  }
+
+  @Test
+  public void testGetRegistryExceptionType() throws ParserConfigurationException, SAXException {
+    // create instance of RegistryManager
+    RegistryManagerImpl manager =
+      new RegistryManagerImpl(mockAppConfig, dataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
+
+    assertEquals(RegistryException.TYPE.BAD_REQUEST, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode()));
+    assertEquals(RegistryException.TYPE.NOT_AUTHORISED, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.UNAUTHORIZED.getStatusCode()));
+    assertEquals(RegistryException.TYPE.BAD_RESPONSE,
+      manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()));
+    assertEquals(RegistryException.TYPE.BAD_RESPONSE,
+      manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.MOVED_PERMANENTLY.getStatusCode()));
+
+    try {
+      manager.getRegistryExceptionType(101);
+    } catch (IllegalArgumentException e) {
+      // asserts that only error codes above 300 expected
+    }
   }
 }

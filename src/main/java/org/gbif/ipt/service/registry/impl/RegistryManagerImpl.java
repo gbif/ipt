@@ -42,13 +42,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -571,7 +571,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     if (HttpUtil.success(resp)) {
       log.info("Register resource was successful!");
     } else {
-      TYPE type = (resp.getStatusCode() == 400) ? TYPE.BAD_REQUEST : TYPE.BAD_RESPONSE;
+      TYPE type = getRegistryExceptionType(resp.getStatusCode());
       throw new RegistryException(type, "Register resource failed: " + resp.getStatusLine());
     }
 
@@ -630,7 +630,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     if (HttpUtil.success(resp)) {
       log.info("Register IPT was successful!");
     } else {
-      TYPE type = (resp.getStatusCode() == 400) ? TYPE.BAD_REQUEST : TYPE.BAD_RESPONSE;
+      TYPE type = getRegistryExceptionType(resp.getStatusCode());
       throw new RegistryException(type, "Register IPT failed: " + resp.getStatusLine());
     }
 
@@ -723,7 +723,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       log.info("Update IPT registration was successful!");
     } else {
       // to continue updating registered resources, IPT update must have been successful
-      TYPE type = (resp.getStatusCode() == 400) ? TYPE.BAD_REQUEST : TYPE.BAD_RESPONSE;
+      TYPE type = getRegistryExceptionType(resp.getStatusCode());
       throw new RegistryException(type, "Update IPT registration failed: " + resp.getStatusLine());
     }
 
@@ -769,9 +769,34 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         baseAction.addActionMessage(
           baseAction.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()}));
     } else {
-      TYPE type = (resp.getStatusCode() == 400) ? TYPE.BAD_REQUEST : TYPE.BAD_RESPONSE;
+      TYPE type = getRegistryExceptionType(resp.getStatusCode());
       throw new RegistryException(type, "Update resource registration failed: " + resp.getStatusLine());
     }
+  }
+
+  /**
+   * Determine the type of RegistryException based on the error response code. In this context, error response codes
+   * include all response codes higher than 300.
+   *
+   * @param code response code from GBIF Registry web service response
+   *
+   * @return RegistryException type based on response code
+   */
+  @VisibleForTesting
+  protected TYPE getRegistryExceptionType(int code) {
+    Preconditions.checkArgument(code > 300); // never called on successful codes include OK (200) and CREATED (201)
+    TYPE type;
+    switch (code) {
+      case 400:
+        type = TYPE.BAD_REQUEST;
+        break;
+      case 401:
+        type = TYPE.NOT_AUTHORISED;
+        break;
+      default:
+        type = TYPE.BAD_RESPONSE;
+    }
+    return type;
   }
 
   public boolean validateOrganisation(String organisationKey, String password) {
