@@ -1,6 +1,5 @@
 package org.gbif.ipt.action.admin;
 
-import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -9,6 +8,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImplTest;
@@ -61,7 +61,8 @@ public class ExtensionsActionTest {
     // create instance of RegistryManager
     RegistryManager registryManager =
       new RegistryManagerImpl(mock(AppConfig.class), mock(DataDir.class), mockHttpUtil, mock(SAXParserFactory.class),
-        mock(ConfigWarnings.class), mock(SimpleTextProvider.class), mock(RegistrationManager.class));
+        mock(ConfigWarnings.class), mock(SimpleTextProvider.class), mock(RegistrationManager.class), mock(
+        ResourceManager.class));
 
     // load list of all registered extensions
     extensions = registryManager.getExtensions();

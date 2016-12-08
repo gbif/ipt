@@ -26,6 +26,7 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
@@ -69,6 +70,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   private ConfigWarnings mockConfigWarnings;
   private SimpleTextProvider mockSimpleTextProvider;
   private RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+  private ResourceManager mockResourceManager = mock(ResourceManager.class);
   private HttpUtil mockHttpUtil;
   private HttpUtil.Response mockResponse;
 
@@ -94,7 +96,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Extension> extensions = manager.getExtensions();
     // a total of 22 Extensions are expected
@@ -120,7 +122,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Extension> extensions = manager.getExtensions();
     // a total of 52 Extensions are expected
@@ -146,7 +148,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     // getExtensions() throws a RegistryException of type PROXY
     try {
@@ -166,7 +168,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     // getExtensions() throws a RegistryException of type BAD_RESPONSE
     try {
@@ -185,7 +187,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     // getExtensions() throws a RegistryException of type BAD_REQUEST
     try {
@@ -207,7 +209,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Vocabulary> vocabularies = manager.getVocabularies();
     assertEquals(52, vocabularies.size());
@@ -224,7 +226,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Vocabulary> vocabularies = manager.getVocabularies();
     assertEquals(65, vocabularies.size());
@@ -251,7 +253,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Resource> resources = manager.getOrganisationsResources("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
     assertEquals(3, resources.size());
@@ -268,7 +270,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager manager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     Organisation organisation = manager.getRegisteredOrganisation("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
     assertNotNull(organisation);
@@ -310,7 +312,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManagerImpl manager =
       new RegistryManagerImpl(appConfig, dataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     DOI expectedDOI = new DOI("http://doi.org/10.5072/fk22zu2ds");
     DOI existingDOI = manager.getLastPublishedVersionExistingDoi(p);

@@ -110,7 +110,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mock(RegistrationManager.class));
+        mockSimpleTextProvider, mock(RegistrationManager.class), mock(ResourceManager.class));
 
     // make sure the list of organisations is fully populated
     assertNotNull(mockRegistryManager.getRegisteredOrganisation(RESOURCE1_ORGANISATION_KEY));

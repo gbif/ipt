@@ -229,6 +229,7 @@ public interface ResourceManager {
    *
    * @return status report of current task either running or on queue for the requested resource or null if none exists
    */
+  @Nullable
   StatusReport status(String shortname);
 
   /**

@@ -9,6 +9,7 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -70,7 +71,7 @@ public class VocabulariesManagerImplTest {
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
       new RegistryManagerImpl(appConfig, dataDir, mockHttpUtil, saxf, warnings, mock(SimpleTextProvider.class),
-        mock(RegistrationManager.class));
+        mock(RegistrationManager.class), mock(ResourceManager.class));
 
     assertTrue(TMP_DIR.isDirectory());
 

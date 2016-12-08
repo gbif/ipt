@@ -502,6 +502,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  /**
+   * @return GBIF UUID, key assigned when resource is registered with GBIF
+   */
   public UUID getKey() {
     return key;
   }

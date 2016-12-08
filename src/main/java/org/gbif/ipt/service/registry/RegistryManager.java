@@ -64,36 +64,39 @@ public interface RegistryManager {
   List<Vocabulary> getVocabularies() throws RegistryException;
 
   /**
-   * Register a new resource with the GBIF Registry associated with the IPT and organisation specified.
+   * Register a new resource with the GBIF Registry associated with the IPT and organisation specified. Parses
+   * GBIF UUID key from response received.
    *
    * @param resource     Resource being registered
    * @param organisation Organisation owning resource
    * @param ipt          IPT hosting resource
    *
-   * @return the newly created registry key for the resource
+   * @return the GBIF UUID key of the newly created resource
    *
-   * @throws RegistryException if registration failed for any reason
+   * @throws RegistryException if registration failed for any reason, including a non valid UUID key was found
    */
   UUID register(Resource resource, Organisation organisation, Ipt ipt) throws RegistryException;
 
   /**
-   * Register an IPT instance against the GBIF Registry.
+   * Register an IPT instance against the GBIF Registry. Parses GBIF UUID key from response received.
    *
    * @param ipt          IPT being registered
    * @param organisation the organisation to register the IPT with
    *
-   * @return key of newly registered IPT
+   * @return the GBIF UUID key of newly registered IPT
    *
-   * @throws RegistryException if registration failed for any reason, including a non empty key was found
+   * @throws RegistryException if registration failed for any reason, including a non valid UUID key was found
    */
   String registerIPT(Ipt ipt, Organisation organisation) throws RegistryException;
 
   /**
-   * Update an IPT instance against the GBIF Registry.
+   * Update an IPT instance against the GBIF Registry. Also updates all registered resources against the GBIF Registry.
+   * This method ensures the GBIF Registry has the correct endpoint URLs for both the IPT and all its registered
+   * resources.
    *
    * @param ipt IPT whose registration is being updated
    *
-   * @throws RegistryException if update was unsuccessful for any reason
+   * @throws RegistryException if updating IPT or any registered resource was unsuccessful for any reason
    */
   void updateIpt(Ipt ipt) throws RegistryException;
 

@@ -96,7 +96,7 @@ public class ExtensionManagerImplTest {
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
       new RegistryManagerImpl(appConfig, mockDataDir, mockHttpUtil, saxf, warnings, mockSimpleTextProvider,
-        mockRegistrationManager);
+        mockRegistrationManager, resourceManager);
 
     File myTmpDir = Files.createTempDir();
     assertTrue(myTmpDir.isDirectory());

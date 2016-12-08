@@ -1287,6 +1287,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // publish RTF
     publishRtf(resource, version);
 
+    // remove StatusReport from previous publishing round
+    StatusReport report = status(resource.getShortname());
+    if (report != null) {
+      processReports.remove(resource.getShortname());
+    }
+
     // (re)generate dwca asynchronously
     boolean dwca = false;
     if (resource.hasMappedData()) {
@@ -2161,19 +2167,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // perform update
         registryManager.updateResource(resource, iptKey);
-
-        // log
-        String msg = action.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()});
-        action.addActionMessage(msg);
-        log.debug(msg);
       } catch (RegistryException e) {
         // log as specific error message as possible about why the Registry error occurred
         String msg = RegistryException.logRegistryException(e.getType(), action);
         action.addActionError(msg);
         log.error(msg);
-
-        // add error message that explains the consequence of the Registry error to user
-        msg = action.getText("admin.config.updateMetadata.resource.fail.registry", new String[] {cfg.getRegistryUrl()});
+        // add error message that explains the root cause of the Registry error to user
+        msg = action.getText("admin.config.updateMetadata.resource.fail.registry", new String[]{e.getMessage()});
         action.addActionError(msg);
         log.error(msg);
         throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);

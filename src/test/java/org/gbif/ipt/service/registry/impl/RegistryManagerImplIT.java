@@ -11,6 +11,7 @@ import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.DOIUtils;
@@ -35,6 +36,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Integration tests hitting sandbox registry (legacy) web services.
@@ -50,17 +52,19 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
   private static final String ORGANISATION_NAME = "Test Organisation Jenkins";
 
   private RegistryManager manager;
+  private ResourceManager resourceManager;
 
   @Before
   public void setup() throws SAXException, ParserConfigurationException {
     ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+    resourceManager = mock(ResourceManager.class);
 
     // manager that issues real http requests
     manager =
       new RegistryManagerImpl(cfg, dataDir, new HttpUtil(buildHttpClient()), buildSaxFactory(), mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager);
+        mockSimpleTextProvider, mockRegistrationManager, resourceManager);
   }
 
   @Test
@@ -81,11 +85,13 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
       ipt.setPrimaryContactType("technical");
       ipt.setLanguage("en");
       ipt.setName("Mock IPT");
+      ipt.setWsPassword("wsPassword");
 
       // register IPT
       String iptKey = manager.registerIPT(ipt, organisation);
       LOG.info("IPT registered successfully, key=" + iptKey);
       ipt.setKey(iptKey);
+      ipt.setOrganisationKey(ORGANISATION_UUID);
 
       // construct resource
       Resource res = new Resource();
@@ -129,6 +135,14 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
       // update resource
       assertTrue(res.isRegistered());
       manager.updateResource(res, iptKey);
+
+      // mock resourceManager returning registered resource in list of resources
+      List<Resource> registeredResources = Lists.newArrayList();
+      registeredResources.add(res);
+      when(resourceManager.list(PublicationStatus.REGISTERED)).thenReturn(registeredResources);
+
+      // update IPT, which updates IPT registration and all registered resources registrations also
+      manager.updateIpt(ipt);
     } catch (Exception e) {
       e.printStackTrace();
       fail(e.getMessage());

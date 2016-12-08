@@ -216,7 +216,7 @@ public class RegistrationAction extends POSTAction {
       LOG.error(msg);
 
       // add error message that explains the consequence of the Registry error
-      msg = getText("admin.registration.failed.update");
+      msg = getText("admin.registration.failed.update", new String[]{e.getMessage()});
       addActionError(msg);
       LOG.error(msg);
       return INPUT;

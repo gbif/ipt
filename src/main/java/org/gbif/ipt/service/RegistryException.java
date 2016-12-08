@@ -80,7 +80,7 @@ public class RegistryException extends RuntimeException {
 
   /**
    * Depending on the RegistryException TYPE, retrieves an i18n message, and returns it. Ideally, the message returned
-   * will be the most specific error possible as to why the exception was thrown. Such a specific message will shielf
+   * will be the most specific error possible as to why the exception was thrown. Such a specific message will shield
    * the IPT admin, from having to interpret complex stacktrace exceptions.
    *
    * @param type   RegistryException.TYPE
@@ -103,8 +103,8 @@ public class RegistryException extends RuntimeException {
       } else if (type == TYPE.IO_ERROR) {
         msg = action.getText("admin.registration.error.io");
       } else if (type == TYPE.BAD_REQUEST) {
-        // this is will only ever occur internally during development, no need to i18n it
-        msg = "A bad request was issued, please check the syntax of the URL used";
+        // this may occur when Registry WS rejects request, e.g. invalid email address (POR-1975) TODO i18n
+        msg = "A bad request was issued. Please contact the GBIF Helpdesk (helpdesk@gbif.org) for help";
       } else if (type == TYPE.UNKNOWN) {
         msg = action.getText("admin.registration.error.unknown");
       }

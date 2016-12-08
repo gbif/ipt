@@ -1004,8 +1004,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   public void prepare() {
     super.prepare();
     if (resource != null) {
-      // get last archive report
-      report = resourceManager.status(resource.getShortname());
+      // refresh archive report
+      updateReport();
       // get potential new managers
       potentialManagers = userManager.list(Role.Publisher);
       potentialManagers.addAll(userManager.list(Role.Manager));
@@ -1073,6 +1073,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // populate frequencies map
       populateFrequencies();
     }
+  }
+
+  /**
+   * Updates report to be displayed on overview page.
+   */
+  private void updateReport() {
+    report = resourceManager.status(resource.getShortname());
   }
 
   /**
@@ -1189,6 +1196,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         // publish a new version of the resource
         if (resourceManager.publish(resource, nextVersion, this)) {
           addActionMessage(getText("publishing.started", new String[] {String.valueOf(nextVersion), resource.getShortname()}));
+          // refresh archive report
+          updateReport();
           return PUBLISHING;
         } else {
           // show action warning there is no source data and mapping, as long as resource isn't metadata-only
@@ -1199,6 +1208,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
           metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
           mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
+          // refresh archive report
+          updateReport();
           return SUCCESS;
         }
       } catch (PublicationException e) {
