@@ -4,8 +4,7 @@
 <link rel="stylesheet" href="/styles/leaflet/leaflet.css" />
 <link rel="stylesheet" href="/styles/leaflet/locationfilter.css" />
 <script type="text/javascript" src="/js/leaflet/leaflet.js"></script>
-<script type="text/javascript" src="/js/leaflet/cartodb.core.js"></script>
-<script type="text/javascript" src="/js/leaflet/locationfilter.js"></script>
+<script type="text/javascript" src="/js/leaflet/tile.stamen.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   initHelp();	
@@ -14,20 +13,10 @@ $(document).ready(function(){
   <#if latitude?? && longitude??>	
 	<script type="text/javascript">
 	$(document).ready(function(){
-      var map = L.map('locationMap', {crs: L.CRS.EPSG4326}).setView([${latitude}, ${longitude}], 2).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
-      // Using cartodb to get a baselayer.
-      // TODO: Consider a better service?
-      var sqlWGS84 = "SELECT ST_SCALE(the_geom, 111319.44444444444444, 111319.44444444444444) AS the_geom_webmercator FROM world_borders";
-      // style it here
-      var cartoCssGBIF = "#layer { polygon-fill: #02393D; polygon-opacity: 1; line-width:0}";
-      cartodb.Tiles.getTiles({
-          user_name: 'gbif', sublayers: [{
-              sql: sqlWGS84, cartocss: cartoCssGBIF
-          }]
-      }, function (tileTemplate) {
-          L.tileLayer(tileTemplate.tiles[0], {
-              attribution: 'Natural Earth data, map by CartoDB',
-          }).addTo(map);
+      var map = L.map('locationMap').setView([${latitude}, ${longitude}], 10).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
+      var layer = new L.StamenTileLayer("terrain");
+      map.addLayer(layer, {
+          detectRetina: true
       });
       L.Icon.Default.imagePath = '/images/leaflet';
       var marker = L.marker([${latitude}, ${longitude}], {iconUrl: 'marker-icon-2x.png'}).addTo(map);

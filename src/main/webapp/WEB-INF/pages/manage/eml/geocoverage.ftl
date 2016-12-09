@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/styles/leaflet/leaflet.css" />
 <link rel="stylesheet" href="/styles/leaflet/locationfilter.css" />
 <script type="text/javascript" src="/js/leaflet/leaflet.js"></script>
-<script type="text/javascript" src="/js/leaflet/cartodb.core.js"></script>
+<script type="text/javascript" src="/js/leaflet/tile.stamen.js"></script>
 <script type="text/javascript" src="/js/leaflet/locationfilter.js"></script>
 
 <script>
@@ -25,21 +25,11 @@
         var minLatValLimit = -90;
         var maxLatValLimit = 90;
 
-        var map = L.map('map', {crs: L.CRS.EPSG4326}).setView([0, 0], 2).setMaxBounds(L.latLngBounds(L.latLng(-90, -360), L.latLng(90, 360)));
+        var map = new L.map('map').setView([0, 0], 10).setMaxBounds(L.latLngBounds(L.latLng(-90, -360), L.latLng(90, 360)));
 
-        // Using cartodb to get a baselayer.
-        // TODO: Consider a better service?
-        var sqlWGS84 = "SELECT ST_SCALE(the_geom, 111319.44444444444444, 111319.44444444444444) AS the_geom_webmercator FROM world_borders";
-        // style it here
-        var cartoCssGBIF = "#layer { polygon-fill: #02393D; polygon-opacity: 1; line-width:0}";
-        cartodb.Tiles.getTiles({
-            user_name: 'gbif', sublayers: [{
-                sql: sqlWGS84, cartocss: cartoCssGBIF
-            }]
-        }, function (tileTemplate) {
-            L.tileLayer(tileTemplate.tiles[0], {
-                attribution: 'Natural Earth data, map by CartoDB',
-            }).addTo(map);
+        var layer = new L.StamenTileLayer("terrain");
+        map.addLayer(layer, {
+            detectRetina: true
         });
 
         // populate coordinate fields, using min max values as defaults if none exist
