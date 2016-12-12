@@ -682,7 +682,7 @@ This metadata pages contains information about one or more people or organisatio
 This metadata page contains information about a project under which the data in the resource were produced.
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataProjectData.png' />
 * **Title** - the title of the project.
-* **Identifier - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.
+* **Identifier** - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.
 * **Description** - an abstract about the research project.
 * **Funding** - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.). Other funding-related information may also be included.
 * **Study Area Description** - a description of the physical area where the project occurred (physical location, habitat, temporal coverage, etc.).
