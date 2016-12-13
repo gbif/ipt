@@ -102,10 +102,11 @@
   </#macro>
 
   <#-- Displays the name of an extension inside a span, with title set to extension description (if it exists) in order to display it in tooltip -->
-  <#macro extensionLink ext>
+  <#macro extensionLink ext isCore=false>
     <#if ext?? && ext.name?has_content>
       <#if ext.description?has_content>
-        <span class="ext-tooltip" title="${ext.description}">${ext.name}</span>
+        <#assign coreText><@s.text name='manage.overview.DwC.Mappings.cores.select'/></#assign>
+        <span class="ext-tooltip" title="${ext.description}">${ext.name}&nbsp;<#if isCore>&#40;${coreText?lower_case}&#41;</#if></span>
       <#else>
         <span>${ext.name}</span>
       </#if>
@@ -351,7 +352,7 @@
                             <ul class="no_bullets horizontal_graph">
                               <!-- at top, show bar for core record count to enable comparison against extensions -->
                               <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                                <li><@extensionLink coreExt/><div class="grey_bar">${coreCount?c}</div></li>
+                                <li><@extensionLink coreExt true/><div class="grey_bar">${coreCount?c}</div></li>
                               </#if>
                               <!-- below bar for core record count, show bars for extension record counts -->
                               <#list recordsByExtensionOrdered?keys as k>
