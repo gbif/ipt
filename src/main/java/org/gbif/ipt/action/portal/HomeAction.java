@@ -59,18 +59,23 @@ public class HomeAction extends BaseAction {
       BigDecimal v = resource.getLastPublishedVersionsVersion();
       String shortname = resource.getShortname();
       File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
-      Resource publishedPublicVersion = ResourceUtils
-        .reconstructVersion(v, resource.getShortname(), resource.getAssignedDoi(), resource.getOrganisation(),
-          resource.findVersionHistory(v), versionEmlFile, resource.getKey());
+      // try/catch block flags resources missing mandatory metadata (published using IPT prior to v2.2)
+      try {
+        Resource publishedPublicVersion = ResourceUtils
+          .reconstructVersion(v, resource.getShortname(), resource.getAssignedDoi(), resource.getOrganisation(),
+            resource.findVersionHistory(v), versionEmlFile, resource.getKey());
 
-      // set properties only existing on current (unpublished) version
-      Resource current = resourceManager.get(shortname);
-      publishedPublicVersion.setModified(current.getModified());
-      publishedPublicVersion.setNextPublished(current.getNextPublished());
-      publishedPublicVersion.setCoreType(current.getCoreType());
-      publishedPublicVersion.setSubtype(current.getSubtype());
-
-      resources.add(publishedPublicVersion);
+        // set properties only existing on current (unpublished) version
+        Resource current = resourceManager.get(shortname);
+        publishedPublicVersion.setModified(current.getModified());
+        publishedPublicVersion.setNextPublished(current.getNextPublished());
+        publishedPublicVersion.setCoreType(current.getCoreType());
+        publishedPublicVersion.setSubtype(current.getSubtype());
+        resources.add(publishedPublicVersion);
+      } catch (IllegalArgumentException e) {
+        // only expected to happen for extremely out-of-date resources published using IPT prior to v.2.2
+        addActionWarning(resource.getTitleAndShortname() + " failed to load. To fix this problem, try publishing this resource again.");
+      }
     }
 
     // sort alphabetically (A to Z)

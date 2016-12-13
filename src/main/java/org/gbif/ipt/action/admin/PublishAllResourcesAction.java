@@ -10,6 +10,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.validation.EmlValidator;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -27,6 +28,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
   protected ResourceManager resourceManager;
   protected RegistryManager registryManager;
+  private final EmlValidator emlValidator;
 
   @Inject
   public PublishAllResourcesAction(SimpleTextProvider textProvider, AppConfig cfg,
@@ -34,6 +36,7 @@ public class PublishAllResourcesAction extends BaseAction {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.registryManager = registryManager;
+    this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
   }
 
   @Override
@@ -56,14 +59,23 @@ public class PublishAllResourcesAction extends BaseAction {
       return SUCCESS;
     }
 
-    // kick off publishing for all resources, unless the resource has exceeded the maximum number of failed publications
+    // kick off publishing for all resources, unless a) the resource has exceeded the maximum number of failed
+    // publications, b) the mandatory metadata has not been provided for the resource
     for (Resource resource : resources) {
       // next version number - the version of newly published eml/rtf/archive
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
       try {
         if (!resourceManager.hasMaxProcessFailures(resource)) {
-          // publish a new version of the resource - dwca gets published asynchronously
-          resourceManager.publish(resource, nextVersion, this);
+          boolean isValidMetadata = emlValidator.isValid(resource, null);
+          if (isValidMetadata) {
+            // publish a new version of the resource - dwca gets published asynchronously
+            resourceManager.publish(resource, nextVersion, this);
+          } else {
+            // alert user publication failed
+            addActionError(getText("publishing.failed",
+              new String[] {nextVersion.toPlainString(), resource.getShortname(),
+                getText("manage.overview.published.missing.metadata")}));
+          }
         } else {
           addActionError(getText("publishing.skipping",
             new String[] {String.valueOf(resource.getNextVersion()), resource.getTitleAndShortname()}));

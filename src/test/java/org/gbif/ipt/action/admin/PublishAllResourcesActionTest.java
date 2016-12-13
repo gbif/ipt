@@ -5,6 +5,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -18,10 +19,14 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
+import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.collect.Sets;
@@ -51,6 +56,21 @@ public class PublishAllResourcesActionTest {
     ResourceManagerImpl mockResourceManager = test.getResourceManagerImpl();
     // prepare and add resource
     Resource resource = test.getNonRegisteredMetadataOnlyResource();
+    // ensure resource has mandatory metadata filled in, meaning its EML validates and it has a valid publishing org
+    Eml eml = EmlFactory.build(FileUtils.classpathStream("data/eml.xml"));
+    eml.setEmlVersion(BigDecimal.valueOf(3.0));
+    eml.setPreviousEmlVersion(BigDecimal.valueOf(1.0));
+    resource.setEml(eml);
+    // assign publishing organisation to resource
+    Organisation o = new Organisation();
+    o.setName("TestOrg");
+    o.setKey(UUID.randomUUID().toString());
+    resource.setOrganisation(o);
+
+    // mock successful lookup for organization by key (done by RegistrationManager in EmlValidator)
+    RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+    when(mockRegistrationManager.get(any(UUID.class))).thenReturn(o);
+
     mockResourceManager.save(resource);
     // mock generateDwca() throwing PublicationException, not actually possible, but used to test failed publications
     GenerateDwcaFactory mockDwcaFactory = mockResourceManager.getDwcaFactory();
@@ -67,7 +87,7 @@ public class PublishAllResourcesActionTest {
 
     // mock action
     action = new PublishAllResourcesAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
-      mock(RegistrationManager.class), mockResourceManager, mock(RegistryManager.class));
+      mockRegistrationManager, mockResourceManager, mock(RegistryManager.class));
 
   }
 
