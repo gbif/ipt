@@ -211,11 +211,10 @@ public class RegistrationAction extends POSTAction {
     } catch (RegistryException e) {
       // add error message explaining why the Registry error occurred
       String msg = RegistryException.logRegistryException(e.getType(), this);
-      // add error message about Registry error
       addActionError(msg);
       LOG.error(msg);
 
-      // add error message that explains the consequence of the Registry error
+      // add error message that explains the root cause of the Registry error
       msg = getText("admin.registration.failed.update", new String[]{e.getMessage()});
       addActionError(msg);
       LOG.error(msg);

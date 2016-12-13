@@ -770,7 +770,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
           baseAction.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()}));
     } else {
       TYPE type = getRegistryExceptionType(resp.getStatusCode());
-      throw new RegistryException(type, "Update resource registration failed: " + resp.getStatusLine());
+      throw new RegistryException(type, "Update resource registration failed [shortname=" + resource.getShortname() + ", key=" + resource.getKey().toString() + "]: " + resp.getStatusLine());
     }
   }
 
