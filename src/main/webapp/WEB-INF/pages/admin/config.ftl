@@ -1,10 +1,10 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="title"/></title>
 
-<link rel="stylesheet" href="/styles/leaflet/leaflet.css" />
-<link rel="stylesheet" href="/styles/leaflet/locationfilter.css" />
-<script type="text/javascript" src="/js/leaflet/leaflet.js"></script>
-<script type="text/javascript" src="/js/leaflet/tile.stamen.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
+<link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
+<script type="text/javascript" src="${baseURL}/js/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="${baseURL}/js/leaflet/tile.stamen.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   initHelp();	
@@ -18,7 +18,7 @@ $(document).ready(function(){
       map.addLayer(layer, {
           detectRetina: true
       });
-      L.Icon.Default.imagePath = '/images/leaflet';
+      L.Icon.Default.imagePath = '${baseURL}/images/leaflet';
       var marker = L.marker([${latitude}, ${longitude}], {iconUrl: 'marker-icon-2x.png'}).addTo(map);
 	});
 	</script>

@@ -4,11 +4,11 @@
  <#assign sideMenuEml=true />
  <#assign currentMenu="manage"/>
 
-<link rel="stylesheet" href="/styles/leaflet/leaflet.css" />
-<link rel="stylesheet" href="/styles/leaflet/locationfilter.css" />
-<script type="text/javascript" src="/js/leaflet/leaflet.js"></script>
-<script type="text/javascript" src="/js/leaflet/tile.stamen.js"></script>
-<script type="text/javascript" src="/js/leaflet/locationfilter.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
+<link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
+<script type="text/javascript" src="${baseURL}/js/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="${baseURL}/js/leaflet/tile.stamen.js"></script>
+<script type="text/javascript" src="${baseURL}/js/leaflet/locationfilter.js"></script>
 
 <script>
     $(document).ready(function() {
