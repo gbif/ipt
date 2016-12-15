@@ -740,12 +740,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @NotNull
   private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
     ExtensionMapping map = new ExtensionMapping();
-    map.setSource(source);
     Extension ext = extensionManager.get(af.getRowType().qualifiedName());
     if (ext == null) {
+      // cleanup source file immediately
+      if (source.isFileSource()) {
+        File file = ((TextFileSource) source).getFile();
+        boolean deleted = FileUtils.deleteQuietly(file);
+        // to bypass "Unable to delete file" error on Windows, run garbage collector to clean up file i/o mapping
+        if (!deleted) {
+          System.gc();
+          FileUtils.deleteQuietly(file);
+        }
+      }
       alog.warn("manage.resource.create.rowType.null", new String[] {af.getRowType().qualifiedName()});
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
     }
+    map.setSource(source);
     map.setExtension(ext);
 
     // set ID column (warning: handmade DwC-A can be missing id index)
@@ -950,7 +960,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (files != null) {
       for (File resourceDir : files) {
         if (resourceDir.isDirectory()) {
-          File[] resourceDirFiles = resourceDir.listFiles();
+          // list of files and folders in resource directory, excluding .DS_Store
+          File[] resourceDirFiles = resourceDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+              return !name.equalsIgnoreCase(".DS_Store");
+            }
+          });
+
           if (resourceDirFiles == null) {
             log.error("Resource directory " + resourceDir.getName() + " could not be read. Please verify its content");
           } else if (resourceDirFiles.length == 0) {
