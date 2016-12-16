@@ -37,9 +37,9 @@ $(document).ready(function(){
 	<@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
 	<@input name="proxy" i18nkey="admin.config.proxy" help="i18n" size=80/>
   <@input name="analyticsKey" i18nkey="admin.config.analyticsKey" help="i18n" size=80/>
-	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" help="i18n"/>
-	<@checkbox name="debug" i18nkey="admin.config.debug" help="i18n"/>
-  <@checkbox name="archivalMode" i18nkey="admin.config.archivalMode" help="i18n"/>
+	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" value="${analyticsGbif?c}" help="i18n"/>
+	<@checkbox name="debug" i18nkey="admin.config.debug" value="${debug?c}" help="i18n"/>
+  <@checkbox name="archivalMode" i18nkey="admin.config.archivalMode" value="${archivalMode?c}" help="i18n"/>
   <@readonly name="logDir" i18nkey="admin.config.server.log.dir" value="${logDir}" help="i18n"/>
   <@readonly name="registryUrl" i18nkey="admin.config.registry.url" value="${registryUrl}" help="i18n"/>
 
