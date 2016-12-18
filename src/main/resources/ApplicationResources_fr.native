@@ -141,7 +141,7 @@ user.roles.admin=Administrateur
 
 # extension
 extension=Extension
-extension.core=Extension du Core
+extension.core=Extension du noyau
 extension.rowtype=RowType
 extension.vocabulary=Vocabulaire
 extension.properties=Propriétés
@@ -151,7 +151,7 @@ extension.prop.required=Nécessaire
 extension.prop.group=Groupe
 extension.synchronise.title=Synchroniser les Extensions et Vocabulaires
 extension.last.synchronised=Dernière synchronisation le {0}
-extension.further.title=Autres modules noyau et d''extension Darwin Core disponibles
+extension.further.title=Autres noyaux et extensions Darwin Core disponibles
 extension.further.title.help=La colonne de gauche contient le nom du module noyau ou d''extension. Dans la colonne de droite se trouve une brève description de ce module ainsi que des données cibles.
 extension.already.installed=Tous les modules (noyau et extension) disponibles sont déjà installés.
 
@@ -611,7 +611,7 @@ admin.registration.test1=La première étape pour enregistrer cette instance IPT
 admin.registration.success=L''instance IPT a été associé avec cette organisation.
 admin.registration.failed=L''enregistrement de l''IPT a échoué.
 admin.registration.success.update=La mise à jour de l''enregistrement de l''IPT a été correctement mis à jour.
-admin.registration.failed.update=La mise à jour de l''enregistrement de l''IPT a échoué.
+admin.registration.failed.update=La mise à jour de l''enregistrement de l''IPT a échoué. {0}
 admin.registration.error.alreadyRegistered1=Cet IPT est déjà associé à une institution.
 admin.registration.error.alreadyRegistered2=Pour modifier l''association avec une institution, veuillez contacter le <a href\="mailto\:helpdesk@gbif.org">support GBIF</a> (en Anglais).
 admin.registration.error.registry=Erreur de communication avec le registre GBIF.
@@ -721,7 +721,7 @@ manage.resource.create.file=Fichier Darwin Core Archive existant (facultatif)
 manage.resource.create.success=Fichier Darwin Core archive préexistant importé. Le type du noyau est {0}. {1} source(s) a été importée et {2} mapping(s) créé(s).
 manage.resource.create.core.invalid=Le ficher Darwin Core Archive n''est pas valide et ne possède pas de mapping vers un module noyau.
 manage.resource.create.core.invalid.rowType=L''archive Darwin Core est invalide \: le mapping principal n''a aucun rowType
-manage.resource.create.core.invalid.id=L''archive Darwin Core est invalide \: comme des extensions sont utilisées, le coeur de standard (core) doit contenir un élément id qui indique l''identifiant pour chaque enregistrement
+manage.resource.create.core.invalid.id=L''archive Darwin Core est invalide \: comme des extensions sont utilisées, le noyau doit contenir un élément id qui indique l''identifiant pour chaque enregistrement
 manage.resource.create.core.invalid.coreid=L''archive Darwin Core est invalide \: comme des extensions sont utilisées, l''extension doit contenir un élément coreId qui contient l''identifiant de l''enregistrement du cœur de standard (l''identifiant correspondant dans le fichier cœur de standard)
 manage.resource.create.failed=Impossible de lire le fichier transmis.
 manage.resource.create.rowType.null=La catégorie RowType {0} n''est pas disponible sur cette installation IPT. Veuillez contacter votre administrateur IPT pour obtenir de l''aide.
