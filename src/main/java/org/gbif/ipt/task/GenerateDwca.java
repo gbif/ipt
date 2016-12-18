@@ -1346,6 +1346,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    *
    * @param inCols values array, of columns in row that have been mapped
    * @param in values array, of all columns in row
+   * @param doiUsedForDatasetId true if mapping should use resource DOI as datasetID, false otherwise
+   * @param doi DOI assigned to resource
    */
   private void applyTranslations(PropertyMapping[] inCols, String[] in, String[] record, boolean doiUsedForDatasetId,
     DOI doi) {
@@ -1432,32 +1434,44 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       String delimitedBy = StringUtils.trimToNull(m.getSource().getMultiValueFieldsDelimitedBy());
 
       for (PropertyMapping pm : m.getFields()) {
-
-        // ArchiveFile.ArchiveField must be dwc-api Term such as DcTerm, DwcTerm, etc.
-        // Therefore, find Term corresponding to ExtensionProperty
         Term term = TERM_FACTORY.findTerm(pm.getTerm().qualifiedName());
-
-        if (af.hasTerm(term)) {
-          ArchiveField field = af.getField(term);
-          mappedConceptTerms.add(term);
-
-          // multi-value delimiter must be same across all sources
-          if (field.getDelimitedBy() != null && !field.getDelimitedBy().equals(delimitedBy)) {
-            throw new GeneratorException(
-              "More than one type of multi-value field delimiter is being used in the source files mapped to the "
-              + m.getExtension().getName()
-              + " extension. Please either ensure all source files mapped to this extension use the same delimiter, otherwise just leave the delimiter blank.");
-          }
-        } else {
-          if ((pm.getIndex() != null && pm.getIndex() >= 0) || pm.getIndex() == null) {
-
-            log.debug("Handling property mapping for term: " + term.qualifiedName() + " (index "
-                      + pm.getIndex() + ")");
-
-            af.addField(buildField(term, delimitedBy));
+        // ensure Extension has concept term
+        if (term != null && m.getExtension().getProperty(term) != null) {
+          if (af.hasTerm(term)) {
+            ArchiveField field = af.getField(term);
             mappedConceptTerms.add(term);
+
+            // multi-value delimiter must be same across all sources
+            if (field.getDelimitedBy() != null && !field.getDelimitedBy().equals(delimitedBy)) {
+              throw new GeneratorException(
+                "More than one type of multi-value field delimiter is being used in the source files mapped to the "
+                + m.getExtension().getName()
+                + " extension. Please either ensure all source files mapped to this extension use the same delimiter, otherwise just leave the delimiter blank.");
+            }
+          } else {
+            if ((pm.getIndex() != null && pm.getIndex() >= 0) || pm.getIndex() == null) {
+              log.debug(
+                "Handling property mapping for term: " + term.qualifiedName() + " (index " + pm.getIndex() + ")");
+              af.addField(buildField(term, delimitedBy));
+              mappedConceptTerms.add(term);
+            }
           }
         }
+      }
+
+      // if Extension has datasetID concept term, check if resource DOI should be used as value for mapping
+      ExtensionProperty ep = m.getExtension().getProperty(DwcTerm.datasetID.qualifiedName());
+      if (ep != null && m.isDoiUsedForDatasetId()) {
+        log.debug("Detected that resource DOI to be used as value for datasetID mapping..");
+        // include datasetID field in ArchiveFile
+        ArchiveField f = buildField(DwcTerm.datasetID, null);
+        af.addField(f);
+        // include datasetID field mapping in ExtensionMapping
+        PropertyMapping pm = new PropertyMapping(f);
+        pm.setTerm(ep);
+        m.getFields().add(pm);
+        // include datasetID in set of all terms mapped for Extension
+        mappedConceptTerms.add(DwcTerm.datasetID);
       }
     }
     return mappedConceptTerms;
