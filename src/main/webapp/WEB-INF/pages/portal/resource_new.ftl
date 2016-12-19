@@ -346,7 +346,7 @@
                         <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
                           <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount?c}</@s.param></@s.text>
                         </#if>
-                        <#if recordsByExtensionOrderedNumber gt 1>
+                        <#if recordsByExtensionOrderedNumber gt 0>
                           <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
                           <div id="record_graph">
                             <ul class="no_bullets horizontal_graph">
