@@ -34,16 +34,15 @@ public interface UserAccountManager {
   void create(User user) throws AlreadyExistingException, IOException;
 
   /**
-   * Removes the specified user from the in memory list of users.
-   * See save() to persist this change to files.
-   * Managers linked to resources, e.g. resource creators, need to delete the resource or assign another manager first
-   * before their account can be removed.
+   * Removes the specified user from the in memory list of users and persists the change to users.xml file.
+   * It also removes the specified user from resources' list of managers (where applicable) and persists the change.
+   * Warning: resources linked to the specified user must be deleted before it can be deleted.
    *
    * @return user that has been removed or null if not existing
    *
-   * @throws DeletionNotAllowedException if its the last admin or a manager linked to a resource
+   * @throws DeletionNotAllowedException if it's the last admin account, or if it's still linked to a resource
    */
-  User delete(String email) throws DeletionNotAllowedException;
+  User delete(String email) throws DeletionNotAllowedException, IOException;
 
   /**
    * Get a user object by its unique, case insensitive email.

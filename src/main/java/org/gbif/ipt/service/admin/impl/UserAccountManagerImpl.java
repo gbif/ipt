@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -118,71 +119,101 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     xstream.registerConverter(passwordConverter);
   }
 
-  public User delete(String email) throws DeletionNotAllowedException {
+  public User delete(String email) throws DeletionNotAllowedException, IOException {
     if (email != null) {
-      User remUser = users.get(email.toLowerCase());
-      // if admin, some other admin still existing?
-      if (remUser.getRole() == Role.Admin) {
-        boolean lastAdmin = true;
-        for (User u : users.values()) {
-          if (u.getRole() == Role.Admin && !u.equals(remUser)) {
-            lastAdmin = false;
-            break;
-          }
-        }
-        if (lastAdmin) {
-          log.warn("Last admin cannot be deleted");
-          throw new DeletionNotAllowedException(Reason.LAST_ADMIN);
-        }
-      }
+      User remUser = get(email);
+      if (remUser != null) {
 
-      // if manager or admin, last manager of a resource?
-      boolean isResourceCreator = false;
-      if (remUser.hasManagerRights()) {
-        Set<String> resourcesWithProblems = new HashSet<String>();
-        for (Resource r : resourceManager.list(remUser)) {
-          if (r.getCreator().equals(remUser)) {
-            isResourceCreator = true;
+        // when deleting an admin, ensure another admin still exists
+        if (remUser.getRole() == Role.Admin) {
+          boolean lastAdmin = true;
+          for (User u : users.values()) {
+            if (u.getRole() == Role.Admin && !u.equals(remUser)) {
+              lastAdmin = false;
+              break;
+            }
           }
-          Set<User> managers = new HashSet<User>(r.getManagers());
-          managers.add(r.getCreator());
+          if (lastAdmin) {
+            log.warn("Last admin cannot be deleted");
+            throw new DeletionNotAllowedException(Reason.LAST_ADMIN);
+          }
+        }
+
+        Set<String> resourcesCreatedByUser = new HashSet<String>();
+        for (Resource r : resourceManager.list()) {
+          User creator = get(r.getCreator().getEmail());
+          if (creator != null && creator.equals(remUser)) {
+            resourcesCreatedByUser.add(r.getShortname());
+          }
+        }
+
+        Set<String> resourcesManagedOnlyByUser = new HashSet<String>();
+        for (Resource r : resourceManager.list(remUser)) {
+          Set<User> managers = Sets.newHashSet();
+          // add creator to list of managers, but only if creator has manager rights!
+          User creator = get(r.getCreator().getEmail());
+          if (creator != null && creator.hasManagerRights()) {
+            managers.add(creator);
+          }
+          for (User m : r.getManagers()) {
+            User manager = get(m.getEmail());
+            if (manager != null && !managers.contains(manager)) {
+              managers.add(manager);
+            }
+          }
+          // lastly, exclude user to be deleted, then check if at least one user with manager rights remains for resource
           managers.remove(remUser);
           if (managers.isEmpty()) {
-            String msg = "Last manager for resource " + r.getShortname() + " cannot be deleted";
-            resourcesWithProblems.add(r.getShortname());
-            log.warn(msg);
+            resourcesManagedOnlyByUser.add(r.getShortname());
           }
         }
-        if (!resourcesWithProblems.isEmpty()) {
-          throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesWithProblems.toString());
+
+        if (!resourcesManagedOnlyByUser.isEmpty()) {
+          // Check #1, is user the only manager that exists for or more resources? If yes, prevent deletion!
+          throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesManagedOnlyByUser.toString());
+        } else if (!resourcesCreatedByUser.isEmpty()) {
+          // Check #2, is user the creator of one or more resources? If yes, prevent deletion!
+          throw new DeletionNotAllowedException(Reason.IS_RESOURCE_CREATOR, resourcesCreatedByUser.toString());
+        } else if (remove(email)) {
+          // and remove user from each resource's list of managers
+          for (Resource r : resourceManager.list(remUser)) {
+            r.getManagers().remove(remUser);
+            resourceManager.save(r);
+          }
+          save(); // persist changes to users.xml
+          return remUser;
         }
       }
-
-      // finally remove user from internal hash and resource managers or update role if its a resource creator
-      // remove from resource managers
-      for (Resource r : resourceManager.list(remUser)) {
-        r.getManagers().remove(remUser);
-        resourceManager.save(r);
-      }
-      // update resource creator
-      if (isResourceCreator) {
-        remUser.setRole(Role.User);
-        log.warn("Creator of resources cannot be deleted. Changed role to a simple user instead");
-      } else {
-        users.remove(email.toLowerCase());
-      }
-
-      return remUser;
     }
-
     return null;
   }
 
+  /**
+   * Retrieve user from internal hash.
+   *
+   * @param email email of user account to retrieve
+   *
+   * @return User if found, null otherwise
+   */
   public User get(String email) {
-    if (email == null) {
-      return null;
+    if (email != null && users.containsKey(email.toLowerCase())) {
+      return users.get(email.toLowerCase());
     }
-    return users.get(email.toLowerCase());
+    return null;
+  }
+
+  /**
+   * Remove user from internal hash.
+   *
+   * @param email email of user account to remove
+   *
+   * @return true if user was removed, false otherwise
+   */
+  public boolean remove(String email) {
+    if (email != null && users.containsKey(email.toLowerCase())) {
+      return users.remove(email.toLowerCase()) != null;
+    }
+    return false;
   }
 
   public User getSetupUser() {

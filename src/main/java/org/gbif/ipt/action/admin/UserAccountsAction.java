@@ -66,6 +66,10 @@ public class UserAccountsAction extends POSTAction {
           addActionError(getText("admin.user.deleted.lastadmin"));
         } else if (Reason.LAST_RESOURCE_MANAGER == e.getReason()) {
           addActionError(getText("admin.user.deleted.lastmanager", new String[] {e.getMessage()}));
+        } else if (Reason.IS_RESOURCE_CREATOR == e.getReason()) {
+          // TODO i18n
+          addActionError("The User cannot be deleted as it is the creator for the following resources: " + e.getMessage()
+                         + " Consider downgrading the User's role, as an alternative action.");
         } else {
           addActionError(getText("admin.user.deleted.error"));
         }

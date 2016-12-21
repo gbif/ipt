@@ -195,7 +195,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     registrationManager.load();
 
     log.info("Loading resource configurations ...");
-    resourceManager.load(dataDir.dataFile(DataDir.RESOURCES_DIR));
+    resourceManager.load(dataDir.dataFile(DataDir.RESOURCES_DIR), userManager.list(Role.Admin).get(0));
 
     // start publishing monitor
     log.info("Starting Publishing Monitor...");

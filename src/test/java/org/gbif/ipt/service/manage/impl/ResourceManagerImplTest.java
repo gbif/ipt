@@ -803,7 +803,7 @@ public class ResourceManagerImplTest {
     assertTrue(resourceDir.exists());
 
     // load resource
-    Resource persistedResource = resourceManager.loadFromDir(resourceDir);
+    Resource persistedResource = resourceManager.loadFromDir(resourceDir, creator);
 
     // make some assertions about resource
     assertEquals(shortName, persistedResource.getShortname());
@@ -1514,7 +1514,7 @@ public class ResourceManagerImplTest {
     when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(cfgFile);
     File resourceDirectory = cfgFile.getParentFile();
     assertTrue(resourceDirectory.isDirectory());
-    Resource resource = getResourceManagerImpl().loadFromDir(resourceDirectory);
+    Resource resource = getResourceManagerImpl().loadFromDir(resourceDirectory, creator);
     String shortname = "res1";
     assertEquals(shortname, resource.getShortname());
     BigDecimal version = new BigDecimal("1.1");
@@ -1577,7 +1577,7 @@ public class ResourceManagerImplTest {
     when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(cfgFile);
     File resourceDirectory = cfgFile.getParentFile();
     assertTrue(resourceDirectory.isDirectory());
-    Resource resource = getResourceManagerImpl().loadFromDir(resourceDirectory);
+    Resource resource = getResourceManagerImpl().loadFromDir(resourceDirectory, creator);
     String shortname = "res1";
     assertEquals(shortname, resource.getShortname());
     BigDecimal version = new BigDecimal("5.0");
@@ -1626,6 +1626,9 @@ public class ResourceManagerImplTest {
     // ensure reconstructed resource uses eml-5.0.xml
     assertEquals("Test Dataset Please Ignore", reconstructed.getEml().getTitle()); // changed
     assertEquals("This dataset covers mosses and lichens from Russia.", reconstructed.getEml().getDescription().get(0)); // changed
+    // creator populated
+    assertNotNull(resource.getCreator());
+    assertEquals(creator, resource.getCreator());
   }
 
   @Test
@@ -1726,7 +1729,7 @@ public class ResourceManagerImplTest {
 
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
-    Resource loaded = resourceManager.loadFromDir(resourceDir);
+    Resource loaded = resourceManager.loadFromDir(resourceDir, creator);
     assertEquals("19.0", loaded.getEmlVersion().toPlainString());
     assertEquals(1, loaded.getVersionHistory().size());
     assertEquals(IdentifierStatus.UNRESERVED, loaded.getIdentifierStatus());
@@ -1737,7 +1740,10 @@ public class ResourceManagerImplTest {
     assertTrue(dwcaNew.exists());
 
     // next version?
-    assertEquals("19.1",loaded.getNextVersion().toPlainString());
+    assertEquals("19.1", loaded.getNextVersion().toPlainString());
+    // creator populated
+    assertNotNull(loaded.getCreator());
+    assertEquals(creator, loaded.getCreator());
   }
 
   @Test
@@ -1951,7 +1957,7 @@ public class ResourceManagerImplTest {
     assertEquals(5, resourceDirectory.listFiles().length);
 
     // load resource, ensure invalid and empty directories are cleaned up
-    manager.load(resourceDirectory);
+    manager.load(resourceDirectory, creator);
     assertEquals(2, resourceDirectory.listFiles().length);
     Set<String> mySet = new HashSet<String>(Arrays.asList(resourceDirectory.list()));
     assertTrue("res1", mySet.contains("res1"));

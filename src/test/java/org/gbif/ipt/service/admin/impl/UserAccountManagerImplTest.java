@@ -171,7 +171,7 @@ public class UserAccountManagerImplTest {
   }
 
   /**
-   * Test user deletion.
+   * Test user deletion with various cases.
    */
   @Test
   public void testDelete() throws AlreadyExistingException, IOException, DeletionNotAllowedException {
@@ -184,52 +184,82 @@ public class UserAccountManagerImplTest {
     userManager.create(publisher);
     userManager.create(user);
 
-    // delete any user.
+    // Case #1. Ensure user with no linkages to any resource can be deleted
     User deletedUser = userManager.delete("user@ipt.gbif.org");
 
     // test if user was deleted
     assertEquals(3, userManager.list().size());
     assertEquals(user, deletedUser);
 
-    // There must always be at least one user Admin.
+    // Case #2. Ensure at least one Admin always remains
     try {
       userManager.delete("admin@ipt.gbif.org");
       fail("There must always be at least one user Admin");
     } catch (DeletionNotAllowedException e) {
+      assertEquals(DeletionNotAllowedException.Reason.LAST_ADMIN, e.getReason());
     }
 
-    // test if the manager or admin that is going to be deleted, is the last manager of a resource.
+    // Case #3. Ensure the last manager of a resource cannot be deleted
     List<Resource> resources = new ArrayList<Resource>();
 
     Resource res1 = new Resource();
+    res1.setShortname("res1");
     res1.setCreator(manager);
     Set<User> managers1 = new HashSet<User>();
     managers1.add(manager);
     res1.setManagers(managers1);
-    res1.setShortname("res1");
-
     resources.add(res1);
-
     when(mockedResourceManager.list(any(User.class))).thenReturn(resources);
     try {
       userManager.delete("manager@ipt.gbif.org");
       fail("Last manager for resource res1 cannot be deleted");
     } catch (DeletionNotAllowedException e) {
+      assertEquals(DeletionNotAllowedException.Reason.LAST_RESOURCE_MANAGER, e.getReason());
     }
 
-    // Creator of resources cannot be deleted. Test if user role is changed to a simple user.
-    resources.remove(res1); //
-    Resource res2 = new Resource();
-    Set<User> managers2 = new HashSet<User>();
-    managers2.add(publisher);
-    res2.setCreator(manager);
-    res2.setManagers(managers2);
-    res2.setShortname("res2");
-    resources.add(res2);
+    // Case #4. Ensure user CAN be deleted when they are not last manager of a resource
+    res1.setCreator(publisher);
+    deletedUser = userManager.delete("manager@ipt.gbif.org");
+    assertEquals(2, userManager.list().size());
+    assertEquals(manager, deletedUser);
 
-    userManager.delete("manager@ipt.gbif.org");
-    assertEquals(Role.User, manager.getRole());
+    // Case #5. Ensure the creator of resources cannot be deleted
+    userManager.create(manager);
+    assertEquals(3, userManager.list().size());
+    managers1 = new HashSet<User>();
+    managers1.add(manager);
+    res1.setManagers(managers1);
+    when(mockedResourceManager.list()).thenReturn(resources);
+    try {
+      userManager.delete("publisher@ipt.gbif.org");
+      fail("Creator for resource res1 cannot be deleted");
+    } catch (DeletionNotAllowedException e) {
+      assertEquals(DeletionNotAllowedException.Reason.IS_RESOURCE_CREATOR, e.getReason());
+    }
 
+    // Case #6. Ensure admin CAN be deleted when they are not last admin in IPT
+    User admin2 = new User();
+    admin2.setEmail("admin2@ipt.gbif.org");
+    admin2.setRole(Role.Admin);
+    admin2.setFirstname("Second");
+    admin2.setLastname("Admin");
+    admin2.setPassword("admin2");
+    userManager.create(admin2);
+    assertEquals(4, userManager.list().size());
+    deletedUser = userManager.delete("admin@ipt.gbif.org");
+    assertEquals(3, userManager.list().size());
+    assertEquals(admin, deletedUser);
+
+    // Case #7. Ensure admin cannot be deleted when they created a resource
+    userManager.create(admin);
+    assertEquals(4, userManager.list().size());
+    res1.setCreator(admin);
+    try {
+      userManager.delete("admin@ipt.gbif.org");
+      fail("Secondary admin cannot be deleted, because it is creator for resource res1");
+    } catch (DeletionNotAllowedException e) {
+      assertEquals(DeletionNotAllowedException.Reason.IS_RESOURCE_CREATOR, e.getReason());
+    }
   }
 
 

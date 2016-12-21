@@ -3,6 +3,8 @@ package org.gbif.ipt.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
 import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,6 +46,7 @@ public class User implements Serializable, Cloneable {
     return equal(email, o.email);
   }
 
+  @NotNull
   public String getEmail() {
     return email;
   }

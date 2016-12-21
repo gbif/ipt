@@ -364,6 +364,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     return created;
   }
 
+  @NotNull
   public User getCreator() {
     return creator;
   }

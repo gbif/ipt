@@ -123,7 +123,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     try {
       u = (User) session.get(Constants.SESSION_USER);
     } catch (Exception e) {
-      LOG.warn("A problem occurred retrieving current user. This can happen if the session is not yet opened");
+      LOG.debug("A problem occurred retrieving current user. This can happen if the session is not yet opened");
     }
     return u;
   }

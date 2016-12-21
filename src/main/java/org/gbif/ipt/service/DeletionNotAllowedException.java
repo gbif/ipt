@@ -15,6 +15,10 @@ public class DeletionNotAllowedException extends Exception {
      */
     LAST_RESOURCE_MANAGER,
     /**
+     * Because this is the original creator of the resource, which cannot be deleted. Used while deleting a user.
+     */
+    IS_RESOURCE_CREATOR,
+    /**
      * Because the extension has been mapped in at least one resource. Used while deleting an extension.
      */
     EXTENSION_MAPPED,

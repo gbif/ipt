@@ -382,7 +382,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.copyDirectory(folder, dest);
 
       // proceed with resource creation (using destination folder in data_dir)
-      res = loadFromDir(dest, alog);
+      res = loadFromDir(dest, creator, alog);
 
       // ensure this resource is safe to import!
       if (res != null) {
@@ -952,7 +952,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
-  public int load(File resourcesDir) {
+  public int load(File resourcesDir, User creator) {
     resources.clear();
     int counter = 0;
     int counterDeleted = 0;
@@ -981,7 +981,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           } else {
             try {
               log.debug("Loading resource from directory " + resourceDir.getName());
-              addResource(loadFromDir(resourceDir));
+              addResource(loadFromDir(resourceDir, creator));
               counter++;
             } catch (InvalidConfigException e) {
               log.error("Can't load resource " + resourceDir.getName(), e);
@@ -1011,22 +1011,23 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Calls loadFromDir(File, ActionLogger), inserting a new instance of ActionLogger.
+   * Calls loadFromDir(File, User, ActionLogger), inserting a new instance of ActionLogger.
    *
    * @param resourceDir resource directory
+   * @param creator User that created resource (only used to populate creator when missing)
    *
    * @return loaded Resource
    */
   @VisibleForTesting
-  protected Resource loadFromDir(File resourceDir) {
-    return loadFromDir(resourceDir, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
+  protected Resource loadFromDir(File resourceDir, User creator) {
+    return loadFromDir(resourceDir, creator, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
   }
 
   /**
    * Reads a complete resource configuration (resource config & eml) from the resource config folder
    * and returns the Resource instance for the internal in memory cache.
    */
-  private Resource loadFromDir(File resourceDir, ActionLogger alog) throws InvalidConfigException {
+  private Resource loadFromDir(File resourceDir, User creator, ActionLogger alog) throws InvalidConfigException {
     if (resourceDir.exists()) {
       // load full configuration from resource.xml and eml.xml files
       String shortname = resourceDir.getName();
@@ -1034,6 +1035,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         File cfgFile = dataDir.resourceFile(shortname, PERSISTENCE_FILE);
         InputStream input = new FileInputStream(cfgFile);
         Resource resource = (Resource) xstream.fromXML(input);
+
+        // populate missing creator - it cannot be null! (this fixes issue #1309)
+        if (creator != null && resource.getCreator() == null) {
+          resource.setCreator(creator);
+          log.warn("On load, populated missing creator for resource: " + resource.getTitleAndShortname());
+        }
+
         // non existing users end up being a NULL in the set, so remove them
         // shouldnt really happen - but people can even manually cause a mess
         resource.getManagers().remove(null);

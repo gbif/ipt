@@ -86,7 +86,7 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
     if (user.hasAdminRights()) {
       return true;
     }
-    if (resource != null && resource.getCreator() != null && resource.getCreator().equals(user)) {
+    if (resource != null && resource.getCreator().equals(user)) {
       return true;
     }
     if (user.hasManagerRights()) {

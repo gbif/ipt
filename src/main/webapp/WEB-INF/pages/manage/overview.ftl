@@ -522,7 +522,7 @@ $(document).ready(function(){
       <table>
         <tr>
           <th><@s.text name="manage.overview.resource.managers.creator"/></th>
-          <td>${resource.creator.name}, ${resource.creator.email}</td>
+          <td>${resource.creator.name!}, ${resource.creator.email}</td>
         </tr>
         <#if (resource.managers?size>0)>
           <#list resource.managers as u>

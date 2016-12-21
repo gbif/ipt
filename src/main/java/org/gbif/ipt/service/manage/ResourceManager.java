@@ -177,10 +177,10 @@ public interface ResourceManager {
    * maintain a map of the basic metadata and authorisation information in this manager.
    *
    * @param resourcesDir resources directory (inside data directory)
-   *
+   * @param creator User that created resource (only used to populate creator when missing)
    * @return number of configured resources loaded into memory
    */
-  int load(File resourcesDir);
+  int load(File resourcesDir, User creator);
 
   /**
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
