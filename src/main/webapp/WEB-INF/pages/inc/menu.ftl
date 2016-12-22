@@ -20,7 +20,7 @@
                 <hgroup class="site-name-slogan">
                   <h1 class="site-name"><a href="${baseURL}" rel="home" title="Home" class="active">Integrated Publishing Toolkit</a><span class="logoSuperscript">(IPT)</span></h1>
                   <h6 class="site-slogan">free and open access to biodiversity data</h6>
-                  [#if !cfg.devMode() && cfg.getRegistryType()=='PRODUCTION']
+                  [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
                   [#else]
                     <img class="testmode" src="${baseURL}/styles/testmode.png" />
                   [/#if]

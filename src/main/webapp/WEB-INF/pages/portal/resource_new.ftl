@@ -336,7 +336,7 @@
                 <#assign recordsByExtensionOrderedNumber = recordsByExtensionOrdered?keys?size -1/>
                 <#assign coreRowType = resource.getCoreRowType()!""/>
                 <#assign coreExt = action.getExtensionManager().get(coreRowType)!/>
-                <#assign coreCount = recordsByExtensionOrdered.get(coreRowType)!0?c/>
+                <#assign coreCount = recordsByExtensionOrdered.get(coreRowType)!recordsPublishedForVersion!0?c/>
                 <#if metadataOnly != true>
                   <div id="dataRecords" class="row">
                     <div>
@@ -344,7 +344,7 @@
                       <p>
                         <@s.text name='portal.resource.dataRecords.intro'><@s.param>${action.getCoreType()?lower_case}</@s.param></@s.text>
                         <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                          <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount?c}</@s.param></@s.text>
+                          <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount}</@s.param></@s.text>
                         </#if>
                         <#if recordsByExtensionOrderedNumber gt 0>
                           <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
@@ -352,7 +352,7 @@
                             <ul class="no_bullets horizontal_graph">
                               <!-- at top, show bar for core record count to enable comparison against extensions -->
                               <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                                <li><@extensionLink coreExt true/><div class="grey_bar">${coreCount?c}</div></li>
+                                <li><@extensionLink coreExt true/><div class="grey_bar">${coreCount}</div></li>
                               </#if>
                               <!-- below bar for core record count, show bars for extension record counts -->
                               <#list recordsByExtensionOrdered?keys as k>

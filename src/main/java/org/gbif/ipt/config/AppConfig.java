@@ -415,21 +415,25 @@ public class AppConfig {
   }
 
   /**
-   *
+   * Reads registry lock file and determines what registry the DataDir is locked to.
    */
   private void readRegistryLock() throws InvalidConfigException {
-    // set lock file if not yet existing
     File lockFile = getRegistryTypeLockFile();
     if (lockFile.exists()) {
       try {
-        String regTypeAsString = StringUtils.trimToNull(FileUtils.readFileToString(lockFile));
+        LOG.info("Reading registry lock file to determine if the DataDir is locked to a registry yet.");
+        String regTypeAsString = StringUtils.trimToEmpty(FileUtils.readFileToString(lockFile, "UTF-8"));
         this.type = REGISTRY_TYPE.valueOf(regTypeAsString);
+        LOG.info("DataDir is locked to registry type: " + type.toString());
+      } catch (IllegalArgumentException e) {
+        LOG.error("Cannot interpret registry lock file contents!", e);
+        throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot interpret registry lock file contents!");
       } catch (IOException e) {
-        LOG.error("Cannot read datadir registry lock", e);
-        throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot read datadir registry lock");
+        LOG.error("Cannot read registry lock file!", e);
+        throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot read registry lock file!");
       }
     } else {
-      LOG.warn("DataDir is not locked to a registry yet !!!");
+      LOG.warn("Registry lock file not found meaning the DataDir is NOT locked to a registry yet!");
     }
   }
 
