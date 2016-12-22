@@ -1039,7 +1039,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // populate missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
           resource.setCreator(creator);
-          log.warn("On load, populated missing creator for resource: " + resource.getTitleAndShortname());
+          log.warn("On load, populated missing creator for resource: " + shortname);
         }
 
         // non existing users end up being a NULL in the set, so remove them
