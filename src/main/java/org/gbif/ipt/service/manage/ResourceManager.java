@@ -180,7 +180,7 @@ public interface ResourceManager {
    * @param creator User that created resource (only used to populate creator when missing)
    * @return number of configured resources loaded into memory
    */
-  int load(File resourcesDir, User creator);
+  int load(File resourcesDir, @Nullable User creator);
 
   /**
    * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.

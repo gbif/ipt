@@ -1019,7 +1019,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return loaded Resource
    */
   @VisibleForTesting
-  protected Resource loadFromDir(File resourceDir, User creator) {
+  protected Resource loadFromDir(File resourceDir, @Nullable User creator) {
     return loadFromDir(resourceDir, creator, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
   }
 
@@ -1027,7 +1027,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Reads a complete resource configuration (resource config & eml) from the resource config folder
    * and returns the Resource instance for the internal in memory cache.
    */
-  private Resource loadFromDir(File resourceDir, User creator, ActionLogger alog) throws InvalidConfigException {
+  private Resource loadFromDir(File resourceDir, @Nullable User creator, ActionLogger alog) throws InvalidConfigException {
     if (resourceDir.exists()) {
       // load full configuration from resource.xml and eml.xml files
       String shortname = resourceDir.getName();

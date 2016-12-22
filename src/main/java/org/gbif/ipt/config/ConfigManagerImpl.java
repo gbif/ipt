@@ -1,5 +1,6 @@
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -195,7 +196,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     registrationManager.load();
 
     log.info("Loading resource configurations ...");
-    resourceManager.load(dataDir.dataFile(DataDir.RESOURCES_DIR), userManager.list(Role.Admin).get(0));
+    // default creator used to populate missing resource creator when loading resources
+    User defaultCreator = (userManager.list(Role.Admin).isEmpty()) ? null : userManager.list(Role.Admin).get(0);
+    resourceManager.load(dataDir.dataFile(DataDir.RESOURCES_DIR), defaultCreator);
 
     // start publishing monitor
     log.info("Starting Publishing Monitor...");
