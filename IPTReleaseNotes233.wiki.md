@@ -56,8 +56,8 @@ This new version has been tested and designed to work on Tomcat 6.0, 7.0, and 8.
 
 ## Viewing the IPT change log
 
-This version addressed a total of 38 issues: 15 Defects, 15 Enhancements, 4 Won't fix, and 4 that were considered as Tasks.
-These are detailed in the [issue tracking system](https://github.com/gbif/ipt/issues?q=is%3Aissue+label%3AMilestone-Release2.3)
+This version addressed a total of 88 issues: 22 Defects, 17 Enhancements, 36 Won't fix, 10 Duplicates, and 3 Other.
+These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/1)
 
 ## When all else fails
 
