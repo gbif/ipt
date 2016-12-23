@@ -39,7 +39,7 @@ An upgrade can be performed in 4 steps:
 
 ### B. Post-upgrade instructions
 
-Following the upgrade, a warning message may appear indicating the some resources failed to load. This is caused when an old resource is missing required metadata. Resource managers can fix this problem by re-publishing the affected resources. 
+Following the upgrade, a warning message may appear indicating the some resources failed to load. This is caused when an old resource is missing required metadata hence it hasn't been republished for a long time. Resource managers can fix this problem by re-publishing the affected resources. 
 
 New in IPT 2.3.x is the ability to publish sample-based data. Once the upgrade is complete, the IPT administrator must install the Darwin Core Event core. Note the Darwin Core Event core is installed by default in new installations.
 
