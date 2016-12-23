@@ -54,9 +54,9 @@ public class RegistryWsClientTest {
   /**
    * Gather statistics needed to update IPT statistics on http://www.gbif.org/ipt/stats.
    * Iterates through all installations, looking for IPT installations. For each IPT installation, it counts the
-   * number of occurrence, checklist, and metadata-only datasets hosted by that installation.
-   * For each occurrence dataset it counts the number of records. For each checklist, it counts the number of usages
-   * and the number of occurrence records.
+   * number of occurrence, sampling-event, checklist, and metadata-only datasets hosted by that installation.
+   * For each occurrence dataset and sampling-event dataset it counts the number of records.
+   * For each checklist, it counts the number of usages and the number of occurrence records.
    * </br>
    * Remember to configure registry.properties to connect to the desired service URLs.
    */
@@ -72,13 +72,16 @@ public class RegistryWsClientTest {
     int iptDatasetCount = 0;
     int iptChecklistDatasetCount = 0;
     int iptOccurrenceDatasetCount = 0;
+    int iptSamplingEventDatasetCount = 0;
     int iptMetadataDatasetCount = 0;
     long totalOccurrenceRecords = 0;
+    long totalOccurrenceRecordsFromSamplingEventDatasets = 0;
     long totalNameUsages = 0;
     long totalOccurrenceRecordsFromChecklists = 0;
     Set<Country> countriesRepresented = Sets.newHashSet();
     Set<UUID> checklistDatasetPublisherKeys = Sets.newHashSet();
     Set<UUID> occurrenceDatasetPublisherKeys = Sets.newHashSet();
+    Set<UUID> samplingEventDatasetPublisherKeys = Sets.newHashSet();
     Set<UUID> metadataDatasetPublisherKeys = Sets.newHashSet();
     PagingRequest installationPage = new PagingRequest(0, PAGING_LIMIT);
     PagingResponse<Installation> installationsResults;
@@ -117,9 +120,11 @@ public class RegistryWsClientTest {
                 // how many occurrence records
                 long numOccurrencesForChecklist =
                   occurrenceCubeService.get(new ReadBuilder().at(OccurrenceCube.DATASET_KEY, dataset.getKey()));
-                if (numOccurrencesForChecklist > 0 && !dataset.getInstallationKey().equals(UUID.fromString("9afa1395-6e93-4848-a42d-bce896f5195e"))) {
+                if (numOccurrencesForChecklist > 0 && !dataset.getInstallationKey()
+                  .equals(UUID.fromString("9afa1395-6e93-4848-a42d-bce896f5195e"))) {
                   //LOG.info("Checklist [" + dataset.getKey() + "] has " + numOccurrencesForChecklist + " occurrence records");
-                  totalOccurrenceRecordsFromChecklists = totalOccurrenceRecordsFromChecklists + numOccurrencesForChecklist;
+                  totalOccurrenceRecordsFromChecklists =
+                    totalOccurrenceRecordsFromChecklists + numOccurrencesForChecklist;
                 }
               }
               // how many datasets are Occurrence datasets, and how many different publishers share them?
@@ -130,6 +135,16 @@ public class RegistryWsClientTest {
                 long numOccurrences =
                   occurrenceCubeService.get(new ReadBuilder().at(OccurrenceCube.DATASET_KEY, dataset.getKey()));
                 totalOccurrenceRecords = totalOccurrenceRecords + numOccurrences;
+              }
+              // how many datasets are Sampling-event datasets, and how many different publishers share them?
+              else if (dataset.getType().equals(DatasetType.SAMPLING_EVENT)) {
+                iptSamplingEventDatasetCount++;
+                samplingEventDatasetPublisherKeys.add(dataset.getPublishingOrganizationKey());
+                // how many occurrence records?
+                long numOccurrences =
+                  occurrenceCubeService.get(new ReadBuilder().at(OccurrenceCube.DATASET_KEY, dataset.getKey()));
+                totalOccurrenceRecordsFromSamplingEventDatasets =
+                  totalOccurrenceRecordsFromSamplingEventDatasets + numOccurrences;
               }
               // how many datasets are Metadata-only datasets, and how many different publishers share them?
               else {
@@ -154,6 +169,9 @@ public class RegistryWsClientTest {
              + " publishers totalling " + totalNameUsages + " usages and " + totalOccurrenceRecordsFromChecklists + " occurrence records");
     LOG.info(iptOccurrenceDatasetCount + " occurrence datasets published by " + occurrenceDatasetPublisherKeys.size()
              + " publishers totalling " + totalOccurrenceRecords + " occurrence records");
+    LOG.info(
+      iptSamplingEventDatasetCount + " sampling event datasets published by " + samplingEventDatasetPublisherKeys.size()
+      + " publishers totalling " + totalOccurrenceRecordsFromSamplingEventDatasets + " occurrence records");
     LOG.info(iptMetadataDatasetCount + " metadata-only datasets published by " + metadataDatasetPublisherKeys.size()
              + " publishers");
   }
