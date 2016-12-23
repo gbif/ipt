@@ -24,7 +24,7 @@ and limitations under the License.
 
 ### A. Performing the upgrade
 
-**Warning 1**: Be sure to backup the IPT data directory before performing an upgrade. It is highly recommended to run scheduled backups of the IPT data directory in general.
+**Warning 1**: Be sure to backup the IPT data directory before performing an upgrade. As per the [Data Hosting Centre Criteria](https://github.com/gbif/ipt/wiki/dataHostingCentres#data-hosting-centre-criteria) it is highly recommended to run scheduled backups of the IPT data directory in general.
 
 **Warning 2**: Once an IPT has been upgraded to 2.3.x from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
