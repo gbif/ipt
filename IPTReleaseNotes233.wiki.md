@@ -26,7 +26,7 @@ and limitations under the License.
 
 **Warning 1**: Be sure to backup the IPT data directory before performing an upgrade. It is highly recommended to run scheduled backups of the IPT data directory in general.
 
-**Warning 2**: Once an IPT has been upgraded to 2.3.x, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
+**Warning 2**: Once an IPT has been upgraded to 2.3.x from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
 **Warning 3**: IPT 2.3.x will be the last version that supports running on a server with Java 6. Since Java 7 reached its end of life in April 2015, the GBIF development team is now in the process of upgrading its projects to use Java 8 instead. This will include the next version of the IPT. 
 
