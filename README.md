@@ -8,7 +8,7 @@ The Integrated Publishing Toolkit (IPT) is a free open source software tool writ
 
 ### Latest Release: 2.3.3
 
-Version 2.3.3 is available for early download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.3/ipt-2.3.3.war), while work updating the [[User Manual|IPT2ManualNotes.wiki]] and [IPT Website](http://www.gbif.org) are ongoing. This version looks and feels the same as 2.3.2 but is much more robust and secure. Its user interface has also been translated into Russian, extending its global reach even further. _All users should plan to upgrade to this version as soon as possible following the instructions in the [[Release Notes|IPTReleaseNotes233.wiki]]._
+Version 2.3.3 is available for early download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.3/ipt-2.3.3.war), while work updating the [User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) and [IPT Website](http://www.gbif.org) are ongoing. This version looks and feels the same as 2.3.2 but is much more robust and secure. Its user interface has also been translated into Russian, extending its global reach even further. _All users should plan to upgrade to this version as soon as possible following the instructions in the [Release Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki)._
 
 ### @Users
 
