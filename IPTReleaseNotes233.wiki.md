@@ -57,7 +57,7 @@ This new version has been tested and designed to work on Tomcat 6.0, 7.0, and 8.
 ## Viewing the IPT change log
 
 This version addressed a total of 88 issues: 22 Defects, 17 Enhancements, 36 Won't fix, 10 Duplicates, and 3 Other.
-These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/1)
+These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/1).
 
 ## When all else fails
 
