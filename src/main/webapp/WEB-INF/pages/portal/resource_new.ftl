@@ -352,7 +352,7 @@
                             <ul class="no_bullets horizontal_graph">
                               <!-- at top, show bar for core record count to enable comparison against extensions -->
                               <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                                <li><@extensionLink coreExt true/><div class="grey_bar">${coreCount}</div></li>
+                                <li><@extensionLink coreExt true/><div class="grey_bar">${coreCount?c}</div></li>
                               </#if>
                               <!-- below bar for core record count, show bars for extension record counts -->
                               <#list recordsByExtensionOrdered?keys as k>
