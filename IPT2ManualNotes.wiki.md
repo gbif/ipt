@@ -1,8 +1,8 @@
 # The IPT User Manual
 
-**IPT Version: 2.3**
+**IPT Version: 2.3.3** - **Page under construction**
 
-_For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
+_For the IPT user manual corresponding to version 2.3.2, please go [[here|IPTUserManualv23.wiki]]. Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
 
 # Table of Contents
 + [[Introduction|IPT2ManualNotes.wiki#introduction]]
