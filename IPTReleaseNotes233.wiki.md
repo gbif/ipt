@@ -54,7 +54,7 @@ Additionally, the IPT administrator should update all installed cores and extens
 #### Tomcat ####
 IPT 2.3.3 has been tested and designed to work on Tomcat 6.0, 7.0, and 8.0, however, the end of life for Apache 6.0.x is 31 December 2016. Therefore you should plan to upgrade to a newer version of Tomcat if necessary. More information about the end of life for Apache 6.0.x can be found [here](http://tomcat.apache.org/tomcat-60-eol.html).
 #### Java ####
-IPT 2.3.3 can still run on servers with Java 6, however, future versions will be designed to run on Java 8 so please be proactive and plan a Java upgrade on your server soon. Please refer to the [Java version Roadmap] for an overview of when Oracle plans to discontinue support for the version of Java you currently use
+IPT 2.3.3 can still run on servers with Java 6, however, future versions will be designed to run on Java 8 so please be proactive and plan a Java upgrade on your server soon. Please refer to the [Java version Roadmap](http://www.oracle.com/technetwork/java/eol-135779.html) for an overview of when Oracle plans to discontinue support for the version of Java you currently use.
 
 ## Viewing the IPT change log
 
