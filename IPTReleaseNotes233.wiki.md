@@ -1,6 +1,6 @@
 ---
 
-Copyright 2015 Global Biodiversity Information Facility Secretariat
+Copyright 2016 Global Biodiversity Information Facility Secretariat
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 except in compliance with the License. You may obtain a copy of the License at
@@ -16,7 +16,7 @@ and limitations under the License.
 
 # Release Notes
 
-**IPT Version: 2.3**
+**IPT Version: 2.3.3**
 
 
 
