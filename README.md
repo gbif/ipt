@@ -20,7 +20,7 @@ Otherwise if want to setup your own instance of the IPT the [Getting Started Gui
 
 ### @Coders 
 
-The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the [Project Manager](https://github.com/gbif/ipt/projects) to find the list of open issues you can start working on. Kindly note that contributions are welcome in the form of a [pull request](https://help.github.com/articles/creating-a-pull-request/) using a branch or fork of the repository. Full instructions aimed at coders can be found [here](HowToContribute.wiki).
+The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the [Open Issues](https://github.com/gbif/ipt/issues) to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a [pull request](https://help.github.com/articles/creating-a-pull-request/) using a branch or fork of the repository. Full instructions aimed at coders can be found [here](HowToContribute.wiki).
 
 ### @Translators
 
