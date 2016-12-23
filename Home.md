@@ -3,7 +3,7 @@
 Here you can find the [[IPT User Manual|IPT2ManualNotes.wiki]] and a variety of other valuable resources. 
 
 ## Latest news!
-Version 2.3.3 is available for early download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.3/ipt-2.3.3.war), while work updating the [[User Manual|IPT2ManualNotes.wiki]] and [website](http://www.gbif.org) are ongoing. This version looks and feels the same as 2.3.2 but is much more robust and secure. Its user interface has also been translated into Russian, extending its global reach even more. _All users should plan to upgrade to this version as soon as possible following the instructions in the [[Release Notes|IPTReleaseNotes233.wiki]]._
+Version 2.3.3 is available for early download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.3/ipt-2.3.3.war), while work updating the [[User Manual|IPT2ManualNotes.wiki]] and [IPT Website](http://www.gbif.org) are ongoing. This version looks and feels the same as 2.3.2 but is much more robust and secure. Its user interface has also been translated into Russian, extending its global reach even more. _All users should plan to upgrade to this version as soon as possible following the instructions in the [[Release Notes|IPTReleaseNotes233.wiki]]._
 
 ## Featured content 
 
