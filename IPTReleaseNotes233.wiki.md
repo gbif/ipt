@@ -31,11 +31,11 @@ and limitations under the License.
 **Warning 3**: IPT 2.3.x will be the last version that supports running on a server with Java 6. Since Java 7 reached its end of life in April 2015, the GBIF development team is now in the process of upgrading its projects to use Java 8 instead. This will include version 2.4 (the next major version) of the IPT. 
 
 An upgrade can be performed in 4 steps:
-
-  1. Replace the previous .war file with the latest edition having the same name (e.g. ipt.war). **Note**: If you replace the .war file while Tomcat is stopped, be sure to delete the associated expanded directory (e.g. /ipt) before restarting Tomcat, so that the updated WAR file will be re-expanded when Tomcat restarts.
-  2. Backup the existing data directory
+  1. Backup the existing data directory and any [custom styling](https://github.com/gbif/ipt/wiki/IPT2Customization.wiki) (images, stylesheets, etc) previously applied to your IPT.
+  2. Replace the previous .war file with the latest edition having the same name (e.g. ipt.war). **Note**: If you replace the .war file while Tomcat is stopped, be sure to delete the associated expanded directory (e.g. /ipt) before restarting Tomcat, so that the updated WAR file will be re-expanded when Tomcat restarts.
   3. Immediately open the IPT in a web browser, and reuse the existing data directory on the initial IPT setup page
   4. To be sure the upgrade worked, try logging in and look for the new version number in the footer (**restart Tomcat if cached version still appears**)
+  5. Reapply your custom styling (if applicable)
 
 ### B. Post-upgrade instructions
 
