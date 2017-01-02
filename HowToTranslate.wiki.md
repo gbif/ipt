@@ -13,9 +13,10 @@ The preferred way of translating the user interface is using an online translati
   * French
   * Japanese
   * Portuguese
-  * Russian (pending)
+  * Russian
   * Spanish
   * Traditional Chinese
+  * Persian (pending)
 
 If you want to translate the user interface into another language, please email helpdesk@gbif.org.
 

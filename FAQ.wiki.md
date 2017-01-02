@@ -73,7 +73,7 @@ struts.locale=pt
 
 Restart Tomcat, and the IPT will startup in Portuguese.
 
-Please note the two-letter language code must match the code used by the IPT. Other languages currently supported include Japanese (ja), French (fr), Spanish (es), and Traditional Chinese (zh).
+Please note the two-letter language code must match the code used by the IPT. Other languages currently supported include Japanese (ja), French (fr), Spanish (es), Traditional Chinese (zh), and Russian (ru).
 
 Please note that every time you upgrade to a new version of the IPT, you will have to apply the same change.
 
