@@ -908,9 +908,7 @@ This page allows a user having the Admin role to make and change settings for th
 * **IPT Server Location** - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.
 
 ### Publish all resources
-This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DWCA, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPTs metadata in the Registry. If any of the following conditions have been met since the last time the resources were updated, click on this button to make the necessary updates:
-* Multiple resources have been updated, and you want to publish a new release for all of them instead of publishing them individually.
-* The Base URL or Proxy URL has been changed and you want to update the IPTs registered services to reflect the change.
+This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DWCA, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPTs and registered resouces' metadata in the Registry. Click on this button if multiple resources have been updated and you want to publish a new release for all of them instead of publishing them individually.
 
 ### Configure User accounts
 This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins.
@@ -945,7 +943,7 @@ Users accounts that are no longer necessary can be deleted using the user detail
   4. A user cannot be deleted if it is the creator or one or more resources. To restrict the user's access to their resources, downgrade their role to type User. Refer to the [[Modify an existing user|IPT2ManualNotes.wiki#modify-an-existing-user]] section for information about how to change a user's role.
 
 ## Configure GBIF registration options
-This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organisation (see the information under the "Configure Organisations" heading in the "Administration Menu" section) or published (see the [[Published Versions|IPT2ManualNotes.wiki#published-versions]] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the "Edit GBIF registration" page.
+This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organisation (see the information under the "Configure Organisations" heading in the "Administration Menu" section) or published (see the [[Published Versions|IPT2ManualNotes.wiki#published-versions]] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the [[Edit GBIF registration|IPT2ManualNotes.wiki#edit-gbif-registration]] page.
 
 The first step to register with GBIF is to test that the IPT has a valid URL that can be reached by the GBIF services. To run this test, click on the button labeled "Validate".
 
@@ -977,7 +975,7 @@ Following are explanations of the specific information to select or enter:
 * **Note**: Any changes to the IPT registration (rather than resource registration - for which see the "Visibility" section under the "Resource Overview" heading in the "Manage Resources Menu" section as well as the information under the "Publish all resources" heading in the "Administration Menu" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).
 
 ## Edit GBIF registration
-This page allows a user to edit the title, description, contact name, and contact email of the IPT instance once it has been registered in the GBIF Registry. Changing the associated (host) organisation is not possible. For help changing other fields displayed in the GBIF Registry, the administrator can contact the GBIF Help Desk (helpdesk@gbif.org).
+After the IPT has been registered, this page allows a user to update the IPT registration information. The update will ensure the IPT and all its registered resources are in sync with the GBIF Registry. **Administrators should run an update each time the base URL of the IPT changes**. Administrators can also run an update in order to update the title, description, contact name, and contact email of the IPT instance. This page does not support changing the hosting organisation. To do so, administrators must contact the GBIF Helpdesk (helpdesk@gbif.org) directly. 
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminEditRegistration.png' />
 
