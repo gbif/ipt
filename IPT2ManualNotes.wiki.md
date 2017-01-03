@@ -103,7 +103,6 @@ _For the IPT user manual corresponding to version 2.3.2, please go [[here|IPTUse
   + [[GBIF Registry|IPT2ManualNotes.wiki#gbif-registry]]
   + [[IPT code site|IPT2ManualNotes.wiki#ipt-code-site]]
   + [[IPT developer documentation|IPT2ManualNotes.wiki#ipt-developer-documentation]]
-  + [[IPT experts group in the GBIF Community Site|IPT2ManualNotes.wiki#ipt-experts-group-in-the-gbif-community Site]]
   + [[IPT issue tracker|IPT2ManualNotes.wiki#ipt-issue-tracker]]
   + [[IPT mailing list|IPT2ManualNotes.wiki#ipt-mailing-list]]
   + [[IPT server preparation|IPT2ManualNotes.wiki#ipt-server-preparation]]
@@ -1112,9 +1111,6 @@ This GitHub site is the project repository for all of the open source code, mana
 
 ## IPT developer documentation
 Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the [[How to Contribute|HowToContribute.wiki]] section of the IPT wiki.
-
-## IPT experts group in the GBIF Community Site
-The GBIF Community Site hosts a group for those interested in participating in helpdesk, promotion, and training activities related to the GBIF IPT. This is a place to exchange experiences, ask for help, and post opportunities, with the objective of a wider uptake of the tool inside and outside of the GBIF Network: <a href='http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/'>http://community.gbif.org/pg/groups/3529/gbif-ipt-helpdesk-and-training-experts/</a>.
 
 ## IPT issue tracker
 The [issue tracker](https://github.com/gbif/ipt/issues) is the bug report and feature request management system for the IPT software and documentation.
