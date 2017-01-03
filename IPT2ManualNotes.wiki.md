@@ -891,7 +891,7 @@ This section describes each of the functions that are accessible from the Admini
 
 ### Configure IPT settings
 This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance.
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTAdminConfigIPT.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v233/IPTAdminConfigIPT.png' />
 
 * **Base URL** - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Base URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organisation and will not allow the resources to be publicly accessible.
 * **Note**: The IPT tests the Base URL for accessibility from the client computer when the IPT Settings are saved. If the IPT is not accessible at the given Base URL, the IPT will display a warning message and the changes will not be saved. The procedure to change the Base URL if the new URL is not yet functional (such as a port change that requires the IPT to be restarted) is given below:
