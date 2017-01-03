@@ -323,7 +323,7 @@ Header, logged in, English language chosen for the user interface:
 #### Footer
 The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTFooter.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v233/IPTFooter.png' />
 
 * **Version** - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.
 * **About the IPT** - This link leads to the [IPT website](http://www.gbif.org/ipt), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.
@@ -335,7 +335,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 ## Home Menu (visible to all users)
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTHome.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v233/IPTHome.png' />
 ### Public Resources Table
 If there are any public resources, they will appear in a table having the following columns:
 
@@ -381,7 +381,7 @@ Following are explanations of the table columns:
 ## Manage Resources Menu (visible to users with an Admin or Manager role)
 This page allows users having the appropriate role (managers and administrators) to make changes to existing resources or to create new resources.
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResources.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v233/IPTManageResources.png' />
 
 ### Manage Resources Table
 When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the [[Public Resources Table|IPT2ManualNotes.wiki#public-resources-table]] section for detailed explanations of the Name, Organisation, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
