@@ -172,7 +172,9 @@ public class TextFileSource extends SourceBase implements FileSource {
     setColumns(reader.header == null ? 0 : reader.header.length);
     setRows(reader.getReadRows());
     setReadable(true);
-    return reader.getEmptyLines();
+    Set<Integer> emptyLines = reader.getEmptyLines();
+    reader.close();
+    return emptyLines;
   }
 
   private String unescape(String x) {
