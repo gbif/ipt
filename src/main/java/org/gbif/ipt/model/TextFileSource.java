@@ -104,8 +104,9 @@ public class TextFileSource extends SourceBase implements FileSource {
     try {
       CSVReader reader = getReader();
       if (ignoreHeaderLines > 0) {
-        return Arrays.asList(reader.header);
-
+        List<String> columns = Arrays.asList(reader.header);
+        reader.close();
+        return columns;
       } else {
         List<String> columns = new ArrayList<String>();
         // careful - the reader.header can be null. In this case set number of columns to 0
@@ -113,6 +114,7 @@ public class TextFileSource extends SourceBase implements FileSource {
         for (int x = 1; x <= numColumns; x++) {
           columns.add("Column #" + x);
         }
+        reader.close();
         return columns;
       }
     } catch (IOException e) {

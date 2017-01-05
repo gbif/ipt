@@ -679,14 +679,19 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private List<String[]> peek(FileSource source, int rows) {
     List<String[]> preview = Lists.newArrayList();
     if (source != null) {
+      ClosableReportingIterator<String[]> iter = null;
       try {
-        Iterator<String[]> iter = source.rowIterator();
+        iter = source.rowIterator();
         while (rows > 0 && iter.hasNext()) {
           rows--;
           preview.add(iter.next());
         }
       } catch (Exception e) {
         log.warn("Cant peek into source " + source.getName(), e);
+      } finally {
+        if (iter != null) {
+          iter.close();
+        }
       }
     }
 
