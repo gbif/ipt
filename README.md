@@ -28,7 +28,7 @@ The IPT user interface and wiki both need internationalisation, but it's a commu
 
 Thanks to an enormous community effort, and by leveraging the power of the [Crowdin](https://crowdin.com/project/gbif-ipt) localisation tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian. 
 
-####Acknowledgements
+### Acknowledgements
 
 A large number of dedicated volunteers contribute to the success of this software. With your help, the IPT has become a successful tool in use all around the world.  
 
