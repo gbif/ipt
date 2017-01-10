@@ -2,7 +2,7 @@
 
 Here you can find the [[IPT User Manual|IPT2ManualNotes.wiki]] and a variety of other valuable resources. 
 
-## New Release: 2.3.3
+## New Version Released!
 Version 2.3.3 is now available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.3/ipt-2.3.3.war)! This version looks and feels the same as 2.3.2 but is much more robust and secure. You can read more about what's new in this version in [this blog post](http://gbif.blogspot.dk/2017/01/ipt-v233-your-repository-for.html). _Important: all users should plan to upgrade to this version as soon as possible following the instructions in the [[Release Notes|IPTReleaseNotes233.wiki]]._
 
 ## Featured content 
