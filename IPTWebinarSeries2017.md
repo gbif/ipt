@@ -2,7 +2,7 @@
 
 ## Introduction
 
-On the first Wednesday of each month, the GBIF Secretariat will be hosting a short webinar focusing on a single topic of interest related to the IPT. Each webinar will be approximately 10-15 minutes long, free of charge and will be in English. 
+On the first Wednesday of each month, the GBIF Secretariat will be hosting a short webinar focusing on a single topic of interest related to the IPT. Each webinar will be held at 15:30 CET, approximately 10-15 minutes long, free of charge and in English. 
 
 Don't miss out on the opportunity to learn more about the IPT and leverage the know-how and experience of our in-house IPT experts!
 
