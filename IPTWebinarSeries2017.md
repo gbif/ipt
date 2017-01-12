@@ -1,4 +1,4 @@
-# 10-part IPT Webinar Series (2017)
+# Monthly IPT Webinar Series (2017)
 
 ## Introduction
 
