@@ -4,7 +4,7 @@
 
 On the first Wednesday of each month, the GBIF Secretariat will be hosting a short webinar focusing on a single topic of interest related to the IPT. Each webinar will be approximately 10-15 minutes long, free of charge and will be in English. 
 
-Don't miss out on the opportunity to learn more about the IPT and leverage the know-how and experience of IPT experts!
+Don't miss out on the opportunity to learn more about the IPT and leverage the know-how and experience of our in-house IPT experts!
 
 ## Topics, in random order:
 - [ ] 1. How to setup a data repository (assigning DOIs to datasets)
