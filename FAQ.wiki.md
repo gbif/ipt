@@ -148,5 +148,5 @@ The type of a resource is derived from its core mapping:
 * If the core mapping is to the [Event extension](http://rs.gbif.org/core/dwc_event_2016_06_21.xml), the type is equal to "sampling-event". 
 * If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to "other".  
 
-Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings (to the Occurrence extension), and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.
+Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.
 
