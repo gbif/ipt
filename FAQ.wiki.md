@@ -15,6 +15,7 @@
   + [[2. Why do published files not include all records?|FAQ.wiki#2-why-do-published-files-not-include-all-records]]
   + [[3. What does the error "No space left on device" mean and how do I fix it?|FAQ.wiki#3-what-does-the-error-no-space-left-on-device-mean-and-how-do-i-fix-it]]
   + [[4. How do I change the publishing organisation of my resource? The dropdown on the Basic Metadata page is disabled.|FAQ.wiki#4-how-do-i-change-the-publishing-organisation-of-my-resource-the-dropdown-on-the-basic-metadata-page-is-disabled]]
+  + [[5. How do I change the type of an existing resource?|FAQ.wiki#5-how-do-i-change-the-type-of-an-existing-resource]]
 
 ## Introduction
 In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
@@ -138,3 +139,14 @@ Do not "delete" the old resource via the IPT user interface, as this will delete
 Instead, you should migrate the resource from the old publishing organisation to the new publishing organisation by following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#migrate-a-resource). Please pay careful attention to step #5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry. 
 
 Lastly, you can delete the old resource by removing its IPT resource folder inside the IPT Data Directory. Restart Tomcat for the deletion to take effect.
+
+### 5. How do I change the type of an existing resource? 
+
+The type of a resource is derived from its core mapping:
+* If the core mapping is to the [Occurrence extension](http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml), the type is equal to "occurrence". 
+* If the core mapping is to the [Taxon extension](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml), the type is equal to "checklist". 
+* If the core mapping is to the [Event extension](http://rs.gbif.org/core/dwc_event_2016_06_21.xml), the type is equal to "sampling-event". 
+* If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to "other".  
+
+Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings (to the Occurrence extension), and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.
+
