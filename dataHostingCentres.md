@@ -44,11 +44,13 @@ If you believe your DHC meets these standards, and would like to offer your serv
 - [[Norway|dataHostingCentres#norway]]
 - [[Portugal|dataHostingCentres#portugal]]
 - [[South Africa|dataHostingCentres#south-africa]]
-- [[Spain|dataHostingCentres#spain]]
+- [[Spain|dataHostingCentres#spain]] <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' /> 
 - [[Sweden|dataHostingCentres#sweden]]
 - [[Taiwan|dataHostingCentres#taiwan]]
 - [[Togo|dataHostingCentres#france]]
 - [[USA|dataHostingCentres#usa]]
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' /> Designates a country hosting an IPT serving as a repository - able to assign DOIs to datasets by connecting with DataCite or EZID.
 
 ## Australia
 
@@ -107,6 +109,8 @@ The [South African National Biodiversity Institute (SANBI)](http://www.sanbi.org
 ## Spain
 
 [GBIF Spain](http://www.gbif.es/) provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact <info@gbif.es> for assistance. 
+
+The [GBIF Spain IPT](https://biosharing.org/biodbcore-000854) is recognized as a repository in BioSharing.org, which is working with an increasing number of journals to ensure data underlying scientific publications gets deposited in a standardized manner. This is part of the growing movement for reproducible research. 
 
 ## Sweden
 
