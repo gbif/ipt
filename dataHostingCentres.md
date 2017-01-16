@@ -110,7 +110,7 @@ The [South African National Biodiversity Institute (SANBI)](http://www.sanbi.org
 
 [GBIF Spain](http://www.gbif.es/) provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact <info@gbif.es> for assistance. 
 
-The [GBIF Spain IPT](https://biosharing.org/biodbcore-000854) is recognized as a repository in BioSharing.org, which is working with an increasing number of journals to ensure data underlying scientific publications gets deposited in a standardized manner. This is part of the growing movement for reproducible research. 
+The [GBIF Spain IPT](http://www.gbif.es/ipt/) is recognized as a repository in [BioSharing.org](https://biosharing.org/biodbcore-000854), which is working with an increasing number of journals to ensure data underlying scientific publications gets deposited in a standardized manner. This is part of the growing movement for reproducible research. 
 
 ## Sweden
 
