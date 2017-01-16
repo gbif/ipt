@@ -30,7 +30,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 ## Data Hosting Centres by Country
 
-- [[Australia|dataHostingCentres#australia]] 
+- [[Australia|dataHostingCentres#australia]] <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' />
 - [[Belgium|dataHostingCentres#belgium]] 
 - [[Benin|dataHostingCentres#france]] 
 - [[Burkina Faso|dataHostingCentres#france]]
@@ -55,6 +55,8 @@ If you believe your DHC meets these standards, and would like to offer your serv
 ## Australia
 
 The Atlas of Living Australia provides helpdesk support to new publishers in Australia, and hosting support for datasets on the [ALA IPT](http://ipt.ala.org.au/). Please contact ALA <david.martin@csiro.au> for assistance. 
+
+The [ALA IPT](http://ipt.ala.org.au/) is recognized as a repository in [BioSharing.org](https://biosharing.org/biodbcore-000852). An increasing number of journals refer authors to an appropriate repository in BioSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
 
 ## Belgium
 
