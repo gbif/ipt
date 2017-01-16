@@ -50,7 +50,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 - [[Togo|dataHostingCentres#france]]
 - [[USA|dataHostingCentres#usa]]
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' /> Designates a country with an IPT serving as a repository, able to assign DOIs to datasets underlying scientific publications in journals.
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' /> Designates a country with an IPT serving as a repository, able to assign DOIs to datasets underlying scientific publications in journals such as [Scientific Data](http://www.nature.com/sdata/).
 
 ## Australia
 
