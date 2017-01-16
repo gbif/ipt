@@ -36,7 +36,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 - [[Burkina Faso|dataHostingCentres#france]]
 - [[Cameroon|dataHostingCentres#france]]
 - [[Canada|dataHostingCentres#canada]]
-- [[Colombia|dataHostingCentres#colombia]]
+- [[Colombia|dataHostingCentres#colombia]] <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' />
 - [[Denmark|dataHostingCentres#denmark]]
 - [[Finland|dataHostingCentres#finland]]
 - [[France|dataHostingCentres#france]]
@@ -71,7 +71,9 @@ Therefore you are recommended to contact Canadensys, which provides helpdesk sup
 
 ## Colombia
 
-The [Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcolombia.net/web/sib/home) provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance.  
+The [Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcolombia.net/web/sib/home) provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance. 
+
+The [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/) is recognized as a repository in [BioSharing.org](https://biosharing.org/biodbcore-000856). An increasing number of journals refer authors to an appropriate repository in BioSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
 
 ## Denmark
 
