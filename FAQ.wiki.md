@@ -108,7 +108,7 @@ The following well-maintained IPTs have all been configured with a DataCite acco
 * [GBIF Spain IPT](http://www.gbif.es/ipt/) - [BioSharing record](https://biosharing.org/biodbcore-000854)
 * [GBIF Australia IPT](http://ipt.ala.org.au/) - [BioSharing record](https://biosharing.org/biodbcore-000852)
 * [Canadensys IPT](http://data.canadensys.net/ipt/) - [BioSharing record](https://biosharing.org/biodbcore-000855)
-* [GBIF Colombia IPT](https://biosharing.org/biodbcore-000856) - [BioSharing record](https://biosharing.org/biodbcore-000856)  
+* [GBIF Colombia IPT](http://ipt.biodiversidad.co/sib/) - [BioSharing record](https://biosharing.org/biodbcore-000856)  
 
 Authors in Spain are already depositing their standardized data in the GBIF Spain IPT, e.g. the following dataset http://doi.org/10.15470/qomfu6 underlies this Scientific Data Data Descriptor: http://doi.org/10.1038/sdata.2016.85 
 
