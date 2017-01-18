@@ -10,6 +10,7 @@
   + [[5. How can I change the IPT's default language?|FAQ.wiki#5-how-can-i-change-the-ipts-default-language]]
   + [[6. How can I switch the IPT from test mode to production mode?|FAQ.wiki#6-how-can-i-switch-the-ipt-from-test-mode-to-production-mode]]
   + [[7. What outgoing connections does the IPT make?|FAQ.wiki#7-what-outgoing-connections-does-the-ipt-make]]
+  + [[8. How can I configure my IPT to assign DOIs to datasets?|FAQ.wiki#8-how-can-i-configure-my-ipt-to-assign-dois-to-datasets]]
 + [[Usage|FAQ.wiki#usage]]
   + [[1. Why do published files contain broken lines?|FAQ.wiki#1-why-do-published-files-contain-broken-lines]]
   + [[2. Why do published files not include all records?|FAQ.wiki#2-why-do-published-files-not-include-all-records]]
@@ -92,6 +93,25 @@ In production mode, the IPT makes outgoing connections to http://gbrds.gbif.org.
 
 In test mode, the IPT makes outgoing connections to http://gbrdsdev.gbif.org. In case you need to update your firewall rules, note you will also need to cater for a “non-proxyfied” redirection to http://apps2.gbif-uat.org. 
 
+### 8. How can I configure my IPT to assign DOIs to datasets?
+ 
+In order to assign DOIs to datasets, the IPT must be configured with a DataCite or EZID account, which has itself been configured to mint DOIs under the IPT's domain. 
+
+The account holding organization must already be associated to the IPT as an organization. For help associating an organization to your IPT, you can refer to the [Add Organization](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#add-organisation) section of the User Manual. 
+
+All that remains, is to add the DataCite or EZID account information to the organization (e.g. the username, password, prefix, etc) and make sure the "Account activated" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the [Edit Organization](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#edit-organisation) section of the User Manual.
+
+If you work for a GBIF ‘country' Node, please contact the GBIF Helpdesk <helpdesk@gbif.org> to inquire about getting a free DataCite account. GBIF has its own account with DataCite and may be able to provide 'country' Nodes with their own free account (determined on a case by case basis). GBIF has done this for Spain and Colombia so far, both of which have a strong track record of keeping their IPTs online near 100% of the time. 
+
+The following well-maintained IPTs have all been configured with a DataCite accounts, can assign DOIs to datasets, and are thus recognized as a repository in BioSharing.org, which is used by journals such as Nature to refer their authors to one or more repositories that are appropriate for the type of data they have.
+
+* [GBIF Spain IPT](http://www.gbif.es/ipt/) - [BioSharing record](https://biosharing.org/biodbcore-000854)
+* [GBIF Australia IPT](http://ipt.ala.org.au/) - [BioSharing record](https://biosharing.org/biodbcore-000852)
+* [Canadensys IPT](http://data.canadensys.net/ipt/) - [BioSharing record](https://biosharing.org/biodbcore-000855)
+* [GBIF Colombia IPT](https://biosharing.org/biodbcore-000856) - [BioSharing record](https://biosharing.org/biodbcore-000856)  
+
+Authors in Spain are already depositing their standardized data in the GBIF Spain IPT, e.g. the following dataset http://doi.org/10.15470/qomfu6 underlies this Scientific Data Data Descriptor: http://doi.org/10.1038/sdata.2016.85 
+
 ## Usage
 
 ### 1. Why do published files contain broken lines?
@@ -149,4 +169,3 @@ The type of a resource is derived from its core mapping:
 * If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to "other".  
 
 Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.
-
