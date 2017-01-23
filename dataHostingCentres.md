@@ -128,9 +128,9 @@ The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en)
 
 ## USA
 
-The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the [USGS BISON IPT](http://ipt.vertnet.org/). Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organisations/resources:
+The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the [USGS BISON IPT](https://bison.usgs.gov/ipt). Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organisations/resources:
 + [Ocean Biogeographic Information System USA - OBIS-USA](https://www1.usgs.gov/obis-usa/ipt/)
 + [Nonindigenous Aquatic Species (NAS) information resource for the USGS](https://nas.er.usgs.gov/ipt/)
-
++ [USGS Biodiversity Information Serving Our Nation (BISON) IPT](https://bison.usgs.gov/ipt)
 
 [VertNet](http://vertnet.org/) provides helpdesk support to new publishers in the United States, and hosting support for datasets on the [VertNet IPT](http://ipt.vertnet.org/). Please contact Laura Russell <larussell@vertnet.org> for assistance. 
