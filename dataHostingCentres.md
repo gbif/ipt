@@ -69,7 +69,7 @@ The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdes
 
 The [Canadian Biodiversity Information Facility (CBIF)](http://www.cbif.gc.ca/) does not run an IPT.  
 
-Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <olivier.norvez@umontreal.ca> for assistance.
+Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <canadensys.network@gmail.com> for assistance.
 
 The [Canadensys IPT](http://data.canadensys.net/ipt) is recognized as a repository in [BioSharing.org](https://biosharing.org/biodbcore-000855). An increasing number of journals refer authors to an appropriate repository in BioSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
 
