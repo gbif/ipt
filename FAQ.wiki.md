@@ -172,7 +172,7 @@ The type of a resource is derived from its core mapping:
 Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.
 
 ### 6. What are some tricks to simplify the authoring and maintenance of metadata?
-Datasets can change over time. Keeping the dataset metadata up to date can be a burden, to prevent inconsistencies and errors from appearing. Below is a list of tricks you can use to simplify the authoring of metadata and make it easier to maintain over time:
+Datasets can change over time. Keeping the dataset metadata up to date can be a burden, as inconsistencies can begin to creep in over time. Below is a list of tricks you can use to simplify the authoring of metadata and make it easier to maintain over time:
 * use a contact's ORCID instead of supplying their email and other fields which are likely change if the person changes jobs. For more information about how to supply an ORCID see [here](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#basic-metadata).
 * for datasets that continue to change/grow (versus static datasets) avoid specifying exact counts in textual descriptions, e.g. for record or taxa counts.
 * use the IPT's citation [Auto-generation feature](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#citations) instead of supplying a manually created data citation. 
