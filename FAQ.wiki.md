@@ -176,5 +176,5 @@ Datasets can change over time. Keeping the dataset metadata up to date can be a 
 * use a contact's ORCID instead of supplying their email and other fields which are likely change if the person changes jobs. For more information about how to supply an ORCID see [here](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#basic-metadata).
 * for datasets that continue to change/grow (versus static datasets) avoid specifying exact counts in textual descriptions, e.g. for record or taxa counts.
 * use the IPT's citation [Auto-generation feature](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#citations) instead of supplying a manually created data citation. 
-* use the IPT's import by [Taxon List feature](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#taxonomic-coverage) instead of supplying each taxa manually one at a time when entering the taxonomic converage. 
+* use the IPT's import by [Taxon list feature](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#taxonomic-coverage) instead of supplying each taxa manually one at a time when entering the taxonomic converage. 
 
