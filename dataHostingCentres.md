@@ -91,12 +91,13 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 
 [GBIF France](http://www.gbif.fr/) provides helpdesk support to new publishers in *Benin*, *Burkina Faso*, *Cameroon*, *France*, *Madagascar*, and *Togo*. GBIF France also hosts an IPT for each of these countries:
 
-+ [GBIF Benin IPT](http://lis-02.snv.jussieu.fr/ipt_benin/)
-+ [GBIF Burkina Faso IPT](http://lis-02.snv.jussieu.fr/ipt_burkina/)
-+ [GBIF Cameroon IPT](http://lis-02.snv.jussieu.fr/ipt_cameroun/)
-+ [GBIF France IPT](http://www.gbif.fr/ipt/)
-+ [MadBIF IPT](http://www.gbif.fr/ipt_madagascar/)
-+ [GBIF Togo IPT](http://lis-02.snv.jussieu.fr/ipt_togo/)
++ [GBIF Benin IPT](http://ipt-benin.gbif.fr)
++ [GBIF Burkina Faso IPT](http://ipt-burkina.gbif.fr)
++ [GBIF Cameroon IPT](http://ipt-cameroun.gbif.fr)
++ [GBIF France IPT](http://ipt.gbif.fr)
++ [GBIF Guinea IPT](http://ipt-guinee.gbif.fr)
++ [MadBIF IPT](http://ipt.madbif.mg)
++ [GBIF Togo IPT](http://ipt-togo.gbif.fr)
 
 Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues please write to <dev@gbif.fr> instead.
 
