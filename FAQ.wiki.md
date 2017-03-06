@@ -18,6 +18,11 @@
   + [[4. How do I change the publishing organisation of my resource? The dropdown on the Basic Metadata page is disabled.|FAQ.wiki#4-how-do-i-change-the-publishing-organisation-of-my-resource-the-dropdown-on-the-basic-metadata-page-is-disabled]]
   + [[5. How do I change the type of an existing resource?|FAQ.wiki#5-how-do-i-change-the-type-of-an-existing-resource]]
   + [[6. What are some tricks to simplify the authoring and maintenance of metadata?|FAQ.wiki#6-what-are-some-tricks-to-simplify-the-authoring-and-maintenance-of-metadata]]
++ [[Indexing by GBIF|FAQ.wiki#indexing-by-gbif]]
+  + [[1. How long does it take GBIF to (re)index my dataset following registration?|FAQ.wiki#]]
+  + [[2. Why hasn't GBIF (re)indexed my dataset yet?|FAQ.wiki#]]
+  + [[3. How often does GBIF reindex my dataset?|FAQ.wiki#]]
+  + [[4. What type of datasets does GBIF index/support?|FAQ.wiki#]]
 
 ## Introduction
 In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
