@@ -188,7 +188,7 @@ Datasets can change over time. Keeping the dataset metadata up to date can be a 
 
 The answer depends on how long GBIF's indexing queue is, how big your dataset it and whether GBIF's indexing service is turned on.
 
-Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to index large datasets with several millions of records, so please be patient. If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see #2 below.
+Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (e.g. with several million records) so please be patient. If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see #2 below.
 
 ### 2. Why hasn't GBIF (re)indexed my dataset yet?
 
