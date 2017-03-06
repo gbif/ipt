@@ -183,3 +183,24 @@ Datasets can change over time. Keeping the dataset metadata up to date can be a 
 * use the IPT's citation [Auto-generation feature](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#citations) instead of supplying a manually created data citation. 
 * use the IPT's import by [Taxon list feature](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#taxonomic-coverage) instead of supplying each taxa manually one at a time when entering the taxonomic converage. 
 
+## Indexing by GBIF
+### 1. How long does it take GBIF to start (re)indexing my dataset?
+
+The answer depends on how long GBIF's indexing queue is, how big your dataset it and whether GBIF's indexing service is turned on.
+
+Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to index large datasets with several millions of records, so please be patient. If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see #2 below.
+
+### 2. Why hasn't GBIF (re)indexed my dataset yet?
+
+Occasionally, GBIF turns off its indexing service for maintenance. If your dataset has been successfully reindexed but the records weren't properly updated, you may be affected by [this bug](https://github.com/gbif/crawler/issues/1) in the crawling service. If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened.
+
+### 3. How often does GBIF reindex my dataset?
+
+GBIF automatically attempts to reindex all registered datasets every 7 days. GBIF will only reindex the dataset if its last published date has changed since the last time it was indexed. 
+
+GBIF automatically attempts to reindex a registered dataset each time its registration is updated. This happens each time the dataset gets republished via the IPT. **Note, however, GBIF doesn't reindex the same dataset more than once every five days. **
+
+### 4. What type of datasets does GBIF index/support?
+
+GBIF supports 4 classes of datasets described [here](https://github.com/gbif/ipt/wiki/howToPublish#introduction). GBIF currently only indexes species occurrence records. Species occurrences can be provided as core records or as extension records. In the case of sampling-event datasets, species occurrences in extension records will be augmented with information coming from its core event record wherever possible. 
+
