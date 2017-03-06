@@ -19,7 +19,7 @@
   + [[5. How do I change the type of an existing resource?|FAQ.wiki#5-how-do-i-change-the-type-of-an-existing-resource]]
   + [[6. What are some tricks to simplify the authoring and maintenance of metadata?|FAQ.wiki#6-what-are-some-tricks-to-simplify-the-authoring-and-maintenance-of-metadata]]
 + [[Indexing by GBIF|FAQ.wiki#indexing-by-gbif]]
-  + [[1. How long does it take GBIF to (re)index my dataset following registration?|FAQ.wiki#]]
+  + [[1. How long does it take GBIF to (re)index my dataset following registration?|FAQ.wiki#1-how-long-does-it-take-gbif-to-start-reindexing-my-dataset]]
   + [[2. Why hasn't GBIF (re)indexed my dataset yet?|FAQ.wiki#]]
   + [[3. How often does GBIF reindex my dataset?|FAQ.wiki#]]
   + [[4. What type of datasets does GBIF index/support?|FAQ.wiki#]]
