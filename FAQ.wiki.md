@@ -206,5 +206,5 @@ To cater to datasets not published using the IPT, GBIF automatically attempts to
 
 ### 4. What type of datasets does GBIF index/support?
 
-GBIF supports 4 classes of datasets described [here](https://github.com/gbif/ipt/wiki/howToPublish#introduction). GBIF currently only indexes species occurrence records though. Species occurrences can be provided as core records or as extension records. In the case of sampling-event datasets, species occurrences in extension records will be augmented with information coming from its core event record wherever possible. 
+GBIF supports 4 classes of datasets described [here](https://github.com/gbif/ipt/wiki/howToPublish#introduction). GBIF currently only indexes species occurrence records though, which can be provided as either core records or as extension records. In the case of sampling-event datasets, species occurrences in extension records will be augmented with information coming from its core event record wherever possible. 
 
