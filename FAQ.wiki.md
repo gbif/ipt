@@ -192,7 +192,9 @@ Normally it will take between 5-60 minutes for GBIF to start indexing your datas
 
 ### 2. Why hasn't GBIF (re)indexed my dataset yet?
 
-Occasionally, GBIF turns off its indexing service for maintenance. If your dataset has been successfully reindexed but the records weren't properly updated, you may be affected by [this bug](https://github.com/gbif/crawler/issues/1) in the crawling service. If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened.
+Occasionally, GBIF turns off its indexing service for maintenance. This is the most common reason why datasets aren't indexed as quickly as expected.
+
+If your dataset has been successfully reindexed, but the records weren't actually updated, you may be affected by [this bug](https://github.com/gbif/crawler/issues/1) in the crawling service. If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened.
 
 ### 3. How often does GBIF reindex my dataset?
 
