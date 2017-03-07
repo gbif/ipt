@@ -59,3 +59,7 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 **Q.** **How do I add common names to a taxon record?** 
 
 **A.** Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this [list](http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml). You can upload this table to the IPT, and map it to the [Vernacular Name extension](http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml). 
+
+**Q.** **How do I add the threat status of a species as defined by IUCN?** 
+
+**A.** Make a table of geographic distributions of a taxon. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your geographic distributions table with extra columns such as the threat status, but only using term names from this [list](http://rs.gbif.org/extension/gbif/1.0/distribution.xml). You can upload this table to the IPT, and map it to the [Species Distribution extension](http://rs.gbif.org/extension/gbif/1.0/distribution.xml). 
