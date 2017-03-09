@@ -78,7 +78,7 @@
     <javax.mail.version>1.4.7</javax.mail.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.7.21</slf4j.version>
-    <struts2.version>2.3.31</struts2.version>
+    <struts2.version>2.3.32</struts2.version>
     <xstream.version>1.4.8</xstream.version>
     <jsr305.version>3.0.1</jsr305.version>
     <httputils.version>0.10</httputils.version>
@@ -223,10 +223,10 @@
         </configuration>
       </plugin>
       <!-- commented out only to perform release: runs integration tests (*IT) during verify -->
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-failsafe-plugin</artifactId>-->
-      <!--</plugin>-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
     </plugins>
 
     <resources>
