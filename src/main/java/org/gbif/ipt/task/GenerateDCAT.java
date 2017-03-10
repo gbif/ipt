@@ -683,6 +683,12 @@ public class GenerateDCAT {
     distributionBuilder.append("\n");
     distributionBuilder.append("a dcat:Distribution");
 
+    //dct:title
+    if (resource.getEml().getTitle() != null) {
+      addPredicateToBuilder(distributionBuilder, "dct:title");
+      addObjectToBuilder(distributionBuilder, "Darwin Core Archive of " + resource.getEml().getTitle(), ObjectTypes.LITERAL);
+    }
+
     //dct:description
     addPredicateToBuilder(distributionBuilder, "dct:description");
     addObjectToBuilder(distributionBuilder, "Darwin Core Archive", ObjectTypes.LITERAL);
