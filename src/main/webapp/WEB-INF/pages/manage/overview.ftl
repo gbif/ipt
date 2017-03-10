@@ -1,7 +1,7 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#escape x as x?html>
 <#macro dwcaValidator>
-  <#if (resource.recordsPublished>0)><a href="http://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate"/></#if>
+  <#if (resource.recordsPublished>0)><a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate"/></#if>
 </#macro>
 <#macro nextDoiButtonTD>
 

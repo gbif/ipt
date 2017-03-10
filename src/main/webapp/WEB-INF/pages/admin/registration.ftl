@@ -60,7 +60,7 @@ $(document).ready(function(){
 	</#if>
 	$('#validate').click(function() {
 		$("#baseURLStatus").html('<img src="${baseURL}/images/small-loader.gif">');
-		var url = "http://tools.gbif.org/ws-validurl/?url=${baseURL}/&callback=?";
+		var url = "https://tools.gbif.org/ws-validurl/?url=${baseURL}/&callback=?";
 		$.getJSON(url,function(data){
 			if(data.success==true) {
 				$("#baseURLStatus").html("<@s.text name="admin.registration.validate.success"/>");
