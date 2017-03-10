@@ -4,6 +4,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -71,6 +72,11 @@ public class HomeAction extends BaseAction {
         publishedPublicVersion.setNextPublished(current.getNextPublished());
         publishedPublicVersion.setCoreType(current.getCoreType());
         publishedPublicVersion.setSubtype(current.getSubtype());
+        // was last published version later registered but never republished? Fix for issue #1319
+        if (!publishedPublicVersion.isRegistered() && current.isRegistered() && current.getOrganisation() != null) {
+          publishedPublicVersion.setStatus(PublicationStatus.REGISTERED);
+          publishedPublicVersion.setOrganisation(current.getOrganisation());
+        }
         resources.add(publishedPublicVersion);
       } catch (IllegalArgumentException e) {
         // only expected to happen for extremely out-of-date resources published using IPT prior to v.2.2
