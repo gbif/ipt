@@ -19,7 +19,7 @@
           <div id="zone-credit" class="zone zone-credit clearfix container_24">
             <aside class="grid_16 region region-credit-first" id="region-credit-first">
               <div class="region-inner region-credit-first-inner">
-                <p>&copy;2016 <a href="http://www.gbif.org">Global Biodiversity Information Facility</a>.</p>
+                <p>&copy;2017 <a href="http://www.gbif.org">Global Biodiversity Information Facility</a>.</p>
               </div>
             </aside>
           </div>
