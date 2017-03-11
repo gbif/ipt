@@ -3,7 +3,7 @@
 Here you can find the [[IPT User Manual|IPT2ManualNotes.wiki]] and a variety of other valuable resources. 
 
 ## New version with security update released!
-**Version 2.3.4** was released on 10 March 2017 and is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.4/ipt-2.3.4.war). The security update fixes a [critical vulnerability](https://struts.apache.org/docs/s2-045.html) that has been discovered in the Apache Struts web framework, which the IPT uses. According to [this article](http://thehackernews.com/2017/03/apache-struts-framework.html), this is a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability. **_Important: all users should plan to upgrade to this version immediately following the instructions in the [[Release Notes|IPTReleaseNotes233.wiki]]._**
+**Version 2.3.4** was released on 10 March 2017 and is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.4/ipt-2.3.4.war). The security update fixes a [critical vulnerability](https://struts.apache.org/docs/s2-045.html) that has been discovered in the Apache Struts web framework, which the IPT uses. According to [this article](http://thehackernews.com/2017/03/apache-struts-framework.html), this is a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability. **Therefore all users should plan to upgrade to this version immediately following the instructions in the [[Release Notes|IPTReleaseNotes233.wiki]].**
 
 ## Featured content 
 
