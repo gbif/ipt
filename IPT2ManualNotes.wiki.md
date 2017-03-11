@@ -1,6 +1,6 @@
 # The IPT User Manual
 
-**IPT Version: 2.3.3**
+**IPT Versions: 2.3.3, 2.3.4**
 
 _For the IPT user manual corresponding to version 2.3.2, please go [[here|IPTUserManualv23.wiki]]. Otherwise, user manuals for older versions are available from the [Version History](http://www.gbif.org/ipt/releases) page._
 
@@ -1083,7 +1083,7 @@ This IPT installation has not been registered yet.<br>
 ## Citation
 This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:
 
-Wieczorek & Braak (2016). The GBIF Integrated Publishing Toolkit User Manual, version 2.3.3 Copenhagen: Global Biodiversity Information Facility.
+Wieczorek & Braak (2016). The GBIF Integrated Publishing Toolkit User Manual, version 2.3.4 Copenhagen: Global Biodiversity Information Facility.
 
 ## Copyright
 The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2016 by the Global Biodiversity Information Facility Secretariat.
