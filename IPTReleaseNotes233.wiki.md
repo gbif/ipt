@@ -16,7 +16,7 @@ and limitations under the License.
 
 # Release Notes
 
-**IPT Version: 2.3.3**
+**IPT Versions: 2.3.3, 2.3.4**
 
 
 
@@ -46,8 +46,8 @@ New in IPT 2.3.x is the ability to publish sample-based data. Once the upgrade i
 Additionally, the IPT administrator should update all installed cores and extensions to the latest versions. This will allow publishers to take advantage of any new terms and vocabularies included in the latest versions. 
 
 ### C. New Features / Other
-  * IPT 2.3.3 shows record counts for all files in the DwC-A inside a bar graph on the "Data Records" section of the resource homepage. Note: for the bar graph to appear, resource managers must republish the resource using IPT 2.3.3. 
-  * IPT 2.3.x supports publishing sample-based datasets (datasets pertaining to a sampling event). Sample-based datasets use the new Darwin Core Event core, installed by default in new installations. Note: IPT administrators upgrading to IPT 2.3.3 from 2.2 or earlier need to install this new core. Please see these [[instructions|IPT2ManualNotes.wiki#install-extension]] for help installing a new core.
+  * IPT 2.3.x shows record counts for all files in the DwC-A inside a bar graph on the "Data Records" section of the resource homepage. Note: for the bar graph to appear, resource managers must republish the resource using IPT 2.3.x. 
+  * IPT 2.3.x supports publishing sample-based datasets (datasets pertaining to a sampling event). Sample-based datasets use the new Darwin Core Event core, installed by default in new installations. Note: IPT administrators upgrading to IPT 2.3.x from 2.2 or earlier need to install this new core. Please see these [[instructions|IPT2ManualNotes.wiki#install-extension]] for help installing a new core.
   * IPT 2.3.x supports versionable IPT extensions, making it possible to update to newer versions whenever they become available. To understand how this works, refer to the [[Update Extension|IPT2ManualNotes.wiki#update-extension]] section of the IPT User Manual.
   * IPT 2.3.x can be installed without an organisation both in production and in test mode. Previously in version 2.2, the IPT had to be installed with an organisation in order to publish datasets because the publishing organisation became a mandatory metadata field. For more information about this change, refer to [issue 1179](https://github.com/gbif/ipt/issues/1179).
   * IPT 2.3.x includes a slightly redesigned mapping page, making it easier to map your source data. 
