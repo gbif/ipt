@@ -28,7 +28,7 @@ and limitations under the License.
 
 **Warning 2**: Once an IPT has been upgraded to 2.3.x from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
-**Warning 3**: IPT 2.3.x will be the last version that supports running on a server with Java 6. Since Java 7 reached its end of life in April 2015, the GBIF development team is now in the process of upgrading its projects to use Java 8 instead. This will include version 2.4 (the next major version) of the IPT. 
+**Warning 3**: IPT 2.3.4 requires Java 8 to run. Since Java 7 reached its end of life in April 2015, the GBIF development team is now in the process of upgrading all its projects to use Java 8 instead. 
 
 An upgrade can be performed in 4 steps:
   1. Backup the existing data directory and any [custom styling](https://github.com/gbif/ipt/wiki/IPT2Customization.wiki) (images, stylesheets, etc) previously applied to your IPT.
@@ -54,12 +54,15 @@ Additionally, the IPT administrator should update all installed cores and extens
 
 ## Dependency Notes
 * This version has been tested and designed to work on Tomcat 6.0, 7.0, and 8.0, however, the end of life for Apache 6.0.x is 31 December 2016. Therefore you should plan to upgrade to a newer version of Tomcat if necessary. More information about the end of life for Apache 6.0.x can be found [here](http://tomcat.apache.org/tomcat-60-eol.html).
-* This version can still run on servers with Java 6, however, future versions will be designed to run on Java 8 so please be proactive and plan a Java upgrade on your server soon. Please refer to the [Java version Roadmap](http://www.oracle.com/technetwork/java/eol-135779.html) for an overview of when Oracle plans to discontinue support for the version of Java you currently use.
+* This version is designed to run on Java 8 so please. Please refer to the [Java version Roadmap](http://www.oracle.com/technetwork/java/eol-135779.html) for an overview of when Oracle plans to discontinue support for the version of Java you currently use.
 
 ## Viewing the IPT change log
 
-This version addressed a total of 88 issues: 22 Defects, 17 Enhancements, 36 Won't fix, 10 Duplicates, and 3 Other.
+Version 2.3.3 addressed a total of 88 issues: 22 Defects, 17 Enhancements, 36 Won't fix, 10 Duplicates, and 3 Other.
 These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/1).
+
+Version 2.3.4 addressed a total of 6 issues: 3 Defects, 2 Enhancements, and 1 Other.
+These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/3).
 
 ## When all else fails
 
