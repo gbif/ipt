@@ -54,7 +54,7 @@ Additionally, the IPT administrator should update all installed cores and extens
 
 ## Dependency Notes
 * This version has been tested and designed to work on Tomcat 6.0, 7.0, and 8.0, however, the end of life for Apache 6.0.x is 31 December 2016. Therefore you should plan to upgrade to a newer version of Tomcat if necessary. More information about the end of life for Apache 6.0.x can be found [here](http://tomcat.apache.org/tomcat-60-eol.html).
-* This version is designed to run on Java 8 so please. Please refer to the [Java version Roadmap](http://www.oracle.com/technetwork/java/eol-135779.html) for an overview of when Oracle plans to discontinue support for the version of Java you currently use.
+* This version is designed to run on Java 8. Please refer to the [Java version Roadmap](http://www.oracle.com/technetwork/java/eol-135779.html) for an overview of when Oracle plans to discontinue support for the version of Java you currently use.
 
 ## Viewing the IPT change log
 
