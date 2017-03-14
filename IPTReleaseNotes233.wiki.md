@@ -28,7 +28,7 @@ and limitations under the License.
 
 **Warning 2**: Once an IPT has been upgraded to 2.3.x from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
-**Warning 3**: IPT 2.3.4 requires Java 8 to run. Since Java 7 reached its end of life in April 2015, the GBIF development team is now in the process of upgrading all its projects to use Java 8 instead. 
+**Warning 3**: IPT 2.3.4 requires Java 8 to run. Since Java 7 reached its end of life in April 2015, the GBIF development team is now in the process of upgrading all its projects to use Java 8 instead.  With Java 7, the IPT will be unable to communicate with the GBIF registry.
 
 An upgrade can be performed in 4 steps:
   1. Backup the existing data directory and any [custom styling](https://github.com/gbif/ipt/wiki/IPT2Customization.wiki) (images, stylesheets, etc) previously applied to your IPT.
