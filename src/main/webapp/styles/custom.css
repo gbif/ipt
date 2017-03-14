@@ -34,3 +34,27 @@ tr.even td.sorting_1 {
   color: #008959;
   background-color: #dbf0e8;
 }
+
+/******************************************************
+* Fontawesome
+******************************************************/
+.icon-background {
+	color: #c4e5d8;
+}
+
+.icon-foreground {
+	color: #008959;
+}	
+
+.icon-background-grey {
+	color: #d4d4d4;
+}
+
+.icon-foreground-grey {
+	color: #7f7f7f;
+}	
+
+.icon-shadow {
+	text-shadow: 1px 0px 1px #333;
+}	
+/*** End Fontawesome ***/
