@@ -16,7 +16,7 @@
 			[@s.actionerror/]
 
   		[@s.form action="setup.do" method="post"]
-      <h2 class="subTitle">[@s.text name="admin.config.setup.disclaimer.title"/]&nbsp;<img class="infoImg" src="${baseURL}/images/warning.gif"/></h2>
+      <h2 class="subTitle">[@s.text name="admin.config.setup.disclaimer.title"/]&nbsp;<span class="fa-stack icon-warning"><i class="fa fa-circle fa-stack-1x icon-shadow"></i><i class="fa fa-exclamation fa-stack-1x"></i></span></h2>
       <p>[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
       <p>[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
       <p>
