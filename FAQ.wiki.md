@@ -95,9 +95,13 @@ To save time recreating resources, you can try transferring your 'test' resource
 
 ### 7. What outgoing connections does the IPT make?
 
-In production mode, the IPT makes outgoing connections to http://gbrds.gbif.org. In case you need to update your firewall rules, note you will also need to cater for a “non-proxyfied” redirection to http://apps2.gbif.org. 
+In production mode, the IPT makes secure outgoing connections to https://gbrds.gbif.org.
 
-In test mode, the IPT makes outgoing connections to http://gbrdsdev.gbif.org. In case you need to update your firewall rules, note you will also need to cater for a “non-proxyfied” redirection to http://apps2.gbif-uat.org. 
+In test mode, the IPT makes secure outgoing connections to https://gbrds.gbif-uat.org.
+
+If you need to update firewall rules, that means opening port 443 for outbound HTTPS connections.
+
+Before version 2.3.4, connections were made using HTTP, rather than HTTPS: http://gbrds.gbif.org and  http://gbrdsdev.gbif.org.  HTTP connections use port 80.
 
 ### 8. How can I configure my IPT to assign DOIs to datasets?
  
