@@ -13,7 +13,7 @@
 	<@s.form cssClass="topForm" action="publishAll.do" method="post" namespace="" includeContext="false">
 	<tr>
 	  <td>
-		<a href="${baseURL}/admin/config.do"><img src="${baseURL}/images/icons/settings.png" /></a>
+		<a href="${baseURL}/admin/config.do"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background"></i><i class="fa fa-cogs fa-stack-1x icon-foreground"></i></span></a>
 	  </td>
 	  <td>
 	  <@s.text name="admin.home.editConfig"/>
@@ -25,7 +25,7 @@
 	  </@s.form>
 	<tr>
 	  <td>
-		<a href="${baseURL}/admin/users.do"><img src="${baseURL}/images/icons/users.png" /></a>
+		<a href="${baseURL}/admin/users.do"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background"></i><i class="fa fa-user fa-stack-1x icon-foreground"></i></span></a>
 	  </td>
 	  <td colspan="2">
 		<@s.text name="admin.home.manageUsers"/>
@@ -33,7 +33,7 @@
 	</tr>
 	<tr>
 	  <td>
-		<a href="${baseURL}/admin/registration.do"><img src="${baseURL}/images/icons/registry.png" /></a>
+		<a href="${baseURL}/admin/registration.do"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background"></i><i class="fa fa-cloud-upload fa-stack-1x icon-foreground"></i></span></a>
 	  </td>
 	  <td colspan="2">
 		<@s.text name="admin.home.editRegistration"/>
@@ -42,9 +42,9 @@
 	<tr>
 	  <td>
 		  <#if registeredIpt?has_content>
-				<a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
+				<a href="${baseURL}/admin/organisations.do"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background"></i><i class="fa fa-university fa-stack-1x icon-foreground"></i></span>></a>
 		  <#else>
-				<img src="${baseURL}/images/icons/organisation-grey.png" />
+				<span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background-grey"></i><i class="fa fa-university fa-stack-1x icon-foreground-grey"></i></span>
 		  </#if>
 	  </td>
 	  <td colspan="2">
@@ -55,7 +55,7 @@
 
 	<tr>
 	  <td>
-		<a href="${baseURL}/admin/extensions.do"><img src="${baseURL}/images/icons/extensions.png" /></a>
+		<a href="${baseURL}/admin/extensions.do"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background"></i><i class="fa fa-cubes fa-stack-1x icon-foreground"></i></span></a>
 	  </td>
 	  <td colspan="2">
 		<@s.text name="admin.home.manageExtensions"/>
@@ -63,7 +63,7 @@
 	</tr>
 	<tr>
 	  <td>
-		<a href="${baseURL}/admin/logs.do"><img src="${baseURL}/images/icons/announcement.png" /></a>
+		<a href="${baseURL}/admin/logs.do"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background"></i><i class="fa fa-search fa-stack-1x icon-foreground"></i></span></a>
 	  </td>
 	  <td colspan="2">
 		<@s.text name="admin.home.manageLogs"/>
