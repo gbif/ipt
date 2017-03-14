@@ -42,7 +42,7 @@
 	<tr>
 	  <td>
 		  <#if registeredIpt?has_content>
-				<a href="${baseURL}/admin/organisations.do"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background"></i><i class="fa fa-university fa-stack-1x icon-foreground"></i></span>></a>
+				<a href="${baseURL}/admin/organisations.do"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background"></i><i class="fa fa-university fa-stack-1x icon-foreground"></i></span></a>
 		  <#else>
 				<span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x icon-background-grey"></i><i class="fa fa-university fa-stack-1x icon-foreground-grey"></i></span>
 		  </#if>
