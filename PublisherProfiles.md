@@ -6,7 +6,7 @@ Are you an ecologist, researcher or institution with biodiversity data that is i
 
 If so, please consider making your data open access via [GBIF.org](http://www.gbif.org). This requires you to convert the data into a standardized format, however, doing so can unlock enormous hidden value in your data compared with simply depositing your data in a general-purpose repository such as Dryad or Figshare.
 
-If you'd like to read more about the benefits of sharing your data through GBIF, you can continue reading here. Otherwise if you're already convinced that you'd like to share your data through GBIF and have (or have been granted) rights to publish the data, start by choosing how to publish your data below.
+If you'd like to read more about the benefits of sharing your data through GBIF, you can continue reading [here](http://www.gbif.org/publishing-data/benefits). Otherwise if you're already convinced that you'd like to share your data through GBIF and have (or have been granted) rights to publish the data, start by choosing how to publish your data below.
 
 ### Choosing how to publish your data 
 
