@@ -20,7 +20,7 @@ To start, identify who you are and how much time and resources you can commit to
 
   * If you have limited time and require help publishing your data...
 
-    _No problem! Simply fill in the [dataset catcher form](https://demo.gbif.org/tools/suggest-dataset) with a description of your dataset. This makes your dataset visible to hundreds of data publishers who can help publish your dataset for you. To speed up the process, be sure to include a link to where your raw data can be downloaded and to indicate why your dataset would be a valuable addition to the GBIF data-pool._ 
+    _No problem! Simply fill in the [dataset catcher form](https://demo.gbif.org/tools/suggest-dataset) with a description of your dataset. This makes your dataset visible to hundreds of data publishers who can help publish your dataset for you. To speed up the process, be sure to include a link to where your raw data can be downloaded and to indicate why your dataset would be a valuable addition to the GBIF data-pool. Rest assured, you still retain ownership of your data, but you will need to give credit to the data publishers that help you as co-authors. _ 
 
 * Do you represent an organization, or GBIF Node?
 
@@ -36,8 +36,7 @@ To start, identify who you are and how much time and resources you can commit to
 
   * If there are limited resources and you cannot commit to the long-term hosting and publishing of your data...
 
-    No worries! There is an extensive list of data hosting centres throughout the world that you can use to host and publish your data. By using a data hosting centre you still retain ownership of your data while leveraging the host's capacity.  
- 
+    No worries! There is an extensive list of [data hosting centres](https://github.com/gbif/ipt/wiki/dataHostingCentres) throughout the world that you can use to host and publish your data. Try contacting one close to you (either regionally or thematically) to ask for support. In some cases, the host can even setup and maintain publishing software in the cloud for you. Rest assured, you still retain ownership of your data even though you leverage a host's generosity and goodwill to host your data. 
 
  
 
