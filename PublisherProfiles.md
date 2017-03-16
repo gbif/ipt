@@ -1,5 +1,10 @@
 ## Publishing biodiversity data decision tree
 
+
+## Table of Contents
++ [[Introduction|PublisherProfiles#introduction]]
++ [[Versioning Policy|PublisherProfiles#choosing-how-to-publish-your-data]]
+
 ### Introduction 
 
 Are you an ecologist, researcher or institution with biodiversity data that is interested in unlocking its hidden potential while getting wider recognition?
