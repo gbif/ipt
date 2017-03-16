@@ -14,7 +14,7 @@ To start, identify who you are and how much time and resources you can commit to
 
 * Are you an individual?
 
-  * If you have plenty of time to learn how to publish your own data...
+  * If you have plenty of time and interest in learning how to publish your own data by yourself...
     
     _Great! Simply follow the instructions in this simple [how to publish guide](https://github.com/gbif/ipt/wiki/howToPublish)._
 
@@ -26,11 +26,18 @@ To start, identify who you are and how much time and resources you can commit to
 
   * If there are plenty of resources to commit to the long-term hosting and publishing of its own data...
 
-    * If the organization has capacity to write its own publishing software...
-    * If the organization has system administrators that can to install and maintain publishing software online...
-  * If there are limited resources and the organization requires help to host and publish their data for them...
+    * And if there is capacity to write custom publishing software...
 
+      Amazing! GBIF has an easy to use [Restful JSON API](http://www.gbif.org/developer/summary). You will need to create datasets in standardized format known as Darwin Core Archives (DwC-A) and then register them with GBIF using the API. For help creating DwC-A, you can refer to the [Create your own Darwin Core Archive, Step-by-Step Guide](http://www.gbif.org/resource/80638).    
 
+    * And there are system administrators that can install and maintain publishing software...
+
+      Then you're in luck! The [GBIF IPT](http://www.gbif.org/ipt) is a free publishing tool that can be installed on your server. An administrator then needs to configure it and create user accounts for potential publishers who can then login and publish their own resources following the simple [how to publish guide](https://github.com/gbif/ipt/wiki/howToPublish).
+
+  * If there are limited resources and cannot commit to the long-term hosting and publishing of its own data...
+
+    No worries! 
+ 
 
  
 
