@@ -16,7 +16,7 @@ If you'd like to read more about the benefits of sharing your data through GBIF,
 
   * If you have limited time and require help publishing your data...
 
-    _No problem! Simply fill in the ['dataset catcher form'](https://demo.gbif.org/tools/suggest-dataset) with a description of your dataset. This makes your dataset visible to hundreds of data publishers who can help publish your dataset for you. To speed up the process, be sure to include a link to where your raw data can be downloaded and to indicate why your dataset would be a valuable addition to the GBIF data-pool._ 
+    _No problem! Simply fill in the [dataset catcher form](https://demo.gbif.org/tools/suggest-dataset) with a description of your dataset. This makes your dataset visible to hundreds of data publishers who can help publish your dataset for you. To speed up the process, be sure to include a link to where your raw data can be downloaded and to indicate why your dataset would be a valuable addition to the GBIF data-pool._ 
 
 * Do you represent an organization, or GBIF Node?
 
