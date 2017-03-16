@@ -24,7 +24,7 @@ To start, identify who you are and how much time and resources you can commit to
 
 * Do you represent an organization, or GBIF Node?
 
-  * If there are plenty of resources to commit to the long-term hosting and publishing of its own data...
+  * If there are plenty of resources to commit to the long-term hosting and publishing of your own data...
 
     * And if there is capacity to write custom publishing software...
 
@@ -34,9 +34,9 @@ To start, identify who you are and how much time and resources you can commit to
 
       Then you're in luck! The [GBIF IPT](http://www.gbif.org/ipt) is a free publishing tool that can be installed on your server. An administrator then needs to configure it and create user accounts for potential publishers who can then login and publish their own resources following the simple [how to publish guide](https://github.com/gbif/ipt/wiki/howToPublish).
 
-  * If there are limited resources and cannot commit to the long-term hosting and publishing of its own data...
+  * If there are limited resources and you cannot commit to the long-term hosting and publishing of your data...
 
-    No worries! 
+    No worries! There is an extensive list of data hosting centres throughout the world that you can use to host and publish your data. By using a data hosting centre you still retain ownership of your data while leveraging the host's capacity.  
  
 
  
