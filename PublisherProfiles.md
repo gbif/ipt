@@ -3,7 +3,7 @@
 
 ## Table of Contents
 + [[Introduction|PublisherProfiles#introduction]]
-+ [[Versioning Policy|PublisherProfiles#choosing-how-to-publish-your-data]]
++ [[Choosing how to publish your data|PublisherProfiles#choosing-how-to-publish-your-data]]
 
 ### Introduction 
 
