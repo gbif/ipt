@@ -14,7 +14,7 @@ GBIF supports publication, discovery and use of four classes of data:
 * [[Occurrence Data|occurrenceData]] 
 * [[Sampling Event Data|samplingEventData]]  
 
-At the simplest, GBIF enables institutions to share information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support an increasingly richer and wider range of information on species, their distributions and abundance.
+At the simplest, GBIF enables sharing information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support an increasingly richer and wider range of information on species, their distributions and abundance.
 
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users.
 
