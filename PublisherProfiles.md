@@ -1,4 +1,4 @@
-## What to do with your biodiversity data?
+## Publishing biodiversity data decision tree
 
 ### Introduction 
 
