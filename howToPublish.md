@@ -19,8 +19,14 @@ At the simplest, GBIF enables sharing information describing a biodiversity data
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users.
 
 ## Prerequisites
-1. You require an account on a GBIF Integrated Publishing Toolkit (IPT) to publish your data. It is highly recommended that you save yourself time and money by requesting an account on a [[data hosting centre IPT|dataHostingCentres]] that is located in your country. Otherwise if your organisation has the technical capacity you can setup your own IPT instance. If no data hosting centre exists in your country, and your organisation doesn't have the technical capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. 
-2. Assuming that you would like to register your dataset with GBIF and make it globally discoverable via http://www.gbif.org, you must ensure your organisation is registered with GBIF by completing [this online questionnaire](http://www.gbif.org/publishing-data/request-endorsement#/intro). The registration process can take days, so in parallel you can proceed to publish your data. 
+1. You require an account on a GBIF Integrated Publishing Toolkit (IPT) to publish your data. 
+  
+    * It is highly recommended that you save yourself time and money by requesting an account on a [[data hosting centre IPT|dataHostingCentres]] that is located in your country. 
+    * Otherwise if you or your organisation has technical capacity, you could install and maintain your own IPT instance. 
+    * If no data hosting centre exists in your country, and your organisation doesn't have the technical capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. 
+2. Assuming that you would like to register your dataset with GBIF and make it globally discoverable via http://www.gbif.org, your dataset must be affiliated with an organisation that is registered with GBIF. 
+    * To register your organisation with GBIF, start by completing [this online questionnaire](http://www.gbif.org/publishing-data/request-endorsement#/intro). The registration process can take days, so in parallel you can proceed to publish your data. 
+    * If you aren't affiliated with any organisation, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance.
 
 ## Instructions 
 
