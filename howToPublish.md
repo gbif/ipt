@@ -34,7 +34,11 @@ To publish your data, follow the 7 steps below.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/flow-all.png' />
 
-1. Select the class of biodiversity data you have: [[Resource metadata|resourceMetadata]], [[Checklist Data|checklistData]], [[Occurrence Data|occurrenceData]], [[Sampling Event Data|samplingEventData]]  
+1. Select the class of biodiversity data you have from this list: 
+    1. [[Resource metadata|resourceMetadata]]
+    2. [[Checklist Data|checklistData]]
+    3. [[Occurrence Data|occurrenceData]]
+    4. [[Sampling Event Data|samplingEventData]]  
 2. Transform your data into a table structure, using Darwin Core (DwC) terms as column names
     * Try using an Excel template to structure your data, and understand what DwC terms are required and recommended
     * It is possible to use data stored in a [[supported database|IPT2DatabaseConnection.wiki]]
