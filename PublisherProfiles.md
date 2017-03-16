@@ -38,6 +38,6 @@ To start, identify who you are and how much time and resources you can commit to
 
     No worries! There is an extensive list of [data hosting centres](https://github.com/gbif/ipt/wiki/dataHostingCentres) throughout the world that you can use to host and publish your data. Try contacting one close to you (either regionally or thematically) to ask for support. In some cases, the host can even setup and maintain an instance of the [GBIF IPT](http://www.gbif.org/ipt) in the cloud for you. Rest assured, you still retain ownership of your data even though you leverage a host's generosity and goodwill to host your data. 
 
-  * **..that wants to initiate a digitization project for a natural history collection?**
+  * **..that doesn't have any data yet and wants to initiate a digitization project for a natural history collection?**
 
      Lucky for you! GBIF published a guide entitled [Initiating a Collection Digitization Project](http://www.gbif.org/resource/80574) that can help guide you through the entire process. After your data has been digitized, please revisit this page for assistance publishing the data through GBIF. 
