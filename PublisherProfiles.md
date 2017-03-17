@@ -4,7 +4,7 @@
 ## Table of Contents
 + [[Introduction|PublisherProfiles#introduction]]
 + [[Choosing how to publish your data|PublisherProfiles#choosing-how-to-publish-your-data]]
-+ [[Recommended publishing resources|PublisherProfiles#introduction]]
++ [[Recommended publishing resources|PublisherProfiles#recommended-publishing-resources]]
 
 ## Introduction 
 
