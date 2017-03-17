@@ -1,9 +1,10 @@
 ## Publishing biodiversity data decision tree
 
 
-## Table of Contents
+### Table of Contents
 + [[Introduction|PublisherProfiles#introduction]]
 + [[Choosing how to publish your data|PublisherProfiles#choosing-how-to-publish-your-data]]
++ [[Recommended publishing resources|PublisherProfiles#introduction]]
 
 ### Introduction 
 
@@ -42,3 +43,12 @@ To start, identify who you are and how much time and resources you can commit to
   * **..with limited resources and you cannot commit to the long-term hosting and publishing of your data?**
 
     No worries! There is an extensive list of [data hosting centres](https://github.com/gbif/ipt/wiki/dataHostingCentres) throughout the world that you can use to host and publish your data. Try contacting one close to you (either regionally or thematically) to ask for support. In some cases, the host can even setup and maintain an instance of the [GBIF IPT](http://www.gbif.org/ipt) in the cloud for you. Rest assured, you still retain ownership of your data even though you leverage a host's generosity and goodwill to host your data. 
+
+### Recommended publishing resources
+
+Here is an overview of all recommended publishing resources, specifying their target audience, format, date of publication, and purpose. 
+
+
+| Resource        | Type           | Audience  | Date Published | Purpose |
+| ------------- |:-------------:|:-----| -----:|:-----|
+| [Create your own Darwin Core Archive, Step-by-Step Guide](http://www.gbif.org/resource/80638) | PDF | Organisation writing custom publishing software | 2010 | Step-by-step guide how to manually create Darwin Core Archives (DwC-A) without installing the IPT. |
