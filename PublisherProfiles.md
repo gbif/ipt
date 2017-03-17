@@ -1,12 +1,12 @@
-## Publishing biodiversity data decision tree
+# Publishing biodiversity data decision tree
 
 
-### Table of Contents
+## Table of Contents
 + [[Introduction|PublisherProfiles#introduction]]
 + [[Choosing how to publish your data|PublisherProfiles#choosing-how-to-publish-your-data]]
 + [[Recommended publishing resources|PublisherProfiles#introduction]]
 
-### Introduction 
+## Introduction 
 
 Are you an ecologist, researcher or institution with biodiversity data that is interested in unlocking its hidden potential while getting wider recognition?
 
@@ -14,7 +14,7 @@ If so, please consider making your data open access via [GBIF.org](http://www.gb
 
 If you'd like to read more about the benefits of sharing your data through GBIF, you can continue reading [here](http://www.gbif.org/publishing-data/benefits). Otherwise if you're already convinced that you'd like to share your data through GBIF and have (or have been granted) rights to publish the data, start by choosing how to publish your data below.
 
-### Choosing how to publish your data 
+## Choosing how to publish your data 
 
 To start, identify who you are and how much time and resources you can commit to publishing your data. Based on your profile, the appropriate path to publishing your data is provided. 
 
@@ -44,7 +44,7 @@ To start, identify who you are and how much time and resources you can commit to
 
     No worries! There is an extensive list of [data hosting centres](https://github.com/gbif/ipt/wiki/dataHostingCentres) throughout the world that you can use to host and publish your data. Try contacting one close to you (either regionally or thematically) to ask for support. In some cases, the host can even setup and maintain an instance of the [GBIF IPT](http://www.gbif.org/ipt) in the cloud for you. Rest assured, you still retain ownership of your data even though you leverage a host's generosity and goodwill to host your data. 
 
-### Recommended publishing resources
+## Recommended publishing resources
 
 Here is an overview of all recommended publishing resources, specifying their target audience, format, date of publication, and purpose. 
 
