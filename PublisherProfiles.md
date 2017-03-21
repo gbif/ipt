@@ -51,4 +51,4 @@ Here is an overview of all recommended publishing resources, specifying their ta
 
 | Resource        | Type           |  Languages           | Audience  | Date Published | Purpose |
 | ------------- |:-------------:|:-----|:-----| -----:|:-----|
-| [Create your own Darwin Core Archive, Step-by-Step Guide](http://www.gbif.org/resource/80638) | PDF | EN, [FR](http://www.gbif.org/orc/?doc_id=2988), [ES](http://www.gbif.org/orc/?doc_id=3072) | Organization | 2010 | Step-by-step guide how to manually create Darwin Core Archives (DwC-A) without installing the IPT. |
+| [Create your own Darwin Core Archive, Step-by-Step Guide](http://www.gbif.org/resource/80638) | PDF | EN, [FR](http://www.gbif.org/orc/?doc_id=2988), [ES](http://www.gbif.org/orc/?doc_id=3072) | Organization | 2010 | Explains how to manually create Darwin Core Archives (DwC-A) without installing the IPT. |
