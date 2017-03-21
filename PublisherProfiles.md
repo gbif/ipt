@@ -49,6 +49,6 @@ To start, identify who you are and how much time and resources you can commit to
 Here is an overview of all recommended publishing resources, specifying their target audience, format, date of publication, and purpose. 
 
 
-| Resource        | Type           | Audience  | Date Published | Purpose |
-| ------------- |:-------------:|:-----| -----:|:-----|
-| [Create your own Darwin Core Archive, Step-by-Step Guide](http://www.gbif.org/resource/80638) | PDF | Organisation writing custom publishing software | 2010 | Step-by-step guide how to manually create Darwin Core Archives (DwC-A) without installing the IPT. |
+| Resource        | Type           |  Languages           | Audience  | Date Published | Purpose |
+| ------------- |:-------------:|:-----|:-----| -----:|:-----|
+| [Create your own Darwin Core Archive, Step-by-Step Guide](http://www.gbif.org/resource/80638) | PDF | EN, [FR](http://www.gbif.org/orc/?doc_id=2988), [ES](http://www.gbif.org/orc/?doc_id=3072) | Organization writing custom publishing software | 2010 | Step-by-step guide how to manually create Darwin Core Archives (DwC-A) without installing the IPT. |
