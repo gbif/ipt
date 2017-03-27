@@ -21,4 +21,4 @@ Take a look at the before and after screenshots below showing the effects of the
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTDefaultStyle.png' />
 
 **After applying custom.css**
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTDefaultStyle.png' />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v205/IPTCustomizedStyle.png' />
