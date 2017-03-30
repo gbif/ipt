@@ -51,7 +51,7 @@ Sharing Links and Identifiers
 
 ## Suggested citation
 
-> GBIF (2017). Best Practices in Publishing Species Checklists. Accessible online at <http://links.gbif.org/checklist_best_practices>
+> GBIF (2017). Best Practices in Publishing Species Checklists. Accessible online at https://github.com/gbif/ipt/wiki/BestPracticesChecklists
 
 ## Introduction
 
