@@ -328,7 +328,7 @@ Sometimes the same name may be a synonym for more than one accepted taxon or may
 | 1           | Vireo solitarius   | 1                       | accepted            |
 | 2           | Vireo cassinii     | 2                       | accepted            |
 | 3           | Vireo plumbeus     | 3                       | accepted            |
-| 4           | Vireo solitarius   | 2|3                     | pro-parte           |
+| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte           |
 
 ## Citation and Attribution
 
