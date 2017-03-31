@@ -31,7 +31,7 @@ The core development of the IPT is directed by GBIF, but the coding is a communi
 
 ### @Translators
 
-The IPT user interface and wiki both need internationalisation, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found [here](HowToTranslate.wiki).
+The IPT user interface and wiki both need internationalisation, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found [here](https://github.com/gbif/ipt/wiki/HowToTranslate.wiki).
 
 Thanks to an enormous community effort, and by leveraging the power of the [Crowdin](https://crowdin.com/project/gbif-ipt) localisation tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian. 
 
