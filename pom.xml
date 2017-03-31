@@ -130,6 +130,10 @@
 
   <repositories>
     <repository>
+      <id>gbif-central</id>
+      <url>http://repository.gbif.org/content/repositories/central</url>
+    </repository>
+    <repository>
       <id>gbif-all</id>
       <url>http://repository.gbif.org/content/groups/gbif</url>
     </repository>
