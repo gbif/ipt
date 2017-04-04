@@ -336,6 +336,7 @@ img.testmode {
 }
 
 #region-menu nav ul li a {
+  display: block;
   text-decoration: none;
   color: #fff;
   width: 144px;
