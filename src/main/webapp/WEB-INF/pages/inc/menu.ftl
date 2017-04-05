@@ -34,8 +34,8 @@
                     [#else]
                       <li>
                         <form id="login-form" action="${baseURL}/login.do" method="post">
-                          <input type="text" size="25" name="email" value="email" class="form-reset" />
-                          <input type="password" size="20" name="password" value="password" class="form-reset" />
+                          <input type="text" size="25" name="email" class="form-reset" placeholder="email" />
+                          <input type="password" size="20" name="password" class="form-reset" placeholder="password" />
                           [@s.submit key="portal.login" name="login-submit"/]
                         </form>
                       </li>
