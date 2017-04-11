@@ -1,5 +1,11 @@
 # Data Hosting Centres
 
+## Table of Contents
++ [[Introduction|dataHostingCentres#introduction]]
++ [[Data Hosting Centre Criteria|dataHostingCentres#versioning-policy]]
++ [[Data Hosting Centres by Country|dataHostingCentres#versioning-policy]]
++ [[Certification|dataHostingCentres#certification]]
+
 ## Introduction
 
 A data hosting centre (DHC) can provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through [GBIF.org](http://www.gbif.org).
