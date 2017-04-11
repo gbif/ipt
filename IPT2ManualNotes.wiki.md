@@ -1079,6 +1079,7 @@ This IPT installation has not been registered yet.<br>
 &lt;/#if&gt;<br>
 </code></pre>
 <hr />
+
 # About the IPT
 ## Citation
 This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:
