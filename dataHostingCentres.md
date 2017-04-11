@@ -135,3 +135,9 @@ The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides help
 + [USGS Biodiversity Information Serving Our Nation (BISON) IPT](https://bison.usgs.gov/ipt)
 
 [VertNet](http://vertnet.org/) provides helpdesk support to new publishers in the United States, and hosting support for datasets on the [VertNet IPT](http://ipt.vertnet.org/). Please contact Laura Russell <larussell@vertnet.org> for assistance. 
+
+## Certification
+
+By becoming certified, repositories can demonstrate to both their users and their funders that an independent authority has evaluated them and endorsed their trustworthiness. The World Data System (WDS) and the Data Seal of Approval (DSA) have merged their data repository certifications into a set of harmonized common requirements for certification of repositories named the [Core Trustworthy Data Repositories (Core TDR) Requirements](https://goo.gl/fxVbgc). 
+
+The Core certification requires a data repository supply evidence that they are sustainable and trustworthy. A repository first conducts an internal self-assessment, which is then reviewed by community peers. More information about the certification process can be found [here](https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf). 
