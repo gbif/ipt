@@ -3,7 +3,7 @@
 ## Table of Contents
 + [[Introduction|dataHostingCentres#introduction]]
 + [[Data Hosting Centre Criteria|dataHostingCentres#versioning-policy]]
-+ [[Data Hosting Centres by Country|dataHostingCentres#versioning-policy]]
++ [[Data Hosting Centres by Country|dataHostingCentres#data-hosting-centres-by-country]]
 + [[Certification|dataHostingCentres#certification]]
 
 ## Introduction
