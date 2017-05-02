@@ -1,4 +1,4 @@
-#Welcome to the IPT wiki
+# Welcome to the IPT wiki
 
 Here you can find the [[IPT User Manual|IPT2ManualNotes.wiki]] and a variety of other valuable resources. 
 
