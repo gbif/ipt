@@ -442,46 +442,26 @@ embeds a scientific name “Struthio camelus” into a URL. Full scientific name
 
 where {12} represents the 12<sup>th</sup> column value that will be substituted in the URL.
 
-[1] GBIF (2011). GBIF Strategic Plan 2012-16: Seizing the future. Copenhagen: Global Biodiversity Information Facility. 7pp. ISBN: 87-92020-18-6. Accessible at <http://links.gbif.org/sp2012_2016.pdf>
+## References
+[2]: <http://links.gbif.org/gbif_dwca_how_to_guide>
 
-[2] <http://links.gbif.org/gbif_dwca_how_to_guide>
-
-[3] <http://links.gbif.org/gbif_gna_profile_reference_guide>
-
+[3]: <http://links.gbif.org/gbif_gna_profile_reference_guide>
 [4] These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”
-
 [5] <http://links.gbif.org/gbif_dwca_how_to_guide_en_v1>
-
 [6] <http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml>
-
 [7] <http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml>
-
 [8] <http://links.gbif.org/gbif_metadata_profile_guide_en_v1>
-
 [9] Vernacular Names Extension - <http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml>
-
 [10] <http://links.gbif.org/gbif_gna_profile_reference_guide>
-
 [11] <http://vocabularies.gbif.org/vocabularies/lang>
-
 [12] <http://vocabularies.gbif.org/vocabularies/country>
-
 [13] <http://rs.gbif.org/extension/gbif/1.0/description.xml>
-
 [14] <http://rs.gbif.org/vocabulary/gbif/description_type.xml>
-
 [15] <http://rs.gbif.org/extension/gbif/1.0/distribution.xml>
-
 [16] <http://vocabularies.gbif.org/vocabularies/country>
-
 [17] <http://rs.gbif.org/extension/gbif/1.0/references.xml>
-
 [18] <http://rs.gbif.org/vocabulary/gbif/reference_type.xml>
-
 [19] <http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml>
-
 [20] <http://rs.gbif.org/extension/gbif/1.0/identifier.xml>
-
 [21] <http://www.iana.org/assignments/media-types/index.html>
-
 [22] <http://links.gbif.org/gbif_dwc-a_metafile_en_v1>
