@@ -31,9 +31,8 @@
 * Citation and Attribution
   * Metadata Citation and Attribution
   * Data-level Citation and Attribution
-  * Authenticated File Access via httpd
-    * Use Case \#1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)
-    * Use Case \#2 - Checklists derived from one or more authority sources
+  * Use Case \#1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)
+  * Use Case \#2 - Checklists derived from one or more authority sources 
 * Sharing Vernacular Names
 * Sharing Species Descriptions
   * Multi-line descriptions
@@ -339,11 +338,6 @@ Attribution and citation information recorded in the metadata document is common
 -   ***dwc:datasetName***: If the record is derived from an external dataset this dataset can be cited as a text string. (Example, “World Register of Marine Species, cited on 12 April 2011”)
 -   ***dwc:datasetID*** – An identifier that refers to a dataset, prefereably resolvable.
 -   ***dc:source*** – Link to the source web page
-
-Authenticated File Access via httpd
------------------------------------
-
-GBIF advocates free and open access to biodiversity data and extends this advocation to include taxonomic information. Some taxonomic data publishers, notwithstanding, may balk at providing data via a completely open and public URL, without an initial consultation with a data user, even if the data are free and open. For such a case, it is possible to publish a Darwin Core Archive such that it is only accessible via authentication with a username and password. The URL itself may be published freely as authentication is required to access the file. Data publishers may use the web server logging function to track access via specific users. It is worth repeating that this is not the preferred method for GBIF. GBIFs position is that if there is a demand for taxonomic resources, a consistent and user-friendly citation and attribution process, such as has been defined here, is preferred.
 
 ### Use Case \#1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)
 
