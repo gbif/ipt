@@ -804,11 +804,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     boolean validEventCore = true;
     // test if occurrence extension mapped
     ArchiveFile occurrenceExtension = arch.getExtension(DwcTerm.Occurrence);
-    if (occurrenceExtension == null) {
-      validEventCore = false;
-    }
-    // test if it has at least one record
-    else {
+    if (occurrenceExtension != null) {
       if (!occurrenceExtension.iterator().hasNext()) {
         validEventCore = false;
       }
