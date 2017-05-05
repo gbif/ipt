@@ -1,5 +1,7 @@
 # Best Practices in Publishing Species Checklists
 
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_stilt.png' width="250" height="200" />
+
 ## Table of Contents
 * Document control
 * Suggested citation
