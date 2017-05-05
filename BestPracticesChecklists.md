@@ -310,6 +310,8 @@ Sometimes the same name may be a synonym for more than one accepted taxon or may
 | 3           | Vireo plumbeus     | 3                       | accepted            |
 | 4           | Vireo solitarius   | 2&#124;3                     | pro-parte           |
 
+***Note***: IPT users should define the multi-value delimiter for each source file in the IPT. Refer to [Source Data section](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#source-data) of the IPT User Manual for additional guidance.
+
 ## Citation and Attribution
 
 Taxonomic checklists often represent significant intellectual and financial efforts on the part of the individuals and organisations who compile them. Some checklists may be derived from, or may reference, other source checklists to create new distinct thematic, regional or taxonomic views of the same source authority. Proper attribution and visibility of these sources is therefore a high priority.
