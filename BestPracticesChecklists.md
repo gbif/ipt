@@ -39,9 +39,10 @@
   * Multi-line descriptions
 * Sharing Species Distributions
 * Sharing References
-Sharing Type information
-Sharing Links and Identifiers
+* Sharing Type information
+* Sharing Links and Identifiers
   * Creating a dynamic link to a species page                                                                                                                                                                                                                                                     
+* References
 
 ## Document control
 
@@ -426,7 +427,7 @@ If a core data file is published using the ITIS TSN system a link can be compose
 
 \# a record id based link to the species page:
 
-&lt;field default="http://www.itis.gov/servlet/SingleRpt/SingleRpt?search\_topic=TSN&search\_value={id}" term="http://purl.org/dc/terms/identifier"/&gt;
+`<field default="http://www.itis.gov/servlet/SingleRpt/SingleRpt?search\_topic=TSN&search\_value={id}" term="http://purl.org/dc/terms/identifier"/>`
 
 where the original numeric value is replaced by the variable “{id}”. This value would be derived from the core ID.
 
@@ -438,7 +439,7 @@ embeds a scientific name “Struthio camelus” into a URL. Full scientific name
 
 \# a record id based link to the species page:
 
-&lt;field default="http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1" term="http://purl.org/dc/terms/identifier"/&gt;
+`<field default="http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1" term="http://purl.org/dc/terms/identifier"/>`
 
 where {12} represents the 12<sup>th</sup> column value that will be substituted in the URL.
 
