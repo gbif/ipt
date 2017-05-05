@@ -1,4 +1,4 @@
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_stilt.png' align="right" width="300" height="250" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_stilt.png' align="left" width="300" height="250" />
 
 # Best Practices in Publishing Species Checklists
 
