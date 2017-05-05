@@ -60,7 +60,6 @@ Sharing Links and Identifiers
 This guide provides details on how to utilise the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilise these components to maximise the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format nor does it serve as a detailed reference guide to the complete set of terms and extensions that describe the GNA Profile. Instead it extends two documents that do cover those topics:
 
 1.  [Darwin Core Archives How to Guide](http://links.gbif.org/gbif_dwca_how_to_guide)[2]
-
 2.  [GNA Profile Reference Guide](http://links.gbif.org/gbif_gna_profile_reference_guide)[3]
 
 The DwC-A format and the specific profile described here represent an internationally recognised and ratified data exchange format for sharing taxonomic data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of taxonomic checklists and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many biologists and data managers familiar with basic structured text files. By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a taxonomic data resource, GBIF hopes to provide the creators and managers of checklists with a standardised approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. A standard format also increases relevance and utility.
@@ -105,13 +104,9 @@ Figure 1. Darwin Core Archive data files in 'star schema'
 For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
 
 -   It is recommended to use TAB or Comma-Separated-Values instead of custom field delimiters and quotes.
-
 -   Be careful and consistent with quotation.
-
 -   Encode text files as UTF-8
-
 -   Make sure you replace all line breaks in a data field, i.e. \\r \\n or \\r\\n with either simple spaces or use 2 characters like “$$” to replace "\\r" to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the html &lt;br&gt; tag.
-
 -   Encode NULLs as empty strings, i.e. no characters between 2 delimiters, or \\N or \\NULL, but no other text sequence!
 
 A [complete description of the Darwin Core Archive format](http://links.gbif.org/gbif_dwca_how_to_guide_en_v1)[5] is beyond the scope of this guide.
@@ -164,11 +159,8 @@ Normalised Classifications (Parent/Child)
 The recommended way to share a classification is in a normalised format. This may also be referred to in a database as a "parent-child relationship" or an "adjacency list". In a normalised taxonomic hierarchy, each taxon is represented by a single row. This includes both species and all higher taxa in the classification. Each row has at least the following component data elements.
 
 -   A ***dwc:taxonID*** referring to the current taxon.
-
 -   The ***dwc:scientficName*** of the current taxon. Example: “***Panthera tigris***”
-
 -   The ***dwc:taxonRank*** of the referent taxon. Example: “***species***”
-
 -   A reference to the taxon identifier of the immediate parent taxon stored in the ***dwc:parentNameUsageID***. In the example below, the parent of record 7, for “***Panthera tigris*** (Linnaeus)” is record 6, the genus “***Panthera***.”
 
 A sample classification for a single species, the tiger, “***Panthera tigris***”, is illustrated below. Note that the top-most member of a hierarchy has no parent so that the parent identifier should be null or a “0”. Note that ***dwc:scientificName*** provides a common field for storing the name in this case but that the full set of options for names is described above in Sharing Scientific Names.
@@ -186,9 +178,7 @@ A sample classification for a single species, the tiger, “***Panthera tigris**
 ### Advantages 
 
 -   ***Efficiency*** – A normalised classification stores a single reference for each taxon in the hierarchy.
-
 -   ***Referential integrity*** – Each taxon component has a distinct identifier that explicitly references its immediate parent. It is easy to verify that the taxonomic hierarchy is complete and properly formed.
-
 -   ***Extensibility*** – All taxa are identified with distinct taxon identifiers. This enables higher taxa to be more richly documented through the use of extensions in the same manner as species records.
 
 ### Disadvantages
@@ -205,7 +195,6 @@ This format is familiar to anyone who manages species information in spreadsheet
 This format is not the recommended method for sharing taxonomic data using Darwin Core Archives but is supported by GBIF as it is in common use in many species lists. If this is the method by which data will be shared, it is highly recommended that
 
 1.  Each higher taxon column is completely populated. Avoid blanks as in the Plantae example below.
-
 2.  Ensure taxonomic integrity of the list. For example ensure that two species in a common genus share the same family. Ensure that if synonyms are included in separate rows, that their classification matches that of the accepted taxon.
 
 | **taxonID** | **kingdom** | **phylum** | **class** | **order**   | **family** | **scientificName\*** |
@@ -218,21 +207,17 @@ This format is not the recommended method for sharing taxonomic data using Darwi
 ### Advantages 
 
 -   ***Legibility*** - The primary advantage of this format is that it is easy to read and the taxonomic hierarchy can be evaluated by simply reading columns.
-
 -   ***Convenient*** – Spreadsheet applications and many relational databases make it easy to implement this structure for storing hierarchical data.
 
 ### Disadvantages
 
 -   ***Higher likelihood of referential integrity loss*** – Higher taxa are repeated in this format which can increase the chance that two identical taxa may be spelled differently. Other similar risks are possible with this format. For example it is possible for two instances of the same taxon (example “Felidae”) to be assigned to two different parents, resulting in a conflict of hierarchical integrity.
-
 -   ***Lack of details for higher taxa*** – This format treats higher taxa as properties of a species, not as separate taxon records themselves. Therefore, this format does not allow properties of higher taxa to be shared either in the core file or in any extensions.
 
 ### Other classification-related recommendations
 
 -   Try to include a Kingdom and a nomenclatural code reference for all records even for basic species lists.
-
 -   Try to include Kingdom, Phylum and Family as a minimal classification for de-normalised classifications.
-
 -   If it is the same throughout the dataset, consider using a static mapping of the term and value. See the Darwin Core Archive How-to Guide at <http://links.gbif.org/gbif_dwca_how_to_guide_en_v1> for details on mapping global values.
 
 ## Classification Formats not recommended for publishing
@@ -300,9 +285,7 @@ Detailed synonymy can be supported by ensuring a unique ***dwc:taxonID*** is inc
 ***Other Synonymy Do’s and Don’ts***
 
 -   An ***dwc:acceptedNameUsageID*** must point to an existing record in the dataset. It is invalid to point to accepted taxa that do not exist as records.
-
 -   Do not confuse the ***dwc:higherTaxonID*** used to describe a classification with the ***dwc:acceptedNameUsageID*** used to describe the taxonomic status of a record.
-
 -   Do not “chain” synonyms. A synonym should only point to accepted taxon records via ***dwc:acceptedNameUsageID***. They should never point to another synonym.
 
 Nomenclatural Synonymy
@@ -344,15 +327,10 @@ Metadata Citation and Attribution
 The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and [available](http://links.gbif.org/gbif_metadata_profile_guide_en_v1)[8] but specific citation and attribution-related elements include:
 
 -   ***Intellectual Property Rights*** – The metadata profile contains a rights management statement for the resource, or a reference to a service providing such information, such as a Creative Commons license. It also includes an element describing the intended use and purpose of the dataset.
-
 -   ***Individuals and Organisations*** – The metadata profile enables the description of any and all individuals, institutions or organisations that may be associated with a dataset. These agents may be ascribed different roles relative to the dataset and may include URLs to each resource. This section provides one method for describing and linking to individuals and organisations that have contributed to a checklist.
-
 -   ***Source URL*** – Links to the homepage of the source
-
 -   ***Project Information*** – If the checklist is linked to a particular project (e.g., “The Catalogue of Life”) there are a set of fields for describing the project in detail.
-
 -   ***Citation*** – This element allows the checklist publisher to specify exactly how the checklist data should be cited when used. Example ***“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”***
-
 -   ***Bibliography*** – A complete bibliography of sources can be described and included in the metadata document.
 
 Data-level Citation and Attribution
@@ -361,13 +339,9 @@ Data-level Citation and Attribution
 Attribution and citation information recorded in the metadata document is common to all data records in a dataset. In some cases, additional granularity is needed even down to individual records. In these cases, there are record-level terms that are recommended for use in specifying citation and attribution information.
 
 -   ***dwc:nameAccordingTo*** : This term can be used to identify the individual or citation that serves as the authoritative taxonomic reference for the record. (Example “***Erpenbeck, D.; Van Soest, R.W.M. 2002. Family Halichondriidae Gray, 1867. Pp. 787-816. In Hooper, J. N. A. & Van Soest, R. W. M. (ed.) Systema Porifera. A guide to the classification of sponges.***”)
-
 -   ***dwc:nameAccordingToID***: A unique identifier that returns the nameAccordingTo reference as described above. This could be a URL for example.
-
 -   ***dwc:datasetName***: If the record is derived from an external dataset this dataset can be cited as a text string. (Example, “World Register of Marine Species, cited on 12 April 2011”)
-
 -   ***dwc:datasetID*** – An identifier that refers to a dataset, prefereably resolvable.
-
 -   ***dc:source*** – Link to the source web page
 
 Authenticated File Access via httpd
@@ -385,7 +359,7 @@ The recommended practice for effectively documenting the provenance of these sor
 
 1.  A single metadata document is created to represent the collective resource itself, (e.g., the Catalogue of Life, the The World Register of Marine Species, etc.) This metadata document provides the proper citation, agents, rights, and other elements identified above. This document filename is referenced the Darwin Core Archive descriptor file, meta.xml. This links the document to the entire DwC-A dataset. Recommended best practice is that this file uses the GBIF metadata profile and be named EML.xml. In this case, the metadata descriptor XML would look like this:
 
-    1.  archive xmlns="http://rs.tdwg.org/dwc/text/" ***metadata="eml.xml"&gt;***
+    a.  archive xmlns="http://rs.tdwg.org/dwc/text/" ***metadata="eml.xml"&gt;***
 
 2.  Additional metadata documents can be created for each of the component datasets and included in the archive. This allows each sub-component dataset to be documented as completely as the “parent” dataset with its own recommended citation, contributing individuals etc. As these datasets do not document the entire collection, they are not referenced in the meta.xml descriptor file. Instead they are referenced from individual data records via the ***dwc:datasetID*** term. If the metadata documents are included in the archive itself, the ***dwc:datasetID*** equals the filename of the document. Alternatively, it could refer to a URL or some other unique and resolvable identifier for the information. A less recommended but alternative approach would be adding a URL to a simple web page that describes the dataset as opposed to a structured metadata document.
 
@@ -396,24 +370,16 @@ The recommended practice for effectively documenting the provenance of these sor
 A species checklist in this use case is compiled for a specific purpose but derives it’s basic taxonomic structure from one or more external taxonomic checklists that serve as ***authority files***. The new compilation may include additional annotations to the basic source record that apply to the new lists focus. An example might be a European national species checklist derived from a database such as Fauna Europaea or the Catalogue of Life, which, in principle, provide the complete listing for a country as a subset of their own coverage. A national list may then add additional regional details such as a national threat status or some other property of interest, resulting in a new, derived dataset. In this case, it is important to be able to provide record-level attribution and linkages to the source dataset. The recommended means to do this are as follows.
 
 1.  A single metadata document is created to represent the new, derived resource itself (e.g., National Checklist of the Netherlands). Datasets that are referenced can be cited in this metadata document.
-
-    1.  Fully described as organisations with a role of Contributor and links to the source web site.
-
-    2.  Cited in the bibliographic section with the citation represented as recommended by the referenced dataset.
+    1. Fully described as organisations with a role of Contributor and links to the source web site.
+    2. Cited in the bibliographic section with the citation represented as recommended by the referenced dataset.
 
 2.  In the datafiles, additional attribution and linkages can be made at the record-level. This includes:
-
-    1.  Referencing the dataset by name in ***dwc:datasetName***
-
-    2.  Referencing the dataset by ID (such as URL) in ***dwc:datasetID*** and linking to the dataset home page
-
-    3.  Providing a link to a corresponding species page on the referenced dataset web site using ***dc:source***
-
+    1. Referencing the dataset by name in ***dwc:datasetName***
+    2. Referencing the dataset by ID (such as URL) in ***dwc:datasetID*** and linking to the dataset home page
+    3. Providing a link to a corresponding species page on the referenced dataset web site using ***dc:source***
         1.  If dc:source is reserved for pointing to URL for the derived database, a link to the source database can still be added using the Alternative Identifiers extension.
-
-    4.  If the source dataset provides globally unique identifiers for the taxa referenced in the list, they can be used as the ***taxonID*** in the derived dataset. This ensures an explicit link to the source taxon and is highly recommended if available.
-
-    5.  Use the ***dwc:nameAccordingTo*** or ***dwc:nameAccordingToID*** to refer to the taxon definition in the corresponding source record as a citation or a URL.
+    4. If the source dataset provides globally unique identifiers for the taxa referenced in the list, they can be used as the ***taxonID*** in the derived dataset. This ensures an explicit link to the source taxon and is highly recommended if available.
+    5. Use the ***dwc:nameAccordingTo*** or ***dwc:nameAccordingToID*** to refer to the taxon definition in the corresponding source record as a citation or a URL.
 
 ## Sharing Vernacular Names
 
