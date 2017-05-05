@@ -442,11 +442,10 @@ embeds a scientific name “Struthio camelus” into a URL. Full scientific name
 
 where {12} represents the 12<sup>th</sup> column value that will be substituted in the URL.
 
-## References
-[2]: <http://links.gbif.org/gbif_dwca_how_to_guide>
 
-[3]: <http://links.gbif.org/gbif_gna_profile_reference_guide>
-[4] These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”
+[2]: http://links.gbif.org/gbif_dwca_how_to_guide
+[3]: http://links.gbif.org/gbif_gna_profile_reference_guide
+[4]: These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”
 [5] <http://links.gbif.org/gbif_dwca_how_to_guide_en_v1>
 [6] <http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml>
 [7] <http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml>
