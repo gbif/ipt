@@ -57,7 +57,7 @@
 
 ## Introduction
 
-This guide provides details on how to utilise the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilise these components to maximise the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format nor does it serve as a detailed reference guide to the complete set of terms and extensions that describe the GNA Profile. Instead it extends two documents that do cover those topics:
+This guide provides details on how to utilise the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilise these components to maximise the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format nor does it serve as a detailed reference guide to the complete set of GBIF checklist extensions. Instead it extends two documents that do cover those topics:
 
 1.  [Darwin Core Archives How to Guide](http://links.gbif.org/gbif_dwca_how_to_guide)
 2.  [GNA Profile Reference Guide](http://links.gbif.org/gbif_gna_profile_reference_guide)
@@ -438,6 +438,18 @@ embeds a scientific name “Struthio camelus” into a URL. Full scientific name
 `<field default="http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1" term="http://purl.org/dc/terms/identifier"/>`
 
 where {12} represents the 12<sup>th</sup> column value that will be substituted in the URL.
+
+## GBIF Checklist Extensions
+
+### Taxon (Core) Extension
+### Vernacular Names Extension
+### References Extension
+### Species Distribution Extension
+### Species Description Extension
+### Alternative Identifiers
+### Types and Specimens Extension
+### Resource Relationship Extension
+### Summary: GNA Profile for Species Checklists
 
 ## References
 [1]: These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”
