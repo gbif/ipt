@@ -59,14 +59,14 @@ Sharing Links and Identifiers
 
 This guide provides details on how to utilise the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilise these components to maximise the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format nor does it serve as a detailed reference guide to the complete set of terms and extensions that describe the GNA Profile. Instead it extends two documents that do cover those topics:
 
-1.  [Darwin Core Archives How to Guide](http://links.gbif.org/gbif_dwca_how_to_guide)<sup>[2]</sup> 
-2.  [GNA Profile Reference Guide](http://links.gbif.org/gbif_gna_profile_reference_guide)<sup>[3]</sup>
+1.  [Darwin Core Archives How to Guide](http://links.gbif.org/gbif_dwca_how_to_guide)
+2.  [GNA Profile Reference Guide](http://links.gbif.org/gbif_gna_profile_reference_guide)
 
 The DwC-A format and the specific profile described here represent an internationally recognised and ratified data exchange format for sharing taxonomic data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of taxonomic checklists and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many biologists and data managers familiar with basic structured text files. By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a taxonomic data resource, GBIF hopes to provide the creators and managers of checklists with a standardised approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. A standard format also increases relevance and utility.
 
 ## Scope
 
-The terms “species checklist” and taxonomic “catalogue” may refer to an overlapping range of taxonomic resources. All of these products contain sets of scientific names that implicitly or explicitly refer to taxa. The set of names included in such a list may be constrained by taxonomic group, geographic region, or by a theme, such as invasive species, or some combination of all three. In order of increasing detail these include the following resource types[4]
+The terms “species checklist” and taxonomic “catalogue” may refer to an overlapping range of taxonomic resources. All of these products contain sets of scientific names that implicitly or explicitly refer to taxa. The set of names included in such a list may be constrained by taxonomic group, geographic region, or by a theme, such as invasive species, or some combination of all three. In order of increasing detail these include the following resource types<sup>[1]</sup>
 
 1.  ***Name lists*** – Simple lists of species names with no explicit indication of taxonomic status, but generally implied to consist of accepted names of taxa. Such lists are generally intended to identify a set of taxa included within some regional or thematic context.
 2.  ***Nomenclatural lists (Nomenclators)*** – Lists of names including the nominal taxa, meaning the registry of published usages of scientific names representing nomenclatural acts as governed by the respective Codes of Nomenclature. Most of these acts are ‘original descriptions’ of new scientific names, but other acts may include emendations, lectotypifications, and other acts as governed by the Codes. Synonymy is not included in these lists as taxonomic concept, but only as newly established combination (for botanists) linked to a basionym, thus providing a nomenclatural synonym.
@@ -104,7 +104,7 @@ For ease in understanding, we may use the terms ***field*** in this guide to ref
 -   Make sure you replace all line breaks in a data field, i.e. \\r \\n or \\r\\n with either simple spaces or use 2 characters like “$$” to replace "\\r" to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the html &lt;br&gt; tag.
 -   Encode NULLs as empty strings, i.e. no characters between 2 delimiters, or \\N or \\NULL, but no other text sequence!
 
-A [complete description of the Darwin Core Archive format](http://links.gbif.org/gbif_dwca_how_to_guide_en_v1)[5] is beyond the scope of this guide.
+A [complete description of the Darwin Core Archive format](http://links.gbif.org/gbif_dwca_how_to_guide_en_v1) is beyond the scope of this guide.
 
 For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
 
@@ -258,7 +258,7 @@ Darwin Core Archive supports the publication of synonyms in species checklists. 
 | 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium            |
 | 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium            |
 
-A synonym record is recommended to contain a distinct ***dwc:taxonID*** or it may have no ***dwc:taxonID*** at all. It ***must not*** use the same ***dwc:taxonID*** as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the ***dwc:acceptedNameUsageID***. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The ***dwc:taxonomicStatus*** field affirms the status of the record. A recommended vocabulary for this field is [available](http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml)[6]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the ***dwc:nomenclaturalStatus*** field and [supporting vocabulary](http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml)[7].
+A synonym record is recommended to contain a distinct ***dwc:taxonID*** or it may have no ***dwc:taxonID*** at all. It ***must not*** use the same ***dwc:taxonID*** as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the ***dwc:acceptedNameUsageID***. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The ***dwc:taxonomicStatus*** field affirms the status of the record. A recommended vocabulary for this field is [available](http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml). Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the ***dwc:nomenclaturalStatus*** field and [supporting vocabulary](http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml).
 
 Detailed synonymy can be supported by ensuring a unique ***dwc:taxonID*** is included in each synonym record and by utilising the available extensions to support the sharing of checklist annotations. This supports the linking of one or more bibliographic records, specimen records and other data types supported by the GNA Profile to a single synonym record in the core data file. If a ***dwc:taxonID*** is not provided for a synonym record, extensions cannot be used as they rely on the ***dwc:taxonID*** to provide the link to the taxon record in the core file. A simplified example below illustrates the use of two files (expressed as tables) to provide a bibliography for a synonym using the References extension. The shared ***dwc:taxonID*** is highlighted in the example.
 
@@ -319,7 +319,7 @@ The DwC-A format provides a range of options and recommendations for providing p
 Metadata Citation and Attribution
 ---------------------------------
 
-The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and [available](http://links.gbif.org/gbif_metadata_profile_guide_en_v1)[8] but specific citation and attribution-related elements include:
+The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and [available](http://links.gbif.org/gbif_metadata_profile_guide_en_v1) but specific citation and attribution-related elements include:
 
 -   ***Intellectual Property Rights*** – The metadata profile contains a rights management statement for the resource, or a reference to a service providing such information, such as a Creative Commons license. It also includes an element describing the intended use and purpose of the dataset.
 -   ***Individuals and Organisations*** – The metadata profile enables the description of any and all individuals, institutions or organisations that may be associated with a dataset. These agents may be ascribed different roles relative to the dataset and may include URLs to each resource. This section provides one method for describing and linking to individuals and organisations that have contributed to a checklist.
@@ -378,13 +378,13 @@ A species checklist in this use case is compiled for a specific purpose but deri
 
 ## Sharing Vernacular Names
 
-The GNA Profile supports the sharing of vernacular name data associated with taxa in taxonomic checklists. Vernacular names are shared as a separate, related file using the [Vernacular Names extension](http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml)[9]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers. The complete listing of extension terms and recommended vocabularies can be found in the GBIF Resource Repository referenced in the previous footnote or in the [GNA Profile Reference Guide](http://links.gbif.org/gbif_gna_profile_reference_guide)[10].
+The GNA Profile supports the sharing of vernacular name data associated with taxa in taxonomic checklists. Vernacular names are shared as a separate, related file using the [Vernacular Names extension](http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml). The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers. The complete listing of extension terms and recommended vocabularies can be found in the GBIF Resource Repository referenced in the previous footnote or in the [GNA Profile Reference Guide](http://links.gbif.org/gbif_gna_profile_reference_guide).
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/myristica_fragrans.png' align="right" width="233" height="173" />Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the ISO 693 language codes for sharing language information. The complete set of language codes can be found on the [GBIF vocabulary server](http://vocabularies.gbif.org/vocabularies/lang)[11]. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilise the ISO 6133 country codes, which are also available on the [GBIF vocabulary server](http://vocabularies.gbif.org/vocabularies/country)[12].
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/myristica_fragrans.png' align="right" width="233" height="173" />Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the ISO 693 language codes for sharing language information. The complete set of language codes can be found on the [GBIF vocabulary server](http://vocabularies.gbif.org/vocabularies/lang). Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilise the ISO 6133 country codes, which are also available on the [GBIF vocabulary server](http://vocabularies.gbif.org/vocabularies/country).
 
 ## Sharing Species Descriptions
 
-The GNA Profile supports the sharing of descriptive information related to a taxon via the [Taxon Description extension](http://rs.gbif.org/extension/gbif/1.0/description.xml)[13]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that a [description type vocabulary](http://rs.gbif.org/vocabulary/gbif/description_type.xml)[14] be used to describe the descriptive information.
+The GNA Profile supports the sharing of descriptive information related to a taxon via the [Taxon Description extension](http://rs.gbif.org/extension/gbif/1.0/description.xml). Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that a [description type vocabulary](http://rs.gbif.org/vocabulary/gbif/description_type.xml) be used to describe the descriptive information.
 
 Multi-line descriptions
 -----------------------
@@ -393,28 +393,28 @@ Descriptive information should be limited to single paragraph text blocks. Multi
 
 ## Sharing Species Distributions
 
-The GNA Profile supports the sharing of distribution data via the [Species Distribution extension](http://rs.gbif.org/extension/gbif/1.0/distribution.xml)[15]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designative national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area.
+The GNA Profile supports the sharing of distribution data via the [Species Distribution extension](http://rs.gbif.org/extension/gbif/1.0/distribution.xml). This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designative national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area.
 
 The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element.
 
-If the dwc:country element is used, it is recommended that the ISO 3166 country codes, available on the [GBIF vocabulary server](http://vocabularies.gbif.org/vocabularies/country)[16], be used.
+If the dwc:country element is used, it is recommended that the ISO 3166 country codes, available on the [GBIF vocabulary server](http://vocabularies.gbif.org/vocabularies/country), be used.
 
 ## Sharing References
 
-The GNA Profile supports the sharing of bibliographic citations through the [References extension](http://rs.gbif.org/extension/gbif/1.0/references.xml)[17]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the ***dc:type*** property, which, when used with [the Reference Type vocabulary](http://rs.gbif.org/vocabulary/gbif/reference_type.xml)[18], can be used to distinguish a set of references related to a taxon.
+The GNA Profile supports the sharing of bibliographic citations through the [References extension](http://rs.gbif.org/extension/gbif/1.0/references.xml). The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the ***dc:type*** property, which, when used with [the Reference Type vocabulary](http://rs.gbif.org/vocabulary/gbif/reference_type.xml), can be used to distinguish a set of references related to a taxon.
 
 ## Sharing Type information
 
-The GNA Profile supports the sharing of information about types and specimens via the Types and Specimens extension[19]. It supports the sharing of basic information about type specimens, type species and genera.
+The GNA Profile supports the sharing of information about types and specimens via the [Types and Specimens extension](http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml). It supports the sharing of basic information about type specimens, type species and genera.
 
 ## Sharing Links and Identifiers
 
-The GNA profile supports the means to share and [describe multiple links to related external resources](http://rs.gbif.org/extension/gbif/1.0/identifier.xml)[20]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the ***mime type*** in this field. A complete list of mime types is [available](http://www.iana.org/assignments/media-types/index.html)[21].
+The GNA profile supports the means to share and [describe multiple links to related external resources](http://rs.gbif.org/extension/gbif/1.0/identifier.xml). It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the ***mime type*** in this field. A complete list of mime types is [available](http://www.iana.org/assignments/media-types/index.html).
 
 Creating a dynamic link to a species page
 -----------------------------------------
 
-Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The DarwinCore Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a DarwinCore Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF [provides a complete guide the to Darwin Core metafile](http://links.gbif.org/gbif_dwc-a_metafile_en_v1)[22].
+Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The DarwinCore Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a DarwinCore Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF [provides a complete guide the to Darwin Core metafile](http://links.gbif.org/gbif_dwc-a_metafile_en_v1).
 
 The metafile supports the creation of variables in the metafile that may refer to a web page or web service call. This variable may be embedded in the URL and include a taxon identifier or the taxon name as one of the parameters in the URL. Any column in the published data can be referenced by enclosing the index number in curly braces “{}”. The taxon identifier in the core data file can also be referenced via the variable “{id}.” The following examples illustrate these features:
 
@@ -442,25 +442,5 @@ embeds a scientific name “Struthio camelus” into a URL. Full scientific name
 
 where {12} represents the 12<sup>th</sup> column value that will be substituted in the URL.
 
-
-[2]: http://links.gbif.org/gbif_dwca_how_to_guide
-[3]: http://links.gbif.org/gbif_gna_profile_reference_guide
-[4]: These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”
-[5] <http://links.gbif.org/gbif_dwca_how_to_guide_en_v1>
-[6] <http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml>
-[7] <http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml>
-[8] <http://links.gbif.org/gbif_metadata_profile_guide_en_v1>
-[9] Vernacular Names Extension - <http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml>
-[10] <http://links.gbif.org/gbif_gna_profile_reference_guide>
-[11] <http://vocabularies.gbif.org/vocabularies/lang>
-[12] <http://vocabularies.gbif.org/vocabularies/country>
-[13] <http://rs.gbif.org/extension/gbif/1.0/description.xml>
-[14] <http://rs.gbif.org/vocabulary/gbif/description_type.xml>
-[15] <http://rs.gbif.org/extension/gbif/1.0/distribution.xml>
-[16] <http://vocabularies.gbif.org/vocabularies/country>
-[17] <http://rs.gbif.org/extension/gbif/1.0/references.xml>
-[18] <http://rs.gbif.org/vocabulary/gbif/reference_type.xml>
-[19] <http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml>
-[20] <http://rs.gbif.org/extension/gbif/1.0/identifier.xml>
-[21] <http://www.iana.org/assignments/media-types/index.html>
-[22] <http://links.gbif.org/gbif_dwc-a_metafile_en_v1>
+## References
+[1]: These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”
