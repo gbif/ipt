@@ -10,11 +10,11 @@
   * Darwin Core Archive Format
     * Checklist Metadata
     * Checklist Data
-    * Data file formatting recommendations.
+    * Data file formatting recommendations
 * Sharing Scientific Names
   * A. Concatenated in the scientificName field
   * B. Separate Name and Authorship parts
-  * C. Separated into name parts.
+  * C. Separated into name parts
   * Infrageneric Markers
 * Publishing Classifications
   * Normalised Classifications (Parent/Child)
@@ -69,15 +69,10 @@ The DwC-A format and the specific profile described here represent an internatio
 The terms “species checklist” and taxonomic “catalogue” may refer to an overlapping range of taxonomic resources. All of these products contain sets of scientific names that implicitly or explicitly refer to taxa. The set of names included in such a list may be constrained by taxonomic group, geographic region, or by a theme, such as invasive species, or some combination of all three. In order of increasing detail these include the following resource types[4]
 
 1.  ***Name lists*** – Simple lists of species names with no explicit indication of taxonomic status, but generally implied to consist of accepted names of taxa. Such lists are generally intended to identify a set of taxa included within some regional or thematic context.
-
 2.  ***Nomenclatural lists (Nomenclators)*** – Lists of names including the nominal taxa, meaning the registry of published usages of scientific names representing nomenclatural acts as governed by the respective Codes of Nomenclature. Most of these acts are ‘original descriptions’ of new scientific names, but other acts may include emendations, lectotypifications, and other acts as governed by the Codes. Synonymy is not included in these lists as taxonomic concept, but only as newly established combination (for botanists) linked to a basionym, thus providing a nomenclatural synonym.
-
 3.  ***Taxonomic checklist*** – These lists extend nomenclatural lists by adding taxonomic opinion in the form of explicit taxonomic status information and the inclusion of names placed in synonymy. Simple taxonomic lists in this category provide no specific circumscription details regarding the basis for the synonymy. Taxa are often organised into classifications. The term “***taxonomic catalogue***” may also be used to refer to instances of this, and the remaining categories, particularly if the resource includes verified publication and taxonomic status details.
-
 4.  ***Annotated Checklists*** - This category extends taxonomic checklists by adding other data types (annotations) to the core, synonymised checklist, such as common names, threat status, distribution and basic descriptive information. When the annotation types provide sufficient detail to effectively define, or circumscribe, a taxon, such as detailed diagnostic descriptions and illustrations, molecular data, specimens, etc., then the annotated list may fall into one of the two categories defined below.
-
 5.  ***Flora or Faunal lists*** – These are typically books that provide detailed species accounts for a particular region. Details may include many of the data types included in annotated checklists but include specific data types, such as detailed descriptions and illustrations, specimen references and other details that explicitly define (circumscribe) the taxon within the scope of the region which is not necessarily global.
-
 6.  ***Monographs*** – Monographs are detailed species accounts often published as books for a particular taxon group at the global scale. It will contain detailed nomenclature and synonymy and taxon circumscription details, that include textual descriptions and illustrations, details of specimens examined and included in the definition, and a bibliography of examined literature.
 
 The Darwin Core Archive format with the GNA profile supports the exchange of key data elements within all of these checklist data types. The specific degree of coverage depends very much on the individual resource. In this document we will use the term ‘checklist’ in the broad sense as a general term for referring to any or all of the resource categories described above. The specific category types will be used when a specific resource is to be referenced.
@@ -99,7 +94,7 @@ The Darwin Core Archive format provides the structural framework for publishing 
 
 Figure 1. Darwin Core Archive data files in 'star schema'
 
-### Data file formatting recommendations.
+### Data file formatting recommendations
 
 For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
 
@@ -135,7 +130,7 @@ B. Separate Name and Authorship parts
 
 Some databases separate a scientific name into a name part and an authorship part. In this case the ***dwc:scientificName*** and ***dwc:scientificNameAuthorship*** fields should be used.
 
-C. Separated into name parts. 
+C. Separated into name parts
 ------------------------------
 
 | **Genus** | **specificEpithet** | **taxonRank** | **infraspecificEpithet** | **scientificNameAuthorship** |
@@ -236,7 +231,7 @@ A. This example identifies the referent taxon as the last column containing taxo
 | 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris      |
 | 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris      |
 
-B. This example attempts is similar to A above but attempts to reduce integrity errors by only recording higher taxon names once.
+B. This example attempts is similar to A above but attempts to reduce integrity errors by only recording higher taxon names once
 
 | **taxonID** | **kingdom** | **phylum** | **class** | **order** | **family** | **scientificName\*** |
 |-------------|-------------|------------|-----------|-----------|------------|----------------------|
