@@ -94,7 +94,7 @@ Documenting the provenance and scope of datasets is required in order to publish
 
 The Darwin Core Archive format provides the structural framework for publishing species checklists. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one ***core file***, containing the basic checklist elements (species list, classification, synonymy) surrounded by a number of ‘***extensions***’, that describe related data types (such as common names). Links between core and extension records are made using a taxon identifier (***taxonID***) data element. In this way, many extension records can exist for each single core taxon record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to species checklists.
 
-<embed src="media/image5.emf" width="569" height="260" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/dwc-a_checklist.png' width="569" height="260" />
 
 Figure 1. Darwin Core Archive data files in 'star schema'
 
