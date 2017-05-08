@@ -441,6 +441,12 @@ where {12} represents the 12<sup>th</sup> column value that will be substituted 
 
 ## GBIF Checklist Extensions
 
+The core data file in a checklist contains taxon records. The set of terms that can be used to describe a taxon record is defined by the Taxon (Core) Extension. 
+
+Each taxon record can be extended with one or more records in an extension file. The set of terms that can be used to describe each extension record is defined by its Extension. 
+
+Below is the complete list of Extensions that can be used to provide additional information about a taxon record:
+
 ### Taxon (Core) Extension
 ### Vernacular Names Extension
 ### References Extension
