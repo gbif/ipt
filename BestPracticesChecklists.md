@@ -448,7 +448,17 @@ Each taxon record can be extended with one or more records in an extension file.
 Below is the complete list of Extensions that can be used to provide additional information about a taxon record:
 
 ### Taxon (Core) Extension
+
+Latest version issued: [2015-04-24](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml)
+
+Use this set of terms to provide the fundamental information for a species checklist including classification, synonymy and other key elements. Each row in this list represents a taxon name, either an accepted name or a synonym. The terms in this class support different methods for representing classification information. Classifications can be shared “spreadsheet-style” with columns for Kingdom, Phylum, Class, etc. or they can be shared “database-style” with each taxon row possessing a field containing the ID of its immediate parent. Please note that the tables contain the complete list of acceptable terms. The minimum requirement for sharing a checklist is as little as a list of species although an accompanying ID is highly recommended. Use this list of terms to identify the terms that best match the data to be shared. Don’t be daunted by the term names. Read the description to locate relevant terms.
+
 ### Vernacular Names Extension
+
+Latest version issued: [2015-02-13](http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml)
+
+This extension provides the means to share information related to common (vernacular) names linked to taxa in the core data file. Multiple vernacular names can be linked to the same taxon via the taxonID.
+
 ### References Extension
 ### Species Distribution Extension
 ### Species Description Extension
