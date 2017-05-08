@@ -396,23 +396,23 @@ Descriptive information should be limited to single paragraph text blocks. Multi
 
 ## Sharing Species Distributions
 
-The GNA Profile supports the sharing of distribution data via the [Species Distribution extension](http://rs.gbif.org/extension/gbif/1.0/distribution.xml). This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designative national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area.
+The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the [Species Distribution extension](http://rs.gbif.org/extension/gbif/1.0/distribution.xml). This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designative national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area.
 
 The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element.
 
-If the dwc:country element is used, it is recommended that the ISO 3166 country codes, available on the [GBIF vocabulary server](http://vocabularies.gbif.org/vocabularies/country), be used.
+If the dwc:country element is used, it is recommended that the [ISO 6133 country codes](http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml) be used.
 
 ## Sharing References
 
-The GNA Profile supports the sharing of bibliographic citations through the [References extension](http://rs.gbif.org/extension/gbif/1.0/references.xml). The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the ***dc:type*** property, which, when used with [the Reference Type vocabulary](http://rs.gbif.org/vocabulary/gbif/reference_type.xml), can be used to distinguish a set of references related to a taxon.
+The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the [References extension](http://rs.gbif.org/extension/gbif/1.0/references.xml). The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the ***dc:type*** property, which, when used with [the Reference Type vocabulary](http://rs.gbif.org/vocabulary/gbif/reference_type.xml), can be used to distinguish a set of references related to a taxon.
 
 ## Sharing Type information
 
-The GNA Profile supports the sharing of information about types and specimens via the [Types and Specimens extension](http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml). It supports the sharing of basic information about type specimens, type species and genera.
+The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the [Types and Specimens extension](http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml). It supports the sharing of basic information about type specimens, type species and genera.
 
 ## Sharing Links and Identifiers
 
-The GNA profile supports the means to share and [describe multiple links to related external resources](http://rs.gbif.org/extension/gbif/1.0/identifier.xml). It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the ***mime type*** in this field. A complete list of mime types is [available](http://www.iana.org/assignments/media-types/index.html).
+It is possible to share and describe multiple links to related external resources using the [Alternate Identifier Extension(http://rs.gbif.org/extension/gbif/1.0/identifier.xml). It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the ***mime type*** in this field. A complete list of mime types is [available](http://www.iana.org/assignments/media-types/index.html).
 
 Creating a dynamic link to a species page
 -----------------------------------------
