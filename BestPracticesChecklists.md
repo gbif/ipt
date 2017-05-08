@@ -42,6 +42,15 @@
 * Sharing Links and Identifiers
   * Creating a dynamic link to a species page                                                                                                                                                                                                                                                     
 * References
+* GBIF Checklist Extensions
+  * Taxon (Core) Extension
+  * Vernacular Names Extension
+  * References Extension
+  * Species Distribution Extension
+  * Species Description Extension
+  * Alternative Identifiers
+  * Types and Specimens Extension
+  * Resource Relationship Extension
 
 ## Document control
 
@@ -496,8 +505,6 @@ Use this extension to share data relating to one or more specimens or type refer
 Latest version issued: [2015-02-13](http://rs.gbif.org/extension/dwc/resource_relation.xml)
 
 This extension is used to describe one or more relationships that the core taxon has with other taxa, either in the source list or included in the record. This extension could be used, for example, to provide a list of plant species (one record per species) pollinated by a bee species listed in the core species list.
-
-### Summary: GNA Profile for Species Checklists
 
 ## References
 [1]: These categories and descriptions are derived directly from “Hyam . R., Standardisation of Data Exchange in the Pan-European Species-directories Infrastructure (PESI) Deliverable D 4.1”
