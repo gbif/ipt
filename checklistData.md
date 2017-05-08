@@ -28,15 +28,13 @@ Try putting your data into the [Excel template](checklistData#templates), which 
 
 Alternatively if your data is stored in a [[supported database|IPT2DatabaseConnection.wiki]], you can write an SQL table (view) using DwC column names. Be careful to include all [required DwC fields](checklistData#required-dwc-fields) and add as many [recommended DwC fields](checklistData#recommended-dwc-fields) as possible. 
 
-For extra guidance, you can look at the [exemplar datasets](checklistData#exemplar-datasets). 
-
-You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml).
+For extra guidance, you can refer to the guide [Best Practices in Publishing Species Checklists](https://github.com/gbif/ipt/wiki/BestPracticesChecklists) and look at the [exemplar datasets](checklistData#exemplar-datasets). 
 
 #### Templates: 
 [![Download Checklist Data Template][2]][1]
 [![Download Checklist Data Template][4]][3]
 
-Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can.
+Populate it and upload it to the IPT. Try to augment it with as many [DwC terms](http://rs.tdwg.org/dwc/terms/) as you can. You can augment your core table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml).
 
   [1]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/downloads/checklist_ipt_template_v1.xlsx
   [2]: https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/excel-template2.png (Download Checklist Data Template)
