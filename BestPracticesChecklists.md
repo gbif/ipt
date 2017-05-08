@@ -460,11 +460,43 @@ Latest version issued: [2015-02-13](http://rs.gbif.org/extension/gbif/1.0/vernac
 This extension provides the means to share information related to common (vernacular) names linked to taxa in the core data file. Multiple vernacular names can be linked to the same taxon via the taxonID.
 
 ### References Extension
+
+Latest version issued: [2015-02-13](http://rs.gbif.org/extension/gbif/1.0/references.xml)
+
+Use this extension to describe one or more bibliographic references related to a taxon in the core data file. Use the type field to qualify the references. This extension supports the sharing of referenced synonymic checklists.
+
 ### Species Distribution Extension
+
+Latest version issued: [2015-02-13](http://rs.gbif.org/extension/gbif/1.0/distribution.xml)
+
+Use this extension to share information on one or more distribution references for a taxon. One or more locality records may be linked to the same taxon. For example multiple localities, regions, or countries may be listed. Use this extension to describe the threat status for a taxon, seasonal distribution changes, and other properties linked to a taxon in
+a particular region.
+
 ### Species Description Extension
+
+Latest version issued: [2015-02-13](http://rs.gbif.org/extension/gbif/1.0/description.xml)
+
+Use this extension to provide descriptive text for a taxon. This is typically in the form of a single paragraph per record as would be normally stored in a database. Descriptions can be qualified by a type to indicate, for example that the description is related to, for example, the morphology conservation, reproduction, etc. Multiple descriptions equal
+multiple records in a descriptions file.
+
 ### Alternative Identifiers
+
+Latest version issued: [2015-02-13](http://rs.gbif.org/extension/gbif/1.0/identifier.xml)
+
+Use this extension if you have more than one identifier or link to information about the taxon. A source database, may, for example provide access to the source data records through a web page, a web service, and a resolvable identifier such as LSID, DOI or other means.
+
 ### Types and Specimens Extension
+
+Latest version issued: [2015-02-13](http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml)
+
+Use this extension to share data relating to one or more specimens or type references linked to the core taxon
+
 ### Resource Relationship Extension
+
+Latest version issued: [2015-02-13](http://rs.gbif.org/extension/dwc/resource_relation.xml)
+
+This extension is used to describe one or more relationships that the core taxon has with other taxa, either in the source list or included in the record. This extension could be used, for example, to provide a list of plant species (one record per species) pollinated by a bee species listed in the core species list.
+
 ### Summary: GNA Profile for Species Checklists
 
 ## References
