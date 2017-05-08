@@ -1,6 +1,6 @@
 # Best Practices in Publishing Species Checklists
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_stilt.png' align="right" width="300" height="250" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_stilt.png' align="right" width="300" height="250" alt="Gregory Basco, Black-necked stilt, Himantopus mexicanus" />
 
 ## Table of Contents
 * Document control
