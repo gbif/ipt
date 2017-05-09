@@ -1,4 +1,5 @@
 # Best Practices in Publishing Species Checklists
+<sup>Version 2.0</sup>
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_stilt.png' align="right" width="300" height="250" />
 
