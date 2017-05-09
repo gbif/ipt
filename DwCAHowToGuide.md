@@ -31,7 +31,7 @@ Annex 3: Darwin Core Archive Examples
 
 ## Suggested citation                                                                                                                                                                                                                                                                        
                                                                                                                                                                                                                                                                                                
-> GBIF (2017). Darwin Core Archives – How-to Guide, version 1, released on 1 March 2011, (contributed by Remsen D, Braak, K, Döring M, Robertson, T), Copenhagen: Global Biodiversity Information Facility, 21 pp, accessible online at: http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1 
+> GBIF (2017). Darwin Core Archives – How-to Guide, version 2.0, released on 9 May 2011, (contributed by Remsen D, Braak, K, Döring M, Robertson, T), Copenhagen: Global Biodiversity Information Facility, 21 pp, accessible online at: https://github.com/gbif/ipt/wiki/DwCAHowToGuide
 
 _Cover art credit: Kim Wismann, Cicindelinae_
 
