@@ -56,7 +56,7 @@ The central idea of an archive is that its data files are logically arranged in 
 
 Sharing entire datasets as Darwin Core Archives instead of using page-able web services like [DiGIR](http://digir.sourceforge.net/) and [TAPIR](http://tdwg.github.io/tapir/docs/tdwg_tapir_specification_2010-05-05.html) allows much simpler and more efficient data transfer. For example, retrieving 260,000 records via TAPIR takes about nine hours, and involves issuing 1,300 http requests to transfer 500 MB of XML-formatted data. The exact same dataset, when encoded as DwC-A and zipped becomes a 3 MB file. Therefore, GBIF highly recommends compressing an archive using ZIP or GZIP when generating a DwC-A. In addition, producing Darwin Core Archives does not require any dedicated software to be installed by a data publisher, making it a much simpler option.
 
-The production of a Darwin Core Archive requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers instead of local ones[8]. This identifier is referred to as the “core ID” in Darwin Core Archives and the specific Darwin Core term that it corresponds to is dependent on the data type being published.
+The production of a Darwin Core Archive requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers instead of local ones<sup>[1](DwCAHowToGuide#references)</sup>. This identifier is referred to as the “core ID” in Darwin Core Archives and the specific Darwin Core term that it corresponds to is dependent on the data type being published.
 
 Darwin Core Archive Components
 ------------------------------
@@ -356,5 +356,5 @@ Checklist: <http://gbif-ecat.googlecode.com/files/Whales-DWC-A.zip>
 Occurrence: <http://www.siba.ad/andorra/dwcaMolluscsAndorra.zip>
 
 ## References
-[8] A Beginner’s Guide to Persistent Identifiers, http://links.gbif.org/persistent_identifiers_guide_en_v1.pdf
+[1] A Beginner’s Guide to Persistent Identifiers, http://links.gbif.org/persistent_identifiers_guide_en_v1.pdf
 [23] delimiter separating fields in a text file, dataset encoding (character set), date format
