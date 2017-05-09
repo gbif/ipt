@@ -26,8 +26,8 @@ Annex 3: Darwin Core Archive Examples
 
 | Version | Description                  | Date of release | Author(s) |
 |---------|------------------------------|-----------------|-----------|
-| 1.0     | Content review and additions | 30 Mar 2011     | DR, MR    |
-| 1.1     | Minor edits                  | 9 Feb 2012      | DR, BK    |
+| 1.0     | Content review and additions | 30 Mar 2011     | David Remsen, Markus Döring |
+| 1.1     | Minor edits                  | 9 Feb 2012      | David Remsen, Burke Ko |
 | 2.0     | Transferred to wiki, major edits | 9 May 2017      | Kyle Braak |
 
 ## Suggested citation                                                                                                                                                                                                                                                                        
