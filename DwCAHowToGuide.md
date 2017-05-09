@@ -169,29 +169,27 @@ The IPT automatically maps all columns that use Darwin Core terms in the first (
 
 ### Registering your Dataset using IPT
 
-The IPT supports automatic registration in the GBIF network. In the “Managing Resources” page of your resource, there is a “Visibility” section. If the status is set to “public”, then there will be a “Register” button and a drop-down list for institutions. Choose the institution with which the resource or dataset is associated, and click the “Register” button. Now your dataset and metadata are registered with the GBIF Registry. See the [IPT User Manual]((IPT2ManualNotes.wiki) for further details.
+The IPT supports automatic registration in the GBIF network. In the “Managing Resources” page of your resource, there is a “Visibility” section. If the status is set to “public”, then there will be a “Register” button and a drop-down list for institutions. Choose the institution with which the resource or dataset is associated, and click the “Register” button. Now your dataset and metadata are registered with the GBIF Registry. See the [IPT User Manual](IPT2ManualNotes.wiki#visibility) for further details.
 
 Publishing DwC-A using GBIF Spreadsheet Templates
 -------------------------------------------------
 
 ***Assumption: The occurrence or simple taxonomic data to be published are not yet captured in digital format OR a simple solution for creating a metadata document to describe a dataset is desired.***
 
-GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing metadata, occurrence data, and simple species checklists. The spreadsheets are linked to an online processing system that validates the uploaded (or emailed) spreadsheet file and then transforms the data to a Darwin Core Archive and returns this to the user.
+GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing metadata, occurrence data, simple species checklists, and sampling-event datasets. The spreadsheets are linked to an online processing system that validates the uploaded (or emailed) spreadsheet file and then transforms the data to a Darwin Core Archive and returns this to the user.
 
-Below is a set of instructions on how to create a DwC-Archive using one of the GBIF Darwin Core Spreadsheet Templates. Each template provides inline help and instructions in the worksheets. Filling in the metadata is outside the scope of these instructions; check the separate [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1)[25]. More information on the Spreadsheet Templates is available at the [project website](http://tools.gbif.org/spreadsheet-processor/)[26].
+Below is a set of instructions on how to create a DwC-Archive using one of the GBIF Darwin Core Spreadsheet Templates. Each template provides inline help and instructions in the worksheets. Filling in the metadata is outside the scope of these instructions; check the separate [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1)[25]. 
 
 Generate a DwC-Archive using the Spreadsheet Templates:
 
 1.  Choose the appropriate template:
     1.  ***Metadata Template***: suitable for composing a metadata document.
     2.  ***Occurrence Template***: suitable for occurrence data (specimen, observation).
-    3.  ***Species Template***: suitable for basic species checklists. Several options are provided that cater to different styles for representing classifications.
+    3.  ***Checklist Template***: suitable for basic species checklists. Several options are provided that cater to different styles for representing classifications.
+    4.  ***Sampling-event Template***: suitable for sampling-event data.
 
 2.  Fill in the template, using the inline help and reference guides included on the project site. To access the inline information, hover the cursor over cells with red upper-right corners.
-3.  Upload the completed template to the Darwin Core Archive Spreadsheet Processor, available online.[27]
-4.  Process the file. When successful, the DwC-Archive will be saved to the same folder as the template. The file is ready to share with others or publish through GBIF.
-5.  See the section Validation of Darwin Core Archives
-6.  GBIF provides an online DwC-Archive Validator to validate the completed archive. Archives should be validated to ensure they are properly composed before the final publishing/registration step.
+3.  Upload the completed template to the IPT and publish it
 
 To use the validator:
 
@@ -212,13 +210,13 @@ Below is a set of instructions on how to manually create and validate a DwC-Arch
 
 1.  Text data file(s) in CSV or Tab format, containing the data,
 2.  A metafile (meta.xml) file that describes the content and relationship of the text file(s), and
-3.  A metadata file (eml.xml) that describes the data resource. For instructions on 3), please refer to [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1)[28]. It is assumed there is a metadata file. If not, the simplest way to produce one is using the metadata spreadsheet template at http://tools.gbif.org/spreadsheet-processor/.
+3.  A metadata file (eml.xml) that describes the data resource. For instructions on 3), please refer to [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1)[28]. It is assumed there is a metadata file. If not, the simplest way to produce one is using the [metadata spreadsheet template](https://github.com/gbif/ipt/wiki/resourceMetadata).
 
 Generate a DwC-Archive through custom conversion:
 
 1.  Unless the data are already stored in a CSV/Tab text file, the publisher needs to prepare a text file(s) from the source. If the data are stored in a database, generate an output of delimited text from the source database into an outfile. Most database management systems support this process; an example is given in the Annex to this guide, below, in the section “Outputting Data From a MySQL Database Into a Textfile”. As the metafile maps the columns of the text file to Darwin Core terms, it is not necessary to use Darwin Core terms as column header in the resultant text file, though it may help to reduce errors. A general recommendation is to produce a single core data file and a single file for each extension if the intention is to output data tied to an extension.
 2.  Create a Metafile: There are two different ways to generate the file:
-    1.  Use the online application [Darwin Core Archive Assistant](http://tools.gbif.org/dwca-assistant/)[29]
+    1.  Use the online application [Darwin Core Archive Assistant](http://tools.gbif.org/dwca-assistant/)
         1.  GBIF provides an online tool for creating an XML metafile for you. Simply select the fields of data to be published, provide some details about the files and save the resultant XML. This only needs to be done once unless the set of published fields changes at some later time. ***Below is a simplified set of instructions on how to use the service to create an XML metafile:***
             1.  Select the category of information of the data being published:
                 1.  ***Occurrence***: the category pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.).
@@ -228,7 +226,7 @@ Generate a DwC-Archive through custom conversion:
             4.  ***(In the meta.xml tab view)*** Enter the URL of the eml.xml file, if possible.
             5.  ***(In the meta.xml tab view)*** Validate the metafile
             6.  ***(In the meta.xml tab view)*** Save the metafile.
-    2.  Manually draft the metafile, using an XML editor and using a sample metafile as a guiding example. A complete description of the metafile format can be found on the [Biodiversity Information Standards website](http://rs.tdwg.org/dwc/terms/guides/text/index.htm)[30] or in the [GBIF Darwin Core Archive Metafile Guide](http://links.gbif.org/gbif_dwc-a_metafile_en_v1).[31]
+    2.  Manually draft the metafile, using an XML editor and using a sample metafile as a guiding example. A complete description of the metafile format can be found on the [Biodiversity Information Standards website](http://rs.tdwg.org/dwc/terms/guides/text/index.htm)[30] or in the [GBIF Darwin Core Archive Metafile Guide](http://links.gbif.org/gbif_dwc-a_metafile_en_v1). **(TODO merge content here)**
 3.  Ensure that the metadata file, the data files, and the XML metafile are in the same directory or folder. Compress the folder using one of the support compression formats. The result is a Darwin Core Archive.
 
 ***Note***: ***In both A and B above, an archive should contain a resource metadata document to describe the dataset. The simplest option for authoring a basic metadata document is to use the GBIF Excel Metadata template, and the spreadsheet processor (http://tools.gbif.org/spreadsheet-processor/). We also encourage you to consider using the Integrated Publishing Toolkit (IPT) to author a metadata document. Metadata authored using IPT can be output as an RTF document, which can then be submitted as ‘Data Paper’ manuscript to Zookeys, PhytoKeys and BioRisks. See instructions to authors for ‘Data Paper’ submission to these journals.***
@@ -236,7 +234,7 @@ Generate a DwC-Archive through custom conversion:
 Validation of Darwin Core Archives
 ==================================
 
-GBIF provides an online [DwC-Archive Validator](http://tools.gbif.org/dwca-validator/)[32] to validate the completed archive. Archives should be validated to ensure they are properly composed before the final publishing/registration step.
+GBIF provides an online [DwC-Archive Validator](http://tools.gbif.org/dwca-validator/) to validate the completed archive. Archives should be validated to ensure they are properly composed before the final publishing/registration step.
 
 To use the validator:
 
@@ -249,7 +247,7 @@ To use the validator:
 
 ### Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools
 
-Registration is the final step of data publication using Darwin Core Archive. An entry for the resource is made in the [GBIF Registry](http://gbrds.gbif.org)[33] that enables the resource to be discoverable and accessible. There is no automatic registration for these options. An email should be sent to [*helpdesk@gbif.org*](mailto:helpdesk@gbif.org) with the following information:
+Registration is the final step of data publication using Darwin Core Archive. An entry for the resource is made in the GBIF Registry that enables the resource to be discoverable and accessible. There is no automatic registration for these options. An email should be sent to [*helpdesk@gbif.org*](mailto:helpdesk@gbif.org) with the following information:
 
 1.  Dataset title
 2.  Dataset description
@@ -277,30 +275,20 @@ A printable guide can be found at: <http://links.gbif.org/gbif_metadata_profile_
 
 In addition, a How-To Guide for composing metadata can be found at: <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>
 
-Data (Occurrence and Taxon)
+Data (Occurrence, Taxon and Event)
 ---------------------------
 
-***Darwin Core Quick Reference Guide*** – Provides a complete listing of all the Darwin Core terms, their definitions and examples of their usage.
-
-A printable guide can be found at: <http://links.gbif.org/gbif_dwc-a_guide_en_v1.1>
-
-The definitive online list of core Occurrence and Taxon terms are available via the GBIF Resource Repository at <http://rs.gbif.org>
+The definitive online list of core Occurrence, Taxon and Event terms are available via the GBIF Resource Repository at <http://rs.gbif.org>
 
 Taxonomic Data/Annotated Species Checklists
 -------------------------------------------
 
-***GBIF Global Names Architecture (GNA) Profile for Darwin Core Archives*** – A Reference Guide to the core Taxon terms and a set of Extensions specifically defined for use in publishing annotated species checklists and taxonomic catalogue data.
-
-A printable guide to the terms and profile can be found at:
-
-<http://links.gbif.org/gbif_gna_profile_reference_guide>
-
-In addition, a Best Practices Guide for publishing annotated species checklists can be found at: <http://links.gbif.org/gbif_gna_profile_reference_guide>
+Refer to the [Best Practices Guide for publishing species checklists](https://github.com/gbif/ipt/wiki/BestPracticesChecklists). This lists the GBIF Checklist Extensions that can be used in publishing annotated species checklists and taxonomic catalogue data.
 
 Vocabularies 
 -------------
 
-Many terms in the core and extension profiles recommend (but do not require) the use of controlled vocabularies to enhance consistency and validation. Some of these vocabularies are listed in the GBIF Schema Repository. The definitive list is available at <http://rs.gbif.org/vocabulary/>
+Many terms in the core and extension profiles recommend (but do not require) the use of controlled vocabularies to enhance consistency and validation. Some of these vocabularies are listed in the [GBIF Resource Repository](http://rs.gbif.org/vocabulary/).
 
 Annex 2: Preparing Your Data
 ============================
@@ -350,7 +338,7 @@ dwc;
 Annex 3: Darwin Core Archive Examples
 =====================================
 
-The following URLS refer to example DarwinCore Archive files that can be accessed as reference files.
+The following URLS refer to example Darwin Core Archive files that can be accessed as reference files.
 
 Checklist: <http://gbif-ecat.googlecode.com/files/Whales-DWC-A.zip>
 
@@ -358,4 +346,3 @@ Occurrence: <http://www.siba.ad/andorra/dwcaMolluscsAndorra.zip>
 
 ## References
 [1] A Beginner’s Guide to Persistent Identifiers, http://links.gbif.org/persistent_identifiers_guide_en_v1.pdf
-[23] delimiter separating fields in a text file, dataset encoding (character set), date format
