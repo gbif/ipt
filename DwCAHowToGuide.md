@@ -70,11 +70,13 @@ GBIF currently supports the following three biodiversity data types as the basis
     2.  ***Taxon*** - The category of information pertaining to taxa or taxon concepts, such as species. Core files of this type are used to share annotated species checklists, taxonomic catalogues, and other information about taxa. The required core ID is represented by ***dwc:taxonID***. The definitive list of core Taxon terms can be found in the [Taxon (Core) Extension](http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml).
     3.  ***Event*** - The category of information pertaining to a sampling event. Core files of this type are used to share information about ecological investigations that can be one off studies or monitoring programmes that are usually quantitative, calibrated and follow certain protocols so that changes and trends of populations can be detected. The required core ID is represented by ***dwc:eventID***. The definitive list of core Event terms can be found in the [Event (Core) Extension](http://rs.gbif.org/core/dwc_event_2016_06_21.xml).
 
-<embed src="media/image4.emf" width="601" height="124" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/core_data_file.png' width="601" height="124" />
 
 Figure 3. A core data file is a simple, tabular, text file
 
-2.  ***Optional “extension” files*** support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may only apply to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the [GBIF Extension Repository](http://rs.gbif.org/extension/) <embed src="media/image5.emf" width="601" height="124" />
+2.  ***Optional “extension” files*** support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may only apply to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the [GBIF Extension Repository](http://rs.gbif.org/extension/) 
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/extension_data_file.png' width="601" height="124" />
 
 Figure 4. An extension is linked to the core file via the common taxon ID
 
@@ -82,19 +84,19 @@ Figure 4. An extension is linked to the core file via the common taxon ID
 
 > A metafile is ***required*** when an archive includes any extension files or if a single core data file uses non-standard column names in the first (header) row of data. A complete reference guide to this metafile is [available](http://links.gbif.org/gbif_dwc-a_metafile_en_v1). **(TODO - merge content here)**
 
-<img src="media/image6.png" alt="Description: Description: metafile" width="557" height="166" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/meta_file.png' width="557" height="166" />
 
 Figure 3. The metafile describes the file names and fields in the core and extension files
 
 4.  Datasets require documentation. This is achieved in a Darwin Core Archive by including a ***resource metadata document*** that provides information about the dataset itself such as a description (abstract) of the dataset, the agents responsible for authorship, publication and documentation, bibliographic and citation information, collection methods and much more. GBIF currently supports a metadata profile based on the [Ecological Metadata Language](https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/index.html) but other metadata standards exist and may be supported. The GBIF Metadata Profile's XML Schema description can be found on the [GBIF Schema Repository](http://rs.gbif.org/schema/eml-gbif-profile/)
 
-<img src="media/image7.png" alt="Description: Description: EML" width="605" height="182" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/metadata_file.png' width="605" height="182" />
 
 Figure 4. A metadata document describes the complete dataset
 
 The entire collection of files (core data, extensions, metafile, and resource metadata) can be compressed into a single archive file. Compression formats include [ZIP](http://en.wikipedia.org/wiki/ZIP_(file_format)) and TAR.GZ /[TGZ](http://en.wikipedia.org/wiki/Tar_(file_format)).
 
-<img src="media/image8.png" alt="Description: Description: dwca" width="484" height="130" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/zipped_archive.png' width="484" height="130" />
 
 Figure 5. Text files are zipped into a single archive
 
