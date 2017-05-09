@@ -97,9 +97,9 @@ The entire collection of files (core data, extensions, metafile, and resource me
 
 Figure 5. Text files are zipped into a single archive
 
-This single, compressed file is the Darwin Core Archive file! This file is easily transported via email, or FTP. It can be served to GBIF simply by putting the file on a web server and registering the URL with GBIF. Details on registering are provided in the Validation and Registration section of this document. See: DWC-A Data Publishing Solutions.
+This single, compressed file is the Darwin Core Archive file! This file is easily transported via email, or FTP. It can be served to GBIF simply by putting the file on a web server and registering the URL with GBIF. Details on registering are provided in the Validation and Registration section of this document. See: DwC-A Data Publishing Solutions.
 
-DWC-A Data Publishing Solutions
+DwC-A Data Publishing Solutions
 ===============================
 
 There are a number of different options for generating a Darwin Core Archive.
@@ -147,13 +147,13 @@ Please contact <helpdesk@gbif.org> for more information on using a Data Hosting 
 
 The IPT can be used to publish Occurrence Data, Taxon Data, and/or Metadata-only.
 
-Below is a set of instructions on how to create a DwC-Archive using the IPT. For more detailed information on installing and operating the IPT, please refer to the [IPT User Manual.](http://code.google.com/p/gbif-providertoolkit/wiki/IPT2ManualNotes)[20] A separate How-To guide for producing metadata is also available (GBIF Extended Metadata Profile: [How-To Guide](http://links.gbif.org/gbif_metadata_profile_how-to_en_v1)[21]). Additional information on the IPT is available from the [project’s website](http://code.google.com/p/gbif-providertoolkit/)[22].
+Below is a set of instructions on how to create a DwC-Archive using the IPT. For more detailed information on installing and operating the IPT, please refer to the [IPT User Manual.](IPT2ManualNotes.wiki) A separate How-To guide for producing metadata is also available (GBIF Extended Metadata Profile: [How-To Guide](http://links.gbif.org/gbif_metadata_profile_how-to_en_v1)). Additional information on the IPT is available from the [project’s website](http://www.gbif.org/ipt).
 
 To generate a DwC-Archive using the IPT:
 
 1.  Follow the instructions in section “Preparing Your Data” (See: Annex to this document, below).
 2.  Create a new resource in the IPT editor.
-3.  Set the appropriate configurations[23] for the data resource, and upload the source data:
+3.  [Upload the source data](IPT2ManualNotes.wiki#source-data) and configure it:
     1.  For CSV/Tab files: use the "upload file" option.
     2.  For a database: create a new SQL source.
 4.  Create a mapping between the source data and the Darwin Core terms, using the IPT interface to match your own column headers against the terms.
@@ -169,7 +169,7 @@ The IPT automatically maps all columns that use Darwin Core terms in the first (
 
 ### Registering your Dataset using IPT
 
-The IPT supports automatic registration in the GBIF network. In the “Managing Resources” page of your resource, there is a “Visibility” section. If the status is set to “public”, then there will be a “Register” button and a drop-down list for institutions. Choose the institution with which the resource or dataset is associated, and click the “Register” button. Now your dataset and metadata are registered with the GBIF Registry. See the [online manual of IPT](http://links.gbif.org/ipt_visibility)[24] at for further details.
+The IPT supports automatic registration in the GBIF network. In the “Managing Resources” page of your resource, there is a “Visibility” section. If the status is set to “public”, then there will be a “Register” button and a drop-down list for institutions. Choose the institution with which the resource or dataset is associated, and click the “Register” button. Now your dataset and metadata are registered with the GBIF Registry. See the [IPT User Manual]((IPT2ManualNotes.wiki) for further details.
 
 Publishing DwC-A using GBIF Spreadsheet Templates
 -------------------------------------------------
