@@ -139,7 +139,7 @@ Publishing DwC-A using the IPT
 
 ***Assumption: Your data are already stored as a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Preferably, you are already using Darwin Core terms as column names, although this is not compulsory.***
 
-The Integrated Publishing Toolkit (IPT) is GBIF’s flagship tool for publishing DwC-As. Additional information on the IPT is available from the [project’s website](http://www.gbif.org/ipt). 
+The [Integrated Publishing Toolkit (IPT)](http://www.gbif.org/ipt) is GBIF’s flagship tool for publishing DwC-As.
 
 The simplest way to begin using the IPT is to request a free account on a [trusted data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
 
