@@ -8,10 +8,10 @@
 * Darwin Core Archive 
   * DwC-A Components 
 * DWC-A Data Publishing Solutions 
-  * Publishing DwC-A using the Integrated Publishing Toolkit (IPT) / Data HostingCenters 
+  * Publishing DwC-A using the IPT 
     * Registering your Dataset using IPT 
   * Publishing DwC-A using GBIF Spreadsheet Templates 
-  * Create your own DwC-A
+  * Publishing DwC-A Manually
 * Validation of DwC-As
   * Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools
 * Annex 1: Reference Guides to Terms and Vocabularies
@@ -134,7 +134,7 @@ The ***Make Your Own*** option is most suitable when:
 
 A more detailed discussion of these three options follows.
 
-Publishing DwC-A using the Integrated Publishing Toolkit (IPT) / Data HostingCenters
+Publishing DwC-A using the IPT
 ------------------------------------------------------------------------------------
 
 ***Assumption: Your data are already stored as a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Preferably, you are already using Darwin Core terms as column names, although this is not compulsory.***
@@ -204,7 +204,7 @@ To use the validator:
 6.  Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org).
 7.  Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools” below.
 
-Create your own DwC-A
+Publishing DwC-A Manually
 -----------------------------------
 
 ***Assumption: Data is already in, or can easily generate, a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). The publisher does not wish to host an IPT instance but does have access to a web server.***
