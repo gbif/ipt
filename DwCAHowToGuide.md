@@ -142,9 +142,7 @@ Publishing DwC-A using the IPT
 The Integrated Publishing Toolkit (IPT) is GBIF’s flagship tool for publishing DwC-As. There are two configuration options available.
 
 1.  You can install and host a local version of the IPT at your home institution.
-2.  You can access a hosted instance of an IPT at a GBIF-endorsed Data Hosting Centre and publish your data there:
-    1.  DanBIF Data Hosting Center
-    2.  Endangered Wildlife Trust Data Hosting Center
+2.  You can access a hosted instance of an IPT at a [trusted IPT Data Hosting Centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) and publish your data there.
 
 Please contact <helpdesk@gbif.org> for more information on using a Data Hosting Centre.
 
