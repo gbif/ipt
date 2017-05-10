@@ -152,16 +152,16 @@ The IPT outputs a DwC-A during publishing and supports automatic registration in
 Publishing DwC-A using GBIF Spreadsheet Templates
 -------------------------------------------------
 
-***Assumption: The occurrence or simple taxonomic data to be published are not yet captured in digital format OR a simple solution for creating a metadata document to describe a dataset is desired.***
+***Assumption: The occurrence data, simple taxonomic data, or sampling-event data to be published are not yet captured in digital format OR a simple solution for creating a metadata document to describe a dataset is desired.***
 
-GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing metadata, occurrence data, simple species checklists, and sampling-event datasets. The spreadsheets are linked to an online processing system that validates the uploaded (or emailed) spreadsheet file and then transforms the data to a DwC-A and returns this to the user.
+GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing metadata, occurrence data, simple species checklists, and sampling-event datasets. To publish the data through the GBIF network, upload the templates to the IPT. If you require an account on an IPT, it is highly recommended that you request an account on a [trusted data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) located in your country. Please contact the GBIF Helpdesk for assistance.
 
-Below is a set of instructions on how to create a DwC-Archive using one of the GBIF Darwin Core Spreadsheet Templates. Each template provides inline help and instructions in the worksheets. Filling in the metadata is outside the scope of these instructions; check the separate [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1)[25]. 
+Each template provides inline help and instructions in the worksheets. Filling in the metadata is outside the scope of these instructions; check the separate [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1). 
 
 Generate a DwC-Archive using the Spreadsheet Templates:
 
 1.  Choose the appropriate template:
-    1.  ***Metadata Template***: suitable for composing a metadata document.
+    1.  ***Metadata Template (TODO)***: suitable for composing a metadata document.
     2.  ***Occurrence Template***: suitable for occurrence data (specimen, observation).
     3.  ***Checklist Template***: suitable for basic species checklists. Several options are provided that cater to different styles for representing classifications.
     4.  ***Sampling-event Template***: suitable for sampling-event data.
