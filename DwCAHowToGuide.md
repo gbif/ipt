@@ -209,11 +209,13 @@ Create your own Darwin Core Archive
 
 ***Assumption: Data is already in, or can easily generate, a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). The publisher does not wish to host an IPT instance but does have access to a web server.***
 
+Darwin Core Archives can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system. 
+
 Below is a set of instructions on how to manually create and validate a DwC-Archive. Three components are required:
 
 1.  Text data file(s) in CSV or Tab format, containing the data,
-2.  A metafile (meta.xml) file that describes the content and relationship of the text file(s), and
-3.  A metadata file (eml.xml) that describes the data resource. For instructions on 3), please refer to [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1)[28]. It is assumed there is a metadata file. If not, the simplest way to produce one is using the [metadata spreadsheet template](https://github.com/gbif/ipt/wiki/resourceMetadata).
+2.  A metafile (meta.xml) file that describes the content and relationship of the text data file(s), and
+3.  A metadata file (eml.xml) that describes the data resource. For instructions on 3), please refer to [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1)[28]. It is assumed there is a metadata file. If not, the simplest way to produce one is using the IPT's built-in metadata editor.
 
 Generate a DwC-Archive through custom conversion:
 
