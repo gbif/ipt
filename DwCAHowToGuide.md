@@ -82,7 +82,7 @@ Figure 4. An extension is linked to the core file via the common taxon ID
 
 3.  A descriptor ***metafile*** describes how the files in your archive are organised. It describes the files in the archive and maps each data column to a corresponding standard Darwin Core or Extension term. The metafile is a relatively simple XML file format. GBIF provides an online tool for making this file but the format is simple enough that many data administrators will be able to generate it manually. These options are described in the Publishing Options section of this document.
 
-> A metafile is ***required*** when an archive includes any extension files or if a single core data file uses non-standard column names in the first (header) row of data. A complete reference guide to this metafile is [available](http://links.gbif.org/gbif_dwc-a_metafile_en_v1). **(TODO - merge content here)**
+> A metafile is ***required*** when an archive includes any extension files or if a single core data file uses non-standard column names in the first (header) row of data. A complete reference guide to this metafile is  [available](http://links.gbif.org/gbif_dwc-a_metafile_en_v1). **(TODO - merge content here)**
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/meta_file.png' width="557" height="166" />
 
@@ -211,17 +211,11 @@ Create your own Darwin Core Archive
 
 Darwin Core Archives can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system. 
 
-Below is a set of instructions on how to manually create and validate a DwC-Archive. Three components are required:
-
-1.  Text data file(s) in CSV or Tab format, containing the data,
-2.  A metafile (meta.xml) file that describes the content and relationship of the text data file(s), and
-3.  A metadata file (eml.xml) that describes the data resource. Complete instructions on doing this are available in the [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1). It is best practice to include a metadata file and the simplest way to produce one is using the IPT's built-in metadata editor.
-
-Generate a DwC-Archive through custom conversion:
+Below is a set of instructions on how to manually create and validate a DwC-Archive:
 
 1.  Unless the data are already stored in a CSV/Tab text file, the publisher needs to prepare a text file(s) from the source. If the data are stored in a database, generate an output of delimited text from the source database into an outfile. Most database management systems support this process; an example is given in the Annex to this guide, below, in the section “Outputting Data From a MySQL Database Into a Textfile”. As the metafile maps the columns of the text file to Darwin Core terms, it is not necessary to use Darwin Core terms as column header in the resultant text file, though it may help to reduce errors. A general recommendation is to produce a single core data file and a single file for each extension if the intention is to output data tied to an extension.
 2.  Create a Metafile: There are two different ways to generate the file:
-    1.  Create it manually by using an XML editor and using a sample metafile as a guiding example. A complete description of the metafile format can be found on the [Biodiversity Information Standards website](http://rs.tdwg.org/dwc/terms/guides/text/index.htm)[30] or in the [GBIF Darwin Core Archive Metafile Guide](http://links.gbif.org/gbif_dwc-a_metafile_en_v1). **(TODO merge content here)**
+    1.  Create it manually by using an XML editor and using a sample metafile as a guiding example. A complete description of the metafile format can be found in the [Darwin Core Text Guide](http://rs.tdwg.org/dwc/terms/guides/text/index.htm).
     2.  Create it using the online application [Darwin Core Archive Assistant](http://tools.gbif.org/dwca-assistant/) <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/dwc-a_assistant.png' align="right" width="300" height="250" /> Simply select the fields of data to be published, provide some details about the files and save the resultant XML. This only needs to be done once unless the set of published fields changes at some later time. **Warning: this tool is no longer supported by GBIF. Support for the Event core is missing. Publishers also need to manually add term dwc:taxonID to Taxon core and dwc:occurrenceID to Occurrence core, to ensure they are explicitly included.** 
 3. Create a metadata file (eml.xml) that describes the data resource. Complete instructions on doing this are available in the [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1). It is best practice to include a metadata file and the simplest way to produce one is using the IPT's built-in metadata editor.
 4. Ensure the data files, the metafile (meta.xml) and metadata file (eml.xml) are in the same directory or folder. Compress the folder using one of the support compression formats. The result is a Darwin Core Archive.
