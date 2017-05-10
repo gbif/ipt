@@ -144,9 +144,7 @@ The Integrated Publishing Toolkit (IPT) is GBIF’s flagship tool for publishing
 1.  You can install and host a local version of the IPT at your home institution.
 2.  You can access a hosted instance of an IPT at a [trusted IPT Data Hosting Centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) and publish your data there.
 
-Please contact <helpdesk@gbif.org> for more information on using a Data Hosting Centre.
-
-The IPT can be used to publish Occurrence Data, Taxon Data, and/or Metadata-only.
+The IPT can be used to publish species occurrence data, species checklists, sampling-event data and/or Metadata-only.
 
 Below is a set of instructions on how to create a DwC-Archive using the IPT. For more detailed information on installing and operating the IPT, please refer to the [IPT User Manual.](IPT2ManualNotes.wiki) A separate How-To guide for producing metadata is also available (GBIF Extended Metadata Profile: [How-To Guide](http://links.gbif.org/gbif_metadata_profile_how-to_en_v1)). Additional information on the IPT is available from the [project’s website](http://www.gbif.org/ipt).
 
