@@ -141,34 +141,12 @@ Publishing DwC-A using the IPT
 
 The Integrated Publishing Toolkit (IPT) is GBIF’s flagship tool for publishing DwC-As. There are two configuration options available.
 
-1.  You can install and host a local version of the IPT at your home institution.
-2.  You can access a hosted instance of an IPT at a [trusted IPT Data Hosting Centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) and publish your data there.
+1.  You can get an account on a [trusted IPT Data Hosting Centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) and publish your data there. This is recommended, hence installing and maintaining an IPT instance requires significant time and resources.
+2.  You can install and host the IPT on your organisation's server. For more detailed information on installing and operating the IPT, please refer to the [IPT User Manual](IPT2ManualNotes.wiki).
 
-The IPT can be used to publish species occurrence data, species checklists, sampling-event data and/or Metadata-only.
+The IPT can be used to publish species occurrence data, species checklists, sampling-event data and/or metadata-only. To do so, simply follow the [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To). 
 
-Below is a set of instructions on how to create a DwC-Archive using the IPT. For more detailed information on installing and operating the IPT, please refer to the [IPT User Manual.](IPT2ManualNotes.wiki) A separate How-To guide for producing metadata is also available (GBIF Extended Metadata Profile: [How-To Guide](http://links.gbif.org/gbif_metadata_profile_how-to_en_v1)). Additional information on the IPT is available from the [project’s website](http://www.gbif.org/ipt).
-
-To generate a DwC-Archive using the IPT:
-
-1.  Follow the instructions in section “Preparing Your Data” (See: Annex to this document, below).
-2.  Create a new resource in the IPT editor.
-3.  [Upload the source data](IPT2ManualNotes.wiki#source-data) and configure it:
-    1.  For CSV/Tab files: use the "upload file" option.
-    2.  For a database: create a new SQL source.
-4.  Create a mapping between the source data and the Darwin Core terms, using the IPT interface to match your own column headers against the terms.
-
-Depending on the type of data you are publishing, you will need to ensure that the appropriate core types and extensions are loaded. This is based on initial configurations when the IPT instance was installed. For example:
-
--   To publish Occurrence data (specimen or observation) data, the core type ***Darwin Core Occurrence*** must be loaded.
--   To publish common names with a species checklist the core type ***Darwin Core Taxon*** and the ***Vernacular Names Extension*** must be loaded.
-
-The IPT automatically maps all columns that use Darwin Core terms in the first (header) row in the source data file. Using Darwin Core terms in your source data helps to save time when generating the mapping. Otherwise, the IPT assists the mapping process through a help dialog. For each term, a definition, an example, and link to the Darwin Core documentation on that term is available. In addition, fields that expect values from controlled vocabularies will present those values in a drop-down list. Whenever a problem exists with a mapping, it is highlighted and brought to the user’s attention to try to ensure that all columns get successfully mapped.
-
-1.  Publish the new DwC-Archive, using the IPT dialogue. This will create the DwC-Archive, bundling the data sources together with the metadata in one zipped archive. On successful processing of the archive, both the archive and the metadata file (EML) will be assigned their own URLs.
-
-### Registering your Dataset using IPT
-
-The IPT supports automatic registration in the GBIF network. In the “Managing Resources” page of your resource, there is a “Visibility” section. If the status is set to “public”, then there will be a “Register” button and a drop-down list for institutions. Choose the institution with which the resource or dataset is associated, and click the “Register” button. Now your dataset and metadata are registered with the GBIF Registry. See the [IPT User Manual](IPT2ManualNotes.wiki#visibility) for further details.
+The IPT outputs a DwC-A during publishing and supports automatic registration in the GBIF network. See the [IPT User Manual](IPT2ManualNotes.wiki#visibility) for further details. Additional information on the IPT is available from the [project’s website](http://www.gbif.org/ipt).
 
 Publishing DwC-A using GBIF Spreadsheet Templates
 -------------------------------------------------
