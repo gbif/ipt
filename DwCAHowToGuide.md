@@ -139,14 +139,15 @@ Publishing DwC-A using the IPT
 
 ***Assumption: Your data are already stored as a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Preferably, you are already using Darwin Core terms as column names, although this is not compulsory.***
 
-The Integrated Publishing Toolkit (IPT) is GBIF’s flagship tool for publishing DwC-As. There are two configuration options available.
+The Integrated Publishing Toolkit (IPT) is GBIF’s flagship tool for publishing DwC-As. Additional information on the IPT is available from the [project’s website](http://www.gbif.org/ipt). 
 
-1.  You can get an account on a [trusted IPT Data Hosting Centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) and publish your data there. This is recommended, hence installing and maintaining an IPT instance requires significant time and resources.
-2.  You can install and host the IPT on your organisation's server. For more detailed information on installing and operating the IPT, please refer to the [IPT User Manual](IPT2ManualNotes.wiki).
+The simplest way to begin using the IPT is to request a free account on a [trusted data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
 
-The IPT can be used to publish species occurrence data, species checklists, sampling-event data and/or metadata-only. To do so, simply follow the [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To). 
+Otherwise if want to setup your own instance of the IPT the [Getting Started Guide](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#getting-started-guide) is your entry point. 
 
-The IPT outputs a DwC-A during publishing and supports automatic registration in the GBIF network. See the [IPT User Manual](IPT2ManualNotes.wiki#visibility) for further details. Additional information on the IPT is available from the [project’s website](http://www.gbif.org/ipt).
+The IPT can be used to publish resource metadata, occurrence data, checklist data, and sampling-event data. The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) provides a simple set of instructions how to do so.
+
+The IPT outputs a DwC-A during publishing and supports automatic registration in the GBIF network. See the [IPT User Manual](IPT2ManualNotes.wiki#visibility) for further details. 
 
 Publishing DwC-A using GBIF Spreadsheet Templates
 -------------------------------------------------
