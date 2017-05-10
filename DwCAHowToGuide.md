@@ -6,13 +6,13 @@
 ## Table of Contents
 * Introduction 
 * Darwin Core Archive 
-  * Darwin Core Archive Components 
+  * DwC-A Components 
 * DWC-A Data Publishing Solutions 
   * Publishing DwC-A using the Integrated Publishing Toolkit (IPT) / Data HostingCenters 
     * Registering your Dataset using IPT 
   * Publishing DwC-A using GBIF Spreadsheet Templates 
-  * Create your own Darwin Core Archive
-* Validation of Darwin Core Archives
+  * Create your own DwC-A
+* Validation of DwC-As
   * Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools
 * Annex 1: Reference Guides to Terms and Vocabularies
   * Metadata
@@ -22,7 +22,7 @@
 * Annex 2: Preparing Your Data
   * Character Encoding Conversion
   * Outputting Data From a MySQL Database Into a Textfile
-Annex 3: Darwin Core Archive Examples
+Annex 3: DwC-A Examples
 
 ## Document Control
 
@@ -48,21 +48,21 @@ The Darwin Core standard is used to mobilise the vast majority of specimen occur
 
 The Darwin Core today is broader in scope and application. It aims to provide a stable, standard reference for sharing information on biological diversity. As a glossary of terms, the Darwin Core provides stable semantic definitions with the goal of being maximally reusable in a variety of contexts. This means that Darwin Core may still be used in the same way it has historically been used, but may also serve as the basis for building enriched exchange formats, while still ensuring interoperability through a common set of terms. This guide defines one of these formats that may be used to publish specimen-occurrence and observational data as well as species-level information such as taxonomic checklists.
 
-Darwin Core Archive
+DwC-A
 ===================
 
-Darwin Core Archive (DwC-A) is a biodiversity informatics data standard that makes use of the Darwin Core terms to produce a single, self contained dataset for sharing both species-level (taxonomic) and species-occurrence data. An archive is a set of text files, in standard comma- or tab-delimited format, with a simple descriptor file (called ***meta.xml***) to inform others how your files are organised. The format is defined in the [Darwin Core Text Guidelines](http://rs.tdwg.org/dwc/terms/guides/text/index.htm). ***It is the preferred format for publishing data in the GBIF network.***
+DwC-A is a biodiversity informatics data standard that makes use of the Darwin Core terms to produce a single, self contained dataset for sharing both species-level (taxonomic) and species-occurrence data. An archive is a set of text files, in standard comma- or tab-delimited format, with a simple descriptor file (called ***meta.xml***) to inform others how your files are organised. The format is defined in the [Darwin Core Text Guidelines](http://rs.tdwg.org/dwc/terms/guides/text/index.htm). ***It is the preferred format for publishing data in the GBIF network.***
 
 The central idea of an archive is that its data files are logically arranged in a star-like manner, with one core data file surrounded by any number of ‘extension’ data files. Core and extension files contain data records, one per line. Each extension record (or ‘extension file row’) points to a record in the core file; in this way, many extension records can exist for each single core record. This is sometimes referred to as a “star schema”.
 
-Sharing entire datasets as Darwin Core Archives instead of using page-able web services like [DiGIR](http://digir.sourceforge.net/) and [TAPIR](http://tdwg.github.io/tapir/docs/tdwg_tapir_specification_2010-05-05.html) allows much simpler and more efficient data transfer. For example, retrieving 260,000 records via TAPIR takes about nine hours, and involves issuing 1,300 http requests to transfer 500 MB of XML-formatted data. The exact same dataset, when encoded as DwC-A and zipped becomes a 3 MB file. Therefore, GBIF highly recommends compressing an archive using ZIP or GZIP when generating a DwC-A. In addition, producing Darwin Core Archives does not require any dedicated software to be installed by a data publisher, making it a much simpler option.
+Sharing entire datasets as DwC-As instead of using page-able web services like [DiGIR](http://digir.sourceforge.net/) and [TAPIR](http://tdwg.github.io/tapir/docs/tdwg_tapir_specification_2010-05-05.html) allows much simpler and more efficient data transfer. For example, retrieving 260,000 records via TAPIR takes about nine hours, and involves issuing 1,300 http requests to transfer 500 MB of XML-formatted data. The exact same dataset, when encoded as DwC-A and zipped becomes a 3 MB file. Therefore, GBIF highly recommends compressing an archive using ZIP or GZIP when generating a DwC-A. In addition, producing DwC-As does not require any dedicated software to be installed by a data publisher, making it a much simpler option.
 
-The production of a Darwin Core Archive requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers instead of local ones<sup>[1](DwCAHowToGuide#references)</sup>. This identifier is referred to as the “core ID” in Darwin Core Archives and the specific Darwin Core term that it corresponds to is dependent on the data type being published.
+The production of a DwC-A requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers instead of local ones<sup>[1](DwCAHowToGuide#references)</sup>. This identifier is referred to as the “core ID” in DwC-As and the specific Darwin Core term that it corresponds to is dependent on the data type being published.
 
-Darwin Core Archive Components
+DwC-A Components
 ------------------------------
 
-A Darwin Core Archive may consist of a single data file or multiple files, depending on the scope of the published data. The specific types of files that may be included in an archive are the following:
+A DwC-A may consist of a single data file or multiple files, depending on the scope of the published data. The specific types of files that may be included in an archive are the following:
 
 1.  ***A required core data file*** consisting of a standard set of [Darwin Core terms](http://rs.tdwg.org/dwc/terms/). The data file is formatted as ***fielded text***, where data records are expressed as rows of text, and data elements (columns) are separated with a standard delimiter such as a tab or comma (commonly referred to as CSV or ‘[comma-separated value’ files](http://en.wikipedia.org/wiki/Comma-separated_values)). The first row of the data file may optionally contain data or represent a ‘header row’. In general, if a header row is included, it contains the names of the Darwin Core terms represented in the succeeding rows of data.
 GBIF currently supports the following three biodiversity data types as the basis for a core data file:
@@ -88,7 +88,7 @@ Figure 4. An extension is linked to the core file via the common taxon ID
 
 Figure 3. The metafile describes the file names and fields in the core and extension files
 
-4.  Datasets require documentation. This is achieved in a Darwin Core Archive by including a ***resource metadata document*** that provides information about the dataset itself such as a description (abstract) of the dataset, the agents responsible for authorship, publication and documentation, bibliographic and citation information, collection methods and much more. GBIF currently supports a metadata profile based on the [Ecological Metadata Language](https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/index.html) but other metadata standards exist and may be supported. The GBIF Metadata Profile's XML Schema description can be found on the [GBIF Schema Repository](http://rs.gbif.org/schema/eml-gbif-profile/)
+4.  Datasets require documentation. This is achieved in a DwC-A by including a ***resource metadata document*** that provides information about the dataset itself such as a description (abstract) of the dataset, the agents responsible for authorship, publication and documentation, bibliographic and citation information, collection methods and much more. GBIF currently supports a metadata profile based on the [Ecological Metadata Language](https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/index.html) but other metadata standards exist and may be supported. The GBIF Metadata Profile's XML Schema description can be found on the [GBIF Schema Repository](http://rs.gbif.org/schema/eml-gbif-profile/)
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/metadata_file.png' width="605" height="182" />
 
@@ -100,12 +100,12 @@ The entire collection of files (core data, extensions, metafile, and resource me
 
 Figure 5. Text files are zipped into a single archive
 
-This single, compressed file is the Darwin Core Archive file! This file is easily transported via email, or FTP. It can be served to GBIF simply by putting the file on a web server and registering the URL with GBIF. Details on registering are provided in the Validation and Registration section of this document. See: DwC-A Data Publishing Solutions.
+This single, compressed file is the DwC-A file! This file is easily transported via email, or FTP. It can be served to GBIF simply by putting the file on a web server and registering the URL with GBIF. Details on registering are provided in the Validation and Registration section of this document. See: DwC-A Data Publishing Solutions.
 
 DwC-A Data Publishing Solutions
 ===============================
 
-There are a number of different options for generating a Darwin Core Archive.
+There are a number of different options for generating a DwC-A.
 
 To help select the most appropriate solution for creating your own archive, answering the following questions can help your decision:
 
@@ -139,7 +139,7 @@ Publishing DwC-A using the Integrated Publishing Toolkit (IPT) / Data HostingCen
 
 ***Assumption: Your data are already stored as a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Preferably, you are already using Darwin Core terms as column names, although this is not compulsory.***
 
-The Integrated Publishing Toolkit (IPT) is GBIF’s flagship tool for publishing Darwin Core Archives. There are two configuration options available.
+The Integrated Publishing Toolkit (IPT) is GBIF’s flagship tool for publishing DwC-As. There are two configuration options available.
 
 1.  You can install and host a local version of the IPT at your home institution.
 2.  You can access a hosted instance of an IPT at a GBIF-endorsed Data Hosting Centre and publish your data there:
@@ -179,7 +179,7 @@ Publishing DwC-A using GBIF Spreadsheet Templates
 
 ***Assumption: The occurrence or simple taxonomic data to be published are not yet captured in digital format OR a simple solution for creating a metadata document to describe a dataset is desired.***
 
-GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing metadata, occurrence data, simple species checklists, and sampling-event datasets. The spreadsheets are linked to an online processing system that validates the uploaded (or emailed) spreadsheet file and then transforms the data to a Darwin Core Archive and returns this to the user.
+GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing metadata, occurrence data, simple species checklists, and sampling-event datasets. The spreadsheets are linked to an online processing system that validates the uploaded (or emailed) spreadsheet file and then transforms the data to a DwC-A and returns this to the user.
 
 Below is a set of instructions on how to create a DwC-Archive using one of the GBIF Darwin Core Spreadsheet Templates. Each template provides inline help and instructions in the worksheets. Filling in the metadata is outside the scope of these instructions; check the separate [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1)[25]. 
 
@@ -204,12 +204,12 @@ To use the validator:
 6.  Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org).
 7.  Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools” below.
 
-Create your own Darwin Core Archive
+Create your own DwC-A
 -----------------------------------
 
 ***Assumption: Data is already in, or can easily generate, a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). The publisher does not wish to host an IPT instance but does have access to a web server.***
 
-Darwin Core Archives can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system. 
+DwC-As can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system. 
 
 Below is a set of instructions on how to manually create and validate a DwC-Archive:
 
@@ -218,11 +218,11 @@ Below is a set of instructions on how to manually create and validate a DwC-Arch
     1. Create it manually by using an XML editor and using a sample metafile as a guiding example. A complete description of the metafile format can be found in the [Darwin Core Text Guide](http://rs.tdwg.org/dwc/terms/guides/text/index.htm).
     2. Create it using the online application [Darwin Core Archive Assistant](http://tools.gbif.org/dwca-assistant/) <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/dwc-a_assistant.png' align="right" width="300" height="250" /> Simply select the fields of data to be published, provide some details about the files and save the resultant XML. This only needs to be done once unless the set of published fields changes at some later time. **Warning: this tool is no longer supported by GBIF. Support for the Event core is missing. Publishers also need to manually add term dwc:taxonID to Taxon core and dwc:occurrenceID to Occurrence core, to ensure they are explicitly included.** 
 3. Create a metadata file (eml.xml) that describes the data resource. Complete instructions on doing this are available in the [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1). It is best practice to include a metadata file and the simplest way to produce one is using the IPT's built-in metadata editor.
-4. Ensure the data files, the metafile (meta.xml) and metadata file (eml.xml) are in the same directory or folder. Compress the folder using one of the support compression formats. The result is a Darwin Core Archive.
+4. Ensure the data files, the metafile (meta.xml) and metadata file (eml.xml) are in the same directory or folder. Compress the folder using one of the support compression formats. The result is a DwC-A.
 
 ***Note***: ***Metadata authored using IPT can be output as an RTF document, which can then be submitted as ‘Data Paper’ manuscript to Zookeys, PhytoKeys and BioRisks. See instructions to authors for ‘Data Paper’ submission to these journals.***
 
-Validation of Darwin Core Archives
+Validation of DwC-As
 ==================================
 
 GBIF provides an online [DwC-Archive Validator](http://tools.gbif.org/dwca-validator/) to validate the completed archive. Archives should be validated to ensure they are properly composed before the final publishing/registration step.
@@ -238,7 +238,7 @@ To use the validator:
 
 ### Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools
 
-Registration is the final step of data publication using Darwin Core Archive. An entry for the resource is made in the GBIF Registry that enables the resource to be discoverable and accessible. There is no automatic registration for these options. An email should be sent to [*helpdesk@gbif.org*](mailto:helpdesk@gbif.org) with the following information:
+Registration is the final step of data publication using DwC-A. An entry for the resource is made in the GBIF Registry that enables the resource to be discoverable and accessible. There is no automatic registration for these options. An email should be sent to [*helpdesk@gbif.org*](mailto:helpdesk@gbif.org) with the following information:
 
 1.  Dataset title
 2.  Dataset description
@@ -255,7 +255,7 @@ Please ensure you have all of the information before you send the email. You wil
 Annex 1: Reference Guides to Terms and Vocabularies
 ===================================================
 
-This section provides links to both online and printable reference guides to terms and vocabularies that support the Darwin Core Archive format. The definitive source for these terms is the GBIF Resources Repository at <http://rs.gbif.org>. It provides a simple menu of options and clear lists and definitions of terms and supporting vocabularies.
+This section provides links to both online and printable reference guides to terms and vocabularies that support the DwC-A format. The definitive source for these terms is the GBIF Resources Repository at <http://rs.gbif.org>. It provides a simple menu of options and clear lists and definitions of terms and supporting vocabularies.
 
 Metadata
 --------
@@ -326,10 +326,10 @@ LINES TERMINATED BY '\\n'
 FROM`
 dwc;
 
-Annex 3: Darwin Core Archive Examples
+Annex 3: DwC-A Examples
 =====================================
 
-The following URLS refer to example Darwin Core Archive files that can be accessed as reference files.
+The following URLS refer to example DwC-A files that can be accessed as reference files.
 
 Checklist: <http://gbif-ecat.googlecode.com/files/Whales-DWC-A.zip>
 
