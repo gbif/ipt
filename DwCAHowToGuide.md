@@ -46,7 +46,6 @@ Sharing entire datasets as DwC-As instead of using page-able web services like [
 The production of a DwC-A requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers (GUID) instead of local ones. Refer to [A Beginner’s Guide to Persistent Identifiers](http://links.gbif.org/persistent_identifiers_guide_en_v1.pdf) for more information about GUIDs. This identifier is referred to as the “core ID” in DwC-As and the specific Darwin Core term that it corresponds to is dependent on the data type being published.
 
 ### DwC-A Components
-------------------------------
 
 A DwC-A may consist of a single data file or multiple files, depending on the scope of the published data. The specific types of files that may be included in an archive are the following:
 
