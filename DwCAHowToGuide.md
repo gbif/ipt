@@ -37,8 +37,7 @@ Annex 3: DwC-A Examples
 
 _Cover art credit: Kim Wismann, Cicindelinae_
 
-Introduction
-============
+## Introduction
 
 Darwin Core Archive (DwC-A) is an internationally recognised biodiversity informatics data standard that simplifies the publication of biodiversity data. It is based on Darwin Core, a standard developed and maintained by the [Biodiversity Information Standards group](http://www.tdwg.org).
 
@@ -48,8 +47,7 @@ The Darwin Core standard is used to mobilise the vast majority of specimen occur
 
 The Darwin Core today is broader in scope and application. It aims to provide a stable, standard reference for sharing information on biological diversity. As a glossary of terms, the Darwin Core provides stable semantic definitions with the goal of being maximally reusable in a variety of contexts. This means that Darwin Core may still be used in the same way it has historically been used, but may also serve as the basis for building enriched exchange formats, while still ensuring interoperability through a common set of terms. This guide defines one of these formats that may be used to publish specimen-occurrence and observational data as well as species-level information such as taxonomic checklists.
 
-DwC-A
-===================
+## DwC-A
 
 DwC-A is a biodiversity informatics data standard that makes use of the Darwin Core terms to produce a single, self contained dataset for sharing both species-level (taxonomic) and species-occurrence data. An archive is a set of text files, in standard comma- or tab-delimited format, with a simple descriptor file (called ***meta.xml***) to inform others how your files are organised. The format is defined in the [Darwin Core Text Guidelines](http://rs.tdwg.org/dwc/terms/guides/text/index.htm). ***It is the preferred format for publishing data in the GBIF network.***
 
@@ -59,7 +57,7 @@ Sharing entire datasets as DwC-As instead of using page-able web services like [
 
 The production of a DwC-A requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers instead of local ones<sup>[1](DwCAHowToGuide#references)</sup>. This identifier is referred to as the “core ID” in DwC-As and the specific Darwin Core term that it corresponds to is dependent on the data type being published.
 
-DwC-A Components
+### DwC-A Components
 ------------------------------
 
 A DwC-A may consist of a single data file or multiple files, depending on the scope of the published data. The specific types of files that may be included in an archive are the following:
@@ -102,8 +100,7 @@ Figure 5. Text files are zipped into a single archive
 
 This single, compressed file is the DwC-A file! This file is easily transported via email, or FTP. It can be served to GBIF simply by putting the file on a web server and registering the URL with GBIF. Details on registering are provided in the Validation and Registration section of this document. See: DwC-A Data Publishing Solutions.
 
-DwC-A Data Publishing Solutions
-===============================
+## DwC-A Data Publishing Solutions
 
 There are a number of different options for generating a DwC-A.
 
@@ -134,8 +131,7 @@ The ***Make Your Own*** option is most suitable when:
 
 A more detailed discussion of these three options follows.
 
-Publishing DwC-A using the IPT
-------------------------------------------------------------------------------------
+### Publishing DwC-A using the IPT
 
 ***Assumption: Your data are already stored as a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Preferably, you are already using Darwin Core terms as column names, although this is not compulsory.***
 
@@ -149,8 +145,7 @@ The IPT can be used to publish resource metadata, occurrence data, checklist dat
 
 The IPT outputs a DwC-A during publishing and supports automatic registration in the GBIF network. See the [IPT User Manual](IPT2ManualNotes.wiki#visibility) for further details. 
 
-Publishing DwC-A using GBIF Spreadsheet Templates
--------------------------------------------------
+### Publishing DwC-A using GBIF Spreadsheet Templates
 
 ***Assumption: The occurrence data, simple taxonomic data, or sampling-event data to be published are not yet captured in digital format OR a simple solution for creating a metadata document to describe a dataset is desired.***
 
@@ -165,7 +160,7 @@ Each template provides inline help and instructions in the worksheets.
 
 To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a [trusted data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) located in your country.
 
-Publishing DwC-A Manually
+### Publishing DwC-A Manually
 -----------------------------------
 
 ***Assumption: Data is already in, or can easily generate, a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). The publisher does not wish to host an IPT instance but does have access to a web server.***
@@ -183,8 +178,7 @@ Below is a set of instructions on how to manually create a DwC-Archive:
 
 ***Note***: ***Metadata authored using IPT can be output as an RTF document, which can then be submitted as ‘Data Paper’ manuscript to Zookeys, PhytoKeys and BioRisks. See instructions to authors for ‘Data Paper’ submission to these journals.***
 
-Validation of DwC-As
-==================================
+## Validation of DwC-As
 
 GBIF provides an online [DwC-Archive Validator](http://tools.gbif.org/dwca-validator/) that performs the following checks:
 
@@ -203,7 +197,7 @@ To use the validator:
 4.  Repeat the process until the file is successfully validated.
 5.  Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org).
 
-### Registration of DwC-As with GBIF
+## Registration of DwC-As with GBIF
 
 An entry for the resource must be made in the GBIF Registry that enables the resource to be discoverable and accessible. The IPT and GBIF API support automatic registration for these options. Otherwise if you are publishing DwC-As manually, please send an email to <mailto:helpdesk@gbif.org> with the following information:
 
