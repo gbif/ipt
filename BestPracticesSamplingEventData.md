@@ -1,5 +1,5 @@
 # Best Practices in Publishing Sampling-event data
-<sup>Version 1.0</sup>
+<sup>Version 2.0</sup>
 
 ## Document control
 
