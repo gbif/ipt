@@ -33,11 +33,15 @@ Documenting the provenance and scope of datasets is required in order to publish
 
 ### Sampling-event Data
 
-The Darwin Core Archive format provides the structural framework for publishing sampling-event data. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one ***core file***, listing the sampling events (sampling protocol, sample size, location, etc.) surrounded by a number of ‘***extensions***’, that describe related data types (such as species occurrences, measurements or facts, etc). Links between core and extension records are made using an event identifier (***eventID***) data element. In this way, many extension records can exist for each single core event record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to sampling-event datasets.
+The Darwin Core Archive format provides the structural framework for publishing sampling-event data. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one ***core file***, listing the sampling events (sampling protocol, sample size, location, etc.) surrounded by a number of ‘***extensions***’, that describe related data types (such as species occurrences, measurements or facts related to the sampling event, etc). Links between core and extension records are made using an event identifier (***eventID***) data element. In this way, many extension records can exist for each single core event record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to sampling-event datasets.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/dwc-a_event.png' width="600" height="400" />
 
 Figure 1. Darwin Core Archive data files in 'star schema'
+
+An alternative way to encode sampling-event data is listing the species occurrence in the core file, surrounded by a number of extensions, that describe the related data types (such as measurements relating to the species occurrences, etc). Note listing sampling events in the core file is preferable if a plot or site is the main focus of the study.
+
+TODO: Provide recommendations on how to work around limitations of DwC-A star schema such as not being able to relate measurements and facts to both events and occurrences in the same dataset. The current work around requires publishers to publish separate datasets. Note OBIS is prototyping an Extended Measurement or Facts Extension that could also help overcome this limitation. Discussion on this prototype extension is taking place in GitHub here. However, issues raised that this prototype extension does not explicitly make it clear if the measurement or fact relates to an occurrence or an event. One alternative is to add resourceID (and perhaps resourceType?) instead of adding eventID (and occurrenceID) as attribute to the measurement or fact extension as is explored by the OBIS extension. 
 
 ### Data file formatting recommendations
 
