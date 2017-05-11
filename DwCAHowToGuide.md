@@ -4,8 +4,7 @@
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_cicindelinae.png' align="right" width="300" height="250" />
 
 ## Table of Contents
-* Introduction 
-* Darwin Core Archive 
+* What is Darwin Core Archive (DwC-A)? 
   * DwC-A Components 
 * DWC-A Data Publishing Solutions 
   * Publishing DwC-A using the IPT 
@@ -33,7 +32,7 @@
 
 _Cover art credit: Kim Wismann, Cicindelinae_
 
-## Introduction
+## What is Darwin Core Archive (DwC-A)? 
 
 Darwin Core Archive (DwC-A) is a biodiversity informatics data standard that makes use of the Darwin Core terms to produce a single, self contained dataset for sharing species-level (taxonomic), species-occurrence data, and sampling-event data. An archive is a set of text files, in standard comma- or tab-delimited format, with a simple descriptor file (called ***meta.xml***) to inform others how your files are organised. The format is defined in the [Darwin Core Text Guidelines](http://rs.tdwg.org/dwc/terms/guides/text/index.htm). ***It is the preferred format for publishing data in the GBIF network.***
 
