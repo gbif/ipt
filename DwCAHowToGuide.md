@@ -92,24 +92,25 @@ To help select the most appropriate solution for creating your own archive, answ
 2.  Are your data stored in a relational database?
 3.  How many separate datasets (DwC-Archives) do you plan to publish?
 
-The ***Integrated Publishing Toolkit*** is most suitable when:
+Publishing DwC-As using the IPT is most suitable when:
 
 -   Your data have been digitised already.
 -   Your data either are or are not already in a relational database
 -   You need to create/manage multiple archives.
 -   You would like to document datasets using the GBIF Metadata Profile.
 
-The ***GBIF Darwin Core Spreadsheet Templates*** are most suitable when:
+Publishing DwC-As using GBIF Spreadsheet Templates is most suitable when:
 
 -   Your data have not been digitised already.
--   You already maintain basic species lists in a spreadsheet file.
--   You need a simple solution for authoring and managing a limited number metadata documents to describe datasets you manage in another system and would like to publish through GBIF.
+-   You already maintain data using spreadsheets.
+-   You need a simple solution to create/manage a limited number datasets
+-   You need extra guidance capturing and formatting the data
 
-The ***Make Your Own*** option is most suitable when:
+Publishing DwC-As manually is most suitable when:
 
 -   Your data have been digitised already.
 -   Your data may be in a relational database.
--   You only need to create/manage a small number of archives, or have the option to automate / script the archive generation process.
+-   You only need to create/manage a small number of archives, and/or you have the technical skills to automate / script the archive generation process.
 
 A more detailed discussion of these three options follows.
 
