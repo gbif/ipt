@@ -17,7 +17,6 @@
 * Annex: Preparing Your Data
   * Required and recommended terms
   * Character Encoding
-  * Character Encoding Conversion
   * Data From a Database
   * DwC-A Examples
 
@@ -219,11 +218,9 @@ The guide [How to publish biodiversity data through GBIF.org](https://github.com
 
 ### Character Encoding
 
-Recommended best practice is to encode text (data) files using UTF-8. For converting character encodings of files, see section [Character Encoding Conversion](DwCAHowToGuide#character-encoding-conversion).
+Recommended best practice is to encode text (data) files using UTF-8. 
 
-### Character Encoding Conversion
-
-Simple resources for Unix and Windows to convert character encodings of files:
+The following tools for Unix and Windows can be used to convert character encodings of files:
 
 -   <http://en.wikipedia.org/wiki/Iconv>
 -   <http://www.gnu.org/software/libiconv/>
