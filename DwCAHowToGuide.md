@@ -208,14 +208,10 @@ To use the validator:
 An entry for the resource must be made in the GBIF Registry that enables the resource to be discoverable and accessible. The IPT and GBIF API support automatic registration for these options. Otherwise if you are publishing DwC-As manually, please send an email to <mailto:helpdesk@gbif.org> with the following information:
 
 1.  Dataset title
-2.  Dataset description
-3.  Technical contact (the person to be contacted in matters regarding technical availability or resource configuration issues on the side of the dataset or data publisher)
-4.  Administrative contact (the person to be contacted in all matters regarding scientific data content and usage of a specific dataset or data publisher)
-5.  Institution name (the institution must be registered in GBIF, otherwise start the registration by filling in this [online questionnaire](http://www.gbif.org/publishing-data/request-endorsement#/intro)).
-6.  Your relation to this Institution
-7.  The name of the GBIF Participant Node that can endorse the publishing institution
-8.  The dataset URL: either the wrapper URL (if you are publishing using one of the wrappers), or the DwC-Archive URL (if you are publishing via a zipped DwC-Archive)
-9.  The metadata document URL (optional)
+2.  Dataset description (copied from metadata file)
+3.  Publishing organisation name (must be registered in GBIF, otherwise register it by filling in this [online questionnaire](http://www.gbif.org/publishing-data/request-endorsement#/intro)).
+4.  Your relation to this organisation
+5.  Dataset URL (publicly accessible address of zipped DwC-A)
 
 Please ensure you have all of the information before you send the email. You will receive a confirmation email, and a URL representing the resource entry in the Registry.
 
