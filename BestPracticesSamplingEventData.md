@@ -44,7 +44,7 @@ An alternative way to encode sampling-event data is listing the species occurren
 
 ### Data file formatting recommendations
 
-For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
+For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the sampling-event publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
 
 -   It is recommended to use TAB or Comma-Separated-Values instead of custom field delimiters and quotes.
 -   Be careful and consistent with quotation.
@@ -53,14 +53,17 @@ For ease in understanding, we may use the terms ***field*** in this guide to ref
 -   Encode NULLs as empty strings, i.e. no characters between 2 delimiters, or \\N or \\NULL, but no other text sequence!
 
 ### Sample size
+The following Darwin Core fields store the sample size of a sampling event:
+* **sampleSizeValue**: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event. 
+* **sampleSizeUnit**: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event. 
 
-The value of sampleSizeValue is a number. The value of sampleSizeUnit could be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) (Table 1).
+The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the [Unit of Measurement Vocabulary](http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml). Examples are given in Table 1 below.
 
 > TODO: Provide recommendations on how to represent the sampling area by choosing the appropriate WKT shape or simple latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points.
 
 **Table 1. sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square metres, or 1 litre.**
 
-| **sampleSizeValue**: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event. | **sampleSizeUnit**: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event. |
+| sampleSizeValue | sampleSizeUnit |
 |--|--|
 | 2 | hour |
 | 3 | m2 |
