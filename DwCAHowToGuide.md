@@ -172,7 +172,7 @@ Publishing DwC-A Manually
 
 DwC-As can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system. 
 
-Below is a set of instructions on how to manually create and validate a DwC-Archive:
+Below is a set of instructions on how to manually create a DwC-Archive:
 
 1.  Unless the data are already stored in a CSV/Tab text file, the publisher needs to prepare a text file(s) from the source. If the data are stored in a database, generate an output of delimited text from the source database into an outfile. Most database management systems support this process; an example is given in the Annex to this guide, below, in the section “Outputting Data From a MySQL Database Into a Textfile”. As the metafile maps the columns of the text file to Darwin Core terms, it is not necessary to use Darwin Core terms as column header in the resultant text file, though it may help to reduce errors. A general recommendation is to produce a single core data file and a single file for each extension if the intention is to output data tied to an extension.
 2.  Create a Metafile: There are three different ways to generate the file:
@@ -186,30 +186,36 @@ Below is a set of instructions on how to manually create and validate a DwC-Arch
 Validation of DwC-As
 ==================================
 
-GBIF provides an online [DwC-Archive Validator](http://tools.gbif.org/dwca-validator/) to validate the completed archive. Archives should be validated to ensure they are properly composed before the final publishing/registration step.
+GBIF provides an online [DwC-Archive Validator](http://tools.gbif.org/dwca-validator/) that performs the following checks:
+
+* The metafile (meta.xml) is valid XML and complies with the [Darwin Core Text Guidelines](http://rs.tdwg.org/dwc/terms/guides/text/). 
+* The content is complies with the known extensions and terms registered within the GBIF network. Note GBIF runs a production and a development registry that keeps track of extensions, both of which are used by this validator.
+* The metadata file (eml.xml) is valid XML and complies with the GBIF Metadata Profile schema and the official EML schema.
+* Referential integrity - that mapped ID terms in extension files reference existing core records.
+* All core IDs are unique
+* That no verbatim null values are found in the data. For example NULL or \N
 
 To use the validator:
 
-1.  Combine the text file(s), metafile (meta.xml), and metadata (eml.xml) together in one zipped folder.
-2.  Upload the zipped folder using the form provided in the Validator web page.
-3.  <span id="_Ref163105804" class="anchor"></span>Validate the DwC-Archive
-4.  Review and address any response that refers to a validation error.
-5.  Repeat the process until the file is successfully validated.
-6.  Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org).
+1.  Upload the DwC-A using the form provided in the Validator web page.
+2.  Validate
+3.  Review the response that and address any validation errors
+4.  Repeat the process until the file is successfully validated.
+5.  Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org).
 
-### Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools
+### Registration of DwC-As with GBIF
 
-Registration is the final step of data publication using DwC-A. An entry for the resource is made in the GBIF Registry that enables the resource to be discoverable and accessible. There is no automatic registration for these options. An email should be sent to [*helpdesk@gbif.org*](mailto:helpdesk@gbif.org) with the following information:
+An entry for the resource must be made in the GBIF Registry that enables the resource to be discoverable and accessible. The IPT and GBIF API support automatic registration for these options. Otherwise if you are publishing DwC-As manually, please send an email to <mailto:helpdesk@gbif.org> with the following information:
 
 1.  Dataset title
 2.  Dataset description
 3.  Technical contact (the person to be contacted in matters regarding technical availability or resource configuration issues on the side of the dataset or data publisher)
 4.  Administrative contact (the person to be contacted in all matters regarding scientific data content and usage of a specific dataset or data publisher)
-5.  Institution name
+5.  Institution name (the institution must be registered in GBIF, otherwise start the registration by filling in this [online questionnaire](http://www.gbif.org/publishing-data/request-endorsement#/intro)).
 6.  Your relation to this Institution
 7.  The name of the GBIF Participant Node that can endorse the publishing institution
 8.  The dataset URL: either the wrapper URL (if you are publishing using one of the wrappers), or the DwC-Archive URL (if you are publishing via a zipped DwC-Archive)
-9.  The metadata document URL
+9.  The metadata document URL (optional)
 
 Please ensure you have all of the information before you send the email. You will receive a confirmation email, and a URL representing the resource entry in the Registry.
 
