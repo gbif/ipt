@@ -92,7 +92,7 @@ To help select the most appropriate solution for creating your own archive, answ
 2.  Are your data stored in a relational database?
 3.  How many separate datasets (DwC-Archives) do you plan to publish?
 
-Publishing DwC-As using the IPT is most suitable when:
+[Publishing DwC-As using the IPT](DwCAHowToGuide#publishing-dwc-a-using-the-ipt) is most suitable when:
 
 -   Your data have been digitised already.
 -   Your data either are or are not already in a relational database
