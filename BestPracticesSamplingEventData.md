@@ -51,3 +51,18 @@ For ease in understanding, we may use the terms ***field*** in this guide to ref
 -   Encode text files as UTF-8
 -   Make sure you replace all line breaks in a data field, i.e. \\r \\n or \\r\\n with either simple spaces or use 2 characters like “$$” to replace "\\r" to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the html &lt;br&gt; tag.
 -   Encode NULLs as empty strings, i.e. no characters between 2 delimiters, or \\N or \\NULL, but no other text sequence!
+
+### Sample size
+
+The value of sampleSizeValue is a number. The value of sampleSizeUnit could be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) (Table 1).
+
+TODO: Provide recommendations on how to represent the sampling area by choosing the appropriate WKT shape or simple latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points.
+
+**Table 1. sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square metres, or 1 litre.**
+
+| **sampleSizeValue**: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event. | **sampleSizeUnit**: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event. |
+|--|--|
+| 2 | hour |
+| 3 | m2 |
+| 17 | km |
+| 1 | litre |
