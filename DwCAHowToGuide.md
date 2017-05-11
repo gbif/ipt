@@ -99,14 +99,14 @@ To help select the most appropriate solution for creating your own archive, answ
 -   You need to create/manage multiple archives.
 -   You would like to document datasets using the GBIF Metadata Profile.
 
-[Publishing DwC-As using GBIF Spreadsheet Templates](https://github.com/gbif/ipt/wiki/DwCAHowToGuide#publishing-dwc-a-using-gbif-spreadsheet-templates) is most suitable when:
+[Publishing DwC-As using GBIF Spreadsheet Templates](DwCAHowToGuide#publishing-dwc-a-using-gbif-spreadsheet-templates) is most suitable when:
 
 -   Your data have not been digitised already.
 -   You already maintain data using spreadsheets.
 -   You need a simple solution to create/manage a limited number datasets
 -   You need extra guidance capturing and formatting the data
 
-Publishing DwC-As manually is most suitable when:
+[Publishing DwC-As manually](DwCAHowToGuide#publishing-dwc-a-manually) is most suitable when:
 
 -   Your data have been digitised already.
 -   Your data may be in a relational database.
@@ -144,7 +144,6 @@ Each template provides inline help and instructions in the worksheets.
 To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a [trusted data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) located in your country.
 
 ### Publishing DwC-A Manually
------------------------------------
 
 ***Assumption: Data is already in, or can easily generate, a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). The publisher does not wish to host an IPT instance but does have access to a web server.***
 
