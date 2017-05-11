@@ -154,30 +154,16 @@ Publishing DwC-A using GBIF Spreadsheet Templates
 
 ***Assumption: The occurrence data, simple taxonomic data, or sampling-event data to be published are not yet captured in digital format OR a simple solution for creating a metadata document to describe a dataset is desired.***
 
-GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing metadata, occurrence data, simple species checklists, and sampling-event datasets. To publish the data through the GBIF network, upload the templates to the IPT. If you require an account on an IPT, it is highly recommended that you request an account on a [trusted data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) located in your country. Please contact the GBIF Helpdesk for assistance.
+GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing occurrence data, checklist data, and sampling-event data:
 
-Each template provides inline help and instructions in the worksheets. Filling in the metadata is outside the scope of these instructions; check the separate [GBIF Extended Metadata Profile: How-To Guide](http://links.gbif.org/%20gbif_metadata_profile_guide_en_v1). 
+1.  [Checklist data template](checklistData#templates): suitable for basic species checklists
+2.  [Occurrence data template](occurrenceData#templates): suitable for occurrence data (specimen, observation)
+3.  [Sampling-event data template](samplingEventData#templates): suitable for sampling-event data
+4.  Resource metadata template: suitable for composing a metadata document - pending but imminent
 
-Generate a DwC-Archive using the Spreadsheet Templates:
+Each template provides inline help and instructions in the worksheets. 
 
-1.  Choose the appropriate template:
-    1.  ***Metadata Template (TODO)***: suitable for composing a metadata document.
-    2.  ***Occurrence Template***: suitable for occurrence data (specimen, observation).
-    3.  ***Checklist Template***: suitable for basic species checklists. Several options are provided that cater to different styles for representing classifications.
-    4.  ***Sampling-event Template***: suitable for sampling-event data.
-
-2.  Fill in the template, using the inline help and reference guides included on the project site. To access the inline information, hover the cursor over cells with red upper-right corners.
-3.  Upload the completed template to the IPT and publish it
-
-To use the validator:
-
-1.  Combine the text file(s), metafile (meta.xml), and metadata (eml.xml) together in one zipped folder.
-2.  Upload the zipped folder using the form provided in the Validator web page.
-3.  Validate the DwC-Archive
-4.  Review and address any response that refers to a validation error.
-5.  Repeat the process until the file is successfully validated.
-6.  Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org).
-7.  Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools” below.
+To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a [trusted data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) located in your country.
 
 Publishing DwC-A Manually
 -----------------------------------
