@@ -48,7 +48,3 @@ For ease in understanding, we may use the terms ***field*** in this guide to ref
 -   Encode text files as UTF-8
 -   Make sure you replace all line breaks in a data field, i.e. \\r \\n or \\r\\n with either simple spaces or use 2 characters like “$$” to replace "\\r" to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the html &lt;br&gt; tag.
 -   Encode NULLs as empty strings, i.e. no characters between 2 delimiters, or \\N or \\NULL, but no other text sequence!
-
-A [complete description of the Darwin Core Archive format](http://links.gbif.org/gbif_dwca_how_to_guide_en_v1) is beyond the scope of this guide.
-
-For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
