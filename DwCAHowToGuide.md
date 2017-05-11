@@ -209,44 +209,14 @@ An entry for the resource must be made in the GBIF Registry that enables the res
 
 Please ensure you have all of the information before you send the email. You will receive a confirmation email, and a URL representing the resource entry in the Registry.
 
-Annex 1: Reference Guides to Terms and Vocabularies
-===================================================
-
-This section provides links to both online and printable reference guides to terms and vocabularies that support the DwC-A format. The definitive source for these terms is the GBIF Resources Repository at <http://rs.gbif.org>. It provides a simple menu of options and clear lists and definitions of terms and supporting vocabularies.
-
-Metadata
---------
-
-***GBIF Extended Metadata Profile Reference Guide*** – This document introduces and defines all the terms and their use in the GBIF Metadata Profile built around the Ecological Metadata Language (EML).
-
-A printable guide can be found at: <http://links.gbif.org/gbif_metadata_profile_guide_en_v1>
-
-In addition, a How-To Guide for composing metadata can be found at: <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>
-
-Data (Occurrence, Taxon and Event)
----------------------------
-
-The definitive online list of core Occurrence, Taxon and Event terms are available via the GBIF Resource Repository at <http://rs.gbif.org>
-
-Taxonomic Data/Annotated Species Checklists
--------------------------------------------
-
-Refer to the [Best Practices Guide for publishing species checklists](https://github.com/gbif/ipt/wiki/BestPracticesChecklists). This lists the GBIF Checklist Extensions that can be used in publishing annotated species checklists and taxonomic catalogue data.
-
-Vocabularies 
--------------
-
-Many terms in the core and extension profiles recommend (but do not require) the use of controlled vocabularies to enhance consistency and validation. Some of these vocabularies are listed in the [GBIF Resource Repository](http://rs.gbif.org/vocabulary/).
-
-Annex 2: Preparing Your Data
+Annex: Preparing Your Data
 ============================
 
 For All Sources
 
 Mandatory Terms (must be included)
 
-For Text File Source Only:
--   Files must be encoded using UTF-8. For converting character encodings of files, see section “Character Encoding Conversion”.
+
 
 For Database Source Only:
 -   Setup a SQL view to use functions (this can also be done in the IPT SQL source definition)
@@ -256,8 +226,11 @@ For Database Source Only:
 -   Use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms, or specimen and observations
 -   Select static values
 
-Character Encoding Conversion
------------------------------
+## Character Encoding
+
+Recommended best practice is to encode text (data) files using UTF-8. For converting character encodings of files, see section “Character Encoding Conversion”.
+
+## Character Encoding Conversion
 
 Simple resources for Unix and Windows to convert character encodings of files:
 
@@ -269,10 +242,9 @@ Ex.: Convert character encodings from Windows-1252 to UTF-8 using [*iconv*](http
 
 \#iconv -f CP1252 -t utf-8 example.txt &gt; exampleUTF8.txt
 
-Outputting Data From a MySQL Database Into a Textfile
------------------------------------------------------
+## Outputting Data From a MySQL Database Into a text file
 
-It is very easy to produce ***delimited text*** using the SELECT INTO outfile command from MySQL. The encoding of the resulting file will depend on the server variables and collations used, and might need to be modified before the operation is done. Note that MySQL will export NULL values as \\N by default. Use the IFNULL() function as shown in the following example to avoid this:
+It is very easy to produce ***delimited text file*** using the SELECT INTO outfile command from MySQL. The encoding of the resulting file will depend on the server variables and collations used, and might need to be modified before the operation is done. Note that MySQL will export NULL values as \\N by default. Use the IFNULL() function as shown in the following example to avoid this:
 
 > SELECT
 IFNULL(id, ''), IFNULL(scientific\_name, ''), IFNULL(count,'')
