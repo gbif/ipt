@@ -22,6 +22,33 @@ The DwC-A format and the specific profile described here represent an internatio
 
 Sampling-event data is a type of data available from thousands of environmental, ecological, and natural resource investigations. These can be one-off studies or monitoring programmes. Such data are usually quantitative, calibrated, and follow certain protocols so that changes and trends of populations can be detected. This is in contrast to opportunistic observation and collection data, which today form a significant proportion of openly accessible biodiversity data. 
 
-From the ecological perspective, sampling event data is qualitative presence-only or presence-absence data, or quantitative abundance data collected together with documented methodology, such as sampling technique, temporal, taxonomic, and spatial “envelope”, encompassing the reported observations.
+Darwin Core Archive Format
+--------------------------
 
-To better understand the difference in data richness level, supported by GBIF [“onion” visualization based on Donald’s slides] one may think of checklist as of WHAT data, with name as the central element, of occurrence as of WHAT-WHERE-WHENs, individual observations, backed by the specimens or not. Sampling event data is different in richness and in packaging biodiversity data: events are WHERE-WHENs and occurrences WHAT-HOW-MUCH are listed for each of the event in a single table with optional quantitative data. Arguably the most important element of a dataset is metadata, containing WHO and HOW details.
+Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the [Darwin Core Archives How-to Guide](https://github.com/gbif/ipt/wiki/DwCAHowToGuide).
+
+### Sampling-event Metadata
+
+Documenting the provenance and scope of datasets is required in order to publish sampling-event data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the sampling methodologies used for its compilation, and the individuals and organisations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for sampling-event datasets based on the Ecological Metadata Language. A How-to guide describes all the options for describing a sampling-event dataset using this format. See <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>
+
+### Sampling-event Data
+
+The Darwin Core Archive format provides the structural framework for publishing sampling-event data. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one ***core file***, containing the basic checklist elements (species list, classification, synonymy) surrounded by a number of ‘***extensions***’, that describe related data types (such as common names). Links between core and extension records are made using a taxon identifier (***taxonID***) data element. In this way, many extension records can exist for each single core taxon record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to species checklists.
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/dwc-a_checklist.png' width="569" height="260" />
+
+Figure 1. Darwin Core Archive data files in 'star schema'
+
+### Data file formatting recommendations
+
+For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
+
+-   It is recommended to use TAB or Comma-Separated-Values instead of custom field delimiters and quotes.
+-   Be careful and consistent with quotation.
+-   Encode text files as UTF-8
+-   Make sure you replace all line breaks in a data field, i.e. \\r \\n or \\r\\n with either simple spaces or use 2 characters like “$$” to replace "\\r" to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the html &lt;br&gt; tag.
+-   Encode NULLs as empty strings, i.e. no characters between 2 delimiters, or \\N or \\NULL, but no other text sequence!
+
+A [complete description of the Darwin Core Archive format](http://links.gbif.org/gbif_dwca_how_to_guide_en_v1) is beyond the scope of this guide.
+
+For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
