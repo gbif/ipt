@@ -14,15 +14,12 @@
   * Publishing DwC-A Manually
 * Validation of DwC-As
 * Registration of DwC-As with GBIF
-* Annex 1: Reference Guides to Terms and Vocabularies
-  * Metadata
-  * Data (Occurrence and Taxon)
-  * Taxonomic Data/Annotated Species Checklists
-  * Vocabularies
-* Annex 2: Preparing Your Data
+* Annex: Preparing Your Data
+  * Required and recommended terms
+  * Character Encoding
   * Character Encoding Conversion
-  * Outputting Data From a MySQL Database Into a Textfile
-Annex 3: DwC-A Examples
+  * Data From a Database
+  * DwC-A Examples
 
 ## Document Control
 
@@ -256,7 +253,7 @@ Here are some other recommendations for generating data using SQL queries/functi
 - Create year/month/day by parsing native SQL date types
 - Use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms, or specimen and observations
 
-DwC-A Examples
+### DwC-A Examples
 
 The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) provides a set of example DwC-As for each type of data:
 
