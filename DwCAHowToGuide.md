@@ -13,7 +13,7 @@
   * Publishing DwC-A using GBIF Spreadsheet Templates 
   * Publishing DwC-A Manually
 * Validation of DwC-As
-  * Registering data using Spreadsheet Processor, Make-Your-Own DwC-A, or other community tools
+* Registration of DwC-As with GBIF
 * Annex 1: Reference Guides to Terms and Vocabularies
   * Metadata
   * Data (Occurrence and Taxon)
