@@ -257,3 +257,10 @@ Here are some other recommendations for generating data using SQL queries/functi
 - Use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms, or specimen and observations
 
 DwC-A Examples
+
+The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) provides a set of example DwC-As for each type of data:
+
+1.  Checklist data: [examplar datasets](checklistData#exemplar-datasets)
+2.  Occurrence data: [examplar datasets](occurrenceData#exemplar-datasets)
+3.  Sampling-event data: [examplar datasets](samplingEventData#exemplar-datasets)
+4.  Resource metadata: [examplar datasets](resourceMetadata#exemplar-datasets)
