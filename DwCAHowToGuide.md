@@ -55,7 +55,7 @@ The central idea of an archive is that its data files are logically arranged in 
 
 Sharing entire datasets as DwC-As instead of using page-able web services like [DiGIR](http://digir.sourceforge.net/) and [TAPIR](http://tdwg.github.io/tapir/docs/tdwg_tapir_specification_2010-05-05.html) allows much simpler and more efficient data transfer. For example, retrieving 260,000 records via TAPIR takes about nine hours, and involves issuing 1,300 http requests to transfer 500 MB of XML-formatted data. The exact same dataset, when encoded as DwC-A and zipped becomes a 3 MB file. Therefore, GBIF highly recommends compressing an archive using ZIP or GZIP when generating a DwC-A. In addition, producing DwC-As does not require any dedicated software to be installed by a data publisher, making it a much simpler option.
 
-The production of a DwC-A requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers instead of local ones<sup>[1](DwCAHowToGuide#references)</sup>. This identifier is referred to as the “core ID” in DwC-As and the specific Darwin Core term that it corresponds to is dependent on the data type being published.
+The production of a DwC-A requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers (GUID) instead of local ones. Refer to [A Beginner’s Guide to Persistent Identifiers](http://links.gbif.org/persistent_identifiers_guide_en_v1.pdf) for more information about GUIDs. This identifier is referred to as the “core ID” in DwC-As and the specific Darwin Core term that it corresponds to is dependent on the data type being published.
 
 ### DwC-A Components
 ------------------------------
@@ -209,28 +209,22 @@ An entry for the resource must be made in the GBIF Registry that enables the res
 
 Please ensure you have all of the information before you send the email. You will receive a confirmation email, and a URL representing the resource entry in the Registry.
 
-Annex: Preparing Your Data
-============================
+## Annex: Preparing Your Data
 
-For All Sources
+### Required and recommended terms
 
-Mandatory Terms (must be included)
+The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) provides a set of required and recommended terms for each type of data:
 
+1.  Checklist data: [required terms](checklistData#required-dwc-fields) / [recommended terms](checklistData#recommended-dwc-fields)
+2.  Occurrence data: [required terms](occurrenceData#required-dwc-fields) / [recommended terms](occurrenceData#recommended-dwc-fields)
+3.  Sampling-event data: [required terms](samplingEventData#required-dwc-fields) / [recommended terms](samplingEventData#recommended-dwc-fields)
+4.  Resource metadata: [required terms](resourceMetadata#required-dwc-fields) / [recommended terms](resourceMetadata#recommended-dwc-fields)
 
+### Character Encoding
 
-For Database Source Only:
--   Setup a SQL view to use functions (this can also be done in the IPT SQL source definition)
-    -   Concatenate or split strings as required, e.g. to construct the full scientific name string (watch out for autonyms)
-    -   Format dates to conform to ISO datetime format
-    -   Create year/month/day by parsing native SQL date types
--   Use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms, or specimen and observations
--   Select static values
+Recommended best practice is to encode text (data) files using UTF-8. For converting character encodings of files, see section [Character Encoding Conversion](DwCAHowToGuide#character-encoding-conversion).
 
-## Character Encoding
-
-Recommended best practice is to encode text (data) files using UTF-8. For converting character encodings of files, see section “Character Encoding Conversion”.
-
-## Character Encoding Conversion
+### Character Encoding Conversion
 
 Simple resources for Unix and Windows to convert character encodings of files:
 
@@ -242,27 +236,24 @@ Ex.: Convert character encodings from Windows-1252 to UTF-8 using [*iconv*](http
 
 \#iconv -f CP1252 -t utf-8 example.txt &gt; exampleUTF8.txt
 
-## Outputting Data From a MySQL Database Into a text file
+### Data From a Database
 
-It is very easy to produce ***delimited text file*** using the SELECT INTO outfile command from MySQL. The encoding of the resulting file will depend on the server variables and collations used, and might need to be modified before the operation is done. Note that MySQL will export NULL values as \\N by default. Use the IFNULL() function as shown in the following example to avoid this:
+It is easy to produce delimited text files from a database using the SQL commands. For MySQL, use the `SELECT INTO outfile` command. The encoding of the resulting file will depend on the server variables and collations used, and might need to be modified before the operation is done. Note that MySQL will export NULL values as \\N by default. Use the IFNULL() function as shown in the following example to avoid this:
 
-> SELECT
-IFNULL(id, ''), IFNULL(scientific\_name, ''), IFNULL(count,'')
-INTO outfile '/tmp/dwc.txt'
-FIELDS TERMINATED BY ','
-OPTIONALLY ENCLOSED BY '"'
-LINES TERMINATED BY '\\n'
-FROM`
-dwc;
+>
+    SELECT
+    IFNULL(id, ''), IFNULL(scientific\_name, ''), IFNULL(count,'')
+    INTO outfile '/tmp/dwc.txt'
+    FIELDS TERMINATED BY ','
+    OPTIONALLY ENCLOSED BY '"'
+    LINES TERMINATED BY '\\n'
+    FROM`
+    dwc;
 
-Annex 3: DwC-A Examples
-=====================================
+Here are some other recommendations for generating data using SQL queries/functions:
+- Concatenate or split strings as required, e.g. to construct the full scientific name string (watch out for autonyms)
+- Format dates to conform to ISO datetime format
+- Create year/month/day by parsing native SQL date types
+- Use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms, or specimen and observations
 
-The following URLS refer to example DwC-A files that can be accessed as reference files.
-
-Checklist: <http://gbif-ecat.googlecode.com/files/Whales-DWC-A.zip>
-
-Occurrence: <http://www.siba.ad/andorra/dwcaMolluscsAndorra.zip>
-
-## References
-[1] A Beginner’s Guide to Persistent Identifiers, http://links.gbif.org/persistent_identifiers_guide_en_v1.pdf
+DwC-A Examples
