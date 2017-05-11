@@ -22,8 +22,7 @@ The DwC-A format and the specific profile described here represent an internatio
 
 Sampling-event data is a type of data available from thousands of environmental, ecological, and natural resource investigations. These can be one-off studies or monitoring programmes. Such data are usually quantitative, calibrated, and follow certain protocols so that changes and trends of populations can be detected. This is in contrast to opportunistic observation and collection data, which today form a significant proportion of openly accessible biodiversity data. 
 
-Darwin Core Archive Format
---------------------------
+### How to express sampling-event data in DwC-A?
 
 Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the [Darwin Core Archives How-to Guide](https://github.com/gbif/ipt/wiki/DwCAHowToGuide).
 
