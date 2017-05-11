@@ -80,7 +80,7 @@ GBIF currently supports the following three biodiversity data types as the basis
 The entire collection of files (core data, extensions, metafile, and resource metadata) can be compressed into a single archive file. Compression formats include [ZIP](http://en.wikipedia.org/wiki/ZIP_(file_format)) and TAR.GZ /[TGZ](http://en.wikipedia.org/wiki/Tar_(file_format)).
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/zipped_archive.png' width="484" height="130" alt=" Text files are zipped into a single archive" />
 
-This single, compressed file is the DwC-A file! This file is easily transported via email, or FTP. It can be served to GBIF simply by putting the file on a web server and registering the URL with GBIF. Details on registering are provided in the Validation and Registration section of this document. See: DwC-A Data Publishing Solutions.
+This single, compressed file is the DwC-A file! 
 
 ## DwC-A Data Publishing Solutions
 
