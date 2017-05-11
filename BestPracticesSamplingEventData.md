@@ -10,4 +10,4 @@
 
 ## Suggested citation
 
-> GBIF (2017). Best Practices in Publishing Sampling-event data. Accessible online at https://github.com/gbif/ipt/wiki/BestPracticesChecklists
+> GBIF (2017). Best Practices in Publishing Sampling-event data. Accessible online at https://github.com/gbif/ipt/wiki/BestPracticesSamplingEventData
