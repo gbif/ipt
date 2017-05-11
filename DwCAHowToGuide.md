@@ -99,7 +99,7 @@ To help select the most appropriate solution for creating your own archive, answ
 -   You need to create/manage multiple archives.
 -   You would like to document datasets using the GBIF Metadata Profile.
 
-Publishing DwC-As using GBIF Spreadsheet Templates is most suitable when:
+[Publishing DwC-As using GBIF Spreadsheet Templates](https://github.com/gbif/ipt/wiki/DwCAHowToGuide#publishing-dwc-a-using-gbif-spreadsheet-templates) is most suitable when:
 
 -   Your data have not been digitised already.
 -   You already maintain data using spreadsheets.
