@@ -72,4 +72,6 @@ Yes, the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6r
 * Citation DOI (remember to turn on citation [auto-generation](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#citations), to ensure your dataset's citation complies with the [best-practice format](https://github.com/gbif/ipt/wiki/IPT2Citation.wiki)).  
 * Alternate identifiers list 
 
-Be aware, however, that using the GBIF DOI in the citation may mislead users, as it resolves to the GBIF dataset page - not the online dataset. A DOI is still preferred to using a link to the online IPT dataset page URL because while the DOI guarantees persistent access, the IPT URL can change. GBIF only assigns a DOI to a dataset during registration, if no DOI was previously assigned to it.
+Note GBIF only assigns a DOI to a dataset during registration, if no DOI was previously assigned to it.
+
+Also note that using the GBIF DOI in the citation may mislead users, as it resolves to the GBIF dataset page - not the online dataset. A DOI is preferred to using a URL to the online dataset, however, because it guarantees persistent access. 
