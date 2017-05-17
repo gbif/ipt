@@ -52,21 +52,21 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 
 #### FAQ: 
 
-##### Q. What should I do if my data cannot be made freely available?
+#### Q. What should I do if my data cannot be made freely available?
 
 **A.** You should publicise its existence by publishing metadata about it. You can indicate the data can be made available by request, to encourage future collaboration and meta-analysis.
 
-##### Q. How can I apply a license to my dataset?
+#### Q. How can I apply a license to my dataset?
 
 **A.** Simply use the IPT's built-in metadata editor following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ApplyingLicense.wiki#dataset-level).  
 
 Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ApplyingLicense.wiki#supplementary-information) 
 
-##### Q. How can I add a link to the dataset's related data paper?
+#### Q. How can I add a link to the dataset's related data paper?
 
 **A.** Reference the related data paper in the IPT's Bibliographic Citations metadata section. Ensure the citation is properly formatted, including its DOI as a linkable URL (e.g. https://doi.org/10.1038/sdata.2017.16). The makes it possible to discover the data paper while reading the dataset metadata. 
 
-##### Q. GBIF assigned my dataset a DOI - can I add this to my metadata?
+#### Q. GBIF assigned my dataset a DOI - can I add this to my metadata?
 
 **A.** Yes, the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6rxy) can be added to the IPT dataset metadata in the following places:
 * Citation DOI (remember to turn on citation [auto-generation](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#citations), to ensure your dataset's citation complies with the [best-practice format](https://github.com/gbif/ipt/wiki/IPT2Citation.wiki)).  
