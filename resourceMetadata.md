@@ -4,7 +4,7 @@
 
 ---
 
-#Resource Metadata
+# Resource Metadata
 
 ## Table of contents
 + [Introduction](resourceMetadata#introduction)
@@ -60,9 +60,16 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 
 **A.** Simply use the IPT's built-in metadata editor following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ApplyingLicense.wiki#dataset-level).  
 
-Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ApplyingLicense.wiki#supplementary-information)
+Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ApplyingLicense.wiki#supplementary-information) 
 
+##### Q. How can I link to a related data paper?
 
+**A.** Reference the related data paper in the IPT's Bibliographic Citations metadata section. Ensure the citation is properly formatted, including its DOI identifier as a linkable URL (e.g. https://doi.org/10.1038/sdata.2017.16). The makes it possible to discover the data paper while reading the dataset metadata. 
 
+##### Q. GBIF assigned my dataset a DOI - can I add this to my metadata?
 
+Yes, the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6rxy) can be added to the IPT dataset metadata in the following places:
+* Citation DOI (remember to turn on citation [auto-generation](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#citations), to ensure your dataset's citation complies with the [best-practice format](https://github.com/gbif/ipt/wiki/IPT2Citation.wiki)).  
+* Alternate identifiers list 
 
+Be aware, however, that using the GBIF DOI in the citation may mislead users, as it resolves to the GBIF dataset page - not the online dataset. A DOI is still preferred to using a link to the online IPT dataset page URL because while the DOI guarantees persistent access, the IPT URL can change. GBIF only assigns a DOI to a dataset during registration, if no DOI was previously assigned to it.
