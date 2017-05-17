@@ -64,7 +64,7 @@ Alternatively if your metadata is already in EML you should assign the dataset a
 
 ##### Q. How can I add a link to the dataset's related data paper?
 
-**A.** Reference the related data paper in the IPT's Bibliographic Citations metadata section. Ensure the citation is properly formatted, including its DOI identifier as a linkable URL (e.g. https://doi.org/10.1038/sdata.2017.16). The makes it possible to discover the data paper while reading the dataset metadata. 
+**A.** Reference the related data paper in the IPT's Bibliographic Citations metadata section. Ensure the citation is properly formatted, including its DOI as a linkable URL (e.g. https://doi.org/10.1038/sdata.2017.16). The makes it possible to discover the data paper while reading the dataset metadata. 
 
 ##### Q. GBIF assigned my dataset a DOI - can I add this to my metadata?
 
