@@ -62,7 +62,7 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 
 Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following [these instructions](https://github.com/gbif/ipt/wiki/IPT2ApplyingLicense.wiki#supplementary-information) 
 
-##### Q. How can I link to a related data paper?
+##### Q. How can I add a link to the dataset's related data paper?
 
 **A.** Reference the related data paper in the IPT's Bibliographic Citations metadata section. Ensure the citation is properly formatted, including its DOI identifier as a linkable URL (e.g. https://doi.org/10.1038/sdata.2017.16). The makes it possible to discover the data paper while reading the dataset metadata. 
 
