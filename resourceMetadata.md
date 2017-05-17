@@ -68,7 +68,7 @@ Alternatively if your metadata is already in EML you should assign the dataset a
 
 ##### Q. GBIF assigned my dataset a DOI - can I add this to my metadata?
 
-Yes, the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6rxy) can be added to the IPT dataset metadata in the following places:
+**A.** Yes, the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6rxy) can be added to the IPT dataset metadata in the following places:
 * Citation DOI (remember to turn on citation [auto-generation](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#citations), to ensure your dataset's citation complies with the [best-practice format](https://github.com/gbif/ipt/wiki/IPT2Citation.wiki)).  
 * Alternate identifiers list 
 
