@@ -68,7 +68,7 @@ Populate it and upload it to the IPT. Try to augment it with as many [DwC terms]
 
 ##### Q. How can I generalize sensitive species occurrence data?
 
-**A.** How you generalize sensitive species data (e.g. restrict the resolution of the data) depends on the species' category of sensitivity. Note it is the responsibility of the publisher to protect sensitive species occurrence data. For guidance, please refer to this [best-practice guide](http://www.gbif.org/resource/80512). Additionally, you could refer to this [recent essay in Science](http://science.sciencemag.org/content/356/6340/800), which presents a simplified way to assess the risks from publishing sensitive species data using a simple scheme.
+**A.** How you generalize sensitive species data (e.g. restrict the resolution of the data) depends on the species' category of sensitivity. Where there is low risk of perverse outcomes, unrestricted publication of sensitive species data remains appropriate. Note it is the responsibility of the publisher to protect sensitive species occurrence data. For guidance, please refer to this [best-practice guide](http://www.gbif.org/resource/80512). You could refer to this [recent essay in Science](http://science.sciencemag.org/content/356/6340/800), which presents a simplified assessment scheme that can be used to help assess the risks from publishing sensitive species data.
 
 When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term [informationWithheld](http://rs.tdwg.org/dwc/terms/#informationWithheld). 
 
