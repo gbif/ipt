@@ -172,7 +172,9 @@ To use the validator:
 
 ## Registration of DwC-As with GBIF
 
-An entry for the resource must be made in the GBIF Registry that enables the resource to be discoverable and accessible. The IPT and GBIF API support automatic registration for these options. Otherwise if you are publishing DwC-As manually, please send an email to <mailto:helpdesk@gbif.org> with the following information:
+An entry for the resource must be made in the GBIF Registry that enables the resource to be discoverable and accessible. Each new registration needs to be associated with a publishing organization that has been formally endorsed by a GBIF Participant Node manager. This is a simple quality control step required by the GBIF Participant Node Managers Committee. 
+
+Fortunately, the IPT and GBIF API support automatic registration for datasets. Otherwise if you are publishing DwC-As manually, initiate registration by sending an email to <mailto:helpdesk@gbif.org> with the following information:
 
 1.  Dataset title
 2.  Dataset description (copied from metadata file)
@@ -180,7 +182,7 @@ An entry for the resource must be made in the GBIF Registry that enables the res
 4.  Your relation to this organisation
 5.  Dataset URL (publicly accessible address of zipped DwC-A)
 
-Please ensure you have all of the information before you send the email. You will receive a confirmation email, and a URL representing the resource entry in the Registry.
+You will receive a confirmation email, and a URL representing the resource entry in the Registry.
 
 ## Annex: Preparing Your Data
 
