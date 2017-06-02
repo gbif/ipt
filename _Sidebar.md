@@ -31,7 +31,6 @@ _[[Para la versión en español|Inicio]]_
     - [[DOI Workflows|IPT2DOIWorkflow.wiki]]
     - [[How To Apply a License|IPT2ApplyingLicense.wiki]]
     - [[How to write your own EML XML file|How-to-write-your-own-EML-XML-file]]
-    - [[IPT Workbook|Workbook.wiki]]
     - [[DarwinCore|DarwinCore.wiki]]
     - [[Data Preparation|DataPreparation.wiki]]
     - [[Occurrence Resource Tutorial|TutorialOccurrenceResource.wiki]]
