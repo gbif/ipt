@@ -7,6 +7,7 @@ _[[Para la versión en español|Inicio]]_
     - [[Table of Contents|IPT2ManualNotes.wiki#table-of-contents]]
     - [[Getting Started Guide|IPT2ManualNotes.wiki#getting-started-guide]]
     - [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]]
++ [[How to Publish Guide|howToPublish]]
 + [[FAQ|FAQ.wiki]] 
 + [[Roadmap|Roadmap.wiki]]
 + [[Version History|VersionHistory.wiki]]
