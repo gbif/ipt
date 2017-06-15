@@ -18,6 +18,10 @@ At the simplest, GBIF enables sharing information describing a biodiversity data
 
 Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users.
 
+To give yourself an introduction to how the IPT can be used to publish biodiversity data through GBIF.org, it's highly recommended watching this concise 25 minute live demo below:
+
+<a href="https://vimeo.com/221572634" target="_blank"><img src="https://i.vimeocdn.com/video/639873882_1280x720.jpg" alt="How to publish biodiversity data through GBIF.org using the IPT" width="640" height="384" border="10" /></a>
+
 ## Prerequisites
 1. You require an account on a GBIF Integrated Publishing Toolkit (IPT) to publish your data. 
   
