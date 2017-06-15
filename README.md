@@ -6,6 +6,10 @@ Inside this repository you can find the [IPT User Manual](https://github.com/gbi
 
 The Integrated Publishing Toolkit (IPT) is a free open source software tool written in Java that is used to publish and share biodiversity datasets through the GBIF network. The IPT can also be configured with either a DataCite or EZID account in order to assign DOIs to datasets transforming it into a data repository. 
 
+To understant how the IPT actually allows you to publish biodiversity data through GBIF.org, it's highly recommended watching this concise 25 minute live demo below (note you can skip to 1:02):
+
+<a href="https://vimeo.com/221572634" target="_blank"><img src="https://i.vimeocdn.com/video/639873882_1280x720.jpg" alt="How to publish biodiversity data through GBIF.org using the IPT" width="640" height="384" border="10" /></a>
+
 ### Latest Release: 2.3.4
 
 Version 2.3.4 is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.4/ipt-2.3.4.war). This new version includes a security update that fixes a [critical vulnerability](https://struts.apache.org/docs/s2-045.html) that has been discovered in the Apache Struts web framework, which the IPT uses. According to [this article](http://thehackernews.com/2017/03/apache-struts-framework.html), this is a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability. **Therefore all users should plan to upgrade to this version immediately following the instructions in the [Release Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki).**
