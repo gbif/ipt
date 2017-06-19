@@ -1,61 +1,31 @@
-<span id="_Toc166925711" class="anchor"></span><img src="media/image1.png" width="97" height="115" />GBIF Metadata Profile:
+# GBIF Metadata Profile – How-to Guide
+<sup>Version 2.0</sup>
 
-How-to Guide
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_coleoptera.png' align="right" width="150" height="150" />
 
-Version 1.0
+## Table of Contents
+* Introduction
+* Metadata Authoring: What to Use?
+  * Integrated Publishing Toolkit (IPT)
+  * GBIF Darwin Core Spreadsheet Templates
+  * Modify an Existing Sample Document
+* Appendix
+  * Required Elements
+  * Best practices guide to debugging/validating XML
 
-<img src="media/image2.png" width="454" height="371" />
-
-|                                                                                                                                                                                                                                                                             |
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Suggested citation:                                                                                                                                                                                                                                                         
+## Suggested citation                                                                                                                                                                                                                                                         
                                                                                                                                                                                                                                                                               
- GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, 11 pp, accessible online at <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>  |
+> GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, 11 pp, accessible online at <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>
 
-ISBN: 87-92020-24-0
+_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._
 
-Persistent URI: http://links.gbif.org/gbif\_metadata\_profile\_how-to\_en\_v1
+## Document Control
 
-Language: English
-
-Copyright © Global Biodiversity Information Facility, 2010
-
-**License:**<img src="media/image3.png" width="88" height="29" />
-
-This document is licensed under a [Creative Commons Attribution 3.0 Unsupported License](http://creativecommons.org/licenses/by/3.0/)
-
-Document Control:
-
-| Version | Description                                                                                                                                       | Date of release | Author(s)  |
-|---------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|------------|
+| Version | Description                  | Date of release | Author(s) |
+|---------|------------------------------|-----------------|-----------|
 | 1.0     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR |
+| 2.0     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak |
 
-***Cover Art Credit:*** <span id="_Toc167110104" class="anchor"></span>John Giez,
-Maidenhair fern sporophyte, Adiatum sp.
-
-About GBIF
-==========
-
-The Global Biodiversity Information Facility (GBIF) was established as a global mega-science initiative to address one of the great challenges of the 21<sup>st</sup> century – harnessing knowledge of the Earth’s biological diversity. GBIF envisions ‘a world in which biodiversity information is freely and universally available for science, society, and a sustainable future’. GBIF’s mission is to be the foremost global resource for biodiversity information, and engender smart solutions for environmental and human well-being[1]. To achieve this mission, GBIF encourages a wide variety of data publishers across the globe to discover and publish data through its network.
-
-Table of Contents
-=================
-
-Introduction 1
-
-Metadata Authoring: What to Use? 2
-
-Integrated Publishing Toolkit (IPT) 2
-
-GBIF Darwin Core Spreadsheet Templates 4
-
-Modify an Existing Sample Document 5
-
-Appendix 7
-
-Required Elements 7
-
-Best practices guide to debugging/validating XML 7
 
  List of Figures
 ================
