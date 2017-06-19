@@ -66,10 +66,25 @@ The [ALA IPT](http://ipt.ala.org.au/) is recognized as a repository in [BioShari
 
 ## Belgium
 
-The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdesk support to publishers in Belgium and hosting support for datasets on the [Belgian BIF IPT](http://ipt.biodiversity.be/). Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity Platform also hosts an IPT for each of these countries/institutions:
+The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdesk support to publishers in Belgium and hosting support for datasets on the [Belgian BIF IPT](http://ipt.biodiversity.be/). Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organisations:
+
++[Royal Belgian Institute of Natural Sciences](www.naturalsciences.be)
++[University of Liège](www.ulg.be)
++[Botanical Garden Meise] (http://www.plantentuinmeise.be)
++[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)](http://biodiversite.wallonie.be)
++[University of Mons-Hainaut](www.http://portail.umons.ac.be)
++[Université Libre de Bruxelles ](http://www.ulb.ac.be/)
++[Royal Museum for Central Africa, Belgium](www.africamuseum.be)
++[Ghent University](www.ugent.be)
++[Natagriwal](https://www.natagriwal.be/)
++[Institute of Tropical Medicine Antwerp](https://www.itg.be/)
+
+The Belgian Biodiversity Platform also hosts an IPT for each of these countries/institutions:
 + [GBIF Mauritania IPT](http://ipt-mrbif.bebif.be/)
 + [Antabif IPT](http://ipt.biodiversity.aq/)
 + [Biofresh IPT](http://data.freshwaterbiodiversity.eu/ipt/)
+
+The Research Institute for Nature and Forest (INBO) also provides [IPT](http://data.inbo.be/ipt) hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organisations: [natuurpunt](www.natuurpunt.be) and the Flemish Environment Agency [VMM](www.vmm.be).
 
 ## Canada
 
