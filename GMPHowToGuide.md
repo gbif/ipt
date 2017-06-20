@@ -13,7 +13,19 @@
 * What changed in version 1.1 of the GMP since 1.0.2?
 * Example files
 * Annex
-  * GMP Elements
+  * Introduction to the GBIF Metadata Profile
+  * Metadata Elements 
+    * Dataset (Resource) 
+    * Project 
+    * People and Organisations 
+    * KeywordSet (General Keywords) 
+    * Coverage 
+    * Taxonomic Coverage 
+    * Geographic Coverage 
+    * Temporal Coverage 
+    * Methods 
+    * Intellectual Property Rights 
+    * Additional Metadata + NCD (Natural Collections Description Data) Related 
 
 ## Suggested citation                                                                                                                                                                                                                                                         
                                                                                                                                                                                                                                                                               
@@ -125,60 +137,18 @@ An example EML complying with v1.1 of the GBIF Metadata Profile can be found [he
 
 ## Annex
 
-A detailed description of each element in the GBIF Metadata Profile can be found below.
-
-Reference Guide
-
-
-Table of Contents
-=================
-
-Introduction 1
-
-Metadata Elements 2
-
-Dataset (Resource) 3
-
-Project 5
-
-People and Organisations 6
-
-KeywordSet (General Keywords) 9
-
-Coverage 10
-
-Taxonomic Coverage 10
-
-Geographic Coverage 11
-
-Temporal Coverage 12
-
-Methods 13
-
-Intellectual Property Rights 14
-
-Additional Metadata + NCD (Natural Collections Description Data) Related 15
-
-Introduction
-============
+### Introduction to the GBIF Metadata Profile
 
 Metadata, literally “data about data” are an essential component of a data management system, describing such aspects as the “who, what, where, when and how” pertaining to a resource. In the GBIF context, resources are datasets, loosely defined as collections of related data, the granularity of which is determined by the data custodian. Metadata can occur in several levels of completeness. In general, metadata should allow a prospective end user of data to:
 
 1.  Identify/discover its existence,
-
 2.  Learn how to access or acquire the data,
-
 3.  Understand its fitness-for-use, and
-
 4.  Learn how to transfer (obtain a copy of) the data.
 
-The GBIF Metadata Profile (GMP) was developed in order to standardise how resources get described at the dataset level in the GBIF [Data Portal](http://data.gbif.org)[2]. This profile can be transformed to other common metadata formats such as the ISO 19139 metadata profile[3].
+The GBIF Metadata Profile (GMP) was developed in order to standardise how resources get described at the dataset level in the GBIF [Data Portal](http://www.gbif.org). This profile can be transformed to other common metadata formats such as the [ISO 19139 metadata profile](http://marinemetadata.org/references/iso19139).
 
 In the GMP there is a minimum set of mandatory elements required for identification, but it is recommended that as many elements be used as possible to ensure the metadata are as descriptive and complete as possible.
-
-There are various ways that you can write a metadata document conforming to the GMP, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Darwin Core Spreadsheet template metadata form, or simply taking a [sample metadata document](http://tools.gbif.org/eml-gbif-sample.xml) and replacing fields of relevance with your own data. For a thorough set of instructions on ways to author metadata conforming to the GMP, you can refer to the [GBIF Metadata Profile - How-To Guide.](http://links.gbif.org/gbif_metadata_profile_how-to_en_v1)[4]
-
-Once the metadata document has been written, it can be validated against the [GBIF metadata profile schema](http://rs.gbif.org/schema/eml-gbif-profile/1.0/eml-gbif-profile.xsd)[5].
 
 Metadata Elements
 =================
