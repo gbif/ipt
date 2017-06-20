@@ -67,15 +67,13 @@ The [[IPT User Manual|https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#meta
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/ipt_help_dialog.png' width="541" height="106" />
 
-Figure 1. Screenshot of a help dialog for the term “Personnel Identifier”
-
+_Figure 1. Screenshot of a help dialog for the term “Personnel Identifier”_
 
 To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2).
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/ipt_field_validation.png' width="256" height="83" />
 
-Figure 2. Screenshot of the field validation message displayed when an email field is submitted with an irregular email address.
-
+_Figure 2. Screenshot of the field validation message displayed when an email field is submitted with an irregular email address._
 
 For further reference, a description of each element in the GBIF Metadata Profile can be found below with an accompanying example.
 
@@ -85,33 +83,15 @@ If at any time the metadata are modified, the user only has to update the docume
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/ipt_published_versions.png' width="570" height="123" />
 
-Figure 3. Screenshot of the Published Versions section of the Manage Resource page of the IPT.
-
+_Figure 3. Screenshot of the Published Versions section of the Manage Resource page of the IPT._
 
 At any point, the resource manager can choose to make the resource publicly available on the Internet and subsequently even register it with GBIF making it globally discoverable. 
 
-GBIF Darwin Core Spreadsheet Templates
---------------------------------------
+## GBIF Metadata Template
 
-The GBIF Darwin Core Spreadsheet Templates are simple tools to assist in the publication of either occurrence or taxonomic data through the GBIF network. Once data have been entered into the templates, the [GBIF Spreadsheet Processor](http://tools.gbif.org/spreadsheet_processor)[12] can be used to generate a Darwin Core Archive file containing both the dataset and its associated metadata. The Darwin Core Archive will then need to be made publically accessible on a web server and the URL registered with GBIF. This process is described in [Publishing and Registering Data with GBIF](http://links.gbif.org/dwc-a_publishing_guide_en_v1)[13].
+The GBIF Metadata Template will be similar to a manuscript template that makes it easy to submit resource metadata. The required fields will all be clearly indicated. Once data have been entered into the template, a metadata author will have to enter it into the IPT via the metadata editor. The IPT metadata editor ensures that fields that comply with controlled vocabularies get entered using the correct value, such as the country field. The IPT also ensures the generated metadata document is valid XML and validates against the GBIF Metadata Profile. Ultimately this two-step process (1. metadata template -> 2. IPT metadata editor) can be used to generate a valid resource metadata document. 
 
-Companion [User Guides](http://gbif-spreadsheet-processor.googlecode.com/svn/trunk/documentation/User-Guide-Basic.doc)[14] for the GBIF Darwin Core Spreadsheet Templates (either the [Species & Vernacular Names Spreadsheet Template](http://tools.gbif.org/spreadsheet-processor/templates/checklist/checklist-3_v0.9.xls)[15], the [Species Checklist Spreadsheet Template](http://tools.gbif.org/spreadsheet-processor/templates/checklist/checklist-1_v0.9.xls)[16] or the [Occurrence Spreadsheet Template](http://tools.gbif.org/spreadsheet-processor/templates/occurrence/occurrence-1_v0.9.xls)[17]) provide thorough assistance on how to author metadata.
-
-<span id="_Toc280033715" class="anchor"></span><img src="media/image7.png" alt="Description: la_naturaleza:Users:rugbysrv:Desktop:metadata.png" width="594" height="108" />
-
-<span id="_Toc280033716" class="anchor"></span>Figure 4. Screenshot of part of the Basic Metadata section of the Dataset Description page in Spreadsheet mode
-
-There is hover-over help for fields that have a red triangle at the top right (Figure 5).
-
-The spreadsheet templates make use of controlled lists (vocabularies) for some fields, such as country and basis of record. In addition, the required fields are all clearly marked with asterisks (Figure 5).
-
-<img src="media/image8.png" alt="Description: la_naturaleza:Users:rugbysrv:Desktop:spreadsheetComments.png" width="601" height="190" />
-
-<span id="_Toc280033717" class="anchor"></span>Figure 5. Screenshot of part of the People and Organisations section of the Dataset Description page showing the hover-over help in Spreadsheet mode
-
-Where there is doubt about what a field means, the [GBIF Metadata Profile Reference Guide](http://links.gbif.org/gbif_metadata_profile_guide_en_v1)[18] can be used to look up the description of its corresponding element with an accompanying example.
-
-Once the metadata have been filled out, they need to be converted into a metadata document conforming to the GMP. To do so, the spreadsheet is submitted to the GBIF Spreadsheet Processor that accepts the spreadsheet file, validates it, and transforms it into a zipped Darwin-Core Archive that contains the metadata document. Note: other data-related sheets found in the Spreadsheet Template do not have to be completed and can be left with the default data. Inside the returned archive is an eml.xml file – this represents the metadata document. Other files packaged inside the archive can be ignored and correspond to the data-related sheets. For help filling in the data-related sheets could refer to the [Darwin Core Archive How-to](http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1)[19] document or the companion [User Guides for the Spreadsheet Templates.](http://links.gbif.org/dwca-spreadsheet-processor-guide)[20]
+Where there is doubt about what a field means, refer to this guide to look up the description of its corresponding element with an accompanying example.
 
 Modify an Existing Sample Document
 ----------------------------------
