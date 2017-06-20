@@ -69,21 +69,26 @@ The [[IPT User Manual|https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#meta
 
 Figure 1. Screenshot of a help dialog for the term “Personnel Identifier”
 
+
 To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2).
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/ipt_field_validation.png' width="256" height="83" />
 
 Figure 2. Screenshot of the field validation message displayed when an email field is submitted with an irregular email address.
 
-For further reference, the [GBIF Metadata Profile Reference Guide](http://links.gbif.org/gbif_metadata_profile_guide_en_v1)[11] includes a description of each element with an accompanying example.
 
-Once installed on a web server, the IPT conveniently publishes the metadata document making it available on a publicly accessible URL and registering the URL with the GBIF Registry. The IPT ensures that it is validated against the GBIF Metadata Profile so the user does not have to worry about validation.
+For further reference, a description of each element in the GBIF Metadata Profile can be found below with an accompanying example.
 
-If at any time the metadata are modified, the user only has to update the document and click the “Publish” button on the Manage Resource page (Figure 3).
+The IPT publishes the metadata document and ensures that it is validated against the GBIF Metadata Profile so the user does not have to worry about validation.
 
-<img src="media/image6.png" alt="Description: Picture 17.png" width="597" height="112" />
+If at any time the metadata are modified, the user only has to update the document and click the “Publish” button on the Manage Resource page to publish a new version of the document (resource) (Figure 3).
 
-<span id="_Toc280033714" class="anchor"></span>Figure 3. Screenshot of the Published Release section of the Manage Resource page of the IPT.
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/ipt_published_versions.png' width="570" height="123" />
+
+Figure 3. Screenshot of the Published Versions section of the Manage Resource page of the IPT.
+
+
+At any point, the resource manager can choose to make the resource publicly available on the Internet and subsequently even register it with GBIF making it globally discoverable. 
 
 GBIF Darwin Core Spreadsheet Templates
 --------------------------------------
