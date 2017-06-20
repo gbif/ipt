@@ -5,10 +5,10 @@
 
 ## Table of Contents
 * Introduction
-* Metadata Authoring: What to Use?
-  * Integrated Publishing Toolkit (IPT)
-  * GBIF Darwin Core Spreadsheet Templates
-  * Modify an Existing Sample Document
+* Metadata Publishing Solutions
+  * Publishing metadata using the IPT
+  * Publishing metadata using the GBIF Metadata Template
+  * Publishing metadata manually
 * Appendix
   * Required Elements
   * Best practices guide to debugging/validating XML
@@ -38,17 +38,15 @@ Once the metadata document has been written and validated, it is ready to be pub
 
 Ultimately, the goal in publishing the metadata is that the data resource described therein can be fully documented and registered in the GBIF Registry. In so doing, the data resource becomes globally discoverable.
 
-## Metadata Authoring: What to Use?
+## Metadata Publishing Solutions
 
 If sampling-event data, occurrence data or checklist data are being published using the IPT, there is a built-in metadata authoring functionality that can be used to write an accompanying metadata document conforming to the GMP. It may be convenient to use this tool for authoring metadata even if no data is being published, especially if there is a need to author and manage several metadata documents. On the other hand, if only a few metadata documents are needed, it might be easiest to generate them manually, for example by modifying a sample document. Below is a description of each of these methodologies.
 
-### Integrated Publishing Toolkit (IPT) 
+### Publishing metadata using the IPT 
 
-The GBIF IPT is a free open-source tool for publishing biodiversity data, as well as resource metadata, that gets published as Darwin Core Archives (DwC-As). Users are recommended to reuse an [IPT data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) instead of installing and maintaining their own installation.
+The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an [IPT data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) instead of installing and maintaining their own installation.
 
-The IPT contains a user-friendly interface that makes authoring metadata easy. Once a user has inputted and saved the minimum required metadata, they can return to it at any time to add to or modify the metadata.
-
-In total, there are 12 different forms in the IPT that logically organise metadata entry. These are:
+In total, the IPT has 12 different metadata forms that logically organise metadata entry:
 
 1.  Basic Metadata
 2.  Geographic Coverage
@@ -87,24 +85,27 @@ _Figure 3. Screenshot of the Published Versions section of the Manage Resource p
 
 At any point, the resource manager can choose to make the resource publicly available on the Internet and subsequently even register it with GBIF making it globally discoverable. 
 
-## GBIF Metadata Template
+### Publishing metadata using the GBIF Metadata Template
 
-The GBIF Metadata Template will be similar to a manuscript template that makes it easy to submit resource metadata. The required fields will all be clearly indicated. Once data have been entered into the template, a metadata author will have to enter it into the IPT via the metadata editor. The IPT metadata editor ensures that fields that comply with controlled vocabularies get entered using the correct value, such as the country field. The IPT also ensures the generated metadata document is valid XML and validates against the GBIF Metadata Profile. Ultimately this two-step process (1. metadata template -> 2. IPT metadata editor) can be used to generate a valid resource metadata document. 
+The GBIF Metadata Template is similar to a manuscript template that makes it easy to author resource metadata. Once data have been entered into the template, a metadata author will have to enter it into the IPT via the metadata editor. The required fields will all be clearly indicated. The IPT metadata editor ensures that all mandatory fields have been filled in and that any fields using controlled vocabularies get entered correctly, e.g. the country field. The IPT also ensures the generated metadata document is valid XML and validates against the GBIF Metadata Profile. Ultimately this two-step process (1. metadata template -> 2. IPT metadata editor) can be used to generate a valid resource metadata document. 
 
 Where there is doubt about what a field means, refer to this guide to look up the description of its corresponding element with an accompanying example.
 
-Modify an Existing Sample Document
-----------------------------------
+### Publishing metadata manually
 
-Another quick and easy way to author a metadata document conforming to the GMP is to take the [reference sample](http://tools.gbif.org/eml-gbif-sample.xml)[21] document and edit it. Refer to the following list to ensure it is completed properly:
+Below is a simple set of instructions for non-IPT users wishing to generate their own custom EML XML file complying with the latest version of the GBIF Metadata Profile: **1.1**.  Refer to the following list to ensure it is completed properly:
 
-1.  Fill in all required elements (Refer to the Appendix: Required Elements).
+#### Instructions
 
-2.  Remove example placeholder information from all other fields that do not pertain to the data resource. Be careful to not remove fields (columns) as this could break the XML validity of the document. Nor should extra elements be added, unless it is to the “additionalMetadata” section.
+1. Use the schema location for version 1.1 of the GBIF Metadata Profile in the `<eml:eml>` root element: 
+`<eml:eml ... xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd" ...>`. 
+2.  Set the “packageId” attribute inside the &lt;eml:eml&gt;. Remember, the packageId should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml' for the 1<sup>st</sup> version of the document, packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml' for the 2<sup>nd</sup> version, and so on.
+3. Fill in all mandatory metadata elements specified by the schema, plus any additional metadata elements desired. When updating an existing EML file using an earlier version of the GBIF Metadata Profile, refer to the section below for a list of what's new in this version.
+4. Ensure the EML file is valid XML. For assistance, refer to [this section](). 
 
-3.  Set the “packageId” attribute inside the &lt;eml:eml&gt;. Remember, the packageId should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml' for the 1<sup>st</sup> version of the document, packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml' for the 2<sup>nd</sup> version, and so on.
+## Validation of metadata
 
-To ensure that the new document is valid, both as an XML document and in conforming to the GMP, it is essential to validate the new document against the GML schema. To do so, use the online validation service provided by GBIF: <http://tools.gbif.org/dwca-validator/eml.do>. For help with debugging the XML document, please refer to the Appendix: Best practices guide to debugging/validating XML.
+It is essential the XML metadata document is valid, both as an XML document and as validating against the GML schema. There are several options for how to do this. The [Oxygen XML Editor](https://www.oxygenxml.com/) is an excellent tool with built-in validator you can use to do this. Java programmers could also do this for example by using the [EmlValidator.java](https://github.com/gbif/registry/blob/master/registry-metadata/src/main/java/org/gbif/registry/metadata/EmlValidator.java) from the GBIF registry-metadata project. 
 
 Appendix
 ========
@@ -155,27 +156,6 @@ These elements are:
 5.  Language (of metadata document)
 
 For each element’s detailed description, you can refer to the [GBIF Metadata Profile Reference Guide](http://links.gbif.org/gbif_metadata_profile_guide_en_v1)[22]
-
-Best practices guide to debugging/validating XML
-------------------------------------------------
-
--   Q: ***I receive the following error: “Eml validation error org.xml.sax.SAXParseException: The processing instruction target matching "\[xX\]\[mM\]\[lL\]" is not allowed.” – what does this mean?***
-
--   A: Ensure there is no whitespace before &lt;?xml version="1.0" encoding="utf-8" ?&gt;
-
--   Q: ***I receive something similar to the following error: “org.xml.sax.SAXParseException: An invalid XML character (Unicode: 0x1c) was found in the element content of the document – what does it mean?***
-
--   A: XML has a special set of characters that cannot be used in XML strings. These need to be replaced with their escaped equivalent:
-
-1.  & should be replaced by &amp;
-
-2.  &lt; should be replaced by &lt;
-
-3.  &gt; should be replaced by &gt;
-
-4.  " should be replaced by &quot;
-
-5.  ' should be replaced by &\#39;
 
 [1] GBIF (2011). GBIF Strategic Plan 2012-16: Seizing the future. Copenhagen: Global Biodiversity Information Facility. 7pp. ISBN: 87-92020-18-6. Accessible at <http://links.gbif.org/sp2012_2016.pdf>
 
