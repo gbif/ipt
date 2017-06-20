@@ -101,7 +101,7 @@ Below is a simple set of instructions for non-IPT users wishing to generate thei
 
 1. Use the schema location for version 1.1 of the GBIF Metadata Profile in the `<eml:eml>` root element: 
 `<eml:eml ... xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd" ...>`. 
-2.  Set the `packageId` attribute inside the `<eml:eml>` root element. Remember, the `packageId` should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml' for the 1<sup>st</sup> version of the document, packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml' for the 2<sup>nd</sup> version, and so on.
+2.  Set the `packageId` attribute inside the `<eml:eml>` root element. Remember, the `packageId` should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'` for the 1<sup>st</sup> version of the document, `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'` for the 2<sup>nd</sup> version, and so on.
 3. Fill in all mandatory metadata elements specified by the schema, plus any additional metadata elements desired. When updating an existing EML file using an earlier version of the GBIF Metadata Profile, refer to the section below for a list of what's new in this version.
 4. Ensure the EML file is valid XML. For assistance, refer to [this section](). 
 
