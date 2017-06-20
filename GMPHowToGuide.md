@@ -32,7 +32,7 @@ Documenting the provenance and scope of datasets is required in order to publish
 
 There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Resource Metadata template (pending), or generating a metadata document manually. The guide also serves as a reference guide to the GBIF Metadata Profile itself.
 
-If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the [Darwin Core Archive: How-To Guide](http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1).[4]
+If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the [[Darwin Core Archive: How-To Guide|DwCAHowToGuide]].
 
 Once the metadata document has been written and validated, it is ready to be published. 
 
