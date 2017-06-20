@@ -13,7 +13,7 @@
 * What changed in version 1.1 of the GMP since 1.0.2?
 * Example files
 * Annex
-  * Introduction to the GBIF Metadata Profile
+  * Background to the GBIF Metadata Profile
   * Metadata Elements 
     * Dataset (Resource) 
     * Project 
@@ -137,7 +137,7 @@ An example EML complying with v1.1 of the GBIF Metadata Profile can be found [he
 
 ## Annex
 
-### Introduction to the GBIF Metadata Profile
+### Background to the GBIF Metadata Profile
 
 Metadata, literally “data about data” are an essential component of a data management system, describing such aspects as the “who, what, where, when and how” pertaining to a resource. In the GBIF context, resources are datasets, loosely defined as collections of related data, the granularity of which is determined by the data custodian. Metadata can occur in several levels of completeness. In general, metadata should allow a prospective end user of data to:
 
