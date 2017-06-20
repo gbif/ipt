@@ -24,40 +24,25 @@ _Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._
 | Version | Description                  | Date of release | Author(s) |
 |---------|------------------------------|-----------------|-----------|
 | 1.0     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR |
-| 2.0     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak |
+| 2.0     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak |                                                                                                                            
 
-
- List of Figures
-================
-
-| Figure No. | Caption of the Figure                                                                                                                                | Page |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------------------|------|
-| 1          | Figure 1. Screenshot of a help dialog for the term “Study Area Description”                                                                          | 3    |
-| 2          | Figure 2. Screenshot of the field validation message displayed when an email field is submitted with an irregular email address.                     | 3    |
-| 3          | Figure 3. Screenshot of the Published Release section of the Manage Resource page of the IPT                                                         | 3    |
-| 4          | Figure 4. Screenshot of part of the Basic Metadata section of the Dataset Description page in Spreadsheet mode                                       | 4    |
-| 5          | Figure 5. Screenshot of part of the People and Organisations section of the Dataset Description page showing the hover-over help in Spreadsheet mode | 4    |
-
-Introduction
-============
+## Introduction
 
 Documenting the provenance and scope of datasets is required in order to publish data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ that enable users to evaluate the fitness-for-use of a dataset.
 
-There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the [GBIF Integrated Publishing Toolkit (IPT)](http://code.google.com/p/gbif-providertoolkit/) metadata editor, the GBIF Darwin Core Spreadsheet templates metadata forms[2], or simply taking a sample metadata document and replacing fields of relevance with the source data. The guide extends the [Reference Guide to the GBIF Metadata Profile](gbif_metadata_profile_guide_en_v1)[3].
+There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Resource Metadata template (pending), or generating a metadata document manually. The guide also serves as a reference guide to the GBIF Metadata Profile itself.
 
 If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the [Darwin Core Archive: How-To Guide](http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1).[4]
 
-Once the metadata document has been written and validated, it is ready to be published. For help publishing metadata, users can refer to the [Publishing and Registering Data with GBIF](http://links.gbif.org/dwc-a_publishing_guide_en_v1)[5]
+Once the metadata document has been written and validated, it is ready to be published. 
 
 Ultimately, the goal in publishing the metadata is that the data resource described therein can be fully documented and registered in the GBIF Registry. In so doing, the data resource becomes globally discoverable.
 
-Metadata Authoring: What to Use?
-================================
+## Metadata Authoring: What to Use?
 
-If occurrence data or taxonomic (checklist) data are being published using the [GBIF Integrated Publishing Toolkit (IPT)](http://code.google.com/p/gbif-providertoolkit/)[6] or the [GBIF Darwin Core Spreadsheet Templates](http://tools.gbif.org/spreadsheet-processor/)[7], there is a built-in metadata authoring functionality that can be used to write an accompanying metadata document conforming to the GMP. It may be convenient to use either of these tools for authoring metadata even if no data is being published. Although the IPT is software that requires installation, it might save a user time in the long run if there is a need to author and manage several metadata documents. On the other hand, if only a few metadata documents are needed, it might be easiest to make use of a Spreadsheet Template. Another option is to modify a [sample document](http://tools.gbif.org/eml-gbif-sample.xml)[8]. Below is a description of each of these methodologies.
+If sampling-event data, occurrence data or checklist data are being published using the IPT, there is a built-in metadata authoring functionality that can be used to write an accompanying metadata document conforming to the GMP. It may be convenient to use this tool for authoring metadata even if no data is being published, especially if there is a need to author and manage several metadata documents. On the other hand, if only a few metadata documents are needed, it might be easiest to generate them manually, for example by modifying a sample document. Below is a description of each of these methodologies.
 
-Integrated Publishing Toolkit (IPT) 
-------------------------------------
+### Integrated Publishing Toolkit (IPT) 
 
 The IPT is a GBIF tool for publishing occurrence and taxonomic data, as well as resource metadata, using Darwin Core Archives. The process for installing the IPT on a web server is described in detail in the [IPT User Manual](http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=GBIF_IPT_User_Manual_1.0.pdf)[9].
 
