@@ -1,7 +1,7 @@
 # GBIF Metadata Profile – How-to Guide
 <sup>Version 2.0</sup>
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_coleoptera.png' align="right" width="150" height="150" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_coleoptera.png' align="right" width="120" height="150" />
 
 ## Table of Contents
 * Introduction
