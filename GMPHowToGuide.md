@@ -44,34 +44,23 @@ If sampling-event data, occurrence data or checklist data are being published us
 
 ### Integrated Publishing Toolkit (IPT) 
 
-The IPT is a GBIF tool for publishing occurrence and taxonomic data, as well as resource metadata, using Darwin Core Archives. The process for installing the IPT on a web server is described in detail in the [IPT User Manual](http://code.google.com/p/gbif-providertoolkit/downloads/detail?name=GBIF_IPT_User_Manual_1.0.pdf)[9].
+The GBIF IPT is a free open-source tool for publishing biodiversity data, as well as resource metadata, that gets published as Darwin Core Archives (DwC-As). Users are recommended to reuse an [IPT data hosting centre](https://github.com/gbif/ipt/wiki/dataHostingCentres) instead of installing and maintaining their own installation.
 
 The IPT contains a user-friendly interface that makes authoring metadata easy. Once a user has inputted and saved the minimum required metadata, they can return to it at any time to add to or modify the metadata.
 
 In total, there are 12 different forms in the IPT that logically organise metadata entry. These are:
 
 1.  Basic Metadata
-
 2.  Geographic Coverage
-
 3.  Taxonomic Coverage
-
 4.  Temporal Coverage
-
 5.  Other Keywords
-
 6.  Associated Parties
-
 7.  Project Data
-
 8.  Sampling Methods
-
 9.  Citations
-
 10. Collection Data
-
 11. Physical Data
-
 12. Additional Metadata
 
 The [IPT User Manual](http://links.gbif.org/ipt_user_manual)[10] goes through each form and its respective fields in some depth. Occasionally, the form will provide help dialogs to aid the user in understanding what an element means (Figure 1).
