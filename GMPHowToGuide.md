@@ -63,17 +63,17 @@ In total, there are 12 different forms in the IPT that logically organise metada
 11. Physical Data
 12. Additional Metadata
 
-The [IPT User Manual](http://links.gbif.org/ipt_user_manual)[10] goes through each form and its respective fields in some depth. Occasionally, the form will provide help dialogs to aid the user in understanding what an element means (Figure 1).
+The [[IPT User Manual|https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#metadata]] goes through each form and its respective fields in some depth. The form provides help dialogs to aid the user in understanding what an element means (Figure 1).
 
-<img src="media/image4.png" alt="Description: Picture 15.png" width="594" height="140" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/ipt_help_dialog.png' width="541" height="106" />
 
-<span id="_Ref280033676" class="anchor"><span id="_Toc280033712" class="anchor"></span></span>Figure 1. Screenshot of a help dialog for the term “Study Area Description”
+Figure 1. Screenshot of a help dialog for the term “Personnel Identifier”
 
 To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2).
 
-<img src="media/image5.png" alt="Description: Picture 19.png" width="487" height="124" />
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/ipt_field_validation.png' width="256" height="83" />
 
-<span id="_Ref280033684" class="anchor"><span id="_Toc280033713" class="anchor"></span></span>Figure 2. Screenshot of the field validation message displayed when an email field is submitted with an irregular email address.
+Figure 2. Screenshot of the field validation message displayed when an email field is submitted with an irregular email address.
 
 For further reference, the [GBIF Metadata Profile Reference Guide](http://links.gbif.org/gbif_metadata_profile_guide_en_v1)[11] includes a description of each element with an accompanying example.
 
