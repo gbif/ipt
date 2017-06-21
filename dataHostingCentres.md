@@ -86,6 +86,8 @@ The Belgian Biodiversity Platform also hosts an IPT for each of these countries/
 
 The Research Institute for Nature and Forest (INBO) also provides [IPT](http://data.inbo.be/ipt) hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organisations: [natuurpunt](www.natuurpunt.be) and the Flemish Environment Agency [VMM](www.vmm.be).
 
+For marine occurrence data sets, the Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for [VLIZ](http://www.vliz.be), [OBIS](http://www.iobis.org) & [EMODnet Biology](http://www.emodnet-biology.eu) at http://ipt.vliz.be
+
 ## Canada
 
 The [Canadian Biodiversity Information Facility (CBIF)](http://www.cbif.gc.ca/) does not run an IPT.  
