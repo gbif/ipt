@@ -144,7 +144,7 @@ The [GBIF Spain IPT](http://www.gbif.es/ipt/) is recognized as a repository in [
 
 ## Sweden
 
-[GBIF Sweden](http://www.gbif.se/) provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Sweden IPT](http://www.gbif.se/ipt/). Please contact Anders Telenius <anders.telenius@nrm.se> for assistance.
+[GBIF Sweden](http://www.gbif.se/) provides helpdesk support to new publishers in Sweden, and hosting support for datasets on the [GBIF Sweden IPT](http://www.gbif.se/ipt/). Please contact Anders Telenius <anders.telenius@nrm.se> for assistance.
 
 ## Taiwan
 
