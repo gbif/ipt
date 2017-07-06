@@ -40,7 +40,6 @@ If you believe your DHC meets these standards, and would like to offer your serv
 - [[Belgium|dataHostingCentres#belgium]] 
 - [[Benin|dataHostingCentres#france]] 
 - [[Burkina Faso|dataHostingCentres#france]]
-- [[Cameroon|dataHostingCentres#france]]
 - [[Canada|dataHostingCentres#canada]] <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' />
 - [[Colombia|dataHostingCentres#colombia]] <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' />
 - [[Denmark|dataHostingCentres#denmark]]
@@ -116,7 +115,7 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 
 + [GBIF Benin IPT](http://ipt-benin.gbif.fr)
 + [GBIF Burkina Faso IPT](http://ipt-burkina.gbif.fr)
-+ [GBIF Cameroon IPT](http://ipt-cameroun.gbif.fr)
++ [GBIF Cameroon IPT](http://ipt-cameroun.gbif.fr) * Not a GBIF Node
 + [GBIF France IPT](http://ipt.gbif.fr)
 + [GBIF Guinea IPT](http://ipt-guinee.gbif.fr)
 + [MadBIF IPT](http://ipt.madbif.mg)
