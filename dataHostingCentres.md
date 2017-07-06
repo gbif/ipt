@@ -115,7 +115,7 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 
 + [GBIF Benin IPT](http://ipt-benin.gbif.fr)
 + [GBIF Burkina Faso IPT](http://ipt-burkina.gbif.fr)
-+ [GBIF Cameroon IPT](http://ipt-cameroun.gbif.fr) * Not a GBIF Node
++ [GBIF Cameroon IPT](http://ipt-cameroun.gbif.fr) - Note Cameroon is no longer a GBIF Participant
 + [GBIF France IPT](http://ipt.gbif.fr)
 + [GBIF Guinea IPT](http://ipt-guinee.gbif.fr)
 + [MadBIF IPT](http://ipt.madbif.mg)
