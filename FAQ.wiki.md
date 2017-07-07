@@ -18,6 +18,7 @@
   + [[4. How do I change the publishing organisation of my resource? The dropdown on the Basic Metadata page is disabled.|FAQ.wiki#4-how-do-i-change-the-publishing-organisation-of-my-resource-the-dropdown-on-the-basic-metadata-page-is-disabled]]
   + [[5. How do I change the type of an existing resource?|FAQ.wiki#5-how-do-i-change-the-type-of-an-existing-resource]]
   + [[6. What are some tricks to simplify the authoring and maintenance of metadata?|FAQ.wiki#6-what-are-some-tricks-to-simplify-the-authoring-and-maintenance-of-metadata]]
+  + [[7. How do I change the hosting organisation of my IPT?|FAQ.wiki#7-how-do-i-change-the-hosting-organisation-of-my-ipt]]
 + [[Indexing by GBIF|FAQ.wiki#indexing-by-gbif]]
   + [[1. How long does it take GBIF to (re)index my dataset following registration?|FAQ.wiki#1-how-long-does-it-take-gbif-to-start-reindexing-my-dataset]]
   + [[2. Why hasn't GBIF (re)indexed my dataset yet?|FAQ.wiki#2-why-hasnt-gbif-reindexed-my-dataset-yet]]
@@ -186,6 +187,21 @@ Datasets can change over time. Keeping the dataset metadata up to date can be a 
 * for datasets that continue to change/grow (versus static datasets) avoid specifying exact counts in textual descriptions, e.g. for record or taxa counts.
 * use the IPT's citation [Auto-generation feature](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#citations) instead of supplying a manually created data citation. 
 * use the IPT's import by [Taxon list feature](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#taxonomic-coverage) instead of supplying each taxa manually one at a time when entering the taxonomic converage. 
+
+### 7. How do I change the hosting organisation of my IPT? 
+
+Warning - the instructions below involve manual changes requiring technical competence. 
+
+First, ensure the desired hosting organisation has been added to your IPT. You can do this through the user interface. For help adding a new organisation to your IPT, refer to [this section](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#add-organisation) of the user manual. 
+
+Next, perform the following 2 manual changes to the registration2.xml file located inside the /config folder of your IPT Data Directory:
+
+> 1. `<registration><registry><hostingOrganisation><key>UUID of desired hosting organisation</key>`
+> 2. `<registration><registry><ipt><organisationKey>UUID of desired hosting organisation</key>`
+
+Restart Tomcat. 
+
+Last, press the "update registration" button on the Edit GBIF Registration page. This will update the change in the GBIF Registry. For further information about what this update does, you can refer to [this section](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#edit-gbif-registration) of the user manual. 
 
 ## Indexing by GBIF
 ### 1. How long does it take GBIF to start (re)indexing my dataset?
