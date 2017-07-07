@@ -190,7 +190,7 @@ Datasets can change over time. Keeping the dataset metadata up to date can be a 
 
 ### 7. How do I change the hosting organisation of my IPT? 
 
-Warning - the instructions below involve manual changes requiring technical competence. 
+Warning - the instructions below assume your IPT has already been registered and involve manual changes requiring technical competence. 
 
 First, ensure the desired hosting organisation has been added to your IPT. You can do this through the user interface. For help adding a new organisation to your IPT, refer to [this section](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#add-organisation) of the user manual. 
 
@@ -201,7 +201,7 @@ Next, perform the following 2 manual changes to the registration2.xml file locat
 
 Restart Tomcat. 
 
-Last, press the "update registration" button on the Edit GBIF Registration page. This will update the change in the GBIF Registry. For further information about what this update does, you can refer to [this section](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#edit-gbif-registration) of the user manual. 
+Last, press the "update registration" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to [this section](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#edit-gbif-registration) of the user manual. 
 
 ## Indexing by GBIF
 ### 1. How long does it take GBIF to start (re)indexing my dataset?
