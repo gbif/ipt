@@ -88,6 +88,14 @@
         <param name="bufferSize">1024</param>
       </result>
     </action>
+    <action name="archiveFile" class="org.gbif.ipt.action.portal.ResourceFileAction" method="dwcaIn">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
     <action name="dcat" class="org.gbif.ipt.action.portal.DCATAction">
       <result type="stream">
         <param name="noCache">true</param>

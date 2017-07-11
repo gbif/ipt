@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -25,13 +26,14 @@ import com.opensymphony.xwork2.util.ValueStack;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 /**
  * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
  * logged in user, and hosting organization information.
  */
-public class BaseAction extends ActionSupport implements SessionAware, Preparable, ServletRequestAware {
+public class BaseAction extends ActionSupport implements SessionAware, Preparable, ServletRequestAware , ServletResponseAware {
 
   // logging
   private static final Logger LOG = Logger.getLogger(BaseAction.class);
@@ -48,6 +50,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   protected List<String> warnings = new ArrayList<String>();
   protected Map<String, Object> session;
   protected HttpServletRequest req;
+  protected HttpServletResponse res;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
   protected String id;
 
@@ -262,6 +265,10 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   public void setServletRequest(HttpServletRequest req) {
     this.req = req;
+  }
+
+  public void setServletResponse(HttpServletResponse res) {
+    this.res = res;
   }
 
   public void setSession(Map<String, Object> session) {

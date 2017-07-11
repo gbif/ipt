@@ -20,6 +20,7 @@ public final class Constants {
   public static final String REQ_PATH_DWCA = "archive.do";
   public static final String REQ_PATH_LOGO = "logo.do";
   public static final String REQ_PARAM_RESOURCE = "r";
+  public static final String REQ_PARAM_FILE = "f";
   public static final String REQ_PARAM_ID = "id";
   public static final String REQ_PARAM_SOURCE = "s";
   public static final String REQ_PARAM_VERSION = "v";

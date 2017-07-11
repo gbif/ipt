@@ -1,5 +1,14 @@
 package org.gbif.ipt.action.portal;
 
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.compress.compressors.deflate.DeflateCompressorInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -13,11 +22,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Enumeration;
+import java.util.zip.GZIPOutputStream;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import javax.servlet.ServletOutputStream;
 
 /**
  * The Action responsible for serving datadir resource files.
@@ -40,6 +48,91 @@ public class ResourceFileAction extends PortalBaseAction {
     DataDir dataDir, ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.dataDir = dataDir;
+  }
+
+  /**
+   * Handles DwC-A internal file download request.
+   *
+   * @return Struts2 result string
+   */
+  public String dwcaIn() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    String internalFilename = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_FILE));
+
+    if(internalFilename == null || internalFilename.trim().isEmpty()) {
+      return NOT_FOUND;
+    }
+
+    // if no specific version is requested, use the latest published version
+    if (version == null) {
+      BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
+      if (latestVersion == null) {
+        return NOT_FOUND;
+      } else {
+        version = latestVersion;
+      }
+    }
+
+    boolean gz = internalFilename.endsWith(".gz");
+    if(gz) {
+      internalFilename = internalFilename.replace(".gz","");
+    }
+    boolean compress = gz || (req.getHeader("Accept-Encoding") != null && req.getHeader("Accept-Encoding").contains("gzip"));
+
+    // serve file
+    File dwcaFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
+    try {
+      ZipFile dwcaZip = new ZipFile(dwcaFile);
+      ZipArchiveEntry entry = dwcaZip.getEntry(internalFilename);
+      if(entry != null) {
+          inputStream = dwcaZip.getInputStream(entry);
+      } else {
+        return NOT_FOUND;
+      }
+    }catch(Exception e) {
+      LOG.warn("failed to get internal file", e);
+      return ERROR;
+    }
+
+    // construct download filename
+    StringBuilder sb = new StringBuilder();
+    sb.append("dwca-" + resource.getShortname());
+    if (version != null) {
+      sb.append("-v" + version.toPlainString());
+    }
+    sb.append("-"+internalFilename);
+    if(gz) sb.append(".gz");
+    filename = sb.toString();
+
+    if(compress){
+      try {
+        if(gz) {
+          res.setContentType("application/x-gzip");
+        } else {
+          res.setContentType("application/octet-stream");
+          res.addHeader("Content-Encoding", "gzip");
+
+        }
+        res.addHeader("Content-Disposition", "attachment; filename=\""+filename+"\"");
+
+        ServletOutputStream sos = res.getOutputStream();
+        GZIPOutputStream zos = new GZIPOutputStream(sos);
+        IOUtils.copy(inputStream, zos);
+        zos.flush();
+        inputStream.close();
+        zos.close();
+        sos.close();
+      } catch (Exception e){
+        LOG.warn("error sending gzip",e);
+      }
+      return NONE;
+    } else {
+      mimeType = "application/octet-stream";
+      return SUCCESS;
+
+    }
   }
 
   /**
