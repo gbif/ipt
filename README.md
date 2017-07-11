@@ -8,7 +8,7 @@ The Integrated Publishing Toolkit (IPT) is a free open source software tool writ
 
 To understand how the IPT works, try watching this concise 25 minute live demo showing how a dataset gets properly published and registered through GBIF.org (note you can skip to 1:02):
 
-<a href="https://vimeo.com/221572634" target="_blank"><img src="https://i.vimeocdn.com/video/639873882_1280x720.jpg" alt="How to publish biodiversity data through GBIF.org using the IPT" width="640" height="384" border="10" /></a>
+<a href="https://www.youtube.com/embed/eDH9IoTrMVE?ecver=1" target="_blank"><img src="https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/screenshots/IPTDemoVideoIntroSlide.png" alt="How to publish biodiversity data through GBIF.org using the IPT" width="560" height="315" border="10" /></a>
 
 ### Latest Release: 2.3.4
 
