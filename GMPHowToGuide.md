@@ -606,3 +606,5 @@ The additionalMetadata field is a container for any other relevant metadata that
 [7] NCD - <http://www.tdwg.org/activities/ncd/>
 
 [8] Required for ISO19139; see http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata/napMetadataProfileV101.pdf
+
+Tom rules!
