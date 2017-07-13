@@ -556,4 +556,3 @@ The additionalMetadata field is a container for any other relevant metadata that
 
 [8] Required for ISO19139; see http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata/napMetadataProfileV101.pdf
 
-Tom rules!
