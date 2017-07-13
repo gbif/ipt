@@ -182,6 +182,17 @@ Dataset (Resource)
 
 The dataset field has elements relating to a single dataset (resource).
 
+| Term name | Description | Example(s) |
+| -- | -- | -- |
+| alternateIdentifier | It is a Universally Unique Identifier (UUID) for the EML document and not for the dataset. This term is optional. A list of different identifiers can be supplied. | 619a4b95-1a82-4006-be6a-7dbe3c9b33c5 |
+
+**Term name**: alternateIdentifier
+
+**Definition**: It is a Universally Unique Identifier (UUID) for the EML document and not for the dataset. This term is optional. A list of different identifiers can be supplied.  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              **Example(s)**: 619a4b95-1a82-4006-be6a-7dbe3c9b33c5                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                    
+  <http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-resource.html#alternateIdentifier> 
+
 | **Term**            | **Definition**                                                                                                                                                                                                                                                                                                   |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | alternateIdentifier | It is a Universally Unique Identifier (UUID) for the EML document and not for the dataset. This term is optional. A list of different identifiers can be supplied.                                                                                                                                               
