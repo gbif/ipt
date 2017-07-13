@@ -184,6 +184,20 @@ The dataset field has elements relating to a single dataset (resource).
 
 | Term name | Description | Example(s) |
 | -- | -- | -- |
+| alternateIdentifier | It is a Universally Unique Identifier (UUID) for the EML document and not for the dataset. This term is optional. A list of different identifiers can be supplied. | E.g., 619a4b95-1a82-4006-be6a-7dbe3c9b33c5. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#alternateIdentifier |
+| title | A description of the resource that is being documented that is long enough to differentiate it from other similar resources. Multiple titles may be provided, particularly when trying to express the title in more than one language (use the "xml:lang" attribute to indicate the language if not English/en). | Vernal pool amphibian density data, Isla Vista, 1990-1996. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#title |
+| creator | The resource creator is the person or organization responsible for creating the resource itself. | See section “People and Organisations” for more details. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#creator |
+| metadataProvider | The metadataProvider is the person or organization responsible for providing documentation for the resource. | See section “People and Organisations” for more details. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#metadataProvider |
+| associatedParty | An associatedParty is another person or organisation that is associated with the resource. These parties might play various roles in the creation or maintenance of the resource, and these roles should be indicated in the "role" element. | See section “People and Organisations” for more details. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#associatedParty |
+| contact | The contact field contains contact information for this dataset. This is the person or institution to contact with questions about the use, interpretation of a data set. | See section “People and Organisations” for more details. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emldataset.html#contact |
+| pubDate | The date that the resource was published. The format should be represented as: CCYY, which represents a 4 digit year, or as CCYY-MM-DD, which denotes the full year, month, and day. Note that month and day are optional components. Formats must conform to ISO 8601. | E.g. 2010-09-20. | http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#pubDate |
+| language | The language in which the resource (not the metadata document) is written. This can be a well-known language name, or one of the ISO language codes to be more precise. GBIF recommendation is to use the ISO language code (http://vocabularies.gbif.org/vocabularies/lang) | E.g., English. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#language |
+| additionalInfo | Information regarding omissions, instructions or other annotations that resource managers may wish to include with a dataset. Basically, any information that is not characterized by the other resource metadata fields. | http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#additionalInfo |
+| url | The URL of the resource that is available online. | http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-physical.html#url |
+| abstract | A brief overview of the resource that is being documented. | http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#abstract |
+
+| Term name | Description | Example(s) |
+| -- | -- | -- |
 | alternateIdentifier | It is a Universally Unique Identifier (UUID) for the EML document and not for the dataset. This term is optional. A list of different identifiers can be supplied. | 619a4b95-1a82-4006-be6a-7dbe3c9b33c5 |
 
 **Term name**: alternateIdentifier
