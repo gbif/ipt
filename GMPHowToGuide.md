@@ -184,7 +184,7 @@ The dataset field has elements relating to a single dataset (resource).
 
 | Term name | Description | Example(s) |
 | -- | -- | -- |
-| [alternateIdentifier]() | It is a Universally Unique Identifier (UUID) for the EML document and not for the dataset. This term is optional. A list of different identifiers can be supplied. | E.g., 619a4b95-1a82-4006-be6a-7dbe3c9b33c5. |
+| alternateIdentifier | It is a Universally Unique Identifier (UUID) for the EML document and not for the dataset. This term is optional. A list of different identifiers can be supplied. | E.g., 619a4b95-1a82-4006-be6a-7dbe3c9b33c5. |
 | title | A description of the resource that is being documented that is long enough to differentiate it from other similar resources. Multiple titles may be provided, particularly when trying to express the title in more than one language (use the "xml:lang" attribute to indicate the language if not English/en). | Vernal pool amphibian density data, Isla Vista, 1990-1996. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#title |
 | creator | The resource creator is the person or organization responsible for creating the resource itself. | See section “People and Organisations” for more details. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#creator |
 | metadataProvider | The metadataProvider is the person or organization responsible for providing documentation for the resource. | See section “People and Organisations” for more details. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#metadataProvider |
