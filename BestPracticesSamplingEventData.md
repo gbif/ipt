@@ -169,6 +169,11 @@ Following are some examples of typical sampling-event data sets. In each case, t
 ### Freshwater invertebrate survey 
 **Core (Event) table** 
 
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude |
+| -- | -- | -- | -- | -- | -- | -- | -- |
+| C_1428 | AQEM | 1.25 | m^2 | 21/06/2006 | Kinzig 03 Rothenbergen | 50.18689 | 9.100369 |
+
+
 
 
 
