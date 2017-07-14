@@ -171,14 +171,16 @@ Following are some examples of typical sampling-event data sets. In each case, t
 
 | EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude |
 | -- | -- | -- | -- | -- | -- | -- | -- |
-| C_1428 | AQEM | 1.25 | m^2 | 21/06/2006 | Kinzig 03 Rothenbergen | 50.18689 | 9.100369 |
+| C_1428 | AQEM | 1.25 | m^2 | 21/06/2006 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369 |
+| B_1538 | AQEM | 1.25 | m^2 | 11/06/2008 | Kinzig W3 Bulau | 50.1316 | 8.9657 |
 
 
-
-
-
-
-
+| EventID | scientificName | organismQuantity | organismQuantityType | ... | 
+| -- | -- | -- | -- | -- |
+| C_1428 | _Baetis rhodani_ | 14 | individuals |  | 
+| C_1428 | _Ephemera danica_ | 15 | individuals |  | 
+| C_1428 | _Gyraulus albus_ | 2 | individuals |  | 
+| B_1538 | _Serratella ignita_ | 318 | individuals |  | 
 
 
 
