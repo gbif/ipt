@@ -205,8 +205,9 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtai
 
 **Extension (Measuremenr-or-Fact) table**
 
-| -- | -- | -- | -- | -- | -- |
+
 | EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... | 
+| -- | -- | -- | -- | -- | -- |
 | IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | -- |
 | IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | -- |
 
@@ -279,7 +280,6 @@ Additional vegetation plot measurements such as vegetation community type (synta
 
 
 **Extension (Measuremenr-or-Fact) table**
-
 
 | EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... | 
 | -- | -- | -- | -- | -- | -- |
