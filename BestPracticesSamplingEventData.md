@@ -90,6 +90,104 @@ Table 2 lists some example values. The value of organismQuantity is a number or 
 
 ### How to uniquely identify sampling events
 
+>TODO: Better guide users on how to fill in dwc:eventID and dwc:parentEventID using persistent globally unique identifiers: 
+>- dwc:eventID should be a persistent globally unique identifier. Remember to reuse existing stable identifiers. Do not create a new identifier for the event when one already is declared.
+>- In the absence of a GUID, and as a last resort, reuse the original fieldNumber.
+
+### How to capture hierarchy of events
+
+Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot[7] each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3).
+Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata.
+
+>TODO: Better guide users how to publish a hierarchy of events (recursive data type) with the proper use of dwc:parentEventID 
+
+### How to capture absence data
+
+>TODO: Guide users how to publish presence/absence data in DwC with the proper use of dwc:occurrenceStatus
+
+### How to include supplementary multimedia 
+
+>TODO: Provide recommendations on how include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned releve sheet when interpreting the data.
+
+## Publishing sampling-event data 
+
+### Using GUIDs for identifiers
+
+>TODO: Advise publishers to use GUIDs, coupled with guidance on how to create GUIDs for applicable fields such as dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland.
+
+### Filling in the required and recommended terms 
+
+>TODO: Guide users how to obfuscate the location of sensitive species, such as by:
+>- Simply removing these species from the dataset
+>- Publishing the species identifications at Genus level only
+>- Publishing the sensitive/protected species in a separate dataset
+>- Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records
+
+### Preserving verbatim data
+
+>TODO: Guide users how to enter verbatim descriptions. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber.
+
+### Publishing project data as a single dataset
+
+>TODO: Provide a recommendation on how to publish data produced from large projects. The current recommendation is to publish a single dataset, because dividing it into multiple datasets results in more duplication of effort entering metadata. Publishers insisting on publishing multiple datasets should link them using Project.ID in EML.  
+
+### Republishing occurrence data as sampling-event data
+
+> TODO: Provide rationale and guidance for migrating existing occurrence datasets to sampling event format. The following questions need to be answered:
+>- Should the sampling event version replace the existing occurrence version, or should both versions be kept online at the same time?
+>- If replacing, should the new sampling event version be assigned a brand new DOI?
+>- What are the benefits of producing the sampling event version? 
+
+### Modelling continuous monitoring of live individuals
+
+> TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded).
+
+### Managing issues related to the dataset
+
+> TODO: Provide a recommendation on how to manage issues related to the dataset using GitHub’s issue management system, just like INBO does for example.
+
+### Sharing scripts and programs used to produce or clean the dataset
+
+> TODO: Provide a recommendation on how to make custom scripts and programs (e.g. for transforming cross table data) publicly available using GitHub, for the benefit of other publishers, just like INBO does for example. The recommendation should encourage users to include a detailed set of instructions on how to run the scripts to make them more usable.
+
+## Describing sampling-event data in dataset metadata
+
+> TODO: Advise publishers to document as much as possible about the sampling event, especially the sampling methodologies, before attempting to try and standardise it into DwC.
+
+### Linking related datasets
+
+> TODO: Advise publishers on how to link related datasets that come out of the same research context so they can be easily retrieved by the users. Publishers may have to publish separate datasets in order to work around the limitations of the DwC-A star schema. Publishers may also choose to publish separate occurrence datasets derived from the same sampling events. The current recommendation is to link them using Project.ID.
+
+### Listing related research
+
+> TODO: Provide recommendations on how to make the dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc.
+
+## Examples 
+
+Following are some examples of typical sampling-event data sets. In each case, the key fields in the Event core and Occurrence extension are provided. For some examples, additional extensions such as Relevé and measurement-or-fact are also included.
+
+### Freshwater invertebrate survey 
+**Core (Event) table** 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
