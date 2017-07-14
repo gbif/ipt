@@ -203,19 +203,37 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtai
 | IA1 | _Abra ovata_ | 57 | individuals |  | 
 | IA3 | _Bittium reticulatum_ | 113 | individuals |  | 
 
+**Extension (Measuremenr-or-Fact) table**
+
+| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... | 
+| IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | -- |
+| IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | -- |
 
 
+**Explanation** 
+
+_Abra ovata_ A total of 57 individuals from 0.04 square meters were obtained in sampling event IA1.
+
+Each event can also have measurements or facts associated with it, e.g., environmental measurements like sediment temperature and redox potential (Eh).
+
+### Macrophyte survey
+
+> TODO: Update example based on Dutch Vegetation Database (LVD) version republished as sampling-event dataset. The Releve extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: http://gbif.blogspot.dk/2016/07/probably-turbovegs-best-kept-secret.html 
+
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| 1001 | Braun Blanquet | 100 | m^2 | 09/08/2012 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369 | |
+
+**Extension (Occurrence) table** 
+
+| EventID | scientificName | organismQuantity | organismQuantityType | ... | 
+| -- | -- | -- | -- | -- |
+| 1001 | _Acer psuedoplatanus_ | r | BraunBlanquetScale |  |
 
 
+**Extension (Relevé) table** 
 
-
-
-
-
-
-
-
-
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
 
 
 
