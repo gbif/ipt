@@ -175,6 +175,8 @@ Following are some examples of typical sampling-event data sets. In each case, t
 | B_1538 | AQEM | 1.25 | m^2 | 11/06/2008 | Kinzig W3 Bulau | 50.1316 | 8.9657 |
 
 
+**Extension (Occurrence) table** 
+
 | EventID | scientificName | organismQuantity | organismQuantityType | ... | 
 | -- | -- | -- | -- | -- |
 | C_1428 | _Baetis rhodani_ | 14 | individuals |  | 
@@ -182,6 +184,24 @@ Following are some examples of typical sampling-event data sets. In each case, t
 | C_1428 | _Gyraulus albus_ | 2 | individuals |  | 
 | B_1538 | _Serratella ignita_ | 318 | individuals |  | 
 
+**Explanation** 
+
+_Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtained in this sampling event. The derived individuals per sq metre count is 11.2 (14/1.25). 
+
+### Brackish water invertebrates survey
+**Core (Event) table** 
+
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ... |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 | |
+| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 | |
+
+**Extension (Occurrence) table** 
+
+| EventID | scientificName | organismQuantity | organismQuantityType | ... | 
+| -- | -- | -- | -- | -- |
+| IA1 | _Abra ovata_ | 57 | individuals |  | 
+| IA3 | _Bittium reticulatum_ | 113 | individuals |  | 
 
 
 
