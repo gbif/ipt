@@ -204,8 +204,9 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtai
 | IA3 | _Bittium reticulatum_ | 113 | individuals |  | 
 
 **Extension (Measuremenr-or-Fact) table**
-
+| -- | -- | -- | -- | -- | -- |
 | EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... | 
+
 | IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | -- |
 | IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | -- |
 
@@ -233,9 +234,49 @@ Each event can also have measurements or facts associated with it, e.g., environ
 
 **Extension (Relevé) table** 
 
+| EventID | syntaxonCode | inclination | coverTotal | treesCover | coverShrubs | highTreeLayerHeight | highHerbLayerMeanHeight | mossesIdentified | ... |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| 1001 | 843200 | 40 | 100 | 95 | 50 | 25 | 40 | Y | -- |
+
+**Explanation** 
+
+ _Acer psuedoplatanus_ : In the 100 sq metres surveyed, the abundance of the species was reported as “r” on the Braun Blanquet scale. 
+
+Additional vegetation plot measurements such as vegetation community type (syntaxon) % coverage values that are typical of TurboVeg type databases are captured in a Relevé (vegetation-plot) extension.
+
+
+### Lepidoptera survey I
+**Core (Event) table** 
+
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ... |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| 2320 | Jalas-model light trap with 160W ML matt lamp | 16 | day | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ... |
+
+**Extension (Occurrence) table** 
+
+| EventID | scientificName | organismQuantity | organismQuantityType | ... | 
+| -- | -- | -- | -- | -- |
+| 2320 | _Opisthograptis luteolata_ | 11 | individuals |  |
+
+**Explanation** 
+
+_Opisthograptis luteolata_ : 11 individuals were observed over the sampling period of 16 days. The derived number of individuals per day is 0.68 (11/16).
+
+### Lepidoptera survey II
+**Core (Event) table** 
+
 | EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 | |
+| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 | |
+
+**Extension (Occurrence) table** 
+| EventID | scientificName | organismQuantity | organismQuantityType | ... | 
+| -- | -- | -- | -- | -- |
+|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |  |
+| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |  |
 
 
-
+**Extension (Measuremenr-or-Fact) table**
 
 
