@@ -206,7 +206,6 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtai
 **Extension (Measuremenr-or-Fact) table**
 | -- | -- | -- | -- | -- | -- |
 | EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... | 
-
 | IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | -- |
 | IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | -- |
 
@@ -266,11 +265,12 @@ _Opisthograptis luteolata_ : 11 individuals were observed over the sampling peri
 **Core (Event) table** 
 
 | EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
-| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- |
 | 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 | |
 | 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 | |
 
 **Extension (Occurrence) table** 
+
 | EventID | scientificName | organismQuantity | organismQuantityType | ... | 
 | -- | -- | -- | -- | -- |
 |  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |  |
