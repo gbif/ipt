@@ -69,3 +69,30 @@ The value of sampleSizeValue is a number and must have a corresponding sampleSiz
 | 3 | m2 |
 | 17 | km |
 | 1 | litre |
+
+
+### Quantity and abundance 
+
+The following Darwin Core fields are also required to be used as a pair:
+* **organismQuantity**: a numeric or enumeration value for the quantity of organisms. 
+* **organismQuantityType**: the type of quantification system used for the quantity of organisms. 
+
+Table 2 lists some example values. The value of organismQuantity is a number or enumeration, e.g.,  “27” for an organismQuantityType “individuals”, “12.5” for an organismQuantityType “%biomass”, or “r” for an organismQuantityType “BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity being measured) is expected to be drawn from a small controlled vocabulary with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, “%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with organismQuantity values: + on DominScale; 5 on BraunBlanquetScale; 45 for %Biomass.
+
+**Table 2. organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale.**
+
+| organismQuantity | organismQuantityType |
+|--|--|
+| 14 | individuals |
+| r | BraunBlanquetScale |
+| 0.4 | %Species |
+| 31 | %Biomass |
+
+### How to uniquely identify sampling events
+
+
+
+
+
+
+
