@@ -204,6 +204,7 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtai
 | IA3 | _Bittium reticulatum_ | 113 | individuals |  | 
 
 **Extension (Measuremenr-or-Fact) table**
+
 | -- | -- | -- | -- | -- | -- |
 | EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... | 
 | IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | -- |
@@ -212,7 +213,7 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtai
 
 **Explanation** 
 
-_Abra ovata_ A total of 57 individuals from 0.04 square meters were obtained in sampling event IA1.
+**_Abra ovata_** : A total of 57 individuals from 0.04 square meters were obtained in sampling event IA1.
 
 Each event can also have measurements or facts associated with it, e.g., environmental measurements like sediment temperature and redox potential (Eh).
 
@@ -239,7 +240,7 @@ Each event can also have measurements or facts associated with it, e.g., environ
 
 **Explanation** 
 
- _Acer psuedoplatanus_ : In the 100 sq metres surveyed, the abundance of the species was reported as “r” on the Braun Blanquet scale. 
+** _Acer psuedoplatanus_** : In the 100 sq metres surveyed, the abundance of the species was reported as “r” on the Braun Blanquet scale. 
 
 Additional vegetation plot measurements such as vegetation community type (syntaxon) % coverage values that are typical of TurboVeg type databases are captured in a Relevé (vegetation-plot) extension.
 
@@ -259,7 +260,7 @@ Additional vegetation plot measurements such as vegetation community type (synta
 
 **Explanation** 
 
-_Opisthograptis luteolata_ : 11 individuals were observed over the sampling period of 16 days. The derived number of individuals per day is 0.68 (11/16).
+**_Opisthograptis luteolata_** : 11 individuals were observed over the sampling period of 16 days. The derived number of individuals per day is 0.68 (11/16).
 
 ### Lepidoptera survey II
 **Core (Event) table** 
@@ -278,5 +279,17 @@ _Opisthograptis luteolata_ : 11 individuals were observed over the sampling peri
 
 
 **Extension (Measuremenr-or-Fact) table**
+
+
+| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... | 
+| -- | -- | -- | -- | -- | -- |
+| 1014-tr023m | Temp | 20 | Degree C |  | |
+| 1014-tr023m | Wind speed | light | | | |
+| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  | |
+| 1014-tr023m | AvgAltitude | 10 | m | Average altitude | |
+
+**Explanation**
+**_Pieras rapae_** :  A total of 1 individual from 250 sq metres was obtained in this sampling event.  
+Several environmental measurements (e.g., temperature, wind speed, cloudiness) are included in a measurement-or-facts extension. 
 
 
