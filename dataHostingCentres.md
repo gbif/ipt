@@ -172,7 +172,7 @@ The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides help
 
 ## Marine data
 
-[OBIS](http://www.iobis.org) provides data hosting and helpdesk support to publishers of marine data around the globe. The Flanders Marine Institute (VLIZ) hosts multiple IPT installations at http://ipt.vliz.be/, which support the OBIS community consisting of more than 20 OBIS nodes around the world connecting 500 institutions from 56 countries.
+[OBIS](http://www.iobis.org) provides data hosting and helpdesk support to publishers of marine data around the globe. EurOBIS/Flanders Marine Institute (VLIZ) hosts multiple IPT installations discoverable at http://ipt.vliz.be/ on behalf of various OBIS Nodes. Currently, there are more than [20 OBIS Nodes](http://www.iobis.org/about/) around the world connecting 500 institutions from 56 countries.
 
 ## Vertebrate data
 
