@@ -34,6 +34,11 @@ A DHC must meet the following set of strict requirements in order to be recommen
 
 If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email <helpdesk@gbif.org>.
 
+## Data Hosting Centres by Theme
+
+- [[Marine Data|dataHostingCentres#marine-data]] 
+- [[Vertebrate Data|dataHostingCentres#vertebrate-data]] 
+
 ## Data Hosting Centres by Country
 
 - [[Australia|dataHostingCentres#australia]] <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/screenshots/star_16.png' />
