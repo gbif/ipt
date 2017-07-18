@@ -74,14 +74,14 @@ The [ALA IPT](http://ipt.ala.org.au/) is recognized as a repository in [BioShari
 
 The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdesk support to publishers in Belgium and hosting support for datasets on the [Belgian BIF IPT](http://ipt.biodiversity.be/). Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organisations:
 
-+ [Royal Belgian Institute of Natural Sciences](www.naturalsciences.be)
-+ [University of Liège](www.ulg.be)
++ [Royal Belgian Institute of Natural Sciences](http://www.naturalsciences.be)
++ [University of Liège](http://www.ulg.be)
 + [Botanical Garden Meise](http://www.plantentuinmeise.be)
 + [Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)](http://biodiversite.wallonie.be)
-+ [University of Mons-Hainaut](www.http://portail.umons.ac.be)
++ [University of Mons-Hainaut](http://www.portail.umons.ac.be)
 + [Université Libre de Bruxelles ](http://www.ulb.ac.be/)
-+ [Royal Museum for Central Africa, Belgium](www.africamuseum.be)
-+ [Ghent University](www.ugent.be)
++ [Royal Museum for Central Africa, Belgium](http://www.africamuseum.be)
++ [Ghent University](http://www.ugent.be)
 + [Natagriwal](https://www.natagriwal.be/)
 + [Institute of Tropical Medicine Antwerp](https://www.itg.be/)
 
@@ -91,8 +91,8 @@ The Belgian Biodiversity Platform also hosts an IPT for each of these countries/
 + [Biofresh IPT](http://data.freshwaterbiodiversity.eu/ipt/)
 
 The Research Institute for Nature and Forest (INBO) also provides [IPT](http://data.inbo.be/ipt) hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organisations: 
-+ [Natuurpunt](www.natuurpunt.be) 
-+ [Flemish Environment Agency VMM](www.vmm.be)
++ [Natuurpunt](http://www.natuurpunt.be) 
++ [Flemish Environment Agency VMM](http://www.vmm.be)
 
 The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for [VLIZ](http://www.vliz.be), [OBIS](http://www.iobis.org) & [EMODnet Biology](http://www.emodnet-biology.eu) at http://ipt.vliz.be. Publishers of marine data should refer to the section [Marine Data|dataHostingCentres#marine-data].
 
