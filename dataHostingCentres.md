@@ -13,7 +13,7 @@ A data hosting centre (DHC) can provide you with an account on their IPT, allowi
 
 Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language. 
 
-Please use this page to discover a trusted DHC in your own country. If no DHC exists in your country, or the DHC doesn't reply promptly to your inquiry, please contact the [GBIF Helpdesk](helpdesk@gbif.org) for assistance.  
+Please use this page to discover a trusted DHC by country or by theme that is right for you. If no appropriate DHC exists, or the DHC doesn't reply promptly to your inquiry, please contact the [GBIF Helpdesk](helpdesk@gbif.org) for assistance.  
 
 Please note that to qualify as a trusted DHC, the centre must meet a strict set of [criteria](dataHostingCentres#data-hosting-centre-criteria). Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset gets backed-up. 
 
