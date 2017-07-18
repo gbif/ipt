@@ -3,6 +3,7 @@
 ## Table of Contents
 + [[Introduction|dataHostingCentres#introduction]]
 + [[Data Hosting Centre Criteria|dataHostingCentres#data-hosting-centre-criteria]]
++ [[Data Hosting Centres by Theme|dataHostingCentres#data-hosting-centres-by-theme]]
 + [[Data Hosting Centres by Country|dataHostingCentres#data-hosting-centres-by-country]]
 + [[Certification|dataHostingCentres#certification]]
 
@@ -73,15 +74,15 @@ The [ALA IPT](http://ipt.ala.org.au/) is recognized as a repository in [BioShari
 The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdesk support to publishers in Belgium and hosting support for datasets on the [Belgian BIF IPT](http://ipt.biodiversity.be/). Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organisations:
 
 +[Royal Belgian Institute of Natural Sciences](www.naturalsciences.be)
-+[University of Liège](www.ulg.be)
-+[Botanical Garden Meise] (http://www.plantentuinmeise.be)
-+[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)](http://biodiversite.wallonie.be)
-+[University of Mons-Hainaut](www.http://portail.umons.ac.be)
-+[Université Libre de Bruxelles ](http://www.ulb.ac.be/)
-+[Royal Museum for Central Africa, Belgium](www.africamuseum.be)
-+[Ghent University](www.ugent.be)
-+[Natagriwal](https://www.natagriwal.be/)
-+[Institute of Tropical Medicine Antwerp](https://www.itg.be/)
++ [University of Liège](www.ulg.be)
++ [Botanical Garden Meise] (http://www.plantentuinmeise.be)
++ [Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)](http://biodiversite.wallonie.be)
++ [University of Mons-Hainaut](www.http://portail.umons.ac.be)
++ [Université Libre de Bruxelles ](http://www.ulb.ac.be/)
++ [Royal Museum for Central Africa, Belgium](www.africamuseum.be)
++ [Ghent University](www.ugent.be)
++ [Natagriwal](https://www.natagriwal.be/)
++ [Institute of Tropical Medicine Antwerp](https://www.itg.be/)
 
 The Belgian Biodiversity Platform also hosts an IPT for each of these countries/institutions:
 + [GBIF Mauritania IPT](http://ipt-mrbif.bebif.be/)
@@ -165,6 +166,14 @@ The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides help
 + [Ocean Biogeographic Information System USA - OBIS-USA](https://www1.usgs.gov/obis-usa/ipt/)
 + [Nonindigenous Aquatic Species (NAS) information resource for the USGS](https://nas.er.usgs.gov/ipt/)
 + [USGS Biodiversity Information Serving Our Nation (BISON) IPT](https://bison.usgs.gov/ipt)
+
+## Marine data
+
+[OBIS](http://www.iobis.org) provides data hosting and helpdesk support to publishers of marine data around the globe. The Flanders Marine Institute (VLIZ) hosts multiple IPT installations at http://ipt.vliz.be/, which support the OBIS community consisting of more than 20 OBIS nodes around the world connecting 500 institutions from 56 countries.
+
+## Vertebrate data
+
+[VertNet](http://vertnet.org/) provides data hosting and helpdesk support to publishers of vertebrate natural history collections and observations. Currently it helps to mobilize collections from 38 countries. It offers data hosting support on the [VertNet IPT](http://ipt.vertnet.org/). Please contact David Bloom <dbloom@vertnet.org> for assistance. 
 
 ## Certification
 
