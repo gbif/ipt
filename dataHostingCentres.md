@@ -173,7 +173,7 @@ The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides help
 
 ## Vertebrate data
 
-[VertNet](http://vertnet.org/) provides data hosting and helpdesk support to publishers of vertebrate natural history collections and observations. Currently it helps to mobilize collections from 38 countries. It offers data hosting support on the [VertNet IPT](http://ipt.vertnet.org/). Please contact David Bloom <dbloom@vertnet.org> for assistance. 
+[VertNet](http://vertnet.org/) provides data hosting and helpdesk support to publishers of vertebrate collections and observations data. Currently it helps to mobilize collections from 38 countries. It offers data hosting support on the [VertNet IPT](http://ipt.vertnet.org/). Please contact David Bloom <dbloom@vertnet.org> for assistance. 
 
 ## Certification
 
