@@ -91,7 +91,7 @@ The Belgian Biodiversity Platform also hosts an IPT for each of these countries/
 
 The Research Institute for Nature and Forest (INBO) also provides [IPT](http://data.inbo.be/ipt) hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organisations: [natuurpunt](www.natuurpunt.be) and the Flemish Environment Agency [VMM](www.vmm.be).
 
-For marine occurrence data sets, the Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for [VLIZ](http://www.vliz.be), [OBIS](http://www.iobis.org) & [EMODnet Biology](http://www.emodnet-biology.eu) at http://ipt.vliz.be
+The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for [VLIZ](http://www.vliz.be), [OBIS](http://www.iobis.org) & [EMODnet Biology](http://www.emodnet-biology.eu) at http://ipt.vliz.be. Publishers of marine data should refer to the section [Marine Data|dataHostingCentres#marine-data].
 
 ## Canada
 
@@ -160,7 +160,7 @@ The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en)
 
 The [iDigBio IPT](http://ipt.idigbio.org) provides helpdesk support to new data publishers in the US, and data publishing resources for datasets needing data mobilization support. Please contact the Joanna McCaffrey at jmccaffrey@flmnh.ufl.edu for assistance.
 
-[VertNet](http://vertnet.org/) provides helpdesk support to new publishers in the US, and hosting support for datasets on the [VertNet IPT](http://ipt.vertnet.org/). Please contact David Bloom <dbloom@vertnet.org> for assistance. 
+[VertNet](http://vertnet.org/) provides helpdesk support to new publishers in the US, with a special focus on vertebrate collections and observations data. Publishers of vertebrate data should refer to the section [[Vertebrate Data|dataHostingCentres#vertebrate-data]].
 
 The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the [USGS BISON IPT](https://bison.usgs.gov/ipt). Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organisations/resources:
 + [Ocean Biogeographic Information System USA - OBIS-USA](https://www1.usgs.gov/obis-usa/ipt/)
