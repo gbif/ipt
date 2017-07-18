@@ -73,7 +73,7 @@ The [ALA IPT](http://ipt.ala.org.au/) is recognized as a repository in [BioShari
 
 The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdesk support to publishers in Belgium and hosting support for datasets on the [Belgian BIF IPT](http://ipt.biodiversity.be/). Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organisations:
 
-+[Royal Belgian Institute of Natural Sciences](www.naturalsciences.be)
++ [Royal Belgian Institute of Natural Sciences](www.naturalsciences.be)
 + [University of Liège](www.ulg.be)
 + [Botanical Garden Meise] (http://www.plantentuinmeise.be)
 + [Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)](http://biodiversite.wallonie.be)
