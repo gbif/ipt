@@ -173,7 +173,7 @@ The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides help
 
 ## Freshwater data
 
-[Biofresh](http://data.freshwaterbiodiversity.eu/ipt/) provides data hosting and helpdesk support to publishers of freshwater data around the globe on the [Biofresh IPT](http://data.freshwaterbiodiversity.eu/ipt/), hosted by the Belgium Biodiversity Platform.. Biofresh is an EU-funded international project that aims to build a global information platform for scientists and ecosystem managers with access to all available databases describing the distribution, status and trends of global freshwater biodiversity. BioFresh integrates the freshwater biodiversity competencies and expertise of 19 research institutions. Biofresh hosts its data on the Biofresh IPT on behalf of BioFresh.
+[Biofresh](http://data.freshwaterbiodiversity.eu/ipt/) provides data hosting and helpdesk support to publishers of freshwater data around the globe on the [Biofresh IPT](http://data.freshwaterbiodiversity.eu/ipt/), hosted by the Belgium Biodiversity Platform. Biofresh is an EU-funded international project that aims to build a global information platform for scientists and ecosystem managers with access to all available databases describing the distribution, status and trends of global freshwater biodiversity. BioFresh integrates the freshwater biodiversity competencies and expertise of 19 research institutions. 
 
 ## Marine data
 
