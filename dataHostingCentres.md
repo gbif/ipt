@@ -76,7 +76,7 @@ The [Belgium Biodiversity Platform](http://www.biodiversity.be) provides helpdes
 
 + [Royal Belgian Institute of Natural Sciences](www.naturalsciences.be)
 + [University of Liège](www.ulg.be)
-+ [Botanical Garden Meise] (http://www.plantentuinmeise.be)
++ [Botanical Garden Meise](http://www.plantentuinmeise.be)
 + [Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)](http://biodiversite.wallonie.be)
 + [University of Mons-Hainaut](www.http://portail.umons.ac.be)
 + [Université Libre de Bruxelles ](http://www.ulb.ac.be/)
@@ -90,7 +90,9 @@ The Belgian Biodiversity Platform also hosts an IPT for each of these countries/
 + [Antabif IPT](http://ipt.biodiversity.aq/)
 + [Biofresh IPT](http://data.freshwaterbiodiversity.eu/ipt/)
 
-The Research Institute for Nature and Forest (INBO) also provides [IPT](http://data.inbo.be/ipt) hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organisations: [natuurpunt](www.natuurpunt.be) and the Flemish Environment Agency [VMM](www.vmm.be).
+The Research Institute for Nature and Forest (INBO) also provides [IPT](http://data.inbo.be/ipt) hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organisations: 
++ [Natuurpunt](www.natuurpunt.be) 
++ [Flemish Environment Agency VMM](www.vmm.be)
 
 The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for [VLIZ](http://www.vliz.be), [OBIS](http://www.iobis.org) & [EMODnet Biology](http://www.emodnet-biology.eu) at http://ipt.vliz.be. Publishers of marine data should refer to the section [Marine Data|dataHostingCentres#marine-data].
 
