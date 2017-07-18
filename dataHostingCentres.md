@@ -94,7 +94,7 @@ The Research Institute for Nature and Forest (INBO) also provides [IPT](http://d
 + [Natuurpunt](http://www.natuurpunt.be) 
 + [Flemish Environment Agency VMM](http://www.vmm.be)
 
-The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for [VLIZ](http://www.vliz.be), [OBIS](http://www.iobis.org) & [EMODnet Biology](http://www.emodnet-biology.eu) at http://ipt.vliz.be. Publishers of marine data should refer to the section [Marine Data|dataHostingCentres#marine-data].
+The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for [VLIZ](http://www.vliz.be), [OBIS](http://www.iobis.org) & [EMODnet Biology](http://www.emodnet-biology.eu) at http://ipt.vliz.be. Publishers of marine data should refer to the section [[Marine Data|dataHostingCentres#marine-data]].
 
 ## Canada
 
