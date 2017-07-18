@@ -37,6 +37,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 ## Data Hosting Centres by Theme
 
+- [[Freshwater Data|dataHostingCentres#freshwater-data]] 
 - [[Marine Data|dataHostingCentres#marine-data]] 
 - [[Vertebrate Data|dataHostingCentres#vertebrate-data]] 
 
@@ -169,6 +170,10 @@ The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides help
 + [Ocean Biogeographic Information System USA - OBIS-USA](https://www1.usgs.gov/obis-usa/ipt/)
 + [Nonindigenous Aquatic Species (NAS) information resource for the USGS](https://nas.er.usgs.gov/ipt/)
 + [USGS Biodiversity Information Serving Our Nation (BISON) IPT](https://bison.usgs.gov/ipt)
+
+## Freshwater data
+
+[Biofresh](http://data.freshwaterbiodiversity.eu/ipt/) provides data hosting and helpdesk support to publishers of freshwater data around the globe on the [Biofresh IPT](http://data.freshwaterbiodiversity.eu/ipt/), hosted by the Belgium Biodiversity Platform.. Biofresh is an EU-funded international project that aims to build a global information platform for scientists and ecosystem managers with access to all available databases describing the distribution, status and trends of global freshwater biodiversity. BioFresh integrates the freshwater biodiversity competencies and expertise of 19 research institutions. Biofresh hosts its data on the Biofresh IPT on behalf of BioFresh.
 
 ## Marine data
 
