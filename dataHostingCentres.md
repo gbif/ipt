@@ -51,6 +51,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 - [[Denmark|dataHostingCentres#denmark]]
 - [[Finland|dataHostingCentres#finland]]
 - [[France|dataHostingCentres#france]]
+- [[Mauritania|dataHostingCentres#belgium]] 
 - [[Madagascar|dataHostingCentres#france]]
 - [[Norway|dataHostingCentres#norway]]
 - [[Portugal|dataHostingCentres#portugal]]
