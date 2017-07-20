@@ -175,6 +175,7 @@ Following are some examples of typical sampling-event data sets. In each case, t
 | B_1538 | AQEM | 1.25 | m^2 | 11/06/2008 | Kinzig W3 Bulau | 50.1316 | 8.9657 |
 
 
+
 **Extension (Occurrence) table** 
 
 | EventID | scientificName | organismQuantity | organismQuantityType | ... | 
@@ -184,9 +185,13 @@ Following are some examples of typical sampling-event data sets. In each case, t
 | C_1428 | _Gyraulus albus_ | 2 | individuals |  | 
 | B_1538 | _Serratella ignita_ | 318 | individuals |  | 
 
+
 **Explanation** 
 
 _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtained in this sampling event. The derived individuals per sq metre count is 11.2 (14/1.25). 
+
+
+
 
 ### Brackish water invertebrates survey
 **Core (Event) table** 
@@ -313,7 +318,7 @@ Several environmental measurements (e.g., temperature, wind speed, cloudiness) a
 
 _**Aulostomus chinensis**_ : A total of 4 individuals from 500 sq metres were obtained in this sampling event.
 
-###Nested samples 
+### Nested samples 
 
 Table 4. Several sub-plots may be related to the parentEventID as in this example of a Whittaker plot consisting of 13 sub-plots (see Figure 3 for plot layout). 
 
@@ -333,4 +338,22 @@ Table 4. Several sub-plots may be related to the parentEventID as in this exampl
 | A1.11 | A1 |  | 1 | m^2 |  |  | | | |
 | A1.12 | A1 |  | 1 | m^2 |  |  | | | |
 | A1.13 | A1 |  | 1 | m^2 |  |  | | | |
+
+
+Figure 3.A Schematic of a Whittaker plot consisting of 13 sub-plots of varying area. 
+
+
+
+### Additional information that could also be included or was previously included 
+
+The Event core elements are mainly drawn from the DwC classes Event, Location and Geological Context (Table 3). The Occurrence extension elements are drawn from the Occurrence, Taxon and Identification classes. For reasons of consistency, the Occurrence extension includes all terms found in the Occurrence core. Thus Event, Location and Geological Context terms are also listed for the Occurrence extension but are actually redundant. Note the IPT hides redundant terms by default when mapping for the user’s convenience.  
+
+Table 3. Placement of the sample related terms in the Event core and Occurrence extension.
+
+
+| Event Core | eventID, parentEventID, samplingProtocol, sampleSizeValue, sampleSizeUnit, samplingTaxaRange*, siteTreatment*, siteID*, layer* |
+|:--|:--|
+| **Occurrence Extension** | **eventID, organismQuantity, organismQuantityType, siteID+, layer+** |
+###### The **+** symbol indicates proposed new terms not yet ratified. 
+
 
