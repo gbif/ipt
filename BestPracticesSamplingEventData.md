@@ -289,7 +289,35 @@ Additional vegetation plot measurements such as vegetation community type (synta
 | 1014-tr023m | AvgAltitude | 10 | m | Average altitude | |
 
 **Explanation**
+
 **_Pieras rapae_** :  A total of 1 individual from 250 sq metres was obtained in this sampling event.  
 Several environmental measurements (e.g., temperature, wind speed, cloudiness) are included in a measurement-or-facts extension. 
+
+### Reef fish survey 
+
+**Core (Event) table**
+
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 | |
+| 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 | |
+
+| EventID | scientificName | organismQuantity | organismQuantityType | ... | 
+| -- | -- | -- | -- | -- |
+| 506003329 | Acanthurus nigricans | 42 | individuals |  |
+| 506003329 | Acanthurus xanthopterus | 1 | individuals |  |
+| 506003329 | Aulostomus chinensis | 4 | individuals |  |
+| 506003329 | Axoclinus cocoensis | 1 | individuals |  |
+
+**Explanation** 
+
+_**Aulostomus chinensis**_ : A total of 4 individuals from 500 sq metres were obtained in this sampling event.
+
+###Nested samples 
+
+Table 4. Several sub-plots may be related to the parentEventID as in this example of a Whittaker plot consisting of 13 sub-plots (see Figure 3 for plot layout). 
+
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- |
 
 
