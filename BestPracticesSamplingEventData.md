@@ -317,7 +317,20 @@ _**Aulostomus chinensis**_ : A total of 4 individuals from 500 sq metres were ob
 
 Table 4. Several sub-plots may be related to the parentEventID as in this example of a Whittaker plot consisting of 13 sub-plots (see Figure 3 for plot layout). 
 
-| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
-| -- | -- | -- | -- | -- | -- | -- | -- | -- |
-
+| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| A1 |  | Modified Whittaker Plot | 1000 | m^2 | 18/03/84 | Monarch | 55.72 | 13.28 | |
+| A1.1 | A1 |  | 100 | m^2 |  |  | | | |
+| A1.2 | A1 |  | 10 | m^2 |  |  | | | |
+| A1.3 | A1 |  | 10 | m^2 |  |  | | | |
+| A1.4 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.5 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.6 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.7 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.8 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.9 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.10 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.11 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.12 | A1 |  | 1 | m^2 |  |  | | | |
+| A1.13 | A1 |  | 1 | m^2 |  |  | | | |
 
