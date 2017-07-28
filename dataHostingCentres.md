@@ -164,7 +164,7 @@ The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en)
 
 The [iDigBio IPT](http://ipt.idigbio.org) provides helpdesk support to new data publishers in the US, and data publishing resources for datasets needing data mobilization support. Please contact the Joanna McCaffrey at jmccaffrey@flmnh.ufl.edu for assistance.
 
-[VertNet](http://vertnet.org/) provides helpdesk support to new publishers in the US, with a special focus on vertebrate collections and observations data. Publishers of vertebrate data should refer to the section [[Vertebrate Data|dataHostingCentres#vertebrate-data]].
+[VertNet](http://vertnet.org/) provides helpdesk support to institutions that have vertebrates among one or more of the data sets they want help publishing. In other words, if the institution is interested in publishing vertebrate data sets (whether specimens or observations), VertNet will help with publishing all of their data sets. This promotes efficiency when providing and maintaining support to the institution. Publishers of vertebrate data should refer to the section [[Vertebrate Data|dataHostingCentres#vertebrate-data]].
 
 The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the [USGS BISON IPT](https://bison.usgs.gov/ipt). Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organisations/resources:
 + [Ocean Biogeographic Information System USA - OBIS-USA](https://www1.usgs.gov/obis-usa/ipt/)
@@ -181,7 +181,7 @@ The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides help
 
 ## Vertebrate data
 
-[VertNet](http://vertnet.org/) provides data hosting and helpdesk support to publishers of vertebrate collections and observations data. Currently it helps to mobilize collections from 38 countries. It offers data hosting support on the [VertNet IPT](http://ipt.vertnet.org/). Please contact David Bloom <dbloom@vertnet.org> for assistance. 
+[VertNet](http://vertnet.org/) provides data hosting and helpdesk support to publishers of vertebrate specimen and observation data. Hosted data can be seen on the [VertNet IPT](http://ipt.vertnet.org/). Please contact David Bloom <dbloom@vertnet.org> for assistance.
 
 ## Certification
 
