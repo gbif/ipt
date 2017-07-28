@@ -15,7 +15,7 @@ Using a DHC is highly recommended because it will save you time and money settin
 
 Please use this page to discover a trusted DHC by country or by theme that is right for you. If no appropriate DHC exists, or the DHC doesn't reply promptly to your inquiry, please contact the [GBIF Helpdesk](helpdesk@gbif.org) for assistance.  
 
-Please note that to qualify as a trusted DHC, the centre must meet a strict set of [criteria](dataHostingCentres#data-hosting-centre-criteria). Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset gets backed-up. 
+Please note that to qualify as a trusted DHC, the centre must meet a strict set of [criteria](dataHostingCentres#data-hosting-centre-criteria). Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset gets backed up. 
 
 ## Data Hosting Centre Criteria
 
@@ -168,7 +168,7 @@ The [iDigBio IPT](http://ipt.idigbio.org) provides helpdesk support to new data 
 
 The [United States Geological Survey (USGS)](http://www.usgs.gov/) provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the [USGS BISON IPT](https://bison.usgs.gov/ipt). Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organisations/resources:
 + [Ocean Biogeographic Information System USA - OBIS-USA](https://www1.usgs.gov/obis-usa/ipt/)
-+ [Nonindigenous Aquatic Species (NAS) information resource for the USGS](https://nas.er.usgs.gov/ipt/)
++ [Non-indigenous Aquatic Species (NAS) information resource for the USGS](https://nas.er.usgs.gov/ipt/)
 + [USGS Biodiversity Information Serving Our Nation (BISON) IPT](https://bison.usgs.gov/ipt)
 
 ## Freshwater data
