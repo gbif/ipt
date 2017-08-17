@@ -158,7 +158,7 @@ Normalised Classifications (Parent/Child)
 
 The recommended way to share a classification is in a normalised format. This may also be referred to in a database as a "parent-child relationship" or an "adjacency list". In a normalised taxonomic hierarchy, each taxon is represented by a single row. This includes both species and all higher taxa in the classification. Each row has at least the following component data elements.
 
--   A ***dwc:taxonID*** referring to the current taxon.
+-   A ***dwc:taxonID*** referring to the current taxon. **You can use whatever identifiers you have**.
 -   The ***dwc:scientficName*** of the current taxon. Example: “***Panthera tigris***”
 -   The ***dwc:taxonRank*** of the referent taxon. Example: “***species***”
 -   A reference to the taxon identifier of the immediate parent taxon stored in the ***dwc:parentNameUsageID***. In the example below, the parent of record 7, for “***Panthera tigris*** (Linnaeus)” is record 6, the genus “***Panthera***.”
