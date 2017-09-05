@@ -153,28 +153,18 @@ In the GMP there is a minimum set of mandatory elements required for identificat
 Metadata Elements
 =================
 
-<span id="_Toc254414783" class="anchor"></span>The GBIF Metadata Profile is primarily based on the Ecological Metadata Language (EML)[6]. The GBIF profile utilises a subset of EML and extends it to include additional requirements that are not accommodated in the EML specification. The following tables provide short descriptions of the profile elements, and where relevant, links to more complete EML descriptions. The elements are categorised as follows:
+<span id="_Toc254414783" class="anchor"></span>The GBIF Metadata Profile is primarily based on the [Ecological Metadata Language (EML)](https://knb.ecoinformatics.org/#tools/eml). The GBIF profile utilises a subset of EML and extends it to include additional requirements that are not accommodated in the EML specification. The following tables provide short descriptions of the profile elements, and where relevant, links to more complete EML descriptions. The elements are categorised as follows:
 
 -   Dataset (Resource)
-
 -   Project
-
 -   People and Organisations
-
 -   Keyword Set (General Keywords)
-
 -   Coverage
-
     -   Taxonomic Coverage
-
     -   Geographic Coverage
-
     -   Temporal Coverage
-
 -   Methods
-
 -   Intellectual Property Rights
-
 -   Additional Metadata + NCD (Natural Collections Descriptions Data) Related<span id="_Toc146358902" class="anchor"><span id="_Toc137570770" class="anchor"></span></span>
 
 Dataset (Resource)
@@ -310,7 +300,7 @@ Contain a rights management statement for the resource, or a reference to a serv
                                                                                                                                                                                                                                                                                                                                                                            
 
 
-Additional Metadata + NCD (Natural Collections Description Data)[7] Related
+Additional Metadata + [Natural Collections Description Data (NCD)](http://www.tdwg.org/activities/ncd/) Related
 ---------------------------------------------------------------------------
 
 The additionalMetadata field is a container for any other relevant metadata that pertains to the resource being described. This field allows EML to be extensible in that any XML-based metadata can be included in this element. The elements provided here in the GMP include those required for conformance with ISO 19139 and a subset of NCD (Natural Collections Descriptions) elements.
@@ -329,21 +319,4 @@ The additionalMetadata field is a container for any other relevant metadata that
 | specimenPreservationMethod | Picklist keyword indicating the process or technique used to prevent physical deterioration of non-living collections. Expected to contain an instance from the Specimen Preservation Method Type Term vocabulary.   E.g., formaldehyde. |                                                                                                                                                                                                                                                                                                                                                                                                                                                
 | jgtiCuratorialUnit | A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by 1) an exact number of “JGI-units” in the collection plus a measure of uncertainty (+/- x); 2) a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted. The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitised. This is to avoid having to update the numbers too often. The number of non-public data (not digitised or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data. |
 
----------------------------------------------------------------------------
-
-[1] GBIF (2011). GBIF Strategic Plan 2012-16: Seizing the future. Copenhagen: Global Biodiversity Information Facility. 7pp. ISBN: 87-92020-18-6. Accessible at <http://links.gbif.org/sp2012_2016.pdf>
-
-[2] The GBIF Data Portal - <http://data.gbif.org>
-
-[3] ISO 19139 profile - <http://marinemetadata.org/references/iso19139>
-
-[4] <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>
-
-[5] GBIF Metadata Profile XSD – <http://rs.gbif.org/schema/eml-gbif-profile/1.0/eml-gbif-profile.xsd>
-
-[6] Ecological Metadata Language - <http://knb.ecoinformatics.org/software/eml/>
-
-[7] NCD - <http://www.tdwg.org/activities/ncd/>
-
-[8] Required for ISO19139; see http://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP-Metadata/napMetadataProfileV101.pdf
 
