@@ -29,7 +29,7 @@
 
 ## Suggested citation                                                                                                                                                                                                                                                         
                                                                                                                                                                                                                                                                               
-> GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, 11 pp, accessible online at <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>
+> GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accessible online at: https://github.com/gbif/ipt/wiki/GMPHowToGuide
 
 _Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._
 
