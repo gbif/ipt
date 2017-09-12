@@ -69,7 +69,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 The Atlas of Living Australia provides helpdesk support to new publishers in Australia, and hosting support for datasets on the [ALA IPT](http://ipt.ala.org.au/). Please contact ALA <david.martin@csiro.au> for assistance. 
 
-The [ALA IPT](http://ipt.ala.org.au/) is recognized as a repository in [BioSharing.org](https://biosharing.org/biodbcore-000852). An increasing number of journals refer authors to an appropriate repository in BioSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
+The [ALA IPT](http://ipt.ala.org.au/) is recognized as a repository in [FAIRSharing.org](https://fairsharing.org/biodbcore-000852). An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
 
 ## Belgium
 
@@ -103,13 +103,13 @@ The [Canadian Biodiversity Information Facility (CBIF)](http://www.cbif.gc.ca/) 
 
 Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the [Canadensys IPT](http://data.canadensys.net/ipt). Please contact Canadensys <canadensys.network@gmail.com> for assistance.
 
-The [Canadensys IPT](http://data.canadensys.net/ipt) is recognized as a repository in [BioSharing.org](https://biosharing.org/biodbcore-000855). An increasing number of journals refer authors to an appropriate repository in BioSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
+The [Canadensys IPT](http://data.canadensys.net/ipt) is recognized as a repository in [FAIRSharing.org](https://fairsharing.org/biodbcore-000855). An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
 
 ## Colombia
 
 The [Colombian Biodiversity Information System (SiB Colombia)](http://www.sibcolombia.net/web/sib/home) provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/). Please contact SiB Colombia <sib@humboldt.org.co> for assistance. 
 
-The [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/) is recognized as a repository in [BioSharing.org](https://biosharing.org/biodbcore-000856). An increasing number of journals refer authors to an appropriate repository in BioSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
+The [SiB Colombia IPT](http://ipt.sibcolombia.net/sib/) is recognized as a repository in [FAIRSharing.org](https://fairsharing.org/biodbcore-000856). An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner. 
 
 ## Denmark
 
@@ -150,7 +150,7 @@ The [South African National Biodiversity Institute (SANBI)](http://www.sanbi.org
 
 [GBIF Spain](http://www.gbif.es/) provides helpdesk support to new publishers in Spain, and hosting support for datasets on the [GBIF Spain IPT](http://www.gbif.es/ipt/). Please contact <info@gbif.es> for assistance. 
 
-The [GBIF Spain IPT](http://www.gbif.es/ipt/) is recognized as a repository in [BioSharing.org](https://biosharing.org/biodbcore-000854). An increasing number of journals refer authors to an appropriate repository in BioSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner.
+The [GBIF Spain IPT](http://www.gbif.es/ipt/) is recognized as a repository in [FAIRSharing.org](https://fairsharing.org/biodbcore-000854). An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner.
 
 ## Sweden
 
