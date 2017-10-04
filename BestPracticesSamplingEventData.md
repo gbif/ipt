@@ -42,6 +42,11 @@ An alternative way to encode sampling-event data is listing the species occurren
 
 > TODO: Provide recommendations on how to work around limitations of DwC-A star schema such as not being able to relate measurements and facts to both events and occurrences in the same dataset. The current work around requires publishers to publish separate datasets. Note OBIS is prototyping an Extended Measurement or Facts Extension that could also help overcome this limitation. Discussion on this prototype extension is taking place in GitHub here. However, issues raised that this prototype extension does not explicitly make it clear if the measurement or fact relates to an occurrence or an event. One alternative is to add resourceID (and perhaps resourceType?) instead of adding eventID (and occurrenceID) as attribute to the measurement or fact extension as is explored by the OBIS extension. 
 
+![](https://github.com/gbif/ipt/blob/master/Fig2.%20sampling%20(2).jpg)
+
+Figure 2. A sampling event uses a particular samplingProtocol, sampleSizeValue, sampleSizeUnit etc. 
+
+
 ### Data file formatting recommendations
 
 For ease in understanding, we may use the terms ***field*** in this guide to refer to the Darwin Core set of terms in the sampling-event publishing profile to which a users data will be mapped. For example, we will refer to the use of the ***dwc:scientificName field*** when referring to the Darwin Core term, ***scientificName***.
