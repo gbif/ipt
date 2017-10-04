@@ -190,6 +190,7 @@ Following are some examples of typical sampling-event data sets. In each case, t
 
 _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtained in this sampling event. The derived individuals per sq metre count is 11.2 (14/1.25). 
 
+<br><br>
 
 
 
@@ -199,7 +200,8 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtai
 | EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ... |
 | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
 | IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 | |
-| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 | |
+| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 | |  
+
 
 **Extension (Occurrence) table** 
 
@@ -222,6 +224,7 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtai
 **_Abra ovata_** : A total of 57 individuals from 0.04 square meters were obtained in sampling event IA1.
 
 Each event can also have measurements or facts associated with it, e.g., environmental measurements like sediment temperature and redox potential (Eh).
+<br><br>
 
 ### Macrophyte survey
 
@@ -249,7 +252,7 @@ Each event can also have measurements or facts associated with it, e.g., environ
 ** _Acer psuedoplatanus_** : In the 100 sq metres surveyed, the abundance of the species was reported as “r” on the Braun Blanquet scale. 
 
 Additional vegetation plot measurements such as vegetation community type (syntaxon) % coverage values that are typical of TurboVeg type databases are captured in a Relevé (vegetation-plot) extension.
-
+<br><br>
 
 ### Lepidoptera survey I
 **Core (Event) table** 
@@ -267,6 +270,7 @@ Additional vegetation plot measurements such as vegetation community type (synta
 **Explanation** 
 
 **_Opisthograptis luteolata_** : 11 individuals were observed over the sampling period of 16 days. The derived number of individuals per day is 0.68 (11/16).
+<br><br>
 
 ### Lepidoptera survey II
 **Core (Event) table** 
@@ -297,6 +301,7 @@ Additional vegetation plot measurements such as vegetation community type (synta
 
 **_Pieras rapae_** :  A total of 1 individual from 250 sq metres was obtained in this sampling event.  
 Several environmental measurements (e.g., temperature, wind speed, cloudiness) are included in a measurement-or-facts extension. 
+<br><br>
 
 ### Reef fish survey 
 
@@ -307,6 +312,8 @@ Several environmental measurements (e.g., temperature, wind speed, cloudiness) a
 | 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 | |
 | 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 | |
 
+**Extension (Occurrence) table**
+
 | EventID | scientificName | organismQuantity | organismQuantityType | ... | 
 | -- | -- | -- | -- | -- |
 | 506003329 | Acanthurus nigricans | 42 | individuals |  |
@@ -314,9 +321,11 @@ Several environmental measurements (e.g., temperature, wind speed, cloudiness) a
 | 506003329 | Aulostomus chinensis | 4 | individuals |  |
 | 506003329 | Axoclinus cocoensis | 1 | individuals |  |
 
+
 **Explanation** 
 
 _**Aulostomus chinensis**_ : A total of 4 individuals from 500 sq metres were obtained in this sampling event.
+<br><br>
 
 ### Nested samples 
 
@@ -338,10 +347,12 @@ Table 4. Several sub-plots may be related to the parentEventID as in this exampl
 | A1.11 | A1 |  | 1 | m^2 |  |  | | | |
 | A1.12 | A1 |  | 1 | m^2 |  |  | | | |
 | A1.13 | A1 |  | 1 | m^2 |  |  | | | |
+<br><br>
 
+![](https://github.com/gbif/ipt/blob/108711b8ed7a22c30189bacb2fd8111370603ffb/Figure%203.%20Schematic%20of%20a%20whittaker%20plot%20(2).png)
 
 Figure 3.A Schematic of a Whittaker plot consisting of 13 sub-plots of varying area. 
-
+<br><br>
 
 
 ### Additional information that could also be included or was previously included 
