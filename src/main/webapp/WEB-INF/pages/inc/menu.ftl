@@ -36,6 +36,7 @@
                         <form id="login-form" action="${baseURL}/login.do" method="post">
                           <input type="text" size="25" name="email" value="email" class="form-reset" />
                           <input type="password" size="20" name="password" value="password" class="form-reset" />
+                          <input name="csrfToken" type="hidden" value="${newCsrfToken!}">
                           [@s.submit key="portal.login" name="login-submit"/]
                         </form>
                       </li>

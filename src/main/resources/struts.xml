@@ -49,6 +49,9 @@
       <!-- also check for any values in the cancel request parameter and returns the cancel result in that case immediately -->
       <interceptor name="setupAndCancel" class="org.gbif.ipt.struts2.SetupAndCancelInterceptor"/>
 
+      <!-- interceptor to set csrf login tokens in cookie and value stack to prevent CSRF login attacks -->
+      <interceptor name="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor"/>
+
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">
         <interceptor-ref name="keepRedirectMessages"/>
@@ -56,6 +59,7 @@
         <interceptor-ref name="validation">
           <param name="excludeMethods">input,back,cancel,list</param>
         </interceptor-ref>
+        <interceptor-ref name="csrfLoginInterceptor" />
         <interceptor-ref name="workflow"/>
       </interceptor-stack>
 
