@@ -76,6 +76,7 @@
     <mockito-all.version>1.10.19</mockito-all.version>
     <mysql-connector-java.version>5.1.42</mysql-connector-java.version>
     <ojdbc.version>14</ojdbc.version>
+    <owasp-java-html-sanitizer.version>20170515.1</owasp-java-html-sanitizer.version>
     <postgresql.version>42.1.1</postgresql.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.21</slf4j.version>
@@ -642,6 +643,13 @@
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
       <version>${jsr305.version}</version>
+    </dependency>
+
+    <!-- HTML sanitizer preventing XSS attacks -->
+    <dependency>
+      <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+      <artifactId>owasp-java-html-sanitizer</artifactId>
+      <version>${owasp-java-html-sanitizer.version}</version>
     </dependency>
   </dependencies>
 

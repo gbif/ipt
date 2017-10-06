@@ -52,6 +52,7 @@
       <!-- interceptor to set csrf login tokens in cookie and value stack to prevent CSRF login attacks -->
       <interceptor name="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor"/>
 
+
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">
         <interceptor-ref name="keepRedirectMessages"/>

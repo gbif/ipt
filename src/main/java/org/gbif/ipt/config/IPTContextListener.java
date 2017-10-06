@@ -12,14 +12,13 @@
  ***************************************************************************/
 package org.gbif.ipt.config;
 
-import org.gbif.ipt.struts2.CharacterEncodingFilter;
-import org.gbif.ws.server.filter.XSSFilter;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
+import org.gbif.ipt.struts2.CharacterEncodingFilter;
+import org.gbif.ipt.struts2.SanitizeHtmlFilter;
 
 public class IPTContextListener extends GuiceServletContextListener {
 
@@ -33,7 +32,7 @@ public class IPTContextListener extends GuiceServletContextListener {
       @Override
       protected void configureServlets() {
         filter("/*").through(CharacterEncodingFilter.class);
-        filter("/*").through(XSSFilter.class);
+        filter("/*").through(SanitizeHtmlFilter.class);
         super.configureServlets();
       }
     }, new Struts2GuicePluginModule(), new IPTModule());
