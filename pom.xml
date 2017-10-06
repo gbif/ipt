@@ -49,7 +49,7 @@
     <dwca-io.version>1.30</dwca-io.version>
     <freemarker.version>2.3.26-incubating</freemarker.version>
     <gbif-api.version>0.54</gbif-api.version>
-    <gbif-common-ws.version>0.39</gbif-common-ws.version>
+    <gbif-common-ws.version>0.41</gbif-common-ws.version>
     <gbif-common.version>0.34</gbif-common.version>
     <gbif-doi.version>1.5</gbif-doi.version>
     <gbif-metadata-profile.version>1.1.1</gbif-metadata-profile.version>
@@ -66,7 +66,7 @@
     <javassist.version>3.12.1.GA</javassist.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.18.3</jersey.version>
-    <jetty-maven-plugin.version>7.6.12.v20130726</jetty-maven-plugin.version>
+    <jetty-maven-plugin.version>9.4.7.v20170914</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.1</jsr305.version>
     <jtds.version>1.3.1</jtds.version>
@@ -80,7 +80,7 @@
     <postgresql.version>42.1.1</postgresql.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.21</slf4j.version>
-    <struts2.version>2.3.32</struts2.version>
+    <struts2.version>2.3.34</struts2.version>
     <validation-api.version>1.1.0.Final</validation-api.version>
     <xstream.version>1.4.10</xstream.version>
   </properties>
@@ -161,7 +161,7 @@
         <!--
           http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin
         -->
-        <groupId>org.mortbay.jetty</groupId>
+        <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty-maven-plugin.version}</version>
         <configuration>
@@ -346,12 +346,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!--
-      Struts2:
-      The 2.3.x series of the Apache Struts framework has a minimum
-      requirement of the following specification versions: Servlet API 2.4,
-      JSP API 2.0, and Java 6.
-    -->
+    <!-- Struts2,  2.3.x series -->
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts2-core</artifactId>
