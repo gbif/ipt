@@ -7,12 +7,17 @@
 *   Addressed [6 issues](https://github.com/gbif/ipt/projects/3 "IPT v2.3.4 Issues List"): 3 Defects, 2 Enhancements and 1 Other
 *   Translated into 7 languages
 
+
+Version 2.3.4 fixes a [security vulnerability](https://struts.apache.org/docs/s2-045.html "Link to security vulnerability in Struts2") that was discovered in the Apache Struts web framework, which the IPT uses. This security vulnerability affects all IPT versions, including 2.3.3, therefore all users should plan to upgrade to this version immediately following the instructions in the [Release Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki "IPT v2.3.4 Release Notes").
+
 ### **2.3.3** - December, 2016
 
 *   <strike>Download</strike> / [Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki "IPT v2.3.3 Release Notes")
 *   [User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki "IPT User Manual") [(es)](https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki "IPT User Manual Spanish")
 *   Addressed [88 issues](https://github.com/gbif/ipt/projects/1 "IPT v2.3.3 Issues List"): 22 Defects, 17 Enhancements, 36 Won’t fix, 10 Duplicates, and 3 Other
 *   Translated into 7 languages
+
+A description of the exciting new features added to the IPT in version 2.3.3 are described in [this blog post](http://gbif.blogspot.dk/2017/01/ipt-v233-your-repository-for.html "Link to blog post about v2.3.3"). Additionally, please note that GBIF recently released a new set of Microsoft Excel templates for uploading data to the IPT. The new templates provide a simpler solution for capturing, formatting and uploading three types of GBIF data classes: [sampling-event data](https://github.com/gbif/ipt/wiki/samplingEventData#templates "Link to sampling-event data template"), [occurrence data](https://github.com/gbif/ipt/wiki/occurrenceData#templates "Link to occurrence data template"), and [checklist data](https://github.com/gbif/ipt/wiki/checklistData#templates "Link to checklist data template"). More information about these templates can be found in [this news article](http://www.gbif.org/newsroom/news/new-darwin-core-spreadsheet-templates "News article about new GBIF templates").
 
 ### **2.3** - September, 2015
 
