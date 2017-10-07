@@ -16,7 +16,7 @@ and limitations under the License.
 
 # Release Notes
 
-**IPT Versions: 2.3.3, 2.3.4**
+**IPT Versions: 2.3.3, 2.3.4, 2.3.5**
 
 
 
@@ -63,6 +63,9 @@ These are detailed in the [issue tracking system](https://github.com/gbif/ipt/pr
 
 Version 2.3.4 addressed a total of 6 issues: 3 Defects, 2 Enhancements, and 1 Other.
 These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/3).
+
+Version 2.3.5 addressed a total of 2 issues: 2 Defects only
+
 
 ## When all else fails
 
