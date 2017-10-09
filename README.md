@@ -14,7 +14,7 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 
 Version 2.3.5 is currently under development. It will fix cross site scripting vulnerabilities and [an issue](https://github.com/gbif/ipt/issues/1344) that caused the dataset inventory web service request to fail.
 
-#### Latest Release 2.3.4
+### Latest Release 2.3.4
 
 Version 2.3.4 includes a security update that fixes a [critical vulnerability](https://struts.apache.org/docs/s2-045.html) that has been discovered in the Apache Struts web framework, which the IPT uses. According to [this article](http://thehackernews.com/2017/03/apache-struts-framework.html), this is a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability. **Therefore all users should plan to upgrade to this version immediately following the instructions in the [Release Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki).**
 
