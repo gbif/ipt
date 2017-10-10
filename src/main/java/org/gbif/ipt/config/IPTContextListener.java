@@ -21,7 +21,7 @@ import org.gbif.ipt.struts2.CharacterEncodingFilter;
 import org.gbif.ipt.struts2.SanitizeHtmlFilter;
 
 public class IPTContextListener extends GuiceServletContextListener {
-
+  public static final String ALL_BUT_AUTHENTICATED = "^(?!.*/(manage|admin)/).*";
   /**
    * Ensure the injector is created when the web application is deployed.
    */
@@ -32,7 +32,7 @@ public class IPTContextListener extends GuiceServletContextListener {
       @Override
       protected void configureServlets() {
         filter("/*").through(CharacterEncodingFilter.class);
-        filter("/*").through(SanitizeHtmlFilter.class);
+        filterRegex(ALL_BUT_AUTHENTICATED).through(SanitizeHtmlFilter.class);
         super.configureServlets();
       }
     }, new Struts2GuicePluginModule(), new IPTModule());
