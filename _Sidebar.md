@@ -9,7 +9,7 @@ _[[Para la versión en español|Inicio]]_
     - [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]]
 + [[How to Publish Guide|howToPublish]]
 + [[FAQ|FAQ.wiki]] 
-+ [[Roadmap|Roadmap.wiki]]
++ [[Roadmap|Roadmap]]
 + [[Version History|VersionHistory.wiki]]
 + How to Customize the IPT
     - [[Style the IPT|IPT2Customization.wiki]]
