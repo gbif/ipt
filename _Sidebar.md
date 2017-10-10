@@ -10,7 +10,7 @@ _[[Para la versión en español|Inicio]]_
 + [[How to Publish Guide|howToPublish]]
 + [[FAQ|FAQ.wiki]] 
 + [[Roadmap|Roadmap]]
-+ [[Version History|VersionHistory.wiki]]
++ [[Version History|Releases]]
 + How to Customize the IPT
     - [[Style the IPT|IPT2Customization.wiki]]
     - [[Adding a New Core|IPT2Core.wiki]]
