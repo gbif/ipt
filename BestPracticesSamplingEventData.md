@@ -108,7 +108,9 @@ Further information on the nature of the relationship (e.g. part of a monitoring
 
 ### How to capture absence data
 
->TODO: Guide users how to publish presence/absence data in DwC with the proper use of dwc:occurrenceStatus
+Refer to the following [FAQ](https://github.com/gbif/ipt/wiki/samplingEventData#q-how-do-i-publish-absence-data).
+
+>TODO: Transfer information from FAQ above, guiding users how to publish presence/absence data in DwC with the proper use of dwc:occurrenceStatus
 
 ### How to include supplementary multimedia 
 
