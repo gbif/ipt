@@ -1,14 +1,16 @@
 package org.gbif.ipt.struts2;
 
+import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import org.apache.log4j.Logger;
 import org.apache.struts2.StrutsStatics;
+import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 import java.security.SecureRandom;
 import java.util.Map;
 
@@ -17,11 +19,13 @@ import java.util.Map;
  */
 public class CsrfLoginInterceptor extends AbstractInterceptor {
 
-  private static final Logger LOG = Logger.getLogger(CsrfLoginInterceptor.class);
   private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   public final static String CSRFtoken = "CSRFtoken";
   private final static int TOKEN_LENGTH = 32;
   private static SecureRandom rnd = new SecureRandom();
+
+  @Inject
+  private AppConfig cfg;
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
@@ -45,14 +49,22 @@ public class CsrfLoginInterceptor extends AbstractInterceptor {
       // add token to cookie
       csrfCookie.setValue(token);
       csrfCookie.setMaxAge(60*15);
+      csrfCookie.setHttpOnly(true);
+
+      try {
+        URI iptUri = URI.create(cfg.getBaseUrl());
+        csrfCookie.setPath(iptUri.getPath());
+        csrfCookie.setDomain(iptUri.getHost());
+        csrfCookie.setSecure(iptUri.getScheme().equalsIgnoreCase("https"));
+      } catch (Exception e) {
+        // ignore
+      }
+
       // add token to newCsrfToken stack value to populate form
       ac.put("newCsrfToken", token);
     }
     resp.addCookie(csrfCookie);
 
-    String result = invocation.invoke();
-    // set new csrf token if not existing
-
-    return result;
+    return invocation.invoke();
   }
 }

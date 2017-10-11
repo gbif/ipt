@@ -411,6 +411,12 @@
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
       <version>${guice.version}</version>
+        <exclusions>
+            <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
     <!-- Used to validate email addresses -->
     <dependency>
@@ -419,16 +425,6 @@
       <version>${javax.mail.version}</version>
     </dependency>
 
-    <!-- Used for the SimpleTextProvider in Struts2 -->
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jsp-api</artifactId>
-      <!--
-        need it for standalone, embedded jetty
-      <scope>provided</scope>
-      -->
-      <version>${jsp-api.version}</version>
-    </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>

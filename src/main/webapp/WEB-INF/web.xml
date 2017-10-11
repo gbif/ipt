@@ -19,19 +19,7 @@
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
 	</filter>
 
-	<!-- Adds cache control headers to all IPT page responses -->
-	<filter>
-		<filter-name>cacheControl</filter-name>
-		<filter-class>org.gbif.ipt.struts2.ResponseHeaderFilter</filter-class>
-	</filter>
-
-	<!-- Standard struts2 filter -->
-	<filter>
-		<filter-name>struts2</filter-name>
-		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
-	</filter>
-	
-	<!-- All requests are subject to checked the dependency injection -->
+    <!-- The Guice listener defining all servlets & filters. -->
 	<filter-mapping>
 		<filter-name>guice</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -40,15 +28,4 @@
 		<listener-class>org.gbif.ipt.config.IPTContextListener</listener-class>
 	</listener>
 
-	<!-- All IPT page responses go through cacheControl filter -->
-	<filter-mapping>
-		<filter-name>cacheControl</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
-	<!-- All requests go through struts2 filter -->
-	<filter-mapping>
-		<filter-name>struts2</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
 </web-app>

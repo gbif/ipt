@@ -1,27 +1,5 @@
 package org.gbif.ipt.config;
 
-import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
-import org.gbif.ipt.utils.InputStreamUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.UriBuilder;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -36,6 +14,16 @@ import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.utils.InputStreamUtils;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.UriBuilder;
+import java.io.*;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.util.*;
 
 @Singleton
 public class AppConfig {
