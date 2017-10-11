@@ -26,7 +26,7 @@ The most common servlet containers used to deploy the IPT are Tomcat, Jetty, and
 
 ### Tomcat
 
-The IPT has been tested and works well with Tomcat 6.0, 7.0 and 8.0. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages:
+The IPT has been tested and works well with Tomcat 7.0 and 8.0. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages:
 
   * [Tomcat on Mac OS X](TomcatInstallationMacOSX.wiki)
   * [Tomcat on Windows 7](TomcatInstallationWindows7.wiki)
@@ -45,14 +45,14 @@ The following screencast also explains how to install the IPT using Tomcat, assu
 
 ### Jetty
 
-The IPT comes equipped with a Jetty web server and servlet container. The IPT can be launched using Jetty if you have Java 6 (minimum), Maven, and Git installed (Mac OSX comes with all of these installed by default).
+The IPT comes equipped with a Jetty server to run it straight from the source code. The IPT can be launched using Jetty if you have Java 8, Maven, and Git installed (Mac OSX comes with all of these installed by default).
 
-First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands (please check if 2.3.2 is still the latest stable version):
+First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands (please check if 2.3.4 is still the latest stable version):
 
 <code>$ git clone https://github.com/gbif/ipt.git </code><br>
 <code>$ cd ipt </code><br>
 <code>$ git tag -l </code><br>
-<code>$ git checkout ipt-2.3.2 (or newer tag if available) </code><br>
+<code>$ git checkout ipt-2.3.4 (or newer tag if available) </code><br>
 <code>$ mvn -Dmaven.test.skip=true </code><br>
 
 The last "mvn" command should start the IPT with a local jetty instance on port 8080. Please note, this launches the IPT in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "<a href='http://gbrdsdev.gbif.org'>http://gbrdsdev.gbif.org</a>" and not the live registry "<a href='http://gbrds.gbif.org'>http://gbrds.gbif.org</a>".
