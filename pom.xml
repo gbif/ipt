@@ -82,7 +82,7 @@
     <slf4j.version>1.7.21</slf4j.version>
     <struts2.version>2.3.34</struts2.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
-    <xstream.version>1.4.10</xstream.version>
+    <xstream.version>1.4.8</xstream.version>
   </properties>
 
   <developers>
