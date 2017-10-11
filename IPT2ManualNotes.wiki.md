@@ -154,14 +154,16 @@ This Getting Started Guide is meant for those wishing to install and run an IPT 
 The IPT is designed under the assumption that the server on which it is run has consistent Internet connectivity. Though many functions of the IPT work even when offline, some aspects of the IPT (GBIF registration, extension installation, controlled vocabularies, and external databases for source data), require communication with external Internet resources. From the perspective of IPT administration and management, the speed of the Internet connection affects only such communications. Access to the IPT web application and its services from beyond a local intranet also requires consistent connectivity, and slow connectivity may have an adverse affect on these aspects, especially when transferring large data sets.
 ### Stable URL
 Though it can be used simply as a tool to generate Darwin Core Archives (see http://rs.tdwg.org/dwc/terms/guides/text/), the IPT is meant to be a discoverable and accessible Internet-based application and service. To support this functionality, the server on which the IPT is installed must be able to support access to the application and services through a stable URL.
+### SSL
+Although not required by the IPT GBIF recommends to run the IPT over secure https if possible.
 ### Memory
 The server hosting the IPT installation must make at least 256 MB RAM memory available to the application.
 ### Disk space
 The space required by the IPT application is less then 20MB. The contents of the IPT data directory after installation require less than 1MB of disk storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disk space.
 ### Java
-The server hosting the IPT must have a version no less than Java 6 installed and functional prior to the installation of the IPT.
+The server hosting the IPT must have a version no less than Java 8 installed and functional prior to the installation of the IPT.
 ### Servlet container
-The IPT application comes packaged with Jetty and therefore requires no further servlet container. Nevertheless, the IPT can be deployed in another servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT, and how to setup a virtual host name for your IPT can be found [[here|IPTServerPreparation.wiki]].
+The IPT application is distributed as a web application archive (war) file and can be deployed in any servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT, and how to setup a virtual host name for your IPT can be found [[here|IPTServerPreparation.wiki]].
 ## Install the IPT
 ### Prepare the server
 Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the sections under "Requirements", above.
