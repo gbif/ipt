@@ -18,21 +18,6 @@ $(document).ready(function(){
 	});	
 });
 
-/**
- * This method shows the languages with their links.
- * Validates the parameter construction when the language is changed.
- * @param {String}  Local Language.
- * @param {String}	Base URL.
- */
-function langs(localLanguage,baseUrl) {
-  	var lan=  ["en","fr","es", "zh", "pt", "ja", "ru"];
-	$.each(lan, function() {
-	  if ( localLanguage != this){
-	  	$("#languages").append('<li><a href="'+baseUrl+'?request_locale='+this+'"><img src="'+baseUrl+'/images/flags/flag_'+this+'.png"/></a></li>');
-	  }
-	});
-}
-	
 function str(x) {
 	if(x!=null && x.length > 0) return x;
 	return '';

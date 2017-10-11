@@ -21,6 +21,7 @@ import org.gbif.ws.util.XSSUtil;
 import javax.annotation.Nullable;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.UriBuilder;
 import java.util.*;
 
 /**
@@ -104,6 +105,18 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   public String getBaseURL() {
     return cfg.getBaseUrl();
+  }
+
+  /**
+   * @return the requested URL using the configured base url including all query parameters but a potentially existing request_locale parameter.
+   */
+  public String getRequestURL() {
+    return UriBuilder.fromUri(cfg.getBaseUrl())
+        .path(Strings.nullToEmpty(req.getServletPath()))
+        .path(Strings.nullToEmpty(req.getPathInfo()))
+        .replaceQuery(req.getQueryString())
+        .replaceQueryParam("request_locale")
+        .build().toString();
   }
 
   public AppConfig getCfg() {

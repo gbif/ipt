@@ -1,9 +1,4 @@
 [#ftl output_format="HTML"]
-<script type="text/javascript">
-	$(document).ready(function(){
-  		langs("${localeLanguage}","${baseURL}");
-	});
-</script>
 </head>
  	<body>
 		<div class="page clearfix" id="page">
@@ -44,8 +39,17 @@
                     <li>
                       <a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
                       <ul id="languages">
+                        [#if requestURL?contains("?")]
+                            [#assign requrl = requestURL + "&request_locale="]
+                        [#else]
+                            [#assign requrl = requestURL + "?request_locale="]
+                        [/#if]
                         <!-- add more languages as translations become available. -->
-                        <!-- To see more information go to langs method in global.js -->
+                        [#list ["en","fr","es", "zh", "pt", "ja", "ru"] as lang]
+                          [#if lang != localeLanguage]
+                            <li><a href="${requrl}${lang}"><img src="${baseURL}/images/flags/flag_${lang}.png"/></a></li>
+                          [/#if]
+                        [/#list]
                       </ul>
                     </li>
                   </ul>

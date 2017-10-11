@@ -26,7 +26,6 @@
         initHelp();
       	[#-- see global.js for function defs --]
       	initMenu();
-      	langs("${localeLanguage}","${baseURL}");  
       });
     </script>
 
