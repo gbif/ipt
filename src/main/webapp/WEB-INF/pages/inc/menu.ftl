@@ -39,7 +39,9 @@
                     <li>
                       <a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
                       <ul id="languages">
-                        [#if requestURL?contains("?")]
+                        [#if !requestURL?has_content]
+                            [#assign requrl = baseURL + "?request_locale="]
+                        [#elseif requestURL?contains("?")]
                             [#assign requrl = requestURL + "&request_locale="]
                         [#else]
                             [#assign requrl = requestURL + "?request_locale="]

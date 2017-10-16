@@ -109,14 +109,20 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   /**
    * @return the requested URL using the configured base url including all query parameters but a potentially existing request_locale parameter.
+   * Returns baseURL in case of errors reconstructing the correct URL.
    */
   public String getRequestURL() {
-    return UriBuilder.fromUri(cfg.getBaseUrl())
-        .path(Strings.nullToEmpty(req.getServletPath()))
-        .path(Strings.nullToEmpty(req.getPathInfo()))
-        .replaceQuery(req.getQueryString())
-        .replaceQueryParam("request_locale")
-        .build().toString();
+    try {
+      return UriBuilder.fromUri(cfg.getBaseUrl())
+          .path(Strings.nullToEmpty(req.getServletPath()))
+          .path(Strings.nullToEmpty(req.getPathInfo()))
+          .replaceQuery(req.getQueryString())
+          .replaceQueryParam("request_locale")
+          .build().toString();
+    } catch (RuntimeException e) {
+      LOG.warn("Failed to reconstruct requestURL from " + req.getRequestURL(), e);
+    }
+    return cfg.getBaseUrl();
   }
 
   public AppConfig getCfg() {
