@@ -56,7 +56,7 @@ public class IPTContextListener extends GuiceServletContextListener {
       }
     } catch (Exception e) {
       // ignore but log
-      LOG.warn("Failed to determine if secure flag for cookies are needed", e);
+      LOG.warn("Failed to determine if secure flag for cookies are needed. Ignore if the IPT's baseURL has not been configured yet");
     }
 
     LOG.info("SessionCookieConfig: httpOnly="+scc.isHttpOnly()+"; secure="+scc.isSecure());
