@@ -12,7 +12,8 @@
     * Work translating each language (by volunteer translators in [Crowdin](https://crowdin.com/project/gbif-ipt)) should be both 100% translated and approved. 
     * The translations should be exported from Crowdin and committed to the IPT repository following the instructions found in each properties file, e.g. [ApplicationResources_fr.native](https://github.com/gbif/ipt/blob/master/src/main/resources/ApplicationResources_fr.native).
 4. Test release candidate
-    * Test new features
+    * Test new features - all issues labelled as "enhancement". Where applicable, try to involve the reporter of the enhancement plus other users to verify it meets their expectations. 
+    * Test bug fixes - all issues labelled as "bug". 
     * Test areas
 
 ## Release steps: 
