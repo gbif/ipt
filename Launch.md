@@ -18,13 +18,26 @@
     * Test new features - issues labelled as "enhancement". Directly involve the reporter of the enhancement in testing, to verify its implementation meets their expectations. 
     * Test bug fixes - issues labelled as "bug". Try to reproduce the bug following the detailed instructions provided in the issue description. 
     * Test all areas possibly affected by code changes. Build a list of affected areas to test by scanning the commit history.
+    * Always ensure that GBIF can index the data published by the IPT, for example using the new GBIF Data Validator.
     * Where applicable, test the IPT in both production and test mode. 
     * Where applicable, perform cross-browser testing.
 
 ## Release steps: 
 
 1. Release new version using Jenkins
+    * **Note**: comment out the integration tests (ITs) for Jenkins to release the IPT successfully. Remember to uncomment the ITs in master afterwards. 
 2. Update GBIF IPTs to new version
+    * Production instances:
+        * [BID IPT](https://cloud.gbif.org/bid) - customized (see below for help)
+        * [EU BON IPT](https://cloud.gbif.org/eubon) - customized (see below for help)
+        * [ALA IPT](http://ipt.ala.org.au/) - needs to be customized todo with ALA logo (see below for help). **Note** this instance still runs in HTTP and should be converted to HTTPS with Dave Martin's help. **Note** this instance runs on ALA's server and requires special access credentials from Dave Martin/Kyle Braak.
+        * [EIA IPT](https://cloud.gbif.org/eia/) - vanilla
+        * [GIASIP IPT](https://giasip.gbif.org) - vanilla **Note** this runs in test mode but is treated like it's in production.
+        * [TEST EU BON IPT](http://eubon-ipt.gbif.org/) - vanilla - **Note** this runs in test mode but is treated like it's in production as it's embedded in EU BON's portal.
+    * Test/Sandbox instances:
+        * [DEMO IPT](https://ipt.gbif.org/) - vanilla
+        * [UAT IPT](https://ipt.gbif-uat.org/) - vanilla
+        * [DEV IPT](https://ipt.gbif-dev.org/) - vanilla
 3. Update User Manual
 4. Update release history
 5. Create/update Release Notes
