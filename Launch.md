@@ -7,14 +7,17 @@
     * Assign milestone to each issue, used to group all issues addressed since last version was released. For example, here are [all issues addressed in version 2.3.5](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.5+is%3Aclosed).
     * Assign project to issues worked on, used internally and externally to transparently show work done for this version. For example, here is the [project for 2.3.5](https://github.com/gbif/ipt/projects/4).
 2. Finalise work
-    * Work on each issue should be considered "Done". The meaning of "Done" being understood and agreed on by the entire team, but ideally this also includes having written automated testing and performed manual (UI) testing.
+    * Work on each issue should be considered "Done". The meaning of "Done" being understood and agreed on by the entire team, but ideally this also includes having written automated testing, performed code reviews as well as UI testing.
 3. Finalise translations 
     * Work translating each language (by volunteer translators in [Crowdin](https://crowdin.com/project/gbif-ipt)) should be both 100% translated and approved. 
     * The translations should be exported from Crowdin and committed to the IPT repository following the instructions found in each properties file, e.g. [ApplicationResources_fr.native](https://github.com/gbif/ipt/blob/master/src/main/resources/ApplicationResources_fr.native).
 4. Test release candidate
-    * Test new features - all issues labelled as "enhancement". Where applicable, try to involve the reporter of the enhancement plus other users to verify it meets their expectations. 
-    * Test bug fixes - all issues labelled as "bug". 
-    * Test areas
+    * Test new features (issues labelled as "enhancement"). Directly involve the reporter of the enhancement in testing, to verify it meets their expectations. 
+    * Test bug fixes (issues labelled as "bug"). Try to reproduce the bug following the detailed instructions provided in the issue description. 
+    * Test all areas possibly affected by code changes. Build a list of affected areas to test by scanning the commit history.
+    * Where applicable, test the IPT in both production and test mode. 
+    * Where applicable, perform cross-browser testing.
+    * When applicable, open the [UAT IPT](testing on https://ipt.gbif-uat.org/ ) for community testing, inviting volunteer testers to through the [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt).
 
 ## Release steps: 
 
