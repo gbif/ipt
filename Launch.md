@@ -33,9 +33,9 @@
         * [ALA IPT](http://ipt.ala.org.au/) - needs to be customized todo with ALA logo (see below for help). **Note** this instance still runs in HTTP and should be converted to HTTPS with Dave Martin's help. **Note** this instance runs on ALA's server and requires special access credentials from Dave Martin/Kyle Braak.
         * [EIA IPT](https://cloud.gbif.org/eia/) - vanilla
         * [GIASIP IPT](https://giasip.gbif.org) - vanilla **Note** this runs in test mode but is treated like it's in production.
-        * [TEST EU BON IPT](http://eubon-ipt.gbif.org/) - vanilla - **Note** this runs in test mode but is treated like it's in production as it's embedded in EU BON's portal.
+        * [TEST EU BON IPT](http://eubon-ipt.gbif.org/) - vanilla **Note** this runs in test mode but is treated like it's in production as it's embedded in EU BON's portal.
     * Test/Sandbox instances:
-        * [DEMO IPT](https://ipt.gbif.org/) - vanilla
+        * [DEMO IPT](https://ipt.gbif.org/) - vanilla **Note** It is always a good idea to cleanup old resources to save disk space.
         * [UAT IPT](https://ipt.gbif-uat.org/) - vanilla
         * [DEV IPT](https://ipt.gbif-dev.org/) - vanilla
 3. Update User Manual
