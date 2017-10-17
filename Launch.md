@@ -14,7 +14,7 @@
     * Open the [UAT IPT](https://ipt.gbif-uat.org/) to volunteer translators to verify their work in vivo (see step below). 
 4. Test release candidate
     * Update the [UAT IPT](https://ipt.gbif-uat.org/) with the release candidate
-    * Invite volunteer testers to join efforts sending an invitation to the [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt) explaining how to request an account on the [UAT IPT](https://ipt.gbif-uat.org/) and what areas of testing to focus on.    
+    * When it makes sense, invite volunteer testers to join efforts by sending an invitation to the [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt) explaining how to request an account on the [UAT IPT](https://ipt.gbif-uat.org/) and what areas of testing to focus on.    
     * Test new features - issues labelled as "enhancement". Directly involve the reporter of the enhancement in testing, to verify it meets their expectations. 
     * Test bug fixes - issues labelled as "bug". Try to reproduce the bug following the detailed instructions provided in the issue description. 
     * Test all areas possibly affected by code changes. Build a list of affected areas to test by scanning the commit history.
