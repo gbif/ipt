@@ -3,7 +3,8 @@
 ## Pre-release steps:
 
 1. Label all issues related to version
-    * Label issues with issue type (bug, enhancement, duplicate, won't fix, task, other, etc.), used in statistical reporting.
+    * Label issues with issue type (`Bug`, `Enhancement`, `Duplicate`, `Won't fix`, `Type-Task`, `Type-Other`, etc.), used in statistical reporting.
+    * Label issues requiring a change in the UserManual/Wiki with `UserManual`.
     * Assign milestone to each issue, used to group all issues addressed since last version was released. For example, here are [all issues addressed in version 2.3.5](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.5+is%3Aclosed).
     * Assign project to issues worked on, used internally and externally to transparently show work done for this version. For example, here is the [project for 2.3.5](https://github.com/gbif/ipt/projects/4).
 2. Finalise work
@@ -40,6 +41,7 @@
         * [DEV IPT](https://ipt.gbif-dev.org/) - vanilla
     * Simple customisations for the above IPTs are done by a) changing the logo image in [menu.ftl#L12](https://github.com/gbif/ipt/blob/master/src/main/webapp/WEB-INF/pages/inc/menu.ftl#L12), b) removing the test image in [menu.ftl#L20](https://github.com/gbif/ipt/blob/master/src/main/webapp/WEB-INF/pages/inc/menu.ftl#L20) (where applicable) and c) tweaking the CSS in [main.css#L297](https://github.com/gbif/ipt/blob/master/src/main/webapp/styles/main.css#L297). Note: before an upgrade, the custom logo image(s) and CSS need to be backed-up/preserved and then copied back to the expanded data directory. 
 3. Update User Manual
+    * Add/update content related to issues labelled as "enhancement"
 4. Update release history
 5. Create/update Release Notes
 6. Publish blog post
