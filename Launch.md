@@ -16,8 +16,8 @@
 4. Test release candidate
     * Update the [UAT IPT](https://ipt.gbif-uat.org/) with the release candidate
     * When it makes sense, invite volunteer testers to join efforts by sending an invitation to the [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt) explaining how to request an account on the [UAT IPT](https://ipt.gbif-uat.org/) and what areas of testing to focus on.    
-    * Test new features - issues labelled as "enhancement". Directly involve the reporter of the enhancement in testing, to verify its implementation meets their expectations. 
-    * Test bug fixes - issues labelled as "bug". Try to reproduce the bug following the detailed instructions provided in the issue description. 
+    * Test new features - issues labelled as `Enhancement`. Directly involve the reporter of the enhancement in testing, to verify its implementation meets their expectations. 
+    * Test bug fixes - issues labelled as `Bug`. Try to reproduce the bug following the detailed instructions provided in the issue description. 
     * Test all areas possibly affected by code changes. Build a list of affected areas to test by scanning the commit history.
     * Always ensure that GBIF can index the data published by the IPT, for example using the new GBIF Data Validator.
     * Where applicable, test the IPT in both production and test mode. 
@@ -41,7 +41,11 @@
         * [DEV IPT](https://ipt.gbif-dev.org/) - vanilla
     * Simple customisations for the above IPTs are done by a) changing the logo image in [menu.ftl#L12](https://github.com/gbif/ipt/blob/master/src/main/webapp/WEB-INF/pages/inc/menu.ftl#L12), b) removing the test image in [menu.ftl#L20](https://github.com/gbif/ipt/blob/master/src/main/webapp/WEB-INF/pages/inc/menu.ftl#L20) (where applicable) and c) tweaking the CSS in [main.css#L297](https://github.com/gbif/ipt/blob/master/src/main/webapp/styles/main.css#L297). Note: before an upgrade, the custom logo image(s) and CSS need to be backed-up/preserved and then copied back to the expanded data directory. 
 3. Update User Manual
-    * Add/update content related to issues labelled as "enhancement"
+    * Archive the User Manual before applying any changes. For example, here is the archived copy of the [User Manual for version 2.0.5](https://github.com/gbif/ipt/wiki/IPTUserManualv205.wiki). 
+    * Add/update User Manual or wiki content - see issues labelled as `UserManual`. 
+    * State the IPT version that the manual corresponds to underneath the title. 
+    * Add a link to the former version(s) of the manual to make it easy to find.
+    * After applying all changes in English, request Spanish translators (e.g. SIB Colombia) to apply all changes to the [Spanish User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki) also.  
 4. Update release history
 5. Create/update Release Notes
 6. Publish blog post
