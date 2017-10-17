@@ -23,7 +23,7 @@
     * Where applicable, test the IPT in both production and test mode. 
     * Where applicable, perform cross-browser testing.
 
-## Release steps: 
+## Release and public launch steps: 
 
 1. Release new version using Jenkins
     * Note: comment out the integration tests (ITs) for Jenkins to release the IPT successfully. Remember to uncomment the ITs in master afterwards. 
