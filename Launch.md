@@ -27,14 +27,14 @@
 1. Release new version using Jenkins
     * Note: comment out the integration tests (ITs) for Jenkins to release the IPT successfully. Remember to uncomment the ITs in master afterwards. 
 2. Update GBIF IPTs to new version
-    * Production instances:
+    * Update production instances:
         * [BID IPT](https://cloud.gbif.org/bid) - customized (see below for help)
         * [EU BON IPT](https://cloud.gbif.org/eubon) - customized (see below for help)
         * [ALA IPT](http://ipt.ala.org.au/) - needs to be customised todo with ALA logo (see below for help). Note this instance still runs in HTTP and should be converted to HTTPS with Dave Martin's help. Note this instance runs on ALA's server and requires special access credentials from Dave Martin/Kyle Braak.
         * [EIA IPT](https://cloud.gbif.org/eia/) - vanilla
         * [GIASIP IPT](https://giasip.gbif.org) - vanilla Note this runs in test mode but is treated like it's in production.
         * [TEST EU BON IPT](http://eubon-ipt.gbif.org/) - vanilla Note this runs in test mode but is treated like it's in production as it's embedded in EU BON's portal.
-    * Test/Sandbox instances:
+    * Update Test/Sandbox instances:
         * [DEMO IPT](https://ipt.gbif.org/) - vanilla Note It is always a good idea to cleanup old resources to save disk space.
         * [UAT IPT](https://ipt.gbif-uat.org/) - vanilla
         * [DEV IPT](https://ipt.gbif-dev.org/) - vanilla
