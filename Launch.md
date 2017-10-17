@@ -11,13 +11,14 @@
 3. Finalise translations 
     * Work translating each language (by volunteer translators in [Crowdin](https://crowdin.com/project/gbif-ipt)) should be both 100% translated and approved. 
     * The translations should be exported from Crowdin and committed to the IPT repository following the instructions found in each properties file, e.g. [ApplicationResources_fr.native](https://github.com/gbif/ipt/blob/master/src/main/resources/ApplicationResources_fr.native).
+    * Open the [UAT IPT](https://ipt.gbif-uat.org/) to volunteer translators to verify their work in vivo (see step below). 
 4. Test release candidate
-    * Test new features (issues labelled as "enhancement"). Directly involve the reporter of the enhancement in testing, to verify it meets their expectations. 
-    * Test bug fixes (issues labelled as "bug"). Try to reproduce the bug following the detailed instructions provided in the issue description. 
+    * When applicable, open the [UAT IPT](testing on https://ipt.gbif-uat.org/ ) for community testing. Invite volunteer testers to join efforts sending an invitation to the [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt) explaining how to help and what areas of the IPT to focus on testing.    
+    * Test new features - issues labelled as "enhancement". Directly involve the reporter of the enhancement in testing, to verify it meets their expectations. 
+    * Test bug fixes - issues labelled as "bug". Try to reproduce the bug following the detailed instructions provided in the issue description. 
     * Test all areas possibly affected by code changes. Build a list of affected areas to test by scanning the commit history.
     * Where applicable, test the IPT in both production and test mode. 
     * Where applicable, perform cross-browser testing.
-    * When applicable, open the [UAT IPT](testing on https://ipt.gbif-uat.org/ ) for community testing, inviting volunteer testers to through the [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt).
 
 ## Release steps: 
 
