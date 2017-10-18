@@ -82,7 +82,7 @@ Many players are involved in the process, not least the GBIF Communications team
     * Keep the message short so that people actually read it, linking to the blog post when applicable that has more detailed information about the release. Here are a couple example announcements for [2.2 major release](https://lists.gbif.org/pipermail/ipt/2015-March/000591.html), [2.3.3 minor release](https://lists.gbif.org/pipermail/ipt/2017-January/000666.html) and [2.3.4 security patch release](https://lists.gbif.org/pipermail/ipt/2017-March/000671.html) 
     * Highlight GBIF's vigilance in keeping the IPT secure, while reminding people of the importance of updating their instance with this latest version. 
 10. Broadcast on social media
-    * Done using GBIF's Facebook and Twitter accounts by the GBIF Communications team
+    * Done using the [GBIF Facebook](https://www.facebook.com/gbifnews) and [GBIF Twitter](https://twitter.com/GBIF) accounts via the GBIF Communications team
 11. Reward volunteers
 
 
