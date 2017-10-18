@@ -58,6 +58,13 @@ A checklist documenting the ordered steps of the release and launch procedure of
     * After applying all changes in English, request Spanish translators (e.g. SIB Colombia) to apply all changes to the [Spanish User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki) also. As highlighted in the [GBIF Data Publishing Analysis](https://docs.google.com/document/d/1epPxmHeTsEoDGQwIPmBY5AdC2R_Cpm-5HlgEXL-FuBE/edit?usp=sharing), the updates from v2.3 to v2.3.4 are still outstanding.
 4. Create/update Release Notes
     * When major changes are expected, create a new Release Notes, otherwise extend the existing notes as has been done for the [2.3.3 Release Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki).
+    * The Release Notes should contain all the information needed to properly upgrade their IPT to the latest version. Typically it contains the following sections:
+        * Upgrade instructions
+        * Post-upgrade instructions
+        * New Features / Other
+        * Dependency Notes
+        * Viewing the IPT change log
+        * When all else fails
 5. Update [release history](https://github.com/gbif/ipt/wiki/Releases)
     * Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, as well as a short summary of what changed.  
 6. Publish blog post
