@@ -1,6 +1,10 @@
 # New IPT Version Launch Procedure
 
-## Pre-release steps:
+## Introduction
+
+A checklist to recording the process of how to release and launch a new version of the IPT. Learn as you go - review and adjust the process to streamline it. 
+
+## Pre-release steps
 
 1. Label all issues related to version
     * Label issues with issue type (`Bug`, `Enhancement`, `Duplicate`, `Won't fix`, `Type-Task`, `Type-Other`, etc.), used in statistical reporting.
@@ -23,7 +27,7 @@
     * Where applicable, test the IPT in both production and test mode. 
     * Where applicable, perform cross-browser testing.
 
-## Release and public launch steps: 
+## Release and public launch steps 
 
 1. Release new version using Jenkins
     * Note: comment out the integration tests (ITs) for Jenkins to release the IPT successfully. Remember to uncomment the ITs in master afterwards. 
