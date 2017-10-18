@@ -29,6 +29,7 @@ A checklist documenting the ordered steps of the release and launch procedure of
     * Test bug fixes - issues labelled as `Bug`. Try to reproduce the bug following the detailed instructions provided in the issue description. 
     * Test all areas possibly affected by code changes. Build a list of affected areas to test by scanning the commit history.
     * Always ensure that GBIF can index the data published by the IPT, for example using the new GBIF Data Validator.
+    * Put on different user hats, testing as an 'Admin', 'Manager' and 'Manager with registration rights'.
     * Where applicable, test the IPT in both production and test mode. 
     * Where applicable, perform cross-browser testing.
 
