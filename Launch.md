@@ -73,17 +73,19 @@ Many players are involved in the process, not least the GBIF Communications team
     * Review the blog post with the help of the GBIF Communications team before publishing. 
 6. Update [release history](https://github.com/gbif/ipt/wiki/Releases)
     * Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, blog post and a short summary of what changed.  
-7. Update [IPT Readme](https://github.com/gbif/ipt/blob/master/README.md)
+7. Update [Roadmap](https://github.com/gbif/ipt/wiki/Roadmap)
+    * Keep this in sync with the [Github IPT Readme](https://github.com/gbif/ipt/blob/master/README.md) and [GBIF.org IPT page](https://www.gbif.org/ipt), which also show the Roadmap.
+8. Update [IPT Readme](https://github.com/gbif/ipt/blob/master/README.md)
     * Advertise the new version, highlighting what changes will be interesting and valuable to users linking to blog post when applicable.
-8. Update [GBIF.org IPT page](https://www.gbif.org/ipt)
+9. Update [GBIF.org IPT page](https://www.gbif.org/ipt)
     * Mirror relevant changes made to IPT Readme in step above
     * Update IPT uptake statistics, e.g. number of installations and number of countries having installations displayed at bottom of map. 
-9. Announce to [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt)
+10. Announce to [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt)
     * Keep the message short so that people actually read it, linking to the blog post when applicable that has more detailed information about the release. Here are a couple example announcements for [2.2 major release](https://lists.gbif.org/pipermail/ipt/2015-March/000591.html), [2.3.3 minor release](https://lists.gbif.org/pipermail/ipt/2017-January/000666.html) and [2.3.4 security patch release](https://lists.gbif.org/pipermail/ipt/2017-March/000671.html) 
     * Highlight GBIF's vigilance in keeping the IPT secure, while reminding people of the importance of updating their instance with this latest version. 
-10. Broadcast on social media
+11. Broadcast on social media
     * Done using the [GBIF Facebook](https://www.facebook.com/gbifnews) and [GBIF Twitter](https://twitter.com/GBIF) accounts via the GBIF Communications team
-11. Reward volunteers
+12. Reward volunteers
     * Say thank you again, in addition to saying it in the blog post and mailing list announcement.
     * Encourage volunteers to include this experience on their CV
 
