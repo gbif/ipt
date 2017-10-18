@@ -65,16 +65,17 @@ A checklist documenting the ordered steps of the release and launch procedure of
         * Dependency Notes
         * Viewing the IPT change log
         * When all else fails
-5. Update [release history](https://github.com/gbif/ipt/wiki/Releases)
-    * Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, as well as a short summary of what changed.  
-6. Update [IPT Readme](https://github.com/gbif/ipt/blob/master/README.md)
-    * Advertise the new version, highlighting what changes will be interesting and valuable to users. 
-7. Update [GBIF.org IPT page](https://www.gbif.org/ipt)
-    * Mirror relevant sections of IPT Readme
-8. Publish blog post
+5. Publish blog post
     * Publicise in some detail, select improvements that users will value. For example, here is an example blog post for [IPT v2.2](http://gbif.blogspot.dk/2015/03/ipt-v22.html).
     * Be sure to acknowledge volunteer translators and coders that contributed to the release.
     * Review the blog post with the help of the GBIF Communications team before publishing. 
+6. Update [release history](https://github.com/gbif/ipt/wiki/Releases)
+    * Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, blog post and a short summary of what changed.  
+7. Update [IPT Readme](https://github.com/gbif/ipt/blob/master/README.md)
+    * Advertise the new version, highlighting what changes will be interesting and valuable to users linking to blog post when applicable.
+8. Update [GBIF.org IPT page](https://www.gbif.org/ipt)
+    * Mirror relevant changes made to IPT Readme in step above
+    * Update IPT uptake statistics, e.g. number of installations and number of countries having installations displayed at bottom of map. 
 9. Announce to IPT Mailing List
 10. Broadcast on social media
 11. Reward volunteers
