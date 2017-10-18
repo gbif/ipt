@@ -77,6 +77,8 @@ A checklist documenting the ordered steps of the release and launch procedure of
     * Mirror relevant changes made to IPT Readme in step above
     * Update IPT uptake statistics, e.g. number of installations and number of countries having installations displayed at bottom of map. 
 9. Announce to [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt)
+    * Keep the message short so that people actually read it, linking to the blog post when applicable that has more detailed information about the release.
+    * Highlight GBIF's vigilance in keeping the IPT secure, while reminding people of the importance of updating their instance with this latest version. 
 10. Broadcast on social media
 11. Reward volunteers
 
