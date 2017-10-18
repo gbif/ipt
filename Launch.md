@@ -1,5 +1,10 @@
 # New IPT Version Launch Procedure
 
+## Table of Contents
++ [[Introduction| Launch#introduction]]
++ [[Pre-release steps| Launch#pre-release-steps]]
++ [[Release and public launch steps| Launch#release-and-public-launch-steps]]
+
 ## Introduction
 
 A checklist documenting the ordered steps of the release and launch procedure of the IPT. Learn as you go - review and adjust the process to streamline it. 
