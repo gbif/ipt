@@ -1,5 +1,7 @@
 package org.gbif.ipt.service.registry.impl;
 
+import com.google.common.collect.Sets;
+import org.apache.log4j.Logger;
 import org.gbif.api.model.checklistbank.DatasetMetrics;
 import org.gbif.api.model.common.paging.PagingRequest;
 import org.gbif.api.model.common.paging.PagingResponse;
@@ -16,20 +18,17 @@ import org.gbif.api.service.registry.OrganizationService;
 import org.gbif.api.vocabulary.Country;
 import org.gbif.api.vocabulary.DatasetType;
 import org.gbif.api.vocabulary.InstallationType;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.Set;
 import java.util.UUID;
 
-import com.google.common.collect.Sets;
-import org.apache.log4j.Logger;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import static org.gbif.ipt.config.RegistryTestModule.webserviceClient;
 import static org.gbif.ipt.config.RegistryTestModule.webserviceClientReadOnly;
-
 import static org.junit.Assert.assertEquals;
 
+@Ignore("These require live UAT webservice and should therefore only run when manually triggered")
 public class RegistryWsClientTest {
 
   // logging
@@ -43,7 +42,7 @@ public class RegistryWsClientTest {
     assertEquals("PonTaurus collection", dataset.getTitle());
   }
 
-  @Ignore
+  @Test
   public void testUpdateDataset() {
     DatasetService ds = webserviceClient().getInstance(DatasetService.class);
     Dataset dataset = ds.get(UUID.fromString("8575f23e-f762-11e1-a439-00145eb45e9a"));
@@ -60,7 +59,7 @@ public class RegistryWsClientTest {
    * </br>
    * Remember to configure registry.properties to connect to the desired service URLs.
    */
-  @Ignore
+  @Ignore("Uses a deprecated API, see https://github.com/gbif/ipt/issues/1366")
   public void gatherStatistics() {
     InstallationService installationService = webserviceClientReadOnly().getInstance(InstallationService.class);
     CubeService occurrenceCubeService = webserviceClientReadOnly().getInstance(CubeService.class);
