@@ -64,7 +64,7 @@ These are detailed in the [issue tracking system](https://github.com/gbif/ipt/pr
 Version 2.3.4 addressed a total of 6 issues: 3 Defects, 2 Enhancements, and 1 Other.
 These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/3).
 
-Version 2.3.5 addressed a total of 2 issues: 2 Defects only
+Version 2.3.5 addressed a total of 3 issues: 3 Defects, 3 maintenance tasks
 These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/4).
 
 
