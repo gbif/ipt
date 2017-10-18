@@ -2,7 +2,7 @@
 
 ## Introduction
 
-A checklist to recording the process of how to release and launch a new version of the IPT. Learn as you go - review and adjust the process to streamline it. 
+A checklist documenting the ordered steps of the release and launch procedure of the IPT. Learn as you go - review and adjust the process to streamline it. 
 
 ## Pre-release steps
 
