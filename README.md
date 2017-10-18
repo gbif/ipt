@@ -1,6 +1,6 @@
 ## Welcome to the IPT Repository including Wiki, Issue Manager and Project Manager! 
 
-Inside this repository you can find the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) and a variety of other valuable resources aimed at users, coders and translators. If you're searching for a more complete description of this software, its uptake statistics, release history, or roadmap, please visit the [IPT Website](http://www.gbif.org/ipt) instead.
+Inside this repository you can find the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) and a variety of other valuable resources aimed at users, coders and translators. If you're searching for a map of where the IPT is installed around the world, please visit the [IPT Website](http://www.gbif.org/ipt) instead.
 
 ### About the IPT
 
