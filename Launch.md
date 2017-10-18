@@ -84,5 +84,7 @@ Many players are involved in the process, not least the GBIF Communications team
 10. Broadcast on social media
     * Done using the [GBIF Facebook](https://www.facebook.com/gbifnews) and [GBIF Twitter](https://twitter.com/GBIF) accounts via the GBIF Communications team
 11. Reward volunteers
+    * Say thank you again, in addition to saying it in the blog post and mailing list announcement.
+    * Encourage volunteers to include this experience on their CV
 
 
