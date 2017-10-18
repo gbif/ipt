@@ -1,6 +1,6 @@
 # Roadmap - what's next?
 
-As of October 10, 2017 there were [88 open issues](https://github.com/gbif/ipt/issues "Link to open IPT issues"). Weigh in on existing issues with a "thumbs-up", or submit a new feature request for functionality you would like to see implemented.
+As of October, 2017 there were more than [80 open issues](https://github.com/gbif/ipt/issues "Link to open IPT issues"). Weigh in on existing issues with a "thumbs-up", or submit a new feature request for functionality you would like to see implemented.
 
 ### Upcoming Release: 2.4
 
