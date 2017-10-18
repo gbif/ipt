@@ -56,7 +56,7 @@ A checklist documenting the ordered steps of the release and launch procedure of
     * State the IPT version that the manual corresponds to underneath the title. 
     * Add a link to the former version(s) of the manual to make it easy to find.
     * After applying all changes in English, request Spanish translators (e.g. SIB Colombia) to apply all changes to the [Spanish User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki) also. As highlighted in the [GBIF Data Publishing Analysis](https://docs.google.com/document/d/1epPxmHeTsEoDGQwIPmBY5AdC2R_Cpm-5HlgEXL-FuBE/edit?usp=sharing), the updates from v2.3 to v2.3.4 are still outstanding.
-4. Update release history
+4. Update [release history](https://github.com/gbif/ipt/wiki/Releases)
 5. Create/update Release Notes
 6. Publish blog post
 7. Update GBIF.org
