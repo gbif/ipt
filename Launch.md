@@ -74,8 +74,8 @@ Many players are involved in the process, not least the GBIF Communications team
 6. Update [release history](https://github.com/gbif/ipt/wiki/Releases)
     * Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, blog post and a short summary of what changed.  
 7. Update [Roadmap](https://github.com/gbif/ipt/wiki/Roadmap)
-    * Keep this in sync with the [Github IPT Readme](https://github.com/gbif/ipt/blob/master/README.md) and [GBIF.org IPT page](https://www.gbif.org/ipt), which also show the Roadmap.
-8. Update [IPT Readme](https://github.com/gbif/ipt/blob/master/README.md)
+    * Keep this in sync with the [Github IPT Readme](https://github.com/gbif/ipt/blob/master/README.md) and [GBIF.org IPT page](https://www.gbif.org/ipt), which also show the Roadmap and get updated in subsequent steps below.
+8. Update [Github IPT Readme](https://github.com/gbif/ipt/blob/master/README.md)
     * Advertise the new version, highlighting what changes will be interesting and valuable to users linking to blog post when applicable.
 9. Update [GBIF.org IPT page](https://www.gbif.org/ipt)
     * Mirror relevant changes made to IPT Readme in step above
