@@ -68,6 +68,9 @@ A checklist documenting the ordered steps of the release and launch procedure of
 5. Update [release history](https://github.com/gbif/ipt/wiki/Releases)
     * Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, as well as a short summary of what changed.  
 6. Publish blog post
+    * Publicise in some detail, select improvements that users will value. For example, here is an example blog post for [IPT v2.2](http://gbif.blogspot.dk/2015/03/ipt-v22.html).
+    * Be sure to acknowledge volunteer translators and coders that contributed to the release.
+    * Review the blog post with the help of the GBIF Communications team before publishing. 
 7. Update GBIF.org
 8. Announce to IPT Mailing List
 9. Broadcast on social media
