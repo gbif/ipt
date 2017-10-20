@@ -2,9 +2,8 @@
 A docker image for the [GBIF IPT](https://github.com/gbif/ipt) running in Tomcat 8.5 with JRE8 on minimal Alpine Linux. 
 Tomcat is exposed on port 8080 and the IPT runs as the ROOT application. 
 
-## Build docker image
-
-```docker build -t gbif/ipt .```
+We regulary publish IPT releases as docker images to docker hub:
+https://hub.docker.com/r/gbif/ipt/
 
 ## Run docker image locally
 To run a new docker container, startup tomcat and expose the tomcat port run this:
@@ -19,4 +18,3 @@ $ docker-machine ip default
 ```
 
 You can then access the IPT at ```192.168.99.100:8080```
-
