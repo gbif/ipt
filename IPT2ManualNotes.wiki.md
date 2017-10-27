@@ -1119,7 +1119,9 @@ Developers who wish to contribute, or to use the latest revision of the source c
 The [issue tracker](https://github.com/gbif/ipt/issues) is the bug report and feature request management system for the IPT software and documentation.
 
 ## IPT mailing list
-Subscribe to the IPT mailing list to send and receive messages related to the use of the Integrated Publishing Toolkit. This group is for users to support each other in the use of the IPT: <a href='http://lists.gbif.org/mailman/listinfo/ipt/'>http://lists.gbif.org/mailman/listinfo/ipt/</a>.
+All **IPT Administrators** should sign up to the [IPT Mailing List](https://lists.gbif.org/mailman/listinfo/ipt/) to be notified of new releases and best practices for maintaining their IPT. Have a question about how to maintain the IPT that you can't find the answer to in the [FAQ](https://github.com/gbif/ipt/wiki/FAQ.wiki) or [User Manaual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki)? Then send your question to the list to get it answered! 
+
+The [IPT Mailing List](https://lists.gbif.org/mailman/listinfo/ipt/) can also be used by **IPT users** to support each other. Have a question about how to use the IPT that you can't find the answer to in the [FAQ](https://github.com/gbif/ipt/wiki/FAQ.wiki) or [User Manaual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki)? Then send your question to the list to get it answered! 
 
 ## IPT server preparation
 This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki [[here|IPTServerPreparation.wiki]].
