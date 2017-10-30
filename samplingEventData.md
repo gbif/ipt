@@ -32,7 +32,7 @@ Each sampling event record should include all [required DwC fields](samplingEven
 
 Similarly each species occurrence record should include all [required DwC fields](occurrenceData#required-dwc-fields) and as many [recommended DwC fields](occurrenceData#recommended-dwc-fields) as possible. You can augment your table with extra DwC columns, but only DwC terms from this [list](http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml). Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise when the location of individual occurrences isn't supplied, its location gets inherited from the event.
 
-For extra guidance, you can look at the [template populated with example data](samplingEventData#templates) or the list of [exemplar datasets](samplingEventData#exemplar-datasets).
+For extra guidance, you can refer to the guide [Best Practices in Publishing Sampling-event data](https://github.com/gbif/ipt/wiki/BestPracticesSamplingEventData) and look at the [template populated with example data](samplingEventData#templates) or the list of [exemplar datasets](samplingEventData#exemplar-datasets). 
 
 #### Templates: 
 [![Download Sampling Event Data Template][2]][1]
