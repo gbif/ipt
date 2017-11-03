@@ -337,6 +337,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v233/IPTHome.png' />
+
 ### Public Resources Table
 If there are any public resources, they will appear in a table having the following columns:
 
