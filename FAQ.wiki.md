@@ -231,7 +231,7 @@ GBIF supports 4 classes of datasets described [here](https://github.com/gbif/ipt
 
 ### 5. Why is my dataset citation different on GBIF.org?
 
-The IPT supports free-text dataset citations, but these get overwritten on the GBIF.org dataset page - learn more [here](https://www.gbif.org/faq?q=citation)**.
+The IPT supports free-text dataset citations, however, these get overwritten on the GBIF.org dataset page. You can find out why in the [GBIF.org FAQ](https://www.gbif.org/faq?q=citation).
 
 
 
