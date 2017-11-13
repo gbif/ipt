@@ -611,7 +611,7 @@ admin.registration.test1=GBIF Network にIPTを登録する最初のステップ
 admin.registration.success=IPTはこの機関で登録されています。
 admin.registration.failed=IPT登録失敗
 admin.registration.success.update=IPT更新成功
-admin.registration.failed.update=IPT更新失敗
+admin.registration.failed.update=IPT更新失敗 {0}
 admin.registration.error.alreadyRegistered1=このIPTは機関がすでに登録されています。
 admin.registration.error.alreadyRegistered2=To change the association with an organisation, please contact the <a href\="mailto\:helpdesk@gbif.org">GBIF Help Desk</a>.
 admin.registration.error.registry=GBIF登録サイトとの交信に問題が発生しました。
@@ -1042,6 +1042,7 @@ manage.metadata.tempcoverage.item=時間的範囲
 
 manage.metadata.citations.title=引用論文
 manage.metadata.citations.intro=あなたのリソースの引用方法を入力してください。あなたのリソースがいつも確実に引用されるように、IPT を引用を自動生成できるようにしておきます。関連の他のリソースの引用論文やこのリソースの作成に使われた論文の情報なども、別途入力することができます。
+manage.metadata.citations.warning=BE AWARE\: Free-text citations get overwritten on the GBIF.org dataset page - learn more <a href\="https\://www.gbif.org/faq?q\=citation" target\="_blank">here</a>.
 manage.metadata.citations.bibliography=書誌情報の引用
 manage.metadata.citations.bibliography.help=このリソースに関連またはこのリソースの作成に使われた他のリソースの引用論文。
 manage.metadata.citations.item=書誌情報の引用

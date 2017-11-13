@@ -1042,6 +1042,7 @@ manage.metadata.tempcoverage.item=временной охват
 
 manage.metadata.citations.title=Цитирования
 manage.metadata.citations.intro=Пожалуйста, укажите как должен цитироваться ресурс. Чтобы убедиться, что ваш ресурс надежно и последовательно цитируется, позвольте IPT автоматически сгенерировать библиографическую запись для цитирования. Могут быть также добавлены дополнительные библиографические источники, например, ссылки на другие ресурсы, которые были использованы при создании данного ресурса.
+manage.metadata.citations.warning=BE AWARE\: Free-text citations get overwritten on the GBIF.org dataset page - learn more <a href\="https\://www.gbif.org/faq?q\=citation" target\="_blank">here</a>.
 manage.metadata.citations.bibliography=Библиографические ссылки
 manage.metadata.citations.bibliography.help=Ссылки на другие ресурсы, относящиеся или использованные при создании этого ресурса.
 manage.metadata.citations.item=библиографическая ссылка
