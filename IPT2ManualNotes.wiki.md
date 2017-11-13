@@ -709,7 +709,7 @@ This metadata page contains information about sampling methods used for the data
 #### Citations
 This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labeled "Bibliographic Citations", and a link labeled "Add new bibliographic citation".
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataCitations.png' />
-* **Resource Citation** - the single citation for use when citing the dataset.
+* **Resource Citation** - the single citation for use when citing the dataset. **BE AWARE: Free-text citations get overwritten on the GBIF.org dataset page - learn more [here](https://www.gbif.org/faq?q=citation)**.
   * Example citation with institutional creator:
   Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 1.2. University of Guelph. Dataset/Species occurrences. <a href='http://dx.doi.org/10.5886/qzxxd2pa'>http://dx.doi.org/10.5886/qzxxd2pa</a>
   * Example citation with 9 creators:
