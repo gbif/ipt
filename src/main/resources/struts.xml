@@ -52,10 +52,15 @@
       <!-- interceptor to set csrf login tokens in cookie and value stack to prevent CSRF login attacks -->
       <interceptor name="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor"/>
 
+      <!-- interceptor to support other Locales not supported by the Java runtime environment, e.g. Persian (fa) -->
+      <!-- to work, it must come before "i18nStack" -->
+      <interceptor name="iptI18nInterceptor" class="org.gbif.ipt.struts2.IptI18nInterceptor"/>
+
 
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">
         <interceptor-ref name="keepRedirectMessages"/>
+        <interceptor-ref name="iptI18nInterceptor"/>
         <interceptor-ref name="i18nStack"/>
         <interceptor-ref name="validation">
           <param name="excludeMethods">input,back,cancel,list</param>

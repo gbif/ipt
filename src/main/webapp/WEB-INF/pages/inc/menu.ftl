@@ -47,7 +47,7 @@
                             [#assign requrl = requestURL + "?request_locale="]
                         [/#if]
                         <!-- add more languages as translations become available. -->
-                        [#list ["en","fr","es", "zh", "pt", "ja", "ru"] as lang]
+                        [#list ["en","fr","es", "zh", "pt", "ja", "ru", "fa"] as lang]
                           [#if lang != localeLanguage]
                             <li><a href="${requrl}${lang}"><img src="${baseURL}/images/flags/flag_${lang}.png"/></a></li>
                           [/#if]
