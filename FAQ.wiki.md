@@ -24,6 +24,7 @@
   + [[2. Why hasn't GBIF (re)indexed my dataset yet?|FAQ.wiki#2-why-hasnt-gbif-reindexed-my-dataset-yet]]
   + [[3. How often does GBIF reindex my dataset?|FAQ.wiki#3-how-often-does-gbif-reindex-my-dataset]]
   + [[4. What type of datasets does GBIF index/support?|FAQ.wiki#4-what-type-of-datasets-does-gbif-indexsupport]]
+  + [[5. Why is my IPT dataset citation different on GBIF.org?|FAQ.wiki#4-what-type-of-datasets-does-gbif-indexsupport]]
 
 ## Introduction
 In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
@@ -227,4 +228,10 @@ To cater to datasets not published using the IPT, GBIF automatically attempts to
 ### 4. What type of datasets does GBIF index/support?
 
 GBIF supports 4 classes of datasets described [here](https://github.com/gbif/ipt/wiki/howToPublish#introduction). GBIF currently only indexes species occurrence records though, which can be provided as either core records or as extension records. In the case of sampling-event datasets, species occurrences in extension records will be augmented with information coming from its core event record wherever possible. 
+
+### 5. Why is my dataset citation different on GBIF.org?
+
+The IPT supports free-text dataset citations, but these get overwritten on the GBIF.org dataset page - learn more [here](https://www.gbif.org/faq?q=citation)**.
+
+
 
