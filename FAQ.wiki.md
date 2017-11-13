@@ -24,7 +24,7 @@
   + [[2. Why hasn't GBIF (re)indexed my dataset yet?|FAQ.wiki#2-why-hasnt-gbif-reindexed-my-dataset-yet]]
   + [[3. How often does GBIF reindex my dataset?|FAQ.wiki#3-how-often-does-gbif-reindex-my-dataset]]
   + [[4. What type of datasets does GBIF index/support?|FAQ.wiki#4-what-type-of-datasets-does-gbif-indexsupport]]
-  + [[5. Why is my IPT dataset citation different on GBIF.org?|FAQ.wiki#4-what-type-of-datasets-does-gbif-indexsupport]]
+  + [[5. Why is my dataset citation different on GBIF.org?|FAQ.wiki#4-what-type-of-datasets-does-gbif-indexsupport]]
 
 ## Introduction
 In this page you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk.
