@@ -24,7 +24,6 @@ public class IptI18nInterceptor extends I18nInterceptor {
       new Locale("ru"),
       new Locale("fa")
   );
-  private static final Locale DEFAULT = Locale.ENGLISH;
 
   @Override
   protected Locale getLocaleFromParam(Object requestedLocale) {
@@ -32,14 +31,13 @@ public class IptI18nInterceptor extends I18nInterceptor {
     if (requestedLocale != null) {
       locale = (requestedLocale instanceof Locale) ? (Locale) requestedLocale
         : LocalizedTextUtil.localeFromString(requestedLocale.toString(), null);
-      if (locale == null || !IPT_SUPPORTED_LOCALES.contains(locale)) {
-        locale = DEFAULT;
-        LOG.debug("Use default locale: " + locale.getLanguage());
-      } else if (LOG.isDebugEnabled()) {
+      if (locale != null && LOG.isDebugEnabled()) {
         LOG.debug("Applied request locale: " + locale.getLanguage());
       }
     }
-
+    if (locale != null && !IPT_SUPPORTED_LOCALES.contains(locale)) {
+      locale = Locale.getDefault();
+    }
     return locale;
   }
 }
