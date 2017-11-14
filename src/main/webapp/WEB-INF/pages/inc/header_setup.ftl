@@ -48,12 +48,8 @@
                 </hgroup>
                 <div id="region-user-second" class="region-inner region-user-second-inner">
                   <ul id="language-menu">
-
-                    <li><a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
-                      <ul id="languages">
-                        <!-- add more languages as translations become available. -->
-                        <!-- To see more information go to langs method in global.js -->
-                      </ul>
+                    <li>
+                      [#include "/WEB-INF/pages/inc/languages.ftl"/]
                     </li>
                   </ul>
                 </div>

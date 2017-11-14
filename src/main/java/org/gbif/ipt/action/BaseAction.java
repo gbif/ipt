@@ -100,7 +100,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * Easy access to the configured application root for simple use in templates.
    */
   public String getBase() {
-    return cfg.getBaseUrl();
+    return getBaseURL();
   }
 
   public String getBaseURL() {
@@ -113,7 +113,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    */
   public String getRequestURL() {
     try {
-      return UriBuilder.fromUri(cfg.getBaseUrl())
+      return UriBuilder.fromUri(getBaseURL())
           .path(Strings.nullToEmpty(req.getServletPath()))
           .path(Strings.nullToEmpty(req.getPathInfo()))
           .replaceQuery(req.getQueryString())
@@ -122,7 +122,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     } catch (RuntimeException e) {
       LOG.warn("Failed to reconstruct requestURL from " + req.getRequestURL(), e);
     }
-    return cfg.getBaseUrl();
+    return getBaseURL();
   }
 
   public AppConfig getCfg() {
