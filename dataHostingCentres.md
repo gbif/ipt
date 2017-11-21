@@ -158,7 +158,7 @@ The [GBIF Spain IPT](http://www.gbif.es/ipt/) is recognized as a repository in [
 
 ## Taiwan
 
-The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en) provides helpdesk support to new publishers in Taiwan, and hosting support for datasets on the [TaiBIF IPT](http://taibif.tw/ipt/). Please contact Yu-Huang Wang <yuhuangwang@gmail.com> for assistance. 
+The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en) provides helpdesk support to new publishers in Taiwan, and hosting support for datasets on the [TaiBIF IPT](http://taibif.tw/ipt/). Please contact Chihjen Ko <cjk@sinica.edu.tw> for assistance. 
 
 ## USA
 
