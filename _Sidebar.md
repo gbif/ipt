@@ -12,6 +12,11 @@ _[[Para la versión en español|Inicio]]_
   + [[Checklist Data|checklistData]] 
   + [[Occurrence Data|occurrenceData]] 
   + [[Sampling Event Data|samplingEventData]]  
++ Best Practice Guides
+  + [[Resource metadata|GMPHowToGuide]]
+  + [[Checklist Data|BestPracticesChecklists]]
+  + Occurrence Data (pending)
+  + [[Sampling Event Data|BestPracticesSamplingEventData]] 
 + [[FAQ|FAQ.wiki]] 
 + [[Roadmap|Roadmap]]
 + [[Version History|Releases]]
