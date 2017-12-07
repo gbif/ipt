@@ -20,6 +20,7 @@ _[[Para la versión en español|Inicio]]_
 + [[FAQ|FAQ.wiki]] 
 + [[Roadmap|Roadmap]]
 + [[Version History|Releases]]
++ [[Uptake Statistics|Stats]]
 + How to Customize the IPT
     - [[Style the IPT|IPT2Customization.wiki]]
     - [[Adding a New Core|IPT2Core.wiki]]
