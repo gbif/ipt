@@ -1,22 +1,22 @@
 # IPT Statistics
 
-## Number of Datasets
+## Number of datasets published by IPTs
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Datasets.png' />
 
-## Number of Installations
+## Number of installations published by IPTs
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Installations.png' />
 
-## Number of Countries
+## Number of countries IPTs are installed in
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Countries.png' />
 
-## Number of Publishers
+## Number of IPT publishers by dataset type
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Publishers.png' />
 
-## Number of Occurrences
+## Number of occurrence records from occurrence datasets
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Occurrences.png' />
 
