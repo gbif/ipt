@@ -2,6 +2,8 @@
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Datasets.png' />
 
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Datasets.jpg' />
+
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Installations.png' />
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Countries.png' />
