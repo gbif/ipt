@@ -3,7 +3,7 @@ _Last updated 7 December, 2017._
 
 ## Table of Contents
 + [[Quick Highlights|Stats#quick-highlights]]
-+ [[Number of countries IPTs are installed in|Stats#quick-highlights]]
++ [[Number of countries IPTs are installed in|Stats#number-of-countries-ipts-are-installed-in]]
 + [[Number of datasets published by IPTs|Stats#quick-highlights]]
 + [[Number of IPT publishers by dataset type|Stats#quick-highlights]]
 + [[Number of occurrence records from occurrence datasets|Stats#quick-highlights]]
