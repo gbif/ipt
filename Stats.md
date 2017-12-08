@@ -30,6 +30,8 @@ Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/g
 
 
 ## Number of occurrence records from occurrence datasets
+Highlights: 
+* 30% increase over last year
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Occurrences.png).
 
