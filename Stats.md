@@ -24,6 +24,9 @@ This page provides various statistics and charts showing the IPT's growth story 
 * 92% increase just in number of checklist datasets published via IPT
 * 158% increase just in number of sampling-event datasets published via IPT
 * 17% increase in number of IPTs registered with GBIF
+* 15% increase in occurrence dataset publishers using IPTs over last year
+* 33% increase in checklist dataset publishers using IPTs over last year
+* 82% increase in sampling-event dataset publishers using IPTs over last year
 
 ## IPT compared against others
 * 315,456,978 out of 872,837,440 (36%) occurrence records in GBIF.org are published via IPTs. _Excluding [eBird](https://www.gbif.org/dataset/4fa7b334-ce0d-4e88-aaae-2e0c138d049e), it is 53%_.
