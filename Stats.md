@@ -31,7 +31,9 @@ This page provides various statistics and charts showing the IPT's growth story 
 * 204 out of 496 (41%) data publishing installations registered with GBIF are IPTs
 * 652 out of 1445 (45%) publishers registered with GBIF use the IPT to publish occurrence data
 
-## Number of occurrence records from occurrence datasets
+## Charts
+
+### Number of occurrence records from occurrence datasets
 Highlights: 
 * 30% increase over last year
 * 164% increase over last 4 years
@@ -40,7 +42,7 @@ Be aware the large dip after October 2015, was due to eBird no longer being publ
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Occurrences.png' />
 
-## Number of datasets published by IPTs
+### Number of datasets published by IPTs
 Highlights: 
 * 26% increase in datasets (of all types) over last year
 * 33% increase just in occurrence datasets over last year
@@ -52,7 +54,7 @@ Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/g
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Datasets.png' />
 
-## Number of IPTs registered with GBIF
+### Number of IPTs registered with GBIF
 Highlights: 
 * 17% increase over last year
 
@@ -60,13 +62,13 @@ Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/g
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Installations.png' />
 
-## Number of IPT publishers by dataset type
+### Number of IPT publishers by dataset type
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Publishers.png).
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Publishers.png' />
 
-## Number of countries IPTs are installed in
+### Number of countries IPTs are installed in
 Highlights: 
 * 10% increase over last year (57 countries now have at least 1 IPT)
 * 26% increase over last 3 years
