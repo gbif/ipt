@@ -26,7 +26,7 @@ _Last updated 7 December, 2017._
 
 ## Number of countries IPTs are installed in
 Highlights: 
-* 10% increase over last year (57 countries have at least 1 IPT)
+* 10% increase over last year (57 countries now have at least 1 IPT)
 * 26% increase over last 3 years
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Countries.png).
