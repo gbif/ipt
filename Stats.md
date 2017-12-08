@@ -5,15 +5,16 @@ _Last updated 7 December, 2017._
 + [[Introduction|Stats#introduction]]
 + [[Last year in review|Stats#last-year-in-review-dec-16-to-dec-17]]
 + [[IPT compared against others|Stats#ipt-compared-against-others]]
-+ [[Number of countries IPTs are installed in|Stats#number-of-countries-ipts-are-installed-in]]
-+ [[Number of occurrence records from occurrence datasets|https://github.com/gbif/ipt/wiki/Stats#number-of-occurrence-records-from-occurrence-datasets]]
-+ [[Number of datasets published by IPTs|Stats#number-of-datasets-published-by-ipts]]
-+ [[Number of IPTs registered with GBIF|Stats#number-of-ipts-registered-with-gbif]]
-+ [[Number of IPT publishers by dataset type|Stats#number-of-ipt-publishers-by-dataset-type]]
++ Charts:
+  + [[Number of occurrence records from occurrence datasets|https://github.com/gbif/ipt/wiki/Stats#number-of-occurrence-records-from-occurrence-datasets]]
+  + [[Number of datasets published by IPTs|Stats#number-of-datasets-published-by-ipts]]
+  + [[Number of IPTs registered with GBIF|Stats#number-of-ipts-registered-with-gbif]]
+  + [[Number of IPT publishers by dataset type|Stats#number-of-ipt-publishers-by-dataset-type]]
+  + [[Number of countries IPTs are installed in|Stats#number-of-countries-ipts-are-installed-in]]
 
 ## Introduction
 
-This page provides various statistics and charts showing the IPT's growth story over these last few years. 
+This page provides various statistics and charts showing the IPT's growth story over these last four years. 
 
 ## Last year in review (Dec 16 to Dec 17)
 * 10% increase in number of countries IPTs are installed in
@@ -29,16 +30,6 @@ This page provides various statistics and charts showing the IPT's growth story 
 * 3,797 out of 14,732 (26%) occurrence datasets registered with GBIF are published via IPTs
 * 204 out of 496 (41%) data publishing installations registered with GBIF are IPTs
 * 652 out of 1445 (45%) publishers registered with GBIF use the IPT to publish occurrence data
-
-## Number of countries IPTs are installed in
-Highlights: 
-* 10% increase over last year (57 countries now have at least 1 IPT)
-* 26% increase over last 3 years
-
-Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Countries.png).
-
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Countries.png' />
-
 
 ## Number of occurrence records from occurrence datasets
 Highlights: 
@@ -74,5 +65,14 @@ Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/g
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Publishers.png).
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Publishers.png' />
+
+## Number of countries IPTs are installed in
+Highlights: 
+* 10% increase over last year (57 countries now have at least 1 IPT)
+* 26% increase over last 3 years
+
+Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Countries.png).
+
+<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Countries.png' />
 
 _Note all statistics are managed in and generated from this [Excel file](https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/IPT-Stats.xlsx)_
