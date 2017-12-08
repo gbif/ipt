@@ -34,7 +34,7 @@ Highlights:
 * 30% increase over last year
 * 164% increase over last 4 years
 
-Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Occurrences.png).
+Be aware the large dip after October 2015, was due to eBird no longer being published via the IPT. Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Occurrences.png).
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Occurrences.png' />
 
