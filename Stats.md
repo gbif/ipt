@@ -43,6 +43,7 @@ Highlights:
 * 26% increase over last year
 * 345% increase over last 4 years
 * 158% increase just in sampling-event datasets over last year
+* 92% increase just in checklist datasets over last year
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Datasets.png).
 
