@@ -57,6 +57,7 @@ Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/g
 ### Number of IPTs registered with GBIF
 Highlights: 
 * 17% increase over last year
+* 93% increase over last 4 years
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Installations.png).
 
