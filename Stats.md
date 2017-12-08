@@ -42,6 +42,7 @@ Be aware the large dip after October 2015, was due to eBird no longer being publ
 Highlights: 
 * 26% increase over last year
 * 345% increase over last 4 years
+* 158% increase just in sampling-event datasets over last year
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Datasets.png).
 
