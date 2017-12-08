@@ -2,7 +2,8 @@
 _Last updated 7 December, 2017._
 
 ## Table of Contents
-+ [[Quick Highlights|Stats#quick-highlights]]
++ [[Last year in review|Stats#last-year-in-review-dec-16-to-dec-17]]
++ [[IPT compared against others|Stats#ipt-compared-against-others]]
 + [[Number of countries IPTs are installed in|Stats#number-of-countries-ipts-are-installed-in]]
 + [[Number of occurrence records from occurrence datasets|https://github.com/gbif/ipt/wiki/Stats#number-of-occurrence-records-from-occurrence-datasets]]
 + [[Number of datasets published by IPTs|Stats#number-of-datasets-published-by-ipts]]
@@ -18,7 +19,7 @@ _Last updated 7 December, 2017._
 * 92% increase just in number of checklist datasets published via IPT
 * 158% increase just in number of sampling-event datasets published via IPT
 
-## IPT versus other data publishing software
+## IPT compared against others
 * 315,456,978 out of 872,837,440 (36%) occurrence records in GBIF.org are published via IPTs. _Excluding [eBird](https://www.gbif.org/dataset/4fa7b334-ce0d-4e88-aaae-2e0c138d049e), it is 53%_.
 * 3,797 out of 14,732 (26%) occurrence datasets registered with GBIF are published via IPTs
 * 204 out of 496 (41%) data publishing installations registered with GBIF are IPTs
