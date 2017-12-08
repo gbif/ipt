@@ -30,6 +30,7 @@ From December 2016 to December 2017, there has been a...
 * 82% increase in sampling-event dataset publishers using IPTs over last year
 
 ## IPT compared against others
+As of December 7, 2017...
 * 315,456,978 out of 872,837,440 (36%) occurrence records in GBIF.org are published via IPTs. _Excluding [eBird](https://www.gbif.org/dataset/4fa7b334-ce0d-4e88-aaae-2e0c138d049e), it is 53%_.
 * 3,797 out of 14,732 (26%) occurrence datasets registered with GBIF are published via IPTs
 * 204 out of 496 (41%) data publishing installations registered with GBIF are IPTs
