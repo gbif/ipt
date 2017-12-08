@@ -2,7 +2,7 @@
 _Last updated 7 December, 2017._
 
 ## Overview
-* 204 out of 496 (41%) publishing installations registered with GBIF are IPTs
+* 204 out of 496 (41%) data publishing installations registered with GBIF are IPTs
 * 57 countries host at least one IPT installation
 * 315,456,978 out of 872,837,440 (36%) occurrence records in GBIF.org are published via IPTs
 * 3,797 out of 14,732 (26%) occurrence datasets registered with GBIF are published via IPTs
