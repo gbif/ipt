@@ -65,8 +65,9 @@ Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/g
 
 ### Number of IPT publishers by dataset type
 Highlights: 
-* 15% increase over last year
-* 721% increase over last 4 years
+* 15% increase in occurrence dataset publishers over last year
+* 33% increase in checklist dataset publishers over last year
+* 721% increase in occurrence dataset publisher over last 4 years
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Publishers.png).
 
