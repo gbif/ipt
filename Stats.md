@@ -25,9 +25,9 @@ From December 2016 to December 2017, there has been a...
 * 92% increase just in number of checklist datasets published via IPT
 * 158% increase just in number of sampling-event datasets published via IPT
 * 17% increase in number of IPTs registered with GBIF
-* 15% increase in occurrence dataset publishers using IPTs over last year
-* 33% increase in checklist dataset publishers using IPTs over last year
-* 82% increase in sampling-event dataset publishers using IPTs over last year
+* 15% increase in occurrence dataset publishers using IPTs
+* 33% increase in checklist dataset publishers using IPTs
+* 82% increase in sampling-event dataset publishers using IPTs
 
 ## IPT compared against others
 As of December 7, 2017...
