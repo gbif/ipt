@@ -3,7 +3,7 @@ _Last updated 7 December, 2017._
 
 ## Table of Contents
 + [[Introduction|Stats#introduction]]
-+ [[Last year in review|Stats#last-year-in-review-dec-16-to-dec-17]]
++ [[Last year in review|Stats#last-year-in-review]]
 + [[IPT compared against others|Stats#ipt-compared-against-others]]
 + Charts:
   + [[Number of occurrence records from occurrence datasets|https://github.com/gbif/ipt/wiki/Stats#number-of-occurrence-records-from-occurrence-datasets]]
@@ -16,7 +16,7 @@ _Last updated 7 December, 2017._
 
 This page provides various statistics and charts showing the IPT's growth story over these last four years. 
 
-## Last year in review (Dec 16 to Dec 17)
+## Last year in review
 * 10% increase in number of countries IPTs are installed in
 * 30% increase in number of occurrence records published via IPT
 * 26% increase in number of datasets (of all types) published via IPT
