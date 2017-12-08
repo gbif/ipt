@@ -64,6 +64,8 @@ Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/g
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Installations.png' />
 
 ### Number of IPT publishers by dataset type
+Highlights: 
+* 15% increase over last year
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Publishers.png).
 
