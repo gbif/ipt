@@ -20,11 +20,14 @@ _Last updated 7 December, 2017._
 
 
 ## Number of countries IPTs are installed in
+Highlights: 
+* 10% increase over last year
+* 26% increase over last 3 years
 
-Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Countries.png). Highlights: 
-* 10% increase in last year
+Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Countries.png).
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Countries.png' />
+
 
 ## Number of occurrence records from occurrence datasets
 
