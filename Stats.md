@@ -17,6 +17,7 @@ _Last updated 7 December, 2017._
 This page provides various statistics and charts showing the IPT's growth story over these last four years. 
 
 ## Last year in review
+From December 2016 to December 2017, there has been a...
 * 10% increase in number of countries IPTs are installed in
 * 30% increase in number of occurrence records published via IPT
 * 26% increase in number of datasets (of all types) published via IPT
