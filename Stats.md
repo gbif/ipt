@@ -1,6 +1,9 @@
 # IPT Statistics 
 _Last updated 7 December, 2017._
 
+## Table of Contents
++ [[Quick Highlights|Stats#quick-highlights]]
+
 ## Quick Highlights
 
 * 57 countries host at least one IPT installation
