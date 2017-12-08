@@ -41,6 +41,7 @@ Be aware the large dip after October 2015, was due to eBird no longer being publ
 ## Number of datasets published by IPTs
 Highlights: 
 * 26% increase over last year
+* 345% increase over last 4 years
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Datasets.png).
 
