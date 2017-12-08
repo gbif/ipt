@@ -36,7 +36,7 @@ Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/g
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/stats/dec17/Datasets.png' />
 
-## Number of installations published by IPTs
+## Number of installations registered with GBIF
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Installations.png).
 
