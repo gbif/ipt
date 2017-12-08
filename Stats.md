@@ -40,11 +40,11 @@ Be aware the large dip after October 2015, was due to eBird no longer being publ
 
 ## Number of datasets published by IPTs
 Highlights: 
-* 26% increase over last year
+* 26% increase in datasets (of all types) over last year
 * 33% increase just in occurrence datasets over last year
-* 158% increase just in sampling-event datasets over last year
 * 92% increase just in checklist datasets over last year
-* 345% increase over last 4 years
+* 158% increase just in sampling-event datasets over last year
+* 345% increase in datasets  (of all types) over last 4 years
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Datasets.png).
 
