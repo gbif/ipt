@@ -10,18 +10,23 @@ _Last updated 7 December, 2017._
 + [[Number of IPT publishers by dataset type|Stats#number-of-ipt-publishers-by-dataset-type]]
 
 
-## Quick Highlights
+## Last year in review (Dec 16 to Dec 17)
+* 10% increase in number of countries IPTs are installed in
+* 30% increase in number of occurrence records published via IPT
+* 26% increase in number of datasets (of all types) published via IPT
+* 33% increase just in number of occurrence datasets published via IPT
+* 92% increase just in number of checklist datasets published via IPT
+* 158% increase just in number of sampling-event datasets published via IPT
 
-* 57 countries host at least one IPT installation
+## IPT versus other data publishing software
 * 315,456,978 out of 872,837,440 (36%) occurrence records in GBIF.org are published via IPTs. _Excluding [eBird](https://www.gbif.org/dataset/4fa7b334-ce0d-4e88-aaae-2e0c138d049e), it is 53%_.
 * 3,797 out of 14,732 (26%) occurrence datasets registered with GBIF are published via IPTs
 * 204 out of 496 (41%) data publishing installations registered with GBIF are IPTs
 * 652 out of 1445 (45%) publishers registered with GBIF use the IPT to publish occurrence data
 
-
 ## Number of countries IPTs are installed in
 Highlights: 
-* 10% increase over last year
+* 10% increase over last year (57 countries have at least 1 IPT)
 * 26% increase over last 3 years
 
 Chart available for [download](https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/stats/dec17/Countries.png).
