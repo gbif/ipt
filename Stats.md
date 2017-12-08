@@ -7,7 +7,7 @@ _Last updated 7 December, 2017._
 + [[Number of occurrence records from occurrence datasets|https://github.com/gbif/ipt/wiki/Stats#number-of-occurrence-records-from-occurrence-datasets]]
 + [[Number of datasets published by IPTs|Stats#number-of-datasets-published-by-ipts]]
 + [[Number of IPTs registered with GBIF|Stats#number-of-ipts-registered-with-gbif]]
-+ [[Number of IPT publishers by dataset type|Stats#quick-highlights]]
++ [[Number of IPT publishers by dataset type|Stats#number-of-ipt-publishers-by-dataset-type]]
 
 
 ## Quick Highlights
