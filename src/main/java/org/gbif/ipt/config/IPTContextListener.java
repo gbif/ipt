@@ -21,6 +21,7 @@ import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
 import org.gbif.ipt.struts2.CharacterEncodingFilter;
+import org.gbif.ipt.struts2.CorsFilter;
 import org.gbif.ipt.struts2.ResponseHeaderFilter;
 import org.gbif.ipt.struts2.SanitizeHtmlFilter;
 
@@ -74,6 +75,11 @@ public class IPTContextListener extends GuiceServletContextListener {
 
         @Override
         protected void configureServlets() {
+
+          // Adds CORS headers to all IPT page responses
+          bind(CorsFilter.class).in(Singleton.class);
+          filter("/*").through(CorsFilter.class);
+
           // Struts 2 setup
           bind(StrutsPrepareAndExecuteFilter.class).in(Singleton.class);
           filter("/*").through(StrutsPrepareAndExecuteFilter.class);
