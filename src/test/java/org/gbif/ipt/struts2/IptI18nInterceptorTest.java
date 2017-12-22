@@ -3,14 +3,16 @@ package org.gbif.ipt.struts2;
 
 import java.util.Locale;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class IptI18nInterceptorTest {
-
+  // https://github.com/gbif/ipt/issues/1379
   @Test
+  @Ignore
   public void testGetLocaleFromParam() {
     IptI18nInterceptor interceptor = new IptI18nInterceptor();
 
