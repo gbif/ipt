@@ -25,8 +25,8 @@
       maven treats properties as strings only, so we cannot negate a boolean devMode value.
       Therefore we keep both available - make sure they are always negated in all profiles!
       -->
-    <devMode>true</devMode>
-    <devModeNegated>false</devModeNegated>
+    <devMode>false</devMode>
+    <devModeNegated>true</devModeNegated>
     <jetty.port>7001</jetty.port>
 
     <analytics.key />
@@ -93,10 +93,6 @@
     <developer>
       <name>Markus Döring</name>
       <email>mdoering@gbif.org</email>
-    </developer>
-    <developer>
-      <name>Kyle Braak</name>
-      <email>kbraak@gbif.org</email>
     </developer>
   </developers>
 
@@ -632,10 +628,6 @@
     <!-- Settings used for an IPT release -->
     <profile>
       <id>release</id>
-      <properties>
-        <devMode>false</devMode>
-        <devModeNegated>true</devModeNegated>
-      </properties>
       <build>
         <plugins>
           <plugin>
@@ -650,35 +642,14 @@
       </build>
     </profile>
 
-    <!-- Settings used for the Staging IPT installation -->
-    <!-- Bundles datadir.location in war so Staging IPT doesn't have to reconfigure datadir on each redeploy -->
+    <!-- Settings used for local IPT development, in particular activating the struts2 dev mode -->
     <profile>
-      <id>staging</id>
+      <id>dev</id>
       <properties>
         <devMode>true</devMode>
         <devModeNegated>false</devModeNegated>
-        <staging.datadir>/var/lib/tomcat/ipt-data</staging.datadir>
       </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-              <webResources>
-                <resource>
-                  <filtering>true</filtering>
-                  <targetPath>WEB-INF</targetPath>
-                  <directory>src/main/webapp/WEB-INF</directory>
-                  <includes>
-                    <include>datadir.location</include>
-                  </includes>
-                </resource>
-              </webResources>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
+
   </profiles>
 </project>

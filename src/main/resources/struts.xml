@@ -83,18 +83,10 @@
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
-
-      <!-- development interceptor only logging in an admin with password "carla" automatically when not yet logged in -->
-      <interceptor name="autoLogin" class="org.gbif.ipt.struts2.AutoLoginAdminInterceptor"/>
-
       <!-- stack to be used as the default for the manage package -->
       <interceptor-stack name="managerStack">
         <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="setupAndCancel"/>
-        <!-- development only ! -->
-        <!--
-          <interceptor-ref name="autoLogin"/>
-        -->
         <interceptor-ref name="requireManager"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
