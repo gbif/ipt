@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>2.3.5-SNAPSHOT</version>
+  <version>2.3.6-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
@@ -25,8 +25,8 @@
       maven treats properties as strings only, so we cannot negate a boolean devMode value.
       Therefore we keep both available - make sure they are always negated in all profiles!
       -->
-    <devMode>true</devMode>
-    <devModeNegated>false</devModeNegated>
+    <devMode>false</devMode>
+    <devModeNegated>true</devModeNegated>
     <jetty.port>7001</jetty.port>
 
     <analytics.key />
@@ -37,53 +37,52 @@
     <!-- The datadir for tests that use a guice injected DataDir object -->
     <test.datadir>/tmp/test-datadir</test.datadir>
 
-    <jdkLevel>1.6</jdkLevel>
+    <jdkLevel>1.8</jdkLevel>
 
-    <apache-poi.version>3.15</apache-poi.version>
+    <apache-poi.version>3.17</apache-poi.version>
+    <checklistbank-ws-client.version>2.61</checklistbank-ws-client.version>
     <commons-digester.version>2.1</commons-digester.version>
-    <commons-lang3.version>3.5</commons-lang3.version>
     <commons-io.version>2.5</commons-io.version>
-    <commons-validator.version>1.5.1</commons-validator.version>
-    <validation-api.version>1.1.0.Final</validation-api.version>
-    <dwca-io.version>1.27</dwca-io.version>
-    <gbif-api.version>0.47</gbif-api.version>
-    <gbif-parsers.version>0.29</gbif-parsers.version>
-    <gbif-registry.version>2.59</gbif-registry.version>
-    <metrics-ws-client.version>0.26</metrics-ws-client.version>
-    <gbif-common-ws.version>0.37</gbif-common-ws.version>
-    <gbif-metadata-profile.version>1.1.1</gbif-metadata-profile.version>
-    <gbif-common.version>0.28</gbif-common.version>
+    <commons-lang3.version>3.6</commons-lang3.version>
+    <commons-validator.version>1.6</commons-validator.version>
+    <dwc-api.version>1.17</dwc-api.version>
+    <dwca-io.version>1.31</dwca-io.version>
+    <freemarker.version>2.3.26-incubating</freemarker.version>
+    <gbif-api.version>0.56</gbif-api.version>
+    <gbif-common-ws.version>0.41</gbif-common-ws.version>
+    <gbif-common.version>0.36</gbif-common.version>
     <gbif-doi.version>1.5</gbif-doi.version>
-    <dwc-api.version>1.16</dwc-api.version>
-    <checklistbank-ws-client.version>2.45</checklistbank-ws-client.version>
+    <gbif-metadata-profile.version>1.1.1</gbif-metadata-profile.version>
+    <gbif-parsers.version>0.31</gbif-parsers.version>
+    <gbif-registry.version>2.74</gbif-registry.version>
+    <gson.version>2.8.2</gson.version>
     <guava.version>18.0</guava.version>
-    <freemarker.version>2.3.25-incubating</freemarker.version>
-    <gson.version>2.7</gson.version>
-    <guice.version>3.0</guice.version>
+    <guice.version>4.1.0</guice.version>
     <httpclient.version>4.3.6</httpclient.version>
     <httpcore.version>4.3.3</httpcore.version>
+    <httputils.version>0.10</httputils.version>
     <itext.version>2.1.7</itext.version>
+    <jackson2.version>2.8.4</jackson2.version>
     <javassist.version>3.12.1.GA</javassist.version>
-    <jetty-maven-plugin.version>7.6.12.v20130726</jetty-maven-plugin.version>
+    <javax.mail.version>1.4.7</javax.mail.version>
+    <jersey.version>1.19.4</jersey.version>
+    <jetty-maven-plugin.version>9.4.7.v20170914</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
+    <jsr305.version>3.0.2</jsr305.version>
     <jtds.version>1.3.1</jtds.version>
     <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
+    <metrics-ws-client.version>0.27</metrics-ws-client.version>
     <mockito-all.version>1.10.19</mockito-all.version>
-    <!-- warning!! Connector/J 6.0 does not work with Java6, read http://dev.mysql.com/doc/connector-j/6.0/en/connector-j-versions.html -->
-    <mysql-connector-java.version>5.1.40</mysql-connector-java.version>
+    <mysql-connector-java.version>5.1.44</mysql-connector-java.version>
     <ojdbc.version>14</ojdbc.version>
-    <!-- warning!! 9.4.1211.jre7 does not work with Java6, read https://jdbc.postgresql.org/download.html -->
-    <postgresql.version>9.4.1211.jre6</postgresql.version>
-    <javax.mail.version>1.4.7</javax.mail.version>
-    <servlet-api.version>2.5</servlet-api.version>
+    <owasp-java-html-sanitizer.version>20170515.1</owasp-java-html-sanitizer.version>
+    <postgresql.version>42.1.4</postgresql.version>
+    <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.21</slf4j.version>
-    <struts2.version>2.3.32</struts2.version>
+    <struts2.version>2.3.34</struts2.version>
+    <validation-api.version>2.0.0.Final</validation-api.version>
     <xstream.version>1.4.8</xstream.version>
-    <jsr305.version>3.0.1</jsr305.version>
-    <httputils.version>0.10</httputils.version>
-    <jackson2.version>2.8.4</jackson2.version>
-    <jersey.version>1.18.3</jersey.version>
   </properties>
 
   <developers>
@@ -94,10 +93,6 @@
     <developer>
       <name>Markus Döring</name>
       <email>mdoering@gbif.org</email>
-    </developer>
-    <developer>
-      <name>Kyle Braak</name>
-      <email>kbraak@gbif.org</email>
     </developer>
   </developers>
 
@@ -162,7 +157,7 @@
         <!--
           http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin
         -->
-        <groupId>org.mortbay.jetty</groupId>
+        <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty-maven-plugin.version}</version>
         <configuration>
@@ -223,10 +218,10 @@
         </configuration>
       </plugin>
       <!-- commented out only to perform release: runs integration tests (*IT) during verify -->
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-failsafe-plugin</artifactId>-->
-      <!--</plugin>-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
     </plugins>
 
     <resources>
@@ -347,12 +342,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!--
-      Struts2:
-      The 2.3.x series of the Apache Struts framework has a minimum
-      requirement of the following specification versions: Servlet API 2.4,
-      JSP API 2.0, and Java 6.
-    -->
+    <!-- Struts2,  2.3.x series -->
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts2-core</artifactId>
@@ -383,11 +373,6 @@
       <artifactId>freemarker</artifactId>
       <version>${freemarker.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.struts.xwork</groupId>
-      <artifactId>xwork-core</artifactId>
-      <version>${struts2.version}</version>
-    </dependency>
 
     <!-- Guice provides the code based (not XML based) injection dependency framework -->
     <dependency>
@@ -412,17 +397,6 @@
       <artifactId>guice-struts2</artifactId>
       <version>${guice.version}</version>
       <scope>compile</scope>
-      <exclusions>
-        <!-- clashes with newer version included in struts2.1.6  -->
-        <exclusion>
-          <groupId>opensymphony</groupId>
-          <artifactId>xwork</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>ognl</groupId>
-          <artifactId>ognl</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
@@ -433,6 +407,12 @@
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
       <version>${guice.version}</version>
+        <exclusions>
+            <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
     <!-- Used to validate email addresses -->
     <dependency>
@@ -441,19 +421,9 @@
       <version>${javax.mail.version}</version>
     </dependency>
 
-    <!-- Used for the SimpleTextProvider in Struts2 -->
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>jsp-api</artifactId>
-      <!--
-        need it for standalone, embedded jetty
-      <scope>provided</scope>
-      -->
-      <version>${jsp-api.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
       <version>${servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>
@@ -646,16 +616,18 @@
       <version>${jsr305.version}</version>
     </dependency>
 
+    <!-- HTML sanitizer preventing XSS attacks -->
+    <dependency>
+      <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+      <artifactId>owasp-java-html-sanitizer</artifactId>
+      <version>${owasp-java-html-sanitizer.version}</version>
+    </dependency>
   </dependencies>
 
   <profiles>
     <!-- Settings used for an IPT release -->
     <profile>
       <id>release</id>
-      <properties>
-        <devMode>false</devMode>
-        <devModeNegated>true</devModeNegated>
-      </properties>
       <build>
         <plugins>
           <plugin>
@@ -663,42 +635,21 @@
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
               <!-- don't bundle local datadir.location file with generated war -->
-              <excludes>**/datadir.location</excludes>
+              <packagingExcludes>**/datadir.location</packagingExcludes>
             </configuration>
           </plugin>
         </plugins>
       </build>
     </profile>
 
-    <!-- Settings used for the Staging IPT installation -->
-    <!-- Bundles datadir.location in war so Staging IPT doesn't have to reconfigure datadir on each redeploy -->
+    <!-- Settings used for local IPT development, in particular activating the struts2 dev mode -->
     <profile>
-      <id>staging</id>
+      <id>dev</id>
       <properties>
         <devMode>true</devMode>
         <devModeNegated>false</devModeNegated>
-        <staging.datadir>/var/lib/tomcat/ipt-data</staging.datadir>
       </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-              <webResources>
-                <resource>
-                  <filtering>true</filtering>
-                  <targetPath>WEB-INF</targetPath>
-                  <directory>src/main/webapp/WEB-INF</directory>
-                  <includes>
-                    <include>datadir.location</include>
-                  </includes>
-                </resource>
-              </webResources>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
+
   </profiles>
 </project>

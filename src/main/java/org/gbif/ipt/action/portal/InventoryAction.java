@@ -1,6 +1,13 @@
 package org.gbif.ipt.action.portal;
 
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.inject.Inject;
+import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.json.annotations.JSON;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
@@ -9,21 +16,13 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.ResourceUtils;
 
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import javax.validation.constraints.NotNull;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.inject.Inject;
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.json.annotations.JSON;
 
 /**
  * Action serialized into JSON - used to get a simple JSON inventory of registered resources.
@@ -32,7 +31,7 @@ public class InventoryAction extends ActionSupport {
 
   private final AppConfig cfg;
   private final ResourceManager resourceManager;
-  private List<DatasetItem> inventory;
+  private List<DatasetItem> inventory = Lists.newArrayList();
 
   @Inject
   public InventoryAction(AppConfig cfg, ResourceManager resourceManager) {
@@ -163,7 +162,9 @@ public class InventoryAction extends ActionSupport {
      * @param recordsByExtension map of record counts (map value) by extension rowType (map key)
      */
     public void setRecordsByExtension(Map<String, Integer> recordsByExtension) {
-      this.recordsByExtension = ImmutableMap.copyOf(recordsByExtension);
+      if (recordsByExtension != null) {
+        this.recordsByExtension = ImmutableMap.copyOf(recordsByExtension);
+      }
     }
 
     /**
@@ -204,20 +205,21 @@ public class InventoryAction extends ActionSupport {
       DOI doi = versionHistory.getDoi();
       File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, version);
       UUID gbifKey = r.getKey();
-      Resource lastPublished = ResourceUtils
-        .reconstructVersion(version, shortname, doi, r.getOrganisation(), versionHistory, versionEmlFile, gbifKey);
+      Resource lastPublished = ResourceUtils.reconstructVersion(
+          version, shortname, doi, r.getOrganisation(),
+          versionHistory, versionEmlFile, gbifKey
+      );
 
       // populate DatasetItem representing last published version of the registered dataset
-      item.setTitle(Strings.nullToEmpty(lastPublished.getTitle()));
+      item.setTitle(Strings.emptyToNull(lastPublished.getTitle()));
       item.setRecords(lastPublished.getRecordsPublished());
       item.setLastPublished(lastPublished.getLastPublished());
       item.setGbifKey(lastPublished.getKey().toString());
       item.setRecordsByExtension(lastPublished.getRecordsByExtension());
-
       item.setEml(cfg.getResourceEmlUrl(shortname));
       item.setDwca(cfg.getResourceArchiveUrl(shortname));
       item.setVersion(version);
-      item.setType(Strings.nullToEmpty(r.getCoreType()));
+      item.setType(Strings.emptyToNull(r.getCoreType()));
       items.add(item);
     }
     setInventory(items);

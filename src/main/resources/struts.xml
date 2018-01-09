@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-  "http://struts.apache.org/dtds/struts-2.0.dtd">
+  "http://struts.apache.org/dtds/struts-2.3.dtd">
 <!--
 	NOTES TO DEVELOPERS:
 	Wildcards can be used in this definition to reduce the amount of configuration necesary
@@ -49,13 +49,22 @@
       <!-- also check for any values in the cancel request parameter and returns the cancel result in that case immediately -->
       <interceptor name="setupAndCancel" class="org.gbif.ipt.struts2.SetupAndCancelInterceptor"/>
 
+      <!-- interceptor to set csrf login tokens in cookie and value stack to prevent CSRF login attacks -->
+      <interceptor name="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor"/>
+
+      <!-- extended i18n default interceptor to support other Locales not supported by the Java runtime environment, e.g. Persian (fa) -->
+      <interceptor name="i18n" class="org.gbif.ipt.struts2.IptI18nInterceptor"/>
+
+
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">
         <interceptor-ref name="keepRedirectMessages"/>
-        <interceptor-ref name="i18nStack"/>
+        <interceptor-ref name="i18n"/>
+        <interceptor-ref name="basicStack"/>
         <interceptor-ref name="validation">
           <param name="excludeMethods">input,back,cancel,list</param>
         </interceptor-ref>
+        <interceptor-ref name="csrfLoginInterceptor" />
         <interceptor-ref name="workflow"/>
       </interceptor-stack>
 
@@ -74,18 +83,10 @@
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
-
-      <!-- development interceptor only logging in an admin with password "carla" automatically when not yet logged in -->
-      <interceptor name="autoLogin" class="org.gbif.ipt.struts2.AutoLoginAdminInterceptor"/>
-
       <!-- stack to be used as the default for the manage package -->
       <interceptor-stack name="managerStack">
         <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="setupAndCancel"/>
-        <!-- development only ! -->
-        <!--
-          <interceptor-ref name="autoLogin"/>
-        -->
         <interceptor-ref name="requireManager"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
@@ -161,8 +162,7 @@
     <action name="about" class="org.gbif.ipt.action.AboutAction">
       <result>/WEB-INF/pages/about.ftl</result>
     </action>
-    <action name="rss"
-            class="org.gbif.ipt.action.portal.ResourceAction" method="rss">
+    <action name="rss" class="org.gbif.ipt.action.portal.ResourceAction" method="rss">
       <result name="success" type="freemarker">
         <param name="location">/WEB-INF/pages/portal/rss.ftl</param>
         <param name="contentType">text/xml</param>

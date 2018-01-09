@@ -14,6 +14,7 @@
     <form id="newuser" class="topForm half" action="${baseURL}/login.do" method="post">
       <@input name="email" i18nkey="user.email" value="${email!}"/>
       <@input name="password" i18nkey="user.password" type="password" value="${password!}"/>
+      <input name="csrfToken" type="hidden" value="${newCsrfToken!}">
       <#if email?has_content>
         <p>
           <@s.text name="login.forgottenpassword"><@s.param>${admin.email}</@s.param></@s.text>

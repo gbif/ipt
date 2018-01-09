@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
-				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-	
+<web-app
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+        version="3.0">
 	<display-name>IPT</display-name>
 
-	<!-- Google Guice is used instead of Spring for lightweight dependency injection -->
+    <!-- configure safer http-only cookies -->
+    <session-config>
+        <cookie-config>
+            <http-only>true</http-only>
+        </cookie-config>
+    </session-config>
+
+    <!-- Google Guice is used instead of Spring for lightweight dependency injection -->
 	<filter>
 		<filter-name>guice</filter-name>
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
 	</filter>
 
-	<!-- Adds cache control headers to all IPT page responses -->
-	<filter>
-		<filter-name>cacheControl</filter-name>
-		<filter-class>org.gbif.ipt.struts2.ResponseHeaderFilter</filter-class>
-	</filter>
-
-	<!-- Standard struts2 filter -->
-	<filter>
-		<filter-name>struts2</filter-name>
-		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
-	</filter>
-	
-	<!-- All requests are subject to checked the dependency injection -->
+    <!-- The Guice listener defining all servlets & filters. -->
 	<filter-mapping>
 		<filter-name>guice</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -32,16 +28,4 @@
 		<listener-class>org.gbif.ipt.config.IPTContextListener</listener-class>
 	</listener>
 
-	<!-- All IPT page responses go through cacheControl filter -->
-	<filter-mapping>
-		<filter-name>cacheControl</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
-	<!-- All requests go through struts2 filter -->
-	<filter-mapping>
-		<filter-name>struts2</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-			
 </web-app>

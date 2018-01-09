@@ -6,6 +6,7 @@ import org.gbif.api.model.common.paging.PagingResponse;
 import org.gbif.api.model.metrics.cube.OccurrenceCube;
 import org.gbif.api.model.metrics.cube.ReadBuilder;
 import org.gbif.api.model.registry.Dataset;
+import org.gbif.api.model.registry.Endpoint;
 import org.gbif.api.model.registry.Installation;
 import org.gbif.api.model.registry.Organization;
 import org.gbif.api.service.checklistbank.DatasetMetricsService;
@@ -17,24 +18,48 @@ import org.gbif.api.vocabulary.Country;
 import org.gbif.api.vocabulary.DatasetType;
 import org.gbif.api.vocabulary.InstallationType;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
+import javax.validation.constraints.NotNull;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
+import com.beust.jcommander.internal.Lists;
 import com.google.common.collect.Sets;
+import com.google.inject.Singleton;
+import org.apache.commons.digester.Digester;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import static org.gbif.ipt.config.RegistryTestModule.webserviceClient;
 import static org.gbif.ipt.config.RegistryTestModule.webserviceClientReadOnly;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+@Ignore("These require live UAT webservice and should therefore only run when manually triggered")
 public class RegistryWsClientTest {
 
   // logging
   private static final Logger LOG = Logger.getLogger(RegistryWsClientTest.class);
   private static final int PAGING_LIMIT = 100;
+  // timeout in milliseconds for both the connection timeout and the response read timeout
+  private static final int TIMEOUT_MILLIS = 2000;
+  private static final SAXParserFactory saxParserFactory = provideNsAwareSaxParserFactory();
+  private static final String IPT_RSS_NAMESPACE = "http://ipt.gbif.org/";
+  private static final Pattern ESCAPE_CHARS = Pattern.compile("[\t\n\r]");
 
   @Test
   public void testGetDataset() {
@@ -43,7 +68,7 @@ public class RegistryWsClientTest {
     assertEquals("PonTaurus collection", dataset.getTitle());
   }
 
-  @Ignore
+  @Test
   public void testUpdateDataset() {
     DatasetService ds = webserviceClient().getInstance(DatasetService.class);
     Dataset dataset = ds.get(UUID.fromString("8575f23e-f762-11e1-a439-00145eb45e9a"));
@@ -60,7 +85,7 @@ public class RegistryWsClientTest {
    * </br>
    * Remember to configure registry.properties to connect to the desired service URLs.
    */
-  @Ignore
+  @Ignore("Uses a deprecated API, see https://github.com/gbif/ipt/issues/1366")
   public void gatherStatistics() {
     InstallationService installationService = webserviceClientReadOnly().getInstance(InstallationService.class);
     CubeService occurrenceCubeService = webserviceClientReadOnly().getInstance(CubeService.class);
@@ -83,6 +108,7 @@ public class RegistryWsClientTest {
     Set<UUID> occurrenceDatasetPublisherKeys = Sets.newHashSet();
     Set<UUID> samplingEventDatasetPublisherKeys = Sets.newHashSet();
     Set<UUID> metadataDatasetPublisherKeys = Sets.newHashSet();
+    List<String[]> stats = Lists.newArrayList();
     PagingRequest installationPage = new PagingRequest(0, PAGING_LIMIT);
     PagingResponse<Installation> installationsResults;
     do {
@@ -93,6 +119,25 @@ public class RegistryWsClientTest {
         installationCount++;
         if (installation.getType().equals(InstallationType.IPT_INSTALLATION)) {
           iptInstallationCount++;
+
+          // check what version this IPT is running by reading its RSS feed
+          // Be aware!: attempting to connect to read each IPTs' RSS feed slows down this method significantly!
+          String[] row = new String[4];
+          stats.add(row);
+          List<Endpoint> endpointList = installation.getEndpoints();
+          if (!endpointList.isEmpty() && endpointList.size() == 1) {
+            Endpoint endpoint = endpointList.get(0);
+            row[0] = (endpoint != null && endpoint.getUrl() != null) ? endpoint.getUrl().toString() : "";
+            row[1] = (installation.getKey() != null) ? installation.getKey().toString() : "";
+            try {
+              RSS rss = pingURL(endpoint.getUrl().toURL());
+              row[2] = (rss != null) ? rss.getIdentifier() : "";
+              row[3] = (rss != null) ? rss.getVersion() : "";
+            } catch (MalformedURLException e) {
+              LOG.error("RSS endpoint has malformed URL! " + endpoint.getUrl().toString());
+            }
+          }
+
           // count number of countries where IPTs are installed
           Organization organization = organizationService.get(installation.getOrganizationKey());
           countriesRepresented.add(organization.getCountry());
@@ -161,6 +206,9 @@ public class RegistryWsClientTest {
       installationPage.nextPage();
     } while (!installationsResults.isEndOfRecords());
 
+    // write stats to file
+    writeStatsToFile(stats);
+
     LOG.info(iptInstallationCount + " out of " + installationCount + " installations are IPTs");
     LOG.info(
       iptInstallationCount + " IPTs hosted in " + countriesRepresented.size() + " countries serve " + iptDatasetCount
@@ -174,6 +222,154 @@ public class RegistryWsClientTest {
       + " publishers totalling " + totalOccurrenceRecordsFromSamplingEventDatasets + " occurrence records");
     LOG.info(iptMetadataDatasetCount + " metadata-only datasets published by " + metadataDatasetPublisherKeys.size()
              + " publishers");
+  }
+
+  /**
+   * Requests a RSS feed with GET request and parses it into RSS object.
+   *
+   * @param url     The RSS HTTP URL to be pinged
+   *
+   * @return Populated RSS object or null if URL was offline or version couldn't be determined for any other reason
+   */
+  public RSS pingURL(URL url) {
+    RSS rss = null;
+    try {
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setConnectTimeout(TIMEOUT_MILLIS);
+      connection.setReadTimeout(TIMEOUT_MILLIS);
+      connection.setRequestMethod("GET");
+      try {
+        rss = parse(connection.getInputStream());
+      } catch (Exception e) {
+        LOG.error("Failed to parse RSS feed: " + rss, e);
+      }
+      connection.disconnect();
+    } catch (IOException exception) {
+      return null;
+    }
+    return rss;
+  }
+
+  @Test
+  public void testPingUrl() throws MalformedURLException {
+    RSS rss = pingURL(new URL("http://ipt.ala.org.au/rss.do"));
+    assertNotNull(rss);
+    assertEquals("1322b7b1-6b85-499f-964e-5e8599c73e6e", rss.getIdentifier());
+    assertEquals("GBIF IPT 2.3.4-r68469e8", rss.getVersion());
+  }
+
+  @Test
+  public void testRSSParsing() throws IOException, SAXException, ParserConfigurationException {
+    InputStream rssIs = RegistryWsClientTest.class.getResourceAsStream("/responses/rss.xml");
+    RSS rss = parse(rssIs);
+    assertNotNull(rss);
+    assertEquals("1322b7b1-6b85-499f-964e-5e8599c73e6e", rss.getIdentifier());
+    assertEquals("GBIF IPT 2.3.4-r68469e8", rss.getVersion());
+  }
+
+  /**
+   * Parses a RSS response as input stream.
+   *
+   * @param is For the XML of the RSS feed
+   *
+   * @return Populated RSS object or null if the RSS response could not be extracted for any reason
+   */
+  private RSS parse(InputStream is) throws ParserConfigurationException, SAXException, IOException {
+    // in order to deal with arbitrary namespace prefixes we need to parse namespace aware!
+    Digester digester = new Digester(saxParserFactory.newSAXParser());
+    digester.setRuleNamespaceURI(IPT_RSS_NAMESPACE);
+    digester.setNamespaceAware(true);
+
+    RSS rss = new RSS();
+    digester.push(rss);
+    digester.addBeanPropertySetter("*/identifier", "identifier");
+    digester.addBeanPropertySetter("*/generator", "version");
+    digester.parse(is);
+    return rss;
+  }
+
+  @Singleton
+  private static SAXParserFactory provideNsAwareSaxParserFactory() {
+    SAXParserFactory saxf = null;
+    try {
+      saxf = SAXParserFactory.newInstance();
+      saxf.setValidating(false);
+      saxf.setNamespaceAware(true);
+    } catch (Exception e) {
+      LOG.error("Failed to create SAX Parser Factory: " + e.getMessage(), e);
+    }
+    return saxf;
+  }
+
+  /**
+   * Class representing RSS feed with select properties of interest.
+   */
+  public class RSS {
+    private String identifier;
+    private String version;
+
+    public RSS() {
+    }
+
+    public String getIdentifier() {
+      return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+      this.identifier = identifier;
+    }
+
+    public String getVersion() {
+      return version;
+    }
+
+    public void setVersion(String version) {
+      this.version = version;
+    }
+  }
+
+  /**
+   * Method writes each string array as row to output file.
+   */
+  private void writeStatsToFile(List<String[]> ls) {
+    LOG.info("Writing IPT stats..");
+    Writer writer;
+    File out = null;
+    try {
+      File outputDirectory = org.gbif.utils.file.FileUtils.createTempDir();
+      out = new File(outputDirectory, "stats.tab");
+      LOG.info("IPT stats written to: " + out.getAbsolutePath());
+      writer = org.gbif.utils.file.FileUtils.startNewUtf8File(out);
+      // write header to output file
+      String[] header = new String[]{"RSS URL", "Registry UUID", "RSS UUID", "RSS Version"};
+      writer.write(tabRow(header));
+      // write each string array to output file
+      for (String[] r : ls) {
+        writer.write(tabRow(r));
+      }
+      writer.close();
+    } catch (IOException e) {
+      LOG.error("Exception while writing to output file: " + out.getAbsolutePath());
+    }
+  }
+
+  /**
+   * Generate a row/string of values tab delimited. Line breaking characters encountered in
+   * a value are replaced with an empty character.
+   *
+   * @param columns array of values/columns
+   *
+   * @return row/string of values tab delimited
+   */
+  @NotNull
+  public static String tabRow(String[] columns) {
+    // escape \t \n \r chars, and wrap in double quotes
+    for (int i = 0; i < columns.length; i++) {
+      if (columns[i] != null) {
+        columns[i] = "\"" + StringUtils.trimToNull(ESCAPE_CHARS.matcher(columns[i]).replaceAll(" ")) + "\"";
+      }
+    }
+    return StringUtils.join(columns, '\t') + "\n";
   }
 
 }

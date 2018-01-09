@@ -1,0 +1,40 @@
+<rss version="2.0" xmlns:ipt="http://ipt.gbif.org/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
+  <channel>
+    <title>ALA IPT</title>
+    <link>http://ipt.ala.org.au</link>
+    <atom:link href="http://ipt.ala.org.au/rss.do" rel="self" type="application/rss+xml"/>
+    <description>Resource metadata of ALA IPT</description>
+    <language>en-us</language>
+    <!-- RFC-822 date-time / Wed, 02 Oct 2010 13:00:00 GMT -->
+    <pubDate>Fri, 29 Jan 2016 03:05:07 +1100</pubDate>
+    <lastBuildDate>Thu, 23 Nov 2017 09:41:04 +1100</lastBuildDate>
+    <!-- UUID of the IPT making RSS feed available -->
+    <ipt:identifier>1322b7b1-6b85-499f-964e-5e8599c73e6e</ipt:identifier>
+    <generator>GBIF IPT 2.3.4-r68469e8</generator>
+    <webMaster>kbraak@gbif.org (Kyle Braak)</webMaster>
+    <docs>http://cyber.law.harvard.edu/rss/rss.html</docs>
+    <ttl>15</ttl>
+    <item>
+      <title>Global Register of Introduced and Invasive Species- Nepal - Version 2.0</title>
+      <link>http://ipt.ala.org.au/resource?r=nepal-griis-gbif</link>
+      <!-- shows what changed in this version, or shows the resource description if change summary was empty -->
+      <description>publish through GBIF</description>
+      <author>s.pagad@auckland.ac.nz (Shyama Pagad)</author>
+      <ipt:eml>http://ipt.ala.org.au/eml.do?r=nepal-griis-gbif</ipt:eml>
+      <ipt:dwca>http://ipt.ala.org.au/archive.do?r=nepal-griis-gbif</ipt:dwca>
+      <pubDate>Thu, 28 Sep 2017 20:14:58 +1000</pubDate>
+      <guid isPermaLink="false">9cfd5f70-968c-4690-94ef-834f01b0cea8/v2.0</guid>
+    </item>
+    <item>
+      <title>Reef Life Survey: Global reef fish dataset - Version 2.1</title>
+      <link>http://ipt.ala.org.au/resource?r=global</link>
+      <!-- shows what changed in this version, or shows the resource description if change summary was empty -->
+      <description>No changes made</description>
+      <author>kbraak@gbif.org (Kyle Braak)</author>
+      <ipt:eml>http://ipt.ala.org.au/eml.do?r=global</ipt:eml>
+      <ipt:dwca>http://ipt.ala.org.au/archive.do?r=global</ipt:dwca>
+      <pubDate>Fri, 23 Dec 2016 22:20:10 +1100</pubDate>
+      <guid isPermaLink="false">38f06820-08c5-42b2-94f6-47cc3e83a54a/v2.1</guid>
+    </item>
+  </channel>
+</rss>

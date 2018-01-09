@@ -255,7 +255,13 @@ public class ResourceManagerImplIT {
     DoiData doiData = registrationManager.getDoiService().resolve(doi);
     assertNotNull(doiData.getStatus());
     assertEquals(DoiStatus.RESERVED, doiData.getStatus());
-    assertNull(doiData.getTarget());
+    if (type == DOIRegistrationAgency.DATACITE) {
+      assertNull(doiData.getTarget());
+    }
+    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
+    if (type == DOIRegistrationAgency.EZID) {
+      assertNotNull(doiData.getTarget());
+    }
 
     // register DOI
     manager.doRegisterDoi(r, null);
@@ -318,7 +324,13 @@ public class ResourceManagerImplIT {
     doiData = registrationManager.getDoiService().resolve(newDoi);
     assertNotNull(doiData.getStatus());
     assertEquals(DoiStatus.RESERVED, doiData.getStatus());
-    assertNull(doiData.getTarget());
+    if (type == DOIRegistrationAgency.DATACITE) {
+      assertNull(doiData.getTarget());
+    }
+    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
+    if (type == DOIRegistrationAgency.EZID) {
+      assertNotNull(doiData.getTarget());
+    }
 
     // replace DOI with new DOI, and publish version 2.0
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());

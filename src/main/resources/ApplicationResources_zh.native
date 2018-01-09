@@ -1,4 +1,4 @@
-#X-Generator: crowdin.com
+﻿#X-Generator: crowdin.com
 # UTF-8 English übersetzen
 ##
 # Introduction (to IPT translation):
@@ -611,7 +611,7 @@ admin.registration.test1=在 GBIF 網絡上註冊此 IPT 的第一個步驟是�
 admin.registration.success=IPT 已註冊於該組織之下。
 admin.registration.failed=IPT 註冊失敗！
 admin.registration.success.update=IPT 註冊資訊更新成功！
-admin.registration.failed.update=IPT 註冊更新失敗！
+admin.registration.failed.update=IPT 註冊更新失敗！{0}
 admin.registration.error.alreadyRegistered1=此 IPT 已註冊在一組織之下。
 admin.registration.error.alreadyRegistered2=要變更組織的關聯，請聯絡 <a href\=''mailto\:helpdesk@gbif.org''>GBIF Help Desk</a>。
 admin.registration.error.registry=在嘗試與 GBIF 登錄溝通時發生問題
@@ -1042,6 +1042,7 @@ manage.metadata.tempcoverage.item=時間涵蓋範圍
 
 manage.metadata.citations.title=引用文獻
 manage.metadata.citations.intro=Please enter how your resource should be cited. To ensure your resource is reliably and consistently cited, let the IPT auto-generate the citation for you. An optional bibliography can also be entered, i.e., citations of other resources related to or used in the creation of this resource.
+manage.metadata.citations.warning=BE AWARE\: Free-text citations get overwritten on the GBIF.org dataset page - learn more <a href\="https\://www.gbif.org/faq?q\=citation" target\="_blank">here</a>.
 manage.metadata.citations.bibliography=引用文獻
 manage.metadata.citations.bibliography.help=Citations of other resources related to or used in the creation of this resource.
 manage.metadata.citations.item=引用文獻

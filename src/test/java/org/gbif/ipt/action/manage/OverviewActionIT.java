@@ -1,6 +1,11 @@
 package org.gbif.ipt.action.manage;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.common.collect.Lists;
+import freemarker.template.TemplateException;
+import org.apache.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.ServiceConfig;
@@ -31,6 +36,10 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.file.FileUtils;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,32 +47,18 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.collect.Lists;
-import freemarker.template.TemplateException;
-import org.apache.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * WARNING!
+ * This requires live DATACITE and EZID services !!!
+ */
 @RunWith(Parameterized.class)
 public class OverviewActionIT {
 
@@ -217,6 +212,8 @@ public class OverviewActionIT {
     assertEquals(IdentifierStatus.UNRESERVED, r.getIdentifierStatus());
     assertNotNull(r.getEml().getCitation());
     assertNull(r.getEml().getCitation().getIdentifier());
+
+    LOG.warn("This test requires live " + type + " services");
   }
 
   /**
@@ -342,7 +339,7 @@ public class OverviewActionIT {
     assertEquals(IdentifierStatus.PUBLIC, r.getIdentifierStatus());
     assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
     assertEquals("doi:10.5072/bclona1", r.getEml().getAlternateIdentifiers().get(0));
-    assertEquals("http://doi.org/10.5072/bclona1", r.getEml().getCitation().getIdentifier()); // citation id reset to previous DOI
+    assertEquals("https://doi.org/10.5072/bclona1", r.getEml().getCitation().getIdentifier()); // citation id reset to previous DOI
     assertTrue(r.isAlreadyAssignedDoi());
     LOG.info("Existing DOI was deleted successfully");
 

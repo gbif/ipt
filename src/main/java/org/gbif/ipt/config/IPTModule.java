@@ -1,5 +1,13 @@
 package org.gbif.ipt.config;
 
+import com.google.inject.*;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
+import freemarker.template.Configuration;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.model.factory.VocabularyFactory;
@@ -13,27 +21,14 @@ import org.gbif.ipt.utils.PBEEncrypt.EncryptionException;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.PreemptiveAuthenticationInterceptor;
 
+import javax.servlet.ServletContext;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import javax.servlet.ServletContext;
-import javax.xml.parsers.SAXParserFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import com.google.inject.Scopes;
-import com.google.inject.Singleton;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
-import freemarker.template.Configuration;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.Logger;
 
 /**
  * A guice module containing wiring used for both test and production.

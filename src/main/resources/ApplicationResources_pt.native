@@ -611,7 +611,7 @@ admin.registration.test1=O primeiro passo para registrar este IPT na rede GBIF �
 admin.registration.success=Este IPT foi registrado em nome da organização.
 admin.registration.failed=O registro do IPT falhou\!
 admin.registration.success.update=A atualização do registro do IPT foi um sucesso\!
-admin.registration.failed.update=A atualização do registro falhou\!
+admin.registration.failed.update=A atualização do registro falhou\! {0}
 admin.registration.error.alreadyRegistered1=Este IPT já foi registrado com um organização.
 admin.registration.error.alreadyRegistered2=Para mudar a associação com uma organização, por favor, contate o <a href\="mailto\:helpdesk@gbif.org">GBIF Help Desk</a>.
 admin.registration.error.registry=Ocorreram problemas durante a tentativa de comunicar com o Registro GBIF.
@@ -1042,6 +1042,7 @@ manage.metadata.tempcoverage.item=cobertura temporal
 
 manage.metadata.citations.title=Citações
 manage.metadata.citations.intro=Por favor insira como seu recurso deve ser citado. Para garantir que o seu recurso seja citado de forma confiável e consistente, deixe o IPT gerar automaticamente a citação para você. Uma bibliografia opcional também pode ser inserida, ou seja, citações de outros recursos relacionados ou utilizados na criação deste recurso.
+manage.metadata.citations.warning=BE AWARE\: Free-text citations get overwritten on the GBIF.org dataset page - learn more <a href\="https\://www.gbif.org/faq?q\=citation" target\="_blank">here</a>.
 manage.metadata.citations.bibliography=Citações bibliográficas
 manage.metadata.citations.bibliography.help=As citações de outros recursos relacionados ou utilizados na criação deste recurso.
 manage.metadata.citations.item=citação bibliográfica

@@ -1,5 +1,12 @@
 package org.gbif.ipt.config;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig.REGISTRY_TYPE;
 import org.gbif.ipt.model.Extension;
@@ -9,11 +16,7 @@ import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
-import org.gbif.ipt.service.admin.ConfigManager;
-import org.gbif.ipt.service.admin.ExtensionManager;
-import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.admin.*;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
@@ -24,14 +27,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
@@ -89,24 +84,14 @@ public class SetupAction extends BaseAction {
     return SUCCESS;
   }
 
-  /**
-   * Tries to guess the current baseURL on the running server from the context
-   *
-   * @return baseURL as string
-   */
-  public String findBaseURL() {
-    // try to detect the baseURL if not configured yet!
-    String appBase = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
-    LOG.info("Auto-Detected IPT BaseURL=" + appBase);
-    return appBase;
-  }
-
   @Override
   public String getBaseURL() {
     if (Strings.isNullOrEmpty(baseURL)) {
       // try to detect default values if not yet configured
       if (StringUtils.trimToNull(cfg.getBaseUrl()) == null) {
-        baseURL = findBaseURL();
+        // Tries to guess the current baseURL on the running server from the context
+        baseURL = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
+        LOG.info("Auto-Detected IPT BaseURL=" + baseURL);
       } else {
         baseURL = cfg.getBaseUrl();
       }

@@ -1,6 +1,6 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
-<script type="text/javascript" src="${baseURL}/js/jquery/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.2.1.min.js"></script>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-3.5.1.css">
 <script src="${baseURL}/js/select2/select2-3.5.1.min.js" type="text/javascript"></script>
 <script type="text/javascript">

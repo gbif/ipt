@@ -50,6 +50,7 @@
 <h2 class="subTitle"><@s.text name='manage.metadata.citations.title'/></h2>
 <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.citations.intro'/></p>
+    <p><strong><@s.text name='manage.metadata.citations.warning'/></strong></p>
 
     <!-- retrieve some link names one time -->
     <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/></#assign>
