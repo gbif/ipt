@@ -127,7 +127,7 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 + [GBIF Burkina Faso IPT](http://ipt-burkinafaso.gbif.fr) - _Note Burkina Faso is not a GBIF Participant_
 + [GBIF Cameroon IPT](http://ipt-cameroun.gbif.fr) - _Note Cameroon is not a GBIF Participant_
 + [GBIF France IPT](http://ipt.gbif.fr)
-+ [Gabon IPT](http://ipt-gabon.gbif.fr)
++ [Gabon IPT](http://ipt-gabon.gbif.fr) - _Note Gabon is not a GBIF Participant_
 + [GBIF Guinea IPT](http://ipt-guinee.gbif.fr)
 + [Ivorian Coast IPT](http://ipt-cotedivoire.gbif.fr) - _Note Ivory Coast is not a GBIF Participant_
 + [MadBIF IPT](http://ipt.madbif.mg)
