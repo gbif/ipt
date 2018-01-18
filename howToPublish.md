@@ -29,7 +29,7 @@ To give yourself an introduction to how the IPT can be used to publish biodivers
     * Hint: you could install and maintain your own IPT instance if you have technical skills and capacity to maintain it online near 100% of the time.  
     * Hint: if no data hosting centre exists in your country, and you or your organisation don't have the technical skills and capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. 
 2. Assuming that you would like to register your dataset with GBIF and make it globally discoverable via http://www.gbif.org, your dataset must be affiliated with an organisation that is registered with GBIF. 
-    * Hint: to register your organisation with GBIF, start by completing [this online questionnaire](http://www.gbif.org/publishing-data/request-endorsement#/intro). The registration process can take days, so in parallel you can proceed to publish your data. 
+    * Hint: to register your organisation with GBIF, start by completing [this online questionnaire](https://www.gbif.org/become-a-publisher). The registration process can take days, so in parallel you can proceed to publish your data. 
     * Hint: if you aren't affiliated with any organisation, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data. 
 
 ## Instructions 
