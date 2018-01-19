@@ -899,7 +899,7 @@ This page allows a user having the Admin role to make and change settings for th
 * **Note**: The IPT tests the Base URL for accessibility from the client computer when the IPT Settings are saved. If the IPT is not accessible at the given Base URL, the IPT will display a warning message and the changes will not be saved. The procedure to change the Base URL if the new URL is not yet functional (such as a port change that requires the IPT to be restarted) is given below:
   * log out of and shut down the IPT.
   * in the data directory for the IPT, open the file config/ipt.properties with a simple text editor - one that does not add extra codes, such as NotePad, TextEdit, vi, etc. (not Microsoft Word).
-  * in the ipt.properties file, change the line starting with "ipt.baseURL" to the new URL with the new port, using the backslash to escape the colon character. For example, enter <code>ipt.baseURL=http\://test.edu\:7001/ipt</code> for <a href='http://test.edu:7001/ipt'>http://test.edu:7001/ipt</a>.
+  * in the ipt.properties file, change the line starting with "ipt.baseURL" to the new URL with the new port, using the backslash to escape the colon character. For example, enter <code>ipt.baseURL=http\\://test.edu\\:7001/ipt</code> for <a href='http://test.edu:7001/ipt'>http://test.edu:7001/ipt</a>.
   * restart the IPT in the servlet container.
   * update the metadata for the IPT as described in the next section of this user manual entitled "Publish all resources".
 * **Proxy URL** - If the server on which the IPT is installed is routed through a proxy server or virtual host, enter the proxy as a URL in the format protocol:host:port, for example <a href='http://proxy.gbif.org:8080'>http://proxy.gbif.org:8080</a>.
