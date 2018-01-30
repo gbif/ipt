@@ -5,7 +5,6 @@
 	dc:relation="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
 	dc:description="ISO 3166-1 alpha-2 codes are two-letter country codes defined in ISO 3166-1, part of the ISO 3166 standard published by the International Organization for Standardization (ISO), to represent countries, dependent territories, and special areas of geographical interest. They are the most widely used of the country codes published by ISO (the others being alpha-3 and numeric), and are used most prominently for the Internet's country code top-level domains (with a few exceptions). They were first included as part of the ISO 3166 standard in its first edition in 1974.  XK for Kosovo has been added here."
 	dc:title="ISO 3166-1 Alpha2 Country Codes"
-  dc:issued="2018-01-22"
   xmlns="http://rs.gbif.org/thesaurus/"
 	xmlns:dc="http://purl.org/dc/terms/"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
