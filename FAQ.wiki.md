@@ -209,11 +209,13 @@ Last, press the "update registration" button on the Edit GBIF Registration page.
 
 The answer depends on how long GBIF's indexing queue is, how big your dataset it and whether GBIF's indexing service is turned on.
 
-Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (e.g. with several million records) so please be patient. If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see #2 below.
+Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (e.g. with several million records) so please be patient. At the bottom of the [GBIF health page](https://www.gbif.org/health) the length of the indexing queue is shown, and the full queue can be seen on the [Crawling and Processing Monitor](https://management-tools.gbif.org/crawling-monitor).
+
+If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see #2 below.
 
 ### 2. Why hasn't GBIF (re)indexed my dataset yet?
 
-Occasionally, GBIF turns off its indexing service for maintenance. This is the most common reason why datasets aren't indexed as quickly as expected.
+Occasionally, GBIF turns off its indexing service for maintenance (see the links in the previous question). This is the most common reason why datasets aren't indexed as quickly as expected.
 
 If your dataset has been successfully reindexed, but the records weren't actually updated, you may be affected by [this bug](https://github.com/gbif/crawler/issues/1) in the crawling service. 
 
