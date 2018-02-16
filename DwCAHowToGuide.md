@@ -156,7 +156,7 @@ Below is a set of instructions on how to manually create a DwC-Archive:
 GBIF provides an online [DwC-Archive Validator](http://tools.gbif.org/dwca-validator/) that performs the following checks:
 
 * The metafile (meta.xml) is valid XML and complies with the [Darwin Core Text Guidelines](http://rs.tdwg.org/dwc/terms/guides/text/). 
-* The content is complies with the known extensions and terms registered within the GBIF network. Note GBIF runs a production and a development registry that keeps track of extensions, both of which are used by this validator.
+* The content complies with the known extensions and terms registered within the GBIF network. Note GBIF runs a production and a development registry that keeps track of extensions, both of which are used by this validator.
 * The metadata file (eml.xml) is valid XML and complies with the GBIF Metadata Profile schema and the official EML schema.
 * Referential integrity - that mapped ID terms in extension files reference existing core records.
 * All core IDs are unique
