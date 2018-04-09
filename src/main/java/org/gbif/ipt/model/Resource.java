@@ -1215,8 +1215,8 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (doi != null) {
       // retrieve a list of the resource's alternate identifiers
       List<String> ids = eml.getAlternateIdentifiers();
-      if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || identifierStatus
-        .equals(IdentifierStatus.PUBLIC)) {
+      if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) ||
+          identifierStatus.equals(IdentifierStatus.PUBLIC)) {
         // make sure the DOI always appears first
         List<String> reorderedList = Lists.newArrayList();
         reorderedList.add(doi.toString());
@@ -1232,8 +1232,8 @@ public class Resource implements Serializable, Comparable<Resource> {
         }
         ids.addAll(reorderedList);
         log.debug("DOI=" + doi.toString() + " added to resource's list of alt ids as first element");
-      } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE) || identifierStatus
-        .equals(IdentifierStatus.UNRESERVED)) {
+      } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE) ||
+          identifierStatus.equals(IdentifierStatus.UNRESERVED)) {
         for (Iterator<String> iterator = ids.iterator(); iterator.hasNext(); ) {
           String id = iterator.next();
           // make sure a DOI that has been made unavailable, or that has been deleted, no longer appears in the list

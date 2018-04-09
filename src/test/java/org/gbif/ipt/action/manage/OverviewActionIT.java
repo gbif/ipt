@@ -338,7 +338,7 @@ public class OverviewActionIT {
     assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
     assertEquals(IdentifierStatus.PUBLIC, r.getIdentifierStatus());
     assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
-    assertEquals("doi:10.5072/bclona1", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("10.5072/bclona1", r.getEml().getAlternateIdentifiers().get(0));
     assertEquals("https://doi.org/10.5072/bclona1", r.getEml().getCitation().getIdentifier()); // citation id reset to previous DOI
     assertTrue(r.isAlreadyAssignedDoi());
     LOG.info("Existing DOI was deleted successfully");

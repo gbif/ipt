@@ -685,7 +685,7 @@ public class ResourceTest {
     r.updateAlternateIdentifierForDOI();
 
     assertEquals(1, r.getEml().getAlternateIdentifiers().size());
-    assertEquals("doi:10.5072/case1", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("10.5072/case1", r.getEml().getAlternateIdentifiers().get(0));
   }
 
   /**
@@ -707,7 +707,7 @@ public class ResourceTest {
     r.updateAlternateIdentifierForDOI();
 
     assertEquals(3, r.getEml().getAlternateIdentifiers().size());
-    assertEquals("doi:10.5072/case2", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("10.5072/case2", r.getEml().getAlternateIdentifiers().get(0));
     assertEquals("alt-id-1", r.getEml().getAlternateIdentifiers().get(1));
     assertEquals("alt-id-2", r.getEml().getAlternateIdentifiers().get(2));
   }
@@ -732,7 +732,7 @@ public class ResourceTest {
     r.updateAlternateIdentifierForDOI();
 
     assertEquals(3, r.getEml().getAlternateIdentifiers().size());
-    assertEquals("doi:10.5072/case3", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("10.5072/case3", r.getEml().getAlternateIdentifiers().get(0));
     assertEquals("alt-id-1", r.getEml().getAlternateIdentifiers().get(1));
     assertEquals("doi:10.5077/other", r.getEml().getAlternateIdentifiers().get(2));
   }
@@ -747,16 +747,18 @@ public class ResourceTest {
     r.setDoi(new DOI("10.5072/case4"));
     r.setIdentifierStatus(IdentifierStatus.UNAVAILABLE);
 
-    r.getEml().getAlternateIdentifiers().add("doi:10.5072/case4");
-    r.getEml().getAlternateIdentifiers().add("doi:10.5077/other");
+    r.getEml().getAlternateIdentifiers().add("10.5072/case4");
+    r.getEml().getAlternateIdentifiers().add("10.5077/other");
     assertEquals(2, r.getEml().getAlternateIdentifiers().size());
-    assertEquals("doi:10.5072/case4", r.getEml().getAlternateIdentifiers().get(0));
-    assertEquals("doi:10.5077/other", r.getEml().getAlternateIdentifiers().get(1));
+    assertEquals("10.5072/case4", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("10.5077/other", r.getEml().getAlternateIdentifiers().get(1));
 
     r.updateAlternateIdentifierForDOI();
 
+    System.out.println(r.getEml().getAlternateIdentifiers());
+
     assertEquals(1, r.getEml().getAlternateIdentifiers().size());
-    assertEquals("doi:10.5077/other", r.getEml().getAlternateIdentifiers().get(0));
+    assertEquals("10.5077/other", r.getEml().getAlternateIdentifiers().get(0));
   }
 
   /**

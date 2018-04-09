@@ -1346,7 +1346,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
         // use DOI for datasetID property?
         if (pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_DATASET_ID) && doiUsedForDatasetId
             && doi != null) {
-          val = doi.toString();
+          val = doi.getDoiString();
         }
       }
       // add value to data file record

@@ -32,7 +32,7 @@ import org.gbif.ipt.service.*;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.ClosableReportingIterator;
-import org.gbif.utils.file.csv.UnkownDelimitersException;
+import org.gbif.utils.file.csv.UnknownDelimitersException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -96,7 +96,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     /**
      * SqlColumnIterator constructor
-     * 
+     *
      * @param source of the sql data
      * @param column to inspect, zero based numbering as used in the dwc archives
      * @param sql statement to query in the sql source
@@ -306,16 +306,16 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
+    } catch (UnknownDelimitersException e) {
+      // this file is invalid
+      log.warn(e.getMessage());
+      throw new ImportException(e);
     } catch (IOException e) {
       log.warn(e.getMessage());
       throw new ImportException(e);
     } catch (UnsupportedArchiveException e) {
       // fine, cant read it with dwca library, but might still be a valid file for manual setup
       log.warn(e.getMessage());
-    } catch (UnkownDelimitersException e) {
-      // this file is invalid
-      log.warn(e.getMessage());
-      throw new ImportException(e);
     }
     return src;
   }

@@ -48,10 +48,10 @@
     <dwc-api.version>1.17</dwc-api.version>
     <dwca-io.version>1.31</dwca-io.version>
     <freemarker.version>2.3.26-incubating</freemarker.version>
-    <gbif-api.version>0.56</gbif-api.version>
+    <gbif-api.version>0.62</gbif-api.version>
     <gbif-common-ws.version>0.41</gbif-common-ws.version>
-    <gbif-common.version>0.36</gbif-common.version>
-    <gbif-doi.version>1.5</gbif-doi.version>
+    <gbif-common.version>0.38</gbif-common.version>
+    <gbif-doi.version>1.7</gbif-doi.version>
     <gbif-metadata-profile.version>1.1.1</gbif-metadata-profile.version>
     <gbif-parsers.version>0.31</gbif-parsers.version>
     <gbif-registry.version>2.74</gbif-registry.version>
@@ -102,7 +102,7 @@
       <post>ipt@lists.gbif.org</post>
       <subscribe>ipt-subscribe@lists.gbif.org</subscribe>
       <unsubscribe>ipt-unsubscribe@lists.gbif.org</unsubscribe>
-      <archive>http://lists.gbif.org/pipermail/ipt/</archive>
+      <archive>https://lists.gbif.org/pipermail/ipt/</archive>
     </mailingList>
   </mailingLists>
 
@@ -522,7 +522,7 @@
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
       <version>${validation-api.version}</version>
-    </dependency>    
+    </dependency>
 
     <!-- Simple XML Parsing -->
     <dependency>
