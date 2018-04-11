@@ -1,5 +1,8 @@
 package org.gbif.ipt.action.manage;
 
+import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
+import com.opensymphony.xwork2.LocaleProviderFactory;
+import com.opensymphony.xwork2.inject.Container;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -56,12 +59,14 @@ public class TranslationActionTest {
   public void setup() throws IOException, ParserConfigurationException, SAXException {
     // mock needed managers
     SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
+    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     AppConfig mockCfg = mock(AppConfig.class);
     ResourceManager mockResourceManager = mock(ResourceManager.class);
     SourceManager mockSourceManager = mock(SourceManager.class);
     VocabulariesManager mockVocabManager = mock(VocabulariesManager.class);
     TranslationAction.Translation translation = new TranslationAction.Translation();
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+    Container container = mock(Container.class);
 
     // mock getting list of values back for BasisOfRecord field/column in source
     Set<String> values = new LinkedHashSet<String>();
@@ -131,10 +136,14 @@ public class TranslationActionTest {
     // mock resourceManager.get - called only in ManagerBaseAction.prepare()
     when(mockResourceManager.get(anyString())).thenReturn(resource);
 
+    // mock a locale provider
+    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
+
     // create mock Action
     action =
       new TranslationAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockSourceManager,
         mockVocabManager, translation);
+    action.setContainer(container);
 
     // initialize ExtensionProperty representing BasisOfRecord field on Occurrence core Extension
     ExtensionProperty property = mapping.getExtension().getProperty(field.getTerm());

@@ -1,6 +1,8 @@
 package org.gbif.ipt.action.portal;
 
-
+import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
+import com.opensymphony.xwork2.LocaleProviderFactory;
+import com.opensymphony.xwork2.inject.Container;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Organisation;
@@ -43,6 +45,9 @@ public class HomeActionTest {
 
   @Before
   public void setup() throws IOException {
+    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
+    Container container = mock(Container.class);
+
     organisation.setName("NHM");
 
     // construct public resource having one public published version 1.34
@@ -74,9 +79,13 @@ public class HomeActionTest {
     when(dataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXMLv134);
     when(appConfig.getDataDir()).thenReturn(dataDir);
 
+    // mock a locale provider
+    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
+
     action = new HomeAction(mock(SimpleTextProvider.class), appConfig, mock(RegistrationManager.class), resourceManager,
       mock(VocabulariesManager.class));
 
+    action.setContainer(container);
     action.setServletRequest(mock(HttpServletRequest.class));
   }
 

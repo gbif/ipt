@@ -19,7 +19,7 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.log4j.Logger;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
+import org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter;
 import org.gbif.ipt.struts2.CharacterEncodingFilter;
 import org.gbif.ipt.struts2.CorsFilter;
 import org.gbif.ipt.struts2.ResponseHeaderFilter;

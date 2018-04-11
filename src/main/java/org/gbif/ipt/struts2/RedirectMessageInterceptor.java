@@ -11,8 +11,8 @@ package org.gbif.ipt.struts2;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.Result;
 import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
-import org.apache.struts2.dispatcher.ServletActionRedirectResult;
-import org.apache.struts2.dispatcher.ServletRedirectResult;
+import org.apache.struts2.result.ServletActionRedirectResult;
+import org.apache.struts2.result.ServletRedirectResult;
 import org.gbif.ipt.action.BaseAction;
 
 import java.util.Collection;

@@ -1,5 +1,8 @@
 package org.gbif.ipt.action.portal;
 
+import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
+import com.opensymphony.xwork2.LocaleProviderFactory;
+import com.opensymphony.xwork2.inject.Container;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -28,7 +31,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableSortedMap;
@@ -63,11 +65,13 @@ public class ResourceActionTest {
   @Before
   public void setup() throws IOException, TemplateException {
     SimpleTextProvider textProvider = new SimpleTextProvider();
+    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     AppConfig mockCfg = mock(AppConfig.class);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     ResourceManager mockResourceManager = mock(ResourceManager.class);
     VocabulariesManager mockVocabManager = mock(VocabulariesManager.class);
     DataDir mockDataDir = mock(DataDir.class);
+    Container container = mock(Container.class);
 
     // mock: vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
     Map<String, String> ranks = new LinkedHashMap<String, String>();
@@ -136,9 +140,13 @@ public class ResourceActionTest {
     assertFalse(nonExistingDwca.exists());
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class))).thenReturn(nonExistingDwca);
 
+    // mock a locale provider
+    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
+
     action = new ResourceAction(textProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
       mockDataDir, mock(ExtensionManager.class));
     action.setResource(resource);
+    action.setContainer(container);
   }
 
   @Test
