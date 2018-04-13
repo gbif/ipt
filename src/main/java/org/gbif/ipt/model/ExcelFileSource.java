@@ -1,17 +1,5 @@
 package org.gbif.ipt.model;
 
-import org.gbif.ipt.utils.FileUtils;
-import org.gbif.utils.file.ClosableReportingIterator;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -19,15 +7,16 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.gbif.ipt.utils.FileUtils;
+import org.gbif.utils.file.ClosableReportingIterator;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Uses apache POI to parse excel spreadsheets.
@@ -152,7 +141,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
         try {
           Row row = iter.next();
           for (int i = 0; i < rowSize; i++) {
-            Cell c = row.getCell(i, Row.CREATE_NULL_AS_BLANK);
+            Cell c = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
             formulaEvaluator.evaluate(c);
             val[i] = dataFormatter.formatCellValue(c, formulaEvaluator);
           }

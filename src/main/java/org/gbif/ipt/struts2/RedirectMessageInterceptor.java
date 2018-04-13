@@ -8,17 +8,16 @@ package org.gbif.ipt.struts2;
  * governing permissions and limitations under the License.
  */
 
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
+import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
+import org.apache.struts2.result.ServletActionRedirectResult;
+import org.apache.struts2.result.ServletRedirectResult;
 import org.gbif.ipt.action.BaseAction;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.Result;
-import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
-import org.apache.struts2.dispatcher.ServletActionRedirectResult;
-import org.apache.struts2.dispatcher.ServletRedirectResult;
 
 /**
  * An Interceptor to preserve an actions ValidationAware messages across a redirect result. It makes the assumption

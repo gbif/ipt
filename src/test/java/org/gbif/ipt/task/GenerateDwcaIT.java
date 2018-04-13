@@ -124,6 +124,7 @@ public class GenerateDwcaIT {
    * Test connects to postgres database (same db that Jenkins/Dev CLB ITs use). The SQL query retrieves a result set
    * that contains a null column value, and is designed to verify the following issue is fixed:
    * https://github.com/gbif/ipt/issues/1205
+   * WARNING: Machine needs to be on GBIF VPN to connect to db, otherwise this test fails with connection error
    */
   @Test
   public void testHandlingNullTableColumnValue() throws Exception {

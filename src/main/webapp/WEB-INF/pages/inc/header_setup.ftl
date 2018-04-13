@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
     <script type="text/javascript" src="${baseURL}/js/modernizr.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/jquery/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${baseURL}/js/global.js"></script>
 		<style>
       h1 {
@@ -26,7 +26,6 @@
         initHelp();
       	[#-- see global.js for function defs --]
       	initMenu();
-      	langs("${localeLanguage}","${baseURL}");  
       });
     </script>
 
@@ -49,12 +48,8 @@
                 </hgroup>
                 <div id="region-user-second" class="region-inner region-user-second-inner">
                   <ul id="language-menu">
-
-                    <li><a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
-                      <ul id="languages">
-                        <!-- add more languages as translations become available. -->
-                        <!-- To see more information go to langs method in global.js -->
-                      </ul>
+                    <li>
+                      [#include "/WEB-INF/pages/inc/languages.ftl"/]
                     </li>
                   </ul>
                 </div>

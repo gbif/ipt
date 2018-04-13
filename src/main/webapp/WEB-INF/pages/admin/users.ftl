@@ -32,7 +32,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/inc/footer.ftl">
 
 <!-- jQuery v1.11.1 -->
-<script type="text/javascript" src="${baseURL}/js/jquery/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.2.1.min.js"></script>
 <!-- DataTables v1.9.4 -->
 <script type="text/javascript" language="javascript" src="${baseURL}/js/jquery/jquery.dataTables.js"></script>
 

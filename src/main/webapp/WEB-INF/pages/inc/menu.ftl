@@ -1,9 +1,4 @@
 [#ftl output_format="HTML"]
-<script type="text/javascript">
-	$(document).ready(function(){
-  		langs("${localeLanguage}","${baseURL}");
-	});
-</script>
 </head>
  	<body>
 		<div class="page clearfix" id="page">
@@ -36,16 +31,13 @@
                         <form id="login-form" action="${baseURL}/login.do" method="post">
                           <input type="text" size="25" name="email" class="form-reset" placeholder="email" />
                           <input type="password" size="20" name="password" class="form-reset" placeholder="password" />
+                          <input name="csrfToken" type="hidden" value="${newCsrfToken!}">
                           [@s.submit key="portal.login" name="login-submit"/]
                         </form>
                       </li>
                     [/#if]
                     <li>
-                      <a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
-                      <ul id="languages">
-                        <!-- add more languages as translations become available. -->
-                        <!-- To see more information go to langs method in global.js -->
-                      </ul>
+                        [#include "/WEB-INF/pages/inc/languages.ftl"/]
                     </li>
                   </ul>
                 </div>

@@ -1,54 +1,5 @@
 package org.gbif.ipt.task;
 
-import org.gbif.api.model.common.DOI;
-import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.terms.TermFactory;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.ArchiveField;
-import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.dwca.io.MetaDescriptorWriter;
-import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.ExtensionMapping;
-import org.gbif.ipt.model.ExtensionProperty;
-import org.gbif.ipt.model.PropertyMapping;
-import org.gbif.ipt.model.RecordFilter;
-import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.SourceManager;
-import org.gbif.ipt.utils.MapUtils;
-import org.gbif.utils.file.ClosableReportingIterator;
-import org.gbif.utils.file.CompressionUtil;
-import org.gbif.utils.file.csv.CSVReader;
-import org.gbif.utils.file.csv.CSVReaderFactory;
-import org.gbif.utils.text.LineComparator;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
-import javax.annotation.Nullable;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -63,6 +14,31 @@ import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
+import org.gbif.api.model.common.DOI;
+import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.terms.TermFactory;
+import org.gbif.dwca.io.*;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.*;
+import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.utils.MapUtils;
+import org.gbif.utils.file.ClosableReportingIterator;
+import org.gbif.utils.file.CompressionUtil;
+import org.gbif.utils.file.csv.CSVReader;
+import org.gbif.utils.file.csv.CSVReaderFactory;
+import org.gbif.utils.text.LineComparator;
+
+import javax.annotation.Nullable;
+import java.io.*;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 public class GenerateDwca extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -516,11 +492,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     // create a sorted data file
     File sortedFile = sortCoreDataFile(extFile, sortColumnIndex);
 
-    // create an iterator on the new sorted data file
-    CSVReader reader = CSVReaderFactory
-      .build(sortedFile, CHARACTER_ENCODING, extFile.getFieldsTerminatedBy(), extFile.getFieldsEnclosedBy(),
-        extFile.getIgnoreHeaderLines());
-
     // metrics
     int recordsWithNoId = 0;
     AtomicInteger recordsWithNoOccurrenceId = new AtomicInteger(0);
@@ -529,26 +500,30 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     AtomicInteger recordsWithNonMatchingBasisOfRecord = new AtomicInteger(0);
     AtomicInteger recordsWithAmbiguousBasisOfRecord = new AtomicInteger(0);
 
-    ClosableReportingIterator<String[]> iter = null;
+    // create an iterator on the new sorted data file
+    CSVReader reader = CSVReaderFactory.build(sortedFile,
+            CHARACTER_ENCODING,
+            extFile.getFieldsTerminatedBy(),
+            extFile.getFieldsEnclosedBy(),
+            extFile.getIgnoreHeaderLines());
+
     int line = 0;
     String lastId = null;
     try {
-      iter = reader.iterator();
-      while (iter.hasNext()) {
+      while (reader.hasNext()) {
         line++;
         if (line % 1000 == 0) {
           checkForInterruption(line);
           reportIfNeeded();
         }
-        String[] record = iter.next();
+        String[] record = reader.next();
         if (record == null || record.length == 0) {
           continue;
         }
         // Exception on reading row was encountered
-        if (iter.hasRowError() && iter.getException() != null) {
-          throw new GeneratorException(
-            "A fatal error was encountered while trying to validate sorted extension data file: " + iter
-              .getErrorMessage(), iter.getException());
+        if (reader.hasRowError() && reader.getException() != null) {
+          throw new GeneratorException("A fatal error was encountered while trying to validate sorted extension data file: "
+                  + reader.getErrorMessage(), reader.getException());
         } else {
           // check id exists
           if (Strings.isNullOrEmpty(record[ID_COLUMN_INDEX])) {
@@ -568,20 +543,20 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       // set last error report!
       setState(e);
       throw e;
+
     } catch (Exception e) {
       // some error validating this file, report
       log.error("Exception caught while validating extension file", e);
       // set last error report!
       setState(e);
       throw new GeneratorException("Error while validating extension file occurred on line " + line, e);
+
     } finally {
-      if (iter != null) {
-        // Exception on advancing cursor was encountered?
-        if (!iter.hasRowError() && iter.getErrorMessage() != null) {
-          writePublicationLogMessage("Error reading data: " + iter.getErrorMessage());
-        }
-        iter.close();
+      // Exception on advancing cursor was encountered?
+      if (!reader.hasRowError() && reader.getErrorMessage() != null) {
+        writePublicationLogMessage("Error reading data: " + reader.getErrorMessage());
       }
+      reader.close();
       // always cleanup the sorted file, it must not be included in the dwca directory when compressed
       FileUtils.deleteQuietly(sortedFile);
     }
@@ -673,26 +648,24 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     AtomicInteger recordsWithNonMatchingBasisOfRecord = new AtomicInteger(0);
     AtomicInteger recordsWithAmbiguousBasisOfRecord = new AtomicInteger(0);
 
-    ClosableReportingIterator<String[]> iter = null;
     int line = 0;
     String lastId = null;
     try {
-      iter = reader.iterator();
-      while (iter.hasNext()) {
+      while (reader.hasNext()) {
         line++;
         if (line % 1000 == 0) {
           checkForInterruption(line);
           reportIfNeeded();
         }
-        String[] record = iter.next();
+        String[] record = reader.next();
         if (record == null || record.length == 0) {
           continue;
         }
         // Exception on reading row was encountered
-        if (iter.hasRowError() && iter.getException() != null) {
+        if (reader.hasRowError() && reader.getException() != null) {
           throw new GeneratorException(
-            "A fatal error was encountered while trying to validate sorted core data file: " + iter.getErrorMessage(),
-            iter.getException());
+            "A fatal error was encountered while trying to validate sorted core data file: " + reader.getErrorMessage(),
+                  reader.getException());
         } else {
           // validate record id if it is mapped, or if archive has extensions (required to link core to extension)
           if (coreFile.hasTerm(id) || archiveHasExtensions) {
@@ -715,13 +688,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       setState(e);
       throw new GeneratorException("Error while validating archive occurred on line " + line, e);
     } finally {
-      if (iter != null) {
-        // Exception on advancing cursor was encountered?
-        if (!iter.hasRowError() && iter.getErrorMessage() != null) {
-          writePublicationLogMessage("Error reading data: " + iter.getErrorMessage());
-        }
-        iter.close();
+      // Exception on advancing cursor was encountered?
+      if (!reader.hasRowError() && reader.getErrorMessage() != null) {
+        writePublicationLogMessage("Error reading data: " + reader.getErrorMessage());
       }
+      reader.close();
       // always cleanup the sorted file, it must not be included in the dwca directory when compressed
       FileUtils.deleteQuietly(sortedCore);
     }
@@ -1252,7 +1223,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
         if (!iter.hasRowError() && iter.getErrorMessage() != null) {
           writePublicationLogMessage("Error reading data: " + iter.getErrorMessage());
         }
-        iter.close();
+        try {
+          iter.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
     }
 
@@ -1371,7 +1346,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
         // use DOI for datasetID property?
         if (pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_DATASET_ID) && doiUsedForDatasetId
             && doi != null) {
-          val = doi.toString();
+          val = doi.getDoiString();
         }
       }
       // add value to data file record

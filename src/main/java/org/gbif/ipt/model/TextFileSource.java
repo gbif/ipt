@@ -1,19 +1,14 @@
 package org.gbif.ipt.model;
 
-import org.gbif.utils.file.csv.CSVReader;
-import org.gbif.utils.file.csv.CSVReaderFactory;
+import org.apache.log4j.Logger;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
+import org.gbif.utils.file.csv.CSVReader;
+import org.gbif.utils.file.csv.CSVReaderFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
+import java.util.*;
 
 /**
  * A delimited text file based source such as CSV or tab files.
@@ -92,8 +87,7 @@ public class TextFileSource extends SourceBase implements FileSource {
 
   public ClosableReportingIterator<String[]> rowIterator() {
     try {
-      CSVReader reader = getReader();
-      return reader.iterator();
+      return getReader();
     } catch (IOException e) {
       LOG.warn("Exception caught", e);
     }

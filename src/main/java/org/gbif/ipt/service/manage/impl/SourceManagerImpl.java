@@ -13,47 +13,6 @@
 
 package org.gbif.ipt.service.manage.impl;
 
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.dwca.io.UnsupportedArchiveException;
-import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.ExcelFileSource;
-import org.gbif.ipt.model.FileSource;
-import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.SqlSource;
-import org.gbif.ipt.model.TextFileSource;
-import org.gbif.ipt.service.AlreadyExistingException;
-import org.gbif.ipt.service.BaseManager;
-import org.gbif.ipt.service.ImportException;
-import org.gbif.ipt.service.InvalidFilenameException;
-import org.gbif.ipt.service.SourceException;
-import org.gbif.ipt.service.manage.SourceManager;
-import org.gbif.utils.file.ClosableIterator;
-import org.gbif.utils.file.ClosableReportingIterator;
-import org.gbif.utils.file.csv.UnkownDelimitersException;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -62,20 +21,42 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.ArchiveFactory;
+import org.gbif.dwca.io.ArchiveFile;
+import org.gbif.dwca.io.UnsupportedArchiveException;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.*;
+import org.gbif.ipt.service.*;
+import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.utils.file.ClosableIterator;
+import org.gbif.utils.file.ClosableReportingIterator;
+import org.gbif.utils.file.csv.UnknownDelimitersException;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
+import java.util.regex.Pattern;
 
 public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private static class ColumnIterator implements ClosableIterator<Object> {
 
-    private final ClosableIterator<String[]> rows;
+    private final ClosableReportingIterator<String[]> rows;
     private final int column;
 
-    public ColumnIterator(FileSource source, int column) throws IOException {
+    ColumnIterator(FileSource source, int column) throws IOException {
       rows = source.rowIterator();
       this.column = column;
     }
 
-    public void close() {
+    @Override
+    public void close() throws Exception {
       rows.close();
     }
 
@@ -115,7 +96,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     /**
      * SqlColumnIterator constructor
-     * 
+     *
      * @param source of the sql data
      * @param column to inspect, zero based numbering as used in the dwc archives
      * @param sql statement to query in the sql source
@@ -325,16 +306,16 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       // anaylze individual files using the dwca reader
       Archive arch = ArchiveFactory.openArchive(file);
       copyArchiveFileProperties(arch.getCore(), src);
+    } catch (UnknownDelimitersException e) {
+      // this file is invalid
+      log.warn(e.getMessage());
+      throw new ImportException(e);
     } catch (IOException e) {
       log.warn(e.getMessage());
       throw new ImportException(e);
     } catch (UnsupportedArchiveException e) {
       // fine, cant read it with dwca library, but might still be a valid file for manual setup
       log.warn(e.getMessage());
-    } catch (UnkownDelimitersException e) {
-      // this file is invalid
-      log.warn(e.getMessage());
-      throw new ImportException(e);
     }
     return src;
   }
@@ -625,9 +606,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    */
   public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
     Set<String> values = new HashSet<String>();
-    ClosableIterator<Object> iter = null;
-    try {
-      iter = iterSourceColumn(source, column, maxRows);
+    try (ClosableIterator<Object> iter = iterSourceColumn(source, column, maxRows)){
       // get distinct values
       while (iter.hasNext() && (maxValues < 1 || values.size() < maxValues)) {
         Object obj = iter.next();
@@ -639,10 +618,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     } catch (Exception e) {
       log.error(e);
       throw new SourceException("Error reading source " + source.getName() + ": " + e.getMessage());
-    } finally {
-      if (iter != null) {
-        iter.close();
-      }
     }
     return values;
   }
@@ -679,19 +654,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private List<String[]> peek(FileSource source, int rows) {
     List<String[]> preview = Lists.newArrayList();
     if (source != null) {
-      ClosableReportingIterator<String[]> iter = null;
-      try {
-        iter = source.rowIterator();
+      try (ClosableReportingIterator<String[]> iter = source.rowIterator()){
         while (rows > 0 && iter.hasNext()) {
           rows--;
           preview.add(iter.next());
         }
       } catch (Exception e) {
         log.warn("Cant peek into source " + source.getName(), e);
-      } finally {
-        if (iter != null) {
-          iter.close();
-        }
       }
     }
 

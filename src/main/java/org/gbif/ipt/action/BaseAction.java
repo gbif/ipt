@@ -1,22 +1,5 @@
 package org.gbif.ipt.action;
 
-import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.model.Ipt;
-import org.gbif.ipt.model.Organisation;
-import org.gbif.ipt.model.User;
-import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ws.util.XSSUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
@@ -26,6 +9,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ws.util.XSSUtil;
+
+import javax.annotation.Nullable;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.UriBuilder;
+import java.util.*;
 
 /**
  * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
@@ -44,6 +41,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public static final String HOME = "home";
   public static final String LOCKED = "locked";
   public static final String NOT_AVAILABLE = "410";
+
 
   protected List<String> warnings = new ArrayList<String>();
   protected Map<String, Object> session;
@@ -102,11 +100,29 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * Easy access to the configured application root for simple use in templates.
    */
   public String getBase() {
-    return cfg.getBaseUrl();
+    return getBaseURL();
   }
 
   public String getBaseURL() {
     return cfg.getBaseUrl();
+  }
+
+  /**
+   * @return the requested URL using the configured base url including all query parameters but a potentially existing request_locale parameter.
+   * Returns baseURL in case of errors reconstructing the correct URL.
+   */
+  public String getRequestURL() {
+    try {
+      return UriBuilder.fromUri(getBaseURL())
+          .path(Strings.nullToEmpty(req.getServletPath()))
+          .path(Strings.nullToEmpty(req.getPathInfo()))
+          .replaceQuery(req.getQueryString())
+          .replaceQueryParam("request_locale")
+          .build().toString();
+    } catch (RuntimeException e) {
+      LOG.warn("Failed to reconstruct requestURL from " + req.getRequestURL(), e);
+    }
+    return getBaseURL();
   }
 
   public AppConfig getCfg() {
@@ -246,6 +262,19 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   }
 
   /**
+   * @param name cookie name
+   * @return the request cookie or null if no cookie with that name exists
+   */
+  public Cookie getCookie(String name) {
+    for (Cookie c : req.getCookies()) {
+      if (c.getName().equals(name)) {
+        return c;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Override this method if you need to load entities based on the id value before the PARAM interceptor is called.
    * You can also use this method to prepare a new, empty instance in case no id was provided. If the id parameter
    * alone
@@ -305,4 +334,5 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     Organisation noOrganisation = registrationManager.get(Constants.DEFAULT_ORG_KEY);
     return (noOrganisation == null) ? null : noOrganisation;
   }
+
 }
