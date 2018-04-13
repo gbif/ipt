@@ -3,7 +3,7 @@
 			</div>
 			</section>
 			<footer id="section-footer" class="section section-footer">
-  			<div id="zone-footer-wrapper" class="zone-wrapper zone-footer-wrapper clearfix">  
+  			<div id="zone-footer-wrapper" class="zone-wrapper zone-footer-wrapper clearfix">
       		<div id="zone-footer" class="zone zone-footer clearfix container_24">
       			<ul>
 			        <li>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</li>
@@ -19,12 +19,12 @@
           <div id="zone-credit" class="zone zone-credit clearfix container_24">
             <aside class="grid_16 region region-credit-first" id="region-credit-first">
               <div class="region-inner region-credit-first-inner">
-                <p>&copy;2017 <a href="http://www.gbif.org">Global Biodiversity Information Facility</a>.</p>
+                <p>&copy;2018 <a href="http://www.gbif.org">Global Biodiversity Information Facility</a>.</p>
               </div>
             </aside>
           </div>
   			</div>
-			</footer>		
+			</footer>
 		</div>
 
     <div id="modalbox"><div id="modalback"></div><div id="modalcontainer"><div id="modalcontent"></div></div></div>
