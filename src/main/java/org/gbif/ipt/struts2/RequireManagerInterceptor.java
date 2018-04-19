@@ -32,7 +32,6 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     Parameter requestedResourceName = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_RESOURCE);
     if (requestedResourceName.isDefined()) {
       requestedResource = StringUtils.trimToNull(requestedResourceName.getValue());
-      System.out.println("RRs " + requestedResource);
     }
     return requestedResource;
   }
