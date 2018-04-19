@@ -1,6 +1,8 @@
 # Install Tomcat on Mac OS X
-# Table of Contents
 
+*Apple no longer sell servers, or server software for Apple computers. This guide is probably only useful for IPT developers using a Mac.*
+
+# Table of Contents
 
 This tutorial explains how to install the Apache Tomcat 6.0.x on Mac OS X 10.5 or 10.6. This document is not tested to work with other versions of Tomcat or Java. For complete details, please consult the specific documentation for those software installations.
 
