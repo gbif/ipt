@@ -700,7 +700,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
           .toString()}));
       } catch (InvalidConfigException e) {
-        LOG.error("Cant publish resource " + resource, e);
+        LOG.error("Can't publish resource " + resource, e);
       }
 
     } else {

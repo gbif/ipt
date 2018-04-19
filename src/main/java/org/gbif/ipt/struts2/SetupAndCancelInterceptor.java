@@ -1,5 +1,6 @@
 package org.gbif.ipt.struts2;
 
+import org.apache.struts2.dispatcher.Parameter;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.SetupAction;
@@ -47,9 +48,8 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
     }
 
     // check if any non empty content exists in cancel request parameter
-    Object cancel = invocation.getInvocationContext().getParameters().get(CANCEL_RESULTNAME);
-    if (cancel != null && cancel.getClass().isArray() && ((Object[]) cancel).length > 0
-      && StringUtils.trimToNull(((Object[]) cancel)[0].toString()) != null) {
+    Parameter cancel = invocation.getInvocationContext().getParameters().get(CANCEL_RESULTNAME);
+    if (cancel.isDefined()) {
       return CANCEL_RESULTNAME;
     }
 

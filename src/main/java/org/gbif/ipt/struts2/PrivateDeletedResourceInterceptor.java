@@ -1,5 +1,6 @@
 package org.gbif.ipt.struts2;
 
+import org.apache.struts2.dispatcher.Parameter;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -104,11 +105,11 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
    */
   private static String getResourceVersionParam(ActionInvocation invocation) {
     String version = null;
-    Object requestedResourceVersion = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_VERSION);
-    if (requestedResourceVersion != null && requestedResourceVersion.getClass().isArray()
-        && ((Object[]) requestedResourceVersion).length == 1) {
-      version = StringUtils.trimToNull(((Object[]) requestedResourceVersion)[0].toString());
+    Parameter requestedResourceVersion = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_VERSION);
+    if (requestedResourceVersion.isDefined()) {
+      version = StringUtils.trimToNull(requestedResourceVersion.getValue());
     }
+
     return version;
   }
 }

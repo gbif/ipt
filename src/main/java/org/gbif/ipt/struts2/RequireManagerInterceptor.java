@@ -1,5 +1,6 @@
 package org.gbif.ipt.struts2;
 
+import org.apache.struts2.dispatcher.Parameter;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -28,10 +29,10 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
 
   protected static String getResourceParam(ActionInvocation invocation) {
     String requestedResource = null;
-    Object requestedResourceName = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_RESOURCE);
-    if (requestedResourceName != null && requestedResourceName.getClass().isArray()
-      && ((Object[]) requestedResourceName).length == 1) {
-      requestedResource = StringUtils.trimToNull(((Object[]) requestedResourceName)[0].toString());
+    Parameter requestedResourceName = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_RESOURCE);
+    if (requestedResourceName.isDefined()) {
+      requestedResource = StringUtils.trimToNull(requestedResourceName.getValue());
+      System.out.println("RRs " + requestedResource);
     }
     return requestedResource;
   }

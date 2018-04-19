@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
   "http://struts.apache.org/dtds/struts-2.5.dtd">
 
 <!--
@@ -61,11 +61,12 @@
     <action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
+      <allowed-methods>addManager,delete,deleteDoi,deleteManager,makePrivate,makePublic,registerResource,reserveDoi,undelete</allowed-methods>
     </action>
 
     <!-- EML metadata actions dynamically invoked. This is the *only* action needed for all forms -->
     <action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
-      <!-- Setting parameters like this doesnt seem to work as expected :((( -->
+      <!-- Setting parameters like this doesn't seem to work as expected :((( -->
       <!-- workaround is parsing the request string in the action manually, see MetadataAction.prepare() -->
       <!--   <param name="section">{1}</param>   -->
 
