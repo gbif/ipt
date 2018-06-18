@@ -118,10 +118,10 @@ public class IPTModule extends AbstractModule {
     // new threadsafe, multithreaded http client with support for http and https.
     DefaultHttpClient client = HttpUtil.newMultithreadedClient(CONNECTION_TIMEOUT_MSEC, MAX_CONNECTIONS, MAX_PER_ROUTE);
 
-    String userAgent = String.format("GBIF-IPT/%s (%s; +https://www.gbif.org/ipt) Java/%s",
+    String userAgent = String.format("GBIF-IPT/%s (+https://www.gbif.org/ipt) Java/%s (%s)",
         cfg.getVersion(),
-        System.getProperty("os.name", "?"),
-        System.getProperty("java.version", "?")
+        System.getProperty("java.version", "?"),
+        System.getProperty("os.name", "?")
         );
 
     client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
