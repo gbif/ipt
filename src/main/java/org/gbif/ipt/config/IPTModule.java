@@ -7,6 +7,7 @@ import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.log4j.Logger;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
@@ -113,9 +114,17 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   @Inject
-  public DefaultHttpClient provideHttpClient() {
+  public DefaultHttpClient provideHttpClient(AppConfig cfg) {
     // new threadsafe, multithreaded http client with support for http and https.
     DefaultHttpClient client = HttpUtil.newMultithreadedClient(CONNECTION_TIMEOUT_MSEC, MAX_CONNECTIONS, MAX_PER_ROUTE);
+
+    String userAgent = String.format("GBIF-IPT/%s (%s; +https://www.gbif.org/ipt) Java/%s",
+        cfg.getVersion(),
+        System.getProperty("os.name", "?"),
+        System.getProperty("java.version", "?")
+        );
+
+    client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
 
     // registry currently requires Preemptive authentication
     // Add as the very first interceptor in the protocol chain

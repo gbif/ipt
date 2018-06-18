@@ -40,7 +40,7 @@ public abstract class IptMockBaseTest {
   protected DefaultHttpClient buildHttpClient() {
     // lazy load
     if (client == null) {
-      client = guice.provideHttpClient();
+      client = guice.provideHttpClient(cfg);
     }
     return client;
   }
