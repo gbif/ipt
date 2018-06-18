@@ -1295,7 +1295,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             }
           } catch (RegistryException e) {
             // log as specific error message as possible about why the Registry error occurred
-            String msg = RegistryException.logRegistryException(e.getType(), this);
+            String msg = RegistryException.logRegistryException(e, this);
             // add error message about Registry error
             addActionError(msg);
             LOG.error(msg);

@@ -125,7 +125,7 @@ public class ExtensionsAction extends POSTAction {
       } catch (Exception e) {
         String errorMsg = e.getMessage();
         if (e instanceof RegistryException) {
-          errorMsg = RegistryException.logRegistryException(((RegistryException)e).getType(), this);
+          errorMsg = RegistryException.logRegistryException(((RegistryException)e), this);
         }
         addActionWarning(getText("admin.extensions.synchronise.error", new String[] {errorMsg}));
         LOG.error(e);
@@ -216,7 +216,7 @@ public class ExtensionsAction extends POSTAction {
         }
       } catch (RegistryException e) {
         // add startup error message about Registry error
-        String msg = RegistryException.logRegistryException(e.getType(), this);
+        String msg = RegistryException.logRegistryException(e, this);
         warnings.addStartupError(msg);
         LOG.error(msg);
 
@@ -241,7 +241,7 @@ public class ExtensionsAction extends POSTAction {
       }
     } catch (RegistryException e) {
       // add startup error message that explains why the Registry error occurred
-      String msg = RegistryException.logRegistryException(e.getType(), this);
+      String msg = RegistryException.logRegistryException(e, this);
       warnings.addStartupError(msg);
       LOG.error(msg);
 

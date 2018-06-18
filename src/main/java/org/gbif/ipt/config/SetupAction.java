@@ -16,6 +16,7 @@ import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.*;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
@@ -154,8 +155,7 @@ public class SetupAction extends BaseAction {
 
   /**
    * Method called when setting up the IPT for the very first time. There might not even be a logged in user, be
-   * careful
-   * to not require an admin!
+   * careful not to require an admin!
    */
   public String setup() {
     if (isHttpPost() && dataDirPath != null) {
@@ -185,6 +185,10 @@ public class SetupAction extends BaseAction {
         } else {
           addActionError(getText("admin.config.setup.datadir.error"));
         }
+      } catch (RegistryException e) {
+        String msg = RegistryException.logRegistryException(e, this);
+        LOG.warn("Failed to contact the GBIF Registry ("+msg+"): " + e.getMessage(), e);
+        addActionError(msg);
       }
     }
     if (dataDir.isConfigured()) {
@@ -304,22 +308,30 @@ public class SetupAction extends BaseAction {
           addActionError(
             getTextWithDynamicArgs("admin.config.setup2.already.registered", cfg.getRegistryType().toString()));
         }
+      } catch (RegistryException e) {
+        String msg = RegistryException.logRegistryException(e, this);
+        LOG.warn("Failed to contact the GBIF Registry ("+msg+"): " + e.getMessage(), e);
+        addActionError(msg);
       }
     }
     return INPUT;
   }
 
   public String setup3() {
-    configManager.loadDataDirConfig();
-    session.put(Constants.SESSION_USER, userManager.getSetupUser());
-
     // install or update latest version of all default vocabularies
+    // (Done in loadDataDirConfig method).
     try {
-      vocabulariesManager.installOrUpdateDefaults();
+      configManager.loadDataDirConfig();
+      session.put(Constants.SESSION_USER, userManager.getSetupUser());
     } catch (InvalidConfigException e) {
       String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[] {e.getMessage()});
       LOG.error(msg, e);
       addActionWarning(msg, e);
+    } catch (RegistryException e) {
+      String msg = RegistryException.logRegistryException(e, this);
+      LOG.warn("Failed to contact the GBIF Registry ("+msg+"): " + e.getMessage(), e);
+      addActionError(msg);
+      addActionExceptionWarning(e);
     }
 
     List<Extension> extensions = extensionManager.listCore();

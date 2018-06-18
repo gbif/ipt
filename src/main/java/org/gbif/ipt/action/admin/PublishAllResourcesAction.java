@@ -48,7 +48,7 @@ public class PublishAllResourcesAction extends BaseAction {
       }
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
-      String msg = RegistryException.logRegistryException(e.getType(), this);
+      String msg = RegistryException.logRegistryException(e, this);
       addActionError(msg);
       log.error(msg);
     }

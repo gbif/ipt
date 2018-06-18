@@ -1978,7 +1978,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       } else {
         UUID key = registryManager.register(resource, organisation, ipt);
         if (key == null) {
-          throw new RegistryException(RegistryException.TYPE.MISSING_METADATA,
+          throw new RegistryException(RegistryException.Type.MISSING_METADATA, null,
             "No key returned for registered resource");
         }
         // display success to user
@@ -2194,7 +2194,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         registryManager.updateResource(resource, iptKey);
       } catch (RegistryException e) {
         // log as specific error message as possible about why the Registry error occurred
-        String msg = RegistryException.logRegistryException(e.getType(), action);
+        String msg = RegistryException.logRegistryException(e, action);
         action.addActionError(msg);
         log.error(msg);
         // add error message that explains the root cause of the Registry error to user

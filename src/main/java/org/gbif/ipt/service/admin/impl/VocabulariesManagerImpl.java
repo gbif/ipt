@@ -316,9 +316,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     } catch (RegistryException e) {
       // add startup error message about Registry error
-      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+      String msg = RegistryException.logRegistryException(e, baseAction);
       warnings.addStartupError(msg);
-      log.error(msg);
+      log.error(msg, e);
 
       // add startup error message that explains the consequence of the Registry error
       msg = baseAction.getText("admin.extensions.vocabularies.couldnt.load", new String[] {cfg.getRegistryUrl()});
@@ -344,17 +344,23 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
       if (installed == null) {
         try {
-          install(latest.getUriResolvable().toURL());
+          URL url = latest.getUriResolvable().toURL();
+          try {
+            install(url);
+          } catch (Exception e) {
+            // All are likely to be HTTP connection errors
+            throw new RegistryException(url.toString(), e);
+          }
         } catch (MalformedURLException e) {
           throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_VOCABULARY,
-            "Vocabulary has an invalid URL: " + latest.getUriResolvable().toString());
+              "Vocabulary has an invalid URL: " + latest.getUriResolvable().toString());
         }
       } else {
         try {
           updateToLatest(installed, latest);
         } catch (IOException e) {
           throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR,
-            "Can't update default vocabulary: " + installed.getUriString(), e);
+              "Can't update default vocabulary: " + installed.getUriString(), e);
         }
       }
     }

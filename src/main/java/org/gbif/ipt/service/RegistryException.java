@@ -2,13 +2,19 @@ package org.gbif.ipt.service;
 
 import org.gbif.ipt.action.BaseAction;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
+
 /**
  * The base class used to indicate types of errors occurring during interaction with the GBIF registry.
  * All exceptions must provide a message and a cause.
  */
 public class RegistryException extends RuntimeException {
 
-  public enum TYPE {
+  public enum Type {
     /**
      * Proper credentials weren't specified.
      */
@@ -47,11 +53,34 @@ public class RegistryException extends RuntimeException {
     NO_INTERNET
   }
 
-  protected TYPE type;
+  protected Type type;
 
-  public RegistryException(TYPE type, Exception e) {
+  protected String url;
+
+  public RegistryException(String url, Exception e) {
+    super(e.getMessage(), e);
+
+    if (e instanceof ClassCastException) {
+      type = Type.BAD_RESPONSE;
+    } else if (e instanceof ConnectException || e instanceof SocketTimeoutException) {
+      type = Type.PROXY;
+    } else if (e instanceof UnknownHostException) {
+      type = Type.NO_INTERNET;
+    } else if (e instanceof IOException) {
+      type = Type.IO_ERROR;
+    } else if (e instanceof URISyntaxException) {
+      type = Type.BAD_REQUEST;
+    } else {
+      type = Type.UNKNOWN;
+    }
+
+    this.url = url;
+  }
+
+  public RegistryException(Type type, String url, Exception e) {
     super(e.getMessage(), e);
     this.type = type;
+    this.url = url;
   }
 
   /**
@@ -61,54 +90,56 @@ public class RegistryException extends RuntimeException {
    * @param type    Is stored in the exception
    * @param message The message to use for logging (not display through the web application)
    */
-  public RegistryException(TYPE type, String message) {
+  public RegistryException(Type type, String url, String message) {
     super(message);
     this.type = type;
+    this.url = url;
   }
 
-  public RegistryException(TYPE type, String message, Exception e) {
+  public RegistryException(Type type, String url, String message, Exception e) {
     super(message, e);
     this.type = type;
+    this.url = url;
   }
 
   /**
    * @return the type of configuration exception. This allows for internationalized display
    */
-  public TYPE getType() {
+  public Type getType() {
     return type;
   }
 
   /**
-   * Depending on the RegistryException TYPE, retrieves an i18n message, and returns it. Ideally, the message returned
+   * Depending on the RegistryException Type, retrieves an i18n message, and returns it. Ideally, the message returned
    * will be the most specific error possible as to why the exception was thrown. Such a specific message will shield
    * the IPT admin, from having to interpret complex stacktrace exceptions.
    *
-   * @param type   RegistryException.TYPE
-   * @param action BaseAtion
+   * @param e      RegistryException
+   * @param action BaseAction
    *
    * @return log message
    */
-  public static String logRegistryException(TYPE type, BaseAction action) {
-    // retrieve specific log message, depending on TYPE
+  public static String logRegistryException(RegistryException e, BaseAction action) {
+    // retrieve specific log message, depending on Type
     String msg = action.getText("admin.registration.error.registry");
-    if (type != null) {
-      if (type == TYPE.PROXY) {
+    if (e.type != null) {
+      if (e.type == Type.PROXY) {
         msg = action.getText("admin.registration.error.proxy");
-      } else if (type == TYPE.SITE_DOWN) {
+      } else if (e.type == Type.SITE_DOWN) {
         msg = action.getText("admin.registration.error.siteDown");
-      } else if (type == TYPE.NO_INTERNET) {
+      } else if (e.type == Type.NO_INTERNET) {
         msg = action.getText("admin.registration.error.internetConnection");
-      } else if (type == TYPE.BAD_RESPONSE) {
+      } else if (e.type == Type.BAD_RESPONSE) {
         msg = action.getText("admin.registration.error.badResponse");
-      } else if (type == TYPE.IO_ERROR) {
+      } else if (e.type == Type.IO_ERROR) {
         msg = action.getText("admin.registration.error.io");
-      } else if (type == TYPE.BAD_REQUEST) {
+      } else if (e.type == Type.BAD_REQUEST) {
         // this may occur when Registry WS rejects request, e.g. invalid email address (POR-1975) TODO i18n
         msg = "A bad request was issued. Please contact the GBIF Helpdesk (helpdesk@gbif.org) for help";
-      } else if (type == TYPE.UNKNOWN) {
+      } else if (e.type == Type.UNKNOWN) {
         msg = action.getText("admin.registration.error.unknown");
       }
     }
-    return msg;
+    return msg + " [" + e.url + "]";
   }
 }

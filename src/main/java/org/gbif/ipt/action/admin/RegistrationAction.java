@@ -6,7 +6,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.RegistryException.TYPE;
+import org.gbif.ipt.service.RegistryException.Type;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -130,11 +130,11 @@ public class RegistrationAction extends POSTAction {
         orgSession.load();
       } catch (RegistryException e) {
         String msg = getText("admin.registration.error.registry");
-        if (e.getType() == TYPE.PROXY) {
+        if (e.getType() == Type.PROXY) {
           msg = getText("admin.registration.error.proxy");
-        } else if (e.getType() == TYPE.SITE_DOWN) {
+        } else if (e.getType() == Type.SITE_DOWN) {
           msg = getText("admin.registration.error.siteDown");
-        } else if (e.getType() == TYPE.NO_INTERNET) {
+        } else if (e.getType() == Type.NO_INTERNET) {
           msg = getText("admin.registration.error.internetConnection");
         }
         LOG.error(msg, e);
@@ -159,7 +159,7 @@ public class RegistrationAction extends POSTAction {
         return SUCCESS;
       } catch (RegistryException re) {
         // add error message explaining why the Registry error occurred
-        String msg = RegistryException.logRegistryException(re.getType(), this);
+        String msg = RegistryException.logRegistryException(re, this);
         addActionError(msg);
         LOG.error(msg);
 
@@ -210,7 +210,7 @@ public class RegistrationAction extends POSTAction {
       addActionMessage(getText("admin.registration.success.update"));
     } catch (RegistryException e) {
       // add error message explaining why the Registry error occurred
-      String msg = RegistryException.logRegistryException(e.getType(), this);
+      String msg = RegistryException.logRegistryException(e, this);
       addActionError(msg);
       LOG.error(msg);
 

@@ -156,7 +156,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     try {
       manager.getExtensions();
     } catch (RegistryException e) {
-      assertEquals(RegistryException.TYPE.PROXY, e.getType());
+      assertEquals(RegistryException.Type.PROXY, e.getType());
     }
   }
 
@@ -176,7 +176,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     try {
       manager.getExtensions();
     } catch (RegistryException e) {
-      assertEquals(RegistryException.TYPE.BAD_RESPONSE, e.getType());
+      assertEquals(RegistryException.Type.BAD_RESPONSE, e.getType());
     }
   }
 
@@ -196,7 +196,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
       manager.getExtensions();
     } catch (RegistryException e) {
       LOG.info(e.getMessage());
-      assertEquals(RegistryException.TYPE.BAD_REQUEST, e.getType());
+      assertEquals(RegistryException.Type.BAD_REQUEST, e.getType());
     }
   }
 
@@ -342,11 +342,11 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
       new RegistryManagerImpl(mockAppConfig, dataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
-    assertEquals(RegistryException.TYPE.BAD_REQUEST, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode()));
-    assertEquals(RegistryException.TYPE.NOT_AUTHORISED, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.UNAUTHORIZED.getStatusCode()));
-    assertEquals(RegistryException.TYPE.BAD_RESPONSE,
+    assertEquals(RegistryException.Type.BAD_REQUEST, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode()));
+    assertEquals(RegistryException.Type.NOT_AUTHORISED, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.UNAUTHORIZED.getStatusCode()));
+    assertEquals(RegistryException.Type.BAD_RESPONSE,
       manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()));
-    assertEquals(RegistryException.TYPE.BAD_RESPONSE,
+    assertEquals(RegistryException.Type.BAD_RESPONSE,
       manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.MOVED_PERMANENTLY.getStatusCode()));
 
     try {

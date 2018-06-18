@@ -378,7 +378,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       }
     } catch (RegistryException e) {
       // add startup error message about Registry error
-      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+      String msg = RegistryException.logRegistryException(e, baseAction);
       warnings.addStartupError(msg);
       log.error(msg);
 

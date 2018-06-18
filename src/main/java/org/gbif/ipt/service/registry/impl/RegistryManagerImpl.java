@@ -15,7 +15,7 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.RegistryException.TYPE;
+import org.gbif.ipt.service.RegistryException.Type;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
@@ -206,25 +207,25 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
    */
   public void deregister(Resource resource) throws RegistryException {
+    String url = getDeleteResourceUri(resource.getKey().toString());
     try {
       if (resource.getOrganisation() != null) {
-        Response resp =
-          http.delete(getDeleteResourceUri(resource.getKey().toString()), orgCredentials(resource.getOrganisation()));
+        Response resp = http.delete(url, orgCredentials(resource.getOrganisation()));
         if (HttpUtil.success(resp)) {
           log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
         } else {
           log.error("Deregister resource response received=" + resp.getStatusCode() + ": " + resp.content);
-          throw new RegistryException(TYPE.BAD_RESPONSE, "Empty registry response");
+          throw new RegistryException(Type.BAD_RESPONSE, url, "Empty registry response");
         }
       } else {
-        throw new RegistryException(TYPE.NOT_AUTHORISED, "Credentials should be specified");
+        throw new RegistryException(Type.NOT_AUTHORISED, null, "Credentials should be specified");
       }
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, e);
+      throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (Exception e) {
       String msg = "Bad registry response: " + e.getMessage();
       log.error(msg, e);
-      throw new RegistryException(RegistryException.TYPE.BAD_RESPONSE, msg);
+      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
     }
 
   }
@@ -317,7 +318,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
           }.getType());
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
-      String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+      String msg = RegistryException.logRegistryException(e, baseAction);
       // add startup error message about Registry error
       warnings.addStartupError(msg);
       log.error(msg);
@@ -364,7 +365,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
           }.getType());
       } catch (RegistryException e) {
         // log as specific error message as possible about why the Registry error occurred
-        String msg = RegistryException.logRegistryException(e.getType(), baseAction);
+        String msg = RegistryException.logRegistryException(e, baseAction);
         // add startup error message about Registry error
         warnings.addStartupError(msg);
         log.error(msg);
@@ -449,13 +450,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {
     List<Map<String, String>> resourcesTemp;
+    String url = getOrganisationsResourcesUri(organisationKey);
     try {
-      resourcesTemp = gson.fromJson(requestHttpGetFromRegistry(getOrganisationsResourcesUri(organisationKey)).content,
-        new TypeToken<List<Map<String, String>>>() {
-        }.getType());
+      resourcesTemp = gson.fromJson(requestHttpGetFromRegistry(url).content,
+          new TypeToken<List<Map<String, String>>>() {}.getType());
     } catch (JsonSyntaxException e) {
       // throw new RegistryException if a non-parsable response was encountered
-      throw new RegistryException(TYPE.BAD_RESPONSE, "Unexpected, non-parsable response format encountered.");
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Unexpected, non-parsable response format encountered.");
     } catch (RegistryException e) {
       // just rethrow if a RegistryException was encountered
       throw e;
@@ -503,27 +504,29 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       if (resp != null && resp.content != null) {
         return resp;
       } else {
-        throw new RegistryException(TYPE.BAD_RESPONSE, "Response content is null");
+        throw new RegistryException(Type.BAD_RESPONSE, url, "Response content is null");
       }
     } catch (ClassCastException e) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, e);
-    } catch (ConnectException e) {
+      throw new RegistryException(Type.BAD_RESPONSE, url, e);
+    } catch (ConnectException | SocketTimeoutException e) {
       // normally happens when a timeout appears - probably a firewall or proxy problem.
-      throw new RegistryException(TYPE.PROXY, e);
+      throw new RegistryException(Type.PROXY, url, e);
     } catch (UnknownHostException e) {
       try {
         // if server cannot connect to Google - probably the Internet connection is not active.
         http.get("http://www.google.com");
       } catch (Exception e1) {
-        throw new RegistryException(TYPE.NO_INTERNET, e1);
+        throw new RegistryException(Type.NO_INTERNET, url, e1);
       }
       // if server can connect to Google - probably the GBIF Registry page is down.
-      throw new RegistryException(TYPE.SITE_DOWN, e);
+      throw new RegistryException(Type.SITE_DOWN, url, e);
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, e);
+      throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (URISyntaxException e) {
-      throw new RegistryException(TYPE.BAD_REQUEST,
+      throw new RegistryException(Type.BAD_REQUEST, url,
         "Please check the request URL: " + ((url != null) ? url : "empty URL used!"));
+    } catch (Exception e) {
+      throw new RegistryException(Type.UNKNOWN, url, e);
     }
   }
 
@@ -559,20 +562,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(ipt.getKey().toString())));
 
     Response resp;
+    String url = getIptResourceUri();
     try {
-      resp = http.post(getIptResourceUri(), null, null, orgCredentials(org),
+      resp = http.post(url, null, null, orgCredentials(org),
         new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
     } catch (URISyntaxException e) {
-      throw new RegistryException(TYPE.BAD_REQUEST, "Register resource failed: request URI invalid", e);
+      throw new RegistryException(Type.BAD_REQUEST, url, "Register resource failed: request URI invalid", e);
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, "Register resource failed: I/O exception occurred", e);
+      throw new RegistryException(Type.IO_ERROR, url, "Register resource failed: I/O exception occurred", e);
     }
 
     if (HttpUtil.success(resp)) {
       log.info("Register resource was successful!");
     } else {
-      TYPE type = getRegistryExceptionType(resp.getStatusCode());
-      throw new RegistryException(type, "Register resource failed: " + resp.getStatusLine());
+      Type type = getRegistryExceptionType(resp.getStatusCode());
+      throw new RegistryException(type, url, "Register resource failed: " + resp.getStatusLine());
     }
 
     // parse GBIF UDDI key
@@ -584,14 +588,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         key = newRegistryEntryHandler.resourceKey;
       }
     } catch (SAXException e) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, "Response received from resource registration couldn't be parsed", e);
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from resource registration couldn't be parsed", e);
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, "Response received from resource registration couldn't be parsed", e);
+      throw new RegistryException(Type.IO_ERROR, url, "Response received from resource registration couldn't be parsed", e);
     }
 
     // ensure non-empty key was found
     if (StringUtils.trimToNull(key) == null) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, "Response received from resource registration missing key!");
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from resource registration missing key!");
     }
 
     // ensure valid UUID was found
@@ -599,7 +603,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       uuidKey = UUID.fromString(key);
     } catch (IllegalArgumentException e) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, "Response received from resource registration has invalid key");
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from resource registration has invalid key");
     }
 
     log.info("A new resource has been registered with GBIF. [Key=" + key + "]");
@@ -618,20 +622,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("wsPassword", StringUtils.trimToEmpty(ipt.getWsPassword()))); // IPT instance
 
     Response resp;
+    String url = getIptUri();
     try {
       resp = http
-        .post(getIptUri(), null, null, orgCredentials(org), new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
+        .post(url, null, null, orgCredentials(org), new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
     } catch (URISyntaxException e) {
-      throw new RegistryException(TYPE.BAD_REQUEST, "Register IPT failed: request URI invalid", e);
+      throw new RegistryException(Type.BAD_REQUEST, url, "Register IPT failed: request URI invalid", e);
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, "Register IPT failed: I/O exception occurred", e);
+      throw new RegistryException(Type.IO_ERROR, url, "Register IPT failed: I/O exception occurred", e);
     }
 
     if (HttpUtil.success(resp)) {
       log.info("Register IPT was successful!");
     } else {
-      TYPE type = getRegistryExceptionType(resp.getStatusCode());
-      throw new RegistryException(type, "Register IPT failed: " + resp.getStatusLine());
+      Type type = getRegistryExceptionType(resp.getStatusCode());
+      throw new RegistryException(type, url, "Register IPT failed: " + resp.getStatusLine());
     }
 
     // parse GBIF UUID key from response
@@ -640,14 +645,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       saxParser.parse(getStream(resp.content), newRegistryEntryHandler);
       key = newRegistryEntryHandler.key;
     } catch (SAXException e) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, "Response received from IPT registration couldn't be parsed", e);
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from IPT registration couldn't be parsed", e);
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, "Response received from IPT registration couldn't be parsed", e);
+      throw new RegistryException(Type.IO_ERROR, url, "Response received from IPT registration couldn't be parsed", e);
     }
 
     // ensure non-empty key was found
     if (StringUtils.trimToNull(key) == null) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, "Response received from IPT registration missing key!");
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from IPT registration missing key!");
     }
 
     // ensure valid UUID was found
@@ -655,7 +660,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       uuidKey = UUID.fromString(key);
     } catch (IllegalArgumentException e) {
-      throw new RegistryException(TYPE.BAD_RESPONSE, "Response received from IPT registration has invalid key");
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from IPT registration has invalid key");
     }
 
     log.info("A new ipt has been registered with GBIF. [Key=" + uuidKey.toString() + "]");
@@ -710,21 +715,22 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<NameValuePair> data = buildIPTParameters(ipt, orgKey);
 
     Response resp;
+    String url = getIptUpdateUri(ipt.getKey().toString());
     try {
-      resp = http.post(getIptUpdateUri(ipt.getKey().toString()), null, null, iptCredentials(ipt),
+      resp = http.post(url, null, null, iptCredentials(ipt),
         new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
     } catch (URISyntaxException e) {
-      throw new RegistryException(TYPE.BAD_REQUEST, "Update IPT registration failed: request URI invalid", e);
+      throw new RegistryException(Type.BAD_REQUEST, url, "Update IPT registration failed: request URI invalid", e);
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, "Update IPT registration failed: I/O exception occurred", e);
+      throw new RegistryException(Type.IO_ERROR, url, "Update IPT registration failed: I/O exception occurred", e);
     }
 
     if (HttpUtil.success(resp)) {
       log.info("Update IPT registration was successful!");
     } else {
       // to continue updating registered resources, IPT update must have been successful
-      TYPE type = getRegistryExceptionType(resp.getStatusCode());
-      throw new RegistryException(type, "Update IPT registration failed: " + resp.getStatusLine());
+      Type type = getRegistryExceptionType(resp.getStatusCode());
+      throw new RegistryException(type, url, "Update IPT registration failed: " + resp.getStatusLine());
     }
 
     List<Resource> resources = resourceManager.list(PublicationStatus.REGISTERED);
@@ -754,13 +760,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("iptKey", StringUtils.trimToEmpty(iptKey)));
 
     Response resp;
+    String url = getIptUpdateResourceUri(resource.getKey().toString());
     try {
-      resp = http.post(getIptUpdateResourceUri(resource.getKey().toString()), null, null,
+      resp = http.post(url, null, null,
         orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
     } catch (URISyntaxException e) {
-      throw new RegistryException(TYPE.BAD_REQUEST, "Update resource registration failed: request URI invalid", e);
+      throw new RegistryException(Type.BAD_REQUEST, url, "Update resource registration failed: request URI invalid", e);
     } catch (IOException e) {
-      throw new RegistryException(TYPE.IO_ERROR, "Update resource registration failed: I/O exception occurred", e);
+      throw new RegistryException(Type.IO_ERROR, url, "Update resource registration failed: I/O exception occurred", e);
     }
 
     if (HttpUtil.success(resp)) {
@@ -769,8 +776,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         baseAction.addActionMessage(
           baseAction.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()}));
     } else {
-      TYPE type = getRegistryExceptionType(resp.getStatusCode());
-      throw new RegistryException(type, "Update resource registration failed [shortname=" + resource.getShortname() + ", key=" + resource.getKey().toString() + "]: " + resp.getStatusLine());
+      Type type = getRegistryExceptionType(resp.getStatusCode());
+      throw new RegistryException(type, url, "Update resource registration failed [shortname=" + resource.getShortname() + ", key=" + resource.getKey().toString() + "]: " + resp.getStatusLine());
     }
   }
 
@@ -783,18 +790,18 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @return RegistryException type based on response code
    */
   @VisibleForTesting
-  protected TYPE getRegistryExceptionType(int code) {
+  protected Type getRegistryExceptionType(int code) {
     Preconditions.checkArgument(code > 300); // never called on successful codes include OK (200) and CREATED (201)
-    TYPE type;
+    Type type;
     switch (code) {
       case 400:
-        type = TYPE.BAD_REQUEST;
+        type = Type.BAD_REQUEST;
         break;
       case 401:
-        type = TYPE.NOT_AUTHORISED;
+        type = Type.NOT_AUTHORISED;
         break;
       default:
-        type = TYPE.BAD_RESPONSE;
+        type = Type.BAD_RESPONSE;
     }
     return type;
   }
