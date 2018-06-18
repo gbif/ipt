@@ -38,8 +38,8 @@ public class IPTModule extends AbstractModule {
 
   private static final Logger LOG = Logger.getLogger(IPTModule.class);
   private static final String DATA_DIR_ENV_VAR = "IPT_DATA_DIR";
-  // 2 minute timeout
-  protected static final int CONNECTION_TIMEOUT_MSEC = 120000;
+  // 30 second timeout; too long and users will refresh and not notice errors.
+  protected static final int CONNECTION_TIMEOUT_MSEC = 30_000;
   protected static final int MAX_CONNECTIONS = 100;
   protected static final int MAX_PER_ROUTE = 10;
 
