@@ -159,7 +159,12 @@ div#un-registered {
   float:right;
   -webkit-box-shadow:  0px 0px 10px 0px rgba(200, 200, 200, 0.4);
   box-shadow:  0px 0px 10px 0px rgba(200, 200, 200, 0.4);
-  font-size:0.9em;
+  font-size:1.1em;
+}
+#language-menu li a {
+  text-decoration:none;
+  font-weight:bold;
+  text-transform:uppercase;
 }
 #language-menu input[type=text] {
   width:140px;
@@ -230,9 +235,11 @@ form#login-form {  display: inline-block; }
   top: 8px;
 }
 #languages a{
-  display:inline-block;
+  display:block;
   background:white;
   padding:2px 3px;
+  margin:0;
+  width:8em;
 }
 #languages a:hover{
   opacity:0.7;

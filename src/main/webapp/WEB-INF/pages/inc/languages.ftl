@@ -1,5 +1,15 @@
 [#ftl]
-<a href="#"><img src="${baseURL}/images/flags/flag_${localeLanguage}.png"/></a>
+[#assign languages = {
+    "en": "English",
+    "fr": "Française",
+    "es": "Español",
+    "zh": "繁體中文",
+    "pt": "Português",
+    "ja": "日本語",
+    "ru": "Русский",
+    "fa": "فارسی"
+}]
+<a href="#">${languages[localeLanguage]}</a>
 <ul id="languages">
 [#if !requestURL?has_content]
     [#assign requrl = baseURL + "?request_locale="]
@@ -9,9 +19,10 @@
     [#assign requrl = requestURL + "?request_locale="]
 [/#if]
     <!-- add more languages as translations become available. -->
-[#list ["en","fr","es", "zh", "pt", "ja", "ru", "fa"] as lang]
+
+[#list languages as lang, name]
     [#if lang != localeLanguage]
-        <li><a href="${requrl}${lang}"><img src="${baseURL}/images/flags/flag_${lang}.png"/></a></li>
+        <li><a href="${requrl}${lang}">${name}</a></li>
     [/#if]
 [/#list]
 </ul>
