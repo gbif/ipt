@@ -101,27 +101,40 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private boolean changeProxy(HttpHost hostTemp, String proxy) {
     try {
       HttpHost host = URLUtils.getHost(proxy);
-      if (!http.verifyHost(host)) {
+      client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
+
+      String testUrl = cfg.getRegistryUrl();
+      boolean proxyWorks;
+      try {
+        log.info("Testing new proxy by fetching "+testUrl+" with 4 second timeout");
+        HttpResponse response = http.executeGetWithTimeout(new HttpGet(testUrl), DEFAULT_TO);
+
+        log.info("Proxy response is "+ response.getStatusLine());
+        proxyWorks = (HttpServletResponse.SC_OK == response.getStatusLine().getStatusCode());
+      } catch (Exception e) {
+        proxyWorks = false;
+        log.warn("Proxy failed because", e);
+      }
+
+      if (proxyWorks) {
+        log.info("Proxy tested and working.");
+      } else {
         if (hostTemp != null) {
-          log.info(
-            "Proxy could not be validated, reverting to previous proxy setting on http client: " + hostTemp.toString());
+          log.info("Proxy could not be validated (tried to retrieve " + testUrl + "), reverting to previous proxy setting on HTTP client: " + hostTemp.toString());
           client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
         }
         throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
       }
-      log.info("Proxy validated, updating the proxy setting on http client to: " + proxy);
-      client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
+
     } catch (NumberFormatException e) {
       if (hostTemp != null) {
-        log.info("NumberFormatException encountered, reverting to previous proxy setting on http client: " + hostTemp
-          .toString());
+        log.info("NumberFormatException encountered, reverting to previous proxy setting on HTTP client: " + hostTemp.toString());
         client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
       }
       throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
     } catch (MalformedURLException e) {
       if (hostTemp != null) {
-        log.info("MalformedURLException encountered, reverting to previous proxy setting on http client: " + hostTemp
-          .toString());
+        log.info("MalformedURLException encountered, reverting to previous proxy setting on HTTP client: " + hostTemp.toString());
         client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
       }
       throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
