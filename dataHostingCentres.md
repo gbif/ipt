@@ -131,13 +131,13 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 + [GBIF Benin IPT](http://ipt-benin.gbif.fr)
 + [GBIF France IPT](http://ipt.gbif.fr)
 + [GBIF Guinea IPT](http://ipt-guinee.gbif.fr)
-+ [GBIF Nigeria IPT] (http://ipt-nigeria.gbif.fr)
++ [GBIF Nigeria IPT](http://ipt-nigeria.gbif.fr)
 + [GBIF Togo IPT](http://ipt-togo.gbif.fr)
 + [GBIF Uganda IPT](http://ipt-uganda.gbif.fr)
-+ [Ghana BIF IPT] (http://ipt-ghana.gbif.fr)
++ [Ghana BIF IPT](http://ipt-ghana.gbif.fr)
 + [Ivorian Coast IPT](http://ipt-cotedivoire.gbif.fr) - _Note Ivory Coast is not a GBIF Participant_
 + [MadBIF IPT](http://ipt.madbif.mg)
-+ [Senegal IPT] (http://ipt-senegal.gbif.fr) - _Note Senegal is not a GBIF participant_
++ [Senegal IPT](http://ipt-senegal.gbif.fr) - _Note Senegal is not a GBIF participant_
 
 Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues please write to <dev@gbif.fr> instead.
 
