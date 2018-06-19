@@ -124,17 +124,20 @@ The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=
 [GBIF France](http://www.gbif.fr/) provides helpdesk support to new publishers in *Benin*, *Burkina Faso*, *Cameroon*, *France*, *Madagascar*, and *Togo*. GBIF France also hosts an IPT for each of these countries:
 
 + [Botswana IPT](http://ipt-botswana.gbif.fr/) - _Note Botswana is not a GBIF Participant_
++ [Burkina Faso IPT](http://ipt-burkinafaso.gbif.fr) - _Note Burkina Faso is not a GBIF Participant_
++ [Cameroon IPT](http://ipt-cameroun.gbif.fr) - _Note Cameroon is not a GBIF Participant_
 + [INPN IPT](http://ipt-inpn.gbif.fr/) 
 + [Gabon IPT](http://ipt-gabon.gbif.fr) - _Note Gabon is not a GBIF Participant_
 + [GBIF Benin IPT](http://ipt-benin.gbif.fr)
-+ [GBIF Burkina Faso IPT](http://ipt-burkinafaso.gbif.fr) - _Note Burkina Faso is not a GBIF Participant_
-+ [GBIF Cameroon IPT](http://ipt-cameroun.gbif.fr) - _Note Cameroon is not a GBIF Participant_
 + [GBIF France IPT](http://ipt.gbif.fr)
 + [GBIF Guinea IPT](http://ipt-guinee.gbif.fr)
++ [GBIF Nigeria IPT] (http://ipt-nigeria.gbif.fr)
 + [GBIF Togo IPT](http://ipt-togo.gbif.fr)
 + [GBIF Uganda IPT](http://ipt-uganda.gbif.fr)
++ [Ghana BIF IPT] (http://ipt-ghana.gbif.fr)
 + [Ivorian Coast IPT](http://ipt-cotedivoire.gbif.fr) - _Note Ivory Coast is not a GBIF Participant_
 + [MadBIF IPT](http://ipt.madbif.mg)
++ [Senegal IPT] (http://ipt-senegal.gbif.fr) - _Note Senegal is not a GBIF participant_
 
 Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues please write to <dev@gbif.fr> instead.
 
