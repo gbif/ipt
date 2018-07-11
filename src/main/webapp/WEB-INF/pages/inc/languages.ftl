@@ -1,5 +1,5 @@
 [#ftl]
-[#assign languages = {
+[#assign interfaceLanguges = {
     "en": "English",
     "fr": "Française",
     "es": "Español",
@@ -9,7 +9,7 @@
     "ru": "Русский",
     "fa": "فارسی"
 }]
-<a href="#">${languages[localeLanguage]}</a>
+<a href="#">${interfaceLanguges[localeLanguage]}</a>
 <ul id="languages">
 [#if !requestURL?has_content]
     [#assign requrl = baseURL + "?request_locale="]
@@ -20,7 +20,7 @@
 [/#if]
     <!-- add more languages as translations become available. -->
 
-[#list languages as lang, name]
+[#list interfaceLanguges as lang, name]
     [#if lang != localeLanguage]
         <li><a href="${requrl}${lang}">${name}</a></li>
     [/#if]
