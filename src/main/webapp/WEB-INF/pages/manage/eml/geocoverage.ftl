@@ -49,6 +49,10 @@
         // checks if global coverage is set. If on, coordinate input fields are hidden and the map disabled
         if (maxLatVal == maxLatValLimit && minLatVal == minLatValLimit && maxLngVal == maxLngValLimit && minLngVal == minLngValLimit) {
           $('input[name=globalCoverage]').attr('checked', true);
+          $("#"+minLngId).attr("value", minLngValLimit);
+          $("#"+maxLngId).attr("value", maxLngValLimit);
+          $("#"+minLatId).attr("value", minLatValLimit);
+          $("#"+maxLatId).attr("value", maxLatValLimit);
           $("#coordinates").slideUp('slow');
           locationFilter.disable();
           map.fitWorld();
