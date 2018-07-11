@@ -506,6 +506,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       } else {
         throw new RegistryException(Type.BAD_RESPONSE, url, "Response content is null");
       }
+    } catch (RegistryException e) { // The one thrown 2 lines above
+      throw e;
     } catch (ClassCastException e) {
       throw new RegistryException(Type.BAD_RESPONSE, url, e);
     } catch (ConnectException | SocketTimeoutException e) {
