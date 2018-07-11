@@ -114,12 +114,13 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   @Inject
-  public DefaultHttpClient provideHttpClient(AppConfig cfg) {
+  public DefaultHttpClient provideHttpClient() {
     // new threadsafe, multithreaded http client with support for http and https.
     DefaultHttpClient client = HttpUtil.newMultithreadedClient(CONNECTION_TIMEOUT_MSEC, MAX_CONNECTIONS, MAX_PER_ROUTE);
 
+    // TODO: Retrieve version. See the commit that introduced this comment for a previous way which didn't work with tests.
     String userAgent = String.format("GBIF-IPT/%s (+https://www.gbif.org/ipt) Java/%s (%s)",
-        cfg.getVersion(),
+        "2.3.6",
         System.getProperty("java.version", "?"),
         System.getProperty("os.name", "?")
         );
