@@ -750,7 +750,7 @@ div.columnLinks div.halfcolumn {
 }
 .checkbox div {
 	display: inline-block;
-	width: 200px;
+	min-width: 200px;
 }
 /* Taxonomic/Temporal Coverage */
 #subItems {
