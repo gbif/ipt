@@ -385,11 +385,11 @@ Following are explanations of the table columns:
 
 ## Manage Resources Menu
 
-Section moved to [[Manual – Manage Resources|IPT2ManualManageResources]].
+Section moved to [[Manual – Manage Resources|IPT2ManualManageResources.wiki]].
 
 ## Administration Menu
 
-Section moved to [[Manual – Administration|IPT2ManualAdministration]].
+Section moved to [[Manual – Administration|IPT2ManualAdministration.wiki]].
 
 ## About Menu
 The default About page gives information about the current IPT installation, including information about the hosting organisation, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called "config" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The about.ftl file is a Freemarker template that can contain a combination of HTML and variable references of the form ${host.variable!"alternate value if null"}. After making changes to the about.ftl file, the About page will have to be restarted to show the changes. Look at the default about.ftl file for examples of variables that can be included.
