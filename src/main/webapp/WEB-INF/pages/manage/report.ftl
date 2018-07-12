@@ -2,7 +2,7 @@
 
 <h2><@s.text name='manage.report.title'/></h2>
     
-<span class="small">${now?datetime?string}</span>
+<span class="small">${now?datetime?string("yyyy-MM-dd HH:mm:ss")}</span>
 
 <#if report??>
 

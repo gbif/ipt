@@ -35,7 +35,7 @@
         </tr>
     </#if>
     <tr>
-         <th><@s.text name="basic.lastModified"/></th><td>${vocabulary.modified?datetime?string.medium}</td>
+         <th><@s.text name="basic.lastModified"/></th><td>${vocabulary.modified?datetime?string("yyyy-MM-dd HH:mm:ss")}</td>
     </tr>
    </table>
 <br/>

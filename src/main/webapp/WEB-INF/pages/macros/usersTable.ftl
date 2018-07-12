@@ -13,8 +13,8 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
       <#list users as u>
           ['<a href="user?id=${u.email?replace("'", "\\'")?replace("\"", '\\"')!}">${u.name?replace("'", "\\'")?replace("\"", '\\"')!}</a>',
            '${u.email?replace("'", "\\'")?replace("\"", '\\"')!}',
-           '<@s.text name="user.roles.${u.role?lower_case}"/>',
-           '${(u.lastLogin?datetime?string.short)!"never"}']<#if u_has_next>,</#if>
+           '<@s.text name="user.roles.${u.role?lower_case}" escapeJavaScript="true"/>',
+           '${(u.lastLogin?datetime?string("yyyy-MM-dd HH:mm:ss"))!"never"}']<#if u_has_next>,</#if>
       </#list>
     ];
 

@@ -35,20 +35,20 @@
          <th><@s.text name="extension.rowtype"/></th><td>${extension.rowType}</td>
     </tr>
     <tr>
-        <th><@s.text name="basic.lastModified"/></th><td>${extension.modified?datetime?string.medium}</td>
+        <th><@s.text name="basic.lastModified"/></th><td>${extension.modified?datetime?string("yyyy-MM-dd HH:mm:ss")}</td>
     </tr>
 </table>
-   
+
 <p>
 	<a href="extensions.do"><button><@s.text name="button.back"/></button></a>
 </p>
 <br/>
 
 <h1><@s.text name="admin.extension.properties"/></h1>
-                                   
-<#list extension.properties as p>	
-<a name="${p.qualname}"></a>          
-<div class="definition">	
+
+<#list extension.properties as p>
+<a name="${p.qualname}"></a>
+<div class="definition">
   <div class="title">
   	<div class="head">
 		${p.name}
