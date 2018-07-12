@@ -666,6 +666,23 @@
       </build>
     </profile>
 
+    <!-- Settings used for an IPT snapshot build -->
+    <profile>
+      <id>staging</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <!-- don't bundle local datadir.location file with generated war -->
+              <packagingExcludes>**/datadir.location</packagingExcludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <!-- Settings used for local IPT development, in particular activating the struts2 dev mode -->
     <profile>
       <id>dev</id>
