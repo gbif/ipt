@@ -103,11 +103,10 @@ public class EmlUtils {
       }
     } catch (IOException e) {
       LOG.error(e);
-      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "IO exception when writing eml for " + resource);
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "IO exception when writing eml for " + resource, e);
     } catch (TemplateException e) {
       LOG.error("EML template exception", e);
-      throw new InvalidConfigException(TYPE.EML,
-        "EML template exception when writing eml for " + resource + ": " + e.getMessage());
+      throw new InvalidConfigException(TYPE.EML, "EML template exception when writing eml for " + resource + ": " + e.getMessage(), e);
     } finally {
       Locale.setDefault(currentLocale);
     }
