@@ -31,9 +31,9 @@ The IPT has been tested and works well with Tomcat 7.0 and 8.0. The Apache Tomca
   * [Tomcat on Mac OS X](TomcatInstallationMacOSX.wiki)
   * [Tomcat on Windows 7](TomcatInstallationWindows7.wiki)
   * [Tomcat on Windows 8](TomcatInstallationWindows8.wiki)
-  * [Tomcat on Cent OS 5](TomcatInstallationCentOS.wiki)
+  * [Tomcat on Linux](TomcatInstallationLinux.wiki)
 
-Download the ipt.war file of the latest release of the IPT from http://www.gbif.org/ipt. Copy the ipt.war file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL:
+Download the ipt.war file of the latest release of the IPT from https://www.gbif.org/ipt. Copy the ipt.war file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL:
 
 http://localhost:8080/ipt
 
@@ -55,13 +55,13 @@ First, change the working directory to the location where you would like to put 
 <code>$ git checkout ipt-2.3.4 (or newer tag if available) </code><br>
 <code>$ mvn -Dmaven.test.skip=true </code><br>
 
-The last "mvn" command should start the IPT with a local jetty instance on port 8080. Please note, this launches the IPT in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "<a href='http://gbrdsdev.gbif.org'>http://gbrdsdev.gbif.org</a>" and not the live registry "<a href='http://gbrds.gbif.org'>http://gbrds.gbif.org</a>".
+The last "mvn" command should start the IPT with a local jetty instance on port 8080. Please note, this launches the IPT in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "<a href='https://gbrds.gbif-uat.org'>https://gbrds.gbif-uat.org</a>" and not the live registry "<a href='https://gbrds.gbif.org'>https://gbrds.gbif.org</a>".
 
 To run in production mode, in place of the last "mvn" command use:
 
 <code>$ mvn -Dmaven.test.skip=true -P release</code><br>
 
-This makes the checkbox "Production use" on Setup page II appear. It must be checked obviously to run in production. What this means is that registrations will be against the live registry "<a href='http://gbrds.gbif.org'>http://gbrds.gbif.org</a>" and not the test registry "<a href='http://gbrdsdev.gbif.org'>http://gbrdsdev.gbif.org</a>",<br>
+This makes the checkbox "Production use" on Setup page II appear. It must be checked obviously to run in production. What this means is that registrations will be against the live registry "<a href='https://gbrds.gbif.org'>https://gbrds.gbif.org</a>" and not the test registry "<a href='https://gbrds.gbif-uat.org'>https://gbrds.gbif-uat.org</a>",<br>
 <br>
 Either way, you can then invoke the IPT in a web browser using the following URL :<br>
 <br>
