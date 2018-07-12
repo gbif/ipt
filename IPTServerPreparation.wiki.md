@@ -49,33 +49,37 @@ The IPT comes equipped with a Jetty server to run it straight from the source co
 
 First, change the working directory to the location where you would like to put the IPT source code. Then issue the following commands (please check if 2.3.4 is still the latest stable version):
 
-<code>$ git clone https://github.com/gbif/ipt.git </code><br>
-<code>$ cd ipt </code><br>
-<code>$ git tag -l </code><br>
-<code>$ git checkout ipt-2.3.4 (or newer tag if available) </code><br>
-<code>$ mvn -Dmaven.test.skip=true </code><br>
+```
+$ git clone https://github.com/gbif/ipt.git
+$ cd ipt
+$ git tag -l
+$ git checkout ipt-2.3.4 (or newer tag if available)
+$ mvn -Dmaven.test.skip=true
+```
 
 The last "mvn" command should start the IPT with a local jetty instance on port 8080. Please note, this launches the IPT in testing mode, meaning that the checkbox "Production use" will be grayed out on Setup page II and registrations will be against the test registry "<a href='https://gbrds.gbif-uat.org'>https://gbrds.gbif-uat.org</a>" and not the live registry "<a href='https://gbrds.gbif.org'>https://gbrds.gbif.org</a>".
 
 To run in production mode, in place of the last "mvn" command use:
 
-<code>$ mvn -Dmaven.test.skip=true -P release</code><br>
+```
+$ mvn -Dmaven.test.skip=true -P release
+```
 
 This makes the checkbox "Production use" on Setup page II appear. It must be checked obviously to run in production. What this means is that registrations will be against the live registry "<a href='https://gbrds.gbif.org'>https://gbrds.gbif.org</a>" and not the test registry "<a href='https://gbrds.gbif-uat.org'>https://gbrds.gbif-uat.org</a>",<br>
-<br>
-Either way, you can then invoke the IPT in a web browser using the following URL :<br>
-<br>
-<a href='http://localhost:8080/ipt'>http://localhost:8080/ipt</a>
+
+Either way, you can then invoke the IPT in a web browser using the following URL: <a href='http://localhost:8080/ipt'>http://localhost:8080/ipt</a>
 
 The first time the mvn command is run it will download many libraries and may take a long time, depending on the Internet data transfer rate. After this has been done once it will be it will be fairly fast thereafter, even if you update to the latest trunk again, which can be done by issuing the following commands from the root directory of the IPT source code:<br>
-<br>
-<code>$ cd gbif-ipt</code><br>
-<code>$ svn up</code><br>
+
+```
+$ cd gbif-ipt
+$ git pull
+```
 
 <h3>Wildfly8 (JBoss)</h3>
 
-Instructions pending.<br>
-<br>
+Instructions pending. (Unlikely to be written by the IPT developers.)
+
 <h2>Virtual Host Name</h2>
 
 This section explains how to setup a virtual host name for your IPT (e.g. ipt.example.com) in Apache. A name-based virtual host is preferred over an IP-based virtual host because it is more aesthetically pleasing and easier to remember.<br>
