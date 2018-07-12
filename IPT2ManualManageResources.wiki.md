@@ -1,3 +1,5 @@
+# The IPT User Manual – Manage Resources Menu
+
 This is a section of the main [[IPT Manual|IPT2ManualNotes.wiki]]
 
 # Table of Contents
