@@ -97,7 +97,7 @@ To save time recreating resources, you can try transferring your 'test' resource
 
 ### 7. What outgoing connections does the IPT make?
 
-During setup, and in test mode, the IPT makes secure HTTPS outgoing connections to https://gbrds.gbif-uat.org.
+During setup, and in test mode, the IPT makes secure HTTPS outgoing connections to https://gbrds.gbif-uat.org and https://tools.gbif.org.
 
 If configured in production mode, the IPT makes secure HTTPS outgoing connections to https://gbrds.gbif.org.
 
