@@ -17,12 +17,11 @@ Many players are involved in the process, not least the GBIF Communications team
     * Label issues with issue type (`Bug`, `Enhancement`, `Duplicate`, `Won't fix`, `Type-Task`, `Type-Other`, etc.), used in statistical reporting.
     * Label issues requiring a change in the UserManual/Wiki with `UserManual`.
     * Assign milestone to each issue, used to group all issues addressed since last version was released. For example, here are [all issues addressed in version 2.3.5](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.5+is%3Aclosed).
-    * Assign project to issues worked on, used internally and externally to transparently show work done for this version. For example, here is the [project for 2.3.5](https://github.com/gbif/ipt/projects/4).
 2. Finalise work
     * Work on each issue should be considered "Done". The meaning of "Done" being understood and agreed on by the entire team, but ideally this also includes having written automated testing, performed code reviews as well as UI testing.
 3. Finalise translations 
     * Work translating each language (by volunteer translators in [Crowdin](https://crowdin.com/project/gbif-ipt)) should be both 100% translated and approved. 
-    * The translations should be exported from Crowdin and committed to the IPT repository following the instructions found in each properties file, e.g. [ApplicationResources_fr.native](https://github.com/gbif/ipt/blob/master/src/main/resources/ApplicationResources_fr.native).
+    * The translation pull request from CrowdIn should be merged.
     * Open the [UAT IPT](https://ipt.gbif-uat.org/) to volunteer translators to verify their work in vivo (see step below). 
 4. Test release candidate
     * Update the [UAT IPT](https://ipt.gbif-uat.org/) with the release candidate
