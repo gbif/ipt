@@ -16,9 +16,7 @@ and limitations under the License.
 
 # Release Notes
 
-**IPT Versions: 2.3.3, 2.3.4, 2.3.5**
-
-
+**IPT Versions: 2.3.3, 2.3.4, 2.3.5, 2.3.6**
 
 ## Upgrade instructions
 
@@ -28,7 +26,7 @@ and limitations under the License.
 
 **Warning 2**: Once an IPT has been upgraded to 2.3.x from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
-**Warning 3**: IPT 2.3.4+ requires Java 8 to run. Since Java 7 reached its end of life in April 2015, the GBIF development team is now in the process of upgrading all its projects to use Java 8 instead.  With Java 7, the IPT will be unable to communicate with the GBIF registry.
+**Warning 3**: IPT 2.3.4+ requires Java 8 to run. Since Java 7 reached its end of life in April 2015, all GBIF projects now use Java 8.
 
 An upgrade can be performed in 4 steps:
   1. Backup the existing data directory and any [custom styling](https://github.com/gbif/ipt/wiki/IPT2Customization.wiki) (images, stylesheets, etc) previously applied to your IPT.
@@ -53,8 +51,8 @@ Additionally, the IPT administrator should update all installed cores and extens
   * IPT 2.3.x includes a slightly redesigned mapping page, making it easier to map your source data. 
 
 ## Dependency Notes
-* This version has been tested and designed to work on Tomcat 6.0, 7.0, and 8.0, however, the end of life for Apache 6.0.x is 31 December 2016. Therefore you should plan to upgrade to a newer version of Tomcat if necessary. More information about the end of life for Apache 6.0.x can be found [here](http://tomcat.apache.org/tomcat-60-eol.html).
-* This version is designed to run on Java 8. Please refer to the [Java version Roadmap](http://www.oracle.com/technetwork/java/eol-135779.html) for an overview of when Oracle plans to discontinue support for the version of Java you currently use.
+* This version has been tested and designed to work on Tomcat 7.0, 8.5, and 9.0.
+* This version is designed to run on Java 8 or 9. Please refer to the [Java version Roadmap](http://www.oracle.com/technetwork/java/eol-135779.html) for an overview of when Oracle plans to discontinue support for the version of Java you currently use.
 
 ## Viewing the IPT change log
 
@@ -67,6 +65,8 @@ These are detailed in the [issue tracking system](https://github.com/gbif/ipt/pr
 Version 2.3.5 addressed a total of 3 issues: 3 Defects, 3 maintenance tasks
 These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/4).
 
+Version 2.3.6 addressed a total of 19 issues.
+These are detailed in the [issue tracking system](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed).
 
 ## When all else fails
 
