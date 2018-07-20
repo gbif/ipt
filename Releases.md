@@ -1,5 +1,16 @@
 # Releases 
 
+### **2.3.6** - July 2018
+
+*   [Download](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.6/ipt-2.3.6.war "Dowload IPT v2.3.6") / [Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki "IPT v2.3.6 Release Notes")
+*   [User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki "IPT User Manual") [(es)](https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki "IPT User Manual Spanish")
+*   Addressed [19 issues](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed "IPT v2.3.6 Issues List").
+*   Translated into 7 languages
+
+Version 2.3.6 fixes a security vulnerability in JQuery, which the IPT uses. Users should plan to upgrade to this version following the instructions in the [Release Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki "IPT v2.3.6 Release Notes").
+
+[An issue](https://github.com/gbif/ipt/issues/1411) remains with custom DOIs from DataCite. If necessary, a further release of the IPT will be made in July or August.
+
 ### **2.3.4** - March, 2017
 
 *   [Download](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.4/ipt-2.3.4.war "Dowload IPT v2.3.4") / [Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki "IPT v2.3.4 Release Notes")
