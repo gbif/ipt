@@ -37,6 +37,7 @@ import org.gbif.metadata.eml.EmlWriter;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.file.FileUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -237,6 +238,7 @@ public class OverviewActionIT {
    * Test reserving existing DOI, making sure the DOI is preserved (user wants to reuse existing DOI).
    */
   @Test
+  @Ignore("Ignoring during DataCite API regression: https://github.com/datacite/poodle/issues/7")
   public void testReuseAndReserveExistingDoi() throws Exception {
     LOG.info("Testing " + type + "...");
     action.setReserveDoi("true");
@@ -274,6 +276,7 @@ public class OverviewActionIT {
    * Test deleting reserved DOI, when the resource was never assigned a DOI before.
    */
   @Test
+  @Ignore("Ignoring during DataCite API regression: https://github.com/datacite/poodle/issues/7")
   public void testDeleteReservedDoi() throws Exception {
     LOG.info("Testing " + type + "...");
     action.setDeleteDoi("true");
@@ -301,6 +304,7 @@ public class OverviewActionIT {
    * Test deleting reserved DOI, when the resource was previously assigned a DOI.
    */
   @Test
+  @Ignore("Ignoring during DataCite API regression: https://github.com/datacite/poodle/issues/7")
   public void testDeleteReservedDoiWhenPreviousDoiExists() throws Exception {
     LOG.info("Testing " + type + "...");
     action.setDeleteDoi("true");
@@ -386,6 +390,7 @@ public class OverviewActionIT {
    * Then test undeleting the same resource, and ensure that all registered DOIs are reactivated.
    */
   @Test
+  @Ignore("Ignoring during DataCite API regression: https://github.com/datacite/poodle/issues/7")
   public void testDeleteAndUndeleteResourceAssignedMultipleDOIs() throws Exception {
     LOG.info("Testing " + type + "...");
     action.setReserveDoi("true");

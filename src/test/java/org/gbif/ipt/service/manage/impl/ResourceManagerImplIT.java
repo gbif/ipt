@@ -59,6 +59,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -239,6 +240,7 @@ public class ResourceManagerImplIT {
    * version, and its target URI should point to that version of the resource.
    */
   @Test
+  @Ignore("Ignoring during DataCite API regression: https://github.com/datacite/poodle/issues/7")
   public void testRegisterDoiWorkflow() throws Exception {
     LOG.info("Testing " + type + "...");
 
