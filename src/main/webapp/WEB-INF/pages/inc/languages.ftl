@@ -6,8 +6,7 @@
     "zh": "繁體中文",
     "pt": "Português",
     "ja": "日本語",
-    "ru": "Русский",
-    "fa": "فارسی"
+    "ru": "Русский"
 }]
 <a href="#">${interfaceLanguges[localeLanguage]}</a>
 <ul id="languages">
