@@ -23,7 +23,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -139,7 +138,6 @@ public class OrganisationSupportIT {
   }
 
   @Test
-  @Ignore("Ignoring during DataCite API regression: https://github.com/datacite/poodle/issues/7")
   public void testValidate() {
     LOG.info("Testing " + organisation.getDoiRegistrationAgency() + "...");
     // EZID only: one-time login over SSL stores a session cookie, clear otherwise test reuses existing valid connection
