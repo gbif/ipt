@@ -1,5 +1,5 @@
 # Best Practices in Publishing Sampling-event data
-<sup>Version 2.0</sup>
+<sup>Version 3.0</sup>
 
 ## Document control
 
@@ -7,6 +7,37 @@
 |---------|-------------------------|-----------------|--------------|
 | [1.0](http://links.gbif.org/ipt-sample-data-primer)   | Release Version         | 2015    | Éamonn Ó Tuama |
 | 2.0 | Transferred to wiki, major changes | May 2017   | Kyle Braak |
+| 3.0 | Minor changes, clean up | Aug 2018   | Marie Grosjean |
+
+## Table of content
+
+1. [Suggested citation](#Suggested-citation)
+2. [Introduction](#Introduction)
+3. [What is sampling-event data?](#What-is-sampling-event-data?)
+	1. How to express sampling-event data in DwC-A?
+	2. Sampling-event Metadata
+	3. Sampling-event Data
+	4. Data file formatting recommendations
+	5. Sample size
+	6. Quantity and abundance
+	7. How to uniquely identify sampling events
+	8. How to capture hierarchy of events
+	9. How to capture absence data
+	10. How to include supplementary multimedia
+4. [Publishing sampling-event data](#Publishing-sampling-event-data)
+	1. Using GUIDs for identifiers
+	2. Protect location of sensitive species
+	3. Preserving verbatim data
+	4. Publishing project data as a single dataset
+	5. Republishing occurrence data as sampling-event data
+	6. Modeling continuous monitoring of live individuals
+5. [Continuous data quality improvement](#Continuous-data-quality-improvement)
+	1. Managing issues related to the dataset
+	2. Sharing scripts and programs used to produce or clean the dataset
+6. [Describing sampling-event data in dataset metadata](#Describing-sampling-event-data-in-dataset-metadata)
+	1. Linking related datasets
+	2. Listing related research
+7. [Examples](#Examples)
 
 ## Suggested citation
 
@@ -14,13 +45,13 @@
 
 ## Introduction
 
-This guide provides details on how to utilise the Darwin Core Archive (DwC-A) format as a means to share sampling-event information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core event data class, and provides recommendations on how to best utilise these components to maximise the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the [Darwin Core Archives How-to Guide](https://github.com/gbif/ipt/wiki/DwCAHowToGuide).
+This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share sampling-event information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core event data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the [Darwin Core Archives How-to Guide](https://github.com/gbif/ipt/wiki/DwCAHowToGuide).
 
-The DwC-A format and the specific profile described here represent an internationally recognised and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardised approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource. A standard format also increases relevance and utility.
+The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favor of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. With this international standard, GBIF hopes to facilitate sampling-event data sharing and promote common approaches to cite and recognize the work of the community creating and handling sampling-event data. <!-- By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource. --> A standard format also increases relevance and utility.
 
 ## What is sampling-event data?
 
-Sampling-event data is a type of data available from thousands of environmental, ecological, and natural resource investigations. These can be one-off studies or monitoring programmes. Such data are usually quantitative, calibrated, and follow certain protocols so that changes and trends of populations can be detected. This is in contrast to opportunistic observation and collection data, which today form a significant proportion of openly accessible biodiversity data. 
+Sampling-event data is a type of data available from thousands of environmental, ecological, and natural resource investigations. These can be one-off studies or monitoring programs. Such data are usually quantitative, calibrated, and follow certain protocols so that changes and trends of populations can be detected. This is in contrast to opportunistic observation and collection data, which today form a significant proportion of openly accessible biodiversity data. 
 
 ### How to express sampling-event data in DwC-A?
 
@@ -28,7 +59,7 @@ Darwin Core Archive (DwC-A) is an informatics data standard that makes use of th
 
 ### Sampling-event Metadata
 
-Documenting the provenance and scope of datasets is required in order to publish sampling-event data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the sampling methodologies used for its compilation, and the individuals and organisations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for sampling-event datasets based on the Ecological Metadata Language. A How-to guide describes all the options for describing a sampling-event dataset using this format. See <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>
+Documenting the provenance and scope of datasets is required in order to publish sampling-event data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the sampling methodologies used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for sampling-event datasets based on the Ecological Metadata Language. A How-to guide describes all the options for describing a sampling-event dataset using this format. See <http://links.gbif.org/gbif_metadata_profile_how-to_en_v1>
 
 ### Sampling-event Data
 
@@ -40,11 +71,8 @@ Figure 1. Darwin Core Archive data files in 'star schema'
 
 An alternative way to encode sampling-event data is listing the species occurrence in the core file, surrounded by a number of extensions, that describe the related data types (such as measurements relating to the species occurrences, etc). Note listing sampling events in the core file is preferable if a plot or site is the main focus of the study.
 
-> TODO: Provide recommendations on how to work around limitations of DwC-A star schema such as not being able to relate measurements and facts to both events and occurrences in the same dataset. The current work around requires publishers to publish separate datasets. Note OBIS is prototyping an Extended Measurement or Facts Extension that could also help overcome this limitation. Discussion on this prototype extension is taking place in GitHub here. However, issues raised that this prototype extension does not explicitly make it clear if the measurement or fact relates to an occurrence or an event. One alternative is to add resourceID (and perhaps resourceType?) instead of adding eventID (and occurrenceID) as attribute to the measurement or fact extension as is explored by the OBIS extension. 
-
-![](https://github.com/gbif/ipt/blob/master/Fig2.%20sampling%20(2).jpg)
-
-Figure 2. A sampling event uses a particular samplingProtocol, sampleSizeValue, sampleSizeUnit etc. 
+Be aware that the current DwC-A star schema such as does have limitations. For example, it does not allow to link measurements and facts to both events and occurrences in the same dataset.
+Discussion on this prototype extension are taking place on GitHub but there is no solution available yet.
 
 
 ### Data file formatting recommendations
@@ -64,9 +92,10 @@ The following Darwin Core fields store the sample size of a sampling event:
 
 The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the [Unit of Measurement Vocabulary](http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml). Examples are given in Table 1 below.
 
-> TODO: Provide recommendations on how to represent the sampling area by choosing the appropriate WKT shape or simple latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points.
+You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points.
 
-**Table 1. sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square metres, or 1 litre.**
+
+**Table 1. sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 liter.**
 
 | sampleSizeValue | sampleSizeUnit |
 |--|--|
@@ -95,79 +124,90 @@ Table 2 lists some example values. The value of organismQuantity is a number or 
 
 ### How to uniquely identify sampling events
 
->TODO: Better guide users on how to fill in dwc:eventID and dwc:parentEventID using persistent globally unique identifiers: 
->- dwc:eventID should be a persistent globally unique identifier. Remember to reuse existing stable identifiers. Do not create a new identifier for the event when one already is declared.
->- In the absence of a GUID, and as a last resort, reuse the original fieldNumber.
+Each event is uniquely identified using dwc:eventID and occasionally dwc:parentEventID. Although the type and format of identifier is arbitrary we recommend that publishers choose persistent globally unique identifier.
+In the absence of a GUID, publishers may reuse the original fieldNumber.
+
+Make sure to reuse existing stable identifiers and do not create a new identifier for an event when one is already declared.
 
 ### How to capture hierarchy of events
 
 Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot[7] each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3).
+
 Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata.
 
->TODO: Better guide users how to publish a hierarchy of events (recursive data type) with the proper use of dwc:parentEventID 
+You may also refer to the following [FAQ](https://github.com/gbif/ipt/wiki/samplingEventData#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parenteventid).
 
 ### How to capture absence data
 
 Refer to the following [FAQ](https://github.com/gbif/ipt/wiki/samplingEventData#q-how-do-i-publish-absence-data).
 
->TODO: Transfer information from FAQ above, guiding users how to publish presence/absence data in DwC with the proper use of dwc:occurrenceStatus
-
 ### How to include supplementary multimedia 
 
->TODO: Provide recommendations on how include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned releve sheet when interpreting the data.
+You may choose to include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned releve sheet when interpreting the data.
+
+The files associated have to be hosted on an external server and linked to the occurrence through the dwc:associatedMedia and dwc:associatedReferences. These files may be images, texts or a combination of both as long as the format type is specified. JPG, PNG, etc. images will be visible as thumbnails while PDFs will appear as clickable links.
 
 ## Publishing sampling-event data 
 
 ### Using GUIDs for identifiers
 
->TODO: Advise publishers to use GUIDs, coupled with guidance on how to create GUIDs for applicable fields such as dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland.
+A number of fields require the usage of unique identifiers: dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID.
 
-### Filling in the required and recommended terms 
+As mentioned previously, although no particular format is enforced, we advise publishers to use Global Unique IDtenifiers (GUIDs). There are a few online services which can provide such identifiers. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland.
 
->TODO: Guide users how to obfuscate the location of sensitive species, such as by:
->- Simply removing these species from the dataset
->- Publishing the species identifications at Genus level only
->- Publishing the sensitive/protected species in a separate dataset
->- Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records
+### Protect location of sensitive species
+
+If your dataset contains sensitive species, there are several ways to handle it:
+- Simply removing these species from the dataset,
+- Publishing the species identifications at Genus level only,
+- Publishing the sensitive/protected species in a separate dataset,
+- Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records.
 
 ### Preserving verbatim data
 
->TODO: Guide users how to enter verbatim descriptions. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber.
+Although verbatim data and descriptions are not visible on the GBIF.org web interface, they are made available to the community through downloads. When entering verbatim description, make sure to link them to the original event or occurrence. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber.
 
 ### Publishing project data as a single dataset
 
->TODO: Provide a recommendation on how to publish data produced from large projects. The current recommendation is to publish a single dataset, because dividing it into multiple datasets results in more duplication of effort entering metadata. Publishers insisting on publishing multiple datasets should link them using Project.ID in EML.  
+Data produced from a large sampling project should be published as a single dataset if possible. If you must publish multiple datasets, we encourage linking them using a common project identifier in the metadata.
 
 ### Republishing occurrence data as sampling-event data
 
-> TODO: Provide rationale and guidance for migrating existing occurrence datasets to sampling event format. The following questions need to be answered:
->- Should the sampling event version replace the existing occurrence version, or should both versions be kept online at the same time?
->- If replacing, should the new sampling event version be assigned a brand new DOI?
->- What are the benefits of producing the sampling event version? 
+Sampling events provide better documentation and benefit both the scientific community and policy makers ([read more](https://www.gbif.org/sampling-event-data)).
+We encourage strongly the republishing of occurrence data as sampling-event data when possible.
 
-### Modelling continuous monitoring of live individuals
+In order to do so, you should create a new sampling-event dataset and send an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplications and preserving citations.
 
-> TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded).
+### Modeling continuous monitoring of live individuals
+
+If your dataset contains continuous monitoring of live individuals, such as bird tracking data, you can use dwc:organismID to store the ID of the individual being tracked. In addition to that, you should represent each individual being tracked as a single event.
+<!-- 
+> TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded). -->
+
+## Continuous data quality improvement
 
 ### Managing issues related to the dataset
 
-> TODO: Provide a recommendation on how to manage issues related to the dataset using GitHub’s issue management system, just like INBO does for example.
+If possible, we recommend tracking all the issues related to a given dataset using an issue management system such as the one provided by Github.
 
 ### Sharing scripts and programs used to produce or clean the dataset
 
-> TODO: Provide a recommendation on how to make custom scripts and programs (e.g. for transforming cross table data) publicly available using GitHub, for the benefit of other publishers, just like INBO does for example. The recommendation should encourage users to include a detailed set of instructions on how to run the scripts to make them more usable.
+Ideally, custom scripts and programs used to transform data should be made publicly available on GitHub. Other publishers will benefit from accessing these scripts along with detailed instructions on how to use them.
 
 ## Describing sampling-event data in dataset metadata
 
-> TODO: Advise publishers to document as much as possible about the sampling event, especially the sampling methodologies, before attempting to try and standardise it into DwC.
+Publishers should document their dataset as much as possible with a particular emphasis on sampling methodologies.
+
+Besides the [mandatory requirements](https://www.gbif.org/data-quality-requirements-sampling-events), the metadata should include information about the extent of study, the sampling methods, the quality control and limitations of the study.
+Although information about fieldwork can part of the data content, you may describe the sampling location and conditions in the metadata as well.
 
 ### Linking related datasets
 
-> TODO: Advise publishers on how to link related datasets that come out of the same research context so they can be easily retrieved by the users. Publishers may have to publish separate datasets in order to work around the limitations of the DwC-A star schema. Publishers may also choose to publish separate occurrence datasets derived from the same sampling events. The current recommendation is to link them using Project.ID.
+Some datasets may come from the same research project or may be related in certain context. The current recommendation is to link them using a project identifier.
 
 ### Listing related research
 
-> TODO: Provide recommendations on how to make the dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc.
+You can make your dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc,. in the bibliographic citation or in the external link part of the metadata.
 
 ## Examples 
 
@@ -195,7 +235,7 @@ Following are some examples of typical sampling-event data sets. In each case, t
 
 **Explanation** 
 
-_Ephemera danica_ : A total of 14 individuals from 1.25 square metres were obtained in this sampling event. The derived individuals per sq metre count is 11.2 (14/1.25). 
+_Ephemera danica_ : A total of 14 individuals from 1.25 square meters were obtained in this sampling event. The derived individuals per sq meter count is 11.2 (14/1.25). 
 
 <br><br>
 
@@ -235,7 +275,7 @@ Each event can also have measurements or facts associated with it, e.g., environ
 
 ### Macrophyte survey
 
-> TODO: Update example based on Dutch Vegetation Database (LVD) version republished as sampling-event dataset. The Releve extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: http://gbif.blogspot.dk/2016/07/probably-turbovegs-best-kept-secret.html 
+Note that this example is based on Dutch Vegetation Database (LVD) previous version republished as sampling-event dataset. The Releve extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: http://gbif.blogspot.dk/2016/07/probably-turbovegs-best-kept-secret.html 
 
 | EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
 | -- | -- | -- | -- | -- | -- | -- | -- | -- |
@@ -256,7 +296,7 @@ Each event can also have measurements or facts associated with it, e.g., environ
 
 **Explanation** 
 
-** _Acer psuedoplatanus_** : In the 100 sq metres surveyed, the abundance of the species was reported as “r” on the Braun Blanquet scale. 
+** _Acer psuedoplatanus_** : In the 100 sq meters surveyed, the abundance of the species was reported as “r” on the Braun Blanquet scale. 
 
 Additional vegetation plot measurements such as vegetation community type (syntaxon) % coverage values that are typical of TurboVeg type databases are captured in a Relevé (vegetation-plot) extension.
 <br><br>
