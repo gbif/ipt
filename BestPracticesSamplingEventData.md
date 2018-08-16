@@ -11,9 +11,9 @@
 
 ## Table of content
 
-1. [Suggested citation](#Suggested-citation)
+1. [Suggested citation](#suggested-citation)
 2. [Introduction](#introduction)
-3. [What is sampling-event data?](#what-is-sampling-event-data?)
+3. [What is sampling-event data?](#what-is-sampling-event-data)
 	1. How to express sampling-event data in DwC-A?
 	2. Sampling-event Metadata
 	3. Sampling-event Data
@@ -24,20 +24,20 @@
 	8. How to capture hierarchy of events
 	9. How to capture absence data
 	10. How to include supplementary multimedia
-4. [Publishing sampling-event data](#Publishing-sampling-event-data)
+4. [Publishing sampling-event data](#publishing-sampling-event-data)
 	1. Using GUIDs for identifiers
 	2. Protect location of sensitive species
 	3. Preserving verbatim data
 	4. Publishing project data as a single dataset
 	5. Republishing occurrence data as sampling-event data
 	6. Modeling continuous monitoring of live individuals
-5. [Continuous data quality improvement](#Continuous-data-quality-improvement)
+5. [Continuous data quality improvement](#continuous-data-quality-improvement)
 	1. Managing issues related to the dataset
 	2. Sharing scripts and programs used to produce or clean the dataset
-6. [Describing sampling-event data in dataset metadata](#Describing-sampling-event-data-in-dataset-metadata)
+6. [Describing sampling-event data in dataset metadata](#describing-sampling-event-data-in-dataset-metadata)
 	1. Linking related datasets
 	2. Listing related research
-7. [Examples](#Examples)
+7. [Examples](#examples)
 
 ## Suggested citation
 
