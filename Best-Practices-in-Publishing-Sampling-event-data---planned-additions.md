@@ -1,7 +1,8 @@
 # Best Practices in Publishing Sampling-event data - planned additions and notes for revision
 <sup>Version 2.0</sup>
 
-Additional information that could also be included or was previously included 
+Additional information that could also be included or was previously included in
+https://github.com/gbif/ipt/wiki/BestPracticesSamplingEventData#continuous-data-quality-improvement
 
 
 ## What is sampling-event data?
