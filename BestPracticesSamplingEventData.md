@@ -12,7 +12,7 @@
 ## Table of content
 
 1. [Suggested citation](#Suggested-citation)
-2. [Introduction](#Introduction)
+2. [Introduction](#introduction)
 3. [What is sampling-event data?](#what-is-sampling-event-data?)
 	1. How to express sampling-event data in DwC-A?
 	2. Sampling-event Metadata
