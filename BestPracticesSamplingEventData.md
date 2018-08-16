@@ -412,6 +412,11 @@ Table 3. Placement of the sample related terms in the Event core and Occurrence 
 | Event Core | eventID, parentEventID, samplingProtocol, sampleSizeValue, sampleSizeUnit, samplingTaxaRange*, siteTreatment*, siteID*, layer* |
 |:--|:--|
 | **Occurrence Extension** | **eventID, organismQuantity, organismQuantityType, siteID+, layer+** |
+
+### Planned additions and notes for revision:
+
+https://github.com/gbif/ipt/wiki/Best-Practices-in-Publishing-Sampling-event-data---planned-additions
+
 ###### The **+** symbol indicates proposed new terms not yet ratified. 
 
 
