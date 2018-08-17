@@ -67,7 +67,7 @@
     <meta name="generator" content="IPT ${cfg.version!}" />
     <meta name="inventory" content="${baseURL}/inventory/dataset"/>
     <meta name="foaf:seeAlso" content="${baseURL}/dcat"/>
-
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
 <script type="text/javascript">
 $(document).ready(function(){
 [#-- see global.js for function defs --]
