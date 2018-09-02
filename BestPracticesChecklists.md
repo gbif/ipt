@@ -163,11 +163,11 @@ The recommended way to share a classification is in a normalised format. This ma
 -   The ***dwc:taxonRank*** of the referent taxon. Example: “***species***”
 -   A reference to the taxon identifier of the immediate parent taxon stored in the ***dwc:parentNameUsageID***. In the example below, the parent of record 7, for “***Panthera tigris*** (Linnaeus)” is record 6, the genus “***Panthera***.”
 
-A sample classification for a single species, the tiger, “***Panthera tigris***”, is illustrated below. Note that the top-most member of a hierarchy has no parent so that the parent identifier should be null or a “0”. Note that ***dwc:scientificName*** provides a common field for storing the name in this case but that the full set of options for names is described above in Sharing Scientific Names.
+A sample classification for a single species, the tiger, “***Panthera tigris***”, is illustrated below. Note that the top-most member of a hierarchy has no parent so that the parent identifier should be empty. Note that ***dwc:scientificName*** provides a common field for storing the name in this case but that the full set of options for names is described above in Sharing Scientific Names.
 
 | **taxonID** | **taxonRank** | **scientificName**         | **parentNameUsageID** |
 |-------------|---------------|----------------------------|-----------------------|
-| 1           | Kingdom       | Animalia                   | 0                     |
+| 1           | Kingdom       | Animalia                   |                       |
 | 2           | Phylum        | Chordata                   | 1                     |
 | 3           | Class         | Mammalia                   | 2                     |
 | 4           | Order         | Carnivora                  | 3                     |
