@@ -155,11 +155,12 @@ div#un-registered {
   -webkit-border-radius: 0 0 12px 12px;
   border-radius: 0 0 12px 12px;
   padding:10px;
-  position:relative;
-  float:right;
   -webkit-box-shadow:  0px 0px 10px 0px rgba(200, 200, 200, 0.4);
   box-shadow:  0px 0px 10px 0px rgba(200, 200, 200, 0.4);
   font-size:1.1em;
+  position: absolute;
+  top: 3px;
+  right: 0;
 }
 #language-menu li a {
   text-decoration:none;
@@ -180,6 +181,7 @@ div#un-registered {
   font-size: 0.9em;
   line-height: 25px;
   font-family: Arial, Helvetica, sans-serif;
+  position: relative;
 }
 
 #region-user-second .region-user-second-inner {
