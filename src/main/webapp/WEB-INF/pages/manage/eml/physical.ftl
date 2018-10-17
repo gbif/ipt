@@ -20,7 +20,7 @@
   <h2 class="subTitle"><@s.text name='manage.metadata.physical.title'/></h2>
   <form class="topForm" action="metadata-${section}.do" method="post">
     <p><@s.text name='manage.metadata.physical.intro'/></p>
-	<@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" />
+	<@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" type="url" />
 
   <div class="listBlock grid_17 suffix_1">
     <@textinline name="eml.physicalData.other" help="i18n"/>
@@ -37,7 +37,7 @@
                   <@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
                 </div>
                 <div class="fullcolumn">
-                  <@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true />
+                  <@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true type="url" />
                 </div>
                 <div class="halfcolumn">
                   <@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />

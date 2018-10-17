@@ -86,7 +86,7 @@
             <@input name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" disabled=true value='${eml.pubDate?date?string("yyyy-MM-dd")}'/>
           </div>
     		  <div class="column_half">
-            <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n"/>
+            <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n" type="url" />
               <div style="padding-left: 20px;">
                 <@s.file name="file"/>
                   <div class="clearfix"></div>

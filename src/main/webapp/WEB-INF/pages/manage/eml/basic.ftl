@@ -274,7 +274,7 @@
                 <@input name="eml.contacts[${contact_index}].email" i18nkey="eml.contact.email" />
               </div>
               <div class="halfcolumn">
-                <@input name="eml.contacts[${contact_index}].homepage" i18nkey="eml.contact.homepage" />
+                <@input name="eml.contacts[${contact_index}].homepage" i18nkey="eml.contact.homepage" type="url" />
               </div>
               <div class="halfcolumn">
                 <#if eml.contacts[contact_index].userIds[0]??>
@@ -345,7 +345,7 @@
               <@input name="eml.creators[${creator_index}].email" i18nkey="eml.resourceCreator.email" />
             </div>
             <div class="halfcolumn">
-              <@input name="eml.creators[${creator_index}].homepage" i18nkey="eml.resourceCreator.homepage" />
+              <@input name="eml.creators[${creator_index}].homepage" i18nkey="eml.resourceCreator.homepage" type="url" />
             </div>
             <div class="halfcolumn">
               <#if eml.creators[creator_index].userIds[0]??>
@@ -415,7 +415,7 @@
               <@input name="eml.metadataProviders[${metadataProvider_index}].email" i18nkey="eml.metadataProvider.email" />
             </div>
             <div class="halfcolumn">
-              <@input name="eml.metadataProviders[${metadataProvider_index}].homepage" i18nkey="eml.metadataProvider.homepage" />
+              <@input name="eml.metadataProviders[${metadataProvider_index}].homepage" i18nkey="eml.metadataProvider.homepage" type="url" />
             </div>
             <div class="halfcolumn">
               <#if eml.metadataProviders[metadataProvider_index].userIds[0]??>
@@ -480,7 +480,7 @@
           <@input name="eml.contact.email" i18nkey="eml.contact.email" />
         </div>
         <div class="halfcolumn">
-          <@input name="eml.contact.homepage" i18nkey="eml.contact.homepage" />
+          <@input name="eml.contact.homepage" i18nkey="eml.contact.homepage" type="url" />
         </div>
         <div class="halfcolumn">
           <@select name="eml.contact.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
@@ -533,7 +533,7 @@
           <@input name="eml.creator.email" i18nkey="eml.resourceCreator.email" />
         </div>
         <div class="halfcolumn">
-          <@input name="eml.creator.homepage" i18nkey="eml.resourceCreator.homepage" />
+          <@input name="eml.creator.homepage" i18nkey="eml.resourceCreator.homepage" type="url" />
         </div>
         <div class="halfcolumn">
           <@select name="eml.creator.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
@@ -586,7 +586,7 @@
           <@input name="eml.metadataProvider.email" i18nkey="eml.metadataProvider.email" />
         </div>
         <div class="halfcolumn">
-          <@input name="eml.metadataProvider.homepage" i18nkey="eml.metadataProvider.homepage" />
+          <@input name="eml.metadataProvider.homepage" i18nkey="eml.metadataProvider.homepage" type="url" />
         </div>
         <div class="halfcolumn">
           <@select name="eml.metadataProvider.userId.directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />

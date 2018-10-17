@@ -71,7 +71,7 @@ $(document).ready(function(){
 		  			<@input name="eml.associatedParties[${item_index}].email" i18nkey="eml.associatedParties.email" />
 				</div>
   		  <div class="halfcolumn">
-		  	  <@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" />
+		  	  <@input name="eml.associatedParties[${item_index}].homepage" i18nkey="eml.associatedParties.homepage" type="url" />
 		    </div>
         <div class="halfcolumn">
           <#if eml.associatedParties[item_index].userIds[0]??>
