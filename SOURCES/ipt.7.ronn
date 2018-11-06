@@ -1,0 +1,52 @@
+GBIF-IPT(7) - Share biodiversity data
+=====================================
+
+## DESCRIPTION
+
+This is a packaged version of the Integrated Publishing Toolkit (IPT),
+developed by the Global Biodiversity Information Facility (GBIF).
+
+## CONFIGURATION
+
+Most configuration is done within the IPT web interface.  Two
+parameters are set in `/etc/sysconfig/ipt`, though most users won't
+need to change them.
+
+* `IPT_DATA_DIR`:
+  This specifies where data should be stored.  You should ensure this
+  directory is backed up!  The default is `/var/lib/ipt`.
+
+* `IPT_PORT`:
+  The port the IPT process will listen on.  The default is 8080.
+
+## STARTING AND STOPPING
+
+Start and stop the IPT using `systemctl`:
+
+- `systemctl start ipt`
+- `systemctl status ipt`
+- `systemctl restart ipt`
+- `systemctl stop ipt`
+
+Set the IPT to start automatically when the server starts up:
+
+- `systemctl enable ipt`
+
+View log output using `journalctl`:
+
+- `journalctl -u ipt`
+
+and/or by looking at the files in /var/lib/ipt/logs.
+
+## WEB SERVER INTEGRATION
+
+Some users choose to install Apache HTTPD web server in front of the
+IPT.  An example configuration file for doing this is at
+/usr/share/doc/ipt/ipt-vhost.conf.
+
+## RESOURCES
+
+On the [GitHub site](https://github.com/gbif/ipt/) you will find the
+source code, additional documentation and issue tracker.
+
+Further information is on the [GBIF IPT site](https://www.gbif.org/ipt).
