@@ -1,4 +1,4 @@
-%define nr_ver  2.3.4
+%define nr_ver  2.3.5
 %define release_number 1
 
 Name: ipt
@@ -73,6 +73,8 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 %systemd_postun_with_restart ipt.service
 
 %changelog
+* Tue Nov 06 2018 Matthew Blissett <mblissett@gbif.org> - 2.3.5-1
+- Publish IPT 2.3.5 release.
 * Tue Nov 06 2018 Matthew Blissett <mblissett@gbif.org> - 2.3.4-1
 - Publish IPT 2.3.4 release.
 * Thu Nov 17 2016 Matthew Blissett <mblissett@gbif.org> - 2.3.2-0.1
