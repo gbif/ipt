@@ -10,13 +10,15 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 
 <a href="https://www.youtube.com/embed/eDH9IoTrMVE?ecver=1" target="_blank"><img src="https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/screenshots/IPTDemoVideoIntroSlide.png" alt="How to publish biodiversity data through GBIF.org using the IPT" width="560" height="315" border="10" /></a>
 
-### Latest Release: 2.3.5
+### Latest Release: 2.3.6
 
-Version 2.3.5 is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.5/ipt-2.3.5.war). 
+Version 2.3.5 is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.6/ipt-2.3.6.war). 
 
-Version 2.3.5 fixes cross site scripting vulnerabilities, and [an issue](https://github.com/gbif/ipt/issues/1344) that caused the dataset inventory web service request to fail.
+Version 2.3.6 improves coverage of translations, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
 
 #### Previous releases 
+
+Version 2.3.5 is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.5/ipt-2.3.5.war).  Version 2.3.5 fixes cross site scripting vulnerabilities, and [an issue](https://github.com/gbif/ipt/issues/1344) that caused the dataset inventory web service request to fail.
 
 Version 2.3.4 includes a security update that fixes a [critical vulnerability](https://struts.apache.org/docs/s2-045.html) that has been discovered in the Apache Struts web framework, which the IPT uses. According to [this article](http://thehackernews.com/2017/03/apache-struts-framework.html), this is a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability. **Therefore all users should plan to upgrade to this version immediately following the instructions in the [Release Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki).**
 
