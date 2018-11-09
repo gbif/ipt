@@ -62,7 +62,7 @@
     <httpcore.version>4.3.3</httpcore.version>
     <httputils.version>0.10</httputils.version>
     <itext.version>2.1.7</itext.version>
-    <jackson2.version>2.9.2</jackson2.version>
+    <jackson2.version>2.9.5</jackson2.version>
     <javassist.version>3.12.1.GA</javassist.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.19.4</jersey.version>
@@ -80,7 +80,7 @@
     <postgresql.version>42.1.4</postgresql.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.21</slf4j.version>
-    <struts2.version>2.5.14.1</struts2.version>
+    <struts2.version>2.5.17</struts2.version>
     <validation-api.version>2.0.0.Final</validation-api.version>
     <xstream.version>1.4.8</xstream.version>
   </properties>
