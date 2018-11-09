@@ -53,7 +53,5 @@ Thanks to an enormous community effort, and by leveraging the power of the [Crow
 
 A large number of dedicated volunteers contribute to the success of this software. With your help, the IPT has become a successful tool in use all around the world.  
 
-[JetBrains](http://www.jetbrains.com/) is kindly supporting this open source project by giving GBIF free open source licenses for its full-featured Java IDE - [IntelliJ](http://www.jetbrains.com/idea/). [JetBrains](http://www.jetbrains.com/) is the creator of a wide range of tools have been helping software developers be more efficient, no matter what technologies they use. Take a second now to look at their [leading software products](http://www.jetbrains.com/).
-
 [Crowdin](https://crowdin.com/) is kindly supporting this open source project by giving GBIF a free access to its localisation management platform. Crowdin makes it possible to manage a large number of concurrent translations.
 
