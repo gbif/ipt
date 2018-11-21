@@ -4,7 +4,7 @@ Here you can find the [[IPT User Manual|IPT2ManualNotes.wiki]] and a variety of 
 
 ## New version with security update released!
 
-**Version 2.3.5** is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.5/ipt-2.3.5.war). Version 2.3.5 fixes cross site scripting vulnerabilities, and [an issue](https://github.com/gbif/ipt/issues/1344) that caused the dataset inventory web service request to fail.
+**Version 2.3.6** is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.6/ipt-2.3.6.war). Version 2.3.6 has minor bugfixes and dependency updates to improve the security of the IPT, following similar updates made for version 2.3.5.
 
 This builds on top of the security update added in **Version 2.3.4** that fixed a [critical vulnerability](https://struts.apache.org/docs/s2-045.html) that was discovered in the Apache Struts web framework, which the IPT uses. According to [this article](http://thehackernews.com/2017/03/apache-struts-framework.html), this was a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability. 
 
