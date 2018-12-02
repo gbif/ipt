@@ -395,7 +395,7 @@ Descriptive information should be limited to single paragraph text blocks. Multi
 
 ## Sharing Species Distributions
 
-The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the [Species Distribution extension](http://rs.gbif.org/extension/gbif/1.0/distribution.xml). This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designative national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area.
+The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the [Species Distribution extension](http://rs.gbif.org/extension/gbif/1.0/distribution.xml). This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area.
 
 The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element.
 
