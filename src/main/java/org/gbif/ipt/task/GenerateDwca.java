@@ -617,7 +617,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
                                      + ". Required term basisOfRecord was not mapped in the occurrence core");
       }
 
-      addMessage(Level.INFO, "? Validating the core basisOfRecord is always present is always present and its "
+      addMessage(Level.INFO, "? Validating the core basisOfRecord is always present and its "
                              + "value matches the Darwin Core Type Vocabulary.");
 
       // find index of basisOfRecord
