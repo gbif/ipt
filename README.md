@@ -12,7 +12,7 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 
 ### Latest Release: 2.3.6
 
-Version 2.3.5 is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.6/ipt-2.3.6.war). 
+Version 2.3.6 is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.6/ipt-2.3.6.war). 
 
 Version 2.3.6 improves coverage of translations, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
 
