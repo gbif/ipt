@@ -49,6 +49,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -241,6 +242,8 @@ public class ResourceManagerImplIT {
   @Test
   public void testRegisterDoiWorkflow() throws Exception {
     LOG.info("Testing " + type + "...");
+    String expectedEzidUrl = UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt%3Fr=ants").build().toString();
+    String expectedDataciteUrl = URI.create("http://www.gbif-uat.org:7001/ipt?r=ants").toString();
 
     // reserve DOI to begin with
     assertNotNull(doi);
@@ -273,8 +276,14 @@ public class ResourceManagerImplIT {
     assertNotNull(doiData.getStatus());
     assertTrue(doiData.getStatus().isRegistered());
     assertNotNull(doiData.getTarget());
-    assertEquals(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt%3Fr=ants").build().toString(),
-      doiData.getTarget().toString());
+
+    if (type == DOIRegistrationAgency.DATACITE) {
+      assertEquals(expectedDataciteUrl, doiData.getTarget().toString());
+    }
+    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
+    if (type == DOIRegistrationAgency.EZID) {
+      assertEquals(expectedEzidUrl, doiData.getTarget().toString());
+    }
 
     // mock version 1.0 having been published by setting last published, and adding new VersionHistory
     r.setLastPublished(new Date());
@@ -302,8 +311,14 @@ public class ResourceManagerImplIT {
     assertNotNull(doiData.getStatus());
     assertTrue(doiData.getStatus().isRegistered());
     assertNotNull(doiData.getTarget());
-    assertEquals(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt%3Fr=ants").build().toString(),
-      doiData.getTarget().toString());
+
+    if (type == DOIRegistrationAgency.DATACITE) {
+      assertEquals(expectedDataciteUrl, doiData.getTarget().toString());
+    }
+    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
+    if (type == DOIRegistrationAgency.EZID) {
+      assertEquals(expectedEzidUrl, doiData.getTarget().toString());
+    }
 
     // mock version 1.1 having been published by setting last published, and adding new VersionHistory
     r.setLastPublished(new Date());
@@ -346,15 +361,27 @@ public class ResourceManagerImplIT {
     assertNotNull(doiData.getStatus());
     assertEquals(DoiStatus.REGISTERED, doiData.getStatus());
     assertNotNull(doiData.getTarget());
-    assertEquals(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt%3Fr=ants").build().toString(),
-      doiData.getTarget().toString());
+
+    if (type == DOIRegistrationAgency.DATACITE) {
+      assertEquals(expectedDataciteUrl, doiData.getTarget().toString());
+    }
+    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
+    if (type == DOIRegistrationAgency.EZID) {
+      assertEquals(expectedEzidUrl, doiData.getTarget().toString());
+    }
 
     // check replaced DOI is still registered, and its target is equal to resource version URI
     doiData = registrationManager.getDoiService().resolve(doi);
     assertNotNull(doiData.getStatus());
     assertEquals(DoiStatus.REGISTERED, doiData.getStatus());
     assertNotNull(doiData.getTarget());
-    assertEquals(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt%3Fr=ants&v=1.1").build().toString(),
-      doiData.getTarget().toString());
+
+    if (type == DOIRegistrationAgency.DATACITE) {
+      assertEquals(URI.create("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").toString(), doiData.getTarget().toString());
+    }
+    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
+    if (type == DOIRegistrationAgency.EZID) {
+      assertEquals(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt%3Fr=ants&v=1.1").build().toString(), doiData.getTarget().toString());
+    }
   }
 }

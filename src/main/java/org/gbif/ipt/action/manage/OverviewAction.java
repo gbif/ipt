@@ -461,17 +461,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     Preconditions.checkNotNull(target);
     try {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
-      if (doiData != null && doiData.getStatus() != null) {
-        if (doiData.getStatus().equals(DoiStatus.DELETED)) {
-          LOG.info("Undeleting deleted DOI: " + doi.toString() + "...");
-          DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
-          registrationManager.getDoiService().register(doi, target, dataCiteMetadata);
-          String msg = getText("manage.overview.publishing.doi.undelete.success", new String[]{doi.toString()});
-          LOG.info(msg);
-          addActionMessage(msg);
-        } else {
-          throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_NOT_DELETED, getText("manage.overview.publishing.doi.undelete.failed.badStatus", new String[] {doi.toString(), doiData.getStatus().toString()}));
-        }
+      if (doiData == null || DoiStatus.DELETED.equals(doiData.getStatus())) {
+        LOG.info("Undeleting deleted DOI: " + doi.toString() + "...");
+        DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
+        registrationManager.getDoiService().register(doi, target, dataCiteMetadata);
+        String msg = getText("manage.overview.publishing.doi.undelete.success", new String[]{doi.toString()});
+        LOG.info(msg);
+        addActionMessage(msg);
       } else {
         throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_DOES_NOT_EXIST, getText("manage.overview.publishing.doi.undelete.failed.notResolved", new String[] {doi.toString()}));
       }
