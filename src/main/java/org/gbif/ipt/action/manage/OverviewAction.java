@@ -469,7 +469,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         LOG.info(msg);
         addActionMessage(msg);
       } else {
-        throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_DOES_NOT_EXIST, getText("manage.overview.publishing.doi.undelete.failed.notResolved", new String[] {doi.toString()}));
+        throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_NOT_DELETED, getText("manage.overview.publishing.doi.undelete.failed.badStatus", new String[] {doi.toString(), doiData.getStatus().toString()}));
       }
     } catch (DoiException e) {
       throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.undelete.failed.exception", new String[] {doi.toString(), e.getMessage()}));
