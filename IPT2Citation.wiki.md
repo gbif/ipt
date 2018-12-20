@@ -1,6 +1,6 @@
 # IPT Citation Format
 
-
+**Note that the citation format used in the IPT is not used by GBIF.org.  See https://www.gbif.org/faq?q=citation for background information on this.**
 
 ## Introduction
 
