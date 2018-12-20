@@ -51,7 +51,9 @@ You will probably need to work with your system or network administrator for the
 
 You will need a DNS name for the server ("`ipt.example.org`") and the firewall to allow access.
 
-Many people use Apache as a proxy, often to allow sharing other websites on the same server or HTTPS access.  The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths `/media` and `/icons` are excluded from being passed to the IPT, to allow hosting static image files (e.g. occurrence images) on the same server.
+Many people use Apache as a proxy, often to allow sharing other websites on the same server or HTTPS access.
+
+The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths `/media` and `/icons` are excluded from being passed to the IPT, to allow hosting static image files (e.g. occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/.
 
 ```
 <VirtualHost *:80>
