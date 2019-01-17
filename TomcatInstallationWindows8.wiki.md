@@ -1,15 +1,14 @@
 # Install Tomcat 8 on Windows 8
 
 ## Table of Contents
-+ [[Introduction|TomcatInstallationWindows7.wiki#introduction]]
-+ [[Prerequisites|TomcatInstallationWindows7.wiki#prerequisites]]
-+ [[Steps|TomcatInstallationWindows7.wiki#steps]]
-  + [[1. Download Tomcat 6.x|TomcatInstallationWindows7.wiki#1-download-tomcat-6x]]
-  + [[2. Install Tomcat 6.x|TomcatInstallationWindows7.wiki#2-install-tomcat-6x]]
-  + [[3. Run Tomcat|TomcatInstallationWindows7.wiki#3-run-tomcat]]
-  + [[4. Test Tomcat|TomcatInstallationWindows7.wiki#4-test-tomcat]]
-  + [[5. Shut down Tomcat|TomcatInstallationWindows7.wiki#5-shut-down-tomcat]]
-  + [[6. References|TomcatInstallationWindows7.wiki#6-references]]
++ [[Introduction|TomcatInstallationWindows8.wiki#introduction]]
++ [[Prerequisites|TomcatInstallationWindows8.wiki#prerequisites]]
++ [[Steps|TomcatInstallationWindows8.wiki#steps]]
+  + [[1. Download Tomcat 8.x|TomcatInstallationWindows8.wiki#1-download-tomcat-8x]]
+  + [[2. Install Tomcat 8.x|TomcatInstallationWindows8.wiki#2-install-tomcat-8x]]
+  + [[3. Run Tomcat|TomcatInstallationWindows8.wiki#3-run-tomcat]]
+  + [[4. Test Tomcat|TomcatInstallationWindows8.wiki#4-test-tomcat]]
+  + [[5. Shut down Tomcat|TomcatInstallationWindows8.wiki#5-shut-down-tomcat]]
 
 ## Introduction
 This tutorial explains how to install the Apache Tomcat Java Servlet 8 on Windows 8.1 Pro. This document is not tested to work with other versions of Tomcat. For complete details, consult the specific documentation for those software installations.
