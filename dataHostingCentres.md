@@ -117,7 +117,7 @@ The [Danish Biodiversity Information Facility (DanBIF)](http://danbif.dk/english
 
 ## Finland
 
-The [Finnish Biodiversity Information Facility (FinBIF)](http://laji.fi/?locale=en) provides helpdesk support to new publishers in Finland, and hosting support for datasets on the [Digitarium IPT](http://ipt.digitarium.fi/). Please contact the Digitarium <hannu.saarenmaa@uef.fi> for assistance. 
+The Finnish Biodiversity Information Facility (FinBIF) (https://laji.fi/en) provides helpdesk support to new publishers in Finland, and hosting support for datasets on the FinBIF IPT (https://ipt.laji.fi/ipt). Please contact FinBIF eija-leena.laiho@helsinki.fi for assistance.
 
 ## France
 
