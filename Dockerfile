@@ -6,7 +6,7 @@ RUN apk add --update curl && \
 RUN rm -Rf /usr/local/tomcat/webapps \
     && mkdir -p /usr/local/tomcat/webapps/ROOT \
     && mkdir -p /usr/local/ipt \
-    && curl -Ls -o ipt.war http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.5/ipt-2.3.5.war \
+    && curl -Ls -o ipt.war http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.6/ipt-2.3.6.war \
     && unzip -d /usr/local/tomcat/webapps/ROOT ipt.war \
     && rm ipt.war
 EXPOSE 8080
