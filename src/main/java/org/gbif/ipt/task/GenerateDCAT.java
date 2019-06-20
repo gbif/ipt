@@ -171,7 +171,7 @@ public class GenerateDCAT {
         BigDecimal v = resource.getLastPublishedVersionsVersion();
         String shortname = resource.getShortname();
         File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
-        Resource publishedPublicVersion = ResourceUtils.reconstructVersion(v, resource.getShortname(),
+        Resource publishedPublicVersion = ResourceUtils.reconstructVersion(v, resource.getShortname(), resource.getCoreType(),
           resource.getAssignedDoi(), resource.getOrganisation(), resource.findVersionHistory(v), versionEmlFile,
           resource.getKey());
 

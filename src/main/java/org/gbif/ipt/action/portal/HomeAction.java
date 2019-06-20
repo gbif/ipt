@@ -63,7 +63,7 @@ public class HomeAction extends BaseAction {
       // try/catch block flags resources missing mandatory metadata (published using IPT prior to v2.2)
       try {
         Resource publishedPublicVersion = ResourceUtils
-          .reconstructVersion(v, resource.getShortname(), resource.getAssignedDoi(), resource.getOrganisation(),
+          .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getAssignedDoi(), resource.getOrganisation(),
             resource.findVersionHistory(v), versionEmlFile, resource.getKey());
 
         // set properties only existing on current (unpublished) version

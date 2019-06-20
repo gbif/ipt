@@ -26,6 +26,7 @@ public class ResourceUtils {
   private ResourceUtils() {
   }
 
+  // TODO: 2019-06-18 update comment (add coreType)
   /**
    * Reconstruct published version, using version's Eml file, version history, etc.
    *
@@ -39,7 +40,7 @@ public class ResourceUtils {
    *
    * @return published version reconstructed
    */
-  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @Nullable DOI doi,
+  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreType, @Nullable DOI doi,
     @Nullable Organisation organisation, @Nullable VersionHistory versionHistory, @Nullable File versionEmlFile,
     @Nullable UUID key) {
     Preconditions.checkNotNull(version);
@@ -52,6 +53,7 @@ public class ResourceUtils {
 
     // initiate new version, and set properties
     Resource resource = new Resource();
+    resource.setCoreType(coreType);
     resource.setShortname(shortname);
     resource.setEmlVersion(version);
     resource.setDoi(doi);

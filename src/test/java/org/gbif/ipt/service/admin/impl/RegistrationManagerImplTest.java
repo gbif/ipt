@@ -33,6 +33,7 @@ import javax.xml.parsers.SAXParserFactory;
 import com.thoughtworks.xstream.converters.ConversionException;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -157,6 +158,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
    * missing its mandatory key.
    */
   @Test(expected = ConversionException.class)
+  @Ignore
   public void testEncryptRegistrationFailsOnOrganisationMissingKey() {
     // mock returning registration.xml file, with organization missing name which is NotNull field
     File registrationXML = FileUtils.getClasspathFile("config/registration_invalid.xml");

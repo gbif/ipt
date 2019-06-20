@@ -1,16 +1,14 @@
 package org.gbif.ipt.action.manage;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Lists;
 import freemarker.template.TemplateException;
 import org.apache.log4j.Logger;
 import org.gbif.api.model.common.DOI;
+import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.doi.service.DoiService;
-import org.gbif.doi.service.ServiceConfig;
-import org.gbif.doi.service.datacite.DataCiteService;
-import org.gbif.doi.service.ezid.EzidService;
+import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -34,7 +32,6 @@ import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
-import org.gbif.utils.HttpUtil;
 import org.gbif.utils.file.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,9 +44,17 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -61,7 +66,6 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(Parameterized.class)
 public class OverviewActionIT {
-
 
   private static final Logger LOG = Logger.getLogger(OverviewActionIT.class);
   private static final UUID ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5");
@@ -101,9 +105,11 @@ public class OverviewActionIT {
     // DataCite parameters..
     RegistrationManager mockRegistrationManagerDataCite = mock(RegistrationManager.class);
 
+    ClientConfiguration cfg;
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    InputStream dc = FileUtils.classpathStream("datacite.yaml");
-    ServiceConfig dcCfg = mapper.readValue(dc, ServiceConfig.class);
+    try (InputStream dc = FileUtils.classpathStream("datacite.yaml")) {
+      cfg = mapper.readValue(dc, ClientConfiguration.class);
+    }
     //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
@@ -112,8 +118,8 @@ public class OverviewActionIT {
     oDataCite.setName("GBIF");
     oDataCite.setDoiPrefix(Constants.TEST_DOI_PREFIX);
     oDataCite.setCanHost(true);
-    oDataCite.setAgencyAccountUsername(dcCfg.getUsername());
-    oDataCite.setAgencyAccountPassword(dcCfg.getPassword());
+    oDataCite.setAgencyAccountUsername(cfg.getUser());
+    oDataCite.setAgencyAccountPassword(cfg.getPassword());
     oDataCite.setDoiRegistrationAgency(DOIRegistrationAgency.DATACITE);
 
     // mock returning primary DOI agency account
@@ -123,7 +129,8 @@ public class OverviewActionIT {
     when(mockRegistrationManagerDataCite.get(any(UUID.class))).thenReturn(oDataCite);
 
     // mock returning DataCite service
-    DoiService dataCiteService = new DataCiteService(HttpUtil.newMultithreadedClient(10000, 3, 2), dcCfg);
+//    DoiService dataCiteService = new DataCiteService(HttpUtil.newMultithreadedClient(10000, 3, 2), dcCfg);
+    DoiService dataCiteService = new RestJsonApiDataCiteService(cfg.getBaseApiUrl(), cfg.getUser(), cfg.getPassword());
     when(mockRegistrationManagerDataCite.getDoiService()).thenReturn(dataCiteService);
 
     // mock action for DataCite
@@ -133,38 +140,40 @@ public class OverviewActionIT {
         mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
 
     // EZID parameters..
-    RegistrationManager mockRegistrationManagerEZID = mock(RegistrationManager.class);
-
-    Organisation oEZID = new Organisation();
-    oEZID.setKey(ORGANISATION_KEY.toString());
-    oEZID.setAgencyAccountPrimary(true);
-    oEZID.setName("GBIF");
-    oEZID.setDoiPrefix(Constants.EZID_TEST_DOI_SHOULDER);
-    oEZID.setCanHost(true);
-    oEZID.setAgencyAccountUsername("apitest");
-    oEZID.setAgencyAccountPassword("apitest");
-    oEZID.setDoiRegistrationAgency(DOIRegistrationAgency.EZID);
+//    RegistrationManager mockRegistrationManagerEZID = mock(RegistrationManager.class);
+//
+//    Organisation oEZID = new Organisation();
+//    oEZID.setKey(ORGANISATION_KEY.toString());
+//    oEZID.setAgencyAccountPrimary(true);
+//    oEZID.setName("GBIF");
+//    oEZID.setDoiPrefix(Constants.EZID_TEST_DOI_SHOULDER);
+//    oEZID.setCanHost(true);
+//    oEZID.setAgencyAccountUsername("apitest");
+//    oEZID.setAgencyAccountPassword("apitest");
+//    oEZID.setDoiRegistrationAgency(DOIRegistrationAgency.EZID);
 
     // mock returning primary DOI agency account
-    when(mockRegistrationManagerEZID.findPrimaryDoiAgencyAccount()).thenReturn(oEZID);
+//    when(mockRegistrationManagerEZID.findPrimaryDoiAgencyAccount()).thenReturn(oEZID);
 
     // mock RegistrationManager returning organisation by key
-    when(mockRegistrationManagerEZID.get(any(UUID.class))).thenReturn(oEZID);
+//    when(mockRegistrationManagerEZID.get(any(UUID.class))).thenReturn(oEZID);
 
     // mock returning EZID service
-    ServiceConfig cfgEZID = new ServiceConfig("apitest", "apitest");
-    EzidService ezidService = new EzidService(HttpUtil.newMultithreadedClient(10000, 2, 2), cfgEZID);
-    when(mockRegistrationManagerEZID.getDoiService()).thenReturn(ezidService);
+    // TODO: 2019-06-17 remove Ezid stuff?
+//    ServiceConfig cfgEZID = new ServiceConfig("apitest", "apitest");
+//    EzidService ezidService = new EzidService(HttpUtil.newMultithreadedClient(10000, 2, 2), cfgEZID);
+//    when(mockRegistrationManagerEZID.getDoiService()).thenReturn(ezidService);
 
     // mock action for EZID
-    OverviewAction actionEZID =
-      new OverviewAction(mock(SimpleTextProvider.class), mockAppConfig, mockRegistrationManagerEZID,
-        mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-        mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
+//    OverviewAction actionEZID =
+//      new OverviewAction(mock(SimpleTextProvider.class), mockAppConfig, mockRegistrationManagerEZID,
+//        mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
+//        mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
 
     return Arrays.asList(
-      new Object[][] {{actionDataCite, DOIRegistrationAgency.DATACITE}
-        , {actionEZID, DOIRegistrationAgency.EZID}
+      new Object[][] {
+          {actionDataCite, DOIRegistrationAgency.DATACITE}
+//        , {actionEZID, DOIRegistrationAgency.EZID}
       });
   }
 
@@ -178,6 +187,7 @@ public class OverviewActionIT {
     r.setEml(eml);
 
     // mandatory elements
+    r.setCoreType("Occurrence");
     r.setTitle("Ants");
     r.setShortname("ants");
     eml.setTitle("Ants");
@@ -379,6 +389,7 @@ public class OverviewActionIT {
     LOG.info("Publishing resource with DOI that cannot be resolved failed as expected");
   }
 
+  // TODO: 2019-06-18 looks like it's not possible anymore
   /**
    * Test deleting resource that has been assigned multiple DOIs, and ensure that deletion deletes all reserved DOIs,
    * and deactivates all registered DOIs.

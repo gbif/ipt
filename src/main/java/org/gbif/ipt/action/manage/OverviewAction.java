@@ -377,7 +377,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           BigDecimal versionToUndelete = resource.getLastPublishedVersionsVersion();
           UUID key = resource.getKey();
           File versionToUndeleteEmlFile = cfg.getDataDir().resourceEmlFile(shortname, versionToUndelete);
-          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, doi, organisation,
+          Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, resource.getCoreType(), doi, organisation,
             resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile, key);
           URI target = cfg.getResourceUri(shortname);
           // perform undelete
@@ -398,7 +398,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                 File formerVersionToUndeleteEmlFile =
                   cfg.getDataDir().resourceEmlFile(shortname, formerVersionToUndelete);
                 Resource formerVersionReconstructed = ResourceUtils
-                  .reconstructVersion(formerVersionToUndelete, shortname, formerDoi, organisation,
+                  .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), formerDoi, organisation,
                     resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile, key);
                 // prepare target URI equal to version resource page
                 URI formerTarget = cfg.getResourceVersionUri(shortname, formerVersionToUndelete);
@@ -461,7 +461,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     Preconditions.checkNotNull(target);
     try {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
-      if (doiData == null || DoiStatus.DELETED.equals(doiData.getStatus())) {
+      if (doiData.getStatus() == DoiStatus.NEW || doiData.getStatus() == DoiStatus.DELETED) {
         LOG.info("Undeleting deleted DOI: " + doi.toString() + "...");
         DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
         registrationManager.getDoiService().register(doi, target, dataCiteMetadata);

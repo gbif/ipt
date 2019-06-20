@@ -1,9 +1,15 @@
 package org.gbif.ipt.service.admin.impl;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Ordering;
+import com.google.common.io.Closer;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.thoughtworks.xstream.XStream;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 import org.gbif.doi.service.DoiService;
-import org.gbif.doi.service.ServiceConfig;
-import org.gbif.doi.service.datacite.DataCiteService;
-import org.gbif.doi.service.ezid.EzidService;
+import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Ipt;
@@ -42,15 +48,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.Ordering;
-import com.google.common.io.Closer;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.thoughtworks.xstream.XStream;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.Logger;
 
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
@@ -126,15 +123,19 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       DOIRegistrationAgency agency = organisation.getDoiRegistrationAgency();
 
       if (!Strings.isNullOrEmpty(username) && !Strings.isNullOrEmpty(password) && agency != null) {
-        ServiceConfig cfg = new ServiceConfig(username, password);
-        if (agency.equals(DOIRegistrationAgency.DATACITE)) {
-          return new DataCiteService(client, cfg);
-        } else if (agency.equals(DOIRegistrationAgency.EZID)) {
-          return new EzidService(client, cfg);
-        } else {
-          throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
-            "DOI agency for " + organisation.getName() + " is not recognized: " + agency.toString());
-        }
+//        ServiceConfig cfg = new ServiceConfig(username, password);
+
+        return new RestJsonApiDataCiteService(cfg.getDataCiteUrl(), username, password);
+
+//        if (agency.equals(DOIRegistrationAgency.DATACITE)) {
+//          return new DataCiteService(client, cfg);
+//        } else if (agency.equals(DOIRegistrationAgency.EZID)) {
+//          return new EzidService(client, cfg);
+//        } else {
+//          throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
+//            "DOI agency for " + organisation.getName() + " is not recognized: " + agency.toString());
+//        }
+
       } else {
         throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
           "DOI agency account for " + organisation.getName() + " is missing information!");

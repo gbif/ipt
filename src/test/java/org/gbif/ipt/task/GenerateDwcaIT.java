@@ -1,11 +1,18 @@
 package org.gbif.ipt.task;
 
 
-import org.gbif.doi.service.ServiceConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.common.collect.Maps;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.servlet.ServletModule;
+import com.google.inject.struts2.Struts2GuicePluginModule;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwca.io.Archive;
 import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -43,29 +50,21 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
+import org.gbif.utils.file.csv.CSVReader;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.validation.constraints.NotNull;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.collect.Maps;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.servlet.ServletModule;
-import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -87,14 +86,14 @@ public class GenerateDwcaIT {
   private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
   private File tmpDataDir;
   private File resourceDir;
-  private static ServiceConfig dbCfg;
+  private static ClientConfiguration cfg;
 
   @BeforeClass
   public static void init() throws IOException {
     // load DataCite account username and password from the properties file
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     InputStream dc = FileUtils.classpathStream("testdb.yaml");
-    dbCfg = mapper.readValue(dc, ServiceConfig.class);
+    cfg = mapper.readValue(dc, ClientConfiguration.class);
 
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
     Map<String, String> basisOfRecords = Maps.newHashMap();
@@ -140,11 +139,11 @@ public class GenerateDwcaIT {
     sqlSource.setRdbms(psql);
     sqlSource.setDatabase("clb");
     sqlSource.setHost("builds.gbif.org");
-    sqlSource.setUsername(dbCfg.getUsername());
+    sqlSource.setUsername(cfg.getUser());
     // column order matches occurrence.txt file, and corresponds to resource.xml mapping
     sqlSource.setSql(
       "SELECT n.id, scientificName, basisOfRecord, kingdom FROM name n, (VALUES(1, null, 'occurrence', 'Animalia')) AS t (occurrenceID, scientificName, basisOfRecord, kingdom) where n.id = t.occurrenceID;");
-    sqlSource.setPassword(dbCfg.getPassword());
+    sqlSource.setPassword(cfg.getPassword());
     resource.getMappings().get(0).setSource(sqlSource);
 
     generateDwca =

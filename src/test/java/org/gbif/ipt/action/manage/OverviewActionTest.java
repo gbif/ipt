@@ -1,7 +1,11 @@
 package org.gbif.ipt.action.manage;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+import freemarker.template.TemplateException;
 import org.gbif.api.model.common.DOI;
-import org.gbif.doi.service.datacite.DataCiteService;
+import org.gbif.doi.service.DoiService;
+import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -25,20 +29,16 @@ import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
+import org.junit.Before;
+import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
-import javax.xml.parsers.ParserConfigurationException;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import freemarker.template.TemplateException;
-import org.junit.Before;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -302,7 +302,7 @@ public class OverviewActionTest {
 
     // mock RegistrationManager returning mock DoiService
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
-    DataCiteService mockDataCiteService = mock(DataCiteService.class);
+    DoiService mockDataCiteService = mock(RestJsonApiDataCiteService.class);
     when(mockRegistrationManager.getDoiService()).thenReturn(mockDataCiteService);
     // mock action
     action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
@@ -332,7 +332,7 @@ public class OverviewActionTest {
 
     // mock RegistrationManager returning mock DoiService
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
-    DataCiteService mockDataCiteService = mock(DataCiteService.class);
+    DoiService mockDataCiteService = mock(RestJsonApiDataCiteService.class);
     when(mockRegistrationManager.getDoiService()).thenReturn(mockDataCiteService);
 
     // mock RegistrationManager returning resource organisation
