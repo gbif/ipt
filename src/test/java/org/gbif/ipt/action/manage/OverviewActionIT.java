@@ -57,7 +57,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * WARNING!
- * This requires live DATACITE and EZID services !!!
+ * This requires live DataCite service.
  */
 @RunWith(Parameterized.class)
 public class OverviewActionIT {
@@ -334,8 +334,7 @@ public class OverviewActionIT {
   public void testPublishFailsBecauseDOICannotBeResolved() throws Exception {
     LOG.info("Testing " + type + "...");
     // mock resource having DOI reserved that doesn't exist!
-    DOI assignedDoi = DOIUtils.mintDOI(type,
-        (type.equals(DOIRegistrationAgency.EZID) ? Constants.EZID_TEST_DOI_SHOULDER : Constants.TEST_DOI_PREFIX));
+    DOI assignedDoi = DOIUtils.mintDOI(type, Constants.TEST_DOI_PREFIX);
     r.setDoi(assignedDoi);
     r.setDoiOrganisationKey(ORGANISATION_KEY);
     r.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);

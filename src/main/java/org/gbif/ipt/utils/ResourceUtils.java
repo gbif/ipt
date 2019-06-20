@@ -26,12 +26,12 @@ public class ResourceUtils {
   private ResourceUtils() {
   }
 
-  // TODO: 2019-06-18 update comment (add coreType)
   /**
    * Reconstruct published version, using version's Eml file, version history, etc.
    *
    * @param version version to assign to reconstructed resource
    * @param shortname shortname to assign to reconstructed resource
+   * @param coreType coreType
    * @param doi DOI to assign to reconstructed resource
    * @param organisation organisation to assign to reconstructed resource
    * @param versionHistory VersionHistory corresponding to resource version being reconstructed

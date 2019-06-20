@@ -51,7 +51,7 @@ public final class Constants {
   public static final String DATASET_TYPE_METADATA_IDENTIFIER = "metadata";
   public static final String TEST_DOI_PREFIX = "10.21373";
 
-  // TODO: 2019-06-17 ananlyze the project and remove all unused properties
+  @Deprecated
   public static final String EZID_TEST_DOI_SHOULDER = "10.5072/FK2";
   public static final UUID DEFAULT_ORG_KEY = UUID.fromString("625a5522-1886-4998-be46-52c66dd566c9");
 

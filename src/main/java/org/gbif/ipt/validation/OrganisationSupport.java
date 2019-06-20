@@ -11,7 +11,6 @@ package org.gbif.ipt.validation;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
@@ -120,14 +119,13 @@ public class OrganisationSupport {
         action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.invalid"));
       } else {
         // running IPT in development, the test DOI prefix is expected, but not mandatory - show warning otherwise
-        if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT && !Constants.TEST_DOI_PREFIX
-          .equalsIgnoreCase(prefix) && !Constants.EZID_TEST_DOI_SHOULDER.equalsIgnoreCase(prefix)) {
+        if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT
+            && !Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix)) {
           action.addActionWarning(action.getText("validation.organisation.doiPrefix.invalid.testMode"));
         }
         // running IPT in production, the test DOI prefix cannot be used
-        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION && (
-          Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix) || Constants.EZID_TEST_DOI_SHOULDER
-            .equalsIgnoreCase(prefix))) {
+        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION
+            && (Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix))) {
           valid = false;
           action.addFieldError("organisation.doiPrefix",
             action.getText("validation.organisation.doiPrefix.invalid.productionMode"));

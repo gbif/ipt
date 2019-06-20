@@ -27,6 +27,7 @@ public class OrganisationsActionTest {
 
   private static final UUID ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5");
 
+  // TODO: 2019-06-20 analyze
   /**
    * Mock EZID account being used to assign a DOI to a resource, then try to change the primary DOI agency account to
    * a DataCite account. This needs to be prevented, because it will render the existing DOI impossible to update.

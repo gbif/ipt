@@ -17,6 +17,7 @@ public class DOIUtilsTest {
     assertTrue(doi.getDoiName().startsWith("10.1234"));
   }
 
+  // TODO: 2019-06-20 remove
   @Test
   public void testMintDoiEZID() {
     DOI doi = DOIUtils.mintDOI(DOIRegistrationAgency.EZID, "10.1234/FK2");
