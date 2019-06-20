@@ -158,7 +158,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
    * missing its mandatory key.
    */
   @Test(expected = ConversionException.class)
-  @Ignore
+  @Ignore("floating behaviour")
   public void testEncryptRegistrationFailsOnOrganisationMissingKey() {
     // mock returning registration.xml file, with organization missing name which is NotNull field
     File registrationXML = FileUtils.getClasspathFile("config/registration_invalid.xml");
