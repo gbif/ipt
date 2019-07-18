@@ -48,10 +48,10 @@
     <dwc-api.version>1.17</dwc-api.version>
     <dwca-io.version>1.31</dwca-io.version>
     <freemarker.version>2.3.26-incubating</freemarker.version>
-    <gbif-api.version>0.81</gbif-api.version>
+    <gbif-api.version>0.82</gbif-api.version>
     <gbif-common-ws.version>0.41</gbif-common-ws.version>
     <gbif-common.version>0.38</gbif-common.version>
-    <gbif-doi.version>2.4</gbif-doi.version>
+    <gbif-doi.version>2.7</gbif-doi.version>
     <gbif-metadata-profile.version>1.1.1</gbif-metadata-profile.version>
     <gbif-parsers.version>0.31</gbif-parsers.version>
     <gbif-registry.version>2.74</gbif-registry.version>

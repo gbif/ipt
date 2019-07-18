@@ -5,6 +5,7 @@ import org.gbif.doi.metadata.datacite.ContributorType;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.metadata.datacite.DateType;
 import org.gbif.doi.metadata.datacite.DescriptionType;
+import org.gbif.doi.metadata.datacite.NameIdentifier;
 import org.gbif.doi.metadata.datacite.RelatedIdentifierType;
 import org.gbif.doi.metadata.datacite.RelationType;
 import org.gbif.doi.service.InvalidMetadataException;
@@ -387,8 +388,7 @@ public class DataCiteMetadataBuilderTest {
   @Test
   public void testConvertEmlUserIdWithUnrecognizedScheme() throws InvalidMetadataException {
     UserId userId1 = new UserId("http://unrecognized.org", "0000-0099-6824-9999");
-    DataCiteMetadata.Creators.Creator.NameIdentifier id =
-      DataCiteMetadataBuilder.convertEmlUserIdIntoCreatorNameIdentifier(userId1);
+    NameIdentifier id = DataCiteMetadataBuilder.convertEmlUserIdIntoCreatorNameIdentifier(userId1);
     assertNull(id);
   }
 
@@ -456,8 +456,7 @@ public class DataCiteMetadataBuilderTest {
   @Test
   public void testConvertEmlContributorUserIdWithUnrecognizedScheme() throws InvalidMetadataException {
     UserId userId1 = new UserId("http://unrecognized.org", "0000-0099-6824-9999");
-    DataCiteMetadata.Contributors.Contributor.NameIdentifier id =
-      DataCiteMetadataBuilder.convertEmlUserIdIntoContributorNameIdentifier(userId1);
+    NameIdentifier id = DataCiteMetadataBuilder.convertEmlUserIdIntoContributorNameIdentifier(userId1);
     assertNull(id);
   }
 

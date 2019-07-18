@@ -1,11 +1,13 @@
 package org.gbif.ipt.utils;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.doi.metadata.datacite.Affiliation;
 import org.gbif.doi.metadata.datacite.Box;
 import org.gbif.doi.metadata.datacite.ContributorType;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.metadata.datacite.DateType;
 import org.gbif.doi.metadata.datacite.DescriptionType;
+import org.gbif.doi.metadata.datacite.NameIdentifier;
 import org.gbif.doi.metadata.datacite.ObjectFactory;
 import org.gbif.doi.metadata.datacite.RelatedIdentifierType;
 import org.gbif.doi.metadata.datacite.RelationType;
@@ -408,7 +410,7 @@ public class DataCiteMetadataBuilder {
           // identifier is optional, however, there can only be one and the name of the identifier scheme is mandatory
           if (!agent.getUserIds().isEmpty()) {
             for (UserId userId : agent.getUserIds()) {
-              DataCiteMetadata.Creators.Creator.NameIdentifier nid = convertEmlUserIdIntoCreatorNameIdentifier(userId);
+              NameIdentifier nid = convertEmlUserIdIntoCreatorNameIdentifier(userId);
               if (nid != null) {
                 creator.getNameIdentifier().add(nid);
                 break;
@@ -417,7 +419,9 @@ public class DataCiteMetadataBuilder {
           }
           // affiliation is optional
           if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
-            creator.getAffiliation().add(agent.getOrganisation());
+            final Affiliation affiliation = FACTORY.createAffiliation();
+            affiliation.setValue(agent.getOrganisation());
+            creator.getAffiliation().add(affiliation);
           }
         }
         // 2. try organisation name
@@ -498,8 +502,7 @@ public class DataCiteMetadataBuilder {
         // identifier is optional, however, there can only be one and the name of the identifier scheme is mandatory
         if (!agent.getUserIds().isEmpty()) {
           for (UserId userId : agent.getUserIds()) {
-            DataCiteMetadata.Contributors.Contributor.NameIdentifier nid =
-              convertEmlUserIdIntoContributorNameIdentifier(userId);
+            NameIdentifier nid = convertEmlUserIdIntoContributorNameIdentifier(userId);
             if (nid != null) {
               contributor.getNameIdentifier().add(nid);
               break;
@@ -508,7 +511,9 @@ public class DataCiteMetadataBuilder {
         }
         // affiliation is optional
         if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
-          contributor.getAffiliation().add(agent.getOrganisation());
+          final Affiliation affiliation = FACTORY.createAffiliation();
+          affiliation.setValue(agent.getOrganisation());
+          contributor.getAffiliation().add(affiliation);
         }
       }
       // 2. try organisation name
@@ -524,7 +529,9 @@ public class DataCiteMetadataBuilder {
         contributor.setContributorName(contributorName);
         // affiliation is optional
         if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
-          contributor.getAffiliation().add(agent.getOrganisation());
+          final Affiliation affiliation = FACTORY.createAffiliation();
+          affiliation.setValue(agent.getOrganisation());
+          contributor.getAffiliation().add(affiliation);
         }
       }
       // otherwise if no name, organisation name, or position name found, throw exception
@@ -701,14 +708,13 @@ public class DataCiteMetadataBuilder {
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
    */
   @VisibleForTesting
-  protected static DataCiteMetadata.Creators.Creator.NameIdentifier convertEmlUserIdIntoCreatorNameIdentifier(
+  protected static NameIdentifier convertEmlUserIdIntoCreatorNameIdentifier(
     UserId userId) {
     if (!Strings.isNullOrEmpty(userId.getIdentifier()) && !Strings.isNullOrEmpty(userId.getDirectory())) {
       String directory = Strings.nullToEmpty(userId.getDirectory()).toLowerCase();
       if (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) || directory
         .contains(RESEARCHERID_NAME_IDENTIFIER_SCHEME.toLowerCase())) {
-        DataCiteMetadata.Creators.Creator.NameIdentifier nid =
-          FACTORY.createDataCiteMetadataCreatorsCreatorNameIdentifier();
+        NameIdentifier nid = FACTORY.createNameIdentifier();
         nid.setValue(userId.getIdentifier());
         nid.setSchemeURI(userId.getDirectory());
         nid.setNameIdentifierScheme(
@@ -734,14 +740,13 @@ public class DataCiteMetadataBuilder {
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
    */
   @VisibleForTesting
-  protected static DataCiteMetadata.Contributors.Contributor.NameIdentifier convertEmlUserIdIntoContributorNameIdentifier(
+  protected static NameIdentifier convertEmlUserIdIntoContributorNameIdentifier(
     UserId userId) {
     if (!Strings.isNullOrEmpty(userId.getIdentifier()) && !Strings.isNullOrEmpty(userId.getDirectory())) {
       String directory = Strings.nullToEmpty(userId.getDirectory()).toLowerCase();
       if (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) || directory
         .contains(RESEARCHERID_NAME_IDENTIFIER_SCHEME.toLowerCase())) {
-        DataCiteMetadata.Contributors.Contributor.NameIdentifier nid =
-          FACTORY.createDataCiteMetadataContributorsContributorNameIdentifier();
+        NameIdentifier nid = FACTORY.createNameIdentifier();
         nid.setValue(userId.getIdentifier());
         nid.setSchemeURI(userId.getDirectory());
         nid.setNameIdentifierScheme(
