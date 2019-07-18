@@ -233,7 +233,7 @@ public class Organisation extends AgentBase implements Serializable {
   }
 
   /**
-   * @return test DOI prefix (used in test registrations for both DataCite and EZID)
+   * @return test DOI prefix (used in test registrations)
    */
   public String getTestDoiPrefix() {
     return Constants.TEST_DOI_PREFIX;

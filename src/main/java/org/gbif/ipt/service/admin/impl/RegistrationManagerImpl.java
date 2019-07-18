@@ -123,19 +123,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       DOIRegistrationAgency agency = organisation.getDoiRegistrationAgency();
 
       if (!Strings.isNullOrEmpty(username) && !Strings.isNullOrEmpty(password) && agency != null) {
-//        ServiceConfig cfg = new ServiceConfig(username, password);
-
         return new RestJsonApiDataCiteService(cfg.getDataCiteUrl(), username, password);
-
-//        if (agency.equals(DOIRegistrationAgency.DATACITE)) {
-//          return new DataCiteService(client, cfg);
-//        } else if (agency.equals(DOIRegistrationAgency.EZID)) {
-//          return new EzidService(client, cfg);
-//        } else {
-//          throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
-//            "DOI agency for " + organisation.getName() + " is not recognized: " + agency.toString());
-//        }
-
       } else {
         throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
           "DOI agency account for " + organisation.getName() + " is missing information!");

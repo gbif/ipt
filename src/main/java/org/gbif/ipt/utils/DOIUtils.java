@@ -1,6 +1,5 @@
 package org.gbif.ipt.utils;
 
-
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 
@@ -21,8 +20,7 @@ public class DOIUtils {
   }
 
   /**
-   * Mint DOI that is allowed in organisation's namespace. Construction varies between EZID and  DataCite, because
-   * EZID prefixes include a shoulder (e.g. "/FK2").
+   * Mint DOI that is allowed in organisation's namespace.
    *
    * @param agency DOI registration agency
    * @param prefix DOI prefix
@@ -37,7 +35,6 @@ public class DOIUtils {
     // generate random alphanumeric string 6 characters long, lower case
     String suffix = RandomStringUtils.randomAlphanumeric(6).toLowerCase();
 
-    // EZID shoulder contains forward slash "/", so handle construction differently to DataCite construction
-    return (agency.equals(DOIRegistrationAgency.EZID)) ? new DOI(prefix + suffix) : new DOI(prefix, suffix);
+    return new DOI(prefix, suffix);
   }
 }

@@ -100,9 +100,9 @@ public interface RegistrationManager {
 
   /**
    * Construct and return the appropriate DOI service depending on the type of DOI agency account that has been
-   * activated in the IPT (DataCite or EZID only).
+   * activated in the IPT (since version 2.4, DataCite only).
    *
-   * @return the DataCite or EZID service capable of reserving, minting, deleting DOIs
+   * @return the DataCite service capable of reserving, minting, deleting DOIs
    *
    * @throws InvalidConfigException if the DOI agency account has been badly configured
    */

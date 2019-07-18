@@ -8,15 +8,7 @@ public enum DOIRegistrationAgency {
   /**
    * DataCite (DataCite REST API).
    *
-   * @see <a href="http://www.datacite.org/">http://www.datacite.org/</a>
+   * @see <a href="https://www.datacite.org/">https://www.datacite.org/</a>
    */
-  DATACITE,
-
-  /**
-   * EZID.
-   *
-   * @see <a href="http://ezid.cdlib.org/">http://ezid.cdlib.org/</a>
-   */
-  @Deprecated
-  EZID
+  DATACITE
 }

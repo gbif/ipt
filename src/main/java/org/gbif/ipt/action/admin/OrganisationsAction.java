@@ -85,9 +85,7 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
 
-  // TODO: 2019-06-20 EZID should be marked as deprecated
-  private static final List<String> DOI_REGISTRATION_AGENCIES =
-    ImmutableList.of(DOIRegistrationAgency.DATACITE.name(), DOIRegistrationAgency.EZID.name());
+  private static final List<String> DOI_REGISTRATION_AGENCIES = ImmutableList.of(DOIRegistrationAgency.DATACITE.name());
 
   @Inject
   public OrganisationsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -294,7 +292,9 @@ public class OrganisationsAction extends POSTAction {
 
   /**
    * Make sure all DOIs in this IPT correspond to the account being saved. Otherwise, the user could switch the
-   * account type from DataCite to EZID, and render all DataCite DOIs unable to be updated.
+   * account type from EZID to DataCite, and render all DataCite DOIs unable to be updated.
+   *
+   * (Support for EZID was removed in version 2.4.)
    *
    * @return true if DOIs assigned using another account are found in the IPT, false otherwise
    */

@@ -55,7 +55,7 @@
     <nodeName>DanBIF - Danish Biodiversity Information Facility</nodeName>
     <canHost>true</canHost>
     <agencyAccountPrimary>true</agencyAccountPrimary>
-    <doiRegistrationAgency>EZID</doiRegistrationAgency>
+    <doiRegistrationAgency>DATACITE</doiRegistrationAgency>
     <agencyAccountUsername>DK.KYLE</agencyAccountUsername>
     <agencyAccountPassword>PsQfBTu3GJfy00mWe2MyOg==</agencyAccountPassword>
     <doiPrefix>10.5072</doiPrefix>
