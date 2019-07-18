@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+  <!--
+     This is console only during development,
+     A running IPT adds a new data dir file based logger.
+     Users can switch from this to a production log4j2 definition in a running system
+   -->
+
+  <Appenders>
+    <Console name="CONSOLE" target="SYSTEM_OUT">
+      <PatternLayout pattern="%-5p [%c] - %m%n"/>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <Logger name="org.apache.http.headers" level="info"/>
+    <Logger name="log4j.logger.org.apache.http" level="info"/>
+
+    <Logger name="org" level="INFO"/>
+    <Logger name="com" level="INFO"/>
+    <Logger name="com.opensymphony.xwork2" level="WARN"/>
+    <!-- Avoid the terrible:
+         "Developer Notification (set struts.devMode to false to disable this message):"
+    -->
+    <Logger name="com.opensymphony.xwork2.interceptor.ParametersInterceptor" level="FATAL"/>
+    <Logger name="freemarker" level="WARN"/>
+
+    <!-- This logger is referred to in LoggingConfiguration.java, don't remove it. -->
+    <Logger name="org.gbif" level="DEBUG"/>
+
+    <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
+
+    <Root level="DEBUG">
+      <AppenderRef ref="CONSOLE"/>
+    </Root>
+  </Loggers>
+</Configuration>

@@ -65,7 +65,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private User addUser(User user) {
     if (user != null) {
       if (user.getRole() == Role.Admin) {
-        log.debug("Adding admin " + user.getEmail());
+        LOG.debug("Adding admin " + user.getEmail());
         if (allowSimplifiedAdminLogin) {
           if (onlyAdminEmail == null) {
             // first admin - keep its email address available for simplified login
@@ -78,7 +78,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           }
         }
       } else {
-        log.debug("Adding user " + user.getEmail());
+        LOG.debug("Adding user " + user.getEmail());
       }
       users.put(user.getEmail().toLowerCase(), user);
     }
@@ -134,7 +134,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
             }
           }
           if (lastAdmin) {
-            log.warn("Last admin cannot be deleted");
+            LOG.warn("Last admin cannot be deleted");
             throw new DeletionNotAllowedException(Reason.LAST_ADMIN);
           }
         }
@@ -256,14 +256,14 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           // end of file, expected exception!
           break;
         } catch (ClassNotFoundException e) {
-          log.error(e.getMessage(), e);
+          LOG.error(e.getMessage(), e);
         }
       }
     } catch (FileNotFoundException e) {
-      log.warn("User accounts not existing, " + PERSISTENCE_FILE
+      LOG.warn("User accounts not existing, " + PERSISTENCE_FILE
         + " file missing  (This is normal when first setting up a new datadir)");
     } catch (IOException e) {
-      log.error(e.getMessage(), e);
+      LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());
     } finally {
       if (in != null) {
@@ -276,7 +276,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   }
 
   public synchronized void save() throws IOException {
-    log.debug("Saving all " + users.size() + " user accounts...");
+    LOG.debug("Saving all " + users.size() + " user accounts...");
     Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
     ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users");
     for (Entry<String, User> entry : users.entrySet()) {

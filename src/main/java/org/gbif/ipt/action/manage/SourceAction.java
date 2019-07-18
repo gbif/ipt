@@ -41,12 +41,13 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SourceAction extends ManagerBaseAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(SourceAction.class);
+  private static final Logger LOG = LogManager.getLogger(SourceAction.class);
 
   private SourceManager sourceManager;
   private JdbcSupport jdbcSupport;

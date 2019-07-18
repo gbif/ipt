@@ -20,7 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class used to start a monitor thread which is responsible for auto-publishing resources when they are due,
@@ -32,7 +33,7 @@ public class PublishingMonitor {
   // 10 second interval
   public static final int MONITOR_INTERVAL_MS = 10000;
   private static Thread monitorThread;
-  private static final Logger LOG = Logger.getLogger(PublishingMonitor.class);
+  private static final Logger LOG = LogManager.getLogger(PublishingMonitor.class);
   private AtomicBoolean running;
   private final ResourceManager resourceManager;
   private final BaseAction baseAction;

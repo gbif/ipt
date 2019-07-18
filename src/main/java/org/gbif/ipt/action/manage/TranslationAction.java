@@ -37,14 +37,15 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TranslationAction extends ManagerBaseAction {
 
   private static final long serialVersionUID = -8350422710092468050L;
 
   // logging
-  private static final Logger LOG = Logger.getLogger(TranslationAction.class);
+  private static final Logger LOG = LogManager.getLogger(TranslationAction.class);
 
   @SessionScoped
   static class Translation {

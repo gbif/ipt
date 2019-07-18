@@ -23,14 +23,15 @@ import java.io.StringWriter;
 import com.google.inject.Inject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AboutAction extends BaseAction {
 
   private static final long serialVersionUID = -471175839075190159L;
 
   // logging
-  private static final Logger LOG = Logger.getLogger(AboutAction.class);
+  private static final Logger LOG = LogManager.getLogger(AboutAction.class);
 
   private final Configuration ftl;
   private String content;

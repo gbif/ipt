@@ -18,7 +18,8 @@ import java.util.List;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the user accounts in the IPT.
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
 public class UserAccountsAction extends POSTAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(UserAccountsAction.class);
+  private static final Logger LOG = LogManager.getLogger(UserAccountsAction.class);
 
   private static final long serialVersionUID = 8892204508303815998L;
   private static final int PASSWORD_LENGTH = 8;

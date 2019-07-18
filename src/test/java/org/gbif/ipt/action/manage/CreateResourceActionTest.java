@@ -14,7 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CreateResourceActionTest {
-  private static final Logger LOG = Logger.getLogger(CreateResourceActionTest.class);
+  private static final Logger LOG = LogManager.getLogger(CreateResourceActionTest.class);
   private static final String SHORTNAME = "bugs";
   private CreateResourceAction action;
   private static final File RESOURCES_DIRECTORY = getResourceDirectory();

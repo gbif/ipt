@@ -27,7 +27,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to extension management.
@@ -35,7 +36,7 @@ import org.apache.log4j.Logger;
 public class ExtensionsAction extends POSTAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(ExtensionsAction.class);
+  private static final Logger LOG = LogManager.getLogger(ExtensionsAction.class);
 
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;

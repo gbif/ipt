@@ -2,7 +2,8 @@ package org.gbif.ipt.validation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.ipt.action.admin.OrganisationsAction;
 import org.gbif.ipt.config.AppConfig;
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.when;
 @RunWith(Parameterized.class)
 public class OrganisationSupportIT {
 
-  private static final Logger LOG = Logger.getLogger(OrganisationSupportIT.class);
+  private static final Logger LOG = LogManager.getLogger(OrganisationSupportIT.class);
 
   private static final String ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5").toString();
   private static final String VALID_ORGANISATION_PASSWORD = "password";

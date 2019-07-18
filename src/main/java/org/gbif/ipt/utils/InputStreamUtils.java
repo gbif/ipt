@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class InputStreamUtils {
 
-  protected static final Logger log = Logger.getLogger(InputStreamUtils.class);
+  protected static final Logger log = LogManager.getLogger(InputStreamUtils.class);
 
   public InputStream classpathStream(String path) {
     InputStream in = null;

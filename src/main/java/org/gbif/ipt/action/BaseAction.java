@@ -6,7 +6,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.util.ValueStack;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 import org.gbif.ipt.config.AppConfig;
@@ -31,7 +32,7 @@ import java.util.*;
 public class BaseAction extends ActionSupport implements SessionAware, Preparable, ServletRequestAware {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(BaseAction.class);
+  private static final Logger LOG = LogManager.getLogger(BaseAction.class);
 
   private static final long serialVersionUID = -2330991910834399442L;
   public static final String NOT_MODIFIED = "304";

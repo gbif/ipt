@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+  <!--
+      This is the production minimal log setting.
+      A running IPT adds a new data dir file based logger.
+      Users can switch from this to a detailed developer log4j2.xml definition in a running system
+  -->
+
+  <Loggers>
+    <Logger name="org.apache.struts2" level="ERROR"/>
+    <Logger name="com.opensymphony.xwork2" level="ERROR"/>
+    <Logger name="freemarker" level="ERROR"/>
+
+    <!-- This logger is referred to in LoggingConfiguration.java, don't remove it. -->
+    <Logger name="org.gbif"/>
+
+    <Logger name="org.gbif.dwc.terms.TermFactory" level="ERROR" />
+
+    <Root level="DEBUG"/>
+  </Loggers>
+</Configuration>

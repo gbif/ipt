@@ -1140,7 +1140,6 @@ public class Eml2Rtf {
     Eml eml = resource.getEml();
     // configure page
     doc.setMargins(72, 72, 72, 72);
-    System.out.println(DataDir.CONFIG_DIR);
     // write metadata
     doc.addAuthor(resource.getCreator().getName());
     doc.addCreationDate();

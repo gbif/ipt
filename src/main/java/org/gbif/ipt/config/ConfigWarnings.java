@@ -20,12 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Singleton;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Singleton
 public class ConfigWarnings {
 
-  private static final Logger LOG = Logger.getLogger(ConfigWarnings.class);
+  private static final Logger LOG = LogManager.getLogger(ConfigWarnings.class);
   private final List<String> startupErrors = new ArrayList<String>();
 
   public void addStartupError(Exception e) {

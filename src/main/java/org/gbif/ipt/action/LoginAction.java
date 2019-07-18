@@ -3,7 +3,8 @@ package org.gbif.ipt.action;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
@@ -22,7 +23,7 @@ import java.io.IOException;
 public class LoginAction extends POSTAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(AccountAction.class);
+  private static final Logger LOG = LogManager.getLogger(AccountAction.class);
 
   private final UserAccountManager userManager;
 

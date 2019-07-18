@@ -17,13 +17,14 @@ import java.io.Writer;
 import java.text.NumberFormat;
 
 import com.google.common.base.Preconditions;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FileUtils {
 
   public static final String UTF8 = "UTF8";
 
-  private static final Logger LOG = Logger.getLogger(FileUtils.class);
+  private static final Logger LOG = LogManager.getLogger(FileUtils.class);
 
   private static final int BUFFER_SIZE = 8192;
 

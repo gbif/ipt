@@ -104,14 +104,14 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       File f = getVocabFile(toUninstall.getUriResolvable());
       if (f.exists()) {
         f.delete();
-        log.debug("Successfully deleted (uninstalled) vocabulary file: " + f.getAbsolutePath());
+        LOG.debug("Successfully deleted (uninstalled) vocabulary file: " + f.getAbsolutePath());
       } else {
-        log.warn("Vocabulary file doesn't exist locally - can't delete: " + f.getAbsolutePath());
+        LOG.warn("Vocabulary file doesn't exist locally - can't delete: " + f.getAbsolutePath());
       }
       // 2. delete from local lookup
       vocabulariesById.remove(identifier);
     } else {
-      log.warn("Vocabulary not installed locally, can't uninstall: " + identifier);
+      LOG.warn("Vocabulary not installed locally, can't uninstall: " + identifier);
     }
   }
 
@@ -131,7 +131,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
             return v;
           }
         } catch (URISyntaxException e) {
-          log.error("Getting vocabulary by URL failed", e);
+          LOG.error("Getting vocabulary by URL failed", e);
         }
       }
     }
@@ -163,7 +163,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
     if (map.isEmpty()) {
-      log.error("Empty i18n map for vocabulary " + identifier + " and language " + lang);
+      LOG.error("Empty i18n map for vocabulary " + identifier + " and language " + lang);
     }
     return map;
   }
@@ -194,7 +194,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       throw e;
     } catch (Exception e) {
       String msg = baseAction.getText("admin.vocabulary.install.error", new String[] {url.toString()});
-      log.error(msg, e);
+      LOG.error(msg, e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_EXTENSION, msg, e);
     }
   }
@@ -227,7 +227,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
       vocabulariesById.put(vocabulary.getUriString(), fromFile);
     } catch (IOException e) {
-      log.error("Installing vocabulary failed, while trying to move and rename vocabulary file: " + e.getMessage(), e);
+      LOG.error("Installing vocabulary failed, while trying to move and rename vocabulary file: " + e.getMessage(), e);
       throw e;
     }
   }
@@ -245,12 +245,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
-      log.info("Successfully downloaded vocabulary: " + url.toString());
+      LOG.info("Successfully downloaded vocabulary: " + url.toString());
       return tmpFile;
     } else {
       String msg =
         "Failed to download vocabulary: " + url.toString() + ". Response=" + String.valueOf(statusLine.getStatusCode());
-      log.error(msg);
+      LOG.error(msg);
       throw new IOException(msg);
     }
   }
@@ -286,7 +286,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
                 counter++;
               }
             } else {
-              log.warn("An invalid vocabulary has been encountered and will be deleted: " + vf.getAbsolutePath());
+              LOG.warn("An invalid vocabulary has been encountered and will be deleted: " + vf.getAbsolutePath());
               FileUtils.deleteQuietly(vf);
             }
           } catch (InvalidConfigException e) {
@@ -318,12 +318,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // add startup error message about Registry error
       String msg = RegistryException.logRegistryException(e, baseAction);
       warnings.addStartupError(msg);
-      log.error(msg, e);
+      LOG.error(msg, e);
 
       // add startup error message that explains the consequence of the Registry error
       msg = baseAction.getText("admin.extensions.vocabularies.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
-      log.error(msg);
+      LOG.error(msg);
     }
     return map;
   }
@@ -384,7 +384,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     // throw exception if not all default vocabularies could not be loaded
     if (DEFAULT_VOCABS.size() != defaults.size()) {
       String msg = "Not all default vocabularies were loaded!";
-      log.error(msg);
+      LOG.error(msg);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, msg);
     }
     return defaults;
@@ -408,24 +408,24 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       InputStream fileIn = closer.register(new FileInputStream(localFile));
       Vocabulary v = vocabFactory.build(fileIn);
       v.setModified(new Date(localFile.lastModified())); // filesystem date
-      log.info("Successfully loaded vocabulary: " + v.getUriString());
+      LOG.info("Successfully loaded vocabulary: " + v.getUriString());
       return v;
     } catch (IOException e) {
-      log.error("Can't access local vocabulary file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't access local vocabulary file (" + localFile.getAbsolutePath() + ")", e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_VOCABULARY,
         "Can't access local vocabulary file");
     } catch (SAXException e) {
-      log.error("Can't parse local extension file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't parse local extension file (" + localFile.getAbsolutePath() + ")", e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_VOCABULARY,
         "Can't parse local vocabulary file");
     } catch (ParserConfigurationException e) {
-      log.error("Can't create sax parser", e);
+      LOG.error("Can't create sax parser", e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_VOCABULARY, "Can't create sax parser");
     } finally {
       try {
         closer.close();
       } catch (IOException e) {
-        log.debug("Failed to close input stream on vocabulary file", e);
+        LOG.debug("Failed to close input stream on vocabulary file", e);
       }
     }
   }
@@ -454,7 +454,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
             }
           }
         }
-        log.debug(
+        LOG.debug(
           "Installed vocabulary with identifier " + vocabulary.getUriString() + " latest=" + vocabulary.isLatest());
       }
     }

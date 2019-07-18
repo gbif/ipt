@@ -18,7 +18,8 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
 public class ConfigAction extends POSTAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(ConfigAction.class);
+  private static final Logger LOG = LogManager.getLogger(ConfigAction.class);
 
   private static final long serialVersionUID = 4726973323043063968L;
 
@@ -109,11 +110,11 @@ public class ConfigAction extends POSTAction {
    */
   @Override
   public String save() {
-    log.info("Changing the IPT configuration");
+    LOG.info("Changing the IPT configuration");
     boolean baseUrlChanged = false;
     // base URL
     if (!stringEquals(baseUrl, cfg.getBaseUrl())) {
-      log.info("Changing the installation baseURL from [" + cfg.getBaseUrl() + "] to [" + baseUrl + "]");
+      LOG.info("Changing the installation baseURL from [" + cfg.getBaseUrl() + "] to [" + baseUrl + "]");
       try {
         URL burl = new URL(baseUrl);
         configManager.setBaseUrl(burl);
@@ -121,7 +122,7 @@ public class ConfigAction extends POSTAction {
         // ensure any public resource URL (alternative identifiers) are updated also
         updateAllAlternateIdentifiersForIPTURLToResource();
 
-        log.info("Installation baseURL successfully changed to[" + baseUrl + "]");
+        LOG.info("Installation baseURL successfully changed to[" + baseUrl + "]");
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));
         addActionMessage(getText("admin.config.baseUrl.changed.reminder"));
@@ -130,7 +131,7 @@ public class ConfigAction extends POSTAction {
           addActionWarning(getText("admin.config.error.localhostURL"));
         } else if (URLUtils.isHostName(burl)) {
           // warn the base URL is same as machine name so user checks it is visible on the Internet
-          log.info("Machine name used in base URL");
+          LOG.info("Machine name used in base URL");
           addActionWarning(getText("admin.config.baseUrl.sameHostName"));
         }
         baseUrlChanged = true;
@@ -213,7 +214,7 @@ public class ConfigAction extends POSTAction {
     try {
       configManager.saveConfig();
     } catch (InvalidConfigException e) {
-      log.error("couldnt write config settings", e);
+      LOG.error("couldnt write config settings", e);
       addActionError(getText("admin.config.save.error"));
       return INPUT;
     }
@@ -268,7 +269,7 @@ public class ConfigAction extends POSTAction {
     resources.addAll(resourceManager.list(PublicationStatus.REGISTERED));
     // log
     if (!resources.isEmpty()) {
-      log.debug("Updating all public resources' IPT URL to resource alternate identifier");
+      LOG.debug("Updating all public resources' IPT URL to resource alternate identifier");
     }
     // update resource IPT URLs
     for (Resource resource : resources) {

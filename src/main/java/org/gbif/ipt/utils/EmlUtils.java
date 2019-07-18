@@ -20,7 +20,8 @@ import java.util.Locale;
 import com.google.common.base.Strings;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 /**
@@ -28,7 +29,7 @@ import org.xml.sax.SAXException;
  */
 public class EmlUtils {
 
-  protected static final Logger LOG = Logger.getLogger(EmlUtils.class);
+  protected static final Logger LOG = LogManager.getLogger(EmlUtils.class);
 
   /*
    * Empty constructor.

@@ -11,7 +11,8 @@ package org.gbif.ipt.validation;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
@@ -35,7 +36,7 @@ import java.util.UUID;
 public class OrganisationSupport {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(OrganisationSupport.class);
+  private static final Logger LOG = LogManager.getLogger(OrganisationSupport.class);
 
   private RegistryManager registryManager;
   private AppConfig cfg;

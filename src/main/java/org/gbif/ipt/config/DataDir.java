@@ -16,7 +16,8 @@ import javax.validation.constraints.NotNull;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the
@@ -34,7 +35,7 @@ public class DataDir {
   public static final String PUBLICATION_LOG_FILENAME = "publication.log";
   private static final Random RANDOM = new Random();
 
-  private static Logger log = Logger.getLogger(DataDir.class);
+  private static final Logger LOG = LogManager.getLogger(DataDir.class);
 
   protected File dataDir;
   private File dataDirSettingFile;
@@ -58,15 +59,15 @@ public class DataDir {
       try {
         dataDirPath = StringUtils.trimToNull(FileUtils.readFileToString(dataDirSettingFile, "UTF-8"));
         if (dataDirPath != null) {
-          log.info("IPT Data Directory configured at " + dataDirPath);
+          LOG.info("IPT Data Directory configured at " + dataDirPath);
           dd.dataDir = new File(dataDirPath);
         }
       } catch (IOException e) {
-        log.error(
+        LOG.error(
           "Failed to read the IPT Data Directory location settings file in WEB-INF at " + dataDirSettingFile.getAbsolutePath(), e);
       }
     } else {
-      log.warn("IPT Data Directory location settings file in WEB-INF not found. Continue without data directory.");
+      LOG.warn("IPT Data Directory location settings file in WEB-INF not found. Continue without data directory.");
     }
     return dd;
   }
@@ -81,7 +82,7 @@ public class DataDir {
   public static DataDir buildFromString(String dataDirPath) {
     DataDir dd = new DataDir();
     if (dataDirPath != null) {
-      log.info("IPT Data Directory configured at " + dataDirPath);
+      LOG.info("IPT Data Directory configured at " + dataDirPath);
       dd.dataDir = new File(dataDirPath);
     }
     return dd;
@@ -103,7 +104,7 @@ public class DataDir {
     File tmpDir = tmpFile("");
     FileUtils.forceMkdir(tmpDir);
     FileUtils.cleanDirectory(tmpDir);
-    log.debug("Cleared temporary folder");
+    LOG.debug("Cleared temporary folder");
   }
 
   /**
@@ -138,7 +139,7 @@ public class DataDir {
     }
     org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile("about.ftl"));
 
-    log.info("Creating new default data dir");
+    LOG.info("Creating new default data dir");
   }
 
   /**
@@ -181,7 +182,7 @@ public class DataDir {
   private void persistLocation() throws IOException {
     // persist location in WEB-INF
     FileUtils.writeStringToFile(dataDirSettingFile, dataDir.getAbsolutePath());
-    log.info("IPT DataDir location file in /WEB-INF changed to " + dataDir.getAbsolutePath());
+    LOG.info("IPT DataDir location file in /WEB-INF changed to " + dataDir.getAbsolutePath());
   }
 
   /**
@@ -301,12 +302,12 @@ public class DataDir {
             throw new InvalidConfigException(TYPE.INVALID_DATA_DIR,
               "DataDir " + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
           }
-          log.info("Reusing existing data dir.");
+          LOG.info("Reusing existing data dir.");
           // persist location in WEB-INF
           try {
             persistLocation();
           } catch (IOException e) {
-            log.error("Cant persist datadir location in WEBINF webapp folder", e);
+            LOG.error("Cant persist datadir location in WEBINF webapp folder", e);
           }
           return false;
         } else {
@@ -331,7 +332,7 @@ public class DataDir {
           persistLocation();
           return true;
         } catch (IOException e) {
-          log.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);
+          LOG.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);
           this.dataDir = null;
           throw new InvalidConfigException(InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR,
             "DataDir " + dataDir.getAbsolutePath() + " is not writable");

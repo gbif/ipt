@@ -18,7 +18,8 @@ import com.google.inject.Singleton;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter;
 import org.gbif.ipt.struts2.CharacterEncodingFilter;
 import org.gbif.ipt.struts2.CorsFilter;
@@ -31,7 +32,7 @@ import javax.servlet.SessionCookieConfig;
 import java.net.URI;
 
 public class IPTContextListener extends GuiceServletContextListener {
-  private static final Logger LOG = Logger.getLogger(IPTContextListener.class);
+  private static final Logger LOG = LogManager.getLogger(IPTContextListener.class);
   public static final String ALL_BUT_AUTHENTICATED = "^(?!.*/(manage|admin)/).*";
 
   @Override

@@ -13,7 +13,8 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * An Interceptor that checks if the basic IPT setup is complete and redirects to the respective setup page otherwise.
@@ -25,7 +26,7 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 1988717332926909383L;
 
-  private static final Logger LOG = Logger.getLogger(SetupAndCancelInterceptor.class);
+  private static final Logger LOG = LogManager.getLogger(SetupAndCancelInterceptor.class);
 
   public static final String SETUP_RESULTNAME = "setupIncomplete";
   public static final String CANCEL_RESULTNAME = "cancel";

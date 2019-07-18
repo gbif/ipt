@@ -118,7 +118,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           stmt.close();
           conn.close();
         } catch (SQLException e) {
-          log.error("Cant close iterator for sql source " + sourceName, e);
+          LOG.error("Cant close iterator for sql source " + sourceName, e);
         }
       }
 
@@ -177,7 +177,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           stmt.close();
           conn.close();
         } catch (SQLException e) {
-          log.error("Cant close iterator for sql source " + sourceName, e);
+          LOG.error("Cant close iterator for sql source " + sourceName, e);
         }
       }
 
@@ -199,7 +199,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
               gotTo = i;
             }
           } catch (SQLException exOnRow) {
-            log.debug("Exception caught reading row: " + exOnRow.getMessage(), exOnRow);
+            LOG.debug("Exception caught reading row: " + exOnRow.getMessage(), exOnRow);
             rowError = true;
             exception = exOnRow;
 
@@ -219,7 +219,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           }
         } catch (SQLException e2) {
           // Exception on advancing cursor, assume no more rows.
-          log.debug("Exception caught advancing cursor: " + e2.getMessage(), e2);
+          LOG.debug("Exception caught advancing cursor: " + e2.getMessage(), e2);
           hasNext = false;
           exception = e2;
           errorMessage = e2.getMessage();
@@ -288,7 +288,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   protected boolean acceptableFileName(String fileName) {
     boolean matches = acceptedPattern.matcher(fileName).matches();
     if (!matches) {
-      log.error("File name contains illegal characters: " + fileName);
+      LOG.error("File name contains illegal characters: " + fileName);
     }
     return matches;
   }
@@ -308,21 +308,21 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       copyArchiveFileProperties(arch.getCore(), src);
     } catch (UnknownDelimitersException e) {
       // this file is invalid
-      log.warn(e.getMessage());
+      LOG.warn(e.getMessage());
       throw new ImportException(e);
     } catch (IOException e) {
-      log.warn(e.getMessage());
+      LOG.warn(e.getMessage());
       throw new ImportException(e);
     } catch (UnsupportedArchiveException e) {
       // fine, cant read it with dwca library, but might still be a valid file for manual setup
-      log.warn(e.getMessage());
+      LOG.warn(e.getMessage());
     }
     return src;
   }
 
   public FileSource add(Resource resource, File file, String fileName) throws ImportException,
     InvalidFilenameException {
-    log.debug("ADDING SOURCE " + fileName + " FROM " + file.getAbsolutePath());
+    LOG.debug("ADDING SOURCE " + fileName + " FROM " + file.getAbsolutePath());
 
     if (acceptableFileName(fileName)) {
       FileSource src;
@@ -391,7 +391,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         ss.setReadable(true);
       }
     } catch (SQLException e) {
-      log.warn("Cant read sql source " + ss, e);
+      LOG.warn("Cant read sql source " + ss, e);
       problem = e.getMessage();
       ss.setReadable(false);
     } finally {
@@ -400,21 +400,21 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         try {
           rs.close();
         } catch (SQLException e) {
-          log.error("ResultSet could not be closed: " + e.getMessage(), e);
+          LOG.error("ResultSet could not be closed: " + e.getMessage(), e);
         }
       }
       if (stmt != null) {
         try {
           stmt.close();
         } catch (SQLException e) {
-          log.error("Statement could not be closed: " + e.getMessage(), e);
+          LOG.error("Statement could not be closed: " + e.getMessage(), e);
         }
       }
       if (con != null) {
         try {
           con.close();
         } catch (SQLException e) {
-          log.error("Connection could not be closed: " + e.getMessage(), e);
+          LOG.error("Connection could not be closed: " + e.getMessage(), e);
         }
       }
     }
@@ -449,7 +449,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       logWriter.flush();
 
     } catch (IOException e) {
-      log.warn("Cant write source log file " + logFile.getAbsolutePath(), e);
+      LOG.warn("Cant write source log file " + logFile.getAbsolutePath(), e);
     } finally {
       if (logWriter != null) {
         IOUtils.closeQuietly(logWriter);
@@ -499,31 +499,31 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       } else {
         String msg = "Can't read sql source, the connection couldn't be created with the current parameters";
         columns.add(msg);
-        log.warn(msg + " " + source);
+        LOG.warn(msg + " " + source);
       }
     } catch (SQLException e) {
-      log.warn("Cant read sql source " + source, e);
+      LOG.warn("Cant read sql source " + source, e);
     } finally {
       // close result set, statement, and connection in that order
       if (rs != null) {
         try {
           rs.close();
         } catch (SQLException e) {
-          log.error("ResultSet could not be closed: " + e.getMessage(), e);
+          LOG.error("ResultSet could not be closed: " + e.getMessage(), e);
         }
       }
       if (stmt != null) {
         try {
           stmt.close();
         } catch (SQLException e) {
-          log.error("Statement could not be closed: " + e.getMessage(), e);
+          LOG.error("Statement could not be closed: " + e.getMessage(), e);
         }
       }
       if (con != null) {
         try {
           con.close();
         } catch (SQLException e) {
-          log.error("Connection could not be closed: " + e.getMessage(), e);
+          LOG.error("Connection could not be closed: " + e.getMessage(), e);
         }
       }
     }
@@ -577,7 +577,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
         SQLWarning warn = conn.getWarnings();
         while (warn != null) {
-          log.warn("SQLWarning: state=" + warn.getSQLState() + ", message=" + warn.getMessage() + ", vendor=" + warn
+          LOG.warn("SQLWarning: state=" + warn.getSQLState() + ", message=" + warn.getMessage() + ", vendor=" + warn
             .getErrorCode());
           warn = warn.getNextWarning();
         }
@@ -587,13 +587,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
             .format(
               "Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
               source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
-        log.warn(msg, e);
+        LOG.warn(msg, e);
         throw new SQLException(msg, e);
       } catch (Exception e) {
         String msg = String
           .format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
             source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
-        log.warn(msg, e);
+        LOG.warn(msg, e);
         throw new SQLException(msg);
       }
     }
@@ -616,7 +616,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
       }
     } catch (Exception e) {
-      log.error(e);
+      LOG.error(e);
       throw new SourceException("Error reading source " + source.getName() + ": " + e.getMessage());
     }
     return values;
@@ -660,7 +660,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           preview.add(iter.next());
         }
       } catch (Exception e) {
-        log.warn("Cant peek into source " + source.getName(), e);
+        LOG.warn("Cant peek into source " + source.getName(), e);
       }
     }
 
@@ -692,28 +692,28 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
       }
     } catch (SQLException e) {
-      log.warn("Cant read sql source " + source, e);
+      LOG.warn("Cant read sql source " + source, e);
     } finally {
       // close result set, statement, and connection in that order
       if (rs != null) {
         try {
           rs.close();
         } catch (SQLException e) {
-          log.error("ResultSet could not be closed: " + e.getMessage(), e);
+          LOG.error("ResultSet could not be closed: " + e.getMessage(), e);
         }
       }
       if (stmt != null) {
         try {
           stmt.close();
         } catch (SQLException e) {
-          log.error("Statement could not be closed: " + e.getMessage(), e);
+          LOG.error("Statement could not be closed: " + e.getMessage(), e);
         }
       }
       if (con != null) {
         try {
           con.close();
         } catch (SQLException e) {
-          log.error("Connection could not be closed: " + e.getMessage(), e);
+          LOG.error("Connection could not be closed: " + e.getMessage(), e);
         }
       }
     }
@@ -732,7 +732,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       return ((FileSource) source).rowIterator();
 
     } catch (Exception e) {
-      log.error("Exception while reading source " + source.getName(), e);
+      LOG.error("Exception while reading source " + source.getName(), e);
       throw new SourceException("Cant build iterator for source " + source.getName() + " :" + e.getMessage());
     }
   }

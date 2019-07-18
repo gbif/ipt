@@ -2,7 +2,8 @@ package org.gbif.ipt.struts2;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Singleton;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.messaging.Response;
 import org.gbif.ws.util.XSSUtil;
 import org.owasp.html.HtmlPolicyBuilder;
@@ -26,7 +27,7 @@ import java.util.Map;
  */
 @Singleton
 public class SanitizeHtmlFilter implements Filter {
-  private static final Logger LOG = Logger.getLogger(SanitizeHtmlFilter.class);
+  private static final Logger LOG = LogManager.getLogger(SanitizeHtmlFilter.class);
   private static final HtmlPolicyBuilder POLICY_BUILDER = new HtmlPolicyBuilder();
 
   @Override

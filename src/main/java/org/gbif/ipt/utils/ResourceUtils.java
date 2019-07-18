@@ -14,11 +14,12 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.base.Preconditions;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ResourceUtils {
 
-  protected static final Logger LOG = Logger.getLogger(ResourceUtils.class);
+  protected static final Logger LOG = LogManager.getLogger(ResourceUtils.class);
 
   /*
    * Empty constructor.

@@ -8,7 +8,8 @@ import java.net.UnknownHostException;
 import com.google.common.base.Strings;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.http.HttpHost;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
  */
 public class URLUtils {
 
-  private static final Logger LOG = Logger.getLogger(URLUtils.class);
+  private static final Logger LOG = LogManager.getLogger(URLUtils.class);
 
   private static final UrlValidator URL_VALIDATOR = new UrlValidator(new String[] {"http", "https"},
     UrlValidator.ALLOW_LOCAL_URLS);

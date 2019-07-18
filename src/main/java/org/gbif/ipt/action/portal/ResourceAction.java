@@ -49,12 +49,13 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 public class ResourceAction extends PortalBaseAction {
 
-  private static final Logger LOG = Logger.getLogger(ResourceAction.class);
+  private static final Logger LOG = LogManager.getLogger(ResourceAction.class);
 
   private VocabulariesManager vocabManager;
   private ExtensionManager extensionManager;

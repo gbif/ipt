@@ -34,12 +34,13 @@ import javax.annotation.Nullable;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CreateResourceAction extends POSTAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(CreateResourceAction.class);
+  private static final Logger LOG = LogManager.getLogger(CreateResourceAction.class);
 
   private ResourceManager resourceManager;
   private DataDir dataDir;

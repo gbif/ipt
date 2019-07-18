@@ -2,7 +2,8 @@ package org.gbif.ipt.action.manage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.common.DoiData;
 import org.gbif.api.model.common.DoiStatus;
@@ -54,7 +55,7 @@ import static org.mockito.Mockito.when;
  */
 public class OverviewActionOtherIT {
 
-  private static final Logger LOG = Logger.getLogger(OverviewActionIT.class);
+  private static final Logger LOG = LogManager.getLogger(OverviewActionIT.class);
   private static final UUID ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5");
   private static ClientConfiguration cfg;
   private static DoiService dataCiteService;

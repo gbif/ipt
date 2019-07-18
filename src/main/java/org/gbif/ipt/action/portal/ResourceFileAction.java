@@ -1,5 +1,7 @@
 package org.gbif.ipt.action.portal;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -17,7 +19,6 @@ import java.math.BigDecimal;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * The Action responsible for serving datadir resource files.
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
 public class ResourceFileAction extends PortalBaseAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(ResourceFileAction.class);
+  private static final Logger LOG = LogManager.getLogger(ResourceFileAction.class);
 
   private final DataDir dataDir;
   protected ResourceManager resourceManager;

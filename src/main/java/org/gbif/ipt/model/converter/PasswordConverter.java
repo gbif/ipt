@@ -27,12 +27,13 @@ import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Singleton
 public class PasswordConverter implements Converter {
 
-  private static final Logger LOG = Logger.getLogger(PasswordConverter.class);
+  private static final Logger LOG = LogManager.getLogger(PasswordConverter.class);
   private final PBEEncrypt encrypter;
 
   @Inject

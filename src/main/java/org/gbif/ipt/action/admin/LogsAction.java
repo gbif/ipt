@@ -12,7 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The Action responsible for showing IPT logs to the admin.
@@ -22,7 +23,7 @@ public class LogsAction extends BaseAction {
   private static final long serialVersionUID = -5038153790552063249L;
 
   // logging
-  private static final Logger LOG = Logger.getLogger(LogsAction.class);
+  private static final Logger LOG = LogManager.getLogger(LogsAction.class);
 
   private final DataDir dataDir;
   private InputStream inputStream;

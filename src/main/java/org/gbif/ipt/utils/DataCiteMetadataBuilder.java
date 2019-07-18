@@ -37,7 +37,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DataCiteMetadataBuilder {
 
@@ -58,7 +59,7 @@ public class DataCiteMetadataBuilder {
   public static final String RECORDS_NAME = "records";
 
 
-  private static final Logger LOG = Logger.getLogger(DataCiteMetadataBuilder.class);
+  private static final Logger LOG = LogManager.getLogger(DataCiteMetadataBuilder.class);
   private static final ObjectFactory FACTORY = new ObjectFactory();
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 

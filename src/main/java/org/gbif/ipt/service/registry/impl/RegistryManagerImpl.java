@@ -115,14 +115,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     DOI doi = resource.getAssignedDoi();
     if (doi != null) {
       data.add(new BasicNameValuePair("doi", doi.toString()));
-      log.debug("Including registry param doi=" + doi.toString());
+      LOG.debug("Including registry param doi=" + doi.toString());
     }
     // otherwise try using the DOI citation identifier of the last published public version, see issue #1276
     else {
       DOI existingDoi = getLastPublishedVersionExistingDoi(resource);
       if (existingDoi != null) {
         data.add(new BasicNameValuePair("doi", existingDoi.toString()));
-        log.debug("Including registry param doi=" + existingDoi.toString());
+        LOG.debug("Including registry param doi=" + existingDoi.toString());
       }
     }
 
@@ -181,23 +181,23 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     // check are there any other services: DWC-ARCHIVE-OCCURRENCE, DWC-ARCHIVE-CHECKLIST, or DWC-ARCHIVE-SAMPLING-EVENT
     if (resource.hasPublishedData() && resource.getCoreTypeTerm() != null) {
       if (DwcTerm.Occurrence == resource.getCoreTypeTerm()) {
-        log.debug("Registering EML & DwC-A Occurrence Service");
+        LOG.debug("Registering EML & DwC-A Occurrence Service");
         rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
         rs.serviceTypes += "|" + SERVICE_TYPE_OCCURRENCE;
       } else if (DwcTerm.Taxon == resource.getCoreTypeTerm()) {
-        log.debug("Registering EML & DwC-A Checklist Service");
+        LOG.debug("Registering EML & DwC-A Checklist Service");
         rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
         rs.serviceTypes += "|" + SERVICE_TYPE_CHECKLIST;
       } else if (DwcTerm.Event == resource.getCoreTypeTerm()) {
-        log.debug("Registering EML & DwC-A Sampling Event Service");
+        LOG.debug("Registering EML & DwC-A Sampling Event Service");
         rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
         rs.serviceTypes += "|" + SERVICE_TYPE_SAMPLING_EVENT;
       } else {
-        log.warn("Unknown core resource type " + resource.getCoreTypeTerm());
-        log.debug("Registering EML service only");
+        LOG.warn("Unknown core resource type " + resource.getCoreTypeTerm());
+        LOG.debug("Registering EML service only");
       }
     } else {
-      log.debug("Resource has no published data, therefore only the EML Service will be registered");
+      LOG.debug("Resource has no published data, therefore only the EML Service will be registered");
     }
     return rs;
   }
@@ -212,9 +212,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       if (resource.getOrganisation() != null) {
         Response resp = http.delete(url, orgCredentials(resource.getOrganisation()));
         if (HttpUtil.success(resp)) {
-          log.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
+          LOG.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
         } else {
-          log.error("Deregister resource response received=" + resp.getStatusCode() + ": " + resp.content);
+          LOG.error("Deregister resource response received=" + resp.getStatusCode() + ": " + resp.content);
           throw new RegistryException(Type.BAD_RESPONSE, url, "Empty registry response");
         }
       } else {
@@ -224,7 +224,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (Exception e) {
       String msg = "Bad registry response: " + e.getMessage();
-      log.error(msg, e);
+      LOG.error(msg, e);
       throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
     }
 
@@ -321,12 +321,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       String msg = RegistryException.logRegistryException(e, baseAction);
       // add startup error message about Registry error
       warnings.addStartupError(msg);
-      log.error(msg);
+      LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
       msg = baseAction.getText("admin.organisations.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
-      log.error(msg);
+      LOG.error(msg);
     }
     // populate Organisation list
     List<Organisation> organisations = new ArrayList<Organisation>();
@@ -346,7 +346,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         }
       }
       if (invalid > 0) {
-        log.debug("Skipped " + invalid + " invalid organisation JSON objects");
+        LOG.debug("Skipped " + invalid + " invalid organisation JSON objects");
       }
     }
     return organisations;
@@ -368,17 +368,17 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         String msg = RegistryException.logRegistryException(e, baseAction);
         // add startup error message about Registry error
         warnings.addStartupError(msg);
-        log.error(msg);
+        LOG.error(msg);
 
         // add startup error message that explains the consequence of the Registry error
         msg = baseAction.getText("admin.organisation.couldnt.load", new String[] {key, cfg.getRegistryUrl()});
         warnings.addStartupError(msg);
-        log.error(msg);
+        LOG.error(msg);
       } catch (JsonSyntaxException e) {
         // add startup error message that explains the consequence of the error
         String msg = baseAction.getText("admin.organisation.couldnt.load", new String[] {key, cfg.getRegistryUrl()});
         warnings.addStartupError(msg);
-        log.error(msg);
+        LOG.error(msg);
       }
     }
 
@@ -484,7 +484,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
       }
       if (invalid > 0) {
-        log.debug("Skipped " + invalid + " invalid dataset JSON objects");
+        LOG.debug("Skipped " + invalid + " invalid dataset JSON objects");
       }
     }
     return resources;
@@ -550,10 +550,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   public UUID register(Resource resource, Organisation org, Ipt ipt) throws RegistryException {
-    log.debug("Registering resource...");
+    LOG.debug("Registering resource...");
 
     if (!resource.isPublished()) {
-      log.warn("Cannot register, resource not published yet");
+      LOG.warn("Cannot register, resource not published yet");
       return null;
     }
 
@@ -575,7 +575,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
 
     if (HttpUtil.success(resp)) {
-      log.info("Register resource was successful!");
+      LOG.info("Register resource was successful!");
     } else {
       Type type = getRegistryExceptionType(resp.getStatusCode());
       throw new RegistryException(type, url, "Register resource failed: " + resp.getStatusLine());
@@ -608,14 +608,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from resource registration has invalid key");
     }
 
-    log.info("A new resource has been registered with GBIF. [Key=" + key + "]");
+    LOG.info("A new resource has been registered with GBIF. [Key=" + key + "]");
     resource.setKey(uuidKey);
     resource.setOrganisation(org);
     return uuidKey;
   }
 
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
-    log.info("Registering IPT instance...");
+    LOG.info("Registering IPT instance...");
 
     // populate params for ws call to register IPT
     String orgKey = org.getKey().toString();
@@ -635,7 +635,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
 
     if (HttpUtil.success(resp)) {
-      log.info("Register IPT was successful!");
+      LOG.info("Register IPT was successful!");
     } else {
       Type type = getRegistryExceptionType(resp.getStatusCode());
       throw new RegistryException(type, url, "Register IPT failed: " + resp.getStatusLine());
@@ -665,7 +665,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from IPT registration has invalid key");
     }
 
-    log.info("A new ipt has been registered with GBIF. [Key=" + uuidKey.toString() + "]");
+    LOG.info("A new ipt has been registered with GBIF. [Key=" + uuidKey.toString() + "]");
     ipt.setKey(uuidKey.toString());
     return key;
   }
@@ -704,13 +704,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       data.add(new BasicNameValuePair("serviceTypes", SERVICE_TYPE_RSS));
       data.add(new BasicNameValuePair("serviceURLs", getRssFeedURL()));
     } else {
-      log.debug("One or both of IPT and Organisation key were null. Params needed for ws will be empty");
+      LOG.debug("One or both of IPT and Organisation key were null. Params needed for ws will be empty");
     }
     return data;
   }
 
   public void updateIpt(Ipt ipt) throws RegistryException {
-    log.info("Update IPT registration...");
+    LOG.info("Update IPT registration...");
 
     // populate params for ws call to update IPT
     String orgKey = (ipt != null && ipt.getOrganisationKey() != null) ? ipt.getOrganisationKey().toString() : null;
@@ -728,7 +728,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
 
     if (HttpUtil.success(resp)) {
-      log.info("Update IPT registration was successful!");
+      LOG.info("Update IPT registration was successful!");
     } else {
       // to continue updating registered resources, IPT update must have been successful
       Type type = getRegistryExceptionType(resp.getStatusCode());
@@ -737,15 +737,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
     List<Resource> resources = resourceManager.list(PublicationStatus.REGISTERED);
     if (!resources.isEmpty()) {
-      log.info("Next, update " + resources.size() + " resource registrations...");
+      LOG.info("Next, update " + resources.size() + " resource registrations...");
       for (Resource resource : resources) {
         try {
           updateResource(resource, ipt.getKey().toString());
         } catch (IllegalArgumentException e) {
-          log.error(e.getMessage());
+          LOG.error(e.getMessage());
         }
       }
-      log.info("Resource registrations updated successfully!");
+      LOG.info("Resource registrations updated successfully!");
     }
   }
 
@@ -755,7 +755,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         "Update resource registration failed: resource [shortname=" + resource.getShortname() + "] is not registered");
     }
 
-    log.info("Update resource registration... [key=" + resource.getKey().toString() + "]");
+    LOG.info("Update resource registration... [key=" + resource.getKey().toString() + "]");
     // populate params for ws call to update registered resource
     List<NameValuePair> data = buildRegistryParameters(resource);
     // ensure IPT serves relationship always gets created/updated
@@ -773,7 +773,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
 
     if (HttpUtil.success(resp)) {
-      log.info("Update resource registration was successful! [key=" + resource.getKey().toString() + "]");
+      LOG.info("Update resource registration was successful! [key=" + resource.getKey().toString() + "]");
         // to avoid repetition, alert user here that update was successful
         baseAction.addActionMessage(
           baseAction.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()}));
@@ -814,7 +814,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         http.get(getLoginURL(organisationKey), null, new UsernamePasswordCredentials(organisationKey, password));
       return HttpUtil.success(resp);
     } catch (Exception e) {
-      log.warn(
+      LOG.warn(
         "The organisation could not be validated using key (" + organisationKey + ") and password (" + password + ")",
         e);
     }
@@ -832,7 +832,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), version);
       if (emlFile.exists()) {
         try {
-          log.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+          LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
           InputStream in = new FileInputStream(emlFile);
           Eml eml = EmlFactory.build(in);
           if (eml.getCitation() != null && !Strings.isNullOrEmpty(eml.getCitation().getIdentifier())) {
@@ -842,7 +842,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
             }
           }
         } catch (Exception e) {
-          log.error("Failed to check last published version citation identifier: " + e.getMessage(), e);
+          LOG.error("Failed to check last published version citation identifier: " + e.getMessage(), e);
         }
       }
     }

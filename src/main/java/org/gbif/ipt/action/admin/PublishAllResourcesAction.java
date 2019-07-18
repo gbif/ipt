@@ -17,12 +17,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PublishAllResourcesAction extends BaseAction {
 
   // logging
-  private static final Logger log = Logger.getLogger(PublishAllResourcesAction.class);
+  private static final Logger LOG = LogManager.getLogger(PublishAllResourcesAction.class);
 
   private static final long serialVersionUID = -2717994514136947049L;
 
@@ -50,7 +51,7 @@ public class PublishAllResourcesAction extends BaseAction {
       // log as specific error message as possible about why the Registry error occurred
       String msg = RegistryException.logRegistryException(e, this);
       addActionError(msg);
-      log.error(msg);
+      LOG.error(msg);
     }
 
     List<Resource> resources = resourceManager.list();
@@ -97,7 +98,7 @@ public class PublishAllResourcesAction extends BaseAction {
         // with this type of error, the version cannot be rolled back - just alert user publication failed
         String msg =
           getText("publishing.failed", new String[] {nextVersion.toPlainString(), resource.getShortname(), e.getMessage()});
-        log.error(msg, e);
+        LOG.error(msg, e);
         addActionError(msg);
       }
     }
@@ -108,7 +109,7 @@ public class PublishAllResourcesAction extends BaseAction {
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
-        log.error("Thread waiting during publish all resources was interrupted", e);
+        LOG.error("Thread waiting during publish all resources was interrupted", e);
       }
     }
     // only display sinlge message: that publish all finished

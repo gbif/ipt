@@ -56,7 +56,8 @@ import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.StatusLine;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import static org.gbif.utils.HttpUtil.success;
@@ -65,7 +66,7 @@ import static org.gbif.utils.HttpUtil.success;
 public class ExtensionManagerImpl extends BaseManager implements ExtensionManager {
 
   // logging
-  private static final Logger log = Logger.getLogger(ExtensionManagerImpl.class);
+  private static final Logger LOG = LogManager.getLogger(ExtensionManagerImpl.class);
   public static final String EXTENSION_FILE_SUFFIX = ".xml";
   protected static final String CONFIG_FOLDER = ".extensions";
   private final static String TAXON_KEYWORD = "dwc:taxon";
@@ -128,13 +129,13 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       for (Resource r : resourceManager.list()) {
         if (!r.getMappings(rowType).isEmpty()) {
           String msg = "Extension mapped in resource " + r.getShortname();
-          log.warn(msg);
+          LOG.warn(msg);
           throw new DeletionNotAllowedException(Reason.EXTENSION_MAPPED, msg);
         }
       }
       uninstall(rowType);
     } else {
-      log.warn("Extension not installed locally, cant delete " + rowType);
+      LOG.warn("Extension not installed locally, cant delete " + rowType);
     }
   }
 
@@ -150,10 +151,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       if (f.exists()) {
         FileUtils.deleteQuietly(f);
       } else {
-        log.warn("Extension doesnt exist locally, cant delete " + rowType);
+        LOG.warn("Extension doesnt exist locally, cant delete " + rowType);
       }
     } else {
-      log.warn("Extension not installed locally, cant delete " + rowType);
+      LOG.warn("Extension not installed locally, cant delete " + rowType);
     }
   }
 
@@ -201,10 +202,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         // if there are mappings to this extension - do migrations to latest version, save resources
         if (!resourcesToMigrate.isEmpty()) {
           for (Resource r : resourcesToMigrate) {
-            log.info("Updating " + rowType + " mappings for resource: " + r.getTitleAndShortname() + "...");
+            LOG.info("Updating " + rowType + " mappings for resource: " + r.getTitleAndShortname() + "...");
             migrateResourceToNewExtensionVersion(r, installed, extension);
             resourceManager.save(r);
-            log.info("Updated " + rowType + " mappings successfully for resource: " + r.getTitleAndShortname());
+            LOG.info("Updated " + rowType + " mappings successfully for resource: " + r.getTitleAndShortname());
           }
         }
 
@@ -250,7 +251,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     // sanity check that the current and newer extensions share same rowType
     Preconditions.checkState(current.getRowType().equalsIgnoreCase(newer.getRowType()));
     Preconditions.checkState(!r.getMappings(current.getRowType()).isEmpty());
-    log.info("Migrating " + r.getShortname() + " mappings to extension " + current.getRowType()
+    LOG.info("Migrating " + r.getShortname() + " mappings to extension " + current.getRowType()
              + " to latest extension version");
 
     // populate various set to keep track of how many terms were deprecated, how terms' vocabulary was updated, etc
@@ -283,10 +284,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         }
       }
     }
-    log.debug(deprecated.size() + " properties have been deprecated in the newer version");
-    log.debug(vocabulariesRemoved.size() + " properties in the newer version of extension no longer use a vocabulary");
-    log.debug(vocabulariesUnchanged.size() + " properties in the newer version of extension use the same vocabulary");
-    log.debug(vocabulariesUpdated.size() + " properties in the newer version of extension use a newer vocabulary");
+    LOG.debug(deprecated.size() + " properties have been deprecated in the newer version");
+    LOG.debug(vocabulariesRemoved.size() + " properties in the newer version of extension no longer use a vocabulary");
+    LOG.debug(vocabulariesUnchanged.size() + " properties in the newer version of extension use the same vocabulary");
+    LOG.debug(vocabulariesUpdated.size() + " properties in the newer version of extension use a newer vocabulary");
 
     // set of new terms (terms to add)
     Set<ExtensionProperty> added = Sets.newHashSet();
@@ -296,7 +297,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         added.add(property);
       }
     }
-    log.debug("Newer version of extension has " + added.size() + " new properties");
+    LOG.debug("Newer version of extension has " + added.size() + " new properties");
 
     for (ExtensionMapping extensionMapping : r.getMappings(current.getRowType())) {
       migrateExtensionMapping(extensionMapping, newer, deprecated);
@@ -315,7 +316,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    */
   private ExtensionMapping migrateExtensionMapping(ExtensionMapping extensionMapping, Extension newer,
     Set<ExtensionProperty> deprecated) {
-    log.debug("Migrating extension mapping...");
+    LOG.debug("Migrating extension mapping...");
     // update Extension
     extensionMapping.setExtension(newer);
     // migrate or remove property mappings to deprecated terms
@@ -327,13 +328,13 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         ExtensionProperty ep = newer.getProperty(replacedBy);
         if (pm != null && ep != null) {
           pm.setTerm(ep);
-          log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName() + " has been migrated to term "
+          LOG.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName() + " has been migrated to term "
                     + replacedBy.qualifiedName());
         }
       }
       // otherwise simply remove the property mapping
       else {
-        log.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName()
+        LOG.debug("Mapping to deprecated term " + deprecatedProperty.qualifiedName()
                   + " cannot be migrated therefore it is being removed!");
         removePropertyMapping(extensionMapping, deprecatedProperty.qualifiedName());
       }
@@ -352,7 +353,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     Set<PropertyMapping> propertyMappings = extensionMapping.getFields();
     if (pm != null && propertyMappings.contains(pm)) {
       propertyMappings.remove(pm);
-      log.debug("Removed mapping to term " + pm.getTerm().qualifiedName());
+      LOG.debug("Removed mapping to term " + pm.getTerm().qualifiedName());
     }
   }
 
@@ -380,18 +381,18 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       // add startup error message about Registry error
       String msg = RegistryException.logRegistryException(e, baseAction);
       warnings.addStartupError(msg);
-      log.error(msg);
+      LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
       msg = baseAction.getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
       warnings.addStartupError(msg);
-      log.error(msg);
+      LOG.error(msg);
     }
 
     // throw exception if not all core type extensions could not be loaded
     if (AppConfig.getCoreRowTypes().size() != coreTypes.size()) {
       String msg = "Not all core extensions were loaded!";
-      log.error(msg);
+      LOG.error(msg);
       throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, msg);
     }
     return coreTypes;
@@ -431,7 +432,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       throw e;
     } catch (Exception e) {
       String msg = baseAction.getText("admin.extension.install.error", new String[] {url.toString()});
-      log.error(msg, e);
+      LOG.error(msg, e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, msg, e);
     }
   }
@@ -455,7 +456,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       // keep extension in local lookup: allowed one installed extension per rowType
       extensionsByRowtype.put(extension.getRowType(), extension);
     } catch (IOException e) {
-      log.error("Installing extension failed, while trying to move and rename extension file: " + e.getMessage(), e);
+      LOG.error("Installing extension failed, while trying to move and rename extension file: " + e.getMessage(), e);
       throw e;
     }
   }
@@ -474,12 +475,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
-      log.info("Successfully downloaded extension: " + url.toString());
+      LOG.info("Successfully downloaded extension: " + url.toString());
       return tmpFile;
     } else {
       String msg =
         "Failed to download extension: " + url.toString() + ". Response=" + String.valueOf(statusLine.getStatusCode());
-      log.error(msg);
+      LOG.error(msg);
       throw new IOException(msg);
     }
   }
@@ -599,22 +600,22 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       Extension extension = factory.build(fileIn);
       // normalise rowtype
       extension.setRowType(normalizeRowType(extension.getRowType()));
-      log.info("Successfully loaded extension " + extension.getRowType());
+      LOG.info("Successfully loaded extension " + extension.getRowType());
       return extension;
     } catch (IOException e) {
-      log.error("Can't access local extension file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't access local extension file (" + localFile.getAbsolutePath() + ")", e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't access local extension file");
     } catch (SAXException e) {
-      log.error("Can't parse local extension file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't parse local extension file (" + localFile.getAbsolutePath() + ")", e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't parse local extension file: " + e.getMessage());
     } catch (ParserConfigurationException e) {
-      log.error("Can't create sax parser", e);
+      LOG.error("Can't create sax parser", e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't create sax parser");
     } finally {
       try {
         closer.close();
       } catch (IOException e) {
-        log.debug("Failed to close input stream on extension file", e);
+        LOG.debug("Failed to close input stream on extension file", e);
       }
     }
   }

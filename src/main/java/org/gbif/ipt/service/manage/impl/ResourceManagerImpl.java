@@ -127,7 +127,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Level;
+import org.apache.logging.log4j.Level;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -187,7 +187,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // remove process from locking list
         processFutures.remove(shortname);
       } else {
-        log.warn("Canceling publication of resource " + shortname + " failed");
+        LOG.warn("Canceling publication of resource " + shortname + " failed");
       }
     }
     return canceled;
@@ -203,7 +203,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       try {
         writer.close();
       } catch (IOException e) {
-        log.error(e);
+        LOG.error(e);
       }
     }
   }
@@ -240,7 +240,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         eml.setPubDate(metadata.getPubDate());
       } else {
         eml.setPubDate(new Date());
-        log.debug("pubDate set to today, because incoming pubDate was null");
+        LOG.debug("pubDate set to today, because incoming pubDate was null");
       }
     }
     return eml;
@@ -268,7 +268,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       FileUtils.copyFile(emlFile, emlFile2);
     } catch (IOException e1) {
-      log.error("Unable to copy EML File", e1);
+      LOG.error("Unable to copy EML File", e1);
     }
     Eml eml;
     try {
@@ -296,9 +296,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (files != null && files.length == 1 && files[0].equals(file)) {
       try {
         FileUtils.deleteDirectory(parent);
-        log.info("Deleted directory: " + parent.getAbsolutePath());
+        LOG.info("Deleted directory: " + parent.getAbsolutePath());
       } catch (IOException e) {
-        log.error("Failed to delete directory " + parent.getAbsolutePath() + ": " + e.getMessage(), e);
+        LOG.error("Failed to delete directory " + parent.getAbsolutePath() + ": " + e.getMessage(), e);
       }
     }
   }
@@ -310,7 +310,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (get(shortname) != null) {
       throw new AlreadyExistingException();
     }
-    ActionLogger alog = new ActionLogger(this.log, action);
+    ActionLogger alog = new ActionLogger(this.LOG, action);
     Resource resource;
     // decompress archive
     List<File> decompressed = null;
@@ -318,15 +318,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       decompressed = CompressionUtil.decompressFile(dwcaDir, dwca, true);
     } catch (UnsupportedCompressionType e) {
-      log.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
+      LOG.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
       // try again as single gzip file
       try {
         decompressed = CompressionUtil.ungzipFile(dwcaDir, dwca, false);
       } catch (Exception e2) {
-        log.debug("2nd attempt to decompress file failed: " + e.getMessage(), e);
+        LOG.debug("2nd attempt to decompress file failed: " + e.getMessage(), e);
       }
     } catch (Exception e) {
-      log.debug("Decompression failed: " + e.getMessage(), e);
+      LOG.debug("Decompression failed: " + e.getMessage(), e);
     }
 
     // create resource:
@@ -478,9 +478,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // create dir
     try {
       save(res);
-      log.info("Created resource " + res.getShortname());
+      LOG.info("Created resource " + res.getShortname());
     } catch (InvalidConfigException e) {
-      log.error("Error creating resource", e);
+      LOG.error("Error creating resource", e);
       return null;
     }
     return res;
@@ -545,7 +545,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         for (ArchiveFile ext : arch.getExtensions()) {
           if (sources.containsKey(ext.getLocation())) {
             s = sources.get(ext.getLocation());
-            log.debug("SourceBase " + s.getName() + " shared by multiple extensions");
+            LOG.debug("SourceBase " + s.getName() + " shared by multiple extensions");
           } else {
             s = importSource(resource, ext);
             sources.put(ext.getLocation(), s);
@@ -693,7 +693,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       try {
         registryManager.deregister(resource);
       } catch (RegistryException e) {
-        log.error("Failed to deregister resource: " + e.getMessage(), e);
+        LOG.error("Failed to deregister resource: " + e.getMessage(), e);
         throw new DeletionNotAllowedException(Reason.REGISTRY_ERROR, e.getMessage());
       }
     }
@@ -787,7 +787,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // the number of rows was calculated using the standard file importer
     // make an adjustment now that the exact number of header rows are known
     if (s.getIgnoreHeaderLines() != 1) {
-      log.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
+      LOG.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
                + " since header count is declared as " + s.getIgnoreHeaderLines());
     }
     s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
@@ -969,30 +969,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           });
 
           if (resourceDirFiles == null) {
-            log.error("Resource directory " + resourceDir.getName() + " could not be read. Please verify its content");
+            LOG.error("Resource directory " + resourceDir.getName() + " could not be read. Please verify its content");
           } else if (resourceDirFiles.length == 0) {
-            log.warn("Cleaning up empty resource directory " + resourceDir.getName());
+            LOG.warn("Cleaning up empty resource directory " + resourceDir.getName());
             FileUtils.deleteQuietly(resourceDir);
             counterDeleted++;
           } else if (resourceDirFiles.length == 1) {
-            log.warn("Cleaning up invalid resource directory " + resourceDir.getName() + " with single file: " + resourceDirFiles[0].getName());
+            LOG.warn("Cleaning up invalid resource directory " + resourceDir.getName() + " with single file: " + resourceDirFiles[0].getName());
             FileUtils.deleteQuietly(resourceDir);
             counterDeleted++;
           } else {
             try {
-              log.debug("Loading resource from directory " + resourceDir.getName());
+              LOG.debug("Loading resource from directory " + resourceDir.getName());
               addResource(loadFromDir(resourceDir, creator));
               counter++;
             } catch (InvalidConfigException e) {
-              log.error("Can't load resource " + resourceDir.getName(), e);
+              LOG.error("Can't load resource " + resourceDir.getName(), e);
             }
           }
         }
       }
-      log.info("Loaded " + counter + " resources into memory altogether.");
-      log.info("Cleaned up " + counterDeleted + " resources altogether.");
+      LOG.info("Loaded " + counter + " resources into memory altogether.");
+      LOG.info("Cleaned up " + counterDeleted + " resources altogether.");
     } else {
-      log.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
+      LOG.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
     }
     return counter;
   }
@@ -1020,7 +1020,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   @VisibleForTesting
   protected Resource loadFromDir(File resourceDir, @Nullable User creator) {
-    return loadFromDir(resourceDir, creator, new ActionLogger(log, new BaseAction(textProvider, cfg, registrationManager)));
+    return loadFromDir(resourceDir, creator, new ActionLogger(LOG, new BaseAction(textProvider, cfg, registrationManager)));
   }
 
   /**
@@ -1039,7 +1039,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // populate missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
           resource.setCreator(creator);
-          log.warn("On load, populated missing creator for resource: " + shortname);
+          LOG.warn("On load, populated missing creator for resource: " + shortname);
         }
 
         // non existing users end up being a NULL in the set, so remove them
@@ -1119,10 +1119,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // update EML with latest resource basics (version and GUID)
         syncEmlWithResource(resource);
 
-        log.debug("Read resource configuration for " + shortname);
+        LOG.debug("Read resource configuration for " + shortname);
         return resource;
       } catch (FileNotFoundException e) {
-        log.error("Cannot read resource configuration for " + shortname, e);
+        LOG.error("Cannot read resource configuration for " + shortname, e);
         throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
           "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
       }
@@ -1146,7 +1146,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         return Constants.INITIAL_RESOURCE_VERSION;
       } else if (version.scale() == 0) {
         BigDecimal majorMinorVersion = version.setScale(1, RoundingMode.CEILING);
-        log.debug("Converted version [" + version.toPlainString() + "] to [" + majorMinorVersion.toPlainString() + "]");
+        LOG.debug("Converted version [" + version.toPlainString() + "] to [" + majorMinorVersion.toPlainString() + "]");
         return majorMinorVersion;
       }
     }
@@ -1193,7 +1193,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // if all renames were successful (didn't throw an exception), set new version
         resource.setEmlVersion(newVersion);
       } catch (IOException e) {
-        log.error("Failed to update version number for " + resource.getShortname(), e);
+        LOG.error("Failed to update version number for " + resource.getShortname(), e);
         throw new InvalidConfigException(TYPE.CONFIG_WRITE,
           "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
       }
@@ -1216,9 +1216,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (unversionedDwca.exists() && !versionedDwca.exists()) {
       try {
         Files.move(unversionedDwca, versionedDwca);
-        log.debug("Renamed dwca.zip to " + versionedDwca.getName());
+        LOG.debug("Renamed dwca.zip to " + versionedDwca.getName());
       } catch (IOException e) {
-        log.error("Failed to rename dwca.zip file name with version number for " + resource.getShortname(), e);
+        LOG.error("Failed to rename dwca.zip file name with version number for " + resource.getShortname(), e);
         throw new InvalidConfigException(TYPE.CONFIG_WRITE,
           "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
       }
@@ -1371,7 +1371,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     String msg = action
       .getText("publishing.success", new String[] {String.valueOf(resource.getEmlVersion()), resource.getShortname()});
     action.addActionMessage(msg);
-    log.info(msg);
+    LOG.info(msg);
   }
 
   /**
@@ -1399,14 +1399,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           doReplaceDoi(resource, version, versionReplaced);
           String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion.replaces",
             new String[] {resource.getDoi().toString()});
-          log.info(msg);
+          LOG.info(msg);
           action.addActionMessage(msg);
         } else {
           // initial major version
           doRegisterDoi(resource, null);
           String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion",
             new String[] {resource.getDoi().toString()});
-          log.info(msg);
+          LOG.info(msg);
           action.addActionMessage(msg);
         }
       } else {
@@ -1414,7 +1414,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         doUpdateDoi(resource);
         String msg = action.getText("manage.overview.publishing.doi.publish.newMinorVersion",
           new String[] {resource.getDoi().toString()});
-        log.info(msg);
+        LOG.info(msg);
         action.addActionMessage(msg);
       }
     }
@@ -1447,7 +1447,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.updateAlternateIdentifierForDOI();
         resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
       } catch (DoiExistsException e) {
-        log.warn(
+        LOG.warn(
           "Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead",
           e);
         try {
@@ -1458,17 +1458,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
         } catch (DoiException e2) {
           String errorMsg = "Failed to update existing DOI  " + doi.toString() + ": " + e2.getMessage();
-          log.error(errorMsg, e2);
+          LOG.error(errorMsg, e2);
           throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e2);
         }
       } catch (InvalidMetadataException e) {
         String errorMsg =
           "Failed to register " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
-        log.error(errorMsg);
+        LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       } catch (DoiException e) {
         String errorMsg = "Failed to register " + doi.toString() + ": " + e.getMessage();
-        log.error(errorMsg);
+        LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       }
     } else {
@@ -1493,11 +1493,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         registrationManager.getDoiService().update(doi, dataCiteMetadata);
       } catch (InvalidMetadataException e) {
         String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
-        log.error(errorMsg);
+        LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       } catch (DoiException e) {
         String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
-        log.error(errorMsg);
+        LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       }
     } else {
@@ -1549,15 +1549,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       } catch (InvalidMetadataException e) {
         String errorMsg = "Failed to update " + doiToReplace.toString() + " metadata: " + e.getMessage();
-        log.error(errorMsg);
+        LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       } catch (DoiException e) {
         String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
-        log.error(errorMsg);
+        LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       } catch (IllegalArgumentException e) {
         String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
-        log.error(errorMsg, e);
+        LOG.error(errorMsg, e);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       }
     } else {
@@ -1598,7 +1598,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     if (toRestore != null) {
       String shortname = resource.getShortname();
-      log.info(
+      LOG.info(
         "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + toRestore.toPlainString()
         + " of resource " + shortname);
 
@@ -1651,12 +1651,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       } catch (IOException e) {
         String msg = action
           .getText("restore.resource.failed", new String[] {toRestore.toPlainString(), shortname, e.getMessage()});
-        log.error(msg, e);
+        LOG.error(msg, e);
         action.addActionError(msg);
       }
       // alert user version rollback was successful
       String msg = action.getText("restore.resource.success", new String[] {toRestore.toPlainString(), shortname});
-      log.info(msg);
+      LOG.info(msg);
       action.addActionMessage(msg);
       // update StatusReport on publishing page
       // Warning: don't retrieve status report using status() otherwise a cyclical call to isLocked results
@@ -1668,7 +1668,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // TODO: i18n
       String msg =
         "Failed to roll back version #" + rollingBack.toPlainString() + ". Could not find version to restore";
-      log.error(msg);
+      LOG.error(msg);
       action.addActionError(msg);
     }
   }
@@ -1703,7 +1703,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             // save all changes to Eml
             saveEml(resource);
             if (cfg.debug()) {
-              log.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
+              LOG.info("GBIF Registry UUID added to Resource's list of alternate identifiers");
             }
           }
         }
@@ -1748,7 +1748,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // save all changes to Eml
         saveEml(resource);
         if (cfg.debug()) {
-          log.info("IPT URL to resource added to (or updated in) Resource's list of alt ids");
+          LOG.info("IPT URL to resource added to (or updated in) Resource's list of alt ids");
         }
       }
       // otherwise if the resource is PRIVATE
@@ -1759,7 +1759,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // save all changes to Eml
           saveEml(resource);
           if (cfg.debug()) {
-            log.info("Following visibility change, IPT URL to resource was removed from Resource's list of alt ids");
+            LOG.info("Following visibility change, IPT URL to resource was removed from Resource's list of alt ids");
           }
         }
       }
@@ -1847,7 +1847,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         try {
           out.close();
         } catch (IOException e) {
-          log.warn("FileOutputStream to RTF file could not be closed");
+          LOG.warn("FileOutputStream to RTF file could not be closed");
         }
       }
     }
@@ -1878,15 +1878,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         alog.info("manage.resource.read.eml.metadata");
         return eml;
       } else {
-        log.warn("Cant find any eml metadata to import");
+        LOG.warn("Cant find any eml metadata to import");
       }
     } catch (ImportException e) {
       String msg = "Cant read basic archive metadata: " + e.getMessage();
-      log.warn(msg);
+      LOG.warn(msg);
       alog.warn(msg);
       return null;
     } catch (Exception e) {
-      log.warn("Cant read archive eml metadata", e);
+      LOG.warn("Cant read archive eml metadata", e);
     }
     // try to read other metadata formats like dc
     try {
@@ -1894,7 +1894,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       alog.info("manage.resource.read.basic.metadata");
       return eml;
     } catch (Exception e) {
-      log.warn("Cant read basic archive metadata: " + e.getMessage());
+      LOG.warn("Cant read basic archive metadata: " + e.getMessage());
     }
     alog.warn("manage.resource.read.problem");
     return null;
@@ -1908,7 +1908,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   public void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action)
     throws RegistryException {
-    ActionLogger alog = new ActionLogger(this.log, action);
+    ActionLogger alog = new ActionLogger(this.LOG, action);
 
     if (PublicationStatus.REGISTERED != resource.getStatus() && PublicationStatus.PUBLIC == resource.getStatus()) {
 
@@ -1940,7 +1940,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               // is the candidate UUID equal to the UUID from an existing registered resource owned by the
               // organization? There should only be one match, and the first one encountered will be used for migration.
               if (entry.getKey() != null && candidate.equals(entry.getKey())) {
-                log.debug("Resource matched to existing registered resource, UUID=" + entry.getKey().toString());
+                LOG.debug("Resource matched to existing registered resource, UUID=" + entry.getKey().toString());
 
                 // fill in registration info - we've found the original resource being migrated to the IPT
                 resource.setStatus(PublicationStatus.REGISTERED);
@@ -1993,7 +1993,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // save all changes to resource
       save(resource);
     } else {
-      log.error("Registration request failed: the resource must be public. Status=" + resource.getStatus().toString());
+      LOG.error("Registration request failed: the resource must be public. Status=" + resource.getStatus().toString());
     }
   }
 
@@ -2074,7 +2074,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   protected synchronized void addOrUpdateVersionHistory(Resource resource, BigDecimal version, boolean published,
     BaseAction action) {
-    log.info("Adding or updating version: " + version.toPlainString());
+    LOG.info("Adding or updating version: " + version.toPlainString());
 
     VersionHistory versionHistory;
     // Construct new VersionHistory, or update existing one if it exists
@@ -2082,10 +2082,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (existingVersionHistory == null) {
       versionHistory = new VersionHistory(version, resource.getStatus());
       resource.addVersionHistory(versionHistory);
-      log.info("Adding VersionHistory for version " + version.toPlainString());
+      LOG.info("Adding VersionHistory for version " + version.toPlainString());
     } else {
       versionHistory = existingVersionHistory;
-      log.info("Updating VersionHistory for version " + version.toPlainString());
+      LOG.info("Updating VersionHistory for version " + version.toPlainString());
     }
 
     // DOI
@@ -2121,7 +2121,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // add to internal map
       addResource(resource);
     } catch (IOException e) {
-      log.error(e);
+      LOG.error(e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write mapping configuration");
     } finally {
       if (writer != null) {
@@ -2143,7 +2143,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File emlFile = dataDir.resourceEmlFile(resource.getShortname());
     // Locale.US it's used because uses '.' as the decimal separator
     EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
-    log.debug("Updated EML file for " + resource);
+    LOG.debug("Updated EML file for " + resource);
   }
 
   public StatusReport status(String shortname) {
@@ -2181,7 +2181,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         action = new BaseAction(textProvider, cfg, registrationManager);
       }
       try {
-        log.debug("Updating registration of resource with key: " + resource.getKey().toString());
+        LOG.debug("Updating registration of resource with key: " + resource.getKey().toString());
 
         // get IPT key
         String iptKey = null;
@@ -2196,16 +2196,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // log as specific error message as possible about why the Registry error occurred
         String msg = RegistryException.logRegistryException(e, action);
         action.addActionError(msg);
-        log.error(msg);
+        LOG.error(msg);
         // add error message that explains the root cause of the Registry error to user
         msg = action.getText("admin.config.updateMetadata.resource.fail.registry", new String[]{e.getMessage()});
         action.addActionError(msg);
-        log.error(msg);
+        LOG.error(msg);
         throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
       } catch (InvalidConfigException e) {
         String msg = action.getText("manage.overview.failed.resource.update", new String[] {e.getMessage()});
         action.addActionError(msg);
-        log.error(msg);
+        LOG.error(msg);
         throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
       }
     }
@@ -2268,7 +2268,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void updateNextPublishedDate(Resource resource) throws PublicationException {
     if (resource.usesAutoPublishing()) {
       try {
-        log.debug("Updating next published date of resource: " + resource.getShortname());
+        LOG.debug("Updating next published date of resource: " + resource.getShortname());
 
         // get the time now, from this the next published date will be calculated
         Date now = new Date();
@@ -2284,22 +2284,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // alert user that auto publishing has been turned on
         if (resource.getNextPublished() == null) {
-          log.debug("Auto-publishing turned on");
+          LOG.debug("Auto-publishing turned on");
         }
 
         // set next published date
         resource.setNextPublished(nextPublished);
 
         // log
-        log.debug("The next publication date is: " + nextPublished.toString());
+        LOG.debug("The next publication date is: " + nextPublished.toString());
       } catch (Exception e) {
         // add error message that explains the consequence of the error to user
         String msg = "Auto-publishing failed: " + e.getMessage();
-        log.error(msg, e);
+        LOG.error(msg, e);
         throw new PublicationException(PublicationException.TYPE.SCHEDULING, msg, e);
       }
     } else {
-      log.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
+      LOG.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
     }
   }
 
@@ -2314,7 +2314,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       resource.setUpdateFrequency(null);
       // clear next published date
       resource.setNextPublished(null);
-      log.debug("Auto-publishing turned off");
+      LOG.debug("Auto-publishing turned off");
       // save change to resource
       save(resource);
     }
@@ -2337,24 +2337,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         String type = resource.getCoreType();
         if (!Strings.isNullOrEmpty(type)) {
           EmlUtils.addOrUpdateKeywordSet(keywords, type, Constants.THESAURUS_DATASET_TYPE);
-          log.debug("GBIF Dataset Type Vocabulary added/updated to Resource's list of keywords");
+          LOG.debug("GBIF Dataset Type Vocabulary added/updated to Resource's list of keywords");
         }
         // its absence means that it must removed (if it exists)
         else {
           EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_TYPE);
-          log.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
+          LOG.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
         }
 
         // add or update KeywordSet for dataset subtype
         String subtype = resource.getSubtype();
         if (!Strings.isNullOrEmpty(subtype)) {
           EmlUtils.addOrUpdateKeywordSet(keywords, subtype, Constants.THESAURUS_DATASET_SUBTYPE);
-          log.debug("GBIF Dataset Subtype Vocabulary added/updated to Resource's list of keywords");
+          LOG.debug("GBIF Dataset Subtype Vocabulary added/updated to Resource's list of keywords");
         }
         // its absence means that it must be removed (if it exists)
         else {
           EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_SUBTYPE);
-          log.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
+          LOG.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
         }
       }
     }
@@ -2376,7 +2376,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public boolean hasMaxProcessFailures(Resource resource) {
     if (processFailures.containsKey(resource.getShortname())) {
       List<Date> failures = processFailures.get(resource.getShortname());
-      log.debug("Publication has failed " + String.valueOf(failures.size()) + " time(s) for resource: " + resource
+      LOG.debug("Publication has failed " + String.valueOf(failures.size()) + " time(s) for resource: " + resource
         .getTitleAndShortname());
       if (failures.size() >= MAX_PROCESS_FAILURES) {
         return true;
@@ -2402,7 +2402,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (dwcaFile != null && dwcaFile.exists()) {
       boolean deleted = FileUtils.deleteQuietly(dwcaFile);
       if (deleted) {
-        log.debug(dwcaFile.getAbsolutePath() + " has been successfully deleted.");
+        LOG.debug(dwcaFile.getAbsolutePath() + " has been successfully deleted.");
       }
     }
   }

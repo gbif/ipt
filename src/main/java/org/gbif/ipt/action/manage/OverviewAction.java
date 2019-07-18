@@ -90,15 +90,16 @@ import com.google.common.io.Files;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.gbif.ipt.task.GenerateDwca.CHARACTER_ENCODING;
 
 public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(OverviewAction.class);
+  private static final Logger LOG = LogManager.getLogger(OverviewAction.class);
 
   private static final String PUBLISHING = "publishing";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();

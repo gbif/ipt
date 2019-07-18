@@ -2,7 +2,8 @@ package org.gbif.ipt.service.manage.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.common.DoiData;
 import org.gbif.api.model.common.DoiStatus;
@@ -71,7 +72,7 @@ import static org.mockito.Mockito.when;
 @RunWith(Parameterized.class)
 public class ResourceManagerImplIT {
 
-  private static final Logger LOG = Logger.getLogger(ResourceManagerImplIT.class);
+  private static final Logger LOG = LogManager.getLogger(ResourceManagerImplIT.class);
   private static DataDir MOCK_DATA_DIR = mock(DataDir.class);
   private static File TMP_EML_FILE;
 

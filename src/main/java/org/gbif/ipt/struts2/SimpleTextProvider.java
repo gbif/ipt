@@ -9,7 +9,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import com.opensymphony.xwork2.LocaleProvider;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A basic text provider for internationalised messages that can replace the native struts2 one. It uses only a single
@@ -18,7 +19,7 @@ import org.apache.log4j.Logger;
  */
 public class SimpleTextProvider {
 
-  private static final Logger LOG = Logger.getLogger(SimpleTextProvider.class);
+  private static final Logger LOG = LogManager.getLogger(SimpleTextProvider.class);
   private static final String DEFAULT_BUNDLE = "ApplicationResources";
   private final Set<String> baseBundleNames = new HashSet<String>();
 

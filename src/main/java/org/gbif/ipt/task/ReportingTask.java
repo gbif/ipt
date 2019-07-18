@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class ReportingTask {
 
-  protected Logger log = Logger.getLogger(this.getClass());
+  protected Logger log = LogManager.getLogger(this.getClass());
   protected final DataDir dataDir;
   private final String resourceShortname;
   private final ReportHandler handler;

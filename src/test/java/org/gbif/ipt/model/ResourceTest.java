@@ -17,7 +17,8 @@
 package org.gbif.ipt.model;
 
 import com.google.common.collect.Lists;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -37,7 +38,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class ResourceTest {
-  private static final Logger LOG = Logger.getLogger(ResourceTest.class);
+  private static final Logger LOG = LogManager.getLogger(ResourceTest.class);
   private static final BigDecimal LATEST_RESOURCE_VERSION = new BigDecimal("3.0");
   private static final BigDecimal RESOURCE_VERSION_TWO = new BigDecimal("2.0");
   private static final BigDecimal RESOURCE_VERSION_ONE = new BigDecimal("1.0");

@@ -16,7 +16,8 @@ import java.net.URL;
 
 import com.google.inject.Inject;
 import org.apache.commons.digester.Rule;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 
 /**
@@ -27,7 +28,7 @@ import org.xml.sax.Attributes;
 public class ThesaurusHandlingRule extends Rule {
 
   public static final String ATTRIBUTE_THESAURUS = "thesaurus";
-  private static final Logger LOG = Logger.getLogger(ThesaurusHandlingRule.class);
+  private static final Logger LOG = LogManager.getLogger(ThesaurusHandlingRule.class);
   private final VocabulariesManager vocabManager;
 
   @Inject

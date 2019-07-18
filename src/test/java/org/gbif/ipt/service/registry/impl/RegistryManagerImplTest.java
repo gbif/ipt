@@ -46,7 +46,8 @@ import org.gbif.utils.HttpUtil.Response;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -64,7 +65,7 @@ import static org.mockito.Mockito.when;
 public class RegistryManagerImplTest extends IptMockBaseTest {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(RegistryManagerImplTest.class);
+  private static final Logger LOG = LogManager.getLogger(RegistryManagerImplTest.class);
 
   private AppConfig mockAppConfig;
   private DataDir mockDataDir;

@@ -7,7 +7,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
@@ -52,7 +53,7 @@ import java.util.UUID;
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
 
-  private static final Logger LOG = Logger.getLogger(RegistrationManagerImpl.class);
+  private static final Logger LOG = LogManager.getLogger(RegistrationManagerImpl.class);
 
   private static final Comparator<Organisation> ORG_BY_NAME_ORD = new Comparator<Organisation>() {
 
@@ -93,7 +94,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
           "Multiple DOI accounts activated in registration information - only one is allowed.");
       }
 
-      log.debug("Adding/updating associated organisation " + organisation.getKey() + " - " + organisation.getName());
+      LOG.debug("Adding/updating associated organisation " + organisation.getKey() + " - " + organisation.getName());
       registration.getAssociatedOrganisations().put(organisation.getKey().toString(), organisation);
     }
     return organisation;
@@ -136,7 +137,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   public Organisation addHostingOrganisation(Organisation organisation) {
     if (organisation != null) {
-      log.debug("Adding hosting organisation " + organisation.getKey() + " - " + organisation.getName());
+      LOG.debug("Adding hosting organisation " + organisation.getKey() + " - " + organisation.getName());
       registration.setHostingOrganisation(organisation);
     }
     return organisation;
@@ -317,22 +318,22 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
             // end of file, expected exception!
             break;
           } catch (ClassNotFoundException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
           }
         }
       } catch (EOFException e) {
         // end of file, expected exception!
       } catch (AlreadyExistingException e) {
-        log.error(e);
+        LOG.error(e);
       }
 
     } catch (FileNotFoundException e) {
-      log.warn("Registration information not existing, " + PERSISTENCE_FILE_V2
+      LOG.warn("Registration information not existing, " + PERSISTENCE_FILE_V2
                + " file missing  (This is normal when IPT is not registered yet)");
     } catch (ClassNotFoundException e) {
-      log.error(e.getMessage(), e);
+      LOG.error(e.getMessage(), e);
     } catch (IOException e) {
-      log.error(e.getMessage(), e);
+      LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
         "Couldnt read the registration information: " + e.getMessage());
     } finally {
@@ -364,9 +365,9 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         }
       }
     } catch (ClassNotFoundException e) {
-      log.error(e.getMessage(), e);
+      LOG.error(e.getMessage(), e);
     } catch (IOException e) {
-      log.error(e.getMessage(), e);
+      LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG, "Couldnt read registration info: " + e.getMessage());
     } finally {
       try {
@@ -415,24 +416,24 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
               // end of file, expected exception!
               break;
             } catch (ClassNotFoundException e) {
-              log.error(e.getMessage(), e);
+              LOG.error(e.getMessage(), e);
             }
           }
         } catch (EOFException e) {
           // end of file, expected exception!
         } catch (AlreadyExistingException e) {
-          log.error(e);
+          LOG.error(e);
         }
 
         // ensure changes are persisted to registration2.xml
         save();
 
       } catch (ClassNotFoundException e) {
-        log.error(e.getMessage(), e);
+        LOG.error(e.getMessage(), e);
         throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
           "Problem reading the registration information: " + e.getMessage());
       } catch (IOException e) {
-        log.error(e.getMessage(), e);
+        LOG.error(e.getMessage(), e);
         throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
           "Couldnt read the registration information: " + e.getMessage());
       } finally {
@@ -470,7 +471,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       // ensure changes are persisted to registration2.xml
       save();
     } catch (IOException e) {
-      log.error("A problem occurred saving ");
+      LOG.error("A problem occurred saving ");
     }
   }
 
@@ -512,20 +513,20 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
           organisation.setPrimaryContactEmail(Strings.emptyToNull(o.getPrimaryContactEmail()));
           organisation.setPrimaryContactPhone(Strings.emptyToNull(o.getPrimaryContactPhone()));
           organisation.setPrimaryContactType(Strings.emptyToNull(o.getPrimaryContactType()));
-          log.debug("Organisation (" + key + ") updated with latest metadata from Registry");
+          LOG.debug("Organisation (" + key + ") updated with latest metadata from Registry");
         } else {
-          log.debug("Update of organisation failed: organisation retrieved from Registry was missing name");
+          LOG.debug("Update of organisation failed: organisation retrieved from Registry was missing name");
         }
       } else {
-        log.debug("Update of organisation failed: organisation retrieved from Registry was null");
+        LOG.debug("Update of organisation failed: organisation retrieved from Registry was null");
       }
     } else {
-      log.debug("Update of organisation failed: organisation was null");
+      LOG.debug("Update of organisation failed: organisation was null");
     }
   }
 
   public synchronized void save() throws IOException {
-    log.debug("Saving all user organisations associated to this IPT...");
+    LOG.debug("Saving all user organisations associated to this IPT...");
     Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE_V2));
     ObjectOutputStream out = xstreamV2.createObjectOutputStream(organisationWriter, "registration");
     out.writeObject(registration);

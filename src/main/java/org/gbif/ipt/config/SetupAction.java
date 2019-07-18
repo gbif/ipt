@@ -6,7 +6,8 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig.REGISTRY_TYPE;
 import org.gbif.ipt.model.Extension;
@@ -35,7 +36,7 @@ import java.util.List;
 public class SetupAction extends BaseAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(SetupAction.class);
+  private static final Logger LOG = LogManager.getLogger(SetupAction.class);
 
   private static final long serialVersionUID = 4726973323043063968L;
 

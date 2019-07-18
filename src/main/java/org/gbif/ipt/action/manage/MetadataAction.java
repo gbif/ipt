@@ -57,11 +57,12 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MetadataAction extends ManagerBaseAction {
 
-  private static final Logger LOG = Logger.getLogger(MetadataAction.class);
+  private static final Logger LOG = LogManager.getLogger(MetadataAction.class);
 
 
   private final ResourceValidator validatorRes = new ResourceValidator();

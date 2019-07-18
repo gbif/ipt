@@ -45,7 +45,8 @@ import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class to generate a DCAT feed, including all resources that are published, public and have a license.
@@ -57,7 +58,7 @@ import org.apache.log4j.Logger;
 public class GenerateDCAT {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(GenerateDCAT.class);
+  private static final Logger LOG = LogManager.getLogger(GenerateDCAT.class);
 
   private static final String DCAT_SETTINGS = "org/gbif/metadata/eml/dcatsettings.properties";
   private static final String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";

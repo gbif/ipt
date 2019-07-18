@@ -3,7 +3,8 @@ package org.gbif.ipt.model;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -26,7 +27,7 @@ import java.util.*;
  */
 public class ExcelFileSource extends SourceBase implements FileSource {
 
-  private static final Logger LOG = Logger.getLogger(ExcelFileSource.class);
+  private static final Logger LOG = LogManager.getLogger(ExcelFileSource.class);
   private static final String SUFFIX = ".xls";
 
   private int sheetIdx = 0;

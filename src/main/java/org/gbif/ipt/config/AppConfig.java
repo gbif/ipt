@@ -13,7 +13,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
@@ -47,7 +48,7 @@ public class AppConfig {
   public static final String IPT_LONGITUDE = "location.lon";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   private Properties properties = new Properties();
-  private static final Logger LOG = Logger.getLogger(AppConfig.class);
+  private static final Logger LOG = LogManager.getLogger(AppConfig.class);
   private DataDir dataDir;
   private REGISTRY_TYPE type;
 

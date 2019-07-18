@@ -1,6 +1,7 @@
 package org.gbif.ipt.model;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.csv.CSVReader;
@@ -15,7 +16,7 @@ import java.util.*;
  */
 public class TextFileSource extends SourceBase implements FileSource {
 
-  private static final Logger LOG = Logger.getLogger(TextFileSource.class);
+  private static final Logger LOG = LogManager.getLogger(TextFileSource.class);
   private static final String SUFFIX = ".txt";
 
   private String fieldsTerminatedBy = "\t";

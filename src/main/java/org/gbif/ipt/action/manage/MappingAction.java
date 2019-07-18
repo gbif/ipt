@@ -49,7 +49,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A rather complex action that deals with a single mapping configuration.
@@ -68,7 +69,7 @@ public class MappingAction extends ManagerBaseAction {
   private static final long serialVersionUID = -831969146160030857L;
 
   // logging
-  private static final Logger LOG = Logger.getLogger(MappingAction.class);
+  private static final Logger LOG = LogManager.getLogger(MappingAction.class);
 
   private static final Pattern NORM_TERM = Pattern.compile("[\\W\\s_0-9]+");
 

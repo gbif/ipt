@@ -2,7 +2,8 @@ package org.gbif.ipt.struts2;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.LocaleUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.I18nInterceptor;
 
 import java.util.Locale;
@@ -13,7 +14,7 @@ import java.util.Set;
  * Struts2 i18n interceptor only handles Locales supported by the JRE, which is Locale.getAvailableLocales().
  */
 public class IptI18nInterceptor extends I18nInterceptor {
-  private static final Logger LOG = Logger.getLogger(IptI18nInterceptor.class);
+  private static final Logger LOG = LogManager.getLogger(IptI18nInterceptor.class);
   private static final Set<Locale> IPT_SUPPORTED_LOCALES = Sets.newHashSet(
       Locale.ENGLISH,
       Locale.FRENCH,

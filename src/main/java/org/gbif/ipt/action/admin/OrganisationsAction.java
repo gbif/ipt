@@ -25,7 +25,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the organisations allowed in the IPT.
@@ -33,7 +34,7 @@ import org.apache.log4j.Logger;
 public class OrganisationsAction extends POSTAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(OrganisationsAction.class);
+  private static final Logger LOG = LogManager.getLogger(OrganisationsAction.class);
 
   /**
    * A session scoped cache of the organisations from the GBIF registry.

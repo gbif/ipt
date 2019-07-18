@@ -42,7 +42,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static com.google.common.base.Objects.equal;
 
@@ -57,7 +58,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     OCCURRENCE, CHECKLIST, SAMPLINGEVENT, METADATA, OTHER
   }
 
-  private static Logger log = Logger.getLogger(Resource.class);
+  private static final Logger LOG = LogManager.getLogger(Resource.class);
 
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
 
@@ -130,7 +131,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       }
     }
     if (!exists) {
-      log.debug("Adding new version history: " + history.getVersion());
+      LOG.debug("Adding new version history: " + history.getVersion());
       versionHistory.add(0, history);
     }
   }
@@ -238,24 +239,24 @@ public class Resource implements Serializable, Comparable<Resource> {
           if (mappings.indexOf(mapping) == 0) {
             ExtensionMapping next = coreMappings.get(1);
             int nextIndex = mappings.indexOf(next);
-            log.debug("Swapping first core mapping with next core mapping with index#" + nextIndex);
+            LOG.debug("Swapping first core mapping with next core mapping with index#" + nextIndex);
             Collections.swap(mappings, 0, nextIndex);
           }
-          log.debug("Deleting core mapping...");
+          LOG.debug("Deleting core mapping...");
           return mappings.remove(mapping);
         }
         // if this was the only core mapping, delete all mappings
         else {
-          log.debug("Deleting only core mapping and thus clearing all mappings...");
+          LOG.debug("Deleting only core mapping and thus clearing all mappings...");
           mappings.clear();
           return true;
         }
       } else {
-        log.debug("Deleting non-core mapping...");
+        LOG.debug("Deleting non-core mapping...");
         return mappings.remove(mapping);
       }
     }
-    log.debug("Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
+    LOG.debug("Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
     return false;
   }
 
@@ -268,7 +269,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       for (ExtensionMapping em : ems) {
         if (em.getSource() != null && src.equals(em.getSource())) {
           deleteMapping(em);
-          log.debug("Cascading source delete to mapping " + em.getExtension().getTitle());
+          LOG.debug("Cascading source delete to mapping " + em.getExtension().getTitle());
         }
       }
     }
@@ -282,7 +283,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (src != null) {
       for (ExtensionMapping em : new ArrayList<ExtensionMapping>(mappings)) {
         if (em.getSource() != null && src.equals(em.getSource())) {
-          log.debug("Source mapped to " + em.getExtension().getTitle());
+          LOG.debug("Source mapped to " + em.getExtension().getTitle());
           return true;
         }
       }
@@ -543,7 +544,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       if (em.getExtension() != null && em.getSource() != null) {
         extensions.add(em.getExtension());
       } else {
-        log.error("ExtensionMapping referencing NULL Extension or Source for resource: " + getShortname());
+        LOG.error("ExtensionMapping referencing NULL Extension or Source for resource: " + getShortname());
       }
     }
     return Lists.newArrayList(extensions);
@@ -961,7 +962,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   public void setReplacedEmlVersion(BigDecimal replacedEmlVersion) {
     VersionHistory vh = findVersionHistory(replacedEmlVersion);
     if (vh == null) {
-      log.error("Replaced version (" + replacedEmlVersion.toPlainString() + ") does not exist in version history!");
+      LOG.error("Replaced version (" + replacedEmlVersion.toPlainString() + ") does not exist in version history!");
     } else {
       this.replacedEmlVersion = replacedEmlVersion;
     }
@@ -1020,7 +1021,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     try {
       return generateResourceCitation(new BigDecimal(version), new URI(homepage));
     } catch (URISyntaxException e) {
-      log.error("Failed to generate URI for homepage string: " + homepage, e);
+      LOG.error("Failed to generate URI for homepage string: " + homepage, e);
     }
     return null;
   }
@@ -1231,7 +1232,7 @@ public class Resource implements Serializable, Comparable<Resource> {
           ids.clear();
         }
         ids.addAll(reorderedList);
-        log.debug("DOI=" + doi.toString() + " added to resource's list of alt ids as first element");
+        LOG.debug("DOI=" + doi.toString() + " added to resource's list of alt ids as first element");
       } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE) ||
           identifierStatus.equals(IdentifierStatus.UNRESERVED)) {
         for (Iterator<String> iterator = ids.iterator(); iterator.hasNext(); ) {
@@ -1239,7 +1240,7 @@ public class Resource implements Serializable, Comparable<Resource> {
           // make sure a DOI that has been made unavailable, or that has been deleted, no longer appears in the list
           if (id.equalsIgnoreCase(doi.toString())) {
             iterator.remove();
-            log.debug("DOI=" + doi.toString() + " removed from resource's list of alt ids");
+            LOG.debug("DOI=" + doi.toString() + " removed from resource's list of alt ids");
           }
         }
       }
@@ -1270,7 +1271,7 @@ public class Resource implements Serializable, Comparable<Resource> {
         } else {
           citation.setIdentifier(doi.getUrl().toString());
         }
-        log.debug("DOI=" + doi.getUrl().toString() + " set as resource's citation identifier");
+        LOG.debug("DOI=" + doi.getUrl().toString() + " set as resource's citation identifier");
       } else if (identifierStatus.equals(IdentifierStatus.UNAVAILABLE) || identifierStatus
         .equals(IdentifierStatus.UNRESERVED)) {
         // make sure the DOI no longer set as resource citation identifier
@@ -1283,7 +1284,7 @@ public class Resource implements Serializable, Comparable<Resource> {
         } else {
           citation.setIdentifier(null);
         }
-        log.debug("DOI=" + doi.getUrl().toString() + " unset as resource's citation identifier");
+        LOG.debug("DOI=" + doi.getUrl().toString() + " unset as resource's citation identifier");
       }
     }
   }

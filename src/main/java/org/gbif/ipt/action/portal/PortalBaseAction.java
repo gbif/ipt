@@ -15,7 +15,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The base of all portal actions.
@@ -26,7 +27,7 @@ public class PortalBaseAction extends BaseAction {
   protected Resource resource;
   protected BigDecimal version;
   public static final String UNSPECIFIED_VERSION = "unspecified";
-  private static final Logger LOG = Logger.getLogger(PortalBaseAction.class);
+  private static final Logger LOG = LogManager.getLogger(PortalBaseAction.class);
 
   @Inject
   public PortalBaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,

@@ -18,11 +18,12 @@ import javax.mail.internet.InternetAddress;
 
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class BaseValidator {
 
-  private static final Logger LOG = Logger.getLogger(BaseValidator.class);
+  private static final Logger LOG = LogManager.getLogger(BaseValidator.class);
 
   protected boolean exists(String x) {
     return exists(x, 2);

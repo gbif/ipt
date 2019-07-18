@@ -1,7 +1,8 @@
 package org.gbif.ipt.service.registry.impl;
 
 import com.google.common.collect.Lists;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.*;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.when;
 public class RegistryManagerImplIT extends IptMockBaseTest {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(RegistryManagerImplTest.class);
+  private static final Logger LOG = LogManager.getLogger(RegistryManagerImplTest.class);
 
   // organisation below must exist in sandbox registry!
   private static final String ORGANISATION_UUID = "62922b92-69d1-4c4b-831c-b23d5412a124";

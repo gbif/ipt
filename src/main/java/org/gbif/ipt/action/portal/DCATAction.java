@@ -10,7 +10,8 @@ import java.io.UnsupportedEncodingException;
 import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Action to create the DCAT feed.
@@ -18,7 +19,7 @@ import org.apache.log4j.Logger;
 public class DCATAction extends ActionSupport {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(DCATAction.class);
+  private static final Logger LOG = LogManager.getLogger(DCATAction.class);
 
   private GenerateDCAT generateDCAT;
 

@@ -19,7 +19,8 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The Action responsible for all user input relating to the registration options.
@@ -27,7 +28,7 @@ import org.apache.log4j.Logger;
 public class RegistrationAction extends POSTAction {
 
   // logging
-  private static final Logger LOG = Logger.getLogger(RegistrationAction.class);
+  private static final Logger LOG = LogManager.getLogger(RegistrationAction.class);
 
   @SessionScoped
   public static class RegisteredOrganisations {

@@ -8,7 +8,8 @@ import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
 import org.gbif.ipt.model.factory.VocabularyFactory;
@@ -36,7 +37,7 @@ import java.util.Properties;
  */
 public class IPTModule extends AbstractModule {
 
-  private static final Logger LOG = Logger.getLogger(IPTModule.class);
+  private static final Logger LOG = LogManager.getLogger(IPTModule.class);
   private static final String DATA_DIR_ENV_VAR = "IPT_DATA_DIR";
   // 30 second timeout; too long and users will refresh and not notice errors.
   protected static final int CONNECTION_TIMEOUT_MSEC = 30_000;
