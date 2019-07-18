@@ -201,41 +201,41 @@ public class DataCiteMetadataBuilderTest {
     assertEquals("10.5072/ipt12", dataCiteMetadata.getIdentifier().getValue());
     assertEquals(DataCiteMetadataBuilder.DOI_IDENTIFIER_TYPE, dataCiteMetadata.getIdentifier().getIdentifierType());
     assertEquals("Ants of New York State", dataCiteMetadata.getTitles().getTitle().get(0).getValue());
-    assertEquals("Natural History Museum", dataCiteMetadata.getPublisher());
+    assertEquals("Natural History Museum", dataCiteMetadata.getPublisher().getValue());
     assertEquals("2013", dataCiteMetadata.getPublicationYear());
     assertEquals("eng", dataCiteMetadata.getTitles().getTitle().get(0).getLang());
     assertNull(dataCiteMetadata.getTitles().getTitle().get(0).getTitleType());
 
     // creator1
-    assertEquals("Jim Smith", dataCiteMetadata.getCreators().getCreator().get(0).getCreatorName());
+    assertEquals("Jim Smith", dataCiteMetadata.getCreators().getCreator().get(0).getCreatorName().getValue());
     assertEquals("0000-0099-6824-9999",
-      dataCiteMetadata.getCreators().getCreator().get(0).getNameIdentifier().getValue());
+      dataCiteMetadata.getCreators().getCreator().get(0).getNameIdentifier().get(0).getValue());
     assertEquals("http://orcid.org",
-      dataCiteMetadata.getCreators().getCreator().get(0).getNameIdentifier().getSchemeURI());
+      dataCiteMetadata.getCreators().getCreator().get(0).getNameIdentifier().get(0).getSchemeURI());
     assertEquals(DataCiteMetadataBuilder.ORCID_NAME_IDENTIFIER_SCHEME,
-      dataCiteMetadata.getCreators().getCreator().get(0).getNameIdentifier().getNameIdentifierScheme());
+      dataCiteMetadata.getCreators().getCreator().get(0).getNameIdentifier().get(0).getNameIdentifierScheme());
     // creator2
-    assertEquals("GBIF", dataCiteMetadata.getCreators().getCreator().get(1).getCreatorName());
+    assertEquals("GBIF", dataCiteMetadata.getCreators().getCreator().get(1).getCreatorName().getValue());
 
     // contributor1
-    assertEquals("Brian Love", dataCiteMetadata.getContributors().getContributor().get(0).getContributorName());
+    assertEquals("Brian Love", dataCiteMetadata.getContributors().getContributor().get(0).getContributorName().getValue());
     assertEquals("0000-0099-6824-1234",
-      dataCiteMetadata.getContributors().getContributor().get(0).getNameIdentifier().getValue());
+      dataCiteMetadata.getContributors().getContributor().get(0).getNameIdentifier().get(0).getValue());
     assertEquals("http://orcid.org",
-      dataCiteMetadata.getContributors().getContributor().get(0).getNameIdentifier().getSchemeURI());
+      dataCiteMetadata.getContributors().getContributor().get(0).getNameIdentifier().get(0).getSchemeURI());
     assertEquals(DataCiteMetadataBuilder.ORCID_NAME_IDENTIFIER_SCHEME,
-      dataCiteMetadata.getContributors().getContributor().get(0).getNameIdentifier().getNameIdentifierScheme());
+      dataCiteMetadata.getContributors().getContributor().get(0).getNameIdentifier().get(0).getNameIdentifierScheme());
     assertEquals(ContributorType.CONTACT_PERSON,
       dataCiteMetadata.getContributors().getContributor().get(0).getContributorType());
     // contributor2
-    assertEquals("Markus Wong", dataCiteMetadata.getContributors().getContributor().get(1).getContributorName());
+    assertEquals("Markus Wong", dataCiteMetadata.getContributors().getContributor().get(1).getContributorName().getValue());
     assertEquals(ContributorType.DATA_CURATOR,
       dataCiteMetadata.getContributors().getContributor().get(1).getContributorType());
     // contributor3
-    assertEquals("Insects Curator", dataCiteMetadata.getContributors().getContributor().get(2).getContributorName());
+    assertEquals("Insects Curator", dataCiteMetadata.getContributors().getContributor().get(2).getContributorName().getValue());
     assertEquals(ContributorType.DATA_CURATOR,
       dataCiteMetadata.getContributors().getContributor().get(2).getContributorType());
-    assertEquals("Programmer", dataCiteMetadata.getContributors().getContributor().get(3).getContributorName());
+    assertEquals("Programmer", dataCiteMetadata.getContributors().getContributor().get(3).getContributorName().getValue());
     assertEquals(ContributorType.PRODUCER,
       dataCiteMetadata.getContributors().getContributor().get(3).getContributorType());
 
@@ -330,10 +330,10 @@ public class DataCiteMetadataBuilderTest {
     assertEquals("eng", dataCiteMetadata.getDescriptions().getDescription().get(0).getLang());
 
     // GeoLocation
-    assertEquals("[51.853298, -115.46875, 51.973588, -112.653503]",
-      dataCiteMetadata.getGeoLocations().getGeoLocation().get(0).getGeoLocationBox().toString());
+    assertEquals("Box{westBoundLongitude=-115.46875, eastBoundLongitude=-112.6535, southBoundLatitude=51.8533, northBoundLatitude=51.973587}",
+        dataCiteMetadata.getGeoLocations().getGeoLocation().get(0).getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox().get(1).toString());
     assertEquals("NE Calgary Region",
-      dataCiteMetadata.getGeoLocations().getGeoLocation().get(0).getGeoLocationPlace().toString());
+      dataCiteMetadata.getGeoLocations().getGeoLocation().get(0).getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox().get(0));
   }
 
   /**
@@ -447,7 +447,7 @@ public class DataCiteMetadataBuilderTest {
     creators.add(creator1);
     DataCiteMetadata.Creators ls = DataCiteMetadataBuilder.convertEmlCreators(creators);
     DataCiteMetadata.Creators.Creator c = ls.getCreator().get(0);
-    assertEquals("NHM London", c.getCreatorName());
+    assertEquals("NHM London", c.getCreatorName().getValue());
   }
 
   /**

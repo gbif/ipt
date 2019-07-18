@@ -238,7 +238,7 @@ public class Resource implements Serializable, Comparable<Resource> {
           if (mappings.indexOf(mapping) == 0) {
             ExtensionMapping next = coreMappings.get(1);
             int nextIndex = mappings.indexOf(next);
-            log.debug("Swapping first core mapping with next core mapping with index#" + String.valueOf(nextIndex));
+            log.debug("Swapping first core mapping with next core mapping with index#" + nextIndex);
             Collections.swap(mappings, 0, nextIndex);
           }
           log.debug("Deleting core mapping...");

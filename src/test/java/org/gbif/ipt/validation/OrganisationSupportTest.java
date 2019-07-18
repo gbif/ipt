@@ -9,14 +9,11 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
-
-import java.util.Arrays;
-import java.util.UUID;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -43,7 +40,7 @@ public class OrganisationSupportTest {
   }
 
   @Parameterized.Parameters
-  public static Iterable data() {
+  public static Object[][] data() {
     // config in production mode
     AppConfig mockCfgProduction = mock(AppConfig.class);
     when(mockCfgProduction.getRegistryType()).thenReturn(AppConfig.REGISTRY_TYPE.PRODUCTION);
@@ -145,30 +142,26 @@ public class OrganisationSupportTest {
     o11.setAgencyAccountPassword("GOOD_PASSWORD");
     o11.setDoiPrefix("prefix");
 
-    // organisation DOI registration agency account, except prefix is invalid because it doesn't start with 10.
-    Organisation o12 = new Organisation();
-    o12.setName("NHM");
-    o12.setPassword(VALID_ORGANISATION_PASSWORD);
-    o12.setKey(ORGANISATION_KEY);
-    o12.setDoiRegistrationAgency(DOIRegistrationAgency.EZID);
-    o12.setAgencyAccountUsername("DK.TEST");
-    o12.setAgencyAccountPassword("GOOD_PASSWORD");
-    o12.setDoiPrefix("10.1234");
-
-    return Arrays.asList(
-      new Object[][] {{o1, true, mockCfgProduction}, {o2, false, mockCfgProduction}, {o3, false, mockCfgProduction},
-        {o4, false, mockCfgProduction}, {o5, false, mockCfgProduction}, {o6, false, mockCfgProduction},
-        {o7, false, mockCfgProduction}, {o8, false, mockCfgProduction}, {o9, false, mockCfgProduction},
-        {o10, false, mockCfgTest}, {o11, false, mockCfgProduction}, {o12, false, mockCfgProduction}});
+    return new Object[][] {
+        {o1, true, mockCfgProduction},
+        {o2, false, mockCfgProduction},
+        {o3, false, mockCfgProduction},
+        {o4, false, mockCfgProduction},
+        {o5, false, mockCfgProduction},
+        {o6, false, mockCfgProduction},
+        {o7, false, mockCfgProduction},
+        {o8, false, mockCfgProduction},
+        {o9, false, mockCfgProduction},
+        {o10, false, mockCfgTest},
+        {o11, false, mockCfgProduction}
+    };
   }
 
   @Test
   public void testValidateInProductionMode() {
     RegistryManager mockRegistryManager = mock(RegistryManager.class);
     when(mockRegistryManager.validateOrganisation(ORGANISATION_KEY, VALID_ORGANISATION_PASSWORD)).thenReturn(true);
-
-    OrganisationSupport organisationSupport = new OrganisationSupport(mockRegistryManager, mockCfg, HttpUtil
-      .newMultithreadedClient(10000, 3, 2));
+    OrganisationSupport organisationSupport = new OrganisationSupport(mockRegistryManager, mockCfg);
     assertEquals(isValid, organisationSupport.validate(action, organisation));
   }
 }

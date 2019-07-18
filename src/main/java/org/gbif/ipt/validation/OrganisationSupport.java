@@ -9,14 +9,15 @@
 
 package org.gbif.ipt.validation;
 
+import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.InvalidMetadataException;
-import org.gbif.doi.service.ServiceConfig;
-import org.gbif.doi.service.datacite.DataCiteService;
-import org.gbif.doi.service.ezid.EzidService;
+import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -31,11 +32,6 @@ import org.gbif.metadata.eml.Agent;
 import java.util.Date;
 import java.util.UUID;
 
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.Logger;
-
 public class OrganisationSupport {
 
   // logging
@@ -43,13 +39,11 @@ public class OrganisationSupport {
 
   private RegistryManager registryManager;
   private AppConfig cfg;
-  private DefaultHttpClient client;
 
   @Inject
-  public OrganisationSupport(RegistryManager registryManager, AppConfig cfg, DefaultHttpClient client) {
+  public OrganisationSupport(RegistryManager registryManager, AppConfig cfg) {
     this.registryManager = registryManager;
     this.cfg = cfg;
-    this.client = client;
   }
 
   /**
@@ -123,19 +117,15 @@ public class OrganisationSupport {
       } else if (!prefix.startsWith("10.")) {
         valid = false;
         action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.invalid"));
-      } else if (!prefix.contains("/") && agency != null && agency.equals(DOIRegistrationAgency.EZID)) {
-        valid = false;
-        action.addFieldError("organisation.doiPrefix", action.getText("validation.organisation.doiPrefix.ezid.invalid"));
       } else {
         // running IPT in development, the test DOI prefix is expected, but not mandatory - show warning otherwise
-        if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT && !Constants.TEST_DOI_PREFIX
-          .equalsIgnoreCase(prefix) && !Constants.EZID_TEST_DOI_SHOULDER.equalsIgnoreCase(prefix)) {
+        if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT
+            && !Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix)) {
           action.addActionWarning(action.getText("validation.organisation.doiPrefix.invalid.testMode"));
         }
         // running IPT in production, the test DOI prefix cannot be used
-        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION && (
-          Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix) || Constants.EZID_TEST_DOI_SHOULDER
-            .equalsIgnoreCase(prefix))) {
+        else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION
+            && (Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix))) {
           valid = false;
           action.addFieldError("organisation.doiPrefix",
             action.getText("validation.organisation.doiPrefix.invalid.productionMode"));
@@ -144,16 +134,7 @@ public class OrganisationSupport {
 
       // validate if the account configuration is correct, e.g. by reserving a test DOI
       if (valid) {
-        DoiService service;
-
-        // before configuring EZID service: clear EZID session cookie otherwise connection reuses existing login
-        if (agency.equals(DOIRegistrationAgency.EZID) && !client.getCookieStore().getCookies().isEmpty()) {
-          client.getCookieStore().clear();
-        }
-
-        ServiceConfig cfg = new ServiceConfig(agencyUsername, agencyPassword);
-        service = (agency.equals(DOIRegistrationAgency.DATACITE)) ? new DataCiteService(client, cfg)
-          : new EzidService(client, cfg);
+        DoiService service = new RestJsonApiDataCiteService(cfg.getDataCiteUrl(), agencyUsername, agencyPassword);
 
         try {
           DOI doi = DOIUtils.mintDOI(agency, prefix);
@@ -195,6 +176,7 @@ public class OrganisationSupport {
     testOrganisation.setKey(UUID.randomUUID().toString());
     testOrganisation.setName("Test Organisation");
     testResource.setOrganisation(testOrganisation);
+    testResource.setCoreType("Occurrence");
     testResource.getEml().setDateStamp(new Date());
     // create and return test DataCiteMetadata from test resource having mandatory DataCite properties
     return DataCiteMetadataBuilder.createDataCiteMetadata(doi, testResource);

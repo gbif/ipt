@@ -74,7 +74,6 @@ public class OrganisationsAction extends POSTAction {
       organisations.addAll(tempOrganisations);
       LOG.debug("organisations returned: " + organisations.size());
     }
-
   }
 
   private static final long serialVersionUID = 7297470324204084809L;
@@ -86,6 +85,7 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
 
+  // TODO: 2019-06-20 EZID should be marked as deprecated
   private static final List<String> DOI_REGISTRATION_AGENCIES =
     ImmutableList.of(DOIRegistrationAgency.DATACITE.name(), DOIRegistrationAgency.EZID.name());
 

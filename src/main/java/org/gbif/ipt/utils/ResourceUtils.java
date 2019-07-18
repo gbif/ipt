@@ -31,6 +31,7 @@ public class ResourceUtils {
    *
    * @param version version to assign to reconstructed resource
    * @param shortname shortname to assign to reconstructed resource
+   * @param coreType coreType
    * @param doi DOI to assign to reconstructed resource
    * @param organisation organisation to assign to reconstructed resource
    * @param versionHistory VersionHistory corresponding to resource version being reconstructed
@@ -39,7 +40,7 @@ public class ResourceUtils {
    *
    * @return published version reconstructed
    */
-  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @Nullable DOI doi,
+  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreType, @Nullable DOI doi,
     @Nullable Organisation organisation, @Nullable VersionHistory versionHistory, @Nullable File versionEmlFile,
     @Nullable UUID key) {
     Preconditions.checkNotNull(version);
@@ -52,6 +53,7 @@ public class ResourceUtils {
 
     // initiate new version, and set properties
     Resource resource = new Resource();
+    resource.setCoreType(coreType);
     resource.setShortname(shortname);
     resource.setEmlVersion(version);
     resource.setDoi(doi);

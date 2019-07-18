@@ -1,15 +1,15 @@
 package org.gbif.ipt.service.manage.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.apache.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.common.DoiData;
 import org.gbif.api.model.common.DoiStatus;
+import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiService;
-import org.gbif.doi.service.ServiceConfig;
-import org.gbif.doi.service.datacite.DataCiteService;
-import org.gbif.doi.service.ezid.EzidService;
-import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.action.manage.OverviewAction;
+import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -31,7 +31,6 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -42,27 +41,24 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
-import org.gbif.utils.HttpUtil;
 import org.gbif.utils.file.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
-import javax.ws.rs.core.UriBuilder;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import javax.ws.rs.core.UriBuilder;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -85,8 +81,11 @@ public class ResourceManagerImplIT {
   private DOI doi;
   private RegistrationManager registrationManager;
 
-  public ResourceManagerImplIT(ResourceManagerImpl action, DOIRegistrationAgency type, DOI doi,
-    RegistrationManager registrationManager) {
+  public ResourceManagerImplIT(
+      ResourceManagerImpl action,
+      DOIRegistrationAgency type,
+      DOI doi,
+      RegistrationManager registrationManager) {
     this.manager = action;
     this.type = type;
     this.doi = doi;
@@ -94,15 +93,15 @@ public class ResourceManagerImplIT {
   }
 
   @Parameterized.Parameters
-  public static Iterable data() throws IOException {
+  public static Object[][] data() throws IOException {
     // Mock classes
     AppConfig mockAppConfig = mock(AppConfig.class);
 
     // mock returning resource URI in gbif-uat belong
     when(mockAppConfig.getResourceUri(anyString()))
-      .thenReturn(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt?r=ants").build());
+        .thenReturn(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt?r=ants").build());
     when(mockAppConfig.getResourceVersionUri("ants", new BigDecimal("1.1")))
-      .thenReturn(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").build());
+        .thenReturn(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").build());
     when(mockAppConfig.getMaxThreads()).thenReturn(3);
 
     UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
@@ -128,7 +127,7 @@ public class ResourceManagerImplIT {
 
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     InputStream dc = FileUtils.classpathStream("datacite.yaml");
-    ServiceConfig dcCfg = mapper.readValue(dc, ServiceConfig.class);
+    ClientConfiguration cfg = mapper.readValue(dc, ClientConfiguration.class);
     //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
@@ -136,61 +135,27 @@ public class ResourceManagerImplIT {
     oDataCite.setName("GBIF");
     oDataCite.setDoiPrefix(Constants.TEST_DOI_PREFIX);
     oDataCite.setCanHost(true);
-    oDataCite.setAgencyAccountUsername(dcCfg.getUsername());
-    oDataCite.setAgencyAccountPassword(dcCfg.getPassword());
+    oDataCite.setAgencyAccountUsername(cfg.getUser());
+    oDataCite.setAgencyAccountPassword(cfg.getPassword());
     oDataCite.setDoiRegistrationAgency(DOIRegistrationAgency.DATACITE);
 
     // mock returning primary DOI agency account
     when(mockRegistrationManagerDataCite.findPrimaryDoiAgencyAccount()).thenReturn(oDataCite);
 
     // mock returning DataCite service
-    DoiService dataCiteService = new DataCiteService(HttpUtil.newMultithreadedClient(10000, 3, 2), dcCfg);
+    DoiService dataCiteService = new RestJsonApiDataCiteService(cfg.getBaseApiUrl(), cfg.getUser(), cfg.getPassword());
     when(mockRegistrationManagerDataCite.getDoiService()).thenReturn(dataCiteService);
 
     // mock ResourceManagerImpl for DataCite
     ResourceManagerImpl managerDataCite = new ResourceManagerImpl(mockAppConfig, MOCK_DATA_DIR, mockEmailConverter,
-      new OrganisationKeyConverter(mockRegistrationManagerDataCite), mockExtensionRowTypeConverter, mockJdbcConverter,
-      mockSourceManager, mockExtensionManager, mockRegistryManager, mockConceptTermConverter, mockDwcaFactory,
-      mockPasswordConverter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider,
-      mockRegistrationManagerDataCite);
+        new OrganisationKeyConverter(mockRegistrationManagerDataCite), mockExtensionRowTypeConverter, mockJdbcConverter,
+        mockSourceManager, mockExtensionManager, mockRegistryManager, mockConceptTermConverter, mockDwcaFactory,
+        mockPasswordConverter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider,
+        mockRegistrationManagerDataCite);
 
-
-    // EZID parameters..
-    RegistrationManager mockRegistrationManagerEZID = mock(RegistrationManager.class);
-
-    Organisation oEZID = new Organisation();
-    oEZID.setAgencyAccountPrimary(true);
-    oEZID.setName("GBIF");
-    oEZID.setDoiPrefix(Constants.EZID_TEST_DOI_SHOULDER);
-    oEZID.setCanHost(true);
-    oEZID.setAgencyAccountUsername("apitest");
-    oEZID.setAgencyAccountPassword("apitest");
-    oEZID.setDoiRegistrationAgency(DOIRegistrationAgency.EZID);
-
-    // mock returning primary DOI agency account
-    when(mockRegistrationManagerEZID.findPrimaryDoiAgencyAccount()).thenReturn(oEZID);
-
-    // mock returning EZID service
-    ServiceConfig cfgEZID = new ServiceConfig("apitest", "apitest");
-    EzidService ezidService = new EzidService(HttpUtil.newMultithreadedClient(10000, 2, 2), cfgEZID);
-    when(mockRegistrationManagerEZID.getDoiService()).thenReturn(ezidService);
-
-    // mock action for EZID
-    OverviewAction actionEZID =
-      new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManagerEZID,
-        mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-        mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
-
-    // mock ResourceManagerImpl for EZID
-    ResourceManagerImpl managerEZID = new ResourceManagerImpl(mockAppConfig, MOCK_DATA_DIR, mockEmailConverter,
-      new OrganisationKeyConverter(mockRegistrationManagerEZID), mockExtensionRowTypeConverter, mockJdbcConverter,
-      mockSourceManager, mockExtensionManager, mockRegistryManager, mockConceptTermConverter, mockDwcaFactory,
-      mockPasswordConverter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider, mockRegistrationManagerEZID);
-
-    return Arrays.asList(new Object[][] {{managerDataCite, DOIRegistrationAgency.DATACITE,
-      DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite}
-      ,{managerEZID, DOIRegistrationAgency.EZID,DOIUtils.mintDOI(DOIRegistrationAgency.EZID, Constants.EZID_TEST_DOI_SHOULDER), mockRegistrationManagerEZID}
-    });
+    return new Object[][]{
+        {managerDataCite, DOIRegistrationAgency.DATACITE, DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite}
+    };
   }
 
   /**
@@ -203,6 +168,7 @@ public class ResourceManagerImplIT {
     r.setEml(eml);
 
     // mandatory elements
+    r.setCoreType("Occurrence");
     r.setTitle("Ants");
     r.setShortname("ants");
     eml.setTitle("Ants");
@@ -242,7 +208,6 @@ public class ResourceManagerImplIT {
   @Test
   public void testRegisterDoiWorkflow() throws Exception {
     LOG.info("Testing " + type + "...");
-    String expectedEzidUrl = UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt%3Fr=ants").build().toString();
     String expectedDataciteUrl = URI.create("http://www.gbif-uat.org:7001/ipt?r=ants").toString();
 
     // reserve DOI to begin with
@@ -261,10 +226,6 @@ public class ResourceManagerImplIT {
     if (type == DOIRegistrationAgency.DATACITE) {
       assertNull(doiData.getTarget());
     }
-    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
-    if (type == DOIRegistrationAgency.EZID) {
-      assertNotNull(doiData.getTarget());
-    }
 
     // register DOI
     manager.doRegisterDoi(r, null);
@@ -278,11 +239,7 @@ public class ResourceManagerImplIT {
     assertNotNull(doiData.getTarget());
 
     if (type == DOIRegistrationAgency.DATACITE) {
-      assertEquals(expectedDataciteUrl, doiData.getTarget().toString());
-    }
-    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
-    if (type == DOIRegistrationAgency.EZID) {
-      assertEquals(expectedEzidUrl, doiData.getTarget().toString());
+      assertEquals(expectedDataciteUrl, decodeUrl(doiData.getTarget().toString()));
     }
 
     // mock version 1.0 having been published by setting last published, and adding new VersionHistory
@@ -313,11 +270,7 @@ public class ResourceManagerImplIT {
     assertNotNull(doiData.getTarget());
 
     if (type == DOIRegistrationAgency.DATACITE) {
-      assertEquals(expectedDataciteUrl, doiData.getTarget().toString());
-    }
-    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
-    if (type == DOIRegistrationAgency.EZID) {
-      assertEquals(expectedEzidUrl, doiData.getTarget().toString());
+      assertEquals(expectedDataciteUrl, decodeUrl(doiData.getTarget().toString()));
     }
 
     // mock version 1.1 having been published by setting last published, and adding new VersionHistory
@@ -342,10 +295,6 @@ public class ResourceManagerImplIT {
     if (type == DOIRegistrationAgency.DATACITE) {
       assertNull(doiData.getTarget());
     }
-    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
-    if (type == DOIRegistrationAgency.EZID) {
-      assertNotNull(doiData.getTarget());
-    }
 
     // replace DOI with new DOI, and publish version 2.0
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
@@ -363,11 +312,7 @@ public class ResourceManagerImplIT {
     assertNotNull(doiData.getTarget());
 
     if (type == DOIRegistrationAgency.DATACITE) {
-      assertEquals(expectedDataciteUrl, doiData.getTarget().toString());
-    }
-    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
-    if (type == DOIRegistrationAgency.EZID) {
-      assertEquals(expectedEzidUrl, doiData.getTarget().toString());
+      assertEquals(expectedDataciteUrl, decodeUrl(doiData.getTarget().toString()));
     }
 
     // check replaced DOI is still registered, and its target is equal to resource version URI
@@ -377,11 +322,11 @@ public class ResourceManagerImplIT {
     assertNotNull(doiData.getTarget());
 
     if (type == DOIRegistrationAgency.DATACITE) {
-      assertEquals(URI.create("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").toString(), doiData.getTarget().toString());
+      assertEquals(URI.create("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").toString(), decodeUrl(doiData.getTarget().toString()));
     }
-    // change in expected EZID behavior between Mar to Oct 2017 - previously target was null. TODO monitor significance
-    if (type == DOIRegistrationAgency.EZID) {
-      assertEquals(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt%3Fr=ants&v=1.1").build().toString(), doiData.getTarget().toString());
-    }
+  }
+
+  private String decodeUrl(String url) throws UnsupportedEncodingException {
+    return URLDecoder.decode(url, StandardCharsets.UTF_8.name());
   }
 }

@@ -1,6 +1,7 @@
 package org.gbif.ipt.utils;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.doi.metadata.datacite.Box;
 import org.gbif.doi.metadata.datacite.ContributorType;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.metadata.datacite.DateType;
@@ -79,12 +80,17 @@ public class DataCiteMetadataBuilder {
     dataCiteMetadata.setCreators(creators);
 
     // publisher (mandatory)
-    String publisher = getPublisher(resource);
+    final DataCiteMetadata.Publisher publisher = FACTORY.createDataCiteMetadataPublisher();
+    publisher.setValue(getPublisher(resource));
     dataCiteMetadata.setPublisher(publisher);
 
     // publication year (mandatory)
     String publicationYear = getPublicationYear(eml);
     dataCiteMetadata.setPublicationYear(publicationYear);
+
+    // add resourceType (mandatory)
+    DataCiteMetadata.ResourceType resourceType = getResourceType(resource);
+    dataCiteMetadata.setResourceType(resourceType);
 
     // version (optional according to DataCite, mandatory and thus never null according to IPT)
     dataCiteMetadata.setVersion(resource.getEmlVersion().toPlainString());
@@ -105,10 +111,6 @@ public class DataCiteMetadataBuilder {
 
     // add language (optional)
     dataCiteMetadata.setLanguage(eml.getLanguage());
-
-    // add resourceType (recommended)
-    DataCiteMetadata.ResourceType resourceType = getResourceType(resource);
-    dataCiteMetadata.setResourceType(resourceType);
 
     // add list of alternate identifier (optional)
     DataCiteMetadata.AlternateIdentifiers alternateIdentifiers =
@@ -144,7 +146,7 @@ public class DataCiteMetadataBuilder {
   }
 
   /**
-   * Retrieve the DOI identifier assigned to the resource. DataCite metadata schema (v3) requires the identifier.
+   * Retrieve the DOI identifier assigned to the resource. DataCite metadata schema (v4) requires the identifier.
    *
    * @param doi DOI identifier assigned to resource
    *
@@ -222,12 +224,18 @@ public class DataCiteMetadataBuilder {
     for (GeospatialCoverage coverage : geospatialCoverages) {
       if (!Strings.isNullOrEmpty(coverage.getDescription())) {
         DataCiteMetadata.GeoLocations.GeoLocation geoLocation = FACTORY.createDataCiteMetadataGeoLocationsGeoLocation();
-        geoLocation.setGeoLocationPlace(coverage.getDescription());
+
+        geoLocation.getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox()
+            .add(coverage.getDescription());
         if (coverage.getBoundingCoordinates().isValid()) {
-          geoLocation.getGeoLocationBox().add(coverage.getBoundingCoordinates().getMin().getLatitude());
-          geoLocation.getGeoLocationBox().add(coverage.getBoundingCoordinates().getMin().getLongitude());
-          geoLocation.getGeoLocationBox().add(coverage.getBoundingCoordinates().getMax().getLatitude());
-          geoLocation.getGeoLocationBox().add(coverage.getBoundingCoordinates().getMax().getLongitude());
+          Box box = FACTORY.createBox();
+          // min is south and west, max is north and east
+          box.setWestBoundLongitude(coverage.getBoundingCoordinates().getMin().getLongitude().floatValue());
+          box.setEastBoundLongitude(coverage.getBoundingCoordinates().getMax().getLongitude().floatValue());
+          box.setSouthBoundLatitude(coverage.getBoundingCoordinates().getMin().getLatitude().floatValue());
+          box.setNorthBoundLatitude(coverage.getBoundingCoordinates().getMax().getLatitude().floatValue());
+          geoLocation.getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox()
+              .add(box);
         }
         geoLocations.getGeoLocation().add(geoLocation);
       }
@@ -315,23 +323,28 @@ public class DataCiteMetadataBuilder {
 
   /**
    * Retrieve the ResourceType, using the formula Dataset/Resource Type=Resource Core Type.
+   * DataCite schema (v4) requires the resource type.
    *
    * @param resource resource
    *
    * @return DataCite ResourceType
+   *
+   * @throws InvalidMetadataException if mandatory resource type cannot be retrieved
    */
-  protected static DataCiteMetadata.ResourceType getResourceType(Resource resource) {
+  protected static DataCiteMetadata.ResourceType getResourceType(Resource resource) throws InvalidMetadataException {
     DataCiteMetadata.ResourceType resourceType = FACTORY.createDataCiteMetadataResourceType();
     resourceType.setResourceTypeGeneral(ResourceType.DATASET);
     if (resource.getCoreType() != null) {
       resourceType.setValue(StringUtils.capitalize(resource.getCoreType().toLowerCase()));
+      return resourceType;
+    } else {
+      throw new InvalidMetadataException("DataCite schema (v4) requires a resource type");
     }
-    return resourceType;
   }
 
   /**
    * Retrieve the publisher from the IPT resource, equal to the name of the publishing organisation. DataCite schema
-   * (v3) requires the publisher. This method ensures that the default organisation "No organisation" cannot be used.
+   * (v4) requires the publisher. This method ensures that the default organisation "No organisation" cannot be used.
    *
    * @param resource IPT resource
    *
@@ -345,13 +358,13 @@ public class DataCiteMetadataBuilder {
         && !resource.getOrganisation().getKey().equals(Constants.DEFAULT_ORG_KEY)) {
       return resource.getOrganisation().getName();
     } else {
-      throw new InvalidMetadataException("DataCite schema (v3) requires a publishing organisation");
+      throw new InvalidMetadataException("DataCite schema (v4) requires a publishing organisation");
     }
   }
 
   /**
    * Retrieve the publication year from Eml dateStamp, which stores the date the resource was created. DataCite schema
-   * (v3) requires the publication year.
+   * (v4) requires the publication year.
    *
    * @param eml EML
    *
@@ -366,12 +379,12 @@ public class DataCiteMetadataBuilder {
       cal.setTime(eml.getDateStamp());
       return String.valueOf(cal.get(Calendar.YEAR));
     } else {
-      throw new InvalidMetadataException("DataCite schema (v3) requires the publication year");
+      throw new InvalidMetadataException("DataCite schema (v4) requires the publication year");
     }
   }
 
   /**
-   * Convert list of EML creators into DataCite creators. DataCite metadata schema (v3.0) requires at least one
+   * Convert list of EML creators into DataCite creators. DataCite metadata schema (v4.0) requires at least one
    * creator. The DataCite metadata schema allows the creator to "be a corporate/institutional or personal name."
    *
    * @param agents EML agents list
@@ -389,13 +402,15 @@ public class DataCiteMetadataBuilder {
         // name is mandatory, in order of priority:
         // 1. try agent name
         if (!Strings.isNullOrEmpty(agent.getFullName())) {
-          creator.setCreatorName(agent.getFullName());
+          final DataCiteMetadata.Creators.Creator.CreatorName creatorName = FACTORY.createDataCiteMetadataCreatorsCreatorCreatorName();
+          creatorName.setValue(agent.getFullName());
+          creator.setCreatorName(creatorName);
           // identifier is optional, however, there can only be one and the name of the identifier scheme is mandatory
           if (!agent.getUserIds().isEmpty()) {
             for (UserId userId : agent.getUserIds()) {
               DataCiteMetadata.Creators.Creator.NameIdentifier nid = convertEmlUserIdIntoCreatorNameIdentifier(userId);
               if (nid != null) {
-                creator.setNameIdentifier(nid);
+                creator.getNameIdentifier().add(nid);
                 break;
               }
             }
@@ -407,12 +422,14 @@ public class DataCiteMetadataBuilder {
         }
         // 2. try organisation name
         else if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
-          creator.setCreatorName(agent.getOrganisation());
+          final DataCiteMetadata.Creators.Creator.CreatorName creatorName = FACTORY.createDataCiteMetadataCreatorsCreatorCreatorName();
+          creatorName.setValue(agent.getOrganisation());
+          creator.setCreatorName(creatorName);
         }
         // otherwise if no name, organisation name, or position name found, throw exception
         else {
           throw new InvalidMetadataException(
-            "DataCite schema (v3) requires creator have a name! Creator can be an organisation or person. Check creator/agent: "
+            "DataCite schema (v4) requires creator have a name! Creator can be an organisation or person. Check creator/agent: "
             + agent.toString());
         }
         // add to list
@@ -420,7 +437,7 @@ public class DataCiteMetadataBuilder {
       }
       return creators;
     } else {
-      throw new InvalidMetadataException("DataCite schema (v3) requires at least one creator");
+      throw new InvalidMetadataException("DataCite schema (v4) requires at least one creator");
     }
   }
 
@@ -458,7 +475,7 @@ public class DataCiteMetadataBuilder {
 
   /**
    * Convert list of EML contacts, metadataProviders, and associatedParties into DataCite contributors.
-   * DataCite metadata schema (v3.0) does not require contributors, they are recommended though.
+   * DataCite metadata schema (v4.0) does not require contributors, they are recommended though.
    *
    * @param agents EML agents list, composed from EML contacts, metadataProviders, and associatedParties
    *
@@ -475,14 +492,16 @@ public class DataCiteMetadataBuilder {
       // name is mandatory, in order of priority:
       // 1. try agent name
       if (!Strings.isNullOrEmpty(agent.getFullName())) {
-        contributor.setContributorName(agent.getFullName());
+        final DataCiteMetadata.Contributors.Contributor.ContributorName contributorName = FACTORY.createDataCiteMetadataContributorsContributorContributorName();
+        contributorName.setValue(agent.getFullName());
+        contributor.setContributorName(contributorName);
         // identifier is optional, however, there can only be one and the name of the identifier scheme is mandatory
         if (!agent.getUserIds().isEmpty()) {
           for (UserId userId : agent.getUserIds()) {
             DataCiteMetadata.Contributors.Contributor.NameIdentifier nid =
               convertEmlUserIdIntoContributorNameIdentifier(userId);
             if (nid != null) {
-              contributor.setNameIdentifier(nid);
+              contributor.getNameIdentifier().add(nid);
               break;
             }
           }
@@ -494,11 +513,15 @@ public class DataCiteMetadataBuilder {
       }
       // 2. try organisation name
       else if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
-        contributor.setContributorName(agent.getOrganisation());
+        final DataCiteMetadata.Contributors.Contributor.ContributorName contributorName = FACTORY.createDataCiteMetadataContributorsContributorContributorName();
+        contributorName.setValue(agent.getOrganisation());
+        contributor.setContributorName(contributorName);
       }
       // 3. try position name
       else if (!Strings.isNullOrEmpty(agent.getPosition())) {
-        contributor.setContributorName(agent.getPosition());
+        final DataCiteMetadata.Contributors.Contributor.ContributorName contributorName = FACTORY.createDataCiteMetadataContributorsContributorContributorName();
+        contributorName.setValue(agent.getPosition());
+        contributor.setContributorName(contributorName);
         // affiliation is optional
         if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
           contributor.getAffiliation().add(agent.getOrganisation());
@@ -507,14 +530,14 @@ public class DataCiteMetadataBuilder {
       // otherwise if no name, organisation name, or position name found, throw exception
       else {
         throw new InvalidMetadataException(
-          "DataCite schema (v3) requires contributor have a name! Check contributor/agent: " + agent.toString());
+          "DataCite schema (v4) requires contributor have a name! Check contributor/agent: " + agent.toString());
       }
 
       // contributorType is mandatory, if not found throw exception
       String role = agent.getRole();
       if (Strings.isNullOrEmpty(role)) {
         throw new InvalidMetadataException(
-          "DataCite schema (v3) requires contributor have a type! Check contributor/agent: " + agent.toString());
+          "DataCite schema (v4) requires contributor have a type! Check contributor/agent: " + agent.toString());
       }
 
       // contributor type, defaulting to RELATED_PERSON if no suitable match exists
@@ -554,7 +577,7 @@ public class DataCiteMetadataBuilder {
   /**
    * Convert list of EML titles into DataCite titles. Only the title is mandatory, the type is optional.
    * EML version 1.1 only contains a single title, with language derived from metadata language. DataCite metadata
-   * schema (v3) requires at least one title.
+   * schema (v4) requires at least one title.
    *
    * @param eml Eml
    *
@@ -571,7 +594,7 @@ public class DataCiteMetadataBuilder {
       titles.getTitle().add(primary);
       return titles;
     } else {
-      throw new InvalidMetadataException("DataCite schema (v3) requires at least one title");
+      throw new InvalidMetadataException("DataCite schema (v4) requires at least one title");
     }
   }
 
@@ -668,7 +691,7 @@ public class DataCiteMetadataBuilder {
   }
 
   /**
-   * Convert a Eml UserId object into a DataCite NameIdentifier object. DataCite metadata schema (v3) requires the
+   * Convert a Eml UserId object into a DataCite NameIdentifier object. DataCite metadata schema (v4) requires the
    * scheme name if the identifier is used. Unfortunately the scheme name cannot be reliably and accurately derived
    * from the schemeURI (UserId.directory) therefore this method only supports the following schemes: ORCID and
    * ResearcherID.
@@ -701,7 +724,7 @@ public class DataCiteMetadataBuilder {
   }
 
   /**
-   * Convert a Eml UserId object into a DataCite NameIdentifier object. DataCite metadata schema (v3) requires the
+   * Convert a Eml UserId object into a DataCite NameIdentifier object. DataCite metadata schema (v4) requires the
    * scheme name if the identifier is used. Unfortunately the scheme name cannot be reliably and accurately derived
    * from the schemeURI (UserId.directory) therefore this method only supports the following schemes: ORCID and
    * ResearcherID.

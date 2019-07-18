@@ -1,16 +1,13 @@
 package org.gbif.ipt.action.manage;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Lists;
-import freemarker.template.TemplateException;
 import org.apache.log4j.Logger;
 import org.gbif.api.model.common.DOI;
+import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.doi.service.DoiService;
-import org.gbif.doi.service.ServiceConfig;
-import org.gbif.doi.service.datacite.DataCiteService;
-import org.gbif.doi.service.ezid.EzidService;
+import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -21,7 +18,6 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -34,7 +30,6 @@ import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
-import org.gbif.utils.HttpUtil;
 import org.gbif.utils.file.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,14 +37,19 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -57,11 +57,10 @@ import static org.mockito.Mockito.when;
 
 /**
  * WARNING!
- * This requires live DATACITE and EZID services !!!
+ * This requires live DataCite service.
  */
 @RunWith(Parameterized.class)
 public class OverviewActionIT {
-
 
   private static final Logger LOG = Logger.getLogger(OverviewActionIT.class);
   private static final UUID ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5");
@@ -76,7 +75,7 @@ public class OverviewActionIT {
   }
 
   @Parameterized.Parameters
-  public static Iterable data() throws IOException, DeletionNotAllowedException, TemplateException, URISyntaxException {
+  public static Object[][] data() throws Exception {
     // common mock AppConfig
     AppConfig mockAppConfig = mock(AppConfig.class);
     DataDir mockDataDir = mock(DataDir.class);
@@ -96,14 +95,16 @@ public class OverviewActionIT {
     // mock returning target URLs
     when(mockAppConfig.getResourceUri(anyString())).thenReturn(new URI("http://www.gbif-uat.org/ipt/resource?r=ants"));
     when(mockAppConfig.getResourceVersionUri(anyString(), any(BigDecimal.class)))
-      .thenReturn(new URI("http://www.gbif-uat.org/ipt/resource?r=ants&v=#.0"));
+        .thenReturn(new URI("http://www.gbif-uat.org/ipt/resource?r=ants&v=#.0"));
 
     // DataCite parameters..
     RegistrationManager mockRegistrationManagerDataCite = mock(RegistrationManager.class);
 
+    ClientConfiguration cfg;
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    InputStream dc = FileUtils.classpathStream("datacite.yaml");
-    ServiceConfig dcCfg = mapper.readValue(dc, ServiceConfig.class);
+    try (InputStream dc = FileUtils.classpathStream("datacite.yaml")) {
+      cfg = mapper.readValue(dc, ClientConfiguration.class);
+    }
     //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
@@ -112,8 +113,8 @@ public class OverviewActionIT {
     oDataCite.setName("GBIF");
     oDataCite.setDoiPrefix(Constants.TEST_DOI_PREFIX);
     oDataCite.setCanHost(true);
-    oDataCite.setAgencyAccountUsername(dcCfg.getUsername());
-    oDataCite.setAgencyAccountPassword(dcCfg.getPassword());
+    oDataCite.setAgencyAccountUsername(cfg.getUser());
+    oDataCite.setAgencyAccountPassword(cfg.getPassword());
     oDataCite.setDoiRegistrationAgency(DOIRegistrationAgency.DATACITE);
 
     // mock returning primary DOI agency account
@@ -123,49 +124,18 @@ public class OverviewActionIT {
     when(mockRegistrationManagerDataCite.get(any(UUID.class))).thenReturn(oDataCite);
 
     // mock returning DataCite service
-    DoiService dataCiteService = new DataCiteService(HttpUtil.newMultithreadedClient(10000, 3, 2), dcCfg);
+    DoiService dataCiteService = new RestJsonApiDataCiteService(cfg.getBaseApiUrl(), cfg.getUser(), cfg.getPassword());
     when(mockRegistrationManagerDataCite.getDoiService()).thenReturn(dataCiteService);
 
     // mock action for DataCite
     OverviewAction actionDataCite =
-      new OverviewAction(mock(SimpleTextProvider.class), mockAppConfig, mockRegistrationManagerDataCite,
-        mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-        mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
+        new OverviewAction(mock(SimpleTextProvider.class), mockAppConfig, mockRegistrationManagerDataCite,
+            mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
+            mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
 
-    // EZID parameters..
-    RegistrationManager mockRegistrationManagerEZID = mock(RegistrationManager.class);
-
-    Organisation oEZID = new Organisation();
-    oEZID.setKey(ORGANISATION_KEY.toString());
-    oEZID.setAgencyAccountPrimary(true);
-    oEZID.setName("GBIF");
-    oEZID.setDoiPrefix(Constants.EZID_TEST_DOI_SHOULDER);
-    oEZID.setCanHost(true);
-    oEZID.setAgencyAccountUsername("apitest");
-    oEZID.setAgencyAccountPassword("apitest");
-    oEZID.setDoiRegistrationAgency(DOIRegistrationAgency.EZID);
-
-    // mock returning primary DOI agency account
-    when(mockRegistrationManagerEZID.findPrimaryDoiAgencyAccount()).thenReturn(oEZID);
-
-    // mock RegistrationManager returning organisation by key
-    when(mockRegistrationManagerEZID.get(any(UUID.class))).thenReturn(oEZID);
-
-    // mock returning EZID service
-    ServiceConfig cfgEZID = new ServiceConfig("apitest", "apitest");
-    EzidService ezidService = new EzidService(HttpUtil.newMultithreadedClient(10000, 2, 2), cfgEZID);
-    when(mockRegistrationManagerEZID.getDoiService()).thenReturn(ezidService);
-
-    // mock action for EZID
-    OverviewAction actionEZID =
-      new OverviewAction(mock(SimpleTextProvider.class), mockAppConfig, mockRegistrationManagerEZID,
-        mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-        mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
-
-    return Arrays.asList(
-      new Object[][] {{actionDataCite, DOIRegistrationAgency.DATACITE}
-        , {actionEZID, DOIRegistrationAgency.EZID}
-      });
+    return new Object[][]{
+        {actionDataCite, DOIRegistrationAgency.DATACITE}
+    };
   }
 
   /**
@@ -178,6 +148,7 @@ public class OverviewActionIT {
     r.setEml(eml);
 
     // mandatory elements
+    r.setCoreType("Occurrence");
     r.setTitle("Ants");
     r.setShortname("ants");
     eml.setTitle("Ants");
@@ -363,8 +334,7 @@ public class OverviewActionIT {
   public void testPublishFailsBecauseDOICannotBeResolved() throws Exception {
     LOG.info("Testing " + type + "...");
     // mock resource having DOI reserved that doesn't exist!
-    DOI assignedDoi = DOIUtils.mintDOI(type,
-      (type.equals(DOIRegistrationAgency.EZID) ? Constants.EZID_TEST_DOI_SHOULDER : Constants.TEST_DOI_PREFIX));
+    DOI assignedDoi = DOIUtils.mintDOI(type, Constants.TEST_DOI_PREFIX);
     r.setDoi(assignedDoi);
     r.setDoiOrganisationKey(ORGANISATION_KEY);
     r.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
@@ -421,24 +391,24 @@ public class OverviewActionIT {
     DOI reserved3 = new DOI(r.getDoi().toString());
 
     assertTrue(!reserved1.toString().equals(reserved2.toString()) && !reserved1.toString().equals(reserved3.toString())
-               && !reserved2.toString().equals(reserved3.toString()));
+        && !reserved2.toString().equals(reserved3.toString()));
 
     // mock VersionHistory: version 1.0 and 1.1 share same registered DOI, version 2.0 has different registered DOI
     VersionHistory history1 =
-      new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PUBLIC);
+        new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PUBLIC);
     history1.setDoi(reserved1);
     history1.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(history1);
 
 
     VersionHistory history11 =
-      new VersionHistory(new BigDecimal("1.1"), new Date(), PublicationStatus.PUBLIC);
+        new VersionHistory(new BigDecimal("1.1"), new Date(), PublicationStatus.PUBLIC);
     history11.setDoi(reserved1);
     history11.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(history11);
 
     VersionHistory history2 =
-      new VersionHistory(new BigDecimal("2.0"), new Date(), PublicationStatus.PUBLIC);
+        new VersionHistory(new BigDecimal("2.0"), new Date(), PublicationStatus.PUBLIC);
     history2.setDoi(reserved2);
     history2.setStatus(IdentifierStatus.PUBLIC);
     r.addVersionHistory(history2);
@@ -476,7 +446,6 @@ public class OverviewActionIT {
     action.setUndelete("true");
 
     // since this integration tests undeletes a reserved DOI, this only works in DataCite
-    // TODO: test undelete in EZID
     if (type.equals(DOIRegistrationAgency.DATACITE)) {
       assertEquals("success", action.undelete());
       assertEquals(PublicationStatus.PUBLIC, r.getStatus());

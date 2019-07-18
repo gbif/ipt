@@ -197,6 +197,16 @@ public class AppConfig {
   }
 
   /**
+   * @return DataCite base URL, depends on the IPT's mode
+   */
+  public String getDataCiteUrl() {
+    if (REGISTRY_TYPE.PRODUCTION == type) {
+      return getProperty("dev.datacite.url");
+    }
+    return getProperty("dev.datacitedev.url");
+  }
+
+  /**
    * @return String URI to resource's last published darwin core archive (no version number)
    */
   @NotNull
