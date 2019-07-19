@@ -1,6 +1,6 @@
 package org.gbif.ipt.task;
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Maps;
@@ -9,7 +9,6 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwca.io.Archive;
 import org.gbif.dwca.io.ArchiveFactory;
@@ -86,14 +85,39 @@ public class GenerateDwcaIT {
   private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
   private File tmpDataDir;
   private File resourceDir;
-  private static ClientConfiguration cfg;
+  private static DbConfiguration dbCfg;
+
+  public static class DbConfiguration {
+    @JsonProperty("username")
+    private String username;
+    @JsonProperty("password")
+    private String password;
+
+    public DbConfiguration() {}
+
+    public void setUsername(String username) {
+      this.username = username;
+    }
+
+    public String getUsername() {
+      return username;
+    }
+
+    public void setPassword(String password) {
+      this.password = password;
+    }
+
+    public String getPassword() {
+      return password;
+    }
+  }
 
   @BeforeClass
   public static void init() throws IOException {
     // load DataCite account username and password from the properties file
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     InputStream dc = FileUtils.classpathStream("testdb.yaml");
-    cfg = mapper.readValue(dc, ClientConfiguration.class);
+    dbCfg = mapper.readValue(dc, DbConfiguration.class);
 
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
     Map<String, String> basisOfRecords = Maps.newHashMap();
@@ -139,11 +163,11 @@ public class GenerateDwcaIT {
     sqlSource.setRdbms(psql);
     sqlSource.setDatabase("clb");
     sqlSource.setHost("builds.gbif.org");
-    sqlSource.setUsername(cfg.getUser());
+    sqlSource.setUsername(dbCfg.getUsername());
     // column order matches occurrence.txt file, and corresponds to resource.xml mapping
     sqlSource.setSql(
       "SELECT n.id, scientificName, basisOfRecord, kingdom FROM name n, (VALUES(1, null, 'occurrence', 'Animalia')) AS t (occurrenceID, scientificName, basisOfRecord, kingdom) where n.id = t.occurrenceID;");
-    sqlSource.setPassword(cfg.getPassword());
+    sqlSource.setPassword(dbCfg.getPassword());
     resource.getMappings().get(0).setSource(sqlSource);
 
     generateDwca =
