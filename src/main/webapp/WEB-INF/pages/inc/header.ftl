@@ -1,6 +1,6 @@
 [#ftl output_format="HTML"]
 [#setting date_format="yyyy-MM-dd"]
-[#setting time_format="hh:mm:ss"]
+[#setting time_format="HH:mm:ss"]
 [#setting datetime_format="iso"]
 [#setting locale="en"]
 [#setting url_escaping_charset="UTF-8"]

@@ -1058,8 +1058,8 @@ public class Resource implements Serializable, Comparable<Resource> {
       }
     }
 
-    // add year resource was first published (captured in EML dateStamp)
-    int publicationYear = getPublicationYear(getEml().getDateStamp());
+    // add year the resource was most recently published
+    int publicationYear = getPublicationYear(getEml().getPubDate());
     if (publicationYear > 0) {
       sb.append(" (");
       sb.append(publicationYear);

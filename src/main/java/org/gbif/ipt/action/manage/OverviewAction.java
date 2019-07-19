@@ -1443,7 +1443,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       sb.append(" failed publications on: ");
       Iterator<Date> iter = failures.iterator();
       while (iter.hasNext()) {
-        sb.append(DateFormatUtils.format(iter.next(), "yyyy-MM-dd HH:mm:SS"));
+        sb.append(DateFormatUtils.format(iter.next(), "yyyy-MM-dd HH:mm:ss"));
         if (iter.hasNext()) {
           sb.append(", ");
         } else {
