@@ -500,6 +500,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     AtomicInteger recordsWithNonMatchingBasisOfRecord = new AtomicInteger(0);
     AtomicInteger recordsWithAmbiguousBasisOfRecord = new AtomicInteger(0);
 
+    // reporting
+    currRecords = 0;
+    currRecordsSkipped = 0;
+    currExtension = extFile.getTitle();
+
     // create an iterator on the new sorted data file
     CSVReader reader = CSVReaderFactory.build(sortedFile,
             CHARACTER_ENCODING,
@@ -507,13 +512,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
             extFile.getFieldsEnclosedBy(),
             extFile.getIgnoreHeaderLines());
 
-    int line = 0;
     String lastId = null;
     try {
       while (reader.hasNext()) {
-        line++;
-        if (line % 1000 == 0) {
-          checkForInterruption(line);
+        currRecords++;
+        if (currRecords % 1000 == 0) {
+          checkForInterruption(currRecords);
           reportIfNeeded();
         }
         String[] record = reader.next();
@@ -534,7 +538,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
               lastId = validateIdentifier(record[sortColumnIndex], lastId, recordsWithNoOccurrenceId,
                 recordsWithDuplicateOccurrenceId);
             }
-            validateBasisOfRecord(record[basisOfRecordIndex], line, recordsWithNoBasisOfRecord,
+            validateBasisOfRecord(record[basisOfRecordIndex], currRecords, recordsWithNoBasisOfRecord,
               recordsWithNonMatchingBasisOfRecord, recordsWithAmbiguousBasisOfRecord);
           }
         }
@@ -549,7 +553,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       log.error("Exception caught while validating extension file", e);
       // set last error report!
       setState(e);
-      throw new GeneratorException("Error while validating extension file occurred on line " + line, e);
+      throw new GeneratorException("Error while validating extension file occurred on line " + currRecords, e);
 
     } finally {
       // Exception on advancing cursor was encountered?
@@ -633,6 +637,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       addMessage(Level.INFO, msg);
     }
 
+    // reporting
+    currRecords = 0;
+    currRecordsSkipped = 0;
+    currExtension = coreFile.getTitle();
+
     // create a new core data file sorted by ID column 0
     File sortedCore = sortCoreDataFile(coreFile, ID_COLUMN_INDEX);
 
@@ -648,13 +657,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     AtomicInteger recordsWithNonMatchingBasisOfRecord = new AtomicInteger(0);
     AtomicInteger recordsWithAmbiguousBasisOfRecord = new AtomicInteger(0);
 
-    int line = 0;
     String lastId = null;
     try {
       while (reader.hasNext()) {
-        line++;
-        if (line % 1000 == 0) {
-          checkForInterruption(line);
+        currRecords++;
+        if (currRecords % 1000 == 0) {
+          checkForInterruption(currRecords);
           reportIfNeeded();
         }
         String[] record = reader.next();
@@ -672,7 +680,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
             lastId = validateIdentifier(record[ID_COLUMN_INDEX], lastId, recordsWithNoId, recordsWithDuplicateId);
           }
           if (isOccurrenceFile(coreFile)) {
-            validateBasisOfRecord(record[basisOfRecordIndex], line, recordsWithNoBasisOfRecord,
+            validateBasisOfRecord(record[basisOfRecordIndex], currRecords, recordsWithNoBasisOfRecord,
               recordsWithNonMatchingBasisOfRecord, recordsWithAmbiguousBasisOfRecord);
           }
         }
@@ -686,7 +694,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       log.error("Exception caught while validating archive", e);
       // set last error report!
       setState(e);
-      throw new GeneratorException("Error while validating archive occurred on line " + line, e);
+      throw new GeneratorException("Error while validating archive occurred on line " + currRecords, e);
     } finally {
       // Exception on advancing cursor was encountered?
       if (!reader.hasRowError() && reader.getErrorMessage() != null) {
@@ -1075,7 +1083,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       case COMPLETED:
         return "Archive generated!";
       case VALIDATING:
-        return "Validating archive";
+        return "Validating archive, " + currRecords + " for data file <em>" + currExtension + "</em>";
       case ARCHIVING:
         return "Archiving version of archive";
       case CANCELLED:
