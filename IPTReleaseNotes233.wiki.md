@@ -1,6 +1,6 @@
 ---
 
-Copyright 2016 Global Biodiversity Information Facility Secretariat
+Copyright 2019 Global Biodiversity Information Facility Secretariat
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
 except in compliance with the License. You may obtain a copy of the License at
@@ -16,7 +16,7 @@ and limitations under the License.
 
 # Release Notes
 
-**IPT Versions: 2.3.3, 2.3.4, 2.3.5, 2.3.6**
+**IPT Versions: 2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.4.0**
 
 ## Upgrade instructions
 
@@ -37,36 +37,26 @@ An upgrade can be performed in 4 steps:
 
 ### B. Post-upgrade instructions
 
-Following the upgrade, a warning message may appear indicating the some resources failed to load. This is caused when an old resource is missing required metadata hence it hasn't been republished for a long time. Resource managers can fix this problem by re-publishing the affected resources. 
+Following the upgrade, a warning message may appear indicating the some resources failed to load. This is caused when an old resource is missing required metadata hence it hasn't been republished for a long time. Resource managers can fix this problem by re-publishing the affected resources.
 
 New in IPT 2.3.x is the ability to publish sample-based data. Once the upgrade is complete, the IPT administrator must install the Darwin Core Event core. Note the Darwin Core Event core is installed by default in new installations.
 
-Additionally, the IPT administrator should update all installed cores and extensions to the latest versions. This will allow publishers to take advantage of any new terms and vocabularies included in the latest versions. 
+Additionally, the IPT administrator should update all installed cores and extensions to the latest versions. This will allow publishers to take advantage of any new terms and vocabularies included in the latest versions.
 
 ### C. New Features / Other
-  * IPT 2.3.x shows record counts for all files in the DwC-A inside a bar graph on the "Data Records" section of the resource homepage. Note: for the bar graph to appear, resource managers must republish the resource using IPT 2.3.x. 
+  * IPT 2.3.x shows record counts for all files in the DwC-A inside a bar graph on the "Data Records" section of the resource homepage. Note: for the bar graph to appear, resource managers must republish the resource using IPT 2.3.x.
   * IPT 2.3.x supports publishing sample-based datasets (datasets pertaining to a sampling event). Sample-based datasets use the new Darwin Core Event core, installed by default in new installations. Note: IPT administrators upgrading to IPT 2.3.x from 2.2 or earlier need to install this new core. Please see these [[instructions|IPT2ManualNotes.wiki#install-extension]] for help installing a new core.
   * IPT 2.3.x supports versionable IPT extensions, making it possible to update to newer versions whenever they become available. To understand how this works, refer to the [[Update Extension|IPT2ManualNotes.wiki#update-extension]] section of the IPT User Manual.
   * IPT 2.3.x can be installed without an organisation both in production and in test mode. Previously in version 2.2, the IPT had to be installed with an organisation in order to publish datasets because the publishing organisation became a mandatory metadata field. For more information about this change, refer to [issue 1179](https://github.com/gbif/ipt/issues/1179).
-  * IPT 2.3.x includes a slightly redesigned mapping page, making it easier to map your source data. 
+  * IPT 2.3.x includes a slightly redesigned mapping page, making it easier to map your source data.
 
 ## Dependency Notes
-* This version has been tested and designed to work on Tomcat 7.0, 8.5, and 9.0.
+* This version has been tested and designed to work on Tomcat 8.5 and 9.0.
 * This version is designed to run on Java 8 or 9. Please refer to the [Java version Roadmap](http://www.oracle.com/technetwork/java/eol-135779.html) for an overview of when Oracle plans to discontinue support for the version of Java you currently use.
 
 ## Viewing the IPT change log
 
-Version 2.3.3 addressed a total of 88 issues: 22 Defects, 17 Enhancements, 36 Won't fix, 10 Duplicates, and 3 Other.
-These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/1).
-
-Version 2.3.4 addressed a total of 6 issues: 3 Defects, 2 Enhancements, and 1 Other.
-These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/3).
-
-Version 2.3.5 addressed a total of 3 issues: 3 Defects, 3 maintenance tasks
-These are detailed in the [issue tracking system](https://github.com/gbif/ipt/projects/4).
-
-Version 2.3.6 addressed a total of 19 issues.
-These are detailed in the [issue tracking system](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed).
+See the [milestones](https://github.com/gbif/ipt/milestones) in GitHub issues.
 
 ## When all else fails
 

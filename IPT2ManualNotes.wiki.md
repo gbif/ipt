@@ -1,6 +1,6 @@
 # The IPT User Manual
 
-**IPT Versions: 2.3.3, 2.3.4, 2.3.5, 2.3.6**
+**IPT Versions: 2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.4.0**
 
 _For the IPT user manual corresponding to version 2.3.2, please go [[here|IPTUserManualv23.wiki]]._
 
