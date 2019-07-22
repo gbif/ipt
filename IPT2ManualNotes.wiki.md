@@ -304,7 +304,7 @@ Files can be uploaded in the IPT during two actions: when [[creating a new resou
 The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:
 * compressing the file (with zip or gzip)
 * loading the data into one of the many [[databases supported by the IPT|IPT2DatabaseConnection.wiki]]
-* splitting the file up
+* splitting the file up (when the dataset is published the IPT will concatenate the files in the order they are mapped)
 
 ### Controls that appear on all pages
 This section describes several features that are accessible in the header and footer of most of the pages of the IPT.
