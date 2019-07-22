@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Since IPT v2.2, the IPT can be configured to use a DataCite or EZID account to manage DOIs for datasets. Publishers have the option of assigning new DOIs to a dataset, or letting the IPT manage an existing DOI for a dataset. A description of these two workflows follows.
+Since IPT v2.2, the IPT can be configured to use a DataCite account to manage DOIs for datasets. Publishers have the option of assigning new DOIs to a dataset, or letting the IPT manage an existing DOI for a dataset. A description of these two workflows follows.
 
 ## Workflows
 

@@ -109,11 +109,11 @@ Before version 2.3.4, connections were made using HTTP, rather than HTTPS, to ht
 
 ### 8. How can I configure my IPT to assign DOIs to datasets?
  
-In order to assign DOIs to datasets, the IPT must be configured with a DataCite or EZID account, which has itself been configured to mint DOIs under the IPT's domain. 
+In order to assign DOIs to datasets, the IPT must be configured with a DataCite account, which has itself been configured to mint DOIs under the IPT's domain. 
 
 The account holding organization must already be associated to the IPT as an organization. For help associating an organization to your IPT, you can refer to the [Add Organization](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#add-organisation) section of the User Manual. 
 
-All that remains, is to add the DataCite or EZID account information to the organization (e.g. the username, password, prefix, etc) and make sure the "Account activated" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the [Edit Organization](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#edit-organisation) section of the User Manual.
+All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the "Account activated" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the [Edit Organization](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#edit-organisation) section of the User Manual.
 
 If you work for a GBIF ‘country' Node, please contact the GBIF Helpdesk <helpdesk@gbif.org> to inquire about getting a free DataCite account. GBIF has its own account with DataCite and may be able to provide 'country' Nodes with their own free account (determined on a case by case basis). GBIF has done this for Spain and Colombia so far, both of which have a strong track record of keeping their IPTs online near 100% of the time. 
 

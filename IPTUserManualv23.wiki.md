@@ -116,12 +116,12 @@ _For the IPT Version 2.2 user manual, please go [[here|IPTUserManualv22.wiki]] O
 
 # Introduction
 ## About the GBIF Integrated Publishing Toolkit
-The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information: 
+The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:
 
 1. primary taxon occurrence data
 2. taxon checklists
 3. sampling event data
-4. general metadata about data sources. 
+4. general metadata about data sources.
 
 An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use. More information about the GBIF IPT can be found at the [IPT website](http://www.gbif.org/ipt).
 
@@ -193,7 +193,7 @@ If the initial data directory assignment step was successful, the IPT will prese
     * **Password** - a password for the default administrator. **Note**: The password should be made secure and safe from loss, as it is not recoverable from the IPT application.
     * **Verify password** - an exact copy of the password as entered in the Password text box to confirm that it was entered as intended.
   * IPT Mode - The IPT mode decides whether or not the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. Warning: for a given installation, this selection is final and cannot be changed later on. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made. (see the "Starting Over" section in this Getting Started Guide).
-    * **IPT mode** - Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (e.g. 10.5072 for DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible.
+    * **IPT mode** - Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible.
   * Base URL
     * **Base URL for this IPT** - the URL that points to the root of this IPT installation. The URL is detected automatically if possible, but should be changed in production systems to be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organisation, and will not allow resources to be publicly accessible.
       * **Proxy URL** - if the server on which the IPT is installed is routed through a proxy server or virtual host, enter the host address and port number through which the IPT will be accessible via the Internet as a URL in the format protocol:host:port, for example, <a href='http://proxy.gbif.org:8080'>http://proxy.gbif.org:8080</a>.
@@ -457,7 +457,7 @@ Click on the button labeled "Clear" to remove the choice of selected file and re
 * **Field Delimiter** - the character or characters that signify a break between columns of data.
 * **Character Encoding** - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).
 * **Field Quotes** - a single character (or none) that is used to enclose the contents of a column in the data (e.g., ' or "). Please note this will not properly enclose columns whose content includes newline characters (\n) or carriage returns (\r).
-* **Multi-value Delimiter** - a single character that delimits the values in a multi-value field (e.g., | or ;). 
+* **Multi-value Delimiter** - a single character that delimits the values in a multi-value field (e.g., | or ;).
 * **Date Format** - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
 * **Selected Worksheet** - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet.
 
@@ -489,7 +489,7 @@ Host - The database server address, optionally including the non-default port nu
 * **SQL Statement** - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example:<code>`SELECT * from specimen join taxon on taxon_fk=taxon.id`</code>. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, <code>`SELECT * from specimen join taxon on taxon_fk=taxon.id` LIMIT 10</code>. When the statement has been fully tested with the Darwin Core Mappings (see the following section of the Quick Reference Guide), change the SQL Statement to return the full intended data set.
 Character Encoding - the system that defines byte-wise definitions of the characters in the data (e.g., Latin1, UTF-8 ).
 * **Date Format** - a code describing the format of fields having a date data type (e.g., YYYY-MM-DD for four-digit year, two-digit month, and two-digit day separated by dashes).
-* **Multi-value Delimiter** - a single character that delimits the values in a multi-value field (e.g., | or ;). 
+* **Multi-value Delimiter** - a single character that delimits the values in a multi-value field (e.g., | or ;).
 
 After the parameters for the data source have been set so that the data are accessed correctly, click on the button labeled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labeled "Edit" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page.
 
@@ -500,7 +500,7 @@ Once these conditions have been met, the left-hand column of the Darwin Core Map
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceDwCMapping.png' />
 
-After the desired core type or extension is selected, click on the button labeled "Add" to open the [[Data Source selection page|IPT2ManualNotes.wiki#data-source-selection-page]]. 
+After the desired core type or extension is selected, click on the button labeled "Add" to open the [[Data Source selection page|IPT2ManualNotes.wiki#data-source-selection-page]].
 
 ##### Data Source selection page
 This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources. **Note 1**: A resource must only use 1 core type: choose "Darwin Core Checklist" when the basis of the resource is taxon names, or choose "Darwin Core Occurrence" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions. **Note 2**: It is possible to map another core type as an extension as long as it is different from the core type mapped.
@@ -543,7 +543,7 @@ To the right of the sidebar are rows of information divided into two columns of 
   * **NotEquals** - this operator is true if the source data field is not equal to the value in the text box at the right. Equality is evaluated based on string matching, thus, if the data source value for a record is 2.0 and the value in the text box is 2, the record will be included in the filtered data set.
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceFilter.png' />
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceFilterEquals.png' />
-* **Required fields** - If there are any required properties that must be mapped for the Core Type or Extension, these have their names highlighted. Be aware basisOfRecord publication will fail if <a href='http://rs.tdwg.org/dwc/terms/#basisOfRecord'>basisOfRecord</a> has not been mapped for the Occurrence core. Also, a special case exists for the ID field, which is only required when linking two sources together. 
+* **Required fields** - If there are any required properties that must be mapped for the Core Type or Extension, these have their names highlighted. Be aware basisOfRecord publication will fail if <a href='http://rs.tdwg.org/dwc/terms/#basisOfRecord'>basisOfRecord</a> has not been mapped for the Occurrence core. Also, a special case exists for the ID field, which is only required when linking two sources together.
 
 In addition to the explanatory information about the extension at the top of the page and the two columns described above, the Data Mapping page may have following sections, links, and buttons:
 * **Resource Title** - clicking on this link will navigate to the Resource Overview page without saving any of the pending changes.
@@ -556,11 +556,11 @@ In addition to the explanatory information about the extension at the top of the
 * **Back** - clicking on this button will abandon all changes that have been made on this page since it was last saved and return to the Resource Overview page.
 * **Unmapped columns** - this section contains a list of columns in the source file, table, or view that have not been mapped. This list can help to determine if everything from the source has been mapped that should be mapped.
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceMappingUnmappedColumns.png' />
-* **Redundant term classes** - this section contains a list of classes whose terms are redundant, meaning that these classes already appear in the core extension. Ideally, a term that has been mapped in the core extension doesn't need to be re-mapped again in an extension. Hiding redundant terms also has the additional benefit of making the mapping page easier to use for the user. 
+* **Redundant term classes** - this section contains a list of classes whose terms are redundant, meaning that these classes already appear in the core extension. Ideally, a term that has been mapped in the core extension doesn't need to be re-mapped again in an extension. Hiding redundant terms also has the additional benefit of making the mapping page easier to use for the user.
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceMappingRedundantClasses.png' />
 
 ##### Value Translation page
-When this page opens for the first time it shows a message at the top giving the number of distinct values of the selected field in the source data, up to 1000 values. The page shows the name and description of the extension field for which translations are being made. If the field is governed by a controlled vocabulary, information about that vocabulary and an icon to open a Vocabulary Detail page (see Vocabulary Detail button explanation, above) will appear under the field description. Below the field description is a table showing the distinct values of the field found in the source data under the column heading "Source Value" with text boxes under the column heading "Translated Value". Enter the value to which the Source Value should be translated in the text box. The icon to the left of the translated value text box indicates if the value provided exists in the vocabulary for this term. 
+When this page opens for the first time it shows a message at the top giving the number of distinct values of the selected field in the source data, up to 1000 values. The page shows the name and description of the extension field for which translations are being made. If the field is governed by a controlled vocabulary, information about that vocabulary and an icon to open a Vocabulary Detail page (see Vocabulary Detail button explanation, above) will appear under the field description. Below the field description is a table showing the distinct values of the field found in the source data under the column heading "Source Value" with text boxes under the column heading "Translated Value". Enter the value to which the Source Value should be translated in the text box. The icon to the left of the translated value text box indicates if the value provided exists in the vocabulary for this term.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceSourceTranslation.png' />
 
@@ -577,7 +577,7 @@ This page shows a list of concepts within the vocabulary. In the context of mapp
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTManageResourceVocabularyDetail.png' />
 
 #### Metadata
-This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labeled "Edit" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite/EZID (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page.
+This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labeled "Edit" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTManageResourceMetadataMissing.png' />
 
@@ -819,14 +819,14 @@ The publish action consists of the steps described below. Publication is all or 
 
 ##### Data Validation
 
-The IPT writes data files inside the DWCA as tab delimited files void of line breaking characters (**note: line breaking characters found in the original data are replaced with an empty string**). 
+The IPT writes data files inside the DWCA as tab delimited files void of line breaking characters (**note: line breaking characters found in the original data are replaced with an empty string**).
 
 After writing, the IPT also validates their content in the following ways:
 * If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique.
 * The Darwin Core term <a href='http://rs.tdwg.org/dwc/terms/#basisOfRecord'>basisOfRecord</a> is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the <a href='http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml'>Darwin Core Type vocabulary</a>.
 
 ##### Assigning DOIs to Resources
-Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organisation associated to the IPT with a DataCite or EZID account. Refer to the "Configure Organisations" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite or EZID account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the [[IPT DOI Workflows|IPT2DOIWorkflow.wiki]] page in the IPT wiki.
+Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organisation associated to the IPT with a DataCite account. Refer to the "Configure Organisations" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the [[IPT DOI Workflows|IPT2DOIWorkflow.wiki]] page in the IPT wiki.
 * **Reserve**: - a DOI can be reserved for a resource. This operation varies a little depending on whether the resource has already been assigned a DOI or not.
   * **Resource not assigned a DOI**: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the "Reserve" button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the "Reserve" button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.
   * **Resource assigned a DOI**: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the "Reserve new" button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.
@@ -857,16 +857,16 @@ The Visibility area of the Manage Resources page allows users having manager rig
 #### Migrate a Resource
 There is now a way to migrate existing registered DiGIR, BioCASE, TAPIR, or DwC-A resources to an IPT. This allows the existing resource to preserve its GBIF Registry UUID.
 
-The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry. 
+The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry.
 
 To migrate an **existing registered resource** to your **IPT resource**, simply follow these instructions:
 
 1. Ensure that the **IPT resource's** visibility is public and NOT registered.
 2. Determine the owning organisation of the e**xisting registered resource**, and ensure that it is added to the IPT as an organisation, and that it is configured to publish datasets. To do so, please refer to the section "Add Organisation".
 3. Select the owning organisation from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page.
-4. Go to the GBIF Dataset page of the **existing registered resource**. Depending on whether you are running the IPT in test or production mode, you would visit <a href='http://www.gbif-uat.org/dataset'>http://www.gbif-uat.org/dataset</a> or <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a> respectively. 
+4. Go to the GBIF Dataset page of the **existing registered resource**. Depending on whether you are running the IPT in test or production mode, you would visit <a href='http://www.gbif-uat.org/dataset'>http://www.gbif-uat.org/dataset</a> or <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a> respectively.
 5. Ensure GBIF Dataset page shows the correct **owning organisation** of the **existing registered resource**. Warning: if it shows a different **owning organisation**, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed.
-6. Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g "5d637678-cb64-4863-a12b-78b4e1a56628". 
+6. Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g "5d637678-cb64-4863-a12b-78b4e1a56628".
 7. Add this UUID to the list of the **IPT resource's** alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page.
 8. Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first.
 9. On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed.
@@ -980,7 +980,7 @@ This page allows a user to edit the title, description, contact name, and contac
 ## Configure Organisations
 This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the "Configure GBIF registration" heading of the "Administration Menu" section). Once registered, this page shows a list of organisations that can be associated with resources in this IPT instance. An IPT that hosts data for organisations other than the one to which it is associated must have the additional organisations configured before they can be used.
 
-An IPT capable of assigning DOIs to resources must also have an organisation configured with a DataCite or EZID account. To be configured with a DataCite or EZID account, the organisation does not necessary have to be able to publish resources (be associated with resources). Only one DataCite or EZID account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section to learn more about the archival mode). The list of organisations shows which organisations have been configured with DataCite or EZID accounts, and which one has been selected to register DOIs for all resources in this IPT instance.
+An IPT capable of assigning DOIs to resources must also have an organisation configured with a DataCite account. To be configured with a DataCite account, the organisation does not necessary have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the [[Configure IPT settings|IPT2ManualNotes.wiki#configure-ipt-settings]] section to learn more about the archival mode). The list of organisations shows which organisations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTAdminOrgs.png' />
 
@@ -994,11 +994,11 @@ Following are explanations of the specific information to select or enter:
 * **Organisation password** - the password that should be used to edit the entry for this organisation in the GBIF Registry.
 * **Organisation alias** - a name given to the organisation for convenience within the IPT instance; aliases, rather then the full Organisation Name appear in Organisation selection lists in the IPT.
 * **Can publish resources** - this checkbox indicates whether the organisation can be associated with resources in the IPT. Only those organisations having this box checked will appear in lists to be associated with resources.
-* **DOI registration agency** - the type of account used to register DOIs for resources; can be either DataCite or EZID. **Note**: an account is issued to the organisation after it signs an agreement with a DataCite member (or EZID), which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). **Note**: confirm that the account can actually register DOIs under the IPT's domain/base URL otherwise registrations via the IPT won't work.
-* **Account username** - the username (symbol) of the DataCite/EZID account issued to the organisation.
-* **Account password** - the password of the DataCite/EZID account issued to the organisation.
+* **DOI registration agency** - the type of account used to register DOIs for resources; can be either DataCite. **Note**: an account is issued to the organisation after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). **Note**: confirm that the account can actually register DOIs under the IPT's domain/base URL otherwise registrations via the IPT won't work.
+* **Account username** - the username (symbol) of the DataCite account issued to the organisation.
+* **Account password** - the password of the DataCite account issued to the organisation.
 * **DOI prefix/shoulder** - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organisation. Note: always use a test prefix (e.g. 10.5072 for DataCite, 10.5072/FK2 for EZID) when running the IPT in test mode.
-* **Account activated** - this checkbox indicates if this DataCite/EZID account is the only account used by the IPT to register DOIs for datasets. Only one DataCite/EZID account can be activated at a time.
+* **Account activated** - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.
 
 ### Add organisation
 Organisations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labeled "Add" to open a page on which an additional organisation can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the "Edit Organisation" section above. After the desired organisation is selected and all other data entered, including the password for the organisation, click on the button labeled "Save" to add the selected organisation to the list.
@@ -1038,7 +1038,7 @@ For any extension that has already been installed in the IPT, it can be removed 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTAdminExtensionsDetailVocabulary.png' />
 
 ### Update extension
-For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labeled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished. 
+For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labeled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v23/IPTAdminExtensionsUpdate.png' />
 
