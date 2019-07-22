@@ -172,10 +172,30 @@ public class ExtensionMappingValidatorTest {
     eventDate.setIndex(1);
     fields.add(eventDate);
 
-    peek.add(new String[] {"id1", "August 18, 1983"});
+    peek.add(new String[] {"id1", "August 38, 1983"});
 
     status = validator.validate(extensionMapping, resource, peek, columns);
     assertFalse(status.isValid());
     assertEquals(1, status.getWrongDataTypeFields().size());
+
+    // Test some additional valid and invalid dates.
+    String[] goodDates = new String[]{"2019-07-22", "2019-07", "2019", "2019-07-21/2019-07-22", "2019-06/2019-07", "2018/2019"};
+
+    for (String d : goodDates) {
+      peek.add(new String[]{"id1", d});
+      status = validator.validate(extensionMapping, resource, peek, columns);
+      assertTrue(status.isValid());
+      peek.clear();
+    }
+
+    String[] badDates = new String[]{"2019-17-22", "2019.07", "010203", "01/02/03", "2019-00-00"};
+
+    for (String d : badDates) {
+      peek.add(new String[]{"id1", d});
+      status = validator.validate(extensionMapping, resource, peek, columns);
+      assertFalse(status.isValid());
+      assertEquals(1, status.getWrongDataTypeFields().size());
+      peek.clear();
+    }
   }
 }

@@ -13,6 +13,9 @@
 
 package org.gbif.ipt.validation;
 
+import org.gbif.common.parsers.core.ParseResult;
+import org.gbif.common.parsers.date.DateParsers;
+import org.gbif.common.parsers.date.TemporalParser;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwca.io.ArchiveField.DataType;
 import org.gbif.ipt.model.Extension;
@@ -20,11 +23,11 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
-import org.gbif.metadata.DateUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +37,8 @@ import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 
 public class ExtensionMappingValidator {
+
+  private static final TemporalParser TEXTDATE_PARSER = DateParsers.defaultTemporalParser();
 
   public static class ValidationStatus {
 
@@ -121,8 +126,12 @@ public class ExtensionMappingValidator {
             continue;
           }
         } else if (DataType.date == dt) {
-          Date d = DateUtils.parse(val, DateUtils.ISO_DATE_FORMAT);
-          if (d == null) {
+          ParseResult<TemporalAccessor> parsedDateResult = TEXTDATE_PARSER.parse(val);
+          TemporalAccessor parsedDateTa = parsedDateResult.getPayload();
+          if (parsedDateTa == null) {
+            return false;
+          }
+          if (!parsedDateTa.isSupported(ChronoField.YEAR)) {
             return false;
           }
         } else if (DataType.decimal == dt) {
