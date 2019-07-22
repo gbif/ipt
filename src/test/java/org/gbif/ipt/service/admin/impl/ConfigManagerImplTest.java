@@ -109,9 +109,14 @@ public class ConfigManagerImplTest {
     // Create configManager.
     ConfigManager configManager = getConfigManager();
 
+    // Save good baseURL
+    URL baseURL = new URL("https://ipt.gbif.org");
+    configManager.setBaseUrl(baseURL);
+    assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
+
     // try to save a nonexistent baseURL.
     try {
-      URL baseURL2 = new URL("http://1.1.1.1/ipt");
+      URL baseURL2 = new URL("http://192.0.2.0/ipt");
       configManager.setBaseUrl(baseURL2);
       // the validation should never get here.
       fail();
@@ -126,12 +131,6 @@ public class ConfigManagerImplTest {
       fail();
     } catch (InvalidConfigException e) {
     }
-
-    // Save good baseURL
-    URL baseURL = new URL("http://ipt.gbif.org");
-    configManager.setBaseUrl(baseURL);
-    assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
-
 
     // TODO figure out how to test a proxy
 
