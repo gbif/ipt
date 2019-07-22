@@ -18,7 +18,7 @@
     * [Server Preparation](IPTServerPreparation.md)
       * [Install Tomcat on Mac OS X](TomcatInstallationMacOSX.md)
       * [Install Tomcat on Windows 7](TomcatInstallationWindows7.md)
-      * [Install Tomcat on CentOS 5](TomcatInstallationCentOS.md)
+      * [Install Tomcat on CentOS](TomcatInstallationCentOS.md)
     * IPT Design
       * [Dataset Versioning Policy](IPT2Versioning.md)
       * [Dataset Citation Format](IPT2Citation.md)
