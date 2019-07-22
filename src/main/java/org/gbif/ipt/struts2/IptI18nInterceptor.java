@@ -29,12 +29,17 @@ public class IptI18nInterceptor extends I18nInterceptor {
   @Override
   protected Locale getLocaleFromParam(Object requestedLocale) {
     Locale locale = null;
-    if (requestedLocale != null) {
-      locale = (requestedLocale instanceof Locale) ? (Locale) requestedLocale
-        : LocaleUtils.toLocale(requestedLocale.toString());
-      if (locale != null && LOG.isDebugEnabled()) {
-        LOG.debug("Applied request locale: " + locale.getLanguage());
+    try {
+      if (requestedLocale != null) {
+        locale = (requestedLocale instanceof Locale) ? (Locale) requestedLocale
+            : LocaleUtils.toLocale(requestedLocale.toString());
+        if (locale != null && LOG.isDebugEnabled()) {
+          LOG.debug("Applied request locale: " + locale.getLanguage());
+        }
       }
+    } catch (IllegalArgumentException e) {
+      LOG.debug("Invalid request locale: {}", requestedLocale);
+      locale = Locale.getDefault();
     }
     if (locale != null && !IPT_SUPPORTED_LOCALES.contains(locale)) {
       locale = Locale.getDefault();

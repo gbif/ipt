@@ -10,17 +10,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class IptI18nInterceptorTest {
-  // https://github.com/gbif/ipt/issues/1379
   @Test
-  @Ignore
   public void testGetLocaleFromParam() {
     IptI18nInterceptor interceptor = new IptI18nInterceptor();
 
     // Test Italian, which is not yet supported by the IPT and should return the default Locale
-    assertEquals(Locale.US, interceptor.getLocaleFromParam(Locale.ITALIAN));
+    assertEquals(Locale.getDefault(), interceptor.getLocaleFromParam(Locale.ITALIAN));
 
     // Test non-interpretable language that should return default Locale
-    assertEquals(Locale.US, interceptor.getLocaleFromParam("$"));
+    assertEquals(Locale.getDefault(), interceptor.getLocaleFromParam("$"));
 
     // Test support for Persian, which is soon supported by the IPT, but not supported by Struts2/JRE by default
     assertEquals(new Locale("fa"), interceptor.getLocaleFromParam(new Locale("fa")));
