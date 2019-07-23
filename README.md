@@ -1,4 +1,4 @@
-https://builds.gbif.org/job/ipt/[image:https://builds.gbif.org/job/ipt/badge/icon[Build status]]
+[![Build Status](https://builds.gbif.org/job/ipt/badge/icon?style=flat-square)](https://builds.gbif.org/job/ipt/)
 
 ## Welcome to the IPT Repository including Wiki, Issue Manager and Project Manager!
 
