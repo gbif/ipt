@@ -100,7 +100,7 @@ public interface RegistrationManager {
 
   /**
    * Construct and return the appropriate DOI service depending on the type of DOI agency account that has been
-   * activated in the IPT (since version 2.4, DataCite only).
+   * activated in the IPT (since version 2.4.0, DataCite only).
    *
    * @return the DataCite service capable of reserving, minting, deleting DOIs
    *

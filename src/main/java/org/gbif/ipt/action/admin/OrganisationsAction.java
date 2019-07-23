@@ -295,7 +295,7 @@ public class OrganisationsAction extends POSTAction {
    * Make sure all DOIs in this IPT correspond to the account being saved. Otherwise, the user could switch the
    * account type from EZID to DataCite, and render all DataCite DOIs unable to be updated.
    *
-   * (Support for EZID was removed in version 2.4.)
+   * (Support for EZID was removed in version 2.4.0.)
    *
    * @return true if DOIs assigned using another account are found in the IPT, false otherwise
    */
