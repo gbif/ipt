@@ -17,6 +17,8 @@ You can then access the setup screen of the IPT on port 8080.
 
 If you need to override the data directory, this can be done with `-e IPT_DATA_DIR=/path/within/container`.
 
+If you need to find the IP address of your "default" Docker machine use `docker-machine ip default`.
+
 **Remember to back up your data directory.**
 
 ## To build and deploy the Docker image
