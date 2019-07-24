@@ -1,14 +1,23 @@
 FROM tomcat:8.5-jre8-alpine
-MAINTAINER Markus Döring <mdoering@gbif.org>
-RUN apk add --update curl && \
-    apk add --update unzip && \
-    rm -rf /var/cache/apk/*
+LABEL MAINTAINERS="Markus Döring <mdoering@gbif.org>, Matthew Blissett <mblissett@gbif.org>"
+
+ARG ipt_version
+ENV IPT_VERSION=${ipt_version}
+ENV IPT_DATA_DIR=/srv/ipt
+
+RUN apk add --no-cache \
+    curl \
+    unzip \
+    && rm -rf /var/cache/apk/*
+
 RUN rm -Rf /usr/local/tomcat/webapps \
     && mkdir -p /usr/local/tomcat/webapps/ROOT \
-    && mkdir -p /usr/local/ipt \
-    && curl -Ls -o ipt.war http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.6/ipt-2.3.6.war \
+    && mkdir -p /srv/ipt \
+    && curl -LSsfo ipt.war https://repository.gbif.org/repository/releases/org/gbif/ipt/${IPT_VERSION}/ipt-${IPT_VERSION}.war \
     && unzip -d /usr/local/tomcat/webapps/ROOT ipt.war \
-    && rm ipt.war
+    && rm -f ipt.war
+
+VOLUME /srv/ipt
+
 EXPOSE 8080
-RUN echo "/usr/local/ipt" > /usr/local/tomcat/webapps/ROOT/WEB-INF/datadir.location
 CMD ["catalina.sh", "run"]
