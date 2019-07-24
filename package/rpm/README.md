@@ -18,9 +18,11 @@ systemctl start ipt
 
 The IPT will run on the specified port.  After startup, logs are in the IPT's data directory.  If you need to see startup logs, you can use `journalctl -u ipt`
 
-Make sure to **backup the IPT data directory**.
+Make sure to **backup the IPT data directory**, which is `/var/lib/ipt` by default.
 
 ## Building
+
+(This section is for GBIF developers.)
 
 ```
 make clean
