@@ -16,3 +16,9 @@ docker run --rm \
        "rpmbuild/SPECS/rpm-build.sh"
 
 chmod 755 $CURRENT_DIR/{RPMS,SOURCES,SRPMS}
+
+#scp -p ~/rpmbuild/RPMS/noarch/ipt-*.noarch.rpm static-vh.gbif.org:/var/www/html/packages/rpm/
+#echo "SCP completed"
+
+#ssh static-vh.gbif.org /usr/bin/createrepo --checkts --update /var/www/html/packages/rpm/
+#echo "Repo updated completed"
