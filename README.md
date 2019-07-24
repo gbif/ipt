@@ -14,7 +14,7 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 
 ### Latest Release: 2.4.0
 
-Version 2.4.0 is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.0/ipt-2.4.0.war), or via a [(test) CentOS repository](https://github.com/gbif/ipt/issues/1304).
+Version 2.4.0 is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.0/ipt-2.4.0.war), or via a [CentOS repository](./package/rpm/README.md).
 
 Version 2.4.0 updates the integration with DataCite for assiging DOIs to datasets, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.0+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
 
