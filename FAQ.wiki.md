@@ -18,6 +18,7 @@
   + [[5. How do I change the type of an existing resource?|FAQ.wiki#5-how-do-i-change-the-type-of-an-existing-resource]]
   + [[6. What are some tricks to simplify the authoring and maintenance of metadata?|FAQ.wiki#6-what-are-some-tricks-to-simplify-the-authoring-and-maintenance-of-metadata]]
   + [[7. How do I change the hosting organisation of my IPT?|FAQ.wiki#7-how-do-i-change-the-hosting-organisation-of-my-ipt]]
+  + [[8. How do I reset the admin password?|FAQ.wiki#8-how-do-i-reset-the-admin-password]]
 + [[Indexing by GBIF|FAQ.wiki#indexing-by-gbif]]
   + [[1. How long does it take GBIF to (re)index my dataset following registration?|FAQ.wiki#1-how-long-does-it-take-gbif-to-start-reindexing-my-dataset]]
   + [[2. Why hasn't GBIF (re)indexed my dataset yet?|FAQ.wiki#2-why-hasnt-gbif-reindexed-my-dataset-yet]]
@@ -196,6 +197,14 @@ Next, perform the following 2 manual changes to the registration2.xml file locat
 Restart Tomcat.
 
 Last, press the "update registration" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to [this section](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#edit-gbif-registration) of the user manual.
+
+### 8. How do I reset the admin password?
+
+If you have forgotten the admin password, the server administrator will need to reset it.
+
+Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role="Admin"`), and replace the encrypted password with `VRRUXOTCtdCkQr40SrHdrnUJurTOYMW9`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed.
+
+If they prefer, a Java developer could modify the [PBEEncryptTest class](https://github.com/gbif/ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest.java) to generate a hash for a different password, or decrypt the lost password (but see [bug 1460](https://github.com/gbif/ipt/issues/1460)).
 
 ## Indexing by GBIF
 ### 1. How long does it take GBIF to start (re)indexing my dataset?
