@@ -59,7 +59,7 @@ public class PBEEncrypt {
       this.decryptCipher = Cipher.getInstance(ALGORITHM, "SunJCE");
       this.decryptCipher.init(Cipher.DECRYPT_MODE, key, params);
     } catch (Exception e) {
-      throw new EncryptionException("Problem constucting " + this.getClass().getName(), e);
+      throw new EncryptionException("Problem constructing " + this.getClass().getName(), e);
     }
   }
 
