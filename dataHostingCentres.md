@@ -169,7 +169,7 @@ The [Taiwan Biodiversity Information Facility (TaiBIF)](http://www.taibif.tw/en)
 
 ## USA
 
-The [iDigBio IPT](http://ipt.idigbio.org) provides helpdesk support to new data publishers in the US, and data publishing resources for datasets needing data mobilization support. Please contact the Joanna McCaffrey at jmccaffrey@flmnh.ufl.edu for assistance.
+The [iDigBio IPT](http://ipt.idigbio.org) provides helpdesk support to new data publishers in the US, and data publishing resources for datasets needing data mobilization support. Please contact data@idigbio.org for assistance.
 
 [VertNet](http://vertnet.org/) provides helpdesk support to institutions that have vertebrates among one or more of the data sets they want to publish. In other words, if the institution is interested in publishing vertebrate data sets (whether specimens or observations), VertNet will help with publishing all of their data sets. This promotes efficiency when providing and maintaining support to the institution.
 
