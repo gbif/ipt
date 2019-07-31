@@ -21,6 +21,10 @@ If you need to find the IP address of your "default" Docker machine use `docker-
 
 **Remember to back up your data directory.**
 
+## Upgrading
+
+Note that, for better consistency with the [Filesystem Hierarchy Standard](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard), from version 2.4.0 the IPT's data directory is `/srv/ipt`, *not* `/usr/local/ipt`.
+
 ## To build and deploy the Docker image
 
 ```
