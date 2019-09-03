@@ -12,7 +12,7 @@
         initHelp();
     });
 </script>
-  <@resourcesTable shownPublicly=false numResourcesShown=10 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>
+  <@resourcesTable shownPublicly=false numResourcesShown=20 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>
 
 <h1 class="rtableTitle"><@s.text name="manage.home.title"/></h1>
 <div id="tableContainer"></div>

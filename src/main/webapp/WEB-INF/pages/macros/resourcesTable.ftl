@@ -56,7 +56,8 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
         $('#rtable').dataTable( {
             "aaData": aDataSet,
             "iDisplayLength": ${numResourcesShown},
-            "bLengthChange": false,
+            "bLengthChange": true,
+            "aLengthMenu": [10, 20, 50, 100, 200],
             "bAutoWidth": false,
             "oLanguage": {
                 "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
