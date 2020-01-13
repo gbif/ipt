@@ -8,6 +8,7 @@ ENV IPT_DATA_DIR=/srv/ipt
 RUN apk add --no-cache \
     curl \
     unzip \
+    coreutils \
     && rm -rf /var/cache/apk/*
 
 RUN rm -Rf /usr/local/tomcat/webapps \
