@@ -11,3 +11,11 @@ target/
 .classpath
 .project
 .settings/org.eclipse.jdt.core.prefs
+
+# Debian
+debian/*.debhelper
+debian/*.debhelper.log
+debian/*.buildinfo
+debian/*.substvars
+debian/files
+debian/ipt
