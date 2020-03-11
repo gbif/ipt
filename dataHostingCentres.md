@@ -143,7 +143,7 @@ Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues p
 
 ## Norway
 
-[GBIF Norway](http://www.gbif.no/) provides helpdesk support to new publishers in Norway, and hosting support for datasets on the [GBIF Norway IPT](http://data.gbif.no/ipt/). Please contact GBIF Norway <gbif-drift@nhm.uio.no> for assistance.
+[GBIF Norway](http://www.gbif.no/) provides helpdesk support to new publishers in Norway, and hosting support for datasets on the [GBIF Norway IPT](http://ipt.gbif.no/). Please contact GBIF Norway <helpdesk@gbif.no> for assistance.
 
 ## Portugal
 
