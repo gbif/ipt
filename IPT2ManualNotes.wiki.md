@@ -73,7 +73,7 @@ it's not possible for the links to redirect on this GitHub wiki.*
         + [[Additional Metadata|IPT2ManualManageResources.wiki#additional-metadata]]
       + [[Published Versions|IPT2ManualManageResources.wiki#published-versions]]
       + [[Visibility|IPT2ManualManageResources.wiki#visibility]]
-      + [[Migrate a Resource|IPT2ManualManageResources.wiki/migrate-a-resource]]
+      + [[Migrate a Resource|IPT2ManualManageResources.wiki#migrate-a-resource]]
       + [[Resource Managers|IPT2ManualManageResources.wiki#resource-managers]]
       + [[Delete a Resource|IPT2ManualManageResources.wiki#delete-a-resource]]
   + [[Administration Menu|IPT2ManualAdministration.wiki#administration-menu]]
