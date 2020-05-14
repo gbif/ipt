@@ -158,7 +158,7 @@ To solve this, you can:
 ### 4. How do I change the publishing organisation of my resource? The dropdown on the Basic Metadata page is disabled.
 Please be aware the publishing organisation cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
 
-In order to change the publishing organisation, you need to republish the resource and then reset the desired publishing organisation. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found [here](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#upload-a-zipped-ipt-resource-configuration-folder).
+In order to change the publishing organisation, you need to republish the resource and then reset the desired publishing organisation. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found [here](https://github.com/gbif/ipt/wiki/IPT2ManualManageResources.wiki#upload-a-zipped-ipt-resource-configuration-folder).
 
 Do not "delete" the old resource via the IPT user interface, as this will delete the registered resource in GBIF.
 
