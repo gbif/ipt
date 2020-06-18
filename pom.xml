@@ -60,7 +60,7 @@
     <httpcore.version>4.3.3</httpcore.version>
     <httputils.version>0.10</httputils.version>
     <itext.version>2.1.7</itext.version>
-    <jackson-core.version>2.9.9.1</jackson-core.version>
+    <jackson-core.version>2.10.0.pr1</jackson-core.version>
     <jackson-dataformat.version>2.9.9</jackson-dataformat.version>
     <javassist.version>3.12.1.GA</javassist.version>
     <javax.mail.version>1.4.7</javax.mail.version>
