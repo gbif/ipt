@@ -70,7 +70,7 @@
     <jsr305.version>3.0.2</jsr305.version>
     <jtds.version>1.3.1</jtds.version>
     <junit.version>4.12</junit.version>
-    <log4j.version>2.12.0</log4j.version>
+    <log4j.version>2.13.3</log4j.version>
     <mockito-all.version>1.10.19</mockito-all.version>
     <mysql-connector-java.version>5.1.44</mysql-connector-java.version>
     <ojdbc.version>14</ojdbc.version>
