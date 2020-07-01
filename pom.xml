@@ -72,7 +72,7 @@
     <junit.version>4.12</junit.version>
     <log4j.version>2.12.0</log4j.version>
     <mockito-all.version>1.10.19</mockito-all.version>
-    <mysql-connector-java.version>5.1.44</mysql-connector-java.version>
+    <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
     <ojdbc.version>14</ojdbc.version>
     <owasp-java-html-sanitizer.version>20170515.1</owasp-java-html-sanitizer.version>
     <postgresql.version>42.1.4</postgresql.version>
