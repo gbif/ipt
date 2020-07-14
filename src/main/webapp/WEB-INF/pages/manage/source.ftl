@@ -42,8 +42,8 @@ $(document).ready(function(){
             <table id="source-properties">
               <tr><th><@s.text name='manage.source.readable'/></th><td><img src="${baseURL}/images/<#if source.readable>good.gif" /><#else>bad.gif" /> ${problem!}</#if></td></tr>
               <tr><th><@s.text name='manage.source.columns'/></th><td>${source.getColumns()}</td></tr>
-              <#if source.fieldsTerminatedBy?has_content>
-                <tr><th><@s.text name='manage.source.file'/></th><td>${(source.file.getAbsolutePath())!}</td></tr>
+              <#if !source.isSqlSource()>
+                <tr><th><@s.text name='manage.source.file'/></th><td><a href="${baseURL}/sourceFile.do?r=${resource.shortname}&s=${source.name}">${(source.file.getAbsolutePath())!}</a></td></tr>
                 <tr><th><@s.text name='manage.source.size'/></th><td>${source.fileSizeFormatted!"???"}</td></tr>
                 <tr><th><@s.text name='manage.source.rows'/></th><td>${source.rows!"???"}</td></tr>
                 <tr><th><@s.text name='manage.source.modified'/></th><td>${(source.lastModified?datetime?string("yyyy-MM-dd HH:mm:ss"))!}</td></tr>

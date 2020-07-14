@@ -20,6 +20,8 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
+import org.gbif.ipt.model.FileSource;
+
 /**
  * The Action responsible for serving datadir resource files.
  */
@@ -211,6 +213,32 @@ public class ResourceFileAction extends PortalBaseAction {
       return NOT_FOUND;
     }
     return execute();
+  }
+
+  /**
+   * Retrieve the requested source file, or return NOT_FOUND if it could not be located.
+   */
+  public String sourceFile() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    // Looping through the sources to file the FileSource
+    for (Source src : resource.getSources()) {
+      if (src instanceof FileSource) {
+        FileSource frSrc = (FileSource) src;
+
+        // Retrieve the FileSource corresponding to the name of the source requested
+        if (frSrc.getName() == source.getName()) {
+          data = dataDir.sourceFile(resource, frSrc);
+          if (data.exists()) {
+            mimeType = "application/octet-stream";
+            filename = source.getName() + frSrc.getPreferredFileSuffix();
+            return execute();
+          }
+        }
+      }
+    }
+    return NOT_FOUND;
   }
 
   @Override

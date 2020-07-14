@@ -72,6 +72,15 @@
         <param name="bufferSize">1024</param>
       </result>
     </action>
+    <action name="sourceFile" class="org.gbif.ipt.action.portal.ResourceFileAction" method="sourceFile">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
     <action name="rtf" class="org.gbif.ipt.action.portal.ResourceFileAction" method="rtf">
       <result name="success" type="stream">
         <param name="contentType">${mimeType}</param>
