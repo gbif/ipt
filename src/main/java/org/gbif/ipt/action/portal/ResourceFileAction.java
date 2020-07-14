@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -19,8 +20,6 @@ import java.math.BigDecimal;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-
-import org.gbif.ipt.model.FileSource;
 
 /**
  * The Action responsible for serving datadir resource files.
