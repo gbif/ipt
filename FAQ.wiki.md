@@ -47,13 +47,13 @@ The following is known to run:
 
 ### 4. I get the following error: "The data directory '/directory' is not writable. What should I do?
 
-Assuming you are running Tomcat for example, you need to ensure the user running Tomcat has permissions on the directory. To find out the user running Tomcat in UNIX, open a shell and enter the following command:
+Assuming you are running Tomcat, you need to ensure the user running Tomcat has permissions on the directory. To find out the user running Tomcat on Linux, open a shell and enter the following command:
 
 ```
 $ ps waux | grep tomcat
 ```
 
-If the user is "tomcatuser", and this user belongs to group "tomcatgroup" then change the ownership of the IPT data directory (and it's child folders and files) by entering the following command:
+If the user is "tomcatuser", and this user belongs to group "tomcatgroup" then change the ownership of the IPT data directory (and its child folders and files) by entering the following command:
 
 ```
 $ chown -R tomcatuser:tomcatgroup directory/
@@ -63,6 +63,16 @@ To ensure only this user has write permission, enter the following command:
 
 ```
 $ chmod -R 755 directory/
+```
+
+On systems with security sandboxing, you may need to grant permissions to the directory.  For example, on Debian you need to add a SystemD override:
+
+```
+$ systemctl edit syslog.service
+[Service]
+ReadWritePaths=/path/to/directory/
+$ systemctl daemon-reload
+$ systemctl restart tomcat8
 ```
 
 ### 5. How can I change the IPT's default language?
