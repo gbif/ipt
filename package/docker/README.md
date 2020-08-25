@@ -29,7 +29,8 @@ Note that, for better consistency with the [Filesystem Hierarchy Standard](https
 
 ## To build and deploy the Docker image
 
-```
-docker build --build-arg IPT_VERSION=2.4.0 -t gbif/ipt:2.4.0 .
-docker push gbif/ipt:2.4.0
-```
+(This process is for GBIF developers.)
+
+1. `docker build --build-arg IPT_VERSION=2.4.0 -t gbif/ipt:2.4.0 .`
+2. **Test the resulting image!** `docker run --detach --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt:2.4.0`
+3. `docker push gbif/ipt:2.4.0`

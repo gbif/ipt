@@ -5,7 +5,7 @@ This is a CentOS RPM package for installing the IPT.
 ## Usage
 
 ```shell
-yum-config-manager --add-repo http://packages.gbif.org/gbif.repo
+yum-config-manager --add-repo https://packages.gbif.org/gbif.repo
 yum install ipt
 ```
 
@@ -24,18 +24,17 @@ Make sure to **backup the IPT data directory**, which is `/var/lib/ipt` by defau
 
 (This section is for GBIF developers.)
 
-```
-make clean
-make rpm
-make deploy
-```
+1. Edit `SPECS/ipt.spec` with a new version number at the top, and a release comment at the bottom.
+2. `make clean && make rpm`
+3. **Test this RPM!** Install it in a CentOS VM (or Docker container) and see that it runs.
+4. `make deploy`
 
-The RPM is published to http://packages.gbif.org/rpm/
+The RPM is published to https://packages.gbif.org/rpm/
 
 ```
 [gbif]
 name=GBIF RPM Packages
-baseurl=http://packages.gbif.org/rpm
+baseurl=https://packages.gbif.org/rpm
 enabled=1
 gpgcheck=0
 ```
