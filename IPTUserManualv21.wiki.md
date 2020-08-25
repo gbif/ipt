@@ -2,13 +2,6 @@
 
 **IPT Version: 2.1**
 
-_For the IPT Version 2.0.5 User Manual, please go [here.](IPTUserManualv205.md)_
-_For the IPT Version 2.0.4 User Manual, please go [here.](IPTUserManualv204.md)_
-_For the IPT Version 2.0.3 User Manual, please go [here.](IPTUserManualv203.md)_
-_For the IPT Version 2.0.2 User Manual, please go [here.](IPTUserManualv202.md)_
-
-
-
 ---
 
 # Introduction
