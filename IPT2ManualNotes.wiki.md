@@ -178,13 +178,15 @@ Follow the normal process for deploying a web application to a servlet container
 Successful deployment of the IPT to the servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's base URL followed by /ipt (e.g., http://localhost:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
 ## Set up the IPT for the first time
 ### IPT setup
-The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page (see screen image, below) is the first of two setup pages. It requires publishers to confirm that they have read and understand a disclaimer regarding data licensing. Next it requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as "c:\datadir" for Windows environments or "/usr/datadir" for Unix and MacOSX environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labeled "Save" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the "Save" button.
+The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page (see screen image, below) is the first of two setup pages. It requires publishers to confirm that they have read and understand a disclaimer regarding data licensing. Next it requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as `C:\datadir` for Windows environments or `/srv/datadir` for Unix and Mac OS X environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labeled "Save" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the "Save" button.
 
-Note 1: Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use /tmp, for example, on systems where this folder may be emptied on a system restart. The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan. Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation.
+Note 1: Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use `/tmp`, for example, on systems where this folder may be emptied on a system restart. **The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan.** Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation.
 
 Note 2: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup (see also the "Starting Over" section of this Getting Started Guide). Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page (see the screen image in the "Administration Menu" section of the Quick Reference Guide).
 
-Note 3: Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in.
+Note 3: If you receive an error stating the location is not writeable, see [[the FAQ item on this|FAQ.wiki#4-i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do]].
+
+Note 4: Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTSetup1.png' />
 
@@ -200,7 +202,7 @@ If the initial data directory assignment step was successful, the IPT will prese
     * **IPT mode** - Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (e.g. 10.5072 for DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible.
   * Base URL
     * **Base URL for this IPT** - the URL that points to the root of this IPT installation. The URL is detected automatically if possible, but should be changed in production systems to be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organisation, and will not allow resources to be publicly accessible.
-      * **Proxy URL** - if the server on which the IPT is installed is routed through a proxy server or virtual host, enter the host address and port number through which the IPT will be accessible via the Internet as a URL in the format protocol:host:port, for example, <a href='http://proxy.gbif.org:8080'>http://proxy.gbif.org:8080</a>.
+      * **Proxy URL** - if the server on which the IPT is installed is routed through a proxy server or virtual host, enter the host address and port number through which the IPT will be accessible via the Internet as a URL in the format protocol:host:port, for example, `http://proxy.gbif.org:8080`.
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTSetup2_1.png' />
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/IPTSetup2_2.png' />
@@ -330,7 +332,7 @@ The footer section of the IPT appears along the bottom of most pages and contain
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v233/IPTFooter.png' />
 
 * **Version** - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.
-* **About the IPT** - This link leads to the [IPT website](http://www.gbif.org/ipt), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.
+* **About the IPT** - This link leads to the [IPT website](https://www.gbif.org/ipt), where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.
 * **User Manual** - This link opens the most recently released online version of the IPT User Manual.
 * [**Report a bug**](https://github.com/gbif/ipt/issues/) - This link opens the list of known open issues for the IPT. If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the "New issues" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for "Version", above).
 * [**Request new feature**](https://github.com/gbif/ipt/issues/new) - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.
@@ -358,7 +360,7 @@ If there are any public resources, they will appear in a table having the follow
 The IPT supports syndication via RSS for those who wish to monitor when new resource versions get published, and how resources change over time. In fact each time a new resource version is broadcast, it will include a summary of what changed since the last version (assuming the publisher entered a change summary, otherwise it defaults to the resource description). The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client.
 
 ### Registered resource inventory
-The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append /inventory/dataset to the IPT base URL, e.g. <a href='http://ipt.gbif.org/inventory/dataset'>http://ipt.gbif.org/inventory/dataset</a>. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts.
+The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append /inventory/dataset to the IPT base URL, e.g. <a href='https://ipt.gbif.org/inventory/dataset'>https://ipt.gbif.org/inventory/dataset</a>. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts.
 
 ### Resource homepage
 The resource homepage is aimed at external users of a resource. The homepage lists all the metadata about a selected version of a resource, provides links to download the version's data/metadata, and displays the resource's version history.
@@ -448,7 +450,7 @@ Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be f
 Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).
 
 ## GBIF Registry
-Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: <a href='http://www.gbif.org/dataset'>http://www.gbif.org/dataset</a>.
+Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: <a href='https://www.gbif.org/dataset'>https://www.gbif.org/dataset</a>.
 
 ## IPT GitHub site
 This GitHub site is the project repository for all of the open source code, management, and documentation of the IPT.
@@ -471,7 +473,7 @@ This wiki page gives details about preparing a server to run the IPT and can be 
 This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site [[here|IPT2DatabaseConnection.wiki]].
 
 ## IPT test installation
-GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at <a href='http://ipt.gbif.org'>http://ipt.gbif.org</a>.
+GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at <a href='https://ipt.gbif.org'>https://ipt.gbif.org</a>.
 
 # References
 Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
