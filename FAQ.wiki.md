@@ -235,7 +235,7 @@ In either case, if you believe GBIF failed to index your dataset, please submit 
 
 ### 3. How often does GBIF reindex my dataset?
 
-GBIF automatically attempts to reindex a registered dataset each time its registration is updated. This happens each time the dataset gets republished via the IPT. **Note, however, GBIF doesn't reindex the same dataset more than once every five days.**
+GBIF automatically attempts to reindex a registered dataset each time its registration is updated. This happens each time the dataset gets republished via the IPT.
 
 To cater to datasets not published using the IPT, GBIF automatically attempts to reindex all registered datasets every 7 days. **Note, however, GBIF will only reindex the dataset if its last published date has changed since the last time it was indexed**.
 
