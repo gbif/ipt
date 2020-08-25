@@ -7,7 +7,7 @@
 
 ## Introduction
 
-A checklist documenting the ordered steps of the release and launch procedure of the IPT. Learn as you go - review and adjust the process to streamline it. 
+A checklist documenting the ordered steps of the release and launch procedure of the IPT. Learn as you go – review and adjust the process to streamline it. 
 
 Many players are involved in the process, not least the GBIF Communications team and GBIF Systems Administrator. Make sure they are on standby ready to help before embarking on the launch. 
 
@@ -17,11 +17,11 @@ Many players are involved in the process, not least the GBIF Communications team
     * Label issues with issue type (`Bug`, `Enhancement`, `Duplicate`, `Won't fix`, `Type-Task`, `Type-Other`, etc.), used in statistical reporting.
     * Label issues requiring a change in the UserManual/Wiki with `UserManual`.
     * Assign milestone to each issue, used to group all issues addressed since last version was released. For example, here are [all issues addressed in version 2.3.5](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.5+is%3Aclosed).
-2. Finalise work
+2. Finalize work
     * Work on each issue should be considered "Done". The meaning of "Done" being understood and agreed on by the entire team, but ideally this also includes having written automated testing, performed code reviews as well as UI testing.
-3. Finalise translations 
+3. Finalize translations 
     * Work translating each language (by volunteer translators in [Crowdin](https://crowdin.com/project/gbif-ipt)) should be both 100% translated and approved. 
-    * The translation pull request from CrowdIn should be merged.
+    * The translation pull request from Crowdin should be merged.
     * Open the [UAT IPT](https://ipt.gbif-uat.org/) to volunteer translators to verify their work in vivo (see step below). 
 4. Test release candidate
     * Update the [UAT IPT](https://ipt.gbif-uat.org/) with the release candidate
@@ -38,6 +38,7 @@ Many players are involved in the process, not least the GBIF Communications team
 
 1. Release new version using Jenkins
     * Note: comment out the integration tests (ITs) for Jenkins to release the IPT successfully. Remember to uncomment the ITs in master afterwards. 
+    * Check the WAR, RPM and Docker image have been released!
 2. Update GBIF IPTs to new version
     * Update production instances:
         * [BID IPT](https://cloud.gbif.org/bid) - customized (see below for help).
@@ -67,7 +68,7 @@ Many players are involved in the process, not least the GBIF Communications team
         * Viewing the IPT change log
         * When all else fails
 5. Publish blog post
-    * Publicise in some detail, select improvements that users will value. For example, here is an example blog post for [IPT v2.2](http://gbif.blogspot.dk/2015/03/ipt-v22.html).
+    * Publicise in some detail, select improvements that users will value. For example, here is an example blog post for [IPT v2.2](http://gbif.blogspot.com/2015/03/ipt-v22.html).
     * Be sure to acknowledge volunteer translators and coders that contributed to the release.
     * Review the blog post with the help of the GBIF Communications team before publishing. 
 6. Update [release history](https://github.com/gbif/ipt/wiki/Releases)
