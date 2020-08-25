@@ -125,16 +125,16 @@ The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source w
 3. sampling event data
 4. general metadata about data sources.
 
-An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use. More information about the GBIF IPT can be found at the [IPT website](http://www.gbif.org/ipt).
+An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use. More information about the GBIF IPT can be found at the [IPT website](https://www.gbif.org/ipt).
 
 Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the
-Internet. [GBIF's diverse Participants](http://www.gbif.org/participation/participant-list) include primarily countries and
+Internet. [GBIF's diverse Participants](https://www.gbif.org/participation/participant-list) include primarily countries and
 international organisations. GBIF also has formal partnerships with
-relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at http://www.gbif.org/.
+relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/.
 
 Several factors have provided motivation for GBIF to lead the development of the IPT:
-  * limitations of previous publishing tools (DiGIR, TAPIR, BioCASE) to easily publish and transfer large datasets;
-  * the need to reduce the load on both the publisher's server, and GBIF's server during indexing. The reason being that indexing from DiGIR, TAPIR, or BioCASE caused heavy loads due to repeated HTTP request-response interactions.
+  * limitations of previous publishing tools (DiGIR, TAPIR, BioCASe) to easily publish and transfer large datasets;
+  * the need to reduce the load on both the publisher's server, and GBIF's server during indexing. The reason being that indexing from DiGIR, TAPIR, or BioCASe caused heavy loads due to repeated HTTP request-response interactions.
   * the need to speed up the process of indexing biodiversity occurrence datasets;
   * the need to offer additional benefits and services to the data publishers to encourage data publication;
   * the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata.
@@ -151,14 +151,14 @@ All users are encouraged to review this introductory part and then refer to the 
 ---
 
 # Getting Started Guide
-This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at http://ipt.gbif.org/. If you do so, refer to [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]] for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the [[How to Contribute|HowToContribute.wiki]] section of the GBIF IPT wiki.
+This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at https://ipt.gbif.org/. If you do so, refer to [[Quick Reference Guide|IPT2ManualNotes.wiki#quick-reference-guide]] for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the [[How to Contribute|HowToContribute.wiki]] section of the GBIF IPT wiki.
 ## Requirements
 ### Internet Connectivity
 The IPT is designed under the assumption that the server on which it is run has consistent Internet connectivity. Though many functions of the IPT work even when offline, some aspects of the IPT (GBIF registration, extension installation, controlled vocabularies, and external databases for source data), require communication with external Internet resources. From the perspective of IPT administration and management, the speed of the Internet connection affects only such communications. Access to the IPT web application and its services from beyond a local intranet also requires consistent connectivity, and slow connectivity may have an adverse affect on these aspects, especially when transferring large data sets.
 ### Stable URL
 Though it can be used simply as a tool to generate Darwin Core Archives (see http://rs.tdwg.org/dwc/terms/guides/text/), the IPT is meant to be a discoverable and accessible Internet-based application and service. To support this functionality, the server on which the IPT is installed must be able to support access to the application and services through a stable URL.
-### SSL
-Although not required by the IPT GBIF recommends to run the IPT over secure https if possible.
+### TLS
+Although not required by the IPT GBIF recommends to run the IPT over secure HTTPS (TLS, which replaced SSL) if possible.
 ### Memory
 The server hosting the IPT installation must make at least 256 MB RAM memory available to the application.
 ### Disk space
@@ -166,12 +166,12 @@ The space required by the IPT application is less then 20MB. The contents of the
 ### Java
 The server hosting the IPT must have a version no less than Java 8 installed and functional prior to the installation of the IPT.
 ### Servlet container
-The IPT application is distributed as a web application archive (war) file and can be deployed in any servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT, and how to setup a virtual host name for your IPT can be found [[here|IPTServerPreparation.wiki]].
+The IPT application is distributed as a web application archive (WAR) file and can be deployed in any servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT, and how to setup a virtual host name for your IPT can be found [[here|IPTServerPreparation.wiki]].
 ## Install the IPT
 ### Prepare the server
 Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the sections under "Requirements", above.
 ### Download the IPT
-The latest release of the IPT software is available for download as a WAR file (or Web application ARchive) from the [IPT website](http://www.gbif.org/ipt). Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the [[How to Contribute|HowToContribute.wiki]] section of the GBIF IPT wiki.
+The latest release of the IPT software is available for download as a WAR file (or Web application ARchive) from the [IPT website](https://www.gbif.org/ipt). Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the [[How to Contribute|HowToContribute.wiki]] section of the GBIF IPT wiki.
 ### Deploy the IPT to the servlet container
 Follow the normal process for deploying a web application to a servlet container. A wiki page with further information about specific installations can be found [[here|IPTServerPreparation.wiki]].
 ### Run the IPT application
