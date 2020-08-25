@@ -45,7 +45,7 @@ public final class Constants {
   public static final String[] IMAGE_TYPES = {"jpeg", "gif", "png"};
   public static final String GBIF_HOME_PAGE_URL = "http://www.gbif.org";
   public static final String THESAURUS_DATASET_TYPE =
-    "GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml";
+    "GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml";
   public static final String THESAURUS_DATASET_SUBTYPE =
     "GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml";
   public static final String DATASET_TYPE_METADATA_IDENTIFIER = "metadata";
