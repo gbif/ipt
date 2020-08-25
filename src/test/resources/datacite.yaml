@@ -1,5 +1,0 @@
-user: ${datacite.user}
-password: ${datacite.password}
-baseApiUrl: https://api.test.datacite.org/
-fileCacheMaxSizeMb: 64
-timeOut: 60

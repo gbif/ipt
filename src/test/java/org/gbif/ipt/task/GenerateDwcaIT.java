@@ -1,8 +1,5 @@
 package org.gbif.ipt.task;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -50,6 +47,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 import org.gbif.utils.file.csv.CSVReader;
+import org.gbif.utils.file.properties.PropertiesUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -64,6 +62,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -88,9 +87,8 @@ public class GenerateDwcaIT {
   private static DbConfiguration dbCfg;
 
   public static class DbConfiguration {
-    @JsonProperty("username")
     private String username;
-    @JsonProperty("password")
+
     private String password;
 
     public DbConfiguration() {}
@@ -115,9 +113,10 @@ public class GenerateDwcaIT {
   @BeforeClass
   public static void init() throws IOException {
     // load DataCite account username and password from the properties file
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    InputStream dc = FileUtils.classpathStream("testdb.yaml");
-    dbCfg = mapper.readValue(dc, DbConfiguration.class);
+    Properties p = PropertiesUtil.loadProperties("testdb.properties");
+    dbCfg = new DbConfiguration();
+    dbCfg.setUsername(p.getProperty("username"));
+    dbCfg.setPassword(p.getProperty("password"));
 
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
     Map<String, String> basisOfRecords = Maps.newHashMap();

@@ -1,7 +1,5 @@
 package org.gbif.ipt.service.manage.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
@@ -42,7 +40,7 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
-import org.gbif.utils.file.FileUtils;
+import org.gbif.utils.file.properties.PropertiesUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +49,6 @@ import org.junit.runners.Parameterized;
 import javax.ws.rs.core.UriBuilder;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -59,6 +56,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -126,9 +124,14 @@ public class ResourceManagerImplIT {
     // DataCite parameters..
     RegistrationManager mockRegistrationManagerDataCite = mock(RegistrationManager.class);
 
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    InputStream dc = FileUtils.classpathStream("datacite.yaml");
-    ClientConfiguration cfg = mapper.readValue(dc, ClientConfiguration.class);
+    Properties p = PropertiesUtil.loadProperties("datacite.properties");
+    ClientConfiguration cfg = ClientConfiguration.builder()
+      .withBaseApiUrl(p.getProperty("baseApiUrl"))
+      .withTimeOut(Long.valueOf(p.getProperty("timeOut")))
+      .withFileCacheMaxSizeMb(Long.valueOf(p.getProperty("fileCacheMaxSizeMb")))
+      .withUser(p.getProperty("user"))
+      .withPassword(p.getProperty("password"))
+      .build();
     //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();

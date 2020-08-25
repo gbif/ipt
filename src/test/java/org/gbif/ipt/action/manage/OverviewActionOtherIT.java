@@ -1,7 +1,5 @@
 package org.gbif.ipt.action.manage;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
@@ -29,16 +27,16 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
-import org.gbif.utils.file.FileUtils;
+import org.gbif.utils.file.properties.PropertiesUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -65,10 +63,14 @@ public class OverviewActionOtherIT {
   @BeforeClass
   public static void setup() throws IOException {
     // load DataCite account username and password from the properties file
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    try (InputStream dc = FileUtils.classpathStream("datacite.yaml")) {
-      cfg = mapper.readValue(dc, ClientConfiguration.class);
-    }
+    Properties p = PropertiesUtil.loadProperties("datacite.properties");
+    ClientConfiguration cfg = ClientConfiguration.builder()
+      .withBaseApiUrl(p.getProperty("baseApiUrl"))
+      .withTimeOut(Long.valueOf(p.getProperty("timeOut")))
+      .withFileCacheMaxSizeMb(Long.valueOf(p.getProperty("fileCacheMaxSizeMb")))
+      .withUser(p.getProperty("user"))
+      .withPassword(p.getProperty("password"))
+      .build();
     // configure a DataCite service for reuse in various Datacite related tests
     dataCiteService = new RestJsonApiDataCiteService(cfg.getBaseApiUrl(), cfg.getUser(), cfg.getPassword());
   }

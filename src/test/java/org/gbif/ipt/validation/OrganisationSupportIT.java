@@ -1,7 +1,5 @@
 package org.gbif.ipt.validation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
@@ -14,14 +12,14 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.file.FileUtils;
+import org.gbif.utils.file.properties.PropertiesUtil;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Properties;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -70,9 +68,14 @@ public class OrganisationSupportIT {
   public static Object[][] data() throws IOException {
 
     // read DataCite config from YAML file
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    InputStream dc = FileUtils.classpathStream("datacite.yaml");
-    ClientConfiguration cfg = mapper.readValue(dc, ClientConfiguration.class);
+    Properties p = PropertiesUtil.loadProperties("datacite.properties");
+    ClientConfiguration cfg = ClientConfiguration.builder()
+      .withBaseApiUrl(p.getProperty("baseApiUrl"))
+      .withTimeOut(Long.valueOf(p.getProperty("timeOut")))
+      .withFileCacheMaxSizeMb(Long.valueOf(p.getProperty("fileCacheMaxSizeMb")))
+      .withUser(p.getProperty("user"))
+      .withPassword(p.getProperty("password"))
+      .build();
     //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     // organisation with valid DataCite account

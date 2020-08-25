@@ -1,7 +1,5 @@
 package org.gbif.ipt.action.manage;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,19 +29,19 @@ import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
-import org.gbif.utils.file.FileUtils;
+import org.gbif.utils.file.properties.PropertiesUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.io.File;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -101,11 +99,15 @@ public class OverviewActionIT {
     // DataCite parameters..
     RegistrationManager mockRegistrationManagerDataCite = mock(RegistrationManager.class);
 
-    ClientConfiguration cfg;
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    try (InputStream dc = FileUtils.classpathStream("datacite.yaml")) {
-      cfg = mapper.readValue(dc, ClientConfiguration.class);
-    }
+    Properties p = PropertiesUtil.loadProperties("datacite.properties");
+    ClientConfiguration cfg = ClientConfiguration.builder()
+      .withBaseApiUrl(p.getProperty("baseApiUrl"))
+      .withTimeOut(Long.valueOf(p.getProperty("timeOut")))
+      .withFileCacheMaxSizeMb(Long.valueOf(p.getProperty("fileCacheMaxSizeMb")))
+      .withUser(p.getProperty("user"))
+      .withPassword(p.getProperty("password"))
+      .build();
+
     //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
