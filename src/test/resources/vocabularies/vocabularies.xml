@@ -1,6 +1,6 @@
 <map>
   <entry>
     <string>http://rs.gbif.org/vocabulary/gbif/datasettype</string>
-    <uri>http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</uri>
+    <uri>http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</uri>
   </entry>
 </map>
