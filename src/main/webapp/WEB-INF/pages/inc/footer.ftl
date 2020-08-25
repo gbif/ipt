@@ -7,7 +7,7 @@
       		<div id="zone-footer" class="zone zone-footer clearfix container_24">
       			<ul>
 			        <li>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</li>
-			        <li><a href="http://www.gbif.org/ipt"><@s.text name="footer.projectHome"/></a></li>
+			        <li><a href="https://www.gbif.org/ipt"><@s.text name="footer.projectHome"/></a></li>
 			        <li><a href="https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki" target="_blank"><@s.text name="footer.useManual"/></a></li>
 			        <li><a href="https://github.com/gbif/ipt/issues/new" target="_blank"><@s.text name="footer.bugReport"/></a></li>
 			        <li><a href="https://github.com/gbif/ipt/issues/new" target="_blank"><@s.text name="footer.featureRequest"/></a></li>
@@ -19,7 +19,7 @@
           <div id="zone-credit" class="zone zone-credit clearfix container_24">
             <aside class="grid_16 region region-credit-first" id="region-credit-first">
               <div class="region-inner region-credit-first-inner">
-                <p>&copy;2018 <a href="http://www.gbif.org">Global Biodiversity Information Facility</a>.</p>
+                <p>&copy;2018 <a href="https://www.gbif.org">Global Biodiversity Information Facility</a>.</p>
               </div>
             </aside>
           </div>

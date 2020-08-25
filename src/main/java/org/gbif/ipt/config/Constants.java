@@ -43,7 +43,7 @@ public final class Constants {
   public static final String VOCAB_URI_DATASET_SUBTYPES = "http://rs.gbif.org/vocabulary/gbif/datasetSubtype";
   public static final String VOCAB_URI_BASIS_OF_RECORDS = "http://rs.tdwg.org/dwc/dwctype/";
   public static final String[] IMAGE_TYPES = {"jpeg", "gif", "png"};
-  public static final String GBIF_HOME_PAGE_URL = "http://www.gbif.org";
+  public static final String GBIF_HOME_PAGE_URL = "https://www.gbif.org";
   public static final String THESAURUS_DATASET_TYPE =
     "GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml";
   public static final String THESAURUS_DATASET_SUBTYPE =
