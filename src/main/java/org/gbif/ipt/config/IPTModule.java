@@ -116,12 +116,25 @@ public class IPTModule extends AbstractModule {
   @Singleton
   @Inject
   public DefaultHttpClient provideHttpClient() {
-    // new threadsafe, multithreaded http client with support for http and https.
+    // new threadsafe, multithreaded http client with support for HTTP and HTTPS.
     DefaultHttpClient client = HttpUtil.newMultithreadedClient(CONNECTION_TIMEOUT_MSEC, MAX_CONNECTIONS, MAX_PER_ROUTE);
 
-    // TODO: Retrieve version. See the commit that introduced this comment for a previous way which didn't work with tests.
+    String version = "unknown";
+    try (InputStream configStream = new InputStreamUtils().classpathStream(AppConfig.CLASSPATH_PROPFILE);) {
+      Properties props = new Properties();
+      if (configStream == null) {
+        LOG.error("Could not load default configuration from application.properties in classpath");
+      } else {
+        props.load(configStream);
+        LOG.debug("Loaded default configuration from application.properties in classpath");
+        version = props.getProperty(AppConfig.DEV_VERSION);
+      }
+    } catch (Exception e) {
+      LOG.error("Unable to read version from application.properties, continuing start-up.", e);
+    }
+
     String userAgent = String.format("GBIF-IPT/%s (+https://www.gbif.org/ipt) Java/%s (%s)",
-        "2.3.6",
+        version,
         System.getProperty("java.version", "?"),
         System.getProperty("os.name", "?")
         );

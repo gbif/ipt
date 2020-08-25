@@ -193,7 +193,7 @@
         <configuration>
           <doCheck>false</doCheck>
           <doUpdate>false</doUpdate>
-	        <shortRevisionLength>7</shortRevisionLength>
+          <shortRevisionLength>7</shortRevisionLength>
         </configuration>
       </plugin>
 
@@ -511,9 +511,9 @@
     <!-- URL validation -->
     <dependency>
       <groupId>commons-validator</groupId>
-	  <artifactId>commons-validator</artifactId>
-	  <version>${commons-validator.version}</version>
-	</dependency>
+      <artifactId>commons-validator</artifactId>
+      <version>${commons-validator.version}</version>
+    </dependency>
 
     <!-- native java io cannot handle redirects -->
     <dependency>

@@ -34,7 +34,7 @@ public class AppConfig {
   }
 
   protected static final String DATADIR_PROPFILE = "ipt.properties";
-  private static final String CLASSPATH_PROPFILE = "application.properties";
+  static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
   @Since(2.1)
   public static final String CORE_ROW_TYPES = "ipt.core_rowTypes";
@@ -46,6 +46,7 @@ public class AppConfig {
   public static final String ANALYTICS_KEY = "analytics.key";
   public static final String IPT_LATITUDE = "location.lat";
   public static final String IPT_LONGITUDE = "location.lon";
+  public static final String DEV_VERSION = "dev.version";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   private Properties properties = new Properties();
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
@@ -295,7 +296,7 @@ public class AppConfig {
   }
 
   public String getVersion() {
-    return properties.getProperty("dev.version");
+    return properties.getProperty(DEV_VERSION);
   }
 
   public boolean hasLocation() {
