@@ -1,7 +1,9 @@
 # Docker IPT
 
-A Docker image for the [GBIF IPT](https://www.gbif.org/ipt) running in Tomcat 8.5 with JRE8 on minimal Alpine Linux.
+A Docker image for the [GBIF IPT](https://www.gbif.org/ipt).
 Tomcat is exposed on port 8080 and the IPT runs as the ROOT application.
+
+The image builds upon the Docker community Tomcat 8.5 / OpenJDK 8 / Debian stable image.
 
 We regulary publish IPT releases as Docker images to Docker Hub: https://hub.docker.com/r/gbif/ipt/
 
@@ -28,6 +30,6 @@ Note that, for better consistency with the [Filesystem Hierarchy Standard](https
 ## To build and deploy the Docker image
 
 ```
-docker build --build-arg ipt_version=2.4.0 -t gbif/ipt:2.4.0 .
+docker build --build-arg IPT_VERSION=2.4.0 -t gbif/ipt:2.4.0 .
 docker push gbif/ipt:2.4.0
 ```
