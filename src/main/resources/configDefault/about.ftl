@@ -2,7 +2,7 @@
 <#if hostingOrganisation?? && hostingOrganisation.name??>
 <p>This is a default IPT hosted by ${hostingOrganisation.name}</p>
 
-<p>You can use the following variables about the hosting organisation:</p>
+<p>You can use the following variables about the hosting organization:</p>
 <ul>
   <li>description = ${hostingOrganisation.description!}</li>
   <li>name = ${hostingOrganisation.name!}</li>

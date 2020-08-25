@@ -16,7 +16,7 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 
 Version 2.4.0 is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.0/ipt-2.4.0.war), via a [CentOS repository](./package/rpm/README.md) or [using Docker](https://hub.docker.com/r/gbif/ipt/).
 
-Version 2.4.0 updates the integration with DataCite for assiging DOIs to datasets, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.0+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
+Version 2.4.0 updates the integration with DataCite for assigning DOIs to datasets, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.0+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
 
 #### Previous releases
 
@@ -52,10 +52,10 @@ The core development of the IPT is directed by GBIF, but the coding is a communi
 
 The IPT user interface and wiki both need internationalisation, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found [here](https://github.com/gbif/ipt/wiki/HowToTranslate.wiki).
 
-Thanks to an enormous community effort, and by leveraging the power of the [Crowdin](https://crowdin.com/project/gbif-ipt) localisation tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian.
+Thanks to an enormous community effort, and by leveraging the power of the [Crowding](https://crowdin.com/project/gbif-ipt) localization tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian.
 
 ### Acknowledgements
 
 A large number of dedicated volunteers contribute to the success of this software. With your help, the IPT has become a successful tool in use all around the world.
 
-[Crowdin](https://crowdin.com/) is kindly supporting this open source project by giving GBIF a free access to its localisation management platform. Crowdin makes it possible to manage a large number of concurrent translations.
+[Crowdin](https://crowdin.com/) is kindly supporting this open source project by giving GBIF a free access to its localization management platform. Crowdin makes it possible to manage a large number of concurrent translations.
