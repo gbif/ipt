@@ -389,7 +389,7 @@
       <version>${guice.version}</version>
       <exclusions>
 
-        <!-- superceded by guava and causing exceptions under tomcat6 -->
+        <!-- superseded by guava and causing exceptions under tomcat6 -->
         <!--
           java.lang.NoSuchMethodError com.google.common.collect.ImmutableList.copyOf(Ljava/util/Collection;)
         -->
@@ -540,7 +540,7 @@
     </dependency>
 
     <!--
-      XStream for resource config data persistency (could be replaced by JAXB in the future)
+      XStream for resource config data persistence (could be replaced by JAXB in the future)
       Version frozen at 1.4.8 - do not upgrade! See issue #1297
     -->
     <dependency>

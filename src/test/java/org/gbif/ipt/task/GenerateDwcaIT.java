@@ -112,7 +112,7 @@ public class GenerateDwcaIT {
 
   @BeforeClass
   public static void init() throws IOException {
-    // load DataCite account username and password from the properties file
+    // load database account username and password from the properties file
     Properties p = PropertiesUtil.loadProperties("testdb.properties");
     dbCfg = new DbConfiguration();
     dbCfg.setUsername(p.getProperty("username"));

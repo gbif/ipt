@@ -12,17 +12,21 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 
 <a href="https://www.youtube.com/embed/eDH9IoTrMVE?ecver=1" target="_blank"><img src="https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/screenshots/IPTDemoVideoIntroSlide.png" alt="How to publish biodiversity data through GBIF.org using the IPT" width="560" height="315" border="10" /></a>
 
-### Latest Release: 2.4.0
+### Latest Release: 2.4.1
 
-Version 2.4.0 is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.0/ipt-2.4.0.war), via a [CentOS repository](./package/rpm/README.md) or [using Docker](https://hub.docker.com/r/gbif/ipt/).
+Version 2.4.1 is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.1/ipt-2.4.1.war), via a [CentOS repository](./package/rpm/README.md) or [using Docker](https://hub.docker.com/r/gbif/ipt/).  A Debian repository is now also available, see [this issue](https://github.com/gbif/ipt/pull/1470).
 
-Version 2.4.0 updates the integration with DataCite for assigning DOIs to datasets, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.0+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
+Version 2.4.1 includes a security update for Apache Struts, and other very [minor changes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.1+is%3Aclosed).
 
 #### Previous releases
 
-Version 2.3.6 is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.6/ipt-2.3.6.war).  Version 2.3.6 improves coverage of translations, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
+Version 2.4.0 includes [these changes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.1+is%3Aclosed).
 
-Version 2.3.5 is available for download [here](http://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.3.5/ipt-2.3.5.war).  Version 2.3.5 fixes cross site scripting vulnerabilities, and [an issue](https://github.com/gbif/ipt/issues/1344) that caused the dataset inventory web service request to fail.
+Version 2.4.0 updates the integration with DataCite for assigning DOIs to datasets, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.0+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
+
+Version 2.3.6 improves coverage of translations, has [minor bug fixes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed) and updates dependency versions to improve the robustness and security of the IPT.
+
+Version 2.3.5 fixes cross site scripting vulnerabilities, and [an issue](https://github.com/gbif/ipt/issues/1344) that caused the dataset inventory web service request to fail.
 
 Version 2.3.4 includes a security update that fixes a [critical vulnerability](https://struts.apache.org/docs/s2-045.html) that has been discovered in the Apache Struts web framework, which the IPT uses. According to [this article](http://thehackernews.com/2017/03/apache-struts-framework.html), this is a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability. **Therefore all users should plan to upgrade to this version immediately following the instructions in the [Release Notes](https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki).**
 
