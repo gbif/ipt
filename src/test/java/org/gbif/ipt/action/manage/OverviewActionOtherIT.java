@@ -30,6 +30,7 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.file.properties.PropertiesUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -51,6 +52,7 @@ import static org.mockito.Mockito.when;
  * Other ITs for OverviewAction that can't run as parameterized tests for example or that
  * need a special DOI account.
  */
+@Ignore
 public class OverviewActionOtherIT {
 
   private static final Logger LOG = LogManager.getLogger(OverviewActionIT.class);
