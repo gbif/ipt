@@ -16,7 +16,7 @@ and limitations under the License.
 
 # Release Notes
 
-**IPT Versions: 2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.4.0**
+**IPT Versions: 2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.4.0, 2.4.1**
 
 ## Upgrade instructions
 
