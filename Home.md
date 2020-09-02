@@ -4,7 +4,9 @@ Here you can find the [[IPT User Manual|IPT2ManualNotes.wiki]] and a variety of 
 
 ## New version with security update released!
 
-**Version 2.4.0** is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.0/ipt-2.4.0.war). Version 2.4.0 has minor bugfixes and dependency updates to improve the security of the IPT, and updated integration with DataCite for issuing custom DOIs, following similar updates made for version 2.3.6.
+**Version 2.4.1** is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.1/ipt-2.4.1.war). Version 2.4.1 has minor bugfixes and dependency updates to improve the security of the IPT, following similar updates made for version 2.4.0.
+
+**Version 2.4.0** also includes updates for the integration to issue DOIs directly with DataCite.
 
 This builds on top of the security update added in **Version 2.3.4** that fixed a [critical vulnerability](https://struts.apache.org/docs/s2-045.html) that was discovered in the Apache Struts web framework, which the IPT uses. According to [this article](http://thehackernews.com/2017/03/apache-struts-framework.html), this was a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability.
 
