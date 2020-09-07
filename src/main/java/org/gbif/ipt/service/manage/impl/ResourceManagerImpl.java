@@ -6,10 +6,7 @@ import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
 import org.gbif.doi.service.InvalidMetadataException;
-import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.terms.GbifTerm;
-import org.gbif.dwc.terms.IucnTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwca.io.Archive;
@@ -679,10 +676,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(passwordConverter);
 
     xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
-    xstream.addDefaultImplementation(DwcTerm.class, Term.class);
-    xstream.addDefaultImplementation(DcTerm.class, Term.class);
-    xstream.addDefaultImplementation(GbifTerm.class, Term.class);
-    xstream.addDefaultImplementation(IucnTerm.class, Term.class);
     xstream.registerConverter(orgConverter);
     xstream.registerConverter(jdbcInfoConverter);
   }
@@ -1121,7 +1114,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         LOG.debug("Read resource configuration for " + shortname);
         return resource;
-      } catch (FileNotFoundException e) {
+      } catch (Exception e) {
         LOG.error("Cannot read resource configuration for " + shortname, e);
         throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
           "Cannot read resource configuration for " + shortname + ": " + e.getMessage());

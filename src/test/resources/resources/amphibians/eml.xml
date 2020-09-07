@@ -1,0 +1,98 @@
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+         packageId="cb643105-2e6b-403d-a23b-2c8128d1f97c/v10.2" system="http://gbif.org" scope="system"
+         xml:lang="eng">
+
+<dataset>
+  <alternateIdentifier>cb643105-2e6b-403d-a23b-2c8128d1f97c</alternateIdentifier>
+  <alternateIdentifier>http://data.gbif.org/datasets/resource/14021</alternateIdentifier>
+  <alternateIdentifier>rsra97fefa7487853981e608bcc4fdbdc5f</alternateIdentifier>
+  <alternateIdentifier>ZMUC:b2f06470-e41b-44e1-ab9f-01670734b2fa</alternateIdentifier>
+  <alternateIdentifier>http://danbif.au.dk/ipt/resource?r=amphibians</alternateIdentifier>
+  <title xml:lang="eng">Amphibians and Reptiles collection at the Natural History Museum of Denmark (SNM)</title>
+      <creator>
+    <individualName>
+        <givenName>Daniel</givenName>
+      <surName>K. Johansson</surName>
+    </individualName>
+    <organizationName>Natural History Museum of Denmark</organizationName>
+    <positionName>Collection Manager for Mammalogy and Herpetology</positionName>
+    <address>
+        <country>DK</country>
+    </address>
+    <electronicMailAddress>dkjohansson@snm.ku.dk</electronicMailAddress>
+      </creator>
+      <metadataProvider>
+    <individualName>
+        <givenName>Daniel</givenName>
+      <surName>K. Johansson</surName>
+    </individualName>
+    <organizationName>Natural History Museum of Denmark</organizationName>
+    <positionName>Collection Manager for Mammalogy and Herpetology</positionName>
+    <address>
+        <country>DK</country>
+    </address>
+    <electronicMailAddress>dkjohansson@snm.ku.dk</electronicMailAddress>
+      </metadataProvider>
+  <pubDate>
+      2017-05-05
+  </pubDate>
+  <language>eng</language>
+  <abstract>
+    <para>The Danish reptiles and amphibians are well represented in the collections, and not least thanks to a single collector (R. Skovgaard), the Museum has representative collections from the rest of Europe as well. The Museum possesses fine exotic collections from the earlier colonies of Denmark, e.g., from the earlier Danish West Indies. This material was treated by Reinhardt &amp; Lütken (1862). From the earlier settlements on the Coast of Guinea, the Museum possesses a small, but very fine collection of snakes, many of which formed the basis for the description of new species (Reinhardt, 1843), among others the spitting cobra, Naja nigricollis. Reinhardt´s paper has been translated in English (Rasmussen &amp; Hughes, 1997). Reinhardt increased the collections personally by undertaking three collecting trips to Brazil. The material was later treated by Reinhardt &amp; Lütken (1861). Most of the very-representative collections of reptiles and amphibians can be traced back to a single expedition or a single person. Thus, the Noona Dan Expedition (1961-1962) brought home a fine collection of terrestrial amphibians and reptiles from the Philippines and Melanesia and marine sea snakes from the Pacific. Since 1985, Arne Redsted Rasmussen has personally more than doubled the number of sea snakes in the collections. The Museum has fine collections of anuran amphibians, most of which have been collected by Arne Schiøtz in connection with his studies on tree frogs from West Africa (1967). Later Arne Schiøtz extended his studies (1985) to include the East African tree frogs as well. Since 1970, the Museum, including the staff at the herpetological section, has made extensive collection tours to East Africa. In consequence, the section has abundant collections (especially snakes) from this area. In May 2005 the then curator of herpetology, Jens B. Rasmussen passed away after a short period of illness. Jens Rasmussen was curator of herpetology at the museum since 1977. His research area focused on phylogeny and biogeography of African snakes and through his work Jens became one of the leading specialists in this field. During his last years Jens worked with a comprehensive revision of the material kept in major collections, with the aim of producing a speciation atlas for African snakes. The work will be published posthumously. For more information, please contact Professor, Dr. scient., Jon Fjeldsaa or assistant curator Mogens Andersen.</para>
+  </abstract>
+      <keywordSet>
+            <keyword>Specimen</keyword>
+        <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+      </keywordSet>
+      <keywordSet>
+            <keyword>Occurrence</keyword>
+        <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+      </keywordSet>
+  <intellectualRights>
+    <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+  </intellectualRights>
+  <maintenance>
+    <description>
+      <para></para>
+    </description>
+    <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+  </maintenance>
+
+      <contact>
+    <individualName>
+        <givenName>Daniel</givenName>
+      <surName>K. Johansson</surName>
+    </individualName>
+    <organizationName>Natural History Museum of Denmark</organizationName>
+    <positionName>Collection Manager for Mammalogy and Herpetology</positionName>
+    <address>
+        <country>DK</country>
+    </address>
+    <electronicMailAddress>dkjohansson@snm.ku.dk</electronicMailAddress>
+      </contact>
+      <contact>
+    <individualName>
+        <givenName>Isabel</givenName>
+      <surName>Calabuig</surName>
+    </individualName>
+    <organizationName>Danish Biodiversity Information Facility</organizationName>
+    <positionName>Node manager</positionName>
+    <address>
+        <country>DK</country>
+    </address>
+    <electronicMailAddress>icalabuig@snm.ku.dk</electronicMailAddress>
+      </contact>
+</dataset>
+  <additionalMetadata>
+    <metadata>
+      <gbif>
+          <dateStamp>2012-02-06T08:29:43.235+01:00</dateStamp>
+          <hierarchyLevel>dataset</hierarchyLevel>
+          <dc:replaces>cb643105-2e6b-403d-a23b-2c8128d1f97c/v10.2.xml</dc:replaces>
+      </gbif>
+    </metadata>
+  </additionalMetadata>
+</eml:eml>

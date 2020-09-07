@@ -218,6 +218,10 @@ public class ResourceManagerImplTest {
     InputStream eventCoreIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/dwc_event_2015-04-24.xml");
     Extension eventCore = extensionFactory.build(eventCoreIs);
 
+    // construct simple images extension
+    InputStream simpleImageIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/simple_image.xml");
+    Extension simpleImage = extensionFactory.build(simpleImageIs);
+
     ExtensionManager extensionManager = mock(ExtensionManager.class);
 
     // mock ExtensionManager returning different Extensions
@@ -225,6 +229,7 @@ public class ResourceManagerImplTest {
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event")).thenReturn(eventCore);
     when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
       .thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.gbif.org/terms/1.0/Image")).thenReturn(simpleImage);
 
     ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
@@ -488,6 +493,93 @@ public class ResourceManagerImplTest {
     // there are no eml properties except default shortname as title since there was no eml.xml file included
     assertEquals("res-single-gz", res.getEml().getTitle());
     assertTrue(res.getEml().getDescription().isEmpty());
+  }
+
+  /**
+   * test resource (with extension) creation from zipped resource folder.
+   */
+  @Test
+  public void testCreateWithExtensionFromZippedFile()
+    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
+    InvalidFilenameException {
+    // retrieve sample zipped resource folder
+    File resourceXML = FileUtils.getClasspathFile("resources/amphibians/resource.xml");
+    // mock finding resource.xml file
+    when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
+
+    // retrieve sample zipped resource folder
+    File emlXML = FileUtils.getClasspathFile("resources/amphibians/eml.xml");
+    // mock finding eml.xml file
+    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+
+    // create instance of manager
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // retrieve sample zipped resource folder
+    File zippedResourceFolder = FileUtils.getClasspathFile("resources/amphibians.zip");
+
+    // create a new resource.
+    resourceManager.create("amphibians", null, zippedResourceFolder, creator, baseAction);
+
+    // test if new resource was added to the resources list.
+    assertEquals(1, resourceManager.list().size());
+
+    // get added resource.
+    Resource res = resourceManager.get("amphibians");
+
+    // test if resource was added correctly.
+    assertEquals("amphibians", res.getShortname());
+    assertEquals(creator, res.getCreator());
+    assertEquals(creator, res.getModifier());
+
+    // test if resource.xml was created.
+    assertTrue(mockedDataDir.resourceFile("amphibians", ResourceManagerImpl.PERSISTENCE_FILE).exists());
+
+    // properties that get preserved
+    // there are 2 source files
+    assertEquals(2, res.getSources().size());
+    assertEquals("danbifdb", res.getSources().get(0).getName());
+    assertEquals(65, res.getSource("danbifdb").getColumns());
+
+    // there is 1 mapping
+    assertEquals(2, res.getMappings().size());
+    assertEquals("danbifdb", res.getMappings().get(0).getSource().getName());
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, res.getMappings().get(0).getExtension().getRowType());
+    assertEquals("http://rs.gbif.org/terms/1.0/Image", res.getMappings().get(1).getExtension().getRowType());
+
+    // properties that get reset
+    assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEmlVersion());
+    // the resource shouldn't be registered
+    assertFalse(res.isRegistered());
+    // the resource shouldn't have any managers
+    assertEquals(0, res.getManagers().size());
+    // the resource shouldn't have a last published date
+    assertNull(res.getLastPublished());
+    // the resource shouldn't be registered (no org, no key)
+    assertNull(res.getKey());
+    assertNull(res.getOrganisation());
+    // the status should be private
+    assertEquals(PublicationStatus.PRIVATE, res.getStatus());
+    // the resource should have a created date
+    assertNotNull(res.getCreated());
+    // the record count is 0
+    assertEquals(0, res.getRecordsPublished());
+    // the DOI was reset
+    assertNull(res.getDoi());
+    assertEquals(IdentifierStatus.UNRESERVED, res.getIdentifierStatus());
+    assertNull(res.getDoiOrganisationKey());
+    // the change summary was reset
+    assertNull(res.getChangeSummary());
+    // the VersionHistory was cleared
+    assertEquals(0, res.getVersionHistory().size());
+    // the auto-publication was reset
+    assertEquals(PublicationMode.AUTO_PUBLISH_OFF, res.getPublicationMode());
+    assertNull(res.getUpdateFrequency());
+    assertNull(res.getNextPublished());
+    // the other last modified dates were also reset
+    assertNull(res.getMetadataModified());
+    assertNull(res.getMappingsModified());
+    assertNull(res.getSourcesModified());
   }
 
   /**

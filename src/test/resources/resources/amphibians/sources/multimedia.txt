@@ -1,0 +1,2 @@
+id	identifier	description
+e0cdf614-589f-490d-bccb-a1c0f53ccdc4	http://digit.snm.ku.dk/www/Rep/full/ZMUC-R0265_Scolecomorphus_vittatus_dorsal.jpg	Habitus-Dorsal

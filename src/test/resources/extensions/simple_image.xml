@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/style/human.xsl"?>
+<extension xmlns="http://rs.gbif.org/extension/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:dc="http://purl.org/dc/terms/"    
+    xsi:schemaLocation="http://rs.gbif.org/extension/ http://rs.gbif.org/schema/extension.xsd"
+    dc:title="Simple Images (deprecated)" name="Image" 
+    namespace="http://rs.gbif.org/terms/1.0" rowType="http://rs.gbif.org/terms/1.0/Image"
+    dc:issued="2015-02-13"
+    dc:subject="dwc:Taxon dwc:Occurrence"
+    dc:relation="http://rs.gbif.org/extension/gbif/1.0/images.xml"
+    dc:description="This extension has been DEPRECATED! Please use the newer Multimedia extension instead: http://rs.gbif.org/extension/gbif/1.0/multimedia.xml">
+
+    <property name="identifier" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/identifier" dc:description='The public URL that identifies and locates the image file directly, not a html page.' examples='http://farm6.static.flickr.com/5127/5242866958_98afd8cbce_o.jpg' type="uri" required="true"/>
+    <property name='references' namespace='http://purl.org/dc/terms/' qualName='http://purl.org/dc/terms/references' dc:relation='http://rs.tdwg.org/dwc/terms/index.htm#dcterms:references' dc:description='A html webpage that shows the image or its metadata. This link should be used for html based image viewers like FSI and should be used as a source link wherever the image is shown.' examples='http://www.flickr.com/photos/victorsaavedramartinez/1866107071/' type="uri" required='false'/>
+    <property name="title" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/title" dc:description='The image title' examples='Andorinha-do-rio (Tachycineta albiventer)' />
+    <property name="description" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/description" dc:description='A longer description for this image' examples='Female Tachycineta albiventer photographed in the Amazon, Brazil, in November 2010.' />
+    <property name='spatial' namespace='http://purl.org/dc/terms/' qualName='http://purl.org/dc/terms/spatial' dc:relation='' dc:description='The locality this picture was taken at' examples='Görlitzer Park, Berlin' required='false'/>
+    <property name='latitude' namespace='http://www.w3.org/2003/01/geo/wgs84_pos#' qualName='http://www.w3.org/2003/01/geo/wgs84_pos#latitude' type='decimal' dc:relation='http://www.w3.org/2003/01/geo/wgs84_pos#' dc:description='The WGS84 latitude in decimal degrees of the location the image was taken. A decimal number ranging from -90 through 90. Decimal fractions of a degree should be expressed to the precision available. Latitudes north of the equator MAY be specified by a plus sign (+), or by the absence of a minus sign (-).  Latitudes south of the Equator MUST be designated by a minus sign (-) preceding the digits designating degrees.' examples='52.496451' required='false'/>
+    <property name='longitude' namespace='http://www.w3.org/2003/01/geo/wgs84_pos#' qualName='http://www.w3.org/2003/01/geo/wgs84_pos#longitude' type='decimal' dc:relation='http://www.w3.org/2003/01/geo/wgs84_pos#' dc:description='The WGS84 longitude in decimal degrees of the location the image was taken. A decimal number ranging from -180 through 180. Decimal fractions of a degree should be expressed to the precision available. Longitudes east of the prime meridian shall be specified by a plus sign (+), or by the absence of a minus sign (-). Longitudes west of the prime meridian MUST be designated by a minus sign (-) preceding the digits designating degrees.' examples='13.437732' required='false'/>
+    <property name="format" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/format" dc:description='The format the image is exposed in' examples='jpeg' />
+    <property name="created" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/created" dc:description='The date and time this image was taken' examples='2010-09-29' type="date"/>
+    <property name="creator" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/creator" dc:description='The person that took the image' examples='David Remsen' />
+    <property name="contributor" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/contributor" dc:description='Any contributor in addition to the creator that helped in taking the image' examples='David Beckham' />
+    <property name="publisher" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/publisher" dc:description='An entity responsible for making the image available.' examples='Encyclopedia of Life' />
+    <property name='audience' namespace='http://purl.org/dc/terms/' qualName='http://purl.org/dc/terms/audience' dc:relation='' dc:description='A class or description for whom the image is intended or useful' examples='"experts", "general public", "children"' required='false'/>
+    <property name="license" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/license" dc:description='License for this image. Can be text or a url like creative commons uses' examples='http://creativecommons.org/licenses/by-nc-sa/2.0/deed.en' />
+    <property name='rightsHolder' namespace='http://purl.org/dc/terms/' qualName='http://purl.org/dc/terms/rightsHolder' dc:relation='' dc:description='A person or organization owning or managing rights over the image.' examples='' required='false'/>
+    <property name='datasetID' namespace='http://rs.tdwg.org/dwc/terms/' qualName='http://rs.tdwg.org/dwc/terms/datasetID' dc:relation='http://rs.tdwg.org/dwc/terms/index.htm#datasetID' dc:description='An identifier for a subset of data.' examples='' required='false'/>
+
+</extension>
