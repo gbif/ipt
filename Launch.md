@@ -24,10 +24,11 @@ Many players are involved in the process, not least the GBIF Communications team
     * The translation pull request from Crowdin should be merged.
     * Open the [UAT IPT](https://ipt.gbif-uat.org/) to volunteer translators to verify their work in vivo (see step below). 
 4. Test release candidate
-    * Update the [UAT IPT](https://ipt.gbif-uat.org/) with the release candidate
+    * Update the [UAT IPT](https://ipt.gbif-uat.org/) with the release candidate.  There is a helper 
+script in `/etc/ipt/upgrade`.
     * When it makes sense, invite volunteer testers to join efforts by sending an invitation to the [IPT mailing list](https://lists.gbif.org/mailman/listinfo/ipt) explaining how to request an account on the [UAT IPT](https://ipt.gbif-uat.org/) and what areas of testing to focus on.    
-    * Test new features - issues labelled as `Enhancement`. Directly involve the reporter of the enhancement in testing, to verify its implementation meets their expectations. 
-    * Test bug fixes - issues labelled as `Bug`. Try to reproduce the bug following the detailed instructions provided in the issue description. 
+    * Test new features — issues labelled as `Enhancement`. Directly involve the reporter of the enhancement in testing, to verify its implementation meets their expectations. 
+    * Test bug fixes — issues labelled as `Bug`. Try to reproduce the bug following the detailed instructions provided in the issue description. 
     * Test all areas possibly affected by code changes. Build a list of affected areas to test by scanning the commit history.
     * Always ensure that GBIF can index the data published by the IPT, for example using the new GBIF Data Validator.
     * Put on different user hats, testing as an 'Admin', 'Manager' and 'Manager with registration rights'.
@@ -40,17 +41,17 @@ Many players are involved in the process, not least the GBIF Communications team
     * Note: comment out the integration tests (ITs) for Jenkins to release the IPT successfully. Remember to uncomment the ITs in master afterwards. 
     * Check the WAR, RPM and Docker image have been released!
 2. Update GBIF IPTs to new version
-    * Update production instances:
-        * [BID IPT](https://cloud.gbif.org/bid) - customized (see below for help).
-        * [EU BON IPT](https://cloud.gbif.org/eubon) - customized (see below for help).
-        * [ALA IPT](http://ipt.ala.org.au/) - customised (see below for help). Note this instance runs on ALA's server.
-        * [EIA IPT](https://cloud.gbif.org/eia/) - vanilla.
-        * [GIASIP IPT](https://giasip.gbif.org) - vanilla. Note this runs in test mode but is treated like it's in production.
-        * [TEST EU BON IPT](http://eubon-ipt.gbif.org/) - vanilla. Note this runs in test mode but is treated like it's in production as it's embedded in EU BON's portal.
+    * Update production instances. There is a helper script in `/mnt/auto/ipt-data/upgrade`:
+        * [BID IPT](https://cloud.gbif.org/bid) — customized (see below for help).
+        * [EU BON IPT](https://cloud.gbif.org/eubon) — customized (see below for help).
+        * [GRIIS IPT](https://cloud.gbif.org/griis) — customised (see below for help).
+        * [Regional IPTs](https://cloud.gbif.org/) — vanilla IPTs on cloud.gbif.org.
+        * [GIASIP IPT](https://giasip.gbif.org) — vanilla. Note this runs in test mode but is treated like it's in production.
+        * [TEST EU BON IPT](http://eubon-ipt.gbif.org/) — vanilla. Note this runs in test mode but is treated like it's in production as it's embedded in EU BON's portal.
     * Update Test/Sandbox instances:
-        * [DEMO IPT](https://ipt.gbif.org/) - vanilla. Note It is always a good idea to cleanup old resources to save disk space.
-        * [UAT IPT](https://ipt.gbif-uat.org/) - vanilla
-        * [DEV IPT](https://ipt.gbif-dev.org/) - vanilla
+        * [DEMO IPT](https://ipt.gbif.org/) — vanilla. Note It is always a good idea to cleanup old resources to save disk space.
+        * [UAT IPT](https://ipt.gbif-uat.org/) — vanilla
+        * [DEV IPT](https://ipt.gbif-dev.org/) — vanilla
     * Simple customisations for the above IPTs are done by a) changing the logo image in [menu.ftl#L12](https://github.com/gbif/ipt/blob/master/src/main/webapp/WEB-INF/pages/inc/menu.ftl#L12), b) removing the test image in [menu.ftl#L20](https://github.com/gbif/ipt/blob/master/src/main/webapp/WEB-INF/pages/inc/menu.ftl#L20) (where applicable) and c) tweaking the CSS in [main.css#L297](https://github.com/gbif/ipt/blob/master/src/main/webapp/styles/main.css#L297). Note: before an upgrade, the custom logo image(s) and CSS need to be backed-up/preserved and then copied back to the expanded data directory. 
 3. Update [User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki) and [Wiki](https://github.com/gbif/ipt/wiki)
     * When major changes are expected, archive the User Manual before applying any changes. For example, here is the archived copy of the [User Manual for version 2.0.5](https://github.com/gbif/ipt/wiki/IPTUserManualv205.wiki). 
