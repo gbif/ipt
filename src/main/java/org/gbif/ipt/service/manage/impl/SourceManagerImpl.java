@@ -118,7 +118,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           stmt.close();
           conn.close();
         } catch (SQLException e) {
-          LOG.error("Cant close iterator for sql source " + sourceName, e);
+          LOG.error("Can't close iterator for SQL source " + sourceName, e);
         }
       }
 
@@ -177,7 +177,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           stmt.close();
           conn.close();
         } catch (SQLException e) {
-          LOG.error("Cant close iterator for sql source " + sourceName, e);
+          LOG.error("Can't close iterator for SQL source " + sourceName, e);
         }
       }
 
@@ -391,7 +391,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         ss.setReadable(true);
       }
     } catch (SQLException e) {
-      LOG.warn("Cant read sql source " + ss, e);
+      LOG.warn("Can't read SQL source " + ss, e);
       problem = e.getMessage();
       ss.setReadable(false);
     } finally {
@@ -449,7 +449,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       logWriter.flush();
 
     } catch (IOException e) {
-      LOG.warn("Cant write source log file " + logFile.getAbsolutePath(), e);
+      LOG.warn("Can't write source log file " + logFile.getAbsolutePath(), e);
     } finally {
       if (logWriter != null) {
         IOUtils.closeQuietly(logWriter);
@@ -497,12 +497,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           idx++;
         }
       } else {
-        String msg = "Can't read sql source, the connection couldn't be created with the current parameters";
+        String msg = "Can't read SQL source, the connection couldn't be created with the current parameters";
         columns.add(msg);
         LOG.warn(msg + " " + source);
       }
     } catch (SQLException e) {
-      LOG.warn("Cant read sql source " + source, e);
+      LOG.warn("Can't read SQL source " + source, e);
     } finally {
       // close result set, statement, and connection in that order
       if (rs != null) {
@@ -571,10 +571,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         DriverManager.setLoginTimeout(CONNECTION_TIMEOUT_SECS);
         Class.forName(source.getJdbcDriver());
         conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
+        // Disable Auto Commit to allow use of cursors (in PostgreSQL, but probably others too).
+        conn.setAutoCommit(false);
 
-        // If a SQLWarning object is available, log its
-        // warning(s). There may be multiple warnings chained.
-
+        // If a SQLWarning object is available, log its warning(s). There may be multiple warnings chained.
         SQLWarning warn = conn.getWarnings();
         while (warn != null) {
           LOG.warn("SQLWarning: state=" + warn.getSQLState() + ", message=" + warn.getMessage() + ", vendor=" + warn
@@ -585,13 +585,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         String msg =
           String
             .format(
-              "Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
+              "Couldn't load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s",
               source.getJdbcDriver(), source.getJdbcUrl(), e.getMessage());
         LOG.warn(msg, e);
         throw new SQLException(msg, e);
       } catch (Exception e) {
         String msg = String
-          .format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
+          .format("Couldn't create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
             source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
         LOG.warn(msg, e);
         throw new SQLException(msg);
@@ -660,7 +660,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           preview.add(iter.next());
         }
       } catch (Exception e) {
-        LOG.warn("Cant peek into source " + source.getName(), e);
+        LOG.warn("Can't peek into source " + source.getName(), e);
       }
     }
 
@@ -692,7 +692,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
       }
     } catch (SQLException e) {
-      LOG.warn("Cant read sql source " + source, e);
+      LOG.warn("Can't read SQL source " + source, e);
     } finally {
       // close result set, statement, and connection in that order
       if (rs != null) {
@@ -733,7 +733,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     } catch (Exception e) {
       LOG.error("Exception while reading source " + source.getName(), e);
-      throw new SourceException("Cant build iterator for source " + source.getName() + " :" + e.getMessage());
+      throw new SourceException("Can't build iterator for source " + source.getName() + " :" + e.getMessage());
     }
   }
 }
