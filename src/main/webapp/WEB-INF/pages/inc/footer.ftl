@@ -19,7 +19,7 @@
           <div id="zone-credit" class="zone zone-credit clearfix container_24">
             <aside class="grid_16 region region-credit-first" id="region-credit-first">
               <div class="region-inner region-credit-first-inner">
-                <p>&copy;2018 <a href="https://www.gbif.org">Global Biodiversity Information Facility</a>.</p>
+                <p>&copy; 2009&ndash;2020 <a href="https://www.gbif.org">Global Biodiversity Information Facility</a>.  Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache license, version 2.0</a>.</p>
               </div>
             </aside>
           </div>
