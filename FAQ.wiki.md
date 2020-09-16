@@ -19,6 +19,7 @@
   + [[6. What are some tricks to simplify the authoring and maintenance of metadata?|FAQ.wiki#6-what-are-some-tricks-to-simplify-the-authoring-and-maintenance-of-metadata]]
   + [[7. How do I change the hosting organisation of my IPT?|FAQ.wiki#7-how-do-i-change-the-hosting-organisation-of-my-ipt]]
   + [[8. How do I reset the admin password?|FAQ.wiki#8-how-do-i-reset-the-admin-password]]
+  + [[9. How do I migrate a dataset from an IPT installation to another?|FAQ.wiki#9-how-do-i-migrate-a-dataset-from-an-IPT-installation-to-another]]
 + [[Indexing by GBIF|FAQ.wiki#indexing-by-gbif]]
   + [[1. How long does it take GBIF to (re)index my dataset following registration?|FAQ.wiki#1-how-long-does-it-take-gbif-to-start-reindexing-my-dataset]]
   + [[2. Why hasn't GBIF (re)indexed my dataset yet?|FAQ.wiki#2-why-hasnt-gbif-reindexed-my-dataset-yet]]
@@ -215,6 +216,14 @@ If you have forgotten the admin password, the server administrator will need to 
 Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role="Admin"`), and replace the encrypted password with `VRRUXOTCtdCkQr40SrHdrnUJurTOYMW9`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed.
 
 If they prefer, a Java developer could modify the [PBEEncryptTest class](https://github.com/gbif/ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest.java) to generate a hash for a different password, or decrypt the lost password (but see [bug 1460](https://github.com/gbif/ipt/issues/1460)).
+
+### 9. How do I migrate a dataset from an IPT installation to another?
+This migration process must be done directly on the server following the next steps:
+1. Shut down the old IPT server; just to check no-one makes any changes.
+2. In the old IPT go to `/ipt/datadir/[ipt_name]/resources/[dataset_name]` and copy the whole dataset folder
+3. In the new IPT go to `/ipt/datadir/[ipt_name]/resources/` and paste the dataset folder
+4. Restart the new IPT server
+5. Publish the dataset in the new IPT (updates the endpoint).
 
 ## Indexing by GBIF
 ### 1. How long does it take GBIF to start (re)indexing my dataset?
