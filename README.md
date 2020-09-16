@@ -12,13 +12,15 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 
 <a href="https://www.youtube.com/embed/eDH9IoTrMVE?ecver=1" target="_blank"><img src="https://raw.githubusercontent.com/wiki/gbif/ipt/gbif-ipt-docs/screenshots/IPTDemoVideoIntroSlide.png" alt="How to publish biodiversity data through GBIF.org using the IPT" width="560" height="315" border="10" /></a>
 
-### Latest Release: 2.4.1
+### Latest Release: 2.4.2
 
-Version 2.4.1 is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.1/ipt-2.4.1.war), via a [CentOS repository](./package/rpm/README.md) or [using Docker](https://hub.docker.com/r/gbif/ipt/).  A Debian repository is now also available, see [this issue](https://github.com/gbif/ipt/pull/1470).
+Version 2.4.2 is available for download [here](https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.2/ipt-2.4.2.war), via a [CentOS repository](./package/rpm/README.md) or [using Docker](https://hub.docker.com/r/gbif/ipt/).  A Debian repository is now also available, see [this issue](https://github.com/gbif/ipt/pull/1470).
 
-Version 2.4.1 includes a security update for Apache Struts, and other very [minor changes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.1+is%3Aclosed).
+Version 2.4.2 includes a bugfix from an issue introduced by the  update in version 2.4.1.  It also allows streaming large datasets from large PostgreSQL databases, [see issue](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.2+is%3Aclosed).
 
 #### Previous releases
+
+Version 2.4.1 includes a security update for Apache Struts, and other very [minor changes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.1+is%3Aclosed).
 
 Version 2.4.0 includes [these changes](https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.1+is%3Aclosed).
 
