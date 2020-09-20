@@ -875,7 +875,7 @@ public class MetadataAction extends ManagerBaseAction {
 
       // then add remaining organisations in the order they have been sorted, excluding the default organisation
       for (Organisation o : associatedOrganisations) {
-        if (!o.getKey().equals(noOrganisation.getKey())) {
+        if (!Constants.DEFAULT_ORG_KEY.equals(o.getKey())) {
           organisations.put(o.getKey().toString(), o.getName());
         }
       }
