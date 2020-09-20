@@ -1,6 +1,4 @@
-<font color='red'>
-<i>Warning: This page contains configuration instructions for advanced IPT users only</i>
-</font>
+**Warning: This page contains configuration instructions for advanced IPT users only.  Datasets published with a different license to those included by GBIF cannot be published to GBIF, or registered to GBIF.** We recommend publishing a metadata-only dataset instead.
 
 # How To Add a New License
 
