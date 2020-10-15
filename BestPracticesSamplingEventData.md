@@ -74,7 +74,7 @@ An alternative way to encode sampling-event data is listing the species occurren
 Be aware that the current DwC-A star schema such as does have limitations. For example, it does not allow to link measurements and facts to both events and occurrences in the same dataset.
 Discussion on this prototype extension are taking place on GitHub but there is no solution available yet.
 
-[Marie Grosjean - 2020-10-14 Edit]: Please check the data quality requirements for Sampling-Events described [here](https://www.gbif.org/data-quality-requirements-sampling-events). Note that if you generate your Darwin Core Archive manually, you might need to add a recordID field containing unique identifiers. (This field is generated automatically if you are using an IPT.) You can always check your archive with the GBIF data validator: https://www.gbif.org/tools/data-validator.
+[Marie Grosjean - 2020-10-15 Edit]: Please check the data quality requirements for Sampling-Events described [here](https://www.gbif.org/data-quality-requirements-sampling-events). Note that if you generate your Darwin Core Archive manually, you might need to add a recordID field containing unique identifiers. (This field is generated automatically if you are using an IPT.) For more information on the structure of a Darwin Core Archive, please check the [TDWG Darwin Core text guide](https://dwc.tdwg.org/text/). You can always check your archive with the GBIF data validator: https://www.gbif.org/tools/data-validator.
 
 ### Data file formatting recommendations
 
