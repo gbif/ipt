@@ -279,11 +279,11 @@ public interface ResourceManager {
   void restoreVersion(Resource resource, BigDecimal rollingBack, @Nullable BaseAction action);
 
   /**
-   * Turn resource publicationMode to OFF.
+   * Update the resource publicationMode.
    *
    * @param resource resource
    */
-  void publicationModeToOff(Resource resource);
+  void updatePublicationMode(Resource resource);
 
   /**
    * Updates the resource's alternative identifier for the IPT URL to the resource, and saves the EML afterward.

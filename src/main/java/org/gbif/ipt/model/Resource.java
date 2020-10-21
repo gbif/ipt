@@ -69,6 +69,13 @@ public class Resource implements Serializable, Comparable<Resource> {
   private String subtype;
   // update frequency
   private MaintenanceUpdateFrequency updateFrequency;
+  // update frequency details
+  private MonthEnum updateFrequencyMonth;
+  private BiMonthEnum updateFrequencyBiMonth;
+  private Integer updateFrequencyDay;
+  private DayEnum updateFrequencyDayOfWeek;
+  private Integer updateFrequencyHour;
+  private Integer updateFrequencyMinute;
   // publication status
   private PublicationStatus status = PublicationStatus.PRIVATE;
   // publication mode
@@ -702,6 +709,35 @@ public class Resource implements Serializable, Comparable<Resource> {
     return updateFrequency;
   }
 
+  /**
+   * Return the temporal information (month, day, hour or minute) to build the next date,
+   * when update frequency is used.
+   */
+
+  public MonthEnum getUpdateFrequencyMonth() {
+    return updateFrequencyMonth;
+  }
+
+  public BiMonthEnum getUpdateFrequencyBiMonth() {
+    return updateFrequencyBiMonth;
+  }
+
+  public Integer getUpdateFrequencyDay() {
+    return updateFrequencyDay;
+  }
+
+  public DayEnum getUpdateFrequencyDayOfWeek() {
+    return updateFrequencyDayOfWeek;
+  }
+
+  public Integer getUpdateFrequencyHour() {
+    return updateFrequencyHour;
+  }
+
+  public Integer getUpdateFrequencyMinute() {
+    return updateFrequencyMinute;
+  }
+
   public String getTitle() {
     if (eml != null) {
       return eml.getTitle();
@@ -894,6 +930,54 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.updateFrequency = MaintenanceUpdateFrequency.findByIdentifier(updateFrequency);
   }
 
+  /**
+   * Sets the frequency and temporal information (month, day, hour or minute) to build the next date,
+   * when update frequency is used.
+   */
+
+  public void setAutoPublishingFrequency(String frequency, String month, String biMonth, int day, String dayOfWeek, int hour, int minute) {
+    clearAutoPublishingFrequency();
+    this.updateFrequency = MaintenanceUpdateFrequency.findByIdentifier(frequency);
+    switch (this.updateFrequency) {
+      case ANNUALLY:
+        this.updateFrequencyMonth = MonthEnum.findByIdentifier(month);
+        this.updateFrequencyDay = day;
+        this.updateFrequencyHour = hour;
+        this.updateFrequencyMinute = minute;
+        break;
+      case BIANNUALLY:
+        this.updateFrequencyBiMonth = BiMonthEnum.findByIdentifier(biMonth);
+        this.updateFrequencyDay = day;
+        this.updateFrequencyHour = hour;
+        this.updateFrequencyMinute = minute;
+        break;
+      case MONTHLY:
+        this.updateFrequencyDay = day;
+        this.updateFrequencyHour = hour;
+        this.updateFrequencyMinute = minute;
+        break;
+      case WEEKLY:
+        this.updateFrequencyDayOfWeek = DayEnum.findByIdentifier(dayOfWeek);
+        this.updateFrequencyHour = hour;
+        this.updateFrequencyMinute = minute;
+        break;
+      case DAILY:
+        this.updateFrequencyHour = hour;
+        this.updateFrequencyMinute = minute;
+        break;
+    }
+  }
+
+  public void clearAutoPublishingFrequency() {
+    this.updateFrequency = null;
+    this.updateFrequencyMonth = null;
+    this.updateFrequencyBiMonth = null;
+    this.updateFrequencyDay = null;
+    this.updateFrequencyDayOfWeek = null;
+    this.updateFrequencyHour = null;
+    this.updateFrequencyMinute = null;
+  }
+
   public void setTitle(String title) {
     if (eml != null) {
       this.eml.setTitle(title);
@@ -914,6 +998,14 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean usesAutoPublishing() {
     return publicationMode == PublicationMode.AUTO_PUBLISH_ON && updateFrequency != null;
+  }
+
+  /**
+   * Check if the resource is using the old configuration for auto-publishing
+   */
+  public boolean isDeprecatedAutoPublishingConfiguration() {
+    // updateFrequenceMinute has a value between 0 and 59 if the new configuration is used
+    return usesAutoPublishing() && (updateFrequencyMinute == null);
   }
 
   /**
