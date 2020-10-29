@@ -76,6 +76,8 @@ $ systemctl daemon-reload
 $ systemctl restart tomcat8
 ```
 
+Note that if you are running your IPT on a windows operating system, you will need to check that your folder didn't revert to read-only permissions.
+
 ### 5. How can I change the IPT's default language?
 
 The IPT's default language is English, and there is no way to change the default language via the user interface.
