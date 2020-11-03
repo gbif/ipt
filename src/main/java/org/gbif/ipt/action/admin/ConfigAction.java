@@ -45,6 +45,7 @@ public class ConfigAction extends POSTAction {
   protected Double latitude;
   protected Double longitude;
   protected Boolean archivalMode;
+  protected Integer archivalLimit;
 
   @Inject
   public ConfigAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -101,6 +102,15 @@ public class ConfigAction extends POSTAction {
    */
   public Boolean getArchivalMode() {
     return cfg.isArchivalMode();
+  }
+
+  /**
+   *
+   * Return the number of archive versions to keep for each resource
+   *
+   */
+  public Integer getArchivalLimit() {
+    return cfg.getArchivalLimit();
   }
 
   /**
@@ -177,10 +187,18 @@ public class ConfigAction extends POSTAction {
         if (e.getType() == InvalidConfigException.TYPE.DOI_REGISTRATION_ALREADY_ACTIVATED) {
           addActionError(getText("admin.error.invalidConfiguration.doiAccount.activated"));
         } else {
-          addActionError(getText("admin.config.archival.error"));
+          addActionError(getText("admin.config.archivalMode.error"));
         }
         return INPUT;
       }
+    }
+
+    // archival limit
+    try {
+      configManager.setArchivalLimit(archivalLimit);
+    } catch (InvalidConfigException e) {
+      addActionError(getText("admin.config.archivalLimit.error"));
+      return INPUT;
     }
 
     // allow gbif analytics
@@ -256,6 +274,10 @@ public class ConfigAction extends POSTAction {
 
   public void setArchivalMode(Boolean archivalMode) {
     this.archivalMode = archivalMode;
+  }
+
+  public void setArchivalLimit(Integer archivalLimit) {
+    this.archivalLimit = archivalLimit;
   }
 
   /**

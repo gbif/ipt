@@ -40,6 +40,7 @@ $(document).ready(function(){
 	<@checkbox name="analyticsGbif" i18nkey="admin.config.analyticsGbif" value="${analyticsGbif?c}" help="i18n"/>
 	<@checkbox name="debug" i18nkey="admin.config.debug" value="${debug?c}" help="i18n"/>
   <@checkbox name="archivalMode" i18nkey="admin.config.archivalMode" value="${archivalMode?c}" help="i18n"/>
+  <@input name="archivalLimit" i18nkey="admin.config.archivalLimit" help="i18n"/>
   <@readonly name="logDir" i18nkey="admin.config.server.log.dir" value="${logDir}" help="i18n"/>
   <@readonly name="registryUrl" i18nkey="admin.config.registry.url" value="${registryUrl}" help="i18n"/>
 

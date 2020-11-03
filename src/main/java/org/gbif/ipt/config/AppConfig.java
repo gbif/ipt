@@ -42,6 +42,7 @@ public class AppConfig {
   public static final String PROXY = "proxy";
   public static final String DEBUG = "debug";
   public static final String ARCHIVAL_MODE = "archivalMode";
+  public static final String ARCHIVAL_LIMIT = "archivalLimit";
   public static final String ANALYTICS_GBIF = "analytics.gbif";
   public static final String ANALYTICS_KEY = "analytics.key";
   public static final String IPT_LATITUDE = "location.lat";
@@ -313,6 +314,21 @@ public class AppConfig {
    */
   public boolean isArchivalMode() {
     return "true".equalsIgnoreCase(properties.getProperty(ARCHIVAL_MODE));
+  }
+
+  /**
+   * Return the number of archive versions to keep for each resource
+   */
+  public Integer getArchivalLimit() {
+    try {
+      String val = properties.getProperty(ARCHIVAL_LIMIT);
+      if (!Strings.isNullOrEmpty(val)) {
+        return Integer.valueOf(val);
+      }
+    } catch (NumberFormatException e) {
+      LOG.warn("Archival limit was invalid: " +e.getMessage());
+    }
+    return null;
   }
 
   public boolean isGbifAnalytics() {

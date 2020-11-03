@@ -1,5 +1,6 @@
 package org.gbif.ipt.config;
 
+import com.sun.jersey.json.impl.provider.entity.JSONArrayProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -311,6 +312,19 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         "Cannot turn off archival mode since" + "DOI registration has been activated");
     }
     cfg.setProperty(AppConfig.ARCHIVAL_MODE, Boolean.toString(archivalMode));
+  }
+
+  /**
+   * Define archival limit.
+   */
+  @Override
+  public void setArchivalLimit(Integer archivalLimit) throws InvalidConfigException {
+    if ((archivalLimit == null) || (archivalLimit == 0)){
+      cfg.setProperty(AppConfig.ARCHIVAL_LIMIT, "");
+    }
+    else {
+      cfg.setProperty(AppConfig.ARCHIVAL_LIMIT, Integer.toString(archivalLimit));
+    }
   }
 
   public void setGbifAnalytics(boolean useGbifAnalytics) throws InvalidConfigException {

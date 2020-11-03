@@ -1360,6 +1360,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (!cfg.isArchivalMode() && version.compareTo(resource.getReplacedEmlVersion()) != 0) {
       removeArchiveVersion(resource.getShortname(), resource.getReplacedEmlVersion());
     }
+    // clean archive versions
+    if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
+      cleanArchiveVersions(resource);
+    }
     // final logging
     String msg = action
       .getText("publishing.success", new String[] {String.valueOf(resource.getEmlVersion()), resource.getShortname()});
@@ -2102,6 +2106,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  @VisibleForTesting
+  public synchronized void cleanArchiveVersions(Resource resource) {
+    if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
+      LOG.info("Archival mode is ON with a limit of "+ cfg.getArchivalLimit()+" elements)");
+      LOG.info("Clean archive versions, if needed, for resource: " + resource.getShortname());
+      while (resource.getVersionHistory().size() > cfg.getArchivalLimit()) {
+        VersionHistory oldestVersion = resource.getVersionHistory().get(resource.getVersionHistory().size() -1);
+        try {
+          BigDecimal version = new BigDecimal(oldestVersion.getVersion());
+          LOG.info("Deleting version " + version + " for resource: " + resource.getShortname());
+          removeVersion(resource.getShortname(), version);
+          resource.removeVersionHistory(version);
+        }
+        catch (Exception e) {
+          LOG.error("Cannot delete oldest versions for resource: " + resource.getShortname(), e);
+          return;
+        }
+      }
+    }
+  }
+
   public synchronized void save(Resource resource) throws InvalidConfigException {
     File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
     Writer writer = null;
@@ -2399,4 +2424,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
   }
+
+  public void removeVersion(String shortname, BigDecimal version) throws IOException {
+      // delete eml-1.1.xml if it exists (eml.xml must remain)
+      File versionedEMLFile = dataDir.resourceEmlFile(shortname, version);
+      if (versionedEMLFile.exists()) {
+        FileUtils.forceDelete(versionedEMLFile);
+      }
+      // delete shortname-1.1.rtf if it exists
+      File versionedRTFFile = dataDir.resourceRtfFile(shortname, version);
+      if (versionedRTFFile.exists()) {
+        FileUtils.forceDelete(versionedRTFFile);
+      }
+      // delete dwca-1.1.zip if it exists
+      File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, version);
+      if (versionedDwcaFile.exists()) {
+        FileUtils.forceDelete(versionedDwcaFile);
+      }
+    }
 }
