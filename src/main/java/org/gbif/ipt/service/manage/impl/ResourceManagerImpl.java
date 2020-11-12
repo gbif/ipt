@@ -2384,6 +2384,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Remove an archived version in the resource history and from the file system
+   */
+  @VisibleForTesting
+  public void removeVersion(Resource resource, BigDecimal version) {
+    // Cannot remove the most recent version, only archived versions
+    if ((version != null) && !version.equals(resource.getEmlVersion())) {
+      LOG.debug("Removing version "+version+" for resource: "+resource.getShortname());
+      try {
+        removeAllFilesVersion(resource.getShortname(), version);
+        resource.removeVersionHistory(version);
+        save(resource);
+        LOG.debug("Version "+version+" has been removed for resource: "+resource.getShortname());
+      }
+      catch(IOException e) {
+        LOG.error("Cannot remove version "+version+" for resource: "+resource.getShortname(), e);
+      }
+    }
+  }
+
+  /**
    * Remove an archive version from the file system (because it has been replaced by a new published version for
    * example).
    *
@@ -2397,6 +2417,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (deleted) {
         LOG.debug(dwcaFile.getAbsolutePath() + " has been successfully deleted.");
       }
+    }
+  }
+
+  public void removeAllFilesVersion(String shortname, BigDecimal version) throws IOException {
+    // delete eml-1.1.xml if it exists (eml.xml must remain)
+    File versionedEMLFile = dataDir.resourceEmlFile(shortname, version);
+    if (versionedEMLFile.exists()) {
+      FileUtils.forceDelete(versionedEMLFile);
+    }
+    // delete shortname-1.1.rtf if it exists
+    File versionedRTFFile = dataDir.resourceRtfFile(shortname, version);
+    if (versionedRTFFile.exists()) {
+      FileUtils.forceDelete(versionedRTFFile);
+    }
+    // delete dwca-1.1.zip if it exists
+    File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, version);
+    if (versionedDwcaFile.exists()) {
+      FileUtils.forceDelete(versionedDwcaFile);
     }
   }
 }

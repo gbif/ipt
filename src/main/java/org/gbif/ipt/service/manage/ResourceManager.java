@@ -333,4 +333,12 @@ public interface ResourceManager {
    * @return true if publication has failed the maximum allowed times for a given resource
    */
   boolean hasMaxProcessFailures(Resource resource);
+
+  /**
+   * Remove a specific archived version of a resource
+   *
+   * @param resource
+   * @param version
+   */
+  void removeVersion(Resource resource, BigDecimal version);
 }
