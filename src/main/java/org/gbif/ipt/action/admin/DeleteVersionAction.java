@@ -16,36 +16,36 @@ import java.math.BigDecimal;
 
 public class DeleteVersionAction extends POSTAction {
 
-    private static final Logger LOG = LogManager.getLogger(DeleteVersionAction.class);
+  private static final Logger LOG = LogManager.getLogger(DeleteVersionAction.class);
 
-    protected final ResourceManager resourceManager;
-    protected Resource resource;
-    protected String version;
+  protected final ResourceManager resourceManager;
+  protected Resource resource;
+  protected String version;
 
-    @Inject
-    public DeleteVersionAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager, ResourceManager resourceManager) {
-        super(textProvider, cfg, registrationManager);
-        this.resourceManager = resourceManager;
+  @Inject
+  public DeleteVersionAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager, ResourceManager resourceManager) {
+    super(textProvider, cfg, registrationManager);
+    this.resourceManager = resourceManager;
+  }
+
+  @Override
+  public void prepare() {
+    super.prepare();
+    // look for resource parameter
+    String res = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_RESOURCE));
+    resource = resourceManager.get(res);
+    if (resource == null) {
+      notFound = true;
     }
-
-    @Override
-    public void prepare() {
-        super.prepare();
-        // look for resource parameter
-        String res = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_RESOURCE));
-        resource = resourceManager.get(res);
-        if (resource == null) {
-            notFound = true;
-        }
-        version = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_VERSION));
-        if (version == null) {
-            notFound = true;
-        }
+    version = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_VERSION));
+    if (version == null) {
+      notFound = true;
     }
+  }
 
-    @Override
-    public String execute() {
-        resourceManager.removeVersion(resource, new BigDecimal(version));
-        return SUCCESS;
-    }
+  @Override
+  public String execute() {
+    resourceManager.removeVersion(resource, new BigDecimal(version));
+    return SUCCESS;
+  }
 }

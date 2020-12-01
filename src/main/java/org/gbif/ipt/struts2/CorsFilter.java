@@ -11,26 +11,26 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CorsFilter implements Filter{
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain filterChain) throws IOException, ServletException {
+  @Override
+  public void doFilter(ServletRequest request, ServletResponse response,
+                       FilterChain filterChain) throws IOException, ServletException {
 
-        if(response instanceof HttpServletResponse){
-            HttpServletResponse res = ((HttpServletResponse)response);
-            addCorsHeader(res);
-        }
-
-        filterChain.doFilter(request, response);
+    if(response instanceof HttpServletResponse){
+      HttpServletResponse res = ((HttpServletResponse)response);
+      addCorsHeader(res);
     }
 
-    private void addCorsHeader(HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD");
-    }
+    filterChain.doFilter(request, response);
+  }
 
-    @Override
-    public void destroy() {}
+  private void addCorsHeader(HttpServletResponse response){
+    response.addHeader("Access-Control-Allow-Origin", "*");
+    response.addHeader("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD");
+  }
 
-    @Override
-    public void init(FilterConfig filterConfig)throws ServletException{}
+  @Override
+  public void destroy() {}
+
+  @Override
+  public void init(FilterConfig filterConfig)throws ServletException{}
 }
