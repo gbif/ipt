@@ -89,6 +89,11 @@
             <#if resource.updateFrequency??>
                 <#assign updateFrequency=resource.updateFrequency.identifier>
             </#if>
+            <#-- Auto-publishing day-->
+            <#assign updateFrequencyDay="">
+            <#if resource.updateFrequencyDay??>
+                <#assign updateFrequencyDay=resource.updateFrequencyDay>
+            </#if>
             <#-- Auto-publishing month-->
             <#assign updateFrequencyMonth="">
             <#if resource.updateFrequencyMonth??>
@@ -98,11 +103,6 @@
             <#assign updateFrequencyBiMonth="">
             <#if resource.updateFrequencyBiMonth??>
                 <#assign updateFrequencyBiMonth=resource.updateFrequencyBiMonth.identifier>
-            </#if>
-            <#-- Auto-publishing day-->
-            <#assign updateFrequencyDay="">
-            <#if resource.updateFrequencyDay??>
-                <#assign updateFrequencyDay=resource.updateFrequencyDay>
             </#if>
             <#-- Auto-publishing dayOfWeek-->
             <#assign updateFrequencyDayOfWeek="">
@@ -135,6 +135,10 @@
                 <br/>
                 <@s.text name="manage.autopublish.intro.annually"/>
             </p>
+            <p id="introDaily">
+                <br/>
+                <@s.text name="manage.autopublish.intro.daily"/>
+            </p>
             <p id="introBiAnnually">
                 <br/>
                 <@s.text name="manage.autopublish.intro.biannually"/>
@@ -147,10 +151,6 @@
                 <br/>
                 <@s.text name="manage.autopublish.intro.weekly"/>
             </p>
-            <p id="introDaily">
-                <br/>
-                <@s.text name="manage.autopublish.intro.daily"/>
-            </p>
             <p id="introOff">
                 <br/>
                 <@s.text name="manage.autopublish.intro.off"/>
@@ -162,6 +162,13 @@
                         <label>Every</label>
                     </div>
                     <div>
+                        <select id="updateFrequencyDay" name="updateFrequencyDay" size="1">
+                            <#list days?keys as val>
+                                <option value="${val}" <#if (updateFrequencyDay!"")?string==val?string> selected="selected"</#if>>
+                                    <@s.text name="${days.get(val)}"/>
+                                </option>
+                            </#list>
+                        </select>
                         <select id="updateFrequencyMonth" name="updateFrequencyMonth" size="1">
                             <#list months?keys as val>
                                 <option value="${val}" <#if (updateFrequencyMonth!"")==val> selected="selected"</#if>>
@@ -173,13 +180,6 @@
                             <#list biMonths?keys as val>
                                 <option value="${val}" <#if (updateFrequencyBiMonth!"")==val> selected="selected"</#if>>
                                     <@s.text name="${biMonths.get(val)}"/>
-                                </option>
-                            </#list>
-                        </select>
-                        <select id="updateFrequencyDay" name="updateFrequencyDay" size="1">
-                            <#list days?keys as val>
-                                <option value="${val}" <#if (updateFrequencyDay!"")?string==val?string> selected="selected"</#if>>
-                                    <@s.text name="${days.get(val)}"/>
                                 </option>
                             </#list>
                         </select>
