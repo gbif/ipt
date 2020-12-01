@@ -80,50 +80,52 @@ public class PublishingMonitor {
             Date now = new Date();
             List<Resource> resources = resourceManager.list();
             for (Resource resource : resources) {
-              Date next = resource.getNextPublished();
-              BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
-              if (next != null) {
-                // ensure resource is due to be auto-published
-                if (next.before(now)) {
-                  // ensure resource isn't already being published
-                  if (!shortNames.contains(resource.getShortname())) {
-                    // ensure resource has not exceeded the maximum number of publication failures
-                    if (!resourceManager.hasMaxProcessFailures(resource)) {
-                      try {
-                        LOG.debug("Monitor: " + resource.getTitleAndShortname() + " v# " + nextVersion.toPlainString()
+              if (resource.usesAutoPublishing()) {
+                Date next = resource.getNextPublished();
+                BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
+                if (next != null) {
+                  // ensure resource is due to be auto-published
+                  if (next.before(now)) {
+                    // ensure resource isn't already being published
+                    if (!shortNames.contains(resource.getShortname())) {
+                      // ensure resource has not exceeded the maximum number of publication failures
+                      if (!resourceManager.hasMaxProcessFailures(resource)) {
+                        try {
+                          LOG.debug("Monitor: " + resource.getTitleAndShortname() + " v# " + nextVersion.toPlainString()
                                   + " due to be auto-published: " + next.toString());
-                        resourceManager.publish(resource, nextVersion, null);
-                      } catch (PublicationException e) {
-                        if (PublicationException.TYPE.LOCKED == e.getType()) {
-                          LOG.error("Monitor: " + resource.getTitleAndShortname()
-                            + " cannot be auto-published, because "
-                            + "it is currently being published");
-                        } else {
-                          // alert user publication failed
+                          resourceManager.publish(resource, nextVersion, null);
+                        } catch (PublicationException e) {
+                          if (PublicationException.TYPE.LOCKED == e.getType()) {
+                            LOG.error("Monitor: " + resource.getTitleAndShortname()
+                                    + " cannot be auto-published, because "
+                                    + "it is currently being published");
+                          } else {
+                            // alert user publication failed
+                            LOG.error(
+                                    "Publishing version #" + nextVersion.toPlainString() + " of resource "
+                                            + resource.getTitleAndShortname()
+                                            + " failed: " + e.getMessage());
+                            // restore the previous version since publication was unsuccessful
+                            resourceManager.restoreVersion(resource, nextVersion, null);
+                            // keep track of how many failures on auto publication have happened
+                            resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+                          }
+                        } catch (InvalidConfigException e) {
+                          // with this type of error, the version cannot be rolled back - just alert user it failed
                           LOG.error(
-                            "Publishing version #" + nextVersion.toPlainString() + " of resource "
-                              + resource.getTitleAndShortname()
-                              + " failed: " + e.getMessage());
-                          // restore the previous version since publication was unsuccessful
-                          resourceManager.restoreVersion(resource, nextVersion, null);
-                          // keep track of how many failures on auto publication have happened
-                          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+                                  "Publishing version #" + nextVersion.toPlainString() + "of resource " + resource.getShortname()
+                                          + "failed:" + e.getMessage(), e);
                         }
-                      } catch (InvalidConfigException e) {
-                        // with this type of error, the version cannot be rolled back - just alert user it failed
-                        LOG.error(
-                          "Publishing version #" + nextVersion.toPlainString() + "of resource " + resource.getShortname()
-                            + "failed:" + e.getMessage(), e);
-                      }
 
+                      } else {
+                        LOG.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
+                                + "] since it has exceeded the maximum number of failed publish attempts. Please try "
+                                + "to publish this resource individually to fix the problem(s)");
+                      }
                     } else {
                       LOG.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
-                        + "] since it has exceeded the maximum number of failed publish attempts. Please try "
-                        + "to publish this resource individually to fix the problem(s)");
+                              + "] since it is already in progress");
                     }
-                  } else {
-                    LOG.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
-                      + "] since it is already in progress");
                   }
                 }
               }

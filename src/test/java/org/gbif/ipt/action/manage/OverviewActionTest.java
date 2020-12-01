@@ -74,8 +74,7 @@ public class OverviewActionTest {
     // mock action
     action =
       new OverviewAction(mock(SimpleTextProvider.class), mockCfg, mock(RegistrationManager.class), mockResourceManager,
-        mock(UserAccountManager.class), mock(ExtensionManager.class), mock(VocabulariesManager.class),
-        mock(GenerateDwcaFactory.class));
+        mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class));
   }
 
   @Test
@@ -306,8 +305,8 @@ public class OverviewActionTest {
     when(mockRegistrationManager.getDoiService()).thenReturn(mockDataCiteService);
     // mock action
     action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
-      mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-      mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
+      mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class),
+            mock(VocabulariesManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());
@@ -346,8 +345,8 @@ public class OverviewActionTest {
 
     // mock action
     action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
-      mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-      mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
+      mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class),
+            mock(VocabulariesManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());

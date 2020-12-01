@@ -153,8 +153,8 @@ public class OverviewActionOtherIT {
         mock(ResourceManager.class),
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
-        mock(VocabulariesManager.class),
-        mock(GenerateDwcaFactory.class));
+        mock(GenerateDwcaFactory.class),
+        mock(VocabulariesManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -224,8 +224,8 @@ public class OverviewActionOtherIT {
         mock(ResourceManager.class),
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
-        mock(VocabulariesManager.class),
-        mock(GenerateDwcaFactory.class));
+        mock(GenerateDwcaFactory.class),
+        mock(VocabulariesManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -294,8 +294,8 @@ public class OverviewActionOtherIT {
         mock(ResourceManager.class),
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
-        mock(VocabulariesManager.class),
-        mock(GenerateDwcaFactory.class));
+        mock(GenerateDwcaFactory.class),
+        mock(VocabulariesManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -361,8 +361,8 @@ public class OverviewActionOtherIT {
         mock(ResourceManager.class),
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
-        mock(VocabulariesManager.class),
-        mock(GenerateDwcaFactory.class));
+        mock(GenerateDwcaFactory.class),
+        mock(VocabulariesManager.class));
 
     LOG.info("Testing DataCite with test Prefix...");
     action.setDeleteDoi("true");

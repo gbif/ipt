@@ -134,7 +134,7 @@ public class OverviewActionIT {
     OverviewAction actionDataCite =
         new OverviewAction(mock(SimpleTextProvider.class), mockAppConfig, mockRegistrationManagerDataCite,
             mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-            mock(VocabulariesManager.class), mock(GenerateDwcaFactory.class));
+            mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class));
 
     return new Object[][]{
         {actionDataCite, DOIRegistrationAgency.DATACITE}
