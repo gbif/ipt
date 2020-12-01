@@ -335,56 +335,56 @@ $(document).ready(function(){
   </div>
 </div>
 
-    <div class="resourceOverview" id="autopublish">
-        <div class="titleOverview">
-            <div class="head">
-                <img class="infoImg" src="${baseURL}/images/info.gif" />
-                <div class="info autop">
-                    <@s.text name="manage.overview.autopublish.description"/>
-                </div>
-                <@s.text name="manage.overview.autopublish.title"/>
-            </div>
-            <div class="actions">
-                <form action='auto-publish.do' method='get'>
-                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                    <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                        <@s.submit name="edit" key="button.edit"/>
-                        <img class="infoImg" src="${baseURL}/images/warning.gif"/>
-                        <div class="info autop">
-                            <@s.text name="manage.overview.autopublish.deprecated.warning.button"/>
-                        </div>
-                    <#else>
-                        <@s.submit name="edit" key="button.edit"/>
-                    </#if>
-                </form>
-            </div>
-        </div>
-        <div class="bodyOverview">
-
-            <p>
-                <#if resource.usesAutoPublishing()>
-                    <@s.text name="manage.overview.autopublish.intro.activated"/>
-                <#else>
-                    <@s.text name="manage.overview.autopublish.intro.deactivated"/>
-                </#if>
-            </p>
-
-            <div class="details">
-                <table>
-                    <#if resource.usesAutoPublishing()>
-                    <tr>
-                        <th><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
-                        <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
-                    </tr>
-                    <tr>
-                        <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
-                        <td>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</td>
-                    </tr>
-                    </#if>
-                </table>
-            </div>
-        </div>
+<div class="resourceOverview" id="autopublish">
+  <div class="titleOverview">
+    <div class="head">
+      <img class="infoImg" src="${baseURL}/images/info.gif" />
+      <div class="info autop">
+        <@s.text name="manage.overview.autopublish.description"/>
+      </div>
+      <@s.text name="manage.overview.autopublish.title"/>
     </div>
+    <div class="actions">
+      <form action='auto-publish.do' method='get'>
+          <input name="r" type="hidden" value="${resource.shortname}"/>
+          <#if resource.isDeprecatedAutoPublishingConfiguration()>
+            <@s.submit name="edit" key="button.edit"/>
+            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+            <div class="info autop">
+              <@s.text name="manage.overview.autopublish.deprecated.warning.button"/>
+            </div>
+          <#else>
+            <@s.submit name="edit" key="button.edit"/>
+          </#if>
+      </form>
+    </div>
+  </div>
+  <div class="bodyOverview">
+
+    <p>
+      <#if resource.usesAutoPublishing()>
+        <@s.text name="manage.overview.autopublish.intro.activated"/>
+      <#else>
+        <@s.text name="manage.overview.autopublish.intro.deactivated"/>
+      </#if>
+    </p>
+
+    <div class="details">
+      <table>
+        <#if resource.usesAutoPublishing()>
+          <tr>
+            <th><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
+            <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
+          </tr>
+          <tr>
+            <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
+            <td>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</td>
+          </tr>
+        </#if>
+      </table>
+    </div>
+  </div>
+</div>
 
 <div class="resourceOverview" id="visibility">
   <div class="titleOverview">

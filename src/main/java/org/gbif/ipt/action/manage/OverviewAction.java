@@ -1556,6 +1556,4 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   public String getSummary() {
     return Strings.emptyToNull(summary);
   }
-
-
 }

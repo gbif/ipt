@@ -934,7 +934,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    * Sets the frequency and temporal information (month, day, hour or minute) to build the next date,
    * when update frequency is used.
    */
-
   public void setAutoPublishingFrequency(String frequency, String month, String biMonth, int day, String dayOfWeek, int hour, int minute) {
     clearAutoPublishingFrequency();
     this.updateFrequency = MaintenanceUpdateFrequency.findByIdentifier(frequency);
