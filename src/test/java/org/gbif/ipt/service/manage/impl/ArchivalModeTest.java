@@ -35,8 +35,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ArchivalModeTest {
 
@@ -94,6 +93,7 @@ public class ArchivalModeTest {
         resourceManager.cleanArchiveVersions(resource);
 
         assertEquals(resource.getVersionHistory().size(), 6);
+        verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
     }
 
     @Test
@@ -106,6 +106,7 @@ public class ArchivalModeTest {
         resourceManager.cleanArchiveVersions(resource);
 
         assertEquals(resource.getVersionHistory().size(), 6);
+        verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
     }
 
     @Test
@@ -119,6 +120,7 @@ public class ArchivalModeTest {
         resourceManager.cleanArchiveVersions(resource);
 
         assertEquals(resource.getVersionHistory().size(), 6);
+        verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
     }
 
     @Test
@@ -132,6 +134,7 @@ public class ArchivalModeTest {
         resourceManager.cleanArchiveVersions(resource);
 
         assertEquals(resource.getVersionHistory().size(), 6);
+        verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
     }
 
     @Test
@@ -145,20 +148,25 @@ public class ArchivalModeTest {
         resourceManager.cleanArchiveVersions(resource);
 
         assertEquals(resource.getVersionHistory().size(), 6);
+        verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
     }
 
     @Test
     public void testArchiveLimitLower() {
+        String resourceName = "testArchiveLimitLower";
         AppConfig mockAppConfig = MockAppConfig.rebuildMock();
         when(mockAppConfig.isArchivalMode()).thenReturn(true);
         when(mockAppConfig.getArchivalLimit()).thenReturn(2);
         ResourceManagerImpl resourceManager = getResourceManagerImpl(mockAppConfig);
 
-        Resource resource = getResource("testArchiveLimitLower");
+        Resource resource = getResource(resourceName);
         resourceManager.cleanArchiveVersions(resource);
 
-        assertEquals(resource.getVersionHistory().size(), 2);
-        assertEquals(resource.getVersionHistory().get(0).getVersion(), "2.5");
-        assertEquals(resource.getVersionHistory().get(1).getVersion(), "2.4");
+        assertEquals(resource.getVersionHistory().size(), 6);
+        verify(mockDataDir, times(4)).resourceDwcaFile(any(), any());
+        verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.3));
+        verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.2));
+        verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.1));
+        verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.0));
     }
 }
