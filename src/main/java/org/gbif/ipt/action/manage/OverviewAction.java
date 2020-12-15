@@ -105,7 +105,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
-  private final VocabulariesManager vocabManager;
   private List<User> potentialManagers;
   private List<Extension> potentialCores;
   private List<Extension> potentialExtensions;
@@ -118,6 +117,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean metadataModifiedSinceLastPublication;
   private boolean mappingsModifiedSinceLastPublication;
   private boolean sourcesModifiedSinceLastPublication;
+  private Map<String, String> autoPublishFrequencies;
   private StatusReport report;
   private Date now;
   private boolean unpublish = false;
@@ -127,7 +127,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean undelete = false;
   private boolean publish = false;
   private String summary;
-  private Map<String, String> frequencies;
+
   // preview
   private GenerateDwcaFactory dwcaFactory;
   private List<String> columns;
@@ -135,17 +135,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private Integer mid;
   private static final int PEEK_ROWS = 100;
 
+  private final VocabulariesManager vocabManager;
+
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    VocabulariesManager vocabManager, GenerateDwcaFactory dwcaFactory) {
+    GenerateDwcaFactory dwcaFactory, VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
-    this.vocabManager = vocabManager;
     this.dwcaFactory = dwcaFactory;
     this.doiAccount = registrationManager.findPrimaryDoiAgencyAccount();
+    this.vocabManager = vocabManager;
   }
 
   /**
@@ -511,15 +513,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public boolean getConfirmOverwrite() {
     return session.get(Constants.SESSION_FILE) != null;
-  }
-
-  /**
-   * On the manage resource page page, this map is used to populate the publishing intervals dropdown.
-   *
-   * @return update frequencies map
-   */
-  public Map<String, String> getFrequencies() {
-    return frequencies;
   }
 
   /**
@@ -976,27 +969,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return execute();
   }
 
-  /**
-   * Populate frequencies map, representing the publishing interval choices uses have when configuring
-   * auto-publishing. The frequencies list is derived from an XML vocabulary, and will contain values in the requested
-   * locale, defaulting to English.
-   */
-  private void populateFrequencies() {
-    frequencies = new LinkedHashMap<String, String>();
-
-    if (resource.usesAutoPublishing()) {
-      frequencies.put("off", getText("autopublish.off"));
-    } else {
-      frequencies.put("", getText("autopublish.interval"));
-    }
-
-    // update frequencies list, that qualify for auto-publishing
-    Map<String, String> filteredFrequencies =
-      vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
-    MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
-    frequencies.putAll(filteredFrequencies);
-  }
-
   @Override
   public void prepare() {
     super.prepare();
@@ -1067,8 +1039,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // check if the sources have been modified since the last publication
       sourcesModifiedSinceLastPublication = setSourcesModifiedSinceLastPublication(resource);
 
-      // populate frequencies map
-      populateFrequencies();
+      // auto publish frequencies
+      autoPublishFrequencies = new LinkedHashMap<String, String>();
+
+      Map<String, String> filteredFrequencies =
+              vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
+      MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
+      autoPublishFrequencies.putAll(filteredFrequencies);
     }
   }
 
@@ -1156,32 +1133,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         logProcessFailures(resource);
         LOG.info("Clearing publish event failures for resource: " + resource.getTitleAndShortname());
         resourceManager.getProcessFailures().removeAll(resource.getShortname());
-      }
-
-      // look for parameters publication mode and publication frequency
-      String pm = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_MODE));
-      if (!Strings.isNullOrEmpty(pm)) {
-        try {
-          // auto-publishing being turned OFF
-          if (PublicationMode.AUTO_PUBLISH_OFF == PublicationMode.valueOf(pm) && resource.usesAutoPublishing()) {
-            resourceManager.publicationModeToOff(resource);
-          }
-          // auto-publishing being turned ON, or auto-publishing settings being updated
-          else {
-            String pf = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_PUBLICATION_FREQUENCY));
-            if (!Strings.isNullOrEmpty(pf)) {
-              resource.setUpdateFrequency(pf);
-              resource.setPublicationMode(PublicationMode.valueOf(pm));
-            } else {
-              LOG.debug("No change to auto-publishing settings");
-            }
-          }
-        } catch (IllegalArgumentException e) {
-          LOG.error("Exception encountered while parsing parameters: " + e.getMessage(), e);
-        } finally {
-          // update frequencies map
-          populateFrequencies();
-        }
       }
 
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
@@ -1481,6 +1432,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public boolean isSourcesModifiedSinceLastPublication() {
     return sourcesModifiedSinceLastPublication;
+  }
+
+  public Map<String, String> getAutoPublishFrequencies() {
+    return autoPublishFrequencies;
   }
 
   /**

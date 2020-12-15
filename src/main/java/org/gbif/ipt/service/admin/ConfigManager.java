@@ -94,6 +94,12 @@ public interface ConfigManager {
   void setArchivalMode(boolean archivalMode) throws InvalidConfigException;
 
   /**
+   * Simple wrapper around AppConfig to set the IPT archival limit.
+   * The modified AppConfig is not immediately persisted - remember to call save() at some point!
+   */
+  void setArchivalLimit(Integer archivalLimit) throws  InvalidConfigException;
+
+  /**
    * Simple wrapper around AppConfig to en/disable google analytics for all IPTs monitored by gbif
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    */

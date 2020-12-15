@@ -92,5 +92,10 @@
       <result type="redirect">${baseURL}/admin/organisations.do</result>
     </action>
 
+    <!-- DELETE ARCHIVED VERSION -->
+    <action name="deleteVersion" class="org.gbif.ipt.action.admin.DeleteVersionAction">
+      <result type="redirect">${baseURL}/resource</result>
+    </action>
+
   </package>
 </struts>

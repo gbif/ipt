@@ -64,6 +64,12 @@
       <allowed-methods>addManager,delete,deleteDoi,deleteManager,makePrivate,makePublic,registerResource,reserveDoi,undelete</allowed-methods>
     </action>
 
+    <action name="auto-publish" class="org.gbif.ipt.action.manage.AutoPublishAction">
+      <result name="input">/WEB-INF/pages/manage/autopublish.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <!-- EML metadata actions dynamically invoked. This is the *only* action needed for all forms -->
     <action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
       <!-- Setting parameters like this doesn't seem to work as expected :((( -->
