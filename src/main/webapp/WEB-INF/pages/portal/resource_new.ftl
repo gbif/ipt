@@ -231,6 +231,10 @@
 
     <div id="wrapper">
         <#if managerRights><a href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if>
+        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+            <#if adminRights> | <a class="confirmDeleteVersion" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}"><@s.text name='button.delete.version'/></a></#if>
+        </#if>
+
         <input style="display:none" class="expand" type="button" id="menu-toggle2" name="expand-sidebar" value=""/>
         <img class="latestVersion"/>
         <!-- Page Content -->
@@ -858,6 +862,8 @@
     <!-- data record line chart -->
     <script type="text/javascript" src="${baseURL}/js/graphs.js"></script>
 
+    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+
     <!-- Menu Toggle Script -->
     <script type="text/javascript">
         $("#menu-toggle").click(function(e) {
@@ -884,6 +890,12 @@
         $(".contactName").next().hide();
         $(".contactName").click(function(e){
             $(this).next().slideToggle("fast");
+        });
+
+        $('.confirmDeleteVersion').jConfirmAction({
+            question : "<@s.text name='portal.resource.confirm.delete.version'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
+            yesAnswer : "<@s.text name='basic.yes'/>",
+            cancelAnswer : "<@s.text name='basic.no'/>"
         });
 
         $(function() {

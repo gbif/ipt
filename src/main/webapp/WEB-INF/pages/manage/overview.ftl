@@ -91,7 +91,7 @@ $(document).ready(function(){
   initHelp();
 	<#if confirmOverwrite>
 		showConfirmOverwrite();
-	</#if>	
+	</#if>
 	var $registered = false;
 
 	$('.confirm').jConfirmAction({question : "<@s.text name='basic.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
@@ -122,7 +122,7 @@ $(document).ready(function(){
 		$(this).click(function() {
 			window.location = $(this).parent('a').attr('href');
 		});
-	});	
+	});
 	$('.submit').each(function() {
 		$(this).click(function() {
 			$(this).parent('form').submit();
@@ -130,7 +130,7 @@ $(document).ready(function(){
 	});
 	$("#file").change(function() {
 		var usedFileName = $("#file").prop("value");
-		if(usedFileName != "") {			
+		if(usedFileName != "") {
 			$("#add").attr("value", '<@s.text name="button.add"/>');
 		}
 	});
@@ -144,43 +144,6 @@ $(document).ready(function(){
     $('.icon-validate').tooltip({track: true});
   });
 
-    // on select of publishing frequency set parameter for publishing frequency
-    $('#autopublish').change(function () {
-        var str = "";
-        $("#autopublish option:selected").each(function () {
-            str += $(this).val();
-        });
-        // set selected frequency
-        $("#pubFreq").val(str);
-
-        // gather current publishing frequency
-        var currFreq = $("#currPubFreq").val();
-
-        // gather current auto-publishing mode
-        var currMode = $("#currPubMode").val();
-
-        // when auto-publishing is off, and a frequency is selected
-        if (currMode=="AUTO_PUBLISH_OFF" && currMode !="" && str!="") {
-            $('#publishButton').val("<@s.text name='autopublish.activate'/>");
-            $("#pubMode").val("AUTO_PUBLISH_ON");
-        }
-        // when auto-publishing is on, and the user wants to disable auto-publishing
-        else if(currMode=="AUTO_PUBLISH_ON" && str=="off") {
-            $('#publishButton').val("<@s.text name='autopublish.disable'/>");
-            $("#pubMode").val("AUTO_PUBLISH_OFF");
-        }
-        // when auto-publishing is on, and the user wants to change the frequency
-        else if(currMode=="AUTO_PUBLISH_ON" && currFreq!=str) {
-            $('#publishButton').val("<@s.text name='autopublish.update'/>");
-            $("#pubMode").val("AUTO_PUBLISH_ON");
-        }
-        // when either auto-publishing is on, and the user is happy with the current settings,
-        // or when auto-publishing is off and no frequency selected
-        else {
-            $('#publishButton').val("<@s.text name='button.publish'/>");
-        }
-    }).change();
-
 	function showConfirmOverwrite() {
 	   var question='<p><@s.text name="manage.resource.addSource.confirm"/></p>';
 	   $('#dialog').html(question);
@@ -192,7 +155,7 @@ $(document).ready(function(){
 					$(this).dialog("close");
 					$("#add").click();
 				},
-				'<@s.text name="basic.no"/>' : function(){					
+				'<@s.text name="basic.no"/>' : function(){
 					$(this).dialog("close");
 					$("#cancel").click();
 				}
@@ -369,6 +332,57 @@ $(document).ready(function(){
             </table>
           </#if>
       </div>
+  </div>
+</div>
+
+<div class="resourceOverview" id="autopublish">
+  <div class="titleOverview">
+    <div class="head">
+      <img class="infoImg" src="${baseURL}/images/info.gif" />
+      <div class="info autop">
+        <@s.text name="manage.overview.autopublish.description"/>
+      </div>
+      <@s.text name="manage.overview.autopublish.title"/>
+    </div>
+    <div class="actions">
+      <form action='auto-publish.do' method='get'>
+          <input name="r" type="hidden" value="${resource.shortname}"/>
+          <#if resource.isDeprecatedAutoPublishingConfiguration()>
+            <@s.submit name="edit" key="button.edit"/>
+            <img class="infoImg" src="${baseURL}/images/warning.gif"/>
+            <div class="info autop">
+              <@s.text name="manage.overview.autopublish.deprecated.warning.button"/>
+            </div>
+          <#else>
+            <@s.submit name="edit" key="button.edit"/>
+          </#if>
+      </form>
+    </div>
+  </div>
+  <div class="bodyOverview">
+
+    <p>
+      <#if resource.usesAutoPublishing()>
+        <@s.text name="manage.overview.autopublish.intro.activated"/>
+      <#else>
+        <@s.text name="manage.overview.autopublish.intro.deactivated"/>
+      </#if>
+    </p>
+
+    <div class="details">
+      <table>
+        <#if resource.usesAutoPublishing()>
+          <tr>
+            <th><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
+            <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
+          </tr>
+          <tr>
+            <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
+            <td>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</td>
+          </tr>
+        </#if>
+      </table>
+    </div>
   </div>
 </div>
 

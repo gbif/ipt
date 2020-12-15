@@ -74,6 +74,7 @@ import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.KeywordSet;
+import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -1349,7 +1350,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // set last published date
     resource.setLastPublished(new Date());
     // set next published date (if resource configured for auto-publishing)
-    updateNextPublishedDate(resource);
+    updateNextPublishedDate(new Date(), resource);
     // register/update DOI
     executeDoiWorkflow(resource, version, resource.getReplacedEmlVersion(), action);
     // finalise/update version history
@@ -2276,6 +2277,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       : processReports.get(shortname).getMessages();
   }
 
+  @Override
+  public void updatePublicationMode(Resource resource) {
+    if (resource.usesAutoPublishing()) {
+      updateNextPublishedDate(new Date(), resource);
+    }
+    else {
+      resource.setNextPublished(null);
+    }
+  }
+
   /**
    * Updates the date the resource is scheduled to be published next. The resource must have been configured with
    * a maintenance update frequency that is suitable for auto-publishing (annually, biannually, monthly, weekly,
@@ -2285,26 +2296,98 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @throws PublicationException if the next published date cannot be set for any reason
    */
-  private void updateNextPublishedDate(Resource resource) throws PublicationException {
+  protected void updateNextPublishedDate(Date currentDate, Resource resource) throws PublicationException {
     if (resource.usesAutoPublishing()) {
       try {
         LOG.debug("Updating next published date of resource: " + resource.getShortname());
 
-        // get the time now, from this the next published date will be calculated
-        Date now = new Date();
+        Date nextPublished = null;
 
-        // get update period in days
-        int days = resource.getUpdateFrequency().getPeriodInDays();
+        // get update period
+        MaintenanceUpdateFrequency frequency = resource.getUpdateFrequency();
 
-        // calculate next published date
         Calendar cal = Calendar.getInstance();
-        cal.setTime(now);
-        cal.add(Calendar.DATE, days);
-        Date nextPublished = cal.getTime();
+        cal.setTime(currentDate);
+
+        // Using the old auto publish configuration
+        if (resource.isDeprecatedAutoPublishingConfiguration()) {
+          // use predefined period for previous IPT version
+          int days = resource.getUpdateFrequency().getPeriodInDays();
+          cal.add(Calendar.DATE, days);
+          nextPublished = cal.getTime();
+        }
+        // Using the new auto publish configuration
+        else {
+          cal.set(Calendar.SECOND, 0);
+          cal.set(Calendar.MILLISECOND, 0);
+          switch (frequency) {
+            case ANNUALLY:
+              cal.set(Calendar.MONTH, resource.getUpdateFrequencyMonth().getMonthId());
+              cal.set(Calendar.DAY_OF_MONTH, resource.getUpdateFrequencyDay());
+              cal.set(Calendar.HOUR_OF_DAY, resource.getUpdateFrequencyHour());
+              cal.set(Calendar.MINUTE, resource.getUpdateFrequencyMinute());
+              nextPublished = cal.getTime();
+              if (nextPublished.before(currentDate)) {
+                cal.add(Calendar.YEAR, 1);
+                nextPublished = cal.getTime();
+              }
+              break;
+            case BIANNUALLY:
+              cal.set(Calendar.MONTH, resource.getUpdateFrequencyBiMonth().getBiMonthId());
+              cal.set(Calendar.DAY_OF_MONTH, resource.getUpdateFrequencyDay());
+              cal.set(Calendar.HOUR_OF_DAY, resource.getUpdateFrequencyHour());
+              cal.set(Calendar.MINUTE, resource.getUpdateFrequencyMinute());
+              nextPublished = cal.getTime();
+              if (nextPublished.before(currentDate)) {
+                cal.add(Calendar.MONTH, 6);
+                nextPublished = cal.getTime();
+                if (nextPublished.before(currentDate)) {
+                  cal.add(Calendar.MONTH, 6);
+                  nextPublished = cal.getTime();
+                }
+              }
+              break;
+            case MONTHLY:
+              cal.set(Calendar.DAY_OF_MONTH, resource.getUpdateFrequencyDay());
+              cal.set(Calendar.HOUR_OF_DAY, resource.getUpdateFrequencyHour());
+              cal.set(Calendar.MINUTE, resource.getUpdateFrequencyMinute());
+              nextPublished = cal.getTime();
+              if (nextPublished.before(currentDate)) {
+                cal.add(Calendar.MONTH, 1);
+                nextPublished = cal.getTime();
+              }
+              break;
+            case WEEKLY:
+              cal.set(Calendar.DAY_OF_WEEK, resource.getUpdateFrequencyDayOfWeek().getDayId());
+              cal.set(Calendar.HOUR_OF_DAY, resource.getUpdateFrequencyHour());
+              cal.set(Calendar.MINUTE, resource.getUpdateFrequencyMinute());
+              nextPublished = cal.getTime();
+              if (nextPublished.before(currentDate)) {
+                cal.add(Calendar.WEEK_OF_YEAR, 1);
+                nextPublished = cal.getTime();
+              }
+              break;
+            case DAILY:
+              cal.set(Calendar.HOUR_OF_DAY, resource.getUpdateFrequencyHour());
+              cal.set(Calendar.MINUTE, resource.getUpdateFrequencyMinute());
+              nextPublished = cal.getTime();
+              if (nextPublished.before(currentDate)) {
+                cal.add(Calendar.DAY_OF_YEAR, 1);
+                nextPublished = cal.getTime();
+              }
+              break;
+          }
+        }
 
         // alert user that auto publishing has been turned on
         if (resource.getNextPublished() == null) {
           LOG.debug("Auto-publishing turned on");
+        }
+
+        if (nextPublished == null) {
+          String msg = "Error to compute the next publication date";
+          LOG.error(msg);
+          throw new PublicationException(PublicationException.TYPE.SCHEDULING, msg);
         }
 
         // set next published date
@@ -2313,30 +2396,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // log
         LOG.debug("The next publication date is: " + nextPublished.toString());
       } catch (Exception e) {
+        resource.setNextPublished(null);
         // add error message that explains the consequence of the error to user
         String msg = "Auto-publishing failed: " + e.getMessage();
         LOG.error(msg, e);
         throw new PublicationException(PublicationException.TYPE.SCHEDULING, msg, e);
       }
     } else {
-      LOG.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
-    }
-  }
-
-  public void publicationModeToOff(Resource resource) {
-    if (PublicationMode.AUTO_PUBLISH_OFF == resource.getPublicationMode()) {
-      throw new InvalidConfigException(TYPE.AUTO_PUBLISHING_ALREADY_OFF,
-        "Auto-publishing mode has already been switched off");
-    } else if (PublicationMode.AUTO_PUBLISH_ON == resource.getPublicationMode()) {
-      // update publicationMode to OFF
-      resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
-      // clear frequency
-      resource.setUpdateFrequency(null);
-      // clear next published date
       resource.setNextPublished(null);
-      LOG.debug("Auto-publishing turned off");
-      // save change to resource
-      save(resource);
+      LOG.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
     }
   }
 
@@ -2411,6 +2479,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Remove an archived version in the resource history and from the file system
+   */
+  @VisibleForTesting
+  public void removeVersion(Resource resource, BigDecimal version) {
+    // Cannot remove the most recent version, only archived versions
+    if ((version != null) && !version.equals(resource.getEmlVersion())) {
+      LOG.debug("Removing version "+version+" for resource: "+resource.getShortname());
+      try {
+        removeVersion(resource.getShortname(), version);
+        resource.removeVersionHistory(version);
+        save(resource);
+        LOG.debug("Version "+version+" has been removed for resource: "+resource.getShortname());
+      }
+      catch(IOException e) {
+        LOG.error("Cannot remove version "+version+" for resource: "+resource.getShortname(), e);
+      }
+    }
+  }
+
+  /**
    * Remove an archive version from the file system (because it has been replaced by a new published version for
    * example).
    *
@@ -2428,20 +2516,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   public void removeVersion(String shortname, BigDecimal version) throws IOException {
-      // delete eml-1.1.xml if it exists (eml.xml must remain)
-      File versionedEMLFile = dataDir.resourceEmlFile(shortname, version);
-      if (versionedEMLFile.exists()) {
-        FileUtils.forceDelete(versionedEMLFile);
-      }
-      // delete shortname-1.1.rtf if it exists
-      File versionedRTFFile = dataDir.resourceRtfFile(shortname, version);
-      if (versionedRTFFile.exists()) {
-        FileUtils.forceDelete(versionedRTFFile);
-      }
-      // delete dwca-1.1.zip if it exists
-      File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, version);
-      if (versionedDwcaFile.exists()) {
-        FileUtils.forceDelete(versionedDwcaFile);
-      }
+    // delete eml-1.1.xml if it exists (eml.xml must remain)
+    File versionedEMLFile = dataDir.resourceEmlFile(shortname, version);
+    if (versionedEMLFile.exists()) {
+      FileUtils.forceDelete(versionedEMLFile);
     }
+    // delete shortname-1.1.rtf if it exists
+    File versionedRTFFile = dataDir.resourceRtfFile(shortname, version);
+    if (versionedRTFFile.exists()) {
+      FileUtils.forceDelete(versionedRTFFile);
+    }
+    // delete dwca-1.1.zip if it exists
+    File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, version);
+    if (versionedDwcaFile.exists()) {
+      FileUtils.forceDelete(versionedDwcaFile);
+    }
+  }
 }

@@ -279,11 +279,11 @@ public interface ResourceManager {
   void restoreVersion(Resource resource, BigDecimal rollingBack, @Nullable BaseAction action);
 
   /**
-   * Turn resource publicationMode to OFF.
+   * Update the resource publicationMode.
    *
    * @param resource resource
    */
-  void publicationModeToOff(Resource resource);
+  void updatePublicationMode(Resource resource);
 
   /**
    * Updates the resource's alternative identifier for the IPT URL to the resource, and saves the EML afterward.
@@ -333,4 +333,12 @@ public interface ResourceManager {
    * @return true if publication has failed the maximum allowed times for a given resource
    */
   boolean hasMaxProcessFailures(Resource resource);
+
+  /**
+   * Remove a specific archived version of a resource
+   *
+   * @param resource
+   * @param version
+   */
+  void removeVersion(Resource resource, BigDecimal version);
 }

@@ -23,8 +23,13 @@ public final class Constants {
   public static final String REQ_PARAM_ID = "id";
   public static final String REQ_PARAM_SOURCE = "s";
   public static final String REQ_PARAM_VERSION = "v";
-  public static final String REQ_PARAM_PUBLICATION_MODE = "pubMode";
-  public static final String REQ_PARAM_PUBLICATION_FREQUENCY = "pubFreq";
+  public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY = "updateFrequency";
+  public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_MONTH = "updateFrequencyMonth";
+  public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_BIMONTH = "updateFrequencyBiMonth";
+  public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_DAY = "updateFrequencyDay";
+  public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_DAYOFWEEK = "updateFrequencyDayOfWeek";
+  public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_HOUR = "updateFrequencyHour";
+  public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_MINUTE = "updateFrequencyMinute";
   public static final String DWC_ROWTYPE_OCCURRENCE = DwcTerm.Occurrence.qualifiedName();
   public static final String DWC_ROWTYPE_TAXON = DwcTerm.Taxon.qualifiedName();
   public static final String DWC_ROWTYPE_EVENT = DwcTerm.Event.qualifiedName();

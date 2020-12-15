@@ -97,7 +97,7 @@ public class ConfigAction extends POSTAction {
 
   /**
    * Check if the IPT is configured to use archival mode.
-   * 
+   *
    * @return is in archival mode
    */
   public Boolean getArchivalMode() {
@@ -105,9 +105,7 @@ public class ConfigAction extends POSTAction {
   }
 
   /**
-   *
    * Return the number of archive versions to keep for each resource
-   *
    */
   public Integer getArchivalLimit() {
     return cfg.getArchivalLimit();
@@ -115,7 +113,7 @@ public class ConfigAction extends POSTAction {
 
   /**
    * This is called when the new configuration is submitted.
-   * 
+   *
    * @return SUCCESS if it is valid, or failure with a message if the entered configuration is invalid
    */
   @Override
