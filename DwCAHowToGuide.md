@@ -231,7 +231,7 @@ Here are some other recommendations for generating data using SQL queries/functi
 
 ### DwC-A Examples
 
-The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) provides a set of example DwC-As for each type of data:
+The guide [How to publish biodiversity data through GBIF.org](https://github.com/gbif/ipt/wiki/howToPublishHow-To) *(which is now broken link)* provided a set of example DwC-As for each type of data:
 
 1.  Checklist data: [examplar datasets](checklistData#exemplar-datasets)
 2.  Occurrence data: [examplar datasets](occurrenceData#exemplar-datasets)
