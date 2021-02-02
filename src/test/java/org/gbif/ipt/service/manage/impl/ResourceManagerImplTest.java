@@ -14,9 +14,9 @@
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.UnsupportedArchiveException;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -1229,7 +1229,7 @@ public class ResourceManagerImplTest {
     // decompress the incoming file
     CompressionUtil.decompressFile(dwcaDir, dwca, true);
     // open DwC-A located inside parent folder
-    Archive archive = ArchiveFactory.openArchive(dwcaDir);
+    Archive archive = DwcFiles.fromLocation(dwcaDir.toPath());
     assertNotNull(archive);
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType().qualifiedName());
   }
@@ -1248,7 +1248,7 @@ public class ResourceManagerImplTest {
     // decompress the incoming file
     CompressionUtil.decompressFile(dwcaDir, dwca, true);
     // open DwC-A located inside parent folder, which throws UnsupportedArchiveException wrapping SaxParseException
-    ArchiveFactory.openArchive(dwcaDir);
+    DwcFiles.fromLocation(dwcaDir.toPath());
   }
 
   @Test

@@ -6,14 +6,14 @@ import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
 import org.gbif.doi.service.InvalidMetadataException;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveField;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.UnsupportedArchiveException;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.ArchiveField;
-import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.dwca.io.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -494,7 +494,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Resource resource;
     try {
       // try to read dwca
-      Archive arch = ArchiveFactory.openArchive(dwca);
+      Archive arch = DwcFiles.fromLocation(dwca.toPath());
 
       if (arch.getCore() == null) {
         alog.error("manage.resource.create.core.invalid");
@@ -1886,14 +1886,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (Exception e) {
       LOG.warn("Cant read archive eml metadata", e);
     }
+    // TODO: 02/02/2021 dwca-io does not provide this functionality anymore
     // try to read other metadata formats like dc
-    try {
-      eml = convertMetadataToEml(archive.getMetadata());
-      alog.info("manage.resource.read.basic.metadata");
-      return eml;
-    } catch (Exception e) {
-      LOG.warn("Cant read basic archive metadata: " + e.getMessage());
-    }
+//    try {
+//      eml = convertMetadataToEml(archive.getMetadata());
+//      alog.info("manage.resource.read.basic.metadata");
+//      return eml;
+//    } catch (Exception e) {
+//      LOG.warn("Cant read basic archive metadata: " + e.getMessage());
+//    }
     alog.warn("manage.resource.read.problem");
     return null;
   }

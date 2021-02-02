@@ -21,10 +21,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.dwca.io.UnsupportedArchiveException;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.UnsupportedArchiveException;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.*;
@@ -304,7 +304,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     TextFileSource src = new TextFileSource();
     try {
       // anaylze individual files using the dwca reader
-      Archive arch = ArchiveFactory.openArchive(file);
+      Archive arch = DwcFiles.fromLocation(file.toPath());
       copyArchiveFileProperties(arch.getCore(), src);
     } catch (UnknownDelimitersException e) {
       // this file is invalid
