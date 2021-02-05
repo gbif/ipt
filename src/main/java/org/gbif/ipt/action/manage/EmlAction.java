@@ -26,6 +26,7 @@ public class EmlAction extends ManagerBaseAction  {
   public String replaceEml() {
     try {
       resourceManager.replaceEml(resource, emlFile);
+      addActionMessage(getText("manage.overview.success.replace.eml"));
       return SUCCESS;
     }
     catch(ImportException e) {
