@@ -18,7 +18,7 @@
  	<link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
 	<link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
 	<link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui.min-1.12.1.css" rel="stylesheet" />
-  	<link rel="stylesheet" type="text/css" href="${baseURL}/styles/font-awesome.min.css" media="all" />
+  	<link rel="stylesheet" type="text/css" href="${baseURL}/styles/font-awesome.min.css" media="all" />	
   <!-- for css overrides needed for customizations -->
 	<link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
   <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
@@ -28,14 +28,14 @@
 	<script type="text/javascript" src="${baseURL}/js/global.js"></script>
 
 [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
-[#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1]
+[#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1] 
 <script type="text/javascript">
   var _gaq = _gaq || [];
-	[#if (cfg.analyticsKey!"")?length>1]
+	[#if (cfg.analyticsKey!"")?length>1] 
 	  _gaq.push(['_setAccount', '${cfg.analyticsKey}']);
 	  _gaq.push(['_trackPageview']);
 	[/#if]
-	[#if cfg.gbifAnalytics]
+	[#if cfg.gbifAnalytics] 
 	  _gaq.push(['gbif._setAccount', '${cfg.getProperty("dev.analytics.gbif")}']);
 	  _gaq.push(['gbif._trackPageview']);
 	[/#if]
