@@ -96,7 +96,8 @@ $(document).ready(function(){
 
 	$('.confirm').jConfirmAction({question : "<@s.text name='basic.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 	$('.confirmRegistration').jConfirmAction({question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>"});
-	$('.confirmDeletion').jConfirmAction({question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+  $('.confirmEmlReplace').jConfirmAction({question : "<@s.text name='manage.metadata.replace.confirm'/></br>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+  $('.confirmDeletion').jConfirmAction({question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
   $('.confirmUndeletion').jConfirmAction({question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
 
   $('.confirmReserveDoi').jConfirmAction({question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
@@ -134,6 +135,19 @@ $(document).ready(function(){
 			$("#add").attr("value", '<@s.text name="button.add"/>');
 		}
 	});
+  $("#emlFile").change(function() {
+    var usedFileName = $("#emlFile").prop("value");
+    if(usedFileName != "") {
+      $("#emlReplace").show();
+      $("#emlCancel").show();
+    }
+  });
+  $("#emlCancel").click(function(event) {
+    event.preventDefault();
+    $("#emlFile").prop("value", "");
+    $("#emlReplace").hide();
+    $("#emlCancel").hide();
+  });
 	$("#clear").click(function(event) {
 		event.preventDefault();
 		$("#file").prop("value", "");
