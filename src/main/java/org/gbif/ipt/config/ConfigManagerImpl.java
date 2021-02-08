@@ -211,11 +211,50 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     LOG.info("Loading resource configurations ...");
     // default creator used to populate missing resource creator when loading resources
     User defaultCreator = (userManager.list(Role.Admin).isEmpty()) ? null : userManager.list(Role.Admin).get(0);
-    resourceManager.load(dataDir.dataFile(DataDir.RESOURCES_DIR), defaultCreator);
+    File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
+    checkResourcesDirAtStartup(resourcesDir);
+    resourceManager.load(resourcesDir, defaultCreator);
 
     // start publishing monitor
     LOG.info("Starting Publishing Monitor...");
     publishingMonitor.start();
+  }
+
+  private void checkResourcesDirAtStartup(File resourcesDir) {
+    // READ access of /resources
+    if (resourcesDir != null && resourcesDir.exists() && !resourcesDir.canRead()) {
+      LOG.error("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
+      warnings.addStartupError("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
+    }
+    // WRITE access of /resources
+    else if (resourcesDir != null && resourcesDir.exists() && !resourcesDir.canWrite()) {
+      LOG.error("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
+      warnings.addStartupError("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
+    }
+    // READ/WRITE access of sub folders of  of /resources
+    else if (resourcesDir != null && resourcesDir.exists()) {
+      File[] files = resourcesDir.listFiles();
+      if (files != null) {
+        for (File resourceDir : files) {
+          if (resourceDir != null && resourceDir.exists() && !resourceDir.canRead()) {
+            LOG.error("At least one resource directory cannot be read. Please check access rights for: " + resourceDir);
+            warnings.addStartupError("At least one resource directory cannot be read. Please check access rights for: " + resourceDir);
+            break;
+          }
+          // WRITE access of /resources
+          else if (resourceDir != null && resourceDir.exists() && !resourceDir.canWrite()) {
+            LOG.error("At least one resource directory cannot be written. Please check access rights for: " + resourceDir);
+            warnings.addStartupError("At least one resource directory cannot be written. Please check access rights for: " + resourceDir);
+            break;
+          }
+        }
+      }
+    }
+    // No folder /resources
+    else {
+      LOG.error("Resources directory does not exist: " + resourcesDir);
+      warnings.addStartupError("Resources directory does not exist: " + resourcesDir);
+    }
   }
 
   private void reloadLogger() {
