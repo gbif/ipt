@@ -1,5 +1,5 @@
 # Darwin Core Archives – How-to Guide
-<sup>Version 2.0</sup>
+<sup>Version 2.1</sup>
 
 <img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/figures/cover_art_cicindelinae.png' align="right" width="300" height="250" />
 
