@@ -1,39 +1,65 @@
 [#ftl output_format="HTML"]
-[#include "/WEB-INF/pages/inc/header_setup.ftl"]
-[#include "/WEB-INF/pages/macros/forms.ftl"]
+[#include "/WEB-INF/pages/inc/header_setup-bootstrap.ftl"]
 
-<div class="grid_18">
-		<h1 class="twenty_top">[@s.text name="admin.config.setup.title"/]</h1>
-		
-			[@s.actionmessage/]
-			[#if warnings?size>0]		    
-			 <ul class="warnMessage">
-			 [#list warnings as w]
-	          <li><span>${w!}</span></li>
-			 [/#list]
-             </ul>
+<main class="container pt-5">
+
+    <form action="setup.do" method="post" class="needs-validation" novalidate>
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h4 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                [@s.text name="admin.config.setup.title"/]
+            </h4>
+
+            [@s.actionmessage cssClass="alert alert-success list-unstyled mx-md-4 mx-2"/]
+            [#if warnings?size>0]
+                [#list warnings as w]
+                    <div class="alert alert-danger mx-md-4 mx-2" role="alert">
+                        ${w!}
+                    </div>
+                [/#list]
             [/#if]
-			[@s.actionerror/]
+            [@s.actionerror cssClass="alert alert-danger list-unstyled mx-md-4 mx-2"/]
 
-  		[@s.form action="setup.do" method="post"]
-      <h2 class="subTitle">[@s.text name="admin.config.setup.disclaimer.title"/]&nbsp;<span class="fa-stack icon-warning"><i class="fa fa-circle fa-stack-1x icon-shadow"></i><i class="fa fa-exclamation fa-stack-1x"></i></span></h2>
-      <p>[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
-      <p>[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
-      <p>
-        [@s.fielderror]
-          [@s.param value="%{'readDisclaimer'}" /]
-        [/@s.fielderror]
-        [@s.checkbox name="readDisclaimer" value="readDisclaimer" /]&nbsp;
-        [@s.text name="admin.config.setup.read"/]
-      </p>
+            <h5 class="text-success mx-md-4 mx-2">
+                [@s.text name="admin.config.setup.disclaimer.title"/]
+            </h5>
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
 
-      <h2 class="subTitle">[@s.text name="admin.config.server.data.dir"/]</h2>
-      <p>[@s.text name="admin.config.setup.welcome"/]</p>
-      <p>[@s.text name="admin.config.setup.instructions"/]</p>
-      <p>[@s.text name="admin.config.setup.examples"/]</p>
-			[@s.textfield key="admin.config.setup.datadir" name="dataDirPath" size="80" required="true"/]
-      [@s.submit cssClass="button" name="save" key="button.save"/]
-		[/@s.form]
+            <div class="form-check text-muted mx-md-4 mx-2 pb-2">
+                [@s.checkbox name="readDisclaimer" value="readDisclaimer" cssClass="form-check-input" id="readDisclaimer"/]
+                <label class="form-check-label" for="readDisclaimer">
+                    [@s.text name="admin.config.setup.read"/]
+                </label>
+                [@s.fielderror id="field-error-readDisclaimer" cssClass="invalid-feedback list-unstyled field-error"]
+                    [@s.param value="%{'readDisclaimer'}"/]
+                [/@s.fielderror]
+            </div>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h5 class="text-success pb-2 mx-md-4 mx-2 pt-2 border-bottom">
+                [@s.text name="admin.config.server.data.dir"/]
+            </h5>
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.welcome"/]</p>
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.instructions"/]</p>
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.examples"/]</p>
+
+            <div class="row mx-md-3 mx-1">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="dataDirPath" name="dataDirPath" aria-label="datadir" aria-describedby="submitDatadir" [#if dataDirPath??]value="${dataDirPath}"[/#if] required>
+                    [@s.submit cssClass="btn btn-outline-success" name="save" id="submitDatadir" key="button.save"/]
+                    <div class="invalid-feedback">
+                        [@s.text name="validation.required"]
+                            [@s.param][@s.text name="validation.field.required"/][/@s.param]
+                        [/@s.text]
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</main>
 </div>
-</div>
-[#include "/WEB-INF/pages/inc/footer.ftl"]
+
+
+[#include "/WEB-INF/pages/inc/footer-bootstrap.ftl"]

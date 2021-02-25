@@ -1,9 +1,9 @@
-<h1>About this IPT installation</h1>
+<h4 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">About this IPT installation</h4>
 <#if hostingOrganisation?? && hostingOrganisation.name??>
-<p>This is a default IPT hosted by ${hostingOrganisation.name}</p>
+<p class="text-muted mx-md-4 mx-2">This is a default IPT hosted by ${hostingOrganisation.name}</p>
 
-<p>You can use the following variables about the hosting organization:</p>
-<ul>
+<p class="text-muted mx-md-4 mx-2">You can use the following variables about the hosting organization:</p>
+<ul class="list-unstyled text-muted">
   <li>description = ${hostingOrganisation.description!}</li>
   <li>name = ${hostingOrganisation.name!}</li>
   <li>alias = ${hostingOrganisation.alias!}</li>
@@ -19,5 +19,5 @@
   <li>nodeContactEmail = ${hostingOrganisation.nodeContactEmail!}</li>
 </ul>
 <#else>
-This IPT installation has not been registered yet.
+  <p class="text-muted mx-md-4 mx-2">This IPT installation has not been registered yet.</p>
 </#if>
