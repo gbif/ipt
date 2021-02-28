@@ -81,8 +81,9 @@
             padding-right: 8px;
             padding-left: 8px;
             transition: all .3s;
-            /*background: #002140;*/
             overflow: hidden;
+            vertical-align: middle;
+            fill: #008959;
         }
 
         .logo svg {
@@ -120,6 +121,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
     <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
