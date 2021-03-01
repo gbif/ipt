@@ -4,7 +4,7 @@
 <body class="bg-light d-flex flex-column h-100">
 
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-xl navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="${baseURL}/">
                 <svg class="logo" viewBox="90 239.1 539.7 523.9" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <ul class="navbar-nav me-auto mb-md-0">
                     <li class="nav-item">
                         <a class="nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
                     </li>
@@ -38,8 +38,8 @@
                         <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
                 </ul>
-                <div class="d-flex">
-                    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                <div class="d-xl-flex align-content-between">
+                    <div id="navbarNavDarkDropdown">
                         [#include "/WEB-INF/pages/inc/languages-bootstrap.ftl"/]
                     </div>
                     [#if (Session.curr_user)??]
@@ -63,7 +63,7 @@
                             </li>
                         </ul>
                     [#else]
-                        <form class="d-flex" action="${baseURL}/login.do" method="post">
+                        <form action="${baseURL}/login.do" method="post">
                             <button class="btn btn-outline-light" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>
