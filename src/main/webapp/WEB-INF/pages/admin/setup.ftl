@@ -5,19 +5,12 @@
 
     <form action="setup.do" method="post" class="needs-validation" novalidate>
         <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+            [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
+
             <h4 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
                 [@s.text name="admin.config.setup.title"/]
             </h4>
-
-            [@s.actionmessage cssClass="alert alert-success list-unstyled mx-md-4 mx-2"/]
-            [#if warnings?size>0]
-                [#list warnings as w]
-                    <div class="alert alert-danger mx-md-4 mx-2" role="alert">
-                        ${w!}
-                    </div>
-                [/#list]
-            [/#if]
-            [@s.actionerror cssClass="alert alert-danger list-unstyled mx-md-4 mx-2"/]
 
             <h5 class="text-success mx-md-4 mx-2">
                 [@s.text name="admin.config.setup.disclaimer.title"/]

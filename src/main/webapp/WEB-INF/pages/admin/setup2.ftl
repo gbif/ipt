@@ -5,19 +5,12 @@
 
     <form action="setup2.do" method="post" class="needs-validation">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+            [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
+
             <h4 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 mt-2 text-success text-center">
                 [@s.text name="admin.config.setup2.title"/]
             </h4>
-
-            [@s.actionmessage cssClass="alert alert-success list-unstyled mx-md-4 mx-2"/]
-            [#if warnings?size>0]
-                [#list warnings as w]
-                    <div class="alert alert-danger mx-md-4 mx-2" role="alert">
-                        ${w!}
-                    </div>
-                [/#list]
-            [/#if]
-            [@s.actionerror cssClass="alert alert-danger list-unstyled mx-md-4 mx-2"/]
 
             <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.welcome"/]</p>
 
