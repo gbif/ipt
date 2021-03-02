@@ -4,7 +4,8 @@
     <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
 <#--    <#if date><div class="calendarInfo"><#else><div></#if>-->
     <div>
-        <#include "/WEB-INF/pages/macros/form_field_common-bootstrap.ftl">
+        <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
+        <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
         <input
                 class="form-control"
                 type="${type}"
@@ -14,7 +15,9 @@
                 <#if (size>0)>size="${size}"</#if>
                 <#if (maxlength>0)>maxlength="${maxlength}"</#if>
                 <#if disabled>readonly="readonly"</#if>
+                <#if requiredField>required</#if>
         />
+        <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
     </div>
     </#macro>
 
@@ -57,7 +60,9 @@
 
     <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false>
         <div>
-            <#include "/WEB-INF/pages/macros/form_field_common-bootstrap.ftl">
+            <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
+            <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
             <select name="${name}" id="${name}" size="${size}" class="form-select" <#if disabled>readonly="readonly"</#if>>
                 <#if includeEmpty>
                     <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
@@ -86,7 +91,9 @@
             <#else>
                 <@s.checkbox cssClass="form-check-input" key="${name}" id="${name}" disabled=disabled value=value />
             </#if>
-            <div><#include "/WEB-INF/pages/macros/form_field_common-bootstrap.ftl"></div>
+            <#include "/WEB-INF/pages/macros/form_checkbox_label-bootstrap.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
+            <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
         </div>
     </#macro>
 

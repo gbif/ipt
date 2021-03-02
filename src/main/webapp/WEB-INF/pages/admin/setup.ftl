@@ -1,5 +1,6 @@
 [#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup-bootstrap.ftl"]
+[#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"]
 
 <main class="container pt-5">
 
@@ -18,14 +19,8 @@
             <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
             <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
 
-            <div class="form-check text-muted mx-md-4 mx-2 pb-2">
-                [@s.checkbox name="readDisclaimer" value="readDisclaimer" cssClass="form-check-input" id="readDisclaimer"/]
-                <label class="form-check-label" for="readDisclaimer">
-                    [@s.text name="admin.config.setup.read"/]
-                </label>
-                [@s.fielderror id="field-error-readDisclaimer" cssClass="invalid-feedback list-unstyled field-error"]
-                    [@s.param value="%{'readDisclaimer'}"/]
-                [/@s.fielderror]
+            <div class="mx-md-4 mx-2">
+                [@checkbox name="readDisclaimer" value="readDisclaimer" i18nkey="admin.config.setup.read"/]
             </div>
         </div>
 
@@ -37,15 +32,13 @@
             <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.instructions"/]</p>
             <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.examples"/]</p>
 
-            <div class="row mx-md-3 mx-1">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="dataDirPath" name="dataDirPath" aria-label="datadir" aria-describedby="submitDatadir" [#if dataDirPath??]value="${dataDirPath}"[/#if] required>
+            <div class="row g-3 mx-md-3 mx-1">
+                <div class="col-12">
+                    [@input name="dataDirPath" type="text" i18nkey="admin.config.setup.datadir" /]
+                </div>
+
+                <div class="col-12">
                     [@s.submit cssClass="btn btn-outline-success" name="save" id="submitDatadir" key="button.save"/]
-                    <div class="invalid-feedback">
-                        [@s.text name="validation.required"]
-                            [@s.param][@s.text name="validation.field.required"/][/@s.param]
-                        [/@s.text]
-                    </div>
                 </div>
             </div>
 

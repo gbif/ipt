@@ -19,6 +19,35 @@
                     }
                 })
 
+            // validate radio 'field-errors' from backend
+            var radioErrors = form.querySelectorAll('.radio-error')
+            Array.prototype.slice.call(radioErrors)
+                .forEach(function (radioError) {
+                    // display feedback
+                    radioError.style.cssText += ';display:block !important;'
+
+                    // get radio name from classes
+                    // id does not work!
+                    var radioName = undefined
+                    Array.prototype.slice.call(radioError.classList)
+                        .forEach(function (radioErrorClass) {
+                        if (radioErrorClass.startsWith('radio-name-')) {
+                            radioName = radioErrorClass.split('radio-name-').pop()
+                        }
+                    })
+
+                    // find radios by name and make them invalid
+                    if (radioName) {
+                        var radios = document.getElementsByName(radioName)
+                        if (radios) {
+                            Array.prototype.slice.call(radios)
+                                .forEach(function (radio) {
+                                    radio.classList.add('is-invalid')
+                                })
+                        }
+                    }
+                })
+
             // standard validation
             form.addEventListener('submit', function (event) {
                 var inputs = form.querySelectorAll('.form-control, .form-select')
