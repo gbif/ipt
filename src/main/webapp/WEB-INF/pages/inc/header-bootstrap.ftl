@@ -100,8 +100,8 @@
             width: 88px;
         }
 
-        a {
-            color: #008959;
+        a:not(.navbar-brand, .nav-link, .menu-link) {
+            color: #008959 !important;
         }
 
         /* Copy of .invalid-feedback, but without 'display: none' */

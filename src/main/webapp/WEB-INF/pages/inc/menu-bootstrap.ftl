@@ -45,17 +45,17 @@
                     [#if (Session.curr_user)??]
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <a class="btn btn-outline-light" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn btn-outline-light menu-link" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ${Session.curr_user.email}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark text-light" aria-labelledby="navbarDarkDropdownMenuLink">
                                     <li>
-                                        <a class="dropdown-item" href="${baseURL}/account.do">
+                                        <a class="dropdown-item menu-link" href="${baseURL}/account.do">
                                             [@s.text name="menu.account"/]
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="${baseURL}/logout.do">
+                                        <a class="dropdown-item menu-link" href="${baseURL}/logout.do">
                                             [@s.text name="menu.logout"/]
                                         </a>
                                     </li>

@@ -26,7 +26,7 @@
         <ul class="dropdown-menu dropdown-menu-dark text-light" aria-labelledby="navbarDarkDropdownMenuLink">
             [#list interfaceLanguges as lang, name]
                 [#if lang != localeLanguage]
-                    <li><a class="dropdown-item" href="${requrl}${lang}">${name}</a></li>
+                    <li><a class="dropdown-item menu-link" href="${requrl}${lang}">${name}</a></li>
                 [/#if]
             [/#list]
         </ul>
