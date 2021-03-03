@@ -3,9 +3,12 @@
 <title><@s.text name="login.title"/></title>
 <#assign currentMenu = "account"/>
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+<#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
 
 <main class="container pt-5" style="max-width: 400px;">
     <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+        <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
             <@s.text name="login.title"/>
@@ -22,21 +25,11 @@
 
             <div class="row g-3 mx-md-4 mx-2 mt-0 mb-2">
                 <div class="col-12">
-                    <label for="email" class="form-label"><@s.text name="user.email"/></label>
-                    <input type="email" class="form-control" id="email" name="email" value="${email!}">
-<#--                    <div class="invalid-feedback">-->
-<#--                        <@s.text name="validation.email.required"/>-->
-<#--                    </div>-->
-<#--                    <@s.fielderror id="field-error-email" cssClass="invalid-feedback list-unstyled field-error" fieldName="user.email"/>-->
+                    <@input name="email" i18nkey="user.email" value="${email!}"/>
                 </div>
 
                 <div class="col-12">
-                    <label for="password" class="form-label"><@s.text name="user.password"/></label>
-                    <input type="password" class="form-control" id="password" name="password" value="${password!}">
-<#--                    <div class="invalid-feedback">-->
-<#--                        <@s.text name="validation.email.required"/>-->
-<#--                    </div>-->
-<#--                    <@s.fielderror id="field-error-email" cssClass="invalid-feedback list-unstyled field-error" fieldName="user.email"/>-->
+                    <@input name="password" i18nkey="user.password" type="password" value="${password!}"/>
                 </div>
 
                 <#if email?has_content>

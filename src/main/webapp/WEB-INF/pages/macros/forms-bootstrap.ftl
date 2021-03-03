@@ -98,8 +98,10 @@
     </#macro>
 
     <#macro readonly name i18nkey value size=-1 help="" errorfield="" requiredField=false>
-        <#include "/WEB-INF/pages/macros/form_field_common.ftl">
-        <input type="text" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly"/>
+        <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
+        <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
+        <input type="text" class="form-control" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly"/>
+        <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
     </#macro>
 
     <#macro label i18nkey help="" requiredField=false>

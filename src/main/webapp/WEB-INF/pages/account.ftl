@@ -2,9 +2,12 @@
 <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
 <title><@s.text name="account.title"/></title>
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+<#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
 
 <main class="container pt-5">
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
+
+        <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
             <@s.text name="account.title"/>
@@ -25,47 +28,29 @@
 
             <div class="row g-3 mx-md-4 mx-2 mt-0 mb-2">
                 <div class="col-sm-6">
-                    <label for="email" class="form-label"><@s.text name="user.email"/></label>
-                    <input type="text" class="form-control" id="email" name="user.email" value="${user.email}" required readonly>
-                    <div class="invalid-feedback">
-                        <@s.text name="validation.email.required"/>
-                    </div>
-                    <@s.fielderror id="field-error-email" cssClass="invalid-feedback list-unstyled field-error" fieldName="user.email"/>
+                    <@input name="user.email" disabled=true />
                 </div>
 
                 <#assign val><@s.text name="user.roles.${user.role?lower_case}"/></#assign>
 
                 <div class="col-sm-6">
-                    <label for="roles" class="form-label"><@s.text name="user.role"/></label>
-                    <input type="text" class="form-control" id="roles" name="role" value="${val}" disabled>
+                    <@readonly name="role" i18nkey="user.role" value=val />
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="firstname" class="form-label"><@s.text name="user.firstname"/></label>
-                    <input type="text" class="form-control" id="firstname" name="user.firstname" value="${user.firstname}" required>
-                    <div class="invalid-feedback">
-                        <@s.text name="validation.firstname.required"/>
-                    </div>
+                    <@input name="user.firstname" />
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="lastname" class="form-label"><@s.text name="user.lastname"/></label>
-                    <input type="text" class="form-control" id="lastname" name="user.lastname" value="${user.lastname}" required>
-                    <div class="invalid-feedback">
-                        <@s.text name="validation.lastname.required"/>
-                    </div>
+                    <@input name="user.lastname" />
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="new-password" class="form-label"><@s.text name="user.password.new"/></label>
-                    <input type="password" class="form-control" id="new-password" name="user.password" value="${user.password}">
-                    <@s.fielderror id="field-error-new-password" cssClass="invalid-feedback list-unstyled field-error" fieldName="user.password"/>
+                    <@input name="user.password" i18nkey="user.password.new" type="password"/>
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="repeat-password" class="form-label"><@s.text name="user.password2"/></label>
-                    <input type="password" class="form-control" id="repeat-password" name="password2">
-                    <@s.fielderror id="field-error-repeat-password" cssClass="invalid-feedback list-unstyled field-error" fieldName="password2"/>
+                    <@input name="password2" i18nkey="user.password2" type="password"/>
                 </div>
 
                 <div class="col-12">
