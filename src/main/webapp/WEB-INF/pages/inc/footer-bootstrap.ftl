@@ -1,5 +1,5 @@
 <#ftl output_format="HTML">
-<footer class="footer mt-auto text-muted text-center py-3">
+<footer class="footer mt-auto text-muted text-center py-3" style='font-size: 0.75rem !important;'>
     <div class="container">
         <ul class="list-inline mb-0">
             <li class="list-inline-item">

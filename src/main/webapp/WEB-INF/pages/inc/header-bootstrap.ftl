@@ -104,12 +104,44 @@
             color: #008959 !important;
         }
 
-        /* Copy of .invalid-feedback, but without 'display: none' */
-        .invalid-feedback-display {
-            width: 100%;
-            margin-top: 0.25rem;
-            font-size: 0.875em;
-            color: #dc3545;
+        /*custom colors for pagination items*/
+        .page-link {
+            position: relative;
+            display: block;
+            color: #198754 !important;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .page-link:hover {
+            z-index: 2;
+            color: #157347 !important;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+        .page-link:focus {
+            z-index: 3;
+            color: #157347 !important;
+            background-color: #e9ecef;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(60, 153, 110, 0.5) !important;
+        }
+
+        .page-item:not(:first-child) .page-link {
+            margin-left: -1px;
+        }
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff !important;
+            background-color: #198754 !important;
+            border-color: #198754 !important;
+        }
+        .page-item.disabled .page-link {
+            color: #6c757d !important;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
         }
     </style>
 

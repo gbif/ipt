@@ -6,9 +6,9 @@
 <main class="container pt-5">
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
 
-        <h4 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
             <@s.text name="account.title"/>
-        </h4>
+        </h5>
 
         <p class="text-muted mx-md-4 mx-2">
             <@s.text name="account.intro"/>

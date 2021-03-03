@@ -8,9 +8,9 @@
 
             [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
 
-            <h4 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
                 [@s.text name="admin.config.setup3.title"/]
-            </h4>
+            </h5>
 
             <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup3.welcome"/]</p>
 

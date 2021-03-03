@@ -17,10 +17,10 @@
 
 <main class="container pt-5">
     <div class="my-3 p-3 bg-body rounded shadow-sm">
-        <h4 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
             <@s.text name="manage.home.title"/>
-        </h4>
-        <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2"></div>
+        </h5>
+        <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2" style='font-size: 0.875rem !important;'></div>
     </div>
 
     <div class="my-3 p-3 bg-body rounded shadow-sm">
