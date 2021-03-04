@@ -5,6 +5,9 @@
 
 <main class="container pt-5">
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
+
+        [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
+
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
             [@s.text name="401.manager.title"/]
         </h5>
