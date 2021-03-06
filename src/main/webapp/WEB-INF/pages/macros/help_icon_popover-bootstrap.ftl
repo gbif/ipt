@@ -2,9 +2,9 @@
 <div class='info\'>
     <#if help=='i18n'>
         <#if i18nkey==''>
-            <@s.text name='${name}.help'/>
+            <@s.text name='${name}.help' escapeHtml=true/>
         <#else>
-            <@s.text name='${i18nkey}.help'/>
+            <@s.text name='${i18nkey}.help' escapeHtml=true/>
         </#if>
     <#else>
         <#if help?has_content>
