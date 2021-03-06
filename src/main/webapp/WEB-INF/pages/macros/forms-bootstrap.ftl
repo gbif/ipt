@@ -23,24 +23,26 @@
 
     <#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false maxlength=-1>
         <div>
-            <#include "/WEB-INF/pages/macros/form_field_common.ftl">
-            <textarea id="${name}" name="${name}" cols="${size}" rows="${rows}" <#if (maxlength>0)>maxlength="${maxlength}" </#if><#if disabled>readonly="readonly"</#if>>
+            <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
+            <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}" <#if (maxlength>0)>maxlength="${maxlength}" </#if><#if disabled>readonly="readonly"</#if>>
                       <#if value=="-99999">
                           <@s.property value="${name}"/>
                       <#else>
                           ${value}
                       </#if>
             </textarea>
+            <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
         </div>
     </#macro>
     <#-- has no label or help icon, and is used exclusively on basic metadata page description textareas -->
     <#macro simpleText name value="-99999" errorfield="" size=40 rows=5 disabled=false requiredField=false maxlength=-1>
         <div>
-            <#if errorfield==""><@s.fielderror cssClass="fielderror" fieldName="${name}"/><#else><@s.fielderror cssClass="fielderror" fieldName="${errorfield}"/></#if>
-            <textarea id="${name}" name="${name}" cols="${size}" rows="${rows}" class="basic"
+            <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}" class="basic"
                       <#if (maxlength>0)>maxlength="${maxlength}"
                       </#if><#if disabled>readonly="readonly"</#if>><#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>
             </textarea>
+            <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
         </div>
     </#macro>
 
