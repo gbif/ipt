@@ -26,20 +26,21 @@
 
                     <#if (resource.sources?size>0)>
                         <div class="details">
-                            <table class="table table-sm table-borderless">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-borderless">
                                 <#list resource.sources as src>
                                     <tr>
                                         <#if src.isFileSource()>
                                             <th>${src.name} <@s.text name='manage.overview.source.file'/></th>
-                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
+                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         <#elseif src.isExcelSource()>
                                             <th>${src.name} <@s.text name='manage.overview.source.excel'/></th>
-                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
+                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         <#else>
                                             <th>${src.name} <@s.text name='manage.overview.source.sql'/></th>
-                                            <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
+                                            <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         </#if>
-                                        <td>
+                                        <td class="d-flex justify-content-end">
                                             <a class="btn btn-outline-success ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                                                 <@s.text name='button.edit'/>
                                             </a>
@@ -47,6 +48,7 @@
                                     </tr>
                                 </#list>
                             </table>
+                            </div>
                         </div>
                     </#if>
                 </div>
@@ -105,33 +107,35 @@
                 <#if resource.coreRowType?has_content>
                     <div class="details">
                         <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
-                        <table class="table table-sm table-borderless">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless">
                             <#list resource.getMappings(resource.coreRowType) as m>
                                 <tr <#if m_index==0>class="mapping_row"</#if>>
                                     <th><#if m_index==0>${m.extension.title}</#if></th>
                                     <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
-                                    <td>
+                                    <td class="d-flex justify-content-end">
                                         <a class="btn btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                             <@s.text name='button.preview'/>
                                         </a>
                                         <a class="btn btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                             <@s.text name='button.edit'/>
                                         </a>
-
                                     </td>
                                 </tr>
                             </#list>
                         </table>
+                        </div>
                         <#if (resource.getMappedExtensions()?size > 1)>
                             <div class="mapping_head twenty_top"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
-                            <table class="table table-sm table-borderless">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-borderless">
                                 <#list resource.getMappedExtensions() as ext>
                                     <#if ext.rowType != resource.coreRowType>
                                         <#list resource.getMappings(ext.rowType) as m>
                                             <tr <#if m_index==0>class="mapping_row"</#if>>
                                                 <th><#if m_index==0>${ext.title}</#if></th>
                                                 <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
-                                                <td>
+                                                <td class="d-flex justify-content-end">
                                                     <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
                                                     <a class="btn btn-outline-secondary" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                         <@s.text name='button.preview'/>
@@ -145,6 +149,7 @@
                                     </#if>
                                 </#list>
                             </table>
+                            </div>
                         </#if>
                     </div>
                 </#if>
