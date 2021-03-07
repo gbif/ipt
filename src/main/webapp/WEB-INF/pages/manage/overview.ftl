@@ -308,7 +308,7 @@
                         </p>
 
                         <div class="details">
-                            <table>
+                            <table class="table table-borderless">
                                 <#if resource.usesAutoPublishing()>
                                     <tr>
                                         <th><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
@@ -350,23 +350,23 @@
 
                 <@popoverTextInfo visibilityTitleInfo/>
                 <@s.text name='manage.overview.visibility'/>
-
-                <#if resource.status=="PRIVATE">
-                    <span class="badge rounded-pill bg-danger">
-                        <@s.text name="resource.status.${resource.status?lower_case}"/>
-                    </span>
-                <#else>
-                    <span class="badge rounded-pill bg-success">
-                        <@s.text name="resource.status.${resource.status?lower_case}"/>
-                    </span>
-                </#if>
             </h6>
 
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
                     <div class="mx-md-4 mx-2">
                         <div class="bodyOverview">
+
                             <p class="text-muted">
+                                <#if resource.status=="PRIVATE">
+                                    <span class="badge rounded-pill bg-danger">
+                                    <@s.text name="resource.status.${resource.status?lower_case}"/>
+                                </span>
+                                <#else>
+                                    <span class="badge rounded-pill bg-success">
+                                    <@s.text name="resource.status.${resource.status?lower_case}"/>
+                                </span>
+                                </#if>
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
