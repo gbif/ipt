@@ -41,7 +41,7 @@
                                             <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         </#if>
                                         <td class="d-flex justify-content-end">
-                                            <a class="btn btn-outline-success ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
+                                            <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                                                 <@s.text name='button.edit'/>
                                             </a>
                                         </td>
@@ -114,10 +114,10 @@
                                     <th><#if m_index==0>${m.extension.title}</#if></th>
                                     <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                     <td class="d-flex justify-content-end">
-                                        <a class="btn btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                        <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                             <@s.text name='button.preview'/>
                                         </a>
-                                        <a class="btn btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                        <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                             <@s.text name='button.edit'/>
                                         </a>
                                     </td>
@@ -137,10 +137,10 @@
                                                 <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                                 <td class="d-flex justify-content-end">
                                                     <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
-                                                    <a class="btn btn-outline-secondary" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                    <a class="btn btn-sm btn-outline-secondary" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                         <@s.text name='button.preview'/>
                                                     </a>
-                                                    <a class="btn btn-outline-success" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                    <a class="btn btn-sm btn-outline-success" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                         <@s.text name='button.edit'/>
                                                     </a>
                                                 </td>
