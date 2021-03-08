@@ -80,8 +80,10 @@
 
     <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false requiredField=false>
         <div>
-            <#include "/WEB-INF/pages/macros/form_field_common.ftl">
-            <@s.select id=name name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled emptyOption=includeEmpty/>
+            <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
+            <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
+            <@s.select id=name class="form-select" name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled emptyOption=includeEmpty/>
         </div>
     </#macro>
 
