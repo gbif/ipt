@@ -11,7 +11,7 @@
 
 [#if warnings?size>0]
     [#list warnings as w]
-        <div class="alert alert-danger mx-md-4 mx-2 mt-2 alert-dismissible fade show" role="alert">
+        <div class="alert alert-warning mx-md-4 mx-2 mt-2 alert-dismissible fade show" role="alert">
             <span>${w!}</span>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
