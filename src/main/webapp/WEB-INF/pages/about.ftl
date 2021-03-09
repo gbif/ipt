@@ -1,6 +1,6 @@
 <#ftl output_format="HTML">
 <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
-<title>[@s.text name="login.title"/]</title>
+<title><@s.text name="login.title"/></title>
 <#assign currentMenu = "about"/>
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
 
