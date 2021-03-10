@@ -1,6 +1,6 @@
 <#ftl output_format="HTML">
 
-<div class="col-md-3 p-3 bg-body rounded shadow-sm">
+<div class="col-lg-3 order-lg-last p-3 bg-body rounded shadow-sm">
     <#if sideMenuEml!false>
         <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-success text-center">
             <@s.text name='manage.metadata.section' />

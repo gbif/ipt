@@ -134,8 +134,9 @@
 <main class="container pt-5">
     <form class="topForm" action="metadata-${section}.do" method="post" novalidate>
         <div class="row g-3">
+            <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
 
-            <div class="col-md-9 p-3 bg-body rounded shadow-sm">
+            <div class="col-lg-9 p-3 bg-body rounded shadow-sm">
 
                 <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
@@ -151,15 +152,15 @@
                         <@input name="eml.title" requiredField=true />
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <@select name="eml.metadataLanguage" help="i18n" options=languages value="${metadataLanguageIso3!'eng'}" requiredField=true />
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <@select name="resource.coreType" i18nkey="resource.coreType" help="i18n" options=types value="${resource.coreType!''}" requiredField=true />
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <#if resource.organisation??>
                             <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations value="${resource.organisation.key!''}" requiredField=true />
                         <#else>
@@ -167,7 +168,7 @@
                         </#if>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <@select name="eml.language" help="i18n" options=languages value="${languageIso3!'eng'}" requiredField=true />
                     </div>
 
@@ -175,7 +176,7 @@
                         <@select name="resource.subtype" i18nkey="resource.subtype" help="i18n" options=listSubtypes value="${resource.subtype!''}" />
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <@select name="eml.updateFrequency" i18nkey="eml.updateFrequency" help="i18n" options=frequencies value="${eml.updateFrequency.identifier!'unkown'}" requiredField=true />
                     </div>
 
@@ -203,9 +204,9 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
-
+        <div class="row g-3 mt-1">
             <div class="col-md-12 p-3 bg-body rounded shadow-sm">
                 <!-- Descriptions, broken into one or more paragraphs -->
                 <@textinline name="eml.description" help="i18n" requiredField=true/>
@@ -635,8 +636,6 @@
                 <input name="r" type="hidden" value="${resource.shortname}" />
             </div>
         </div>
-
-
     </form>
 
 </main>
