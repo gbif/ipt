@@ -172,7 +172,9 @@
 <main class="container pt-5">
     <form class="topForm" action="metadata-${section}.do" method="post">
         <div class="row g-3">
-            <div class="col-md-9 p-3 bg-body rounded shadow-sm">
+            <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
+
+            <div class="col-lg-9 p-3 bg-body rounded shadow-sm">
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
@@ -220,8 +222,6 @@
             <!-- internal parameter -->
             <input name="r" type="hidden" value="${resource.shortname}" />
         </div>
-
-            <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
         </div>
     </form>
 </main>
