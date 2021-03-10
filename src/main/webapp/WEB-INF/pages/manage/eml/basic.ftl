@@ -132,7 +132,7 @@
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 
 <main class="container pt-5">
-    <form class="topForm" action="metadata-${section}.do" method="post">
+    <form class="topForm" action="metadata-${section}.do" method="post" novalidate>
         <div class="row g-3">
 
             <div class="col-md-9 p-3 bg-body rounded shadow-sm">
@@ -251,8 +251,8 @@
                 <@textinline name="eml.contact.plural" help="i18n" requiredField=true/>
                 <div id="contact-items">
                     <#list eml.contacts as contact>
-                        <div id="contact-item-${contact_index}" class="item clearfix row g-3 mx-md-4 mx-2 pb-4">
-                            <div class="columnLinks mt-2 d-flex justify-content-between">
+                        <div id="contact-item-${contact_index}" class="item row g-3 mx-md-4 mx-2 pb-4 border-bottom">
+                            <div class="columnLinks mt-3 d-flex justify-content-between">
                                 <!-- Do not show copy-from-resource-contact link for for first contact -->
                                 <div>&nbsp;</div>
                                 <div>
@@ -317,7 +317,7 @@
                     <a id="plus-contact" href="">[${addContactLink?lower_case?cap_first}]</a>
                 </div>
 
-                <div id="baseItem-contact" class="item clearfix row g-3 mx-md-4 mx-2 pb-4" style="display:none;">
+                <div id="baseItem-contact" class="item row g-3 mx-md-4 mx-2 pb-4 border-bottom" style="display:none;">
                     <div class="columnLinks mt-3 d-flex justify-content-between">
                         <div>
                             <a id="contact-copyDetails" href="">[ ${copyLink?lower_case?cap_first} ]</a>
@@ -376,13 +376,12 @@
                 <@textinline name="eml.resourceCreator.plural" help="i18n" requiredField=true/>
                 <div id="creator-items">
                     <#list eml.creators as creator>
-                        <div id="creator-item-${creator_index}" class="item clearfix">
+                        <div id="creator-item-${creator_index}" class="item row g-3 mx-md-4 mx-2 pb-4 border-bottom">
                             <div class="columnLinks mt-3 d-flex justify-content-between">
-                                <div class="col-md-6">
+                                <div>
                                     <a id="creator-copyDetails-${creator_index}" href="">[ ${copyLink?lower_case?cap_first} ]</a>
                                 </div>
-                                <div class="col-md-6">
-
+                                <div>
                                     <a id="creator-removeLink-${creator_index}" class="removeCreatorLink" href="">[ ${removeCreatorLink?lower_case?cap_first} ]</a>
                                 </div>
                             </div>
@@ -407,7 +406,7 @@
                             <div class="col-md-6">
                                 <@input name="eml.creators[${creator_index}].address.province" i18nkey="eml.resourceCreator.address.province" />
                             </div>
-                            <div class="countryList">
+                            <div class="countryList col-md-6">
                                 <@select name="eml.creators[${creator_index}].address.country" help="i18n" options=countries i18nkey="eml.resourceCreator.address.country" value="${eml.creators[creator_index].address.country!}"/>
                             </div>
                             <div class="col-md-6">
@@ -446,7 +445,7 @@
                     </a>
                 </div>
 
-                <div id="baseItem-creator" class="item clearfix row g-3 mx-md-4 mx-2 pb-4" style="display:none;">
+                <div id="baseItem-creator" class="item row g-3 mx-md-4 mx-2 pb-4 border-bottom" style="display:none;">
                     <div class="columnLinks mt-3 d-flex justify-content-between">
                         <div>
                             <a id="creator-copyDetails" href="">[ ${copyLink}  ]</a>
@@ -503,9 +502,9 @@
             <div class="col-md-12 p-3 bg-body rounded shadow-sm">
                 <!-- Metadata Providers -->
                 <@textinline name="eml.metadataProvider.plural" help="i18n" requiredField=true/>
-                <div id="metadataProvider-items" class="mx-md-4 mx-2 pb-4">
+                <div id="metadataProvider-items">
                     <#list eml.metadataProviders as metadataProvider>
-                        <div id="metadataProvider-item-${metadataProvider_index}" class="item clearfix row g-3">
+                        <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 mx-md-4 mx-2 pb-4 border-bottom">
                             <div class="columnLinks d-flex justify-content-between">
                                 <div>
                                     <a id="metadataProvider-copyDetails-${metadataProvider_index}" href="">[ <@s.text name="eml.resourceCreator.copyLink" />  ]</a>
@@ -568,11 +567,11 @@
                     </#list>
                 </div>
 
-                <div class="addNew mx-md-4 mx-2">
+                <div class="addNew mx-md-4 mx-2 mt-2">
                     <a id="plus-metadataProvider" href="">${addMetadataProviderLink?lower_case?cap_first}</a>
                 </div>
 
-                <div id="baseItem-metadataProvider" class="item clearfix row g-3 mx-md-4 mx-2 pb-4" style="display:none;">
+                <div id="baseItem-metadataProvider" class="item row g-3 mx-md-4 mx-2 pb-4 border-bottom" style="display:none;">
                     <div class="columnLinks d-flex justify-content-between">
                         <div>
                             <a id="metadataProvider-copyDetails" href="">[ ${copyLink?lower_case?cap_first}  ]</a>
