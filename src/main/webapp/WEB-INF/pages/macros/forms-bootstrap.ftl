@@ -1,24 +1,47 @@
 <#ftl output_format="HTML">
 
-
     <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
-<#--    <#if date><div class="calendarInfo"><#else><div></#if>-->
-    <div>
-        <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
-        <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
-        <input
-                class="form-control"
-                type="${type}"
-                id="${name}"
-                name="${name}"
-                value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
-                <#if (size>0)>size="${size}"</#if>
-                <#if (maxlength>0)>maxlength="${maxlength}"</#if>
-                <#if disabled>readonly="readonly"</#if>
-                <#if requiredField>required</#if>
-        />
-        <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
-    </div>
+        <#if date>
+            <div class="calendarInfo">
+                <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
+                <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
+                <div class="input-group">
+                    <span class="input-group-text" id="calendar-${name}">
+                        <i class="bi bi-calendar3"></i>
+                    </span>
+                    <input
+                            class="form-control"
+                            type="${type}"
+                            id="${name}"
+                            name="${name}"
+                            aria-describedby="calendar-${name}"
+                            value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
+                            <#if (size>0)>size="${size}"</#if>
+                            <#if (maxlength>0)>maxlength="${maxlength}"</#if>
+                            <#if disabled>readonly="readonly"</#if>
+                            <#if requiredField>required</#if>
+                    />
+                </div>
+                <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
+            </div>
+        <#else>
+            <div>
+                <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
+                <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
+                <input
+                        class="form-control"
+                        type="${type}"
+                        id="${name}"
+                        name="${name}"
+                        value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
+                        <#if (size>0)>size="${size}"</#if>
+                        <#if (maxlength>0)>maxlength="${maxlength}"</#if>
+                        <#if disabled>readonly="readonly"</#if>
+                        <#if requiredField>required</#if>
+                />
+                <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
+            </div>
+        </#if>
     </#macro>
 
     <#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false maxlength=-1>

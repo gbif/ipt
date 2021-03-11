@@ -40,17 +40,18 @@ function initForm(){
  * 	-remember to add the (#) symbol in the parameter-. (this parameter can be omitted).
  */
 function initHelp(context){
-	if(context == undefined) context = "";
+	if(context === undefined) context = "";
 	
 	$(context+" .calendarInfo").each(function(i) {
-		if (context != "") {
-			$(this).find("input").removeAttr("class");
-			$(this).find(".ui-datepicker-trigger").remove();
-		}
+		// if (context !== "") {
+		// 	console.log(context)
+		// 	$(this).find("input").removeAttr("class");
+		// 	$(this).find(".ui-datepicker-trigger").remove();
+		// }
 		$(this).find("input").datepicker({
-			showOn: "button",
-			buttonImage: "../images/calendar.png",
-			buttonImageOnly: true,
+			// showOn: "button",
+			// buttonImage: "../images/calendar.png",
+			// buttonImageOnly: true,
 			changeMonth: true,
 			changeYear: true,
 			constrainInput: false,
