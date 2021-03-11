@@ -1,6 +1,6 @@
 <!-- Represents metadata section on resource overview page -->
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="metadata">
-    <h6 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
         <#assign metadataHeaderInfo>
             <@s.text name='manage.metadata.basic.required.message'/>
             <#if resource.coreType?has_content && resource.coreType==metadataType>
@@ -13,7 +13,7 @@
         <@popoverTextInfo metadataHeaderInfo/>
 
         <@s.text name='manage.overview.metadata'/>
-    </h6>
+    </h5>
 
     <div class="row">
         <div class="col-sm-9 order-sm-last">
@@ -39,12 +39,15 @@
                 <form action='metadata-basic.do' method='get'>
                     <input name="r" type="hidden" value="${resource.shortname}"/>
                     <#if missingMetadata>
-                        <@s.submit cssClass="btn btn-outline-success" name="edit" key="button.edit"/>
-                        <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
-                            <@s.text name="manage.overview.missing.metadata"/>
-                        ">
-                        <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-                        </span>
+                        <div class="btn-group" role="group">
+                            <#assign metadataSubmitWarning>
+                                <@s.text name="manage.overview.missing.metadata"/>
+                            </#assign>
+                            <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${metadataSubmitWarning}">
+                                <i class="bi bi-exclamation-triangle"></i>
+                            </button>
+                            <@s.submit cssClass="btn btn-outline-warning" name="edit" key="button.edit"/>
+                        </div>
                     <#else>
                         <@s.submit cssClass="btn btn-outline-success" name="edit" key="button.edit"/>
                     </#if>

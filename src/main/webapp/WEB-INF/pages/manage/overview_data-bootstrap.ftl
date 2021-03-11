@@ -1,14 +1,14 @@
 <!-- Represents source data and mapping data sections on resource overview page -->
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="sources">
     <div class="titleOverview">
-        <h6 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
             <#assign sourcesInfo>
                 <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/>
             </#assign>
             <@popoverTextInfo sourcesInfo/>
 
             <@s.text name='manage.overview.source.data'/>
-        </h6>
+        </h5>
 
         <div class="row">
             <div class="col-xl-9 order-xl-last">
@@ -27,7 +27,7 @@
                     <#if (resource.sources?size>0)>
                         <div class="details">
                             <div class="table-responsive">
-                                <table class="table table-sm table-borderless">
+                                <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                 <#list resource.sources as src>
                                     <tr>
                                         <#if src.isFileSource()>
@@ -80,14 +80,14 @@
 </div>
 
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="mappings">
-    <h6 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
         <#assign mappingsInfo>
             <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/><@s.text name='manage.overview.DwC.Mappings.coretype.description1'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description2'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description3'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description4'/>
         </#assign>
         <@popoverTextInfo mappingsInfo/>
 
         <@s.text name='manage.overview.DwC.Mappings'/>
-    </h6>
+    </h5>
 
     <div class="row">
         <div class="col-sm-9 order-sm-last">
@@ -108,18 +108,20 @@
                     <div class="details">
                         <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
                         <div class="table-responsive">
-                            <table class="table table-sm table-borderless">
+                            <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                             <#list resource.getMappings(resource.coreRowType) as m>
                                 <tr <#if m_index==0>class="mapping_row"</#if>>
                                     <th><#if m_index==0>${m.extension.title}</#if></th>
                                     <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                     <td class="d-flex justify-content-end">
-                                        <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                            <@s.text name='button.preview'/>
-                                        </a>
-                                        <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                            <@s.text name='button.edit'/>
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                                <@s.text name='button.preview'/>
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                                <@s.text name='button.edit'/>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             </#list>
@@ -128,7 +130,7 @@
                         <#if (resource.getMappedExtensions()?size > 1)>
                             <div class="mapping_head twenty_top"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
                             <div class="table-responsive">
-                                <table class="table table-sm table-borderless">
+                                <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                 <#list resource.getMappedExtensions() as ext>
                                     <#if ext.rowType != resource.coreRowType>
                                         <#list resource.getMappings(ext.rowType) as m>
@@ -136,13 +138,14 @@
                                                 <th><#if m_index==0>${ext.title}</#if></th>
                                                 <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                                 <td class="d-flex justify-content-end">
-                                                    <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
-                                                    <a class="btn btn-sm btn-outline-secondary" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                        <@s.text name='button.preview'/>
-                                                    </a>
-                                                    <a class="btn btn-sm btn-outline-success" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                        <@s.text name='button.edit'/>
-                                                    </a>
+                                                    <div class="btn-group" role="group">
+                                                        <a class="btn btn-sm btn-outline-secondary" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                            <@s.text name='button.preview'/>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-outline-success" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                            <@s.text name='button.edit'/>
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </#list>

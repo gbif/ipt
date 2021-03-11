@@ -173,7 +173,7 @@
         </#if>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="publish">
-            <h6 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
                 <#assign overviewTitleInfo>
                     <#if resource.coreType?has_content && resource.coreType==metadataType>
                         <@s.text name="manage.overview.published.description.metadataOnly"/>
@@ -190,7 +190,7 @@
                 <@popoverTextInfo overviewTitleInfo/>
 
                 <@s.text name='manage.overview.published'/>
-            </h6>
+            </h5>
 
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
@@ -214,7 +214,7 @@
                         <#assign licenseTitle><@s.text name='eml.intellectualRights.license'/></#assign>
 
                         <div class="table-responsive mx-md-4 mx-2">
-                            <table class="table table-sm table-borderless">
+                            <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                 <tr>
                                     <th></th><#if resource.lastPublished??><td class="green">${lastPublishedTitle?cap_first}</td></#if><td class="left_padding">${nextPublishedTitle?cap_first}</td>
                                 </tr>
@@ -291,10 +291,10 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="autopublish">
-            <h6 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
                 <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                 <@s.text name="manage.overview.autopublish.title"/>
-            </h6>
+            </h5>
 
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
@@ -341,7 +341,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="visibility">
-            <h6 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
                 <#assign visibilityTitleInfo>
                     <@s.text name='manage.overview.visibility.description'/>
                     <br><br>
@@ -350,7 +350,7 @@
 
                 <@popoverTextInfo visibilityTitleInfo/>
                 <@s.text name='manage.overview.visibility'/>
-            </h6>
+            </h5>
 
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
@@ -360,18 +360,20 @@
                             <p class="text-muted">
                                 <#if resource.status=="PRIVATE">
                                     <span class="badge rounded-pill bg-danger">
-                                    <@s.text name="resource.status.${resource.status?lower_case}"/>
-                                </span>
+                                        <@s.text name="resource.status.${resource.status?lower_case}"/>
+                                    </span>
                                 <#else>
                                     <span class="badge rounded-pill bg-success">
-                                    <@s.text name="resource.status.${resource.status?lower_case}"/>
-                                </span>
+                                        <@s.text name="resource.status.${resource.status?lower_case}"/>
+                                    </span>
                                 </#if>
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
                             <p>
-                                <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                                <span class="badge rounded-pill bg-warning">
+                                    <i class="bi bi-exclamation-triangle" style="color: black;"></i>
+                                </span>
                                 <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
                             </p>
                             <#if resource.status=="REGISTERED" && resource.key??>
@@ -459,10 +461,10 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="managers">
-            <h6 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
                 <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                 <@s.text name="manage.overview.resource.managers"/>
-            </h6>
+            </h5>
 
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
@@ -472,7 +474,7 @@
                         </p>
 
                         <div class="details">
-                            <table class="table table-sm table-borderless">
+                            <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                 <tr>
                                     <th><@s.text name="manage.overview.resource.managers.creator"/></th>
                                     <td>${resource.creator.name!}, ${resource.creator.email}</td>
