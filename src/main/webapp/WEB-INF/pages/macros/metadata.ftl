@@ -222,7 +222,8 @@ $(document).ready(function(){
 		$("#list-"+$target.attr("id").split("-")[1]).slideDown('slow', function(){
 			$("#taxonsLink-"+$target.attr("id").split("-")[1]).hide();
 			$target.parent().children("img").hide();
-		});		
+			$target.parent().children("span").hide();
+		});
 	}
 	
 	function createTaxons(event) {
@@ -365,7 +366,7 @@ $(document).ready(function(){
 			$("#item-"+index+" [id^='add-button']").attr("id", "add-button-"+index).attr("name", function() {return $(this).attr("id");});
 			$("#add-button-"+index).click(function(event){
 				createTaxons(event);
-			});			
+			});
 			if($("#item-"+index+" #subItems").children().size() == 0) {
 				$("#plus-subItem-"+index).click();
 			};

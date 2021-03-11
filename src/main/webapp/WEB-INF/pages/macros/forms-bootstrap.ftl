@@ -57,7 +57,7 @@
 
     <#macro link name value="" href="" class="" i18nkey="" help="" errorfield="">
         <div>
-            <#include "/WEB-INF/pages/macros/help_icon.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
             <a id="${name}" name="${name}" class="${class}" href="${href}"><@s.text name="${value}"/></a>
         </div>
     </#macro>
@@ -139,11 +139,12 @@
 
     <#macro showMore text maxLength>
         <#if (text?length>maxLength)>
-            <div id="visibleContent"><@textWithFormattedLink (text)?substring(0,maxLength)/>... <a id="showMore"
-                                                                                                   href=""><@s.text name='basic.showMore'/></a>
+            <div id="visibleContent">
+                <@textWithFormattedLink (text)?substring(0,maxLength)/>... <a id="showMore" href=""><@s.text name='basic.showMore'/></a>
             </div>
-            <div id="hiddenContent" style="display: none"><@textWithFormattedLink text/><a id="showLess"
-                                                                                           href=""><@s.text name='basic.showLess'/></a>
+            <div id="hiddenContent" style="display: none">
+                <@textWithFormattedLink text/>
+                <a id="showLess" href=""><@s.text name='basic.showLess'/></a>
             </div>
         <#else>
             <@textWithFormattedLink text/>
