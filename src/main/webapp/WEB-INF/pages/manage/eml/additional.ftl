@@ -1,159 +1,193 @@
 <#escape x as x?html>
-<#setting number_format="#####.##">
-<#include "/WEB-INF/pages/inc/header.ftl">
-<#include "/WEB-INF/pages/macros/metadata.ftl"/>
-<script type="text/javascript" src="${baseURL}/js/ajaxfileupload.js"></script>
-<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-<title><@s.text name='manage.metadata.additional.title'/></title>
-<script type="text/javascript">
-	$(document).ready(function(){
-		initHelp();
+    <#setting number_format="#####.##">
+    <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+    <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+    <script type="text/javascript" src="${baseURL}/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <title><@s.text name='manage.metadata.additional.title'/></title>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            initHelp();
 
-		$("#buttonUpload").click(function() {
-  			return ajaxFileUpload();
-		});
+            $("#buttonUpload").click(function() {
+                return ajaxFileUpload();
+            });
 
-		function ajaxFileUpload()
-    {
-        var logourl=$("#resourcelogo img").attr("src");
-        $.ajaxFileUpload
-        (
+            function ajaxFileUpload()
             {
-                url:'uploadlogo.do',
-                secureuri:false,
-                fileElementId:'file',
-                dataType: 'json',
-                success: function (data, status)
-                {
-                    if(typeof(data.error) != 'undefined')
+                var logourl=$("#resourcelogo img").attr("src");
+                $.ajaxFileUpload
+                (
                     {
-                        if(data.error != '')
+                        url:'uploadlogo.do',
+                        secureuri:false,
+                        fileElementId:'file',
+                        dataType: 'json',
+                        success: function (data, status)
                         {
-                            alert(data.error);
-                        }else
+                            if(typeof(data.error) != 'undefined')
+                            {
+                                if(data.error != '')
+                                {
+                                    alert(data.error);
+                                }else
+                                {
+                                    alert(data.msg);
+                                }
+                            }
+                        },
+                        error: function (data, status, e)
                         {
-                            alert(data.msg);
+                            alert(e);
                         }
                     }
-                },
-                error: function (data, status, e)
-                {
-                    alert(e);
+                )
+                if(logourl==undefined){
+                    var baseimg=$('#baseimg').clone();
+                    baseimg.appendTo('#resourcelogo');
+                    logourl=$("#resourcelogo img").attr("src");
+                    $("#resourcelogo img").hide('slow').removeAttr("src");
+                    $("#resourcelogo img").show('slow', function() {
+                        $("[id$='eml.logoUrl']").attr("value",logourl);
+                        $("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
+                    });
+                }else{
+                    $("#resourcelogo img").hide('slow').removeAttr("src");
+                    logourl=$("#baseimg").attr("src");
+                    $("#resourcelogo img").show('slow', function() {
+                        $("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
+                        $("#logofields input[name$='logoUrl']").val( logourl);
+                    });
                 }
+                return false;
             }
-        )
-        if(logourl==undefined){
-        	var baseimg=$('#baseimg').clone();
-			baseimg.appendTo('#resourcelogo');
-			logourl=$("#resourcelogo img").attr("src");
-			$("#resourcelogo img").hide('slow').removeAttr("src");
-			$("#resourcelogo img").show('slow', function() {
-    			$("[id$='eml.logoUrl']").attr("value",logourl);
-				$("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
-  			});
-        }else{
-        	$("#resourcelogo img").hide('slow').removeAttr("src");
-         	logourl=$("#baseimg").attr("src");
-         	 $("#resourcelogo img").show('slow', function() {
-    			$("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
-    			$("#logofields input[name$='logoUrl']").val( logourl);
-  			});
+
+        });
+
+
+    </script>
+    <#assign sideMenuEml=true />
+    <#assign currentMenu="manage"/>
+    <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+    <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
+    <style>
+        #resourcelogo img {
+            max-width: 150px;
         }
-        return false;
-    }
-
-	});
+    </style>
 
 
-</script>
-<#assign sideMenuEml=true />
-<#assign currentMenu="manage"/>
-<#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms.ftl"/>
+    <main class="container pt-5">
 
-<h1><span class="superscript"><@s.text name='manage.overview.title.label'/></span>
-    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-</h1>
-<div class="grid_17 suffix_1">
-<form class="topForm" action="metadata-${section}.do" method="post">
-<h2 class="subTitle"><@s.text name='manage.metadata.additional.title'/></h2>
-    <p><@s.text name='manage.metadata.additional.intro'/></p>
+        <form class="topForm" action="metadata-${section}.do" method="post" novalidate>
+            <div class="row g-3">
+                <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
 
-      <!-- Resource Logo -->
-    	<div id="logofields" class="twenty_top quad_block">
-          <div class="column_quad">
-            <@input name="dateStamp" i18nkey="eml.dateStamp" help="i18n" disabled=true value='${eml.dateStamp?date?string("yyyy-MM-dd")}'/>
-            <@input name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" disabled=true value='${eml.pubDate?date?string("yyyy-MM-dd")}'/>
-          </div>
-    		  <div class="column_half">
-            <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n" type="url" />
-              <div style="padding-left: 20px;">
-                <@s.file name="file"/>
-                  <div class="clearfix"></div>
-                  <button class="button" id="buttonUpload"><@s.text name="button.upload"/></button>
-              </div>
-    		  </div>
-    		  <div class="column_quad">
-    			  <div id="resourcelogo">
-    				  <#if resource.eml.logoUrl?has_content>
-    					  <img src="${resource.eml.logoUrl}" />
-    				  </#if>
-    			  </div>
-          </div>
-          <div class="clearfix"></div>
-    	</div>
+                <div class="col-lg-9 p-3 bg-body rounded shadow-sm">
 
-    <!-- Purpose -->
-    <div class="twenty_top">
-      <@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
-    </div>
+                    <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-    <!-- Maintenance Update Frequency -->
-    <div class="twenty_top">
-      <@text name="eml.updateFrequencyDescription" i18nkey="eml.updateFrequencyDescription" help="i18n" />
-    </div>
+                    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                        <@s.text name='manage.metadata.additional.title'/>:
+                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    </h5>
 
-      <!-- Additional info -->
-      <div class="twenty_top">
-        <@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
-      </div>
+                    <p class="text-muted mx-md-4 mx-2 mb-0">
+                        <@s.text name='manage.metadata.additional.intro'/>
+                    </p>
 
+                    <!-- Resource Logo -->
+                    <div id="logofields" class="row g-3 mx-md-3 mx-1 pb-1 mt-1">
+                        <div class="col-lg-6">
+                            <@input name="dateStamp" i18nkey="eml.dateStamp" help="i18n" disabled=true value='${eml.dateStamp?date?string("yyyy-MM-dd")}'/>
+                        </div>
 
-    <!-- Alternative identifiers -->
-    <div class="listBlock">
-        <@textinline name="manage.metadata.alternateIdentifiers.title" help="i18n"/>
-      	<div id="items">
-    		<#list eml.alternateIdentifiers as item>
-    			<div id="item-${item_index}" class="item">
-    			<div class="right">
-    				<a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
-    		    </div>
-    			<@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
-    		  	</div>
-    		</#list>
-    	</div>
-      	<div class="addNew"><a id="plus" href="">[ <@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a></div>
+                        <div class="col-lg-6">
+                            <@input name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" disabled=true value='${eml.pubDate?date?string("yyyy-MM-dd")}'/>
+                        </div>
 
-      	<div class="buttons">
-     		<@s.submit cssClass="button" name="save" key="button.save" cssClass="confirm" />
-     		<@s.submit cssClass="button" name="cancel" key="button.cancel"/>
-      	</div>
-      	<div class="clearfix"></div>
-  	</div>
-    <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
-	  <input id="r" name="r" type="hidden" value="${resource.shortname}" />
-    <input id="validate" name="validate" type="hidden" value="false" />
-</form>
-</div>
+                        <div class="col-lg-9">
+                            <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n" type="url" />
+                            <@s.file cssClass="form-control my-1" name="file"/>
+                            <button class="button btn btn-outline-success" id="buttonUpload">
+                                <@s.text name="button.upload"/>
+                            </button>
+                        </div>
 
-<div id="baseItem" class="item clearfix" style="display:none;">
-	<div class="right">
-      <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
-    </div>
-	<@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
-</div>
-<img id="baseimg" src="${baseURL}/logo.do?r=${resource.shortname}" style="display:none;"/>
-<img id="loadingimg" src="${baseURL}/images/loading_indicator.gif" style="display:none;"/>
+                        <div class="col-lg-3 d-flex justify-content-start align-items-center">
+                            <div id="resourcelogo">
+                                <#if resource.eml.logoUrl?has_content>
+                                    <img src="${resource.eml.logoUrl}" />
+                                </#if>
+                            </div>
+                        </div>
+                    </div>
 
-<#include "/WEB-INF/pages/inc/footer.ftl">
+                    <div class="row g-3 mx-md-3 mx-1 pb-3 mt-1">
+                        <!-- Purpose -->
+                        <div class="twenty_top">
+                            <@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
+                        </div>
+
+                        <!-- Maintenance Update Frequency -->
+                        <div class="twenty_top">
+                            <@text name="eml.updateFrequencyDescription" i18nkey="eml.updateFrequencyDescription" help="i18n" />
+                        </div>
+
+                        <!-- Additional info -->
+                        <div class="twenty_top">
+                            <@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row g-3 mt-1">
+                <div class="col-lg-12 p-3 bg-body rounded shadow-sm">
+                    <!-- Alternative identifiers -->
+                    <div class="listBlock">
+                        <@textinline name="manage.metadata.alternateIdentifiers.title" help="i18n"/>
+                        <div id="items">
+                            <#list eml.alternateIdentifiers as item>
+                                <div id="item-${item_index}" class="item row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1">
+                                    <div class="mt-1 d-flex justify-content-end">
+                                        <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
+                                    </div>
+                                    <@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
+                                </div>
+                            </#list>
+                        </div>
+
+                        <div class="addNew col-12 mx-md-4 mx-2 mt-1">
+                            <a id="plus" href="">[ <@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
+                        </div>
+
+                        <div id='buttons' class="buttons col-12 mx-md-4 mx-2 mt-3">
+                            <@s.submit cssClass="button btn btn-outline-success" name="save" key="button.save"/>
+                            <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel"/>
+                        </div>
+
+                    </div>
+
+                    <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
+                    <input id="r" name="r" type="hidden" value="${resource.shortname}" />
+                    <input id="validate" name="validate" type="hidden" value="false" />
+
+                    <div id="baseItem" class="item clearfix row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1" style="display:none;">
+                        <div class="mt-1 d-flex justify-content-end">
+                            <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
+                        </div>
+                        <@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
+                    </div>
+
+                    <img id="baseimg" src="${baseURL}/logo.do?r=${resource.shortname}" style="display:none;"/>
+                    <img id="loadingimg" src="${baseURL}/images/loading_indicator.gif" style="display:none;"/>
+                </div>
+            </div>
+
+        </form>
+    </main>
+
+    <#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
 </#escape>
