@@ -60,6 +60,10 @@
                     </h5>
 
                     <p class="text-muted mx-md-4 mx-2 mb-0">
+                        <@s.text name='manage.metadata.citations.intro'/>
+                    </p>
+
+                    <p class="text-muted mx-md-4 mx-2 mb-0">
                         <strong><@s.text name='manage.metadata.citations.warning'/></strong>
                     </p>
 
@@ -107,7 +111,7 @@
 
                     <div class="buttons col-12 mx-md-4 mx-2 mt-3">
                         <@s.submit cssClass="button btn btn-outline-success" name="save" key="button.save" />
-                        <@s.submit cssClass="button btn btn-outline-danger" name="cancel" key="button.cancel" />
+                        <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
                     </div>
 
                     <!-- internal parameter -->
