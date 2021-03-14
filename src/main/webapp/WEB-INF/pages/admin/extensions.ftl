@@ -105,7 +105,7 @@
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
                     <@s.text name="admin.extension.extensions"/>
                 </h5>
 
@@ -128,7 +128,7 @@
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
                     <@s.text name="extension.synchronise.title"/>
                 </h5>
 
@@ -148,7 +148,7 @@
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
                     <@s.text name="extension.further.title"/>
                 </h5>
 
