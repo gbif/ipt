@@ -1,32 +1,49 @@
 [#ftl output_format="HTML"]
-[#include "/WEB-INF/pages/inc/header.ftl"/]
+[#include "/WEB-INF/pages/inc/header-bootstrap.ftl"/]
 <title>[@s.text name="error.header.title"/]</title>
-[#include "/WEB-INF/pages/inc/menu.ftl"/]
+[#include "/WEB-INF/pages/inc/menu-bootstrap.ftl"/]
 
-<h1>[@s.text name="error.title"/]</h1>
-<p>[@s.text name="error.body"/]<p/>
+<main class="container pt-5">
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-<pre>
-      [@s.property value="%{exception.message}"/]
-</pre>
-    
-[#if adminRights]
-<p><a href="${baseURL}/admin/logs.do">[@s.text name="error.view.logs"/]</a></p>
-[/#if]
-<p>
-[@s.text name="error.report"/]
-</p>
+        [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
 
-<p>
-[@s.text name="error.thanks"/]
-</p>
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            [@s.text name="error.title"/]
+        </h5>
 
-<hr/>
-<h3>[@s.text name="error.details.title"/]</h3>
-<p>
-  [@s.property value="%{exceptionStack}"/]
-</p>
+        <p class="text-muted mx-md-4 mx-2">
+            [@s.text name="error.body"/]
+        </p>
 
-</div>
+        <pre class="mb-0">
+            [@s.property value="%{exception.message}"/]
+        </pre>
 
-[#include "/WEB-INF/pages/inc/footer.ftl"/]
+        [#if adminRights]
+            <p class="text-muted mx-md-4 mx-2">
+                <a href="${baseURL}/admin/logs.do">[@s.text name="error.view.logs"/]</a>
+            </p>
+        [/#if]
+
+        <p class="text-muted mx-md-4 mx-2">
+            [@s.text name="error.report"/]
+        </p>
+
+        <p class="text-muted mx-md-4 mx-2">
+            [@s.text name="error.thanks"/]
+        </p>
+    </div>
+
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            [@s.text name="error.details.title"/]
+        </h5>
+
+        <p class="text-muted mx-md-4 mx-2">
+            [@s.property value="%{exceptionStack}"/]
+        </p>
+    </div>
+</main>
+
+[#include "/WEB-INF/pages/inc/footer-bootstrap.ftl"/]
