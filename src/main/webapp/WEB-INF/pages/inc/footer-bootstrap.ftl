@@ -3,7 +3,7 @@
     <div class="container">
         <ul class="list-inline mb-0">
             <li class="list-inline-item">
-                <small>IPT Version 2.4.3-SNAPSHOT-reb1201e</small>
+                <small>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</small>
             </li>
             <li class="list-inline-item">
                 <a href="#"><small>About the IPT</small></a>
