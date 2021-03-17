@@ -8,7 +8,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
 <@resourcesTableBootstrap shownPublicly=true numResourcesShown=20 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
 
-<main class="container pt-5">
+<main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
             <@s.text name="portal.home.title"/>

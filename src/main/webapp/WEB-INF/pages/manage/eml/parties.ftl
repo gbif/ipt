@@ -13,7 +13,7 @@
     <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 
-<main class="container pt-5">
+<main class="container">
 
     <form class="topForm" action="metadata-${section}.do" method="post" novalidate>
         <div class="row g-3">

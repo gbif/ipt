@@ -13,7 +13,7 @@
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 
 
-    <main class="container pt-5">
+    <main class="container">
 
         <form class="topForm" action="metadata-${section}.do" method="post" novalidate>
             <div class="row g-3">

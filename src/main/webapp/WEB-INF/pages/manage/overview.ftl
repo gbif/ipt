@@ -138,7 +138,7 @@
 <#include "/WEB-INF/pages/macros/manage/publish-bootstrap.ftl"/>
 <#assign metadataType = "metadata"/>
 
-    <main class="container pt-5">
+    <main class="container">
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 

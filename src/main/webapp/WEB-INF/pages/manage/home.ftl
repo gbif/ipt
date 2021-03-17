@@ -15,7 +15,7 @@
 </script>
 <@resourcesTableBootstrap shownPublicly=false numResourcesShown=10 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>
 
-<main class="container pt-5">
+<main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm">
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
             <@s.text name="manage.home.title"/>

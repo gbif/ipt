@@ -2,7 +2,7 @@
 [#include "/WEB-INF/pages/inc/header_setup-bootstrap.ftl"]
 [#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"]
 
-<main class="container pt-5">
+<main class="container">
 
     <form action="setup2.do" method="post" class="needs-validation">
         <div class="my-3 p-3 bg-body rounded shadow-sm">

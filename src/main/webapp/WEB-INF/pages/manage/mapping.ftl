@@ -343,7 +343,7 @@
     </#if>
 </#macro>
 
-<main class="container pt-5">
+<main class="container">
 
     <form id="mappingForm" action="mapping.do" method="post">
         <div class="my-3 p-3 bg-body rounded shadow-sm">

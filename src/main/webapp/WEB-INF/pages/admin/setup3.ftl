@@ -1,7 +1,7 @@
 [#ftl output_format="HTML"]
 [#include "/WEB-INF/pages/inc/header_setup-bootstrap.ftl"]
 
-<main class="container pt-5">
+<main class="container">
 
     <form action="setupComplete.do">
         <div class="my-3 p-3 bg-body rounded shadow-sm">

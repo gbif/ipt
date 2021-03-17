@@ -3,7 +3,7 @@
 <title>[@s.text name="error.header.title"/]</title>
 [#include "/WEB-INF/pages/inc/menu-bootstrap.ftl"/]
 
-<main class="container pt-5">
+<main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm">
 
         [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]

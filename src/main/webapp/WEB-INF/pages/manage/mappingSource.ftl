@@ -11,7 +11,7 @@
     <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 
-<main class="container pt-5">
+<main class="container">
     <form class="topForm" action="mapping.do" method="post">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 

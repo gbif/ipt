@@ -4,7 +4,7 @@
 <#assign currentMenu = "about"/>
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
 
-<main class="container pt-5">
+<main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
 
         <@content?interpret />

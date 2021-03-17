@@ -30,7 +30,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
 
 
-    <main class="container pt-5">
+    <main class="container">
         <div class="row g-3">
             <div class="my-3 p-3 bg-body rounded shadow-sm">
                 <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">

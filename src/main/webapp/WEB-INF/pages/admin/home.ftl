@@ -10,7 +10,7 @@
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
 <#include "/WEB-INF/pages/macros/popover-bootstrap.ftl"/>
 
-<main class="container pt-5">
+<main class="container">
 	<div class="my-3 p-3 bg-body rounded shadow-sm">
 		<table id="admintable">
 			<@s.form cssClass="topForm" action="publishAll.do" method="post" namespace="" includeContext="false">

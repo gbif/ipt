@@ -45,7 +45,7 @@
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
     <#include "/WEB-INF/pages/macros/manage/translation_buttons-bootstrap.ftl"/>
 
-<main class="container pt-5">
+<main class="container">
     <form class="topForm" action="translation.do" method="post">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 

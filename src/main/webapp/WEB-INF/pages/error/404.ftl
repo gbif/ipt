@@ -3,7 +3,7 @@
 <title>[@s.text name="404.title"/]</title>
 [#include "/WEB-INF/pages/inc/menu-bootstrap.ftl"/]
 
-<main class="container pt-5">
+<main class="container">
 
     [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
 

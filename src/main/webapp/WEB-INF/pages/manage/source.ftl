@@ -21,7 +21,7 @@
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
 <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 
-    <main class="container pt-5">
+    <main class="container">
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 
