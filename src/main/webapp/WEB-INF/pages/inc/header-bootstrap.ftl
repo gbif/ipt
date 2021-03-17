@@ -31,6 +31,15 @@
             vertical-align: middle;
         }
 
+        .ipt-footer-item:after {
+            content: '|';
+            margin: 0 5px;
+        }
+
+        footer a {
+            text-decoration: none !important;
+        }
+
         /* Links color with exception for some classes */
         a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
             color: #008959 !important;

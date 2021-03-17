@@ -1,26 +1,27 @@
 <#ftl output_format="HTML">
-<footer class="footer mt-auto text-muted text-center py-3" style='font-size: 0.75rem !important;'>
+<footer class="footer mt-auto text-muted text-center py-3" style='font-size: 0.875rem !important;'>
     <div class="container">
         <ul class="list-inline mb-0">
-            <li class="list-inline-item">
+            <li class="list-inline-item ipt-footer-item">
                 <small>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</small>
             </li>
-            <li class="list-inline-item">
-                <a href="#"><small>About the IPT</small></a>
+            <li class="list-inline-item ipt-footer-item">
+                <a href="https://www.gbif.org/ipt"><small><@s.text name="footer.projectHome"/></small></a>
+            </li>
+            <li class="list-inline-item ipt-footer-item">
+                <a href="https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki" target="_blank"><small><@s.text name="footer.useManual"/></small></a>
+            </li>
+            <li class="list-inline-item ipt-footer-item">
+                <a href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.bugReport"/></small></a>
             </li>
             <li class="list-inline-item">
-                <a href="#"><small>User Manual</small></a>
-            </li>
-            <li class="list-inline-item">
-                <a href="#"><small>Report a bug</small></a>
-            </li>
-            <li class="list-inline-item">
-                <a href="#"><small>Request new feature</small></a>
+                <a href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.featureRequest"/></small></a>
             </li>
         </ul>
-        <small>© 2009–2021 Global Biodiversity Information Facility. Licensed under the Apache license, version 2.0.</small>
     </div>
 </footer>
+
+<div id="modalbox"><div id="modalback"></div><div id="modalcontainer"><div id="modalcontent"></div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 <script type="text/javascript" src="${baseURL}/js/form-validation.js"></script>
