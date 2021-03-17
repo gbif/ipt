@@ -42,6 +42,19 @@
         a {
             color: #008959;
         }
+
+        .ipt-footer-item:after {
+            content: '|';
+            margin: 0 5px;
+        }
+
+        footer a {
+            text-decoration: none !important;
+        }
+
+        header, .dropdown-menu {
+            font-size: 0.875rem !important;
+        }
     </style>
 
 </head>
@@ -52,7 +65,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
-                <img src="${baseURL}/images/gbif-logo-2.5.svg" alt="GBIF IPT" class="gbif-logo"/>
+                <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

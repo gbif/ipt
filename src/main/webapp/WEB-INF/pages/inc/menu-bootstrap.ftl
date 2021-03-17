@@ -7,7 +7,7 @@
     <nav class="navbar navbar-expand-xl navbar-dark fixed-top bg-dark">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
-                <img src="${baseURL}/images/gbif-logo-2.5.svg" alt="GBIF IPT" class="gbif-logo"/>
+                <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -42,11 +42,11 @@
                     <!-- Login, account -->
                     [#if (Session.curr_user)??]
                         <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="btn btn-outline-light menu-link" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <li class="nav-item dropdown d-xl-flex align-content-xl-center">
+                                <a class="btn btn-sm btn-outline-light menu-link m-xl-auto" id="accountDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ${Session.curr_user.email}
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-dark text-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <ul class="dropdown-menu dropdown-menu-dark text-light" aria-labelledby="accountDropdownLink">
                                     <li>
                                         <a class="dropdown-item menu-link" href="${baseURL}/account.do">
                                             [@s.text name="menu.account"/]
@@ -61,8 +61,8 @@
                             </li>
                         </ul>
                     [#else]
-                        <form action="${baseURL}/login.do" method="post">
-                            <button class="btn btn-outline-light" type="submit" name="login-submit">
+                        <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center">
+                            <button class="btn btn-sm btn-outline-light m-xl-auto" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>
                         </form>

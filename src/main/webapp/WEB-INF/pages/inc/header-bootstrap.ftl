@@ -40,6 +40,18 @@
             text-decoration: none !important;
         }
 
+        header {
+            font-size: 0.875rem !important;
+        }
+
+        .dropdown-menu {
+            font-size: 0.875rem !important;
+        }
+
+        #accountDropdownLink {
+            color: #4E9D2D !important;
+        }
+
         /* Links color with exception for some classes */
         a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
             color: #008959 !important;

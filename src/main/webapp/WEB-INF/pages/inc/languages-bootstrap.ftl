@@ -20,10 +20,10 @@
     <!-- add more languages as translations become available. -->
 
     <li class="nav-item dropdown">
-        <a class="nav-link" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link" href="#" id="languageDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             ${interfaceLanguges[localeLanguage]}
         </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-light" aria-labelledby="navbarDarkDropdownMenuLink">
+        <ul class="dropdown-menu dropdown-menu-dark text-light" aria-labelledby="languageDropdownLink">
             [#list interfaceLanguges as lang, name]
                 [#if lang != localeLanguage]
                     <li><a class="dropdown-item menu-link" href="${requrl}${lang}">${name}</a></li>
