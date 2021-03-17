@@ -15,6 +15,7 @@
         }
 
         body {
+            font-family: Roboto,'Helvetica Neue',Helvetica,Arial,sans-serif !important;
             min-height: 75rem;
             padding-top: 4.5rem; /* Separates nav and main */
         }

@@ -50,7 +50,7 @@
 <header>
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
+        <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-2.5.svg" alt="GBIF IPT" class="gbif-logo"/>
             </a>

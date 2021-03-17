@@ -5,7 +5,7 @@
 
 <header>
     <nav class="navbar navbar-expand-xl navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
+        <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-2.5.svg" alt="GBIF IPT" class="gbif-logo"/>
             </a>
@@ -13,6 +13,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
+                <!-- Navbar -->
                 <ul class="navbar-nav me-auto mb-md-0">
                     <li class="nav-item">
                         <a class="nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
@@ -31,10 +32,14 @@
                         <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
                 </ul>
+
                 <div class="d-xl-flex align-content-between">
+                    <!-- Languages -->
                     <div id="navbarNavDarkDropdown">
                         [#include "/WEB-INF/pages/inc/languages-bootstrap.ftl"/]
                     </div>
+
+                    <!-- Login, account -->
                     [#if (Session.curr_user)??]
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">

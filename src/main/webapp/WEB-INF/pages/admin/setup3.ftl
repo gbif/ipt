@@ -12,7 +12,7 @@
                 [@s.text name="admin.config.setup3.title"/]
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup3.welcome"/]</p>
+            <p class="text-muted mx-md-4 mx-2 text-center">[@s.text name="admin.config.setup3.welcome"/]</p>
 
             <div class="row g-3 pb-2">
                 <div class="col-12 d-flex justify-content-center">
