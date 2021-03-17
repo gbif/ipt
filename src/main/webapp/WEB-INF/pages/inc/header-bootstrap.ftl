@@ -15,66 +15,11 @@
         }
 
         body {
-            padding-top: 20px;
+            min-height: 75rem;
+            padding-top: 4.5rem; /* Separates nav and main */
         }
 
-        @media (max-width: 991.98px) {
-            .offcanvas-collapse {
-                position: fixed;
-                top: 56px; /* Height of navbar */
-                bottom: 0;
-                left: 100%;
-                width: 100%;
-                padding-right: 1rem;
-                padding-left: 1rem;
-                overflow-y: auto;
-                visibility: hidden;
-                background-color: #343a40;
-                transition: transform .3s ease-in-out, visibility .3s ease-in-out;
-            }
-            .offcanvas-collapse.open {
-                visibility: visible;
-                transform: translateX(-100%);
-            }
-        }
-
-        .nav-scroller {
-            position: fixed;
-            top: 56px;
-            z-index: 2;
-            height: 2.75rem;
-            overflow-y: hidden;
-        }
-
-        .nav-scroller .nav {
-            display: flex;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
-            color: rgba(255, 255, 255, .75);
-            text-align: center;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .nav-underline .nav-link {
-            padding-top: .75rem;
-            padding-bottom: .75rem;
-            font-size: .875rem;
-            color: #6c757d;
-        }
-
-        .nav-underline .nav-link:hover {
-            color: #008959;
-        }
-
-        .nav-underline .active {
-            font-weight: 500;
-            color: #343a40;
-        }
-
-        .logo {
+        .gbif-logo {
             height: 32px;
             position: relative;
             line-height: 32px;
@@ -83,28 +28,14 @@
             transition: all .3s;
             overflow: hidden;
             vertical-align: middle;
-            fill: #008959;
         }
 
-        .logo svg {
-            vertical-align: middle;
-            height: 32px;
-            /*fill: #5ba734;*/
-            fill: #008959;
-            padding: 3px 0;
-        }
-
-        .cc-logo {
-            display: block;
-            height: 31px;
-            width: 88px;
-        }
-
+        /* Links color with exception for some classes */
         a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
             color: #008959 !important;
         }
 
-        /*custom colors for pagination items*/
+        /* custom colors for tables pagination items */
         .page-link {
             position: relative;
             display: block;
