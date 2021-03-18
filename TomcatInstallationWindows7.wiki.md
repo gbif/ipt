@@ -1,5 +1,7 @@
 # Install Tomcat 6 on Windows 7
 
+_Tomcat 6 and Windows 7 are obsolete, please refer to [[TomcatInstallationWindows8]] instead._
+
 ## Table of Contents
 + [[Introduction|TomcatInstallationWindows7.wiki#introduction]]
 + [[Prerequisites|TomcatInstallationWindows7.wiki#prerequisites]]
