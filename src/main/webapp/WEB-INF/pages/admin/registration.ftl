@@ -97,35 +97,10 @@
 
             <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
             <#if hostingOrganisation?has_content>
-                <p>
+                <p class="text-muted mx-md-4 mx-2">
                     <@s.text name="admin.registration.registered1"/><br />
                     <@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text>
                 </p>
-
-                <form id="registration" class="topForm half" action="updateRegistration" method="post">
-                    <h3 class="subTitle"><@s.text name="admin.registration.links"/></h3>
-
-                    <ul>
-                        <li><a href="${cfg.portalUrl}/installation/${registeredIpt.key}" target="_blank">${registeredIpt.name!"IPT"}</a></li>
-                        <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
-                        <li><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></li>
-                    </ul>
-
-                    <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
-                    <@text name="registeredIpt.description" i18nkey="admin.ipt.description" requiredField=true />
-
-                    <#-- For future release. Will replace contact name below
-                    <@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
-                    <@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
-                    -->
-
-                    <@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
-                    <@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
-                    <div class="buttons">
-                        <@s.submit cssClass="button" name="update" id="update" key="button.updateRegistration" />
-                        <@s.submit cssClass="button" name="cancel" id="cancel" key="button.cancel"/>
-                    </div>
-                </form>
             <#else>
 
             <#-- BASE URL has not been validated, disable the form -->
@@ -234,6 +209,52 @@
                 </div>
             </#if>
         </div>
+
+        <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
+        <#if hostingOrganisation?has_content>
+            <div class="my-3 p-3 bg-body rounded shadow-sm">
+                <form id="registration" class="topForm half" action="updateRegistration" method="post">
+                    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                        <@s.text name="admin.registration.links"/>
+                    </h5>
+
+                    <ul class="mx-md-4 mx-2">
+                        <li><a href="${cfg.portalUrl}/installation/${registeredIpt.key}" target="_blank">${registeredIpt.name!"IPT"}</a></li>
+                        <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
+                        <li><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></li>
+                    </ul>
+
+                    <div class="row g-3 mx-md-3 mx-1">
+                        <div class="col-lg-6">
+                            <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
+                        </div>
+
+                        <div class="col-12">
+                            <@text name="registeredIpt.description" i18nkey="admin.ipt.description" requiredField=true />
+                        </div>
+
+                        <#-- For future release. Will replace contact name below
+                        <@input name="registeredIpt.primaryContactFirstName" i18nkey="admin.ipt.primaryContactFirstName" type="text" />
+                        <@input name="registeredIpt.primaryContactLastName" i18nkey="admin.ipt.primaryContactLastName" type="text" />
+                        -->
+
+                        <div class="col-lg-6">
+                            <@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
+                        </div>
+
+                        <div class="col-lg-6">
+                            <@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
+                        </div>
+
+                        <div class="col-12">
+                            <@s.submit cssClass="button btn btn-outline-success" name="update" id="update" key="button.updateRegistration" />
+                            <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" id="cancel" key="button.cancel"/>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </#if>
     </div>
 </main>
 
