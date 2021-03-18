@@ -28,8 +28,8 @@ $(document).ready(function(){
 	emailContent += '<@s.text name="emails.request.organisation.association7"/>';
 
 		var url = "<@s.url value='${registryURL}organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
-		$.getJSON(url+"?callback=?",function(data){
-			
+		$.getJSON(url,function(data){
+
 			$('#organisation\\.primaryContactType').val(data.primaryContactType);
 			$('#organisation\\.primaryContactName').val(data.primaryContactName);
 			$('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
