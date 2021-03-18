@@ -1,6 +1,6 @@
 <#ftl output_format="HTML">
 <#if help?has_content>
     <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<#include '/WEB-INF/pages/macros/help_icon_popover-bootstrap.ftl'>">
-        <i class="bi bi-info text-success"></i>
+        <i class="bi bi-info-circle text-success"></i>
     </span>
 </#if>
