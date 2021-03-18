@@ -139,7 +139,7 @@
                         </p>
                         <#list doiRegistrationAgencies as agency>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="agency" id="agency${agency}" aria-describedby="field-error-agency" value="${organisation.doiRegistrationAgency}">
+                                <input class="form-check-input" type="radio" name="agency" id="agency${agency}" aria-describedby="field-error-agency" <#if organisation.doiRegistrationAgency??>value="${organisation.doiRegistrationAgency}" </#if>>
                                 <label class="form-check-label" for="agency${agency}">
                                     ${agency}
                                 </label>
