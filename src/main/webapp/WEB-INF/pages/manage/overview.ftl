@@ -1,6 +1,76 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#escape x as x?html>
 
+<#macro dwcaValidator>
+    <#if (resource.recordsPublished>0)><a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate"/></#if>
+</#macro>
+
+<#macro nextDoiButtonTD>
+
+    <!-- The organisation with DOI account activated must exist,
+    the mandatory metadata must have been filled in,
+    and the user must have registration rights for any DOI operation made possible -->
+    <#if !organisationWithPrimaryDoiAccount??>
+
+        <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>">
+            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+        </span>
+
+    <#elseif !currentUser.hasRegistrationRights()>
+
+        <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>" escapeHtml=true/>">
+            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+        </span>
+
+    <#elseif resource.identifierStatus == "UNRESERVED">
+        <form action='resource-reserveDoi.do' method='post'>
+            <input name="r" type="hidden" value="${resource.shortname}"/>
+
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
+                    <i class="bi bi-info-circle text-success"></i>
+                </button>
+                <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-success" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
+            </div>
+        </form>
+
+    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+
+        <form action='resource-deleteDoi.do' method='post'>
+            <input name="r" type="hidden" value="${resource.shortname}"/>
+
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
+                    <i class="bi bi-info-circle text-danger"></i>
+                </button>
+                <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
+            </div>
+        </form>
+
+    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
+
+        <form action='resource-reserveDoi.do' method='post'>
+            <input name="r" type="hidden" value="${resource.shortname}"/>
+
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
+                    <i class="bi bi-info-circle text-success"></i>
+                </button>
+                <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-success" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
+            </div>
+        </form>
+
+    </#if>
+</#macro>
+
+<#macro description text maxLength>
+    <#if (text?length>maxLength)>
+        ${(text)?substring(0,maxLength)}...
+    <#else>
+        ${(text)}
+    </#if>
+</#macro>
+
 <!-- The short form of the license for display in the versions table -->
 <#macro shortLicense licenseUrl="">
     <#if licenseUrl == "http://creativecommons.org/publicdomain/zero/1.0/legalcode">
