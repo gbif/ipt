@@ -67,15 +67,34 @@ public class IPTModule extends AbstractModule {
   @Inject
   public DataDir provideDataDir(ServletContext ctx) {
     DataDir dd;
-    String dataDirectoryLocation = System.getenv(DATA_DIR_ENV_VAR);
-    if (dataDirectoryLocation == null) {
-      File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
-      LOG.info("Using location settings file for data directory location at: " + dataDirSettingFile.getAbsolutePath());
-      dd = DataDir.buildFromLocationFile(dataDirSettingFile);
+
+    /*
+     * Parameter from the servlet context, e.g.
+     * <Context>
+     *   <Parameter name="IPT_DATA_DIR" value="/var/lib/ipt2"/>
+     * </Context>
+     * typically in $CATALINA_BASE/conf/Catalina/localhost/ipt2.xml
+     */
+    String dataDirectoryLocationParam = ctx.getInitParameter(DATA_DIR_ENV_VAR);
+
+    /*
+     * System environment variable
+     */
+    String dataDirectoryLocationEnv = System.getenv(DATA_DIR_ENV_VAR);
+
+    if (dataDirectoryLocationParam != null) {
+      LOG.info("Using context parameter " + DATA_DIR_ENV_VAR +
+        " for data directory location: " + dataDirectoryLocationParam);
+      dd = DataDir.buildFromString(dataDirectoryLocationParam);
+    } else if (dataDirectoryLocationEnv != null) {
+      LOG.info("Using environment variable " + DATA_DIR_ENV_VAR +
+        " for data directory location: " + dataDirectoryLocationEnv);
+      dd = DataDir.buildFromString(dataDirectoryLocationEnv);
     } else {
-      LOG.info(
-        "Using environment variable " + DATA_DIR_ENV_VAR + " for data directory location: " + dataDirectoryLocation);
-      dd = DataDir.buildFromString(dataDirectoryLocation);
+      File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
+      LOG.info("Using file " + dataDirSettingFile.getAbsolutePath() +
+        " for data directory location.");
+      dd = DataDir.buildFromLocationFile(dataDirSettingFile);
     }
     try {
       if (dd != null && dd.isConfigured()) {
