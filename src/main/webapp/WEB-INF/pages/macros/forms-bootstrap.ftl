@@ -4,7 +4,6 @@
         <#if date>
             <div class="calendarInfo">
                 <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
-                <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
                 <div class="input-group">
                     <span class="input-group-text" id="calendar-${name}">
                         <i class="bi bi-calendar3"></i>
@@ -27,7 +26,6 @@
         <#else>
             <div>
                 <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
-                <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
                 <input
                         class="form-control"
                         type="${type}"
@@ -47,7 +45,6 @@
     <#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false maxlength=-1>
         <div>
             <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
-            <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
             <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}" <#if (maxlength>0)>maxlength="${maxlength}" </#if><#if disabled>readonly="readonly"</#if>>
                       <#if value=="-99999">
                           <@s.property value="${name}"/>
@@ -88,7 +85,6 @@
     <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false>
         <div>
             <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
-            <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
             <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
             <select name="${name}" id="${name}" size="${size}" class="form-select" <#if disabled>readonly="readonly"</#if>>
                 <#if includeEmpty>
@@ -106,7 +102,6 @@
     <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false requiredField=false>
         <div>
             <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
-            <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
             <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
             <@s.select id=name class="form-select" name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled emptyOption=includeEmpty/>
         </div>
@@ -128,7 +123,6 @@
 
     <#macro readonly name i18nkey value size=-1 help="" errorfield="" requiredField=false>
         <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
-        <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
         <input type="text" class="form-control" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly"/>
         <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
     </#macro>
