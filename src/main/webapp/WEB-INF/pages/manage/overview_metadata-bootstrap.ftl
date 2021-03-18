@@ -21,7 +21,7 @@
                 <@s.text name="manage.overview.metadata.description"/>
             </p>
 
-            <div class="table-responsive">
+            <div class="table-responsive mx-md-4 mx-2">
                 <table class="table table-sm">
                     <tr>
                         <#if metadataModifiedSinceLastPublication>
@@ -43,13 +43,13 @@
                             <#assign metadataSubmitWarning>
                                 <@s.text name="manage.overview.missing.metadata"/>
                             </#assign>
-                            <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${metadataSubmitWarning}">
+                            <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${metadataSubmitWarning}">
                                 <i class="bi bi-exclamation-triangle"></i>
                             </button>
-                            <@s.submit cssClass="btn btn-outline-warning" name="edit" key="button.edit"/>
+                            <@s.submit cssClass="btn btn-sm btn-outline-warning" name="edit" key="button.edit"/>
                         </div>
                     <#else>
-                        <@s.submit cssClass="btn btn-outline-success" name="edit" key="button.edit"/>
+                        <@s.submit cssClass="btn btn-sm btn-outline-success" name="edit" key="button.edit"/>
                     </#if>
                 </form>
             </div>

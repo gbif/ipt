@@ -315,12 +315,12 @@
                                 </tr>
                                 <#if resource.lastPublished??>
                                     <tr>
-                                        <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
+                                        <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button btn-sm btn-outline-success" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
                                     </tr>
                                 </#if>
                                 <#if report??>
                                     <tr>
-                                        <th>${pubRepTitle?cap_first}</th><td class="separator"><#if report?? && (report.state?contains('cancelled') || report.exception?has_content) ><em>${report.state}</em>&nbsp;</#if><a id="toggleReport" href="#">${showTitle?cap_first}</a></td><td class="left_padding">${emptyCell}</td>
+                                        <th>${pubRepTitle?cap_first}</th><td class="separator"><#if report?? && (report.state?contains('cancelled') || report.exception?has_content) ><em>${report.state}</em>&nbsp;</#if><a id="toggleReport" class="btn btn-sm btn-outline-success" href="#">${showTitle?cap_first}</a></td><td class="left_padding">${emptyCell}</td>
                                     </tr>
                                 </#if>
                             </table>
@@ -399,10 +399,14 @@
                         <form action='auto-publish.do' method='get'>
                             <input name="r" type="hidden" value="${resource.shortname}"/>
                             <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                                <@s.submit name="edit" cssClass="btn btn-outline-success" key="button.edit"/>
-                                <@popoverPropertyWarning "manage.overview.autopublish.deprecated.warning.button"/>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                    </button>
+                                    <@s.submit name="edit" cssClass="btn btn-sm btn-outline-warning" key="button.edit"/>
+                                </div>
                             <#else>
-                                <@s.submit name="edit" cssClass="btn btn-outline-success" key="button.edit"/>
+                                <@s.submit name="edit" cssClass="btn btn-sm btn-outline-success" key="button.edit"/>
                             </#if>
                         </form>
                     </div>
@@ -443,12 +447,12 @@
                             <p>
                                 <span class="badge rounded-pill bg-warning">
                                     <i class="bi bi-exclamation-triangle" style="color: black;"></i>
+                                    <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
                                 </span>
-                                <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
                             </p>
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details">
-                                    <table>
+                                    <table class="table table-sm table-borderless">
                                         <tr>
                                             <th>GBIF UUID</th>
                                             <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
@@ -488,33 +492,54 @@
                             <#if resource.status=="PUBLIC">
                                 <#if !currentUser.hasRegistrationRights()>
                                     <!-- Disable register button and show warning: user must have registration rights -->
-                                    <@s.submit cssClass="confirmRegistration btn btn-outline-success my-1" name="register" key="button.register" disabled="true"/>
                                     <#assign visibilityConfirmRegistrationWarning>
                                         <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                                     </#assign>
-                                    <@popoverTextWarning visibilityConfirmRegistrationWarning/>
+
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${visibilityConfirmRegistrationWarning}">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </button>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                    </div>
                                 <#elseif missingValidPublishingOrganisation?string == "true">
                                     <!-- Disable register button and show warning: user must assign valid publishing organisation -->
-                                    <@s.submit cssClass="confirmRegistration btn btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
-                                    <@popoverPropertyWarning "manage.overview.visibility.missing.organisation"/>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.organisation" escapeHtml=true/>">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </button>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                    </div>
                                 <#elseif missingRegistrationMetadata?string == "true">
                                     <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
-                                    <@s.submit cssClass="confirmRegistration btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
-                                    <@popoverPropertyWarning "manage.overview.visibility.missing.metadata"/>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.metadata" escapeHtml=true/>">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </button>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                    </div>
                                 <#elseif !resource.isLastPublishedVersionPublic()>
                                     <!-- Disable register button and show warning: last published version must be publicly available to register -->
-                                    <@s.submit cssClass="confirmRegistration btn btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
-                                    <@popoverPropertyWarning "manage.overview.prevented.resource.registration.notPublic"/>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.notPublic" escapeHtml=true/>">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </button>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                    </div>
                                 <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                     <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                    <@s.submit cssClass="confirmRegistration btn btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
-                                    <@popoverPropertyWarning "manage.overview.prevented.resource.registration.noGBIFLicense"/>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </button>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                    </div>
                                 <#else>
-                                    <@s.submit cssClass="confirmRegistration btn btn-outline-success my-1" name="register" key="button.register"/>
+                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-success my-1" name="register" key="button.register"/>
                                 </#if>
                             <#else>
                                 <#if resource.status=="PRIVATE">
-                                    <@s.submit name="makePrivate" cssClass="btn btn-outline-success my-1" key="button.public"/>
+                                    <@s.submit name="makePrivate" cssClass="btn btn-sm btn-outline-success my-1" key="button.public"/>
                                 </#if>
                             </#if>
                         </form>
@@ -573,13 +598,13 @@
                             <!-- Warning: method name match is case sensitive therefore must be addManager -->
                             <form action='resource-addManager.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
-                                <select name="id" class="form-select" id="manager" size="1">
+                                <select name="id" class="form-select form-select-sm" id="manager" size="1">
                                     <option value=""></option>
                                     <#list potentialManagers?sort_by("name") as u>
                                         <option value="${u.email}">${u.name}</option>
                                     </#list>
                                 </select>
-                                <@s.submit name="add" cssClass="btn btn-outline-success mt-1" key="button.add"/>
+                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-success mt-1" key="button.add"/>
                             </form>
                         </div>
                     </#if>

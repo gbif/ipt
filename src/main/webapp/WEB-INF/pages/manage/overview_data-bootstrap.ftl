@@ -62,12 +62,12 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <@s.file name="file" cssClass="form-control my-1" key="manage.resource.create.file"/>
+                                <@s.file name="file" cssClass="form-control form-control-sm my-1" key="manage.resource.create.file"/>
                             </div>
                             <div class="col-12">
-                                <@s.submit name="add" cssClass="btn btn-outline-success my-1" key="button.connectDB"/>
-                                <@s.submit name="clear" cssClass="btn btn-outline-secondary my-1" key="button.clear"/>
-                                <@s.submit name="cancel" cssClass="btn btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel" method="cancelOverwrite"/>
+                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-success my-1" key="button.connectDB"/>
+                                <@s.submit name="clear" cssClass="btn btn-sm btn-outline-secondary my-1" key="button.clear"/>
+                                <@s.submit name="cancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel" method="cancelOverwrite"/>
                             </div>
                         </div>
                     </form>
@@ -164,7 +164,7 @@
                 <#if (potentialCores?size>0)>
                     <form action='mapping.do' method='post'>
                         <input name="r" type="hidden" value="${resource.shortname}"/>
-                        <select name="id" class="form-select my-1" id="rowType" size="1">
+                        <select name="id" class="form-select form-select-sm my-1" id="rowType" size="1">
                             <optgroup label="<@s.text name='manage.overview.DwC.Mappings.cores.select'/>">
                                 <#list potentialCores as c>
                                     <#if c?has_content>
@@ -182,14 +182,18 @@
                                 </optgroup>
                             </#if>
                         </select>
-                        <@s.submit name="add" cssClass="btn btn-outline-success my-1" key="button.add"/>
+                        <@s.submit name="add" cssClass="btn btn-sm btn-outline-success my-1" key="button.add"/>
                     </form>
                 <#else>
                     <div class="d-flex justify-content-start">
-                        <select class="form-select">
-                            <option value=""></option>
-                        </select>
-                        <@popoverPropertyWarning "manage.overview.DwC.Mappings.cantdo"/>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.DwC.Mappings.cantdo" escapeHtml=true/>">
+                                <i class="bi bi-exclamation-triangle"></i>
+                            </button>
+                            <select class="form-select form-select-sm">
+                                <option value=""></option>
+                            </select>
+                        </div>
                     </div>
                 </#if>
             </div>

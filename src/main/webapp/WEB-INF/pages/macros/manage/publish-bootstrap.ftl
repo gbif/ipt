@@ -8,22 +8,26 @@
         <#if missingMetadata>
 
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.published.missing.metadata" escapeHtml=true/>">
+                <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.published.missing.metadata" escapeHtml=true/>">
                     <i class="bi bi-exclamation-triangle"></i>
                 </button>
-                <@s.submit id="publishButton" cssClass="btn btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
+                <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
             </div>
 
 
         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
         <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-            <@s.submit id="publishButton" cssClass="btn btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
-            <@popoverPropertyWarning "manage.overview.prevented.resource.publishing.noGBIFLicense"/>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" escapeHtml=true/>">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </button>
+                <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
+            </div>
 
 
         <!-- previously published resources without a DOI, or that haven't been registered yet can be republished whenever by any manager -->
         <#elseif resource.lastPublished?? && resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">
-            <@s.submit cssClass="confirmPublishMinorVersion btn btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
+            <@s.submit cssClass="confirmPublishMinorVersion btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
 
 
         <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
@@ -32,12 +36,17 @@
         || resource.status == "REGISTERED">
             <!-- the user must have registration rights -->
             <#if !currentUser.hasRegistrationRights()>
-                <@s.submit id="publishButton" cssClass="btn btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
                 <#assign popover1>
                     <@s.text name="manage.resource.status.publication.forbidden"/>
                     &nbsp;<@s.text name="manage.resource.role.change"/>
                 </#assign>
-                <@popoverTextWarning popover1/>
+
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${popover1}">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </button>
+                    <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
+                </div>
 
             <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
             <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
@@ -45,10 +54,10 @@
             && !organisationWithPrimaryDoiAccount??>
 
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.resource.status.publication.forbidden.account.missing" escapeHtml=true/>">
+                    <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.resource.status.publication.forbidden.account.missing" escapeHtml=true/>">
                         <i class="bi bi-exclamation-triangle"></i>
                     </button>
-                    <@s.submit id="publishButton" cssClass="btn btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
+                    <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
                 </div>
 
             <!-- when a DOI is reserved.. -->
@@ -58,20 +67,20 @@
                     <!-- and the resource has never been published before, the first publication is a new major version -->
                     <#if !resource.lastPublished??>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
+                            <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
                                 <i class="bi bi-exclamation-triangle"></i>
                             </button>
-                            <@s.submit cssClass="confirmPublishMajorVersionWithoutDOI btn btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
+                            <@s.submit cssClass="confirmPublishMajorVersionWithoutDOI btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
                         </div>
 
                     <!-- and the resource has been published before, the next publication is a new minor version -->
                     <#else>
 
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
+                            <button type="button" class="btn btn-sm btn-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
                                 <i class="bi bi-info"></i>
                             </button>
-                            <@s.submit cssClass="confirmPublishMinorVersion btn btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
+                            <@s.submit cssClass="confirmPublishMinorVersion btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
                         </div>
                     </#if>
 
@@ -80,32 +89,32 @@
                 <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
 
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.help" escapeHtml=true/>">
+                        <button type="button" class="btn btn-sm btn-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.help" escapeHtml=true/>">
                             <i class="bi bi-info"></i>
                         </button>
-                        <@s.submit cssClass="confirmPublishMajorVersion btn btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
+                        <@s.submit cssClass="confirmPublishMajorVersion btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
                     </div>
 
                 </#if>
 
             <!-- publishing a new minor version -->
             <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()>
-                <@s.submit cssClass="confirmPublishMinorVersion btn btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
+                <@s.submit cssClass="confirmPublishMinorVersion btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
 
             <!-- publishing a new version registered with GBIF -->
             <#elseif resource.status == "REGISTERED">
-                <@s.submit cssClass="confirmPublishMinorVersion btn btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
+                <@s.submit cssClass="confirmPublishMinorVersion btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
             </#if>
 
 
         <!-- first time any resource not assigned a DOI is published is always new major version -->
         <#elseif !resource.lastPublished?? && resource.identifierStatus == "UNRESERVED">
-            <@s.submit cssClass="confirmPublishMajorVersionWithoutDOI btn btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
+            <@s.submit cssClass="confirmPublishMajorVersionWithoutDOI btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
 
 
         <!-- otherwise prevent publication from happening just to be safe -->
         <#else>
-            <@s.submit id="publishButton" cssClass="btn btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
+            <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
         </#if>
 
         <br/>
