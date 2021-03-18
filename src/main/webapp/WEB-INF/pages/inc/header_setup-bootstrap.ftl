@@ -62,7 +62,7 @@
 
 <header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark py-1">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
