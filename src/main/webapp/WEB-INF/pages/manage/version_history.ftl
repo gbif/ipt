@@ -37,7 +37,7 @@
                 <div class="mx-md-4 mx-2">
                     <#list resource.versionHistory as history>
                         <#if history.version == version.toPlainString()>
-                            <table id="${history.version}" class="table table-borderless">
+                            <table id="${history.version}" class="table table-sm table-borderless">
                                 <tr>
                                     <th>${versionTitle?cap_first}</th>
                                     <td>${history.version}</td>
@@ -77,7 +77,7 @@
                                 <tr>
                                     <th>${summaryTitle?cap_first}</th>
                                     <td>
-                                        <textarea name="summary" class="form-control" placeholder="Please summarize what has changed in this version">${history.changeSummary!}</textarea>
+                                        <textarea name="summary" class="form-control" cols="60" rows="5" placeholder="Please summarize what has changed in this version">${history.changeSummary!}</textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -85,7 +85,7 @@
                     </#list>
                 </div>
 
-                <div class="row">
+                <div class="row mx-md-3 mx-1">
                     <div class="buttons col-12">
                         <@s.submit cssClass="button btn btn-outline-success" name="save" key="button.save"/>
                         <@s.submit cssClass="button btn btn-outline-secondary" name="back" key="button.cancel"/>
@@ -96,7 +96,7 @@
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </h5>
 
-                <div class="row">
+                <div class="row mx-md-3 mx-1">
                     <div class="buttons col-12">
                         <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
                     </div>
