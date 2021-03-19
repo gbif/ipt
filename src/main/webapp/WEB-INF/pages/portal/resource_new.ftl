@@ -330,10 +330,7 @@
                                         <p><@s.text name='portal.resource.versions.verbose'/></p>
                                     </#if>
                                     <@versionsTable numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
-                                    <div id="vtableContainer"></div>
-                                    <p>
-                                    <div class="clearfix"></div>
-                                    </p>
+                                    <div id="vtableContainer" class="table-responsive mx-md-4 mx-2 pt-2" style='font-size: 0.875rem !important;'></div>
                                 </div>
                             </div>
                         </#if>
