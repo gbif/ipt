@@ -2,7 +2,11 @@
 <#escape x as x?html>
 
 <#macro dwcaValidator>
-    <#if (resource.recordsPublished>0)><a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate"/></#if>
+    <#if (resource.recordsPublished>0)>
+        <a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate">
+            <i class="bi bi-check2 text-success"></i>
+        </a>
+    </#if>
 </#macro>
 
 <#macro nextDoiButtonTD>
@@ -290,7 +294,7 @@
                                 </tr>
                                 <tr>
                                     <th>${versionTitle?cap_first}</th><#if resource.lastPublished??>
-                                    <td class="separator green">${resource.emlVersion.toPlainString()}&nbsp;<a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}'</a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-success</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a></td>
+                                    <td class="separator green">${resource.emlVersion.toPlainString()}&nbsp;<a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-success</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a></td>
                                 </tr>
                                 <!-- hide visibility row if 1) a DOI has already been assigned to the resource since any resource with a DOI has to be public, 2) the resource is registered, or 3) the visibility of the currenct version and next version are the same -->
                                 <#if !resource.isAlreadyAssignedDoi() && !resource.isRegistered() && (resource.getStatus()?lower_case != resource.getLastPublishedVersionsPublicationStatus()?lower_case) || !resource.lastPublished?? >
