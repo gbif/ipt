@@ -319,12 +319,12 @@
                                 </tr>
                                 <#if resource.lastPublished??>
                                     <tr>
-                                        <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button btn-sm btn-outline-success" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
+                                        <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button btn btn-sm btn-outline-success ignore-link-color" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button btn btn-sm btn-outline-success" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
                                     </tr>
                                 </#if>
                                 <#if report??>
                                     <tr>
-                                        <th>${pubRepTitle?cap_first}</th><td class="separator"><#if report?? && (report.state?contains('cancelled') || report.exception?has_content) ><em>${report.state}</em>&nbsp;</#if><a id="toggleReport" class="btn btn-sm btn-outline-success" href="#">${showTitle?cap_first}</a></td><td class="left_padding">${emptyCell}</td>
+                                        <th>${pubRepTitle?cap_first}</th><td class="separator"><#if report?? && (report.state?contains('cancelled') || report.exception?has_content) ><em>${report.state}</em>&nbsp;</#if><a id="toggleReport" href="#">${showTitle?cap_first}</a></td><td class="left_padding">${emptyCell}</td>
                                     </tr>
                                 </#if>
                             </table>
@@ -448,15 +448,16 @@
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
-                            <p>
+                            <div class="alert alert-warning" role="alert">
                                 <span class="badge rounded-pill bg-warning">
                                     <i class="bi bi-exclamation-triangle" style="color: black;"></i>
                                     <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
                                 </span>
-                            </p>
+                            </div>
+
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details">
-                                    <table class="table table-sm table-borderless">
+                                    <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                         <tr>
                                             <th>GBIF UUID</th>
                                             <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
@@ -551,7 +552,7 @@
                         <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
                             <#assign actionMethod>makePrivate</#assign>
                             <form action='resource-${actionMethod}.do' method='post'>
-                                <@s.submit cssClass="confirm btn btn-outline-success my-1" name="unpublish" key="button.private" />
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-success my-1" name="unpublish" key="button.private" />
                             </form>
                         </#if>
                     </div>
@@ -584,8 +585,8 @@
                                             <th><@s.text name="manage.overview.resource.managers.manager"/></th>
                                             <!-- Warning: method name match is case sensitive therefore must be deleteManager -->
                                             <td>${u.name}, ${u.email}&nbsp;
-                                                <a class="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
-                                                    <input class="btn btn-outline-danger" type="button" value='<@s.text name='button.delete'/>'/>
+                                                <a class="button btn btn-sm btn-outline-danger ignore-link-color" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                    <@s.text name='button.delete'/>
                                                 </a>
                                             </td>
                                         </tr>
