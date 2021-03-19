@@ -13,13 +13,13 @@
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
             <@s.text name="portal.home.title"/>
         </h5>
-        <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2"></div>
+        <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2" style="font-size: 0.875rem !important;"></div>
 
         <!-- RSS Feed shown if there are resources -->
         <#if (resources?size>0)>
             <p class="text-muted mx-md-4 mx-2 pt-2">
+                <i class="bi bi-rss"></i>
                 <@s.text name="portal.home.feed"><@s.param>${baseURL}/rss.do</@s.param></@s.text>
-                <img id="rssImage" src="${baseURL}/images/rss.png"/>.
             </p>
         <#else>
             <p class="text-muted text-center pt-2"><@s.text name="portal.home.no.public"/></p>
