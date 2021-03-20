@@ -319,7 +319,7 @@
                                 </tr>
                                 <#if resource.lastPublished??>
                                     <tr>
-                                        <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button btn btn-sm btn-outline-success ignore-link-color" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button btn btn-sm btn-outline-success" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
+                                        <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button ignore-link-color" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button btn btn-sm btn-outline-success" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
                                     </tr>
                                 </#if>
                                 <#if report??>
@@ -449,10 +449,8 @@
                             </p>
 
                             <div class="alert alert-warning" role="alert">
-                                <span class="badge rounded-pill bg-warning">
-                                    <i class="bi bi-exclamation-triangle" style="color: black;"></i>
-                                    <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
-                                </span>
+                                <i class="bi bi-exclamation-triangle" style="color: black;"></i>
+                                <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
                             </div>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
