@@ -18,6 +18,61 @@
     .icon-gbif {
         background-image: url('${baseURL}/images/gbif-logo.svg');
     }
+
+    #resourcelogo {
+        float:right;
+    }
+    #resourcelogo img {
+        max-width: 100px;
+    }
+
+    .cc_logo {
+        display: block;
+        float: left;
+        margin-right: 18px;
+        height: 31px;
+        width: 88px;
+    }
+
+    .cc_by {
+        background: url('${baseURL}/images/icons/cc-by.png');
+    }
+
+    .cc_by_nc {
+        background: url('${baseURL}/images/icons/cc-by-nc.png');
+    }
+
+    .cc_zero {
+        background: url('${baseURL}/images/icons/cc-zero.png');
+    }
+
+    span.doi {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: white;
+        background: #008959;
+        font-size: 13px;
+        font-style: normal;
+        text-decoration: none;
+        padding: 2px 0px 2px 4px;
+        border-color: #008959;
+        border-style: solid;
+        border-width: 1px;
+    }
+
+    span.doi:before {
+        content: "DOI";
+    }
+
+    span.doi a {
+        color: #666;
+        background: white;
+        font-style: normal;
+        text-decoration: none;
+        text-transform: lowercase;
+        margin-left: 4px;
+        margin-right: 1px;
+        padding: 2px 5px 2px 4px;
+    }
 </style>
 
 <#--Construct a Contact. Parameters are the actual contact object, the contact type, and the Dublin Core Property Type -->
@@ -149,11 +204,6 @@
             ${eml.title!resource.shortname}
         </h5>
 
-        <#if managerRights><a href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name='button.edit'/></a></#if>
-        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-            <#if adminRights> | <a class="confirmDeleteVersion" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}"><@s.text name='button.delete.version'/></a></#if>
-        </#if>
-
         <input style="display:none" class="expand" type="button" id="menu-toggle2" name="expand-sidebar" value=""/>
         <img class="latestVersion"/>
 
@@ -165,44 +215,64 @@
             </div>
         </#if>
         <div class="mx-md-4 mx-2">
-            <div>
-                <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
-                <#if doi?has_content>
-                    <#assign doiUrl>${action.findDoiAssignedToPublishedVersion().getUrl()!}</#assign>
-                </#if>
-                <#if doi?has_content && doiUrl?has_content>
-                    <div id="resourcedoi">
-                      <span class="doi">
-                        <a property="dc:identifier" href="${doiUrl!}">${doi}</a>
-                      </span>
-                    </div>
-                </#if>
-                <p class="undertitle">
-                    <#if resource.lastPublished?? && resource.organisation??>
-                    <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                            <em class="warn"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                        <#else>
-                            <@s.text name='portal.resource.latest.version'/>
-                        </#if>
+            <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
+            <#if doi?has_content>
+                <#assign doiUrl>${action.findDoiAssignedToPublishedVersion().getUrl()!}</#assign>
+            </#if>
 
-                        <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
-                            ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.medium}</span>
-                            <br><em class="warn"><@s.text name='manage.home.not.registered.verbose'/></em>
-                        <#else>
-                            <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.medium}</span>
-                            <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
-                        </#if>
+            <div class="row">
+                <div class="col-lg-8">
+                    <span class="fst-italic">
+                        <#if resource.lastPublished?? && resource.organisation??>
+                        <#-- the existence of parameter version means the version is not equal to the latest published version -->
+                            <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                                <em class="text-danger"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                            <#else>
+                                <@s.text name='portal.resource.latest.version'/>
+                            </#if>
 
-                    <#else>
-                        <@s.text name='portal.resource.published.never.long'/>
+                            <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
+                                ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.medium}</span>
+                                <br>
+                            <em class="text-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
+                            <#else>
+                                <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.medium}</span>
+                                <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
+                            </#if>
+
+                        <#else>
+                            <@s.text name='portal.resource.published.never.long'/>
+                        </#if>
+                    </span>
+                </div>
+
+                <div class="col-lg-4">
+                    <#if managerRights>
+                        <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-outline-success ignore-link-color mx-1">
+                            <@s.text name='button.edit'/>
+                        </a>
                     </#if>
-                </p>
+                    <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                        <#if adminRights>
+                            <a class="confirmDeleteVersion btn btn-outline-danger ignore-link-color" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
+                                <@s.text name='button.delete.version'/>
+                            </a>
+                        </#if>
+                    </#if>
+                    <#if doi?has_content && doiUrl?has_content>
+                        <div id="resourcedoi">
+                            <span class="doi">
+                                <a property="dc:identifier" href="${doiUrl!}">${doi}</a>
+                            </span>
+                        </div>
+                    </#if>
+                </div>
+
             </div>
             <div class="clearfix"></div>
 
             <#if eml.logoUrl?has_content>
-                <div id="resourcelogo">
+                <div id="resourcelogo" class="pt-2">
                     <img src="${eml.logoUrl}"/>
                 </div>
             </#if>
@@ -229,7 +299,7 @@
                         </a>
                     </#if>
                     <#if resource.status=="REGISTERED" && resource.key??>
-                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-outline-success ignore-link-color icon icon-gbif">
+                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-outline-success ignore-link-color">
                             <@s.text name='portal.resource.gbif.page.short'/>
                         </a>
                     </#if>
@@ -379,7 +449,7 @@
                         <p><@s.text name='portal.resource.versions.verbose'/></p>
                     </#if>
                     <@versionsTableBootstrap numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
-                    <div id="vtableContainer" class="table-responsive mx-md-4 mx-2 pt-2" style='font-size: 0.875rem !important;'></div>
+                    <div id="vtableContainer" class="table-responsive" style='font-size: 0.875rem !important;'></div>
                 </div>
             </div>
         </#if>
