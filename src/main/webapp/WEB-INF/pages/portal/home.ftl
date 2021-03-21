@@ -3,6 +3,11 @@
 <title><@s.text name="title"/></title>
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
 <#include "/WEB-INF/pages/macros/resourcesTable-bootstrap.ftl"/>
+<style>
+    .resourceminilogo {
+        width: 30px;
+    }
+</style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
