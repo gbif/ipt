@@ -7,7 +7,7 @@ versionsTable macro: Generates a data table that has pagination.
 - baseURL: IPT baseURL
 - shortname: The shortname of the resource
 -->
-<#macro versionsTable numVersionsShown sEmptyTable baseURL shortname>
+<#macro versionsTableBootstrap numVersionsShown sEmptyTable baseURL shortname>
     <script type="text/javascript" charset="utf-8">
 
         /* version history list */

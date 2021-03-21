@@ -5,6 +5,21 @@
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
 <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 <#include "/WEB-INF/pages/macros/versionsTable-bootstrap.ftl"/>
+
+<style>
+    .icon {
+        background-repeat: no-repeat;
+        background-position: 0 50%;
+        background-position-x: 10px;
+        background-position-y: 50%;
+        padding-left: 30px;
+    }
+
+    .icon-gbif {
+        background-image: url('${baseURL}/images/gbif-logo.svg');
+    }
+</style>
+
 <#--Construct a Contact. Parameters are the actual contact object, the contact type, and the Dublin Core Property Type -->
 <#macro contact con type dcPropertyType>
     <div class="contact">
@@ -121,6 +136,10 @@
 <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
+
 <main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm">
 
@@ -203,31 +222,45 @@
             </#if>
 
             <#if eml.distributionUrl?has_content || resource.lastPublished??>
-                <ul class="horizontal-list">
+                <div class="btn-group btn-group-sm">
                     <#if eml.distributionUrl?has_content>
-                        <li class="box"><a href="${eml.distributionUrl}" class="icon icon-homepage"><@s.text name='eml.distributionUrl.short'/></a></li>
+                        <a href="${eml.distributionUrl}" class="btn btn-outline-success ignore-link-color bi bi-house-door">
+                            <@s.text name='eml.distributionUrl.short'/>
+                        </a>
                     </#if>
                     <#if resource.status=="REGISTERED" && resource.key??>
-                        <li class="box"><a href="${cfg.portalUrl}/dataset/${resource.key}" class="icon icon-gbif"><@s.text name='portal.resource.gbif.page.short'/></a></li>
+                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-outline-success ignore-link-color icon icon-gbif">
+                            <@s.text name='portal.resource.gbif.page.short'/>
+                        </a>
                     </#if>
                     <#if metadataOnly == false>
-                        <li class="box"><a href="${download_dwca_url}" class="icon icon-download"><@s.text name='portal.resource.published.dwca'/></a></li>
+                        <a href="${download_dwca_url}" class="btn btn-outline-success ignore-link-color bi bi-download">
+                            <@s.text name='portal.resource.published.dwca'/>
+                        </a>
                     </#if>
                     <#if resource.lastPublished??>
-                        <li class="box"><a href="${download_eml_url}" class="icon icon-download"><@s.text name='portal.resource.published.eml'/></a></li>
-                        <li class="box"><a href="${download_rtf_url}" class="icon icon-download"><@s.text name='portal.resource.published.rtf'/></a></li>
+                        <a href="${download_eml_url}" class="btn btn-outline-success ignore-link-color bi bi-download">
+                            <@s.text name='portal.resource.published.eml'/>
+                        </a>
+                        <a href="${download_rtf_url}" class="btn btn-outline-success ignore-link-color bi bi-download">
+                            <@s.text name='portal.resource.published.rtf'/>
+                        </a>
                         <#if resource.versionHistory??>
-                            <li class="box"><a href="${anchor_versions}" class="icon icon-clock"><@s.text name='portal.resource.versions'/></a></li>
+                            <a href="${anchor_versions}" class="btn btn-outline-success ignore-link-color bi bi-clock">
+                                <@s.text name='portal.resource.versions'/>
+                            </a>
                         </#if>
-                        <li class="box"><a href="${anchor_rights}" class="icon icon-key"><@s.text name='eml.intellectualRights.simple'/></a></li>
+                        <a href="${anchor_rights}" class="btn btn-outline-success ignore-link-color bi bi-key">
+                            <@s.text name='eml.intellectualRights.simple'/>
+                        </a>
                         <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
-                            <li class="box"><a href="${anchor_citation}" class="icon icon-book"><@s.text name='portal.resource.cite'/></a></li>
+                            <a href="${anchor_citation}" class="btn btn-outline-success ignore-link-color bi bi-book">
+                                <@s.text name='portal.resource.cite'/>
+                            </a>
                         </#if>
                     </#if>
-                </ul>
+                </div>
             </#if>
-
-            <div class="clearfix"></div>
         </div>
 
     </div>
@@ -345,7 +378,7 @@
                     <#else>
                         <p><@s.text name='portal.resource.versions.verbose'/></p>
                     </#if>
-                    <@versionsTable numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
+                    <@versionsTableBootstrap numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
                     <div id="vtableContainer" class="table-responsive mx-md-4 mx-2 pt-2" style='font-size: 0.875rem !important;'></div>
                 </div>
             </div>
