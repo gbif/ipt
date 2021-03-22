@@ -39,32 +39,15 @@
         background: url('${baseURL}/images/icons/cc-zero.png');
     }
 
+    a.doi {
+        padding-left: 0;
+        border-right-width: 2px;
+    }
+
     span.doi {
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background: #198754;
         color: white;
-        background: #008959;
-        font-size: 13px;
-        font-style: normal;
-        text-decoration: none;
-        padding: 2px 0px 2px 4px;
-        border-color: #008959;
-        border-style: solid;
-        border-width: 1px;
-    }
-
-    span.doi:before {
-        content: "DOI";
-    }
-
-    span.doi a {
-        color: #666;
-        background: white;
-        font-style: normal;
-        text-decoration: none;
-        text-transform: lowercase;
-        margin-left: 4px;
-        margin-right: 1px;
-        padding: 2px 5px 2px 4px;
+        padding: 6px 10px 7px 10px;
     }
 </style>
 
@@ -218,7 +201,7 @@
                 <#assign doiUrl>${action.findDoiAssignedToPublishedVersion().getUrl()!}</#assign>
             </#if>
 
-            <div class="row">
+            <div class="row g-2">
                 <div class="col-lg-8">
                     <span class="fst-italic">
                         <#if resource.lastPublished?? && resource.organisation??>
@@ -245,25 +228,24 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="d-flex justify-content-end">
+                    <div class="d-lg-flex justify-content-lg-end">
                         <#if managerRights>
-                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-outline-success ignore-link-color mx-1">
+                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-success ignore-link-color me-1">
                                 <@s.text name='button.edit'/>
                             </a>
                         </#if>
                         <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                             <#if adminRights>
-                                <a class="confirmDeleteVersion btn btn-outline-danger ignore-link-color" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
+                                <a class="confirmDeleteVersion btn btn-sm btn-outline-danger ignore-link-color me-1" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
                                     <@s.text name='button.delete.version'/>
                                 </a>
                             </#if>
                         </#if>
                         <#if doi?has_content && doiUrl?has_content>
-                            <div id="resourcedoi">
-                                <span class="doi">
-                                    <a property="dc:identifier" href="${doiUrl!}">${doi}</a>
-                                </span>
-                            </div>
+                            <a property="dc:identifier" class="btn btn-sm btn-outline-success ignore-link-color doi" href="${doiUrl!}">
+                                <span class="doi">DOI</span>
+                                ${doi}
+                            </a>
                         </#if>
                     </div>
                 </div>
@@ -551,7 +533,7 @@
                     <@s.text name='portal.resource.contacts'/>
                 </h5>
 
-                <div class="row mx-md-4 mx-2">
+                <div class="row g-3 mx-md-4 mx-2">
                     <div class="col-lg">
                         <p><@s.text name='portal.resource.creator.intro'/>:</p>
                         <div class="fullwidth">
