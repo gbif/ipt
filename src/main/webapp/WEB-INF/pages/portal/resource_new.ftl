@@ -19,13 +19,6 @@
         background-image: url('${baseURL}/images/gbif-logo.svg');
     }
 
-    #resourcelogo {
-        float:right;
-    }
-    #resourcelogo img {
-        max-width: 100px;
-    }
-
     .cc_logo {
         display: block;
         float: left;
@@ -88,7 +81,7 @@
         </div>
 
         <#-- minimum info is the last name, organisation name, or position name -->
-        <div <#if dcPropertyType?has_content>property="dc:${dcPropertyType}" </#if> class="contactName">
+        <div <#if dcPropertyType?has_content>property="dc:${dcPropertyType}" </#if> class="contactName text-success">
             <#if con.lastName?has_content>
                 ${con.firstName!} ${con.lastName!}
             <#elseif con.organisation?has_content>
@@ -200,13 +193,17 @@
 
         <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-        <h5 property="dc:title" class="rtitle border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
-            ${eml.title!resource.shortname}
-        </h5>
+        <div class="text-center">
+            <#if eml.logoUrl?has_content>
+                <img src="${eml.logoUrl}" style="max-width: 75px;"/>
+            </#if>
+
+            <h5 property="dc:title" class="rtitle border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                ${eml.title!resource.shortname}
+            </h5>
+        </div>
 
         <input style="display:none" class="expand" type="button" id="menu-toggle2" name="expand-sidebar" value=""/>
-        <img class="latestVersion"/>
-
 
         <#-- display watermark for preview pages -->
         <#if action.isPreview()?string == "true">
@@ -214,6 +211,7 @@
                 <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text>
             </div>
         </#if>
+
         <div class="mx-md-4 mx-2">
             <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
             <#if doi?has_content>
@@ -247,38 +245,33 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <#if managerRights>
-                        <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-outline-success ignore-link-color mx-1">
-                            <@s.text name='button.edit'/>
-                        </a>
-                    </#if>
-                    <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                        <#if adminRights>
-                            <a class="confirmDeleteVersion btn btn-outline-danger ignore-link-color" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
-                                <@s.text name='button.delete.version'/>
+                    <div class="d-flex justify-content-end">
+                        <#if managerRights>
+                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-outline-success ignore-link-color mx-1">
+                                <@s.text name='button.edit'/>
                             </a>
                         </#if>
-                    </#if>
-                    <#if doi?has_content && doiUrl?has_content>
-                        <div id="resourcedoi">
-                            <span class="doi">
-                                <a property="dc:identifier" href="${doiUrl!}">${doi}</a>
-                            </span>
-                        </div>
-                    </#if>
+                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
+                            <#if adminRights>
+                                <a class="confirmDeleteVersion btn btn-outline-danger ignore-link-color" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
+                                    <@s.text name='button.delete.version'/>
+                                </a>
+                            </#if>
+                        </#if>
+                        <#if doi?has_content && doiUrl?has_content>
+                            <div id="resourcedoi">
+                                <span class="doi">
+                                    <a property="dc:identifier" href="${doiUrl!}">${doi}</a>
+                                </span>
+                            </div>
+                        </#if>
+                    </div>
                 </div>
 
             </div>
-            <div class="clearfix"></div>
-
-            <#if eml.logoUrl?has_content>
-                <div id="resourcelogo" class="pt-2">
-                    <img src="${eml.logoUrl}"/>
-                </div>
-            </#if>
 
             <#if (eml.description?size>0)>
-                <div property="dc:abstract">
+                <div property="dc:abstract" class="mt-3">
                     <#list eml.description as para>
                         <#if para?has_content>
                             <p>
@@ -288,7 +281,9 @@
                     </#list>
                 </div>
             <#else>
-                <@s.text name='portal.resource.no.description'/>
+                <div class="mt-3">
+                    <p><@s.text name='portal.resource.no.description'/></p>
+                </div>
             </#if>
 
             <#if eml.distributionUrl?has_content || resource.lastPublished??>
@@ -556,31 +551,35 @@
                     <@s.text name='portal.resource.contacts'/>
                 </h5>
 
-                <div class="mx-md-4 mx-2">
-                    <p><@s.text name='portal.resource.creator.intro'/>:</p>
-                    <div class="fullwidth">
-                        <@contactList contacts=eml.creators dcPropertyType='creator'/>
+                <div class="row mx-md-4 mx-2">
+                    <div class="col-lg">
+                        <p><@s.text name='portal.resource.creator.intro'/>:</p>
+                        <div class="fullwidth">
+                            <@contactList contacts=eml.creators dcPropertyType='creator'/>
+                        </div>
                     </div>
-                    <div class="clearfix"></div>
 
-                    <p class="twenty_top"><@s.text name='portal.resource.contact.intro'/>:</p>
-                    <div class="fullwidth">
-                        <@contactList contacts=eml.contacts dcPropertyType='mediator'/>
+                    <div class="col-lg">
+                        <p class="twenty_top"><@s.text name='portal.resource.contact.intro'/>:</p>
+                        <div class="fullwidth">
+                            <@contactList contacts=eml.contacts dcPropertyType='mediator'/>
+                        </div>
                     </div>
-                    <div class="clearfix"></div>
 
-                    <p class="twenty_top"><@s.text name='portal.metadata.provider.intro'/>:</p>
-                    <div class="fullwidth">
-                        <@contactList contacts=eml.metadataProviders dcPropertyType='contributor'/>
+                    <div class="col-lg">
+                        <p class="twenty_top"><@s.text name='portal.metadata.provider.intro'/>:</p>
+                        <div class="fullwidth">
+                            <@contactList contacts=eml.metadataProviders dcPropertyType='contributor'/>
+                        </div>
                     </div>
-                    <div class="clearfix"></div>
 
                     <#if (eml.associatedParties?size>0)>
-                        <p class="twenty_top"><@s.text name='portal.associatedParties.intro'/>:</p>
-                        <div class="fullwidth">
-                            <@contactList contacts=eml.associatedParties dcPropertyType='contributor'/>
+                        <div class="col-lg">
+                            <p class="twenty_top"><@s.text name='portal.associatedParties.intro'/>:</p>
+                            <div class="fullwidth">
+                                <@contactList contacts=eml.associatedParties dcPropertyType='contributor'/>
+                            </div>
                         </div>
-                        <div class="clearfix"></div>
                     </#if>
                 </div>
             </div>
