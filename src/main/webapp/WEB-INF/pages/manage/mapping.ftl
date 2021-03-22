@@ -470,7 +470,7 @@
                             <#list groupsFields as field>
                                 <@showField field field_index/>
                             </#list>
-                            <div class="twenty_top">
+                            <div>
                                 <@threeButtons/>
                             </div>
                         </div>
@@ -478,12 +478,16 @@
                 </#if>
             </#list>
         <#else>
-            <h3 class="twenty_top"><@s.text name="manage.mapping.fields"/></h3>
-            <#list fields as field>
-                <@showField field field_index/>
-            </#list>
-            <div class="twenty_top">
-                <@threeButtons/>
+            <div class="my-3 p-3 bg-body rounded shadow-sm">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                    <@s.text name="manage.mapping.fields"/>
+                </h5>
+                <#list fields as field>
+                    <@showField field field_index/>
+                </#list>
+                <div>
+                    <@threeButtons/>
+                </div>
             </div>
         </#if>
 
