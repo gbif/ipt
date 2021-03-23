@@ -108,11 +108,16 @@
                         <@s.hidden name="organisation.description" id="organisation.description" />
 
                         <div class="col-lg-6">
-                            <img class="infoImg" src="${baseURL}/images/info.gif">
-                            <div class="info" style="display: none;">
+                            <#assign selectOrganisationInfo>
                                 <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
-                            </div>
-                            <@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
+                            </#assign>
+                            <label for="organisation.key" class="form-label">
+                                <@s.text name="admin.organisation.key"/>
+                                <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${selectOrganisationInfo}">
+                                    <i class="bi bi-info-circle text-success"></i>
+                                </span>
+                            </label>
+                            <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
                         </div>
                     </#if>
 
@@ -139,7 +144,15 @@
                             <@popoverPropertyInfo "admin.organisation.doiRegistrationAgency.help"/>
                             <@s.text name="admin.organisation.doiRegistrationAgency"/>
                         </p>
-                        <@s.radio name="organisation.doiRegistrationAgency" cssClass="form-check-input" list="doiRegistrationAgencies" value="organisation.doiRegistrationAgency" help="i18n" />
+
+                        <#list doiRegistrationAgencies as agency>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="organisation.doiRegistrationAgency" id="organisation_doiRegistrationAgency${agency}" value="${agency}" >
+                                <label class="form-check-label" for="organisation_doiRegistrationAgency${agency}" >
+                                    ${agency}
+                                </label>
+                            </div>
+                        </#list>
                         <@s.fielderror cssClass="invalid-feedback list-unstyled radio-error radio-name-organisation.doiRegistrationAgency mx-md-4 mx-2 my-1">
                             <@s.param value="%{'organisation.doiRegistrationAgency'}" />
                         </@s.fielderror>
