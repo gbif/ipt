@@ -137,15 +137,8 @@
                             <@popoverPropertyInfo "admin.organisation.doiRegistrationAgency.help"/>
                             <@s.text name="admin.organisation.doiRegistrationAgency"/>
                         </p>
-                        <#list doiRegistrationAgencies as agency>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="agency" id="agency${agency}" aria-describedby="field-error-agency" <#if organisation.doiRegistrationAgency??>value="${organisation.doiRegistrationAgency}" </#if>>
-                                <label class="form-check-label" for="agency${agency}">
-                                    ${agency}
-                                </label>
-                            </div>
-                        </#list>
-                        <@s.fielderror cssClass="invalid-feedback list-unstyled radio-error radio-name-modeSelected mx-md-4 mx-2 my-0" fieldName="modeSelected">
+                        <@s.radio name="organisation.doiRegistrationAgency" cssClass="form-check-input" list="doiRegistrationAgencies" value="organisation.doiRegistrationAgency" help="i18n" />
+                        <@s.fielderror cssClass="invalid-feedback list-unstyled radio-error radio-name-organisation.doiRegistrationAgency mx-md-4 mx-2 my-1">
                             <@s.param value="%{'organisation.doiRegistrationAgency'}" />
                         </@s.fielderror>
                     </div>
