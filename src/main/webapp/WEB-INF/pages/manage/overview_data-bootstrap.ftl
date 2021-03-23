@@ -96,7 +96,7 @@
                     <@s.text name='manage.overview.DwC.Mappings.description'/>
                 </p>
 
-                <div class="details twenty_bottom">
+                <div class="details mb-3">
                     <#if mappingsModifiedSinceLastPublication>
                         <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?date?string.medium!}
                     <#elseif resource.lastPublished??>
@@ -139,10 +139,10 @@
                                                 <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="btn-group" role="group">
-                                                        <a class="btn btn-sm btn-outline-secondary" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                        <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <@s.text name='button.preview'/>
                                                         </a>
-                                                        <a class="btn btn-sm btn-outline-success" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                        <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <@s.text name='button.edit'/>
                                                         </a>
                                                     </div>

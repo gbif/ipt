@@ -30,8 +30,8 @@
         <form action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
+            <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-outline-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle text-success"></i>
                 </button>
                 <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-success" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
@@ -43,8 +43,8 @@
         <form action='resource-deleteDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
+            <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-outline-danger" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle text-danger"></i>
                 </button>
                 <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
@@ -56,8 +56,8 @@
         <form action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
+            <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-outline-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle text-success"></i>
                 </button>
                 <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-success" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
@@ -233,9 +233,63 @@
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2">
-                <@s.text name="manage.overview.description"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
-            </p>
+            <div class="row g-2 mx-md-4 mx-2">
+                <div class="col-md-9">
+                    <span class="text-muted">
+                        <@s.text name="manage.overview.description"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
+                    </span>
+                </div>
+
+                <div class="col-md-3 d-md-flex justify-content-md-end">
+                    <#if resource.isAlreadyAssignedDoi()?string == "false" && resource.status != "REGISTERED">
+                        <#assign disableRegistrationRights="false"/>
+                    <#elseif currentUser.hasRegistrationRights()?string == "true">
+                        <#assign disableRegistrationRights="false"/>
+                    <#else>
+                        <#assign disableRegistrationRights="true"/>
+                    </#if>
+
+                    <#if resource.status == "DELETED">
+                        <form action='resource-undelete.do' method='post'>
+                            <input name="r" type="hidden" value="${resource.shortname}" />
+
+                            <#if !currentUser.hasRegistrationRights()>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <#assign resourceUndeleteInfo>
+                                        <@s.text name="manage.resource.status.undeletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
+                                    </#assign>
+                                    <button type="button" class="btn btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                    </button>
+                                    <@s.submit cssClass="btn btn-sm btn-outline-secondary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
+                                </div>
+                            <#else>
+                                <@s.submit cssClass="btn btn-sm btn-outline-success confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
+                            </#if>
+                        </form>
+                    <#else>
+                        <form action='resource-delete.do' method='post'>
+                            <input name="r" type="hidden" value="${resource.shortname}" />
+
+                            <#if !currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED")>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <#assign resourceUndeleteInfo>
+                                        <@s.text name="manage.resource.status.deletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
+                                    </#assign>
+                                    <button type="button" class="btn btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                    </button>
+                                    <@s.submit cssClass="btn btn-sm btn-outline-secondary confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}' />
+                                </div>
+                            <#else>
+                                <@s.submit cssClass="btn btn-sm btn-outline-danger confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}'/>
+                            </#if>
+                        </form>
+                    </#if>
+                </div>
+            </div>
+
+            <div id="dialog"></div>
         </div>
 
         <!-- when resource is of type metadata-only, there is no need to show source data and mapping sections -->
@@ -290,41 +344,112 @@
                         <div class="table-responsive mx-md-4 mx-2">
                             <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                 <tr>
-                                    <th></th><#if resource.lastPublished??><td class="green">${lastPublishedTitle?cap_first}</td></#if><td class="left_padding">${nextPublishedTitle?cap_first}</td>
+                                    <th></th>
+                                    <#if resource.lastPublished??>
+                                        <td class="text-success">${lastPublishedTitle?cap_first}</td>
+                                    </#if>
+                                    <td class="left_padding">
+                                        ${nextPublishedTitle?cap_first}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <th>${versionTitle?cap_first}</th><#if resource.lastPublished??>
-                                    <td class="separator green">${resource.emlVersion.toPlainString()}&nbsp;<a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a><@dwcaValidator/></td></#if><td class="left_padding">${resource.getNextVersion().toPlainString()}&nbsp;<a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-success</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a></td>
+                                    <th>${versionTitle?cap_first}</th>
+                                    <#if resource.lastPublished??>
+                                        <td class="separator text-success">
+                                            ${resource.emlVersion.toPlainString()}&nbsp;
+                                            <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a>
+                                            <@dwcaValidator/>
+                                        </td>
+                                    </#if>
+                                    <td class="left_padding">
+                                        ${resource.getNextVersion().toPlainString()}&nbsp;
+                                        <a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-success</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
+                                    </td>
                                 </tr>
                                 <!-- hide visibility row if 1) a DOI has already been assigned to the resource since any resource with a DOI has to be public, 2) the resource is registered, or 3) the visibility of the currenct version and next version are the same -->
                                 <#if !resource.isAlreadyAssignedDoi() && !resource.isRegistered() && (resource.getStatus()?lower_case != resource.getLastPublishedVersionsPublicationStatus()?lower_case) || !resource.lastPublished?? >
                                     <tr>
-                                        <th>${visibilityTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}</td></#if><td class="left_padding">${resource.status?lower_case?cap_first}</td>
+                                        <th>${visibilityTitle?cap_first}</th>
+                                        <#if resource.lastPublished??>
+                                            <td class="separator text-success">
+                                                ${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}
+                                            </td>
+                                        </#if>
+                                        <td class="left_padding">
+                                            ${resource.status?lower_case?cap_first}
+                                        </td>
                                     </tr>
                                 </#if>
                                 <!-- hide DOI row if no organisation with DOI account has been activated yet -->
                                 <#if organisationWithPrimaryDoiAccount??>
                                     <tr>
-                                        <th>DOI</th><#if resource.lastPublished??><td class="separator green"><#if resource.isAlreadyAssignedDoi()>${resource.versionHistory[0].doi!}<#else>${emptyCell}</#if></td></#if><td class="left_padding"><#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)><em>${resource.doi!emptyCell}</em>&nbsp;</#if><@nextDoiButtonTD/></td>
+                                        <th>DOI</th>
+                                        <#if resource.lastPublished??>
+                                            <td class="separator text-success">
+                                                <#if resource.isAlreadyAssignedDoi()>
+                                                    ${resource.versionHistory[0].doi!}
+                                                    resource.versionHistory.doi
+                                                <#else>
+                                                    ${emptyCell}
+                                                </#if>
+                                            </td>
+                                        </#if>
+                                        <td class="left_padding">
+                                            <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
+                                                <em>${resource.doi!emptyCell}</em>&nbsp;
+                                            </#if>
+                                            <@nextDoiButtonTD/>
+                                        </td>
                                     </tr>
                                 </#if>
                                 <!-- TODO: hide license row if the current version and next version have both been assigned the same license -->
                                 <#if (resource.lastPublished?? && !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) || !resource.lastPublished?? || !resource.isAssignedGBIFSupportedLicense()>
                                     <tr>
-                                        <th>${licenseTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></td></#if><td class="left_padding"><@shortLicense resource.getEml().parseLicenseUrl()/></td>
+                                        <th>${licenseTitle?cap_first}</th>
+                                        <#if resource.lastPublished??>
+                                            <td class="separator text-success">
+                                                <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
+                                            </td>
+                                        </#if>
+                                        <td class="left_padding">
+                                            <@shortLicense resource.getEml().parseLicenseUrl()/>
+                                        </td>
                                     </tr>
                                 </#if>
                                 <tr>
-                                    <th>${releasedTitle?cap_first}</th><#if resource.lastPublished??><td class="separator green">${resource.lastPublished?date?string.medium}</td></#if><td class="left_padding"><#if resource.nextPublished??>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}<#else>${emptyCell}</#if></td>
+                                    <th>${releasedTitle?cap_first}</th>
+                                    <#if resource.lastPublished??>
+                                        <td class="separator text-success">${resource.lastPublished?date?string.medium}</td>
+                                    </#if>
+                                    <td class="left_padding">
+                                        <#if resource.nextPublished??>
+                                            ${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}
+                                        <#else>
+                                            ${emptyCell}
+                                        </#if>
+                                    </td>
                                 </tr>
                                 <#if resource.lastPublished??>
                                     <tr>
-                                        <th>${pubLogTitle?cap_first}</th><td class="separator"><a class="button ignore-link-color" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><input class="button btn btn-sm btn-outline-success" type="button" value='${downloadTitle?cap_first}'/></a></td><td class="left_padding">${emptyCell}</td>
+                                        <th>${pubLogTitle?cap_first}</th>
+                                        <td class="separator">
+                                            <a class="button ignore-link-color" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
+                                                <input class="button btn btn-sm btn-outline-success" type="button" value='${downloadTitle?cap_first}'/>
+                                            </a>
+                                        </td>
+                                        <td class="left_padding">${emptyCell}</td>
                                     </tr>
                                 </#if>
                                 <#if report??>
                                     <tr>
-                                        <th>${pubRepTitle?cap_first}</th><td class="separator"><#if report?? && (report.state?contains('cancelled') || report.exception?has_content) ><em>${report.state}</em>&nbsp;</#if><a id="toggleReport" href="#">${showTitle?cap_first}</a></td><td class="left_padding">${emptyCell}</td>
+                                        <th>${pubRepTitle?cap_first}</th>
+                                        <td class="separator">
+                                            <#if report?? && (report.state?contains('cancelled') || report.exception?has_content) >
+                                                <em>${report.state}</em>&nbsp;
+                                            </#if>
+                                            <a id="toggleReport" href="#">${showTitle?cap_first}</a>
+                                        </td>
+                                        <td class="left_padding">${emptyCell}</td>
                                     </tr>
                                 </#if>
                             </table>
@@ -382,7 +507,7 @@
                         </p>
 
                         <div class="details">
-                            <table class="table table-borderless">
+                            <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                                 <#if resource.usesAutoPublishing()>
                                     <tr>
                                         <th><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
@@ -582,7 +707,10 @@
                                         <tr>
                                             <th><@s.text name="manage.overview.resource.managers.manager"/></th>
                                             <!-- Warning: method name match is case sensitive therefore must be deleteManager -->
-                                            <td>${u.name}, ${u.email}&nbsp;
+                                            <td>
+                                                ${u.name}, ${u.email}&nbsp;
+                                            </td>
+                                            <td class="d-flex justify-content-end">
                                                 <a class="button btn btn-sm btn-outline-danger ignore-link-color" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
                                                     <@s.text name='button.delete'/>
                                                 </a>
@@ -601,13 +729,13 @@
                             <!-- Warning: method name match is case sensitive therefore must be addManager -->
                             <form action='resource-addManager.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
-                                <select name="id" class="form-select form-select-sm" id="manager" size="1">
+                                <select name="id" class="form-select form-select-sm my-1" id="manager" size="1">
                                     <option value=""></option>
                                     <#list potentialManagers?sort_by("name") as u>
                                         <option value="${u.email}">${u.name}</option>
                                     </#list>
                                 </select>
-                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-success mt-1" key="button.add"/>
+                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-success my-1" key="button.add"/>
                             </form>
                         </div>
                     </#if>
