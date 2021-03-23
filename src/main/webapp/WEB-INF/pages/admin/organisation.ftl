@@ -73,7 +73,7 @@
                 </#if>
             </h5>
 
-            <@s.form id="organisationsForm" cssClass="topForm half" action="organisation.do" method="post" namespace="" includeContext="false">
+            <form id="organisationsForm" class="needs-validation" action="organisation.do" method="post" novalidate>
                 <div class="row g-3 mx-md-3 mx-1">
                     <#if id?has_content>
                         <div class="col-lg-6">
@@ -109,7 +109,9 @@
 
                         <div class="col-lg-6">
                             <img class="infoImg" src="${baseURL}/images/info.gif">
-                            <div class="info" style="display: none;"><@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/></div>
+                            <div class="info" style="display: none;">
+                                <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
+                            </div>
                             <@s.select id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
                         </div>
                     </#if>
@@ -167,7 +169,7 @@
                         <@s.submit name="cancel" key="button.cancel" cssClass="button btn btn-outline-secondary"/>
                     </div>
                 </div>
-            </@s.form>
+            </form>
         </div>
     </main>
 

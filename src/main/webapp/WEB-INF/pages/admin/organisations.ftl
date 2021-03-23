@@ -47,7 +47,7 @@
                 <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2"></div>
 
                 <div class="mx-md-4 mx-2 mt-2">
-                    <button id="create" class="btn btn-outline-success"><@s.text name="button.create"/></button>
+                    <button id="add" class="btn btn-outline-success"><@s.text name="button.add"/></button>
                     <button id="cancel" class="btn btn-outline-secondary"><@s.text name="button.cancel"/></button>
                 </div>
 
