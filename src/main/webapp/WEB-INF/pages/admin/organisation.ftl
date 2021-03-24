@@ -7,7 +7,7 @@
         $(document).ready(function(){
             initHelp();
 
-            $('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+            $('.confirm').jConfirmActionBootstrap({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 
             $('select#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"375px", allowClear: true});
 
@@ -27,7 +27,7 @@
                 emailContent += '</@s.param></@s.text>';
                 emailContent += '<@s.text name="emails.request.organisation.association7"/>';
 
-                var url = "<@s.url value='${registryURL}organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
+                var url = '${registryURL}organisation/' + $('#organisation\\.key :selected').val() + ".json";
                 $.getJSON(url,function(data){
 
                     $('#organisation\\.primaryContactType').val(data.primaryContactType);
@@ -147,7 +147,7 @@
 
                         <#list doiRegistrationAgencies as agency>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="organisation.doiRegistrationAgency" id="organisation_doiRegistrationAgency${agency}" value="${agency}" >
+                                <input class="form-check-input" type="radio" name="organisation.doiRegistrationAgency" id="organisation_doiRegistrationAgency${agency}" <#if agency??>value="${agency}"</#if> <#if organisation.doiRegistrationAgency?? && agency == organisation.doiRegistrationAgency> checked </#if> >
                                 <label class="form-check-label" for="organisation_doiRegistrationAgency${agency}" >
                                     ${agency}
                                 </label>
