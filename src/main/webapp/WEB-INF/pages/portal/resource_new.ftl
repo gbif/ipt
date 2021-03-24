@@ -7,6 +7,7 @@
 <#include "/WEB-INF/pages/macros/versionsTable-bootstrap.ftl"/>
 
 <style>
+    /* Resource logo styling */
     .icon {
         background-repeat: no-repeat;
         background-position: 0 50%;
@@ -19,6 +20,7 @@
         background-image: url('${baseURL}/images/gbif-logo.svg');
     }
 
+    /* Licence logos styling */
     .cc_logo {
         display: block;
         float: left;
@@ -39,6 +41,7 @@
         background: url('${baseURL}/images/icons/cc-zero.png');
     }
 
+    /* DOI styling */
     a.doi {
         padding-left: 0;
         border-right-width: 2px;
@@ -48,6 +51,11 @@
         background: #198754;
         color: white;
         padding: 6px 10px 7px 10px;
+    }
+
+    /* Version table pointer styling */
+    img.latestVersionHidden {
+        opacity: 0.2;
     }
 </style>
 
@@ -377,7 +385,7 @@
                     <p><@s.text name='portal.resource.downloads.verbose'/></p>
                 </#if>
 
-                <table class="downloads table table-sm table-borderless">
+                <table class="downloads table table-sm table-borderless" style="font-size: 0.875rem;">
                     <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
                     <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
                     <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
@@ -512,7 +520,7 @@
                 <div class="mx-md-4 mx-2">
                     <p><@s.text name='portal.resource.otherFormats'/></p>
 
-                    <table class="table table-sm table-borderless">
+                    <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#list eml.physicalData as item>
                             <#assign link=eml.physicalData[item_index]/>
                             <tr property="dc:isFormatOf"><th>${link.name!}</th><td><a href="${link.distributionUrl}">${link.distributionUrl!"?"}</a>
@@ -577,7 +585,7 @@
                 <div class="mx-md-4 mx-2">
                     <p property="dc:spatial"><@textWithFormattedLink eml.geospatialCoverages[0].description!no_description/></p>
 
-                    <table class="table table-sm table-borderless">
+                    <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <tr>
                             <th><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
                             <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${eml.geospatialCoverages[0].boundingCoordinates.min.latitude},&nbsp;${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${eml.geospatialCoverages[0].boundingCoordinates.max.latitude},&nbsp;${eml.geospatialCoverages[0].boundingCoordinates.max.longitude}&#93;</td>
@@ -598,7 +606,7 @@
                     <#list organizedCoverages as item>
                         <p><@textWithFormattedLink item.description!no_description/></p>
 
-                        <table class="table table-sm table-borderless">
+                        <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                             <#list item.keywords as k>
                                 <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
                                     <tr>
@@ -634,7 +642,7 @@
 
                 <div class="mx-md-4 mx-2">
                     <#list eml.temporalCoverages as item>
-                        <table class="table table-sm table-borderless">
+                        <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                             <#if ("${item.type}" == "DATE_RANGE") && eml.temporalCoverages[item_index].startDate?? && eml.temporalCoverages[item_index].endDate?? >
                                 <tr>
                                     <th><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
@@ -672,7 +680,7 @@
                 <div class="mx-md-4 mx-2">
                     <p><@textWithFormattedLink eml.project.description!no_description/></p>
 
-                    <table class="table table-sm table-borderless">
+                    <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#if eml.project.title?has_content>
                             <tr>
                                 <th><@s.text name='eml.project.title'/></th>
@@ -727,7 +735,7 @@
                 <div class="mx-md-4 mx-2">
                     <p><@textWithFormattedLink eml.sampleDescription!no_description/></p>
 
-                    <table class="table table-sm table-borderless">
+                    <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#if eml.studyExtent?has_content>
                             <tr>
                                 <th><@s.text name='eml.studyExtent'/></th>
@@ -768,7 +776,7 @@
 
                 <#list eml.collections as item>
                     <div class="mx-md-4 mx-2">
-                        <table class="table table-sm table-borderless">
+                        <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#if item.collectionName?has_content>
                             <tr>
                                 <th><@s.text name='eml.collectionName'/></th>
@@ -793,7 +801,7 @@
 
                 <#if eml.specimenPreservationMethods?? && (eml.specimenPreservationMethods?size>0) && eml.specimenPreservationMethods[0]?has_content >
                     <div class="mx-md-4 mx-2">
-                        <table class="table table-sm table-borderless">
+                        <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                             <tr>
                                 <th><@s.text name='eml.specimenPreservationMethod.plural'/></th>
                                 <td>
@@ -808,7 +816,7 @@
 
                 <#if eml.jgtiCuratorialUnits?? && (eml.jgtiCuratorialUnits?size>0) && eml.jgtiCuratorialUnits[0]?has_content>
                     <div class="mx-md-4 mx-2">
-                        <table class="table table-sm table-borderless">
+                        <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                             <tr>
                                 <th><@s.text name='manage.metadata.collections.curatorialUnits.title'/></th>
                                 <td>
@@ -867,7 +875,7 @@
                         <p><@textWithFormattedLink eml.additionalInfo/></p>
                     </#if>
 
-                    <table class="table table-sm table-borderless">
+                    <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#if eml.purpose?has_content>
                             <tr>
                                 <th><@s.text name='eml.purpose'/></th>
