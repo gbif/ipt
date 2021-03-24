@@ -1,7 +1,9 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
-    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-3.5.1.css">
-    <script src="${baseURL}/js/select2/select2-3.5.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js" type="text/javascript"></script>
+
     <script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -9,7 +11,7 @@
 
             $('.confirm').jConfirmActionBootstrap({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 
-            $('select#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"375px", allowClear: true});
+            $('select#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"100%", allowClear: true, theme: 'bootstrap4'});
 
             $('#organisation\\.key').change(function() {
 
@@ -108,16 +110,18 @@
                         <@s.hidden name="organisation.description" id="organisation.description" />
 
                         <div class="col-lg-6">
-                            <#assign selectOrganisationInfo>
-                                <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
-                            </#assign>
-                            <label for="organisation.key" class="form-label">
-                                <@s.text name="admin.organisation.key"/>
-                                <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${selectOrganisationInfo}">
-                                    <i class="bi bi-info-circle text-success"></i>
-                                </span>
-                            </label>
-                            <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
+                            <div class="form-group">
+                                <#assign selectOrganisationInfo>
+                                    <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
+                                </#assign>
+                                <label for="organisation.key" class="form-label">
+                                    <@s.text name="admin.organisation.key"/>
+                                    <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${selectOrganisationInfo}">
+                                        <i class="bi bi-info-circle text-success"></i>
+                                    </span>
+                                </label>
+                                <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
+                            </div>
                         </div>
                     </#if>
 

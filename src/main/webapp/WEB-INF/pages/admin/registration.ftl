@@ -1,11 +1,13 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
     <script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-3.5.1.css">
-    <script src="${baseURL}/js/select2/select2-3.5.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js" type="text/javascript"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"375px", allowClear: true});
+            $('#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width: "100%", allowClear: true, theme: 'bootstrap4'});
         });
     </script>
     <script type="text/javascript">
@@ -29,8 +31,8 @@
                 emailContent += '<@s.text name="emails.request.organisation.association7"/>';
 
                 $('#organisation\\.alias').val(orgName);
-                var url = "<@s.url value='${registryURL}organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
-                $.getJSON(url+"?callback=?",function(data){
+                var url = '${registryURL}organisation/' + $('#organisation\\.key :selected').val() + ".json";
+                $.getJSON(url,function(data){
 
                     $('#organisation\\.primaryContactType').val(data.primaryContactType);
                     $('#organisation\\.primaryContactName').val(data.primaryContactName);
@@ -140,15 +142,24 @@
 
                 <div id="registrationForm" class="mx-md-4 mx-2 mt-4" style="display: none;" >
 
-                    <@s.form cssClass="topForm half" action="registration" method="post" id="registrationForm" namespace="" includeContext="false">
+                    <form id="registrationForm" class="needs-validation" action="registration.do" method="post" novalidate>
                         <div class="row g-3">
                             <div class="col-lg-6">
-                                <@s.fielderror>
-                                    <@s.param value="%{'organisation.key'}" />
-                                </@s.fielderror>
-                                <img class="infoImg" src="${baseURL}/images/info.gif">
-                                <div class="info" style="display: none;"><@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.registration.intro2"/></div>
-                                <@s.select cssClass="form-select" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
+                                <div class="form-group">
+                                    <#assign selectOrganisationInfo>
+                                        <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.registration.intro2"/>
+                                    </#assign>
+                                    <label for="organisation.key" class="form-label">
+                                        <@s.text name="admin.organisation.key"/>
+                                        <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${selectOrganisationInfo}">
+                                        <i class="bi bi-info-circle text-success"></i>
+                                    </span>
+                                    </label>
+                                    <@s.select cssClass="form-select" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
+                                    <@s.fielderror>
+                                        <@s.param value="%{'organisation.key'}" />
+                                    </@s.fielderror>
+                                </div>
                             </div>
 
                             <div class="col-lg-6">
@@ -205,7 +216,7 @@
                                 <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" id="cancel" key="button.cancel"/>
                             </div>
                         </div>
-                    </@s.form>
+                    </form>
                 </div>
             </#if>
         </div>
