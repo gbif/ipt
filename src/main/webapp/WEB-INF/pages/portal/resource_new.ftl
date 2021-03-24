@@ -57,6 +57,39 @@
     img.latestVersionHidden {
         opacity: 0.2;
     }
+
+    /* Data records chars styling */
+    ul.no_bullets li {
+        background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+        padding-left: 0;
+        margin-left: 0;
+    }
+    ul.horizontal_graph {
+        margin: 0;
+    }
+    ul.horizontal_graph .grey_bar {
+        background-color: #a9e4ba;
+        border-radius: 1px;
+        display: inline-block;
+        height: 3px;
+        margin: 0 0 2px;
+    }
+    ul.horizontal_graph li span {
+        display: inline-block;
+        width: 200px;
+        font-size: 0.9em;
+        word-wrap: break-word;
+    }
+    ul.no_bullets {
+        list-style: outside none none;
+    }
+    ul.horizontal_graph .value_label {
+        color: #cccccc;
+        display: inline-block;
+        font-size: 0.9em;
+        margin: 0 0 0 10px;
+        padding: 0;
+    }
 </style>
 
 <#--Construct a Contact. Parameters are the actual contact object, the contact type, and the Dublin Core Property Type -->
@@ -342,29 +375,32 @@
                         <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
                             <@s.text name='portal.resource.dataRecords.core'><@s.param>${coreCount}</@s.param></@s.text>
                         </#if>
-
-                        <#if recordsByExtensionOrderedNumber gt 0>
-                            <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
-
-                            <div id="record_graph">
-                                <ul class="no_bullets horizontal_graph">
-                                    <!-- at top, show bar for core record count to enable comparison against extensions -->
-                                    <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                                        <li><@extensionLink coreExt true/><div class="grey_bar">${coreCount?c}</div></li>
-                                    </#if>
-
-                                    <!-- below bar for core record count, show bars for extension record counts -->
-                                    <#list recordsByExtensionOrdered?keys as k>
-                                        <#assign ext = action.getExtensionManager().get(k)!/>
-                                        <#assign extCount = recordsByExtensionOrdered.get(k)!/>
-                                        <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content && extCount?has_content>
-                                            <li><@extensionLink ext/><div class="grey_bar">${extCount?c}</div></li>
-                                        </#if>
-                                    </#list>
-                                </ul>
-                            </div>
-                        </#if>
                     </p>
+
+                    <#if recordsByExtensionOrderedNumber gt 0>
+                        <p>
+                            <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
+                        </p>
+
+                        <div id="record_graph">
+                            <ul class="no_bullets horizontal_graph">
+                                <!-- at top, show bar for core record count to enable comparison against extensions -->
+                                <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
+                                    <li><@extensionLink coreExt true/><div class="grey_bar">${coreCount?c}</div></li>
+                                </#if>
+
+                                <!-- below bar for core record count, show bars for extension record counts -->
+                                <#list recordsByExtensionOrdered?keys as k>
+                                    <#assign ext = action.getExtensionManager().get(k)!/>
+                                    <#assign extCount = recordsByExtensionOrdered.get(k)!/>
+                                    <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content && extCount?has_content>
+                                        <li><@extensionLink ext/><div class="grey_bar">${extCount?c}</div></li>
+                                    </#if>
+                                </#list>
+                            </ul>
+                        </div>
+                    </#if>
+
                     <p>
                         <@s.text name='portal.resource.dataRecords.repository'/>
                     </p>
