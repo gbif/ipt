@@ -388,7 +388,6 @@
                                             <td class="separator text-success">
                                                 <#if resource.isAlreadyAssignedDoi()>
                                                     ${resource.versionHistory[0].doi!}
-                                                    resource.versionHistory.doi
                                                 <#else>
                                                     ${emptyCell}
                                                 </#if>

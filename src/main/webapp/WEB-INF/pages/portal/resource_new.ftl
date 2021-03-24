@@ -453,7 +453,9 @@
                         </#if>
                         <@s.text name='portal.resource.cite.help'/>:
                     </p>
-                    <p property="dc:bibliographicCitation" class="howtocite"><@textWithFormattedLink eml.citation.citation/></p>
+                    <p property="dc:bibliographicCitation" class="howtocite mt-3 p-3 border">
+                        <@textWithFormattedLink eml.citation.citation/>
+                    </p>
                 </div>
             </div>
         </#if>
