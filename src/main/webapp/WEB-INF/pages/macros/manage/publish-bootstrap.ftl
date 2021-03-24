@@ -8,7 +8,7 @@
         <#if missingMetadata>
 
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.published.missing.metadata" escapeHtml=true/>">
+                <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.published.missing.metadata" escapeHtml=true/>">
                     <i class="bi bi-exclamation-triangle"></i>
                 </button>
                 <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
@@ -18,7 +18,7 @@
         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
         <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" escapeHtml=true/>">
+                <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" escapeHtml=true/>">
                     <i class="bi bi-exclamation-triangle"></i>
                 </button>
                 <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
@@ -42,7 +42,7 @@
                 </#assign>
 
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${popover1}">
+                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${popover1}">
                         <i class="bi bi-exclamation-triangle"></i>
                     </button>
                     <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
@@ -54,7 +54,7 @@
             && !organisationWithPrimaryDoiAccount??>
 
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.resource.status.publication.forbidden.account.missing" escapeHtml=true/>">
+                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.resource.status.publication.forbidden.account.missing" escapeHtml=true/>">
                         <i class="bi bi-exclamation-triangle"></i>
                     </button>
                     <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
@@ -67,7 +67,7 @@
                     <!-- and the resource has never been published before, the first publication is a new major version -->
                     <#if !resource.lastPublished??>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
+                            <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
                                 <i class="bi bi-exclamation-triangle"></i>
                             </button>
                             <@s.submit cssClass="confirmPublishMajorVersionWithoutDOI btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
@@ -77,8 +77,8 @@
                     <#else>
 
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
-                                <i class="bi bi-info"></i>
+                            <button type="button" class="btn btn-sm btn-outline-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
+                                <i class="bi bi-info-circle text-success"></i>
                             </button>
                             <@s.submit cssClass="confirmPublishMinorVersion btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
                         </div>
@@ -89,8 +89,8 @@
                 <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
 
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-sm btn-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.help" escapeHtml=true/>">
-                            <i class="bi bi-info"></i>
+                        <button type="button" class="btn btn-sm btn-outline-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.help" escapeHtml=true/>">
+                            <i class="bi bi-info-circle"></i>
                         </button>
                         <@s.submit cssClass="confirmPublishMajorVersion btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
                     </div>

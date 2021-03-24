@@ -187,7 +187,7 @@
                 <#else>
                     <div class="d-flex justify-content-start">
                         <div class="input-group">
-                            <button type="button" class="btn btn-sm btn-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.DwC.Mappings.cantdo" escapeHtml=true/>">
+                            <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.DwC.Mappings.cantdo" escapeHtml=true/>">
                                 <i class="bi bi-exclamation-triangle"></i>
                             </button>
                             <select class="form-select form-select-sm">
