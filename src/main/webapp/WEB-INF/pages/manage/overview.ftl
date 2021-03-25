@@ -171,8 +171,30 @@
                         $(this).dialog("close");
                         $("#cancel").click();
                     }
+                },
+                // modal window fixed positioning to prevent page elements from changing position
+                create: function (event, ui) {
+                    $(event.target).parent().css('position', 'fixed');
+                },
+                resizeStop: function (event, ui) {
+                    var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
+                        (Math.floor(ui.position.top) - $(window).scrollTop())];
+                    $(event.target).parent().css('position', 'fixed');
+                    $(dlg).dialog('option', 'position', position);
                 }
             });
+
+            // add bootstrap design to modal's title, content and footer
+            var dialog = $('.ui-dialog');
+            dialog.addClass('modal-content');
+            dialog.find('.ui-dialog-titlebar').addClass('modal-header').find('.ui-dialog-titlebar-close').addClass('btn-close');
+            dialog.find('.ui-dialog-title').addClass('modal-title fw-bold').html('<@s.text name="basic.confirm"/>');
+            dialog.find('.ui-dialog-content').addClass('modal-body');
+            dialog.find('.ui-dialog-buttonpane').addClass('modal-footer');
+
+            // add bootstrap design to modal buttons
+            $('.ui-dialog-buttonset button:first-child').addClass('btn btn-outline-success mx-2');
+            $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-outline-secondary');
         }
 
         // load a preview of the mapping in the modal window
@@ -289,7 +311,7 @@
                 </div>
             </div>
 
-            <div id="dialog"></div>
+            <div id="dialog" class="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="display: none"></div>
         </div>
 
         <!-- when resource is of type metadata-only, there is no need to show source data and mapping sections -->
