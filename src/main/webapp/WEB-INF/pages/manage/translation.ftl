@@ -7,7 +7,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             initHelp();
-            $('.confirm').jConfirmActionBootstrap({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
             $("table input").focus(function() {
                 $(this).parent().parent().addClass("highlight");
             });

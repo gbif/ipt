@@ -946,6 +946,8 @@
 <!-- data record line chart -->
 <script type="text/javascript" src="${baseURL}/js/graphs.js"></script>
 
+<script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
+
 <!-- Menu Toggle Script -->
 <script type="text/javascript">
     $("#menu-toggle").click(function(e) {
@@ -975,6 +977,7 @@
     });
 
     $('.confirmDeleteVersion').jConfirmAction({
+        titleQuestion : "<@s.text name="basic.confirm"/>",
         question : "<@s.text name='portal.resource.confirm.delete.version'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
         yesAnswer : "<@s.text name='basic.yes'/>",
         cancelAnswer : "<@s.text name='basic.no'/>"

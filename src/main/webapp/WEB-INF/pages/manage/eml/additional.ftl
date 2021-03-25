@@ -3,7 +3,7 @@
     <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <script type="text/javascript" src="${baseURL}/js/ajaxfileupload.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script type="text/javascript">
         $(document).ready(function(){
