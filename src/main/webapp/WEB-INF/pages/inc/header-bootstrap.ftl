@@ -113,7 +113,7 @@
 
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
     <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
-    <link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui.min-1.12.1.css" rel="stylesheet" />
+[#--    <link media="all" type="text/css" href="${baseURL}/styles/jquery/jquery-ui.min-1.12.1.css" rel="stylesheet" />--]
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/font-awesome.min.css" media="all" />
     <!-- for css overrides needed for customizations -->
 [#--    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />--]
@@ -122,8 +122,6 @@
     <script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${baseURL}/js/jquery/jquery-ui.min-1.12.1.js"></script>
     <script type="text/javascript" src="${baseURL}/js/global.js"></script>
-[#--    <script type="text/javascript" src="${baseURL}/js/form-validation.js"></script>--]
-[#--    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>--]
 
 
     [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
