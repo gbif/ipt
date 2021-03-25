@@ -27,22 +27,22 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-lg-4 mx-2 pt-2 text-success text-center">
                 <@s.text name='manage.source.title'/>
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2">
+            <p class="text-muted mx-lg-4 mx-2">
                 <@s.text name='manage.source.intro'/>
             </p>
 
             <form class="topForm" action="source.do" method="post">
-                <div class="row g-3 mx-md-4 mx-2">
+                <div class="row g-3 mx-lg-4 mx-2">
                     <input type="hidden" name="r" value="${resource.shortname}" />
                     <input type="hidden" name="id" value="${id!}" />
 
                     <#if source??>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <@input name="source.name" help="i18n" disabled=id?has_content/>
                         </div>
 
@@ -60,9 +60,9 @@
                             <@input name="source.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
                         </#macro>
 
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class="table-responsive">
-                                <table id="source-properties" class="table table-borderless">
+                                <table id="source-properties" class="table table-sm table-borderless" style="font-size: 0.875rem;">
                                     <tr><th><@s.text name='manage.source.readable'/></th><td><#if source.readable> <i class="bi bi-check-circle text-success"></i><#else><i class="bi bi-exclamation-circle text-danger"></i> ${problem!}</#if></td></tr>
                                     <tr><th><@s.text name='manage.source.columns'/></th><td>${source.getColumns()}</td></tr>
                                     <#if source.fieldsTerminatedBy?has_content>
@@ -80,9 +80,9 @@
                             <table class="bottomButtons table table-borderless">
                                 <tr>
                                     <th>
-                                        <@s.submit cssClass="btn btn-outline-success" name="analyze" key="button.analyze"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-success" name="analyze" key="button.analyze"/>
                                         <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
-                                        <a href="#" id="peekBtn" class="btn btn-outline-secondary ignore-link-color">
+                                        <a href="#" id="peekBtn" class="btn btn-sm btn-outline-secondary ignore-link-color my-1">
                                             <@s.text name='button.preview'/>
                                         </a>
                                     </th>
@@ -95,16 +95,16 @@
                             <div class="col-12">
                                 <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name!}" i18nkey="sqlSource.rdbms" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@input name="sqlSource.host" help="i18n"/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@input name="sqlSource.database" help="i18n"/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@input name="sqlSource.username" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@input name="sqlSource.password" type="password" />
                             </div>
                             <div class="col-12">
@@ -115,55 +115,55 @@
                                     </@label>
                                 </#if>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@encoding/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@dateFormat/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@multivalue/>
                             </div>
 
                         <#-- excel source -->
                         <#elseif source.isExcelSource()>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@headerLines/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@select name="source.sheetIdx" options=source.sheets() value="${source.sheetIdx}" i18nkey="excelSource.sheets" />
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@multivalue/>
                             </div>
 
                         <#-- file source -->
                         <#else>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@headerLines/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","a":"Single Quote"}/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@multivalue/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@encoding/>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <@dateFormat/>
                             </div>
                         </#if>
 
                         <div class="col-12">
                             <@s.submit cssClass="btn btn-outline-success" name="save" key="button.save"/>
-                            <@s.submit cssClass="btn btn-outline-secondary" name="cancel" key="button.cancel"/>
+                            <@s.submit cssClass="btn btn-outline-secondary my-1" name="cancel" key="button.cancel"/>
                             <#if id?has_content>
-                                <@s.submit cssClass="confirm btn btn-outline-danger" name="delete" key="button.delete.source.file"/>
+                                <@s.submit cssClass="confirm btn btn-outline-danger my-1" name="delete" key="button.delete.source.file"/>
                             </#if>
                         </div>
                     <#else>
