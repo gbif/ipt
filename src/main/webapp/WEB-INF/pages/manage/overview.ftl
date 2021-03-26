@@ -375,7 +375,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>${versionTitle?cap_first}</th>
+                                    <th class="col-4">${versionTitle?cap_first}</th>
                                     <#if resource.lastPublished??>
                                         <td class="separator text-success">
                                             ${resource.emlVersion.toPlainString()}&nbsp;
@@ -531,7 +531,7 @@
                             <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                                 <#if resource.usesAutoPublishing()>
                                     <tr>
-                                        <th><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
+                                        <th class="col-4"><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
                                         <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
                                     </tr>
                                     <tr>
@@ -720,7 +720,7 @@
                         <div class="details">
                             <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                 <tr>
-                                    <th><@s.text name="manage.overview.resource.managers.creator"/></th>
+                                    <th class="col-4"><@s.text name="manage.overview.resource.managers.creator"/></th>
                                     <td>${resource.creator.name!}, ${resource.creator.email}</td>
                                 </tr>
                                 <#if (resource.managers?size>0)>
