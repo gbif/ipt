@@ -54,7 +54,9 @@
                             <@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
 
                             <!-- Taxon list-->
-                            <@link name="taxonsLink-${item_index}" class="show-taxonList mt-1" value="manage.metadata.taxcoverage.addSeveralTaxa" help="i18n" i18nkey="manage.metadata.taxcoverage.addSeveralTaxa"/>
+                            <div class="my-2">
+                                <@link name="taxonsLink-${item_index}" class="show-taxonList mt-1" value="manage.metadata.taxcoverage.addSeveralTaxa" help="i18n" i18nkey="manage.metadata.taxcoverage.addSeveralTaxa"/>
+                            </div>
 
                             <div id="list-${item_index}" class="half addSeveralTaxa mt-2" style="display:none">
                                 <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
@@ -62,9 +64,9 @@
                                     <@s.submit cssClass="button btn btn-outline-success" name="add-button-${item_index}" key="button.add"/>
                                 </div>
                             </div>
-                            <div id="subItems">
+                            <div id="subItems" class="mt-2">
                                 <#list item.taxonKeywords as subItem>
-                                    <div id="subItem-${subItem_index}" class="sub-item row g-3">
+                                    <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
                                         <div class="col-lg-4">
                                             <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
                                         </div>
@@ -77,17 +79,17 @@
                                             <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
                                         </div>
 
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-2 d-flex align-items-end">
                                             <#if (item.taxonKeywords ? size == 1) >
-                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger mt-auto" style="display: none;" role="button"><@s.text name='button.delete'/></button>
+                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger" style="display: none;" role="button"><@s.text name='button.delete'/></button>
                                             <#else>
-                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger mt-auto" role="button"><@s.text name='button.delete'/></button>
+                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger" role="button"><@s.text name='button.delete'/></button>
                                             </#if>
                                         </div>
                                     </div>
                                 </#list>
                             </div>
-                            <div class="pb-1 mt-1">
+                            <div class="pb-1 mt-3">
                                 <a id="plus-subItem-${item_index}" href="" >
                                     <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' />
                                 </a>
@@ -135,7 +137,7 @@
                             <@s.submit cssClass="button btn btn-outline-success" name="add-button" key="button.add"/>
                         </div>
                     </div>
-                    <div id="subItems"></div>
+                    <div id="subItems" class="my-2"></div>
                     <div class="addNew border-bottom pb-1 mt-1">
                         <a id="plus-subItem" href="" >
                             <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' />
@@ -143,7 +145,7 @@
                     </div>
                 </div>
 
-                <div id="subItem-9999" class="sub-item row g-3 pt-3 align-items-end" style="display:none">
+                <div id="subItem-9999" class="sub-item row g-3 pt-3" style="display:none">
                     <div class="col-lg-4">
                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
                     </div>
@@ -156,8 +158,8 @@
                         <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
                     </div>
 
-                    <div class="col-lg">
-                        <button id="trash" class="btn btn-outline-danger mt-auto" role="button"><@s.text name='button.delete'/></button>
+                    <div class="col-lg-2 d-flex align-items-end">
+                        <button id="trash" class="btn btn-outline-danger" role="button">delete</button>
                     </div>
                 </div>
 

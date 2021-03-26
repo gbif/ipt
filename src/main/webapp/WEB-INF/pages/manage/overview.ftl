@@ -603,7 +603,7 @@
                                 <div class="details">
                                     <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                         <tr>
-                                            <th>GBIF UUID</th>
+                                            <th class="col-4">GBIF UUID</th>
                                             <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
                                             </td>
                                         </tr>
