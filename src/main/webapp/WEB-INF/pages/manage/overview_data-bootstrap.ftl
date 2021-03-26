@@ -116,7 +116,7 @@
                                     <td class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
                                             <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                                <@s.text name='button.preview'/>
+                                                <i class="bi bi-eye"></i>
                                             </a>
                                             <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <@s.text name='button.edit'/>
@@ -140,7 +140,7 @@
                                                 <td class="d-flex justify-content-end">
                                                     <div class="btn-group" role="group">
                                                         <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                            <@s.text name='button.preview'/>
+                                                            <i class="bi bi-eye"></i>
                                                         </a>
                                                         <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <@s.text name='button.edit'/>
