@@ -31,13 +31,13 @@
                                 <#list resource.sources as src>
                                     <tr>
                                         <#if src.isFileSource()>
-                                            <th>${src.name} <@s.text name='manage.overview.source.file'/></th>
+                                            <th class="col-4">${src.name} <@s.text name='manage.overview.source.file'/></th>
                                             <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         <#elseif src.isExcelSource()>
-                                            <th>${src.name} <@s.text name='manage.overview.source.excel'/></th>
+                                            <th class="col-4">${src.name} <@s.text name='manage.overview.source.excel'/></th>
                                             <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         <#else>
-                                            <th>${src.name} <@s.text name='manage.overview.source.sql'/></th>
+                                            <th class="col-4">${src.name} <@s.text name='manage.overview.source.sql'/></th>
                                             <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         </#if>
                                         <td class="d-flex justify-content-end">
@@ -111,7 +111,7 @@
                             <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                             <#list resource.getMappings(resource.coreRowType) as m>
                                 <tr <#if m_index==0>class="mapping_row"</#if>>
-                                    <th><#if m_index==0>${m.extension.title}</#if></th>
+                                    <th class="col-4"><#if m_index==0>${m.extension.title}</#if></th>
                                     <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                     <td class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
@@ -135,7 +135,7 @@
                                     <#if ext.rowType != resource.coreRowType>
                                         <#list resource.getMappings(ext.rowType) as m>
                                             <tr <#if m_index==0>class="mapping_row"</#if>>
-                                                <th><#if m_index==0>${ext.title}</#if></th>
+                                                <th class="col-4"><#if m_index==0>${ext.title}</#if></th>
                                                 <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="btn-group" role="group">
