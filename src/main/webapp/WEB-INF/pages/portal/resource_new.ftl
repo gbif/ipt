@@ -7,6 +7,14 @@
 <#include "/WEB-INF/pages/macros/versionsTable-bootstrap.ftl"/>
 
 <style>
+    #watermark {
+        position: fixed;
+        opacity: 0.15;
+        z-index: 1000;
+        color: #666;
+        font-size: 650%;
+    }
+
     /* Resource logo styling */
     .icon {
         background-repeat: no-repeat;
