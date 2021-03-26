@@ -502,7 +502,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 border-lg-right">
                     <div class="mx-md-4 mx-2">
                         <@publish resource/>
                     </div>
@@ -544,7 +544,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 border-lg-right">
                     <div class="mx-md-4 mx-2">
                         <form action='auto-publish.do' method='get'>
                             <input name="r" type="hidden" value="${resource.shortname}"/>
@@ -629,7 +629,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 border-lg-right">
                     <#assign actionMethod>registerResource</#assign>
                     <#if resource.status=="PRIVATE">
                         <#assign actionMethod>makePublic</#assign>
@@ -744,7 +744,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 border-lg-right">
                     <#if (potentialManagers?size>0)>
                         <div class="mx-md-4 mx-2">
                             <!-- Warning: method name match is case sensitive therefore must be addManager -->

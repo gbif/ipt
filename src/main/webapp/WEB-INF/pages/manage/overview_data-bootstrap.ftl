@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-3">
+            <div class="col-xl-3 border-xl-right">
                 <div class="mx-md-4 mx-2">
                     <form action='addsource.do' method='post' enctype="multipart/form-data">
                         <input name="r" type="hidden" value="${resource.shortname}"/>
@@ -90,7 +90,7 @@
     </h5>
 
     <div class="row">
-        <div class="col-sm-9 order-sm-last">
+        <div class="col-lg-9 order-lg-last">
             <div class="mx-md-4 mx-2">
                 <p class="text-muted">
                     <@s.text name='manage.overview.DwC.Mappings.description'/>
@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-lg-3 border-lg-right">
             <div class="mx-md-4 mx-2">
                 <#if (potentialCores?size>0)>
                     <form action='mapping.do' method='post'>

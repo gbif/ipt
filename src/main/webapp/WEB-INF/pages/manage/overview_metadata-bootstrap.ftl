@@ -16,7 +16,7 @@
     </h5>
 
     <div class="row">
-        <div class="col-sm-9 order-sm-last">
+        <div class="col-lg-9 order-lg-last">
             <p class="text-muted mx-md-4 mx-2">
                 <@s.text name="manage.overview.metadata.description"/>
             </p>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-lg-3 border-lg-right">
             <div class="mx-md-4 mx-2">
                 <form action='metadata-basic.do' method='get'>
                     <input name="r" type="hidden" value="${resource.shortname}"/>
