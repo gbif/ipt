@@ -96,6 +96,48 @@
             background-color: #fff;
             border-color: #dee2e6;
         }
+
+        /* overlay div for modal views */
+        #modalbox {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            z-index: 999;
+        }
+
+        #modalback {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            filter: alpha(opacity=80);
+            opacity: 0.8;
+            -moz-opacity: 0.8;
+        }
+
+        #modalcontainer {
+            position: relative;
+            display: block;
+            width: 100%;
+            margin-top: 80px;
+            min-height: 50px;
+            text-align: center;
+        }
+
+        #modalcontent {
+            display: inline-block;
+            margin: 0 auto;
+            min-width: 100px;
+            background-color: #fff;
+            border: 1px solid #000;
+            padding: 15px;
+        }
     </style>
 
 [#--    <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />--]

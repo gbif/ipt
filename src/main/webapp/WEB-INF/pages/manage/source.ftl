@@ -81,9 +81,8 @@
                                 <tr>
                                     <th>
                                         <@s.submit cssClass="btn btn-sm btn-outline-success" name="analyze" key="button.analyze"/>
-                                        <!-- preview icon is taken from Gentleface Toolbar Icon Set available from http://gentleface.com/free_icon_set.html licensed under CC-BY -->
                                         <a href="#" id="peekBtn" class="btn btn-sm btn-outline-secondary ignore-link-color my-1">
-                                            <@s.text name='button.preview'/>
+                                            <i class="bi bi-eye"></i>
                                         </a>
                                     </th>
                                 </tr>
