@@ -115,7 +115,7 @@
                                     <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                     <td class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
-                                            <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                            <a class="btn btn-sm btn-outline-secondary ignore-link-color peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
@@ -139,7 +139,7 @@
                                                 <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="btn-group" role="group">
-                                                        <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                        <a class="btn btn-sm btn-outline-secondary ignore-link-color peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
                                                         <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">

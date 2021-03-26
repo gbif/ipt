@@ -105,7 +105,6 @@
             top: 0;
             width: 100%;
             height: 100%;
-            text-align: center;
             z-index: 999;
         }
 
@@ -127,7 +126,6 @@
             width: 100%;
             margin-top: 80px;
             min-height: 50px;
-            text-align: center;
         }
 
         #modalcontent {
