@@ -435,7 +435,7 @@
                     <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
                     <#if metadataOnly == false>
                         <tr>
-                            <th><@s.text name='portal.resource.dwca.verbose'/></th>
+                            <th class="col-4"><@s.text name='portal.resource.dwca.verbose'/></th>
                             <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
                                 <td><a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion!0?c} ]);"><@s.text name='portal.resource.download'/></a>
                                     ${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;<#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
@@ -569,11 +569,15 @@
                     <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#list eml.physicalData as item>
                             <#assign link=eml.physicalData[item_index]/>
-                            <tr property="dc:isFormatOf"><th>${link.name!}</th><td><a href="${link.distributionUrl}">${link.distributionUrl!"?"}</a>
+                            <tr property="dc:isFormatOf">
+                                <th class="col-4">${link.name!}</th>
+                                <td>
+                                    <a href="${link.distributionUrl}">${link.distributionUrl!"?"}</a>
                                     <#if link.charset?? || link.format?? || link.formatVersion??>
                                         ${link.charset!} ${link.format!} ${link.formatVersion!}
                                     </#if>
-                                </td></tr>
+                                </td>
+                            </tr>
                         </#list>
                     </table>
                 </div>
@@ -633,7 +637,7 @@
 
                     <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <tr>
-                            <th><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
+                            <th class="col-4"><@s.text name='eml.geospatialCoverages.boundingCoordinates'/></th>
                             <td><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/>&nbsp;&#91;${eml.geospatialCoverages[0].boundingCoordinates.min.latitude},&nbsp;${eml.geospatialCoverages[0].boundingCoordinates.min.longitude}&#93;&#44;&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/>&nbsp;<@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/>&nbsp;&#91;${eml.geospatialCoverages[0].boundingCoordinates.max.latitude},&nbsp;${eml.geospatialCoverages[0].boundingCoordinates.max.longitude}&#93;</td>
                         </tr>
                     </table>
@@ -658,9 +662,9 @@
                                     <tr>
                                         <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
                                         <#if k.rank?lower_case == "class">
-                                            <th>Class</th>
+                                            <th class="col-4">Class</th>
                                         <#else>
-                                            <th>${ranks[k.rank?html]?cap_first!}</th>
+                                            <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
                                         </#if>
                                         <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                         <td>
@@ -691,22 +695,22 @@
                         <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                             <#if ("${item.type}" == "DATE_RANGE") && eml.temporalCoverages[item_index].startDate?? && eml.temporalCoverages[item_index].endDate?? >
                                 <tr>
-                                    <th><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
+                                    <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
                                     <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date} / ${eml.temporalCoverages[item_index].endDate?date}</td>
                                 </tr>
                             <#elseif "${item.type}" == "SINGLE_DATE" && eml.temporalCoverages[item_index].startDate?? >
                                 <tr>
-                                    <th><@s.text name='eml.temporalCoverages.startDate'/></th>
+                                    <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/></th>
                                     <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date}</td>
                                 </tr>
                             <#elseif "${item.type}" == "FORMATION_PERIOD" && eml.temporalCoverages[item_index].formationPeriod?? >
                                 <tr>
-                                    <th><@s.text name='eml.temporalCoverages.formationPeriod'/></th>
+                                    <th class="col-4"><@s.text name='eml.temporalCoverages.formationPeriod'/></th>
                                     <td property="dc:temporal">${eml.temporalCoverages[item_index].formationPeriod}</td>
                                 </tr>
                             <#elseif eml.temporalCoverages[item_index].livingTimePeriod??> <!-- LIVING_TIME_PERIOD -->
                                 <tr>
-                                    <th><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th>
+                                    <th class="col-4"><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th>
                                     <td property="dc:temporal">${eml.temporalCoverages[item_index].livingTimePeriod!}</td>
                                 </tr>
                             </#if>
@@ -729,31 +733,31 @@
                     <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#if eml.project.title?has_content>
                             <tr>
-                                <th><@s.text name='eml.project.title'/></th>
+                                <th class="col-4"><@s.text name='eml.project.title'/></th>
                                 <td><@textWithFormattedLink eml.project.title!/></td>
                             </tr>
                         </#if>
                         <#if eml.project.identifier?has_content>
                             <tr>
-                                <th><@s.text name='eml.project.identifier'/></th>
+                                <th class="col-4"><@s.text name='eml.project.identifier'/></th>
                                 <td><@textWithFormattedLink eml.project.identifier!/></td>
                             </tr>
                         </#if>
                         <#if eml.project.funding?has_content>
                             <tr>
-                                <th><@s.text name='eml.project.funding'/></th>
+                                <th class="col-4"><@s.text name='eml.project.funding'/></th>
                                 <td><@textWithFormattedLink eml.project.funding/></td>
                             </tr>
                         </#if>
                         <#if eml.project.studyAreaDescription.descriptorValue?has_content>
                             <tr>
-                                <th><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th>
+                                <th class="col-4"><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th>
                                 <td><@textWithFormattedLink eml.project.studyAreaDescription.descriptorValue/></td>
                             </tr>
                         </#if>
                         <#if eml.project.designDescription?has_content>
                             <tr>
-                                <th><@s.text name='eml.project.designDescription'/></th>
+                                <th class="col-4"><@s.text name='eml.project.designDescription'/></th>
                                 <td><@textWithFormattedLink eml.project.designDescription/></td>
                             </tr>
                         </#if>
@@ -784,14 +788,14 @@
                     <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#if eml.studyExtent?has_content>
                             <tr>
-                                <th><@s.text name='eml.studyExtent'/></th>
+                                <th class="col-4"><@s.text name='eml.studyExtent'/></th>
                                 <td><@textWithFormattedLink eml.studyExtent/></td>
                             </tr>
                         </#if>
 
                         <#if eml.qualityControl?has_content>
                             <tr>
-                                <th><@s.text name='eml.qualityControl'/></th>
+                                <th class="col-4"><@s.text name='eml.qualityControl'/></th>
                                 <td><@textWithFormattedLink eml.qualityControl/></td>
                             </tr>
                         </#if>
@@ -825,19 +829,19 @@
                         <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#if item.collectionName?has_content>
                             <tr>
-                                <th><@s.text name='eml.collectionName'/></th>
+                                <th class="col-4"><@s.text name='eml.collectionName'/></th>
                                 <td>${item.collectionName!}</td>
                             </tr>
                         </#if>
                         <#if item.collectionId?has_content>
                             <tr>
-                                <th><@s.text name='eml.collectionId'/></th>
+                                <th class="col-4"><@s.text name='eml.collectionId'/></th>
                                 <td>${item.collectionId!}</td>
                             </tr>
                         </#if>
                         <#if item.parentCollectionId?has_content>
                             <tr>
-                                <th><@s.text name='eml.parentCollectionId'/></th>
+                                <th class="col-4"><@s.text name='eml.parentCollectionId'/></th>
                                 <td>${item.parentCollectionId!}</td>
                             </tr>
                         </#if>
@@ -849,7 +853,7 @@
                     <div class="mx-md-4 mx-2">
                         <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                             <tr>
-                                <th><@s.text name='eml.specimenPreservationMethod.plural'/></th>
+                                <th class="col-4"><@s.text name='eml.specimenPreservationMethod.plural'/></th>
                                 <td>
                                     <#list eml.specimenPreservationMethods as item>
                                         ${preservationMethods[item]?cap_first!}<#if item_has_next>,&nbsp;</#if>
@@ -864,7 +868,7 @@
                     <div class="mx-md-4 mx-2">
                         <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                             <tr>
-                                <th><@s.text name='manage.metadata.collections.curatorialUnits.title'/></th>
+                                <th class="col-4"><@s.text name='manage.metadata.collections.curatorialUnits.title'/></th>
                                 <td>
                                     <#list eml.jgtiCuratorialUnits as item>
                                         <#if item.type=="COUNT_RANGE">
@@ -924,20 +928,20 @@
                     <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
                         <#if eml.purpose?has_content>
                             <tr>
-                                <th><@s.text name='eml.purpose'/></th>
+                                <th class="col-4"><@s.text name='eml.purpose'/></th>
                                 <td><@textWithFormattedLink eml.purpose/></td>
                             </tr>
                         </#if>
                         <#if eml.updateFrequencyDescription?has_content>
                             <tr>
-                                <th><@s.text name='eml.updateFrequencyDescription'/></th>
+                                <th class="col-4"><@s.text name='eml.updateFrequencyDescription'/></th>
                                 <td><@textWithFormattedLink eml.updateFrequencyDescription/></td>
                             </tr>
                         </#if>
                         <#if (eml.alternateIdentifiers?size > 0)>
                             <#list eml.alternateIdentifiers as item>
                                 <tr>
-                                    <th><#if item_index ==0><@s.text name='manage.metadata.alternateIdentifiers.title'/></#if></th>
+                                    <th class="col-4"><#if item_index ==0><@s.text name='manage.metadata.alternateIdentifiers.title'/></#if></th>
                                     <td><@textWithFormattedLink eml.alternateIdentifiers[item_index]!/></td>
                                 </tr>
                             </#list>
