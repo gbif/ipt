@@ -645,43 +645,43 @@
                                         <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                                     </#assign>
 
-                                    <div class="btn-group" role="group">
+                                    <div class="btn-group my-1" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${visibilityConfirmRegistrationWarning}">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
                                     </div>
                                 <#elseif missingValidPublishingOrganisation?string == "true">
                                     <!-- Disable register button and show warning: user must assign valid publishing organisation -->
-                                    <div class="btn-group" role="group">
+                                    <div class="btn-group my-1" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.organisation" escapeHtml=true/>">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
                                     </div>
                                 <#elseif missingRegistrationMetadata?string == "true">
                                     <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
-                                    <div class="btn-group" role="group">
+                                    <div class="btn-group my-1" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.metadata" escapeHtml=true/>">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
                                     </div>
                                 <#elseif !resource.isLastPublishedVersionPublic()>
                                     <!-- Disable register button and show warning: last published version must be publicly available to register -->
-                                    <div class="btn-group" role="group">
+                                    <div class="btn-group my-1" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.notPublic" escapeHtml=true/>">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
                                     </div>
                                 <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                     <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                    <div class="btn-group" role="group">
+                                    <div class="btn-group my-1" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary my-1" name="register" key="button.register" disabled="true"/>
+                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
                                     </div>
                                 <#else>
                                     <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-success my-1" name="register" key="button.register"/>
