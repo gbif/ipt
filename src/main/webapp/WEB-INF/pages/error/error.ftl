@@ -16,7 +16,7 @@
             [@s.text name="error.body"/]
         </p>
 
-        <pre class="mb-0">
+        <pre class="mb-0 mx-md-4 mx-2">
             [@s.property value="%{exception.message}"/]
         </pre>
 
@@ -40,9 +40,9 @@
             [@s.text name="error.details.title"/]
         </h5>
 
-        <p class="text-muted mx-md-4 mx-2">
+        <pre class="mx-md-4 mx-2">
             [@s.property value="%{exceptionStack}"/]
-        </p>
+        </pre>
     </div>
 </main>
 
