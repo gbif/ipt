@@ -138,14 +138,8 @@
         }
     </style>
 
-[#--    <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />--]
-[#--    <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />--]
-[#--    <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/960_24_col.css" />--]
-[#--    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />--]
-[#--    <link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/jquery/dataTable.css"/>--]
-
     <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-borders.css" />
     <link href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
