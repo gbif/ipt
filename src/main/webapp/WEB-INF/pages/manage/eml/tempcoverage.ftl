@@ -167,7 +167,7 @@
 
 <main class="container">
 
-    <form class="topForm" action="metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
         <div class="row g-3">
             <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
 
@@ -211,8 +211,9 @@
                             <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                                 <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                     <div>
-                                        <@input date=true i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        <@input i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                     </div>
+
                                 </div>
 
                             <#elseif "${temporalCoverage.type}" == "FORMATION_PERIOD" >

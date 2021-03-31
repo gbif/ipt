@@ -49,17 +49,17 @@
                 })
 
             // standard validation
-            form.addEventListener('submit', function (event) {
-                var inputs = form.querySelectorAll('.form-control, .form-select')
-
-                Array.prototype.slice.call(inputs)
-                    .forEach(function (input) {
-                        if (!input.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                            input.classList.add('is-invalid')
-                        }
-                    })
-            })
+            // form.addEventListener('submit', function (event) {
+            //     var inputs = form.querySelectorAll('.form-control, .form-select')
+            //
+            //     Array.prototype.slice.call(inputs)
+            //         .forEach(function (input) {
+            //             if (!input.checkValidity()) {
+            //                 event.preventDefault()
+            //                 event.stopPropagation()
+            //                 input.classList.add('is-invalid')
+            //             }
+            //         })
+            // })
         })
 })()

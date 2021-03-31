@@ -20,7 +20,7 @@
 
     <main class="container">
 
-        <form class="topForm" action="metadata-${section}.do" method="post" novalidate>
+        <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
             <div class="row g-3">
                 <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
 

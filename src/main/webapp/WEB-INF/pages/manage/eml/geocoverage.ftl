@@ -170,7 +170,7 @@
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 
 <main class="container">
-    <form class="topForm" action="metadata-${section}.do" method="post">
+    <form class="needs-validation" action="metadata-${section}.do" method="post">
         <div class="row g-3">
             <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
 
