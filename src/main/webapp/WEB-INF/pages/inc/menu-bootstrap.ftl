@@ -1,6 +1,15 @@
 [#ftl output_format="HTML"]
 </head>
 
+[#if auxTopNavbar]
+<style>
+    body {
+        padding-top: 120px;
+    }
+</style>
+[/#if]
+
+
 <body class="bg-light d-flex flex-column h-100">
 
 <header>
@@ -71,6 +80,50 @@
             </div>
         </div>
     </nav>
+
+    [#if auxTopNavbar]
+        <nav class="navbar navbar-expand-sm navbar-light fixed-top bg-body shadow-sm py-1" style="position: fixed; top: 50px;">
+            <div class="container">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="fieldIndexDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Field Index
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="fieldIndexDropdown">
+                            <li><a class="dropdown-item menu-link" href="#">Action 1</a></li>
+                            <li><a class="dropdown-item menu-link" href="#">Action 2</a></li>
+                            <li><a class="dropdown-item menu-link" href="#">Action 3</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdow">
+                        <a class="nav-link dropdown-toggle" href="#" id="filtersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Field Filters
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="filtersDropdown">
+                            <li><a class="dropdown-item menu-link" href="#">Action 1</a></li>
+                            <li><a class="dropdown-item menu-link" href="#">Action 2</a></li>
+                            <li><a class="dropdown-item menu-link" href="#">Action 3</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+                <div class="d-flex align-content-between">
+                    <ul class="navbar-nav">
+                        <li class="nav-item py-2 px-1">
+                            <button class="btn btn-sm btn-outline-success">Save</button>
+                        </li>
+                        <li class="nav-item py-2 px-1">
+                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                        </li>
+                        <li class="nav-item py-2 px-1">
+                            <button class="btn btn-sm btn-outline-secondary">Back</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    [/#if]
 </header>
 
 <div id="dialog-confirm" class="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="display: none"></div>

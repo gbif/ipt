@@ -4,6 +4,7 @@
 [#setting datetime_format="iso"]
 [#setting locale="en"]
 [#setting url_escaping_charset="UTF-8"]
+[#assign auxTopNavbar=false /]
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 <head>
