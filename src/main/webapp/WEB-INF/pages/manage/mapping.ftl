@@ -207,12 +207,13 @@
     </style>
 
 <#assign currentMenu = "manage"/>
+<#assign auxTopNavbar = true />
+<#assign auxTopNavbarPage = "mapping" />
+<#assign redundants = action.getRedundantGroups()/>
+<#assign nonMapped = action.getNonMappedColumns()/>
 <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl"/>
 <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 <#include "/WEB-INF/pages/macros/popover-bootstrap.ftl"/>
-
-<#assign redundants = action.getRedundantGroups()/>
-<#assign nonMapped = action.getNonMappedColumns()/>
 
 <#macro threeButtons>
     <div class="col-12 m-3">
@@ -345,7 +346,6 @@
 
 <main class="container">
 
-    <form id="mappingForm" action="mapping.do" method="post">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
@@ -528,8 +528,8 @@
             </div>
         </#if>
 
-    </form>
 </main>
+</form>
 
 <#include "/WEB-INF/pages/inc/footer-bootstrap.ftl"/>
 </#escape>

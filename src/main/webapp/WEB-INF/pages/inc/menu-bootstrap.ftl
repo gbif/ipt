@@ -9,8 +9,11 @@
 </style>
 [/#if]
 
-
 <body class="bg-light d-flex flex-column h-100">
+
+[#if auxTopNavbarPage == 'mapping']
+    <form id="mappingForm" action="mapping.do" method="post">
+[/#if]
 
 <header>
     <nav class="navbar navbar-expand-xl navbar-dark fixed-top bg-dark py-1">
@@ -84,43 +87,60 @@
     [#if auxTopNavbar]
         <nav class="navbar navbar-expand-sm navbar-light fixed-top bg-body shadow-sm py-1" style="position: fixed; top: 50px;">
             <div class="container">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="fieldIndexDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Field Index
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="fieldIndexDropdown">
-                            <li><a class="dropdown-item menu-link" href="#">Action 1</a></li>
-                            <li><a class="dropdown-item menu-link" href="#">Action 2</a></li>
-                            <li><a class="dropdown-item menu-link" href="#">Action 3</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdow">
-                        <a class="nav-link dropdown-toggle" href="#" id="filtersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Field Filters
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="filtersDropdown">
-                            <li><a class="dropdown-item menu-link" href="#">Action 1</a></li>
-                            <li><a class="dropdown-item menu-link" href="#">Action 2</a></li>
-                            <li><a class="dropdown-item menu-link" href="#">Action 3</a></li>
-                        </ul>
-                    </li>
+                [#if auxTopNavbarPage=='mapping']
+                    <ul class="navbar-nav me-auto">
+                        [#assign groups = fieldsByGroup?keys/]
 
-                </ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="fieldIndexDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                [@s.text name='manage.mapping.index'/]
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="fieldIndexDropdown">
+                                [#if (groups?size>0)]
+                                    [#list groups as g]
+                                        <li [#if redundants?seq_contains(g)] class="redundant" [/#if] ><a class="sidebar-anchor dropdown-item menu-link" href="#group_${g}">${g}</a></li>
+                                    [/#list]
+                                [/#if]
 
-                <div class="d-flex align-content-between">
-                    <ul class="navbar-nav">
-                        <li class="nav-item py-2 px-1">
-                            <button class="btn btn-sm btn-outline-success">Save</button>
+                                [#if (nonMapped?size>0)]
+                                    <li><a class="sidebar-anchor dropdown-item menu-link" href="#nonmapped">[@s.text name='manage.mapping.no.mapped.title'/]</a></li>
+                                [/#if]
+
+                                [#if (redundants?size>0)]
+                                    <li><a class="sidebar-anchor dropdown-item menu-link" href="#redundant">[@s.text name='manage.mapping.redundant'/]</a></li>
+                                [/#if]
+                            </ul>
                         </li>
-                        <li class="nav-item py-2 px-1">
-                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+
+                        <li class="nav-item dropdow">
+                            <a class="nav-link dropdown-toggle" href="#" id="filtersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                [@s.text name='manage.mapping.filters'/]
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="filtersDropdown">
+                                <li><a id="toggleFields" class="dropdown-item menu-link" href="#">[@s.text name='manage.mapping.hideEmpty'/]</a></li>
+
+                                [#if (redundants?size>0)]
+                                    <li><a id="toggleGroups" class="dropdown-item menu-link" href="#">[@s.text name='manage.mapping.hideGroups'/]</a></li>
+                                [/#if]
+                            </ul>
                         </li>
-                        <li class="nav-item py-2 px-1">
-                            <button class="btn btn-sm btn-outline-secondary">Back</button>
-                        </li>
+
                     </ul>
-                </div>
+
+                    <div class="d-flex align-content-between">
+                        <ul class="navbar-nav">
+                            <li class="nav-item py-2 px-1">
+                                [@s.submit cssClass="button btn btn-sm btn-outline-success" name="save" key="button.save"/]
+                            </li>
+                            <li class="nav-item py-2 px-1">
+                                [@s.submit cssClass="confirm btn btn-sm btn-outline-danger" name="delete" key="button.delete"/]
+                            </li>
+                            <li class="nav-item py-2 px-1">
+                                [@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/]
+                            </li>
+                        </ul>
+                    </div>
+                [/#if]
             </div>
         </nav>
     [/#if]
