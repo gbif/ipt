@@ -120,7 +120,7 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item dropdow">
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="filtersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 [@s.text name='manage.mapping.filters'/]
                             </a>
