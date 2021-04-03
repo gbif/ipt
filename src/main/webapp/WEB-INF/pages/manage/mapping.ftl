@@ -417,7 +417,7 @@
                 </#if>
             </div>
 
-            <div id="filterSection">
+            <div id="filterSection" class="mappingRow">
 
                 <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 mappingFiler">
                     <div class="col-lg-1 pt-1" id="filter">
@@ -501,7 +501,7 @@
 
         <#if (nonMapped?size>0)>
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 id="nonmapped" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
                     <@s.text name="manage.mapping.no.mapped.title"/>
                 </h5>
                 <p class="text-muted mx-md-4 mx-2"><@s.text name="manage.mapping.no.mapped.columns"/>:</p>

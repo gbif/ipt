@@ -6,6 +6,14 @@
     body {
         padding-top: 120px;
     }
+
+    .second-nav {
+        position: fixed;
+        top: 50px;
+        right: 0;
+        left: 0;
+        z-index: 999 !important; /* less than top nav dropdowns */
+    }
 </style>
 [/#if]
 
@@ -85,7 +93,7 @@
     </nav>
 
     [#if auxTopNavbar]
-        <nav class="navbar navbar-expand-sm navbar-light fixed-top bg-body shadow-sm py-1" style="position: fixed; top: 50px;">
+        <nav class="navbar navbar-expand-sm navbar-light second-nav bg-body shadow-sm py-1">
             <div class="container">
                 [#if auxTopNavbarPage=='mapping']
                     <ul class="navbar-nav me-auto">
