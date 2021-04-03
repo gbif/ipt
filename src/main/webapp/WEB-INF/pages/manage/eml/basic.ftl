@@ -147,7 +147,7 @@
         });
 
     </script>
-    <#assign auxTopNavbar=true />
+    <#assign auxTopNavbar=false />
     <#assign sideMenuEml=true />
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
