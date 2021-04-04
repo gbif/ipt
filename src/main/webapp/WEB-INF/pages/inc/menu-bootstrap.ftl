@@ -93,7 +93,7 @@
     </nav>
 
     [#if auxTopNavbar]
-        <nav class="navbar navbar-expand-sm navbar-light second-nav bg-body shadow-sm py-1">
+        <nav class="navbar navbar-expand navbar-light second-nav bg-body shadow-sm py-1">
             <div class="container">
                 [#if auxTopNavbarPage=='mapping']
                     <ul class="navbar-nav me-auto">

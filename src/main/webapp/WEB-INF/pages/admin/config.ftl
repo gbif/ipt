@@ -99,13 +99,14 @@
                     </div>
                 </div>
 
-                <div id="locationMap" class="mx-md-4 mx-2 mt-0">
+                <#if latitude?? && longitude??>
                     <#-- the map -->
-                    <#if latitude?? && longitude??>
-                    <#else>
-                        <img src="${baseURL}/images/ipt_no_location_map.gif" />
-                    </#if>
-                </div>
+                    <div id="locationMap" class="mx-md-4 mx-2 mt-0"></div>
+                <#else>
+                    <div class="mx-md-4 mx-2 mt-0" >
+                        <img src="${baseURL}/images/ipt_no_location_map.gif"/>
+                    </div>
+                </#if>
 
                 <div class="buttons row g-3 mx-md-3 mx-1 mt-1">
                     <div class="col-12">
