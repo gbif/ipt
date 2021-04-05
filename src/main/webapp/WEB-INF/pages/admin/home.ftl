@@ -12,8 +12,8 @@
 
 <main class="container">
 	<div class="my-3 p-3 bg-body rounded shadow-sm">
-		<table id="admintable">
-			<@s.form cssClass="topForm" action="publishAll.do" method="post" namespace="" includeContext="false">
+		<@s.form cssClass="topForm" action="publishAll.do" method="post" namespace="" includeContext="false">
+			<table id="admintable">
 				<tr>
 					<td>
 						<a href="${baseURL}/admin/config.do">
@@ -30,8 +30,8 @@
 						<@s.submit cssClass="btn btn-sm btn-outline-success" name="publishAll" key="admin.home.publishResources"/>
 					</td>
 				</tr>
-			</@s.form>
-		</table>
+			</table>
+		</@s.form>
 	</div>
 
 	<div class="my-3 p-3 bg-body rounded shadow-sm">

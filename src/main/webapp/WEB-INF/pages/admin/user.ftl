@@ -29,7 +29,7 @@
                     <@s.text name="admin.user.intro2"/>
                 </p>
 
-                <@s.form id="newuser" action="user.do" method="post" namespace="" includeContext="false">
+                <form id="newuser" class="needs-validation" action="user.do" method="post">
                     <div class="row g-3 mx-md-3 mx-1 mt-2">
                         <@s.hidden name="id" value="${user.email!}" required="true"/>
 
@@ -67,7 +67,7 @@
                         </#if>
                         <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel"/>
                     </div>
-                </@s.form>
+                </form>
 
             </div>
         </div>

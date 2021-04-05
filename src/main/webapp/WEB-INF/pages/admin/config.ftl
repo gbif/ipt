@@ -43,7 +43,7 @@
                 <@s.text name="admin.home.editConfig"/>
             </h5>
 
-            <@s.form cssClass="topForm half" action="config" method="post" namespace="" includeContext="false">
+            <form class="topForm half needs-validation" action="config.do" method="post" >
 
                 <div class="row g-3 mx-md-3 mx-1">
                     <div class="col-lg-6">
@@ -115,7 +115,7 @@
                     </div>
                 </div>
 
-            </@s.form>
+            </form>
 
         </div>
     </div>
