@@ -251,7 +251,7 @@
             </#if>
 
             <div class="row g-2">
-                <div class="col-lg-8">
+                <div class="col-xl-8">
                     <span class="fst-italic">
                         <#if resource.lastPublished?? && resource.organisation??>
                         <#-- the existence of parameter version means the version is not equal to the latest published version -->
@@ -276,22 +276,22 @@
                     </span>
                 </div>
 
-                <div class="col-lg-4">
-                    <div class="d-lg-flex justify-content-lg-end">
+                <div class="col-xl-4">
+                    <div class="d-xl-flex justify-content-xl-end">
                         <#if managerRights>
-                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-success ignore-link-color me-1">
+                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 me-xl-1">
                                 <@s.text name='button.edit'/>
                             </a>
                         </#if>
                         <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                             <#if adminRights>
-                                <a class="confirmDeleteVersion btn btn-sm btn-outline-danger ignore-link-color me-1" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
+                                <a class="confirmDeleteVersion btn btn-sm btn-outline-danger ignore-link-color mt-1 me-xl-1" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
                                     <@s.text name='button.delete.version'/>
                                 </a>
                             </#if>
                         </#if>
                         <#if doi?has_content && doiUrl?has_content>
-                            <a property="dc:identifier" class="btn btn-sm btn-outline-success ignore-link-color doi" href="${doiUrl!}">
+                            <a property="dc:identifier" class="btn btn-sm btn-outline-success ignore-link-color mt-1 me-xl-1 doi" href="${doiUrl!}">
                                 <span class="doi">DOI</span>
                                 ${doi}
                             </a>
@@ -318,39 +318,39 @@
             </#if>
 
             <#if eml.distributionUrl?has_content || resource.lastPublished??>
-                <div class="btn-group btn-group-sm">
+                <div>
                     <#if eml.distributionUrl?has_content>
-                        <a href="${eml.distributionUrl}" class="btn btn-outline-success ignore-link-color bi bi-house-door">
+                        <a href="${eml.distributionUrl}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-house-door">
                             <@s.text name='eml.distributionUrl.short'/>
                         </a>
                     </#if>
                     <#if resource.status=="REGISTERED" && resource.key??>
-                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-outline-success ignore-link-color">
+                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-sm btn-outline-success mt-1 ignore-link-color">
                             <@s.text name='portal.resource.gbif.page.short'/>
                         </a>
                     </#if>
                     <#if metadataOnly == false>
-                        <a href="${download_dwca_url}" class="btn btn-outline-success ignore-link-color bi bi-download">
+                        <a href="${download_dwca_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.dwca'/>
                         </a>
                     </#if>
                     <#if resource.lastPublished??>
-                        <a href="${download_eml_url}" class="btn btn-outline-success ignore-link-color bi bi-download">
+                        <a href="${download_eml_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.eml'/>
                         </a>
-                        <a href="${download_rtf_url}" class="btn btn-outline-success ignore-link-color bi bi-download">
+                        <a href="${download_rtf_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.rtf'/>
                         </a>
                         <#if resource.versionHistory??>
-                            <a href="${anchor_versions}" class="btn btn-outline-success ignore-link-color bi bi-clock">
+                            <a href="${anchor_versions}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-clock">
                                 <@s.text name='portal.resource.versions'/>
                             </a>
                         </#if>
-                        <a href="${anchor_rights}" class="btn btn-outline-success ignore-link-color bi bi-key">
+                        <a href="${anchor_rights}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-key">
                             <@s.text name='eml.intellectualRights.simple'/>
                         </a>
                         <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
-                            <a href="${anchor_citation}" class="btn btn-outline-success ignore-link-color bi bi-book">
+                            <a href="${anchor_citation}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-book">
                                 <@s.text name='portal.resource.cite'/>
                             </a>
                         </#if>
