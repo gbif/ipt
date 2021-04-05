@@ -67,16 +67,22 @@
                             <div id="subItems" class="mt-2">
                                 <#list item.taxonKeywords as subItem>
                                     <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
-                                        <div class="col-lg-4">
-                                            <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
+                                        <div class="col-lg-4 d-flex align-items-end">
+                                            <div class="w-100">
+                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
+                                            </div>
                                         </div>
 
-                                        <div class="col-lg-3">
-                                            <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
+                                        <div class="col-lg-3 d-flex align-items-end">
+                                            <div class="w-100">
+                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
+                                            </div>
                                         </div>
 
-                                        <div class="col-lg-3">
-                                            <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
+                                        <div class="col-lg-3 d-flex align-items-end">
+                                            <div class="w-100">
+                                                <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
+                                            </div>
                                         </div>
 
                                         <div class="col-lg-2 d-flex align-items-end">
@@ -146,20 +152,26 @@
                 </div>
 
                 <div id="subItem-9999" class="sub-item row g-3 pt-3" style="display:none">
-                    <div class="col-lg-4">
-                        <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
+                    <div class="col-lg-4 d-flex align-items-end">
+                        <div class="w-100">
+                            <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
+                        </div>
                     </div>
 
-                    <div class="col-lg-3">
-                        <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" />
+                    <div class="col-lg-3 d-flex align-items-end">
+                        <div class="w-100">
+                            <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" />
+                        </div>
                     </div>
 
-                    <div class="col-lg-3">
-                        <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
+                    <div class="col-lg-3 d-flex align-items-end">
+                        <div class="w-100">
+                            <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
+                        </div>
                     </div>
 
                     <div class="col-lg-2 d-flex align-items-end">
-                        <button id="trash" class="btn btn-outline-danger" role="button">delete</button>
+                        <button id="trash" class="btn btn-outline-danger" role="button"><@s.text name='button.delete'/></button>
                     </div>
                 </div>
 
