@@ -12,6 +12,22 @@
         $(document).ready(function () {
             initHelp();
             calculateCount();
+            styleCalendar();
+
+            $(this).find("#ui-datepicker-div").addClass("bg-body rounded shadow-sm px-2").css("border", "1px solid #ced4da");
+
+            function styleCalendar() {
+                if ($(".ui-datepicker-calendar")[0]){
+                    // add bootstrap styles to the calendar
+                    $(".ui-datepicker-calendar").addClass("table table-sm table-borderless");
+                    $(".ui-datepicker-title").addClass("d-flex");
+                    $(".ui-datepicker-month").addClass('form-select form-select-sm me-1');
+                    $(".ui-datepicker-year").addClass('form-select form-select-sm');
+                    $(".ui-corner-all").addClass("mx-1")
+                }
+
+                setTimeout(styleCalendar, 100);
+            }
 
             function calculateCount() {
                 var lastChild = $("#temporals .tempo:last-child").attr("id");
@@ -199,19 +215,21 @@
 
                             <!-- Adding new subform -->
                             <#if "${temporalCoverage.type}" == "DATE_RANGE" >
-                                <div id="date-${temporalCoverage_index}" class="typeForm row col-12">
-                                    <div class="col-lg-6">
-                                        <@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <@input date=true i18nkey="eml.temporalCoverages.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                <div id="date-${temporalCoverage_index}" class="typeForm col-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <@input date=true i18nkey="eml.temporalCoverages.endDate" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+                                        </div>
                                     </div>
                                 </div>
 
                             <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                                 <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                     <div>
-                                        <@input i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                        <@input date=true i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                     </div>
 
                                 </div>

@@ -2,25 +2,20 @@
 
     <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
         <#if date>
+            <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
             <div class="calendarInfo">
-                <#include "/WEB-INF/pages/macros/form_field_label-bootstrap.ftl">
-                <div class="input-group">
-                    <span class="input-group-text" id="calendar-${name}">
-                        <i class="bi bi-calendar3"></i>
-                    </span>
-                    <input
-                            class="form-control"
-                            type="${type}"
-                            id="${name}"
-                            name="${name}"
-                            aria-describedby="calendar-${name}"
-                            value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
-                            <#if (size>0)>size="${size}"</#if>
-                            <#if (maxlength>0)>maxlength="${maxlength}"</#if>
-                            <#if disabled>readonly="readonly"</#if>
-                            <#if requiredField>required</#if>
-                    />
-                </div>
+                <input
+                        class="form-control"
+                        type="${type}"
+                        id="${name}"
+                        name="${name}"
+                        aria-describedby="calendar-${name}"
+                        value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
+                        <#if (size>0)>size="${size}"</#if>
+                        <#if (maxlength>0)>maxlength="${maxlength}"</#if>
+                        <#if disabled>readonly="readonly"</#if>
+                        <#if requiredField>required</#if>
+                />
                 <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
             </div>
         <#else>

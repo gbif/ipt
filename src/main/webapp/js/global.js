@@ -43,20 +43,17 @@ function initHelp(context){
 	if(context === undefined) context = "";
 	
 	$(context+" .calendarInfo").each(function(i) {
-		// if (context !== "") {
-		// 	console.log(context)
-		// 	$(this).find("input").removeAttr("class");
-		// 	$(this).find(".ui-datepicker-trigger").remove();
-		// }
+		if (context !== "") {
+			$(this).find("input").removeAttr("class");
+			$(this).find("input").addClass("form-control")
+			$(this).find(".ui-datepicker-trigger").remove();
+		}
 		$(this).find("input").datepicker({
-			// showOn: "button",
-			// buttonImage: "../images/calendar.png",
-			// buttonImageOnly: true,
 			changeMonth: true,
 			changeYear: true,
 			constrainInput: false,
 			dateFormat: 'yy-mm-dd'
-		});		
+		});
 	});
 	$(context+" .infoImg").click(function(e) {
         var show = $(this).next().is(":hidden");
