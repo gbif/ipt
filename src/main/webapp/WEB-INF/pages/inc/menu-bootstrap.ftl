@@ -94,7 +94,7 @@
 
     [#if auxTopNavbar]
         <nav class="navbar navbar-expand navbar-light second-nav bg-body shadow-sm py-1">
-            <div class="container">
+            <div class="container" style="overflow-x: auto">
                 [#if auxTopNavbarPage=='mapping']
                     <ul class="navbar-nav me-auto">
                         [#assign groups = fieldsByGroup?keys/]

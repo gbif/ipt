@@ -224,7 +224,7 @@
 </#macro>
 
 <#macro sourceSample index fieldsIndex>
-    <div id="fSIdx${fieldsIndex}" class="sample mappingText mx-3">
+    <div id="fSIdx${fieldsIndex}" class="sample mappingText mx-3" style="overflow-x: auto !important;">
         <@s.text name='manage.mapping.sourceSample' />:
         <em>
             <#list peek as row>
