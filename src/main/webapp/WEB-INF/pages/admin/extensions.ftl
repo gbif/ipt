@@ -23,16 +23,16 @@
                             </span>
                         </#if>
                     </div>
-                    <div class="actions">
+                    <div class="actions d-flex">
                         <#if !ext.isLatest()>
                             <form action='updateExtension.do' method='post'>
                                 <input type='hidden' name='id' value='${ext.rowType}' />
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-success" name="update" key="button.update"/>
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-success mt-1 me-1" name="update" key="button.update"/>
                             </form>
                         </#if>
                         <form action='extension.do' method='post'>
                             <input type='hidden' name='id' value='${ext.rowType}' />
-                            <@s.submit name="delete" cssClass="btn btn-sm btn-outline-danger" key="button.remove"/>
+                            <@s.submit name="delete" cssClass="btn btn-sm btn-outline-danger mt-1" key="button.remove"/>
                         </form>
                     </div>
                 </div>
@@ -43,14 +43,17 @@
                     <div class="body">
                         <div>
                             <p>${ext.description!}
-                                <#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if></p>
-                        </div>
-                        <div class="details">
-                            <table>
-                                <#if ext.issued??>
-                                    <tr><th><@s.text name="basic.issued"/></th><td>${ext.issued?date?string.medium}</td></tr>
+                                <#if ext.link?has_content>
+                                    <br/><div class="text-truncate" ><@s.text name="basic.seealso"/> <a  href="${ext.link}">${ext.link}</a></div>
                                 </#if>
-                                <tr><th><@s.text name="extension.properties"/></th><td>${ext.properties?size}</td></tr>
+                            </p>
+                        </div>
+                        <div class="details table-responsive">
+                            <table class="table table-sm table-borderless">
+                                <#if ext.issued??>
+                                    <tr><th class="col-3"><@s.text name="basic.issued"/></th><td>${ext.issued?date?string.medium}</td></tr>
+                                </#if>
+                                <tr><th class="col-3"><@s.text name="extension.properties"/></th><td>${ext.properties?size}</td></tr>
                                 <tr><th><@s.text name="basic.name"/></th><td>${ext.name}</td></tr>
                                 <tr><th><@s.text name="basic.namespace"/></th><td>${ext.namespace}</td></tr>
                                 <tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType}</td></tr>
@@ -180,9 +183,9 @@
                                     <div>
                                         <p>${ext.description!}</p>
                                     </div>
-                                    <div class="details">
-                                        <table>
-                                            <tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType!}</td></tr>
+                                    <div class="details table-responsive">
+                                        <table class="table table-sm table-borderless">
+                                            <tr><th class="col-3"><@s.text name="extension.rowtype"/></th><td>${ext.rowType!}</td></tr>
                                             <tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
                                         </table>
                                     </div>
