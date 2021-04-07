@@ -94,7 +94,7 @@
 
     [#if auxTopNavbar]
         <nav class="navbar navbar-expand navbar-light second-nav bg-body shadow-sm py-1">
-            <div class="container" style="overflow-x: auto">
+            <div class="container">
                 [#if auxTopNavbarPage=='mapping']
                     <ul class="navbar-nav me-auto">
                         [#assign groups = fieldsByGroup?keys/]
@@ -143,6 +143,31 @@
                             <li class="nav-item py-2 px-1">
                                 [@s.submit cssClass="confirm btn btn-sm btn-outline-danger" name="delete" key="button.delete"/]
                             </li>
+                            <li class="nav-item py-2 px-1">
+                                [@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/]
+                            </li>
+                        </ul>
+                    </div>
+                [#elseif auxTopNavbarPage=='metadata']
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="sectionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                [@s.text name='manage.metadata.section'/]
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="sectionDropdown">
+                                [#list ["basic", "geocoverage", "taxcoverage","tempcoverage", "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional"] as it]
+                                    <li>
+                                        <a class="sidebar-anchor dropdown-item menu-link" href="metadata-${it}.do?r=${resource.shortname!r!}">
+                                            [@s.text name="submenu.${it}"/]
+                                        </a>
+                                    </li>
+                                [/#list]
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-content-between">
+                        <ul class="navbar-nav">
                             <li class="nav-item py-2 px-1">
                                 [@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/]
                             </li>

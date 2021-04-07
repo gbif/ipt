@@ -147,18 +147,16 @@
         });
 
     </script>
-    <#assign auxTopNavbar=false />
-    <#assign sideMenuEml=true />
+    <#assign auxTopNavbar=true />
     <#assign currentMenu="manage"/>
+    <#assign auxTopNavbarPage = "metadata" />
     <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 
 <main class="container">
     <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
         <div class="row g-3">
-            <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
-
-            <div class="col-lg-9 p-3 bg-body rounded shadow-sm">
+            <div class="p-3 bg-body rounded shadow-sm">
 
                 <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
@@ -226,10 +224,8 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row g-3 mt-1">
-            <div class="col-md-12 p-3 bg-body rounded shadow-sm">
+            <div class="p-3 bg-body rounded shadow-sm">
                 <!-- Descriptions, broken into one or more paragraphs -->
                 <@textinline name="eml.description" help="i18n" requiredField=true/>
                 <div id="items" class="mx-md-4 mx-2">
@@ -269,7 +265,7 @@
                 <#assign addMetadataProviderLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.metadataProvider'/></#assign>
             </div>
 
-            <div class="col-md-12 p-3 bg-body rounded shadow-sm">
+            <div class="p-3 bg-body rounded shadow-sm">
                 <!-- Resource Contacts -->
                 <@textinline name="eml.contact.plural" help="i18n" requiredField=true/>
                 <div id="contact-items">
@@ -394,7 +390,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 p-3 bg-body rounded shadow-sm">
+            <div class="p-3 bg-body rounded shadow-sm">
                 <!-- Resource Creators -->
                 <@textinline name="eml.resourceCreator.plural" help="i18n" requiredField=true/>
                 <div id="creator-items">
@@ -522,7 +518,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 p-3 bg-body rounded shadow-sm">
+            <div class="p-3 bg-body rounded shadow-sm">
                 <!-- Metadata Providers -->
                 <@textinline name="eml.metadataProvider.plural" help="i18n" requiredField=true/>
                 <div id="metadataProvider-items">
