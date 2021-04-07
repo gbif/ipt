@@ -8,7 +8,8 @@
         });
     </script>
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-    <#assign sideMenuEml=true />
+    <#assign auxTopNavbar=true />
+    <#assign auxTopNavbarPage = "metadata" />
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
@@ -18,9 +19,7 @@
 
         <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
             <div class="row g-3">
-                <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
-
-                <div class="col-lg-9 p-3 bg-body rounded shadow-sm">
+                <div class="p-3 bg-body rounded shadow-sm">
 
                     <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 

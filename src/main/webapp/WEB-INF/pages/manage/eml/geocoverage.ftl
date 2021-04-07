@@ -1,7 +1,8 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
 <title xmlns="http://www.w3.org/1999/html"><@s.text name='manage.metadata.geocoverage.title'/></title>
-    <#assign sideMenuEml=true />
+    <#assign auxTopNavbar=true />
+    <#assign auxTopNavbarPage = "metadata" />
     <#assign currentMenu="manage"/>
 
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
@@ -172,9 +173,7 @@
 <main class="container">
     <form class="needs-validation" action="metadata-${section}.do" method="post">
         <div class="row g-3">
-            <#include "/WEB-INF/pages/manage/eml/section-bootstrap.ftl">
-
-            <div class="col-lg-9 p-3 bg-body rounded shadow-sm">
+            <div class="p-3 bg-body rounded shadow-sm">
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
