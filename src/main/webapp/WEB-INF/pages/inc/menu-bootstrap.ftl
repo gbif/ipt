@@ -20,7 +20,7 @@
 <body class="bg-light d-flex flex-column h-100">
 
 [#if auxTopNavbarPage == 'mapping']
-    <form id="mappingForm" action="mapping.do" method="post">
+    <form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
 [#elseif auxTopNavbarPage == 'metadata']
     <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
 [/#if]
