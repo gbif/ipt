@@ -150,6 +150,8 @@ $(document).ready(function(){
         initHelp("#baseItem");
 
         setItemIndex(newItem, ++itemsCount);
+
+        initInfoPopovers(newItem[0]);
     }
 
     function addNewCollectionItem(effects){
@@ -164,6 +166,8 @@ $(document).ready(function(){
         initHelp("#baseItem-collection");
 
         setCollectionItemIndex(newItem, ++collectionItemsCount);
+
+        initInfoPopovers(newItem[0]);
     }
 
     function addNewSpecimenPreservationMethodItem(effects){
@@ -178,6 +182,8 @@ $(document).ready(function(){
         initHelp("#baseItem-specimenPreservationMethod");
 
         setSpecimenPreservationMethodItemIndex(newItem, ++specimenPreservationMethodItemsCount);
+
+        initInfoPopovers(newItem[0]);
     }
 
     function removeItem(event){

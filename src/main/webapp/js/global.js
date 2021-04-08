@@ -78,6 +78,17 @@ function initHelp(context){
         $(this).parent().parent().parent().hide("fast");
     });    
 }
+function initInfoPopovers(item) {
+	var popoverTriggerList = [].slice.call(item.querySelectorAll('[data-bs-toggle="popover"]'))
+	var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+		return new bootstrap.Popover(popoverTriggerEl)
+	})
+	try {
+		var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+			trigger: 'focus'
+		})
+	} catch (TypeError) {}
+}
 function jsddm_open() {  
 	jsddm_canceltimer();
 	jsddm_close();
