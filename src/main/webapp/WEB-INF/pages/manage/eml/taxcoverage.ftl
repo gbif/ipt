@@ -76,19 +76,21 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 d-flex align-items-end">
-                                        <div class="w-100">
+                                    <div class="col-lg-5 d-flex align-items-end">
+                                        <div class="w-100 me-2">
                                             <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
+                                        </div>
+
+                                        <div>
+                                            <#if (item.taxonKeywords ? size == 1) >
+                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger" style="display: none;" role="button"><@s.text name='button.delete'/></button>
+                                            <#else>
+                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger" role="button"><@s.text name='button.delete'/></button>
+                                            </#if>
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-2 d-flex align-items-end">
-                                        <#if (item.taxonKeywords ? size == 1) >
-                                            <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger" style="display: none;" role="button"><@s.text name='button.delete'/></button>
-                                        <#else>
-                                            <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger" role="button"><@s.text name='button.delete'/></button>
-                                        </#if>
-                                    </div>
+
                                 </div>
                             </#list>
                         </div>
@@ -161,14 +163,14 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 d-flex align-items-end">
-                    <div class="w-100">
+                <div class="col-lg-5 d-flex align-items-end">
+                    <div class="w-100 me-2">
                         <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
                     </div>
-                </div>
 
-                <div class="col-lg-2 d-flex align-items-end">
-                    <button id="trash" class="btn btn-outline-danger" role="button"><@s.text name='button.delete'/></button>
+                    <div>
+                        <button id="trash" class="btn btn-outline-danger" role="button"><@s.text name='button.delete'/></button>
+                    </div>
                 </div>
             </div>
 
