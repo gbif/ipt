@@ -195,9 +195,7 @@
                                     </span>
                                     </label>
                                     <@s.select cssClass="form-select" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
-                                    <@s.fielderror>
-                                        <@s.param value="%{'organisation.key'}" />
-                                    </@s.fielderror>
+                                    <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                                 </div>
                             </div>
 
