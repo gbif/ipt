@@ -30,11 +30,11 @@
 
         <#list vocabulary.concepts as c>
             <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
-                <div class="col-md-3">
+                <div class="col-lg-3">
                     <strong class="text-muted">${c.identifier}</strong>
                 </div>
 
-                <div class="col-md-9">
+                <div class="col-lg-9">
                     <#if c.description?has_content>
                         <div>
                             ${c.description!}
