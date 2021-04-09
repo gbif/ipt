@@ -200,10 +200,6 @@
         div.mappingFiler {
             background-color: #F0FAFF;
         }
-        div.required {
-            color: #bc5e5b;
-            font-weight: bold;
-        }
     </style>
 
 <#assign currentMenu = "manage"/>
@@ -258,7 +254,7 @@
     <#assign p=field.term/>
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
-    <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 mappingRow<#if p.required> required</#if> border-bottom" style="border-color: #dee2e6 !important;">
+    <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 mappingRow<#if p.required> text-danger</#if> border-bottom" style="border-color: #dee2e6 !important;">
             <div class="col-md-4 pt-1">
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
@@ -270,7 +266,7 @@
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
-                <strong class="text-muted">
+                <strong class="<#if p.required> text-danger<#else>text-muted</#if>">
                     <#if !p.namespace?starts_with("http://purl.org/dc/")>
                         ${p.name}
                     <#elseif p.namespace?starts_with("http://purl.org/dc/terms")>
