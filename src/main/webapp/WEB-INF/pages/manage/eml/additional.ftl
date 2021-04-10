@@ -6,65 +6,57 @@
     <script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
             initHelp();
 
-            $("#buttonUpload").click(function() {
+            $("#buttonUpload").click(function () {
                 return ajaxFileUpload();
             });
 
-            function ajaxFileUpload()
-            {
-                var logourl=$("#resourcelogo img").attr("src");
+            function ajaxFileUpload() {
+                var logourl = $("#resourcelogo img").attr("src");
                 $.ajaxFileUpload
                 (
                     {
-                        url:'uploadlogo.do',
-                        secureuri:false,
-                        fileElementId:'file',
+                        url: 'uploadlogo.do',
+                        secureuri: false,
+                        fileElementId: 'file',
                         dataType: 'json',
-                        success: function (data, status)
-                        {
-                            if(typeof(data.error) != 'undefined')
-                            {
-                                if(data.error != '')
-                                {
+                        done: function (data, status) {
+                            if (typeof (data.error) != 'undefined') {
+                                if (data.error !== '') {
                                     alert(data.error);
-                                }else
-                                {
+                                } else {
                                     alert(data.msg);
                                 }
                             }
                         },
-                        error: function (data, status, e)
-                        {
+                        fail: function (data, status, e) {
                             alert(e);
                         }
                     }
                 )
-                if(logourl==undefined){
-                    var baseimg=$('#baseimg').clone();
+                if (logourl === undefined) {
+                    var baseimg = $('#baseimg').clone();
                     baseimg.appendTo('#resourcelogo');
-                    logourl=$("#resourcelogo img").attr("src");
+                    logourl = $("#resourcelogo img").attr("src");
                     $("#resourcelogo img").hide('slow').removeAttr("src");
-                    $("#resourcelogo img").show('slow', function() {
-                        $("[id$='eml.logoUrl']").attr("value",logourl);
-                        $("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
+                    $("#resourcelogo img").show('slow', function () {
+                        $("[id$='eml.logoUrl']").attr("value", logourl);
+                        $("#resourcelogo img").attr("src", logourl + "&t=" + (new Date()).getTime());
                     });
-                }else{
+                } else {
                     $("#resourcelogo img").hide('slow').removeAttr("src");
-                    logourl=$("#baseimg").attr("src");
-                    $("#resourcelogo img").show('slow', function() {
-                        $("#resourcelogo img").attr("src", logourl+"&t="+(new Date()).getTime());
-                        $("#logofields input[name$='logoUrl']").val( logourl);
+                    logourl = $("#baseimg").attr("src");
+                    $("#resourcelogo img").show('slow', function () {
+                        $("#resourcelogo img").attr("src", logourl + "&t=" + (new Date()).getTime());
+                        $("#logofields input[name$='logoUrl']").val(logourl);
                     });
                 }
                 return false;
             }
 
         });
-
-
     </script>
     <#assign auxTopNavbar=true />
     <#assign auxTopNavbarPage = "metadata" />
@@ -178,7 +170,6 @@
                 </div>
 
                 <img id="baseimg" src="${baseURL}/logo.do?r=${resource.shortname}" style="display:none;"/>
-                <img id="loadingimg" src="${baseURL}/images/loading_indicator.gif" style="display:none;"/>
             </div>
         </div>
     </main>
