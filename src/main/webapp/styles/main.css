@@ -1573,6 +1573,10 @@ ul {
   background-image: url('../images/icons/green/download.png');
 }
 
+.icon-download-black {
+  background-image: url('../images/icons/green/download-black.png');
+}
+
 .icon-homepage {
   background-image: url('../images/icons/green/homepage.png');
 }

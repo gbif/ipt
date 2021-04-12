@@ -49,6 +49,7 @@
                 <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<img src="${baseURL}/images/warning.gif"/></#if></td>
               </#if>
               <td>
+                <a class="icon icon-download-black button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank" title="<@s.text name='manage.overview.source.download'/>"/>
                 <a class="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                   <input class="button" type="button" value='<@s.text name='button.edit'/>'/>
                 </a>
