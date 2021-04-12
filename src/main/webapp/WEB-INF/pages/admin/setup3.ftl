@@ -1,24 +1,28 @@
 [#ftl output_format="HTML"]
-[#include "/WEB-INF/pages/inc/header_setup.ftl"]
+[#include "/WEB-INF/pages/inc/header_setup-bootstrap.ftl"]
 
-<div class="grid_18 suffix_6">
-  <h1 class="twenty_top">[@s.text name="admin.config.setup3.title"/]</h1>
-  <p>[@s.text name="admin.config.setup3.welcome"/]</p>
+<main class="container">
 
-  [#if warnings?size>0]
-    <ul class="warnMessage">
-      [#list warnings as w]
-        <li><span>${w!}</span></li>
-      [/#list]
-    </ul>
-  [/#if]
+    <form action="setupComplete.do">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-  [#include "/WEB-INF/pages/macros/forms.ftl"]
-  [@s.form cssClass="topForm half" action="setupComplete" namespace="" includeContext="false"]
-	  <div class="buttons">
- 	    [@s.submit cssClass="button" name="continue" key="button.continue"/]
-	  </div>
-  [/@s.form]
+            [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
+
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                [@s.text name="admin.config.setup3.title"/]
+            </h5>
+
+            <p class="text-muted mx-md-4 mx-2 text-center">[@s.text name="admin.config.setup3.welcome"/]</p>
+
+            <div class="row g-3 pb-2">
+                <div class="col-12 d-flex justify-content-center">
+                    [@s.submit cssClass="btn btn-outline-success" name="continue" key="button.continue"/]
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
 </div>
 
-[#include "/WEB-INF/pages/inc/footer.ftl"]
+
+[#include "/WEB-INF/pages/inc/footer-bootstrap.ftl"]

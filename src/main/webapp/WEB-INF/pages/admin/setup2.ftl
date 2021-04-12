@@ -1,54 +1,97 @@
 [#ftl output_format="HTML"]
-[#include "/WEB-INF/pages/inc/header_setup.ftl"]
-<div class="grid_18">
-<h1 class="twenty_top">[@s.text name="admin.config.setup2.title"/]</h1>
-<p>[@s.text name="admin.config.setup2.welcome"/]</p>
+[#include "/WEB-INF/pages/inc/header_setup-bootstrap.ftl"]
+[#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"]
 
-			[@s.actionmessage/]
-			[#if warnings?size>0]
-			 <ul class="warnMessage">
-			 [#list warnings as w]
-	          <li><span>${w!}</span></li>
-			 [/#list]
-             </ul>
-            [/#if]
-			[@s.actionerror/]
+<main class="container">
 
-[#include "/WEB-INF/pages/macros/forms.ftl"]
-[@s.form cssClass="topForm half" action="setup2.do" method="post"]
-	<input type="hidden" name="setup2" value="true" />
+    <form action="setup2.do" method="post" class="needs-validation">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-	<input type="hidden" name="ignoreUserValidation" value="${ignoreUserValidation}" />
-  <h2 class="subTitle">[@s.text name="admin.config.setup2.administrator"/]</h2>
-  [@s.text name="admin.config.setup2.administrator.help"/]<br/>
-	[@input name="user.email" disabled=(ignoreUserValidation==1) /]
-	[@input name="user.firstname" disabled=(ignoreUserValidation==1) /]
-	[@input name="user.lastname" disabled=(ignoreUserValidation==1) /]
-	[@input name="user.password" type="password" disabled=(ignoreUserValidation==1) /]
-	[@input name="password2" i18nkey="user.password2" type="password" disabled=(ignoreUserValidation==1) /]
+            [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
 
-<div id="iptMode" class="clearfix">
-  <div class="radio">
-    <h2 class="subTitle">[@s.text name="admin.config.setup2.mode.title"/]</h2>
-    [@s.text name="admin.config.setup2.mode.help"/]<br/><br/>
-    [@s.text name="admin.config.setup2.mode.test"/]<br/>
-    [@s.text name="admin.config.setup2.mode.production"/]<br/><br/>
-    [@s.text name="admin.config.setup2.mode"/]
-    [@s.fielderror]
-    	[@s.param value="%{'modeSelected'}" /]
-    [/@s.fielderror]
-    [@s.radio name="modeSelected" list="modes" disabled=(cfg.devMode()) value="modeSelected" /]
-  </div>
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 mt-2 text-success text-center">
+                [@s.text name="admin.config.setup2.title"/]
+            </h5>
+
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.welcome"/]</p>
+
+            <input type="hidden" name="setup2" value="true" />
+            <input type="hidden" name="ignoreUserValidation" value="${ignoreUserValidation}" />
+
+            <h5 class="text-success mx-md-4 mx-2">
+                [@s.text name="admin.config.setup2.administrator"/]
+            </h5>
+            <p class="text-muted mx-md-4 mx-2">
+                [@s.text name="admin.config.setup2.administrator.help"/]
+            </p>
+            <div class="row g-3 mx-md-4 mx-2 pb-3 mb-2">
+                <div class="col-12">
+                    [@input name="user.email" disabled=(ignoreUserValidation==1) /]
+                </div>
+
+                <div class="col-md-6">
+                    [@input name="user.firstname" disabled=(ignoreUserValidation==1) /]
+                </div>
+
+                <div class="col-md-6">
+                    [@input name="user.lastname" disabled=(ignoreUserValidation==1) /]
+                </div>
+
+                <div class="col-md-6">
+                    [@input name="user.password" type="password" disabled=(ignoreUserValidation==1) /]
+                </div>
+
+                <div class="col-md-6">
+                    [@input name="password2" i18nkey="user.password2" type="password" disabled=(ignoreUserValidation==1) /]
+                </div>
+            </div>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h5 class="text-success pb-2 mt-2 border-bottom mx-md-4 mx-2">
+                [@s.text name="admin.config.setup2.mode.title"/]
+            </h5>
+
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.help"/]</p>
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.test"/]</p>
+            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.production"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode"/]</p>
+
+            [#list modes as mode]
+                <div class="form-check form-check-inline mx-md-4 mx-2 pb-2">
+                    <input class="form-check-input" type="radio" name="modeSelected" id="mode${mode}" aria-describedby="field-error-mode" [#if mode??]value="${mode}"[/#if] [#if modeSelected?? && mode == modeSelected] checked [/#if]>
+                    <label class="form-check-label" for="mode${mode}">
+                        ${mode}
+                    </label>
+                </div>
+            [/#list]
+            [@s.fielderror cssClass="invalid-feedback list-unstyled radio-error radio-name-modeSelected mx-md-4 mx-2 my-0" fieldName="modeSelected"/]
+
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h5 class="text-success pb-2 mx-md-4 mx-2 pt-2 border-bottom">
+                [@s.text name="admin.registration.baseURL"/]
+            </h5>
+
+            <div class="row g-2 mx-md-3 mx-1">
+                <div class="col-md-6">
+                    [@input name="baseURL" help="i18n" i18nkey="admin.config.baseUrl"/]
+                </div>
+
+                <div class="col-md-6">
+                    [@input name="proxy" help="i18n" i18nkey="admin.config.proxy" /]
+                </div>
+
+                <div class="col-12 pb-3">
+                    [@s.submit cssClass="btn btn-outline-success" name="save" key="button.save"/]
+                </div>
+            </div>
+
+        </div>
+    </form>
+</main>
 </div>
-  <h2 class="subTitle">[@s.text name="admin.registration.baseURL"/]</h2>
-	[@input name="baseURL" help="i18n" i18nkey="admin.config.baseUrl"/]
-	[@input name="proxy" help="i18n" i18nkey="admin.config.proxy" /]
 
-	  <div class="buttons">
- 	[@s.submit cssClass="button" name="save" key="button.save"/]
-	  </div>
 
-[/@s.form]
-</div>
-</div>
-[#include "/WEB-INF/pages/inc/footer.ftl"]
+[#include "/WEB-INF/pages/inc/footer-bootstrap.ftl"]

@@ -1,10 +1,15 @@
-[#ftl]
-[#include "/WEB-INF/pages/inc/header.ftl"/]
- <title>[@s.text name="login.title"/]</title>
- [#assign currentMenu = "about"/]
-[#include "/WEB-INF/pages/inc/menu.ftl"/]
+<#ftl output_format="HTML">
+<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<title><@s.text name="login.title"/></title>
+<#assign currentMenu = "about"/>
+<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
 
-<div class="grid_18 suffix_6">
-${content}
-</div>
-[#include "/WEB-INF/pages/inc/footer.ftl"/]
+<main class="container">
+    <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
+
+        <@content?interpret />
+
+    </div>
+</main>
+
+<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">

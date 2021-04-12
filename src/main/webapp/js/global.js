@@ -40,22 +40,20 @@ function initForm(){
  * 	-remember to add the (#) symbol in the parameter-. (this parameter can be omitted).
  */
 function initHelp(context){
-	if(context == undefined) context = "";
+	if(context === undefined) context = "";
 	
 	$(context+" .calendarInfo").each(function(i) {
-		if (context != "") {
+		if (context !== "") {
 			$(this).find("input").removeAttr("class");
+			$(this).find("input").addClass("form-control")
 			$(this).find(".ui-datepicker-trigger").remove();
 		}
 		$(this).find("input").datepicker({
-			showOn: "button",
-			buttonImage: "../images/calendar.png",
-			buttonImageOnly: true,
 			changeMonth: true,
 			changeYear: true,
 			constrainInput: false,
 			dateFormat: 'yy-mm-dd'
-		});		
+		});
 	});
 	$(context+" .infoImg").click(function(e) {
         var show = $(this).next().is(":hidden");
@@ -79,6 +77,17 @@ function initHelp(context){
         $(this).parent().parent().parent().next().val($(this).attr("val"));
         $(this).parent().parent().parent().hide("fast");
     });    
+}
+function initInfoPopovers(item) {
+	var popoverTriggerList = [].slice.call(item.querySelectorAll('[data-bs-toggle="popover"]'))
+	var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+		return new bootstrap.Popover(popoverTriggerEl)
+	})
+	try {
+		var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+			trigger: 'focus'
+		})
+	} catch (TypeError) {}
 }
 function jsddm_open() {  
 	jsddm_canceltimer();

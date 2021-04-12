@@ -134,6 +134,8 @@
             initHelp("#baseItem-contact");
 
             setContactItemIndex(newItem, ++contactItems);
+
+            initInfoPopovers(newItem[0]);
         }
 
         function addNewCreatorItem(effects) {
@@ -148,6 +150,8 @@
             initHelp("#baseItem-creator");
 
             setCreatorItemIndex(newItem, ++creatorItems);
+
+            initInfoPopovers(newItem[0]);
         }
 
         function addNewMetadataProviderItem(effects) {
@@ -162,6 +166,8 @@
             initHelp("#baseItem-metadataProvider");
 
             setMetadataProviderItemIndex(newItem, ++metadataProviderItems);
+
+            initInfoPopovers(newItem[0]);
         }
 
         function addNewAssociatedPartyItem(effects){
@@ -176,6 +182,8 @@
             initHelp("#baseItem-associatedParty");
 
             setAssociatedPartyItemIndex(newItem, ++associatedPartyItemsCount);
+
+            initInfoPopovers(newItem[0]);
         }
 
         function addNewPersonnelItem(effects){
@@ -190,6 +198,8 @@
             initHelp("#baseItem-personnel");
 
             setPersonnelItemIndex(newItem, ++personnelItemsCount);
+
+            initInfoPopovers(newItem[0]);
         }
 
         function removeContactItem(event) {
