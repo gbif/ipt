@@ -40,11 +40,14 @@
             transition: all .3s;
             overflow: hidden;
             vertical-align: middle;
-            fill: #008959;
         }
 
         a {
-            color: #008959;
+            color: #4E9D2D !important;
+        }
+
+        .text-gbif-primary {
+            color: #4E9D2D !important;
         }
 
         .ipt-footer-item:after {

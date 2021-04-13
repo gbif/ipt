@@ -17,7 +17,7 @@
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
         <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
             <@s.text name="portal.home.title"/>
         </h5>
         <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2" style="font-size: 0.875rem !important;"></div>

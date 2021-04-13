@@ -4,7 +4,7 @@
 <#macro dwcaValidator>
     <#if (resource.recordsPublished>0)>
         <a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate">
-            <i class="bi bi-check2 text-success"></i>
+            <i class="bi bi-check2 text-gbif-primary"></i>
         </a>
     </#if>
 </#macro>
@@ -240,7 +240,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
                 <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                             <@s.text name="manage.overview.intro.metadataOnly"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
@@ -323,7 +323,7 @@
         </#if>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="publish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
                 <#assign overviewTitleInfo>
                     <#if resource.coreType?has_content && resource.coreType==metadataType>
                         <@s.text name="manage.overview.published.description.metadataOnly"/>
@@ -368,7 +368,7 @@
                                 <tr>
                                     <th></th>
                                     <#if resource.lastPublished??>
-                                        <td class="text-success">${lastPublishedTitle?cap_first}</td>
+                                        <td class="text-gbif-primary">${lastPublishedTitle?cap_first}</td>
                                     </#if>
                                     <td class="left_padding">
                                         ${nextPublishedTitle?cap_first}
@@ -377,7 +377,7 @@
                                 <tr>
                                     <th class="col-4">${versionTitle?cap_first}</th>
                                     <#if resource.lastPublished??>
-                                        <td class="separator text-success">
+                                        <td class="separator text-gbif-primary">
                                             ${resource.emlVersion.toPlainString()}&nbsp;
                                             <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a>
                                             <@dwcaValidator/>
@@ -393,7 +393,7 @@
                                     <tr>
                                         <th>${visibilityTitle?cap_first}</th>
                                         <#if resource.lastPublished??>
-                                            <td class="separator text-success">
+                                            <td class="separator text-gbif-primary">
                                                 ${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}
                                             </td>
                                         </#if>
@@ -407,7 +407,7 @@
                                     <tr>
                                         <th>DOI</th>
                                         <#if resource.lastPublished??>
-                                            <td class="separator text-success">
+                                            <td class="separator text-gbif-primary">
                                                 <#if resource.isAlreadyAssignedDoi()>
                                                     ${resource.versionHistory[0].doi!}
                                                 <#else>
@@ -428,7 +428,7 @@
                                     <tr>
                                         <th>${licenseTitle?cap_first}</th>
                                         <#if resource.lastPublished??>
-                                            <td class="separator text-success">
+                                            <td class="separator text-gbif-primary">
                                                 <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
                                             </td>
                                         </#if>
@@ -440,7 +440,7 @@
                                 <tr>
                                     <th>${releasedTitle?cap_first}</th>
                                     <#if resource.lastPublished??>
-                                        <td class="separator text-success">${resource.lastPublished?date?string.medium}</td>
+                                        <td class="separator text-gbif-primary">${resource.lastPublished?date?string.medium}</td>
                                     </#if>
                                     <td class="left_padding">
                                         <#if resource.nextPublished??>
@@ -511,7 +511,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="autopublish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
                 <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                 <@s.text name="manage.overview.autopublish.title"/>
             </h5>
@@ -565,7 +565,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="visibility">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
                 <#assign visibilityTitleInfo>
                     <@s.text name='manage.overview.visibility.description'/>
                     <br><br>
@@ -705,7 +705,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="managers">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
                 <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                 <@s.text name="manage.overview.resource.managers"/>
             </h5>

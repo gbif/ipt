@@ -346,7 +346,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
                 <@popoverPropertyInfo "manage.mapping.intro"/>
                 <@s.text name='manage.mapping.title'/>:
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
@@ -462,7 +462,7 @@
                 <#if (groupsFields?size>0)>
                     <div class="my-3 p-3 bg-body rounded shadow-sm">
                         <div id="group_${g}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
-                            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">${g}</h5>
+                            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary">${g}</h5>
                             <#list groupsFields as field>
                                 <@showField field field_index/>
                             </#list>
@@ -475,7 +475,7 @@
             </#list>
         <#else>
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary">
                     <@s.text name="manage.mapping.fields"/>
                 </h5>
                 <#list fields as field>
@@ -497,7 +497,7 @@
 
         <#if (nonMapped?size>0)>
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 id="nonmapped" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 id="nonmapped" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary">
                     <@s.text name="manage.mapping.no.mapped.title"/>
                 </h5>
                 <p class="text-muted mx-md-4 mx-2"><@s.text name="manage.mapping.no.mapped.columns"/>:</p>
@@ -512,7 +512,7 @@
 
         <#if (action.getRedundantGroups()?size>0)>
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 id="redundant" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 id="redundant" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary">
                     <@s.text name="manage.mapping.redundant.classes.title"/>
                 </h5>
                 <p class="text-muted mx-md-4 mx-2"><@s.text name="manage.mapping.redundant.classes.intro"/>:</p>

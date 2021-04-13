@@ -58,13 +58,17 @@
             color: #4E9D2D !important;
         }
 
-        .navbar-button:hover {
+        .navbar-button:hover, .admin-item:hover {
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
         }
 
         /* Links color with exception for some classes */
         a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
-            color: #008959 !important;
+            color: #4E9D2D !important;
+        }
+
+        .text-gbif-primary {
+            color: #4E9D2D !important;
         }
 
         /* custom colors for tables pagination items */

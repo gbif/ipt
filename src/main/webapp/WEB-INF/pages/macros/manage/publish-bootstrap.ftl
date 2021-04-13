@@ -78,7 +78,7 @@
 
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-sm btn-outline-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" escapeHtml=true/>">
-                                <i class="bi bi-info-circle text-success"></i>
+                                <i class="bi bi-info-circle text-gbif-primary"></i>
                             </button>
                             <@s.submit cssClass="confirmPublishMinorVersion btn btn-sm btn-outline-success" id="publishButton" name="publish" key="button.publish"/>
                         </div>

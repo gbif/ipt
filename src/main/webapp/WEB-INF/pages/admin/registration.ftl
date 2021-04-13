@@ -93,7 +93,7 @@
         <div class="my-3 p-3 bg-body rounded shadow-sm">
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
                 <@s.text name="admin.home.editRegistration"/>
             </h5>
 
@@ -191,7 +191,7 @@
                                     <label for="organisation.key" class="form-label">
                                         <@s.text name="admin.organisation.key"/>
                                         <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${selectOrganisationInfo}">
-                                        <i class="bi bi-info-circle text-success"></i>
+                                        <i class="bi bi-info-circle text-gbif-primary"></i>
                                     </span>
                                     </label>
                                     <@s.select cssClass="form-select" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>

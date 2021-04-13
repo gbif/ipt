@@ -9,7 +9,7 @@
 
         <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
             <@s.text name="account.title"/>
         </h5>
 

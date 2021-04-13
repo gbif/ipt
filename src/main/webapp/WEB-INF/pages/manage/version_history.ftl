@@ -17,7 +17,7 @@
             <#if resource?? && version?? && resource.versionHistory??>
                 <input type="hidden" name="r" value="${resource.shortname}" />
                 <input type="hidden" name="v" value="${version.toPlainString()}" />
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
                     <@s.text name='manage.history.title'/>: <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </h5>
 
@@ -92,7 +92,7 @@
                     </div>
                 </div>
             <#else>
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </h5>
 

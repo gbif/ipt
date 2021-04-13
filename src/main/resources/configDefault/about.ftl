@@ -1,4 +1,4 @@
-<h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">About this IPT installation</h5>
+<h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">About this IPT installation</h5>
 <#if hostingOrganisation?? && hostingOrganisation.name??>
 <p class="text-muted mx-md-4 mx-2">This is a default IPT hosted by ${hostingOrganisation.name}</p>
 

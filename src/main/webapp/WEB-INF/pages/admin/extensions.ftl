@@ -76,7 +76,7 @@
             <div class="my-3 p-3 bg-body rounded shadow-sm">
                 <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
                     <@s.text name="admin.extension.coreTypes"/>
                 </h5>
 
@@ -108,7 +108,7 @@
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary">
                     <@s.text name="admin.extension.extensions"/>
                 </h5>
 
@@ -131,7 +131,7 @@
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary">
                     <@s.text name="extension.synchronise.title"/>
                 </h5>
 
@@ -151,7 +151,7 @@
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary">
                     <@s.text name="extension.further.title"/>
                 </h5>
 
@@ -196,7 +196,7 @@
                 </#list>
 
                 <#if count=0>
-                    <p class="text-success mx-md-4 mx-2 mt-2">
+                    <p class="text-gbif-primary mx-md-4 mx-2 mt-2">
                         <@s.text name="extension.already.installed"/>
                     </p>
                 </#if>

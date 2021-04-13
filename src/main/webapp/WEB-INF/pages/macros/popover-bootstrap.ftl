@@ -7,7 +7,7 @@
 
 <#macro popoverPropertyInfo propertyName>
     <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="${propertyName}" escapeHtml=true/>">
-        <i class="bi bi-info-circle text-success"></i>
+        <i class="bi bi-info-circle text-gbif-primary"></i>
     </span>
 </#macro>
 
@@ -19,6 +19,6 @@
 
 <#macro popoverTextInfo text>
     <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${text}">
-        <i class="bi bi-info-circle text-success"></i>
+        <i class="bi bi-info-circle text-gbif-primary"></i>
     </span>
 </#macro>
