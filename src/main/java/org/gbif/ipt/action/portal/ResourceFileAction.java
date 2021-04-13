@@ -260,11 +260,7 @@ public class ResourceFileAction extends PortalBaseAction {
   }
 
   public String rawsource() {
-    if (resource == null) {
-      return NOT_FOUND;
-    }
-
-    if (id == null) {
+    if (resource == null || id == null) {
       return NOT_FOUND;
     }
 

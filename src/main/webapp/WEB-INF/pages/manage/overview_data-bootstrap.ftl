@@ -43,7 +43,7 @@
                                         <td class="d-flex justify-content-end">
                                           <div class="btn-group" role="group">
                                             <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank" title="<@s.text name='manage.overview.source.download'/>">
-                                              <i class="bi bi-eye"></i>
+                                              <i class="bi bi-download"></i>
                                             </a>
                                             <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                                               <@s.text name='button.edit'/>
