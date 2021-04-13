@@ -50,8 +50,16 @@
             font-size: 0.875rem !important;
         }
 
-        #accountDropdownLink {
+        .bg-gbif-green-gradient {
+            background: linear-gradient(#78b578, #71b171) !important;
+        }
+
+        .navbar-button {
             color: #4E9D2D !important;
+        }
+
+        .navbar-button:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
         }
 
         /* Links color with exception for some classes */

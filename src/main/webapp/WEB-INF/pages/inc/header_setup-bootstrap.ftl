@@ -27,6 +27,10 @@
             padding-top: 4.5rem; /* Separates nav and main */
         }
 
+        .bg-gbif-green-gradient {
+            background: linear-gradient(#78b578, #71b171) !important;
+        }
+
         .gbif-logo {
             height: 32px;
             position: relative;
@@ -62,15 +66,15 @@
 
 <header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark py-1">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-gbif-green-gradient py-1 shadow-sm">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <div class="navbar-nav me-auto mb-2 mb-lg-0"></div>
                 <div class="d-flex">
                     [#include "/WEB-INF/pages/inc/languages-bootstrap.ftl"/]
