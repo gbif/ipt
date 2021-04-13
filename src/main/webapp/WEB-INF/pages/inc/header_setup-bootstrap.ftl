@@ -42,7 +42,7 @@
             vertical-align: middle;
         }
 
-        a {
+        a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
             color: #4E9D2D !important;
         }
 
