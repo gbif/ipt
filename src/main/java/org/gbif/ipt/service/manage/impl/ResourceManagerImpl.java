@@ -986,7 +986,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       LOG.info("Loaded " + counter + " resources into memory altogether.");
       LOG.info("Cleaned up " + counterDeleted + " resources altogether.");
     } else {
-      LOG.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
+      LOG.error("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
     }
     return counter;
   }
