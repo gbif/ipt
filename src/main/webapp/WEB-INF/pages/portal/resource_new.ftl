@@ -279,7 +279,7 @@
                 <div class="col-xl-4">
                     <div class="d-xl-flex justify-content-xl-end">
                         <#if managerRights>
-                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 me-xl-1">
+                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 me-xl-1">
                                 <@s.text name='button.edit'/>
                             </a>
                         </#if>
@@ -291,7 +291,7 @@
                             </#if>
                         </#if>
                         <#if doi?has_content && doiUrl?has_content>
-                            <a property="dc:identifier" class="btn btn-sm btn-outline-success ignore-link-color mt-1 me-xl-1 doi" href="${doiUrl!}">
+                            <a property="dc:identifier" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 me-xl-1 doi" href="${doiUrl!}">
                                 <span class="doi">DOI</span>
                                 ${doi}
                             </a>
@@ -320,37 +320,37 @@
             <#if eml.distributionUrl?has_content || resource.lastPublished??>
                 <div>
                     <#if eml.distributionUrl?has_content>
-                        <a href="${eml.distributionUrl}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-house-door">
+                        <a href="${eml.distributionUrl}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-house-door">
                             <@s.text name='eml.distributionUrl.short'/>
                         </a>
                     </#if>
                     <#if resource.status=="REGISTERED" && resource.key??>
-                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-sm btn-outline-success mt-1 ignore-link-color">
+                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-sm btn-outline-gbif-primary mt-1 ignore-link-color">
                             <@s.text name='portal.resource.gbif.page.short'/>
                         </a>
                     </#if>
                     <#if metadataOnly == false>
-                        <a href="${download_dwca_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
+                        <a href="${download_dwca_url}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.dwca'/>
                         </a>
                     </#if>
                     <#if resource.lastPublished??>
-                        <a href="${download_eml_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
+                        <a href="${download_eml_url}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.eml'/>
                         </a>
-                        <a href="${download_rtf_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
+                        <a href="${download_rtf_url}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.rtf'/>
                         </a>
                         <#if resource.versionHistory??>
-                            <a href="${anchor_versions}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-clock">
+                            <a href="${anchor_versions}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-clock">
                                 <@s.text name='portal.resource.versions'/>
                             </a>
                         </#if>
-                        <a href="${anchor_rights}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-key">
+                        <a href="${anchor_rights}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-key">
                             <@s.text name='eml.intellectualRights.simple'/>
                         </a>
                         <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
-                            <a href="${anchor_citation}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-book">
+                            <a href="${anchor_citation}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-book">
                                 <@s.text name='portal.resource.cite'/>
                             </a>
                         </#if>

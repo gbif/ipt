@@ -39,7 +39,7 @@
                 </#if>
 
                 <div class="col-12">
-                    <@s.submit cssClass="btn btn-outline-success" name="login" key="portal.login"/>
+                    <@s.submit cssClass="btn btn-outline-gbif-primary" name="login" key="portal.login"/>
                 </div>
             </div>
         </form>

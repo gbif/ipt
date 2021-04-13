@@ -41,7 +41,7 @@
                                             <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         </#if>
                                         <td class="d-flex justify-content-end">
-                                            <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
+                                            <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                                                 <@s.text name='button.edit'/>
                                             </a>
                                         </td>
@@ -65,7 +65,7 @@
                                 <@s.file name="file" cssClass="form-control form-control-sm my-1" key="manage.resource.create.file"/>
                             </div>
                             <div class="col-12">
-                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-success my-1" key="button.connectDB"/>
+                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.connectDB"/>
                                 <@s.submit name="clear" cssClass="btn btn-sm btn-outline-secondary my-1" key="button.clear"/>
                                 <@s.submit name="cancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel" method="cancelOverwrite"/>
                             </div>
@@ -118,7 +118,7 @@
                                             <a class="btn btn-sm btn-outline-secondary ignore-link-color peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                            <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <@s.text name='button.edit'/>
                                             </a>
                                         </div>
@@ -142,7 +142,7 @@
                                                         <a class="btn btn-sm btn-outline-secondary ignore-link-color peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                        <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <@s.text name='button.edit'/>
                                                         </a>
                                                     </div>
@@ -182,7 +182,7 @@
                                 </optgroup>
                             </#if>
                         </select>
-                        <@s.submit name="add" cssClass="btn btn-sm btn-outline-success my-1" key="button.add"/>
+                        <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
                     </form>
                 <#else>
                     <div class="d-flex justify-content-start">

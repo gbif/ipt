@@ -16,7 +16,7 @@
 
             <div class="row g-3 pb-2">
                 <div class="col-12 d-flex justify-content-center">
-                    [@s.submit cssClass="btn btn-outline-success" name="continue" key="button.continue"/]
+                    [@s.submit cssClass="btn btn-outline-gbif-primary" name="continue" key="button.continue"/]
                 </div>
             </div>
         </div>

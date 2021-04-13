@@ -80,7 +80,7 @@
                             <table class="bottomButtons table table-borderless">
                                 <tr>
                                     <th>
-                                        <@s.submit cssClass="btn btn-sm btn-outline-success" name="analyze" key="button.analyze"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="analyze" key="button.analyze"/>
                                         <a href="#" id="peekBtn" class="btn btn-sm btn-outline-secondary ignore-link-color my-1">
                                             <i class="bi bi-eye"></i>
                                         </a>
@@ -159,7 +159,7 @@
                         </#if>
 
                         <div class="col-12">
-                            <@s.submit cssClass="btn btn-outline-success" name="save" key="button.save"/>
+                            <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
                             <@s.submit cssClass="btn btn-outline-secondary my-1" name="cancel" key="button.cancel"/>
                             <#if id?has_content>
                                 <@s.submit cssClass="confirm btn btn-outline-danger my-1" name="delete" key="button.delete.source.file"/>

@@ -87,7 +87,7 @@
 
                 <div class="row mx-md-3 mx-1">
                     <div class="buttons col-12">
-                        <@s.submit cssClass="button btn btn-outline-success" name="save" key="button.save"/>
+                        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
                         <@s.submit cssClass="button btn btn-outline-secondary" name="back" key="button.cancel"/>
                     </div>
                 </div>

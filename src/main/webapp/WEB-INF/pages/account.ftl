@@ -54,7 +54,7 @@
                 </div>
 
                 <div class="col-12">
-                    <@s.submit cssClass="btn btn-outline-success" name="save" key="button.save"/>
+                    <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
                     <@s.submit cssClass="btn btn-outline-secondary" name="cancel" key="button.cancel"/>
                 </div>
 

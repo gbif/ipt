@@ -139,7 +139,7 @@
                         </div>
 
                         <div class="col-12">
-                            <@s.submit cssClass="button btn btn-outline-success" name="update" id="update" key="button.updateRegistration" />
+                            <@s.submit cssClass="button btn btn-outline-gbif-primary" name="update" id="update" key="button.updateRegistration" />
                             <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" id="cancel" key="button.cancel"/>
                         </div>
                     </div>
@@ -156,9 +156,9 @@
                         </div>
 
                         <div class="col-12">
-                            <@s.submit cssClass="button btn btn-outline-success" name="validate" id="validate" key="admin.registration.validate"/>
+                            <@s.submit cssClass="button btn btn-outline-gbif-primary" name="validate" id="validate" key="admin.registration.validate"/>
 
-                            <button id="validation-in-process" name="validate" class="btn btn-outline-success" type="submit" style="display: none" disabled>
+                            <button id="validation-in-process" name="validate" class="btn btn-outline-gbif-primary" type="submit" style="display: none" disabled>
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 <@s.text name="admin.registration.validate"/>
                             </button>
@@ -249,7 +249,7 @@
                             <@s.hidden id="ipt.organisationKey" name="ipt.organisationKey" />
 
                             <div class="buttons col-12">
-                                <@s.submit cssClass="button btn btn-outline-success" name="save" id="save" key="button.save"/>
+                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" id="save" key="button.save"/>
                                 <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" id="cancel" key="button.cancel"/>
                             </div>
                         </div>

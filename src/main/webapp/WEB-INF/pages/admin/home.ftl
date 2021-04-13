@@ -27,7 +27,7 @@
 							<@s.text name="admin.home.editConfig"/>
 							<@popoverPropertyInfo "admin.home.publishResources.help"/>
 						</h6>
-						<@s.submit cssClass="btn btn-sm btn-outline-success" name="publishAll" key="admin.home.publishResources"/>
+						<@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="publishAll" key="admin.home.publishResources"/>
 					</td>
 				</tr>
 			</table>

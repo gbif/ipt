@@ -140,7 +140,7 @@
                     <div class="d-flex align-content-between">
                         <ul class="navbar-nav">
                             <li class="nav-item py-2 px-1">
-                                [@s.submit cssClass="button btn btn-sm btn-outline-success" name="save" key="button.save"/]
+                                [@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary" name="save" key="button.save"/]
                             </li>
                             <li class="nav-item py-2 px-1">
                                 [@s.submit cssClass="confirm btn btn-sm btn-outline-danger" name="delete" key="button.delete"/]
@@ -171,7 +171,7 @@
                     <div class="d-flex align-content-between">
                         <ul class="navbar-nav">
                             <li class="nav-item py-2 px-1">
-                                [@s.submit cssClass="button btn btn-sm btn-outline-success" name="save" key="button.save" /]
+                                [@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary" name="save" key="button.save" /]
                             </li>
                             <li class="nav-item py-2 px-1">
                                 [@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.cancel" /]

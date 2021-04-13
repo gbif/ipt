@@ -49,7 +49,7 @@
                             <@s.submit cssClass="btn btn-sm btn-outline-warning" name="edit" key="button.edit"/>
                         </div>
                     <#else>
-                        <@s.submit cssClass="btn btn-sm btn-outline-success" name="edit" key="button.edit"/>
+                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
                     </#if>
                 </form>
             </div>

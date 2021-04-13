@@ -180,7 +180,7 @@
                     </div>
 
                     <div class="col-12">
-                        <@s.submit name="save" key="button.save" cssClass="button btn btn-outline-success"/>
+                        <@s.submit name="save" key="button.save" cssClass="button btn btn-outline-gbif-primary"/>
                         <#if id?has_content>
                             <@s.submit name="delete" key="button.delete" cssClass="button confirm btn btn-outline-danger"/>
                         </#if>

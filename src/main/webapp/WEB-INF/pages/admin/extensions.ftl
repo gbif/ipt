@@ -27,7 +27,7 @@
                         <#if !ext.isLatest()>
                             <form action='updateExtension.do' method='post'>
                                 <input type='hidden' name='id' value='${ext.rowType}' />
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-success mt-1 me-1" name="update" key="button.update"/>
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary mt-1 me-1" name="update" key="button.update"/>
                             </form>
                         </#if>
                         <form action='extension.do' method='post'>
@@ -145,7 +145,7 @@
 
                 <form action='extensions.do' method='post'>
                     <div class="col-12 mt-2 mx-md-4 mx-2">
-                        <@s.submit name="synchronise" cssClass="btn btn-outline-success" key="button.synchronise"/>
+                        <@s.submit name="synchronise" cssClass="btn btn-outline-gbif-primary" key="button.synchronise"/>
                     </div>
                 </form>
             </div>
@@ -171,7 +171,7 @@
                                 <div class="actions">
                                     <form action='extension.do' method='post'>
                                         <input type='hidden' name='url' value='${ext.url}' />
-                                        <@s.submit name="install" cssClass="btn btn-sm btn-outline-success" key="button.install"/>
+                                        <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
                                     </form>
                                 </div>
                             </div>

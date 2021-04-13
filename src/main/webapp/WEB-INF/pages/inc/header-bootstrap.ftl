@@ -71,11 +71,37 @@
             color: #4E9D2D !important;
         }
 
+        /*GBIF green colored button*/
+        .btn-outline-gbif-primary {
+            color: #4E9D2D !important;
+            border-color: #4E9D2D !important;
+        }
+        .btn-outline-gbif-primary:hover {
+            color: #fff !important;
+            background-color: #4E9D2D !important;
+            border-color: #4E9D2D !important;
+        }
+        .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5) !important;
+        }
+        .btn-check:checked + .btn-outline-gbif-primary, .btn-check:active + .btn-outline-gbif-primary, .btn-outline-gbif-primary:active, .btn-outline-gbif-primary.active, .btn-outline-gbif-primary.dropdown-toggle.show {
+            color: #fff !important;
+            background-color: #4E9D2D !important;
+            border-color: #4E9D2D !important;
+        }
+        .btn-check:checked + .btn-outline-gbif-primary:focus, .btn-check:active + .btn-outline-gbif-primary:focus, .btn-outline-gbif-primary:active:focus, .btn-outline-gbif-primary.active:focus, .btn-outline-gbif-primary.dropdown-toggle.show:focus {
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5) !important;
+        }
+        .btn-outline-gbif-primary:disabled, .btn-outline-gbif-primary.disabled {
+            color: #4E9D2D !important;
+            background-color: transparent !important;
+        }
+
         /* custom colors for tables pagination items */
         .page-link {
             position: relative;
             display: block;
-            color: #198754 !important;
+            color: #4E9D2D !important;
             text-decoration: none;
             background-color: #fff;
             border: 1px solid #dee2e6;
@@ -83,13 +109,13 @@
         }
         .page-link:hover {
             z-index: 2;
-            color: #157347 !important;
+            color: #4E9D2D !important;
             background-color: #e9ecef;
             border-color: #dee2e6;
         }
         .page-link:focus {
             z-index: 3;
-            color: #157347 !important;
+            color: #4E9D2D !important;
             background-color: #e9ecef;
             outline: 0;
             box-shadow: 0 0 0 0.25rem rgba(60, 153, 110, 0.5) !important;
@@ -101,8 +127,8 @@
         .page-item.active .page-link {
             z-index: 3;
             color: #fff !important;
-            background-color: #198754 !important;
-            border-color: #198754 !important;
+            background-color: #4E9D2D !important;
+            border-color: #4E9D2D !important;
         }
         .page-item.disabled .page-link {
             color: #6c757d !important;

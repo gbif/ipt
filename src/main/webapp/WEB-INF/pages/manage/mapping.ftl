@@ -213,7 +213,7 @@
 
 <#macro threeButtons>
     <div class="col-12 m-3">
-        <@s.submit cssClass="button btn btn-outline-success" name="save" key="button.save"/>
+        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
         <@s.submit cssClass="confirm btn btn-outline-danger" name="delete" key="button.delete"/>
         <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
     </div>
@@ -316,7 +316,7 @@
                         <#if (((field.translation?size)!0)>0)>
                             ${(field.translation?size)!0} terms
                         <#else>
-                            <button type="button" class="add btn btn-sm btn-outline-success" onclick="window.location.href"><@s.text name="button.add"/></button>
+                            <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
                         </#if>
                     </a>
                 </div>

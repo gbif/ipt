@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="col-12 pb-3">
-                    [@s.submit cssClass="btn btn-outline-success" name="save" key="button.save"/]
+                    [@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/]
                 </div>
             </div>
 

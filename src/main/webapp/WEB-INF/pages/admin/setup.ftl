@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="col-12">
-                    [@s.submit cssClass="btn btn-outline-success" name="save" id="submitDatadir" key="button.save"/]
+                    [@s.submit cssClass="btn btn-outline-gbif-primary" name="save" id="submitDatadir" key="button.save"/]
                 </div>
             </div>
 
