@@ -97,6 +97,16 @@
             background-color: transparent !important;
         }
 
+        /* Published versions table separator */
+        td.separator {
+            border-right: 1px solid #EEEEEE;
+            padding-right: 30px !important;
+        }
+
+        td.left_padding {
+            padding-left: 30px !important;
+        }
+
         /* custom colors for tables pagination items */
         .page-link {
             position: relative;
