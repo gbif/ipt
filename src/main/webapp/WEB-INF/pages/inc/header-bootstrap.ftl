@@ -186,6 +186,12 @@
             border: 1px solid #000;
             padding: 15px;
         }
+
+        /*Style select2 component*/
+        .select2-container--bootstrap4 .select2-results__option--highlighted, .select2-container--bootstrap4 .select2-results__option--highlighted.select2-results__option[aria-selected="true"] {
+            color: #fff;
+            background-color: #4E9D2D !important;
+        }
     </style>
 
     <!-- Bootstrap core CSS -->
