@@ -1,9 +1,13 @@
 <#ftl output_format="HTML">
 <footer class="footer mt-auto text-muted text-center py-3" style='font-size: 0.875rem !important;'>
     <div class="container">
+        <div class="mb-1">
+            <img class="footer-gbif-logo" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
+            This data repository is powered by the GBIF Integrated Publishing Toolkit (IPT)
+        </div>
         <ul class="list-inline mb-0">
             <li class="list-inline-item ipt-footer-item">
-                <small>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</small>
+                <small><strong>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</strong></small>
             </li>
             <li class="list-inline-item ipt-footer-item">
                 <a href="https://www.gbif.org/ipt"><small><@s.text name="footer.projectHome"/></small></a>

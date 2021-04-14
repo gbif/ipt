@@ -88,6 +88,10 @@
         header, .dropdown-menu {
             font-size: 0.875rem !important;
         }
+
+        .footer-gbif-logo {
+            width: 55px;
+        }
     </style>
 
 </head>
