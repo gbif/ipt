@@ -227,6 +227,15 @@
         </script>
     [/#if]
 
+    [#-- If not logged, refresh page periodically to avoid CSRF token expiration --]
+    [#if !loggedIn]
+      <script type="text/javascript">
+        setTimeout(function(){
+          window.location.reload();
+        }, ${cfg.getCsrfPageRefreshDelay()?c});
+      </script>
+    [/#if]
+
     [#-- Metadata used by browsers (title in browser toolbar, bookmark when added to favorites), search engines (keywords) --]
     [#assign metaKeywords = "GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" /]
     [#assign registeredIpt = action.getRegisteredIpt()!""/]
