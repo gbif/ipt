@@ -43,11 +43,15 @@
         }
 
         a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
-            color: #4E9D2D !important;
+            color: #4BA2CE !important;
         }
 
         .text-gbif-primary {
             color: #4E9D2D !important;
+        }
+
+        .text-gbif-header {
+            color: #4E565F !important;
         }
 
         /*GBIF green colored button*/
