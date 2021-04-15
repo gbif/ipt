@@ -176,7 +176,7 @@
 
         <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
             <@s.text name='manage.metadata.geocoverage.title'/>:
             <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
         </h5>
@@ -211,7 +211,7 @@
             </div>
 
             <div class="col-12">
-                <@s.submit cssClass="button btn btn-outline-success" name="save" key="button.save" />
+                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
                 <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
             </div>
         </div>

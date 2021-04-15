@@ -1,6 +1,6 @@
 <!-- Represents metadata section on resource overview page -->
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="metadata">
-    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
         <#assign metadataHeaderInfo>
             <@s.text name='manage.metadata.basic.required.message'/>
             <#if resource.coreType?has_content && resource.coreType==metadataType>
@@ -49,7 +49,7 @@
                             <@s.submit cssClass="btn btn-sm btn-outline-warning" name="edit" key="button.edit"/>
                         </div>
                     <#else>
-                        <@s.submit cssClass="btn btn-sm btn-outline-success" name="edit" key="button.edit"/>
+                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
                     </#if>
                 </form>
             </div>

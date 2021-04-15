@@ -8,7 +8,7 @@
 
             [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 [@s.text name="admin.config.setup3.title"/]
             </h5>
 
@@ -16,7 +16,7 @@
 
             <div class="row g-3 pb-2">
                 <div class="col-12 d-flex justify-content-center">
-                    [@s.submit cssClass="btn btn-outline-success" name="continue" key="button.continue"/]
+                    [@s.submit cssClass="btn btn-outline-gbif-primary" name="continue" key="button.continue"/]
                 </div>
             </div>
         </div>

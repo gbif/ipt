@@ -113,7 +113,7 @@
         </div>
 
         <#-- minimum info is the last name, organisation name, or position name -->
-        <div <#if dcPropertyType?has_content>property="dc:${dcPropertyType}" </#if> class="contactName text-success">
+        <div <#if dcPropertyType?has_content>property="dc:${dcPropertyType}" </#if> class="contactName text-gbif-primary">
             <#if con.lastName?has_content>
                 ${con.firstName!} ${con.lastName!}
             <#elseif con.organisation?has_content>
@@ -230,7 +230,7 @@
                 <img src="${eml.logoUrl}" style="max-width: 75px;"/>
             </#if>
 
-            <h5 property="dc:title" class="rtitle border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+            <h5 property="dc:title" class="rtitle border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                 ${eml.title!resource.shortname}
             </h5>
         </div>
@@ -279,7 +279,7 @@
                 <div class="col-xl-4">
                     <div class="d-xl-flex justify-content-xl-end">
                         <#if managerRights>
-                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 me-xl-1">
+                            <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 me-xl-1">
                                 <@s.text name='button.edit'/>
                             </a>
                         </#if>
@@ -291,7 +291,7 @@
                             </#if>
                         </#if>
                         <#if doi?has_content && doiUrl?has_content>
-                            <a property="dc:identifier" class="btn btn-sm btn-outline-success ignore-link-color mt-1 me-xl-1 doi" href="${doiUrl!}">
+                            <a property="dc:identifier" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 me-xl-1 doi" href="${doiUrl!}">
                                 <span class="doi">DOI</span>
                                 ${doi}
                             </a>
@@ -320,37 +320,37 @@
             <#if eml.distributionUrl?has_content || resource.lastPublished??>
                 <div>
                     <#if eml.distributionUrl?has_content>
-                        <a href="${eml.distributionUrl}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-house-door">
+                        <a href="${eml.distributionUrl}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-house-door">
                             <@s.text name='eml.distributionUrl.short'/>
                         </a>
                     </#if>
                     <#if resource.status=="REGISTERED" && resource.key??>
-                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-sm btn-outline-success mt-1 ignore-link-color">
+                        <a href="${cfg.portalUrl}/dataset/${resource.key}" class="btn btn-sm btn-outline-gbif-primary mt-1 ignore-link-color">
                             <@s.text name='portal.resource.gbif.page.short'/>
                         </a>
                     </#if>
                     <#if metadataOnly == false>
-                        <a href="${download_dwca_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
+                        <a href="${download_dwca_url}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.dwca'/>
                         </a>
                     </#if>
                     <#if resource.lastPublished??>
-                        <a href="${download_eml_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
+                        <a href="${download_eml_url}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.eml'/>
                         </a>
-                        <a href="${download_rtf_url}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-download">
+                        <a href="${download_rtf_url}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-download">
                             <@s.text name='portal.resource.published.rtf'/>
                         </a>
                         <#if resource.versionHistory??>
-                            <a href="${anchor_versions}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-clock">
+                            <a href="${anchor_versions}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-clock">
                                 <@s.text name='portal.resource.versions'/>
                             </a>
                         </#if>
-                        <a href="${anchor_rights}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-key">
+                        <a href="${anchor_rights}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-key">
                             <@s.text name='eml.intellectualRights.simple'/>
                         </a>
                         <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
-                            <a href="${anchor_citation}" class="btn btn-sm btn-outline-success ignore-link-color mt-1 bi bi-book">
+                            <a href="${anchor_citation}" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 bi bi-book">
                                 <@s.text name='portal.resource.cite'/>
                             </a>
                         </#if>
@@ -373,7 +373,7 @@
 
         <#if metadataOnly != true>
             <div id="dataRecords" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='portal.resource.dataRecords'/>
                 </h5>
 
@@ -418,7 +418,7 @@
 
         <!-- downloads section -->
         <div id="downloads" class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                 <@s.text name='portal.resource.downloads'/>
             </h5>
 
@@ -467,7 +467,7 @@
         <!-- versions section -->
         <#if resource.versionHistory??>
             <div id ="versions" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='portal.resource.versions'/>
                 </h5>
 
@@ -486,7 +486,7 @@
         <!-- citation section -->
         <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
             <div id="citation" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='portal.resource.cite.howTo'/>
                 </h5>
 
@@ -507,7 +507,7 @@
         <!-- rights section -->
         <#if eml.intellectualRights?has_content>
             <div id="rights" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='eml.intellectualRights.simple'/>
                 </h5>
 
@@ -526,7 +526,7 @@
 
         <!-- GBIF Registration section -->
         <div id="gbif" class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                 <@s.text name='portal.resource.organisation.key'/>
             </h5>
 
@@ -546,7 +546,7 @@
         <!-- Keywords section -->
         <#if eml.subject?has_content>
             <div id="keywords" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='portal.resource.summary.keywords'/>
                 </h5>
 
@@ -559,7 +559,7 @@
         <!-- External data section -->
         <#if (eml.physicalData?size > 0 )>
             <div id="external" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='manage.metadata.physical.alternativeTitle'/>
                 </h5>
 
@@ -587,7 +587,7 @@
         <!-- Contacts section -->
         <#if (eml.contacts?size>0) || (eml.creators?size>0) || (eml.metadataProviders?size>0) || (eml.associatedParties?size>0)>
             <div id="contacts" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='portal.resource.contacts'/>
                 </h5>
 
@@ -628,7 +628,7 @@
         <!-- Geo coverage section -->
         <#if eml.geospatialCoverages[0]??>
             <div id="geospatial" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='portal.resource.summary.geocoverage'/>
                 </h5>
 
@@ -648,7 +648,7 @@
         <!-- Taxonomic coverage sections -->
         <#if ((organizedCoverages?size > 0))>
             <div id="taxanomic" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='manage.metadata.taxcoverage.title'/>
                 </h5>
 
@@ -686,7 +686,7 @@
         <!-- Temporal coverages section -->
         <#if ((eml.temporalCoverages?size > 0))>
             <div id="temporal" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='manage.metadata.tempcoverage.title'/>
                 </h5>
 
@@ -723,7 +723,7 @@
         <!-- Project section -->
         <#if eml.project?? && eml.project.title?has_content>
             <div id="project" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='manage.metadata.project.title'/>
                 </h5>
 
@@ -778,7 +778,7 @@
         <!-- Sampling methods section -->
         <#if eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content) >
             <div id="methods" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='manage.metadata.methods.title'/>
                 </h5>
 
@@ -820,7 +820,7 @@
         <!-- Collections section -->
         <#if eml.collections?? && (eml.collections?size > 0) && eml.collections[0].collectionName?has_content >
             <div id="collection" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='manage.metadata.collections.title'/>
                 </h5>
 
@@ -893,7 +893,7 @@
         <!-- bibliographic citations section -->
         <#if eml.bibliographicCitationSet?? && (eml.bibliographicCitationSet.bibliographicCitations?has_content)>
             <div id="reference" class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='manage.metadata.citations.bibliography'/>
                 </h5>
 
@@ -915,7 +915,7 @@
     <#if eml.additionalInfo?has_content || eml.purpose?has_content || (eml.alternateIdentifiers?size > 0 )>
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                 <@s.text name='manage.metadata.additional.title'/>
             </h5>
 

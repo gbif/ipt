@@ -10,7 +10,7 @@
 
         <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
             <@s.text name="login.title"/>
         </h5>
 
@@ -39,7 +39,7 @@
                 </#if>
 
                 <div class="col-12">
-                    <@s.submit cssClass="btn btn-outline-success" name="login" key="portal.login"/>
+                    <@s.submit cssClass="btn btn-outline-gbif-primary" name="login" key="portal.login"/>
                 </div>
             </div>
         </form>
