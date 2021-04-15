@@ -39,10 +39,6 @@
                     <@s.text name="admin.home.editOrganisations"/>
                 </h5>
 
-                <p class="text-muted mx-md-4 mx-2 mb-0">
-                    <@s.text name='manage.metadata.methods.intro'/>
-                </p>
-
                 <@organisationsTableBootstrap numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
                 <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2"></div>
 
