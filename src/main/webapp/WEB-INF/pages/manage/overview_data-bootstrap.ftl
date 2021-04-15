@@ -1,7 +1,7 @@
 <!-- Represents source data and mapping data sections on resource overview page -->
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="sources">
     <div class="titleOverview">
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
             <#assign sourcesInfo>
                 <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/>
             </#assign>
@@ -80,7 +80,7 @@
 </div>
 
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="mappings">
-    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
+    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
         <#assign mappingsInfo>
             <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/><@s.text name='manage.overview.DwC.Mappings.coretype.description1'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description2'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description3'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description4'/>
         </#assign>

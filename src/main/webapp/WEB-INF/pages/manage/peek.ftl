@@ -14,7 +14,7 @@
             </#if>
         </#if>
 
-        <h6 class="text-gbif-primary">
+        <h6 class="text-gbif-header">
             <@s.text name='manage.report.logMessage'/>
         </h6>
         <ul class="simple">
@@ -25,7 +25,7 @@
 
         <#if cfg.debug() && report.hasException()>
             <br/>
-            <h6 class="text-gbif-primary">
+            <h6 class="text-gbif-header">
                 <@s.text name='manage.report.exception'/>: ${report.exceptionMessage!}
             </h6>
             <ul class="simple">

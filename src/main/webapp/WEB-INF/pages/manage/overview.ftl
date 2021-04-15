@@ -240,7 +240,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                             <@s.text name="manage.overview.intro.metadataOnly"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
@@ -248,7 +248,7 @@
                             <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
                         </#if>
                     ">
-                    <i class="bi bi-info-circle"></i>
+                    <i class="bi bi-info-circle text-gbif-primary"></i>
                 </span>
 
                 <span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>
@@ -323,7 +323,7 @@
         </#if>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="publish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
                 <#assign overviewTitleInfo>
                     <#if resource.coreType?has_content && resource.coreType==metadataType>
                         <@s.text name="manage.overview.published.description.metadataOnly"/>
@@ -511,7 +511,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="autopublish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
                 <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                 <@s.text name="manage.overview.autopublish.title"/>
             </h5>
@@ -565,7 +565,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="visibility">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
                 <#assign visibilityTitleInfo>
                     <@s.text name='manage.overview.visibility.description'/>
                     <br><br>
@@ -705,7 +705,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="managers">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-primary">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
                 <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                 <@s.text name="manage.overview.resource.managers"/>
             </h5>

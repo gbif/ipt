@@ -17,7 +17,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 ${mapping.extension.title}
             </h5>
 
@@ -32,7 +32,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name='manage.mapping.source'/>
             </h5>
 

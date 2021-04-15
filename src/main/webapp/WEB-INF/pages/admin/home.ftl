@@ -23,7 +23,7 @@
 						</a>
 					</td>
 					<td>
-						<h6 class="text-gbif-primary">
+						<h6 class="text-gbif-header">
 							<@s.text name="admin.home.editConfig"/>
 							<@popoverPropertyInfo "admin.home.publishResources.help"/>
 						</h6>
@@ -45,7 +45,7 @@
 					</a>
 				</td>
 				<td colspan="2">
-					<h6 class="text-gbif-primary"><@s.text name="admin.home.manageUsers"/></h6>
+					<h6 class="text-gbif-header"><@s.text name="admin.home.manageUsers"/></h6>
 				</td>
 			</tr>
 		</table>
@@ -62,7 +62,7 @@
 					</a>
 				</td>
 				<td colspan="2">
-					<h6 class="text-gbif-primary">
+					<h6 class="text-gbif-header">
 						<@s.text name="admin.home.editRegistration"/>
 					</h6>
 				</td>
@@ -87,7 +87,7 @@
 					</#if>
 				</td>
 				<td colspan="2">
-					<h6 class="text-gbif-primary">
+					<h6 class="text-gbif-header">
 						<@s.text name="admin.home.editOrganisations"/>
 					</h6>
 					<#if !registeredIpt?has_content>
@@ -111,7 +111,7 @@
 					</a>
 				</td>
 				<td colspan="2">
-					<h6 class="text-gbif-primary">
+					<h6 class="text-gbif-header">
 						<@s.text name="admin.home.manageExtensions"/>
 					</h6>
 				</td>
@@ -130,7 +130,7 @@
 					</a>
 				</td>
 				<td colspan="2">
-					<h6 class="text-gbif-primary">
+					<h6 class="text-gbif-header">
 						<@s.text name="admin.home.manageLogs"/>
 					</h6>
 				</td>

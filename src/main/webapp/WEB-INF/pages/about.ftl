@@ -10,7 +10,7 @@
         padding-top: .5rem !important;
         padding-bottom: .5rem !important;
         margin-bottom: .5rem !important;
-        color: #4E9D2D !important;
+        color: #4e565f !important;
         border-bottom: 1px solid #dee2e6 !important;
     }
 

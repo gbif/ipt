@@ -1,6 +1,6 @@
 <#setting url_escaping_charset="UTF-8">
 
-<h5 class="text-gbif-primary">
+<h5 class="text-gbif-header">
     <@s.text name='manage.report.title'/>
 </h5>
 
@@ -41,7 +41,7 @@
             </p>
         </#if>
 
-        <h6 class="text-gbif-primary">
+        <h6 class="text-gbif-header">
             <@s.text name='manage.report.logMessage'/>
         </h6>
         <ul class="simple">
@@ -52,7 +52,7 @@
 
         <#if cfg.debug() && report.hasException()>
             <br/>
-            <h6 class="text-gbif-primary">
+            <h6 class="text-gbif-header">
                 <@s.text name='manage.report.exception'/>
             </h6>
             <ul class="simple">
@@ -65,7 +65,7 @@
     </div>
 
 <#else>
-    <h5 class="text-gbif-primary">
+    <h5 class="text-gbif-header">
         <@s.text name='manage.report.finished'/>
     </h5>
     <p class="text-muted">

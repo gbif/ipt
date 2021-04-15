@@ -23,7 +23,7 @@
             <div class="p-3 bg-body rounded shadow-sm">
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-primary text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                     <@s.text name='manage.metadata.methods.title'/>:
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </h5>

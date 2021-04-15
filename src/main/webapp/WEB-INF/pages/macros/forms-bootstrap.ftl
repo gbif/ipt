@@ -63,7 +63,7 @@
 
     <#macro textinline name value="-99999" i18nkey="" errorfield="" help="" requiredField=false>
         <div class="textinline">
-            <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-gbif-primary">
+            <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-gbif-header">
                 <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
                 <span><@s.text name="${name}"/><#if requiredField>&#42;</#if></span>
             </h5>
