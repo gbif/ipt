@@ -27,7 +27,7 @@
                         <#if !ext.isLatest()>
                             <form action='updateExtension.do' method='post'>
                                 <input type='hidden' name='id' value='${ext.rowType}' />
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-success mt-1 me-1" name="update" key="button.update"/>
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary mt-1 me-1" name="update" key="button.update"/>
                             </form>
                         </#if>
                         <form action='extension.do' method='post'>
@@ -76,7 +76,7 @@
             <div class="my-3 p-3 bg-body rounded shadow-sm">
                 <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                     <@s.text name="admin.extension.coreTypes"/>
                 </h5>
 
@@ -108,7 +108,7 @@
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name="admin.extension.extensions"/>
                 </h5>
 
@@ -131,7 +131,7 @@
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name="extension.synchronise.title"/>
                 </h5>
 
@@ -145,13 +145,13 @@
 
                 <form action='extensions.do' method='post'>
                     <div class="col-12 mt-2 mx-md-4 mx-2">
-                        <@s.submit name="synchronise" cssClass="btn btn-outline-success" key="button.synchronise"/>
+                        <@s.submit name="synchronise" cssClass="btn btn-outline-gbif-primary" key="button.synchronise"/>
                     </div>
                 </form>
             </div>
 
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name="extension.further.title"/>
                 </h5>
 
@@ -171,7 +171,7 @@
                                 <div class="actions">
                                     <form action='extension.do' method='post'>
                                         <input type='hidden' name='url' value='${ext.url}' />
-                                        <@s.submit name="install" cssClass="btn btn-sm btn-outline-success" key="button.install"/>
+                                        <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
                                     </form>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@
                 </#list>
 
                 <#if count=0>
-                    <p class="text-success mx-md-4 mx-2 mt-2">
+                    <p class="text-gbif-primary mx-md-4 mx-2 mt-2">
                         <@s.text name="extension.already.installed"/>
                     </p>
                 </#if>

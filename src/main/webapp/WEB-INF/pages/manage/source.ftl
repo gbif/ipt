@@ -27,7 +27,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-lg-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-lg-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name='manage.source.title'/>
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
@@ -63,7 +63,7 @@
                         <div class="col-lg-6">
                             <div class="table-responsive">
                                 <table id="source-properties" class="table table-sm table-borderless" style="font-size: 0.875rem;">
-                                    <tr><th><@s.text name='manage.source.readable'/></th><td><#if source.readable> <i class="bi bi-check-circle text-success"></i><#else><i class="bi bi-exclamation-circle text-danger"></i> ${problem!}</#if></td></tr>
+                                    <tr><th><@s.text name='manage.source.readable'/></th><td><#if source.readable> <i class="bi bi-check-circle text-gbif-primary"></i><#else><i class="bi bi-exclamation-circle text-danger"></i> ${problem!}</#if></td></tr>
                                     <tr><th><@s.text name='manage.source.columns'/></th><td>${source.getColumns()}</td></tr>
                                     <#if source.fieldsTerminatedBy?has_content>
                                         <tr><th><@s.text name='manage.source.file'/></th><td>${(source.file.getAbsolutePath())!}</td></tr>
@@ -80,7 +80,7 @@
                             <table class="bottomButtons table table-borderless">
                                 <tr>
                                     <th>
-                                        <@s.submit cssClass="btn btn-sm btn-outline-success" name="analyze" key="button.analyze"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="analyze" key="button.analyze"/>
                                         <a href="#" id="peekBtn" class="btn btn-sm btn-outline-secondary ignore-link-color my-1">
                                             <i class="bi bi-eye"></i>
                                         </a>
@@ -159,7 +159,7 @@
                         </#if>
 
                         <div class="col-12">
-                            <@s.submit cssClass="btn btn-outline-success" name="save" key="button.save"/>
+                            <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
                             <@s.submit cssClass="btn btn-outline-secondary my-1" name="cancel" key="button.cancel"/>
                             <#if id?has_content>
                                 <@s.submit cssClass="confirm btn btn-outline-danger my-1" name="delete" key="button.delete.source.file"/>

@@ -50,20 +50,72 @@
             font-size: 0.875rem !important;
         }
 
-        #accountDropdownLink {
+        .bg-gbif-green-gradient {
+            background: linear-gradient(#78b578, #71b171) !important;
+        }
+
+        .navbar-button {
             color: #4E9D2D !important;
+        }
+
+        .navbar-button:hover, .admin-item:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
         }
 
         /* Links color with exception for some classes */
         a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
-            color: #008959 !important;
+            color: #4BA2CE !important;
+        }
+
+        .text-gbif-primary {
+            color: #4E9D2D !important;
+        }
+
+        .text-gbif-header {
+            color: #4E565F !important;
+        }
+
+        /*GBIF green colored button*/
+        .btn-outline-gbif-primary {
+            color: #4E9D2D !important;
+            border-color: #4E9D2D !important;
+        }
+        .btn-outline-gbif-primary:hover {
+            color: #fff !important;
+            background-color: #4E9D2D !important;
+            border-color: #4E9D2D !important;
+        }
+        .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5) !important;
+        }
+        .btn-check:checked + .btn-outline-gbif-primary, .btn-check:active + .btn-outline-gbif-primary, .btn-outline-gbif-primary:active, .btn-outline-gbif-primary.active, .btn-outline-gbif-primary.dropdown-toggle.show {
+            color: #fff !important;
+            background-color: #4E9D2D !important;
+            border-color: #4E9D2D !important;
+        }
+        .btn-check:checked + .btn-outline-gbif-primary:focus, .btn-check:active + .btn-outline-gbif-primary:focus, .btn-outline-gbif-primary:active:focus, .btn-outline-gbif-primary.active:focus, .btn-outline-gbif-primary.dropdown-toggle.show:focus {
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5) !important;
+        }
+        .btn-outline-gbif-primary:disabled, .btn-outline-gbif-primary.disabled {
+            color: #4E9D2D !important;
+            background-color: transparent !important;
+        }
+
+        /* Published versions table separator */
+        td.separator {
+            border-right: 1px solid #EEEEEE;
+            padding-right: 30px !important;
+        }
+
+        td.left_padding {
+            padding-left: 30px !important;
         }
 
         /* custom colors for tables pagination items */
         .page-link {
             position: relative;
             display: block;
-            color: #198754 !important;
+            color: #4E9D2D !important;
             text-decoration: none;
             background-color: #fff;
             border: 1px solid #dee2e6;
@@ -71,13 +123,13 @@
         }
         .page-link:hover {
             z-index: 2;
-            color: #157347 !important;
+            color: #4E9D2D !important;
             background-color: #e9ecef;
             border-color: #dee2e6;
         }
         .page-link:focus {
             z-index: 3;
-            color: #157347 !important;
+            color: #4E9D2D !important;
             background-color: #e9ecef;
             outline: 0;
             box-shadow: 0 0 0 0.25rem rgba(60, 153, 110, 0.5) !important;
@@ -89,8 +141,8 @@
         .page-item.active .page-link {
             z-index: 3;
             color: #fff !important;
-            background-color: #198754 !important;
-            border-color: #198754 !important;
+            background-color: #4E9D2D !important;
+            border-color: #4E9D2D !important;
         }
         .page-item.disabled .page-link {
             color: #6c757d !important;
@@ -138,6 +190,16 @@
             border: 1px solid #000;
             padding: 15px;
         }
+
+        /* Style select2 component */
+        .select2-container--bootstrap4 .select2-results__option--highlighted, .select2-container--bootstrap4 .select2-results__option--highlighted.select2-results__option[aria-selected="true"] {
+            color: #fff;
+            background-color: #4E9D2D !important;
+        }
+
+        .footer-gbif-logo {
+            width: 55px;
+        }
     </style>
 
     <!-- Bootstrap core CSS -->
@@ -177,6 +239,15 @@
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
             })();
         </script>
+    [/#if]
+
+    [#-- If not logged, refresh page periodically to avoid CSRF token expiration --]
+    [#if !loggedIn]
+      <script type="text/javascript">
+        setTimeout(function(){
+          window.location.reload();
+        }, ${cfg.getCsrfPageRefreshDelay()?c});
+      </script>
     [/#if]
 
     [#-- Metadata used by browsers (title in browser toolbar, bookmark when added to favorites), search engines (keywords) --]

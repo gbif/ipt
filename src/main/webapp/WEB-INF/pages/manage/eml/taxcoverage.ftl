@@ -30,7 +30,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name='manage.metadata.taxcoverage.title'/>:
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
@@ -58,7 +58,7 @@
                         <div id="list-${item_index}" class="half addSeveralTaxa mt-2" style="display:none">
                             <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
                             <div id="addSeveralTaxaButtons" class="buttons mt-2">
-                                <@s.submit cssClass="button btn btn-outline-success" name="add-button-${item_index}" key="button.add"/>
+                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="add-button-${item_index}" key="button.add"/>
                             </div>
                         </div>
                         <div id="subItems" class="mt-2">
@@ -111,7 +111,7 @@
 
             <div class="row mx-md-3 mx-1 mt-3">
                 <div class="col-12">
-                    <@s.submit cssClass="button btn btn-outline-success" name="save" key="button.save"/>
+                    <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
                     <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel"/>
                 </div>
             </div>
@@ -139,7 +139,7 @@
                 <div id="list" class="mt-2" style="display:none">
                     <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
                     <div class="buttons taxon-list my-2">
-                        <@s.submit cssClass="button btn btn-outline-success" name="add-button" key="button.add"/>
+                        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="add-button" key="button.add"/>
                     </div>
                 </div>
                 <div id="subItems" class="my-2"></div>

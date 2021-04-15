@@ -1,6 +1,6 @@
 <#macro buttons>
     <div class="mx-md-4 mx-2">
-        <@s.submit cssClass="button btn btn-outline-success" name="save" key="button.save"/>
+        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
 
         <a class="button btn btn-outline-secondary ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${property.extension.rowType?url}&mid=${mid}">
             <@s.text name='button.cancel'/>

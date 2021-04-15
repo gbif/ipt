@@ -93,7 +93,7 @@
         <div class="my-3 p-3 bg-body rounded shadow-sm">
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name="admin.home.editRegistration"/>
             </h5>
 
@@ -139,7 +139,7 @@
                         </div>
 
                         <div class="col-12">
-                            <@s.submit cssClass="button btn btn-outline-success" name="update" id="update" key="button.updateRegistration" />
+                            <@s.submit cssClass="button btn btn-outline-gbif-primary" name="update" id="update" key="button.updateRegistration" />
                             <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" id="cancel" key="button.cancel"/>
                         </div>
                     </div>
@@ -156,9 +156,9 @@
                         </div>
 
                         <div class="col-12">
-                            <@s.submit cssClass="button btn btn-outline-success" name="validate" id="validate" key="admin.registration.validate"/>
+                            <@s.submit cssClass="button btn btn-outline-gbif-primary" name="validate" id="validate" key="admin.registration.validate"/>
 
-                            <button id="validation-in-process" name="validate" class="btn btn-outline-success" type="submit" style="display: none" disabled>
+                            <button id="validation-in-process" name="validate" class="btn btn-outline-gbif-primary" type="submit" style="display: none" disabled>
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 <@s.text name="admin.registration.validate"/>
                             </button>
@@ -191,7 +191,7 @@
                                     <label for="organisation.key" class="form-label">
                                         <@s.text name="admin.organisation.key"/>
                                         <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${selectOrganisationInfo}">
-                                        <i class="bi bi-info-circle text-success"></i>
+                                        <i class="bi bi-info-circle text-gbif-primary"></i>
                                     </span>
                                     </label>
                                     <@s.select cssClass="form-select" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
@@ -249,7 +249,7 @@
                             <@s.hidden id="ipt.organisationKey" name="ipt.organisationKey" />
 
                             <div class="buttons col-12">
-                                <@s.submit cssClass="button btn btn-outline-success" name="save" id="save" key="button.save"/>
+                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" id="save" key="button.save"/>
                                 <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" id="cancel" key="button.cancel"/>
                             </div>
                         </div>

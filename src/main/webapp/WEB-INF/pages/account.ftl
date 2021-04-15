@@ -9,7 +9,7 @@
 
         <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
             <@s.text name="account.title"/>
         </h5>
 
@@ -54,7 +54,7 @@
                 </div>
 
                 <div class="col-12">
-                    <@s.submit cssClass="btn btn-outline-success" name="save" key="button.save"/>
+                    <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
                     <@s.submit cssClass="btn btn-outline-secondary" name="cancel" key="button.cancel"/>
                 </div>
 

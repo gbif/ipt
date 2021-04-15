@@ -9,11 +9,11 @@
 
             [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 [@s.text name="admin.config.setup.title"/]
             </h5>
 
-            <h5 class="text-success mx-md-4 mx-2">
+            <h5 class="text-gbif-header mx-md-4 mx-2">
                 [@s.text name="admin.config.setup.disclaimer.title"/]
             </h5>
             <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="text-success pb-2 mx-md-4 mx-2 pt-2 border-bottom">
+            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom">
                 [@s.text name="admin.config.server.data.dir"/]
             </h5>
             <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.welcome"/]</p>
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="col-12">
-                    [@s.submit cssClass="btn btn-outline-success" name="save" id="submitDatadir" key="button.save"/]
+                    [@s.submit cssClass="btn btn-outline-gbif-primary" name="save" id="submitDatadir" key="button.save"/]
                 </div>
             </div>
 

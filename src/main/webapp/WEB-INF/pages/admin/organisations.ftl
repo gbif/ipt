@@ -35,19 +35,15 @@
             <div class="my-3 p-3 bg-body rounded shadow-sm">
                 <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                     <@s.text name="admin.home.editOrganisations"/>
                 </h5>
-
-                <p class="text-muted mx-md-4 mx-2 mb-0">
-                    <@s.text name='manage.metadata.methods.intro'/>
-                </p>
 
                 <@organisationsTableBootstrap numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
                 <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2"></div>
 
                 <div class="mx-md-4 mx-2 mt-2">
-                    <button id="add" class="btn btn-outline-success"><@s.text name="button.add"/></button>
+                    <button id="add" class="btn btn-outline-gbif-primary"><@s.text name="button.add"/></button>
                     <button id="cancel" class="btn btn-outline-secondary"><@s.text name="button.cancel"/></button>
                 </div>
 

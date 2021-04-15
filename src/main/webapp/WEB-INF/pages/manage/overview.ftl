@@ -4,7 +4,7 @@
 <#macro dwcaValidator>
     <#if (resource.recordsPublished>0)>
         <a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate">
-            <i class="bi bi-check2 text-success"></i>
+            <i class="bi bi-check2 text-gbif-primary"></i>
         </a>
     </#if>
 </#macro>
@@ -31,10 +31,10 @@
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
             <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
+                <button type="button" class="btn btn-outline-gbif-primary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle"></i>
                 </button>
-                <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-success" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
+                <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
             </div>
         </form>
 
@@ -57,10 +57,10 @@
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
             <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
+                <button type="button" class="btn btn-outline-gbif-primary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle"></i>
                 </button>
-                <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-success" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
+                <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
             </div>
         </form>
 
@@ -193,7 +193,7 @@
             dialog.find('.ui-dialog-buttonpane').addClass('modal-footer');
 
             // add bootstrap design to modal buttons
-            $('.ui-dialog-buttonset button:first-child').addClass('btn btn-outline-success mx-2');
+            $('.ui-dialog-buttonset button:first-child').addClass('btn btn-outline-gbif-primary mx-2');
             $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-outline-secondary');
         }
 
@@ -240,7 +240,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                             <@s.text name="manage.overview.intro.metadataOnly"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
@@ -248,7 +248,7 @@
                             <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
                         </#if>
                     ">
-                    <i class="bi bi-info-circle"></i>
+                    <i class="bi bi-info-circle text-gbif-primary"></i>
                 </span>
 
                 <span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>
@@ -286,7 +286,7 @@
                                     <@s.submit cssClass="btn btn-sm btn-outline-secondary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
                                 </div>
                             <#else>
-                                <@s.submit cssClass="btn btn-sm btn-outline-success confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
+                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
                             </#if>
                         </form>
                     <#else>
@@ -323,7 +323,7 @@
         </#if>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="publish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
                 <#assign overviewTitleInfo>
                     <#if resource.coreType?has_content && resource.coreType==metadataType>
                         <@s.text name="manage.overview.published.description.metadataOnly"/>
@@ -368,7 +368,7 @@
                                 <tr>
                                     <th></th>
                                     <#if resource.lastPublished??>
-                                        <td class="text-success">${lastPublishedTitle?cap_first}</td>
+                                        <td class="text-gbif-primary">${lastPublishedTitle?cap_first}</td>
                                     </#if>
                                     <td class="left_padding">
                                         ${nextPublishedTitle?cap_first}
@@ -377,15 +377,15 @@
                                 <tr>
                                     <th class="col-4">${versionTitle?cap_first}</th>
                                     <#if resource.lastPublished??>
-                                        <td class="separator text-success">
+                                        <td class="separator text-gbif-primary">
                                             ${resource.emlVersion.toPlainString()}&nbsp;
-                                            <a class="btn btn-sm btn-outline-success ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a>
+                                            <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a>
                                             <@dwcaValidator/>
                                         </td>
                                     </#if>
                                     <td class="left_padding">
                                         ${resource.getNextVersion().toPlainString()}&nbsp;
-                                        <a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-success</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
+                                        <a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
                                     </td>
                                 </tr>
                                 <!-- hide visibility row if 1) a DOI has already been assigned to the resource since any resource with a DOI has to be public, 2) the resource is registered, or 3) the visibility of the currenct version and next version are the same -->
@@ -393,7 +393,7 @@
                                     <tr>
                                         <th>${visibilityTitle?cap_first}</th>
                                         <#if resource.lastPublished??>
-                                            <td class="separator text-success">
+                                            <td class="separator text-gbif-primary">
                                                 ${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}
                                             </td>
                                         </#if>
@@ -407,7 +407,7 @@
                                     <tr>
                                         <th>DOI</th>
                                         <#if resource.lastPublished??>
-                                            <td class="separator text-success">
+                                            <td class="separator text-gbif-primary">
                                                 <#if resource.isAlreadyAssignedDoi()>
                                                     ${resource.versionHistory[0].doi!}
                                                 <#else>
@@ -428,7 +428,7 @@
                                     <tr>
                                         <th>${licenseTitle?cap_first}</th>
                                         <#if resource.lastPublished??>
-                                            <td class="separator text-success">
+                                            <td class="separator text-gbif-primary">
                                                 <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
                                             </td>
                                         </#if>
@@ -440,7 +440,7 @@
                                 <tr>
                                     <th>${releasedTitle?cap_first}</th>
                                     <#if resource.lastPublished??>
-                                        <td class="separator text-success">${resource.lastPublished?date?string.medium}</td>
+                                        <td class="separator text-gbif-primary">${resource.lastPublished?date?string.medium}</td>
                                     </#if>
                                     <td class="left_padding">
                                         <#if resource.nextPublished??>
@@ -455,7 +455,7 @@
                                         <th>${pubLogTitle?cap_first}</th>
                                         <td class="separator">
                                             <a class="button ignore-link-color" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
-                                                <input class="button btn btn-sm btn-outline-success" type="button" value='${downloadTitle?cap_first}'/>
+                                                <input class="button btn btn-sm btn-outline-gbif-primary" type="button" value='${downloadTitle?cap_first}'/>
                                             </a>
                                         </td>
                                         <td class="left_padding">${emptyCell}</td>
@@ -511,7 +511,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="autopublish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
                 <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                 <@s.text name="manage.overview.autopublish.title"/>
             </h5>
@@ -556,7 +556,7 @@
                                     <@s.submit name="edit" cssClass="btn btn-sm btn-outline-warning" key="button.edit"/>
                                 </div>
                             <#else>
-                                <@s.submit name="edit" cssClass="btn btn-sm btn-outline-success" key="button.edit"/>
+                                <@s.submit name="edit" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.edit"/>
                             </#if>
                         </form>
                     </div>
@@ -565,7 +565,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="visibility">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
                 <#assign visibilityTitleInfo>
                     <@s.text name='manage.overview.visibility.description'/>
                     <br><br>
@@ -684,11 +684,11 @@
                                         <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
                                     </div>
                                 <#else>
-                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-success my-1" name="register" key="button.register"/>
+                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary my-1" name="register" key="button.register"/>
                                 </#if>
                             <#else>
                                 <#if resource.status=="PRIVATE">
-                                    <@s.submit name="makePrivate" cssClass="btn btn-sm btn-outline-success my-1" key="button.public"/>
+                                    <@s.submit name="makePrivate" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.public"/>
                                 </#if>
                             </#if>
                         </form>
@@ -696,7 +696,7 @@
                         <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
                             <#assign actionMethod>makePrivate</#assign>
                             <form action='resource-${actionMethod}.do' method='post'>
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-success my-1" name="unpublish" key="button.private" />
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary my-1" name="unpublish" key="button.private" />
                             </form>
                         </#if>
                     </div>
@@ -705,7 +705,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="managers">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-success">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
                 <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                 <@s.text name="manage.overview.resource.managers"/>
             </h5>
@@ -756,7 +756,7 @@
                                         <option value="${u.email}">${u.name}</option>
                                     </#list>
                                 </select>
-                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-success my-1" key="button.add"/>
+                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
                             </form>
                         </div>
                     </#if>

@@ -37,7 +37,7 @@
 
         <div class="col-12">
         <#if (organisations?size>0) >
-            <@s.submit cssClass="btn btn-outline-success" name="create" key="button.create"/>
+            <@s.submit cssClass="btn btn-outline-gbif-primary" name="create" key="button.create"/>
         <#else>
             <!-- Disable create button and show warning: must be at least one organization able to host -->
             <@s.submit cssClass="btn btn-outline-secondary mx-1" name="create" key="button.create" disabled="true"/>

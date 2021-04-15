@@ -67,7 +67,7 @@
         <div class="my-3 p-3 bg-body rounded shadow-sm">
             <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-success text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <#if id?has_content>
                     <@s.text name="admin.organisation.title"/>
                 <#else>
@@ -117,7 +117,7 @@
                                 <label for="organisation.key" class="form-label">
                                     <@s.text name="admin.organisation.key"/>
                                     <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${selectOrganisationInfo}">
-                                        <i class="bi bi-info-circle text-success"></i>
+                                        <i class="bi bi-info-circle text-gbif-primary"></i>
                                     </span>
                                 </label>
                                 <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
@@ -180,7 +180,7 @@
                     </div>
 
                     <div class="col-12">
-                        <@s.submit name="save" key="button.save" cssClass="button btn btn-outline-success"/>
+                        <@s.submit name="save" key="button.save" cssClass="button btn btn-outline-gbif-primary"/>
                         <#if id?has_content>
                             <@s.submit name="delete" key="button.delete" cssClass="button confirm btn btn-outline-danger"/>
                         </#if>
