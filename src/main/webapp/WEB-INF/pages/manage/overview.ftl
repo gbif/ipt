@@ -369,10 +369,14 @@
                                     <th></th>
                                     <#if resource.lastPublished??>
                                         <td class="text-gbif-primary">${lastPublishedTitle?cap_first}</td>
+                                        <td class="left_padding">
+                                            ${nextPublishedTitle?cap_first}
+                                        </td>
+                                    <#else>
+                                        <td>
+                                            ${nextPublishedTitle?cap_first}
+                                        </td>
                                     </#if>
-                                    <td class="left_padding">
-                                        ${nextPublishedTitle?cap_first}
-                                    </td>
                                 </tr>
                                 <tr>
                                     <th class="col-4">${versionTitle?cap_first}</th>
@@ -382,11 +386,16 @@
                                             <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a>
                                             <@dwcaValidator/>
                                         </td>
+                                        <td class="left_padding">
+                                            ${resource.getNextVersion().toPlainString()}&nbsp;
+                                            <a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
+                                        </td>
+                                    <#else>
+                                        <td>
+                                            ${resource.getNextVersion().toPlainString()}&nbsp;
+                                            <a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
+                                        </td>
                                     </#if>
-                                    <td class="left_padding">
-                                        ${resource.getNextVersion().toPlainString()}&nbsp;
-                                        <a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
-                                    </td>
                                 </tr>
                                 <!-- hide visibility row if 1) a DOI has already been assigned to the resource since any resource with a DOI has to be public, 2) the resource is registered, or 3) the visibility of the currenct version and next version are the same -->
                                 <#if !resource.isAlreadyAssignedDoi() && !resource.isRegistered() && (resource.getStatus()?lower_case != resource.getLastPublishedVersionsPublicationStatus()?lower_case) || !resource.lastPublished?? >
@@ -396,10 +405,14 @@
                                             <td class="separator text-gbif-primary">
                                                 ${resource.getLastPublishedVersionsPublicationStatus()?lower_case?cap_first}
                                             </td>
+                                            <td class="left_padding">
+                                                ${resource.status?lower_case?cap_first}
+                                            </td>
+                                        <#else>
+                                            <td>
+                                                ${resource.status?lower_case?cap_first}
+                                            </td>
                                         </#if>
-                                        <td class="left_padding">
-                                            ${resource.status?lower_case?cap_first}
-                                        </td>
                                     </tr>
                                 </#if>
                                 <!-- hide DOI row if no organisation with DOI account has been activated yet -->
@@ -414,13 +427,20 @@
                                                     ${emptyCell}
                                                 </#if>
                                             </td>
+                                            <td class="left_padding">
+                                                <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
+                                                    <em>${resource.doi!emptyCell}</em>&nbsp;
+                                                </#if>
+                                                <@nextDoiButtonTD/>
+                                            </td>
+                                        <#else>
+                                            <td>
+                                                <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
+                                                    <em>${resource.doi!emptyCell}</em>&nbsp;
+                                                </#if>
+                                                <@nextDoiButtonTD/>
+                                            </td>
                                         </#if>
-                                        <td class="left_padding">
-                                            <#if (resource.isAlreadyAssignedDoi() && resource.versionHistory[0].doi != resource.doi!"") || (!resource.isAlreadyAssignedDoi() && resource.doi?has_content)>
-                                                <em>${resource.doi!emptyCell}</em>&nbsp;
-                                            </#if>
-                                            <@nextDoiButtonTD/>
-                                        </td>
                                     </tr>
                                 </#if>
                                 <!-- TODO: hide license row if the current version and next version have both been assigned the same license -->
@@ -431,24 +451,38 @@
                                             <td class="separator text-gbif-primary">
                                                 <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
                                             </td>
+                                            <td class="left_padding">
+                                                <@shortLicense resource.getEml().parseLicenseUrl()/>
+                                            </td>
+                                        <#else>
+                                            <td>
+                                                <@shortLicense resource.getEml().parseLicenseUrl()/>
+                                            </td>
                                         </#if>
-                                        <td class="left_padding">
-                                            <@shortLicense resource.getEml().parseLicenseUrl()/>
-                                        </td>
                                     </tr>
                                 </#if>
                                 <tr>
                                     <th>${releasedTitle?cap_first}</th>
                                     <#if resource.lastPublished??>
-                                        <td class="separator text-gbif-primary">${resource.lastPublished?date?string.medium}</td>
+                                        <td class="separator text-gbif-primary">
+                                            ${resource.lastPublished?date?string.medium}
+                                        </td>
+                                        <td class="left_padding">
+                                            <#if resource.nextPublished??>
+                                                ${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}
+                                            <#else>
+                                                ${emptyCell}
+                                            </#if>
+                                        </td>
+                                    <#else>
+                                        <td>
+                                            <#if resource.nextPublished??>
+                                                ${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}
+                                            <#else>
+                                                ${emptyCell}
+                                            </#if>
+                                        </td>
                                     </#if>
-                                    <td class="left_padding">
-                                        <#if resource.nextPublished??>
-                                            ${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}
-                                        <#else>
-                                            ${emptyCell}
-                                        </#if>
-                                    </td>
                                 </tr>
                                 <#if resource.lastPublished??>
                                     <tr>
