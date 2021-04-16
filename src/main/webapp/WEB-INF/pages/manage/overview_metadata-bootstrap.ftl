@@ -36,7 +36,19 @@
 
         <div class="col-lg-3 border-lg-right">
             <div class="mx-md-4 mx-2">
-                <form action='metadata-basic.do' method='get'>
+                <form action='replace-eml.do' method='post' enctype="multipart/form-data">
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <div class="row">
+                        <div class="col-12">
+                            <@s.file name="emlFile" cssClass="form-control form-control-sm my-1"/>
+                        </div>
+                        <div class="col-12">
+                            <@s.submit name="emlReplace" cssClass="btn btn-sm btn-outline-gbif-primary my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
+                            <@s.submit name="emlCancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
+                        </div>
+                    </div>
+                </form>
+                <form action='metadata-basic.do' method='get' class="my-1">
                     <input name="r" type="hidden" value="${resource.shortname}"/>
                     <#if missingMetadata>
                         <div class="btn-group" role="group">
@@ -51,18 +63,6 @@
                     <#else>
                         <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
                     </#if>
-                </form>
-                <form action='replace-eml.do' method='post' enctype="multipart/form-data" style="margin-top: 10px;">
-                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                    <div class="row">
-                        <div class="col-12">
-                            <@s.file name="emlFile" cssClass="form-control form-control-sm my-1"/>
-                        </div>
-                        <div class="col-12">
-                            <@s.submit name="emlReplace" cssClass="btn btn-sm btn-outline-success my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
-                            <@s.submit name="emlCancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
