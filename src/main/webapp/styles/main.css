@@ -1611,7 +1611,7 @@ ul {
 
 .icon-foreground {
 	color: #008959;
-}	
+}
 
 .icon-background-grey {
 	color: #d4d4d4;
@@ -1619,7 +1619,7 @@ ul {
 
 .icon-foreground-grey {
 	color: #7f7f7f;
-}	
+}
 
 .icon-shadow {
 	text-shadow: 1px 0px 1px #333;
@@ -1630,7 +1630,7 @@ ul {
 }
 .icon-warning .fa-exclamation {
 	font-size: .67em;
-}	
+}
 /*** End Fontawesome ***/
 
 #preview-report {

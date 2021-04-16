@@ -41,9 +41,16 @@
                                             <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         </#if>
                                         <td class="d-flex justify-content-end">
-                                            <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
-                                                <@s.text name='button.edit'/>
+                                          <div class="btn-group" role="group">
+                                            <#if src.isFileSource() || src.isExcelSource()>
+                                            <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank" title="<@s.text name='manage.overview.source.download'/>">
+                                              <i class="bi bi-download"></i>
                                             </a>
+                                            </#if>
+                                            <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
+                                              <@s.text name='button.edit'/>
+                                            </a>
+                                          </div>
                                         </td>
                                     </tr>
                                 </#list>

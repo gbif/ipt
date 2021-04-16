@@ -69,7 +69,7 @@
         <@s.text name='manage.overview.DwC.Mappings.coretype.description1'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description2'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description3'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description4'/>
         </div>
       <@s.text name='manage.overview.DwC.Mappings'/>
-    </div> 
+    </div>
     <div class="actions">
     <#if (potentialCores?size>0)>
         <form action='mapping.do' method='post'>

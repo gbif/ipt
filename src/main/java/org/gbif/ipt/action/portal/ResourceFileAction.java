@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -256,5 +257,30 @@ public class ResourceFileAction extends PortalBaseAction {
     sb.append(".rtf");
     filename = sb.toString();
     return execute();
+  }
+
+  public String rawsource() {
+    if (resource == null || id == null) {
+      return NOT_FOUND;
+    }
+
+    Source source = resource.getSource(id);
+
+    if (source instanceof FileSource) {
+      FileSource frSrc = (FileSource) source;
+
+      data = dataDir.sourceFile(resource, frSrc);
+      mimeType = "application/octet-stream";
+
+      // construct download filename
+      StringBuilder sb = new StringBuilder();
+      sb.append(id);
+      sb.append(frSrc.getPreferredFileSuffix());
+      filename = sb.toString();
+      return execute();
+    }
+    else {
+      return NOT_FOUND;
+    }
   }
 }
