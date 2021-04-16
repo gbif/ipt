@@ -589,6 +589,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Replace the EML file in a resource by the provided file
+   *
+   * @param resource
+   * @param emlFile
+   * @throws ImportException
+   */
+  public void replaceEml(Resource resource, File emlFile) throws ImportException {
+    Eml eml;
+    // copy eml file to data directory (with name eml.xml) and populate Eml instance
+    eml = copyMetadata(resource.getShortname(), emlFile);
+    resource.setEml(eml);
+    resource.setMetadataModified(new Date());
+    save(resource);
+  }
+
+  /**
    * Method ensures an Extension's mapping:
    * a) always contains the coreId term mapping (if it doesn't exist yet)
    * b) coreId element's index is always the same as the coreId term's index (see issue #1229)

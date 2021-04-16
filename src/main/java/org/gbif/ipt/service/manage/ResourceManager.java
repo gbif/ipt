@@ -341,4 +341,12 @@ public interface ResourceManager {
    * @param version
    */
   void removeVersion(Resource resource, BigDecimal version);
+
+  /**
+   * Replace the EML file in a resource by the provided file
+   *
+   * @param resource
+   * @param emlFile
+   */
+  void replaceEml(Resource resource, File emlFile) throws ImportException;
 }

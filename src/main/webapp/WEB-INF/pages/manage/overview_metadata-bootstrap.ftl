@@ -2,7 +2,7 @@
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="metadata">
     <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
         <#assign metadataHeaderInfo>
-            <@s.text name='manage.metadata.basic.required.message'/>
+            <@s.text name='manage.metadata.description'/>
             <#if resource.coreType?has_content && resource.coreType==metadataType>
                 </br></br>
                 <@s.text name='manage.overview.source.hidden'>
@@ -25,7 +25,7 @@
                 <table class="table table-sm">
                     <tr>
                         <#if metadataModifiedSinceLastPublication>
-                            <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?date?string.medium!}
+                            <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?datetime?string.medium!}
                         <#elseif resource.lastPublished??>
                             <@s.text name="manage.overview.notModified"/>
                         </#if>
@@ -51,6 +51,18 @@
                     <#else>
                         <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
                     </#if>
+                </form>
+                <form action='replace-eml.do' method='post' enctype="multipart/form-data" style="margin-top: 10px;">
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <div class="row">
+                        <div class="col-12">
+                            <@s.file name="emlFile" cssClass="form-control form-control-sm my-1"/>
+                        </div>
+                        <div class="col-12">
+                            <@s.submit name="emlReplace" cssClass="btn btn-sm btn-outline-success my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
+                            <@s.submit name="emlCancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel"/>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
