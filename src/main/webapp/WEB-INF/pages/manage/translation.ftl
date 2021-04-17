@@ -1,6 +1,6 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.TranslationAction" -->
 <#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="manage.translation.title"/></title>
     <script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
 
@@ -41,15 +41,15 @@
         });
     </script>
     <#assign currentMenu = "manage"/>
-    <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
-    <#include "/WEB-INF/pages/macros/manage/translation_buttons-bootstrap.ftl"/>
+    <#include "/WEB-INF/pages/macros/manage/translation_buttons.ftl"/>
 
 <main class="container">
     <form class="topForm" action="translation.do" method="post">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-            <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name="manage.translation.title"/>
@@ -125,5 +125,5 @@
 
 </main>
 
-    <#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

@@ -1,4 +1,4 @@
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="title"/></title>
 
 <style>
@@ -31,13 +31,13 @@
     </script>
 </#if>
 <#assign currentMenu = "admin"/>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
 
 <main class="container">
     <div class="row g-3">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name="admin.home.editConfig"/>
@@ -121,4 +121,4 @@
     </div>
 </main>
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">

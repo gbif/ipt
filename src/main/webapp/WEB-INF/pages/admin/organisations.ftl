@@ -1,5 +1,5 @@
 <#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="title"/></title>
     <script type="text/javascript">
 
@@ -22,9 +22,9 @@
         });
     </script>
     <#assign currentMenu = "admin"/>
-    <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
-    <#include "/WEB-INF/pages/macros/organisationsTable-bootstrap.ftl"/>
+    <#include "/WEB-INF/pages/macros/organisationsTable.ftl"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
@@ -33,7 +33,7 @@
     <main class="container">
         <div class="row g-3">
             <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
                 <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                     <@s.text name="admin.home.editOrganisations"/>
@@ -51,6 +51,6 @@
         </div>
     </main>
 
-    <#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/footer.ftl">
 
 </#escape>

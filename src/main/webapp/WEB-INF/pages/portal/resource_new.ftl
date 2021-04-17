@@ -1,10 +1,10 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.portal.ResourceAction" -->
 <#escape x as x?html>
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
 <title>${eml.title!"IPT"}</title>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
-<#include "/WEB-INF/pages/macros/versionsTable-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/macros/versionsTable.ftl"/>
 
 <style>
     #watermark {
@@ -223,7 +223,7 @@
 <main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-        <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
         <div class="text-center">
             <#if eml.logoUrl?has_content>
@@ -953,7 +953,7 @@
     </#if>
 </main>
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">
 
 <!-- data record line chart -->
 <script type="text/javascript" src="${baseURL}/js/graphs.js"></script>

@@ -1,4 +1,4 @@
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="title"/></title>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -7,8 +7,8 @@
 </script>
 
 <#assign currentMenu = "admin"/>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
-<#include "/WEB-INF/pages/macros/popover-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/popover.ftl"/>
 
 <main class="container">
 	<div class="my-3 p-3 bg-body rounded shadow-sm admin-item">
@@ -140,4 +140,4 @@
 </main>
 
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">

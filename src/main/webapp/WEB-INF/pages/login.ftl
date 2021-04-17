@@ -1,8 +1,8 @@
 <#ftl output_format="HTML">
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="login.title"/></title>
 <#assign currentMenu = "account"/>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
 
 <main class="container" style="max-width: 400px;">
@@ -46,4 +46,4 @@
     </div>
 </main>
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">

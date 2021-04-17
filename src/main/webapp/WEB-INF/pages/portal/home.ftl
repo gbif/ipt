@@ -1,8 +1,8 @@
 <#ftl output_format="HTML">
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="title"/></title>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
-<#include "/WEB-INF/pages/macros/resourcesTable-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
 <style>
     .resourceminilogo {
         width: 30px;
@@ -15,7 +15,7 @@
 
 <main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
-        <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
             <@s.text name="portal.home.title"/>
@@ -34,4 +34,4 @@
     </div>
 </main>
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">

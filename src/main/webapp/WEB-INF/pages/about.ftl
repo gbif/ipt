@@ -1,5 +1,5 @@
 <#ftl output_format="HTML">
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="login.title"/></title>
 <#assign currentMenu = "about"/>
 <#--Custom styles only for about page-->
@@ -18,7 +18,7 @@
         text-align: center !important;
     }
 </style>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/menu.ftl">
 
 <main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
@@ -28,4 +28,4 @@
     </div>
 </main>
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">

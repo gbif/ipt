@@ -1,10 +1,10 @@
 <#ftl output_format="HTML">
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="title"/></title>
 <#assign currentMenu = "manage"/>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
-<#include "/WEB-INF/pages/macros/resourcesTable-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
@@ -28,8 +28,8 @@
             <@s.text name="manage.resource.create.title"/>
         </h5>
 
-        <#include "inc/create_new_resource-bootstrap.ftl"/>
+        <#include "inc/create_new_resource.ftl"/>
     </div>
 </main>
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">

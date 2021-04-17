@@ -1,32 +1,50 @@
 <#ftl output_format="HTML">
+<footer class="footer mt-auto text-muted text-center py-3" style='font-size: 0.875rem !important;'>
+    <div class="container">
+        <div class="mb-1">
+            <img class="footer-gbif-logo" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
+            This data repository is powered by the GBIF Integrated Publishing Toolkit (IPT)
+        </div>
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item ipt-footer-item">
+                <small><strong>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</strong></small>
+            </li>
+            <li class="list-inline-item ipt-footer-item">
+                <a href="https://www.gbif.org/ipt"><small><@s.text name="footer.projectHome"/></small></a>
+            </li>
+            <li class="list-inline-item ipt-footer-item">
+                <a href="https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki" target="_blank"><small><@s.text name="footer.useManual"/></small></a>
+            </li>
+            <li class="list-inline-item ipt-footer-item">
+                <a href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.bugReport"/></small></a>
+            </li>
+            <li class="list-inline-item">
+                <a href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.featureRequest"/></small></a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+<div id="modalbox">
+    <div id="modalback"></div>
+    <div id="modalcontainer">
+        <div id="modalcontent" class="container-fluid"></div>
+    </div>
 </div>
-			</div>
-			</section>
-			<footer id="section-footer" class="section section-footer">
-  			<div id="zone-footer-wrapper" class="zone-wrapper zone-footer-wrapper clearfix">
-      		<div id="zone-footer" class="zone zone-footer clearfix container_24">
-      			<ul>
-			        <li>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</li>
-			        <li><a href="https://www.gbif.org/ipt"><@s.text name="footer.projectHome"/></a></li>
-			        <li><a href="https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki" target="_blank"><@s.text name="footer.useManual"/></a></li>
-			        <li><a href="https://github.com/gbif/ipt/issues/new" target="_blank"><@s.text name="footer.bugReport"/></a></li>
-			        <li><a href="https://github.com/gbif/ipt/issues/new" target="_blank"><@s.text name="footer.featureRequest"/></a></li>
-		        </ul>
-      		</div>
-  			</div>
 
-  			<div id="zone-credit-wrapper" class="zone-wrapper zone-footer-wrapper clearfix">
-          <div id="zone-credit" class="zone zone-credit clearfix container_24">
-            <aside class="grid_16 region region-credit-first" id="region-credit-first">
-              <div class="region-inner region-credit-first-inner">
-                <p>&copy; 2009&ndash;2020 <a href="https://www.gbif.org">Global Biodiversity Information Facility</a>.  Licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache license, version 2.0</a>.</p>
-              </div>
-            </aside>
-          </div>
-  			</div>
-			</footer>
-		</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+<script type="text/javascript" src="${baseURL}/js/form-validation.js"></script>
+<script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+    try {
+        var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+            trigger: 'focus'
+        })
+    } catch (TypeError) {}
+</script>
 
-    <div id="modalbox"><div id="modalback"></div><div id="modalcontainer"><div id="modalcontent"></div></div></div>
-	</body>
+</body>
 </html>

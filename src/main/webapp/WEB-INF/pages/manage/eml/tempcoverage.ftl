@@ -1,5 +1,5 @@
 <#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/header.ftl">
     <#setting number_format="#####.##">
     <script type="text/javascript" xmlns="http://www.w3.org/1999/html">
         var DATE_RANGE = "DATE_RANGE";
@@ -179,14 +179,14 @@
     <#assign auxTopNavbar=true />
     <#assign auxTopNavbarPage = "metadata" />
     <#assign currentMenu="manage"/>
-    <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
 
 <main class="container">
     <div class="row g-3">
         <div class="p-3 bg-body rounded shadow-sm">
 
-            <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name='manage.metadata.tempcoverage.title'/>:
@@ -308,5 +308,5 @@
 </main>
     </form>
 
-    <#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

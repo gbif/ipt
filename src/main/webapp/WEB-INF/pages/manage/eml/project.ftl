@@ -1,5 +1,5 @@
 <#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.project.title'/></title>
     <#assign auxTopNavbar=true />
     <#assign auxTopNavbarPage = "metadata" />
@@ -9,7 +9,7 @@
             initHelp();
         });
     </script>
-    <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 
@@ -17,7 +17,7 @@
         <div class="row g-3">
             <div class="p-3 bg-body rounded shadow-sm">
 
-                <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
                 <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                     <@s.text name='manage.metadata.project.title'/>:
@@ -129,5 +129,5 @@
     </main>
     </form>
 
-    <#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

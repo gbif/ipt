@@ -1,6 +1,6 @@
 <#escape x as x?html>
 <#setting url_escaping_charset="UTF-8">
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
 <script type="text/javascript">
     $(document).ready(function(){
         loadReport();
@@ -16,11 +16,11 @@
     });
 </script>
 <#assign currentMenu = "manage"/>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/menu.ftl">
 
 <main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm">
-        <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
             ${resource.title!resource.shortname}
@@ -30,5 +30,5 @@
     </div>
 </main>
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

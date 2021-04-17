@@ -1,6 +1,6 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MappingAction" -->
 <#escape x as x?html>
-<#include "/WEB-INF/pages/inc/header-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/inc/header.ftl"/>
 <title><@s.text name="manage.mapping.title"/></title>
     <script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
     <script type="text/javascript">
@@ -207,9 +207,9 @@
 <#assign auxTopNavbarPage = "mapping" />
 <#assign redundants = action.getRedundantGroups()/>
 <#assign nonMapped = action.getNonMappedColumns()/>
-<#include "/WEB-INF/pages/inc/menu-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/inc/menu.ftl"/>
 <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
-<#include "/WEB-INF/pages/macros/popover-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/macros/popover.ftl"/>
 
 <#macro threeButtons>
     <div class="col-12 m-3">
@@ -244,9 +244,9 @@
             <#assign value><@s.property value="${name}"/></#assign>
         </#if>
         <@s.checkbox key=name id=idAttr value=value cssClass=classAttr/>
-        <#include "/WEB-INF/pages/macros/form_checkbox_label-bootstrap.ftl">
-        <#include "/WEB-INF/pages/macros/help_icon-bootstrap.ftl">
-        <#include "/WEB-INF/pages/macros/form_field_error-bootstrap.ftl">
+        <#include "/WEB-INF/pages/macros/form_checkbox_label.ftl">
+        <#include "/WEB-INF/pages/macros/help_icon.ftl">
+        <#include "/WEB-INF/pages/macros/form_field_error.ftl">
     </div>
 </#macro>
 
@@ -344,7 +344,7 @@
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-            <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@popoverPropertyInfo "manage.mapping.intro"/>
@@ -527,5 +527,5 @@
 </main>
 </form>
 
-<#include "/WEB-INF/pages/inc/footer-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/inc/footer.ftl"/>
 </#escape>

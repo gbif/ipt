@@ -1,5 +1,5 @@
 <#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/header.ftl">
     <script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
@@ -86,12 +86,12 @@
     <title><@s.text name="title"/></title>
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
-    <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <main class="container">
     <div class="row g-3">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name="admin.home.editRegistration"/>
@@ -261,5 +261,5 @@
     </div>
 </main>
 
-    <#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

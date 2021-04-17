@@ -1,5 +1,5 @@
 [#ftl output_format="HTML"]
-[#include "/WEB-INF/pages/inc/header_setup-bootstrap.ftl"]
+[#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"]
 
 <main class="container">
@@ -7,7 +7,7 @@
     <form action="setup.do" method="post" class="needs-validation" novalidate>
         <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-            [#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl"]
+            [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 [@s.text name="admin.config.setup.title"/]
@@ -48,4 +48,4 @@
 </div>
 
 
-[#include "/WEB-INF/pages/inc/footer-bootstrap.ftl"]
+[#include "/WEB-INF/pages/inc/footer.ftl"]

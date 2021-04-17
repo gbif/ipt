@@ -1,11 +1,11 @@
 <#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.autopublish.title'/></title>
 
     <#assign currentMenu = "manage"/>
-    <#include "/WEB-INF/pages/inc/menu-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
-    <#include "/WEB-INF/pages/macros/popover-bootstrap.ftl"/>
+    <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
     <script>
         $(document).ready(function() {
@@ -76,7 +76,7 @@
 
     <main class="container">
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <#include "/WEB-INF/pages/inc/action_alerts-bootstrap.ftl">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <@s.text name='manage.autopublish.title'/>
@@ -279,5 +279,5 @@
         </div>
     </main>
 
-    <#include "/WEB-INF/pages/inc/footer-bootstrap.ftl">
+    <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
