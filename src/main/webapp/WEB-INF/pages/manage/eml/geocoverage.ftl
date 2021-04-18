@@ -168,7 +168,7 @@
     </style>
 
     <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
+    <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <main class="container">
     <div class="row g-3">

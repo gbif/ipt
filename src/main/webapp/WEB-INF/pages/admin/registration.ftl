@@ -85,7 +85,7 @@
     </script>
     <title><@s.text name="title"/></title>
     <#assign currentMenu = "admin"/>
-    <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
+    <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <main class="container">

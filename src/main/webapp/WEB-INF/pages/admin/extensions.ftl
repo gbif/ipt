@@ -1,7 +1,7 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageExtensions"/></title>
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
+    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function(){

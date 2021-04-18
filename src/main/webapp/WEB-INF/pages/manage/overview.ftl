@@ -96,7 +96,7 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 
-<script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
+<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -243,7 +243,7 @@
 
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 <#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
 <#assign metadataType = "metadata"/>

@@ -6,7 +6,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 - columnToSortOn: The column to sort on by default (index starting at 0)
 - sortOrder: The sort order of the columnToSortOn
 -->
-<#macro resourcesTableBootstrap shownPublicly numResourcesShown sEmptyTable columnToSortOn sortOrder>
+<#macro resourcesTable shownPublicly numResourcesShown sEmptyTable columnToSortOn sortOrder>
 
     <script type="text/javascript" charset="utf-8">
         <#assign emptyString="--">

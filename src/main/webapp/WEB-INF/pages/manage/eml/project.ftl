@@ -10,7 +10,7 @@
         });
     </script>
     <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
+    <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 
     <main class="container">

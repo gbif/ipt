@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js" type="text/javascript"></script>
 
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
+    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             initHelp();
@@ -60,7 +60,7 @@
 
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
+    <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/macros/popover.ftl">
 
     <main class="container">

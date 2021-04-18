@@ -5,7 +5,7 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
 - columnToSortOn: The column to sort on by default (index starting at 0)
 - sortOrder: The sort order of the columnToSortOn
 -->
-<#macro usersTableBootstrap numUsersShown sEmptyTable columnToSortOn sortOrder>
+<#macro usersTable numUsersShown sEmptyTable columnToSortOn sortOrder>
     <script type="text/javascript" charset="utf-8">
 
         /* organisation list */

@@ -24,7 +24,7 @@
             background: url('${baseURL}/images/icons/cc-zero.png');
         }
     </style>
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
+    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             initHelp();
@@ -151,7 +151,7 @@
     <#assign currentMenu="manage"/>
     <#assign auxTopNavbarPage = "metadata" />
     <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
+    <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <main class="container">
     <div class="row g-3">

@@ -3,7 +3,7 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title>${eml.title!"IPT"}</title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/versionsTable.ftl"/>
 
 <style>
@@ -477,7 +477,7 @@
                     <#else>
                         <p><@s.text name='portal.resource.versions.verbose'/></p>
                     </#if>
-                    <@versionsTableBootstrap numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
+                    <@versionsTable numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
                     <div id="vtableContainer" class="table-responsive" style='font-size: 0.875rem !important;'></div>
                 </div>
             </div>
@@ -958,7 +958,7 @@
 <!-- data record line chart -->
 <script type="text/javascript" src="${baseURL}/js/graphs.js"></script>
 
-<script type="text/javascript" src="${baseURL}/js/jconfirmation-bootstrap.jquery.js"></script>
+<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
 <!-- Menu Toggle Script -->
 <script type="text/javascript">

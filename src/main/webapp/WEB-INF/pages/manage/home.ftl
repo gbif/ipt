@@ -3,7 +3,7 @@
 <title><@s.text name="title"/></title>
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms-bootstrap.ftl"/>
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
@@ -13,7 +13,7 @@
         initHelp();
     });
 </script>
-<@resourcesTableBootstrap shownPublicly=false numResourcesShown=10 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>
+<@resourcesTable shownPublicly=false numResourcesShown=10 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>
 
 <main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm">

@@ -3,7 +3,7 @@
 <title><@s.text name="login.title"/></title>
 <#assign currentMenu = "account"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl">
 
 <main class="container" style="max-width: 400px;">
     <div class="my-3 p-3 bg-body rounded shadow-sm">

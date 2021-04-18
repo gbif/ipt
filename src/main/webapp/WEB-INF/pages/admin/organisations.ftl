@@ -23,7 +23,7 @@
     </script>
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/forms-bootstrap.ftl">
+    <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/macros/organisationsTable.ftl"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
@@ -39,7 +39,7 @@
                     <@s.text name="admin.home.editOrganisations"/>
                 </h5>
 
-                <@organisationsTableBootstrap numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
+                <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
                 <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2"></div>
 
                 <div class="mx-md-4 mx-2 mt-2">
