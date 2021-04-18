@@ -55,7 +55,7 @@
                     </li>
                     [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
                     [#else]
-                        <img class="testmode" src="${baseURL}/styles/testmode.png" style="width: 100px;"/>
+                        <img class="testmode" src="${baseURL}/images/testmode.png" style="width: 100px;"/>
                     [/#if]
                 </ul>
 
