@@ -53,6 +53,10 @@
                     <li class="nav-item">
                         <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
+                    [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
+                    [#else]
+                        <img class="testmode" src="${baseURL}/styles/testmode.png" style="width: 100px;"/>
+                    [/#if]
                 </ul>
 
                 <div class="d-xl-flex align-content-between">
