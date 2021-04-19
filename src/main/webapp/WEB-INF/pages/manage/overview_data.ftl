@@ -135,7 +135,7 @@
                         </table>
                         </div>
                         <#if (resource.getMappedExtensions()?size > 1)>
-                            <div class="mapping_head twenty_top"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
+                            <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
                             <div class="table-responsive">
                                 <table class="table table-sm table-borderless" style="font-size: 0.875em;">
                                 <#list resource.getMappedExtensions() as ext>

@@ -594,29 +594,29 @@
                 <div class="row g-3 mx-md-4 mx-2">
                     <div class="col-lg">
                         <p><@s.text name='portal.resource.creator.intro'/>:</p>
-                        <div class="fullwidth">
+                        <div>
                             <@contactList contacts=eml.creators dcPropertyType='creator'/>
                         </div>
                     </div>
 
                     <div class="col-lg">
-                        <p class="twenty_top"><@s.text name='portal.resource.contact.intro'/>:</p>
-                        <div class="fullwidth">
+                        <p><@s.text name='portal.resource.contact.intro'/>:</p>
+                        <div>
                             <@contactList contacts=eml.contacts dcPropertyType='mediator'/>
                         </div>
                     </div>
 
                     <div class="col-lg">
-                        <p class="twenty_top"><@s.text name='portal.metadata.provider.intro'/>:</p>
-                        <div class="fullwidth">
+                        <p><@s.text name='portal.metadata.provider.intro'/>:</p>
+                        <div>
                             <@contactList contacts=eml.metadataProviders dcPropertyType='contributor'/>
                         </div>
                     </div>
 
                     <#if (eml.associatedParties?size>0)>
                         <div class="col-lg">
-                            <p class="twenty_top"><@s.text name='portal.associatedParties.intro'/>:</p>
-                            <div class="fullwidth">
+                            <p><@s.text name='portal.associatedParties.intro'/>:</p>
+                            <div>
                                 <@contactList contacts=eml.associatedParties dcPropertyType='contributor'/>
                             </div>
                         </div>
@@ -766,7 +766,7 @@
                     <#if (eml.project.personnel?size >0)>
                         <br>
                         <p><@s.text name='eml.project.personnel.intro'/>:</p>
-                        <div class="fullwidth">
+                        <div>
                             <@contactList eml.project.personnel/>
                         </div>
                         <div class="clearfix"></div>
@@ -802,7 +802,7 @@
                     </table>
 
                     <#if (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content)>
-                        <p class="twenty_top"><@s.text name='rtf.methods.description'/>&#58;</p>
+                        <p><@s.text name='rtf.methods.description'/>&#58;</p>
                         <ol>
                             <#list eml.methodSteps as item>
                                 <#if (eml.methodSteps[item_index]?has_content)>

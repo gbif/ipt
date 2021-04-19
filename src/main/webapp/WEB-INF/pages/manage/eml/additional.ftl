@@ -113,17 +113,17 @@
 
                 <div class="row g-3 mx-md-3 mx-1 pb-3 mt-1">
                     <!-- Purpose -->
-                    <div class="twenty_top">
+                    <div>
                         <@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
                     </div>
 
                     <!-- Maintenance Update Frequency -->
-                    <div class="twenty_top">
+                    <div>
                         <@text name="eml.updateFrequencyDescription" i18nkey="eml.updateFrequencyDescription" help="i18n" />
                     </div>
 
                     <!-- Additional info -->
-                    <div class="twenty_top">
+                    <div>
                         <@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
                     </div>
                 </div>
