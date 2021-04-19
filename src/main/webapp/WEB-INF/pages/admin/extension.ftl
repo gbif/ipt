@@ -112,17 +112,17 @@
                     <div class="col-lg-9">
                         <div class="definition">
                             <div class="body">
-                                <p>
+                                <p class="overflow-x-auto">
                                     <#if p.description?has_content>${p.description}<br/></#if>
                                     <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a></#if>
                                 </p>
                                 <#if p.examples?has_content>
-                                    <p>
+                                    <p class="overflow-x-auto">
                                         <em><@s.text name="basic.examples"/></em>: ${p.examples}
                                     </p>
                                 </#if>
                                 <#if p.vocabulary??>
-                                    <p>
+                                    <p class="overflow-x-auto">
                                         <em><@s.text name="extension.vocabulary"/></em>:
                                         <a href="vocabulary.do?id=${p.vocabulary.uriString}">${p.vocabulary.title}</a>
                                     </p>

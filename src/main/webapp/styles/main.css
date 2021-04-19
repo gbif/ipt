@@ -7,14 +7,14 @@
 */
 
 /* Principle settings for all pages */
-html,
-body {
-    overflow-x: hidden; /* Prevent scroll on narrow devices */
-}
+/*html,*/
+/*body {*/
+/*    height: 100%;*/
+/*    !*overflow-x: hidden; !* Prevent scroll on narrow devices *!*!*/
+/*}*/
 
 body {
     font-family: Roboto,'Helvetica Neue',Helvetica,Arial,sans-serif !important;
-    min-height: 75rem;
     padding-top: 4.5rem; /* Separates nav and main */
     color: #666;
 }
@@ -364,4 +364,9 @@ div.requiredMapping {
 
 div.mappingFiler {
     background-color: #F0FAFF;
+}
+
+
+.overflow-x-auto {
+    overflow-x: auto;
 }

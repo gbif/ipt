@@ -42,7 +42,7 @@
                 <div class="definition">
                     <div class="body">
                         <div>
-                            <p>${ext.description!}
+                            <p class="overflow-x-auto">${ext.description!}
                                 <#if ext.link?has_content>
                                     <br/><div class="text-truncate" ><@s.text name="basic.seealso"/> <a  href="${ext.link}">${ext.link}</a></div>
                                 </#if>
@@ -181,7 +181,7 @@
                             <div class="definition">
                                 <div class="body">
                                     <div>
-                                        <p>${ext.description!}</p>
+                                        <p class="overflow-x-auto">${ext.description!}</p>
                                     </div>
                                     <div class="details table-responsive">
                                         <table class="table table-sm table-borderless">
