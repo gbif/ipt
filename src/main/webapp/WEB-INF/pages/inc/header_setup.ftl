@@ -8,6 +8,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
 
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
 
@@ -15,88 +16,6 @@
     <script type="text/javascript" src="${baseURL}/js/modernizr.js"></script>
     <script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="${baseURL}/js/global.js"></script>
-
-    <style>
-        html,
-        body {
-            overflow-x: hidden; /* Prevent scroll on narrow devices */
-        }
-
-        body {
-            min-height: 75rem;
-            padding-top: 4.5rem; /* Separates nav and main */
-        }
-
-        .bg-gbif-green-gradient {
-            background: linear-gradient(#78b578, #71b171) !important;
-        }
-
-        .gbif-logo {
-            height: 32px;
-            position: relative;
-            line-height: 32px;
-            padding-right: 8px;
-            padding-left: 8px;
-            transition: all .3s;
-            overflow: hidden;
-            vertical-align: middle;
-        }
-
-        a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
-            color: #4BA2CE !important;
-        }
-
-        .text-gbif-primary {
-            color: #4E9D2D !important;
-        }
-
-        .text-gbif-header {
-            color: #4E565F !important;
-        }
-
-        /*GBIF green colored button*/
-        .btn-outline-gbif-primary {
-            color: #4E9D2D;
-            border-color: #4E9D2D;
-        }
-        .btn-outline-gbif-primary:hover {
-            color: #fff;
-            background-color: #4E9D2D;
-            border-color: #4E9D2D;
-        }
-        .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
-            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5);
-        }
-        .btn-check:checked + .btn-outline-gbif-primary, .btn-check:active + .btn-outline-gbif-primary, .btn-outline-gbif-primary:active, .btn-outline-gbif-primary.active, .btn-outline-gbif-primary.dropdown-toggle.show {
-            color: #fff;
-            background-color: #4E9D2D;
-            border-color: #4E9D2D;
-        }
-        .btn-check:checked + .btn-outline-gbif-primary:focus, .btn-check:active + .btn-outline-gbif-primary:focus, .btn-outline-gbif-primary:active:focus, .btn-outline-gbif-primary.active:focus, .btn-outline-gbif-primary.dropdown-toggle.show:focus {
-            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5);
-        }
-        .btn-outline-gbif-primary:disabled, .btn-outline-gbif-primary.disabled {
-            color: #4E9D2D;
-            background-color: transparent;
-        }
-
-        .ipt-footer-item:after {
-            content: '|';
-            margin: 0 5px;
-        }
-
-        footer a {
-            text-decoration: none !important;
-        }
-
-        header, .dropdown-menu {
-            font-size: 0.875rem !important;
-        }
-
-        .footer-gbif-logo {
-            width: 55px;
-        }
-    </style>
 
 </head>
 <body class="bg-light d-flex flex-column h-100">
