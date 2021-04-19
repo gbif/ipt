@@ -19,6 +19,10 @@ body {
     color: #666;
 }
 
+table {
+    color: #666 !important;
+}
+
 
 /* Logo, header, menu etc. START */
 .gbif-logo {

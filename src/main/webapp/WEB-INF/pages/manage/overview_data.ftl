@@ -16,7 +16,7 @@
                     <p>
                         <@s.text name='manage.overview.source.intro'/>
                     </p>
-                    <div class="details twenty_bottom">
+                    <div class="details">
                         <#if sourcesModifiedSinceLastPublication>
                             <@s.text name='manage.home.last.modified'/> ${resource.getSourcesModified()?date?string.medium!}
                         <#elseif resource.lastPublished??>
