@@ -1,13 +1,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="title"/></title>
 
-<style>
-    #locationMap {
-        clear:both;
-        height: 170px;
-        max-width: 310px;
-    }
-</style>
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
 <script type="text/javascript" src="${baseURL}/js/leaflet/leaflet.js"></script>

@@ -214,3 +214,154 @@ td.left_padding {
     color: #fff;
     background-color: #4E9D2D !important;
 }
+
+
+#watermark {
+    position: fixed;
+    opacity: 0.15;
+    z-index: 1000;
+    color: #666;
+    font-size: 650%;
+}
+
+
+/* Resource logo styling */
+.icon {
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    background-position-x: 10px;
+    background-position-y: 50%;
+    padding-left: 30px;
+}
+
+
+.icon-gbif {
+    background-image: url('../images/gbif-logo.svg');
+}
+
+
+/* Licence logos styling START */
+.cc_logo {
+    display: block;
+    float: left;
+    margin-right: 18px;
+    height: 31px;
+    width: 88px;
+}
+
+.cc_by {
+    background: url('../images/icons/cc-by.png');
+}
+
+.cc_by_nc {
+    background: url('../images/icons/cc-by-nc.png');
+}
+
+.cc_zero {
+    background: url('../images/icons/cc-zero.png');
+}
+/* Licence logos styling END */
+
+
+/* DOI styling START */
+a.doi {
+    padding-left: 0;
+    border-right-width: 2px;
+}
+
+span.doi {
+    background: #198754;
+    color: white;
+    padding: 6px 10px 7px 10px;
+}
+/* DOI styling END */
+
+
+/* Version table pointer styling */
+img.latestVersionHidden {
+    opacity: 0.2;
+}
+
+
+/* Data records chars styling START*/
+ul.no_bullets li {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+ul.horizontal_graph {
+    margin: 0;
+}
+
+ul.horizontal_graph .grey_bar {
+    background-color: #a9e4ba;
+    border-radius: 1px;
+    display: inline-block;
+    height: 3px;
+    margin: 0 0 2px;
+}
+
+ul.horizontal_graph li span {
+    display: inline-block;
+    width: 200px;
+    font-size: 0.9em;
+    word-wrap: break-word;
+}
+
+ul.no_bullets {
+    list-style: outside none none;
+}
+
+ul.horizontal_graph .value_label {
+    color: #cccccc;
+    display: inline-block;
+    font-size: 0.9em;
+    margin: 0 0 0 10px;
+    padding: 0;
+}
+/* Data records chars styling START*/
+
+
+/* Metadata map size */
+#locationMap {
+    clear: both;
+    height: 170px;
+    max-width: 310px;
+}
+
+#map {
+    height: 320px;
+    border: none;
+    margin-top: 18px;
+}
+
+
+/* Metadata image size */
+#resourcelogo img {
+    max-width: 150px;
+}
+
+
+/* Resource mini logo in the table */
+.resourceminilogo {
+    width: 30px;
+}
+
+
+/* Mapping page custom colors */
+#filter {
+    color: #0080FF;
+}
+
+#coreID {
+    color: #008959;
+}
+
+div.requiredMapping {
+    background-color: #E6F5EB;
+}
+
+div.mappingFiler {
+    background-color: #F0FAFF;
+}

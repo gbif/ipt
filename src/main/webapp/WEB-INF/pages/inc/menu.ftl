@@ -3,6 +3,7 @@
 
 [#if auxTopNavbar]
 <style>
+    /* Increase padding when the second nav is enabled */
     body {
         padding-top: 120px;
     }

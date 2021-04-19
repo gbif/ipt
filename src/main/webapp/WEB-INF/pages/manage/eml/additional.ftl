@@ -63,11 +63,6 @@
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
-    <style>
-        #resourcelogo img {
-            max-width: 150px;
-        }
-    </style>
 
     <main class="container">
         <div class="row g-3">

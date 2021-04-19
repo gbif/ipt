@@ -187,20 +187,6 @@
             });
         });
     </script>
-    <style>
-        #filter {
-            color: #0080FF;
-        }
-        #coreID {
-            color: #008959;
-        }
-        div.requiredMapping {
-            background-color: #E6F5EB;
-        }
-        div.mappingFiler {
-            background-color: #F0FAFF;
-        }
-    </style>
 
 <#assign currentMenu = "manage"/>
 <#assign auxTopNavbar = true />

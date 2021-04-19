@@ -3,27 +3,6 @@
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
-    <style>
-        .cc_logo {
-            display: block;
-            float: left;
-            margin-right: 18px;
-            height: 31px;
-            width: 88px;
-        }
-
-        .cc_by {
-            background: url('${baseURL}/images/icons/cc-by.png');
-        }
-
-        .cc_by_nc {
-            background: url('${baseURL}/images/icons/cc-by-nc.png');
-        }
-
-        .cc_zero {
-            background: url('${baseURL}/images/icons/cc-zero.png');
-        }
-    </style>
     <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){

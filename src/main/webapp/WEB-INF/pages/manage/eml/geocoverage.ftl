@@ -159,14 +159,6 @@
         });
     </script>
 
-    <style>
-        #map {
-            height: 320px;
-            border: none;
-            margin-top: 18px;
-        }
-    </style>
-
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
