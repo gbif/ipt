@@ -683,8 +683,8 @@
                         <#assign actionMethod>makePublic</#assign>
                     </#if>
 
-                    <div class="mx-md-4 mx-2">
-                        <form action='resource-${actionMethod}.do' method='post'>
+                    <div class="mx-md-4 mx-2 d-flex">
+                        <form class="me-1" action='resource-${actionMethod}.do' method='post'>
                             <input name="r" type="hidden" value="${resource.shortname}"/>
                             <#if resource.status=="PUBLIC">
                                 <#if !currentUser.hasRegistrationRights()>
