@@ -12,7 +12,7 @@
             [@s.text name="error.title"/]
         </h5>
 
-        <p class="text-muted mx-md-4 mx-2">
+        <p class="mx-md-4 mx-2">
             [@s.text name="error.body"/]
         </p>
 
@@ -21,16 +21,16 @@
         </pre>
 
         [#if adminRights]
-            <p class="text-muted mx-md-4 mx-2">
+            <p class="mx-md-4 mx-2">
                 <a href="${baseURL}/admin/logs.do">[@s.text name="error.view.logs"/]</a>
             </p>
         [/#if]
 
-        <p class="text-muted mx-md-4 mx-2">
+        <p class="mx-md-4 mx-2">
             [@s.text name="error.report"/]
         </p>
 
-        <p class="text-muted mx-md-4 mx-2">
+        <p class="mx-md-4 mx-2">
             [@s.text name="error.thanks"/]
         </p>
     </div>

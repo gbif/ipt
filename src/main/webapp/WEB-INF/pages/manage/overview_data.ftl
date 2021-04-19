@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-xl-9 order-xl-last">
                 <div class="mx-md-4 mx-2">
-                    <p class="text-muted">
+                    <p>
                         <@s.text name='manage.overview.source.intro'/>
                     </p>
                     <div class="details twenty_bottom">
@@ -99,7 +99,7 @@
     <div class="row">
         <div class="col-lg-9 order-lg-last">
             <div class="mx-md-4 mx-2">
-                <p class="text-muted">
+                <p>
                     <@s.text name='manage.overview.DwC.Mappings.description'/>
                 </p>
 

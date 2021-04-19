@@ -82,7 +82,7 @@
                 <@s.text name='manage.autopublish.title'/>
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2"><@s.text name='manage.autopublish.intro'/></p>
+            <p class="mx-md-4 mx-2"><@s.text name='manage.autopublish.intro'/></p>
 
             <form class="topForm" action="auto-publish.do" method="post">
                 <#if resource.isDeprecatedAutoPublishingConfiguration()>
@@ -144,27 +144,27 @@
                     </div>
                 </div>
 
-                <p id="introAnnually" class="text-muted mx-md-4 mx-2">
+                <p id="introAnnually" class="mx-md-4 mx-2">
                     <br/>
                     <@s.text name="manage.autopublish.intro.annually"/>
                 </p>
-                <p id="introDaily" class="text-muted mx-md-4 mx-2">
+                <p id="introDaily" class="mx-md-4 mx-2">
                     <br/>
                     <@s.text name="manage.autopublish.intro.daily"/>
                 </p>
-                <p id="introBiAnnually" class="text-muted mx-md-4 mx-2">
+                <p id="introBiAnnually" class="mx-md-4 mx-2">
                     <br/>
                     <@s.text name="manage.autopublish.intro.biannually"/>
                 </p>
-                <p id="introMonthly" class="text-muted mx-md-4 mx-2">
+                <p id="introMonthly" class="mx-md-4 mx-2">
                     <br/>
                     <@s.text name="manage.autopublish.intro.monthly"/>
                 </p>
-                <p id="introWeekly" class="text-muted mx-md-4 mx-2">
+                <p id="introWeekly" class="mx-md-4 mx-2">
                     <br/>
                     <@s.text name="manage.autopublish.intro.weekly"/>
                 </p>
-                <p id="introOff" class="text-muted mx-md-4 mx-2">
+                <p id="introOff" class="mx-md-4 mx-2">
                     <br/>
                     <@s.text name="manage.autopublish.intro.off"/>
                 </p>

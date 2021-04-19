@@ -4,7 +4,7 @@
     <@s.text name='manage.report.title'/>
 </h5>
 
-<p class="text-muted">
+<p>
     <span class="small">${now?datetime?string("yyyy-MM-dd HH:mm:ss")}</span>
 </p>
 
@@ -23,20 +23,20 @@
                 </div>
             </#if>
 
-            <p class="text-muted">
+            <p>
                 <@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text>
             </p>
-            <p class="text-muted">
+            <p>
                 <@s.text name='portal.publication.download.log'/> <a target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
             </p>
         <#else>
-            <p class="text-muted">
+            <p>
                 <@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?id=${resource.shortname}</@s.param></@s.text>
             </p>
             <div class="alert alert-warning" role="alert">
                 ${report.state}
             </div>
-            <p class="text-muted">
+            <p>
                 <a href="cancel.do?r=${resource.shortname}"><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>.
             </p>
         </#if>
@@ -68,7 +68,7 @@
     <h5 class="text-gbif-header">
         <@s.text name='manage.report.finished'/>
     </h5>
-    <p class="text-muted">
+    <p>
         <@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text>
     </p>
 </#if>

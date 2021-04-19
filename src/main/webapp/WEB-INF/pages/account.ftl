@@ -13,11 +13,11 @@
             <@s.text name="account.title"/>
         </h5>
 
-        <p class="text-muted mx-md-4 mx-2">
+        <p class="mx-md-4 mx-2">
             <@s.text name="account.intro"/>
         </p>
 
-        <p class="text-muted mx-md-4 mx-2">
+        <p class="mx-md-4 mx-2">
             <@s.text name="account.email.cantChange"/>
         </p>
     </div>

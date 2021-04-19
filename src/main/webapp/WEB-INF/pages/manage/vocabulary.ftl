@@ -13,7 +13,7 @@
             ${vocabulary.title}
         </h5>
 
-        <p class="text-muted mx-md-4 mx-2">${vocabulary.description!}</p>
+        <p class="mx-md-4 mx-2">${vocabulary.description!}</p>
 
         <#if vocabulary.subject?has_content>
             <p><@s.text name="basic.keywords"/>: ${vocabulary.subject}</p>

@@ -13,7 +13,7 @@
                 [@s.text name="admin.config.setup2.title"/]
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.welcome"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup2.welcome"/]</p>
 
             <input type="hidden" name="setup2" value="true" />
             <input type="hidden" name="ignoreUserValidation" value="${ignoreUserValidation}" />
@@ -21,7 +21,7 @@
             <h5 class="text-gbif-header mx-md-4 mx-2">
                 [@s.text name="admin.config.setup2.administrator"/]
             </h5>
-            <p class="text-muted mx-md-4 mx-2">
+            <p class="mx-md-4 mx-2">
                 [@s.text name="admin.config.setup2.administrator.help"/]
             </p>
             <div class="row g-3 mx-md-4 mx-2 pb-3 mb-2">
@@ -52,9 +52,9 @@
                 [@s.text name="admin.config.setup2.mode.title"/]
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.help"/]</p>
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.test"/]</p>
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.production"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.help"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.test"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode.production"/]</p>
             <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup2.mode"/]</p>
 
             [#list modes as mode]

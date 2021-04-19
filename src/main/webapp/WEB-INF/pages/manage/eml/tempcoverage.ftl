@@ -193,7 +193,7 @@
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2 mb-0">
+            <p class="mx-md-4 mx-2 mb-0">
                 <@s.text name='manage.metadata.tempcoverage.intro'/>
             </p>
 

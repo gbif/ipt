@@ -1,4 +1,4 @@
-<p class="text-muted mx-md-4 mx-2 pt-2"><@s.text name="manage.resource.create.intro"/></p>
+<p class="mx-md-4 mx-2 pt-2"><@s.text name="manage.resource.create.intro"/></p>
 
 <script>
     $(document).ready(function() {

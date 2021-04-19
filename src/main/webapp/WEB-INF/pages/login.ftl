@@ -14,7 +14,7 @@
             <@s.text name="login.title"/>
         </h5>
 
-        <p class="text-muted mx-md-4 mx-2">
+        <p class="mx-md-4 mx-2">
             <@s.text name="login.intro">
                 <@s.param>${admin.email}</@s.param>
             </@s.text>

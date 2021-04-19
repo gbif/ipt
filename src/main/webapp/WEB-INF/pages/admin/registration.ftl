@@ -99,7 +99,7 @@
 
             <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
             <#if hostingOrganisation?has_content>
-                <p class="text-muted mx-md-4 mx-2">
+                <p class="mx-md-4 mx-2">
                     <@s.text name="admin.registration.registered1"/><br />
                     <@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text>
                 </p>
@@ -148,7 +148,7 @@
                 <#-- BASE URL has not been validated, disable the form -->
                 <#if !validatedBaseURL>
 
-                    <p class="text-muted mx-md-4 mx-2"><@s.text name="admin.registration.test1"/></p>
+                    <p class="mx-md-4 mx-2"><@s.text name="admin.registration.test1"/></p>
 
                     <div class="row g-3 mx-md-3 mx-1">
                         <div class="col-12">

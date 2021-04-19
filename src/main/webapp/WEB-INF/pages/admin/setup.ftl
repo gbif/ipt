@@ -16,8 +16,8 @@
             <h5 class="text-gbif-header mx-md-4 mx-2">
                 [@s.text name="admin.config.setup.disclaimer.title"/]
             </h5>
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
 
             <div class="mx-md-4 mx-2">
                 [@checkbox name="readDisclaimer" value="readDisclaimer" i18nkey="admin.config.setup.read"/]
@@ -28,9 +28,9 @@
             <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom">
                 [@s.text name="admin.config.server.data.dir"/]
             </h5>
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.welcome"/]</p>
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.instructions"/]</p>
-            <p class="text-muted mx-md-4 mx-2">[@s.text name="admin.config.setup.examples"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.welcome"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.instructions"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.examples"/]</p>
 
             <div class="row g-3 mx-md-3 mx-1">
                 <div class="col-12">

@@ -358,7 +358,7 @@
 
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
-                    <p class="text-muted mx-md-4 mx-2">
+                    <p class="mx-md-4 mx-2">
                         <@s.text name="manage.overview.published.intro"/>
                     </p>
 
@@ -567,7 +567,7 @@
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
                     <div class="mx-md-4 mx-2">
-                        <p class="text-muted">
+                        <p>
                             <#if resource.usesAutoPublishing()>
                                 <@s.text name="manage.overview.autopublish.intro.activated"/>
                             <#else>
@@ -629,7 +629,7 @@
                     <div class="mx-md-4 mx-2">
                         <div class="bodyOverview">
 
-                            <p class="text-muted">
+                            <p>
                                 <#if resource.status=="PRIVATE">
                                     <span class="badge rounded-pill bg-danger">
                                         <@s.text name="resource.status.${resource.status?lower_case}"/>
@@ -761,7 +761,7 @@
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
                     <div class="mx-md-4 mx-2">
-                        <p class="text-muted">
+                        <p>
                             <@s.text name="manage.overview.resource.managers.intro"><@s.param>${resource.shortname}</@s.param></@s.text>
                         </p>
 

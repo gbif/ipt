@@ -17,7 +17,7 @@
 
     <div class="row">
         <div class="col-lg-9 order-lg-last">
-            <p class="text-muted mx-md-4 mx-2">
+            <p class="mx-md-4 mx-2">
                 <@s.text name="manage.overview.metadata.description"/>
             </p>
 

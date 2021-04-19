@@ -32,7 +32,7 @@
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
 
-            <p class="text-muted mx-lg-4 mx-2">
+            <p class="mx-lg-4 mx-2">
                 <@s.text name='manage.source.intro'/>
             </p>
 

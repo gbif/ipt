@@ -21,7 +21,7 @@
                     <@s.text name='manage.history.title'/>: <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </h5>
 
-                <p class="mx-md-4 mx-2 text-muted">
+                <p class="mx-md-4 mx-2">
                     <@s.text name="manage.history.intro"><@s.param>${version.toPlainString()}</@s.param><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
                 </p>
 

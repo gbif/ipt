@@ -164,7 +164,7 @@
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2"><@s.text name="manage.metadata.basic.required.message" /></p>
+            <p class="mx-md-4 mx-2"><@s.text name="manage.metadata.basic.required.message" /></p>
 
             <div class="row mx-md-3 mx-1 g-3">
                 <div class="col-12">
@@ -216,7 +216,7 @@
                     </#list>
 
                     <div id='disclaimerRigths' style='display: none'>
-                        <p class="text-muted mt-3">
+                        <p class="mt-3">
                             <@s.text name='eml.intellectualRights.license.disclaimer'/>
                         </p>
                     </div>

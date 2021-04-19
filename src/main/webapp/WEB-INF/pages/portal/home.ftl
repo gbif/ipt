@@ -24,12 +24,12 @@
 
         <!-- RSS Feed shown if there are resources -->
         <#if (resources?size>0)>
-            <p class="text-muted mx-md-4 mx-2 pt-2">
+            <p class="mx-md-4 mx-2 pt-2">
                 <i class="bi bi-rss"></i>
                 <@s.text name="portal.home.feed"><@s.param>${baseURL}/rss.do</@s.param></@s.text>
             </p>
         <#else>
-            <p class="text-muted text-center pt-2"><@s.text name="portal.home.no.public"/></p>
+            <p class="text-center pt-2"><@s.text name="portal.home.no.public"/></p>
         </#if>
     </div>
 </main>

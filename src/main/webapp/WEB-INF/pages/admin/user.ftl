@@ -22,10 +22,10 @@
                     <#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if>
                 </h5>
 
-                <p class="text-muted mx-md-4 mx-2 mb-0">
+                <p class="mx-md-4 mx-2 mb-0">
                     <@s.text name="admin.user.intro"/>
                 </p>
-                <p class="text-muted mx-md-4 mx-2 mb-0">
+                <p class="mx-md-4 mx-2 mb-0">
                     <@s.text name="admin.user.intro2"/>
                 </p>
 

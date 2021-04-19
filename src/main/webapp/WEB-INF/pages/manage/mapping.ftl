@@ -358,7 +358,7 @@
                 <#assign extensionType><@s.text name='extension'/></#assign>
             </#if>
 
-            <p class="text-muted mx-md-4 mx-2">
+            <p class="mx-md-4 mx-2">
                 <@s.text name='manage.mapping.intro1'><@s.param><a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></@s.param><@s.param>${extensionType?lower_case}:</@s.param><@linkOrNameParam mapping.extension/></@s.text>
             </p>
 
@@ -500,8 +500,8 @@
                 <h5 id="nonmapped" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name="manage.mapping.no.mapped.title"/>
                 </h5>
-                <p class="text-muted mx-md-4 mx-2"><@s.text name="manage.mapping.no.mapped.columns"/>:</p>
-                <ul class="text-muted mx-md-4 mx-2">
+                <p class="mx-md-4 mx-2"><@s.text name="manage.mapping.no.mapped.columns"/>:</p>
+                <ul class="mx-md-4 mx-2">
                     <#list nonMapped as col>
                         <li>${col}</li>
                     </#list>
@@ -515,8 +515,8 @@
                 <h5 id="redundant" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name="manage.mapping.redundant.classes.title"/>
                 </h5>
-                <p class="text-muted mx-md-4 mx-2"><@s.text name="manage.mapping.redundant.classes.intro"/>:</p>
-                <ul class="text-muted mx-md-4 mx-2">
+                <p class="mx-md-4 mx-2"><@s.text name="manage.mapping.redundant.classes.intro"/>:</p>
+                <ul class="mx-md-4 mx-2">
                     <#list action.getRedundantGroups() as gr>
                         <li>${gr}</li>
                     </#list>

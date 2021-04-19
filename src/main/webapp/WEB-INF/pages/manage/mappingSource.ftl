@@ -21,9 +21,9 @@
                 ${mapping.extension.title}
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2">${mapping.extension.description}</p>
+            <p class="mx-md-4 mx-2">${mapping.extension.description}</p>
             <#if mapping.extension.link?has_content>
-                <p class="text-muted mx-md-4 mx-2"><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
+                <p class="mx-md-4 mx-2"><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
             </#if>
             <input type="hidden" name="r" value="${resource.shortname}" />
             <input type="hidden" name="id" value="${mapping.extension.rowType}" />
@@ -36,7 +36,7 @@
                 <@s.text name='manage.mapping.source'/>
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2"><@s.text name='manage.mapping.source.help'/></p>
+            <p class="mx-md-4 mx-2"><@s.text name='manage.mapping.source.help'/></p>
 
             <div class="row mx-md-3 mx-1">
                 <div class="col-sm-6">

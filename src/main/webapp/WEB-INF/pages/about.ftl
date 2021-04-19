@@ -22,7 +22,7 @@
 
 <main class="container">
     <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
-        <div class="mx-md-4 mx-2 text-muted">
+        <div class="mx-md-4 mx-2">
             <@content?interpret />
         </div>
     </div>

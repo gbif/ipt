@@ -80,7 +80,7 @@
                     <@s.text name="admin.extension.coreTypes"/>
                 </h5>
 
-                <p class="text-muted mx-md-4 mx-2">
+                <p class="mx-md-4 mx-2">
                     <@s.text name="admin.extension.no.coreTypes.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
                 </p>
 
@@ -97,7 +97,7 @@
                     <p class="text-danger mx-md-4 mx-2 mb-0">
                         <@s.text name="admin.extension.no.coreTypes.installed"/>
                     </p>
-                    <p class="text-muted mx-md-4 mx-2">
+                    <p class="mx-md-4 mx-2">
                         <span class="badge rounded-pill bg-warning">
                             <i class="bi bi-exclamation-triangle" style="color: black;"></i>
                         </span>
@@ -112,7 +112,7 @@
                     <@s.text name="admin.extension.extensions"/>
                 </h5>
 
-                <p class="text-muted mx-md-4 mx-2 mb-0">
+                <p class="mx-md-4 mx-2 mb-0">
                     <@s.text name="admin.extension.no.extensions.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
                 </p>
 
@@ -135,7 +135,7 @@
                     <@s.text name="extension.synchronise.title"/>
                 </h5>
 
-                <p class="text-muted mx-md-4 mx-2 mb-0">
+                <p class="mx-md-4 mx-2 mb-0">
                     <@s.text name="admin.extensions.synchronise.help"/>
                 </p>
 
@@ -155,7 +155,7 @@
                     <@s.text name="extension.further.title"/>
                 </h5>
 
-                <p class="text-muted mx-md-4 mx-2 mb-0">
+                <p class="mx-md-4 mx-2 mb-0">
                     <@s.text name="extension.further.title.help"/>
                 </p>
 

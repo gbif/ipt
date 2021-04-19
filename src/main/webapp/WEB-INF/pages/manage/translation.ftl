@@ -55,7 +55,7 @@
                 <@s.text name="manage.translation.title"/>
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2"><@s.text name="manage.translation.intro"/></p>
+            <p class="mx-md-4 mx-2"><@s.text name="manage.translation.intro"/></p>
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
@@ -63,14 +63,14 @@
                 <@s.text name="manage.translation.property"/> <em>${property.name}</em>
             </h5>
 
-            <p class="text-muted mx-md-4 mx-2">&quot;${property.description!}&quot;</p>
+            <p class="mx-md-4 mx-2">&quot;${property.description!}&quot;</p>
 
             <#if property.vocabulary?has_content>
-                <p class="text-muted mx-md-4 mx-2">
+                <p class="mx-md-4 mx-2">
                     <strong><@s.text name="manage.translation.vocabulary.required"/></strong>:
                     <@s.text name="manage.translation.vocabulary.required.intro"/>
                 </p>
-                <p class="text-muted mx-md-4 mx-2">
+                <p class="mx-md-4 mx-2">
                     <em>${property.vocabulary.title!property.vocabulary.uriString}</em>:
                     <a href="vocabulary.do?id=${property.vocabulary.uriString}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
                     &quot;${property.vocabulary.description!}&quot;
