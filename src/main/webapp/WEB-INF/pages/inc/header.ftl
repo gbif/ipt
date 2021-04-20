@@ -10,14 +10,16 @@
 <html lang="en" class="h-100">
 <head>
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-borders.css" />
-    <link href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap-5.0.0-beta3.min.css">
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap-borders.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/dataTables.bootstrap5-1.10.23.min.css" />
 
     <!-- Bootstrap icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-icons/font/bootstrap-icons.css" />
+
+    <!-- IPT CSS -->
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
 
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
     <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
