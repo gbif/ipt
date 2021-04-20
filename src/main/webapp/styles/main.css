@@ -367,6 +367,11 @@ div.mappingFiler {
 }
 
 
+/* Utilities */
 .overflow-x-auto {
     overflow-x: auto;
+}
+
+.text-smaller {
+    font-size: 0.875rem !important;
 }
