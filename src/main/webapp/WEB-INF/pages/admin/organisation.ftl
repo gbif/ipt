@@ -1,8 +1,8 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js" type="text/javascript"></script>
 
     <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script type="text/javascript">
