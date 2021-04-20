@@ -206,7 +206,7 @@
 </#macro>
 
 <#macro sourceSample index fieldsIndex>
-    <div id="fSIdx${fieldsIndex}" class="sample mappingText mx-3" style="overflow-x: auto !important;">
+    <div id="fSIdx${fieldsIndex}" class="sample mappingText mx-3 overflow-x-auto">
         <@s.text name='manage.mapping.sourceSample' />:
         <em>
             <#list peek as row>

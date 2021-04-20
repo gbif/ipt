@@ -369,7 +369,7 @@ div.mappingFiler {
 
 /* Utilities */
 .overflow-x-auto {
-    overflow-x: auto;
+    overflow-x: auto !important;
 }
 
 .text-smaller {

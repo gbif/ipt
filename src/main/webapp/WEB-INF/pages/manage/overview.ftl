@@ -378,7 +378,7 @@
                         <#assign licenseTitle><@s.text name='eml.intellectualRights.license'/></#assign>
 
                         <div class="table-responsive mx-md-4 mx-2">
-                            <table class="table table-sm table-borderless" style="font-size: 0.875em;">
+                            <table class="table table-sm table-borderless text-smaller">
                                 <tr>
                                     <th></th>
                                     <#if resource.lastPublished??>
@@ -576,7 +576,7 @@
                         </p>
 
                         <div class="details">
-                            <table class="table table-sm table-borderless" style="font-size: 0.875rem;">
+                            <table class="table table-sm table-borderless text-smaller">
                                 <#if resource.usesAutoPublishing()>
                                     <tr>
                                         <th class="col-4"><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
@@ -649,7 +649,7 @@
 
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details">
-                                    <table class="table table-sm table-borderless" style="font-size: 0.875em;">
+                                    <table class="table table-sm table-borderless text-smaller">
                                         <tr>
                                             <th class="col-4">GBIF UUID</th>
                                             <td><a href="${cfg.portalUrl}/dataset/${resource.key}" target="_blank">${resource.key}</a>
@@ -766,7 +766,7 @@
                         </p>
 
                         <div class="details">
-                            <table class="table table-sm table-borderless" style="font-size: 0.875em;">
+                            <table class="table table-sm table-borderless text-smaller">
                                 <tr>
                                     <th class="col-4"><@s.text name="manage.overview.resource.managers.creator"/></th>
                                     <td>${resource.creator.name!}, ${resource.creator.email}</td>

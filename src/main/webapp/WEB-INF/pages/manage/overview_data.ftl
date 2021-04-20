@@ -27,7 +27,7 @@
                     <#if (resource.sources?size>0)>
                         <div class="details">
                             <div class="table-responsive">
-                                <table class="table table-sm table-borderless" style="font-size: 0.875em;">
+                                <table class="table table-sm table-borderless text-smaller">
                                 <#list resource.sources as src>
                                     <tr>
                                         <#if src.isFileSource()>
@@ -115,7 +115,7 @@
                     <div class="details">
                         <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
                         <div class="table-responsive">
-                            <table class="table table-sm table-borderless" style="font-size: 0.875em;">
+                            <table class="table table-sm table-borderless text-smaller">
                             <#list resource.getMappings(resource.coreRowType) as m>
                                 <tr <#if m_index==0>class="mapping_row"</#if>>
                                     <th class="col-4"><#if m_index==0>${m.extension.title}</#if></th>
@@ -137,7 +137,7 @@
                         <#if (resource.getMappedExtensions()?size > 1)>
                             <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
                             <div class="table-responsive">
-                                <table class="table table-sm table-borderless" style="font-size: 0.875em;">
+                                <table class="table table-sm table-borderless text-smaller">
                                 <#list resource.getMappedExtensions() as ext>
                                     <#if ext.rowType != resource.coreRowType>
                                         <#list resource.getMappings(ext.rowType) as m>

@@ -15,7 +15,7 @@
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
             <@s.text name="portal.home.title"/>
         </h5>
-        <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2" style="font-size: 0.875rem !important;"></div>
+        <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2"></div>
 
         <!-- RSS Feed shown if there are resources -->
         <#if (resources?size>0)>

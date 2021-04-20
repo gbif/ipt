@@ -38,7 +38,7 @@
 </#if>
 
 <div class="table-responsive">
-    <table class="simple table table-sm table-borderless" style="font-size: 0.875rem;">
+    <table class="simple table table-sm table-borderless text-smaller">
         <tr>
             <#list columns as col><th>${col}</th></#list>
         </tr>
