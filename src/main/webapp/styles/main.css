@@ -70,10 +70,18 @@ footer a {
 /* Footer END */
 
 
-/* Links color with exception for some classes */
+/* Links color with exception for some classes START */
 a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
     color: #4BA2CE !important;
+    text-decoration: none !important;
 }
+
+a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color):focus,
+a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color):hover {
+    color: #2c79a1 !important;
+    text-decoration: underline !important;
+}
+/* Links color with exception for some classes END */
 
 
 /* Custom colors */
