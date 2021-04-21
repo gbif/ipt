@@ -96,12 +96,12 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                         // warning fragile: index 8 must always equal next published date on both home page and manage page
                         var nextPublishedDate = (oSettings.aoData[i]._aData[8] == '${emptyString}') ? today : parseDate(oSettings.aoData[i]._aData[8]);
                         if (today > nextPublishedDate) {
-                            oSettings.aoData[i].nTr.className += " text-danger";
+                            oSettings.aoData[i].nTr.className += " text-gbif-danger";
                         }
                         // warning fragile: index 9 must always equal visibility (only on manage page)
                         var visibility = oSettings.aoData[i]._aData[9];
                         if (visibility && visibility.toLowerCase() == '${deletedString?lower_case}') {
-                            oSettings.aoData[i].nTr.className += " text-danger";
+                            oSettings.aoData[i].nTr.className += " text-gbif-danger";
                         }
                     }
                 }

@@ -63,7 +63,7 @@
                         <div class="col-lg-6">
                             <div class="table-responsive">
                                 <table id="source-properties" class="table table-sm table-borderless text-smaller">
-                                    <tr><th><@s.text name='manage.source.readable'/></th><td><#if source.readable> <i class="bi bi-check-circle text-gbif-primary"></i><#else><i class="bi bi-exclamation-circle text-danger"></i> ${problem!}</#if></td></tr>
+                                    <tr><th><@s.text name='manage.source.readable'/></th><td><#if source.readable> <i class="bi bi-check-circle text-gbif-primary"></i><#else><i class="bi bi-exclamation-circle text-gbif-danger"></i> ${problem!}</#if></td></tr>
                                     <tr><th><@s.text name='manage.source.columns'/></th><td>${source.getColumns()}</td></tr>
                                     <#if source.fieldsTerminatedBy?has_content>
                                         <tr><th><@s.text name='manage.source.file'/></th><td>${(source.file.getAbsolutePath())!}</td></tr>
@@ -162,7 +162,7 @@
                             <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
                             <@s.submit cssClass="btn btn-outline-secondary my-1" name="cancel" key="button.cancel"/>
                             <#if id?has_content>
-                                <@s.submit cssClass="confirm btn btn-outline-danger my-1" name="delete" key="button.delete.source.file"/>
+                                <@s.submit cssClass="confirm btn btn-outline-gbif-danger my-1" name="delete" key="button.delete.source.file"/>
                             </#if>
                         </div>
                     <#else>

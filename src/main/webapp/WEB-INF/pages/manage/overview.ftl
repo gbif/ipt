@@ -44,10 +44,10 @@
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
             <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-danger" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
+                <button type="button" class="btn btn-outline-gbif-danger" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle"></i>
                 </button>
-                <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
+                <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
             </div>
         </form>
 
@@ -318,7 +318,7 @@
                                     <@s.submit cssClass="btn btn-sm btn-outline-secondary confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}' />
                                 </div>
                             <#else>
-                                <@s.submit cssClass="btn btn-sm btn-outline-danger confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}'/>
+                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}'/>
                             </#if>
                         </form>
                     </#if>
@@ -780,7 +780,7 @@
                                                 ${u.name}, ${u.email}&nbsp;
                                             </td>
                                             <td class="d-flex justify-content-end">
-                                                <a class="button btn btn-sm btn-outline-danger ignore-link-color" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                <a class="button btn btn-sm btn-outline-gbif-danger ignore-link-color" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
                                                     <@s.text name='button.delete'/>
                                                 </a>
                                             </td>

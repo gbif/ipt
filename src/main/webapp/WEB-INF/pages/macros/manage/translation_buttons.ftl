@@ -6,7 +6,7 @@
             <@s.text name='button.cancel'/>
         </a>
 
-        <@s.submit cssClass="confirm btn btn-outline-danger" name="delete" key="button.delete"/>
+        <@s.submit cssClass="confirm btn btn-outline-gbif-danger" name="delete" key="button.delete"/>
 
         <a class="button btn btn-outline-secondary ignore-link-color" href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType?url}&term=${property.qualname?url}&mid=${mid}&rowtype=${property.extension.rowType?url}'>
             <@s.text name="button.reload"/>

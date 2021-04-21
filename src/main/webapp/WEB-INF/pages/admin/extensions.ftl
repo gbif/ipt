@@ -32,7 +32,7 @@
                         </#if>
                         <form action='extension.do' method='post'>
                             <input type='hidden' name='id' value='${ext.rowType}' />
-                            <@s.submit name="delete" cssClass="btn btn-sm btn-outline-danger mt-1" key="button.remove"/>
+                            <@s.submit name="delete" cssClass="btn btn-sm btn-outline-gbif-danger mt-1" key="button.remove"/>
                         </form>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                 </#list>
 
                 <#if count=0>
-                    <p class="text-danger mx-md-4 mx-2 mb-0">
+                    <p class="text-gbif-danger mx-md-4 mx-2 mb-0">
                         <@s.text name="admin.extension.no.coreTypes.installed"/>
                     </p>
                     <p class="mx-md-4 mx-2">
@@ -124,7 +124,7 @@
                     </#if>
                 </#list>
                 <#if count=0>
-                    <p class="text-danger mx-md-4 mx-2">
+                    <p class="text-gbif-danger mx-md-4 mx-2">
                         <@s.text name="admin.extension.no.extensions.installed"/>
                     </p>
                 </#if>

@@ -62,7 +62,7 @@
                     <div class="mx-md-4 mx-2 mt-3">
                         <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
                         <#if "${newUser!}"=="no">
-                            <@s.submit cssClass="confirm btn btn-outline-danger" name="delete" key="button.delete"/>
+                            <@s.submit cssClass="confirm btn btn-outline-gbif-danger" name="delete" key="button.delete"/>
                             <@s.submit cssClass="button btn btn-outline-warning" name="resetPassword" key="button.resetPassword" />
                         </#if>
                         <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel"/>

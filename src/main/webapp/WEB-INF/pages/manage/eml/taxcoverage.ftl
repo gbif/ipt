@@ -83,9 +83,9 @@
 
                                         <div>
                                             <#if (item.taxonKeywords ? size == 1) >
-                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger" style="display: none;" role="button"><@s.text name='button.delete'/></button>
+                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-gbif-danger" style="display: none;" role="button"><@s.text name='button.delete'/></button>
                                             <#else>
-                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-danger" role="button"><@s.text name='button.delete'/></button>
+                                                <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-gbif-danger" role="button"><@s.text name='button.delete'/></button>
                                             </#if>
                                         </div>
                                     </div>
@@ -169,7 +169,7 @@
                     </div>
 
                     <div>
-                        <button id="trash" class="btn btn-outline-danger" role="button"><@s.text name='button.delete'/></button>
+                        <button id="trash" class="btn btn-outline-gbif-danger" role="button"><@s.text name='button.delete'/></button>
                     </div>
                 </div>
             </div>

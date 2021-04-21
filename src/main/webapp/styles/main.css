@@ -78,7 +78,11 @@ a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
 
 /* Custom colors */
 .text-gbif-primary {
-    color: #4E9D2D !important;
+    color: #61a861 !important;
+}
+
+.text-gbif-danger {
+    color: #e36370 !important;
 }
 
 .text-gbif-header {
@@ -88,30 +92,58 @@ a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
 
 /* GBIF green colored outline button START */
 .btn-outline-gbif-primary {
-    color: #4E9D2D !important;
-    border-color: #4E9D2D !important;
+    color: #61a861 !important;
+    border-color: #61a861 !important;
 }
 .btn-outline-gbif-primary:hover {
     color: #fff !important;
-    background-color: #4E9D2D !important;
-    border-color: #4E9D2D !important;
+    background-color: #61a861 !important;
+    border-color: #61a861 !important;
 }
 .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5) !important;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25); !important;
 }
 .btn-check:checked + .btn-outline-gbif-primary, .btn-check:active + .btn-outline-gbif-primary, .btn-outline-gbif-primary:active, .btn-outline-gbif-primary.active, .btn-outline-gbif-primary.dropdown-toggle.show {
     color: #fff !important;
-    background-color: #4E9D2D !important;
-    border-color: #4E9D2D !important;
+    background-color: #61a861 !important;
+    border-color: #61a861 !important;
 }
 .btn-check:checked + .btn-outline-gbif-primary:focus, .btn-check:active + .btn-outline-gbif-primary:focus, .btn-outline-gbif-primary:active:focus, .btn-outline-gbif-primary.active:focus, .btn-outline-gbif-primary.dropdown-toggle.show:focus {
-    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.5) !important;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25) !important;
 }
 .btn-outline-gbif-primary:disabled, .btn-outline-gbif-primary.disabled {
-    color: #4E9D2D !important;
+    color: #61a861 !important;
     background-color: transparent !important;
 }
 /* GBIF green colored outline button END */
+
+
+/* GBIF red colored outline button START */
+.btn-outline-gbif-danger {
+    color: #e36370;
+    border-color: #e36370;
+}
+.btn-outline-gbif-danger:hover {
+    color: #fff;
+    background-color: #e36370;
+    border-color: #e36370;
+}
+.btn-check:focus + .btn-outline-gbif-danger, .btn-outline-gbif-danger:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
+}
+.btn-check:checked + .btn-outline-gbif-danger, .btn-check:active + .btn-outline-gbif-danger, .btn-outline-gbif-danger:active, .btn-outline-gbif-danger.active, .btn-outline-gbif-danger.dropdown-toggle.show {
+    color: #fff;
+    background-color: #e36370;
+    border-color: #e36370;
+}
+.btn-check:checked + .btn-outline-gbif-danger:focus, .btn-check:active + .btn-outline-gbif-danger:focus, .btn-outline-gbif-danger:active:focus, .btn-outline-gbif-danger.active:focus, .btn-outline-gbif-danger.dropdown-toggle.show:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.5);
+}
+.btn-outline-gbif-danger:disabled, .btn-outline-gbif-danger.disabled {
+    color: #e36370;
+    background-color: transparent;
+}
+/* GBIF red colored outline button END */
 
 
 /* Published versions table separator */

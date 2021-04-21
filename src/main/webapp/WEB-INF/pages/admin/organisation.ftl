@@ -182,7 +182,7 @@
                     <div class="col-12">
                         <@s.submit name="save" key="button.save" cssClass="button btn btn-outline-gbif-primary"/>
                         <#if id?has_content>
-                            <@s.submit name="delete" key="button.delete" cssClass="button confirm btn btn-outline-danger"/>
+                            <@s.submit name="delete" key="button.delete" cssClass="button confirm btn btn-outline-gbif-danger"/>
                         </#if>
                         <@s.submit name="cancel" key="button.cancel" cssClass="button btn btn-outline-secondary"/>
                     </div>

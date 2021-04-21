@@ -200,7 +200,7 @@
 <#macro threeButtons>
     <div class="col-12 m-3">
         <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-        <@s.submit cssClass="confirm btn btn-outline-danger" name="delete" key="button.delete"/>
+        <@s.submit cssClass="confirm btn btn-outline-gbif-danger" name="delete" key="button.delete"/>
         <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
     </div>
 </#macro>
@@ -240,7 +240,7 @@
     <#assign p=field.term/>
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
-    <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 mappingRow<#if p.required> text-danger</#if> border-bottom" style="border-color: #dee2e6 !important;">
+    <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 mappingRow<#if p.required> text-gbif-danger</#if> border-bottom" style="border-color: #dee2e6 !important;">
             <div class="col-md-4 pt-1">
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
@@ -252,7 +252,7 @@
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
-                <strong class="<#if p.required> text-danger<#else>text-muted</#if>">
+                <strong class="<#if p.required> text-gbif-danger<#else>text-muted</#if>">
                     <#if !p.namespace?starts_with("http://purl.org/dc/")>
                         ${p.name}
                     <#elseif p.namespace?starts_with("http://purl.org/dc/terms")>

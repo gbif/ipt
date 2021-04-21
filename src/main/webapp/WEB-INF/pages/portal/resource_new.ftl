@@ -162,7 +162,7 @@
                         <#if resource.lastPublished?? && resource.organisation??>
                         <#-- the existence of parameter version means the version is not equal to the latest published version -->
                             <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                                <em class="text-danger"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                                <em class="text-gbif-danger"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
                             <#else>
                                 <@s.text name='portal.resource.latest.version'/>
                             </#if>
@@ -170,7 +170,7 @@
                             <#if action.getDefaultOrganisation()?? && resource.organisation.key.toString() == action.getDefaultOrganisation().key.toString()>
                                 ${publishedOnText?lower_case}&nbsp;<span property="dc:issued">${eml.pubDate?date?string.medium}</span>
                                 <br>
-                            <em class="text-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
+                            <em class="text-gbif-danger"><@s.text name='manage.home.not.registered.verbose'/></em>
                             <#else>
                                 <@s.text name='portal.resource.publishedOn'><@s.param>${resource.organisation.name}</@s.param></@s.text> <span property="dc:issued">${eml.pubDate?date?string.medium}</span>
                                 <span property="dc:publisher" style="display: none">${resource.organisation.name}</span>
@@ -191,7 +191,7 @@
                         </#if>
                         <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
                             <#if adminRights>
-                                <a class="confirmDeleteVersion btn btn-sm btn-outline-danger ignore-link-color mt-1 me-xl-1" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
+                                <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger ignore-link-color mt-1 me-xl-1" href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
                                     <@s.text name='button.delete.version'/>
                                 </a>
                             </#if>

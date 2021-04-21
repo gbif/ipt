@@ -148,7 +148,7 @@
                                 [@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary" name="save" key="button.save"/]
                             </li>
                             <li class="nav-item py-2 px-1">
-                                [@s.submit cssClass="confirm btn btn-sm btn-outline-danger" name="delete" key="button.delete"/]
+                                [@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger" name="delete" key="button.delete"/]
                             </li>
                             <li class="nav-item py-2 px-1">
                                 [@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/]
