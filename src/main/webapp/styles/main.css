@@ -7,11 +7,6 @@
 */
 
 /* Principle settings for all pages */
-/*html,*/
-/*body {*/
-/*    height: 100%;*/
-/*    !*overflow-x: hidden; !* Prevent scroll on narrow devices *!*!*/
-/*}*/
 
 body {
     font-family: Roboto,'Helvetica Neue',Helvetica,Arial,sans-serif !important;
@@ -182,7 +177,7 @@ a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color):hover {
     box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
 }
 
-.form-check-input:checked {
+.form-check-input:not(.is-invalid):checked {
     background-color: #61a861;
     border-color: #61a861;
 }
