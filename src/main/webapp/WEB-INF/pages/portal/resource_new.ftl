@@ -405,7 +405,7 @@
                         </#if>
                         <@s.text name='portal.resource.cite.help'/>:
                     </p>
-                    <p property="dc:bibliographicCitation" class="howtocite mt-3 p-3 border">
+                    <p property="dc:bibliographicCitation" class="howtocite mt-3 p-3 border overflow-x-auto">
                         <@textWithFormattedLink eml.citation.citation/>
                     </p>
                 </div>
@@ -723,7 +723,7 @@
 
                     <#if (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content)>
                         <p><@s.text name='rtf.methods.description'/>&#58;</p>
-                        <ol>
+                        <ol class="overflow-x-auto">
                             <#list eml.methodSteps as item>
                                 <#if (eml.methodSteps[item_index]?has_content)>
                                     <li>
@@ -823,7 +823,7 @@
                     <@s.text name='manage.metadata.citations.bibliography'/>
                 </h5>
 
-                <ol class="mx-md-4 mx-2">
+                <ol class="mx-md-4 mx-2 overflow-x-auto">
                     <#list eml.bibliographicCitationSet.bibliographicCitations as item>
                         <#if item.citation?has_content>
                             <li property="dc:references">
