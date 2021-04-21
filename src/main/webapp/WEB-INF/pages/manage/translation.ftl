@@ -72,7 +72,9 @@
                 </p>
                 <p class="mx-md-4 mx-2">
                     <em>${property.vocabulary.title!property.vocabulary.uriString}</em>:
-                    <a href="vocabulary.do?id=${property.vocabulary.uriString}" target="_blank"><img class="vocabImg" src="${baseURL}/images/vocabulary.png" /></a>
+                    <a href="vocabulary.do?id=${property.vocabulary.uriString}" target="_blank">
+                        <i class="bi bi-book"></i>
+                    </a>
                     &quot;${property.vocabulary.description!}&quot;
                 </p>
             </#if>
@@ -110,9 +112,17 @@
                         <td>${sourceValuesMap.get(k)!}</td>
                         <!-- do not show column if term does not relate to vocabulary -->
                         <#if (vocabTerms?size>0)>
-                            <td><img src="${baseURL}/images/<#if vocabTerms[tmap.get(k)!k]??>good<#else>bad</#if>.gif"/></td>
+                            <td>
+                                <#if vocabTerms[tmap.get(k)!k]??>
+                                    <i class="bi bi-check-circle text-gbif-primary"></i>
+                                <#else>
+                                    <i class="bi bi-exclamation-circle text-gbif-danger"></i>
+                                </#if>
+                            </td>
                         </#if>
-                        <td><input type="text" class="form-control" name="tmap['${k}']" value="${tmap.get(k)!}"/></td>
+                        <td>
+                            <input type="text" class="form-control" name="tmap['${k}']" value="${tmap.get(k)!}"/>
+                        </td>
                     </tr>
                 </#list>
             </table>
