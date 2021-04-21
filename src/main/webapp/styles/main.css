@@ -40,6 +40,10 @@ header, .dropdown-menu {
     font-size: 0.875rem !important;
 }
 
+.dropdown-item:active {
+    background-color: #61a861 !important;
+}
+
 .bg-gbif-green-gradient {
     background: linear-gradient(#78b578, #71b171) !important;
 }
