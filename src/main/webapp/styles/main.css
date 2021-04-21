@@ -45,7 +45,7 @@ header, .dropdown-menu {
 }
 
 .navbar-button {
-    color: #4E9D2D !important;
+    color: #61a861 !important;
 }
 
 .navbar-button:hover, .admin-item:hover {
@@ -146,6 +146,37 @@ a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
 /* GBIF red colored outline button END */
 
 
+/* Style form elements START */
+.form-control, .form-select, .form-control:focus, .form-select:focus {
+    color: #666;
+}
+
+.form-control:focus {
+    background-color: #fff;
+    border-color: #92c392;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
+}
+
+.form-select:focus {
+    border-color: #92c392;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
+}
+
+.form-check-input:focus {
+    border-color: #92c392;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #61a861;
+    border-color: #61a861;
+}
+/* Style form elements END */
+
+
 /* Published versions table separator */
 td.separator {
     border-right: 1px solid #EEEEEE;
@@ -161,7 +192,7 @@ td.left_padding {
 .page-link {
     position: relative;
     display: block;
-    color: #4E9D2D !important;
+    color: #61a861 !important;
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #dee2e6;
@@ -169,16 +200,16 @@ td.left_padding {
 }
 .page-link:hover {
     z-index: 2;
-    color: #4E9D2D !important;
+    color: #61a861 !important;
     background-color: #e9ecef;
     border-color: #dee2e6;
 }
 .page-link:focus {
     z-index: 3;
-    color: #4E9D2D !important;
+    color: #61a861 !important;
     background-color: #e9ecef;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(60, 153, 110, 0.5) !important;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25) !important;
 }
 
 .page-item:not(:first-child) .page-link {
@@ -187,8 +218,8 @@ td.left_padding {
 .page-item.active .page-link {
     z-index: 3;
     color: #fff !important;
-    background-color: #4E9D2D !important;
-    border-color: #4E9D2D !important;
+    background-color: #61a861 !important;
+    border-color: #61a861 !important;
 }
 .page-item.disabled .page-link {
     color: #6c757d !important;
@@ -244,7 +275,7 @@ td.left_padding {
 /* Style select2 component */
 .select2-container--bootstrap4 .select2-results__option--highlighted, .select2-container--bootstrap4 .select2-results__option--highlighted.select2-results__option[aria-selected="true"] {
     color: #fff;
-    background-color: #4E9D2D !important;
+    background-color: #61a861 !important;
 }
 
 
