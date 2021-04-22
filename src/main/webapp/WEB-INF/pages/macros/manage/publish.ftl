@@ -116,8 +116,5 @@
         <#else>
             <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
         </#if>
-
-        <br/>
-        <br/>
     </form>
 </#macro>
