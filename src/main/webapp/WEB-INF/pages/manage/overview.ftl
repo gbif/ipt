@@ -271,7 +271,7 @@
 
             <div class="row g-2 mx-md-4 mx-2">
                 <div class="col-md-9">
-                    <span class="text-muted">
+                    <span>
                         <@s.text name="manage.overview.description"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
                     </span>
                 </div>

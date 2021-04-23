@@ -52,7 +52,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
         ];
 
         $(document).ready(function() {
-            $('#tableContainer').html( '<table  class="table table-sm text-muted" id="rtable"></table>' );
+            $('#tableContainer').html( '<table  class="table table-sm" id="rtable"></table>' );
             $('#rtable').DataTable( {
                 "aaData": aDataSet,
                 "iDisplayLength": ${numResourcesShown},
@@ -62,7 +62,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
                     "sZeroRecords": "<@s.text name="dataTables.sZeroRecords.resources"/>",
                     "sInfo": "<@s.text name="dataTables.sInfo"/>",
-                    "sInfoEmpty": "<@s.text class="text-muted" name="dataTables.sInfoEmpty"/>",
+                    "sInfoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
                     "sInfoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
                     "sSearch": "<@s.text name="manage.mapping.filter"/>:",
                     "oPaginate": {

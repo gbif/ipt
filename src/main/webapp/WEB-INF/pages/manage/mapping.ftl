@@ -252,7 +252,7 @@
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
-                <strong class="<#if p.required> text-gbif-danger<#else>text-muted</#if>">
+                <strong class="<#if p.required>text-gbif-danger</#if>" >
                     <#if !p.namespace?starts_with("http://purl.org/dc/")>
                         ${p.name}
                     <#elseif p.namespace?starts_with("http://purl.org/dc/terms")>

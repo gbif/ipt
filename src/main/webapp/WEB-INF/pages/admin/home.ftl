@@ -70,7 +70,7 @@
 		</table>
 	</div>
 
-	<div class="my-3 p-3 bg-body rounded shadow-sm admin-item">
+	<div class="my-3 p-3 bg-body rounded shadow-sm <#if registeredIpt?has_content>admin-item</#if>">
 		<table id="admintable">
 			<tr>
 				<td>
@@ -82,7 +82,7 @@
 						</a>
 					<#else>
 						<span class="fa-stack fa-2x">
-							<i class="fa fa-university fa-stack-1x text-muted"></i>
+							<i class="fa fa-university fa-stack-1x"></i>
 						</span>
 					</#if>
 				</td>
@@ -91,7 +91,7 @@
 						<@s.text name="admin.home.editOrganisations"/>
 					</h6>
 					<#if !registeredIpt?has_content>
-						<small class="text-muted pt-0 mt-0">
+						<small class="pt-0 mt-0">
 							<@s.text name="admin.home.editOrganisations.disabled"/>
 						</small>
 					</#if>

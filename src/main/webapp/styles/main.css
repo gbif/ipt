@@ -11,11 +11,11 @@
 body {
     font-family: Roboto,'Helvetica Neue',Helvetica,Arial,sans-serif !important;
     padding-top: 4.5rem; /* Separates nav and main */
-    color: #666;
+    color: #4e565f;
 }
 
 table {
-    color: #666 !important;
+    color: #4e565f !important;
 }
 
 
@@ -155,7 +155,7 @@ a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color):hover {
 
 /* Style form elements START */
 .form-control, .form-select, .form-control:focus, .form-select:focus {
-    color: #666;
+    color: #212529;
 }
 
 .form-control:focus {
@@ -279,11 +279,16 @@ td.left_padding {
 /* Overlay div for modal views END */
 
 
-/* Style select2 component */
+/* Style select2 component START */
 .select2-container--bootstrap4 .select2-results__option--highlighted, .select2-container--bootstrap4 .select2-results__option--highlighted.select2-results__option[aria-selected="true"] {
-    color: #fff;
+    color: #fff !important;
     background-color: #61a861 !important;
 }
+
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
+    color: #212529 !important;
+}
+/* Style select2 component END */
 
 
 /* Style autocomplete component START */

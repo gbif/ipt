@@ -182,7 +182,7 @@
                 <div class="col-12">
                     <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" requiredField=true/>
 
-                    <div id="intellectualRightsDiv" class="text-muted mt-3 p-3 border">
+                    <div id="intellectualRightsDiv" class="mt-3 p-3 border">
                         <@licenseLogoClass eml.intellectualRights!/>
                         <#noescape>${eml.intellectualRights!}</#noescape>
                     </div>

@@ -19,7 +19,7 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
         ];
 
         $(document).ready(function() {
-            $('#tableContainer').html( '<table class="table table-sm text-muted" id="rtable"></table>' );
+            $('#tableContainer').html( '<table class="table table-sm" id="rtable"></table>' );
             $('#rtable').dataTable( {
                 "aaData": aDataSet,
                 "iDisplayLength": ${numUsersShown},

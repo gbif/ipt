@@ -165,15 +165,15 @@
                         </div>
 
                         <div class="col-12">
-                            <div id="validation-success" class="text-muted" style="display: none">
+                            <div id="validation-success" style="display: none">
                                 <@s.text name="admin.registration.validate.success"/>
                             </div>
 
-                            <div id="validation-failed-development" class="text-muted" style="display: none">
+                            <div id="validation-failed-development" style="display: none">
                                 <@s.text name="admin.registration.validate.failed.development"/>
                             </div>
 
-                            <div id="validation-failed" class="text-muted" style="display: none">
+                            <div id="validation-failed" style="display: none">
                                 <@s.text name="admin.registration.validate.failed"/>
                             </div>
                         </div>

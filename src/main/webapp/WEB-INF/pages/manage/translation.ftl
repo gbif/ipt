@@ -90,7 +90,7 @@
             <input type="hidden" name="term" value="${property.qualname}"/>
 
             <div class="mx-md-4 mx-2 table-responsive">
-                <table id="translation" class="simple table text-muted">
+                <table id="translation" class="simple table">
                 <colgroup>
                     <col width="400">
                     <!-- do not show column if term does not relate to vocabulary -->

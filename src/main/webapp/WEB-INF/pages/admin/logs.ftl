@@ -26,7 +26,7 @@
                 <@s.text name="admin.logs.download"><@s.param>logfile.do?log=debug</@s.param></@s.text>
             </p>
 
-            <pre id="logs" class="text-muted mx-md-4 mx-2"></pre>
+            <pre id="logs" class="mx-md-4 mx-2"></pre>
         </div>
     </div>
 </main>
