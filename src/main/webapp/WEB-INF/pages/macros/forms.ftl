@@ -131,8 +131,9 @@
 
     <#macro label i18nkey help="" requiredField=false>
         <div>
-            <label><@s.text name="${i18nkey}"/><#if requiredField>&#42;</#if></label>
-            <img style="visibility:hidden" src="${baseURL}/images/info.gif"/>
+            <label>
+                <@s.text name="${i18nkey}"/><#if requiredField>&#42;</#if>
+            </label>
             <#nested>
         </div>
     </#macro>
