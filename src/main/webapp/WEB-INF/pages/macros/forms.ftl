@@ -3,6 +3,7 @@
     <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1>
         <#if date>
             <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon.ftl">
             <div class="calendarInfo">
                 <input
                         class="form-control"
@@ -21,6 +22,7 @@
         <#else>
             <div>
                 <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+                <#include "/WEB-INF/pages/macros/help_icon.ftl">
                 <input
                         class="form-control"
                         type="${type}"
@@ -40,6 +42,7 @@
     <#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false maxlength=-1>
         <div>
             <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon.ftl">
             <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}" <#if (maxlength>0)>maxlength="${maxlength}" </#if><#if disabled>readonly="readonly"</#if>>
                       <#if value=="-99999">
                           <@s.property value="${name}"/>
@@ -50,6 +53,7 @@
             <#include "/WEB-INF/pages/macros/form_field_error.ftl">
         </div>
     </#macro>
+
     <#-- has no label or help icon, and is used exclusively on basic metadata page description textareas -->
     <#macro simpleText name value="-99999" errorfield="" size=40 rows=5 disabled=false requiredField=false maxlength=-1>
         <div>
@@ -80,7 +84,7 @@
     <#macro select name options value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false javaGetter=true requiredField=false>
         <div>
             <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-            <#include "/WEB-INF/pages/macros/form_field_error.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon.ftl">
             <select name="${name}" id="${name}" size="${size}" class="form-select" <#if disabled>readonly="readonly"</#if>>
                 <#if includeEmpty>
                     <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
@@ -91,14 +95,16 @@
                     </option>
                 </#list>
             </select>
+            <#include "/WEB-INF/pages/macros/form_field_error.ftl">
         </div>
     </#macro>
 
     <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false requiredField=false>
         <div>
             <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-            <#include "/WEB-INF/pages/macros/form_field_error.ftl">
+            <#include "/WEB-INF/pages/macros/help_icon.ftl">
             <@s.select id=name class="form-select" name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled emptyOption=includeEmpty/>
+            <#include "/WEB-INF/pages/macros/form_field_error.ftl">
         </div>
     </#macro>
 
@@ -118,6 +124,7 @@
 
     <#macro readonly name i18nkey value size=-1 help="" errorfield="" requiredField=false>
         <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+        <#include "/WEB-INF/pages/macros/help_icon.ftl">
         <input type="text" class="form-control" value="${value}" <#if (size>0)>size="${size}"</#if> readonly="readonly"/>
         <#include "/WEB-INF/pages/macros/form_field_error.ftl">
     </#macro>

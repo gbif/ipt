@@ -6,5 +6,4 @@
         <@s.text name="${i18nkey}"/>
     </#if>
     <#if requiredField>&#42;</#if>
-    <#include '/WEB-INF/pages/macros/help_icon.ftl'>
 </label>
