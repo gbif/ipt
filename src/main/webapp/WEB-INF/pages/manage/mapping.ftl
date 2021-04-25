@@ -187,6 +187,17 @@
             });
         });
     </script>
+<style>
+    @media (max-width: 800px) {
+        .second-nav {
+            display: none !important;
+        }
+
+        body {
+            padding-top: 72px !important;
+        }
+    }
+</style>
 
 <#assign currentMenu = "manage"/>
 <#assign auxTopNavbar = true />
@@ -241,7 +252,7 @@
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
     <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 mappingRow<#if p.required> text-gbif-danger</#if> border-bottom" style="border-color: #dee2e6 !important;">
-            <div class="col-md-4 pt-1">
+            <div class="col-lg-4 pt-1">
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
                     <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
@@ -263,7 +274,7 @@
                 </strong>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <select id="fIdx${fieldsIndex}" class="fidx form-select" name="fields[${fieldsIndex}].index">
                     <option value="" <#if !field.index??> selected="selected"</#if>></option>
                     <#list columns as col>
@@ -272,7 +283,7 @@
                 </select>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <#if p.vocabulary??>
                     <#assign vocab=vocabTerms[p.vocabulary.uriString] />
 
@@ -357,7 +368,7 @@
             </div>
 
             <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 requiredMapping">
-                <div class="col-md-4 pt-1" id="coreID">
+                <div class="col-lg-4 pt-1" id="coreID">
                         <#if coreid??>
                             <#assign text1>
                                 <#if coreid.description?has_content>${coreid.description}</#if>
@@ -374,7 +385,7 @@
                         <strong>${coreid.name!"Record ID"}</strong>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <select name="mapping.idColumn" id="idColumn" class="form-select">
                         <#if action.isCoreMapping()>
                             <option value="" <#if !mapping.idColumn??> selected="selected"<#elseif (mapping.idColumn!-99)==-3> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
@@ -390,7 +401,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <input type="text" name="mapping.idSuffix" value="${mapping.idSuffix!}" class="form-control" />
                 </div>
 
