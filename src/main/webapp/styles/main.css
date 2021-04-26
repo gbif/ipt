@@ -484,6 +484,12 @@ div.mappingFiler {
 }
 
 
+/* Pointer at info\warning icons */
+i {
+    cursor: pointer;
+}
+
+
 /* Utilities */
 .overflow-x-auto {
     overflow-x: auto !important;
