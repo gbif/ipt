@@ -34,7 +34,7 @@
                 <div class="col-lg-3">
                     <strong><@s.text name="basic.link"/></strong>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-9 overflow-x-auto">
                     <a href="${extension.link}">${extension.link}</a>
                 </div>
             </div>
@@ -67,14 +67,14 @@
             <div class="col-lg-3">
                 <strong><@s.text name="basic.namespace"/></strong>
             </div>
-            <div class="col-lg-9">${extension.namespace}</div>
+            <div class="col-lg-9 overflow-x-auto">${extension.namespace}</div>
         </div>
 
         <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
             <div class="col-lg-3">
                 <strong><@s.text name="extension.rowtype"/></strong>
             </div>
-            <div class="col-lg-9">${extension.rowType}</div>
+            <div class="col-lg-9 overflow-x-auto">${extension.rowType}</div>
         </div>
 
         <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
@@ -102,7 +102,7 @@
                 <div class="col-lg-3">
                     <a name="${p.qualname}"></a>
                     <div class="title">
-                        <div class="head">
+                        <div class="head overflow-x-auto">
                             <strong>${p.name}</strong>
                         </div>
                     </div>
@@ -111,10 +111,16 @@
                 <div class="col-lg-9">
                     <div class="definition">
                         <div class="body">
-                            <p class="overflow-x-auto">
-                                <#if p.description?has_content>${p.description}<br/></#if>
-                                <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a></#if>
-                            </p>
+                            <#if p.description?has_content>
+                                <p class="overflow-x-auto">
+                                    ${p.description}
+                                </p>
+                            </#if>
+                            <#if p.link?has_content>
+                                <p class="overflow-x-auto">
+                                    <@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a>
+                                </p>
+                            </#if>
                             <#if p.examples?has_content>
                                 <p class="overflow-x-auto">
                                     <em><@s.text name="basic.examples"/></em>: ${p.examples}
@@ -126,7 +132,7 @@
                                     <a href="vocabulary.do?id=${p.vocabulary.uriString}">${p.vocabulary.title}</a>
                                 </p>
                             </#if>
-                            <div class="details">
+                            <div class="details table-responsive">
                                 <table>
                                     <tr><th><@s.text name="extension.prop.qname"/></th><td>${p.qualname}</td></tr>
                                     <tr><th><@s.text name="basic.namespace"/></th><td>${p.namespace}</td></tr>

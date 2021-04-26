@@ -42,11 +42,14 @@
                 <div class="definition">
                     <div class="body">
                         <div>
-                            <p class="overflow-x-auto">${ext.description!}
-                                <#if ext.link?has_content>
-                                    <br/><div class="text-truncate" ><@s.text name="basic.seealso"/> <a  href="${ext.link}">${ext.link}</a></div>
-                                </#if>
+                            <p class="overflow-x-auto">
+                                ${ext.description!}
                             </p>
+                            <#if ext.link?has_content>
+                                <p class="overflow-x-auto">
+                                    <@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a>
+                                </p>
+                            </#if>
                         </div>
                         <div class="details table-responsive">
                             <table class="table table-sm table-borderless">

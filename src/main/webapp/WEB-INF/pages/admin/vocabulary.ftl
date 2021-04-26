@@ -34,7 +34,7 @@
                 <div class="col-lg-3">
                     <strong><@s.text name="basic.link"/></strong>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-9 overflow-x-auto">
                     <a href="${vocabulary.link}">${vocabulary.link}</a>
                 </div>
             </div>
@@ -60,7 +60,7 @@
             <div class="col-lg-3">
                 <strong><@s.text name="basic.identifier"/></strong>
             </div>
-            <div class="col-lg-9">${vocabulary.uriString}</div>
+            <div class="col-lg-9 overflow-x-auto">${vocabulary.uriString}</div>
         </div>
 
         <#if vocabulary.subject??>
@@ -112,7 +112,7 @@
                             <@s.text name="vocabulary.terms.alt"/>:
                             <em><#list c.alternativeTerms as t>${t.title} <span class="small">[${t.lang}]</span>; </#list></em>
                         </p>
-                        <div class="details">
+                        <div class="details table-responsive">
                             <table>
                                 <tr><th><@s.text name="basic.identifier"/></th><td>${c.identifier}</td></tr>
                                 <tr><th><@s.text name="vocabulary.uri"/></th><td>${c.uri}</td></tr>
