@@ -157,7 +157,7 @@
             </#if>
 
             <div class="row g-2">
-                <div class="col-xl-8">
+                <div class="col-xl-8 pt-1">
                     <span class="fst-italic">
                         <#if resource.lastPublished?? && resource.organisation??>
                         <#-- the existence of parameter version means the version is not equal to the latest published version -->
@@ -197,10 +197,12 @@
                             </#if>
                         </#if>
                         <#if doi?has_content && doiUrl?has_content>
-                            <a property="dc:identifier" class="btn btn-sm btn-outline-gbif-primary ignore-link-color mt-1 me-xl-1 doi" href="${doiUrl!}">
-                                <span class="doi">DOI</span>
-                                ${doi}
-                            </a>
+                            <div class="btn-group mt-1 me-xl-1">
+                                <span class="btn btn-sm doi">DOI</span>
+                                <a property="dc:identifier" class="btn btn-sm btn-outline-gbif-primary ignore-link-color" href="${doiUrl!}">
+                                    ${doi}
+                                </a>
+                            </div>
                         </#if>
                     </div>
                 </div>

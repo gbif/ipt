@@ -381,15 +381,9 @@ td.left_padding {
 
 
 /* DOI styling START */
-a.doi {
-    padding-left: 0;
-    border-right-width: 2px;
-}
-
 span.doi {
-    background: #198754;
-    color: white;
-    padding: 6px 10px 7px 10px;
+    background: #61a861;
+    color: #fff;
 }
 /* DOI styling END */
 
