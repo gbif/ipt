@@ -31,7 +31,7 @@
         <#list vocabulary.concepts as c>
             <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
                 <div class="col-lg-3">
-                    <strong class="text-muted">${c.identifier}</strong>
+                    <strong>${c.identifier}</strong>
                 </div>
 
                 <div class="col-lg-9">
