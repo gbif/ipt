@@ -285,6 +285,12 @@ td.left_padding {
     background-color: #61a861 !important;
 }
 
+.select2-container--bootstrap4.select2-container--focus .select2-selection {
+    border-color: #92c392 !important;
+    -webkit-box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25) !important;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25) !important;
+}
+
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
     color: #212529 !important;
 }
