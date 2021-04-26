@@ -98,24 +98,30 @@
 
                 <div class="col-lg-9">
                     <div class="body">
-                        <#if c.description?has_content || c.link?has_content>
-                            <p>
+                        <#if c.description?has_content>
+                            <p class="overflow-x-auto">
                                 ${c.description!}
-                                <#if c.link?has_content><br/><a href="${c.link}"><@s.text name="basic.seealso"/> ${c.link}</a></#if>
+                            </p>
+                        </#if>
+                        <#if c.link?has_content>
+                            <p class="overflow-x-auto">
+                                <a href="${c.link}"><@s.text name="basic.seealso"/> ${c.link}</a>
                             </p>
                         </#if>
                         <p>
                             <@s.text name="vocabulary.terms.pref"/>:
                             <em><#list c.preferredTerms as t>${t.title} <span class="small">[${t.lang}]</span>; </#list></em>
                         </p>
-                        <p>
-                            <@s.text name="vocabulary.terms.alt"/>:
-                            <em><#list c.alternativeTerms as t>${t.title} <span class="small">[${t.lang}]</span>; </#list></em>
-                        </p>
+                        <#if c.alternativeTerms?has_content>
+                            <p>
+                                <@s.text name="vocabulary.terms.alt"/>:
+                                <em><#list c.alternativeTerms as t>${t.title} <span class="small">[${t.lang}]</span>; </#list></em>
+                            </p>
+                        </#if>
                         <div class="details table-responsive">
                             <table>
-                                <tr><th><@s.text name="basic.identifier"/></th><td>${c.identifier}</td></tr>
-                                <tr><th><@s.text name="vocabulary.uri"/></th><td>${c.uri}</td></tr>
+                                <tr><th class="pe-md-4 pe-2"><@s.text name="basic.identifier"/></th><td>${c.identifier}</td></tr>
+                                <tr><th class="pe-md-4 pe-2"><@s.text name="vocabulary.uri"/></th><td>${c.uri}</td></tr>
                             </table>
                         </div>
                     </div>

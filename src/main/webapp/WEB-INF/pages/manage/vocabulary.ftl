@@ -41,7 +41,7 @@
                         </div>
                     </#if>
                     <#if c.link?has_content>
-                        <div>
+                        <div class="overflow-x-auto">
                             <@s.text name="basic.seealso"/>: <a href="${c.link}">${c.link}</a>
                         </div>
                     </#if>
