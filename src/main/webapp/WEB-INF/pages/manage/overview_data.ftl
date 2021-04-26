@@ -43,11 +43,11 @@
                                         <td class="d-flex justify-content-end">
                                           <div class="btn-group" role="group">
                                             <#if src.isFileSource() || src.isExcelSource()>
-                                            <a class="btn btn-sm btn-outline-secondary ignore-link-color" role="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank" title="<@s.text name='manage.overview.source.download'/>">
+                                            <a class="btn btn-sm btn-outline-secondary" role="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank" title="<@s.text name='manage.overview.source.download'/>">
                                               <i class="bi bi-download"></i>
                                             </a>
                                             </#if>
-                                            <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
+                                            <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                                               <@s.text name='button.edit'/>
                                             </a>
                                           </div>
@@ -122,10 +122,10 @@
                                     <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                     <td class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
-                                            <a class="btn btn-sm btn-outline-secondary ignore-link-color peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                            <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                            <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <@s.text name='button.edit'/>
                                             </a>
                                         </div>
@@ -146,10 +146,10 @@
                                                 <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="btn-group" role="group">
-                                                        <a class="btn btn-sm btn-outline-secondary ignore-link-color peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                        <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                        <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <@s.text name='button.edit'/>
                                                         </a>
                                                     </div>

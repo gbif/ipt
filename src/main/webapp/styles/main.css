@@ -70,13 +70,13 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link) {
     color: #4BA2CE !important;
     text-decoration: none !important;
 }
 
-a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color):focus,
-a:not(.navbar-brand, .nav-link, .menu-link, .ignore-link-color):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link):hover {
     color: #2c79a1 !important;
     text-decoration: underline !important;
 }

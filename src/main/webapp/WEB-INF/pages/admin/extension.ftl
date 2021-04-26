@@ -86,7 +86,7 @@
             </div>
 
             <div class="mx-md-4 mx-2 mt-2">
-                <a href="extensions.do" class="btn btn-outline-secondary ignore-link-color">
+                <a href="extensions.do" class="btn btn-outline-secondary">
                     <@s.text name="button.back"/>
                 </a>
             </div>

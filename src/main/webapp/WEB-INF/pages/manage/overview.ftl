@@ -397,17 +397,17 @@
                                     <#if resource.lastPublished??>
                                         <td class="separator text-gbif-primary">
                                             ${resource.emlVersion.toPlainString()}&nbsp;
-                                            <a class="btn btn-sm btn-outline-gbif-primary ignore-link-color" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a>
+                                            <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a>
                                             <@dwcaValidator/>
                                         </td>
                                         <td class="left_padding">
                                             ${resource.getNextVersion().toPlainString()}&nbsp;
-                                            <a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
+                                            <a class="btn btn-sm <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
                                         </td>
                                     <#else>
                                         <td>
                                             ${resource.getNextVersion().toPlainString()}&nbsp;
-                                            <a class="btn btn-sm ignore-link-color <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
+                                            <a class="btn btn-sm <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
                                         </td>
                                     </#if>
                                 </tr>
@@ -502,7 +502,7 @@
                                     <tr>
                                         <th>${pubLogTitle?cap_first}</th>
                                         <td class="separator">
-                                            <a class="button ignore-link-color" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
+                                            <a class="button" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
                                                 <input class="button btn btn-sm btn-outline-gbif-primary" type="button" value='${downloadTitle?cap_first}'/>
                                             </a>
                                         </td>
@@ -780,7 +780,7 @@
                                                 ${u.name}, ${u.email}&nbsp;
                                             </td>
                                             <td class="d-flex justify-content-end">
-                                                <a class="button btn btn-sm btn-outline-gbif-danger ignore-link-color" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
                                                     <@s.text name='button.delete'/>
                                                 </a>
                                             </td>

@@ -81,7 +81,7 @@
                                 <tr>
                                     <th>
                                         <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="analyze" key="button.analyze"/>
-                                        <a href="#" id="peekBtn" class="btn btn-sm btn-outline-secondary ignore-link-color my-1">
+                                        <a href="#" id="peekBtn" class="btn btn-sm btn-outline-secondary my-1">
                                             <i class="bi bi-eye"></i>
                                         </a>
                                     </th>
