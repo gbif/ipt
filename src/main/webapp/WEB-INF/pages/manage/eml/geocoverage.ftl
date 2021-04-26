@@ -163,56 +163,54 @@
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <main class="container">
-    <div class="row g-3">
-        <div class="p-3 bg-body rounded shadow-sm">
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
-            <@s.text name='manage.metadata.geocoverage.title'/>:
-            <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-        </h5>
+    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+        <@s.text name='manage.metadata.geocoverage.title'/>:
+        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+    </h5>
 
-        <p class="mx-md-4 mx-2"><@s.text name='manage.metadata.geocoverage.intro'/></p>
+    <p class="mx-md-4 mx-2"><@s.text name='manage.metadata.geocoverage.intro'/></p>
 
-        <div id="map" class="mx-md-4 mx-2"></div>
+    <div id="map" class="mx-md-4 mx-2"></div>
 
-        <div id="bbox" class="row mx-md-3 mx-1 g-3">
-            <div class="col-12">
-                <@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
+    <div id="bbox" class="row mx-md-3 mx-1 g-3">
+        <div class="col-12">
+            <@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
+        </div>
+        <div id="coordinates" class="row g-3 mt-0">
+            <div class="col-md-6">
+                <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
             </div>
-            <div id="coordinates" class="row g-3 mt-0">
-                <div class="col-md-6">
-                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
-                </div>
-                <div class="col-md-6">
-                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude" requiredField=true />
-                </div>
-                <div class="col-md-6">
-                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude" requiredField=true />
-                </div>
-                <div class="col-md-6">
-                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
-                </div>
+            <div class="col-md-6">
+                <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude" requiredField=true />
+            </div>
+            <div class="col-md-6">
+                <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude" requiredField=true />
+            </div>
+            <div class="col-md-6">
+                <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
             </div>
         </div>
+    </div>
 
-        <div class="row g-3 mx-md-3 mx-1 mt-2">
-            <div class="col-12">
-                <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true />
-            </div>
-
-            <div class="col-12">
-                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
-                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
-            </div>
+    <div class="row g-3 mx-md-3 mx-1 mt-2">
+        <div class="col-12">
+            <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true />
         </div>
 
+        <div class="col-12">
+            <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
+            <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
+        </div>
+    </div>
 
-        <!-- internal parameter -->
-        <input name="r" type="hidden" value="${resource.shortname}" />
-    </div>
-    </div>
+
+    <!-- internal parameter -->
+    <input name="r" type="hidden" value="${resource.shortname}" />
+</div>
 </main>
     </form>
 

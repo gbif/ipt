@@ -5,7 +5,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
 <main class="container">
-    <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
 
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
@@ -22,7 +22,7 @@
         </p>
     </div>
 
-    <div class="my-3 p-3 bg-body rounded shadow-sm" id="summary">
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
         <form class="needs-validation" action="account.do" method="post" novalidate>
             <input type="hidden" name="id" value="${user.email!}" required>
 

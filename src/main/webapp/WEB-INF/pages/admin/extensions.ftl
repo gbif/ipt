@@ -72,136 +72,134 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
     <main class="container">
-        <div class="row g-3">
-            <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
-                    <@s.text name="admin.extension.coreTypes"/>
-                </h5>
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+                <@s.text name="admin.extension.coreTypes"/>
+            </h5>
 
-                <p class="mx-md-4 mx-2">
-                    <@s.text name="admin.extension.no.coreTypes.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
-                </p>
+            <p class="mx-md-4 mx-2">
+                <@s.text name="admin.extension.no.coreTypes.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+            </p>
 
-                <#assign count=0>
+            <#assign count=0>
 
-                <#list extensions as ext>
-                    <#if ext.core>
-                        <#assign count=count+1>
-                        <@extensionRow ext/>
-                    </#if>
-                </#list>
-
-                <#if count=0>
-                    <p class="text-gbif-danger mx-md-4 mx-2 mb-0">
-                        <@s.text name="admin.extension.no.coreTypes.installed"/>
-                    </p>
-                    <p class="mx-md-4 mx-2">
-                        <span class="badge rounded-pill bg-warning">
-                            <i class="bi bi-exclamation-triangle" style="color: black;"></i>
-                        </span>
-                        <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
-                    </p>
-                </#if>
-
-            </div>
-
-            <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
-                    <@s.text name="admin.extension.extensions"/>
-                </h5>
-
-                <p class="mx-md-4 mx-2 mb-0">
-                    <@s.text name="admin.extension.no.extensions.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
-                </p>
-
-                <#assign count=0>
-                <#list extensions as ext>
-                    <#if !ext.core>
-                        <#assign count=count+1>
-                        <@extensionRow ext/>
-                    </#if>
-                </#list>
-                <#if count=0>
-                    <p class="text-gbif-danger mx-md-4 mx-2">
-                        <@s.text name="admin.extension.no.extensions.installed"/>
-                    </p>
-                </#if>
-            </div>
-
-            <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
-                    <@s.text name="extension.synchronise.title"/>
-                </h5>
-
-                <p class="mx-md-4 mx-2 mb-0">
-                    <@s.text name="admin.extensions.synchronise.help"/>
-                </p>
-
-                <#if lastSynchronised?has_content>
-                    <p><@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?date?string("yyyy-MM-dd HH:mm:ss")}</@s.param></@s.text></p>
-                </#if>
-
-                <form action='extensions.do' method='post'>
-                    <div class="col-12 mt-2 mx-md-4 mx-2">
-                        <@s.submit name="synchronise" cssClass="btn btn-outline-gbif-primary" key="button.synchronise"/>
-                    </div>
-                </form>
-            </div>
-
-            <div class="my-3 p-3 bg-body rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
-                    <@s.text name="extension.further.title"/>
-                </h5>
-
-                <p class="mx-md-4 mx-2 mb-0">
-                    <@s.text name="extension.further.title.help"/>
-                </p>
-
-                <#assign count=0>
-                <#list newExtensions as ext>
+            <#list extensions as ext>
+                <#if ext.core>
                     <#assign count=count+1>
-                    <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
-                        <div class="col-md-3">
-                            <div class="title">
-                                <div class="head">
-                                    ${ext.title}
-                                </div>
-                                <div class="actions">
-                                    <form action='extension.do' method='post'>
-                                        <input type='hidden' name='url' value='${ext.url}' />
-                                        <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
-                                    </form>
-                                </div>
+                    <@extensionRow ext/>
+                </#if>
+            </#list>
+
+            <#if count=0>
+                <p class="text-gbif-danger mx-md-4 mx-2 mb-0">
+                    <@s.text name="admin.extension.no.coreTypes.installed"/>
+                </p>
+                <p class="mx-md-4 mx-2">
+                    <span class="badge rounded-pill bg-warning">
+                        <i class="bi bi-exclamation-triangle" style="color: black;"></i>
+                    </span>
+                    <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+                </p>
+            </#if>
+
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
+                <@s.text name="admin.extension.extensions"/>
+            </h5>
+
+            <p class="mx-md-4 mx-2 mb-0">
+                <@s.text name="admin.extension.no.extensions.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+            </p>
+
+            <#assign count=0>
+            <#list extensions as ext>
+                <#if !ext.core>
+                    <#assign count=count+1>
+                    <@extensionRow ext/>
+                </#if>
+            </#list>
+            <#if count=0>
+                <p class="text-gbif-danger mx-md-4 mx-2">
+                    <@s.text name="admin.extension.no.extensions.installed"/>
+                </p>
+            </#if>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
+                <@s.text name="extension.synchronise.title"/>
+            </h5>
+
+            <p class="mx-md-4 mx-2 mb-0">
+                <@s.text name="admin.extensions.synchronise.help"/>
+            </p>
+
+            <#if lastSynchronised?has_content>
+                <p><@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?date?string("yyyy-MM-dd HH:mm:ss")}</@s.param></@s.text></p>
+            </#if>
+
+            <form action='extensions.do' method='post'>
+                <div class="col-12 mt-2 mx-md-4 mx-2">
+                    <@s.submit name="synchronise" cssClass="btn btn-outline-gbif-primary" key="button.synchronise"/>
+                </div>
+            </form>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
+                <@s.text name="extension.further.title"/>
+            </h5>
+
+            <p class="mx-md-4 mx-2 mb-0">
+                <@s.text name="extension.further.title.help"/>
+            </p>
+
+            <#assign count=0>
+            <#list newExtensions as ext>
+                <#assign count=count+1>
+                <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
+                    <div class="col-md-3">
+                        <div class="title">
+                            <div class="head">
+                                ${ext.title}
+                            </div>
+                            <div class="actions">
+                                <form action='extension.do' method='post'>
+                                    <input type='hidden' name='url' value='${ext.url}' />
+                                    <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
+                                </form>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-9">
-                            <div class="definition">
-                                <div class="body">
-                                    <div>
-                                        <p class="overflow-x-auto">${ext.description!}</p>
-                                    </div>
-                                    <div class="details table-responsive">
-                                        <table class="table table-sm table-borderless">
-                                            <tr><th class="col-3"><@s.text name="extension.rowtype"/></th><td>${ext.rowType!}</td></tr>
-                                            <tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
-                                        </table>
-                                    </div>
+                    <div class="col-md-9">
+                        <div class="definition">
+                            <div class="body">
+                                <div>
+                                    <p class="overflow-x-auto">${ext.description!}</p>
+                                </div>
+                                <div class="details table-responsive">
+                                    <table class="table table-sm table-borderless">
+                                        <tr><th class="col-3"><@s.text name="extension.rowtype"/></th><td>${ext.rowType!}</td></tr>
+                                        <tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </#list>
+                </div>
+            </#list>
 
-                <#if count=0>
-                    <p class="text-gbif-primary mx-md-4 mx-2 mt-2">
-                        <@s.text name="extension.already.installed"/>
-                    </p>
-                </#if>
+            <#if count=0>
+                <p class="text-gbif-primary mx-md-4 mx-2 mt-2">
+                    <@s.text name="extension.already.installed"/>
+                </p>
+            </#if>
 
-            </div>
         </div>
     </main>
 
