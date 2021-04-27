@@ -457,7 +457,7 @@
             <#list fieldsByGroup?keys as g>
                 <#assign groupsFields = fieldsByGroup.get(g)/>
                 <#if (groupsFields?size>0)>
-                    <div class="my-3 p-3 bg-body rounded shadow-sm">
+                    <div class="my-3 p-3 bg-body rounded shadow-sm <#if redundants?seq_contains(g)>redundant</#if>">
                         <div id="group_${g}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
                             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">${g}</h5>
                             <#list groupsFields as field>
