@@ -15,7 +15,7 @@
             <div class="col-lg-3">
                 <strong><@s.text name="basic.title"/></strong>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9 overflow-x-auto">
                 ${extension.title}
             </div>
         </div>
@@ -24,7 +24,7 @@
             <div class="col-lg-3">
                 <strong><@s.text name="basic.description"/></strong>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9 overflow-x-auto">
                 ${extension.description}
             </div>
         </div>

@@ -16,10 +16,10 @@
         <p class="mx-md-4 mx-2">${vocabulary.description!}</p>
 
         <#if vocabulary.subject?has_content>
-            <p><@s.text name="basic.keywords"/>: ${vocabulary.subject}</p>
+            <p class="mx-md-4 mx-2"><@s.text name="basic.keywords"/>: ${vocabulary.subject}</p>
         </#if>
         <#if vocabulary.link?has_content>
-            <p><@s.text name="basic.link"/>: <a href="${vocabulary.link}">${vocabulary.link}</a></p>
+            <p class="mx-md-4 mx-2"><@s.text name="basic.link"/>: <a href="${vocabulary.link}">${vocabulary.link}</a></p>
         </#if>
     </div>
 
