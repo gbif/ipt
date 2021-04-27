@@ -495,6 +495,10 @@ i {
     overflow-x: auto !important;
 }
 
+.overflow-x-hidden {
+    overflow-x: hidden !important;
+}
+
 .text-smaller {
     font-size: 0.875rem !important;
 }
