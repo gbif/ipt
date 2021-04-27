@@ -489,6 +489,10 @@ i {
     cursor: pointer;
 }
 
+.icon-validate {
+    padding: 0 !important;
+}
+
 
 /* Utilities */
 .overflow-x-auto {
