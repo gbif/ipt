@@ -251,7 +251,7 @@
     <#assign p=field.term/>
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
-    <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 mappingRow<#if p.required> text-gbif-danger</#if> border-bottom" style="border-color: #dee2e6 !important;">
+    <div class="row mx-md-3 mx-1 p-2 pb-3 g-2 mappingRow border-bottom">
             <div class="col-lg-4 pt-1">
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
