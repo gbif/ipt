@@ -575,7 +575,7 @@
                             </#if>
                         </p>
 
-                        <div class="details">
+                        <div class="details table-responsive">
                             <table class="table table-sm table-borderless text-smaller">
                                 <#if resource.usesAutoPublishing()>
                                     <tr>
@@ -643,12 +643,12 @@
                             </p>
 
                             <div class="alert alert-warning" role="alert">
-                                <i class="bi bi-exclamation-triangle" style="color: black;"></i>
+                                <i class="bi bi-exclamation-triangle text-muted"></i>
                                 <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
                             </div>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
-                                <div class="details">
+                                <div class="details table-responsive">
                                     <table class="table table-sm table-borderless text-smaller">
                                         <tr>
                                             <th class="col-4">GBIF UUID</th>
@@ -765,7 +765,7 @@
                             <@s.text name="manage.overview.resource.managers.intro"><@s.param>${resource.shortname}</@s.param></@s.text>
                         </p>
 
-                        <div class="details">
+                        <div class="details table-responsive">
                             <table class="table table-sm table-borderless text-smaller">
                                 <tr>
                                     <th class="col-4"><@s.text name="manage.overview.resource.managers.creator"/></th>
