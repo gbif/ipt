@@ -1,5 +1,5 @@
 <#ftl output_format="HTML">
-<footer class="footer mt-auto text-muted text-center py-3" style='font-size: 0.875rem !important;'>
+<footer class="footer mt-auto text-muted text-center text-smaller py-3">
     <div class="container">
         <div class="mb-1">
             <img class="footer-gbif-logo" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>

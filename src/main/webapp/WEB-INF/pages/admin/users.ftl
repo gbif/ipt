@@ -29,7 +29,7 @@
             </h5>
 
             <@usersTable numUsersShown=20 sEmptyTable="dataTables.sEmptyTable.users" columnToSortOn=0 sortOrder="asc" />
-            <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2"></div>
+            <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2"></div>
 
             <div class="mx-md-4 mx-2 mt-2">
                 <button id="create" class="btn btn-outline-gbif-primary"><@s.text name="button.create"/></button>

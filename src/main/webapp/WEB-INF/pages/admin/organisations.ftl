@@ -38,7 +38,7 @@
             </h5>
 
             <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
-            <div id="tableContainer" class="table-responsive mx-md-4 mx-2 pt-2"></div>
+            <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2"></div>
 
             <div class="mx-md-4 mx-2 mt-2">
                 <button id="add" class="btn btn-outline-gbif-primary"><@s.text name="button.add"/></button>
