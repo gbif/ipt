@@ -17,6 +17,7 @@
     <#if !organisationWithPrimaryDoiAccount??>
 
         <a tabindex="0" role="button"
+           class="popover-link"
            data-bs-toggle="popover"
            data-bs-trigger="focus"
            data-bs-html="true"
@@ -27,6 +28,7 @@
     <#elseif !currentUser.hasRegistrationRights()>
 
         <a tabindex="0" role="button"
+           class="popover-link"
            data-bs-toggle="popover"
            data-bs-trigger="focus"
            data-bs-html="true"
@@ -264,6 +266,7 @@
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
                 <a tabindex="0" role="button"
+                   class="popover-link"
                    data-bs-toggle="popover"
                    data-bs-trigger="focus"
                    data-bs-html="true"

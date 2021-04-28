@@ -1,6 +1,7 @@
 <#ftl output_format="HTML">
 <#macro popoverPropertyWarning propertyName>
     <a tabindex="0" role="button"
+       class="popover-link"
        data-bs-toggle="popover"
        data-bs-trigger="focus"
        data-bs-html="true"
@@ -11,6 +12,7 @@
 
 <#macro popoverPropertyInfo propertyName>
     <a tabindex="0" role="button"
+       class="popover-link"
        data-bs-toggle="popover"
        data-bs-trigger="focus"
        data-bs-html="true"
@@ -21,6 +23,7 @@
 
 <#macro popoverTextWarning text>
     <a tabindex="0" role="button"
+       class="popover-link"
        data-bs-toggle="popover"
        data-bs-trigger="focus"
        data-bs-html="true"
@@ -31,6 +34,7 @@
 
 <#macro popoverTextInfo text>
     <a tabindex="0" role="button"
+       class="popover-link"
        data-bs-toggle="popover"
        data-bs-trigger="focus"
        data-bs-html="true"

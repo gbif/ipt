@@ -118,6 +118,7 @@
                                     <@s.text name="admin.organisation.key"/>
                                 </label>
                                 <a tabindex="0" role="button"
+                                   class="popover-link"
                                    data-bs-toggle="popover"
                                    data-bs-trigger="focus"
                                    data-bs-html="true"

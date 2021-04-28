@@ -70,13 +70,13 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link) {
     color: #4BA2CE !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):hover {
     color: #2c79a1 !important;
     text-decoration: underline !important;
 }
@@ -491,6 +491,11 @@ i {
 
 .icon-validate {
     padding: 0 !important;
+}
+
+/* No decoration for popovers */
+a.popover-link, a.popover-link:hover, a.popover-link:focus {
+    text-decoration: none !important;
 }
 
 

@@ -19,6 +19,7 @@
                         <a href="extension.do?id=${ext.rowType?url}">${ext.title}</a>
                         <#if !ext.isLatest()>
                             <a tabindex="0" role="button"
+                               class="popover-link"
                                data-bs-toggle="popover"
                                data-bs-trigger="focus"
                                data-bs-html="true"
