@@ -194,7 +194,7 @@
         }
 
         body {
-            padding-top: 72px !important;
+            padding-top: 3.5rem !important;
         }
     }
 </style>

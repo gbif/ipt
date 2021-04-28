@@ -5,7 +5,7 @@
 <style>
     /* Increase padding when the second nav is enabled */
     body {
-        padding-top: 120px;
+        padding-top: 6.5rem;
     }
 
     .second-nav {
