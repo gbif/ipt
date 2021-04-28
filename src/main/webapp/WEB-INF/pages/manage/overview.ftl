@@ -16,22 +16,30 @@
     and the user must have registration rights for any DOI operation made possible -->
     <#if !organisationWithPrimaryDoiAccount??>
 
-        <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>">
+        <a tabindex="0" role="button"
+           data-bs-toggle="popover"
+           data-bs-trigger="focus"
+           data-bs-html="true"
+           data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>">
             <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-        </span>
+        </a>
 
     <#elseif !currentUser.hasRegistrationRights()>
 
-        <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>" escapeHtml=true/>">
+        <a tabindex="0" role="button"
+           data-bs-toggle="popover"
+           data-bs-trigger="focus"
+           data-bs-html="true"
+           data-bs-content="<@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>">
             <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-        </span>
+        </a>
 
     <#elseif resource.identifierStatus == "UNRESERVED">
         <form action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
             <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-gbif-primary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
+                <button type="button" class="btn btn-outline-gbif-primary" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle"></i>
                 </button>
                 <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
@@ -44,7 +52,7 @@
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
             <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-gbif-danger" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
+                <button type="button" class="btn btn-outline-gbif-danger" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle"></i>
                 </button>
                 <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
@@ -57,7 +65,7 @@
             <input name="r" type="hidden" value="${resource.shortname}"/>
 
             <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-gbif-primary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
+                <button type="button" class="btn btn-outline-gbif-primary" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>">
                     <i class="bi bi-info-circle"></i>
                 </button>
                 <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
@@ -255,7 +263,11 @@
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
-                <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
+                <a tabindex="0" role="button"
+                   data-bs-toggle="popover"
+                   data-bs-trigger="focus"
+                   data-bs-html="true"
+                   data-bs-content="
                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                             <@s.text name="manage.overview.intro.metadataOnly"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
                         <#else>
@@ -263,7 +275,7 @@
                         </#if>
                     ">
                     <i class="bi bi-info-circle text-gbif-primary"></i>
-                </span>
+                </a>
 
                 <span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
@@ -294,7 +306,7 @@
                                     <#assign resourceUndeleteInfo>
                                         <@s.text name="manage.resource.status.undeletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
                                     </#assign>
-                                    <button type="button" class="btn btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
+                                    <button type="button" class="btn btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
                                         <i class="bi bi-exclamation-triangle"></i>
                                     </button>
                                     <@s.submit cssClass="btn btn-sm btn-outline-secondary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
@@ -312,7 +324,7 @@
                                     <#assign resourceUndeleteInfo>
                                         <@s.text name="manage.resource.status.deletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
                                     </#assign>
-                                    <button type="button" class="btn btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
+                                    <button type="button" class="btn btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
                                         <i class="bi bi-exclamation-triangle"></i>
                                     </button>
                                     <@s.submit cssClass="btn btn-sm btn-outline-secondary confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}' />
@@ -598,7 +610,7 @@
                             <input name="r" type="hidden" value="${resource.shortname}"/>
                             <#if resource.isDeprecatedAutoPublishingConfiguration()>
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>">
+                                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>">
                                         <i class="bi bi-exclamation-triangle"></i>
                                     </button>
                                     <@s.submit name="edit" cssClass="btn btn-sm btn-outline-warning" key="button.edit"/>
@@ -694,7 +706,7 @@
                                     </#assign>
 
                                     <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${visibilityConfirmRegistrationWarning}">
+                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${visibilityConfirmRegistrationWarning}">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
                                         <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
@@ -702,7 +714,7 @@
                                 <#elseif missingValidPublishingOrganisation?string == "true">
                                     <!-- Disable register button and show warning: user must assign valid publishing organisation -->
                                     <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.organisation" escapeHtml=true/>">
+                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.organisation" escapeHtml=true/>">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
                                         <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
@@ -710,7 +722,7 @@
                                 <#elseif missingRegistrationMetadata?string == "true">
                                     <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
                                     <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.metadata" escapeHtml=true/>">
+                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.metadata" escapeHtml=true/>">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
                                         <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
@@ -718,7 +730,7 @@
                                 <#elseif !resource.isLastPublishedVersionPublic()>
                                     <!-- Disable register button and show warning: last published version must be publicly available to register -->
                                     <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.notPublic" escapeHtml=true/>">
+                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.notPublic" escapeHtml=true/>">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
                                         <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
@@ -726,7 +738,7 @@
                                 <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                     <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
                                     <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>">
+                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>">
                                             <i class="bi bi-exclamation-triangle"></i>
                                         </button>
                                         <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>

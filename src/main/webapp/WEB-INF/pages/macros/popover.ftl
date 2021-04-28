@@ -1,24 +1,40 @@
 <#ftl output_format="HTML">
 <#macro popoverPropertyWarning propertyName>
-    <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="${propertyName}" escapeHtml=true/>">
+    <a tabindex="0" role="button"
+       data-bs-toggle="popover"
+       data-bs-trigger="focus"
+       data-bs-html="true"
+       data-bs-content="<@s.text name="${propertyName}" escapeHtml=true/>">
         <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-    </span>
+    </a>
 </#macro>
 
 <#macro popoverPropertyInfo propertyName>
-    <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="${propertyName}" escapeHtml=true/>">
+    <a tabindex="0" role="button"
+       data-bs-toggle="popover"
+       data-bs-trigger="focus"
+       data-bs-html="true"
+       data-bs-content="<@s.text name="${propertyName}" escapeHtml=true/>">
         <i class="bi bi-info-circle text-gbif-primary"></i>
-    </span>
+    </a>
 </#macro>
 
 <#macro popoverTextWarning text>
-    <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${text}">
+    <a tabindex="0" role="button"
+       data-bs-toggle="popover"
+       data-bs-trigger="focus"
+       data-bs-html="true"
+       data-bs-content="${text}">
         <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-    </span>
+    </a>
 </#macro>
 
 <#macro popoverTextInfo text>
-    <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${text}">
+    <a tabindex="0" role="button"
+       data-bs-toggle="popover"
+       data-bs-trigger="focus"
+       data-bs-html="true"
+       data-bs-content="${text}">
         <i class="bi bi-info-circle text-gbif-primary"></i>
-    </span>
+    </a>
 </#macro>

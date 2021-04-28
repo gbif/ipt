@@ -18,9 +18,13 @@
                     <div class="head">
                         <a href="extension.do?id=${ext.rowType?url}">${ext.title}</a>
                         <#if !ext.isLatest()>
-                            <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="admin.extension.version.warning" escapeHtml=true/>">
+                            <a tabindex="0" role="button"
+                               data-bs-toggle="popover"
+                               data-bs-trigger="focus"
+                               data-bs-html="true"
+                               data-bs-content="<@s.text name="admin.extension.version.warning" escapeHtml=true/>">
                                 <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-                            </span>
+                            </a>
                         </#if>
                     </div>
                     <div class="actions d-flex">

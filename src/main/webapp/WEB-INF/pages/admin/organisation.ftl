@@ -116,10 +116,14 @@
                                 </#assign>
                                 <label for="organisation.key" class="form-label">
                                     <@s.text name="admin.organisation.key"/>
-                                    <span data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${selectOrganisationInfo}">
-                                        <i class="bi bi-info-circle text-gbif-primary"></i>
-                                    </span>
                                 </label>
+                                <a tabindex="0" role="button"
+                                   data-bs-toggle="popover"
+                                   data-bs-trigger="focus"
+                                   data-bs-html="true"
+                                   data-bs-content="${selectOrganisationInfo}">
+                                    <i class="bi bi-info-circle text-gbif-primary"></i>
+                                </a>
                                 <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
                                 <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                             </div>

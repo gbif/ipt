@@ -55,7 +55,7 @@
                             <#assign metadataSubmitWarning>
                                 <@s.text name="manage.overview.missing.metadata"/>
                             </#assign>
-                            <button type="button" class="btn btn-sm btn-outline-warning" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${metadataSubmitWarning}">
+                            <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${metadataSubmitWarning}">
                                 <i class="bi bi-exclamation-triangle"></i>
                             </button>
                             <@s.submit cssClass="btn btn-sm btn-outline-warning" name="edit" key="button.edit"/>
