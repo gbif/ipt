@@ -55,7 +55,7 @@
                     }
 
                     if (theOptions.summary !== undefined) {
-                        content += '<div class="mt-3"><textarea id="dialogSummary" rows="5" class="dialog-summary form-control" placeholder="' + theOptions.summary + '"/></div>';
+                        content += '<div class="mt-3"><textarea id="dialogSummary" rows="5" class="dialog-summary form-control" placeholder="' + theOptions.summary + '"></textarea></div>';
                     }
 
                     $('#dialog-confirm').html(content);
