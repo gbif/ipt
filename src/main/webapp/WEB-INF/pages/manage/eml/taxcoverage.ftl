@@ -61,8 +61,9 @@
                         </div>
                     </div>
                     <div id="subItems" class="mt-2">
-                        <#list item.taxonKeywords as subItem>
-                            <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
+                        <#if (item.taxonKeywords)??>
+                            <#list item.taxonKeywords as subItem>
+                                <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
                                 <div class="col-lg-4 d-flex align-items-end">
                                     <div class="w-100">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
@@ -91,7 +92,8 @@
 
 
                             </div>
-                        </#list>
+                            </#list>
+                        </#if>
                     </div>
                     <div class="pb-1 mt-3">
                         <a id="plus-subItem-${item_index}" href="" >
