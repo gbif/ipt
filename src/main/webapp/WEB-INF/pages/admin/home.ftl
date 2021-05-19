@@ -1,8 +1,16 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="title"/></title>
+<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();
+
+		$('.confirmPublishAll').jConfirmAction({
+			titleQuestion : "<@s.text name="basic.confirm"/>",
+			question : "<@s.text name="basic.confirm"/>",
+			yesAnswer : "<@s.text name='basic.yes'/>",
+			cancelAnswer : "<@s.text name='basic.no'/>"
+		});
 	});
 </script>
 
@@ -27,7 +35,7 @@
 							<@s.text name="admin.home.editConfig"/>
 							<@popoverPropertyInfo "admin.home.publishResources.help"/>
 						</h6>
-						<@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="publishAll" key="admin.home.publishResources"/>
+						<@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmPublishAll" name="publishAll" key="admin.home.publishResources"/>
 					</td>
 				</tr>
 			</table>
