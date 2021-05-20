@@ -1,16 +1,8 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
  <title><@s.text name="title"/></title>
-<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		initHelp();
-
-		$('.confirmPublishAll').jConfirmAction({
-			titleQuestion : "<@s.text name="basic.confirm"/>",
-			question : "<@s.text name="basic.confirm"/>",
-			yesAnswer : "<@s.text name='basic.yes'/>",
-			cancelAnswer : "<@s.text name='basic.no'/>"
-		});
 	});
 </script>
 
@@ -20,26 +12,41 @@
 
 <main class="container">
 	<div class="my-3 p-3 bg-body rounded shadow-sm admin-item">
-		<@s.form cssClass="topForm" action="publishAll.do" method="post" namespace="" includeContext="false">
-			<table id="admintable">
-				<tr>
-					<td>
-						<a href="${baseURL}/admin/config.do">
-							<span class="fa-stack fa-2x text-gbif-primary">
-								<i class="fa fa-cogs fa-stack-1x"></i>
-							</span>
-						</a>
-					</td>
-					<td>
-						<h6 class="text-gbif-header">
-							<@s.text name="admin.home.editConfig"/>
-							<@popoverPropertyInfo "admin.home.publishResources.help"/>
-						</h6>
-						<@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmPublishAll" name="publishAll" key="admin.home.publishResources"/>
-					</td>
-				</tr>
-			</table>
-		</@s.form>
+		<table id="admintable">
+			<tr>
+				<td>
+					<a href="${baseURL}/admin/config.do">
+						<span class="fa-stack fa-2x text-gbif-primary">
+							<i class="fa fa-cogs fa-stack-1x"></i>
+						</span>
+					</a>
+				</td>
+				<td>
+					<h6 class="text-gbif-header">
+						<@s.text name="admin.home.editConfig"/>
+					</h6>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="my-3 p-3 bg-body rounded shadow-sm admin-item">
+		<table id="admintable">
+			<tr>
+				<td>
+					<a href="${baseURL}/admin/bulk-publication.do">
+						<span class="fa-stack fa-2x text-gbif-primary">
+							<i class="fa fa-share-square-o fa-stack-1x"></i>
+						</span>
+					</a>
+				</td>
+				<td colspan="2">
+					<h6 class="text-gbif-header">
+						<@s.text name="admin.home.bulkPublication"/>
+					</h6>
+				</td>
+			</tr>
+		</table>
 	</div>
 
 	<div class="my-3 p-3 bg-body rounded shadow-sm admin-item">
@@ -48,7 +55,7 @@
 				<td>
 					<a href="${baseURL}/admin/users.do">
 						<span class="fa-stack fa-2x text-gbif-primary">
-							<i class="fa fa-user fa-stack-1x"></i>
+							<i class="fa fa-users fa-stack-1x"></i>
 						</span>
 					</a>
 				</td>

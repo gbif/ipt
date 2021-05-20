@@ -30,6 +30,9 @@
     <action name="publishAll" class="org.gbif.ipt.action.admin.PublishAllResourcesAction">
       <result type="redirect">${baseURL}/admin/home.do</result>
     </action>
+    <action name="bulk-publication" class="org.gbif.ipt.action.admin.BulkPublicationAction">
+      <result>/WEB-INF/pages/admin/bulk_publication.ftl</result>
+    </action>
 
     <!-- USER MANAGEMENT -->
     <action name="users" class="org.gbif.ipt.action.admin.UserAccountsAction" method="list">
