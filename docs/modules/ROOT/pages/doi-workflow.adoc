@@ -1,14 +1,10 @@
-# IPT DOI Workflows
-
-
-
-## Introduction
+= DOI Workflows
 
 Since IPT v2.2, the IPT can be configured to use a DataCite account to manage DOIs for datasets. Publishers have the option of assigning new DOIs to a dataset, or letting the IPT manage an existing DOI for a dataset. A description of these two workflows follows.
 
-## Workflows
+== Workflows
 
-### Assigning new DOIs to a Dataset
+=== Assigning new DOIs to a Dataset
 
 Ideally publishers assign a new DOI to a dataset each time it undergoes a scientifically significant change. This differentiates major versions from each other, and allows them to be uniquely cited.
 
@@ -18,9 +14,9 @@ The DOI will get registered the next time the resource is published, provided th
 
 Until the reserved DOI gets registered it can still be deleted. A graphical representation of this workflow is below:
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/AssignNewDOI.png' />
+image::ipt2/v22/AssignNewDOI.png[]
 
-### Letting the IPT manage an existing DOI for a Dataset
+=== Letting the IPT manage an existing DOI for a Dataset
 
 If a dataset has already been assigned a DOI, publishers have the option of letting the IPT manage the existing DOI for them. This facilitates updating the DOI metadata, since the IPT automatically updates the DOI metadata every time the dataset is (re)published.
 
@@ -34,4 +30,4 @@ The DOI will get updated the next time the resource is published, provided the r
 
 A graphical representation of this workflow is below:
 
-<img src='https://github.com/gbif/ipt/wiki/gbif-ipt-docs/ipt2/v22/AssignExistingDOI.png' />
+image::ipt2/v22/AssignExistingDOI.png[]

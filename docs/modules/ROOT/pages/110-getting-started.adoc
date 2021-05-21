@@ -1,0 +1,116 @@
+= Getting Started
+
+This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at https://ipt.gbif.org/. If you do so, refer to xref:120-quick-reference-guide.adoc[] for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the xref:how-to-contribute.adoc[] section.
+
+== Requirements
+
+=== Internet Connectivity
+The IPT is designed under the assumption that the server on which it is run has consistent Internet connectivity. Though many functions of the IPT work even when offline, some aspects of the IPT (GBIF registration, extension installation, controlled vocabularies, and external databases for source data), require communication with external Internet resources. From the perspective of IPT administration and management, the speed of the Internet connection affects only such communications. Access to the IPT web application and its services from beyond a local intranet also requires consistent connectivity, and slow connectivity may have an adverse affect on these aspects, especially when transferring large data sets.
+
+=== Stable URL
+Though it can be used simply as a tool to generate http://rs.tdwg.org/dwc/terms/guides/text/[Darwin Core Archives], the IPT is meant to be a discoverable and accessible Internet-based application and service. To support this functionality, the server on which the IPT is installed must be able to support access to the application and services through a stable URL.
+
+=== TLS
+Although not required by the IPT, GBIF recommends to run the IPT over secure HTTPS (TLS, which replaced SSL) if possible.
+
+=== Memory
+The server hosting the IPT installation must make at least 256 MB RAM memory available to the application.
+
+=== Disc space
+The space required by the IPT application is around 100MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space.
+
+=== Java
+The server hosting the IPT must have a version no less than Java 8 installed and functional prior to the installation of the IPT.
+
+=== Servlet container
+The IPT application is distributed as a web application archive (WAR) file and can be deployed in any servlet container (e.g., Tomcat) that is already in use. Information about how to use various servlet containers with the IPT, and how to setup a virtual host name for your IPT can be found in the section xref:server-preparation.adoc[].
+
+== Install the IPT
+
+=== Prepare the server
+Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the sections under "Requirements", above.
+
+=== Download the IPT
+The latest release of the IPT software is available for download as a WAR file (or Web application ARchive) from the https://www.gbif.org/ipt[IPT website]. Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the xref:how-to-contribute.adoc[] section.
+
+=== Deploy the IPT to the servlet container
+Follow the normal process for deploying a web application to a servlet container. A page with further information about specific installations can be found at xref:server-preparation.adoc[].
+
+=== Run the IPT application
+Successful deployment of the IPT to the servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's base URL followed by /ipt (e.g., http://server.example.org:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
+
+== Set up the IPT for the first time
+
+=== IPT setup I
+The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page (see screen image, below) is the first of two setup pages. It requires publishers to confirm that they have read and understand a disclaimer regarding data licensing. Next it requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as `C:\datadir` for Windows environments or `/srv/datadir` for Unix and Mac OS X environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labeled "Save" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the "Save" button.
+
+CAUTION: Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use `/tmp`, for example, on systems where this folder may be emptied on a system restart. *The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan.* Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation.
+
+NOTE: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup (see also the <<Starting Over>> section below). Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page (see the screen image in the "Administration Menu" section of the Quick Reference Guide).
+
+NOTE: If you receive an error stating the location is not writeable, see xref:faq.adoc[the FAQ item on this] #TODO link# 4-i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do.
+
+TIP: Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in.
+
+image::ipt2/v22/IPTSetup1.png[]
+
+=== IPT setup II
+If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:
+
+* Default administrator
++
+--
+The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one.
+
+* *Email* - the full, active email address of the default administrator of the IPT installation.
+* *First name* - the first name of the default administrator.
+* *Last name* - the last name of the default administrator.
+* *Password* - a password for the default administrator.
++
+[NOTE]
+====
+The password should be made secure and safe from loss, as it is not recoverable from the IPT application.
+====
+* *Verify password* - an exact copy of the password as entered in the Password text box to confirm that it was entered as intended.
+--
+
+* IPT Mode
++
+--
+WARNING: for a given installation, this selection is final and cannot be changed later on.
+
+The IPT mode decides whether or not the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made. (see the <<Starting Over>> section below).
+
+* *IPT mode*
++
+Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (which can be requested from DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible.
+--
+
+* Base URL
+** *Base URL for this IPT* - The public, Internet-accessible URL that points to the root of this IPT installation. The URL is detected automatically if possible.  On production systems it needs to be accessible via the Internet in order for the IPT to function fully.  Configuring the IPT Base URL to use localhost, for example, will not allow the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow resources to be publicly accessible.
+** *Proxy URL* - If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `http://proxy.example.org:8080`.
+
+image::ipt2/v22/IPTSetup2_1.png[]
+
+image::ipt2/v22/IPTSetup2_2.png[]
+
+When all of the information on the page is complete and correct, click on the button labeled "Save" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear.
+
+image::ipt2/v22/IPTSetupFinished.png[]
+
+Click on the button labeled "Continue" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the "Administration Menu" section of the Quick Reference Guide. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organisation. The Organisations button is disabled by default until the GBIF registration options have been set.
+
+image::ipt2/v205/IPTAdminBeforeRegistration.png[]
+
+Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the Quick Reference Guide of this user manual.
+
+== Starting Over
+
+It is relatively easy to re-initiate the IPT and begin again with the first setup page by doing the following:
+
+* Every user who is logged in to the IPT should first log out.
+* Remove the file called datadir.location from the folder where it was created by the IPT (normally WEB-INF within the IPT base installation directory - not within the IPT data directory configured in the first setup step).
+* The person having the default administrator information and knowledge of the IPT installation should open the IPT in a web browser. This will show the initial IPT setup page again (see the <<IPT setup I>> section above).
+* If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored, assuming that there has been no incompatible upgrade in IPT versions between the time when the data directory was last used and when it is used to re-initiate the IPT.
+* If the same data directory location is desired, but without the previous IPT configuration, then the contents of that data directory should be moved to a different location or removed entirely before clicking on "Save" in the initial IPT setup page.
+* If an entirely new data directory is used, then the setup will proceed exactly as described in the "IPT setup" section of this Getting Started Guide.
