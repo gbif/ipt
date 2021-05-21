@@ -71,19 +71,36 @@
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
             <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom">
-                [@s.text name="admin.registration.baseURL"/]
+                [@s.text name="admin.config.setup2.publicURL.title"/]
             </h5>
+
+            <p class="mx-md-4 mx-2">
+                [@s.text name="admin.config.setup2.publicURL.details"/]
+            </p>
 
             <div class="row g-2 mx-md-3 mx-1">
                 <div class="col-md-6">
                     [@input name="baseURL" help="i18n" i18nkey="admin.config.baseUrl"/]
                 </div>
+            </div>
 
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom">
+                [@s.text name="admin.config.setup2.forwardProxyURL.title"/]
+            </h5>
+
+            <p class="mx-md-4 mx-2">
+                [@s.text name="admin.config.setup2.forwardProxyURL.details"/]
+            </p>
+
+            <div class="row g-2 mx-md-3 mx-1">
                 <div class="col-md-6">
                     [@input name="proxy" help="i18n" i18nkey="admin.config.proxy" /]
                 </div>
 
-                <div class="col-12 pb-3">
+                <div class="col-12">
                     [@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/]
                 </div>
             </div>
