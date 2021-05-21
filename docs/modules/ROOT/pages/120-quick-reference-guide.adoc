@@ -139,7 +139,7 @@ Please note only a user having the Admin role or one of the Manager roles can ed
 image::ipt2/v22/IPTHomeMetadataOverview.png[]
 
 ==== Version history
-The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see xref:128-administration#_configure_ipt_settings[] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.
+The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see the xref:128-administration#_configure_ipt_settings[Configure IPT Settings] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.
 
 image::ipt2/v22/IPTVersionHistoryTable.png[]
 

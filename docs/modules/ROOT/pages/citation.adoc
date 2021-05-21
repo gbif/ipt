@@ -18,7 +18,7 @@ Creators¹ (PublicationYear²): Title³. Version⁴. Publisher⁵. ResourceType�
 
 7 citation parts explained:
 
-[cols="2*"]
+[cols="2"]
 |===
 | Citation Part
 | Description
@@ -43,6 +43,7 @@ Creators¹ (PublicationYear²): Title³. Version⁴. Publisher⁵. ResourceType�
 
 | 7. Identifier
 | The DOI (digital object identifier) handle that resolves to the online dataset. If a DOI is lacking, a link to the online IPT dataset page will be used instead. A DOI is highly preferred, since the DOI guarantees persistent access, whereas the IPT URL can change. For citation purposes, DataCite recommends that DOIs are displayed as linkable, permanent URLs.
+|===
 
 == Example Citations
 

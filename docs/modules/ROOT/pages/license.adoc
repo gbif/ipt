@@ -17,7 +17,7 @@ Each license has a default rights statement associated to it that gets shown to 
 
 [quote]
 ****
-This work is licensed under a <a href='http://creativecommons.org/licenses/by/4.0/legalcode'>Creative Commons Attribution (CC-BY) 4.0 License</a>.
+This work is licensed under a https://creativecommons.org/licenses/by/4.0/legalcode[Creative Commons Attribution (CC-BY) 4.0 License].
 ****
 
 The list of licenses and their rights statements can be modified, however, which is useful for communities that need to apply different licenses to their resources, or that want to include additional usage instructions.

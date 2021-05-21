@@ -8,6 +8,7 @@ image::ipt2/v205/IPTAdminBeforeRegistration.png[]
 
 == Configure IPT settings
 This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance.
+
 image::ipt2/v233/IPTAdminConfigIPT2.png[]
 
 * *Base URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Base URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Base URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organisation and will not allow the resources to be publicly accessible.
@@ -81,6 +82,7 @@ If the IPT passes the validation step above, a form showing additional informati
 image::ipt2/v22/IPTAdminRegistrationStep2.png[]
 
 Following are explanations of the specific information to select or enter:
+
 * *Organisation* - the select box contains a list of organisations in the GBIF registry. Select the single organisation with which this IPT instance will be associated. If you are unable to find the organisation you seek on the list, use the GBIF Registry (https://www.gbif.org/publisher/search) to determine if the organisation is registered under a name other than what you expected. If the organisation is not yet registered with GBIF, please contact the GBIF Help Desk to register the organisation before proceeding with the registration of the IPT. Click on the help icon and then click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.
 * *Organisation's password* - the correct password registered in the GBIF registry for the selected organisation must be entered in this text box to verify that the user has the authorisation required to associate the IPT instance with that organisation. If you do not have to the organisation's password, you can request it from the registered contact. A link to the primary contact on record for the organisation will appear below the Organisation's Password text box after selecting an organisation in the Organisation select box. The password will be used to authenticate the IPT registration when the button labeled "Save" is clicked.
 * *Alias* - enter a convenient name or code to represent the organisation within this instance of the IPT. The alias will appear in place of the full organisation name in organisation select boxes in the IPT user interfaces.
@@ -111,6 +113,7 @@ On this page a user having the Admin role can edit the organisation. Click on th
 image::ipt2/v22/IPTAdminOrgsEditOrg.png[]
 
 Following are explanations of the specific information to select or enter:
+
 * *Organisation name* - the title of the organisation as registered in the GBIF Registry. *Note*: this cannot be changed.
 * *Organisation password* - the password that should be used to edit the entry for this organisation in the GBIF Registry.
 * *Organisation alias* - a name given to the organisation for convenience within the IPT instance; aliases, rather then the full Organisation Name appear in Organisation selection lists in the IPT.
