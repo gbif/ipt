@@ -10,7 +10,6 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 
 .How to publish biodiversity data through GBIF.org using the IPT
 video::eDH9IoTrMVE[youtube]
-//,poster=screenshots/IPTDemoVideoIntroSlide.png]
 
 ### Latest Release: 2.4.2
 
