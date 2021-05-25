@@ -1,0 +1,114 @@
+= Releases
+
+== *2.4.2* – September 2020
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.2/ipt-2.4.2.war[Download]
+* xref:release-notes[IPT v2.4.2 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Addressed https://github.com/gbif/ipt/milestone/9?closed=1[19 issues].
+* Translated into 7 languages
+
+Version 2.4.2 fixes a minor security vulnerability in Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:release-notes[Release Notes].  An improvement to memory use when large datasets are read from a PostgreSQL server is also included.
+
+== *2.4.1* – September 2020
+
+* xref:release-notes[IPT v2.4.1 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Addressed https://github.com/gbif/ipt/milestone/25?closed=1[19 issues].
+* Translated into 7 languages
+
+Version 2.4.1 fixes a security vulnerability in Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:release-notes[Release Notes].
+
+== *2.4.0* – July 2019
+
+* xref:release-notes[IPT v2.4.0 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Addressed https://github.com/gbif/ipt/milestone/8?closed=1[19 issues].
+* Translated into 7 languages
+
+Version 2.4.0 fixes security vulnerabilities in Apache Jackson and Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:release-notes[Release Notes].  It also updates the integration for custom DOIs from DataCite, and removes (unused) support for DOIs from EZID.  The version number has been updated to 2.4.0 to reflect the removal of support for EZID.
+
+== *2.3.6* – July 2018
+
+* xref:release-notes[IPT v2.3.6 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Addressed https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed[19 issues].
+* Translated into 7 languages
+
+Version 2.3.6 fixes a security vulnerability in JQuery, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:release-notes[Release Notes].
+
+https://github.com/gbif/ipt/issues/1411[An issue] remains with custom DOIs from DataCite. If necessary, a further release of the IPT will be made in July or August.
+
+== *2.3.5* – October 2017
+
+* xref:release-notes[IPT v2.3.5 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Addressed https://github.com/gbif/ipt/projects/3[27 issues]: 6 Defects, 7 Enhancements and 15 Other
+* Translated into 7 languages
+
+Version 2.3.4 fixes a https://struts.apache.org/docs/s2-045.html[security vulnerability] that was discovered in the Apache Struts web framework, which the IPT uses. This security vulnerability affects all IPT versions, including 2.3.3, therefore all users should plan to upgrade to this version immediately following the instructions in the xref:release-notes[Release Notes].
+
+== *2.3.4* – March 2017
+
+* xref:release-notes[IPT v2.3.4 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Addressed https://github.com/gbif/ipt/projects/3[6 issues]: 3 Defects, 2 Enhancements and 1 Other
+* Translated into 7 languages
+
+Version 2.3.4 fixes a https://struts.apache.org/docs/s2-045.html[security vulnerability] that was discovered in the Apache Struts web framework, which the IPT uses. This security vulnerability affects all IPT versions, including 2.3.3, therefore all users should plan to upgrade to this version immediately following the instructions in the xref:release-notes[Release Notes].
+
+== *2.3.3* – December 2016
+
+* xref:release-notes[IPT v2.3.3 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Addressed https://github.com/gbif/ipt/projects/1[88 issues]: 22 Defects, 17 Enhancements, 36 Won’t fix, 10 Duplicates, and 3 Other
+* Translated into 7 languages
+
+A description of the exciting new features added to the IPT in version 2.3.3 are described in https://gbif.blogspot.com/2017/01/ipt-v233-your-repository-for.html[this blog post]. Additionally, please note that GBIF recently released a new set of Microsoft Excel templates for uploading data to the IPT. The new templates provide a simpler solution for capturing, formatting and uploading three types of GBIF data classes: xref:sampling-event-data[sampling-event data], xref:occurrence-data[occurrence data], and xref:checklist-data[checklist data]. More information about these templates can be found in https://www.gbif.org/newsroom/news/new-darwin-core-spreadsheet-templates[this news article].
+
+== *2.3* – September 2015
+
+* xref:ipt-release-notes-2_3[IPT v2.3 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* Addressed https://github.com/gbif/ipt/issues?q=is%3Aissue+label%3AMilestone-Release2.3[38 issues]: 15 Defects, 15 Enhancements, 4 Won’t fix, and 4 that were considered as Tasks
+* Translated into 6 languages
+
+== *2.2* – March 2015
+
+* xref:ipt-release-notes-2_2[IPT v2.2 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
+* http://gbif.blogspot.com/2015/03/ipt-v22.html[Release Announcement]
+* Addressed https://github.com/gbif/ipt/issues?q=label%3AMilestone-Release2.2[74 issues]: 20 Defects, 26 Enhancements, 16 Won’t fix, 6 Duplicates, 2 Other, 1 Task, and 3 that were considered as Invalid
+* Translated into 6 languages
+
+== *2.1* – April 2014
+
+* xref:ipt-release-notes-2_1[IPT v2.1 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv21.wiki[User Manual] https://code.google.com/archive/p/gbif-providertoolkit/wikis/IPTUserManualv21.wiki[(es)]
+* https://gbif.blogspot.com/2014/04/ipt-v21.html[Release Announcement]
+* Addressed https://github.com/gbif/ipt/issues?q=label%3AMilestone-Release2.1[85 issues]: 38 Defects, 11 Enhancements, 18 Won’t fix, 6 Duplicates, 1 Other, and 11 that were considered as Invalid
+* Translated into 6 languages (Japanese translation added)
+
+== *2.0.5* – May 2013
+
+* xref:ipt-release-notes-2_0_5[IPT v2.0.5 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv205.wiki[User Manual] https://code.google.com/p/gbif-providertoolkit/wiki/IPTUserManualv205?wl=es[(es)]
+* https://gbif.blogspot.com/2013/05/ipt-v205-released-melhor-versao-ate-o.html[Release Announcement]
+* Addressed https://github.com/gbif/ipt/issues?q=label%3AMilestone-Release2.0.5[45 issues]: 15 Defects, 17 Enhancements, 2 Patches, 7 Won’t fix, 3 Duplicates, and 1 that was considered as Invalid
+* Translated into 5 languages (Portuguese translation added)
+
+== *2.0.4* – October 2012
+
+* xref:ipt-release-notes-2_0_4[IPT v2.0.4 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv204.wiki[User Manual] https://code.google.com/p/gbif-providertoolkit/wiki/IPTUserManualv204?wl=es[(es)]
+* https://gbif.blogspot.com/2012/10/ipt-v204-released.html[Release Announcement]
+* Addressed https://github.com/gbif/ipt/issues?q=label%3AMilestone-Release2.0.4[108 issues]: 38 Defects, 35 Enhancements, 7 Other, 5 Patches, 18 Won't fix, 4 Duplicates, and 1 that was considered as Invalid
+* Translated into 4 languages (Traditional Chinese translation added)
+
+== *2.0.3* – November 2011
+
+* xref:ipt-release-notes-2_0_3[IPT v2.0.3 Release Notes]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv203.wiki[IPT v2.0.3 User Manual] https://code.google.com/p/gbif-providertoolkit/wiki/IPTUserManualv203?wl=es[(es)]
+* https://gbif.blogspot.com/2011/11/important-quality-boost-for-gbif-data.html[Release Announcement]
+* Addressed https://github.com/gbif/ipt/issues?q=label%3AMilestone-Release2.0.3[85 issues]: 43 defects, 31 enhancements, 3 Patches, 7 Won’t fix, and 1 Duplicate
+* Translated into 3 languages (French and Spanish translations added)

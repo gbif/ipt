@@ -1,8 +1,4 @@
-# GBIF Integrated Publishing Toolkit (IPT) User Manual
-
-//Inside this repository you can find the [IPT User Manual](https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki), [FAQ](https://github.com/gbif/ipt/wiki/FAQ.wiki) and a variety of other valuable resources aimed at users, coders and translators. Do you have a question that you can't find the answer to? Then send your question to the [IPT Mailing List](https://lists.gbif.org/mailman/listinfo/ipt) to get it answered!
-
-## About the IPT
+= GBIF Integrated Publishing Toolkit (IPT) User Manual
 
 The Integrated Publishing Toolkit (IPT) is a free, open source software tool written in Java that is used to publish and share biodiversity datasets through the GBIF network. The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.
 
@@ -11,60 +7,50 @@ To understand how the IPT works, try watching this concise 25 minute live demo s
 .How to publish biodiversity data through GBIF.org using the IPT
 video::eDH9IoTrMVE[youtube]
 
-### Latest Release: 2.4.2
+== Latest Release: 2.4.2
 
 Version 2.4.2 is available for download https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.2/ipt-2.4.2.war[here], via a https://github.com/gbif/ipt/blob/master/package/rpm/README.md#gbif-ipt-packaging[CentOS repository] or https://hub.docker.com/r/gbif/ipt/[using Docker].  A Debian repository is now also available, see https://github.com/gbif/ipt/pull/1470[this issue].
 
 Version 2.4.2 includes a bugfix from an issue introduced by the  update in version 2.4.1.  It also allows streaming large datasets from large PostgreSQL databases, https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.2+is%3Aclosed[see issue].
 
-#### Previous releases
-
-Version 2.4.1 includes a security update for Apache Struts, and other very https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.1+is%3Aclosed[minor changes].
-
-Version 2.4.0 includes https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.1+is%3Aclosed[these changes].
-
-Version 2.4.0 updates the integration with DataCite for assigning DOIs to datasets, has https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.0+is%3Aclosed[minor bug fixes] and updates dependency versions to improve the robustness and security of the IPT.
-
-Version 2.3.6 improves coverage of translations, has https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed[minor bug fixes] and updates dependency versions to improve the robustness and security of the IPT.
-
-Version 2.3.5 fixes cross site scripting vulnerabilities, and https://github.com/gbif/ipt/issues/1344[an issue] that caused the dataset inventory web service request to fail.
-
-Version 2.3.4 includes a security update that fixes a https://struts.apache.org/docs/s2-045.html[critical vulnerability] that has been discovered in the Apache Struts web framework, which the IPT uses. According to http://thehackernews.com/2017/03/apache-struts-framework.html[this article], this is a remote code execution vulnerability that could allow hackers to execute malicious commands on the IPT server. It also says that hackers are actively exploiting this vulnerability. *Therefore all users should plan to upgrade to this version immediately following the instructions in the https://github.com/gbif/ipt/wiki/IPTReleaseNotes233.wiki[Release Notes].*
-
-You can find out what features were added in version 2.3.3 in https://gbif.blogspot.com/2017/01/ipt-v233-your-repository-for.html[this blog post].
-
-### Next release
+== Next release
 
 No release date has been set yet for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/projects/2[here].
 
-Minor issues and security issues will be addressed in patch releases.
+Minor issues and security issues will be addressed in patch releases.  A full list of open issues for the IPT is available on https://github.com/gbif/ipt/issues[GitHub].
 
-### @Users
+See also, xref:releases[previous releases].
+
+== Featured content
+
+*Need help validating your dataset?* For help, refer to this new xref:data-quality-checklist[data quality checklist]. It is particularly suited for checking occurrence and sampling event datasets and will help ensure that the dataset is both valid and complete
+
+*Confused about what types of data GBIF supports? Confused about how to publish data and register it with GBIF?* Check out the new xref:how-to-publish[How to Publish Guide]. It starts by describing the four classes of biodiversity data that can be published through GBIF.org. For each class of data you'll find a simple set of instructions guiding you through the publication steps. Try out the simple Excel templates designed to simplify publication even more!
+
+*Interested in writing your own resource metadata in XML?* Check out xref:gbif-metadata-profile[this new how-to guide].
+
+== Users
 
 If you're only interested in trying out the IPT please request an account on the https://ipt.gbif.org/[Demo IPT] by sending an email to helpdesk@gbif.org.
 
-The simplest way to begin using the IPT is to request a free account on a https://github.com/gbif/ipt/wiki/dataHostingCentres[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
+The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
 
-Otherwise if want to setup your own instance of the IPT the https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#getting-started-guide[Getting Started Guide] is your entry point.
+Otherwise if want to setup your own instance of the IPT the xref:110-getting-started[Getting Started Guide] is your entry point.
 
 NOTE: Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users. It is essential that the IPT is kept up to date to be as secure and robust as possible, so if you are responsible for administering an IPT, then you should be signed up to be notified of new releases so that you can update immediately.
 
-### @Coders
+== Developers
 
-The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at coders can be found HowToContribute.wiki[here].
+The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide[here].
 
-### @Translators
+== Translators
 
-The IPT user interface and wiki both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found https://github.com/gbif/ipt/wiki/HowToTranslate.wiki[here].
+The IPT user interface and manual both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found xref:translators[here].
 
 Thanks to an enormous community effort, and by leveraging the power of the https://crowdin.com/project/gbif-ipt[Crowdin] localization tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian.
 
-### Acknowledgements
+== Acknowledgements
 
 A large number of dedicated volunteers contribute to the success of this software. With your help, the IPT has become a successful tool in use all around the world.
 
 https://crowdin.com/[Crowdin] is kindly supporting this open source project by giving GBIF a free access to its localization management platform. Crowdin makes it possible to manage a large number of concurrent translations.
-
-//This is the automatic start page for version *{page-component-version}* of Component B.
-
-//This page is sourced from the AsciiDoc file named [.path]_index.adoc_ that is located at [.path]_demo-component-b/docs/modules/ROOT/pages_.
