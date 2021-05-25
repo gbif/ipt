@@ -45,7 +45,3 @@
 * xref:statistics.adoc[]
 * xref:resources.adoc[]
 * xref:glossary.adoc[]
-
-'''
-
-* Para la versión en español
