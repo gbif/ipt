@@ -154,13 +154,13 @@ The dataset field has elements relating to a single dataset (resource).
 
 | https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#title[title] | A description of the resource that is being documented that is long enough to differentiate it from other similar resources. Multiple titles may be provided, particularly when trying to express the title in more than one language (use the "xml:lang" attribute to indicate the language if not English/en). E.g. Vernal pool amphibian density data, Isla Vista, 1990-1996.
 
-| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#creator[creator] | The resource creator is the person or organization responsible for creating the resource itself. | See section “People and Organisations” for more details. http://knb.ecoinformatics.org/software/eml/eml-2.1.0/emlresource.html#creator
+| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#creator[creator] | The resource creator is the person or organization responsible for creating the resource itself. See section “People and Organisations” for more details.
 
 | https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#metadataProvider[metadataProvider] | The metadataProvider is the person or organization responsible for providing documentation for the resource. See section “People and Organisations” for more details.
 
 | https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#associatedParty[associatedParty] | An associatedParty is another person or organisation that is associated with the resource. These parties might play various roles in the creation or maintenance of the resource, and these roles should be indicated in the "role" element. See section “People and Organisations” for more details.
 
-| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#contact[contact] | The contact field contains contact information for this dataset. This is the person or institution to contact with questions about the use, interpretation of a data set. | See section “People and Organisations” for more details.
+| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#contact[contact] | The contact field contains contact information for this dataset. This is the person or institution to contact with questions about the use, interpretation of a data set. See section “People and Organisations” for more details.
 
 | https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#pubDate[pubDate] | The date that the resource was published. The format should be represented as: CCYY, which represents a 4 digit year, or as CCYY-MM-DD, which denotes the full year, month, and day. Note that month and day are optional components. Formats must conform to ISO 8601. E.g. 2010-09-20.
 

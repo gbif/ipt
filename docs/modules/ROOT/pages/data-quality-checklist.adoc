@@ -12,7 +12,7 @@ The checklist will help ensure that the data is complete, meaning it contains va
 
 Examples of events include a species observation, a physical specimen being collected, or a biological sampling event.
 
-Additionally, the checklist ensures that the <<Dataset metadata>> also contains answers to the five Ws in order to facilitate reuse of the data.
+Additionally, the checklist ensures that the <<Dataset Metadata>> also contains answers to the five Ws in order to facilitate reuse of the data.
 
 == Instructions
 

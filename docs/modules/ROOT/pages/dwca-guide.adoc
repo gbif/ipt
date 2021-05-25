@@ -133,7 +133,7 @@ Each template provides inline help and instructions in the worksheets.
 
 To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a dataHostingCentres[trusted data hosting centre] located in your country.
 
-=== Publishing DwC-A Manually
+=== Publishing DwC-A manually
 
 *Assumption: Data is already in a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). The publisher does not wish to host an IPT instance but does have access to a web server.*
 
