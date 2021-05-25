@@ -1,26 +1,23 @@
-= GBIF Integrated Publishing Toolkit (IPT) User Manual
+= Manual del Usuario del IPT
 
-The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:
+El Integrated Publishing Toolkit (IPT) de GBIF es una aplicación web de código abierto, disponible de forma gratuita, que facilita compartir cuatro tipos de información sobre biodiversidad:
 
-. primary taxon occurrence data
-. taxon checklists
-. sampling event data
-. general metadata about data sources.
+. Datos primarios sobre registros biológicos
+. Listas de chequeo taxonómico
+. Datos de Eventos de muestreo
+. Metadatos de conjuntos de datos
 
-An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.  More information about the GBIF IPT can be found at the https://www.gbif.org/ipt[IPT website].
+Una instancia del IPT, así como los datos y metadatos registrados a través del mismo, están conectados al Sistema Global de Descubrimiento de Recursos sobre Biodiversidad (GBRDS, conocido también como el Registro GBIF), indexados por consulta a través de la red y el portal GBIF, y disponibles para uso público.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.  Puede encontrar más información sobre el IPT de GBIF en el https://www.gbif.org/ipt[sitio web de IPT].
 
-Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the
-Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and
-international organizations. GBIF also has formal partnerships with
-relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/[GBIF.org].
+Fundada y financiada por los gobiernos en el año 2001, la Infraestructura Mundial de Información en Biodiversidad (GBIF) es la iniciativa multilateral más grande del mundo, creada para facilitar el acceso libre a datos sobre biodiversidad a través de Internet. Entre los diversos https://www.gbif.org/participation/participant-list[Aliados de GBIF] se incluyen principalmente países y organizaciones internacionales. GBIF también ha constituido alianzas formales con importantes organismos que son producto de tratados internacionales. La misión de GBIF consiste en promover y facilitar el acceso libre y gratuito a datos sobre biodiversidad en todo el mundo, a través de Internet, para apoyar a la ciencia, la conservación y el desarrollo sostenible. Puede obtener más información acerca de GBIF en https://www.gbif.org/[GBIF.org].
 
-Several factors have provided motivation for GBIF to lead the development of the IPT:
+Múltiples factores han servido como motivación para que GBIF lidere el desarrollo del IPT:
 
-* limitations of previous publishing tools (DiGIR, TAPIR, BioCASe) to easily publish and transfer large datasets;
-* the need to reduce the load on both the publisher's server, and GBIF's server during indexing. The reason being that indexing from DiGIR, TAPIR, or BioCASe caused heavy loads due to repeated HTTP request-response interactions.
-* the need to speed up the process of indexing biodiversity occurrence datasets;
-* the need to offer additional benefits and services to the data publishers to encourage data publication;
-* the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata.
+* Las limitaciones de aplicaciones y protocolos anteriores (DiGIR, TAPIR, ABCD) para publicar y transferir fácilmente conjuntos de datos de gran tamaño;
+* La necesidad de reducir la carga en los servidores de los publicadores y de GBIF durante el proceso de indexación. Esto se debe a que el proceso de indexación desde DiGIR, TAPIR, o BioCASE se convierte en una carga pesada debido a las interacciones requerimiento-respuesta HTTP repetidas;
+* La necesidad de agilizar el proceso de indexación de los conjuntos de datos sobre biodiversidad;
+* La necesidad de ofrecer beneficios y servicios adicionales a los publicadores de datos para incentivar la publicación;
+* La carencia de herramientas apropiadas para la publicación de determinado tipo de datos sobre biodiversidad, tales como nombres, listas de chequeo y metadatos.
 
 To understand how the IPT works, try watching this concise 25 minute live demo showing how a dataset gets properly published and registered through GBIF.org.
 
