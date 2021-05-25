@@ -32,5 +32,5 @@ ipt.core_rowTypes=http\://rs.tdwg.org/dwc/terms/MaterialSample
 ipt.core_idTerms=http\://rs.tdwg.org/dwc/terms/materialSampleID
 ----
 
-This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe `|` character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then xref:128-administration.adoc#_install_extension[install the core]. The core is now available to use in the IPT.
+This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe `|` character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then xref:administration.adoc#_install_extension[install the core]. The core is now available to use in the IPT.
 --

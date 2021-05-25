@@ -1,6 +1,6 @@
 = Getting Started
 
-This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at https://ipt.gbif.org/. If you do so, refer to xref:120-quick-reference-guide.adoc[] for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the xref:developer-guide.adoc[] section.
+This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at https://ipt.gbif.org/. If you do so, refer to xref:quick-reference-guide.adoc[] for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the xref:developer-guide.adoc[] section.
 
 == Requirements
 

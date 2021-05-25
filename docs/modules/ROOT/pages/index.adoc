@@ -1,33 +1,31 @@
 = GBIF Integrated Publishing Toolkit (IPT) User Manual
 
-The Integrated Publishing Toolkit (IPT) is a free, open source software tool written in Java that is used to publish and share biodiversity datasets through the GBIF network. The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.
+The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:
+
+. primary taxon occurrence data
+. taxon checklists
+. sampling event data
+. general metadata about data sources.
+
+An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.  More information about the GBIF IPT can be found at the https://www.gbif.org/ipt[IPT website].
+
+Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the
+Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and
+international organizations. GBIF also has formal partnerships with
+relevant international treaty bodies. GBIF's mission is to promote and enable free and open access to biodiversity data worldwide via the Internet to underpin science, conservation and sustainable development. More information about GBIF can be found at https://www.gbif.org/[GBIF.org].
+
+Several factors have provided motivation for GBIF to lead the development of the IPT:
+
+* limitations of previous publishing tools (DiGIR, TAPIR, BioCASe) to easily publish and transfer large datasets;
+* the need to reduce the load on both the publisher's server, and GBIF's server during indexing. The reason being that indexing from DiGIR, TAPIR, or BioCASe caused heavy loads due to repeated HTTP request-response interactions.
+* the need to speed up the process of indexing biodiversity occurrence datasets;
+* the need to offer additional benefits and services to the data publishers to encourage data publication;
+* the lack of appropriate tools to publish certain types of biodiversity data, such as names checklists and data set metadata.
 
 To understand how the IPT works, try watching this concise 25 minute live demo showing how a dataset gets properly published and registered through GBIF.org.
 
 .How to publish biodiversity data through GBIF.org using the IPT
-video::eDH9IoTrMVE[youtube,100%]
-
-== Latest Release: 2.4.2
-
-Version 2.4.2 is available for download https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.2/ipt-2.4.2.war[here], via a https://github.com/gbif/ipt/blob/master/package/rpm/README.md#gbif-ipt-packaging[CentOS repository] or https://hub.docker.com/r/gbif/ipt/[using Docker].  A Debian repository is now also available, see https://github.com/gbif/ipt/pull/1470[this issue].
-
-Version 2.4.2 includes a bugfix from an issue introduced by the  update in version 2.4.1.  It also allows streaming large datasets from large PostgreSQL databases, https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.4.2+is%3Aclosed[see issue].
-
-== Next release
-
-No release date has been set yet for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/projects/2[here].
-
-Minor issues and security issues will be addressed in patch releases.  A full list of open issues for the IPT is available on https://github.com/gbif/ipt/issues[GitHub].
-
-See also, xref:releases.adoc[previous releases].
-
-== Featured content
-
-*Need help validating your dataset?* For help, refer to this new xref:data-quality-checklist.adoc[data quality checklist]. It is particularly suited for checking occurrence and sampling event datasets and will help ensure that the dataset is both valid and complete
-
-*Confused about what types of data GBIF supports? Confused about how to publish data and register it with GBIF?* Check out the new xref:how-to-publish.adoc[How to Publish Guide]. It starts by describing the four classes of biodiversity data that can be published through GBIF.org. For each class of data you'll find a simple set of instructions guiding you through the publication steps. Try out the simple Excel templates designed to simplify publication even more!
-
-*Interested in writing your own resource metadata in XML?* Check out xref:gbif-metadata-profile.adoc[this new how-to guide].
+video::eDH9IoTrMVE[youtube,width=100%]
 
 == Users
 
@@ -35,7 +33,7 @@ If you're only interested in trying out the IPT please request an account on the
 
 The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
 
-Otherwise if want to setup your own instance of the IPT the xref:110-getting-started.adoc[Getting Started Guide] is your entry point.
+Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point.
 
 NOTE: Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users. It is essential that the IPT is kept up to date to be as secure and robust as possible, so if you are responsible for administering an IPT, then you should be signed up to be notified of new releases so that you can update immediately.
 

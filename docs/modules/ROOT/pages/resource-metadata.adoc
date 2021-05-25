@@ -58,7 +58,7 @@ Alternatively if your metadata is already in EML you should assign the dataset a
 
 *A.* Yes. To do so, add the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6rxy) in the following places:
 
-* Citation DOI (remember to turn on citation xref:123-manage-resources.adoc#_citations[auto-generation], to ensure your dataset's citation complies with the xref:citation.adoc[best-practice format]).
+* Citation DOI (remember to turn on citation xref:manage-resources.adoc#_citations[auto-generation], to ensure your dataset's citation complies with the xref:citation.adoc[best-practice format]).
 * Alternate identifiers list
 
 Note GBIF only assigns a DOI to a dataset during registration if no DOI was previously assigned to it.

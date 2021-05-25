@@ -2,7 +2,7 @@
 
 Version 2.0
 
-Additional information that could also be included or was previously included in xref:best-practices-sampling-event.adoc[].
+Additional information that could also be included or was previously included in xref:best-practices-sampling-event-data.adoc[].
 
 == What is sampling-event data?
 === How to express sampling-event data in DwC-A?

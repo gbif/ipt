@@ -8,7 +8,7 @@ Here you will find answers to the most frequently asked questions about the GBIF
 
 There is one important directory that contains all the IPT's configuration and resources: the IPT's data directory. If you ensure this directory is regularly backed-up somewhere safe, you'll never lose any data.
 
-To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, all you have to do is follow the xref:110-getting-started.adoc#_starting_over[Starting Over] instructions. As it says: "If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored".
+To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, all you have to do is follow the xref:getting-started.adoc#_starting_over[Starting Over] instructions. As it says: "If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored".
 
 === 2. My GBIF IPT instance is slow. What can I do to improve performance?
 
@@ -72,7 +72,7 @@ Switching the IPT from test mode to production mode cannot be done automatically
 
 Therefore to switch to production mode you need to setup an entirely new IPT instance in production mode.
 
-To save time recreating resources, you can try transferring your 'test' resources to the production IPT. To do this simply "upload an existing IPT resource using its zipped resource configuration folder." There are complete instructions on how to do this xref:123-manage-resources.adoc#_upload_a_zipped_ipt_resource_configuration_folder[here].
+To save time recreating resources, you can try transferring your 'test' resources to the production IPT. To do this simply "upload an existing IPT resource using its zipped resource configuration folder." There are complete instructions on how to do this xref:manage-resources.adoc#_upload_a_zipped_ipt_resource_configuration_folder[here].
 
 === 7. What outgoing connections does the IPT make?
 
@@ -90,9 +90,9 @@ Before version 2.3.4, connections were made using HTTP, rather than HTTPS, to ht
 
 In order to assign DOIs to datasets, the IPT must be configured with a DataCite account, which has itself been configured to mint DOIs under the IPT's domain.
 
-The account holding organization must already be associated to the IPT as an organization. For help associating an organization to your IPT, you can refer to the xref:128-administration.adoc#_add_organisation[Add Organization] section of the User Manual.
+The account holding organization must already be associated to the IPT as an organization. For help associating an organization to your IPT, you can refer to the xref:administration.adoc#_add_organisation[Add Organization] section of the User Manual.
 
-All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the "Account activated" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:128-administration.adoc#_edit_organisation[Edit Organization] section of the User Manual.
+All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the "Account activated" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:administration.adoc#_edit_organisation[Edit Organization] section of the User Manual.
 
 If you work for a GBIF ‘country' Node, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] to enquire about getting a free DataCite account. GBIF has its own account with DataCite and may be able to provide 'country' Nodes with their own free account (determined on a case by case basis). GBIF has done this for Spain and Colombia so far, both of which have a strong track record of keeping their IPTs online near 100% of the time.
 
@@ -140,17 +140,17 @@ in your publication log file, it means there is no space left in the disk partit
 To solve this, you can:
 
 * Allocate more space to this partition.
-* Move your IPT data directory to another partition where there is more space available. Note, this requires you to xref:110-getting-started.adoc#_starting_over[reinstall] your IPT.
+* Move your IPT data directory to another partition where there is more space available. Note, this requires you to xref:getting-started.adoc#_starting_over[reinstall] your IPT.
 * Free up disk space (e.g. deleting temporary files, remove unused applications, etc)
 
 === 4. How do I change the publishing organisation of my resource? The dropdown on the Basic Metadata page is disabled.
 Please be aware the publishing organisation cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
 
-In order to change the publishing organisation, you need to republish the resource and then reset the desired publishing organisation. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:123-manage-resources.adoc#_upload_a_zipped_ipt_resource_configuration_folder[here].
+In order to change the publishing organisation, you need to republish the resource and then reset the desired publishing organisation. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#_upload_a_zipped_ipt_resource_configuration_folder[here].
 
 WARNING: Do not "delete" the old resource via the IPT user interface, as this will delete the registered resource in GBIF.
 
-Instead, you should migrate the resource from the old publishing organisation to the new publishing organisation by following xref:123-manage-resources.adoc#_migrate_a_resource[these instructions]. Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry.
+Instead, you should migrate the resource from the old publishing organisation to the new publishing organisation by following xref:manage-resources.adoc#_migrate_a_resource[these instructions]. Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry.
 
 Lastly, you can delete the old resource by removing its IPT resource folder inside the IPT Data Directory. Restart Tomcat for the deletion to take effect.
 
@@ -168,16 +168,16 @@ Therefore to change the type of a resource, you need to change its core mapping.
 === 6. What are some tricks to simplify the authoring and maintenance of metadata?
 Datasets can change over time. Keeping the dataset metadata up to date can be a burden, as inconsistencies can begin to creep in over time. Below is a list of tricks you can use to simplify the authoring of metadata and make it easier to maintain over time:
 
-* use a contact's ORCID instead of supplying their email and other fields which are likely change if the person changes jobs. For more information about how to supply an ORCID see xref:123-manage-resources.adoc#_basic_metadata[here].
+* use a contact's ORCID instead of supplying their email and other fields which are likely change if the person changes jobs. For more information about how to supply an ORCID see xref:manage-resources.adoc#_basic_metadata[here].
 * for datasets that continue to change/grow (versus static datasets) avoid specifying exact counts in textual descriptions, e.g. for record or taxa counts.
-* use the IPT's citation xref:123-manage-resources.adoc#_citations[Auto-generation feature] instead of supplying a manually created data citation.
-* use the IPT's import by xref:123-manage-resources.adoc#_taxonomic_coverage[Taxon list feature] instead of supplying each taxa manually one at a time when entering the taxonomic coverage.
+* use the IPT's citation xref:manage-resources.adoc#_citations[Auto-generation feature] instead of supplying a manually created data citation.
+* use the IPT's import by xref:manage-resources.adoc#_taxonomic_coverage[Taxon list feature] instead of supplying each taxa manually one at a time when entering the taxonomic coverage.
 
 === 7. How do I change the hosting organisation of my IPT?
 
 Warning - the instructions below assume your IPT has already been registered and involve manual changes requiring technical competence.
 
-First, ensure the desired hosting organisation has been added to your IPT. You can do this through the user interface. For help adding a new organisation to your IPT, refer to xref:128-administration.adoc#_add_organisation[this section] of the user manual.
+First, ensure the desired hosting organisation has been added to your IPT. You can do this through the user interface. For help adding a new organisation to your IPT, refer to xref:administration.adoc#_add_organisation[this section] of the user manual.
 
 Next, perform the following 2 manual changes to the registration2.xml file located inside the /config folder of your IPT Data Directory:
 
@@ -186,7 +186,7 @@ Next, perform the following 2 manual changes to the registration2.xml file locat
 
 Restart Tomcat.
 
-Last, press the "update registration" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to xref:128-administration.adoc#_edit_gbif_registration[this section] of the user manual.
+Last, press the "update registration" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to xref:administration.adoc#_edit_gbif_registration[this section] of the user manual.
 
 === 8. How do I reset the admin password?
 
