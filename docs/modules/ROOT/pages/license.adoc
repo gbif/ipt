@@ -16,9 +16,7 @@ Since IPT v2.2 the IPT ships with 3 machine readable licenses to choose from whe
 Each license has a default rights statement associated to it that gets shown to users. For example, if the publisher chooses to apply CC-BY to their resource, this rights statement shown to users is:
 
 [quote]
-****
 This work is licensed under a https://creativecommons.org/licenses/by/4.0/legalcode[Creative Commons Attribution (CC-BY) 4.0 License].
-****
 
 The list of licenses and their rights statements can be modified, however, which is useful for communities that need to apply different licenses to their resources, or that want to include additional usage instructions.
 

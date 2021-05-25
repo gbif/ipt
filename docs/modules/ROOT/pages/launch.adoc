@@ -58,7 +58,7 @@ NOTE: comment out the integration tests (ITs) for Jenkins to release the IPT suc
 NOTE: before an upgrade, the custom logo image(s) and CSS need to be backed-up/preserved and then copied back to the expanded data directory.
 --
 
-. Update the xref:index[User Manual]; add a new version to the https://github.com/gbif/tech-docs[technical documentation].
+. Update the xref:index.adoc[User Manual]; add a new version to the https://github.com/gbif/tech-docs[technical documentation].
 ** Add/update User Manual content - see issues labelled as `UserManual`.
 ** After applying all changes in English, request Spanish translators (e.g. SIB Colombia) to apply all changes to the Spanish user manual also (process not yet clear for the tech-docs system).
 . Update Release Notes
@@ -73,9 +73,9 @@ NOTE: before an upgrade, the custom logo image(s) and CSS need to be backed-up/p
 ** Publicise in some detail, select improvements that users will value. For example, here is an example blog post for http://gbif.blogspot.com/2015/03/ipt-v22.html[IPT v2.2].
 ** Be sure to acknowledge volunteer translators and coders that contributed to the release.
 ** Review the blog post with the help of the GBIF Communications team before publishing.
-. Update xref:releases[release history]
+. Update xref:releases.adoc[release history]
 ** Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, blog post and a short summary of what changed.
-. Update xref:index#_roadmap[Roadmap]
+. Update xref:index.adoc#_roadmap[Roadmap]
 ** Keep this in sync with the https://github.com/gbif/ipt/blob/master/README.md[Github IPT Readme] and https://www.gbif.org/ipt[GBIF.org IPT page], which also show the Roadmap and get updated in subsequent steps below.
 . Update https://github.com/gbif/ipt/blob/master/README.md[Github IPT Readme]
 ** Advertise the new version, highlighting what changes will be interesting and valuable to users linking to blog post when applicable.

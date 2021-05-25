@@ -47,4 +47,4 @@ These are detailed in the https://code.google.com/p/gbif-providertoolkit/issues/
 
 == When all else fails
 
-See the xref:faq[FAQ], which continues to be updated with good questions.
+See the xref:faq.adoc[FAQ], which continues to be updated with good questions.

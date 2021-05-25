@@ -7,7 +7,7 @@ Please make sure the following conditions (software and version) are met before 
 
 . The client version of Windows 8.1 Pro. This tutorial is written based on the 64-bit version of Windows 8.1 Professional.
 . The latest security upgrades.
-. Java 8 Framework installed. This tutorial is written based on version jre1.8.0_60 (Java Version 8 Update 60). Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in C:\\Program Files (x86)\Java\jre8. (Note from tester on Windows 8.1, I tried to install Java in the C:\\Program Files directory and it would not work. I had to put it in the (x86) folder).
+. Java 8 Framework installed. This tutorial is written based on version jre1.8.0_60 (Java Version 8 Update 60). Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in C:\Program Files (x86)\Java\jre8. (Note from tester on Windows 8.1, I tried to install Java in the C:\Program Files directory and it would not work. I had to put it in the (x86) folder).
 . Logged in as an administrator.
 
 == Steps
@@ -18,7 +18,7 @@ Download the latest stable Tomcat 8 Binary Distribution Core (32-bit/64-bit Wind
 
 === 2. Install Tomcat 8.x
 
-Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the tomcat_home.md[tomcat\_home]/conf/tomcat-users.xml file and restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked).
+Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the tomcat_home.md[tomcat_home]/conf/tomcat-users.xml file and restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked).
 
 image::screenshots/Capturetomcat1.JPG[Apache Tomcat Setup Config Options]
 

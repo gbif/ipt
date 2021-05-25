@@ -1,6 +1,6 @@
 = Getting Started
 
-This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at https://ipt.gbif.org/. If you do so, refer to xref:120-quick-reference-guide.adoc[] for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the xref:how-to-contribute.adoc[] section.
+This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at https://ipt.gbif.org/. If you do so, refer to xref:120-quick-reference-guide.adoc[] for details on how to use the screens you will see. Developers who wish to work with the latest revision of the source code should consult the xref:developer-guide.adoc[] section.
 
 == Requirements
 
@@ -31,7 +31,7 @@ The IPT application is distributed as a web application archive (WAR) file and c
 Before installing the IPT, be sure that the intended hosting server meets the minimum specifications described in the sections under "Requirements", above.
 
 === Download the IPT
-The latest release of the IPT software is available for download as a WAR file (or Web application ARchive) from the https://www.gbif.org/ipt[IPT website]. Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the xref:how-to-contribute.adoc[] section.
+The latest release of the IPT software is available for download as a WAR file (or Web application ARchive) from the https://www.gbif.org/ipt[IPT website]. Download this file to the server on which the IPT will run. Developers or those wishing to use the latest revision of the source code should consult the xref:developer-guide.adoc[] section.
 
 === Deploy the IPT to the servlet container
 Follow the normal process for deploying a web application to a servlet container. A page with further information about specific installations can be found at xref:server-preparation.adoc[].
@@ -48,7 +48,7 @@ CAUTION: Do not select a data directory that is vulnerable to inadvertent change
 
 NOTE: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup (see also the <<Starting Over>> section below). Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page (see the screen image in the "Administration Menu" section of the Quick Reference Guide).
 
-NOTE: If you receive an error stating the location is not writeable, see xref:faq.adoc[the FAQ item on this] #TODO link# 4-i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do.
+NOTE: If you receive an error stating the location is not writeable, see xref:faq.adoc#_4_i_get_the_following_error_the_data_directory_directory_is_not_writable_what_should_i_do[the FAQ item on this].
 
 TIP: Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in.
 

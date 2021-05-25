@@ -1,6 +1,6 @@
 = IPT Version 2.1 Release Notes
 
-=== Upgrade instructions
+== Upgrade instructions
 
 . Performing the upgrade
 +
@@ -35,15 +35,15 @@ Upgrading from 2.0.3, once the upgrade is complete, resource managers should:
 ** IPT 2.1 now supports uploading Excel files as data sources. https://tools.gbif.org/spreadsheet-processor/[GBIF Spreadsheet Templates] can be used to create new resources, but they have to be converted into a Darwin Core Archive first.
 ** GBIF has released a new IPT2Core.md[guide] on how to add custom cores to the IPT, aimed advaned users and communities prototyping new data standards.
 
-=== Dependency Notes
+== Dependency Notes
 
 This new version has been tested and designed to work on Tomcat 6.0 or 7.0. Please note IPT 2.1 no longer supports Java 5, and is designed to run on Java 6 or later.
 
-=== Viewing the IPT change log
+== Viewing the IPT change log
 
 This version addressed a total of 85 issues: 38 Defects, 11 Enhancements, 18 Won't fix, 6 Duplicates, 1 Other, and 11 that were considered as Invalid.
 These are detailed in the https://code.google.com/p/gbif-providertoolkit/issues/list?can=1&q=milestone=Release2.1&sort=status&colspec=ID%20Type%20Status%20Priority%20Milestone%20Owner%20Summary[issue tracking system]
 
-=== When all else fails
+== When all else fails
 
-See the xref:faq[FAQ], which continues to be updated with good questions.
+See the xref:faq.adoc[FAQ], which continues to be updated with good questions.

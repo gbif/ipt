@@ -11,7 +11,7 @@ Until the ratification of Darwin Core as a standard it was used to describe prim
 When we were looking for a very simple checklist data exchange format and with the rise of tagging of species on Flickr, it became apparent that simple terms for biodiversity in the tradition of Dublin Core would be very useful - and indeed very much overlapping with the
 Darwin Core terms in use already.
 
-= Terms
+== Terms
 All Darwin Core terms are defined in http://rs.tdwg.org/dwc/terms/index.htm[Darwin Core Terms: a quick reference guide].
 
 A single DwC term, in IPT often called a property, can be used once for each record.
@@ -108,24 +108,24 @@ infraspecificEpithet=anatolica
 == Checklists
 Checklists are confined to ± the taxonomic subset of all Darwin Core terms.
 
-See the xref:checklist-data[recommendations on how to publish species checklists].
+See the xref:checklist-data.adoc[recommendations on how to publish species checklists].
 
-= The Darwin Core Archive
+== The Darwin Core Archive
 Darwin Core archives (DwC-A) are the new, primary means of publishing data to the GBIF network.
 They contain an _entire dataset_, are based on _simple text files_ and can be created fairly easily without the IPT with _custom software_.
 
-== Darwin Core Extensions
+=== Darwin Core Extensions
 Recognising that DwC only covers the core biodiversity metadata, extensions to darwin core are a common need across all communities.
 The simplest way to do so is to create new terms in a new namespace and simply extend a regular dwc record with these terms.
 
 Often multiple _subrecords_ for an extension is desired, such as many common names for a species or multiple images for a specimen.
 In order to share these richer, related records the *star scheme* is used, whereby an extension consists of multiple records, each linked to a core dwc record. Any number of extension records potentially from different extensions (e.g. images & identification) for a single core record is possible.
 
-== The Archive Format
+=== The Archive Format
 
 The Darwin Core archive format provides a means to publish dwc records plus extensions in a relatively simple, text-based format.
 A Darwin Core archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file.
 The format follows the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core text guidelines].
 A typical package is illustrated in the diagram below and consists of components described in http://code.google.com/p/gbif-ecat/wiki/DwCArchive[details here].
 
-#TODO (broken link)# http://gbif-ecat.googlecode.com/files/dwca.png
+image::figures/dwca.png[]

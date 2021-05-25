@@ -46,9 +46,9 @@ No Excel template exists for resource metadata. Simply use the IPT's built-in me
 
 === Q. How can I apply a license to my dataset?
 
-*A.* Simply use the IPT's built-in metadata editor following xref:applying-license#_dataset_level[these instructions].
+*A.* Simply use the IPT's built-in metadata editor following xref:applying-license.adoc#_dataset_level[these instructions].
 
-Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following xref:applying-license#_supplementary_information[these instructions].
+Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following xref:applying-license.adoc#_supplementary_information[these instructions].
 
 === Q. Can I add a link to the dataset's related data paper?
 
@@ -58,7 +58,7 @@ Alternatively if your metadata is already in EML you should assign the dataset a
 
 *A.* Yes. To do so, add the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6rxy) in the following places:
 
-* Citation DOI (remember to turn on citation xref:123-manage-resources#_citations[auto-generation], to ensure your dataset's citation complies with the xref:citation[best-practice format]).
+* Citation DOI (remember to turn on citation xref:123-manage-resources.adoc#_citations[auto-generation], to ensure your dataset's citation complies with the xref:citation.adoc[best-practice format]).
 * Alternate identifiers list
 
 Note GBIF only assigns a DOI to a dataset during registration if no DOI was previously assigned to it.

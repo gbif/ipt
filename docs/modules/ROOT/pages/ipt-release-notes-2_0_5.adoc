@@ -25,7 +25,7 @@ If upgrading from 2.0.3, once the upgrade is complete, resource managers should:
 
 . Other
 +
-GBIF has released a new style/CSS customization guide for IPT 2.0.5 entitled xref:customization[How to Style Your IPT]
+GBIF has released a new style/CSS customization guide for IPT 2.0.5 entitled xref:customization.adoc[How to Style Your IPT]
 
 == Dependency Notes
 
@@ -39,4 +39,4 @@ These are detailed in the http://code.google.com/p/gbif-providertoolkit/issues/l
 
 === When all else fails
 
-See the xref:faq[FAQ], which continues to be updated with good questions.
+See the xref:faq.adoc[FAQ], which continues to be updated with good questions.

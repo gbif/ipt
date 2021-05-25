@@ -8,7 +8,7 @@
 
 === A. Performing the upgrade
 
-WARNING: Be sure to backup the IPT data directory before performing an upgrade. As per the https://github.com/gbif/ipt/wiki/dataHostingCentres#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
+WARNING: Be sure to backup the IPT data directory before performing an upgrade. As per the xref:data-hosting-centres.adoc#_data_hosting_centre_criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
 
 CAUTION: Once an IPT has been upgraded to 2.3.x from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
@@ -16,7 +16,7 @@ NOTE: IPT 2.3.4+ requires Java 8 to run. Since Java 7 reached its end of life in
 
 An upgrade can be performed in 4 steps:
 
-. Backup the existing data directory and any xref:customization[custom styling] (images, stylesheets, etc) previously applied to your IPT.
+. Backup the existing data directory and any xref:customization.adoc[custom styling] (images, stylesheets, etc) previously applied to your IPT.
 . Replace the previous .war file with the latest edition having the same name (e.g. ipt.war).
 +
 NOTE: If you replace the .war file while Tomcat is stopped, be sure to delete the associated expanded directory (e.g. /ipt) before restarting Tomcat, so that the updated WAR file will be re-expanded when Tomcat restarts.
@@ -36,8 +36,8 @@ Additionally, the IPT administrator should update all installed cores and extens
 === C. New Features / Other
 
 * IPT 2.3.x shows record counts for all files in the DwC-A inside a bar graph on the "Data Records" section of the resource homepage. Note: for the bar graph to appear, resource managers must republish the resource using IPT 2.3.x.
-* IPT 2.3.x supports publishing sample-based datasets (datasets pertaining to a sampling event). Sample-based datasets use the new Darwin Core Event core, installed by default in new installations. Note: IPT administrators upgrading to IPT 2.3.x from 2.2 or earlier need to install this new core. Please see these [[instructions|IPT2ManualNotes.wiki#install-extension]] for help installing a new core.
-* IPT 2.3.x supports versionable IPT extensions, making it possible to update to newer versions whenever they become available. To understand how this works, refer to the [[Update Extension|IPT2ManualNotes.wiki#update-extension]] section of the IPT User Manual.
+* IPT 2.3.x supports publishing sample-based datasets (datasets pertaining to a sampling event). Sample-based datasets use the new Darwin Core Event core, installed by default in new installations. Note: IPT administrators upgrading to IPT 2.3.x from 2.2 or earlier need to install this new core. Please see these xref:128-administration#_install_extension[instructions] for help installing a new core.
+* IPT 2.3.x supports versionable IPT extensions, making it possible to update to newer versions whenever they become available. To understand how this works, refer to the xref:128-administration#_update_extension[Update Extension] section of the IPT User Manual.
 * IPT 2.3.x can be installed without an organisation both in production and in test mode. Previously in version 2.2, the IPT had to be installed with an organisation in order to publish datasets because the publishing organisation became a mandatory metadata field. For more information about this change, refer to https://github.com/gbif/ipt/issues/1179[issue 1179].
 * IPT 2.3.x includes a slightly redesigned mapping page, making it easier to map your source data.
 
@@ -52,4 +52,4 @@ See the https://github.com/gbif/ipt/milestones[milestones] in GitHub issues.
 
 == When all else fails
 
-See the xref:faq[FAQ], which continues to be updated with good questions.
+See the xref:faq.adoc[FAQ], which continues to be updated with good questions.

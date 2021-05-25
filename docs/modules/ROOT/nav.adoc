@@ -5,9 +5,6 @@
 * xref:120-quick-reference-guide.adoc[]
 * xref:123-manage-resources.adoc[]
 * xref:128-administration.adoc[]
-* xref:130-about-the-ipt.adoc[]
-* xref:140-resources.adoc[]
-* xref:150-glossary.adoc[]
 * xref:how-to-publish.adoc[]
 ** xref:resource-metadata.adoc[]
 ** xref:checklist-data.adoc[]
@@ -43,4 +40,10 @@
 ** xref:dwca-guide.adoc[]
 ** xref:data-preparation.adoc[]
 ** xref:data-quality-checklist.adoc[]
+* xref:130-about-the-ipt.adoc[]
+* xref:140-resources.adoc[]
+* xref:150-glossary.adoc[]
+
+'''
+
 * Para la versión en español

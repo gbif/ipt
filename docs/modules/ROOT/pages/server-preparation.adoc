@@ -14,16 +14,16 @@ The most common servlet containers used to deploy the IPT are Tomcat, Jetty and 
 
 The IPT has been tested and works well with Tomcat 8.0 and 9.0. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages:
 
-* xref:tomcat-installation-windows[Tomcat on Windows 8]
-* xref:tomcat-installation-linux[Tomcat on Linux]
+* xref:tomcat-installation-windows.adoc[Tomcat on Windows 8]
+* xref:tomcat-installation-linux.adoc[Tomcat on Linux]
 
 Download the `ipt.war` file of the latest release of the IPT from https://www.gbif.org/ipt. Copy the `ipt.war` file to the Tomcat webapps folder and then start Tomcat, or restart Tomcat if it is already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
 
-If the installation doesn't start please check the `catalina.out` logfile, and refer to the FAQ.md[FAQ] for help.
+If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
 
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
-video:116142276[vimeo]
+video:|116142276[vimeo]
 
 === Jetty
 

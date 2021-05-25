@@ -7,15 +7,15 @@ image::figures/cover_art_stilt.png[]
 == Document control
 
 |===
-| Version | Description             | Date of release | Author(s)    |
+| Version | Description             | Date of release | Author(s)
 
-| 1.0     | Release Version         | 1 April 2011    | David Remsen |
+| 1.0     | Release Version         | 1 April 2011    | David Remsen
 
-| http://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen |
+| http://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen
 
-| 2.0 | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak |
+| 2.0 | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak
 
-| 2.1 | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett |
+| 2.1 | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett
 |===
 
 == Suggested citation
@@ -26,7 +26,7 @@ _Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexicanus_
 
 == Introduction
 
-This guide provides details on how to utilise the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilise these components to maximise the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core[Darwin Core Archives How-to Guide].
+This guide provides details on how to utilise the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilise these components to maximise the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide].
 
 The DwC-A format and the specific profile described here represent an internationally recognised and ratified data exchange format for sharing taxonomic data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of taxonomic checklists and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many biologists and data managers familiar with basic structured text files. By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a taxonomic data resource, GBIF hopes to provide the creators and managers of checklists with a standardised approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. A standard format also increases relevance and utility.
 
@@ -45,7 +45,7 @@ The Darwin Core Archive format with the <<GBIF Checklist Extensions>> supports t
 
 === Darwin Core Archive Format
 
-Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core[Darwin Core Archives How-to Guide].
+Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide].
 
 ==== Checklist Metadata
 
@@ -122,15 +122,15 @@ The recommended way to share a classification is in a normalised format. This ma
 A sample classification for a single species, the tiger, “*Panthera tigris*”, is illustrated below. Note that the top-most member of a hierarchy has no parent so that the parent identifier should be empty. Note that *dwc:scientificName* provides a common field for storing the name in this case but that the full set of options for names is described above in Sharing Scientific Names.
 
 |===
-| taxonID | taxonRank | scientificName         | parentNameUsageID |
+| taxonID | taxonRank | scientificName         | parentNameUsageID
 
-| 1           | Kingdom       | Animalia                   |                       |
-| 2           | Phylum        | Chordata                   | 1                     |
-| 3           | Class         | Mammalia                   | 2                     |
-| 4           | Order         | Carnivora                  | 3                     |
-| 5           | Family        | Felidae                    | 4                     |
-| 6           | Genus         | Panthera                   | 5                     |
-| 7           | Species       | Panthera tigris (Linnaeus) | 6                     |
+| 1           | Kingdom       | Animalia                   |
+| 2           | Phylum        | Chordata                   | 1
+| 3           | Class         | Mammalia                   | 2
+| 4           | Order         | Carnivora                  | 3
+| 5           | Family        | Felidae                    | 4
+| 6           | Genus         | Panthera                   | 5
+| 7           | Species       | Panthera tigris (Linnaeus) | 6
 |===
 
 ==== Advantages
@@ -155,12 +155,13 @@ This format is not the recommended method for sharing taxonomic data using Darwi
 . Ensure taxonomic integrity of the list. For example ensure that two species in a common genus share the same family. Ensure that if synonyms are included in separate rows, that their classification matches that of the accepted taxon.
 
 |===
-| taxonID | kingdom | phylum | class | order | family | scientificName |
+| taxonID | kingdom | phylum | class | order | family | scientificName
 
-| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera tigris      |
-| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo         |
-| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera       |
-| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis        |
+| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera tigris
+| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo
+| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera
+| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis
+|===
 
 === Advantages
 
@@ -186,29 +187,29 @@ The following examples illustrate data configurations that can fit the profile *
 . This example identifies the referent taxon as the last column containing taxon values.
 +
 |===
-| taxonID | kingdom | phylum | class | order | family | scientificName |
+| taxonID | kingdom | phylum | class | order | family | scientificName
 
-| 997         | Animalia    |            |           |           |            |                      |
-| 998         | Animalia    | Chordata   |           |           |            |                      |
-| 999         | Animalia    | Chordata   | Mammalia  |           |            |                      |
-| 1000        | Animalia    | Chordata   | Mammalia  | Carnivora |            |                      |
-| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    |                      |
-| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris      |
-| 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris      |
+| 997         | Animalia    |            |           |           |            |
+| 998         | Animalia    | Chordata   |           |           |            |
+| 999         | Animalia    | Chordata   | Mammalia  |           |            |
+| 1000        | Animalia    | Chordata   | Mammalia  | Carnivora |            |
+| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    |
+| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris
+| 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris
 |===
 
 . This example attempts is similar to A above but attempts to reduce integrity errors by only recording higher taxon names once
 +
 |===
-| taxonID | kingdom | phylum | class | order | family | scientificName |
+| taxonID | kingdom | phylum | class | order | family | scientificName
 
-| 997         | Animalia    |            |           |           |            |                      |
-| 998         |             | Chordata   |           |           |            |                      |
-| 999         |             |            | Mammalia  |           |            |                      |
-| 1000        |             |            |           | Carnivora |            |                      |
-| 1001        |             |            |           |           | Felidae    |                      |
-| 1002        |             |            |           |           |            | Panthera tigris      |
-| 1003        |             |            |           |           |            | Panthera leo         |
+| 997         | Animalia    |            |           |           |            |
+| 998         |             | Chordata   |           |           |            |
+| 999         |             |            | Mammalia  |           |            |
+| 1000        |             |            |           | Carnivora |            |
+| 1001        |             |            |           |           | Felidae    |
+| 1002        |             |            |           |           |            | Panthera tigris
+| 1003        |             |            |           |           |            | Panthera leo
 |===
 
 Please avoid publishing data in these configurations.
@@ -218,14 +219,14 @@ Please avoid publishing data in these configurations.
 Darwin Core Archive supports the publication of synonyms in species checklists. A synonym is published as a separate record in the core data file. A synonym references the accepted taxon record through the use of the *dwc:acceptedNameUsageID* field. This field contains the *dwc:taxonID* representing the accepted taxon record. In the simplified example below, the first record represents the accepted name for a taxon and records 2 and 3 are synonyms.
 
 |===
-| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclaturalStatus |
+| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclaturalStatus
 
-| 1           | Coeligena helianthea (Lesson 1838)                | 1                  | accepted            |                         |
-| 2           | Ornismya helianthea Lesson 1838                   | 1                  | Homotypic synonym   |                         |
-| 3           | Helianthea helianthea (Lesson 1838) J. Gould 1848 | 1                  | Homotypic synonym   |                         |
-| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium            |
-| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium            |
-| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium            |
+| 1           | Coeligena helianthea (Lesson 1838)                | 1                  | accepted            |
+| 2           | Ornismya helianthea Lesson 1838                   | 1                  | Homotypic synonym   |
+| 3           | Helianthea helianthea (Lesson 1838) J. Gould 1848 | 1                  | Homotypic synonym   |
+| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium
+| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium
+| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium
 |===
 
 A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml[supporting vocabulary].
@@ -235,20 +236,20 @@ Detailed synonymy can be supported by ensuring a unique *dwc:taxonID* is include
 *Taxon.txt* data file
 
 |===
-| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus |
+| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus
 
-| 1           | Coeligena helianthea  | 1                       | accepted            |
-| 2           | Ornismya helianthea   | 1                       | synonym             |
-| 3           | Helianthea helianthea | 1                       | synonym             |
+| 1           | Coeligena helianthea  | 1                       | accepted
+| 2           | Ornismya helianthea   | 1                       | synonym
+| 3           | Helianthea helianthea | 1                       | synonym
 |===
 
 *References.txt* data file
 
 |===
-| taxonID | Bibliographic citation |
+| taxonID | Bibliographic citation
 
-| 2           | Schmidt, O. 1870. Grundzüge einer Spongien-Fauna des atlantischen Gebietes. (Wilhelm Engelmann: Leipzig): iii-iv, 1-88, pls I-VI.                                     |
-| 2           | Laubenfels, M.W. De 1942. Porifera from Greenland and Baffinland collected by Capt. Robert A. Bartlett. Journal of the Washington Academy of Sciences 32(9): 263-269. |
+| 2           | Schmidt, O. 1870. Grundzüge einer Spongien-Fauna des atlantischen Gebietes. (Wilhelm Engelmann: Leipzig): iii-iv, 1-88, pls I-VI.
+| 2           | Laubenfels, M.W. De 1942. Porifera from Greenland and Baffinland collected by Capt. Robert A. Bartlett. Journal of the Washington Academy of Sciences 32(9): 263-269.
 |===
 
 *Other Synonymy Do’s and Don’ts*
@@ -262,11 +263,11 @@ Detailed synonymy can be supported by ensuring a unique *dwc:taxonID* is include
 *Nomenclatural synonymy* is supported in the core data file through the use of the *dwc:originalNameUsageID* field. This field refers to the row representing the original taxon reference for the name. This record is recommended to provide a bibliographic citation in the *dwc:namePublishedIn* field, which refers to the publication in which the name was originally established.
 
 |===
-| taxonID | scientificName | originalNameID | namePublishedIn |
+| taxonID | scientificName | originalNameID | namePublishedIn
 
-| 1           | Tetrao afer Müller 1778             | 1                  | J. Syst. Nat 7:31   |
-| 2           | Pternistes afer (Müller 1778)       | 1                  |                     |
-| 3           | Francolinus afer afer (Müller 1778) | 1                  |                     |
+| 1           | Tetrao afer Müller 1778             | 1                  | J. Syst. Nat 7:31
+| 2           | Pternistes afer (Müller 1778)       | 1                  |
+| 3           | Francolinus afer afer (Müller 1778) | 1                  |
 |===
 
 Nomenclatural and taxonomic synonyms may be designated in the same taxon record.
@@ -278,12 +279,12 @@ NOTE: An *dwc:originalNameUsageID* must point to an existing record in the datas
 Sometimes the same name may be a synonym for more than one accepted taxon or may be both an accepted taxon name and a synonym. These are caused by splits and circumscription changes where, for example, a series of types may be divided among multiple taxa. The recommended practice for sharing pro-parte synonyms is represented in the example. In this example, *Vireo solitarius* is an accepted taxon name and it is also included in the synonymy for both *Vireo cassinii* and *Vireo plumbeus*. In the case of the synonyms, they are represented as a single record with accepted taxon reference concatenated in the *dwc:acceptedNameUsageID* field and separated by a pipe (“|”) character.
 
 |===
-| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus |
+| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus
 
-| 1           | Vireo solitarius   | 1                       | accepted            |
-| 2           | Vireo cassinii     | 2                       | accepted            |
-| 3           | Vireo plumbeus     | 3                       | accepted            |
-| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte           |
+| 1           | Vireo solitarius   | 1                       | accepted
+| 2           | Vireo cassinii     | 2                       | accepted
+| 3           | Vireo plumbeus     | 3                       | accepted
+| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte
 |===
 
 NOTE: IPT users should define the multi-value delimiter for each source file in the IPT. Refer to https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#source-data[Source Data section] of the IPT User Manual for additional guidance.
@@ -330,7 +331,7 @@ The recommended practice for effectively documenting the provenance of these sor
 ----
 
 . Additional metadata documents can be created for each of the component datasets and included in the archive. This allows each sub-component dataset to be documented as completely as the “parent” dataset with its own recommended citation, contributing individuals etc. As these datasets do not document the entire collection, they are not referenced in the meta.xml descriptor file. Instead they are referenced from individual data records via the *dwc:datasetID* term. If the metadata documents are included in the archive itself, the *dwc:datasetID* equals the filename of the document. Alternatively, it could refer to a URL or some other unique and resolvable identifier for the information. A less recommended but alternative approach would be adding a URL to a simple web page that describes the dataset as opposed to a structured metadata document.
-. To cite individuals at the record level, providing a 3<sup>rd</sup> level of citation, it is recommended to use the *dwc:nameAccordingTo* field. Additional record-level terms are provided above.
+. To cite individuals at the record level, providing a 3rd level of citation, it is recommended to use the *dwc:nameAccordingTo* field. Additional record-level terms are provided above.
 
 === Use Case 2 - Checklists derived from one or more authority sources
 
@@ -385,7 +386,7 @@ It is possible to share and describe multiple links to related external resource
 
 === Creating a dynamic link to a species page
 
-Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The DarwinCore Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a DarwinCore Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF xref:gbif-metadata-profile[provides a complete guide the to Darwin Core metafile].
+Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The DarwinCore Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a DarwinCore Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF xref:gbif-metadata-profile.adoc[provides a complete guide the to Darwin Core metafile].
 
 The metafile supports the creation of variables in the metafile that may refer to a web page or web service call. This variable may be embedded in the URL and include a taxon identifier or the taxon name as one of the parameters in the URL. Any column in the published data can be referenced by enclosing the index number in curly braces “{}”. The taxon identifier in the core data file can also be referenced via the variable “{id}.” The following examples illustrate these features:
 
@@ -397,7 +398,7 @@ http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=17
 If a core data file is published using the ITIS TSN system a link can be composed and tied to the “identifier” term in the core data standard using the following syntax.
 
 ----
-<field default="http://www.itis.gov/servlet/SingleRpt/SingleRpt?search\_topic=TSN&search\_value={id}" term="http://purl.org/dc/terms/identifier"/>
+<field default="http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}" term="http://purl.org/dc/terms/identifier"/>
 ----
 
 where the original numeric value is replaced by the variable `{id}`. This value would be derived from the core ID.

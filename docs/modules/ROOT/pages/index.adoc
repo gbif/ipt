@@ -19,33 +19,33 @@ No release date has been set yet for the next release.  Progress working on issu
 
 Minor issues and security issues will be addressed in patch releases.  A full list of open issues for the IPT is available on https://github.com/gbif/ipt/issues[GitHub].
 
-See also, xref:releases[previous releases].
+See also, xref:releases.adoc[previous releases].
 
 == Featured content
 
-*Need help validating your dataset?* For help, refer to this new xref:data-quality-checklist[data quality checklist]. It is particularly suited for checking occurrence and sampling event datasets and will help ensure that the dataset is both valid and complete
+*Need help validating your dataset?* For help, refer to this new xref:data-quality-checklist.adoc[data quality checklist]. It is particularly suited for checking occurrence and sampling event datasets and will help ensure that the dataset is both valid and complete
 
-*Confused about what types of data GBIF supports? Confused about how to publish data and register it with GBIF?* Check out the new xref:how-to-publish[How to Publish Guide]. It starts by describing the four classes of biodiversity data that can be published through GBIF.org. For each class of data you'll find a simple set of instructions guiding you through the publication steps. Try out the simple Excel templates designed to simplify publication even more!
+*Confused about what types of data GBIF supports? Confused about how to publish data and register it with GBIF?* Check out the new xref:how-to-publish.adoc[How to Publish Guide]. It starts by describing the four classes of biodiversity data that can be published through GBIF.org. For each class of data you'll find a simple set of instructions guiding you through the publication steps. Try out the simple Excel templates designed to simplify publication even more!
 
-*Interested in writing your own resource metadata in XML?* Check out xref:gbif-metadata-profile[this new how-to guide].
+*Interested in writing your own resource metadata in XML?* Check out xref:gbif-metadata-profile.adoc[this new how-to guide].
 
 == Users
 
 If you're only interested in trying out the IPT please request an account on the https://ipt.gbif.org/[Demo IPT] by sending an email to helpdesk@gbif.org.
 
-The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
+The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server.
 
-Otherwise if want to setup your own instance of the IPT the xref:110-getting-started[Getting Started Guide] is your entry point.
+Otherwise if want to setup your own instance of the IPT the xref:110-getting-started.adoc[Getting Started Guide] is your entry point.
 
 NOTE: Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users. It is essential that the IPT is kept up to date to be as secure and robust as possible, so if you are responsible for administering an IPT, then you should be signed up to be notified of new releases so that you can update immediately.
 
 == Developers
 
-The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide[here].
+The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide.adoc[here].
 
 == Translators
 
-The IPT user interface and manual both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found xref:translators[here].
+The IPT user interface and manual both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found xref:translations.adoc[here].
 
 Thanks to an enormous community effort, and by leveraging the power of the https://crowdin.com/project/gbif-ipt[Crowdin] localization tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian.
 

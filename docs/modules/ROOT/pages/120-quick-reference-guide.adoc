@@ -62,7 +62,7 @@ image:ipt2/Control-TableSortedDescending.png[]
 
 ==== File upload
 
-Files can be uploaded in the IPT during two actions: when xref:123-manage-resources#_create_a_new_resource[creating a new resource], or when xref:123-manage-resources#_create_a_new_resource[adding new source data files].
+Files can be uploaded in the IPT during two actions: when xref:123-manage-resources.adoc#_create_a_new_resource[creating a new resource], or when xref:123-manage-resources.adoc#_source_data[adding new source data files].
 
 image:ipt2/v22/Control-UploadCreateResource.png[]
 
@@ -71,7 +71,7 @@ image:ipt2/v22/Control-UploadSourceData.png[]
 The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:
 
 * compressing the file (with zip or gzip)
-* loading the data into one of the many xref:database-connection[databases supported by the IPT]
+* loading the data into one of the many xref:database-connection.adoc[databases supported by the IPT]
 * splitting the file up (when the dataset is published the IPT will concatenate the files in the order they are mapped)
 
 === Controls that appear on all pages
@@ -91,7 +91,7 @@ image::ipt2/v205/IPTHeaderLoggedIn.png[]
 * **Login** - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the "Login" link. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the "Configure User accounts" heading in the "Administration Menu" section. The process of initializing the IPT creates the first user having the Admin role.
 * **Logout** - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the page along with a "Logout" link.
 * **Account** - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the "Configure User accounts" heading in the "Administration Menu" section.
-* **Language selection** - In the upper right-hand corner of the page is a name depicting the language in which the IPT is currently being presented. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the [[How to Translate|HowToTranslate.wiki]] page of the GBIF IPT wiki.
+* **Language selection** - In the upper right-hand corner of the page is a name depicting the language in which the IPT is currently being presented. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the xref:translations.adoc[How to Translate] page.
 
 ==== Footer
 The footer section of the IPT appears along the bottom of most pages and contains information about the IPT version and links to important resources.
@@ -116,8 +116,8 @@ If there are any public resources, they will appear in a table having the follow
 * **Logo** - the resource logo (configurable in Additional Metadata page of the resource metadata)
 * **Name** - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's homepage (see below).
 * **Organisation** - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.
-* **Type** - the type of the resource as given in the Type drop down on the xref:123-manage-resources#_basic_metadata[Basic Metadata] page of the resource metadata
-* **Subtype** - the subtype of the resource as given in the Subtype drop down on the xref:123-manage-resources#_basic_metadata[Basic Metadata] page of the resource metadata
+* **Type** - the type of the resource as given in the Type drop down on the xref:123-manage-resources.adoc#_basic_metadata[Basic Metadata] page of the resource metadata
+* **Subtype** - the subtype of the resource as given in the Subtype drop down on the xref:123-manage-resources.adoc#_basic_metadata[Basic Metadata] page of the resource metadata
 * **Records** - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource. For resources having data in one or more extension files, the number links to the Data Records page on the resource homepage showing a breakdown of record counts by extension.
 * **Last modified** - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.
 * **Last publication** - the date the resource was last published.
@@ -139,7 +139,7 @@ Please note only a user having the Admin role or one of the Manager roles can ed
 image::ipt2/v22/IPTHomeMetadataOverview.png[]
 
 ==== Version history
-The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see the xref:128-administration#_configure_ipt_settings[Configure IPT Settings] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.
+The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see the xref:128-administration.adoc#_configure_ipt_settings[Configure IPT Settings] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.
 
 image::ipt2/v22/IPTVersionHistoryTable.png[]
 
@@ -154,11 +154,11 @@ Following are explanations of the table columns:
 
 == Manage Resources Menu
 
-Section moved to xref:123-manage-resources[Manage Resources].
+Section moved to xref:123-manage-resources.adoc[Manage Resources].
 
 == Administration Menu
 
-Section moved to xref:128-administration[Administration].
+Section moved to xref:128-administration.adoc[Administration].
 
 == About Menu
 The default About page gives information about the current IPT installation, including information about the hosting organisation, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called "config" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The about.ftl file is a Freemarker template that can contain a combination of HTML and variable references of the form `${host.variable!"alternate value if null"}`. After making changes to the about.ftl file, the About page will have to be restarted to show the changes. Look at the default about.ftl file for examples of variables that can be included.

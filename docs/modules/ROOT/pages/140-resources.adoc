@@ -1,7 +1,7 @@
 = Resources
 
 == Darwin Core Archive documentation
-Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DWCAs can be found on [[this|DarwinCore.wiki]] wiki page.
+Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DWCAs can be found on xref:darwin-core.adoc[this] page.
 
 == GBIF Help Desk
 Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).
@@ -13,21 +13,21 @@ Use this online application to find information about organisations, IPT instanc
 This GitHub site is the project repository for all of the open source code, management, and documentation of the IPT.
 
 == IPT developer documentation
-Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the [[How to Contribute|HowToContribute.wiki]] section of the IPT wiki.
+Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the xref:developer-guide.adoc[Developer Guide] section.
 
 == IPT issue tracker
 The https://github.com/gbif/ipt/issues[issue tracker] is the bug report and feature request management system for the IPT software and documentation.
 
 == IPT mailing list
-All *IPT Administrators* should sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] to be notified of new releases and best practices for maintaining their IPT. Have a question about how to maintain the IPT that you can't find the answer to in the [FAQ](https://github.com/gbif/ipt/wiki/FAQ.wiki) or xref:index[User Manaual]? Then send your question to the list to get it answered!
+All *IPT Administrators* should sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] to be notified of new releases and best practices for maintaining their IPT. Have a question about how to maintain the IPT that you can't find the answer to in the xref:faq.adoc[FAQ] or xref:index.adoc[User Manaual]? Then send your question to the list to get it answered!
 
-The https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] can also be used by *IPT users* to support each other. Have a question about how to use the IPT that you can't find the answer to in the [FAQ](https://github.com/gbif/ipt/wiki/FAQ.wiki) or xref:index[User Manaual]? Then send your question to the list to get it answered!
+The https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] can also be used by *IPT users* to support each other. Have a question about how to use the IPT that you can't find the answer to in the xref:faq.adoc[FAQ] or xref:index.adoc[User Manaual]? Then send your question to the list to get it answered!
 
 == IPT server preparation
-This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki [[here|IPTServerPreparation.wiki]].
+This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki xref:server-preparation.adoc[here].
 
 == IPT supported databases
-This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site xref:database-connection[here].
+This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site xref:database-connection.adoc[here].
 
 == IPT test installation
 GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at https://ipt.gbif.org/.

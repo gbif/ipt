@@ -5,12 +5,12 @@ Version 3.0
 == Document control
 
 |===
-| Version | Description             | Date of release | Author(s)    |
+| Version | Description             | Date of release | Author(s)
 
-| http://links.gbif.org/ipt-sample-data-primer[1.0]   | Release Version         | 2015    | Éamonn Ó Tuama |
-| 2.0 | Transferred to wiki, major changes | May 2017   | Kyle Braak |
-| 3.0 | Minor changes, clean up | Aug 2018   | Marie Grosjean |
-| 3.1 | Conversion to Asciidoctor | May 2021 | Matthew Blissett |
+| http://links.gbif.org/ipt-sample-data-primer[1.0]   | Release Version         | 2015    | Éamonn Ó Tuama
+| 2.0 | Transferred to wiki, major changes | May 2017   | Kyle Braak
+| 3.0 | Minor changes, clean up | Aug 2018   | Marie Grosjean
+| 3.1 | Conversion to Asciidoctor | May 2021 | Matthew Blissett
 |===
 
 == Suggested citation
@@ -19,7 +19,7 @@ Version 3.0
 
 == Introduction
 
-This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share sampling-event information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core event data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core[Darwin Core Archives How-to Guide].
+This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share sampling-event information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core event data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide].
 
 The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favor of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. With this international standard, GBIF hopes to facilitate sampling-event data sharing and promote common approaches to cite and recognize the work of the community creating and handling sampling-event data.
 // By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource.
@@ -31,7 +31,7 @@ Sampling-event data is a type of data available from thousands of environmental,
 
 === How to express sampling-event data in DwC-A?
 
-Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core[Darwin Core Archives How-to Guide].
+Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide].
 
 === Sampling-event Metadata
 
@@ -74,12 +74,12 @@ You may represent a sampling area by using an appropriate WKT shape or latitude/
 
 . sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 liter.*
 |===
-| sampleSizeValue | sampleSizeUnit |
+| sampleSizeValue | sampleSizeUnit
 
-| 2 | hour |
-| 3 | m2 |
-| 17 | km |
-| 1 | litre |
+| 2 | hour
+| 3 | m2
+| 17 | km
+| 1 | litre
 |===
 
 === Quantity and abundance
@@ -92,12 +92,12 @@ Table 2 lists some example values. The value of organismQuantity is a number or 
 
 . organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale.*
 |===
-| organismQuantity | organismQuantityType |
+| organismQuantity | organismQuantityType
 
-| 14 | individuals |
-| r | BraunBlanquetScale |
-| 0.4 | %Species |
-| 31 | %Biomass |
+| 14 | individuals
+| r | BraunBlanquetScale
+| 0.4 | %Species
+| 31 | %Biomass
 |===
 
 === How to uniquely identify sampling events
@@ -113,11 +113,11 @@ Sampling events can be related to each other (e.g., nested samples) via a common
 
 Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata.
 
-You may also refer to the following xref:sampling-event-data#_q_how_do_i_publish_a_hierarchy_of_events_recursive_data_type_using_parentEventID[FAQ].
+You may also refer to the following xref:sampling-event-data.adoc#_q_how_do_i_publish_a_hierarchy_of_events_recursive_data_type_using_parentEventID[FAQ].
 
 === How to capture absence data
 
-Refer to the following xref:sampling-event-data#_q_how_do_i_publish_absence_data[FAQ].
+Refer to the following xref:sampling-event-data.adoc#_q_how_do_i_publish_absence_data[FAQ].
 
 === How to include supplementary multimedia
 
@@ -197,21 +197,21 @@ Following are some examples of typical sampling-event data sets. In each case, t
 *Core (Event) table*
 
 |===
-| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude |
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude
 
-| C_1428 | AQEM | 1.25 | m^2 | 21/06/2006 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369 |
-| B_1538 | AQEM | 1.25 | m^2 | 11/06/2008 | Kinzig W3 Bulau | 50.1316 | 8.9657 |
+| C_1428 | AQEM | 1.25 | m^2 | 21/06/2006 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369
+| B_1538 | AQEM | 1.25 | m^2 | 11/06/2008 | Kinzig W3 Bulau | 50.1316 | 8.9657
 |===
 
 *Extension (Occurrence) table*
 
 |===
-| EventID | scientificName | organismQuantity | organismQuantityType | ... |
+| EventID | scientificName | organismQuantity | organismQuantityType | ...
 
-| C_1428 | _Baetis rhodani_ | 14 | individuals |  |
-| C_1428 | _Ephemera danica_ | 15 | individuals |  |
-| C_1428 | _Gyraulus albus_ | 2 | individuals |  |
-| B_1538 | _Serratella ignita_ | 318 | individuals |  |
+| C_1428 | _Baetis rhodani_ | 14 | individuals |
+| C_1428 | _Ephemera danica_ | 15 | individuals |
+| C_1428 | _Gyraulus albus_ | 2 | individuals |
+| B_1538 | _Serratella ignita_ | 318 | individuals |
 |===
 
 *Explanation*
@@ -223,28 +223,28 @@ _Ephemera danica_ : A total of 14 individuals from 1.25 square meters were obtai
 *Core (Event) table*
 
 |===
-| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ... |
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...
 
-| IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 | |
-| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 | |
+| IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |
+| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |
 |===
 
 *Extension (Occurrence) table*
 
 |===
-| EventID | scientificName | organismQuantity | organismQuantityType | ... |
+| EventID | scientificName | organismQuantity | organismQuantityType | ...
 
-| IA1 | _Abra ovata_ | 57 | individuals |  |
-| IA3 | _Bittium reticulatum_ | 113 | individuals |  |
+| IA1 | _Abra ovata_ | 57 | individuals |
+| IA3 | _Bittium reticulatum_ | 113 | individuals |
 |===
 
 *Extension (Measuremenr-or-Fact) table*
 
 |===
-| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... |
+| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...
 
-| IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | -- |
-| IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | -- |
+| IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | --
+| IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | --
 |===
 
 *Explanation*
@@ -258,25 +258,25 @@ Each event can also have measurements or facts associated with it, e.g., environ
 Note that this example is based on Dutch Vegetation Database (LVD) previous version republished as sampling-event dataset. The Releve extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html
 
 |===
-| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...
 
-| 1001 | Braun Blanquet | 100 | m^2 | 09/08/2012 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369 | |
+| 1001 | Braun Blanquet | 100 | m^2 | 09/08/2012 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369 |
 |===
 
 *Extension (Occurrence) table*
 
 |===
-| EventID | scientificName | organismQuantity | organismQuantityType | ... |
+| EventID | scientificName | organismQuantity | organismQuantityType | ...
 
-| 1001 | _Acer psuedoplatanus_ | r | BraunBlanquetScale |  |
+| 1001 | _Acer psuedoplatanus_ | r | BraunBlanquetScale |
 |===
 
 *Extension (Relevé) table*
 
 |===
-| EventID | syntaxonCode | inclination | coverTotal | treesCover | coverShrubs | highTreeLayerHeight | highHerbLayerMeanHeight | mossesIdentified | ... |
+| EventID | syntaxonCode | inclination | coverTotal | treesCover | coverShrubs | highTreeLayerHeight | highHerbLayerMeanHeight | mossesIdentified | ...
 
-| 1001 | 843200 | 40 | 100 | 95 | 50 | 25 | 40 | Y | -- |
+| 1001 | 843200 | 40 | 100 | 95 | 50 | 25 | 40 | Y | --
 |===
 
 *Explanation*
@@ -290,17 +290,17 @@ Additional vegetation plot measurements such as vegetation community type (synta
 *Core (Event) table*
 
 |===
-| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ... |
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...
 
-| 2320 | Jalas-model light trap with 160W ML matt lamp | 16 | day | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ... |
+| 2320 | Jalas-model light trap with 160W ML matt lamp | 16 | day | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ...
 |===
 
 *Extension (Occurrence) table*
 
 |===
-| EventID | scientificName | organismQuantity | organismQuantityType | ... |
+| EventID | scientificName | organismQuantity | organismQuantityType | ...
 
-| 2320 | _Opisthograptis luteolata_ | 11 | individuals |  |
+| 2320 | _Opisthograptis luteolata_ | 11 | individuals |
 |===
 
 *Explanation*
@@ -312,30 +312,30 @@ Additional vegetation plot measurements such as vegetation community type (synta
 *Core (Event) table*
 
 |===
-| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...
 
-| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 | |
-| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 | |
+| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |
+| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |
 |===
 
 *Extension (Occurrence) table*
 
 |===
-| EventID | scientificName | organismQuantity | organismQuantityType | ... |
+| EventID | scientificName | organismQuantity | organismQuantityType | ...
 
-|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |  |
-| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |  |
+|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |
+| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |
 |===
 
 *Extension (Measuremenr-or-Fact) table*
 
 |===
-| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ... |
+| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...
 
-| 1014-tr023m | Temp | 20 | Degree C |  | |
-| 1014-tr023m | Wind speed | light | | | |
-| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  | |
-| 1014-tr023m | AvgAltitude | 10 | m | Average altitude | |
+| 1014-tr023m | Temp | 20 | Degree C |  |
+| 1014-tr023m | Wind speed | light | | |
+| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  |
+| 1014-tr023m | AvgAltitude | 10 | m | Average altitude |
 |===
 
 *Explanation*
@@ -348,21 +348,21 @@ Several environmental measurements (e.g., temperature, wind speed, cloudiness) a
 *Core (Event) table*
 
 |===
-| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...
 
-| 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 | |
-| 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 | |
+| 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 |
+| 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 |
 |===
 
 *Extension (Occurrence) table*
 
 |===
-| EventID | scientificName | organismQuantity | organismQuantityType | ... |
+| EventID | scientificName | organismQuantity | organismQuantityType | ...
 
-| 506003329 | Acanthurus nigricans | 42 | individuals |  |
-| 506003329 | Acanthurus xanthopterus | 1 | individuals |  |
-| 506003329 | Aulostomus chinensis | 4 | individuals |  |
-| 506003329 | Axoclinus cocoensis | 1 | individuals |  |
+| 506003329 | Acanthurus nigricans | 42 | individuals |
+| 506003329 | Acanthurus xanthopterus | 1 | individuals |
+| 506003329 | Aulostomus chinensis | 4 | individuals |
+| 506003329 | Axoclinus cocoensis | 1 | individuals |
 |===
 
 *Explanation*
@@ -373,22 +373,22 @@ Several environmental measurements (e.g., temperature, wind speed, cloudiness) a
 
 . Several sub-plots may be related to the parentEventID as in this example of a Whittaker plot consisting of 13 sub-plots (see Figure 3 for plot layout).
 |===
-| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ... |
+| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...
 
-| A1 |  | Modified Whittaker Plot | 1000 | m^2 | 18/03/84 | Monarch | 55.72 | 13.28 | |
-| A1.1 | A1 |  | 100 | m^2 |  |  | | | |
-| A1.2 | A1 |  | 10 | m^2 |  |  | | | |
-| A1.3 | A1 |  | 10 | m^2 |  |  | | | |
-| A1.4 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.5 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.6 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.7 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.8 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.9 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.10 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.11 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.12 | A1 |  | 1 | m^2 |  |  | | | |
-| A1.13 | A1 |  | 1 | m^2 |  |  | | | |
+| A1 |  | Modified Whittaker Plot | 1000 | m^2 | 18/03/84 | Monarch | 55.72 | 13.28 |
+| A1.1 | A1 |  | 100 | m^2 |  |  | | |
+| A1.2 | A1 |  | 10 | m^2 |  |  | | |
+| A1.3 | A1 |  | 10 | m^2 |  |  | | |
+| A1.4 | A1 |  | 1 | m^2 |  |  | | |
+| A1.5 | A1 |  | 1 | m^2 |  |  | | |
+| A1.6 | A1 |  | 1 | m^2 |  |  | | |
+| A1.7 | A1 |  | 1 | m^2 |  |  | | |
+| A1.8 | A1 |  | 1 | m^2 |  |  | | |
+| A1.9 | A1 |  | 1 | m^2 |  |  | | |
+| A1.10 | A1 |  | 1 | m^2 |  |  | | |
+| A1.11 | A1 |  | 1 | m^2 |  |  | | |
+| A1.12 | A1 |  | 1 | m^2 |  |  | | |
+| A1.13 | A1 |  | 1 | m^2 |  |  | | |
 |===
 
 .A Schematic of a Whittaker plot consisting of 13 sub-plots of varying area.
@@ -412,4 +412,4 @@ The "+" symbol indicates proposed new terms not yet ratified.
 
 === Planned additions and notes for revision:
 
-xref:best-practices-sampling-event-planned-additions[]
+xref:best-practices-sampling-event-planned-additions.adoc[]
