@@ -28,6 +28,17 @@ Many players are involved in the process, not least the GBIF Communications team
 ** Put on different user hats, testing as an 'Admin', 'Manager' and 'Manager with registration rights'.
 ** Where applicable, test the IPT in both production and test mode.
 ** Where applicable, perform cross-browser testing.
+. Update the xref:index.adoc[User Manual].
+** Add/update User Manual content - see issues labelled as `UserManual`.
+** After applying all changes in English, request Spanish translators (e.g. SIB Colombia) to apply all changes to the Spanish user manual also (process not yet clear for the tech-docs system).
+. Update Release Notes
+** The Release Notes should contain all the information needed to properly upgrade their IPT to the latest version. Typically it contains the following sections:
+*** Upgrade instructions
+*** Post-upgrade instructions
+*** New Features / Other
+*** Dependency Notes
+*** Viewing the IPT change log
+*** When all else fails
 
 == Release and public launch steps
 
@@ -36,6 +47,7 @@ Many players are involved in the process, not least the GBIF Communications team
 NOTE: comment out the integration tests (ITs) for Jenkins to release the IPT successfully. Remember to uncomment the ITs in master afterwards.
 
 ** Check the WAR, RPM and Docker image have been released!
+** Create a release on GitHub (using the same tag), so people watching the repository are notified.
 . Update GBIF IPTs to new version
 ** Update production instances. There is a helper script in `/mnt/auto/ipt-data/upgrade`:
 *** https://cloud.gbif.org/bid[BID IPT] — customized (see below for help).
@@ -58,17 +70,7 @@ NOTE: comment out the integration tests (ITs) for Jenkins to release the IPT suc
 NOTE: before an upgrade, the custom logo image(s) and CSS need to be backed-up/preserved and then copied back to the expanded data directory.
 --
 
-. Update the xref:index.adoc[User Manual]; add a new version to the https://github.com/gbif/tech-docs[technical documentation].
-** Add/update User Manual content - see issues labelled as `UserManual`.
-** After applying all changes in English, request Spanish translators (e.g. SIB Colombia) to apply all changes to the Spanish user manual also (process not yet clear for the tech-docs system).
-. Update Release Notes
-** The Release Notes should contain all the information needed to properly upgrade their IPT to the latest version. Typically it contains the following sections:
-*** Upgrade instructions
-*** Post-upgrade instructions
-*** New Features / Other
-*** Dependency Notes
-*** Viewing the IPT change log
-*** When all else fails
+. Add a new version to the https://github.com/gbif/tech-docs[technical documentation]
 . Publish blog post
 ** Publicise in some detail, select improvements that users will value. For example, here is an example blog post for http://gbif.blogspot.com/2015/03/ipt-v22.html[IPT v2.2].
 ** Be sure to acknowledge volunteer translators and coders that contributed to the release.
