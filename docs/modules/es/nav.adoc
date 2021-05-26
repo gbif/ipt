@@ -1,0 +1,2 @@
+.La versión en español
+* xref:manual-del-usuario-del-ipt.adoc[Manual del usuario del IPT]

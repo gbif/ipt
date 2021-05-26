@@ -4,3 +4,4 @@ version: 2.4.2
 start_page: ROOT:index.adoc
 nav:
   - modules/ROOT/nav.adoc
+  - modules/es/nav.adoc

@@ -45,5 +45,3 @@
 * xref:statistics.adoc[]
 * xref:resources.adoc[]
 * xref:glossary.adoc[]
-* ——
-* xref:es/manual-del-usuario-del-ipt.adoc[Para la versión en español]
