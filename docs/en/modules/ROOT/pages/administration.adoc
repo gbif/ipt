@@ -23,6 +23,8 @@ The IPT tests the Public URL for accessibility from the client computer when the
 * in the ipt.properties file, change the line starting with "ipt.baseURL" to the new URL with the new port, using the backslash to escape the colon character. For example, enter `ipt.baseURL=http\://example.org\:7001/ipt` for http://example.org:7001/ipt.
 * restart the IPT in the servlet container.
 * update the metadata for the IPT as described in the next section of this user manual entitled "Publish all resources".
+====
+
 --
 * *Institutional proxy URL* - If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `http://proxy.example.org:8080`.
 * *Google Analytics key* - If you would like to track the use of your instance of the IPT with Google Analytics, you can enable it to do so by entering your Google Analytics key in this text box. This is distinct from enabling GBIF to track the use of this instance of the IPT, which can be enabled using the check box described below. For more information about Google Analytics, see https://www.google.com/intl/en/analytics/.
