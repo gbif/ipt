@@ -1,0 +1,164 @@
+= Installation
+
+== Data directory
+
+The IPT stores configuration, resources, users and logs in its data directory.  This can be set during installation, or the first time the IPT is run.
+
+A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\ipt-data` is appropriate.  The IPT must have write permission to the chosen location.
+
+[CAUTION]
+====
+Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use `/tmp`, for example, on systems where this folder may be emptied on a system restart.
+
+*The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan.*
+
+Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation.
+====
+
+NOTE: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory below, or during the first step of the IPT setup.
+
+== Installation method
+
+There are several ways to install the IPT.
+
+* Users of *Red Hat*, *CentOS*, *Debian*, *Ubuntu* or similar may install directly from <<Installation from Linux packages,Linux packages>>.  This is the simplest method for the typical installation of a single IPT on a single server, and is also the easiest method to keep updated.
+* Other *Linux* users, all *MS Windows* users, and those who wish to run multiple IPTs on the same server should instead look at the section on <<Installation within a servlet container>>.
+* *Docker* images are also available, see https://github.com/gbif/ipt/tree/master/package/docker[Docker packaging].
+
+== Installation from Linux packages
+
+=== RPM (Red Hat, CentOS etc)
+
+To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:
+
+[source,shell]
+----
+yum-config-manager --add-repo https://packages.gbif.org/gbif.repo
+yum install ipt
+----
+
+Optionally, edit `/etc/sysconfig/ipt` to change the default data directory and port.  Finally:
+
+[source,shell]
+----
+systemctl enable ipt
+systemctl start ipt
+----
+
+The IPT starts up on port 8080 (unless this was changed above).  Initial logs are visible with `journalctl -u ipt`, but are then logged in the data directory.  Make sure to *back up the IPT data directory*, which is `/var/lib/ipt` by default.
+
+Successful installation of the IPT packages will make the IPT accessible through a web browser at a URL determined by the server's name and port (e.g., http://server.example.org:8080). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
+
+=== APT (Debian, Ubuntu etc)
+
+Please refer to https://github.com/gbif/ipt/pull/1470["Debian packaging"] on GitHub.  This is a contribution from GBIF Spain, and not yet supported by the IPT developers.
+
+Then continue to <<Opening the IPT to the Internet>>.
+
+== Installation within a servlet container
+
+The IPT is also provided as a `.war` file.  Installing the IPT consists of deploying the `.war` file in a servlet container such as Tomcat.
+
+This section explains how to install different types of servlet containers on your server, and how to deploy the IPT within them.
+
+It isn't necessary to use an reverse proxy, but in case you do, the following section explains how to configure an Apache HTTPD virtual host declaration for the IPT.
+
+The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly8 (JBoss).
+
+=== Tomcat
+
+The IPT has been tested and works well with Tomcat 7, 8 or 9. The Apache Tomcat documentation can be found on http://tomcat.apache.org/.
+
+. Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or xref:tomcat-installation-windows.adoc[Windows], or refer to the Tomcat documentation.
+
+. Configure the IPT data directory within Tomcat
++
+--
+TIP: This step is optional, but is recommended to improve security and simplify the upgrade procedure.
+
+Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, #TODO# on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`.
+
+Define the `IPT_DATA_DIR` parameter within the file — copy and paste the text here, since the case of the letters is important:
+
+[source,xml]
+----
+<Context>
+  <Parameter name="IPT_DATA_DIR" value="/srv/ipt"/>
+</Context>
+----
+
+[NOTE]
+====
+If this step is not done, the IPT will prompt for a data directory when it is first run.  The location will be stored in a file called `datadir.location` the IPT's base installation directory, e.g. `/var/lib/tomcat/webapps/ipt/WEB-INF/datadir.location`.
+
+If the data directory location needs to be changed, remove/edit this file and restart Tomcat.
+====
+--
+
+. Deploy the IPT
++
+--
+Download the latest release of the IPT from https://www.gbif.org/ipt, and rename it to `ipt.war` (or similar). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
+
+If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
+--
+
+Successful deployment of the IPT within a servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's name and port, followed by /ipt (e.g., http://server.example.org:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
+
+The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
+
+video:116142276[vimeo]
+
+=== Jetty
+
+_As a very rough guide, on CentOS:_
+
+[source,shell]
+----
+yum install jetty-runner
+java -jar /usr/share/java/jetty/jetty-runner.jar --port 8080 ipt.war
+----
+
+== Opening the IPT to the Internet
+
+You will probably need to work with your system or network administrator for the IPT to be available on the Internet.
+
+You will need a DNS name for the server ("`ipt.example.org`") and the firewall to allow access.
+
+Many people use Apache HTTPD as a reverse proxy, often to allow sharing other websites on the same server or HTTPS access.
+
+The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths `/media` and `/icons` are excluded from being passed to the IPT, to allow hosting static image files (e.g. occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/.
+
+[source]
+----
+<VirtualHost *:80>
+        ServerName                 ipt.gbif.org
+        ServerAdmin                webmaster@gbif.org
+        ErrorLog                   logs/ipt-80_error
+        CustomLog                  logs/ipt-80_log combined
+
+        Redirect                   / https://ipt.gbif.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+        ServerName                 ipt.gbif.org
+        ServerAdmin                webmaster@gbif.org
+        ErrorLog                   logs/ipt-443_error
+        CustomLog                  logs/ipt-443_log combined
+
+        DocumentRoot               /var/www/html/ipt
+
+        Options                    +Indexes
+        AddDefaultCharset          UTF-8
+
+        ProxyPreserveHost          On
+        ProxyPass                  /icons !
+        ProxyPass                  /media !
+        ProxyPass                  / http://localhost:8080/ipt/
+        ProxyPassReverse           / http://localhost:8080/ipt/
+        ProxyPassReverseCookiePath /ipt /
+
+        SSLEngine                  On
+        # Other SSL configuration (certificates etc)
+</VirtualHost>
+----
