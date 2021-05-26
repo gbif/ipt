@@ -1,6 +1,6 @@
 = Initial Setup
 
-== IPT setup I
+== Data directory
 
 NOTE: This step is only shown if the data directory was not already configured during installation.
 
@@ -8,7 +8,7 @@ The first time the IPT is run, you will be presented with a few simple steps to 
 
 CAUTION: Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use `/tmp`, for example, on systems where this folder may be emptied on a system restart. *The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan.* Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation.
 
-NOTE: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup (see also the <<Starting Over>> section below). Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page (see the screen image in the "Administration Menu" section of the Quick Reference Guide).
+NOTE: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup. Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page (see the screen image in the "Administration Menu" section of the Quick Reference Guide).
 
 NOTE: If you receive an error stating the location is not writeable, see xref:faq.adoc#_4_i_get_the_following_error_the_data_directory_directory_is_not_writable_what_should_i_do[the FAQ item on this].
 
@@ -16,7 +16,7 @@ TIP: Click on the language name in the upper right hand corner to see whether yo
 
 image::ipt2/v22/IPTSetup1.png[]
 
-== IPT setup II
+== Administrator user and URLs
 If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:
 
 * Default administrator
@@ -41,7 +41,7 @@ The password should be made secure and safe from loss, as it is not recoverable 
 --
 WARNING: for a given installation, this selection is final and cannot be changed later on.
 
-The IPT mode decides whether or not the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made. (see the <<Starting Over>> section below).
+The IPT mode decides whether or not the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made.
 
 * *IPT mode*
 +

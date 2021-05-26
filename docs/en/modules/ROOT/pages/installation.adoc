@@ -21,11 +21,9 @@ NOTE: If you have a data directory from a previously running IPT of the same ver
 
 There are several ways to install the IPT.
 
-Users of *Red Hat*, *CentOS*, *Debian*, *Ubuntu* or similar may install directly from <<Installation from Linux packages,Linux packages>>.  This is the simplest method for the typical installation of a single IPT on a single server, and is also the easiest method to keep updated.
-
-Other *Linux* users, all *MS Windows* users, and those who wish to run multiple IPTs on the same server should instead look at the section on <<Installation within a servlet container>>.
-
-*Docker* images are also available, see https://github.com/gbif/ipt/tree/master/package/docker[Docker packaging].
+* Users of *Red Hat*, *CentOS*, *Debian*, *Ubuntu* or similar may install directly from <<Installation from Linux packages,Linux packages>>.  This is the simplest method for the typical installation of a single IPT on a single server, and is also the easiest method to keep updated.
+* Other *Linux* users, all *MS Windows* users, and those who wish to run multiple IPTs on the same server should instead look at the section on <<Installation within a servlet container>>.
+* *Docker* images are also available, see https://github.com/gbif/ipt/tree/master/package/docker[Docker packaging].
 
 == Installation from Linux packages
 
@@ -69,10 +67,9 @@ The most common servlet containers used to deploy the IPT are Tomcat, Jetty and 
 
 === Tomcat
 
-The IPT has been tested and works well with Tomcat 7, 8 or 9. The Apache Tomcat documentation can be found on http://tomcat.apache.org/. Also, minimal instructions for Tomcat installations on various operating systems can be found in associated Server Preparation pages:
+The IPT has been tested and works well with Tomcat 7, 8 or 9. The Apache Tomcat documentation can be found on http://tomcat.apache.org/.
 
-* xref:tomcat-installation-linux.adoc[Tomcat on Linux]
-* xref:tomcat-installation-windows.adoc[Tomcat on Windows 8]
+. Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or xref:tomcat-installation-windows.adoc[Windows], or refer to the Tomcat documentation.
 
 . Configure the IPT data directory within Tomcat
 +
@@ -110,7 +107,7 @@ Successful deployment of the IPT within a servlet container will make the IPT ac
 
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
-video:|116142276[vimeo]
+video:116142276[vimeo]
 
 === Jetty
 

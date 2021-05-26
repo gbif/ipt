@@ -30,29 +30,24 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 == Data Hosting Centres by Theme
 
-* <<Freshwater Data>>
-* <<Marine Data>>
-* <<Vertebrate Data>>
+* <<Freshwater data>>
+* <<Marine data>>
+* <<Vertebrate data>>
 
 == Data Hosting Centres by Location
 
 * <<Belgium>>
-* <<Benin>>
-* <<Burkina Faso>>
 * <<Canada>> ⭐
 * <<Colombia>> ⭐
 * <<Denmark>>
 * <<Finland>>
-* <<France>>
-* <<Mauritania>>
-* <<Madagascar>>
+* <<France>> (also for Benin, Botswana, Burkina Faso, Cameroon, Côte d'Ivoire, Gabon, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo and Uganda)
 * <<Norway>>
 * <<Portugal>>
 * <<South Africa>>
 * <<Spain>> ⭐
 * <<Sweden>>
 * <<Taiwan>>
-* <<Togo>>
 * <<USA>>
 
 ⭐ Designates a country with an IPT serving as a repository, able to assign DOIs to datasets underlying scientific publications in journals such as https://www.nature.com/sdata/[Scientific Data].
@@ -111,16 +106,16 @@ The Finnish Biodiversity Information Facility (FinBIF) (https://laji.fi/) provid
 
 http://www.gbif.fr/[GBIF France] provides helpdesk support to new publishers and hosts an IPT for each of these countries:
 
+* http://ipt-benin.gbif.fr[GBIF Benin IPT]
 * http://ipt-botswana.gbif.fr/[Botswana IPT] - _Note Botswana is not a GBIF Participant_
 * http://ipt-burkinafaso.gbif.fr[Burkina Faso IPT] - _Note Burkina Faso is not a GBIF Participant_
 * http://ipt-cameroun.gbif.fr[Cameroon IPT]
-* http://ipt-cotedivoire.gbif.fr[Côte dÍvoire IPT] - _Note Côte d'Ivoire is not a GBIF Participant_
-* http://ipt-inpn.gbif.fr/[INPN IPT]
-* http://ipt-gabon.gbif.fr[Gabon IPT] - _Note Gabon is not a GBIF Participant_
-* http://ipt-benin.gbif.fr[GBIF Benin IPT]
+* http://ipt-cotedivoire.gbif.fr[Côte d'Ivoire IPT] - _Note Côte d'Ivoire is not a GBIF Participant_
 * http://ipt.gbif.fr[GBIF France IPT]
+* http://ipt-gabon.gbif.fr[Gabon IPT] - _Note Gabon is not a GBIF Participant_
 * http://ipt-ghana.gbif.fr[Ghana BIF IPT]
 * http://ipt-guinee.gbif.fr[GBIF Guinea IPT]
+* http://ipt-inpn.gbif.fr/[INPN IPT]
 * http://ipt.madbif.mg[MadBIF IPT]
 * http://ipt-nigeria.gbif.fr[GBIF Nigeria IPT]
 * http://ipt-senegal.gbif.fr[Senegal IPT] - _Note Senegal is not a GBIF participant_
