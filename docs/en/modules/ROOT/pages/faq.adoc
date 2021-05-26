@@ -8,7 +8,7 @@ Here you will find answers to the most frequently asked questions about the GBIF
 
 There is one important directory that contains all the IPT's configuration and resources: the IPT's data directory. If you ensure this directory is regularly backed-up somewhere safe, you'll never lose any data.
 
-To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, all you have to do is follow the xref:getting-started.adoc#_starting_over[Starting Over] instructions. As it says: "If the user enters the same absolute path to the data directory as before, the previous configuration will be completely restored".
+To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, xref:installation.adoc[install the IPT on the new server], using this directory as the data directory.
 
 === 2. My GBIF IPT instance is slow. What can I do to improve performance?
 
@@ -140,7 +140,7 @@ in your publication log file, it means there is no space left in the disk partit
 To solve this, you can:
 
 * Allocate more space to this partition.
-* Move your IPT data directory to another partition where there is more space available. Note, this requires you to xref:getting-started.adoc#_starting_over[reinstall] your IPT.
+* Move your IPT data directory to another partition where there is more space available. (Refer to the xref:installation.adoc[installation instructions] to change the location of the data directory).
 * Free up disk space (e.g. deleting temporary files, remove unused applications, etc)
 
 === 4. How do I change the publishing organisation of my resource? The dropdown on the Basic Metadata page is disabled.

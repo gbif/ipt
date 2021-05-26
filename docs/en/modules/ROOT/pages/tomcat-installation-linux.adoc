@@ -4,7 +4,7 @@ Tomcat is usually installed using distribution packages.
 
 For example, on CentOS or RedHat systems, `yum install tomcat`.
 
-Or on Debian or Ubuntu systems, `apt install tomcat8`.
+Or on Debian or Ubuntu systems, `apt install tomcat9`.
 
 You can set Tomcat to start up automatically with `systemctl enable tomcat` or similar.
 
