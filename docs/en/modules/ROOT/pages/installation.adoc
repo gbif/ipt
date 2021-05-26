@@ -63,7 +63,7 @@ The IPT is also provided as a `.war` file.  Installing the IPT consists of deplo
 
 This section explains how to install different types of servlet containers on your server, and how to deploy the IPT within them.
 
-It isn't necessary to use an Apache HTTPD reverse proxy, but in case you do, the following section explains how to configure an Apache HTTPD virtual host declaration for the IPT.
+It isn't necessary to use an reverse proxy, but in case you do, the following section explains how to configure an Apache HTTPD virtual host declaration for the IPT.
 
 The most common servlet containers used to deploy the IPT are Tomcat, Jetty and Wildfly8 (JBoss).
 
@@ -128,7 +128,7 @@ You will probably need to work with your system or network administrator for the
 
 You will need a DNS name for the server ("`ipt.example.org`") and the firewall to allow access.
 
-Many people use Apache HTTPD as a proxy, often to allow sharing other websites on the same server or HTTPS access.
+Many people use Apache HTTPD as a reverse proxy, often to allow sharing other websites on the same server or HTTPS access.
 
 The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths `/media` and `/icons` are excluded from being passed to the IPT, to allow hosting static image files (e.g. occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/.
 

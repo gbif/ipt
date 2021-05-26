@@ -48,9 +48,13 @@ The IPT mode decides whether or not the hosted resources will be indexed for pub
 Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (which can be requested from DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible.
 --
 
-* Base URL
-** *Base URL for this IPT* - The public, Internet-accessible URL that points to the root of this IPT installation. The URL is detected automatically if possible.  On production systems it needs to be accessible via the Internet in order for the IPT to function fully.  Configuring the IPT Base URL to use localhost, for example, will not allow the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow resources to be publicly accessible.
-** *Proxy URL* - If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `http://proxy.example.org:8080`.
+* Public URL
++
+The public, Internet-accessible URL that points to the root of this IPT installation. The URL is detected automatically if possible.  On production systems it needs to be accessible via the Internet in order for the IPT to function fully.  Configuring the IPT Public URL to use localhost, for example, will not allow the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow resources to be publicly accessible.
+
+* Institutional proxy URL (optional)
++
+If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `http://proxy.example.org:8080`.
 
 image::ipt2/v22/IPTSetup2_1.png[]
 
