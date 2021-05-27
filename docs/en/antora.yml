@@ -1,0 +1,7 @@
+name: ipt
+title: IPT
+version: 2.5
+start_page: ROOT:index.adoc
+nav:
+  - modules/ROOT/nav.adoc
+  - modules/es/nav.adoc

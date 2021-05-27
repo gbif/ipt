@@ -1,0 +1,49 @@
+= IPT Version 2.1 Release Notes
+
+== Upgrade instructions
+
+. Performing the upgrade
++
+--
+WARNING: It is always a good idea to take the precaution of backing up the existing IPT data directory before performing an upgrade.
+
+CAUTION: Once an IPT has been upgraded to 2.1, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
+
+An upgrade can be performed in 3 steps:
+
+. Replace the previous .war file with the latest edition
+. Backup the existing data directory
+. Reuse the existing data directory during setup
+--
+
+. Post-upgrade instructions
++
+--
+Upgrading from 2.0.5, once the upgrade is complete, resource managers should:
+
+. Republish all occurrence and checklist resources (Windows hosted IPTs only). A https://code.google.com/p/gbif-providertoolkit/issues/detail?id=1015[bug] in 2.0.5 caused names of files inside the Darwin Core Archive to be prefixed by a backward slash, e.g. "\meta.xml".
+. Check the geographic coverage is correct for each resource (if applicable). A bug in all earlier versions of the IPT caused bounding boxes to reset to global coverage following server restart on some locales. This was due to a https://code.google.com/p/gbif-providertoolkit/issues/detail?id=1043[bug] interpreting decimal coordinates, and has been fixed in 2.1
+
+Upgrading from 2.0.3, once the upgrade is complete, resource managers should:
+
+. Reset the resource subtype (if applicable), making the selection on the basic metadata page. The reason being that this list now refers to a controlled vocabulary in all subsequent versions and previous selections will have been reset.
+. Re-save the metadata for each resource. The reason being that additional validation has been added to the metadata pages in all subsequent versions in order to ensure better compliance with the GBIF metadata profile.
+--
+
+. Other
+** IPT 2.1 now explicitly writes the occurrenceID/taxonID in the published Darwin Core Archive. In previous versions, the value mapped to the occurrenceID/taxonID was written to the ID column in the Darwin Core Archive.
+** IPT 2.1 now supports uploading Excel files as data sources. https://tools.gbif.org/spreadsheet-processor/[GBIF Spreadsheet Templates] can be used to create new resources, but they have to be converted into a Darwin Core Archive first.
+** GBIF has released a new IPT2Core.md[guide] on how to add custom cores to the IPT, aimed advaned users and communities prototyping new data standards.
+
+== Dependency Notes
+
+This new version has been tested and designed to work on Tomcat 6.0 or 7.0. Please note IPT 2.1 no longer supports Java 5, and is designed to run on Java 6 or later.
+
+== Viewing the IPT change log
+
+This version addressed a total of 85 issues: 38 Defects, 11 Enhancements, 18 Won't fix, 6 Duplicates, 1 Other, and 11 that were considered as Invalid.
+These are detailed in the https://code.google.com/p/gbif-providertoolkit/issues/list?can=1&q=milestone=Release2.1&sort=status&colspec=ID%20Type%20Status%20Priority%20Milestone%20Owner%20Summary[issue tracking system]
+
+== When all else fails
+
+See the xref:faq.adoc[FAQ], which continues to be updated with good questions.
