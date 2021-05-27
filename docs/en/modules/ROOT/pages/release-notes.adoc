@@ -6,6 +6,8 @@
 
 == Upgrade instructions
 
+#TODO: Upgrades using Linux packages.#
+
 === A. Performing the upgrade
 
 WARNING: Be sure to backup the IPT data directory before performing an upgrade. As per the xref:data-hosting-centres.adoc#_data_hosting_centre_criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.

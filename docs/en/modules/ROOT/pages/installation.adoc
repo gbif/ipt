@@ -57,7 +57,7 @@ Then continue to <<Opening the IPT to the Internet>>.
 
 == Installation within a servlet container
 
-The IPT is also provided as a `.war` file.  Installing the IPT consists of deploying the `.war` file in a servlet container such as Tomcat.
+Installing the IPT within a servlet container consists of deploying the IPT `.war` file in a servlet container such as Tomcat.
 
 This section explains how to install different types of servlet containers on your server, and how to deploy the IPT within them.
 
@@ -98,7 +98,7 @@ If the data directory location needs to be changed, remove/edit this file and re
 . Deploy the IPT
 +
 --
-Download the latest release of the IPT from https://www.gbif.org/ipt, and rename it to `ipt.war` (or similar). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
+Download the latest WAR release of the IPT from the xref:news.adoc[release page] or https://www.gbif.org/ipt, and rename it to `ipt.war` (or similar). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
 
 If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
 --
@@ -107,7 +107,7 @@ Successful deployment of the IPT within a servlet container will make the IPT ac
 
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
-video:116142276[vimeo]
+video::116142276[vimeo]
 
 === Jetty
 
@@ -125,16 +125,14 @@ You will probably need to work with your system or network administrator for the
 
 You will need a DNS name for the server ("`ipt.example.org`") and the firewall to allow access.
 
-Many people use Apache HTTPD as a reverse proxy, often to allow sharing other websites on the same server or HTTPS access.
+Many people use Apache HTTPD as a reverse proxy, often to provide HTTPS access or to allow sharing other websites on the same server.
 
-The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths `/media` and `/icons` are excluded from being passed to the IPT, to allow hosting static image files (e.g. occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/.
+The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths https://ipt.gbif.org/media/[`/media`] and https://ipt.gbif.org/icons/[`/icons`] are excluded from being passed to the IPT, to allow hosting static image files (e.g. occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/.
 
-[source]
+[source,apache]
 ----
 <VirtualHost *:80>
         ServerName                 ipt.gbif.org
-        ServerAdmin                webmaster@gbif.org
-        ErrorLog                   logs/ipt-80_error
         CustomLog                  logs/ipt-80_log combined
 
         Redirect                   / https://ipt.gbif.org/
@@ -142,7 +140,6 @@ The configuration used by `ipt.gbif.org` is shown here as an example.  It uses A
 
 <VirtualHost *:443>
         ServerName                 ipt.gbif.org
-        ServerAdmin                webmaster@gbif.org
         ErrorLog                   logs/ipt-443_error
         CustomLog                  logs/ipt-443_log combined
 
