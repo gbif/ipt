@@ -16,7 +16,7 @@
 
         <p class="mx-md-4 mx-2">
             <@s.text name="login.intro">
-                <@s.param>${admin.email}</@s.param>
+                <@s.param>${adminEmail}</@s.param>
             </@s.text>
         </p>
 
@@ -34,7 +34,7 @@
 
                 <#if email?has_content>
                     <p>
-                        <@s.text name="login.forgottenpassword"><@s.param>${admin.email}</@s.param></@s.text>
+                        <@s.text name="login.forgottenpassword"><@s.param>${adminEmail}</@s.param></@s.text>
                     </p>
                 </#if>
 

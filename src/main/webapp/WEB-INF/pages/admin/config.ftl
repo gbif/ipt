@@ -43,6 +43,10 @@
                 </div>
 
                 <div class="col-lg-6">
+                    <@input name="adminEmail" i18nkey="admin.config.adminEmail" help="i18n" size=80/>
+                </div>
+
+                <div class="col-lg-6">
                     <@input name="baseUrl" i18nkey="admin.config.baseUrl" help="i18n" size=80/>
                 </div>
 

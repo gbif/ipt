@@ -469,4 +469,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     return false;
   }
 
+  public void setAdminEmail(String adminEmail) {
+    cfg.setProperty(AppConfig.ADMIN_EMAIL, adminEmail);
+  }
 }
