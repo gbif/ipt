@@ -253,6 +253,8 @@ public class SetupAction extends BaseAction {
           if (getModeSelected().equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
             if (URLUtils.isLocalhost(burl)) {
               addFieldError("baseURL", getText("admin.config.baseUrl.invalidBaseURL"));
+              // get the correct baseURL from context
+              baseURL = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
               return INPUT;
             } else if (URLUtils.isHostName(burl)) {
               // warn the base URL is same as machine name so user ensures it is visible on the Internet
