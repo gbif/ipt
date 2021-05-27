@@ -589,6 +589,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
+   * Replace the EML file in a resource by the provided file
+   *
+   * @param resource
+   * @param emlFile
+   * @throws ImportException
+   */
+  public void replaceEml(Resource resource, File emlFile) throws ImportException {
+    Eml eml;
+    // copy eml file to data directory (with name eml.xml) and populate Eml instance
+    eml = copyMetadata(resource.getShortname(), emlFile);
+    resource.setEml(eml);
+    resource.setMetadataModified(new Date());
+    save(resource);
+  }
+
+  /**
    * Method ensures an Extension's mapping:
    * a) always contains the coreId term mapping (if it doesn't exist yet)
    * b) coreId element's index is always the same as the coreId term's index (see issue #1229)
@@ -986,7 +1002,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       LOG.info("Loaded " + counter + " resources into memory altogether.");
       LOG.info("Cleaned up " + counterDeleted + " resources altogether.");
     } else {
-      LOG.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
+      LOG.error("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
     }
     return counter;
   }
@@ -2112,17 +2128,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
       LOG.info("Archival mode is ON with a limit of "+ cfg.getArchivalLimit()+" elements)");
       LOG.info("Clean archive versions, if needed, for resource: " + resource.getShortname());
-      while (resource.getVersionHistory().size() > cfg.getArchivalLimit()) {
-        VersionHistory oldestVersion = resource.getVersionHistory().get(resource.getVersionHistory().size() -1);
-        try {
-          BigDecimal version = new BigDecimal(oldestVersion.getVersion());
-          LOG.info("Deleting version " + version + " for resource: " + resource.getShortname());
-          removeVersion(resource.getShortname(), version);
-          resource.removeVersionHistory(version);
-        }
-        catch (Exception e) {
-          LOG.error("Cannot delete oldest versions for resource: " + resource.getShortname(), e);
-          return;
+      List<VersionHistory> history = resource.getVersionHistory();
+      if (history.size() > cfg.getArchivalLimit()) {
+        for (int i=cfg.getArchivalLimit(); i<history.size(); i++) {
+          VersionHistory oldVersion = history.get(i);
+          try {
+            BigDecimal version = new BigDecimal(oldVersion.getVersion());
+            LOG.info("Deleting archive version " + version + " for resource: " + resource.getShortname());
+            removeArchiveVersion(resource.getShortname(), version);
+          }
+          catch (Exception e) {
+            LOG.error("Cannot delete old archive versions for resource: " + resource.getShortname(), e);
+            return;
+          }
         }
       }
     }

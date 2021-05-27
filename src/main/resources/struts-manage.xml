@@ -44,6 +44,17 @@
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${shortname}</result>
     </action>
 
+    <action name="replace-eml" class="org.gbif.ipt.action.manage.EmlAction" method="replaceEml">
+      <interceptor-ref name="fileUpload">
+        <param name="maximumSize">104857600</param>
+      </interceptor-ref>
+      <interceptor-ref name="managerStack"/>
+      <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
@@ -94,6 +105,14 @@
       <result name="success">/WEB-INF/pages/manage/source.ftl</result>
       <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+    <action name="raw-source" class="org.gbif.ipt.action.portal.ResourceFileAction" method="rawsource">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
     </action>
     <action name="uploadlogo" class="org.gbif.ipt.action.manage.SourceAction" method="uploadLogo">
       <interceptor-ref name="fileUpload">
