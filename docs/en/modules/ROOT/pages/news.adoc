@@ -1,0 +1,25 @@
+= News
+
+// When updating this page, remember to move information on the old release to releases.adoc.
+
+== Latest Release: 2.5.0
+
+Version 2.5.0 is #TODO NOT YET# available for download https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[here], using xref:installation.adoc#_installation_from_linux_packages[via Linux packages] or https://github.com/gbif/ipt/tree/master/package/docker[using Docker].
+
+Version 2.5.0 includes a #TODO#, https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.5.0+is%3Aclosed[see issues closed] by this release.
+
+Older releases are listed on the xref:releases.adoc[version history] page.
+
+== Next release
+
+No release date has been set yet for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestone/4[here].
+
+Minor issues and security issues will be addressed in patch releases.
+
+== Featured content
+
+*Need help validating your dataset?* For help, refer to this new xref:data-quality-checklist[data quality checklist]. It is particularly suited for checking occurrence and sampling event datasets and will help ensure that the dataset is both valid and complete
+
+*Confused about what types of data GBIF supports?* *Confused about how to publish data and register it with GBIF?* Check out the new xref:how-to-publish[How to Publish Guide]. It starts by describing the four classes of biodiversity data that can be published through GBIF.org. For each class of data you'll find a simple set of instructions guiding you through the publication steps. Try out the simple Excel templates designed to simplify publication even more!
+
+*Interested in writing your own resource metadata in XML?* Check out xref:gbif-metadata-profile.adoc[this new how-to guide].
