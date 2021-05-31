@@ -493,13 +493,15 @@ public class EmlValidator extends BaseValidator {
             int index = 0;
             for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
               int kw = 0;
-              for (TaxonKeyword k : tc.getTaxonKeywords()) {
-                if (!exists(k.getScientificName())) {
-                  action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName",
-                    action.getText("validation.required",
-                      new String[] {action.getText("eml.taxonomicCoverages.taxonKeyword.scientificName")}));
+              if (tc != null) {
+                for (TaxonKeyword k : tc.getTaxonKeywords()) {
+                  if (!exists(k.getScientificName())) {
+                    action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName",
+                        action.getText("validation.required",
+                            new String[]{action.getText("eml.taxonomicCoverages.taxonKeyword.scientificName")}));
+                  }
+                  kw++;
                 }
-                kw++;
               }
               index++;
             }
