@@ -79,16 +79,16 @@
       <!-- stack to be used as the default for the admin package -->
       <interceptor-stack name="adminStack">
         <interceptor-ref name="setupAndCancel"/>
-        <interceptor-ref name="requireAdmin"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
+        <interceptor-ref name="requireAdmin"/>
       </interceptor-stack>
 
       <!-- stack to be used as the default for the manage package -->
       <interceptor-stack name="managerStack">
         <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="setupAndCancel"/>
-        <interceptor-ref name="requireManager"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
+        <interceptor-ref name="requireManager"/>
       </interceptor-stack>
 
       <!-- stack to be used for individual ajax actions within any package -->
