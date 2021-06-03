@@ -61,6 +61,13 @@
                 </ul>
 
                 <div class="d-xl-flex align-content-between">
+                    <!-- Health -->
+                    <div class="navbar-nav">
+                      <a href="${baseURL}/health.do" class="nav-link" title="[@s.text name="portal.health.title"/]">
+                        <i class="fa fa-tasks"></i>
+                      </a>
+                    </div>
+
                     <!-- Languages -->
                     <div id="navbarNavDropdown">
                         [#include "/WEB-INF/pages/inc/languages.ftl"/]

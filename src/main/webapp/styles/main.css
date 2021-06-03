@@ -50,6 +50,11 @@ header, .dropdown-menu {
 .navbar-button:hover, .admin-item:hover {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
+
+.navbar-nav .fa {
+  font-size: 22px;
+}
+
 /* Logo, header, menu etc. END */
 
 
@@ -94,6 +99,18 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):hover 
 
 .text-gbif-header {
     color: #4E565F !important;
+}
+
+.bg-gbif-primary {
+  background-color: #61a861 !important;
+}
+
+.bg-gbif-danger {
+  background-color: #e36370 !important;
+}
+
+.bg-gbif-header {
+  background-color: #4E565F !important;
 }
 
 

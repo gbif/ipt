@@ -162,6 +162,11 @@
     <action name="about" class="org.gbif.ipt.action.AboutAction">
       <result>/WEB-INF/pages/about.ftl</result>
     </action>
+
+    <action name="health" class="org.gbif.ipt.action.HealthAction">
+      <result>/WEB-INF/pages/health.ftl</result>
+    </action>
+
     <action name="rss" class="org.gbif.ipt.action.portal.ResourceAction" method="rss">
       <result name="success" type="freemarker">
         <param name="location">/WEB-INF/pages/portal/rss.ftl</param>
@@ -174,6 +179,14 @@
   <!-- Actions related to the inventory API of the IPT accessible by everyone. -->
   <package name="default" namespace="/inventory" extends="json-default">
     <action name="dataset" class="org.gbif.ipt.action.portal.InventoryAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+      </result>
+    </action>
+  </package>
+
+  <package name="ipt-api" namespace="/api" extends="json-default">
+    <action name="health" class="org.gbif.ipt.action.HealthAction">
       <result name="success" type="json">
         <param name="noCache">true</param>
       </result>
