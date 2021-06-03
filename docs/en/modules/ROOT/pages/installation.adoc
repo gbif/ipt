@@ -76,7 +76,7 @@ The IPT has been tested and works well with Tomcat 7, 8 or 9. The Apache Tomcat 
 --
 TIP: This step is optional, but is recommended to improve security and simplify the upgrade procedure.
 
-Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, #TODO# on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`.
+Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`.
 
 Define the `IPT_DATA_DIR` parameter within the file — copy and paste the text here, since the case of the letters is important:
 
@@ -98,7 +98,7 @@ If the data directory location needs to be changed, remove/edit this file and re
 . Deploy the IPT
 +
 --
-Download the latest WAR release of the IPT from the xref:news.adoc[release page] or https://www.gbif.org/ipt, and rename it to `ipt.war` (or similar). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
+Download the latest WAR release of the IPT from the xref:news.adoc[release page] or https://www.gbif.org/ipt, and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
 
 If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
 --
@@ -109,9 +109,14 @@ The following screencast also explains how to install the IPT using Tomcat, assu
 
 video::116142276[vimeo]
 
+[TIP]
+====
+Multiple IPTs can be installed on the same server with a small variation to this process.  Rather than (or in addition to) using `ipt.xml` and `ipt.war`, use different names and change the files accordingly: on https://cloud.gbif.org/[cloud.gbif.org] we have `africa.xml` and `africa.war`, `bid.xml` and `bid.war` etc.
+====
+
 === Jetty
 
-_As a very rough guide, on CentOS:_
+_As a very rough guide, on CentOS, to run a single instance of the IPT:_
 
 [source,shell]
 ----
