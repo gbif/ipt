@@ -31,6 +31,10 @@
         <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
+                [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
+                [#else]
+                    <img class="testmode" src="${baseURL}/images/testmode.png" style="width: 100px;"/>
+                [/#if]
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,10 +58,6 @@
                     <li class="nav-item">
                         <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
-                    [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
-                    [#else]
-                        <img class="testmode" src="${baseURL}/images/testmode.png" style="width: 100px;"/>
-                    [/#if]
                 </ul>
 
                 <div class="d-xl-flex align-content-between">
