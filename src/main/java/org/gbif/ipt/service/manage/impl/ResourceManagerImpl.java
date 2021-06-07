@@ -990,10 +990,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             LOG.warn("Cleaning up empty resource directory " + resourceDir.getName());
             FileUtils.deleteQuietly(resourceDir);
             counterDeleted++;
-          } else if (resourceDirFiles.length == 1) {
-            LOG.warn("Cleaning up invalid resource directory " + resourceDir.getName() + " with single file: " + resourceDirFiles[0].getName());
-            FileUtils.deleteQuietly(resourceDir);
-            counterDeleted++;
           } else {
             try {
               LOG.debug("Loading resource from directory " + resourceDir.getName());
