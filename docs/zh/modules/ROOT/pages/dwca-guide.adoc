@@ -4,15 +4,15 @@ Version 2.1
 
 image::figures/cover_art_cicindelinae.png[]
 
-== Document Control
+== 文件版控
 
 |===
-| 版本 | 說明                  | Date of release | Author(s)
+| 版本 | 說明                  | 釋出版日期 | 作者
 
-| http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1[1.0]    | Content review and additions | April 2011     | David Remsen, Markus Döring
-| 2.0     | Transferred to wiki, major edits | 9 May 2017      | Kyle Braak
-| 2.1     | Minor edits, updating links etc  | 8 February 2021 | Matthew Blissett
-| 2.2     | Conversion to AsciiDoc  | 25 May 2021 | Matthew Blissett
+| http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1[1.0]    | Content review and additions | 2011 年 4 月     | David Remsen, Markus Döring
+| 2.0     | Transferred to wiki, major edits | 2017 年 5 月 9 日      | Kyle Braak
+| 2.1     | Minor edits, updating links etc  | 2021 年 2 月 8 日 | Matthew Blissett
+| 2.2     | Conversion to AsciiDoc  | 2021 年 5 月 25 日 | Matthew Blissett
 |===
 
 == Suggested citation
