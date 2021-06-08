@@ -61,6 +61,13 @@
                 </ul>
 
                 <div class="d-xl-flex align-content-between">
+                    <!-- Health -->
+                    <div class="navbar-nav">
+                      <a href="${baseURL}/health.do" class="nav-link" title="[@s.text name="portal.health.title"/]">
+                          <img src="${baseURL}/images/gbif-heartbeat.svg" alt="Status">
+                      </a>
+                    </div>
+
                     <!-- Languages -->
                     <div id="navbarNavDropdown">
                         [#include "/WEB-INF/pages/inc/languages.ftl"/]
@@ -88,7 +95,7 @@
                             </li>
                         </ul>
                     [#else]
-                        <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center">
+                        <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center px-1">
                             <button class="btn btn-sm btn-light m-xl-auto navbar-button" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>

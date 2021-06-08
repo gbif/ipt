@@ -96,6 +96,18 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):hover 
     color: #4E565F !important;
 }
 
+.bg-gbif-primary {
+  background-color: #61a861 !important;
+}
+
+.bg-gbif-danger {
+  background-color: #e36370 !important;
+}
+
+.bg-gbif-header {
+  background-color: #4E565F !important;
+}
+
 
 /* GBIF green colored outline button START */
 .btn-outline-gbif-primary {
