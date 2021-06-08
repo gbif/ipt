@@ -50,11 +50,6 @@ header, .dropdown-menu {
 .navbar-button:hover, .admin-item:hover {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
-
-.navbar-nav .fa {
-  font-size: 22px;
-}
-
 /* Logo, header, menu etc. END */
 
 
