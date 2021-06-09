@@ -1,4 +1,4 @@
-= Darwin Core Archives – How-to Guide
+= 達爾文核心檔案 — 說明指南
 
 Version 2.1
 
@@ -9,10 +9,10 @@ image::figures/cover_art_cicindelinae.png[]
 |===
 | 版本 | 說明                  | 釋出版日期 | 作者
 
-| http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1[1.0]    | Content review and additions | 2011 年 4 月     | David Remsen, Markus Döring
-| 2.0     | Transferred to wiki, major edits | 2017 年 5 月 9 日      | Kyle Braak
-| 2.1     | Minor edits, updating links etc  | 2021 年 2 月 8 日 | Matthew Blissett
-| 2.2     | Conversion to AsciiDoc  | 2021 年 5 月 25 日 | Matthew Blissett
+| http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1[1.0]    | 審閱與新增內容 | 2011 年 4 月     | David Remsen, Markus Döring
+| 2.0     | 轉移到 wiki，大幅度修正 | 2017 年 5 月 9 日      | Kyle Braak
+| 2.1     | 小幅度修正、更新連結等  | 2021 年 2 月 8 日 | Matthew Blissett
+| 2.2     | 轉換成 AsciiDoc  | 2021 年 5 月 25 日 | Matthew Blissett
 |===
 
 == Suggested citation
