@@ -3,12 +3,9 @@
     <div class="container">
         <div class="mb-1">
             <img class="footer-gbif-logo" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
-            This data repository is powered by the GBIF Integrated Publishing Toolkit (IPT)
+            Integrated Publishing Toolkit (IPT) <@s.text name="footer.version"/> ${cfg.version!"???"}
         </div>
         <ul class="list-inline mb-0">
-            <li class="list-inline-item ipt-footer-item">
-                <small><strong>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</strong></small>
-            </li>
             <li class="list-inline-item ipt-footer-item">
                 <a href="https://www.gbif.org/ipt"><small><@s.text name="footer.projectHome"/></small></a>
             </li>
