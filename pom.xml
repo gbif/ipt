@@ -66,7 +66,7 @@
     <jetty-maven-plugin.version>9.4.7.v20170914</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <log4j.version>2.13.3</log4j.version>
     <mockito-all.version>1.10.19</mockito-all.version>
     <owasp-java-html-sanitizer.version>20170515.1</owasp-java-html-sanitizer.version>
