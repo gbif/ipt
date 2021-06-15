@@ -80,6 +80,7 @@
 
     <!-- JDBC drivers -->
     <jtds.version>1.3.1</jtds.version>
+    <mssql-jdbc.version>9.2.1.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.25</mysql-connector-java.version>
     <ojdbc.version>21.1.0.0</ojdbc.version>
     <postgresql.version>42.2.20</postgresql.version>
@@ -467,6 +468,12 @@
       <groupId>net.sourceforge.jtds</groupId>
       <artifactId>jtds</artifactId>
       <version>${jtds.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>${mssql-jdbc.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
