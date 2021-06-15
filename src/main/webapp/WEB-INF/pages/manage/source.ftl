@@ -1,8 +1,8 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.source.title'/></title>
-<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-<script type="text/javascript">
+<script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<script>
     $(document).ready(function(){
         initHelp();
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});

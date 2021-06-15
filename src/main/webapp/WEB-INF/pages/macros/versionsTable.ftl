@@ -8,7 +8,7 @@ versionsTable macro: Generates a data table that has pagination.
 - shortname: The shortname of the resource
 -->
 <#macro versionsTable numVersionsShown sEmptyTable baseURL shortname>
-    <script type="text/javascript" charset="utf-8">
+    <script charset="utf-8">
 
         /* version history list */
         var aDataSet = [

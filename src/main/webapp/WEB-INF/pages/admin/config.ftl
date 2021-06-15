@@ -3,15 +3,15 @@
 
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
-<script type="text/javascript" src="${baseURL}/js/leaflet/leaflet.js"></script>
-<script type="text/javascript" src="${baseURL}/js/leaflet/tile.stamen.js"></script>
-<script type="text/javascript">
+<script src="${baseURL}/js/leaflet/leaflet.js"></script>
+<script src="${baseURL}/js/leaflet/tile.stamen.js"></script>
+<script>
     $(document).ready(function(){
         initHelp();
     });
 </script>
 <#if latitude?? && longitude??>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
             var map = L.map('locationMap').setView([${latitude}, ${longitude}], 10).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
             var layer = new L.StamenTileLayer("terrain");

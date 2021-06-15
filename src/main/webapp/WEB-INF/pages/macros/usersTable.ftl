@@ -6,7 +6,7 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
 - sortOrder: The sort order of the columnToSortOn
 -->
 <#macro usersTable numUsersShown sEmptyTable columnToSortOn sortOrder>
-    <script type="text/javascript" charset="utf-8">
+    <script charset="utf-8">
 
         /* organisation list */
         var aDataSet = [

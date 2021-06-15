@@ -2,7 +2,7 @@
 <footer class="footer mt-auto text-muted text-center text-smaller py-3">
     <div class="container">
         <div class="mb-1">
-            <img class="footer-gbif-logo" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
+            <img class="footer-gbif-logo" alt="GBIF" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
             Integrated Publishing Toolkit (IPT) <@s.text name="footer.version"/> ${cfg.version!"???"}
         </div>
         <ul class="list-inline mb-0">
@@ -29,8 +29,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src="${baseURL}/js/bootstrap/bootstrap.bundle-5.0.0-beta3.min.js"></script>
-<script type="text/javascript" src="${baseURL}/js/form-validation.js"></script>
+<script src="${baseURL}/js/bootstrap/bootstrap.bundle-5.0.0-beta3.min.js"></script>
+<script src="${baseURL}/js/form-validation.js"></script>
 <script>
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

@@ -8,7 +8,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 -->
 <#macro resourcesTable shownPublicly numResourcesShown sEmptyTable columnToSortOn sortOrder>
 
-    <script type="text/javascript" charset="utf-8">
+    <script charset="utf-8">
         <#assign emptyString="--">
         <#assign dotDot="..">
         <#assign deletedString><@s.text name="manage.home.visible.deleted"/></#assign>

@@ -26,15 +26,15 @@
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/font-awesome.min.css" media="all" />
 
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
-    <script type="text/javascript" src="${baseURL}/js/modernizr.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/jquery/jquery-ui.min-1.12.1.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/global.js"></script>
+    <script src="${baseURL}/js/modernizr.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-ui.min-1.12.1.js"></script>
+    <script src="${baseURL}/js/global.js"></script>
 
 
     [#-- GOOGLE ANALYTICS - asynchroneous: http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html --]
     [#if cfg.gbifAnalytics || (cfg.analyticsKey!"")?length>1]
-        <script type="text/javascript">
+        <script>
             var _gaq = _gaq || [];
             [#if (cfg.analyticsKey!"")?length>1]
             _gaq.push(['_setAccount', '${cfg.analyticsKey}']);
@@ -54,7 +54,7 @@
 
     [#-- If not logged, refresh page periodically to avoid CSRF token expiration --]
     [#if !loggedIn]
-      <script type="text/javascript">
+      <script>
         setTimeout(function(){
           window.location.reload();
         }, ${cfg.getCsrfPageRefreshDelay()?c});
@@ -65,25 +65,25 @@
     [#assign metaKeywords = "GBIF, Global Biodiversity Information Facility, IPT, Integrated Publishing Toolkit, checklist, occurrence, metadata, DwC-A, Darwin Core, Darwin Core Archive, biodiversity data, data paper, EML" /]
     [#assign registeredIpt = action.getRegisteredIpt()!""/]
     [#if resource?? && eml??]
-        <meta name="description" content="${eml.description!}" charset="UTF-8" />
+        <meta name="description" content="${eml.description!}" />
         [#if eml.subject?has_content]
-            <meta name="keywords" content="${eml.subject?replace(";", ",")}" charset="UTF-8" />
+            <meta name="keywords" content="${eml.subject?replace(";", ",")}" />
         [/#if]
         <meta name="foaf:topic" content="${cfg.getResourceUri(resource.shortname)}/#dataset"/>
         <meta name="foaf:isPrimaryTopicOf" content="${cfg.getResourceUri(resource.shortname)}">
     [#elseif registeredIpt?has_content]
-        <meta name="description" content="${registeredIpt.description!}" charset="UTF-8" />
-        <meta name="keywords" content="${metaKeywords}" charset="UTF-8" />
+        <meta name="description" content="${registeredIpt.description!}" />
+        <meta name="keywords" content="${metaKeywords}" />
     [#else]
-        <meta name="description" content="The Integrated Publishing Toolkit (IPT) is a tool developed by the Global Biodiversity Information Facility (GBIF) to provide an easy and efficient way of publishing biodiversity data." charset="UTF-8"}" />
-        <meta name="keywords" content="${metaKeywords}" charset="UTF-8" />
+        <meta name="description" content="The Integrated Publishing Toolkit (IPT) is a tool developed by the Global Biodiversity Information Facility (GBIF) to provide an easy and efficient way of publishing biodiversity data." />
+        <meta name="keywords" content="${metaKeywords}" />
     [/#if]
     <meta name="generator" content="IPT ${cfg.version!}" />
     <meta name="inventory" content="${baseURL}/inventory/dataset"/>
     <meta name="foaf:seeAlso" content="${baseURL}/dcat"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
             [#-- see global.js for function defs --]
             initForm();

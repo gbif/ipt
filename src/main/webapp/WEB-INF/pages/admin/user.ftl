@@ -1,8 +1,8 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><#if "${newUser!}"=="no"><@s.text name="admin.user.title.edit"/><#else><@s.text name="admin.user.title.new"/></#if></title>
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script type="text/javascript">
+    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script>
         $(document).ready(function(){
             initHelp();
             $('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});

@@ -6,7 +6,7 @@
     <#assign auxTopNavbar=true />
     <#assign auxTopNavbarPage = "metadata" />
     <#assign currentMenu="manage"/>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
             initHelp();
         });

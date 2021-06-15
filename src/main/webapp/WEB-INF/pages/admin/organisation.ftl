@@ -2,10 +2,10 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
-    <script src="${baseURL}/js/select2/select2-4.0.13.min.js" type="text/javascript"></script>
+    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
 
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script type="text/javascript">
+    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script>
         $(document).ready(function(){
             initHelp();
 
