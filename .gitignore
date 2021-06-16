@@ -3,7 +3,6 @@
 target/
 .idea/
 .DS_Store
-.history
 
 # Package Files #
 *.jar
@@ -12,3 +11,8 @@ target/
 .classpath
 .project
 .settings/org.eclipse.jdt.core.prefs
+
+# Updating Ceiba
+.history
+.factorypath
+.settings/
