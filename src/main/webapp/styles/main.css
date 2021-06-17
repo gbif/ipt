@@ -47,10 +47,22 @@ header, .dropdown-menu {
     color: #61a861 !important;
 }
 
-.navbar-button:hover, .admin-item:hover {
+.navbar-button:hover {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 /* Logo, header, menu etc. END */
+
+
+/* Admin page styles START */
+.admin-item:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.admin-item {
+    transition: .5s;
+    transition-timing-function: ease-in-out;
+}
+/* Admin page styles END */
 
 
 /* Footer START */
