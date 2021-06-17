@@ -43,7 +43,7 @@
                 <!-- Navbar -->
                 <ul class="navbar-nav me-auto mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
+                        <a class="nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/"><img src="${baseURL}/images/icons/home.png">[@s.text name="menu.home"/]</a>
                     </li>
                     [#if managerRights]
                         <li class="nav-item">
@@ -55,15 +55,22 @@
                             <a class="nav-link [#if currentMenu=='admin']active[/#if]" href="${baseURL}/admin/">[@s.text name="menu.admin"/]</a>
                         </li>
                     [/#if]
+
                     <li class="nav-item">
-                        <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
+                        <a class="nav-link [#if currentMenu=='inventory']active[/#if]" href="http://goo.gl/is7UaG" target="_blank"><img src="${baseURL}/images/icons/inventory.png">[@s.text name="menu.inventory"/]</a>
                     </li>
-                    <li[#if currentMenu=='home'] class="current"[/#if]><a href="${baseURL}/"><img src="${baseURL}/images/icons/home.png">[@s.text name="menu.home"/]</a></li>
-                    <li[#if currentMenu=='inventory'] class="current"[/#if]><a href="http://goo.gl/SBp8RP" target="_blank"><img src="${baseURL}/images/icons/inventory.png">[@s.text name="menu.inventory"/]</a></li>
-                    <li[#if currentMenu=='data'] class="current"[/#if]><a href="http://goo.gl/8VC1cg" target="_blank"><img src="${baseURL}/images/icons/data.png">[@s.text name="menu.data"/]</a></li>
-   				    <li[#if currentMenu=='faq'] class="current"[/#if]><a href="http://geotux.tuxfamily.org" target="_blank"><img src="${baseURL}/images/icons/about.png">[@s.text name="menu.faq"/]</a></li>
-                    <li[#if currentMenu=='manual'] class="current"[/#if]><a href="http://goo.gl/nCsK0l" target="_blank"><img src="${baseURL}/images/icons/usermanu.png">[@s.text name="menu.usermanual"/]</a></li>
-                </ul>           
+                    <li class="nav-item">
+                        <a class="nav-link [#if currentMenu=='data']active[/#if]" href="http://goo.gl/8VC1cg" target="_blank"><img src="${baseURL}/images/icons/data.png">[@s.text name="menu.data"/]</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link [#if currentMenu=='faq']active[/#if]" href="${baseURL}/faq.do" target="_blank"><img src="${baseURL}/images/icons/about.png">[@s.text name="menu.faq"/]</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link [#if currentMenu=='current']active[/#if]" href="https://sites.google.com/humboldt.org.co/i2dwiki/ceiba-manual/ceiba-consulta" target="_blank"><img src="${baseURL}/images/icons/usermanu.png">[@s.text name="menu.usermanual"/]</a>
+                    </li>
+
+
+                </ul>
 
                 <div class="d-xl-flex align-content-between">
                     <!-- Health -->
@@ -110,6 +117,10 @@
             </div>
         </div>
     </nav>
+
+    <div>
+    </div>
+
 
     [#if auxTopNavbar]
         <nav class="navbar navbar-expand navbar-light second-nav bg-body shadow-sm py-1">
