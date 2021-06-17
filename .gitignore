@@ -11,3 +11,10 @@ target/
 .classpath
 .project
 .settings/org.eclipse.jdt.core.prefs
+
+# Updating Ceiba
+.history
+.factorypath
+.settings/
+*.log
+**/datadir.location

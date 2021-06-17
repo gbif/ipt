@@ -30,7 +30,7 @@
     <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-green-gradient fixed-top py-1 [#if !auxTopNavbar]shadow-sm[/#if]">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
-                <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
+                <img src="${baseURL}/images/logo.png" alt="CEIBA IPT" class="gbif-logo"/>
                 [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
                 [#else]
                     <img class="testmode" src="${baseURL}/images/testmode.png" style="width: 100px;"/>
@@ -58,7 +58,12 @@
                     <li class="nav-item">
                         <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
-                </ul>
+                    <li[#if currentMenu=='home'] class="current"[/#if]><a href="${baseURL}/"><img src="${baseURL}/images/icons/home.png">[@s.text name="menu.home"/]</a></li>
+                    <li[#if currentMenu=='inventory'] class="current"[/#if]><a href="http://goo.gl/SBp8RP" target="_blank"><img src="${baseURL}/images/icons/inventory.png">[@s.text name="menu.inventory"/]</a></li>
+                    <li[#if currentMenu=='data'] class="current"[/#if]><a href="http://goo.gl/8VC1cg" target="_blank"><img src="${baseURL}/images/icons/data.png">[@s.text name="menu.data"/]</a></li>
+   				    <li[#if currentMenu=='faq'] class="current"[/#if]><a href="http://geotux.tuxfamily.org" target="_blank"><img src="${baseURL}/images/icons/about.png">[@s.text name="menu.faq"/]</a></li>
+                    <li[#if currentMenu=='manual'] class="current"[/#if]><a href="http://goo.gl/nCsK0l" target="_blank"><img src="${baseURL}/images/icons/usermanu.png">[@s.text name="menu.usermanual"/]</a></li>
+                </ul>           
 
                 <div class="d-xl-flex align-content-between">
                     <!-- Health -->
