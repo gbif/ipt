@@ -29,7 +29,7 @@
     </div>
 </div>
 
-<script src="${baseURL}/js/bootstrap/bootstrap.bundle-5.0.0-beta3.min.js"></script>
+<script src="${baseURL}/js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="${baseURL}/js/form-validation.js"></script>
 <script>
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
