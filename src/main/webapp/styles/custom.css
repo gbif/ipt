@@ -14,6 +14,7 @@ a {
 }
 #region-menu nav ul li.current {
   background-color: #008959;
+  width: 620px;
 }
 #region-content h1 {
   color: #008959;
