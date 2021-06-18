@@ -657,9 +657,9 @@
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
-                            <div class="alert alert-warning" role="alert">
-                                <i class="bi bi-exclamation-triangle text-muted"></i>
-                                <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
+                            <div class="text-gbif-danger">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <em><@s.text name="manage.overview.published.testmode.warning"/></em>
                             </div>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
