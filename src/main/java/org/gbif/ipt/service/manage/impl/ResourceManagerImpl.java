@@ -703,6 +703,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(jdbcInfoConverter);
   }
 
+  @Override
+  public void deleteResourceFromIpt(Resource resource) throws IOException {
+    // remove from data dir
+    FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
+    // remove object
+    resources.remove(resource.getShortname().toLowerCase());
+  }
+
   public void delete(Resource resource, boolean remove) throws IOException, DeletionNotAllowedException {
     // deregister resource?
     if (resource.isRegistered()) {
