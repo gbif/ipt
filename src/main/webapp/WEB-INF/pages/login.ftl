@@ -38,8 +38,8 @@
                     </p>
                 </#if>
 
-                <div class="col-12">
-                    <@s.submit cssClass="btn btn-outline-gbif-primary" name="login" key="portal.login"/>
+                <div class="col-12 pt-3">
+                    <@s.submit cssClass="btn btn-outline-gbif-primary w-100" name="login" key="portal.login"/>
                 </div>
             </div>
         </form>
