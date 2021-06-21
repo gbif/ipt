@@ -523,6 +523,13 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 }
 
 
+/* Resource deletion buttons */
+.confirmDeletion {
+    border: none;
+    color: #212529;
+}
+
+
 /* Utilities */
 .overflow-x-auto {
     overflow-x: auto !important;
