@@ -12,7 +12,7 @@ Older releases are listed on the xref:releases.adoc[version history] page.
 
 == Next release
 
-No release date has been set yet for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestone/4[here].
+No release date has been set yet for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[here].
 
 Minor issues and security issues will be addressed in patch releases.
 

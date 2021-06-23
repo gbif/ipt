@@ -10,7 +10,7 @@
                 <a href="https://www.gbif.org/ipt"><small><@s.text name="footer.projectHome"/></small></a>
             </li>
             <li class="list-inline-item ipt-footer-item">
-                <a href="https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki" target="_blank"><small><@s.text name="footer.useManual"/></small></a>
+                <a href="https://ipt.gbif.org/manual/" target="_blank"><small><@s.text name="footer.useManual"/></small></a>
             </li>
             <li class="list-inline-item ipt-footer-item">
                 <a href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.bugReport"/></small></a>

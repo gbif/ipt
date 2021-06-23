@@ -287,7 +287,7 @@ Sometimes the same name may be a synonym for more than one accepted taxon or may
 | 4           | Vireo solitarius   | 2&#124;3                     | pro-parte
 |===
 
-NOTE: IPT users should define the multi-value delimiter for each source file in the IPT. Refer to https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki#source-data[Source Data section] of the IPT User Manual for additional guidance.
+NOTE: IPT users should define the multi-value delimiter for each source file in the IPT. Refer to xref:manage-resources.adoc#_source_data[Source Data section] of the IPT User Manual for additional guidance.
 
 == Citation and Attribution
 
