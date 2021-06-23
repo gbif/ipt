@@ -41,10 +41,10 @@ There are 4 properties that you need to add for each driver. All 4 have to start
 
 * *title*: The title to be displayed in the IPT for this driver
 * *driver*: The driver java class to be used when connecting
-* *url*: A template to build the url for connecting. There are 2 variables that can be used in the url string which will be replaced by the actual settings configured: *{host}* and *{database}*
+* *url*: A template to build the url for connecting. There are 2 variables that can be used in the url string which will be replaced by the actual settings configured: *\{host}* and *\{database}*
 * *limitType*: How to limit the amount of data returned. Possible values are *LIMIT*, *TOP*, *ROWNUM*. This is driver specific.
 
-In the SQLite example above the driver connects to a file, so no {host} is used in the url template. Please add the following to the jdbc.properties to add the SQLite driver:
+In the SQLite example above the driver connects to a file, so no \{host} is used in the url template. Please add the following to the jdbc.properties to add the SQLite driver:
 
 ----
 # SQLite driver

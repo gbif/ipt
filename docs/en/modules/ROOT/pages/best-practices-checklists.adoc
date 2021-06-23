@@ -388,7 +388,7 @@ It is possible to share and describe multiple links to related external resource
 
 Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The DarwinCore Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a DarwinCore Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF xref:gbif-metadata-profile.adoc[provides a complete guide the to Darwin Core metafile].
 
-The metafile supports the creation of variables in the metafile that may refer to a web page or web service call. This variable may be embedded in the URL and include a taxon identifier or the taxon name as one of the parameters in the URL. Any column in the published data can be referenced by enclosing the index number in curly braces “{}”. The taxon identifier in the core data file can also be referenced via the variable “{id}.” The following examples illustrate these features:
+The metafile supports the creation of variables in the metafile that may refer to a web page or web service call. This variable may be embedded in the URL and include a taxon identifier or the taxon name as one of the parameters in the URL. Any column in the published data can be referenced by enclosing the index number in curly braces “{}”. The taxon identifier in the core data file can also be referenced via the variable “\{id}.” The following examples illustrate these features:
 
 . The Integrated Taxonomic Information System (ITIS) uses Taxonomic Serial Numbers (TSN) to provide links to taxon pages on its web site.
 +
@@ -401,7 +401,7 @@ If a core data file is published using the ITIS TSN system a link can be compose
 <field default="http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}" term="http://purl.org/dc/terms/identifier"/>
 ----
 
-where the original numeric value is replaced by the variable `{id}`. This value would be derived from the core ID.
+where the original numeric value is replaced by the variable `\{id}`. This value would be derived from the core ID.
 --
 
 . The 2010 Catalogue of Life Annual Checklist provides similar identifiers. It also supports name-based searches that can also be encoded as URLs. For example,
@@ -416,7 +416,7 @@ embeds a scientific name “Struthio camelus” into a URL. Full scientific name
 <field default="http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1" term="http://purl.org/dc/terms/identifier"/>
 ----
 
-where `{12}` represents the 12th column value that will be substituted in the URL.
+where `\{12}` represents the 12th column value that will be substituted in the URL.
 --
 
 == GBIF Checklist Extensions

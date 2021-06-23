@@ -71,7 +71,7 @@ If the "id" given does not exist you can set the "notFound" property to true in 
 To do validation, implement the `validate()` method of an action (instead of using xml validation definitions). See SetupAction.java as an example. Validation requires an "input" result name that shows the form when the form was not valid. Using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/docs/fielderror.html
 
 === HTML Design
-Links always use `${baseURL}/my/ipt/link.do`, so please refrain from using struts or JSP URL tags!
+Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using struts or JSP URL tags!
 
 Forms use the forms.ftl macros instead of struts2 tags, such as the i18n @select drop downs.
 
