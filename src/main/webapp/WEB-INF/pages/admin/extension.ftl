@@ -45,7 +45,7 @@
                 <div class="col-lg-3">
                     <strong><@s.text name="basic.issued"/></strong>
                 </div>
-                <div class="col-lg-9">${extension.issued?date?string.medium}</div>
+                <div class="col-lg-9">${extension.issued?date?string.long}</div>
             </div>
         </#if>
 
@@ -81,7 +81,7 @@
             <div class="col-lg-3">
                 <strong><@s.text name="basic.lastModified"/></strong>
             </div>
-            <div class="col-lg-9">${extension.modified?datetime?string("yyyy-MM-dd HH:mm:ss")}</div>
+            <div class="col-lg-9">${extension.modified?datetime?string.long_short}</div>
         </div>
 
         <div class="mx-md-4 mx-2 mt-2">

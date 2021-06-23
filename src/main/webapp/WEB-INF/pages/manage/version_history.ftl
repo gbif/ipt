@@ -57,7 +57,7 @@
                                 <tr>
                                     <th>${releasedTitle?cap_first}</th>
                                     <#if history.released??>
-                                        <td>${history.released?date!}</td>
+                                        <td>${history.released?datetime?string.long_medium!}</td>
                                     <#else>
                                         <td>${emptyPlaceholder}</td>
                                     </#if>

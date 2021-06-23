@@ -5,7 +5,7 @@
 </h5>
 
 <p>
-    <span class="small">${now?datetime?string("yyyy-MM-dd HH:mm:ss")}</span>
+    <span class="small">${now?datetime?string.full}</span>
 </p>
 
 <#if report??>

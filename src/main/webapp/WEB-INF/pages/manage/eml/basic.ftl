@@ -213,7 +213,7 @@
                             [ <@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/> ]
                         </a>
                     </div>
-                    <@simpleText name="eml.description[${item_index}]" requiredField=true/>
+                    <@simpleText name="eml.description[${item_index}]" minlength=5 requiredField=true></@simpleText>
                 </div>
             </#list>
         </div>
