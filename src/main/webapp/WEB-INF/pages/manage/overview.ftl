@@ -284,13 +284,13 @@
             </h5>
 
             <div class="row g-2 mx-md-4 mx-2">
-                <div class="col-md-9">
+                <div class="col-lg-10">
                     <span>
                         <@s.text name="manage.overview.description"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
                     </span>
                 </div>
 
-                <div class="col-md-3 d-md-flex justify-content-md-end">
+                <div class="col-lg-2 d-lg-flex justify-content-lg-end">
                     <#if resource.isAlreadyAssignedDoi()?string == "false" && resource.status != "REGISTERED">
                         <#assign disableRegistrationRights="false"/>
                     <#elseif currentUser.hasRegistrationRights()?string == "true">
@@ -311,7 +311,7 @@
                                     <button type="button" class="btn btn-outline-gbif-primary" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
                                         <i class="bi bi-exclamation-triangle"></i>
                                     </button>
-                                    <@s.submit cssClass="btn btn-sm btn-outlineg-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
+                                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
                                 </div>
                             <#else>
                                 <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
@@ -323,11 +323,11 @@
                                 <#assign resourceUndeleteInfo>
                                     <@s.text name="manage.resource.status.deletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
                                 </#assign>
-                                <button type="button" class="btn btn-outline-gbif-danger" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
+                                <button type="button" class="btn btn-outline-gbif-danger align-self-start" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
                                     <i class="bi bi-exclamation-triangle"></i>
                                 </button>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                    <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
                                         <@s.text name="button.delete"/>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
@@ -349,7 +349,7 @@
                             </div>
                         <#else>
                             <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
                                     <@s.text name="button.delete"/>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
