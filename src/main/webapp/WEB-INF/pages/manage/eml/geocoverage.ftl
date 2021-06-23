@@ -198,7 +198,7 @@
 
     <div class="row g-3 mx-md-3 mx-1 mt-2">
         <div class="col-12">
-            <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true />
+            <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true minlength=2 />
         </div>
 
         <div class="col-12">
