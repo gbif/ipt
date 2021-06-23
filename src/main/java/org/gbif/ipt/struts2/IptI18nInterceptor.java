@@ -16,7 +16,7 @@ import java.util.Set;
 public class IptI18nInterceptor extends I18nInterceptor {
   private static final Logger LOG = LogManager.getLogger(IptI18nInterceptor.class);
   private static final Set<Locale> IPT_SUPPORTED_LOCALES = Sets.newHashSet(
-      Locale.ENGLISH,
+      Locale.UK, // Used to ensure a day-month-year order in formatted dates.
       Locale.FRENCH,
       Locale.CHINESE,
       Locale.JAPANESE,
@@ -40,6 +40,9 @@ public class IptI18nInterceptor extends I18nInterceptor {
     } catch (IllegalArgumentException e) {
       LOG.debug("Invalid request locale: {}", requestedLocale);
       locale = Locale.getDefault();
+    }
+    if (Locale.ENGLISH.equals(locale)) {
+      locale = Locale.UK;
     }
     if (locale != null && !IPT_SUPPORTED_LOCALES.contains(locale)) {
       locale = Locale.getDefault();

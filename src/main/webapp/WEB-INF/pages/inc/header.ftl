@@ -2,7 +2,7 @@
 [#setting date_format="yyyy-MM-dd"]
 [#setting time_format="HH:mm:ss"]
 [#setting datetime_format="iso"]
-[#setting locale="en"]
+[#setting locale="${locale}"]
 [#setting url_escaping_charset="UTF-8"]
 [#assign auxTopNavbar=false /]
 [#assign auxTopNavbarPage="none" /]

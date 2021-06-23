@@ -526,11 +526,11 @@
                                     <th>${releasedTitle?cap_first}</th>
                                     <#if resource.lastPublished??>
                                         <td class="separator text-gbif-primary">
-                                            ${resource.lastPublished?date?string.medium}
+                                            ${resource.lastPublished?datetime?string.long_short}
                                         </td>
                                         <td class="left_padding">
                                             <#if resource.nextPublished??>
-                                                ${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}
+                                                ${resource.nextPublished?datetime?string.long_short}
                                             <#else>
                                                 ${emptyCell}
                                             </#if>
@@ -538,7 +538,7 @@
                                     <#else>
                                         <td>
                                             <#if resource.nextPublished??>
-                                                ${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}
+                                                ${resource.nextPublished?datetime?string.long_short}
                                             <#else>
                                                 ${emptyCell}
                                             </#if>
@@ -631,7 +631,7 @@
                                     </tr>
                                     <tr>
                                         <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
-                                        <td>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</td>
+                                        <td>${resource.nextPublished?datetime?string.long_short}</td>
                                     </tr>
                                 </#if>
                             </table>
