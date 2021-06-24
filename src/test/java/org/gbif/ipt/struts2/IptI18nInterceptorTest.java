@@ -25,7 +25,7 @@ public class IptI18nInterceptorTest {
 
     // Test support for existing 7 languages as of v2.3.5 working as expected:
     // Spanish, Japanese, Portuguese, Traditional Chinese, Russian, French and English
-    assertEquals(Locale.ENGLISH, interceptor.getLocaleFromParam(new Locale("en")));
+    assertEquals(Locale.UK, interceptor.getLocaleFromParam(new Locale("en")));
     assertEquals(Locale.FRENCH, interceptor.getLocaleFromParam(new Locale("fr")));
     assertEquals(Locale.CHINESE, interceptor.getLocaleFromParam(new Locale("zh")));
     assertEquals(Locale.JAPANESE, interceptor.getLocaleFromParam(new Locale("ja")));
