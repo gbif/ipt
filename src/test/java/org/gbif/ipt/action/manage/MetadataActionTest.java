@@ -103,13 +103,13 @@ public class MetadataActionTest {
 
   @Test
   public void testDirectoriesProperties() {
-    assertEquals(4, MetadataAction.directoriesProperties().size());
+    assertEquals(5, MetadataAction.directoriesProperties().size());
   }
 
   @Test
   public void testLoadDirectoriesMap() {
     MetadataAction.loadDirectories("Select a directory");
-    assertEquals(5, action.getUserIdDirectories().size()); // includes "select a license"
+    assertEquals(6, action.getUserIdDirectories().size()); // includes "select a license"
     assertEquals("Select a directory", action.getUserIdDirectories().get(""));
   }
 
