@@ -14,9 +14,32 @@ The upgrade method depends on the original xref:installation.adoc#_installation_
 
 === Upgrades using Linux packages
 
-Users of Linux packages on Red Hat, CentOS, Debian, Ubuntu etc. may upgrade using `yum update ipt` (Red Hat, CentOS etc.) or `apt install ipt` (Debian, Ubuntu etc.).
+Users of Linux packages on Red Hat, CentOS, Debian, Ubuntu etc. may upgrade using the system package manager.
 
-To test a pre-release version, use `yum install --enablerepo=gbif-testing ipt`.  You may first need to rerun `yum-config-manager --add-repo https://packages.gbif.org/gbif.repo`, in case you do not have the new gbif-testing repository configuration.
+[source,shell]
+----
+# Red Hat, CentOS etc:
+yum update ipt
+# Debian, Ubuntu etc:
+apt install ipt
+----
+
+These commands can be used to test a pre-release version on Red Hat/CentOS:
+
+[source,shell]
+----
+# Ensure the GBIF repository configuration is up-to-date:
+yum-config-manager --add-repo https://packages.gbif.org/gbif.repo
+
+# Install the latest pre-release/testing version:
+yum install --enablerepo=gbif-testing ipt
+
+# Roll back to a previous, stable version:
+yum downgrade ipt-2.4.2
+
+# Show all available versions, testing and stable:
+yum --showduplicates list --enablerepo=gbif-testing ipt
+----
 
 #TODO:# Debian instructions, once the 2.5.0-RC1 pre-release package is prepared.
 
