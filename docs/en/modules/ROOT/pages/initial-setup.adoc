@@ -54,7 +54,7 @@ The public, Internet-accessible URL that points to the root of this IPT installa
 
 * Institutional proxy URL (optional)
 +
-If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `http://proxy.example.org:8080`.
+If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `\http://proxy.example.org:8080`.
 
 image::ipt2/v22/IPTSetup2_1.png[]
 

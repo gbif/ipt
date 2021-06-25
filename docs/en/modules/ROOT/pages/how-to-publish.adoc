@@ -14,7 +14,7 @@ Data publishers are strongly encouraged to share their data using the richest ap
 To give yourself an introduction to how the IPT can be used to publish biodiversity data through GBIF.org, it's highly recommended watching this concise 25 minute live demo below:
 
 .How to publish biodiversity data through GBIF.org using the IPT
-video::eDH9IoTrMVE[youtube]
+video::eDH9IoTrMVE[youtube,width=100%]
 
 == Prerequisites
 

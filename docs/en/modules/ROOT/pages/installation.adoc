@@ -107,7 +107,7 @@ Successful deployment of the IPT within a servlet container will make the IPT ac
 
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
-video::116142276[vimeo]
+video::116142276[vimeo,width=100%]
 
 [TIP]
 ====
