@@ -21,7 +21,7 @@ Version 3.0
 
 This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share sampling-event information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core event data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide].
 
-The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favor of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. With this international standard, GBIF hopes to facilitate sampling-event data sharing and promote common approaches to cite and recognize the work of the community creating and handling sampling-event data.
+The DwC-A format and the specific profile described here represent an internationally recognized and ratified data exchange format for sharing sampling-event data. All data exchange standards must strike a balance between the technical scope and capacity on one hand, and social acceptance and uptake on the other. Simple solutions sacrifice coverage and complexity in favour of ease-of-use. Highly complex formats provide more complete solutions for representing any type of data but at the expense of simplicity and require supporting software and expertise. The Darwin Core Archive format represents an intermediate position between the two ends of this spectrum. It focuses on the key elements of sampling-event data and enables an enriched set of data types to be linked to this core structure. The data contained in an archive can be readily understood and used by many ecologists and data managers familiar with basic structured text files. With this international standard, GBIF hopes to facilitate sampling-event data sharing and promote common approaches to cite and recognize the work of the community creating and handling sampling-event data.
 // By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource.
 A standard format also increases relevance and utility.
 
@@ -59,7 +59,7 @@ For ease in understanding, we may use the terms *field* in this guide to refer t
 * Be careful and consistent with quotation.
 * Encode text files as UTF-8
 * Make sure you replace all line breaks in a data field, i.e. `\r` `\n` or `\r\n` with either simple spaces or use 2 characters like `$$` to replace `\r` to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the HTML `<br>` tag.
-* Encode NULLs as empty strings, i.e. no characters between 2 delimiters, or `\N` or `\NULL`, but no other text sequence!
+* Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `\N` or `\NULL`, but no other text sequence!
 
 === Sample size
 
@@ -72,7 +72,7 @@ The value of sampleSizeValue is a number and must have a corresponding sampleSiz
 
 You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points.
 
-. sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 liter.*
+. sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre.*
 |===
 | sampleSizeValue | sampleSizeUnit
 
@@ -121,7 +121,7 @@ Refer to the following xref:sampling-event-data.adoc#_q_how_do_i_publish_absence
 
 === How to include supplementary multimedia
 
-You may choose to include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned releve sheet when interpreting the data.
+You may choose to include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data.
 
 The files associated have to be hosted on an external server and linked to the occurrence through the dwc:associatedMedia and dwc:associatedReferences. These files may be images, texts or a combination of both as long as the format type is specified. JPG, PNG, etc. images will be visible as thumbnails while PDFs will appear as clickable links.
 
@@ -155,9 +155,9 @@ Data produced from a large sampling project should be published as a single data
 Sampling events provide better documentation and benefit both the scientific community and policy makers (https://www.gbif.org/sampling-event-data[read more]).
 We encourage strongly the republishing of occurrence data as sampling-event data when possible.
 
-In order to do so, you should create a new sampling-event dataset and send an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplications and preserving citations.
+In order to do so, you should create a new sampling-event dataset and send an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations.
 
-=== Modeling continuous monitoring of live individuals
+=== Modelling continuous monitoring of live individuals
 
 If your dataset contains continuous monitoring of live individuals, such as bird tracking data, you can use dwc:organismID to store the ID of the individual being tracked. In addition to that, you should represent each individual being tracked as a single event.
 
@@ -255,7 +255,7 @@ Each event can also have measurements or facts associated with it, e.g., environ
 
 === Macrophyte survey
 
-Note that this example is based on Dutch Vegetation Database (LVD) previous version republished as sampling-event dataset. The Releve extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html
+Note that this example is based on Dutch Vegetation Database (LVD) previous version republished as sampling-event dataset. The Relevé extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html
 
 |===
 | EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...
@@ -327,7 +327,7 @@ Additional vegetation plot measurements such as vegetation community type (synta
 | 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |
 |===
 
-*Extension (Measuremenr-or-Fact) table*
+*Extension (Measurement-or-Fact) table*
 
 |===
 | EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...

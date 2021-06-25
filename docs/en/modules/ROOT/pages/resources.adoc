@@ -1,13 +1,13 @@
 = Resources
 
 == Darwin Core Archive documentation
-Details about the structure of a Darwin Core Archive, abbreviated DWCA, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DWCAs can be found on xref:darwin-core.adoc[this] page.
+Details about the structure of a Darwin Core Archive, abbreviated DwC-A, can be found in the "Text Guide" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DwC-A can be found on xref:darwin-core.adoc[this] page.
 
 == GBIF Help Desk
 Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below).
 
 == GBIF Registry
-Use this online application to find information about organisations, IPT instances, and resources registered with GBIF: https://www.gbif.org/dataset.
+Use this online application to find information about organizations, IPT instances, and resources registered with GBIF: https://www.gbif.org/dataset.
 
 == IPT GitHub site
 This GitHub site is the project repository for all of the open source code, management, and documentation of the IPT.

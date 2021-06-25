@@ -7,7 +7,7 @@
 * *Darwin Core Archive* - a single zipped archive for a data set consisting of one or more text files of data, an XML file (meta.xml) describing the contents of the text files and how they relate to each other, and an XML file (eml.xml) containing the metadata in EML about the data set.
 * *EML* - the Ecological Markup Language is an XML-based profile used to encode metadata about a data set.
 * *Extension* - in this user manual, an extension is a set of terms corresponding to a specific category of data. An extension should be thought of as an extension of the capabilities of the IPT rather than as an extension of any particular standard.
-* *GBIF Registry* - a registry that manages the nodes, organisations, resources, and IPT installations registered with GBIF, making them discoverable and interoperable.
+* *GBIF Registry* - a registry that manages the nodes, organizations, resources, and IPT installations registered with GBIF, making them discoverable and interoperable.
 * *Metadata* - in this user manual, metadata refers to the information about a data set as opposed the primary data in the data set.
 * *Metadata Resource* - a resource having information about a data set, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.
 * *Occurrence Resource* - a resource having information about Occurrences as defined in the Darwin Core.

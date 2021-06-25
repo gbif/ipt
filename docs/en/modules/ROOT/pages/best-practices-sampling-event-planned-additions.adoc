@@ -34,7 +34,7 @@ Additional information that could also be included or was previously included in
 
 === How to include supplementary multimedia
 
-#TODO:# Provide recommendations on how include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned releve sheet when interpreting the data.
+#TODO:# Provide recommendations on how include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data.
 
 == Publishing sampling-event data
 === Using GUIDs for identifiers
@@ -78,7 +78,7 @@ Additional information that could also be included or was previously included in
 
 == Describing sampling-event data in dataset metadata
 
-#TODO:# Advise publishers to document as much as possible about the sampling event, especially the sampling methodologies, before attempting to try and standardise it into DwC.
+#TODO:# Advise publishers to document as much as possible about the sampling event, especially the sampling methodologies, before attempting to try and standardize it into DwC.
 
 === Linking related datasets
 
@@ -93,4 +93,4 @@ Additional information that could also be included or was previously included in
 === Brackish water invertebrates survey
 === Macrophyte survey
 
-#TODO:# Update example based on Dutch Vegetation Database (LVD) version republished as sampling-event dataset. The Releve extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html
+#TODO:# Update example based on Dutch Vegetation Database (LVD) version republished as sampling-event dataset. The Relevé extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html

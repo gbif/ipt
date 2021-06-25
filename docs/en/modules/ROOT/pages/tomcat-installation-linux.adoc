@@ -2,7 +2,7 @@
 
 Tomcat is usually installed using distribution packages.
 
-For example, on CentOS or RedHat systems, `yum install tomcat`.
+For example, on CentOS or Red Hat systems, `yum install tomcat`.
 
 Or on Debian or Ubuntu systems, `apt install tomcat9`.
 

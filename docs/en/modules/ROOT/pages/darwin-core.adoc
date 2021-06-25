@@ -34,8 +34,8 @@ It therefore makes sense to provide both if possible.
 
 === Denormalised Hierarchies
 The geography and taxonomy can be expressed as a flexible hierarchy of places or taxa through the terms `higherParentNameUsage(ID)` and `higherGeography(ID)`.
-In addition to this _adjencency list_ , the most popular ranks can be published as a denormalised hierarchy for each record, effectively repeating
-this information across many records. But it does provide a quick, short and human readble classification for each record in isolation of the entire dataset.
+In addition to this _adjacency list_ , the most popular ranks can be published as a denormalised hierarchy for each record, effectively repeating
+this information across many records. But it does provide a quick, short and human readable classification for each record in isolation of the entire dataset.
 
 * Taxonomic denormalised classification: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus`
 * Geographic denormalised classification:  `continent`, `waterBody`, `islandGroup`, `island`, `country` / `countryCode`, `stateProvince`, `county`, `municipality`
@@ -56,7 +56,7 @@ exact transcription of the collecting date, while `eventDate` can be encoded in 
 == Primary data
 All DwC terms can be used to describe an occurrence record.
 It is recommended to publish at least the following terms.
-Terms flagged with !!! have to be present to be recognised by the current GBIF indexing:
+Terms flagged with !!! have to be present to be recognized by the current GBIF indexing:
 
 * http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord[basisOfRecord] !!!
 * http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID[occurrenceID]
@@ -115,7 +115,7 @@ Darwin Core archives (DwC-A) are the new, primary means of publishing data to th
 They contain an _entire dataset_, are based on _simple text files_ and can be created fairly easily without the IPT with _custom software_.
 
 === Darwin Core Extensions
-Recognising that DwC only covers the core biodiversity metadata, extensions to darwin core are a common need across all communities.
+Recognizing that DwC only covers the core biodiversity metadata, extensions to Darwin core are a common need across all communities.
 The simplest way to do so is to create new terms in a new namespace and simply extend a regular dwc record with these terms.
 
 Often multiple _subrecords_ for an extension is desired, such as many common names for a species or multiple images for a specimen.

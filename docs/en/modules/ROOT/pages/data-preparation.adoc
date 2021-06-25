@@ -18,7 +18,7 @@
 * convert to UTF8
 * use standard CSV (i.e. delimiter=`,` quotation=`"`) or tab files
 * make sure you have replaced line breaks, i.e. `\r` `\n` or `\r\n` with either simple spaces or use 2 characters `\r` to escape the line break if the intention is to preserve them
-* encode NULLs as empty fields, i.e. no characters between 2 delimiters, not `\N` or `\NULL`
+* encode nulls as empty fields, i.e. no characters between 2 delimiters, not `\N` or `\NULL`
 
 === Utility: Character encoding converter - iconv
 
@@ -38,7 +38,7 @@ iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt
 
 === Utility: Unix Stream Editor,  SED
 
-A Unix commandline tool to manipulate files as streams, thereby allowing to modify very large files without the need to load them into memory first (this is what pretty much all editors apart from few, e.g. vi, do)
+A Unix command line tool to manipulate files as streams, thereby allowing to modify very large files without the need to load them into memory first (this is what pretty much all editors apart from few, e.g. vi, do)
 
 * http://www.unixguide.net/unix/sedoneliner.shtml
 * http://www.brunolinux.com/02-The_Terminal/Find_and%20Replace_with_Sed.html

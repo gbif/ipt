@@ -48,9 +48,9 @@ SetupAndCancelInterceptor.java checks if the datadir is configured and an admin 
 
 For each package (root, portal, manage, admin) its own interceptor stack exists.
 
-The "input" resultname is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesn't validate.
+The "input" result name is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesn't validate.
 
-The "success" resultname is called when the form submit succeeded. In many cases this should simply be a redirect to another, often the corresponding list, action.
+The "success" result name is called when the form submit succeeded. In many cases this should simply be a redirect to another, often the corresponding list, action.
 
 The action implements preparable, request aware and the execute method.
 
@@ -64,7 +64,7 @@ POSTAction.java simplifies working with forms. For modifying instance data alway
 Most full actions for modifying entities should override the following methods:
 
 * `prepare()`: load existing values based on "id" parameter and request object.
-* `save()`: persist data AFTER the params interceptor did its job.
+* `save()`: persist data AFTER the parameters interceptor did its job.
 * `delete()`: this method is called when a POST with a "delete=anything_but_null" parameter is received.
 If the "id" given does not exist you can set the "notFound" property to true in any of the above methods. The action will then return a 404 result name.
 
@@ -82,10 +82,10 @@ General best practice guides:
 * http://htmldog.com/articles/formlayout/
 * https://www.sherpaglobal.com/top-10-html-form-layout-best-practices/
 
-=== Javascript
+=== JavaScript
 Only use jQuery (https://jquery.com/) for custom code.
 
-Use jconfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when asking for confirmation, e.g. deletes.
+Use jConfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when asking for confirmation, e.g. deletes.
 
 Use jQuery dataTables (https://www.datatables.net/) plugin to enhance HTML tables with pagination, searching, etc.
 
@@ -98,6 +98,6 @@ Keep number of CSS classes to a minimum and consider using page specific CSS in 
 2 tier architecture only with interfaces + implementation.
 
 === i18n
-Templates, actions and also important service messages should be localised using a single ResourceBundle.
+Templates, actions and also important service messages should be localized using a single ResourceBundle.
 
 Translated vocabularies can be used to populate select drop downs easily by calling getI18nVocab(...).

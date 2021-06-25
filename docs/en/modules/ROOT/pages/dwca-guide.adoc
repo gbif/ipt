@@ -98,7 +98,7 @@ To help select the most appropriate solution for creating your own archive, cons
 
 <<Publishing DwC-A manually>> is most suitable when:
 
-* Your data have been digitised already.
+* Your data have been digitized already.
 * Your data may be in a relational database.
 * You only need to create/manage a small number of archives, and/or you have the technical skills to automate/script the archive generation process.
 

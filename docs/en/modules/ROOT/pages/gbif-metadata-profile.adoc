@@ -40,7 +40,7 @@ If sampling-event data, occurrence data or checklist data are being published us
 
 The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an xref:data-hosting-centres.adoc[IPT data hosting centre] instead of installing and maintaining their own installation.
 
-In total, the IPT has 12 different metadata forms that logically organise metadata entry:
+In total, the IPT has 12 different metadata forms that logically organize metadata entry:
 
 1.  Basic Metadata
 2.  Geographic Coverage
@@ -55,9 +55,9 @@ In total, the IPT has 12 different metadata forms that logically organise metada
 11. Physical Data
 12. Additional Metadata
 
-The xref:manage-resources.adoc#_metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogs to aid the user in understanding what an element means (Figure 1).
+The xref:manage-resources.adoc#_metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1).
 
-.Sreenshot of a help dialog for the term “Personnel Identifier
+.Screenshot of a help dialog for the term “Personnel Identifier
 image::figures/ipt_help_dialog.png[]
 
 To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2).
@@ -123,17 +123,17 @@ Metadata, literally “data about data” are an essential component of a data m
 3. Understand its fitness-for-use, and
 4. Learn how to transfer (obtain a copy of) the data.
 
-The GBIF Metadata Profile (GMP) was developed in order to standardise how resources get described at the dataset level in the GBIF http://www.gbif.org[Data Portal]. This profile can be transformed to other common metadata formats such as the http://marinemetadata.org/references/iso19139[ISO 19139 metadata profile].
+The GBIF Metadata Profile (GMP) was developed in order to standardize how resources get described at the dataset level in the GBIF http://www.gbif.org[Data Portal]. This profile can be transformed to other common metadata formats such as the http://marinemetadata.org/references/iso19139[ISO 19139 metadata profile].
 
 In the GMP there is a minimum set of mandatory elements required for identification, but it is recommended that as many elements be used as possible to ensure the metadata are as descriptive and complete as possible.
 
 == Metadata Elements
 
-The GBIF Metadata Profile is primarily based on the https://knb.ecoinformatics.org/#tools/eml[Ecological Metadata Language (EML)]. The GBIF profile utilises a subset of EML and extends it to include additional requirements that are not accommodated in the EML specification. The following tables provide short descriptions of the profile elements, and where relevant, links to more complete EML descriptions. The elements are categorised as follows:
+The GBIF Metadata Profile is primarily based on the https://knb.ecoinformatics.org/#tools/eml[Ecological Metadata Language (EML)]. The GBIF profile utilizes a subset of EML and extends it to include additional requirements that are not accommodated in the EML specification. The following tables provide short descriptions of the profile elements, and where relevant, links to more complete EML descriptions. The elements are categorized as follows:
 
 * Dataset (Resource)
 * Project
-* People and Organisations
+* People and Organizations
 * Keyword Set (General Keywords)
 * Coverage
 ** Taxonomic Coverage
@@ -154,13 +154,13 @@ The dataset field has elements relating to a single dataset (resource).
 
 | https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#title[title] | A description of the resource that is being documented that is long enough to differentiate it from other similar resources. Multiple titles may be provided, particularly when trying to express the title in more than one language (use the "xml:lang" attribute to indicate the language if not English/en). E.g. Vernal pool amphibian density data, Isla Vista, 1990-1996.
 
-| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#creator[creator] | The resource creator is the person or organization responsible for creating the resource itself. See section “People and Organisations” for more details.
+| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#creator[creator] | The resource creator is the person or organization responsible for creating the resource itself. See section “People and Organizations” for more details.
 
-| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#metadataProvider[metadataProvider] | The metadataProvider is the person or organization responsible for providing documentation for the resource. See section “People and Organisations” for more details.
+| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#metadataProvider[metadataProvider] | The metadataProvider is the person or organization responsible for providing documentation for the resource. See section “People and Organizations” for more details.
 
-| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#associatedParty[associatedParty] | An associatedParty is another person or organisation that is associated with the resource. These parties might play various roles in the creation or maintenance of the resource, and these roles should be indicated in the "role" element. See section “People and Organisations” for more details.
+| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#associatedParty[associatedParty] | An associatedParty is another person or organization that is associated with the resource. These parties might play various roles in the creation or maintenance of the resource, and these roles should be indicated in the "role" element. See section “People and Organizations” for more details.
 
-| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#contact[contact] | The contact field contains contact information for this dataset. This is the person or institution to contact with questions about the use, interpretation of a data set. See section “People and Organisations” for more details.
+| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#contact[contact] | The contact field contains contact information for this dataset. This is the person or institution to contact with questions about the use, interpretation of a data set. See section “People and Organizations” for more details.
 
 | https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#pubDate[pubDate] | The date that the resource was published. The format should be represented as: CCYY, which represents a 4 digit year, or as CCYY-MM-DD, which denotes the full year, month, and day. Note that month and day are optional components. Formats must conform to ISO 8601. E.g. 2010-09-20.
 
@@ -191,9 +191,9 @@ The project field contains information on the project in which this dataset was 
 | https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-project.html#designDescription[designDescription] | The field designDescription contains general textual descriptions of research design. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work. Literature citations may also be used to describe the research design.
 |===
 
-=== People and Organisations
+=== People and Organizations
 
-There are several fields that could represent either a person or an organisation. Below is a list of the various fields used to describe a person or organisation.
+There are several fields that could represent either a person or an organization. Below is a list of the various fields used to describe a person or organization.
 
 |===
 | Term | Definition
@@ -353,5 +353,5 @@ The additionalMetadata field is a container for any other relevant metadata that
 
 | specimenPreservationMethod | Picklist keyword indicating the process or technique used to prevent physical deterioration of non-living collections. Expected to contain an instance from the Specimen Preservation Method Type Term vocabulary.   E.g., formaldehyde.
 
-| jgtiCuratorialUnit | A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by 1) an exact number of “JGI-units” in the collection plus a measure of uncertainty (+/- x); 2) a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted. The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitised. This is to avoid having to update the numbers too often. The number of non-public data (not digitised or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.
+| jgtiCuratorialUnit | A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by 1) an exact number of “JGI-units” in the collection plus a measure of uncertainty (+/- x); 2) a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted. The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitized. This is to avoid having to update the numbers too often. The number of non-public data (not digitized or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.
 |===

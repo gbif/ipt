@@ -22,10 +22,10 @@ video::eDH9IoTrMVE[youtube,width=100%]
 . You require an account on a GBIF Integrated Publishing Toolkit (IPT) to publish your data.
 ** Hint: it is highly recommended that you save yourself time and money by requesting an account on a xref:data-hosting-centres.adoc[data hosting centre IPT] that is located in your country.
 ** Hint: you could install and maintain your own IPT instance if you have technical skills and capacity to maintain it online near 100% of the time.
-** Hint: if no data hosting centre exists in your country, and you or your organisation don't have the technical skills and capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance.
-. Assuming that you would like to register your dataset with GBIF and make it globally discoverable via https://www.gbif.org[GBIF.org], your dataset must be affiliated with an organisation that is registered with GBIF.
-** Hint: to register your organisation with GBIF, start by completing https://www.gbif.org/become-a-publisher[this online questionnaire]. The registration process can take days, so in parallel you can proceed to publish your data.
-** Hint: if you aren't affiliated with any organisation, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data.
+** Hint: if no data hosting centre exists in your country, and you or your organization don't have the technical skills and capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance.
+. Assuming that you would like to register your dataset with GBIF and make it globally discoverable via https://www.gbif.org[GBIF.org], your dataset must be affiliated with an organization that is registered with GBIF.
+** Hint: to register your organization with GBIF, start by completing https://www.gbif.org/become-a-publisher[this online questionnaire]. The registration process can take days, so in parallel you can proceed to publish your data.
+** Hint: if you aren't affiliated with any organization, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data.
 
 == Instructions
 
@@ -48,4 +48,4 @@ image::ipt2/flow-all.png[]
 . Publish the dataset (make it freely and openly available worldwide)
 . Register the dataset with GBIF.
 +
-NOTE: your organisation must be registered with GBIF (see prerequisite #2 above) and added to your IPT by the IPT administrator. Otherwise, the organisation will not be available to choose from in the IPT.
+NOTE: your organization must be registered with GBIF (see prerequisite #2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT.

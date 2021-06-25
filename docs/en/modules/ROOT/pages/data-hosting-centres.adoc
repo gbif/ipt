@@ -6,7 +6,7 @@ A data hosting centre (DHC) can provide you with an account on their IPT, allowi
 
 Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language.
 
-Please use this page to discover a trusted DHC by country or by theme that is right for you. If no appropriate DHC exists, or the DHC doesn't reply promptly to your inquiry, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] for assistance.
+Please use this page to discover a trusted DHC by country or by theme that is right for you. If no appropriate DHC exists, or the DHC doesn't reply promptly to your enquiry, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] for assistance.
 
 Please note that to qualify as a trusted DHC, the centre must meet a strict set of criteria. Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset is backed up.
 
@@ -54,7 +54,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 == Belgium
 
-The https://www.biodiversity.be[Belgium Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organisations:
+The https://www.biodiversity.be[Belgium Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organizations:
 
 * http://www.naturalsciences.be[Royal Belgian Institute of Natural Sciences]
 * http://www.ulg.be[University of Liège]
@@ -73,12 +73,12 @@ The Belgian Biodiversity Platform also hosts an IPT for each of these countries/
 * http://ipt.biodiversity.aq/[Antabif IPT]
 * http://data.freshwaterbiodiversity.eu/ipt/[Biofresh IPT]
 
-The Research Institute for Nature and Forest (INBO) also provides http://data.inbo.be/ipt[IPT] hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organisations:
+The Research Institute for Nature and Forest (INBO) also provides http://data.inbo.be/ipt[IPT] hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organizations:
 
 * http://www.natuurpunt.be[Natuurpunt]
 * http://www.vmm.be[Flemish Environment Agency VMM]
 
-The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] & http://www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. Publishers of marine data should refer to the section <<Marine Data>>.
+The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] & http://www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. Publishers of marine data should refer to the section <<Marine data>>.
 
 == Canada
 
@@ -156,7 +156,7 @@ The http://ipt.idigbio.org[iDigBio IPT] provides helpdesk support to new data pu
 
 http://vertnet.org/[VertNet] provides helpdesk support to institutions that have vertebrates among one or more of the data sets they want to publish. In other words, if the institution is interested in publishing vertebrate data sets (whether specimens or observations), VertNet will help with publishing all of their data sets. This promotes efficiency when providing and maintaining support to the institution.
 
-The http://www.usgs.gov/[United States Geological Survey (USGS)] provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the https://bison.usgs.gov/ipt[USGS BISON IPT]. Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organisations/resources:
+The http://www.usgs.gov/[United States Geological Survey (USGS)] provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the https://bison.usgs.gov/ipt[USGS BISON IPT]. Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organizations/resources:
 
 * https://www1.usgs.gov/obis-usa/ipt/[Ocean Biogeographic Information System USA - OBIS-USA]
 * https://nas.er.usgs.gov/ipt/[Non-indigenous Aquatic Species (NAS) information resource for the USGS]
