@@ -2,15 +2,17 @@
 
 // When updating this page, remember to update news.adoc with the newest release.
 
-== *2.5.0* – #TODO 2021#
+== *2.5.0-RC1* – June 2021
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[Download WAR], xref:installation.adoc#_installation_from_linux_packages[Linux packages] or https://github.com/gbif/ipt/tree/master/package/docker[Docker]
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0-RC1/ipt-2.5.0-RC1.war[Download WAR], xref:installation.adoc#_installation_from_linux_packages[Linux packages] or https://github.com/gbif/ipt/tree/master/package/docker[Docker]
 * xref:release-notes.adoc[IPT v2.5.0 Release Notes]
-* xref:index.adoc[User Manual] xref:es/index.adoc[(es)]
-* Addressed https://github.com/gbif/ipt/milestone/27?closed=1[#TODO# issues].
+* xref:index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/27?closed=1[#TODO 63+ issues so far#].
 * Translated into 7 languages
 
-Version 2.5.0 #TODO#. Users should plan to upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes].
+#Release candidate# version 2.5.0-RC1.
+//Users should plan to upgrade to
+Users may test this pre-release version following the instructions in the xref:release-notes.adoc[Release Notes].
 
 == *2.4.2* – September 2020
 
