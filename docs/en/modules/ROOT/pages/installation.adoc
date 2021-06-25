@@ -49,6 +49,8 @@ The IPT starts up on port 8080 (unless this was changed above).  Initial logs ar
 
 Successful installation of the IPT packages will make the IPT accessible through a web browser at a URL determined by the server's name and port (e.g., http://server.example.org:8080). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
 
+Then continue to <<Opening the IPT to the Internet>>.
+
 === APT (Debian, Ubuntu etc)
 
 Please refer to https://github.com/gbif/ipt/pull/1470["Debian packaging"] on GitHub.  This is a contribution from GBIF Spain, and not yet supported by the IPT developers.
@@ -105,8 +107,11 @@ If the installation doesn't start please check the `catalina.out` logfile, and r
 
 Successful deployment of the IPT within a servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's name and port, followed by /ipt (e.g., http://server.example.org:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
 
+Then continue to <<Opening the IPT to the Internet>>.
+
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
+[.responsive-video]
 video::116142276[vimeo,width=100%]
 
 [TIP]
@@ -123,6 +128,8 @@ _As a very rough guide, on CentOS, to run a single instance of the IPT:_
 yum install jetty-runner
 java -jar /usr/share/java/jetty/jetty-runner.jar --port 8080 ipt.war
 ----
+
+Then continue to <<Opening the IPT to the Internet>>.
 
 == Installation using Docker
 

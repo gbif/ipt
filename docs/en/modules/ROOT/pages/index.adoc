@@ -24,6 +24,7 @@ Several factors have provided motivation for GBIF to lead the development of the
 
 To understand how the IPT works, try watching this concise 25 minute live demo showing how a dataset gets properly published and registered through GBIF.org.
 
+[.responsive-video]
 .How to publish biodiversity data through GBIF.org using the IPT
 video::eDH9IoTrMVE[youtube,width=100%]
 
