@@ -58,6 +58,10 @@ NOTE: If you replace the .war file while Tomcat is stopped, be sure to delete th
 . To be sure the upgrade worked, try logging in and look for the new version number in the footer. (_Restart Tomcat if the previous version still appears._)
 . Reapply your custom styling (if applicable)
 
+=== Upgrades using Docker
+
+See the xref:installation.adoc#_installation_using_docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release.
+
 == Post-upgrade instructions
 
 Following the upgrade, a warning message may appear indicating the some resources failed to load. This is caused when an old resource is missing required metadata after not being republished for a long time. Resource managers can fix this problem by re-publishing the affected resources.

@@ -2,13 +2,9 @@
 
 // When updating this page, remember to move information on the old release to releases.adoc.
 
-== Latest Release: 2.5.0
+== Latest Release: 2.5.0-RC1
 
-Version 2.5.0 is #TODO NOT YET# available for download https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[here], using xref:installation.adoc#_installation_from_linux_packages[via Linux packages] or https://github.com/gbif/ipt/tree/master/package/docker[using Docker].
-
-Version 2.5.0 includes a #TODO#, https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.5.0+is%3Aclosed[see issues closed] by this release.
-
-Older releases are listed on the xref:releases.adoc[version history] page.
+Version 2.5.0-RC1 is available for download.  Please see the xref:releases.adoc[Releases] page.
 
 == Next release
 

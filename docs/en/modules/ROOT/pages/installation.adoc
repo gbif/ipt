@@ -23,7 +23,7 @@ There are several ways to install the IPT.
 
 * Users of *Red Hat*, *CentOS*, *Debian*, *Ubuntu* or similar may install directly from <<Installation from Linux packages,Linux packages>>.  This is the simplest method for the typical installation of a single IPT on a single server, and is also the easiest method to keep updated.
 * Other *Linux* users, all *MS Windows* users, and those who wish to run multiple IPTs on the same server should instead look at the section on <<Installation within a servlet container>>.
-* *Docker* images are also available, see https://github.com/gbif/ipt/tree/master/package/docker[Docker packaging].
+* *Docker* images are also available, see <<Installation using Docker>>.
 
 == Installation from Linux packages
 
@@ -123,6 +123,25 @@ _As a very rough guide, on CentOS, to run a single instance of the IPT:_
 yum install jetty-runner
 java -jar /usr/share/java/jetty/jetty-runner.jar --port 8080 ipt.war
 ----
+
+== Installation using Docker
+
+GBIF maintain a Docker image, published to the https://hub.docker.com/r/gbif/ipt/[Docker Hub].  The image builds upon the Docker community Tomcat 8.5 / OpenJDK 8 / Debian stable image.  Tomcat is exposed on port 8080 and the IPT runs as the ROOT application.
+
+To run a new Docker container, startup Tomcat and expose the Tomcat port run like this:
+
+[source,shell]
+----
+docker run --detach --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt
+----
+
+You can then access the setup screen of the IPT on port 8080.
+
+If you need to override the data directory, this can be done with `-e IPT_DATA_DIR=/path/within/container`.
+
+If you need to find the IP address of your "default" Docker machine use `docker-machine ip default`.
+
+Run a specific version from https://hub.docker.com/r/gbif/ipt/tags[those available] by using `gbif/ipt:version` rather than `gbif/ipt`.
 
 == Opening the IPT to the Internet
 
