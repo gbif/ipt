@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"POT-Creation-Date: 2021-06-26 15:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:3
-msgid "xref:news.adoc[News]"
+msgid "xref:news.adoc[]"
 msgstr ""
 
 #. type: Plain text
@@ -73,190 +73,200 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:13
-msgid "xref:quick-reference-guide.adoc[]"
+msgid "xref:overview.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:14
-msgid "xref:manage-resources.adoc[]"
+msgid "xref:home.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:15
-msgid "xref:administration.adoc[]"
+msgid "xref:manage-resources.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:16
-msgid "xref:how-to-publish.adoc[]"
+msgid "xref:administration.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:17
-msgid "xref:resource-metadata.adoc[]"
+msgid "xref:about.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:18
-msgid "xref:checklist-data.adoc[]"
+msgid "xref:how-to-publish.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:19
-msgid "xref:occurrence-data.adoc[]"
+msgid "xref:resource-metadata.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:20
-msgid "xref:sampling-event-data.adoc[]"
+msgid "xref:checklist-data.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:21
-msgid "Best Practice Guides"
+msgid "xref:occurrence-data.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:22
-msgid "xref:gbif-metadata-profile.adoc[Resource metadata]"
+msgid "xref:sampling-event-data.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:23
-msgid "xref:best-practices-checklists.adoc[Checklist Data]"
+msgid "Best Practice Guides"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:24
-msgid "Occurrence Data (pending)"
+msgid "xref:gbif-metadata-profile.adoc[Resource metadata]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:25
-msgid "xref:best-practices-sampling-event-data.adoc[Sampling Event Data]"
+msgid "xref:best-practices-checklists.adoc[Checklist Data]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:26
-msgid "xref:faq.adoc[]"
+msgid "Occurrence Data (pending)"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:27
-msgid "Customization"
+msgid "xref:best-practices-sampling-event-data.adoc[Sampling Event Data]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:28
-msgid "xref:customization.adoc[]"
+msgid "xref:faq.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:29
-msgid "xref:core.adoc[Adding a new core]"
+msgid "Customization"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:30
-msgid "xref:license.adoc[]"
+msgid "xref:customization.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:31
-msgid "xref:user-id.adoc[]"
+msgid "xref:core.adoc[Adding a new core]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:32
-msgid "Contributing"
+msgid "xref:license.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:33
-msgid "xref:translations.adoc[Translations]"
+msgid "xref:user-id.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:34
-msgid "xref:developer-guide.adoc[Development]"
+msgid "Contributing"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:35
-msgid "Other Resources & Tutorials"
+msgid "xref:translations.adoc[Translations]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:36
-msgid "xref:database-connection.adoc[]"
+msgid "xref:developer-guide.adoc[Development]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:37
-msgid "xref:versioning.adoc[]"
+msgid "Other Resources & Tutorials"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:38
-msgid "xref:citation.adoc[]"
+msgid "xref:database-connection.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:39
-msgid "xref:datacite-mappings.adoc[]"
+msgid "xref:versioning.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:40
-msgid "xref:doi-workflow.adoc[]"
+msgid "xref:citation.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:41
-msgid "xref:applying-license.adoc[]"
+msgid "xref:datacite-mappings.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:42
-msgid "xref:darwin-core.adoc[]"
+msgid "xref:doi-workflow.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:43
-msgid "xref:dwca-guide.adoc[]"
+msgid "xref:applying-license.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:44
-msgid "xref:data-preparation.adoc[]"
+msgid "xref:darwin-core.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:45
-msgid "xref:data-quality-checklist.adoc[]"
+msgid "xref:dwca-guide.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:46
-msgid "xref:colophon.adoc[]"
+msgid "xref:data-preparation.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:47
-msgid "xref:releases.adoc[Version history]"
+msgid "xref:data-quality-checklist.adoc[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:48
+msgid "xref:colophon.adoc[]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/nav.adoc:49
+msgid "xref:releases.adoc[Version history]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/nav.adoc:50
 msgid "xref:statistics.adoc[]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/nav.adoc:49
+#: en/modules/ROOT/nav.adoc:51
 msgid "xref:resources.adoc[]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/nav.adoc:49
+#: en/modules/ROOT/nav.adoc:51
 msgid "xref:glossary.adoc[]"
 msgstr ""

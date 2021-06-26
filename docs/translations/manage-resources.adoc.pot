@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"POT-Creation-Date: 2021-06-26 15:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,9 +92,10 @@ msgstr ""
 msgid "Additional Metadata"
 msgstr ""
 
-#. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:2
-msgid "# Manage Resources Menu"
+#. type: Title =
+#: en/modules/ROOT/pages/manage-resources.adoc:1
+#, no-wrap
+msgid "Manage Resources Menu"
 msgstr ""
 
 #. type: Plain text
@@ -128,7 +129,7 @@ msgid ""
 "When the Manage Resources page is first opened, it shows a table of existing "
 "resources that the current user has permission to change, including those "
 "created by this user and those that this user has been invited to manage by "
-"others. Refer to the information under the xref:quick-reference-guide."
+"others. Refer to the information under the xref:home."
 "adoc#_public_resource_table[Public Resources Table] section for detailed "
 "explanations of the Name, Organization, Type, Subtype, Records, Last "
 "Modified, Last publication, and Next publication columns. In addition, the "
@@ -139,7 +140,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:13
 #, no-wrap
-msgid "*Visibility* - a category stating who has access to view the resource. If the resource is \"Public\", all users will be able to see it on the xref:quick-reference-guide.adoc#_public_resource_table[Public Resources Table] on the Home page. If the resource is \"Private\", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the \"Resource Managers\" section under the \"Resource Overview\" heading in the \"Manage Resources\" section.\n"
+msgid "*Visibility* - a category stating who has access to view the resource. If the resource is \"Public\", all users will be able to see it on the xref:home.adoc#_public_resource_table[Public Resources Table] on the Home page. If the resource is \"Private\", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the \"Resource Managers\" section under the \"Resource Overview\" heading in the \"Manage Resources\" section.\n"
 msgstr ""
 
 #. type: Plain text
@@ -200,8 +201,8 @@ msgid ""
 "mapping the fields therein to terms in the appropriate extension or "
 "extensions. *Please note the IPT has a 100MB file upload limit*, however, "
 "there is *no limit to the size of Darwin Core Archive the IPT can export/"
-"publish*. Refer to the xref:quick-reference-guide.adoc#_file_upload[File "
-"upload] section to find out how to work around the file upload limit."
+"publish*. Refer to the xref:overview.adoc#_file_upload[File upload] section "
+"to find out how to work around the file upload limit."
 msgstr ""
 
 #. type: Plain text
@@ -710,7 +711,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:125
 #, no-wrap
-msgid "*SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example: `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10`. When the statement has been fully tested with the Darwin Core Mappings (see the following section of the Quick Reference Guide), change the SQL Statement to return the full intended data set.\n"
+msgid "*SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example: `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10`. When the statement has been fully tested with the Darwin Core Mappings (see the following section), change the SQL Statement to return the full intended data set.\n"
 msgstr ""
 
 #. type: Plain text
