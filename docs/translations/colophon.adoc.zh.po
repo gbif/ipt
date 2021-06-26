@@ -1,0 +1,93 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"PO-Revision-Date: 2021-06-26 14:23\n"
+"Last-Translator: \n"
+"Language-Team: Chinese Traditional\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: zh-TW\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/colophon.adoc.pot\n"
+"X-Crowdin-File-ID: 100\n"
+
+#. type: Title =
+#: en/modules/ROOT/pages/colophon.adoc:1
+#, no-wrap
+msgid "About the IPT"
+msgstr "關於 IPT"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/colophon.adoc:2
+#, no-wrap
+msgid "Citation"
+msgstr "引用文獻"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:4
+msgid "This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:6
+msgid "Wieczorek & Braak (2016). The GBIF Integrated Publishing Toolkit User Manual, version 2.3.4 Copenhagen: Global Biodiversity Information Facility."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/colophon.adoc:7
+#, no-wrap
+msgid "Copyright"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:9
+msgid "The GBIF Integrated Publishing Toolkit and this user manual are Copyright 2016 by the Global Biodiversity Information Facility Secretariat."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/colophon.adoc:10
+#, no-wrap
+msgid "License"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:12
+msgid "The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an \"as is\" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:14
+msgid "This user manual is released under the Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:16
+msgid "you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:17
+msgid "you may not use this work for commercial purposes;"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:18
+msgid "if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/colophon.adoc:19
+#, no-wrap
+msgid "References"
+msgstr "參考文獻"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/colophon.adoc:20
+msgid "Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp."
+msgstr ""
+

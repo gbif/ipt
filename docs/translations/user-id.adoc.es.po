@@ -1,0 +1,142 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"PO-Revision-Date: 2021-06-26 14:22\n"
+"Last-Translator: \n"
+"Language-Team: Spanish, Colombia\n"
+"Language: es_CO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: es-CO\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/user-id.adoc.pot\n"
+"X-Crowdin-File-ID: 176\n"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/core.adoc:13
+#: en/modules/ROOT/pages/customization.adoc:9
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:17
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+#: en/modules/ROOT/pages/how-to-publish.adoc:30
+#: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
+#, no-wrap
+msgid "Instructions"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/license.adoc:46 en/modules/ROOT/pages/user-id.adoc:36
+msgid "Double check"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/license.adoc:50 en/modules/ROOT/pages/user-id.adoc:39
+msgid "Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:2
+msgid "# Adding a New User ID Directory"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:4
+msgid "This page contains configuration instructions for advanced IPT users only."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:6
+msgid "Since IPT v2.2 the IPT ships with 4 user directories to choose from when entering a user ID for any contact, creator, metadata provider, associated party, or project personnel. Those directories are:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:8
+msgid "http://orcid.org/ (ORCID)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:9
+msgid "http://www.researcherid.com/rid/ (ResearcherID)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:10
+msgid "http://scholar.google.com/citations?user= (Google Scholar)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:11
+msgid "https://www.linkedin.com/profile/view?id= (LinkedIn)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:13
+msgid "After having selected a user directory, IPT users enter a conjoining user ID. The combination of the two is used to form a link to a user profile page, for example:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:15
+msgid "http://orcid.org/0000-0002-1825-0097"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:16
+msgid "http://www.researcherid.com/rid/A-1009-2008"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:17
+msgid "https://scholar.google.com/citations?user=drZVfmcAAAAJ"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:18
+msgid "https://www.linkedin.com/profile/view?id=190869005"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:20
+msgid "The list of user directories can be modified, however, which is useful for communities that rely on other directories."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:22
+msgid "The steps below explain how to configure the IPT with another user directory to choose from."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:26
+msgid "Locate the UserDirectories.properties file e.g. /tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties. Open the file in a text editor, and do the following:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:28
+msgid "Add a new property defining the user directory using the following format:"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/user-id.adoc:33
+#, no-wrap
+msgid "URL=URL\n"
+"# For example:\n"
+"http\\://orcid.org/=http://orcid.org/\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:37
+msgid "the colon in the property key is escaped by a backwards slash,"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:38
+msgid "both the key and value are equal, with the exception of the escape character in the key"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/user-id.adoc:39
+msgid "Backup the UserDirectories.properties file, since it will get overwritten the next time you upgrade your IPT"
+msgstr ""
+

@@ -1,0 +1,311 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"PO-Revision-Date: 2021-06-26 14:22\n"
+"Last-Translator: \n"
+"Language-Team: Spanish, Colombia\n"
+"Language: es_CO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: es-CO\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/statistics.adoc.pot\n"
+"X-Crowdin-File-ID: 168\n"
+
+#. type: Title =
+#: en/modules/ROOT/pages/statistics.adoc:1
+#, no-wrap
+msgid "IPT Statistics"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:4
+msgid "_Last updated 7 December, 2017._"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:6
+msgid "This page provides various statistics and charts showing the IPT's growth story over these last four years. For example, did you know the number of organizations publishing occurrence data using the IPT has grown 721% over the last 4 years?!"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/statistics.adoc:7
+#, no-wrap
+msgid "Last year in review"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:10
+msgid "From December 2016 to December 2017, there has been a…"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:12
+#, no-wrap
+msgid "*10%* increase in number of countries IPTs are installed in\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:13
+#, no-wrap
+msgid "*30%* increase in number of occurrence records published via IPT\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:14
+#, no-wrap
+msgid "*26%* increase in number of datasets (of all types) published via IPT\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:15
+#, no-wrap
+msgid "*33%* increase just in number of occurrence datasets published via IPT\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:16
+#, no-wrap
+msgid "*92%* increase just in number of checklist datasets published via IPT\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:17
+#, no-wrap
+msgid "*158%* increase just in number of sampling-event datasets published via IPT\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:18
+#, no-wrap
+msgid "*17%* increase in number of IPTs registered with GBIF\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:19
+#, no-wrap
+msgid "*15%* increase in occurrence dataset publishers using IPTs\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:20
+#, no-wrap
+msgid "*33%* increase in checklist dataset publishers using IPTs\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:21
+#, no-wrap
+msgid "*82%* increase in sampling-event dataset publishers using IPTs\n"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/statistics.adoc:22
+#, no-wrap
+msgid "IPT compared against others"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:25
+msgid "As of December 7, 2017..."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:27
+msgid "315,456,978 out of 872,837,440 (*36%*) occurrence records in GBIF.org are published via IPTs. _Excluding https://www.gbif.org/dataset/4fa7b334-ce0d-4e88-aaae-2e0c138d049e[eBird], it is 53%_."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:28
+msgid "3,797 out of 14,732 (*26%*) occurrence datasets registered with GBIF are published via IPTs"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:29
+msgid "204 out of 496 (*41%*) data publishing installations registered with GBIF are IPTs"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:30
+msgid "652 out of 1445 (*45%*) publishers registered with GBIF use the IPT to publish occurrence data"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/statistics.adoc:31
+#, no-wrap
+msgid "Charts"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/statistics.adoc:33
+#, no-wrap
+msgid "Number of occurrence records from occurrence datasets"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:36
+#: en/modules/ROOT/pages/statistics.adoc:47
+#: en/modules/ROOT/pages/statistics.adoc:59
+#: en/modules/ROOT/pages/statistics.adoc:68
+#: en/modules/ROOT/pages/statistics.adoc:78
+msgid "Highlights:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:38
+#, no-wrap
+msgid "*30%* increase over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:39
+#, no-wrap
+msgid "*164%* increase over last 4 years\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:41
+msgid "Be aware the large dip after October 2015, was due to https://www.gbif.org/dataset/4fa7b334-ce0d-4e88-aaae-2e0c138d049e[eBird] no longer being published via the IPT."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/statistics.adoc:42
+#, no-wrap
+msgid "stats/dec17/Occurrences.png"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/statistics.adoc:44
+#, no-wrap
+msgid "Number of datasets published by IPTs"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:49
+#, no-wrap
+msgid "*26%* increase in datasets (of all types) over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:50
+#, no-wrap
+msgid "*33%* increase just in occurrence datasets over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:51
+#, no-wrap
+msgid "*92%* increase just in checklist datasets over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:52
+#, no-wrap
+msgid "*158%* increase just in sampling-event datasets over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:53
+#, no-wrap
+msgid "*345%* increase in datasets (of all types) over last 4 years\n"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/statistics.adoc:54
+#, no-wrap
+msgid "stats/dec17/Datasets.png"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/statistics.adoc:56
+#, no-wrap
+msgid "Number of IPTs registered with GBIF"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:61
+#, no-wrap
+msgid "*17%* increase over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:62
+#, no-wrap
+msgid "*93%* increase over last 4 years\n"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/statistics.adoc:63
+#, no-wrap
+msgid "stats/dec17/Installations.png"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/statistics.adoc:65
+#, no-wrap
+msgid "Number of IPT publishers by dataset type"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:70
+#, no-wrap
+msgid "*15%* increase in occurrence dataset publishers using IPTs over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:71
+#, no-wrap
+msgid "*33%* increase in checklist dataset publishers using IPTs over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:72
+#, no-wrap
+msgid "*82%* increase in sampling-event dataset publishers using IPTs over last year\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:73
+#, no-wrap
+msgid "*721%* increase in occurrence dataset publishers using the IPT over last 4 years\n"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/statistics.adoc:74
+#, no-wrap
+msgid "stats/dec17/Publishers.png"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/statistics.adoc:76
+#, no-wrap
+msgid "Number of countries IPTs are installed in"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:79
+#, no-wrap
+msgid "*10%* increase over last year (57 countries now have at least 1 IPT)\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:80
+#, no-wrap
+msgid "*26%* increase over last 3 years\n"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/statistics.adoc:81
+#, no-wrap
+msgid "stats/dec17/Countries.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/statistics.adoc:83
+msgid "_Note all statistics are managed in and generated from this hlink:{attachmentsdir}/stats/IPT-Stats.xlsx[Excel file]_"
+msgstr ""
+
