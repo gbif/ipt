@@ -1,0 +1,321 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"PO-Revision-Date: 2021-06-26 14:24\n"
+"Last-Translator: \n"
+"Language-Team: Spanish, Colombia\n"
+"Language: es_CO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: es-CO\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/developer-guide.adoc.pot\n"
+"X-Crowdin-File-ID: 118\n"
+
+#. type: Title =
+#: en/modules/ROOT/pages/developer-guide.adoc:1
+#, no-wrap
+msgid "Developer Guidelines"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/developer-guide.adoc:3
+#, no-wrap
+msgid "Contributions"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:6
+msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/developer-guide.adoc:7
+#, no-wrap
+msgid "Source Code Frameworks"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:10
+msgid "The IPT uses the following core frameworks:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:12
+msgid "http://struts.apache.org/2.x/index.html[Struts2]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:13
+msgid "http://code.google.com/p/google-guice/[Google Guice]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:14
+msgid "http://freemarker.sourceforge.net/docs/[Freemarker] templating"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:15
+msgid "http://jquery.com/[JQuery] for JavaScript and AJAX"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/developer-guide.adoc:16
+#: en/modules/ROOT/pages/how-to-publish.adoc:20
+#: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
+#, no-wrap
+msgid "Prerequisites"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:19
+msgid "The IPT uses Maven to manage dependencies and the build process. Refer to http://maven.apache.org/install.html[Maven's own installation instructions] for help."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/developer-guide.adoc:20
+#, no-wrap
+msgid "Running the application in Jetty"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/developer-guide.adoc:25
+#, no-wrap
+msgid "$ cd ipt\n"
+"$ mvn -Dmaven.test.skip=true\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:28
+msgid "This command starts up the IPT via the Jetty plugin on port 8080. You should be able to see the IPT running by opening http://localhost:8080 in your web browser."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/developer-guide.adoc:29
+#, no-wrap
+msgid "Git"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:31
+msgid "Please don't check in unused files."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:33
+msgid "Code in the trunk should always compile and allow the startup of jetty via maven!"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/developer-guide.adoc:34
+#, no-wrap
+msgid "Guice"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:36
+msgid "IptModule contains wiring, but interfaces are annotated directly with `@ImplementedBy(ConfigManagerImpl.class)`"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/developer-guide.adoc:37
+#, no-wrap
+msgid "Configuration"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:39
+msgid "DataDir inside WEB-INF of a running IPT a single file datadir.location is created that points to the currently used datadir where all configuration and data is stored. If this file is deleted the setup interceptor will ask the user to assign a new (potentially existing) datadir."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:41
+msgid "The hidden file \".gbifreg\" indicates whether the datadir is linked to the production or test registry. This cannot be changed again from the UI!"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:43
+msgid "AppConfig.java contains all IPT wide configuration, in particular the baseURL for the application."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/developer-guide.adoc:44
+#, no-wrap
+msgid "Struts2"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:46
+msgid "BaseAction.java supplies the AppConfig, implements session aware and gives access to current user, implements a simpler TextProvider which is faster than the native struts2 one."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:48
+msgid "SetupAndCancelInterceptor.java checks if the datadir is configured and an admin user exists - otherwise redirects to the respective setup page."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:50
+msgid "For each package (root, portal, manage, admin) its own interceptor stack exists."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:52
+msgid "The \"input\" result name is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesn't validate."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:54
+msgid "The \"success\" result name is called when the form submit succeeded. In many cases this should simply be a redirect to another, often the corresponding list, action."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:56
+msgid "The action implements preparable, request aware and the execute method."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:58
+msgid "execute: FormAction determines if a POST or GET is used and calls save (POST), delete (POST + delete=true) or nothing (GET)."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:60
+msgid "If any other action values need to be set you can override prepare() - but remember to call `super.execute()`."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:62
+msgid "prepare: the \"id\" parameter of the request object is stored in the action."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:65
+msgid "POSTAction.java simplifies working with forms. For modifying instance data always use POST, never GET.  Most full actions for modifying entities should override the following methods:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:67
+msgid "`prepare()`: load existing values based on \"id\" parameter and request object."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:68
+msgid "`save()`: persist data AFTER the parameters interceptor did its job."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:70
+msgid "`delete()`: this method is called when a POST with a \"delete=anything_but_null\" parameter is received.  If the \"id\" given does not exist you can set the \"notFound\" property to true in any of the above methods. The action will then return a 404 result name."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:72
+msgid "To do validation, implement the `validate()` method of an action (instead of using xml validation definitions). See SetupAction.java as an example. Validation requires an \"input\" result name that shows the form when the form was not valid. Using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/docs/fielderror.html"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/developer-guide.adoc:73
+#, no-wrap
+msgid "HTML Design"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:75
+msgid "Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using struts or JSP URL tags!"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:77
+msgid "Forms use the forms.ftl macros instead of struts2 tags, such as the i18n @select drop downs."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:79
+msgid "Buttons use proper buttons or `input@type=submit` (forms) for add, delete, edit, create actions."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:81
+msgid "General best practice guides:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:83
+msgid "http://htmldog.com/articles/formlayout/"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:84
+msgid "https://www.sherpaglobal.com/top-10-html-form-layout-best-practices/"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/developer-guide.adoc:85
+#, no-wrap
+msgid "JavaScript"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:87
+msgid "Only use jQuery (https://jquery.com/) for custom code."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:89
+msgid "Use jConfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when asking for confirmation, e.g. deletes."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:91
+msgid "Use jQuery dataTables (https://www.datatables.net/) plugin to enhance HTML tables with pagination, searching, etc."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/developer-guide.adoc:92
+#, no-wrap
+msgid "CSS"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:94
+msgid "960 grid system (http://960.gs/) is used for page layouts."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:96
+msgid "Keep number of CSS classes to a minimum and consider using page specific CSS in <head><style> on that page."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/developer-guide.adoc:97
+#, no-wrap
+msgid "Managers"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:99
+msgid "2 tier architecture only with interfaces + implementation."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/developer-guide.adoc:100
+#, no-wrap
+msgid "i18n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:102
+msgid "Templates, actions and also important service messages should be localized using a single ResourceBundle."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:103
+msgid "Translated vocabularies can be used to populate select drop downs easily by calling getI18nVocab(...)."
+msgstr ""
+
