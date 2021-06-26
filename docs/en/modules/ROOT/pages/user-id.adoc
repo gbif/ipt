@@ -1,4 +1,4 @@
-# Adding a New User ID Directory
+= Adding a New User ID Directory
 
 WARNING: This page contains configuration instructions for advanced IPT users only.
 

@@ -1,4 +1,4 @@
-# Manage Resources Menu
+= Manage Resources Menu
 
 This menu is visible to users with an Admin or Manager role.
 
@@ -7,9 +7,9 @@ This page allows users having the appropriate role (managers and administrators)
 image::ipt2/v233/IPTManageResources.png[]
 
 == Manage Resources Table
-When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the xref:quick-reference-guide.adoc#_public_resource_table[Public Resources Table] section for detailed explanations of the Name, Organization, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
+When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the xref:home.adoc#_public_resource_table[Public Resources Table] section for detailed explanations of the Name, Organization, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:
 
-* *Visibility* - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the xref:quick-reference-guide.adoc#_public_resource_table[Public Resources Table] on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
+* *Visibility* - a category stating who has access to view the resource. If the resource is "Public", all users will be able to see it on the xref:home.adoc#_public_resource_table[Public Resources Table] on the Home page. If the resource is "Private", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the "Resource Managers" section under the "Resource Overview" heading in the "Manage Resources" section.
 * *Author* - the IPT user who created the resource.
 
 == Create a New Resource
@@ -19,7 +19,7 @@ Below the Manage Resource table is a form that can be used to create a new resou
 * <<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,
 * <<Upload a metadata file,metadata file>>.
 
-Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 100MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the xref:quick-reference-guide.adoc#_file_upload[File upload] section to find out how to work around the file upload limit.
+Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 100MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the xref:overview.adoc#_file_upload[File upload] section to find out how to work around the file upload limit.
 
 Begin by entering a new resource shortname as described above, and then click on the button labelled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.
 
@@ -121,7 +121,7 @@ Host - The database server address, optionally including the non-default port nu
 * *Database* - The name of the database in the database management system, or the DSN for an ODBC connection.
 * *Database User* - the name of the database user to use when connecting to the database.
 * *Database Password* - the password for the database user to connect to the database.
-* *SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example: `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10`. When the statement has been fully tested with the Darwin Core Mappings (see the following section of the Quick Reference Guide), change the SQL Statement to return the full intended data set.
+* *SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example: `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10`. When the statement has been fully tested with the Darwin Core Mappings (see the following section), change the SQL Statement to return the full intended data set.
 * *Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., Latin1, UTF-8 ).
 * *Date Format* - a code describing the format of fields having a date data type (e.g., `YYYY-MM-DD` for four-digit year, two-digit month, and two-digit day separated by dashes).
 * *Multi-value Delimiter* - a single character that delimits the values in a multi-value field (e.g., `|` or `;`).
