@@ -1,12 +1,12 @@
 = GBIF Metadata Profile – How-to Guide
 
-Version 2.0.
+Version 2.1.
 
 image::figures/cover_art_adiatum.png[]
 
 == Suggested citation
 
-> GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accessible online at: #TODO#
+> GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/gbif-metadata-profile
 
 _Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._
 
@@ -55,7 +55,7 @@ In total, the IPT has 12 different metadata forms that logically organize metada
 11. Physical Data
 12. Additional Metadata
 
-The xref:manage-resources.adoc#_metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1).
+The xref:manage-resources.adoc#metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1).
 
 .Screenshot of a help dialog for the term “Personnel Identifier
 image::figures/ipt_help_dialog.png[]

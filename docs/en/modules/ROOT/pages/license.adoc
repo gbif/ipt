@@ -7,7 +7,7 @@ This page contains configuration instructions for advanced IPT users only.  Data
 We recommend publishing a metadata-only dataset instead.
 --
 
-Since IPT v2.2 the IPT ships with 3 machine readable licenses to choose from when applying a license to your resource:
+Since IPT v2.2 the IPT offers 3 machine readable licenses to choose from when applying a license to your resource:
 
 * Public Domain (CC0 1.0, technically a waiver)
 * Creative Commons Attribution (CC-BY 4.0)
@@ -24,7 +24,7 @@ The steps below explain how to configure the IPT with another license to choose 
 
 == Instructions
 
-Locate the licenses.properties file e.g. /tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties. Open the file in a text editor, and do the following:
+Locate the licenses.properties file e.g. `/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Open the file in a text editor, and do the following:
 
 . Add a new property defining the license name using the following format:
 +

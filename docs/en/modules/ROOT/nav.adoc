@@ -1,6 +1,8 @@
-* xref:index.adoc[Background]
+// A link to index.adoc is included automatically.
 * xref:news.adoc[]
-* xref:release-notes.adoc[]
+** xref:release-notes.adoc[]
+** xref:releases.adoc[Release History]
+//** xref:statistics.adoc[]
 * xref:introduction.adoc[]
 * xref:getting-started.adoc[]
 ** xref:requirements.adoc[]
@@ -25,16 +27,15 @@
 ** Occurrence Data (pending)
 ** xref:best-practices-sampling-event-data.adoc[Sampling Event Data]
 * xref:faq.adoc[]
-* Customization
-** xref:customization.adoc[]
-** xref:core.adoc[Adding a new core]
-** xref:license.adoc[]
-** xref:user-id.adoc[]
 * Contributing
 ** xref:translations.adoc[Translations]
 ** xref:developer-guide.adoc[Development]
-* Other Resources & Tutorials
+* Customization
+** xref:customization.adoc[]
 ** xref:database-connection.adoc[]
+** xref:core.adoc[Adding a new core]
+** xref:license.adoc[]
+** xref:user-id.adoc[]
 * xref:versioning.adoc[]
 * xref:citation.adoc[]
 ** xref:datacite-mappings.adoc[]
@@ -45,7 +46,5 @@
 * xref:data-preparation.adoc[]
 * xref:data-quality-checklist.adoc[]
 * xref:colophon.adoc[]
-* xref:releases.adoc[Version history]
-* xref:statistics.adoc[]
 * xref:resources.adoc[]
 * xref:glossary.adoc[]

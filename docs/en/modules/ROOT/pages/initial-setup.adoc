@@ -10,7 +10,7 @@ CAUTION: Do not select a data directory that is vulnerable to inadvertent change
 
 NOTE: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup. Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page.
 
-NOTE: If you receive an error stating the location is not writable, see xref:faq.adoc#_4_i_get_the_following_error_the_data_directory_directory_is_not_writable_what_should_i_do[the FAQ item on this].
+NOTE: If you receive an error stating the location is not writable, see xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[the FAQ item on this].
 
 TIP: Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in.
 

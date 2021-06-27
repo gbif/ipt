@@ -1,6 +1,11 @@
 name: ipt
-title: IPT
+title: Integrated Publishing Toolkit
 version: 2.5
 start_page: ROOT:index.adoc
 nav:
   - modules/ROOT/nav.adoc
+asciidoc:
+  attributes:
+    manual-version: 2.5
+    idprefix: '@'
+    idseparator: '-@'

@@ -1,6 +1,6 @@
 = Best Practices in Publishing Species Checklists
 
-Version 2.0
+Version 2.1
 
 image::figures/cover_art_stilt.png[]
 
@@ -15,12 +15,12 @@ image::figures/cover_art_stilt.png[]
 
 | 2.0 | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak
 
-| 2.1 | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett
+| xref:best-practices-checklists.adoc[2.1] | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett
 |===
 
 == Suggested citation
 
-> GBIF (2017). Best Practices in Publishing Species Checklists. Accessible online at #TODO#
+> GBIF (2017). Best Practices in Publishing Species Checklists. Accessible online at https://ipt.gbif.org/manual/en/ipt/{manual-version}/best-practices-checklists
 
 _Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexicanus_
 
@@ -49,7 +49,7 @@ Darwin Core Archive (DwC-A) is an informatics data standard that makes use of th
 
 ==== Checklist Metadata
 
-Documenting the provenance and scope of datasets is required in order to publish checklist data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the scope and intended function of the list, methodologies and resources used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for species checklists based on the Ecological Metadata Language. A How-to guide describes all the options for describing a species checklist using this format. See http://links.gbif.org/gbif_metadata_profile_how-to_en_v1
+Documenting the provenance and scope of datasets is required in order to publish checklist data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the scope and intended function of the list, methodologies and resources used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for species checklists based on the Ecological Metadata Language. A How-to guide describes all the options for describing a species checklist using this format. See xref:gbif-metadata-profile.adoc[].
 
 ==== Checklist Data
 
@@ -177,7 +177,7 @@ This format is not the recommended method for sharing taxonomic data using Darwi
 
 * Try to include a Kingdom and a nomenclatural code reference for all records even for basic species lists.
 * Try to include Kingdom, Phylum and Family as a minimal classification for denormalized classifications.
-* If it is the same throughout the dataset, consider using a static mapping of the term and value. See the Darwin Core Archive How-to Guide at http://links.gbif.org/gbif_dwca_how_to_guide_en_v1 for details on mapping global values.
+* If it is the same throughout the dataset, consider using a static mapping of the term and value. See the Darwin Core Archive How-to Guide at xref:dwca-guide.adoc[] for details on mapping global values.
 
 == Classification Formats not recommended for publishing
 
@@ -287,7 +287,7 @@ Sometimes the same name may be a synonym for more than one accepted taxon or may
 | 4           | Vireo solitarius   | 2&#124;3                     | pro-parte
 |===
 
-NOTE: IPT users should define the multi-value delimiter for each source file in the IPT. Refer to xref:manage-resources.adoc#_source_data[Source Data section] of the IPT User Manual for additional guidance.
+NOTE: IPT users should define the multi-value delimiter for each source file in the IPT. Refer to xref:manage-resources.adoc#source-data[Source Data section] of the IPT User Manual for additional guidance.
 
 == Citation and Attribution
 
@@ -297,7 +297,7 @@ The DwC-A format provides a range of options and recommendations for providing p
 
 === Metadata Citation and Attribution
 
-The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and http://links.gbif.org/gbif_metadata_profile_guide_en_v1[available] but specific citation and attribution-related elements include:
+The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and xref:gbif-metadata-profile.adoc[available] but specific citation and attribution-related elements include:
 
 * *Intellectual Property Rights* – The metadata profile contains a rights management statement for the resource, or a reference to a service providing such information, such as a Creative Commons license. It also includes an element describing the intended use and purpose of the dataset.
 * *Individuals and Organizations* – The metadata profile enables the description of any and all individuals, institutions or organizations that may be associated with a dataset. These agents may be ascribed different roles relative to the dataset and may include URLs to each resource. This section provides one method for describing and linking to individuals and organizations that have contributed to a checklist.

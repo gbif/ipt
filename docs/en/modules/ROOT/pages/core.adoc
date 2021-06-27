@@ -18,9 +18,9 @@ The core XML definition has to comply with the http://rs.gbif.org/schema/extensi
 
 . *Register Core with GBIF*
 +
-While the core definition is still undergoing changes, it gets registered into the GBIF Sandbox Registry. To register your core, email your formatted and validated XML definition to the GBIF development team (dev@gbif.org). If it passes inspection, it will be uploaded to http://rs.gbif.org/sandbox/core/[http://rs.gbif.org/sandbox/core/], and included in the http://gbrdsdev.gbif.org/registry/extensions.json[Sandbox Registry's list of extensions]. When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at http://rs.gbif.org/core/[http://rs.gbif.org/core/] and included in the http://gbrds.gbif.org/registry/extensions.json[Live Registry's list of extensions] The same process applies to registering non-core extensions and vocabularies.
+While the core definition is still undergoing changes, it gets registered into the GBIF Sandbox Registry. To register your core, make a pull request to the rs.gbif.org repository following https://github.com/gbif/rs.gbif.org/blob/master/versioning.md#how-to-create-a-new-version-of-an-extension-or-vocabulary-on-rsgbiforg[these instructions]. If it passes inspection, it will be merged in to https://rs.gbif.org/sandbox/core/, and included in the https://gbrdsdev.gbif.org/registry/extensions.json[Sandbox Registry's list of extensions]. When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at https://rs.gbif.org/core/ and included in the https://gbrds.gbif.org/registry/extensions.json[Live Registry's list of extensions] The same process applies to registering non-core extensions and vocabularies.
 
-. *Configure IPT* -
+. *Configure IPT*
 +
 --
 To configure the IPT to use the http://rs.gbif.org/sandbox/core/dwc_material_sample.xml[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`.
@@ -32,5 +32,5 @@ ipt.core_rowTypes=http\://rs.tdwg.org/dwc/terms/MaterialSample
 ipt.core_idTerms=http\://rs.tdwg.org/dwc/terms/materialSampleID
 ----
 
-This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe `|` character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then xref:administration.adoc#_install_extension[install the core]. The core is now available to use in the IPT.
+This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe `|` character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then xref:administration.adoc#install-extension[install the core]. The core is now available to use in the IPT.
 --

@@ -58,7 +58,7 @@ image:ipt2/Control-TableSortedDescending.png[]
 
 === File upload
 
-Files can be uploaded in the IPT during two actions: when xref:manage-resources.adoc#_create_a_new_resource[creating a new resource], or when xref:manage-resources.adoc#_source_data[adding new source data files].
+Files can be uploaded in the IPT during two actions: when xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files].
 
 image:ipt2/controls/Control-UploadCreateResource.png[width=238]
 

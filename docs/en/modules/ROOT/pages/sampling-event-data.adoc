@@ -81,4 +81,4 @@ Optional (provide one or both):
 
 Instructions how to create a checklist can be found xref:checklist-data.adoc[here]. Detailed metadata should be included with the checklist describing a) the people who performed the identifications and their taxonomic expertise and b) how it was decided that these species were detectable & identifiable at the time and place of sampling.
 
-To link the checklist to the sampling event dataset, add the checklist to the dataset metadata in the xref:manage-resources.adoc#_external_links[External links] section.
+To link the checklist to the sampling event dataset, add the checklist to the dataset metadata in the xref:manage-resources.adoc#external-links[External links] section.

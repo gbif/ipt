@@ -2,16 +2,16 @@
 
 == Contributions
 
-The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository.
+The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the https://github.com/gbif/ipt[IPT Git repository].
 
 == Source Code Frameworks
 
 The IPT uses the following core frameworks:
 
-* http://struts.apache.org/2.x/index.html[Struts2]
-* http://code.google.com/p/google-guice/[Google Guice]
-* http://freemarker.sourceforge.net/docs/[Freemarker] templating
-* http://jquery.com/[JQuery] for JavaScript and AJAX
+* https://struts.apache.org/[Struts2]
+* https://github.com/google/guice[Google Guice]
+* https://freemarker.sourceforge.net/docs/[Freemarker] templating
+* https://jquery.com/[jQuery] for JavaScript and AJAX
 
 == Prerequisites
 
@@ -19,9 +19,10 @@ The IPT uses Maven to manage dependencies and the build process. Refer to http:/
 
 == Running the application in Jetty
 
+[source,shell]
 ----
 $ cd ipt
-$ mvn -Dmaven.test.skip=true
+$ mvn -DskipTests
 ----
 
 This command starts up the IPT via the Jetty plugin on port 8080. You should be able to see the IPT running by opening http://localhost:8080 in your web browser.
@@ -29,24 +30,27 @@ This command starts up the IPT via the Jetty plugin on port 8080. You should be 
 == Git
 Please don't check in unused files.
 
-Code in the trunk should always compile and allow the startup of jetty via maven!
+Code in the master branch should always compile and allow the startup of Jetty using Maven!
 
 === Guice
-IptModule contains wiring, but interfaces are annotated directly with `@ImplementedBy(ConfigManagerImpl.class)`
+
+`IptModule` contains wiring, but interfaces are annotated directly with `@ImplementedBy(ConfigManagerImpl.class)`
 
 === Configuration
-DataDir inside WEB-INF of a running IPT a single file datadir.location is created that points to the currently used datadir where all configuration and data is stored. If this file is deleted the setup interceptor will ask the user to assign a new (potentially existing) datadir.
 
-The hidden file ".gbifreg" indicates whether the datadir is linked to the production or test registry. This cannot be changed again from the UI!
+Inside WEB-INF of a running IPT is a single file `datadir.location`.  It points to the currently used data directory where all configuration and data is stored. If this file is deleted the setup interceptor will ask the user to assign a new (potentially existing) data directory.
 
-AppConfig.java contains all IPT wide configuration, in particular the baseURL for the application.
+The hidden file `.gbifreg` indicates whether the data directory is linked to the production or test registry. Once set, this cannot be changed from the UI!
+
+`AppConfig.java` contains all IPT wide configuration, in particular the `baseURL` (referred to in the UI and documentation as the "Public URL") for the application.
 
 === Struts2
-BaseAction.java supplies the AppConfig, implements session aware and gives access to current user, implements a simpler TextProvider which is faster than the native struts2 one.
 
-SetupAndCancelInterceptor.java checks if the datadir is configured and an admin user exists - otherwise redirects to the respective setup page.
+`BaseAction.java` supplies the `AppConfig`, implements session aware and gives access to current user, implements a simpler `TextProvider` which is faster than the native Struts 2 one.
 
-For each package (root, portal, manage, admin) its own interceptor stack exists.
+`SetupAndCancelInterceptor.java` checks if the data directory is configured and an admin user exists - otherwise redirects to the respective setup page.
+
+For each package (`root`, `portal`, `manage`, `admin`) its own interceptor stack exists.
 
 The "input" result name is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesn't validate.
 
@@ -54,26 +58,27 @@ The "success" result name is called when the form submit succeeded. In many case
 
 The action implements preparable, request aware and the execute method.
 
-* execute: FormAction determines if a POST or GET is used and calls save (POST), delete (POST + delete=true) or nothing (GET).
+* execute: `FormAction` determines if a `POST` or `GET` is used and calls save (`POST`), delete (`POST + delete=true`) or nothing (`GET`).
 
-If any other action values need to be set you can override prepare() - but remember to call `super.execute()`.
+If any other action values need to be set you can override `prepare()` - but remember to call `super.execute()`.
 
-* prepare: the "id" parameter of the request object is stored in the action.
+* prepare: the `id` parameter of the request object is stored in the action.
 
-POSTAction.java simplifies working with forms. For modifying instance data always use POST, never GET.
+`POSTAction.java` simplifies working with forms. For modifying instance data always use `POST`, never `GET`.
 Most full actions for modifying entities should override the following methods:
 
 * `prepare()`: load existing values based on "id" parameter and request object.
 * `save()`: persist data AFTER the parameters interceptor did its job.
-* `delete()`: this method is called when a POST with a "delete=anything_but_null" parameter is received.
-If the "id" given does not exist you can set the "notFound" property to true in any of the above methods. The action will then return a 404 result name.
+* `delete()`: this method is called when a `POST` with a `delete=anything_but_null` parameter is received.
+If the `id` given does not exist you can set the `notFound` property to true in any of the above methods. The action will then return a 404 result name.
 
-To do validation, implement the `validate()` method of an action (instead of using xml validation definitions). See SetupAction.java as an example. Validation requires an "input" result name that shows the form when the form was not valid. Using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/docs/fielderror.html
+To do validation, implement the `validate()` method of an action (instead of using XML validation definitions). See `SetupAction.java` as an example. Validation requires an `input` result name that shows the form when the form was not valid. Using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/docs/fielderror.html
 
 === HTML Design
-Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using struts or JSP URL tags!
 
-Forms use the forms.ftl macros instead of struts2 tags, such as the i18n @select drop downs.
+Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using Struts or JSP URL tags!
+
+Forms use the `forms.ftl` macros instead of Struts 2 tags, such as the internationalization `@select` drop downs.
 
 Buttons use proper buttons or `input@type=submit` (forms) for add, delete, edit, create actions.
 
@@ -83,6 +88,7 @@ General best practice guides:
 * https://www.sherpaglobal.com/top-10-html-form-layout-best-practices/
 
 === JavaScript
+
 Only use jQuery (https://jquery.com/) for custom code.
 
 Use jConfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when asking for confirmation, e.g. deletes.
@@ -90,14 +96,17 @@ Use jConfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when asking
 Use jQuery dataTables (https://www.datatables.net/) plugin to enhance HTML tables with pagination, searching, etc.
 
 === CSS
-960 grid system (http://960.gs/) is used for page layouts.
 
-Keep number of CSS classes to a minimum and consider using page specific CSS in <head><style> on that page.
+https://960.gs/[960 grid system] is used for page layouts.
+
+Keep number of CSS classes to a minimum and consider using page specific CSS in `<head><style>` on that page.
 
 === Managers
+
 2 tier architecture only with interfaces + implementation.
 
-=== i18n
-Templates, actions and also important service messages should be localized using a single ResourceBundle.
+=== Internationalization
 
-Translated vocabularies can be used to populate select drop downs easily by calling getI18nVocab(...).
+Templates, actions and also important service messages should be localized using a single `ResourceBundle`.
+
+Translated vocabularies can be used to populate select drop downs easily by calling `getI18nVocab(…)`.

@@ -1,13 +1,18 @@
 = How to Translate
 
-The IPT user interface and user manual both need internationalization. Internationalization is a community effort, and everyone is welcome to join.
+The IPT user interface and user manual both benefit from internationalization. Internationalization is a community effort, and everyone is welcome to join.
 
-== How To Translate the User Interface
-The preferred way of translating the user interface is using an online translation tool called https://crowdin.com/project/gbif-ipt[Crowdin]. To join, just login to https://crowdin.com/project/gbif-ipt[Crowdin], select the language you would like to translate, and hit the 'Join' button. A manager will handle your request, and add you to the translation team. After that, you can get started translating. Most people find Crowdin incredibly easy and intuitive to use. For help using Crowdin, you can always refer to their https://support.crowdin.com/for-translators/getting-started-translators/interface-overview[Knowledge Base].
+Translation uses an online translation tool called https://crowdin.com/project/gbif-ipt[Crowdin]. To join, login to https://crowdin.com/project/gbif-ipt[Crowdin], select the language you would like to translate, and click the "Join" button. A translation manager will handle your request, and add you to the translation team. You may then start translating. Most people find Crowdin easy and intuitive to use. For help using Crowdin, you can always refer to their https://support.crowdin.com5/crowdin-intro/[Crowdin Introduction].
+
+In the Crowdin IPT project, the file `Glossary` is not part of either the user interface or the user manual, but is used to check the consistence of translated terms.  Other files belong either to the user interface, or the user manual.
+
+== Translating the User Interface
+
+Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's develoment IPT], where new translations will be applied.
 
 image::ipt2/v22/Crowdin-Join.png[]
 
-=== Languages
+=== Current languages
 
 * French
 * Japanese
@@ -15,14 +20,68 @@ image::ipt2/v22/Crowdin-Join.png[]
 * Russian
 * Spanish
 * Traditional Chinese
-* Persian (pending)
+* Persian (in progress)
 
 If you want to translate the user interface into another language, please email helpdesk@gbif.org.
 
-== How To Translate the User Manual
+== Translating the User Manual
 
-#TODO: The process to translate the user manual has not yet been decided.#
+Translations for the user manual are in the CrowdIn folder `docs/translations`.  The user manual is written in https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], and some syntax is necessary in the translations – for example, `+++*bold*, _italic_ or `monospaced` text+++`.
+
+Particular care is needed to ensure cross-references (links between pages and/or sections within pages) work in the translated versions.
+
+=== Plain hyperlinks
+
+When translating these, it's appropriate to link to a translated version of the page if the content is equivalent.  Translate as follows:
+
+[source,asciidoctor]
+----
+https://www.gbif.org/the-gbif-network[GBIF's diverse Participants]
+
+https://www.gbif.org/es/the-gbif-network[los diversos Aliados de GBIF]
+----
+
+=== Same-page crossreferences
+
+These are links to locations within a page, and are usually made with the crossreference syntax: `\<<Target Heading Text>>`, and sometimes the form `\<<Target Heading Text,display text>>` when the text shown should not be the same as the heading to which the link points.
+
+Therefore, a crossreference translation is like this:
+
+[source,asciidoctor]
+----
+click on the button labelled "Add" to open the <<Data Source selection page>>.
+
+clic en el botón "Agregar" para abrir la <<Página de selección del Conjunto de Datos>>.
+----
+
+=== Different-page crossreferences
+
+The simplest links to different pages are to the top of the linked page.  These have the form `\xref:filename.adoc[display text]`.  Only the display text should be translated, the file name does not change:
+
+[source,asciidoc]
+----
+refer to the xref:doi-workflow.adoc[DOI Workflows] page
+
+consulte la página de xref:doi-workflow.adoc[flujo de trabajo de los DOIs].
+----
+
+More complicated are links to a specific section within another page.  These must use the link target, which is generated automatically on each heading: spaces in the heading text are replaced with hyphens (`-`) and the result is converted to lower case.  In a web browser, they are shown in the URL bar following a `#`, in the "Contents" menu, or with the "§" symbol next to a heading.
+
+The crossreference is then written as `\xref:filename.adoc#link-target[display text]`, for example `\xref:manage-resources.adoc#resource-managers[read about resource managers]` shows as xref:manage-resources.adoc#resource-managers[read about resource managers].
+
+An English heading `Source Data` has the link target `source-data`.  The Spanish translation of the heading, `Conjunto de datos`, has the target `conjunto-de-datos`.
+
+[source,asciidoc]
+----
+Files can be uploaded … when xref:manage-resources.adoc#source-data[adding new source data files].
+
+La carga de archivos al se puede … cuando se xref:manage-resources.adoc#conjunto-de-datos[agregan nuevos archivos de conjuntos de datos].
+----
 
 === Languages
 
-* Spanish
+* Spanish (partial)
+* Traditional Chinese (started)
+
+If you want to translate the user interface into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English.
+

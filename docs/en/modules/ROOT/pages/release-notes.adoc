@@ -4,13 +4,13 @@
 
 == Upgrade instructions
 
-WARNING: Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#_data_hosting_centre_criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
+WARNING: Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
 
 CAUTION: Once an IPT has been upgraded to 2.3.x or later from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
 Check your system meets the xref:requirements.adoc[installation requirements] for this release.
 
-The upgrade method depends on the original xref:installation.adoc#_installation_method[installation method].
+The upgrade method depends on the original xref:installation.adoc#installation-method[installation method].
 
 === Upgrades using Linux packages
 
@@ -45,7 +45,7 @@ yum --showduplicates list --enablerepo=gbif-testing ipt
 
 === Upgrades using a servlet container
 
-TIP: When upgrading to version 2.5.0-RC1 or later, follow xref:installation.adoc#_tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT.
+TIP: When upgrading to version 2.5.0-RC1 or later, follow xref:installation.adoc#tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT.
 
 An upgrade can be performed in 4 steps:
 
@@ -60,7 +60,7 @@ NOTE: If you replace the .war file while Tomcat is stopped, be sure to delete th
 
 === Upgrades using Docker
 
-See the xref:installation.adoc#_installation_using_docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release.
+See the xref:installation.adoc#installation-using-docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release.
 
 == Post-upgrade instructions
 
@@ -76,7 +76,7 @@ The full list of new features is documented on the xref:releases.adoc[releases p
 
 * IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work.
 * IPT 2.5.0 now includes a troubleshooting page, accessible only to administrators from within the Administration menu.
-* IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#_tomcat[step 2] of the installation instructions.
+* IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions.
 * IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)
 * The documentation has moved to this new location; links will be made from the old GitHub Wiki.
 
