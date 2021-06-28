@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:23\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: 2021-06-28 10:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -16,9 +16,8 @@ msgstr ""
 "X-Crowdin-File: /[gbif.ipt] master/docs/translations/administration.adoc.pot\n"
 "X-Crowdin-File-ID: 86\n"
 
-#. type: Title ==
+#. type: Title =
 #: en/modules/ROOT/pages/administration.adoc:1
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:159
 #, no-wrap
 msgid "Administration Menu"
 msgstr "Menú Administración"
@@ -54,8 +53,8 @@ msgstr "Esta página permite a los usuarios con el rol Administrador, realizar y
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:12
 #, no-wrap
-msgid "ipt2/administration/IPTAdminConfigIPT2.png"
-msgstr "ipt2/administration/IPTAdminConfigIPT2.png"
+msgid "ipt2/administration/IPTAdminConfigIPT.png"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:15
@@ -154,8 +153,8 @@ msgstr "Esta página permite al usuario con rol Administrador, crear, modificar 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:42
 #, no-wrap
-msgid "ipt2/v22/IPTAdminUserAccounts.png"
-msgstr "ipt2/v22/IPTAdminUserAccounts.png"
+msgid "ipt2/administration/IPTAdminUserAccounts.png"
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:44
@@ -274,8 +273,8 @@ msgstr "Igualmente, la instalación del IPT siempre debe tener al menos un usuar
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:72
-msgid "Each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under xref:manage-resources.adoc#_resource_managers[Resource Managers] to see how new managers can be assigned."
-msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que tenga el rol Administrador o uno de los otros roles de Administrador, de tal forma que el último Gestor de un recurso no pueda ser eliminado. Para eliminar aquel usuario, primero se debe asociar otro usuario que tenga uno de los roles de Gestor, con el recurso al cual el usuario desea eliminarle el último gestor del mismo. Para saber cómo pueden ser asignados los nuevos gestores, consulte la información de xref:manage-resources.adoc#_gestores_del_recurso[Gestores del recurso]."
+msgid "Each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under xref:manage-resources.adoc#resource-managers[Resource Managers] to see how new managers can be assigned."
+msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que tenga el rol Administrador o uno de los otros roles de Administrador, de tal forma que el último Gestor de un recurso no pueda ser eliminado. Para eliminar aquel usuario, primero se debe asociar otro usuario que tenga uno de los roles de Gestor, con el recurso al cual el usuario desea eliminarle el último gestor del mismo. Para saber cómo pueden ser asignados los nuevos gestores, consulte la información de xref:manage-resources.adoc#gestores-del-recurso[Gestores del recurso]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:73
@@ -290,8 +289,8 @@ msgstr "Configurar Opciones para el Registro GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:76
-msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#_published_versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
-msgstr "Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección \"Menú Administración\") o publicarlo (véase la sección xref:manage-resources.adoc#_versiones_publicadas[Versiones Publicadas]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página <<Editar Registro GBIF>>."
+msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
+msgstr "Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección \"Menú Administración\") o publicarlo (véase la sección xref:manage-resources.adoc#versiones-publicadas[Versiones Publicadas]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página <<Editar Registro GBIF>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:78
@@ -341,8 +340,8 @@ msgstr "Si el IPT pasa la etapa de validación mencionada anteriormente, aparece
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:90
 #, no-wrap
-msgid "ipt2/v22/IPTAdminRegistrationStep2.png"
-msgstr "ipt2/v22/IPTAdminRegistrationStep2.png"
+msgid "ipt2/administration/IPTAdminRegistrationStep2.png"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:93
@@ -452,8 +451,8 @@ msgstr "Un IPT capaz de asignar DOIs a los recursos, para esto debe tener las or
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:116
 #, no-wrap
-msgid "ipt2/v22/IPTAdminOrgs.png"
-msgstr "ipt2/v22/IPTAdminOrgs.png"
+msgid "ipt2/administration/IPTAdminOrgs.png"
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:118
@@ -557,7 +556,7 @@ msgstr "Esta página permite a un usuario con rol Administrador, importar y comp
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:144
 msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
-msgstr "Los vocabularios contienen una lista de valores válidos que un elemento particular en un estándar o extensión pueda tomar. Por ejemplo, el https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario de Darwin Core][ contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
+msgstr "Los vocabularios contienen una lista de valores válidos que un elemento particular en un estándar o extensión pueda tomar. Por ejemplo, el https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario de Darwin Core] contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:146
@@ -612,8 +611,8 @@ msgstr "Para propiedades que tienen vocabularios controlados, la información so
 #: en/modules/ROOT/pages/administration.adoc:162
 #: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
-msgid "ipt2/v23/IPTAdminExtensionsDetailVocabulary.png"
-msgstr "ipt2/v23/IPTAdminExtensionsDetailVocabulary.png"
+msgid "ipt2/administration/IPTAdminExtensionsDetailVocabulary.png"
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:164
@@ -651,8 +650,8 @@ msgstr "Cualquiera de las extensiones que ya haya sido instalada en el IPT, y qu
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:175
 #, no-wrap
-msgid "ipt2/v23/IPTAdminExtensionsUpdate.png"
-msgstr "ipt2/v23/IPTAdminExtensionsUpdate.png"
+msgid "ipt2/administration/IPTAdminExtensionsUpdate.png"
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:177

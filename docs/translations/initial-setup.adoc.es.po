@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:21\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"PO-Revision-Date: 2021-06-28 10:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -58,7 +58,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:14
-msgid "If you receive an error stating the location is not writable, see xref:faq.adoc#_4_i_get_the_following_error_the_data_directory_directory_is_not_writable_what_should_i_do[the FAQ item on this]."
+msgid "If you receive an error stating the location is not writable, see xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[the FAQ item on this]."
 msgstr ""
 
 #. type: Plain text
@@ -193,11 +193,11 @@ msgstr "ipt2/setup/IPTSetupFinished.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:66
-msgid "Click on the button labelled \"Continue\" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section of the Quick Reference Guide. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization. The Organizations button is disabled by default until the GBIF registration options have been set."
-msgstr "Haga clic en el botón \"Continuar\" para abrir la página de Administración del IPT (véase a continuación la imagen de la pantalla), en la que se pueden realizar configuraciones adicionales. Por favor revise la explicación de todas las funciones de Administración antes de continuar. Detalles sobre las opciones presentadas en esta pantalla se muestran en la sección xref:administration.adoc[Menú Administración] de la Guía de Referencia Rápida. Antes de añadir fuentes de datos al IPT, el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF, y asociar el IPT con una organización. El botón “Organizaciones” estará desactivado predeterminadamente hasta que se hayan establecido las opciones de registro en GBIF."
+msgid "Click on the button labelled \"Continue\" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization. The Organizations button is disabled by default until the GBIF registration options have been set."
+msgstr "Haga clic en el botón \"Continuar\" para abrir la página de Administración del IPT (véase a continuación la imagen de la pantalla), en la que se pueden realizar configuraciones adicionales. Por favor revise la explicación de todas las funciones de Administración antes de continuar. Detalles sobre las opciones presentadas en esta pantalla se muestran en la sección xref:administration.adoc[Menú Administración]. Antes de añadir fuentes de datos al IPT, el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF, y asociar el IPT con una organización. El botón “Organizaciones” estará desactivado predeterminadamente hasta que se hayan establecido las opciones de registro en GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:69
-msgid "Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the xref:quick-reference-guide.adoc[Quick Reference Guide] of this user manual."
-msgstr "Una vez se hayan completado los pasos de esta \"Guía de Instalación\", el IPT estará listo para agregar recursos (conjuntos de datos y metadatos). Es recomendable revisar los tutoriales para entender cómo se llevan a cabo las tareas comunes del IPT. Para una explicación detallada de cualquier otro aspecto del IPT, consulte la xref:quick-reference-guide.adoc[Guía de Referencia Rápida] de este manual de usuario."
+msgid "Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the following sections of this user manual."
+msgstr ""
 

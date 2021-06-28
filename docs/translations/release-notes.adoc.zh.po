@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:22\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"PO-Revision-Date: 2021-06-28 09:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -58,7 +58,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
-msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#_data_hosting_centre_criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general."
+msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general."
 msgstr ""
 
 #. type: Plain text
@@ -73,7 +73,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:14
-msgid "The upgrade method depends on the original xref:installation.adoc#_installation_method[installation method]."
+msgid "The upgrade method depends on the original xref:installation.adoc#installation-method[installation method]."
 msgstr ""
 
 #. type: Title ===
@@ -142,7 +142,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:49
-msgid "When upgrading to version 2.5.0-RC1 or later, follow xref:installation.adoc#_tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT."
+msgid "When upgrading to version 2.5.0-RC1 or later, follow xref:installation.adoc#tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT."
 msgstr ""
 
 #. type: Plain text
@@ -188,7 +188,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:64
-msgid "See the xref:installation.adoc#_installation_using_docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release."
+msgid "See the xref:installation.adoc#installation-using-docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release."
 msgstr ""
 
 #. type: Plain text
@@ -223,7 +223,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:80
-msgid "IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#_tomcat[step 2] of the installation instructions."
+msgid "IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions."
 msgstr ""
 
 #. type: Plain text

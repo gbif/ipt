@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:24\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: 2021-06-28 10:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -26,7 +26,6 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
@@ -67,7 +66,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:4
-msgid "Version 2.0."
+msgid "Version 2.1."
 msgstr ""
 
 #. type: Target for macro image
@@ -78,7 +77,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:10
-msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accessible online at: #TODO#"
+msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/gbif-metadata-profile"
 msgstr ""
 
 #. type: Plain text
@@ -149,7 +148,7 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:46
-#: en/modules/ROOT/pages/manage-resources.adoc:249
+#: en/modules/ROOT/pages/manage-resources.adoc:248
 #, no-wrap
 msgid "Basic Metadata"
 msgstr "Metadatos Básicos"
@@ -158,7 +157,7 @@ msgstr "Metadatos Básicos"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:47
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:141
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:261
-#: en/modules/ROOT/pages/manage-resources.adoc:292
+#: en/modules/ROOT/pages/manage-resources.adoc:291
 #, no-wrap
 msgid "Geographic Coverage"
 msgstr "Cobertura Geográfica"
@@ -167,7 +166,7 @@ msgstr "Cobertura Geográfica"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:140
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:243
-#: en/modules/ROOT/pages/manage-resources.adoc:303
+#: en/modules/ROOT/pages/manage-resources.adoc:302
 #, no-wrap
 msgid "Taxonomic Coverage"
 msgstr "Cobertura Taxonómica"
@@ -176,7 +175,7 @@ msgstr "Cobertura Taxonómica"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:142
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:279
-#: en/modules/ROOT/pages/manage-resources.adoc:327
+#: en/modules/ROOT/pages/manage-resources.adoc:326
 #, no-wrap
 msgid "Temporal Coverage"
 msgstr "Cobertura Temporal"
@@ -188,35 +187,35 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:51
-#: en/modules/ROOT/pages/manage-resources.adoc:366
+#: en/modules/ROOT/pages/manage-resources.adoc:365
 #, no-wrap
 msgid "Associated Parties"
 msgstr "Partes Asociadas"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
-#: en/modules/ROOT/pages/manage-resources.adoc:377
+#: en/modules/ROOT/pages/manage-resources.adoc:376
 #, no-wrap
 msgid "Project Data"
 msgstr "Datos del Proyecto"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:396
+#: en/modules/ROOT/pages/manage-resources.adoc:395
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "Métodos de Muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:409
+#: en/modules/ROOT/pages/manage-resources.adoc:408
 #, no-wrap
 msgid "Citations"
 msgstr "Referencias"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:437
+#: en/modules/ROOT/pages/manage-resources.adoc:436
 #, no-wrap
 msgid "Collection Data"
 msgstr "Datos de la Colección"
@@ -228,14 +227,14 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:57
-#: en/modules/ROOT/pages/manage-resources.adoc:488
+#: en/modules/ROOT/pages/manage-resources.adoc:487
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "Metadatos Adicionales"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:59
-msgid "The xref:manage-resources.adoc#_metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1)."
+msgid "The xref:manage-resources.adoc#metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1)."
 msgstr ""
 
 #. type: Block title

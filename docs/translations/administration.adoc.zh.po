@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:23\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: 2021-06-28 10:02\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -16,9 +16,8 @@ msgstr ""
 "X-Crowdin-File: /[gbif.ipt] master/docs/translations/administration.adoc.pot\n"
 "X-Crowdin-File-ID: 86\n"
 
-#. type: Title ==
+#. type: Title =
 #: en/modules/ROOT/pages/administration.adoc:1
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:159
 #, no-wrap
 msgid "Administration Menu"
 msgstr ""
@@ -54,7 +53,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:12
 #, no-wrap
-msgid "ipt2/administration/IPTAdminConfigIPT2.png"
+msgid "ipt2/administration/IPTAdminConfigIPT.png"
 msgstr ""
 
 #. type: Plain text
@@ -154,7 +153,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:42
 #, no-wrap
-msgid "ipt2/v22/IPTAdminUserAccounts.png"
+msgid "ipt2/administration/IPTAdminUserAccounts.png"
 msgstr ""
 
 #. type: Title ===
@@ -274,7 +273,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:72
-msgid "Each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under xref:manage-resources.adoc#_resource_managers[Resource Managers] to see how new managers can be assigned."
+msgid "Each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under xref:manage-resources.adoc#resource-managers[Resource Managers] to see how new managers can be assigned."
 msgstr ""
 
 #. type: Plain text
@@ -290,7 +289,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:76
-msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#_published_versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
+msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
 msgstr ""
 
 #. type: Plain text
@@ -341,7 +340,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:90
 #, no-wrap
-msgid "ipt2/v22/IPTAdminRegistrationStep2.png"
+msgid "ipt2/administration/IPTAdminRegistrationStep2.png"
 msgstr ""
 
 #. type: Plain text
@@ -452,7 +451,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:116
 #, no-wrap
-msgid "ipt2/v22/IPTAdminOrgs.png"
+msgid "ipt2/administration/IPTAdminOrgs.png"
 msgstr ""
 
 #. type: Title ===
@@ -612,7 +611,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:162
 #: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
-msgid "ipt2/v23/IPTAdminExtensionsDetailVocabulary.png"
+msgid "ipt2/administration/IPTAdminExtensionsDetailVocabulary.png"
 msgstr ""
 
 #. type: Title ===
@@ -651,7 +650,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:175
 #, no-wrap
-msgid "ipt2/v23/IPTAdminExtensionsUpdate.png"
+msgid "ipt2/administration/IPTAdminExtensionsUpdate.png"
 msgstr ""
 
 #. type: Title ==

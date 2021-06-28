@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:20\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"PO-Revision-Date: 2021-06-28 09:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -45,7 +45,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:11
-msgid "Since IPT v2.2 the IPT ships with 3 machine readable licenses to choose from when applying a license to your resource:"
+msgid "Since IPT v2.2 the IPT offers 3 machine readable licenses to choose from when applying a license to your resource:"
 msgstr ""
 
 #. type: Plain text
@@ -85,7 +85,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:28
-msgid "Locate the licenses.properties file e.g. /tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties. Open the file in a text editor, and do the following:"
+msgid "Locate the licenses.properties file e.g. `/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Open the file in a text editor, and do the following:"
 msgstr ""
 
 #. type: Plain text
