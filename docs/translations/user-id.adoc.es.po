@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:22\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"PO-Revision-Date: 2021-06-28 09:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -37,9 +37,10 @@ msgstr ""
 msgid "Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect"
 msgstr ""
 
-#. type: Plain text
-#: en/modules/ROOT/pages/user-id.adoc:2
-msgid "# Adding a New User ID Directory"
+#. type: Title =
+#: en/modules/ROOT/pages/user-id.adoc:1
+#, no-wrap
+msgid "Adding a New User ID Directory"
 msgstr ""
 
 #. type: Plain text
@@ -54,17 +55,17 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:8
-msgid "http://orcid.org/ (ORCID)"
+msgid "https://orcid.org/ (ORCID)"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:9
-msgid "http://www.researcherid.com/rid/ (ResearcherID)"
+msgid "https://www.researcherid.com/rid/ (ResearcherID)"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:10
-msgid "http://scholar.google.com/citations?user= (Google Scholar)"
+msgid "https://scholar.google.com/citations?user= (Google Scholar)"
 msgstr ""
 
 #. type: Plain text
@@ -79,12 +80,12 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:15
-msgid "http://orcid.org/0000-0002-1825-0097"
+msgid "https://orcid.org/0000-0002-1825-0097"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:16
-msgid "http://www.researcherid.com/rid/A-1009-2008"
+msgid "https://www.researcherid.com/rid/A-1009-2008"
 msgstr ""
 
 #. type: Plain text
@@ -109,7 +110,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:26
-msgid "Locate the UserDirectories.properties file e.g. /tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties. Open the file in a text editor, and do the following:"
+msgid "Locate the UserDirectories.properties file e.g. `tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Open the file in a text editor, and do the following:"
 msgstr ""
 
 #. type: Plain text
