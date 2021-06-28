@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"POT-Creation-Date: 2021-06-28 10:56+0000\n"
+"PO-Revision-Date: 2021-06-28 11:11\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -26,6 +26,7 @@ msgid "FAQ"
 msgstr ""
 
 #. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:35
 #: en/modules/ROOT/pages/dwca-guide.adoc:148 en/modules/ROOT/pages/faq.adoc:184
 #: en/modules/ROOT/pages/faq.adoc:194
 msgid "{blank}"
