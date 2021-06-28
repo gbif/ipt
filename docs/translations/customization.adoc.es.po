@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: 2021-06-28 10:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -82,7 +82,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/customization.adoc:17
 #, no-wrap
-msgid "ipt2/v205/IPTDefaultStyle.png"
+msgid "ipt2/customization/IPTDefaultStyle.png"
 msgstr ""
 
 #. type: Block title
@@ -94,6 +94,6 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/customization.adoc:20
 #, no-wrap
-msgid "ipt2/v205/IPTCustomizedStyle.png"
+msgid "ipt2/customization/IPTCustomizedStyle.png"
 msgstr ""
 
