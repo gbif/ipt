@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/home.adoc:5
 #, no-wrap
-msgid "ipt2/v233/IPTHome.png"
+msgid "ipt2/home/IPTHome.png"
 msgstr ""
 
 #. type: Title ==

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,7 +61,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:12
 #, no-wrap
-msgid "ipt2/administration/IPTAdminConfigIPT2.png"
+msgid "ipt2/administration/IPTAdminConfigIPT.png"
 msgstr ""
 
 #. type: Plain text
@@ -187,7 +187,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:42
 #, no-wrap
-msgid "ipt2/v22/IPTAdminUserAccounts.png"
+msgid "ipt2/administration/IPTAdminUserAccounts.png"
 msgstr ""
 
 #. type: Title ===
@@ -430,7 +430,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:90
 #, no-wrap
-msgid "ipt2/v22/IPTAdminRegistrationStep2.png"
+msgid "ipt2/administration/IPTAdminRegistrationStep2.png"
 msgstr ""
 
 #. type: Plain text
@@ -566,7 +566,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:116
 #, no-wrap
-msgid "ipt2/v22/IPTAdminOrgs.png"
+msgid "ipt2/administration/IPTAdminOrgs.png"
 msgstr ""
 
 #. type: Title ===
@@ -792,7 +792,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:162
 #: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
-msgid "ipt2/v23/IPTAdminExtensionsDetailVocabulary.png"
+msgid "ipt2/administration/IPTAdminExtensionsDetailVocabulary.png"
 msgstr ""
 
 #. type: Title ===
@@ -847,7 +847,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:175
 #, no-wrap
-msgid "ipt2/v23/IPTAdminExtensionsUpdate.png"
+msgid "ipt2/administration/IPTAdminExtensionsUpdate.png"
 msgstr ""
 
 #. type: Title ==

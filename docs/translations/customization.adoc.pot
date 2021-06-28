@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,7 +98,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/customization.adoc:17
 #, no-wrap
-msgid "ipt2/v205/IPTDefaultStyle.png"
+msgid "ipt2/customization/IPTDefaultStyle.png"
 msgstr ""
 
 #. type: Block title
@@ -110,5 +110,5 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/customization.adoc:20
 #, no-wrap
-msgid "ipt2/v205/IPTCustomizedStyle.png"
+msgid "ipt2/customization/IPTCustomizedStyle.png"
 msgstr ""
