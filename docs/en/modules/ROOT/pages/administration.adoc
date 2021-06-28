@@ -9,7 +9,7 @@ image::ipt2/administration/IPTAdminBeforeRegistration.png[]
 == Configure IPT settings
 This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance.
 
-image::ipt2/administration/IPTAdminConfigIPT2.png[]
+image::ipt2/administration/IPTAdminConfigIPT.png[]
 
 * *Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.
 +
@@ -39,7 +39,7 @@ This option is an administrative action just like the Publish button, only it pu
 == Configure User accounts
 This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins.
 
-image::ipt2/v22/IPTAdminUserAccounts.png[]
+image::ipt2/administration/IPTAdminUserAccounts.png[]
 
 === Create a new user
 A new user can be created by clicking on the button labelled "Create" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labelled "Save".
@@ -87,7 +87,7 @@ image::ipt2/administration/IPTAdminRegistrationStep1.png[]
 
 If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its password must be known*. For explanations of the fields and selections on this form, refer to the information below.
 
-image::ipt2/v22/IPTAdminRegistrationStep2.png[]
+image::ipt2/administration/IPTAdminRegistrationStep2.png[]
 
 Following are explanations of the specific information to select or enter:
 
@@ -113,7 +113,7 @@ This page is unavailable until the IPT instance has been successfully registered
 
 An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessary have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance.
 
-image::ipt2/v22/IPTAdminOrgs.png[]
+image::ipt2/administration/IPTAdminOrgs.png[]
 
 === Edit organization
 On this page a user having the Admin role can edit the organization. Click on the button labelled "Edit" to open the page containing the details of the selected organization. For explanations of the fields and selections on this form, refer to the information below.
@@ -159,7 +159,7 @@ image::ipt2/administration/IPTAdminExtensionsDetail.png[]
 
 For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label "Vocabulary:". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers.
 
-image::ipt2/v23/IPTAdminExtensionsDetailVocabulary.png[]
+image::ipt2/administration/IPTAdminExtensionsDetailVocabulary.png[]
 
 === Install extension
 For any of the extensions that have not yet been installed in the IPT, there is a button labelled "Install" under the extension name in the left-hand column. Click on this button to retrieve the extension from the GBIF registry and install it in the IPT.
@@ -167,12 +167,12 @@ For any of the extensions that have not yet been installed in the IPT, there is 
 === Remove extension
 For any extension that has already been installed in the IPT, it can be removed by clicking the button labelled "Remove". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.
 
-image::ipt2/v23/IPTAdminExtensionsDetailVocabulary.png[]
+image::ipt2/administration/IPTAdminExtensionsDetailVocabulary.png[]
 
 === Update extension
 For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished.
 
-image::ipt2/v23/IPTAdminExtensionsUpdate.png[]
+image::ipt2/administration/IPTAdminExtensionsUpdate.png[]
 
 == View IPT logs
 Messages generated from actions taken while running the IPT are logged to files for reference in the directory called "logs" within the IPT data directory (see the information under the "IPT Settings" heading in the "Administration Menu" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labelled "complete log file". The contents of the complete log file may be useful when reporting an apparent bug.

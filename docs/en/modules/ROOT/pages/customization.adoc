@@ -14,7 +14,7 @@ In short, customization can be achieved by applying CSS overrides. Continue read
 Take a look at the before and after screenshots below showing the effects of the default custom.css file.
 
 .Before applying custom.css
-image::ipt2/v205/IPTDefaultStyle.png[]
+image::ipt2/customization/IPTDefaultStyle.png[]
 
 .After applying custom.css
-image::ipt2/v205/IPTCustomizedStyle.png[]
+image::ipt2/customization/IPTCustomizedStyle.png[]

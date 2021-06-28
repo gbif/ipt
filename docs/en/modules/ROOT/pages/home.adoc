@@ -2,7 +2,7 @@
 
 This page allows users to view a list of public resources, if any, and to look at the detailed metadata of any resource on the list.
 
-image::ipt2/v233/IPTHome.png[]
+image::ipt2/home/IPTHome.png[]
 
 == Public Resources Table
 If there are any public resources, they will appear in a table having the following columns:
