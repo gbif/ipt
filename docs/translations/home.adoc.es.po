@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: 2021-06-28 10:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -30,8 +30,8 @@ msgstr "Esta página permite a los usuarios ver una lista de los recursos públi
 #. type: Target for macro image
 #: en/modules/ROOT/pages/home.adoc:5
 #, no-wrap
-msgid "ipt2/v233/IPTHome.png"
-msgstr "ipt2/v233/IPTHome.png"
+msgid "ipt2/home/IPTHome.png"
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:7
