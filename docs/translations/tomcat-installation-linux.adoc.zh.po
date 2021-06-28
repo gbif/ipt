@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:22\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"PO-Revision-Date: 2021-06-28 09:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -44,6 +44,6 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:11
-msgid "Most Linux users seem not to need any additional advice; if you do please ask on the xref:resources.adoc#_ipt_mailing_list[mailing list]."
+msgid "Most Linux users seem not to need any additional advice; if you do please ask on the xref:resources.adoc#ipt-mailing-list[mailing list]."
 msgstr ""
 
