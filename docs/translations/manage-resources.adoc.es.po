@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-06-28 10:01\n"
+"PO-Revision-Date: 2021-06-28 10:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -123,13 +123,13 @@ msgstr "Tabla Gestión de Recursos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:11
 msgid "When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the xref:home.adoc#public-resource-table[Public Resources Table] section for detailed explanations of the Name, Organization, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:"
-msgstr ""
+msgstr "Cuando la página \"Gestión de Recursos\" se abre por primera vez, muestra una tabla de los recursos existentes que el usuario actual tiene permiso para modificar, incluidos los creados por este usuario y aquellos que este usuario pueda administrar por invitación de otros usuarios. Consulte la información en la sección xref:home.adoc#table-de-recursos-publicos[Tabla de recursos Públicos] para obtener una explicación detallada acerca de las columnas Nombre, Organización, Tipo, Subtipo, Registros, Última modificación, Última publicación y Próxima publicación. Además, la \"Tabla Gestión de Recursos\" incluye las siguientes columnas de información básica sobre los recursos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:13
 #, no-wrap
 msgid "*Visibility* - a category stating who has access to view the resource. If the resource is \"Public\", all users will be able to see it on the xref:home.adoc#public-resource-table[Public Resources Table] on the Home page. If the resource is \"Private\", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the \"Resource Managers\" section under the \"Resource Overview\" heading in the \"Manage Resources\" section.\n"
-msgstr ""
+msgstr "*Visibilidad* - Una categoría que establece quién tiene acceso a la visualización del recurso. Si el recurso es \"Público\", todos los usuarios podrán verlo en la xref:home.adoc#table-de-recursos-publicos[Tabla de recursos Públicos] en la página de Inicio. Si el recurso es \"Privado\", será visible en la \"Tabla Gestión de Recursos\" sólo para el usuario que lo creó, para quienes han sido invitados a administrarlo, y para los usuarios que tienen el rol Gestor. Detalles acerca de cómo invitar a otros a administrar un recurso se encuentran en la sección \"Gestores de Recursos\" bajo el encabezado \"Vista General del Recurso\" en la sección \"Gestión de Recursos\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:14
@@ -166,7 +166,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 100MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the xref:overview.adoc#file-upload[File upload] section to find out how to work around the file upload limit."
-msgstr ""
+msgstr "De igual forma, siempre se puede crear un recurso completamente nuevo sin tener que cargar un recurso existente. Con esta opción, la configuración del recurso tendrá que ser creada en su totalidad a través del IPT, incluyendo la carga de un archivo fuente de datos (limite 100MB) o una base de datos y mapear los nombres de las columnas con la extensión o extensiones apropiadas. *Por favor note que el IPT tiene un límite de carga para archivos de 100MB* sin embargo, *no* existe un límite para el tamaño de los Archivos Darwin Core que pueden ser exportados/publicados en el IPT. Para más información diríjase a la sección xref:overview.adoc#carga-de-archivos[Carga de archivos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
@@ -538,7 +538,7 @@ msgstr "*Contraseña de la Base de datos* - La contraseña utilizada por el usua
 #: en/modules/ROOT/pages/manage-resources.adoc:124
 #, no-wrap
 msgid "*SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example: `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10`. When the statement has been fully tested with the Darwin Core Mappings (see the following section), change the SQL Statement to return the full intended data set.\n"
-msgstr ""
+msgstr "*Sentencia SQL* - La sentencia de Lenguaje de Consulta Estructurado utilizada para leer los datos de la fuente de base de datos. La sentencia se enviará como está, a la base de datos configurada, por lo cual usted puede utilizar cualquier característica local de la base de datos como funciones, agrupación de documentos, límites, o uniones, si están admitidos. Ejemplo: `SELECT * FROM especimenes JOIN taxones ON taxones_fk = taxones.id`. Al momento de probar una fuente de datos de gran tamaño es buena idea incluir el lenguaje apropiado en la sentencia SELECT para limitar el número de filas arrojadas por la consulta - por ejemplo, en MySQL, `SELECT * FROM especimenes JOIN taxones ON taxones_fk = taxones.id LIMIT 10`. Cuando la sentencia ha sido totalmente probada con el enlace de Darwin Core (consulte la siguiente sección), cambie la sentencia SQL para arrojar el conjunto completo de datos previsto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:125
@@ -1260,7 +1260,7 @@ msgstr "*Categoría* - Este cuadro de texto está destinado para la categoría t
 #: en/modules/ROOT/pages/manage-resources.adoc:324
 #, no-wrap
 msgid "*Trash Icon* image:ipt2/controls/Control-TrashIcon.png[] - clicking on this icon will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.\n"
-msgstr ""
+msgstr "*Ícono de Papelera* image:ipt2/controls/Control-TrashIcon.png[] - Al hacer clic en el ícono se eliminarán los datos asociados al taxón (nombre científico, nombre común, y categoría) que se encuentran a la izquierda de ícono de la cobertura taxonómica.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:325
@@ -2044,7 +2044,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:541
 #, no-wrap
 msgid "*Version*: - the version number tracking the major_version.minor_version of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the \"View\" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the \"Preview\" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
-msgstr ""
+msgstr "*Versión*: - El número de seguimiento de la versión_mayor. versión_menor de la versión pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el gestores del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, a la que se le haya reservado un nuevo DOI. Para una descripción detallada de la política de versionamiento del IPT haga clic xref:versioning.adoc[aquí]. En la columna de versión actual, haga clic en el botón “Ver\" para image:ipt2/manage/checkmark.png[width=40,height=40] ver la página principal de la versión actual. Asumiendo que un Archivo Darwin Core ha sido publicado, haga clic en para confirmar que se utilice el https://tools.gbif.org/dwca-validator/[Validador de Archivos Darwin Core]. En la columna de versión pendiente, haga clic en \"Vista previa\" para ver una imagen preliminar de la página principal de la versión pendiente. La página principal preliminar es privada y sólo puede ser vista por el gestor del recurso, lo cual le permite asegurarse de que el recurso está listo para ser publicado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:542
@@ -2111,7 +2111,7 @@ msgstr "Los datos de recursos primarios actuales como fueron configurados a trav
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:556
 msgid "If the IPT's Archival Mode is turned on (see xref:administration.adoc#configure-ipt-settings[Configure IPT settings] section), an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved."
-msgstr ""
+msgstr "Si el Modo Archivo del IPT está activado (ver la sección xref:administration.adoc#configuracion-de-las-opciones-del-ipt[Configuración de las opciones del IPT]), una versión posterior del archivo Darwin Core Archive se guardará, llamada dwca-n.zip."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:557
