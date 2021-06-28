@@ -70,6 +70,7 @@ Most full actions for modifying entities should override the following methods:
 * `prepare()`: load existing values based on "id" parameter and request object.
 * `save()`: persist data AFTER the parameters interceptor did its job.
 * `delete()`: this method is called when a `POST` with a `delete=anything_but_null` parameter is received.
+
 If the `id` given does not exist you can set the `notFound` property to true in any of the above methods. The action will then return a 404 result name.
 
 To do validation, implement the `validate()` method of an action (instead of using XML validation definitions). See `SetupAction.java` as an example. Validation requires an `input` result name that shows the form when the form was not valid. Using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/docs/fielderror.html

@@ -31,7 +31,8 @@ Simple tool for Linux and Windows to convert character encodings of files.
 Examples:
 
 * convert character encodings from Windows-1252 to UTF-8 using http://unixhelp.ed.ac.uk/CGI/man-cgi?iconv[iconv]
-*
+* {blank}
++
 ----
 iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt
 ----

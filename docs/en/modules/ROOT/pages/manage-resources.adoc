@@ -116,7 +116,7 @@ image::ipt2/manage/IPTManageResourceSourceDatabase.png[]
 * *Analyse* - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.
 * *Preview* image:ipt2/manage/preview.png[width=32,height=31] - click on this button to see an interpretation of the data based on the database connection settings on this page.
 * *Database System* - the relational database management system to which the IPT must connect to retrieve the data.
-Host - The database server address, optionally including the non-default port number (e.g., `localhost` or `mysql.example.org:1336`). For ODBC connections, this is not needed.
+* *Host* - The database server address, optionally including the non-default port number (e.g., `localhost` or `mysql.example.org:1336`). For ODBC connections, this is not needed.
 * *Database* - The name of the database in the database management system, or the DSN for an ODBC connection.
 * *Database User* - the name of the database user to use when connecting to the database.
 * *Database Password* - the password for the database user to connect to the database.
