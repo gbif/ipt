@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:22\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"PO-Revision-Date: 2021-06-28 09:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -63,7 +63,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:14
-msgid "This GitHub site is the project repository for all of the open source code, management, and documentation of the IPT."
+msgid "The https://github.org/gbif/ipt[IPT GitHub site] is the project repository for all of the open source code, management, and documentation of the IPT."
 msgstr ""
 
 #. type: Title ==
@@ -107,33 +107,11 @@ msgstr ""
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:26
 #, no-wrap
-msgid "IPT server preparation"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/resources.adoc:28
-msgid "This wiki page gives details about preparing a server to run the IPT and can be found on the IPT project code site wiki xref:server-preparation.adoc[here]."
-msgstr ""
-
-#. type: Title ==
-#: en/modules/ROOT/pages/resources.adoc:29
-#, no-wrap
-msgid "IPT supported databases"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/resources.adoc:31
-msgid "This wiki page gives details about the database management systems to which the IPT can connect for a data source. The page can be found on the IPT project code site xref:database-connection.adoc[here]."
-msgstr ""
-
-#. type: Title ==
-#: en/modules/ROOT/pages/resources.adoc:32
-#, no-wrap
 msgid "IPT test installation"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/resources.adoc:33
+#: en/modules/ROOT/pages/resources.adoc:27
 msgid "GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at https://ipt.gbif.org/."
 msgstr ""
 
