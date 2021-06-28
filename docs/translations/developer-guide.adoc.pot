@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"POT-Creation-Date: 2021-06-28 10:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -260,16 +260,21 @@ msgid "`save()`: persist data AFTER the parameters interceptor did its job."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:74
+#: en/modules/ROOT/pages/developer-guide.adoc:73
 msgid ""
 "`delete()`: this method is called when a `POST` with a "
-"`delete=anything_but_null` parameter is received.  If the `id` given does "
-"not exist you can set the `notFound` property to true in any of the above "
-"methods. The action will then return a 404 result name."
+"`delete=anything_but_null` parameter is received."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:76
+#: en/modules/ROOT/pages/developer-guide.adoc:75
+msgid ""
+"If the `id` given does not exist you can set the `notFound` property to true "
+"in any of the above methods. The action will then return a 404 result name."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/developer-guide.adoc:77
 msgid ""
 "To do validation, implement the `validate()` method of an action (instead of "
 "using XML validation definitions). See `SetupAction.java` as an example. "
@@ -279,116 +284,116 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/developer-guide.adoc:77
+#: en/modules/ROOT/pages/developer-guide.adoc:78
 #, no-wrap
 msgid "HTML Design"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:80
+#: en/modules/ROOT/pages/developer-guide.adoc:81
 msgid ""
 "Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from "
 "using Struts or JSP URL tags!"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:82
+#: en/modules/ROOT/pages/developer-guide.adoc:83
 msgid ""
 "Forms use the `forms.ftl` macros instead of Struts 2 tags, such as the "
 "internationalization `@select` drop downs."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:84
+#: en/modules/ROOT/pages/developer-guide.adoc:85
 msgid ""
 "Buttons use proper buttons or `input@type=submit` (forms) for add, delete, "
 "edit, create actions."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:86
+#: en/modules/ROOT/pages/developer-guide.adoc:87
 msgid "General best practice guides:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:88
+#: en/modules/ROOT/pages/developer-guide.adoc:89
 msgid "http://htmldog.com/articles/formlayout/"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:89
+#: en/modules/ROOT/pages/developer-guide.adoc:90
 msgid "https://www.sherpaglobal.com/top-10-html-form-layout-best-practices/"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/developer-guide.adoc:90
+#: en/modules/ROOT/pages/developer-guide.adoc:91
 #, no-wrap
 msgid "JavaScript"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:93
+#: en/modules/ROOT/pages/developer-guide.adoc:94
 msgid "Only use jQuery (https://jquery.com/) for custom code."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:95
+#: en/modules/ROOT/pages/developer-guide.adoc:96
 msgid ""
 "Use jConfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when "
 "asking for confirmation, e.g. deletes."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:97
+#: en/modules/ROOT/pages/developer-guide.adoc:98
 msgid ""
 "Use jQuery dataTables (https://www.datatables.net/) plugin to enhance HTML "
 "tables with pagination, searching, etc."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/developer-guide.adoc:98
+#: en/modules/ROOT/pages/developer-guide.adoc:99
 #, no-wrap
 msgid "CSS"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:101
+#: en/modules/ROOT/pages/developer-guide.adoc:102
 msgid "https://960.gs/[960 grid system] is used for page layouts."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:103
+#: en/modules/ROOT/pages/developer-guide.adoc:104
 msgid ""
 "Keep number of CSS classes to a minimum and consider using page specific CSS "
 "in `<head><style>` on that page."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/developer-guide.adoc:104
+#: en/modules/ROOT/pages/developer-guide.adoc:105
 #, no-wrap
 msgid "Managers"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:107
+#: en/modules/ROOT/pages/developer-guide.adoc:108
 msgid "2 tier architecture only with interfaces + implementation."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/developer-guide.adoc:108
+#: en/modules/ROOT/pages/developer-guide.adoc:109
 #, no-wrap
 msgid "Internationalization"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:111
+#: en/modules/ROOT/pages/developer-guide.adoc:112
 msgid ""
 "Templates, actions and also important service messages should be localized "
 "using a single `ResourceBundle`."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/developer-guide.adoc:112
+#: en/modules/ROOT/pages/developer-guide.adoc:113
 msgid ""
 "Translated vocabularies can be used to populate select drop downs easily by "
 "calling `getI18nVocab(…)`."
