@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"POT-Creation-Date: 2021-06-28 10:56+0000\n"
+"PO-Revision-Date: 2021-06-28 11:11\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -139,56 +139,63 @@ msgid "Examples:"
 msgstr ""
 
 #. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:34
+msgid "convert character encodings from Windows-1252 to UTF-8 using http://unixhelp.ed.ac.uk/CGI/man-cgi?iconv[iconv]"
+msgstr ""
+
+#. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-msgid "convert character encodings from Windows-1252 to UTF-8 using http://unixhelp.ed.ac.uk/CGI/man-cgi?iconv[iconv] *"
+#: en/modules/ROOT/pages/dwca-guide.adoc:148 en/modules/ROOT/pages/faq.adoc:184
+#: en/modules/ROOT/pages/faq.adoc:194
+msgid "{blank}"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/data-preparation.adoc:37
+#: en/modules/ROOT/pages/data-preparation.adoc:38
 #: en/modules/ROOT/pages/dwca-guide.adoc:225
 #, no-wrap
 msgid "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/data-preparation.adoc:39
+#: en/modules/ROOT/pages/data-preparation.adoc:40
 #, no-wrap
 msgid "Utility: Unix Stream Editor,  SED"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-preparation.adoc:42
+#: en/modules/ROOT/pages/data-preparation.adoc:43
 msgid "A Unix command line tool to manipulate files as streams, thereby allowing to modify very large files without the need to load them into memory first (this is what pretty much all editors apart from few, e.g. vi, do)"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-preparation.adoc:44
+#: en/modules/ROOT/pages/data-preparation.adoc:45
 msgid "http://www.unixguide.net/unix/sedoneliner.shtml"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-preparation.adoc:45
+#: en/modules/ROOT/pages/data-preparation.adoc:46
 msgid "http://www.brunolinux.com/02-The_Terminal/Find_and%20Replace_with_Sed.html"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-preparation.adoc:46
+#: en/modules/ROOT/pages/data-preparation.adoc:47
 msgid "replace in place and create backup copy"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/data-preparation.adoc:49
+#: en/modules/ROOT/pages/data-preparation.adoc:50
 #, no-wrap
 msgid "sed -i.old \"s/\\\\\\\\N//g\" allNames.txt\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-preparation.adoc:52
+#: en/modules/ROOT/pages/data-preparation.adoc:53
 msgid "convert DOS newlines (CR/LF) to Unix format:"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/data-preparation.adoc:55
+#: en/modules/ROOT/pages/data-preparation.adoc:56
 #, no-wrap
 msgid "sed 's/.$//'\n"
 msgstr ""
