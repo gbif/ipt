@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:24\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"PO-Revision-Date: 2021-06-28 09:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -145,7 +145,7 @@ msgstr ""
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/data-preparation.adoc:37
-#: en/modules/ROOT/pages/dwca-guide.adoc:224
+#: en/modules/ROOT/pages/dwca-guide.adoc:225
 #, no-wrap
 msgid "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 msgstr ""
