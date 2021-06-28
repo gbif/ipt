@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-06-28 11:11\n"
+"PO-Revision-Date: 2021-06-28 11:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -478,7 +478,7 @@ msgstr "Base de Datos como fuente de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:106
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given on the xref:database-connection.adoc[Supported Databases] page of the IPT Project wiki. To configure a database as a data source, click on the button labelled \"Connect to DB\" in the left-hand column of the Source Data area of the Resource Overview page. This will open a Source Database detail page."
-msgstr ""
+msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. Una lista de las conexiones de xref:database-connection.adoc[Bases de Datos Soportadas por el IPT] disponible a través del sitio de la wiki del IPT de GBIF en Google Code. Para configurar una base de datos como fuente de datos, haga clic en el botón \"Conectar a BD\" en la columna de la izquierda del área \"Fuente de Datos\" de la página \"Vista General del Recurso\". Esto abrirá una página detallada de Fuente de Base de Datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:108
@@ -512,13 +512,13 @@ msgstr "*Se puede leer* - Este ícono indica si los datos están disponibles usa
 #: en/modules/ROOT/pages/manage-resources.adoc:119
 #, no-wrap
 msgid "*Database System* - the relational database management system to which the IPT must connect to retrieve the data.\n"
-msgstr ""
+msgstr "*Sistema de la Base de Datos* - El sistema de administración de base de datos relacional al que el IPT debe conectarse para recuperar los datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:120
 #, no-wrap
 msgid "*Host* - The database server address, optionally including the non-default port number (e.g., `localhost` or `mysql.example.org:1336`). For ODBC connections, this is not needed.\n"
-msgstr ""
+msgstr "*Host* - La dirección del servidor de la base de datos, que opcionalmente incluye el número de puerto no predeterminado (por ejemplo, `localhost` o `mysql.example.org:1336`). Para las conexiones ODBC, esto no es necesario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:121
@@ -2392,7 +2392,7 @@ msgstr "Asegúrese que la visibilidad del *recurso IPT* es público y NO registr
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:642
 msgid "Determine the owning organization of the *existing registered resource*, and ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the section \"Add Organization\"."
-msgstr "Determine la organización propietaria del recurso registrado existente, y asegúrese que esta ha sido adicionada al IPT como una organización y que está configurada para publicar conjuntos de datos. Para realizar esto, por favor refiérase a la sección \"Adicionar una Organización\"."
+msgstr "Determine la organización propietaria del *recurso registrado existente*, y asegúrese que esta ha sido adicionada al IPT como una organización y que está configurada para publicar conjuntos de datos. Para realizar esto, por favor refiérase a la sección \"Adicionar una Organización\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:643
