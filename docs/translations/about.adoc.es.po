@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 15:16+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: 2021-06-28 10:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -30,8 +30,8 @@ msgstr "La página \"Acerca de\", predeterminadamente muestra información sobre
 #. type: Target for macro image
 #: en/modules/ROOT/pages/about.adoc:5
 #, no-wrap
-msgid "ipt2/v22/IPTAbout.png"
-msgstr "ipt2/v22/IPTAbout.png"
+msgid "ipt2/about/IPTAbout.png"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/about.adoc:8
