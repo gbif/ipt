@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: 2021-06-28 10:02\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -148,7 +148,7 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:46
-#: en/modules/ROOT/pages/manage-resources.adoc:249
+#: en/modules/ROOT/pages/manage-resources.adoc:248
 #, no-wrap
 msgid "Basic Metadata"
 msgstr "基本元數據"
@@ -157,7 +157,7 @@ msgstr "基本元數據"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:47
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:141
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:261
-#: en/modules/ROOT/pages/manage-resources.adoc:292
+#: en/modules/ROOT/pages/manage-resources.adoc:291
 #, no-wrap
 msgid "Geographic Coverage"
 msgstr "地理涵蓋範圍"
@@ -166,7 +166,7 @@ msgstr "地理涵蓋範圍"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:140
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:243
-#: en/modules/ROOT/pages/manage-resources.adoc:303
+#: en/modules/ROOT/pages/manage-resources.adoc:302
 #, no-wrap
 msgid "Taxonomic Coverage"
 msgstr "分類群涵蓋範圍"
@@ -175,7 +175,7 @@ msgstr "分類群涵蓋範圍"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:142
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:279
-#: en/modules/ROOT/pages/manage-resources.adoc:327
+#: en/modules/ROOT/pages/manage-resources.adoc:326
 #, no-wrap
 msgid "Temporal Coverage"
 msgstr "時間涵蓋範圍"
@@ -187,35 +187,35 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:51
-#: en/modules/ROOT/pages/manage-resources.adoc:366
+#: en/modules/ROOT/pages/manage-resources.adoc:365
 #, no-wrap
 msgid "Associated Parties"
 msgstr "相關團體"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
-#: en/modules/ROOT/pages/manage-resources.adoc:377
+#: en/modules/ROOT/pages/manage-resources.adoc:376
 #, no-wrap
 msgid "Project Data"
 msgstr "計劃資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:396
+#: en/modules/ROOT/pages/manage-resources.adoc:395
 #, no-wrap
 msgid "Sampling Methods"
 msgstr "取樣方法"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
-#: en/modules/ROOT/pages/manage-resources.adoc:409
+#: en/modules/ROOT/pages/manage-resources.adoc:408
 #, no-wrap
 msgid "Citations"
 msgstr "引用文獻"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
-#: en/modules/ROOT/pages/manage-resources.adoc:437
+#: en/modules/ROOT/pages/manage-resources.adoc:436
 #, no-wrap
 msgid "Collection Data"
 msgstr "採集、蒐藏資料"
@@ -227,7 +227,7 @@ msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:57
-#: en/modules/ROOT/pages/manage-resources.adoc:488
+#: en/modules/ROOT/pages/manage-resources.adoc:487
 #, no-wrap
 msgid "Additional Metadata"
 msgstr "其他元數據"
