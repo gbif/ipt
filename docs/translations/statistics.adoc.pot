@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/statistics.adoc:4
-msgid "_Last updated 7 December, 2017._"
+msgid "_Last updated 7 December 2017._"
 msgstr ""
 
 #. type: Plain text
@@ -115,7 +115,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/statistics.adoc:25
-msgid "As of December 7, 2017..."
+msgid "As of 7 December 2017..."
 msgstr ""
 
 #. type: Plain text
@@ -164,7 +164,7 @@ msgstr ""
 #: en/modules/ROOT/pages/statistics.adoc:47
 #: en/modules/ROOT/pages/statistics.adoc:59
 #: en/modules/ROOT/pages/statistics.adoc:68
-#: en/modules/ROOT/pages/statistics.adoc:78
+#: en/modules/ROOT/pages/statistics.adoc:79
 msgid "Highlights:"
 msgstr ""
 
@@ -303,26 +303,26 @@ msgid "Number of countries IPTs are installed in"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/statistics.adoc:79
+#: en/modules/ROOT/pages/statistics.adoc:81
 #, no-wrap
 msgid "*10%* increase over last year (57 countries now have at least 1 IPT)\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/statistics.adoc:80
+#: en/modules/ROOT/pages/statistics.adoc:82
 #, no-wrap
 msgid "*26%* increase over last 3 years\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/statistics.adoc:81
+#: en/modules/ROOT/pages/statistics.adoc:83
 #, no-wrap
 msgid "stats/dec17/Countries.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/statistics.adoc:83
+#: en/modules/ROOT/pages/statistics.adoc:85
 msgid ""
-"_Note all statistics are managed in and generated from this hlink:"
+"_Note all statistics are managed in and generated from this link:"
 "{attachmentsdir}/stats/IPT-Stats.xlsx[Excel file]_"
 msgstr ""

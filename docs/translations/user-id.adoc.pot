@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 15:16+0000\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,17 +61,17 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:8
-msgid "http://orcid.org/ (ORCID)"
+msgid "https://orcid.org/ (ORCID)"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:9
-msgid "http://www.researcherid.com/rid/ (ResearcherID)"
+msgid "https://www.researcherid.com/rid/ (ResearcherID)"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:10
-msgid "http://scholar.google.com/citations?user= (Google Scholar)"
+msgid "https://scholar.google.com/citations?user= (Google Scholar)"
 msgstr ""
 
 #. type: Plain text
@@ -89,12 +89,12 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:15
-msgid "http://orcid.org/0000-0002-1825-0097"
+msgid "https://orcid.org/0000-0002-1825-0097"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:16
-msgid "http://www.researcherid.com/rid/A-1009-2008"
+msgid "https://www.researcherid.com/rid/A-1009-2008"
 msgstr ""
 
 #. type: Plain text
@@ -124,8 +124,8 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/user-id.adoc:26
 msgid ""
-"Locate the UserDirectories.properties file e.g. /tomcat7/webapps/ipt/WEB-INF/"
-"classes/org/gbif/metadata/eml/licenses.properties. Open the file in a text "
+"Locate the UserDirectories.properties file e.g. `tomcat7/webapps/ipt/WEB-INF/"
+"classes/org/gbif/metadata/eml/licenses.properties`. Open the file in a text "
 "editor, and do the following:"
 msgstr ""
 

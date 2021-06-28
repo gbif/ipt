@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,7 +76,7 @@ msgstr ""
 msgid ""
 "Alternatively if your metadata is already in EML or Dublin Core, you can "
 "upload it in these formats to the IPT. Guidance on how to do that can be "
-"found 123-manage-resources#_upload-a-metadata-file[here]."
+"found 123-manage-resources#upload-a-metadata-file[here]."
 msgstr ""
 
 #. type: Plain text
@@ -195,7 +195,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:50
 #, no-wrap
-msgid "*A.* Simply use the IPT's built-in metadata editor following xref:applying-license.adoc#_dataset_level[these instructions].\n"
+msgid "*A.* Simply use the IPT's built-in metadata editor following xref:applying-license.adoc#dataset-level[these instructions].\n"
 msgstr ""
 
 #. type: Plain text
@@ -203,7 +203,7 @@ msgstr ""
 msgid ""
 "Alternatively if your metadata is already in EML you should assign the "
 "dataset a machine readable license before uploading it to the IPT following "
-"xref:applying-license.adoc#_supplementary_information[these instructions]."
+"xref:applying-license.adoc#supplementary-information[these instructions]."
 msgstr ""
 
 #. type: Title ===
@@ -234,7 +234,7 @@ msgstr ""
 #: en/modules/ROOT/pages/resource-metadata.adoc:62
 msgid ""
 "Citation DOI (remember to turn on citation xref:manage-resources."
-"adoc#_citations[auto-generation], to ensure your dataset's citation complies "
+"adoc#citations[auto-generation], to ensure your dataset's citation complies "
 "with the xref:citation.adoc[best-practice format])."
 msgstr ""
 

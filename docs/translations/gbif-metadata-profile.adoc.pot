@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,6 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
@@ -67,7 +66,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:4
-msgid "Version 2.0."
+msgid "Version 2.1."
 msgstr ""
 
 #. type: Target for macro image
@@ -81,7 +80,8 @@ msgstr ""
 msgid ""
 "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, "
 "Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information "
-"Facility ISBN: 87-92020-24-0, accessible online at: #TODO#"
+"Facility ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/"
+"manual/en/ipt/{manual-version}/gbif-metadata-profile"
 msgstr ""
 
 #. type: Plain text
@@ -277,7 +277,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:59
 msgid ""
-"The xref:manage-resources.adoc#_metadata[IPT User Manual] goes through each "
+"The xref:manage-resources.adoc#metadata[IPT User Manual] goes through each "
 "form and its respective fields in some depth. The form provides help "
 "dialogues to aid the user in understanding what an element means (Figure 1)."
 msgstr ""
