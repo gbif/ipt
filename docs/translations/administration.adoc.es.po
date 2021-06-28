@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-06-28 10:02\n"
+"PO-Revision-Date: 2021-06-28 10:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -274,7 +274,7 @@ msgstr "Igualmente, la instalación del IPT siempre debe tener al menos un usuar
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:72
 msgid "Each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under xref:manage-resources.adoc#resource-managers[Resource Managers] to see how new managers can be assigned."
-msgstr ""
+msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que tenga el rol Administrador o uno de los otros roles de Administrador, de tal forma que el último Gestor de un recurso no pueda ser eliminado. Para eliminar aquel usuario, primero se debe asociar otro usuario que tenga uno de los roles de Gestor, con el recurso al cual el usuario desea eliminarle el último gestor del mismo. Para saber cómo pueden ser asignados los nuevos gestores, consulte la información de xref:manage-resources.adoc#gestores-del-recurso[Gestores del recurso]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:73
@@ -290,7 +290,7 @@ msgstr "Configurar Opciones para el Registro GBIF"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:76
 msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
-msgstr ""
+msgstr "Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección \"Menú Administración\") o publicarlo (véase la sección xref:manage-resources.adoc#versiones-publicadas[Versiones Publicadas]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página <<Editar Registro GBIF>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:78
