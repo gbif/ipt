@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"POT-Creation-Date: 2021-06-28 10:56+0000\n"
+"PO-Revision-Date: 2021-06-28 11:11\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -50,8 +50,15 @@ msgstr ""
 msgid "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
 msgstr ""
 
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:35
+#: en/modules/ROOT/pages/dwca-guide.adoc:148 en/modules/ROOT/pages/faq.adoc:184
+#: en/modules/ROOT/pages/faq.adoc:194
+msgid "{blank}"
+msgstr ""
+
 #. type: delimited block -
-#: en/modules/ROOT/pages/data-preparation.adoc:37
+#: en/modules/ROOT/pages/data-preparation.adoc:38
 #: en/modules/ROOT/pages/dwca-guide.adoc:225
 #, no-wrap
 msgid "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
@@ -474,12 +481,6 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:147
 msgid "Create it manually by using an XML editor and using a sample metafile as a guiding example. A complete description of the metafile format can be found in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core Text Guide]."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/dwca-guide.adoc:148 en/modules/ROOT/pages/faq.adoc:184
-#: en/modules/ROOT/pages/faq.adoc:194
-msgid "{blank}"
 msgstr ""
 
 #. type: Target for macro image

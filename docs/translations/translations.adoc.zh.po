@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"POT-Creation-Date: 2021-06-28 10:56+0000\n"
+"PO-Revision-Date: 2021-06-28 11:11\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -220,21 +220,42 @@ msgstr ""
 #. type: Title ===
 #: en/modules/ROOT/pages/translations.adoc:81
 #, no-wrap
-msgid "Languages"
+msgid "Images and downloads"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:84
+msgid "Some screenshot images can be translated, and others (without any English text) can be the same across all languages.  The default is for the same image to be used in all languages.  A different image must be uploaded in https://github.com/gbif/ipt[GitHub].  Create an image with the same filename and path, except with `en` changed to the target languag."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/translations.adoc:86
+msgid "For example, the default (English) image shown on the xref:home.adoc[home menu page] is stored in GitHub at https://github.com/gbif/ipt/blob/master/docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png`], and its Spanish translation is at https://github.com/gbif/ipt/blob/master/docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png`]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/translations.adoc:88
+msgid "The syntax to include this image in the manual, `\\image::ipt2/home/IPTHome.png[]`, does not require translation."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/translations.adoc:89
+#, no-wrap
+msgid "Languages"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/translations.adoc:92
 msgid "Spanish (partial)"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:85
+#: en/modules/ROOT/pages/translations.adoc:93
 msgid "Traditional Chinese (started)"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:87
+#: en/modules/ROOT/pages/translations.adoc:94
 msgid "If you want to translate the user interface into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English."
 msgstr ""
 
