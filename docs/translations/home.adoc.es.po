@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-06-28 10:01\n"
+"PO-Revision-Date: 2021-06-28 10:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/home.adoc:1
 #, no-wrap
 msgid "Home Menu"
-msgstr ""
+msgstr "Menú Inicio"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:4
@@ -66,13 +66,13 @@ msgstr "*Organización* - La organización bajo la cual el recurso ha sido regis
 #: en/modules/ROOT/pages/home.adoc:14
 #, no-wrap
 msgid "**Type** - the type of the resource as given in the Type drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata\n"
-msgstr ""
+msgstr "*Tipo* - El tipo de recurso como figura en la lista desplegable de Tipo en la página xref:manage-resources.adoc#metadatos-basicos[Metadatos Básicos] de los metadatos del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:15
 #, no-wrap
 msgid "**Subtype** - the subtype of the resource as given in the Subtype drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata\n"
-msgstr ""
+msgstr "*Subtype* - El subtipo del recurso como figura en la lista desplegable de Subtipo en la página xref:manage-resources.adoc#metadatos-basicos[Metadatos Básicos] de los metadatos del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:16
@@ -156,7 +156,7 @@ msgstr "Página de historial de versiones"
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:37
 msgid "The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DwC-A to be stored (see the xref:administration.adoc#configure-ipt-settings[Configure IPT Settings] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below."
-msgstr ""
+msgstr "La tabla del historial de versiones muestra todas las versiones de un recurso que han sido publicadas, permitiéndole a los usuarios hacer el seguimiento de los cambios en el recurso a lo largo del tiempo y descargar las versiones previas de datos/metadatos. Tenga en cuenta que el Modo Archivo del IPT debe estar activado para que las versiones anteriores del DWCA sean guardadas (véase la sección xref:administration.adoc#configuracion-de-las-opciones-del-ipt[Configuración de las opciones del IPT]). Solo las versiones con acceso al público pueden ser vistas por usuarios externos, mientras que los gestores del recurso podrán ver todas las versiones. A continuación encontrará más información acerca de las columnas de la tabla."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/home.adoc:38
