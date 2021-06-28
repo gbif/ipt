@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"PO-Revision-Date: 2021-06-28 10:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -194,12 +194,12 @@ msgstr "Carga de archivos"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:62
 msgid "Files can be uploaded in the IPT during two actions: when xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files]."
-msgstr ""
+msgstr "La carga de archivos al IPT se puede hacer por medio de dos acciones: xref:manage-resources.adoc#_creando_un_nuevo_recurso[creando un nuevo recurso], o cuando se xref:manage-resources.adoc#conjuntos-de-datos[agregan nuevos archivos de conjuntos de datos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:64
 msgid "image:ipt2/controls/Control-UploadCreateResource.png[width=238]"
-msgstr "image:ipt2/controls/Control-UploadCreateResource.png[width=238]image:ipt2/controls/Control-UploadCreateResource.png[width=238]"
+msgstr "image:ipt2/controls/Control-UploadCreateResource.png[width=238]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:66
