@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: 2021-06-28 10:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -53,8 +53,8 @@ msgstr "Esta página permite a los usuarios con el rol Administrador, realizar y
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:12
 #, no-wrap
-msgid "ipt2/administration/IPTAdminConfigIPT2.png"
-msgstr "ipt2/administration/IPTAdminConfigIPT2.png"
+msgid "ipt2/administration/IPTAdminConfigIPT.png"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:15
@@ -153,8 +153,8 @@ msgstr "Esta página permite al usuario con rol Administrador, crear, modificar 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:42
 #, no-wrap
-msgid "ipt2/v22/IPTAdminUserAccounts.png"
-msgstr "ipt2/v22/IPTAdminUserAccounts.png"
+msgid "ipt2/administration/IPTAdminUserAccounts.png"
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:44
@@ -340,8 +340,8 @@ msgstr "Si el IPT pasa la etapa de validación mencionada anteriormente, aparece
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:90
 #, no-wrap
-msgid "ipt2/v22/IPTAdminRegistrationStep2.png"
-msgstr "ipt2/v22/IPTAdminRegistrationStep2.png"
+msgid "ipt2/administration/IPTAdminRegistrationStep2.png"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:93
@@ -451,8 +451,8 @@ msgstr "Un IPT capaz de asignar DOIs a los recursos, para esto debe tener las or
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:116
 #, no-wrap
-msgid "ipt2/v22/IPTAdminOrgs.png"
-msgstr "ipt2/v22/IPTAdminOrgs.png"
+msgid "ipt2/administration/IPTAdminOrgs.png"
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:118
@@ -611,8 +611,8 @@ msgstr "Para propiedades que tienen vocabularios controlados, la información so
 #: en/modules/ROOT/pages/administration.adoc:162
 #: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
-msgid "ipt2/v23/IPTAdminExtensionsDetailVocabulary.png"
-msgstr "ipt2/v23/IPTAdminExtensionsDetailVocabulary.png"
+msgid "ipt2/administration/IPTAdminExtensionsDetailVocabulary.png"
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:164
@@ -650,8 +650,8 @@ msgstr "Cualquiera de las extensiones que ya haya sido instalada en el IPT, y qu
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:175
 #, no-wrap
-msgid "ipt2/v23/IPTAdminExtensionsUpdate.png"
-msgstr "ipt2/v23/IPTAdminExtensionsUpdate.png"
+msgid "ipt2/administration/IPTAdminExtensionsUpdate.png"
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:177
