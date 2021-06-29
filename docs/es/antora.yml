@@ -1,0 +1,11 @@
+name: ipt
+title: IPT
+version: 2.3
+start_page: ROOT:index.adoc
+nav:
+  - modules/ROOT/nav.adoc
+asciidoc:
+  attributes:
+    latest-manual: "https://ipt.gbif.org/manual/es/ipt/2.5/"
+    idprefix: '@'
+    idseparator: '-@'

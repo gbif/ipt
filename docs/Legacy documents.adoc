@@ -1,0 +1,9 @@
+= Legacy IPT manual: versions 2.4 (English) and 2.3 (Spanish)
+
+These IPT user manuals were converted from the GitHub wiki.  The final
+English version was for 2.4, and the final Spanish version 2.3.
+
+The Spanish version is not translated using Crowdin, so any edits can
+be made to the AsciiDoctor files directly.  It is also only a partial
+manual, without the untranslated English pages – similar to how the
+wiki was structured.
