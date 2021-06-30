@@ -1,8 +1,4 @@
 // A link to index.adoc is included automatically.
-* xref:news.adoc[]
-** xref:release-notes.adoc[]
-** xref:releases.adoc[Release History]
-//** xref:statistics.adoc[]
 * xref:introduction.adoc[]
 * xref:getting-started.adoc[]
 ** xref:requirements.adoc[]
@@ -16,6 +12,9 @@
 * xref:manage-resources.adoc[]
 * xref:administration.adoc[]
 * xref:about.adoc[]
+* xref:releases.adoc[]
+* xref:release-notes.adoc[]
+//** xref:statistics.adoc[]
 * xref:how-to-publish.adoc[]
 ** xref:resource-metadata.adoc[]
 ** xref:checklist-data.adoc[]

@@ -1,18 +1,37 @@
-= Release History
+= Releases
 
-// When updating this page, remember to update news.adoc with the newest release.
+[TIP]
+.Latest stable release
+====
+The current, stable release is version <<2-4-2-september-2020,2.4.2>>.
 
-== *2.5.0-RC1* – June 2021
+You are reading the manual for version 2.5.0-RC1.  You might prefer to read the manual for xref:2.4@releases.adoc[version 2.4].
+====
+
+== *2.5.0* – Expected in August 2021
+
+Version 2.5.0 of the IPT is expected to be released in August 2021.  In preparation for this, a _release candidate_ version 2.5.0-RC1 is now available, alongside this version 2.5 user manual.
+
+CAUTION: This is a *release candidate* made available for testing.  *It is not suitable for production use.*
 
 * https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0-RC1/ipt-2.5.0-RC1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.5.0 Release Notes]
 * xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/27?closed=1[#TODO 63+ issues so far#].
+* Addressed https://github.com/gbif/ipt/milestone/27?closed=1[63 issues].
 * Translated into 7 languages
 
-#Release candidate# version 2.5.0-RC1.
-//Users should plan to upgrade to
-Users may test this pre-release version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].
+Users may install this pre-release version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].
+
+This version addresses 63 issues including the famous "double log in bug" and brings in a fresher looking user interface. There are 7 further issues that we will address before the final release.
+
+Users of the IPT are encouraged to explore functions they are familiar with and run any applicable security tests.
+
+Translators are requested to update any missing UI translations and (optionally) begin translation of this user manual.  Please see the xref:translations.adoc[translations page].
+
+//No release date has been set yet for the next release.
+//Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+//Minor issues and security issues will be addressed in patch releases.
 
 == *2.4.2* – September 2020
 
