@@ -158,35 +158,10 @@ You will need a DNS name for the server ("`ipt.example.org`") and the firewall t
 
 Many people use Apache HTTPD as a reverse proxy, often to provide HTTPS access or to allow sharing other websites on the same server.
 
-The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths https://ipt.gbif.org/media/[`/media`] and https://ipt.gbif.org/icons/[`/icons`] are excluded from being passed to the IPT, to allow hosting static image files (e.g. occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/.
+The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths https://ipt.gbif.org/media/[`/media`] and https://ipt.gbif.org/icons/[`/icons`] are excluded from being passed to the IPT, to allow hosting static image files (such as occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/.
 
+// The Apache configuration example is in a separate file so the translation system can ignore it.
 [source,apache]
 ----
-<VirtualHost *:80>
-        ServerName                 ipt.gbif.org
-        CustomLog                  logs/ipt-80_log combined
-
-        Redirect                   / https://ipt.gbif.org/
-</VirtualHost>
-
-<VirtualHost *:443>
-        ServerName                 ipt.gbif.org
-        ErrorLog                   logs/ipt-443_error
-        CustomLog                  logs/ipt-443_log combined
-
-        DocumentRoot               /var/www/html/ipt
-
-        Options                    +Indexes
-        AddDefaultCharset          UTF-8
-
-        ProxyPreserveHost          On
-        ProxyPass                  /icons !
-        ProxyPass                  /media !
-        ProxyPass                  / http://localhost:8080/ipt/
-        ProxyPassReverse           / http://localhost:8080/ipt/
-        ProxyPassReverseCookiePath /ipt /
-
-        SSLEngine                  On
-        # Other SSL configuration (certificates etc)
-</VirtualHost>
+include::partial$apache-configuration-example.conf[]
 ----
