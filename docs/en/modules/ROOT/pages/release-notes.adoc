@@ -8,7 +8,7 @@
 
 === A. Performing the upgrade
 
-WARNING: Be sure to backup the IPT data directory before performing an upgrade. As per the xref:data-hosting-centres.adoc#_data_hosting_centre_criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
+WARNING: Be sure to backup the IPT data directory before performing an upgrade. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
 
 CAUTION: Once an IPT has been upgraded to 2.3.x from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
@@ -36,8 +36,8 @@ Additionally, the IPT administrator should update all installed cores and extens
 === C. New Features / Other
 
 * IPT 2.3.x shows record counts for all files in the DwC-A inside a bar graph on the "Data Records" section of the resource homepage. Note: for the bar graph to appear, resource managers must republish the resource using IPT 2.3.x.
-* IPT 2.3.x supports publishing sample-based datasets (datasets pertaining to a sampling event). Sample-based datasets use the new Darwin Core Event core, installed by default in new installations. Note: IPT administrators upgrading to IPT 2.3.x from 2.2 or earlier need to install this new core. Please see these xref:128-administration#_install_extension[instructions] for help installing a new core.
-* IPT 2.3.x supports versionable IPT extensions, making it possible to update to newer versions whenever they become available. To understand how this works, refer to the xref:128-administration#_update_extension[Update Extension] section of the IPT User Manual.
+* IPT 2.3.x supports publishing sample-based datasets (datasets pertaining to a sampling event). Sample-based datasets use the new Darwin Core Event core, installed by default in new installations. Note: IPT administrators upgrading to IPT 2.3.x from 2.2 or earlier need to install this new core. Please see these xref:administration.adoc#install-extension[instructions] for help installing a new core.
+* IPT 2.3.x supports versionable IPT extensions, making it possible to update to newer versions whenever they become available. To understand how this works, refer to the xref:administration.adoc#update-extension[Update Extension] section of the IPT User Manual.
 * IPT 2.3.x can be installed without an organisation both in production and in test mode. Previously in version 2.2, the IPT had to be installed with an organisation in order to publish datasets because the publishing organisation became a mandatory metadata field. For more information about this change, refer to https://github.com/gbif/ipt/issues/1179[issue 1179].
 * IPT 2.3.x includes a slightly redesigned mapping page, making it easier to map your source data.
 

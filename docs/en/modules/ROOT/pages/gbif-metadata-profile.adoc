@@ -55,7 +55,7 @@ In total, the IPT has 12 different metadata forms that logically organise metada
 11. Physical Data
 12. Additional Metadata
 
-The xref:manage-resources.adoc#_metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogs to aid the user in understanding what an element means (Figure 1).
+The xref:manage-resources.adoc#metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogs to aid the user in understanding what an element means (Figure 1).
 
 .Sreenshot of a help dialog for the term “Personnel Identifier
 image::figures/ipt_help_dialog.png[]

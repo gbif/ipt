@@ -4,7 +4,7 @@
 
 * https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.4.2/ipt-2.4.2.war[Download]
 * xref:release-notes.adoc[IPT v2.4.2 Release Notes]
-* xref:index.adoc[User Manual] xref:es/index.adoc[(es)]
+* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/9?closed=1[19 issues].
 * Translated into 7 languages
 
@@ -13,7 +13,7 @@ Version 2.4.2 fixes a minor security vulnerability in Apache Struts, which the I
 == *2.4.1* – September 2020
 
 * xref:release-notes.adoc[IPT v2.4.1 Release Notes]
-* xref:index.adoc[User Manual] xref:es/index.adoc[(es)]
+* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/25?closed=1[19 issues].
 * Translated into 7 languages
 
@@ -22,7 +22,7 @@ Version 2.4.1 fixes a security vulnerability in Apache Struts, which the IPT use
 == *2.4.0* – July 2019
 
 * xref:release-notes.adoc[IPT v2.4.0 Release Notes]
-* xref:index.adoc[User Manual] xref:es/index.adoc[(es)]
+* xref:index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/8?closed=1[19 issues].
 * Translated into 7 languages
 
@@ -31,7 +31,7 @@ Version 2.4.0 fixes security vulnerabilities in Apache Jackson and Apache Struts
 == *2.3.6* – July 2018
 
 * xref:release-notes.adoc[IPT v2.3.6 Release Notes]
-* xref:index.adoc[User Manual] xref:es/index.adoc[(es)]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] https://ipt.gbif.org/manual/es/ipt/2.3/[(es)]
 * Addressed https://github.com/gbif/ipt/issues?q=is%3Aissue+milestone%3A2.3.6+is%3Aclosed[19 issues].
 * Translated into 7 languages
 
@@ -42,7 +42,7 @@ https://github.com/gbif/ipt/issues/1411[An issue] remains with custom DOIs from 
 == *2.3.5* – October 2017
 
 * xref:release-notes.adoc[IPT v2.3.5 Release Notes]
-* xref:index.adoc[User Manual] xref:es/index.adoc[(es)]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] https://ipt.gbif.org/manual/es/ipt/2.3/[(es)]
 * Addressed https://github.com/gbif/ipt/projects/3[27 issues]: 6 Defects, 7 Enhancements and 15 Other
 * Translated into 7 languages
 
@@ -51,7 +51,7 @@ Version 2.3.4 fixes a https://struts.apache.org/docs/s2-045.html[security vulner
 == *2.3.4* – March 2017
 
 * xref:release-notes.adoc[IPT v2.3.4 Release Notes]
-* xref:index.adoc[User Manual] xref:es/index.adoc[(es)]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] https://ipt.gbif.org/manual/es/ipt/2.3/[(es)]
 * Addressed https://github.com/gbif/ipt/projects/3[6 issues]: 3 Defects, 2 Enhancements and 1 Other
 * Translated into 7 languages
 
@@ -60,7 +60,7 @@ Version 2.3.4 fixes a https://struts.apache.org/docs/s2-045.html[security vulner
 == *2.3.3* – December 2016
 
 * xref:release-notes.adoc[IPT v2.3.3 Release Notes]
-* xref:index.adoc[User Manual] xref:es/index.adoc[(es)]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] https://ipt.gbif.org/manual/es/ipt/2.3/[(es)]
 * Addressed https://github.com/gbif/ipt/projects/1[88 issues]: 22 Defects, 17 Enhancements, 36 Won’t fix, 10 Duplicates, and 3 Other
 * Translated into 7 languages
 
@@ -69,14 +69,14 @@ A description of the exciting new features added to the IPT in version 2.3.3 are
 == *2.3* – September 2015
 
 * xref:ipt-release-notes-2_3.adoc[IPT v2.3 Release Notes]
-* https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] xref:es/index.adoc[(es)]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] https://ipt.gbif.org/manual/es/ipt/2.3/[(es)]
 * Addressed https://github.com/gbif/ipt/issues?q=is%3Aissue+label%3AMilestone-Release2.3[38 issues]: 15 Defects, 15 Enhancements, 4 Won’t fix, and 4 that were considered as Tasks
 * Translated into 6 languages
 
 == *2.2* – March 2015
 
 * xref:ipt-release-notes-2_2.adoc[IPT v2.2 Release Notes]
-* https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[User Manual] xref:es/index.adoc[(es)]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[User Manual]
 * http://gbif.blogspot.com/2015/03/ipt-v22.html[Release Announcement]
 * Addressed https://github.com/gbif/ipt/issues?q=label%3AMilestone-Release2.2[74 issues]: 20 Defects, 26 Enhancements, 16 Won’t fix, 6 Duplicates, 2 Other, 1 Task, and 3 that were considered as Invalid
 * Translated into 6 languages

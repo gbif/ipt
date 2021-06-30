@@ -62,7 +62,7 @@ image:ipt2/Control-TableSortedDescending.png[]
 
 ==== File upload
 
-Files can be uploaded in the IPT during two actions: when xref:manage-resources.adoc#_create_a_new_resource[creating a new resource], or when xref:manage-resources.adoc#_source_data[adding new source data files].
+Files can be uploaded in the IPT during two actions: when xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files].
 
 image:ipt2/v22/Control-UploadCreateResource.png[]
 
@@ -116,8 +116,8 @@ If there are any public resources, they will appear in a table having the follow
 * **Logo** - the resource logo (configurable in Additional Metadata page of the resource metadata)
 * **Name** - the title of the resource as given in the Title entry of the resource metadata. The Name appears as a link, which will open the resource's homepage (see below).
 * **Organisation** - the organisation under which the resource has been registered, if any. If the resource is not registered, the value in the Organisation column will be "Not registered". Review the information under the "Organisations" heading in the "Administration Menu" section for more information about registering organisations and registering a resource under an organisation.
-* **Type** - the type of the resource as given in the Type drop down on the xref:manage-resources.adoc#_basic_metadata[Basic Metadata] page of the resource metadata
-* **Subtype** - the subtype of the resource as given in the Subtype drop down on the xref:manage-resources.adoc#_basic_metadata[Basic Metadata] page of the resource metadata
+* **Type** - the type of the resource as given in the Type drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata
+* **Subtype** - the subtype of the resource as given in the Subtype drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata
 * **Records** - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource. For resources having data in one or more extension files, the number links to the Data Records page on the resource homepage showing a breakdown of record counts by extension.
 * **Last modified** - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.
 * **Last publication** - the date the resource was last published.
@@ -139,7 +139,7 @@ Please note only a user having the Admin role or one of the Manager roles can ed
 image::ipt2/v22/IPTHomeMetadataOverview.png[]
 
 ==== Version history
-The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see the xref:administration.adoc#_configure_ipt_settings[Configure IPT Settings] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.
+The version history table lists all published versions of the resource, enabling users to track changes to the resource over time and download previous versions' data/metadata. Please note, the IPT's Archival Mode must be turned on in order for old versions of DWCA to be stored (see the xref:administration.adoc#configure-ipt-settings[Configure IPT Settings] section). Only versions that are publicly accessible can be viewed by external users, whereas admins and resource managers can see all versions. For explanations of the table columns, refer to the information below.
 
 image::ipt2/v22/IPTVersionHistoryTable.png[]
 

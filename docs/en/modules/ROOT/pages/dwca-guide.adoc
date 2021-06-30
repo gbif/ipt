@@ -116,7 +116,7 @@ Otherwise if want to setup your own instance of the IPT the xref:getting-started
 
 The IPT can be used to publish resource metadata, occurrence data, checklist data, and sampling-event data. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so.
 
-The IPT outputs a DwC-A during publishing and supports automatic registration in the GBIF network. See the xref:manage-resources.adoc#_visibility[IPT User Manual] for further details.
+The IPT outputs a DwC-A during publishing and supports automatic registration in the GBIF network. See the xref:manage-resources.adoc#visibility[IPT User Manual] for further details.
 
 === Publishing DwC-A using GBIF Spreadsheet Templates
 
@@ -124,9 +124,9 @@ The IPT outputs a DwC-A during publishing and supports automatic registration in
 
 GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing occurrence data, checklist data, and sampling-event data:
 
-. xref:checklist-data.adoc#_templates[Checklist data template]: suitable for basic species checklists
-. xref:occurrence-data.adoc#_templates[Occurrence data template]: suitable for occurrence data (specimen, observation)
-. xref:sampling-event-data.adoc#_templates[Sampling-event data template]: suitable for sampling-event data
+. xref:checklist-data.adoc#templates[Checklist data template]: suitable for basic species checklists
+. xref:occurrence-data.adoc#templates[Occurrence data template]: suitable for occurrence data (specimen, observation)
+. xref:sampling-event-data.adoc#templates[Sampling-event data template]: suitable for sampling-event data
 //.  Resource metadata template: suitable for composing a metadata document - pending but imminent
 
 Each template provides inline help and instructions in the worksheets.
@@ -202,10 +202,10 @@ Advanced users can request permission to register datasets in bulk, by integrati
 
 The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:
 
-. Checklist data: xref:checklist-data.adoc#_required_dwc_fields[required terms] / xref:checklist-data.adoc#_recommended_dwc_fields[recommended terms]
-. Occurrence data: xref:occurrence-data.adoc#_required_dwc_fields[required terms] / xref:occurrence-data.adoc#_recommended_dwc_fields[recommended terms]
-. Sampling-event data: xref:sampling-event-data.adoc#_required_dwc_fields[required terms] / xref:sampling-event-data.adoc#_recommended_dwc_fields[recommended terms]
-. Resource metadata: xref:resource-metadata.adoc#_required_dwc_fields[required terms] / xref:resource-metadata.adoc#_recommended_dwc_fields[recommended terms]
+. Checklist data: xref:checklist-data.adoc#required-dwc-fields[required terms] / xref:checklist-data.adoc#recommended-dwc-fields[recommended terms]
+. Occurrence data: xref:occurrence-data.adoc#required-dwc-fields[required terms] / xref:occurrence-data.adoc#recommended-dwc-fields[recommended terms]
+. Sampling-event data: xref:sampling-event-data.adoc#required-dwc-fields[required terms] / xref:sampling-event-data.adoc#recommended-dwc-fields[recommended terms]
+. Resource metadata: xref:resource-metadata.adoc#required-dwc-fields[required terms] / xref:resource-metadata.adoc#recommended-dwc-fields[recommended terms]
 
 === Character Encoding
 
@@ -248,7 +248,7 @@ Here are some other recommendations for generating data using SQL queries/functi
 
 The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provided a set of example DwC-As for each type of data:
 
-. Checklist data: xref:checklist-data.adoc#_exemplar_datasets[examplar datasets]
-. Occurrence data: xref:occurrence-data.adoc#_exemplar_datasets[examplar datasets]
-. Sampling-event data: xref:sampling-event-data.adoc#_exemplar_datasets[examplar datasets]
-. Resource metadata: xref:resource-metadata.adoc#_exemplar_datasets[examplar datasets]
+. Checklist data: xref:checklist-data.adoc#exemplar-datasets[examplar datasets]
+. Occurrence data: xref:occurrence-data.adoc#exemplar-datasets[examplar datasets]
+. Sampling-event data: xref:sampling-event-data.adoc#exemplar-datasets[examplar datasets]
+. Resource metadata: xref:resource-metadata.adoc#exemplar-datasets[examplar datasets]

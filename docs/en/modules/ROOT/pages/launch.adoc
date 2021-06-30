@@ -75,7 +75,7 @@ NOTE: before an upgrade, the custom logo image(s) and CSS need to be backed-up/p
 ** Review the blog post with the help of the GBIF Communications team before publishing.
 . Update xref:releases.adoc[release history]
 ** Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, blog post and a short summary of what changed.
-. Update xref:index.adoc#_roadmap[Roadmap]
+. Update xref:index.adoc#roadmap[Roadmap]
 ** Keep this in sync with the https://github.com/gbif/ipt/blob/master/README.md[Github IPT Readme] and https://www.gbif.org/ipt[GBIF.org IPT page], which also show the Roadmap and get updated in subsequent steps below.
 . Update https://github.com/gbif/ipt/blob/master/README.md[Github IPT Readme]
 ** Advertise the new version, highlighting what changes will be interesting and valuable to users linking to blog post when applicable.

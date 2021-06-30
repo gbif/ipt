@@ -113,11 +113,11 @@ Sampling events can be related to each other (e.g., nested samples) via a common
 
 Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata.
 
-You may also refer to the following xref:sampling-event-data.adoc#_q_how_do_i_publish_a_hierarchy_of_events_recursive_data_type_using_parentEventID[FAQ].
+You may also refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ].
 
 === How to capture absence data
 
-Refer to the following xref:sampling-event-data.adoc#_q_how_do_i_publish_absence_data[FAQ].
+Refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ].
 
 === How to include supplementary multimedia
 
