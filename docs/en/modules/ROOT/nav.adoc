@@ -1,5 +1,4 @@
 * xref:index.adoc[Background]
-* xref:news.adoc[News]
 * xref:release-notes.adoc[]
 * xref:introduction.adoc[]
 * xref:getting-started.adoc[]
