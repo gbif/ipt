@@ -2,13 +2,15 @@ https://builds.gbif.org/job/ipt/lastBuild/console[image:https://builds.gbif.org/
 
 = GBIF Integrated Publishing Toolkit (IPT)
 
-The Integrated Publishing Toolkit (IPT) is a free, open source software tool written in Java that is used to publish and share biodiversity datasets through the GBIF network. The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.
+The Integrated Publishing Toolkit (IPT) is a free, open source software tool used to publish and share biodiversity datasets through the https://www.gbif.org/[GBIF network]. The IPT can also be configured with a DataCite account in order to assign DOIs to datasets, thus transforming it into a data repository.
 
-Here you can find the IPT source code, https://ipt.gbif.org/manual/[IPT User Manual] source code, and the https://github.com/gbif/ipt/issues[IPT issue tracker].
+In this repository you can find the IPT source code, https://ipt.gbif.org/manual/[IPT User Manual] source code, and the https://github.com/gbif/ipt/issues[IPT issue tracker].
 
-Most users should look at the https://www.gbif.org/ipt[IPT website] and https://ipt.gbif.org/manual/[user manual], and send any questions to the https://lists.gbif.org/mailman/listinfo/ipt[IPT Mailing List].
+****
+*Most users should refer to the https://ipt.gbif.org/manual/[user manual] for further information.*
+****
 
-== Further information
+== Resources
 
 * https://ipt.gbif.org/manual/[IPT User Manual]
 * Information on the https://ipt.gbif.org/manual/en/ipt/2.5/releases/[latest release] and the https://ipt.gbif.org/manual/en/ipt/2.5/news/#next-release[next release]
