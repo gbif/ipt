@@ -229,7 +229,7 @@ Darwin Core Archive supports the publication of synonyms in species checklists. 
 | 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium
 |===
 
-A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml[supporting vocabulary].
+A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is {latest-taxonomic-status}[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and {latest-nomenclatural-status}[supporting vocabulary].
 
 Detailed synonymy can be supported by ensuring a unique *dwc:taxonID* is included in each synonym record and by utilizing the available extensions to support the sharing of checklist annotations. This supports the linking of one or more bibliographic records, specimen records and other data types supported by the <<GBIF Checklist Extensions>> to a single synonym record in the core data file. If a *dwc:taxonID* is not provided for a synonym record, extensions cannot be used as they rely on the *dwc:taxonID* to provide the link to the taxon record in the core file. A simplified example below illustrates the use of two files (expressed as tables) to provide a bibliography for a synonym using the References extension. The shared *dwc:taxonID* is highlighted in the example.
 
@@ -350,7 +350,7 @@ A species checklist in this use case is compiled for a specific purpose but deri
 
 == Sharing Vernacular Names
 
-The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers.
+The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the {latest-vernacularname}[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers.
 
 image::figures/myristica_fragrans.png[]
 
@@ -358,7 +358,7 @@ Vernacular names are referenced via an extension, therefore they must be linked 
 
 == Sharing Species Descriptions
 
-The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the http://rs.gbif.org/extension/gbif/1.0/description.xml[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the http://rs.gbif.org/vocabulary/gbif/description_type.xml[description type vocabulary] be used to describe the descriptive information.
+The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the {latest-description}[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the {latest-description-type}[description type vocabulary] be used to describe the descriptive information.
 
 === Multi-line descriptions
 
@@ -366,7 +366,7 @@ Descriptive information should be limited to single paragraph text blocks. Multi
 
 == Sharing Species Distributions
 
-The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the http://rs.gbif.org/extension/gbif/1.0/distribution.xml[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area.
+The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the {latest-species-distribution}[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area.
 
 The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element.
 
@@ -374,15 +374,15 @@ If the dwc:country element is used, it is recommended that the http://rs.gbif.or
 
 == Sharing References
 
-The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the http://rs.gbif.org/extension/gbif/1.0/references.xml[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with http://rs.gbif.org/vocabulary/gbif/reference_type.xml[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon.
+The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon.
 
 == Sharing Type information
 
-The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera.
+The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the {latest-typesandspecimen}[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera.
 
 == Sharing Links and Identifiers
 
-It is possible to share and describe multiple links to related external resources using the http://rs.gbif.org/extension/gbif/1.0/identifier.xml[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *mime type* in this field. A complete list of mime types is [available].
+It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *mime type* in this field. A complete list of mime types is [available].
 
 === Creating a dynamic link to a species page
 
@@ -429,50 +429,50 @@ Below is the complete list of Extensions that can be used to provide additional 
 
 === Taxon (Core) Extension
 
-Latest version issued: http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml[2015-04-24]
+Latest version issued: {latest-dwc-taxon}[{date-dwc-taxon}]
 
 Use this set of terms to provide the fundamental information for a species checklist including classification, synonymy and other key elements. Each row in this list represents a taxon name, either an accepted name or a synonym. The terms in this class support different methods for representing classification information. Classifications can be shared “spreadsheet-style” with columns for Kingdom, Phylum, Class, etc. or they can be shared “database-style” with each taxon row possessing a field containing the ID of its immediate parent. Please note that the tables contain the complete list of acceptable terms. The minimum requirement for sharing a checklist is as little as a list of species although an accompanying ID is highly recommended. Use this list of terms to identify the terms that best match the data to be shared. Don’t be daunted by the term names. Read the description to locate relevant terms.
 
 === Vernacular Names Extension
 
-Latest version issued: http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml[2015-02-13]
+Latest version issued: {latest-vernacularname}[{date-vernacularname}]
 
 This extension provides the means to share information related to common (vernacular) names linked to taxa in the core data file. Multiple vernacular names can be linked to the same taxon via the taxonID.
 
 === References Extension
 
-Latest version issued: http://rs.gbif.org/extension/gbif/1.0/references.xml[2015-02-13]
+Latest version issued: {latest-references}[{date-references}]
 
 Use this extension to describe one or more bibliographic references related to a taxon in the core data file. Use the type field to qualify the references. This extension supports the sharing of referenced synonymic checklists.
 
 === Species Distribution Extension
 
-Latest version issued: http://rs.gbif.org/extension/gbif/1.0/distribution.xml[2015-02-13]
+Latest version issued: {latest-species-distribution}[{date-species-distribution}]
 
 Use this extension to share information on one or more distribution references for a taxon. One or more locality records may be linked to the same taxon. For example multiple localities, regions, or countries may be listed. Use this extension to describe the threat status for a taxon, seasonal distribution changes, and other properties linked to a taxon in
 a particular region.
 
 === Species Description Extension
 
-Latest version issued: http://rs.gbif.org/extension/gbif/1.0/description.xml[2015-02-13]
+Latest version issued: {latest-description}[{date-description}]
 
 Use this extension to provide descriptive text for a taxon. This is typically in the form of a single paragraph per record as would be normally stored in a database. Descriptions can be qualified by a type to indicate, for example that the description is related to, for example, the morphology conservation, reproduction, etc. Multiple descriptions equal
 multiple records in a descriptions file.
 
 === Alternative Identifiers
 
-Latest version issued: http://rs.gbif.org/extension/gbif/1.0/identifier.xml[2015-02-13]
+Latest version issued: {latest-identifier}[{date-identifier}]
 
 Use this extension if you have more than one identifier or link to information about the taxon. A source database, may, for example provide access to the source data records through a web page, a web service, and a resolvable identifier such as LSID, DOI or other means.
 
 === Types and Specimens Extension
 
-Latest version issued: http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml[2015-02-13]
+Latest version issued: {latest-typesandspecimen}[{date-typesandspecimen}]
 
 Use this extension to share data relating to one or more specimens or type references linked to the core taxon
 
 === Resource Relationship Extension
 
-Latest version issued: http://rs.gbif.org/extension/dwc/resource_relation.xml[2015-02-13]
+Latest version issued: {latest-resource-relation}[{date-resource-relation}]
 
 This extension is used to describe one or more relationships that the core taxon has with other taxa, either in the source list or included in the record. This extension could be used, for example, to provide a list of plant species (one record per species) pollinated by a bee species listed in the core species list.

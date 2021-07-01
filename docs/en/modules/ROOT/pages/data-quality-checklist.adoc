@@ -48,7 +48,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 |===
 | Check-ID | Fields | Requirements
 
-| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to "absence" per the http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[GBIF Occurrence Status Vocabulary].
+| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to "absence" per the {latest-occurrence-status}.xml[GBIF Occurrence Status Vocabulary].
 |===
 
 ==== If it was a species occurrence related event - what species was it?
@@ -56,7 +56,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 |===
 | Check-ID | Fields | Requirements
 
-| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.
+| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the {latest-rank}[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.
 | *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`).
 |===
 
@@ -66,13 +66,13 @@ Compile a list of all checks that fail and report them back to the data publishe
 | Field | Value | Constraint
 
 | `occurrenceID` | "HAMAARAG:T0_L_049:6199" | Must be a GUID or an identifier that is near globally unique. Integer identifiers are not allowed.
-| `basisOfRecord` | "MachineObservation" | Must match http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type Vocabulary]
+| `basisOfRecord` | "MachineObservation" | Must match {latest-basis-of-record}[Darwin Core Type Vocabulary]
 | `individualCount` | 1 | Must be an integer, 0 or greater
 | `organismQuantity` | 1 | Must pair with `organismQuantityType`
-| `organismQuantityType` | "individuals" | Must match http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml[GBIF Quantity Type Vocabulary]
-| `occurrenceStatus` | "present" | Must match http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[GBIF Occurrence Status Vocabulary]
+| `organismQuantityType` | "individuals" | Must match {latest-quantity-type}[GBIF Quantity Type Vocabulary]
+| `occurrenceStatus` | "present" | Must match {latest-occurrence-status}[GBIF Occurrence Status Vocabulary]
 | `scientificName` | "Canis aureus Linnaeus, 1758" | Must be the full scientific name, with authorship and date information if known.
-| `taxonRank` | "species" | Must match http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml[GBIF Taxon Rank Vocabulary]
+| `taxonRank` | "species" | Must match {latest-rank}[GBIF Taxon Rank Vocabulary]
 | `kingdom` | "Animalia" | Must be the full scientific name of the kingdom in which the taxon is classified.
 | `phylum` | "Chordata" | Must be the full scientific name of the phylum or division in which the taxon is classified.
 | `class` | "Mammalia" | Must be the full scientific name of the class in which the taxon is classified.
@@ -234,7 +234,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 |===
 | Check-ID | Fields | Requirements
 
-| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.
+| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.
 |===
 
 ==== Case 1: Because of a butterfly monitoring scheme
@@ -244,7 +244,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 
 | `samplingProtocol` | "Pollard walks" | Must be a short name or URL referencing a method or sampling protocol
 | `sampleSizeValue` | 250 | Must pair with `sampleSizeUnit`
-| `sampleSizeUnit` | "square_metre" | Must match http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml[Unit of Measurement Vocabulary]
+| `sampleSizeUnit` | "square_metre" | Must match {latest-unit-of-measurement}[Unit of Measurement Vocabulary]
 | `samplingEffort` | "Average of 30 Minutes walk along transect" | Can be a free-text description
 | `eventRemarks` | "No occurrences of Lepidoptera recorded for entire transect" | Can be a free-text description
 |===

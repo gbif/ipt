@@ -68,7 +68,7 @@ The following Darwin Core fields store the sample size of a sampling event:
 * *sampleSizeValue*: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.
 * *sampleSizeUnit*: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.
 
-The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml[Unit of Measurement Vocabulary]. Examples are given in Table 1 below.
+The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. Examples are given in Table 1 below.
 
 You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points.
 
