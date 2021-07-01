@@ -145,7 +145,7 @@ A sample classification for a single species, the tiger, “*Panthera tigris*”
 
 NOTE: A *dwc:parentNameUsageID* must point to an existing record in the dataset. It is invalid to point to higher taxon identifiers that do not exist as records.
 
-=== Denormalised Classifications
+=== Denormalized Classifications
 
 This format is familiar to anyone who manages species information in spreadsheets. In a denormalized classification, each row of the data table refers to one of the terminal taxa, such as a species, and a complete set of parent taxa as a set of columns, one for each parent taxon.
 
