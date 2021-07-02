@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-06-28 11:11\n"
+"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"PO-Revision-Date: 2021-07-02 13:18\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -420,17 +420,17 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:161
-msgid "If the core mapping is to the http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml[Occurrence extension], the type is equal to \"occurrence\"."
+msgid "If the core mapping is to the {latest-dwc-occurrence}.xml[Occurrence extension], the type is equal to \"occurrence\"."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:162
-msgid "If the core mapping is to the http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml[Taxon extension], the type is equal to \"checklist\"."
+msgid "If the core mapping is to the {latest-dwc-taxon}.xml[Taxon extension], the type is equal to \"checklist\"."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:163
-msgid "If the core mapping is to the http://rs.gbif.org/core/dwc_event_2016_06_21.xml[Event extension], the type is equal to \"sampling-event\"."
+msgid "If the core mapping is to the {latest-dwc-event}.xml[Event extension], the type is equal to \"sampling-event\"."
 msgstr ""
 
 #. type: Plain text
