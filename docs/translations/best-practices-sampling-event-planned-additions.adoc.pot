@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"POT-Creation-Date: 2021-07-02 13:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,133 +67,133 @@ msgid "Quantity and abundance"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:103
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:104
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:110
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
 #, no-wrap
 msgid "How to capture hierarchy of events"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:118
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:119
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
 #, no-wrap
 msgid "How to capture absence data"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:122
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:123
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:128
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:129
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:39
 #, no-wrap
 msgid "Publishing sampling-event data"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:131
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
 #, no-wrap
 msgid "Using GUIDs for identifiers"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:145
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:146
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:52
 #, no-wrap
 msgid "Preserving verbatim data"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:149
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:150
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:153
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:154
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:160
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:168
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:169
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:172
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:176
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:177
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:183
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
 #, no-wrap
 msgid "Linking related datasets"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:187
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:188
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
 #, no-wrap
 msgid "Listing related research"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:191
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:192
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:91
 #, no-wrap
 msgid "Examples"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:195
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:196
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:92
 #, no-wrap
 msgid "Freshwater invertebrate survey"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:221
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:222
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:256
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:257
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
 #, no-wrap
 msgid "Macrophyte survey"
