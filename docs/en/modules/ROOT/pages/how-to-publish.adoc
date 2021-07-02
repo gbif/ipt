@@ -48,4 +48,4 @@ image::ipt2/flow-all.png[]
 . Publish the dataset (make it freely and openly available worldwide)
 . Register the dataset with GBIF.
 +
-NOTE: your organization must be registered with GBIF (see prerequisite #2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT.
+NOTE: Your organization must be registered with GBIF (see prerequisite 2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT.
