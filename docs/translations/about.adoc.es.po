@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-06-28 10:01\n"
+"PO-Revision-Date: 2021-07-06 00:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,7 +25,7 @@ msgstr "Menú Acerca de"
 #. type: Plain text
 #: en/modules/ROOT/pages/about.adoc:4
 msgid "The default About page gives information about the current IPT installation, including information about the hosting organization, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called \"config\" within the IPT data directory (see the information under the \"IPT Settings\" heading in the \"Administration Menu\" section). The about.ftl file is a FreeMarker template that can contain a combination of HTML and variable references of the form `${host.variable!\"alternate value if null\"}`. After making changes to the about.ftl file, the About page will have to be restarted to show the changes. Look at the default about.ftl file for examples of variables that can be included."
-msgstr "La página \"Acerca de\", predeterminadamente muestra información sobre la actual instalación del IPT, incluyendo información de la organización que lo aloja y si aquel IPT ha sido registrado. Esta página está diseñada para ser personalizada en cada IPT, editando el archivo llamado about.ftl en el directorio llamado “config”, dentro del directorio de datos del IPT (véase la información bajo el encabezado “Configuración del IPT” en la sección “Menú Administración\"). El archivo about.ftl es una plantilla Freemarker que puede contener una combinación de HTML y referencias variables de la forma `${host.variable!\"valor alternativo para cuando es nulo\"}`. Después de realizar los cambios en el archivo about.ftl, la página \"Acerca de\", deberá ser actualizada para mostrar los cambios. Revise el archivo about.ftl predeterminado, para ejemplos de las variables que pueden ser incluidas."
+msgstr "La página \"Acerca de\" muestra, por defecto, información sobre la actual instalación del IPT, incluyendo información de la organización que lo aloja y si dicho IPT ha sido registrado. Esta página está diseñada para ser personalizada en cada IPT, editando el archivo llamado about.ftl en el directorio llamado “config”, dentro del directorio de datos del IPT (véase la información bajo el encabezado “Configuración del IPT” en la sección “Menú Administración\"). El archivo about.ftl es una plantilla Freemarker que puede contener una combinación de HTML y referencias variables de la forma `${host.variable!\"valor alternativo para cuando es nulo\"}`. Después de realizar los cambios en el archivo about.ftl, la página \"Acerca de\", deberá ser actualizada para mostrar los cambios. Revise el archivo about.ftl predeterminado, para ejemplos de las variables que pueden ser incluidas."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/about.adoc:5
@@ -36,7 +36,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/about.adoc:8
 msgid "Here is the content of the about.ftl file resulting in the page as viewed above."
-msgstr "Aquí está el contenido del archivo about.ftl que resulta en la página que se ve en la imagen anterior."
+msgstr "Aquí está el contenido del archivo about.ftl que da como resultado la página como se ve arriba."
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/about.adoc:14
