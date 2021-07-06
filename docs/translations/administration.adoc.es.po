@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-06-28 10:38\n"
+"PO-Revision-Date: 2021-07-06 00:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,17 +20,18 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:1
 #, no-wrap
 msgid "Administration Menu"
-msgstr "Menú Administración"
+msgstr "Menú de Administración"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:4
 msgid "This menu is visible only to users having the Admin role."
-msgstr ""
+msgstr "Este menú es visible únicamente para los usuarios que tienen el rol de Administrador."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:6
 msgid "This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labelled \"Organizations\" will remain disabled by default until the GBIF registration options have been set."
-msgstr "Esta sección describe cada una de las funciones que están disponibles desde el \"Menú Administración\". Haciendo clic sobre Administración, se abre una página (ver imagen a continuación) desde la cual cada una de estas tareas administrativas puede ser revisada, haciendo clic sobre el botón apropiado. Note que el botón marcado como “Organizaciones”, predeterminadamente permanecerá deshabilitado hasta que las opciones de Registro GBIF hayan sido establecidas."
+msgstr "Esta sección describe cada una de las funciones que están disponibles desde el \"Menú Administración\". Haciendo clic sobre Administración, se abre una página (ver imagen a continuación) desde la cual, cada una de estas tareas administrativas puede ser revisada, haciendo clic sobre el botón apropiado. Tenga en cuenta que el botón etiquetado \"Organizaciones\" permanecerá deshabilitado de forma predeterminada hasta que se establezcan las opciones de registro de GBIF.\n\n"
+"Ícono de validado por la comunidad"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:7
@@ -60,7 +61,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:15
 #, no-wrap
 msgid "*Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.\n"
-msgstr ""
+msgstr "* URL pública *: esta es la URL que apunta a la raíz de esta instalación de IPT. La URL se establece automáticamente durante la instalación de IPT. La URL pública debe ser accesible a través de Internet para que el IPT funcione completamente. Configurar la URL pública de IPT para usar localhost, por ejemplo, no permitirá que la instancia de IPT se registre con GBIF, no permitirá que el IPT se asocie con una organización y no permitirá que los recursos sean de acceso público.\n"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:20
@@ -96,7 +97,7 @@ msgstr "Actualice los metadatos para el IPT como se describe en la siguiente sec
 #: en/modules/ROOT/pages/administration.adoc:30
 #, no-wrap
 msgid "*Institutional proxy URL* - If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `http://proxy.example.org:8080`.\n"
-msgstr ""
+msgstr "* URL del proxy institucional *: si el servidor en el que está instalado el IPT no tiene acceso HTTP / HTTPS directo a Internet, sino que debe enrutar las solicitudes HTTP / HTTPS salientes a través de un servidor proxy institucional, ingrese la dirección del host y el número de puerto aquí . Por ejemplo, `http: //proxy.example.org: 8080`.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:31
@@ -137,7 +138,7 @@ msgstr "Publicar Todos los Recursos"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:38
 msgid "This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPT and registered resources' metadata in the Registry. Click on this button if multiple resources have been updated and you want to publish a new release for all of them instead of publishing them individually."
-msgstr ""
+msgstr "Esta opción es una acción administrativa al igual que el botón Publicar, solo que publica TODOS los recursos. Por lo tanto, para cada recurso, crea un nuevo DwC-A, EML y RTF y transmite la actualización al Registro y vía RSS. Además, también actualiza el IPT y los metadatos de los recursos registrados en el Registro. Haga clic en este botón si se han actualizado varios recursos y desea publicar una nueva versión para todos ellos en lugar de publicarlos individualmente."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:39
@@ -264,7 +265,7 @@ msgstr "Las cuentas de los usuarios que dejan de ser necesarias, pueden ser elim
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:70
 msgid "An admin cannot delete their own account while logged in therefore it must be deleted by another admin."
-msgstr ""
+msgstr "Un administrador no puede eliminar su propia cuenta mientras está conectado, por lo que debe ser eliminado por otro administrador."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:71
@@ -279,7 +280,7 @@ msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que ten
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:73
 msgid "A user cannot be deleted if it is the creator or one or more resources. To restrict the user's access to their resources, downgrade their role to type User. Refer to the <<Modify an existing user>> section for information about how to change a user's role."
-msgstr ""
+msgstr "No se puede eliminar un usuario si es el creador o uno o más recursos. Para restringir el acceso del usuario a sus recursos, baje su rol al tipo Usuario. Consulte la sección <<Modificar un usuario existente>> para obtener información sobre cómo cambiar el rol de un usuario."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:74
@@ -312,7 +313,7 @@ msgstr "*No hay conexión a Internet* - Para un funcionamiento apropiado, el IPT
 #: en/modules/ROOT/pages/administration.adoc:83
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
-msgstr ""
+msgstr "* URL de proxy pública o institucional incorrecta *: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref: initial-setup.adoc [Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección << Configurar opciones de IPT >>).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:84
@@ -424,7 +425,7 @@ msgstr "Editar el Registro GBIF"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:108
 msgid "After the IPT has been registered, this page allows a user to update the IPT registration information. The update will ensure the IPT and all its registered resources are in sync with the GBIF Registry. *Administrators should run an update each time the public URL of the IPT changes*. Administrators can also run an update in order to update the title, description, contact name, and contact email of the IPT instance. This page does not support changing the hosting organization. To do so, administrators must contact the GBIF Helpdesk (helpdesk@gbif.org) directly."
-msgstr ""
+msgstr "Una vez que se ha registrado el IPT, esta página permite al usuario actualizar la información de registro del IPT. La actualización garantizará que el IPT y todos sus recursos registrados estén sincronizados con el Registro de GBIF. * Los administradores deben ejecutar una actualización cada vez que cambie la URL pública del IPT *. Los administradores también pueden ejecutar una actualización para actualizar el título, la descripción, el nombre de contacto y el correo electrónico de contacto de la instancia de IPT. Esta página no admitle el cambio de organización de alojamiento. Para hacerlo, los administradores deben comunicarse directamente con el servicio de asistencia de GBIF (helpdesk@gbif.org)."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:109
