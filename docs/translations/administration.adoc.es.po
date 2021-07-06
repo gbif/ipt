@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-07-06 00:07\n"
+"PO-Revision-Date: 2021-07-06 13:58\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -61,7 +61,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:15
 #, no-wrap
 msgid "*Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.\n"
-msgstr "* URL pública *: esta es la URL que apunta a la raíz de esta instalación de IPT. La URL se establece automáticamente durante la instalación de IPT. La URL pública debe ser accesible a través de Internet para que el IPT funcione completamente. Configurar la URL pública de IPT para usar localhost, por ejemplo, no permitirá que la instancia de IPT se registre con GBIF, no permitirá que el IPT se asocie con una organización y no permitirá que los recursos sean de acceso público.\n"
+msgstr "*URL pública*: esta es la URL que apunta a la raíz de esta instalación de IPT. La URL se establece automáticamente durante la instalación de IPT. La URL pública debe ser accesible a través de Internet para que el IPT funcione completamente. Configurar la URL pública de IPT para usar localhost, por ejemplo, no permitirá que la instancia de IPT se registre con GBIF, no permitirá que el IPT se asocie con una organización y no permitirá que los recursos sean de acceso público.\n"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:20
@@ -97,7 +97,7 @@ msgstr "Actualice los metadatos para el IPT como se describe en la siguiente sec
 #: en/modules/ROOT/pages/administration.adoc:30
 #, no-wrap
 msgid "*Institutional proxy URL* - If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `http://proxy.example.org:8080`.\n"
-msgstr "* URL del proxy institucional *: si el servidor en el que está instalado el IPT no tiene acceso HTTP / HTTPS directo a Internet, sino que debe enrutar las solicitudes HTTP / HTTPS salientes a través de un servidor proxy institucional, ingrese la dirección del host y el número de puerto aquí . Por ejemplo, `http: //proxy.example.org: 8080`.\n"
+msgstr "*URL del proxy institucional*: si el servidor en el que está instalado el IPT no tiene acceso HTTP / HTTPS directo a Internet, sino que debe enrutar las solicitudes HTTP / HTTPS salientes a través de un servidor proxy institucional, ingrese la dirección del host y el número de puerto aquí. Por ejemplo, `http://proxy.example.org:8080`.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:31
@@ -196,7 +196,7 @@ msgstr "*Nombre* - El nombre del usuario.\n"
 #: en/modules/ROOT/pages/administration.adoc:53
 #, no-wrap
 msgid "*Last name* - The last name of the user.\n"
-msgstr "* - El apellido del usuario.\n"
+msgstr "*Apellido* - El apellido del usuario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:54
@@ -313,7 +313,7 @@ msgstr "*No hay conexión a Internet* - Para un funcionamiento apropiado, el IPT
 #: en/modules/ROOT/pages/administration.adoc:83
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
-msgstr "* URL de proxy pública o institucional incorrecta *: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref: initial-setup.adoc [Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección << Configurar opciones de IPT >>).\n"
+msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref: initial-setup.adoc[Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Configurar opciones de IPT>>).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:84
