@@ -6,9 +6,11 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
+import org.gbif.dwc.Archive;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -44,9 +46,9 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
-import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.properties.PropertiesUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -65,6 +67,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -189,21 +192,24 @@ public class GenerateDwcaIT {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile core = archive.getCore();
+    ClosableIterator<Record> iterator = core.iterator();
+
     // 1st record
-    String[] row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("1", row[2]);
-    assertEquals("", row[3]);
-    assertEquals("occurrence", row[4]);
-    reader.close();
+    Record record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("1", record.column(2));
+    assertNull(record.column(3));
+    assertEquals("occurrence", record.column(4));
+
+    iterator.close();
   }
 
   /**

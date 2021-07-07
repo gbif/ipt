@@ -1,10 +1,11 @@
 package org.gbif.ipt.task;
 
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.utils.file.csv.CSVReader;
+import org.gbif.utils.file.ClosableIterator;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -135,7 +136,7 @@ public class GenerateDwcaEventTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
 
     // investigate event core data file
     assertEquals(DwcTerm.Event, archive.getCore().getRowType());
@@ -149,22 +150,23 @@ public class GenerateDwcaEventTest {
     assertEquals("sampleSizeUnit", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
     // confirm data written to event core data file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st core record
-    String[] row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("1", row[1]);
-    assertEquals("mist net", row[2]);
-    assertEquals("5", row[3]);
-    assertEquals("metre", row[4]);
+    Record record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("1", record.column(1));
+    assertEquals("mist net", record.column(2));
+    assertEquals("5", record.column(3));
+    assertEquals("metre", record.column(4));
     // 2nd core record
-    row = reader.next();
-    assertEquals("2", row[0]);
-    assertEquals("2", row[1]);
-    assertEquals("mist net", row[2]);
-    assertEquals("5", row[3]);
-    assertEquals("metre", row[4]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("2", record.column(0));
+    assertEquals("2", record.column(1));
+    assertEquals("mist net", record.column(2));
+    assertEquals("5", record.column(3));
+    assertEquals("metre", record.column(4));
+    iterator.close();
 
     // investigate extension file
     ArchiveFile extFile = archive.getExtensions().iterator().next();
@@ -178,20 +180,20 @@ public class GenerateDwcaEventTest {
     assertEquals("kingdom", extFile.getFieldsSorted().get(2).getTerm().simpleName());
 
     // confirm data written to file
-    reader = extFile.getCSVReader();
+    iterator = extFile.iterator();
     // 1st record
-    row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("puma concolor", row[2]);
-    assertEquals("animalia", row[3]);
+    record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("puma concolor", record.column(2));
+    assertEquals("animalia", record.column(3));
     // 2nd record
-    row = reader.next();
-    assertEquals("2", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("pumm:concolor", row[2]);
-    assertEquals("animalia", row[3]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("2", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("pumm:concolor", record.column(2));
+    assertEquals("animalia", record.column(3));
+    iterator.close();
 
     // since basisOfRecord was occurrence, and this is ambiguous, there should be a warning message!
     boolean foundWarningAboutAmbiguousBOR = false;

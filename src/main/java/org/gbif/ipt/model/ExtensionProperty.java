@@ -7,10 +7,11 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.dwc.ArchiveField.DataType;
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwca.io.ArchiveField.DataType;
 
 import java.io.Serializable;
+import java.net.URI;
 
 import com.google.common.base.Objects;
 
@@ -205,4 +206,18 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
     return qualname;
   }
 
+  @Override
+  public String prefix() {
+    return "";
+  }
+
+  @Override
+  public URI namespace() {
+    return URI.create(namespace);
+  }
+
+  @Override
+  public boolean isClass() {
+    return false;
+  }
 }
