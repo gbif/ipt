@@ -264,21 +264,6 @@
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
-                <a tabindex="0" role="button"
-                   class="popover-link"
-                   data-bs-toggle="popover"
-                   data-bs-trigger="focus"
-                   data-bs-html="true"
-                   data-bs-content="
-                        <#if resource.coreType?has_content && resource.coreType==metadataType>
-                            <@s.text name="manage.overview.intro.metadataOnly"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
-                        <#else>
-                            <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
-                        </#if>
-                    ">
-                    <i class="bi bi-info-circle text-gbif-primary"></i>
-                </a>
-
                 <span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
@@ -286,7 +271,11 @@
             <div class="row g-2 mx-md-4 mx-2">
                 <div class="col-lg-10">
                     <span>
-                        <@s.text name="manage.overview.description"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
+                        <#if resource.coreType?has_content && resource.coreType==metadataType>
+                            <@s.text name="manage.overview.description.metadataOnly"/>
+                        <#else>
+                            <@s.text name="manage.overview.description"/>
+                        </#if>
                     </span>
                 </div>
 
