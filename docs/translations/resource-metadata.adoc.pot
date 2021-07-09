@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"POT-Creation-Date: 2021-07-09 11:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,7 +76,7 @@ msgstr ""
 msgid ""
 "Alternatively if your metadata is already in EML or Dublin Core, you can "
 "upload it in these formats to the IPT. Guidance on how to do that can be "
-"found xref:manage-resources#upload-a-metadata-file[here]."
+"found xref:manage-resources.adoc#upload-a-metadata-file[here]."
 msgstr ""
 
 #. type: Plain text

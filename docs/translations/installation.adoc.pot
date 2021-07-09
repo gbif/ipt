@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-30 14:42+0000\n"
+"POT-Creation-Date: 2021-07-09 11:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,12 +306,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:104
 msgid ""
-"Download the latest WAR release of the IPT from the xref:news.adoc[release "
-"page] or https://www.gbif.org/ipt, and rename it to `ipt.war` (or similar, "
-"matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the "
-"Tomcat webapps folder, and then start Tomcat if it is not already running. "
-"You can then invoke the IPT in a web browser running on the same server by "
-"using the following URL: http://localhost:8080/ipt"
+"Download the latest WAR release of the IPT from the xref:releases."
+"adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt."
+"xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps "
+"folder, and then start Tomcat if it is not already running. You can then "
+"invoke the IPT in a web browser running on the same server by using the "
+"following URL: http://localhost:8080/ipt"
 msgstr ""
 
 #. type: Plain text
