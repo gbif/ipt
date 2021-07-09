@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-07-02 13:18\n"
+"POT-Creation-Date: 2021-07-09 11:48+0000\n"
+"PO-Revision-Date: 2021-07-09 11:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -60,7 +60,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:14
-msgid "Alternatively if your metadata is already in EML or Dublin Core, you can upload it in these formats to the IPT. Guidance on how to do that can be found xref:manage-resources#upload-a-metadata-file[here]."
+msgid "Alternatively if your metadata is already in EML or Dublin Core, you can upload it in these formats to the IPT. Guidance on how to do that can be found xref:manage-resources.adoc#upload-a-metadata-file[here]."
 msgstr ""
 
 #. type: Plain text
