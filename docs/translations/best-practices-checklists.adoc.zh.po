@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"PO-Revision-Date: 2021-07-02 13:18\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -181,9 +181,9 @@ msgstr ""
 msgid "The Darwin Core Archive format provides the structural framework for publishing species checklists. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one *core file*, containing the basic checklist elements (species list, classification, synonymy) surrounded by a number of ‘*extensions*’, that describe related data types (such as common names). Links between core and extension records are made using a taxon identifier (*taxonID*) data element. In this way, many extension records can exist for each single core taxon record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to species checklists."
 msgstr ""
 
-#. type: Plain text
+#. type: Block title
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:58
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:44
 #, no-wrap
 msgid "Darwin Core Archive data files in 'star schema'"
 msgstr ""
@@ -418,7 +418,7 @@ msgstr ""
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:148
 #, no-wrap
-msgid "Denormalised Classifications"
+msgid "Denormalized Classifications"
 msgstr ""
 
 #. type: Plain text
@@ -573,7 +573,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:233
-msgid "A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml[supporting vocabulary]."
+msgid "A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is {latest-taxonomic-status}[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and {latest-nomenclatural-status}[supporting vocabulary]."
 msgstr ""
 
 #. type: Plain text
@@ -903,7 +903,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:354
-msgid "The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers."
+msgid "The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the {latest-vernacularname}[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers."
 msgstr ""
 
 #. type: Target for macro image
@@ -925,7 +925,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:362
-msgid "The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the http://rs.gbif.org/extension/gbif/1.0/description.xml[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the http://rs.gbif.org/vocabulary/gbif/description_type.xml[description type vocabulary] be used to describe the descriptive information."
+msgid "The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the {latest-description}[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the {latest-description-type}[description type vocabulary] be used to describe the descriptive information."
 msgstr ""
 
 #. type: Title ===
@@ -947,7 +947,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:370
-msgid "The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the http://rs.gbif.org/extension/gbif/1.0/distribution.xml[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area."
+msgid "The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the {latest-species-distribution}[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area."
 msgstr ""
 
 #. type: Plain text
@@ -968,7 +968,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:378
-msgid "The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the http://rs.gbif.org/extension/gbif/1.0/references.xml[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with http://rs.gbif.org/vocabulary/gbif/reference_type.xml[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon."
+msgid "The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon."
 msgstr ""
 
 #. type: Title ==
@@ -979,7 +979,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:382
-msgid "The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera."
+msgid "The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the {latest-typesandspecimen}[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera."
 msgstr ""
 
 #. type: Title ==
@@ -990,7 +990,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:386
-msgid "It is possible to share and describe multiple links to related external resources using the http://rs.gbif.org/extension/gbif/1.0/identifier.xml[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *mime type* in this field. A complete list of mime types is [available]."
+msgid "It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *mime type* in this field. A complete list of mime types is [available]."
 msgstr ""
 
 #. type: Title ===
@@ -1091,7 +1091,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:433
-msgid "Latest version issued: http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml[2015-04-24]"
+msgid "Latest version issued: {latest-dwc-taxon}[{date-dwc-taxon}]"
 msgstr ""
 
 #. type: Plain text
@@ -1107,7 +1107,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:439
-msgid "Latest version issued: http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml[2015-02-13]"
+msgid "Latest version issued: {latest-vernacularname}[{date-vernacularname}]"
 msgstr ""
 
 #. type: Plain text
@@ -1123,7 +1123,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:445
-msgid "Latest version issued: http://rs.gbif.org/extension/gbif/1.0/references.xml[2015-02-13]"
+msgid "Latest version issued: {latest-references}[{date-references}]"
 msgstr ""
 
 #. type: Plain text
@@ -1139,7 +1139,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:451
-msgid "Latest version issued: http://rs.gbif.org/extension/gbif/1.0/distribution.xml[2015-02-13]"
+msgid "Latest version issued: {latest-species-distribution}[{date-species-distribution}]"
 msgstr ""
 
 #. type: Plain text
@@ -1155,7 +1155,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:458
-msgid "Latest version issued: http://rs.gbif.org/extension/gbif/1.0/description.xml[2015-02-13]"
+msgid "Latest version issued: {latest-description}[{date-description}]"
 msgstr ""
 
 #. type: Plain text
@@ -1171,7 +1171,7 @@ msgstr "替代的識別碼"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:465
-msgid "Latest version issued: http://rs.gbif.org/extension/gbif/1.0/identifier.xml[2015-02-13]"
+msgid "Latest version issued: {latest-identifier}[{date-identifier}]"
 msgstr ""
 
 #. type: Plain text
@@ -1187,7 +1187,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:471
-msgid "Latest version issued: http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml[2015-02-13]"
+msgid "Latest version issued: {latest-typesandspecimen}[{date-typesandspecimen}]"
 msgstr ""
 
 #. type: Plain text
@@ -1203,7 +1203,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:477
-msgid "Latest version issued: http://rs.gbif.org/extension/dwc/resource_relation.xml[2015-02-13]"
+msgid "Latest version issued: {latest-resource-relation}[{date-resource-relation}]"
 msgstr ""
 
 #. type: Plain text

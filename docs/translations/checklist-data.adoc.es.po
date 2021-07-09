@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:23\n"
+"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"PO-Revision-Date: 2021-07-02 13:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -78,7 +78,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:23
-msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml[list]."
+msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}.xml[list]."
 msgstr ""
 
 #. type: Title ===
@@ -161,7 +161,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:45
 #, no-wrap
-msgid "*A.* Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml[list]. You can upload this table to the IPT, and map it to the http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml[Vernacular Name extension].\n"
+msgid "*A.* Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this {latest-vernacularname}[list]. You can upload this table to the IPT, and map it to the {latest-vernacularname}[Vernacular Name extension].\n"
 msgstr ""
 
 #. type: Title ====
@@ -173,7 +173,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:49
 #, no-wrap
-msgid "*A.* Make a table of geographic distributions of a taxon. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your geographic distributions table with extra columns such as the threat status, but only using term names from this http://rs.gbif.org/extension/gbif/1.0/distribution.xml[list]. You can upload this table to the IPT, and map it to the http://rs.gbif.org/extension/gbif/1.0/distribution.xml[Species Distribution extension].\n"
+msgid "*A.* Make a table of geographic distributions of a taxon. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your geographic distributions table with extra columns such as the threat status, but only using term names from this {latest-species-distribution}[list]. You can upload this table to the IPT, and map it to the {latest-species-distribution}[Species Distribution extension].\n"
 msgstr ""
 
 #. type: Title ====

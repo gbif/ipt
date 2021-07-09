@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:21\n"
+"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"PO-Revision-Date: 2021-07-02 13:19\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -165,12 +165,12 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:46
-msgid "Hint: refer to the xref:index.adoc[IPT User Manual] for additional guidance"
+msgid "Hint: refer to other sections of this manual for additional guidance, such as the xref:manage-resources.adoc[Manage Resources Menu] section."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:47
-msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the http://rs.gbif.org/core/dwc_event_2015_05_29.xml[Event Core]."
+msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}.xml[Event Core]."
 msgstr ""
 
 #. type: Plain text
@@ -190,6 +190,6 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:51
-msgid "your organization must be registered with GBIF (see prerequisite #2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT."
+msgid "Your organization must be registered with GBIF (see prerequisite 2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT."
 msgstr ""
 

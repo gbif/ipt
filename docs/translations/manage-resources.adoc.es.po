@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-06-28 11:39\n"
+"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"PO-Revision-Date: 2021-07-02 13:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1708,8 +1708,8 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:452
 #, no-wrap
-msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the http://rs.gbif.org/vocabulary/gbif/preservation_method.xml[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
-msgstr "*Métodos de preservación de los ejemplares* - palabra clave del vocabulario Método de Preservación de los Especímenes de GBIF, indicando el proceso o técnica utilizada para prevenir deterioro físico de colecciones no vivientes. Si la colección tiene más de un método de preservación, seleccione el predominante. Recuerde que puede incluir una lista de métodos de preparación y preservación para un espécimen en el elemento \"Preparaciones\" del mapeo de datos DwC (http://rs.tdwg.org/dwc/terms/preparations). Por favor, no seleccione ningún tratamiento para colecciones vivas. Este puede relacionarse con la(s) unidad(es) curatorial(es) en la colección.\n"
+msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:453
@@ -2150,8 +2150,8 @@ msgstr "Si una columna contiene el identificador del core(por ejemplo, ID del re
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:567
-msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary]."
-msgstr "El término Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] es un término obligatorio para la extensión Occurrence. Por esto el IPT valida que cada archivo de datos tenga una columna de basisOfRecord. Adicionalmente, el IPT valida que cada registro de Ocurrence presente el basisOfRecord, ya que los valores coincidan con el http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario del Tipo de Darwin Core]."
+msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary]."
+msgstr ""
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:568

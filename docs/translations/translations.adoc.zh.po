@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-06-28 11:11\n"
+"POT-Creation-Date: 2021-06-28 11:52+0000\n"
+"PO-Revision-Date: 2021-06-28 12:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -225,7 +225,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:84
-msgid "Some screenshot images can be translated, and others (without any English text) can be the same across all languages.  The default is for the same image to be used in all languages.  A different image must be uploaded in https://github.com/gbif/ipt[GitHub].  Create an image with the same filename and path, except with `en` changed to the target languag."
+msgid "Some screenshot images can be translated, and others (without any English text) can be the same across all languages.  The default is for the same image to be used in all languages.  A different image must be uploaded in https://github.com/gbif/ipt[GitHub].  Create an image with the same filename and path, except with `en` changed to the target language."
 msgstr ""
 
 #. type: Plain text
@@ -235,7 +235,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:88
-msgid "The syntax to include this image in the manual, `\\image::ipt2/home/IPTHome.png[]`, does not require translation."
+msgid "The syntax to include this image in the manual, `image::ipt2/home/IPTHome.png[]`, does not require translation."
 msgstr ""
 
 #. type: Title ===
