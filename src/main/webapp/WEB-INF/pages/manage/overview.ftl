@@ -689,10 +689,12 @@
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
-                            <div class="text-gbif-danger">
-                                <i class="bi bi-exclamation-triangle"></i>
-                                <em><@s.text name="manage.overview.published.testmode.warning"/></em>
-                            </div>
+                            <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
+                                <p class="text-gbif-danger">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <em><@s.text name="manage.overview.published.testmode.warning"/></em>
+                                </p>
+                            </#if>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details table-responsive">
