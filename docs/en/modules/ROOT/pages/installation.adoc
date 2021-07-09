@@ -100,7 +100,7 @@ If the data directory location needs to be changed, remove/edit this file and re
 . Deploy the IPT
 +
 --
-Download the latest WAR release of the IPT from the xref:news.adoc[release page] or https://www.gbif.org/ipt, and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
+Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
 
 If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
 --

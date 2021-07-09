@@ -10,7 +10,7 @@ Ultimately your metadata needs to be transformed into an XML metadata document. 
 
 No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata. The IPT makes sure it's in the proper valid XML format.
 
-Alternatively if your metadata is already in EML or Dublin Core, you can upload it in these formats to the IPT. Guidance on how to do that can be found xref:manage-resources#upload-a-metadata-file[here].
+Alternatively if your metadata is already in EML or Dublin Core, you can upload it in these formats to the IPT. Guidance on how to do that can be found xref:manage-resources.adoc#upload-a-metadata-file[here].
 
 For extra guidance, you can look at the <<Exemplar datasets>>.
 
