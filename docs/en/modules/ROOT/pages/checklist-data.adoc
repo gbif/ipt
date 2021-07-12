@@ -19,7 +19,7 @@ For extra guidance, you can refer to the guide xref:best-practices-checklists.ad
 link:{attachmentsdir}/downloads/checklist_ipt_template_v1.xlsx[image:ipt2/excel-template2.png[Excel Template]]
 link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]
 
-Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml[list].
+Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}.xml[list].
 
 ==== Required DwC fields
 
@@ -41,11 +41,11 @@ Populate it and upload it to the IPT. Try to augment it with as many http://rs.t
 
 ==== Q. *How do I add common names to a taxon record?*
 
-*A.* Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml[list]. You can upload this table to the IPT, and map it to the http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml[Vernacular Name extension].
+*A.* Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this {latest-vernacularname}[list]. You can upload this table to the IPT, and map it to the {latest-vernacularname}[Vernacular Name extension].
 
 ==== Q. *How do I add the threat status of a species as defined by IUCN?*
 
-*A.* Make a table of geographic distributions of a taxon. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your geographic distributions table with extra columns such as the threat status, but only using term names from this http://rs.gbif.org/extension/gbif/1.0/distribution.xml[list]. You can upload this table to the IPT, and map it to the http://rs.gbif.org/extension/gbif/1.0/distribution.xml[Species Distribution extension].
+*A.* Make a table of geographic distributions of a taxon. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your geographic distributions table with extra columns such as the threat status, but only using term names from this {latest-species-distribution}[list]. You can upload this table to the IPT, and map it to the {latest-species-distribution}[Species Distribution extension].
 
 ==== Q. *Can I update the https://doi.org/10.15468/39omei[GBIF Backbone Taxonomy] with names from my checklist?*
 

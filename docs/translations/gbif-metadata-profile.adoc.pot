@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 10:56+0000\n"
+"POT-Creation-Date: 2021-07-02 13:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -405,8 +405,8 @@ msgstr ""
 msgid ""
 "Use the schema location for version 1.1 of the GBIF Metadata Profile in the "
 "`<eml:eml>` root element: `<eml:eml ... xsi:schemaLocation=\"eml://"
-"ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/"
-"eml.xsd\" ...>`."
+"ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-"
+"profile/1.1/eml.xsd\" ...>`."
 msgstr ""
 
 #. type: Plain text
@@ -675,7 +675,7 @@ msgid ""
 "\n"
 "| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#pubDate[pubDate] | The date that the resource was published. The format should be represented as: CCYY, which represents a 4 digit year, or as CCYY-MM-DD, which denotes the full year, month, and day. Note that month and day are optional components. Formats must conform to ISO 8601. E.g. 2010-09-20.\n"
 "\n"
-"| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#language[language] | The language in which the resource (not the metadata document) is written. This can be a well-known language name, or one of the ISO language codes to be more precise. GBIF recommendation is to use the ISO language code (http://vocabularies.gbif.org/vocabularies/lang). E.g., English.\n"
+"| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#language[language] | The language in which the resource (not the metadata document) is written. This can be a well-known language name, or one of the ISO language codes to be more precise. GBIF recommendation is to use the ISO language code (https://api.gbif.org/v1/enumeration/language). E.g., English.\n"
 "\n"
 "| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#additionalInfo[additionalInfo] | Information regarding omissions, instructions or other annotations that resource managers may wish to include with a dataset. Basically, any information that is not characterized by the other resource metadata fields.\n"
 "\n"
@@ -746,7 +746,7 @@ msgid ""
 "\n"
 "| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-party.html#country[country] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The country field is used for the name of the contact's country. The country name is most often derived from the ISO 3166 country code list. E.g., Japan.\n"
 "\n"
-"| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-party.html#onlineUrl[onlineUrl] | A link to associated online information, usually a web site. When the party represents an organization, this is the URL to a website or other online information about the organization. If the party is an individual, it might be their personal web site or other related online information about the party. E.g., http://www.yourdomain.edu/~doe.\n"
+"| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-party.html#onlineUrl[onlineUrl] | A link to associated online information, usually a web site. When the party represents an organization, this is the URL to a website or other online information about the organization. If the party is an individual, it might be their personal web site or other related online information about the party. E.g., https://www.example.edu/botany.\n"
 msgstr ""
 
 #. type: Title ===
@@ -891,7 +891,7 @@ msgid ""
 "\n"
 "| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-dataset.html#purpose[purpose] | A description of the purpose of this dataset.\n"
 "\n"
-"| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#intellectualRights[intellectualRights] | A rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might include requirements for use, requirements for attribution, or other requirements the owner would like to impose. E.g., Copyright 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
+"| https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/./eml-resource.html#intellectualRights[intellectualRights] | A rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might include requirements for use, requirements for attribution, or other requirements the owner would like to impose. E.g., © 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
 msgstr ""
 
 #. type: Title ===
@@ -912,14 +912,14 @@ msgid ""
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:356
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:358
 #, no-wrap
 msgid ""
 "| Term                   | Definition\n"
 "\n"
 "| dateStamp | The dateTime the metadata document was created or modified. E.g., 2002-10-23T18:13:51.235+01:00\n"
 "\n"
-"| metadataLanguage | The language in which the metadata document (as opposed to the resource being described by the metadata) is written. Composed of an ISO639-2/T three-letter language code and an ISO3166-1 three-letter country code. E.g., en_UK\n"
+"| metadataLanguage | The language in which the metadata document (as opposed to the resource being described by the metadata) is written. Composed of an ISO639-2/T three-letter language code and an ISO3166-1 three-letter country code. E.g., en_GB\n"
 "\n"
 "| hierarchyLevel | Dataset level to which the metadata applies; default value is “dataset”[8] E.g., dataset\n"
 "\n"
@@ -943,5 +943,22 @@ msgid ""
 "\n"
 "| specimenPreservationMethod | Picklist keyword indicating the process or technique used to prevent physical deterioration of non-living collections. Expected to contain an instance from the Specimen Preservation Method Type Term vocabulary.   E.g., formaldehyde.\n"
 "\n"
-"| jgtiCuratorialUnit | A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by 1) an exact number of “JGI-units” in the collection plus a measure of uncertainty (+/- x); 2) a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted. The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitized. This is to avoid having to update the numbers too often. The number of non-public data (not digitized or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.\n"
+"| jgtiCuratorialUnit\n"
+"a| A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by\n"
+"\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:359
+#, no-wrap
+msgid "an exact number of “JGI-units” in the collection plus a measure of uncertainty (± x);\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:362
+#, no-wrap
+msgid ""
+"a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted.\n"
+"\n"
+"The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitized. This is to avoid having to update the numbers too often. The number of non-public data (not digitized or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.\n"
 msgstr ""

@@ -41,7 +41,7 @@ Documenting the provenance and scope of datasets is required in order to publish
 
 The Darwin Core Archive format provides the structural framework for publishing sampling-event data. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one *core file*, listing the sampling events (sampling protocol, sample size, location, etc.) surrounded by a number of ‘*extensions*’, that describe related data types (such as species occurrences, measurements or facts related to the sampling event, etc). Links between core and extension records are made using an event identifier (*eventID*) data element. In this way, many extension records can exist for each single core event record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to sampling-event datasets.
 
-. Darwin Core Archive data files in 'star schema'
+.Darwin Core Archive data files in 'star schema'
 image::figures/dwc-a_event.png[]
 
 An alternative way to encode sampling-event data is listing the species occurrence in the core file, surrounded by a number of extensions, that describe the related data types (such as measurements relating to the species occurrences, etc). Note listing sampling events in the core file is preferable if a plot or site is the main focus of the study.
@@ -68,11 +68,11 @@ The following Darwin Core fields store the sample size of a sampling event:
 * *sampleSizeValue*: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.
 * *sampleSizeUnit*: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.
 
-The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml[Unit of Measurement Vocabulary]. Examples are given in Table 1 below.
+The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. Examples are given in Table 1 below.
 
 You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points.
 
-. sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre.*
+.sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre.
 |===
 | sampleSizeValue | sampleSizeUnit
 
@@ -85,12 +85,13 @@ You may represent a sampling area by using an appropriate WKT shape or latitude/
 === Quantity and abundance
 
 The following Darwin Core fields are also required to be used as a pair:
+
 * *organismQuantity*: a numeric or enumeration value for the quantity of organisms.
 * *organismQuantityType*: the type of quantification system used for the quantity of organisms.
 
-Table 2 lists some example values. The value of organismQuantity is a number or enumeration, e.g.,  “27” for an organismQuantityType “individuals”, “12.5” for an organismQuantityType “%biomass”, or “r” for an organismQuantityType “BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity being measured) is expected to be drawn from a small controlled vocabulary with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, “%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with organismQuantity values: + on DominScale; 5 on BraunBlanquetScale; 45 for %Biomass.
+Table 2 lists some example values. The value of organismQuantity is a number or enumeration, e.g.,  “27” for an organismQuantityType “individuals”, “12.5” for an organismQuantityType “%biomass”, or “r” for an organismQuantityType “BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity being measured) is expected to be drawn from a small controlled vocabulary with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, “%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with organismQuantity values: “+” on DominScale; “5” on BraunBlanquetScale; “45” for %Biomass.
 
-. organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale.*
+.organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale.
 |===
 | organismQuantity | organismQuantityType
 
@@ -109,7 +110,7 @@ Make sure to reuse existing stable identifiers and do not create a new identifie
 
 === How to capture hierarchy of events
 
-Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot[7] each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3).
+Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3).
 
 Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata.
 
@@ -131,7 +132,7 @@ The files associated have to be hosted on an external server and linked to the o
 
 A number of fields require the usage of unique identifiers: dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID.
 
-As mentioned previously, although no particular format is enforced, we advise publishers to use Global Unique IDtenifiers (GUIDs). There are a few online services which can provide such identifiers. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland.
+As mentioned previously, although no particular format is enforced, we advise publishers to use Global Unique IDentifiers (GUIDs). There are a few online services which can provide such identifiers. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland.
 
 === Protect location of sensitive species
 
@@ -199,8 +200,8 @@ Following are some examples of typical sampling-event data sets. In each case, t
 |===
 | EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude
 
-| C_1428 | AQEM | 1.25 | m^2 | 21/06/2006 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369
-| B_1538 | AQEM | 1.25 | m^2 | 11/06/2008 | Kinzig W3 Bulau | 50.1316 | 8.9657
+| C_1428 | AQEM | 1.25 | m^2 | 2006-06-21 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369
+| B_1538 | AQEM | 1.25 | m^2 | 2008-11-06 | Kinzig W3 Bulau | 50.1316 | 8.9657
 |===
 
 *Extension (Occurrence) table*
@@ -371,11 +372,11 @@ Several environmental measurements (e.g., temperature, wind speed, cloudiness) a
 
 === Nested samples
 
-. Several sub-plots may be related to the parentEventID as in this example of a Whittaker plot consisting of 13 sub-plots (see Figure 3 for plot layout).
+.Several sub-plots may be related to the parentEventID as in this example of a Whittaker plot consisting of 13 sub-plots (see Figure 3 for plot layout).
 |===
 | EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...
 
-| A1 |  | Modified Whittaker Plot | 1000 | m^2 | 18/03/84 | Monarch | 55.72 | 13.28 |
+| A1 |  | Modified Whittaker Plot | 1000 | m^2 | 1984-03-18 | Monarch | 55.72 | 13.28 |
 | A1.1 | A1 |  | 100 | m^2 |  |  | | |
 | A1.2 | A1 |  | 10 | m^2 |  |  | | |
 | A1.3 | A1 |  | 10 | m^2 |  |  | | |
@@ -392,13 +393,13 @@ Several environmental measurements (e.g., temperature, wind speed, cloudiness) a
 |===
 
 .A Schematic of a Whittaker plot consisting of 13 sub-plots of varying area.
-image::figures/whittaker-plot.png[]
+image::figures/whittaker_plot.png[]
 
 === Additional information that could also be included or was previously included
 
 The Event core elements are mainly drawn from the DwC classes Event, Location and Geological Context (Table 3). The Occurrence extension elements are drawn from the Occurrence, Taxon and Identification classes. For reasons of consistency, the Occurrence extension includes all terms found in the Occurrence core. Thus Event, Location and Geological Context terms are also listed for the Occurrence extension but are actually redundant. Note the IPT hides redundant terms by default when mapping for the user’s convenience.
 
-. Placement of the sample related terms in the Event core and Occurrence extension.
+.Placement of the sample related terms in the Event core and Occurrence extension.
 [cols="1h,1"]
 |===
 | Event Core

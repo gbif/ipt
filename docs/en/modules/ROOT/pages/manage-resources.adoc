@@ -448,7 +448,7 @@ image::ipt2/manage/IPTManageResourceMetadataCollectionData.png[]
 +
 image::ipt2/manage/IPTManageResourceMetadataCollections.png[]
 
-* *Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the http://rs.gbif.org/vocabulary/gbif/preservation_method.xml[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.
+* *Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.
 ** *Add new preservation method* -  click on this link to add the text boxes required for an additional preservation method in the Specimen Preservation Methods section.
 ** *Remove this preservation method* - click on this link to remove the preservation method that follows immediately below the link.
 +
@@ -563,7 +563,7 @@ The IPT writes data files inside the DwC-A as tab delimited files void of line b
 After writing, the IPT also validates their content in the following ways:
 
 * If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique.
-* The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary].
+* The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary].
 
 ==== Assigning DOIs to Resources
 

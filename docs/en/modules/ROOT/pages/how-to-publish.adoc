@@ -42,10 +42,10 @@ image::ipt2/flow-all.png[]
 ** Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended
 ** Hint: it is possible to use data stored in a xref:database-connection.adoc[supported database]
 . Upload your data to the IPT
-** Hint: refer to the xref:index.adoc[IPT User Manual] for additional guidance
-. Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the http://rs.gbif.org/core/dwc_event_2015_05_29.xml[Event Core].
+** Hint: refer to other sections of this manual for additional guidance, such as the xref:manage-resources.adoc[Manage Resources Menu] section.
+. Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}.xml[Event Core].
 . Fill in resource metadata using the IPT's metadata editor
 . Publish the dataset (make it freely and openly available worldwide)
 . Register the dataset with GBIF.
 +
-NOTE: your organization must be registered with GBIF (see prerequisite #2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT.
+NOTE: Your organization must be registered with GBIF (see prerequisite 2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT.

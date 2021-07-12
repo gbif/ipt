@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"POT-Creation-Date: 2021-07-09 11:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,12 +306,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:104
 msgid ""
-"Download the latest WAR release of the IPT from the xref:news.adoc[release "
-"page] or https://www.gbif.org/ipt, and rename it to `ipt.war` (or similar, "
-"matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the "
-"Tomcat webapps folder, and then start Tomcat if it is not already running. "
-"You can then invoke the IPT in a web browser running on the same server by "
-"using the following URL: http://localhost:8080/ipt"
+"Download the latest WAR release of the IPT from the xref:releases."
+"adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt."
+"xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps "
+"folder, and then start Tomcat if it is not already running. You can then "
+"invoke the IPT in a web browser running on the same server by using the "
+"following URL: http://localhost:8080/ipt"
 msgstr ""
 
 #. type: Plain text
@@ -456,68 +456,12 @@ msgid ""
 "uses Apache HTTPD, with the `mod_proxy` module installed. The paths https://"
 "ipt.gbif.org/media/[`/media`] and https://ipt.gbif.org/icons/[`/icons`] are "
 "excluded from being passed to the IPT, to allow hosting static image files "
-"(e.g. occurrence images) on the same server.  Requests to http://ipt.gbif."
+"(such as occurrence images) on the same server.  Requests to http://ipt.gbif."
 "org/ are redirected to the secure https://ipt.gbif.org/."
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:168
+#: en/modules/ROOT/pages/installation.adoc:167
 #, no-wrap
-msgid ""
-"<VirtualHost *:80>\n"
-"        ServerName                 ipt.gbif.org\n"
-"        CustomLog                  logs/ipt-80_log combined\n"
-msgstr ""
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:171
-#, no-wrap
-msgid ""
-"        Redirect                   / https://ipt.gbif.org/\n"
-"</VirtualHost>\n"
-msgstr ""
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:176
-#, no-wrap
-msgid ""
-"<VirtualHost *:443>\n"
-"        ServerName                 ipt.gbif.org\n"
-"        ErrorLog                   logs/ipt-443_error\n"
-"        CustomLog                  logs/ipt-443_log combined\n"
-msgstr ""
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:178
-#, no-wrap
-msgid "        DocumentRoot               /var/www/html/ipt\n"
-msgstr ""
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:181
-#, no-wrap
-msgid ""
-"        Options                    +Indexes\n"
-"        AddDefaultCharset          UTF-8\n"
-msgstr ""
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:188
-#, no-wrap
-msgid ""
-"        ProxyPreserveHost          On\n"
-"        ProxyPass                  /icons !\n"
-"        ProxyPass                  /media !\n"
-"        ProxyPass                  / http://localhost:8080/ipt/\n"
-"        ProxyPassReverse           / http://localhost:8080/ipt/\n"
-"        ProxyPassReverseCookiePath /ipt /\n"
-msgstr ""
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:192
-#, no-wrap
-msgid ""
-"        SSLEngine                  On\n"
-"        # Other SSL configuration (certificates etc)\n"
-"</VirtualHost>\n"
+msgid "include::partial$apache-configuration-example.conf[]\n"
 msgstr ""
