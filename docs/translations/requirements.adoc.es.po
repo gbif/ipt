@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:22\n"
+"PO-Revision-Date: 2021-07-12 02:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -81,7 +81,7 @@ msgstr "El espacio requerido por la aplicación del IPT es menor a 100 MB. El co
 #: en/modules/ROOT/pages/requirements.adoc:18
 #, no-wrap
 msgid "Java version"
-msgstr ""
+msgstr "Versión de Java"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:21
