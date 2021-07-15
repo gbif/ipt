@@ -1,5 +1,5 @@
 name: ipt
-title: IPT
+title: Integrated Publishing Toolkit
 version: 2.4
 start_page: ROOT:index.adoc
 nav:
@@ -8,3 +8,6 @@ asciidoc:
   attributes:
     idprefix: '@'
     idseparator: '-@'
+    manual-version: 2.4
+    # EML
+    eml-location: http://web.archive.org/web/2013if_/http://knb.ecoinformatics.org/software/eml/eml-2.1.1

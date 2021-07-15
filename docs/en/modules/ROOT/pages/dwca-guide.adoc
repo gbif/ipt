@@ -11,13 +11,13 @@ image::figures/cover_art_cicindelinae.png[]
 
 | http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1[1.0]    | Content review and additions | April 2011     | David Remsen, Markus Döring
 | 2.0     | Transferred to wiki, major edits | 9 May 2017      | Kyle Braak
-| 2.1     | Minor edits, updating links etc  | 8 February 2021 | Matthew Blissett
-| 2.2     | Conversion to AsciiDoc  | 25 May 2021 | Matthew Blissett
+| https://github.com/gbif/ipt/wiki/DwCAHowToGuide[2.1]     | Minor edits, updating links etc  | 8 February 2021 | Matthew Blissett
+| xref:dwca-guide.adoc[2.2]     | Conversion to AsciiDoc  | 25 May 2021 | Matthew Blissett
 |===
 
 == Suggested citation
 
-> GBIF (2021). Darwin Core Archives – How-to Guide, version 2.1, released on 8 February 2021, (contributions by Remsen D, Braak, K, Döring M, Robertson, T, Blissett M), Copenhagen: Global Biodiversity Information Facility, accessible online at: #TODO#
+> GBIF (2021). Darwin Core Archives – How-to Guide, version 2.1, released on 8 February 2021, (contributions by Remsen D, Braak, K, Döring M, Robertson, T, Blissett M), Copenhagen: Global Biodiversity Information Facility, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/dwca-guide
 
 _Cover art credit: Kim Wismann, Cicindelinae_
 
@@ -37,7 +37,7 @@ The production of a DwC-A requires the use of stable identifiers for core record
 
 A DwC-A may consist of a single data file or multiple files, depending on the scope of the published data. The specific types of files that may be included in an archive are the following:
 
-. *A required core data file* consisting of a standard set of http://rs.tdwg.org/dwc/terms/[Darwin Core terms]. The data file is formatted as *fielded text*, where data records are expressed as rows of text, and data elements (columns) are separated with a standard delimiter such as a tab or comma (commonly referred to as CSV or ‘https://en.wikipedia.org/wiki/Comma-separated_values[comma-separated value’ files]). The first row of the data file may optionally contain data or represent a ‘header row’. In general, if a header row is included, it contains the names of the Darwin Core terms represented in the succeeding rows of data.
+. *A required core data file* consisting of a standard set of http://rs.tdwg.org/dwc/terms/[Darwin Core terms]. The data file is formatted as *fielded text*, where data records are expressed as rows of text, and data elements (columns) are separated with a standard delimiter such as a tab or comma (commonly referred to as CSV or link:https://en.wikipedia.org/wiki/Comma-separated_values[‘comma-separated value’ files]). The first row of the data file may optionally contain data or represent a ‘header row’. In general, if a header row is included, it contains the names of the Darwin Core terms represented in the succeeding rows of data.
 GBIF currently supports the following three biodiversity data types as the basis for a core data file:
 +
 --
@@ -60,7 +60,7 @@ NOTE: A metafile is *required* when an archive includes any extension files or i
 image::figures/meta_file.png[The metafile describes the file names and fields in the core and extension files]
 --
 
-. Datasets require documentation. This is achieved in a DwC-A by including a *resource metadata document* that provides information about the dataset itself such as a description (abstract) of the dataset, the agents responsible for authorship, publication and documentation, bibliographic and citation information, collection methods and much more. GBIF currently supports a metadata profile based on the https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/index.html[Ecological Metadata Language] but other metadata standards exist and may be supported. The GBIF Metadata Profile's XML Schema description can be found on the http://rs.gbif.org/schema/eml-gbif-profile/[GBIF Schema Repository]
+. Datasets require documentation. This is achieved in a DwC-A by including a *resource metadata document* that provides information about the dataset itself such as a description (abstract) of the dataset, the agents responsible for authorship, publication and documentation, bibliographic and citation information, collection methods and much more. GBIF currently supports a metadata profile based on the {eml-location}/index.html[Ecological Metadata Language] but other metadata standards exist and may be supported. The GBIF Metadata Profile's XML Schema description can be found on the http://rs.gbif.org/schema/eml-gbif-profile/[GBIF Schema Repository]
 +
 --
 image::figures/metadata_file.png[A metadata document describes the complete dataset]
@@ -219,6 +219,7 @@ The following tools for Linux, Mac and Windows can be used to convert character 
 
 Ex.: Convert character encodings from Windows-1252 to UTF-8 using https://linux.die.net/man/1/iconv[*iconv*]:
 
+[source,shell]
 ----
 iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt
 ----
@@ -227,6 +228,7 @@ iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt
 
 It is easy to produce delimited text files from a database using the SQL commands. For MySQL, use the `SELECT INTO outfile` command. The encoding of the resulting file will depend on the server variables and collations used, and might need to be modified before the operation is done. Note that MySQL will export NULL values as `\N` by default. Use the IFNULL() function as shown in the following example to avoid this:
 
+[source,sql]
 ----
 SELECT
   IFNULL(id, ''), IFNULL(scientific_name, ''), IFNULL(count,'')
