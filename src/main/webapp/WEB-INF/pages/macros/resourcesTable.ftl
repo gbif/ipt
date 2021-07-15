@@ -52,8 +52,13 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
         ];
 
         $(document).ready(function() {
+            const SEARCH_PARAM = "search";
+
+            var urlParams = new URLSearchParams(window.location.search);
+            var searchParam = urlParams.get(SEARCH_PARAM) ? urlParams.get(SEARCH_PARAM) : "";
+
             $('#tableContainer').html( '<table  class="table table-sm" id="rtable"></table>' );
-            $('#rtable').DataTable( {
+            var dt = $('#rtable').DataTable( {
                 "aaData": aDataSet,
                 "iDisplayLength": ${numResourcesShown},
                 "bLengthChange": false,
@@ -88,6 +93,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 "aoColumnDefs": [
                     { 'bSortable': false, 'aTargets': [ 0 ] }
                 ],
+                "oSearch": {"sSearch": searchParam},
                 "fnInitComplete": function(oSettings) {
                     /* Next published date should never be before today's date, otherwise auto-publication must have failed.
                        In this case, highlight the row to bring the problem to the resource manager's attention. */
@@ -106,6 +112,17 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     }
                 }
             } );
+
+            dt.on( 'search.dt', function () {
+              if (history.pushState) {
+                var searchValue = dt.search();
+                var searchParams = new URLSearchParams(window.location.search);
+                searchParams.set(SEARCH_PARAM, searchValue);
+                var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+                window.history.pushState({path: newurl}, '', newurl);
+              }
+            });
+
         } );
     </script>
 </#macro>
