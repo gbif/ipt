@@ -1,0 +1,69 @@
+= Configuración inicial del IPT
+
+== Data directory
+
+NOTE: This step is only shown if the data directory was not already configured during installation.
+
+La primera vez que el IPT sea ejecutado, se presentarán unos pasos simples para preparar el IPT para su uso. La página de instalación del IPT (ver imagen de la pantalla a continuación) es la primera de dos páginas de instalación y requiere una ubicación en la que se puedan almacenar los datos para la instalación del IPT. El formato de la ubicación introducida en la página debe cumplir con el estándar para una ruta absoluta a un directorio en el sistema operativo en el que está instalado el IPT, este formato no soporta rutas relativas. Por ejemplo, utilice una ruta como `C:\datadir` para entornos Windows o `/srv/datadir` para entornos Unix y Mac OS X. El IPT debe tener permiso de escritura en la ubicación seleccionada. Si lo tiene, la ruta se puede introducir en el cuadro de texto y luego hacer clic en el botón "Guardar", con lo cual se creará el directorio en caso de que este no exista. Es posible crear primero el directorio de datos con los permisos de escritura adecuados, y a continuación introducir la ruta absoluta al directorio en el cuadro de texto y hacer clic en el botón "Guardar".
+
+CAUTION: no seleccione un directorio de datos que sea vulnerable a cambios o eliminaciones accidentales. No utilice /tmp, por ejemplo, en sistemas en los que se elimine el contenido de esta carpeta en un reinicio del sistema. *Se deberá realizar una copia de seguridad del directorio de datos con regularidad, de acuerdo con un plan apropiado de recuperación ante desastres.* La pérdida de los contenidos del directorio de datos tendrá como resultado la pérdida de recursos, del usuario y de otra información de configuración y personalizaciones a la instalación IPT.
+
+NOTE: If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup. Clicking on "Save" in this case will bypass the page titled IPT setup II and present the IPT Administration page.
+
+NOTE: If you receive an error stating the location is not writable, see xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[the FAQ item on this].
+
+TIP: haga clic en el nombre del idioma que está en la esquina superior derecha para verificar si el idioma de su preferencia está disponible para usar el IPT.
+
+image::ipt2/setup/IPTSetup1.png[]
+
+== Administrator user and URLs
+If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:
+
+* Administrador predeterminado
++
+--
+El Administrador predeterminado tendrá un nombre de usuario definido y la autoridad para realizar cambios en todos los aspectos de la instalación del IPT. Puede crear cuentas de usuario adicionales, incluyendo otros administradores que tengan la misma autoridad para hacer cambios. Aunque los administradores pueden ser añadidos y eliminados, el IPT siempre debe tener al menos un responsable asignado.
+
+* *Correo electrónico* - La dirección de correo electrónico completa y activa del administrador predeterminado en la instalación del IPT.
+* *Nombre* - El nombre del administrador predeterminado.
+* *Apellido* - El apellido del administrador predeterminado.
+* *Contraseña* - Una contraseña para el administrador predeterminado.
++
+[NOTE]
+====
+La contraseña debe ser segura y estar a salvo de perderse, ya que no es recuperable desde la aplicación del IPT.
+====
+* *Verificar contraseña* - Una copia exacta de la contraseña tal como se ingresó en el cuadro de texto Contraseña, para confirmar que se haya ingresado correctamente.
+--
+
+* Modo del IPT
++
+--
+WARNING: para una instalación dada, esta selección es definitiva y no puede ser cambiada posteriormente.
+
+El modo del IPT determina si los recursos alojados serán o no indexados por GBIF, con el fin de facilitar el acceso público. GBIF recomienda a los administradores del IPT, usar en un principio el modo Prueba para entender el proceso de registro, y luego reinstalarlo en modo Producción para efectuar publicaciones formales.
+
+* *Modo del IPT*
++
+Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (which can be requested from DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible.
+--
+
+* Public URL
++
+The public, Internet-accessible URL that points to the root of this IPT installation. The URL is detected automatically if possible. On production systems it needs to be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow resources to be publicly accessible.
+
+* Institutional proxy URL (optional)
++
+If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here. For example, `\http://proxy.example.org:8080`.
+
+image::ipt2/setup/IPTSetup2.png[]
+
+Cuando toda la información en la página esté completa y correcta, haga clic en el botón "Guardar" para completar el proceso de instalación del IPT. Si se presenta algún problema, aparecerá un mensaje de error en la parte superior de la página con recomendaciones acerca de cómo resolverlo. Siempre y cuando el problema haya sido resuelto, al reiniciar el servidor web este mensaje de error desaparecerá. Si la configuración fue exitosa, aparecerá una página de confirmación de la configuración.
+
+image::ipt2/setup/IPTSetupFinished.png[]
+
+Haga clic en el botón "Continuar" para abrir la página de Administración del IPT (véase a continuación la imagen de la pantalla), en la que se pueden realizar configuraciones adicionales. Por favor revise la explicación de todas las funciones de Administración antes de continuar. Detalles sobre las opciones presentadas en esta pantalla se muestran en la sección xref:administration.adoc[Menú Administración]. Antes de añadir fuentes de datos al IPT, el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF, y asociar el IPT con una organización. El botón “Organizaciones” estará desactivado predeterminadamente hasta que se hayan establecido las opciones de registro en GBIF.
+
+image::ipt2/administration/IPTAdminBeforeRegistration.png[]
+
+Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the following sections of this user manual.

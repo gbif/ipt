@@ -1,0 +1,47 @@
+= Menú Inicio
+
+Esta página permite a los usuarios ver una lista de los recursos públicos, si los hay, y ver los metadatos detallados de cualquier recurso en la lista.
+
+image::ipt2/home/IPTHome.png[]
+
+== Tabla de Recursos Públicos
+Si hay recursos públicos, estos serán relacionados en una tabla que tiene las siguientes columnas:
+
+* *Logo* - El logo del recurso (se puede configurar en la página "Metadatos Adicionales" de los metadatos del recurso).
+* *Nombre* - El título del recurso tal como figura en el Título de la entrada de los metadatos del recurso. El nombre aparece como un enlace, que abrirá una "Página Visualización de Metadatos" (ver más adelante) para el recurso seleccionado.
+* *Organización* - La organización bajo la cual el recurso ha sido registrado. Si el recurso no está registrado, el valor en la columna de Organización será "No registrado". Revise la información en el encabezado “Organizaciones”, en la sección de "Menú Administración" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.
+* *Tipo* - El tipo de recurso como figura en la lista desplegable de Tipo en la página xref:manage-resources.adoc#metadatos-basicos[Metadatos Básicos] de los metadatos del recurso.
+* *Subtype* - El subtipo del recurso como figura en la lista desplegable de Subtipo en la página xref:manage-resources.adoc#metadatos-basicos[Metadatos Básicos] de los metadatos del recurso.
+* ** Registros **: el número de filas de datos en el archivo de datos centrales del último archivo de Darwin Core publicado para el recurso. Para los recursos que tienen datos en uno o más archivos de extensión, el número se vincula a la página Registros de datos en la página de inicio del recurso que muestra un desglose de los recuentos de registros por extensión.
+* *Última modificación* - Ya sea la fecha en la que fue creado el recurso o la fecha en la que los datos o los metadatos fueron modificados, aquella que sea más reciente.
+* *Última publicación* - La fecha en la que el recurso fue publicado por última vez.
+* *Próxima publicación* - La fecha en la que el recurso será publicado próximamente.
+
+== RSS feed
+El IPT apoya la agremiación a través de RSS para aquellos que desean monitorear los cambios en la configuración de los recursos. La fuente RSS está disponible haciendo clic en el enlace que aparece debajo de la lista de recursos públicos alojados. Puede ser leída en cualquier cliente estándar de RSS.
+
+== Inventario de recursos registrados
+El IPT provee un inventario JSON de todos los recursos registrados. Esta característica no se muestra en la interfaz de usuario. Para verla, simplemente adjunte `/inventory/dataset` a la URL básica del IPT e.g. https://ipt.gbif.org/inventory/dataset. GBIF utiliza este inventario para el monitoreo de la correcta indexación de los recursos a través de la comparación entre las cuentas de los objetivos y los registros indexados.
+
+== Página principal del Recurso
+La Página principal del Recurso está dirigida a los usuarios externos de un recurso. En esta, se muestra una lista de todos los metadatos de la versión seleccionada del recurso, provee los enlaces de descarga de los datos/metadatos de las versiones y exhibe el historial de versiones del recurso.
+
+Para ver la página principal de un recurso, el usuario puede hacer clic en el enlace del nombre en la lista de recursos de la página de inicio. Otra forma de acceder a la página principal de un recurso es utilizando el DOI: cuando un número DOI es asignado a un recurso a través del IPT, éste siempre remite al usuario a la página principal del recurso que representa.
+
+Por favor recuerde que sólo usuarios con el rol de Administrador u otros tipos de roles administrativos (con y sin derecho de registro) pueden editar los metadatos de un recurso. Para conocer más, refiérase a la información en la sección "Editar un recurso existente" en el "Menú Gestión de Recursos".
+
+image::ipt2/home/IPTHomeMetadataOverview.png[]
+
+=== Página de historial de versiones
+La tabla del historial de versiones muestra todas las versiones de un recurso que han sido publicadas, permitiéndole a los usuarios hacer el seguimiento de los cambios en el recurso a lo largo del tiempo y descargar las versiones previas de datos/metadatos. Tenga en cuenta que el Modo Archivo del IPT debe estar activado para que las versiones anteriores del DWCA sean guardadas (véase la sección xref:administration.adoc#configuracion-de-las-opciones-del-ipt[Configuración de las opciones del IPT]). Solo las versiones con acceso al público pueden ser vistas por usuarios externos, mientras que los gestores del recurso podrán ver todas las versiones. A continuación encontrará más información acerca de las columnas de la tabla.
+
+image::ipt2/home/IPTVersionHistoryTable.png[]
+
+A continuación se encuentran las explicaciones de las columnas de la tabla de versiones:
+
+* **Versión** - El número de la versión publicada, el cual usa el formato major_version.minor_version. La versión del recurso que se está viendo actualmente se indica con una flecha. Para abrir la página de inicio de una versión específica, haga clic en el número de la versión. **Nota**: un cambio considerable en comparación con la última versión publicada indica que ha ocurrido un cambio científicamente significativo.
+* **Publicado en** - La fecha de publicación de la versión.
+* **Registros** - El número de registros que contiene la versión publicada.
+* **Resumen de cambios** - Resumen de los cambios realizados desde la última versión publicada.
+* **Handle del DOI** - El handle DOI asignado a la versión publicada **Nota**: si el DOI obtenido es diferente al DOI de la última versión publicada, indica que se han realizado cambios científicamente significativos al recurso.
+* **Última modificación por** - Usuario del IPT que modificó por última vez la versión publicada.
