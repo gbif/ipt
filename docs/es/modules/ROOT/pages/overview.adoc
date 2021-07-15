@@ -1,0 +1,100 @@
+= Vista General
+
+The following sections explain in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the xref:getting-started.adoc[Getting Started Guide]. The details of this guide are presented in four sections corresponding to the four "menus" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in.
+
+== Controles de la interfaz del usuario
+La mayoría de los controles de la interfaz del usuario tienen los modos “habilitado” e “inhabilitado”. Si el control está habilitado, realizará una acción cuando se haga clic (un botón, por ejemplo), o permitirá que se realicen cambios a los valores que se vinculen al control (un texto o recuadro de selección o chequeo, por ejemplo). En este último caso, los cambios se guardarán, si es posible, cuando la forma en que aparecen sea guardada, lo que generalmente se realiza en una determinada página haciendo clic en el botón "Guardar". Los controles inhabilitados muestran el valor de la información asociada, pero no permiten que la información sea guardada bajo las condiciones vigentes en el momento en que aparecen. El objetivo de la mayoría de los controles de interfaz de usuario, se indica mediante una etiqueta asociada que aparece sobre y/o a la izquierda del control. En algunas ocasiones, información adicional también está disponible mediante un ícono de información asociada.
+
+*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the ☰ button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role, and the currently active screen is highlighted.
+
+.Barra de menú antes de iniciar sesión o después de que un usuario sin una función especial inicia sesión, con el "Menú Inicio" activo:
+image::ipt2/controls/IPTMenuBarHomeAbout.png[width=125,height=52]
+
+.Menú después de que inicie sesión, un usuario con función de Administrador con o sin derechos para registrar recursos, con el "Menú Gestión de Recursos" activo:
+image::ipt2/controls/IPTMenuBarHomeManageAbout.png[width=234,height=52]
+
+.Menú después de que inicie sesión, un usuario con función de Administrador, con el "Menú Administración" activo:
+image::ipt2/controls/IPTMenuBarHomeManageAdminAbout.png[width=353,height=52]
+
+*Cuadros de texto* - Permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).
+
+Example text box and label for an email address:
+
+image::ipt2/controls/Control-TextBoxExample.png[]
+
+*Cuadros de verificación* - Permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).
+
+Ejemplo de cuadros de verificación y de etiqueta para indicar que el IPT puede publicar los recursos: image:ipt2/controls/Control-CheckboxExample.png[width=233]
+
+*Cuadros de selección* - Permiten visualizar o seleccionar un valor de una lista de valores predefinidos. Un cuadro de selección puede contener un texto explicativo acerca de la escogencia de un valor seleccionable. En este caso, la selección iniciará con la palabra "Seleccione" (por ejemplo, "Seleccione un país, territorio o isla"). Haga clic en el cuadro de selección para desplegar la lista de posibles valores. Haga clic en una de las opciones para fijar ese valor.
+
+Ejemplo de cuadro de selección y de etiqueta para el rol del usuario, con la opción Administrador seleccionada: image:ipt2/controls/Control-SelectBoxExample.png[width=522]
+
+*Enlaces* - Abre una página diferente a la que contiene el enlace. Los enlaces pueden abrir la nueva página en la misma ventana del navegador (o pestaña) o en una ventana separada (o pestaña).
+
+Ejemplo de enlace a la página de información de la cuenta del usuario conectado: image:ipt2/Control-LinkExample.png[]
+
+*Ícono de Información* - Muestra un mensaje que explica la intención del control junto al que aparece. Haga clic en el ícono situado junto a cualquier elemento para ver un mensaje de ayuda acerca de ese control. Haga clic de nuevo para que el mensaje desaparezca. Algunos mensajes de información incluyen un enlace, que de ser seleccionado, ingresará el valor apropiado para la selección
+
+Ejemplo de ícono de información para la codificación de caracteres, después de seleccionar el enlace de UTF-8: image:ipt2/controls/Information-CharacterEncoding.png[width=464]
+
+*Ícono de Documentación* image:ipt2/controls/Control-DocumentationIcon.png[width=22] - Este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.
+
+*Icono de Papelera* image:ipt2/Control-TrashIcon.png[] - Este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.
+
+*Ícono de Calendario* image:ipt2/Control-CalendarIcon.png[] - Este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.
+
+Ejemplo del calendario asociado a un cuadro de texto llamado "Fecha Final" en el que 19 de julio 2013 es la fecha actual, pero aún no ha sido seleccionada:
+
+image:ipt2/Control-TextBoxWithCalendarOpen.png[]
+
+*Tabla ordenable* - Una tabla que permite ordenar las filas según los valores de una columna seleccionada en orden ascendente o descendente. Los encabezados de las columnas son las etiquetas de las columnas que aparecen como enlaces. Haga clic en un encabezado de columna para ordenar la tabla con los valores de esa columna. Haga clic nuevamente en el encabezado de la misma columna para ordenar la tabla en la dirección opuesta.
+
+Ejemplo de tabla ordenable en orden ascendente según la columna etiquetada "Nombre". image:ipt2/Control-TableSortedAscending.png[]
+
+Ejemplo de tabla ordenable en orden descendente según la columna etiquetada "Tipo". image:ipt2/Control-TableSortedDescending.png[]
+
+=== Carga de archivos
+
+La carga de archivos al IPT se puede hacer por medio de dos acciones: xref:manage-resources.adoc#_creando_un_nuevo_recurso[creando un nuevo recurso], o cuando se xref:manage-resources.adoc#conjuntos-de-datos[agregan nuevos archivos de conjuntos de datos].
+
+image:ipt2/controls/Control-UploadCreateResource.png[width=238]
+
+image:ipt2/controls/Control-UploadSourceData.png[width=230]
+
+El IPT tiene un límite de 100MB para la carga de archivos. Sin embargo no se tienen límites de tamaño para los Archivos Darwin Core que se deseen exportar o publicar a través del IPT. Para la carga en el IPT de conjuntos de datos de un tamaño mayor a los 100MB, se recomiendan las siguientes alternativas:
+
+* Comprimir el archivo (con zip o gzip)
+* Cargar los datos a una de las xref:database-connection.adoc[bases de datos soportadas por el IPT]
+* splitting the file up (when the dataset is published the IPT will concatenate the files in the order they are mapped)
+
+== Controles que aparecen en todas las páginas
+Esta sección describe diversas características que son accesibles en el encabezado y el pie de página de la mayoría de las páginas del IPT.
+
+=== Encabezado
+La sección "Encabezado" del IPT aparece en la esquina superior derecha de la mayoría de las páginas y permite un control básico del IPT, incluyendo el quién lo usa y en qué idioma. A continuación, se presentan dos imágenes de la pantalla que muestran los dos posibles estados en los que puede se puede encontrar el encabezado – sesión iniciada, y no iniciada.
+
+Encabezado, no ha iniciado sesión, idioma español seleccionado para la interfaz de usuario:
+
+image::ipt2/controls/IPTHeaderNotLoggedIn.png[width=350,height=54]
+
+Encabezado, sesión iniciada, idioma español seleccionado para la interfaz de usuario:
+
+image::ipt2/controls/IPTHeaderLoggedIn.png[width=350,height=54]
+
+* *Iniciar sesión* - Un usuario que se ha creado en esta instancia del IPT, puede iniciar sesión ingresando la dirección de correo electrónico y contraseña en la esquina superior derecha de la página, y haciendo clic en el vínculo "Iniciar sesión". Nuevos usuarios podrán ser creados únicamente por un usuario existente que tiene el rol Administrador. El proceso de creación de los nuevos usuarios se explica en el encabezado "Configurar Cuentas de Usuario" en la sección "Menú Administración". El proceso de iniciar el IPT asignará el rol Administrador al primer usuario.
+* *Cerrar sesión* - Si alguien inicia sesión en el IPT, la dirección de correo electrónico de la persona que se registra se mostrará en la esquina superior derecha de la página, junto con el enlace "Cerrar sesión".
+* *Cuenta* - Para visualizar este enlace y la página a la que conduce, debe iniciar sesión en el IPT. La página muestra los detalles de la información de la cuenta para la persona que inicia sesión en el IPT y permite que estos sean cambiados. Los detalles de los elementos de esta página se podrán encontrar en el encabezado "Configurar Cuentas de Usuario" en la sección "Menú Administración".
+* Selección del idioma - En la esquina superior derecha de la página está el nombre del idioma en el que se visualiza actualmente el IPT. El IPT se visualizará predeterminadamente en idioma inglés. El idioma de la interfaz del usuario se puede cambiar haciendo clic en el idioma deseado, si está disponible. GBIF busca activamente que el IPT sea traducido a otros idiomas. Para obtener más información, consulte la sección xref:translations.adoc[Cómo contribuir (página en ingés)] del sitio de la wiki del IPT de GBIF en Google Code.
+
+=== Pie de Página
+La sección "Pie de Página" del IPT aparece en la parte inferior de la mayoría de las páginas y contiene información acerca de la versión del IPT y de enlaces a recursos importantes.
+
+image::ipt2/controls/IPTFooter.png[]
+
+* *Versión* - A la izquierda de "Pie de Página" en la parte inferior de la página se encuentra la versión del IPT que se está ejecutando en el momento. La información de la versión se puede utilizar para determinar qué características están incluidas en el IPT y los errores existentes. Esta es la información de la versión que se solicita al momento de generar los informes de error.
+* *Acerca del proyecto IPT* - Este enlace lleva al https://www.gbif.org/es/ipt[sitio web de IPT], donde puede obtener información adicional sobre el IPT, incluyendo la última versión de este manual, temas pendientes, código fuente, y documentación relacionada.
+* *Manual de Usuario* - Este enlace abrirá la versión más reciente publicada en línea del Manual de Usuario del IPT.
+* https://github.com/gbif/ipt/issues/[*Reportar un error*] - Este enlace abrirá la lista de los temas pendientes para el IPT. Si cree que ha encontrado un error, revise la lista de problemas conocidos para verificar si este error ya ha sido reportado. Si es así, es posible añadir nueva información a manera de comentario al reporte de error existente, lo cual podría ayudar a los ingenieros a diagnosticar y corregir el problema. Si en la lista no hay ningún error similar al que encontró en el IPT, puede crear un nuevo informe de errores, haga clic en el enlace "Nuevos Errores". Al reportar un nuevo error, se recomienda incluir la versión del IPT que está utilizando (ver la explicación de "Versión").
+* https://github.com/gbif/ipt/issues/new[*Request new feature*] - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.
+* *Derechos de Autor* - GBIF posee los derechos de autor del software del IPT. Un enlace a la página principal de GBIF está disponible. Los detalles de los derechos de autor y las licencias se podrán ver en la sección "Acerca del IPT" de este manual de usuario.
