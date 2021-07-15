@@ -1,7 +1,7 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#setting number_format="#####.##">
-    <script type="text/javascript" xmlns="http://www.w3.org/1999/html">
+    <script xmlns="http://www.w3.org/1999/html">
         var DATE_RANGE = "DATE_RANGE";
         var FORMATION_PERIOD = "FORMATION_PERIOD";
         var LIVING_TIME_PERIOD = "LIVING_TIME_PERIOD";

@@ -1,7 +1,7 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.source.title'/></title>
-<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
@@ -57,7 +57,7 @@
                                 <tr>
                                     <th>${releasedTitle?cap_first}</th>
                                     <#if history.released??>
-                                        <td>${history.released?date!}</td>
+                                        <td>${history.released?datetime?string.long_medium!}</td>
                                     <#else>
                                         <td>${emptyPlaceholder}</td>
                                     </#if>

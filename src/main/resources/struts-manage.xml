@@ -72,7 +72,7 @@
     <action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
-      <allowed-methods>addManager,delete,deleteDoi,deleteManager,makePrivate,makePublic,registerResource,reserveDoi,undelete</allowed-methods>
+      <allowed-methods>addManager,delete,deleteFromIpt,deleteDoi,deleteManager,makePrivate,makePublic,registerResource,reserveDoi,undelete</allowed-methods>
     </action>
 
     <action name="auto-publish" class="org.gbif.ipt.action.manage.AutoPublishAction">

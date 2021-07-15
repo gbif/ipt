@@ -2014,7 +2014,7 @@ public class ResourceManagerImplTest {
     assertTrue(cfg.exists());
     assertEquals(2, res1.listFiles().length);
 
-    // invalid resource
+    // possibly invalid resource, but we no longer delete such
     File res2 = new File (resourceDirectory, "res2");
     res2.mkdir();
     File eml2 = new File (res2, "eml.xml");
@@ -2023,7 +2023,7 @@ public class ResourceManagerImplTest {
     assertTrue(eml2.exists());
     assertEquals(1, res2.listFiles().length);
 
-    // invalid resource
+    // possibly invalid resource, but we no longer delete such
     File res3 = new File (resourceDirectory, "res3");
     res3.mkdir();
     File cfg3 = new File (res3, "resource.xml");
@@ -2051,9 +2051,9 @@ public class ResourceManagerImplTest {
 
     assertEquals(5, resourceDirectory.listFiles().length);
 
-    // load resource, ensure invalid and empty directories are cleaned up
+    // load resource, ensure empty directories are cleaned up
     manager.load(resourceDirectory, creator);
-    assertEquals(2, resourceDirectory.listFiles().length);
+    assertEquals(4, resourceDirectory.listFiles().length);
     Set<String> mySet = new HashSet<String>(Arrays.asList(resourceDirectory.list()));
     assertTrue("res1", mySet.contains("res1"));
     assertTrue("res5", mySet.contains("res5"));

@@ -18,7 +18,7 @@
                     </p>
                     <div class="details">
                         <#if sourcesModifiedSinceLastPublication>
-                            <@s.text name='manage.home.last.modified'/> ${resource.getSourcesModified()?date?string.medium!}
+                            <@s.text name='manage.home.last.modified'/> ${resource.getSourcesModified()?datetime?string.medium!}
                         <#elseif resource.lastPublished??>
                             <@s.text name="manage.overview.notModified"/>
                         </#if>
@@ -32,10 +32,10 @@
                                     <tr>
                                         <#if src.isFileSource()>
                                             <th class="col-4">${src.name} <@s.text name='manage.overview.source.file'/></th>
-                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
+                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         <#elseif src.isExcelSource()>
                                             <th class="col-4">${src.name} <@s.text name='manage.overview.source.excel'/></th>
-                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?date?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
+                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
                                         <#else>
                                             <th class="col-4">${src.name} <@s.text name='manage.overview.source.sql'/></th>
                                             <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
@@ -105,7 +105,7 @@
 
                 <div class="details mb-3">
                     <#if mappingsModifiedSinceLastPublication>
-                        <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?date?string.medium!}
+                        <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?datetime?string.medium!}
                     <#elseif resource.lastPublished??>
                         <@s.text name="manage.overview.notModified"/>
                     </#if>
@@ -119,7 +119,7 @@
                             <#list resource.getMappings(resource.coreRowType) as m>
                                 <tr <#if m_index==0>class="mapping_row"</#if>>
                                     <th class="col-4"><#if m_index==0>${m.extension.title}</#if></th>
-                                    <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
+                                    <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
                                     <td class="d-flex justify-content-end">
                                         <div class="btn-group" role="group">
                                             <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
@@ -143,7 +143,7 @@
                                         <#list resource.getMappings(ext.rowType) as m>
                                             <tr <#if m_index==0>class="mapping_row"</#if>>
                                                 <th class="col-4"><#if m_index==0>${ext.title}</#if></th>
-                                                <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?date?string.medium)!}</td>
+                                                <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="btn-group" role="group">
                                                         <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">

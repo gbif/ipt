@@ -2,7 +2,7 @@
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
             initHelp();
 

@@ -7,9 +7,9 @@
 
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
-    <script type="text/javascript" src="${baseURL}/js/leaflet/leaflet.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/leaflet/tile.stamen.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/leaflet/locationfilter.js"></script>
+    <script src="${baseURL}/js/leaflet/leaflet.js"></script>
+    <script src="${baseURL}/js/leaflet/tile.stamen.js"></script>
+    <script src="${baseURL}/js/leaflet/locationfilter.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -198,7 +198,7 @@
 
     <div class="row g-3 mx-md-3 mx-1 mt-2">
         <div class="col-12">
-            <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true />
+            <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true minlength=2 />
         </div>
 
         <div class="col-12">

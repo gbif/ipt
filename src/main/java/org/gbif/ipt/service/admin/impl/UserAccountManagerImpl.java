@@ -216,6 +216,10 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return false;
   }
 
+  public String getDefaultAdminEmail() {
+    return cfg.getAdminEmail();
+  }
+
   public User getSetupUser() {
     return setupUser;
   }

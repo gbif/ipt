@@ -106,9 +106,9 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 
-<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
-<script type="text/javascript">
+<script>
     $(document).ready(function(){
         initHelp();
         <#if confirmOverwrite>
@@ -217,8 +217,8 @@
             dialog.find('.ui-dialog-buttonpane').addClass('modal-footer');
 
             // add bootstrap design to modal buttons
-            $('.ui-dialog-buttonset button:first-child').addClass('btn btn-outline-gbif-primary mx-2');
-            $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-outline-secondary');
+            $('.ui-dialog-buttonset button:first-child').addClass('btn btn-sm btn-outline-gbif-primary mx-2');
+            $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-sm btn-outline-secondary');
         }
 
         // load a preview of the mapping in the modal window
@@ -247,7 +247,6 @@
             $('.doiButton').show();
             $('#doi_edit_block').hide();
         });
-
     });
 </script>
 
@@ -265,33 +264,22 @@
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
-                <a tabindex="0" role="button"
-                   class="popover-link"
-                   data-bs-toggle="popover"
-                   data-bs-trigger="focus"
-                   data-bs-html="true"
-                   data-bs-content="
-                        <#if resource.coreType?has_content && resource.coreType==metadataType>
-                            <@s.text name="manage.overview.intro.metadataOnly"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
-                        <#else>
-                            <@s.text name="manage.overview.intro"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
-                        </#if>
-                    ">
-                    <i class="bi bi-info-circle text-gbif-primary"></i>
-                </a>
-
                 <span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
 
             <div class="row g-2 mx-md-4 mx-2">
-                <div class="col-md-9">
+                <div class="col-lg-10">
                     <span>
-                        <@s.text name="manage.overview.description"><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
+                        <#if resource.coreType?has_content && resource.coreType==metadataType>
+                            <@s.text name="manage.overview.description.metadataOnly"/>
+                        <#else>
+                            <@s.text name="manage.overview.description"/>
+                        </#if>
                     </span>
                 </div>
 
-                <div class="col-md-3 d-md-flex justify-content-md-end">
+                <div class="col-lg-2 d-lg-flex justify-content-lg-end">
                     <#if resource.isAlreadyAssignedDoi()?string == "false" && resource.status != "REGISTERED">
                         <#assign disableRegistrationRights="false"/>
                     <#elseif currentUser.hasRegistrationRights()?string == "true">
@@ -309,33 +297,66 @@
                                     <#assign resourceUndeleteInfo>
                                         <@s.text name="manage.resource.status.undeletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
                                     </#assign>
-                                    <button type="button" class="btn btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
+                                    <button type="button" class="btn btn-outline-gbif-primary" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
                                         <i class="bi bi-exclamation-triangle"></i>
                                     </button>
-                                    <@s.submit cssClass="btn btn-sm btn-outline-secondary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
+                                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
                                 </div>
                             <#else>
                                 <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
                             </#if>
                         </form>
                     <#else>
-                        <form action='resource-delete.do' method='post'>
-                            <input name="r" type="hidden" value="${resource.shortname}" />
-
-                            <#if !currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED")>
+                        <#if !currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED")>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <#assign resourceUndeleteInfo>
+                                    <@s.text name="manage.resource.status.deletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
+                                </#assign>
+                                <button type="button" class="btn btn-outline-gbif-danger align-self-start" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                </button>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <#assign resourceUndeleteInfo>
-                                        <@s.text name="manage.resource.status.deletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
-                                    </#assign>
-                                    <button type="button" class="btn btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
-                                        <i class="bi bi-exclamation-triangle"></i>
+                                    <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                        <@s.text name="button.delete"/>
                                     </button>
-                                    <@s.submit cssClass="btn btn-sm btn-outline-secondary confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}' />
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
+                                        <li>
+                                            <form action="resource-delete.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="resource-deleteFromIpt.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIpt"/>
+                                            </form>
+                                        </li>
+                                    </ul>
                                 </div>
-                            <#else>
-                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion" name="delete" key="button.delete" disabled='${disableRegistrationRights?string}'/>
-                            </#if>
-                        </form>
+
+                            </div>
+                        <#else>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                    <@s.text name="button.delete"/>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
+                                    <li>
+                                        <form action="resource-delete.do" method='post'>
+                                            <input name="r" type="hidden" value="${resource.shortname}" />
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIptAndGbif"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="resource-deleteFromIpt.do" method='post'>
+                                            <input name="r" type="hidden" value="${resource.shortname}" />
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIpt"/>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </#if>
                     </#if>
                 </div>
             </div>
@@ -494,11 +515,11 @@
                                     <th>${releasedTitle?cap_first}</th>
                                     <#if resource.lastPublished??>
                                         <td class="separator text-gbif-primary">
-                                            ${resource.lastPublished?date?string.medium}
+                                            ${resource.lastPublished?datetime?string.long_short}
                                         </td>
                                         <td class="left_padding">
                                             <#if resource.nextPublished??>
-                                                ${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}
+                                                ${resource.nextPublished?datetime?string.long_short}
                                             <#else>
                                                 ${emptyCell}
                                             </#if>
@@ -506,7 +527,7 @@
                                     <#else>
                                         <td>
                                             <#if resource.nextPublished??>
-                                                ${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}
+                                                ${resource.nextPublished?datetime?string.long_short}
                                             <#else>
                                                 ${emptyCell}
                                             </#if>
@@ -599,7 +620,7 @@
                                     </tr>
                                     <tr>
                                         <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
-                                        <td>${resource.nextPublished?date?string("MMM d, yyyy, HH:mm:ss")}</td>
+                                        <td>${resource.nextPublished?datetime?string.long_short}</td>
                                     </tr>
                                 </#if>
                             </table>
@@ -657,9 +678,9 @@
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
-                            <div class="alert alert-warning" role="alert">
-                                <i class="bi bi-exclamation-triangle text-muted"></i>
-                                <em class="text-muted"><@s.text name="manage.overview.published.testmode.warning"/></em>
+                            <div class="text-gbif-danger">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <em><@s.text name="manage.overview.published.testmode.warning"/></em>
                             </div>
 
                             <#if resource.status=="REGISTERED" && resource.key??>

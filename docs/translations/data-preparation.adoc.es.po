@@ -1,0 +1,202 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-06-28 10:56+0000\n"
+"PO-Revision-Date: 2021-06-28 11:11\n"
+"Last-Translator: \n"
+"Language-Team: Spanish, Colombia\n"
+"Language: es_CO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: es-CO\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/data-preparation.adoc.pot\n"
+"X-Crowdin-File-ID: 110\n"
+
+#. type: Title =
+#: en/modules/ROOT/pages/data-preparation.adoc:1
+#, no-wrap
+msgid "Data Preparation"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/data-preparation.adoc:3
+#, no-wrap
+msgid "Things to consider"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:5
+msgid "create a local identifier if not existing"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:6
+msgid "create full dwc:scientificName including authorship"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:7
+msgid "create decimal coordinates & precision"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/data-preparation.adoc:8
+#, no-wrap
+msgid "Database Source"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:11
+msgid "setup a SQL view to use functions (can also be done in IPT SQL source definition)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:12
+msgid "concatenation, splitting of strings: e.g. build full scientific name (watchout autonyms)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:13
+msgid "format dates as ISO"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:14
+msgid "create year/month/day by parsing native SQL date types"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:15
+msgid "use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms or specimen and observations"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:16
+msgid "select fixed values (prefer to do this in IPT mapping)"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/data-preparation.adoc:17
+#, no-wrap
+msgid "Text Files Source"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:19
+msgid "convert to UTF8"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:20
+msgid "use standard CSV (i.e. delimiter=`,` quotation=`\"`) or tab files"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:21
+msgid "make sure you have replaced line breaks, i.e. `\\r` `\\n` or `\\r\\n` with either simple spaces or use 2 characters `\\r` to escape the line break if the intention is to preserve them"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:22
+msgid "encode nulls as empty fields, i.e. no characters between 2 delimiters, not `\\N` or `\\NULL`"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/data-preparation.adoc:23
+#, no-wrap
+msgid "Utility: Character encoding converter - iconv"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:26
+msgid "Simple tool for Linux and Windows to convert character encodings of files."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:28
+msgid "http://en.wikipedia.org/wiki/Iconv"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:29
+#: en/modules/ROOT/pages/dwca-guide.adoc:218
+msgid "http://www.gnu.org/software/libiconv/"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:30
+#: en/modules/ROOT/pages/dwca-guide.adoc:219
+msgid "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:32
+msgid "Examples:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:34
+msgid "convert character encodings from Windows-1252 to UTF-8 using http://unixhelp.ed.ac.uk/CGI/man-cgi?iconv[iconv]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:35
+#: en/modules/ROOT/pages/dwca-guide.adoc:148 en/modules/ROOT/pages/faq.adoc:184
+#: en/modules/ROOT/pages/faq.adoc:194
+msgid "{blank}"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/data-preparation.adoc:38
+#: en/modules/ROOT/pages/dwca-guide.adoc:225
+#, no-wrap
+msgid "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/data-preparation.adoc:40
+#, no-wrap
+msgid "Utility: Unix Stream Editor,  SED"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:43
+msgid "A Unix command line tool to manipulate files as streams, thereby allowing to modify very large files without the need to load them into memory first (this is what pretty much all editors apart from few, e.g. vi, do)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:45
+msgid "http://www.unixguide.net/unix/sedoneliner.shtml"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:46
+msgid "http://www.brunolinux.com/02-The_Terminal/Find_and%20Replace_with_Sed.html"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:47
+msgid "replace in place and create backup copy"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/data-preparation.adoc:50
+#, no-wrap
+msgid "sed -i.old \"s/\\\\\\\\N//g\" allNames.txt\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-preparation.adoc:53
+msgid "convert DOS newlines (CR/LF) to Unix format:"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/data-preparation.adoc:56
+#, no-wrap
+msgid "sed 's/.$//'\n"
+msgstr ""
+

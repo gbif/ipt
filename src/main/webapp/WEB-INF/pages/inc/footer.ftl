@@ -2,18 +2,15 @@
 <footer class="footer mt-auto text-muted text-center text-smaller py-3">
     <div class="container">
         <div class="mb-1">
-            <img class="footer-gbif-logo" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
-            This data repository is powered by the GBIF Integrated Publishing Toolkit (IPT)
+            <img class="footer-gbif-logo" alt="GBIF" src="${baseURL}/images/GBIF-2015-standard-ipt.png"/>
+            Integrated Publishing Toolkit (IPT) <@s.text name="footer.version"/> ${cfg.version!"???"}
         </div>
         <ul class="list-inline mb-0">
-            <li class="list-inline-item ipt-footer-item">
-                <small><strong>IPT <@s.text name="footer.version"/> ${cfg.version!"???"}</strong></small>
-            </li>
             <li class="list-inline-item ipt-footer-item">
                 <a href="https://www.gbif.org/ipt"><small><@s.text name="footer.projectHome"/></small></a>
             </li>
             <li class="list-inline-item ipt-footer-item">
-                <a href="https://github.com/gbif/ipt/wiki/IPT2ManualNotes.wiki" target="_blank"><small><@s.text name="footer.useManual"/></small></a>
+                <a href="https://ipt.gbif.org/manual/" target="_blank"><small><@s.text name="footer.useManual"/></small></a>
             </li>
             <li class="list-inline-item ipt-footer-item">
                 <a href="https://github.com/gbif/ipt/issues/new" target="_blank"><small><@s.text name="footer.bugReport"/></small></a>
@@ -32,8 +29,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src="${baseURL}/js/bootstrap/bootstrap.bundle-5.0.0-beta3.min.js"></script>
-<script type="text/javascript" src="${baseURL}/js/form-validation.js"></script>
+<script src="${baseURL}/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="${baseURL}/js/form-validation.js"></script>
 <script>
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

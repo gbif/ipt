@@ -1,6 +1,6 @@
 package org.gbif.ipt.action;
 
-
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -30,8 +30,7 @@ public class LoginAction extends POSTAction {
   private String redirectUrl;
   private String email;
   private String password;
-  // to show admin contact
-  private User admin;
+  private String adminEmail;
   private String csrfToken;
 
   @Inject
@@ -44,8 +43,10 @@ public class LoginAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
-    // populate admin user
-    admin = userManager.list(User.Role.Admin).get(0);
+    adminEmail = userManager.getDefaultAdminEmail();
+    if (Strings.isNullOrEmpty(adminEmail)) {
+      adminEmail = userManager.list(User.Role.Admin).get(0).getEmail();
+    }
   }
 
   public String login() throws IOException {
@@ -118,12 +119,12 @@ public class LoginAction extends POSTAction {
     this.password = password;
   }
 
-  public User getAdmin() {
-    return admin;
+  public String getAdminEmail() {
+    return adminEmail;
   }
 
-  public void setAdmin(User admin) {
-    this.admin = admin;
+  public void setAdminEmail(String adminEmail) {
+    this.adminEmail = adminEmail;
   }
 
   public void setCsrfToken(String csrfToken) {

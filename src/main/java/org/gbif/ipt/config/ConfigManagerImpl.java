@@ -221,42 +221,46 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   private void checkResourcesDirAtStartup(File resourcesDir) {
-    // No folder /resources
-    if (resourcesDir == null || !resourcesDir.exists()) {
-      LOG.error("Resources directory does not exist: " + resourcesDir);
-      warnings.addStartupError("Resources directory does not exist: " + resourcesDir);
-    }
-    // READ access of /resources
-    else if (!resourcesDir.canRead()) {
-      LOG.error("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
-      warnings.addStartupError("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
-    }
-    // WRITE access of /resources
-    else if (!resourcesDir.canWrite()) {
-      LOG.error("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
-      warnings.addStartupError("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
-    }
-    // READ/WRITE access of sub folders of /resources
-    else {
-      File[] files = resourcesDir.listFiles();
-      if (files != null) {
-        for (File subResourceDir : files) {
-          if (subResourceDir != null && subResourceDir.exists()) {
-            // READ access of sub folders of /resources
-            if (!subResourceDir.canRead()) {
-              LOG.error("At least one resource directory cannot be read. Please check access rights for: " + subResourceDir);
-              warnings.addStartupError("At least one resource directory cannot be read. Please check access rights for: " + subResourceDir);
-              break;
-            }
-            // WRITE access of sub folders of /resources
-            else if (!subResourceDir.canWrite()) {
-              LOG.error("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
-              warnings.addStartupError("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
-              break;
+    DataDir.DirStatus status = dataDir.getDirectoryReadWriteStatus(resourcesDir);
+    switch (status) {
+      case NOT_EXIST:
+        // No folder /resources
+        LOG.error("Resources directory does not exist: " + resourcesDir);
+        warnings.addStartupError("Resources directory does not exist: " + resourcesDir);
+        break;
+      case NO_ACCESS:
+        // No access to folder /resources
+        LOG.error("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
+        warnings.addStartupError("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
+        break;
+      case READ_ONLY:
+        // No write access to folder /resources
+        LOG.error("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
+        warnings.addStartupError("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
+        break;
+      case READ_WRITE:
+        // Write access to folder /resources
+        // Check subdirectories
+        File[] files = resourcesDir.listFiles();
+        if (files != null) {
+          for (File subResourceDir : files) {
+            DataDir.DirStatus subStatus = dataDir.getDirectoryReadWriteStatus(subResourceDir);
+            switch (subStatus) {
+              case NOT_EXIST:
+              case NO_ACCESS:
+                // No access to sub folders of /resources
+                LOG.error("At least one resource directory cannot be read. Please check access rights for: " + subResourceDir);
+                warnings.addStartupError("At least one resource directory cannot be read. Please check access rights for: " + subResourceDir);
+                break;
+              case READ_ONLY:
+                // No write access to sub folders of /resources
+                LOG.error("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
+                warnings.addStartupError("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
+                break;
             }
           }
         }
-      }
+        break;
     }
   }
 
@@ -469,4 +473,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     return false;
   }
 
+  public void setAdminEmail(String adminEmail) {
+    cfg.setProperty(AppConfig.ADMIN_EMAIL, adminEmail);
+  }
 }

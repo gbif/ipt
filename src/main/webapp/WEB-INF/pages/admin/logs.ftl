@@ -1,7 +1,7 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="admin.home.manageLogs"/></title>
 <#assign currentMenu = "admin"/>
-<script type="text/javascript">
+<script>
     $(document).ready(function(){
         $.get("${baseURL}/admin/logfile.do", {log:"admin"}, function(data){
             $("#logs").text(data);

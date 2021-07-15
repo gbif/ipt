@@ -1,8 +1,8 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.source.title'/></title>
-<script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-<script type="text/javascript">
+<script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<script>
     $(document).ready(function(){
         initHelp();
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
@@ -69,7 +69,7 @@
                                         <tr><th><@s.text name='manage.source.file'/></th><td>${(source.file.getAbsolutePath())!}</td></tr>
                                         <tr><th><@s.text name='manage.source.size'/></th><td>${source.fileSizeFormatted!"???"}</td></tr>
                                         <tr><th><@s.text name='manage.source.rows'/></th><td>${source.rows!"???"}</td></tr>
-                                        <tr><th><@s.text name='manage.source.modified'/></th><td>${(source.lastModified?datetime?string("yyyy-MM-dd HH:mm:ss"))!}</td></tr>
+                                        <tr><th><@s.text name='manage.source.modified'/></th><td>${(source.lastModified?datetime?string.long_medium)!}</td></tr>
                                         <#if (logExists)>
                                             <tr><th><@s.text name='manage.source.source.log'/></th><td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.download'/></a></td></tr>
                                         </#if>

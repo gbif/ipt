@@ -2,8 +2,8 @@
 <#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl"/>
 <title><@s.text name="manage.mapping.title"/></title>
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script type="text/javascript">
+    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script>
         $(document).ready(function(){
             function showHideIdSuffix(){
                 if($('#idColumn option:selected').val()!="" && $('#idColumn option:selected').val()>=-1){

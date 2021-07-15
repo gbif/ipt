@@ -3,8 +3,8 @@
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script type="text/javascript">
+    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script>
         $(document).ready(function(){
             initHelp();
             // Ensure core type cannot be changed once set (e.g., after core mapping is done)
@@ -213,7 +213,7 @@
                             [ <@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/> ]
                         </a>
                     </div>
-                    <@simpleText name="eml.description[${item_index}]" requiredField=true/>
+                    <@simpleText name="eml.description[${item_index}]" minlength=5 requiredField=true></@simpleText>
                 </div>
             </#list>
         </div>

@@ -94,8 +94,8 @@
                     dialog.find('.ui-dialog-buttonpane').addClass('modal-footer');
 
                     // add bootstrap design to modal buttons
-                    $('.ui-dialog-buttonset button:first-child').addClass('btn btn-outline-gbif-primary mx-2');
-                    $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-outline-secondary');
+                    $('.ui-dialog-buttonset button:first-child').addClass('btn btn-sm btn-outline-gbif-primary mx-2');
+                    $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-sm btn-outline-secondary');
 
                     if (theOptions.checkboxText != undefined) {
                         $('.ui-dialog-buttonset button:first-child').hide();

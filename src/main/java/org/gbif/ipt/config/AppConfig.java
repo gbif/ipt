@@ -48,6 +48,7 @@ public class AppConfig {
   public static final String IPT_LATITUDE = "location.lat";
   public static final String IPT_LONGITUDE = "location.lon";
   public static final String DEV_VERSION = "dev.version";
+  public static final String ADMIN_EMAIL = "admin.email";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   private Properties properties = new Properties();
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
@@ -131,6 +132,10 @@ public class AppConfig {
       base = base.substring(0, base.length() - 1);
     }
     return base;
+  }
+
+  public String getAdminEmail() {
+    return properties.getProperty(ADMIN_EMAIL);
   }
 
   public DataDir getDataDir() {

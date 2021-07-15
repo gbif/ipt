@@ -1,0 +1,520 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/core.adoc:13
+#: en/modules/ROOT/pages/customization.adoc:9
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:17
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+#: en/modules/ROOT/pages/how-to-publish.adoc:30
+#: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
+#, no-wrap
+msgid "Instructions"
+msgstr ""
+
+#. type: Title =
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:1
+#, no-wrap
+msgid "Data Quality Checklist"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:4
+msgid ""
+"Use this checklist to help review biodiversity datasets. Note it is "
+"particularly suited for checking occurrence and sampling event datasets."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:6
+msgid ""
+"The checklist will help ensure that the data is complete, meaning it "
+"contains valid answers to the five Ws:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:8
+msgid "<<What event happened?>>"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:9
+msgid "<<Who acted in the event?>>"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:10
+msgid "<<When did the event take place?>>"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:11
+msgid "<<Where did the event take place?>>"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:12
+msgid "<<Why did the event happen?>>"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:14
+msgid ""
+"Examples of events include a species observation, a physical specimen being "
+"collected, or a biological sampling event."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:16
+msgid ""
+"Additionally, the checklist ensures that the <<Dataset Metadata>> also "
+"contains answers to the five Ws in order to facilitate reuse of the data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:20
+msgid ""
+"If the dataset has been registered with GBIF, give yourself a running start "
+"by reviewing the dataset's 'Stats' page. Here you can find the set of issues "
+"that GBIF discovered while interpreting the dataset:"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:21
+#, no-wrap
+msgid "ipt2/InterpretationIssues2.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:24
+msgid ""
+"Next, read the dataset metadata to get a better understanding about the data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:26
+msgid ""
+"Next, load the data into https://openrefine.org/[OpenRefine]. This will "
+"allow https://docs.openrefine.org/manual/facets[faceted browsing] to get the "
+"big picture of the data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:28
+msgid ""
+"There are various ways each of the five Ws can be answered. Each 'check' "
+"relates to one or more Darwin Core fields. Therefore try to perform as many "
+"checks as possible based on the Darwin Core fields present in the dataset."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:30
+msgid ""
+"Compile a list of all checks that fail and report them back to the data "
+"publisher, referring to each check by its 'Check-ID'. This will make "
+"providing feedback a less time consuming and verbose process."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:31
+#, no-wrap
+msgid "Quality checks"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:33
+#, no-wrap
+msgid "What event happened?"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:35
+#, no-wrap
+msgid "What type of event was it?"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:44
+#, no-wrap
+msgid ""
+"| Check-ID | Fields | Requirements\n"
+"\n"
+"| *what 1* | `occurrenceID`, `basisOfRecord`, `eventID`  | The species observation event uniquely identified by `occurrenceID` and having `basisOfRecord` equal to `HumanObservation` or `MachineObservation` indicating whether the observation was performed by a machine or by one or more people. If this observation was derived from a sampling event, it must have the `eventID` of the sampling event filled in.\n"
+"| *what 2* | `occurrenceID`, `basisOfRecord`, `catalogNumber`, `collectionCode`, `eventID`  | The specimen preservation event uniquely identified by `occurrenceID` and having `basisOfRecord` equal to `PreservedSpecimen`, `FossilSpecimen` or `LivingSpecimen` indicating its specific type. Ideally a specimen is deposited in a collection and therefore can be assigned both a `catalogNumber` and `collectionCode`.  If this specimen was derived from a sampling event, it must have the `eventID` of the sampling event filled in.\n"
+"| *what 3* | `occurrenceID`, `basisOfRecord`, `materialSampleID`, `catalogNumber`, `collectionCode`, `eventID`  | The physical result of a sampling event uniquely identified by both `occurrenceID` and having `basisOfRecord` equal to `MaterialSample`. If the sample was preserved (vs destructively processed) as a specimen and deposited in a collection it will ideally be assigned both a `catalogNumber` and `collectionCode`. The `eventID` of the sampling event must be filled in.\n"
+"| *what 4* | `eventID`, `fieldNumber`, `parentEventID`   | The actual sampling event uniquely identified by `eventID`. The `eventID` should be a GUID, otherwise it should reuse the `fieldNumber`. The `parentEventID` indicates the event is a sub-sampling event. To be valid, all `parentEventIDs` must reference `eventIDs` of records defined in the same dataset. Otherwise, the `parentEventID` must be a globally unique identifier (e.g. DOI, HTTP, URI, etc) that resolves to an event record described elsewhere. Ideally all sub-sampling events share the same data and location as the parent event.\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:46
+#, no-wrap
+msgid "If it was a species occurrence related event - how many species were there?"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:52
+#, no-wrap
+msgid ""
+"| Check-ID | Fields | Requirements\n"
+"\n"
+"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}.xml[GBIF Occurrence Status Vocabulary].\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:54
+#, no-wrap
+msgid "If it was a species occurrence related event - what species was it?"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:61
+#, no-wrap
+msgid ""
+"| Check-ID | Fields | Requirements\n"
+"\n"
+"| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the {latest-rank}[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
+"| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`).\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:63
+#, no-wrap
+msgid "Case 1: Species observation from a camera trap"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:85
+#, no-wrap
+msgid ""
+"| Field | Value | Constraint\n"
+"\n"
+"| `occurrenceID` | \"HAMAARAG:T0_L_049:6199\" | Must be a GUID or an identifier that is near globally unique. Integer identifiers are not allowed.\n"
+"| `basisOfRecord` | \"MachineObservation\" | Must match {latest-basis-of-record}[Darwin Core Type Vocabulary]\n"
+"| `individualCount` | 1 | Must be an integer, 0 or greater\n"
+"| `organismQuantity` | 1 | Must pair with `organismQuantityType`\n"
+"| `organismQuantityType` | \"individuals\" | Must match {latest-quantity-type}[GBIF Quantity Type Vocabulary]\n"
+"| `occurrenceStatus` | \"present\" | Must match {latest-occurrence-status}[GBIF Occurrence Status Vocabulary]\n"
+"| `scientificName` | \"Canis aureus Linnaeus, 1758\" | Must be the full scientific name, with authorship and date information if known.\n"
+"| `taxonRank` | \"species\" | Must match {latest-rank}[GBIF Taxon Rank Vocabulary]\n"
+"| `kingdom` | \"Animalia\" | Must be the full scientific name of the kingdom in which the taxon is classified.\n"
+"| `phylum` | \"Chordata\" | Must be the full scientific name of the phylum or division in which the taxon is classified.\n"
+"| `class` | \"Mammalia\" | Must be the full scientific name of the class in which the taxon is classified.\n"
+"| `order` | \"Carnivora\" | Must be the full scientific name of the order in which the taxon is classified.\n"
+"| `family` | \"Canidae\" | Must be the full scientific name of the family in which the taxon is classified.\n"
+"| `genus` | \"Canis Linnaeus, 1758\" | Must be the full scientific name of the genus in which the taxon is classified.\n"
+"| `taxonID` | http://www.gbif.org/species/5219219 | Must be a GUID or an identifier related to the source\n"
+"| `nameAccordingTo` | \"GBIF Backbone Taxonomy, May 2016\" | Must be reference including date\n"
+"| `nameAccordingToID` | \"http://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c\" | Must be a GUID or an identifier for the source\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:87
+#, no-wrap
+msgid "Who acted in the event?"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:95
+#, no-wrap
+msgid ""
+"| Check-ID | Fields | Requirements\n"
+"\n"
+"| *who 1* | `recordedBy` | The full names of each person acting in the event (e.g. collecting, observing, etc) should be entered in `recordedBy` using the vertical bar as a separator. Note there is a separate field for capturing the person(s) making the identification (see below).\n"
+"| *who 2* | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen.\n"
+"| *who 3* | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:97
+#, no-wrap
+msgid "Case 1: Two different people collecting and identifying a specimen"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:106
+#, no-wrap
+msgid ""
+"| Field | Value | Constraint\n"
+"\n"
+"| `recordedBy` | \"Ole Karsholt\" | Must be one or more persons' names\n"
+"| `institutionCode` | \"ZMUC\" | Must be an acronym or name of an institution\n"
+"| `ownerInstitutionCode` | \"ZMUC\" | Must be an acronym or name of an institution\n"
+"| `identifiedBy` | \"Jan Pedersen\" | Must be names of one or more persons, groups or organizations\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:108
+#, no-wrap
+msgid "When did the event take place?"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:118
+#, no-wrap
+msgid ""
+"| Check-ID | Fields | Requirements\n"
+"\n"
+"| *when 1* | `eventDate` | The date, date-time, date range, or date-time range during which the Event occurred should be entered in `eventDate` in https://en.wikipedia.org/wiki/ISO_8601[ISO 8601] format. Partial dates can be provided if they have at least a year and month, e.g. \"2007-03\".\n"
+"| *when 2* | `verbatimEventDate` | If the original value has to be converted into https://en.wikipedia.org/wiki/ISO_8601[ISO 8601] `verbatimEventDate` should be filled in with the original value.\n"
+"| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. If the start date resolution is specific to the day fill in `startDayOfYear`.\n"
+"| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Although it appears redundant, it is recommended trying to fill in `eventTime`, `year`, `month`, `day`, `startDayOfYear` and `endDayOfYear` for date ranges as completely as possible. If there is a date range spanning days, `day` is left blank. If there is a date range spanning months, `month` is left blank. If there is a date range spanning years, `year` is left blank. If the start date resolution is specific to the day fill in `startDayOfYear`. If the end date resolution is specific to the day fill in `endDayOfYear`.\n"
+"| *when 5* | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks`\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:120
+#, no-wrap
+msgid "Case 1: Single date"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:131
+#, no-wrap
+msgid ""
+"| Field | Value | Constraint\n"
+"\n"
+"| `eventDate` | 2007-03-20 | Must be in https://en.wikipedia.org/wiki/ISO_8601[ISO 8601] format\n"
+"| `year` | 2007 | Must be four-digit year\n"
+"| `month` | 3 | Must be between 1-12\n"
+"| `day` | 20 | Must be between 1-31\n"
+"| `startDayOfYear` | 79 | Must be between 1-366\n"
+"| `verbatimEventDate` | \"Mar 20, 07\" | Original date or date description\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:133
+#, no-wrap
+msgid "Case 2: Date-time range spanning days"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:146
+#, no-wrap
+msgid ""
+"| Field | Value\n"
+"\n"
+"| `eventDate` | 2007-03-20T00:00:00Z/2007-03-27T06:00:00Z\n"
+"| `eventTime` | 00:00:00Z/06:00:00Z\n"
+"| `year` | 2007\n"
+"| `month` | 3\n"
+"| `day` |\n"
+"| `startDayOfYear` | 79\n"
+"| `endDayOfYear` | 86\n"
+"| `verbatimEventDate` | \"The third week in March 07, for 6 hours starting at midnight.\"\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:148
+#, no-wrap
+msgid "Case 3: Partial date"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:158
+#, no-wrap
+msgid ""
+"| Field | Value\n"
+"\n"
+"| `eventDate` | 2007-03\n"
+"| `year` | 2007\n"
+"| `month` | 3\n"
+"| `day` |\n"
+"| `eventRemarks` | \"Exact collection day was never recorded\"\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:160
+#, no-wrap
+msgid "Case 4: Missing date"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:166
+#, no-wrap
+msgid ""
+"| Field | Value\n"
+"\n"
+"| `eventRemarks` | \"Event date was not found in legacy data\"\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:168
+#, no-wrap
+msgid "Where did the event take place?"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:181
+#, no-wrap
+msgid ""
+"| Check-ID | Fields | Requirements\n"
+"\n"
+"| *where 1* | `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | The point location coordinates should be entered in decimal degrees in `decimalLatitude` and `decimalLongitude`. The spatial reference system upon which the coordinates are based must be entered in `geodeticDatum` using the EPSG code if known, e.g. \"EPSG:4326\". Otherwise use a controlled vocabulary for the name or code of the `geodeticDatum` if known, e.g. \"WGS84\". If none of these is known, use the value \"unknown\".\n"
+"| *where 2* |`footprintWKT`, `footprintSRS` | To provide a specific shape location enter a well-Known Text (WKT) representation of the shape in `footprintWKT`. The corresponding spatial reference system upon which the shape is based must be entered in `footprintSRS` using the EPSG code, e.g. \"EPSG:4326\".\n"
+"| *where 3* |`coordinateUncertaintyInMeters`, `dataGeneralizations` | `coordinateUncertaintyInMeters` should express the uncertainty in meters of the GPS reading. For large uncertainties (more than 1000 meters) check `dataGeneralizations` to see if the location was generalized on purpose, e.g. to protect sensitive species.\n"
+"| *where 4* |`verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` | If the original point location coordinates had to be converted from another coordinate system such as 'degrees minutes seconds' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` should be filled in with the original coordinates of the Location.\n"
+"| *where 5* | `dataGeneralizations` | If actions were taken to make the point location less specific than in its original form or the coordinateUncertaintyInMeters is very high, an explanation should be provided in `dataGeneralizations`.\n"
+"| *where 6* |`informationWitheld` | If the point location should exist, but has not been entered, an explanation should be provided in `informationWitheld`.\n"
+"| *where 7* | `georeferenceRemarks` | If the point location does not exist, or the point location is calculated from the cent er of a grid cell (versus from GPS reading) an explanation should be provided in `georeferenceRemarks`.\n"
+"| *where 8* | `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | As much supplementary information as possible about the location should also be provided. If no `country` and `countryCode` can be provided then an explanation as to why should be entered in `locationRemarks`\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:183
+#, no-wrap
+msgid "Case 1: Point location converted from degrees minutes seconds to decimal degrees"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:202
+#, no-wrap
+msgid ""
+"| Field | Value | Constraint\n"
+"\n"
+"| `decimalLatitude` | 42.4566 | Must be between -90 and 90, inclusive\n"
+"| `decimalLongitude` | -76.45442 | Must be between -180 and 180, inclusive\n"
+"| `geodeticDatum` | \"EPSG:4326\" | Ideally an http://spatialreference.org/ref/epsg/wgs-84/[EPSG code] or from a controlled vocabulary otherwise \"unknown\"\n"
+"| `coordinateUncertaintyInMeters` | 500 | Zero is NOT a valid value\n"
+"| `verbatimCoordinates` | 42° 27' 23.76\", -76° 27' 15.91\" |\n"
+"| `verbatimLatitude` | 42° 27' 23.76\" |\n"
+"| `verbatimLongitude` | -76° 27' 15.91\" |\n"
+"| `verbatimCoordinateSystem` | \"degrees minutes seconds\" |\n"
+"| `continent` | \"North America\" | Must be preferred English name according to http://www.getty.edu/research/tools/vocabularies/tgn/[Getty Thesaurus of Geographic Names]\n"
+"| `country` | \"United States\" | Must be preferred English name according to http://www.getty.edu/research/tools/vocabularies/tgn/[Getty Thesaurus of Geographic Names]\n"
+"| `countryCode` | \"US\" | Must be https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2[ISO 3166-1-alpha-2 country code]\n"
+"| `stateProvince` | \"New York\" |\n"
+"| `county` | \"Tomkins County\" |\n"
+"| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | Must be a specific description of the place\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:204
+#, no-wrap
+msgid "Case 2: Point location that was generalized"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:214
+#, no-wrap
+msgid ""
+"| Field | Value\n"
+"\n"
+"| `decimalLatitude` | 42.44\n"
+"| `decimalLongitude` | -76.33\n"
+"| `geodeticDatum` | \"EPSG:4326\"\n"
+"| `coordinateUncertaintyInMeters` | 5000\n"
+"| `dataGeneralizations` | \"Point location obscured by a factor of 5000m\"\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:216
+#, no-wrap
+msgid "Case 3: Point location exists but not provided"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:222
+#, no-wrap
+msgid ""
+"| Field | Value\n"
+"\n"
+"| `informationWitheld` | \"Point location hidden to protect sensitive species. Available upon request.\"\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:224
+#, no-wrap
+msgid "Case 4: Point location does not exist"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:230
+#, no-wrap
+msgid ""
+"| Field | Value\n"
+"\n"
+"| `dataGeneralizations` | \"Point location was not found in legacy data\"\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:232
+#, no-wrap
+msgid "Why did the event happen?"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:238
+#, no-wrap
+msgid ""
+"| Check-ID | Fields | Requirements\n"
+"\n"
+"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:240
+#, no-wrap
+msgid "Case 1: Because of a butterfly monitoring scheme"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:250
+#, no-wrap
+msgid ""
+"| Field | Value | Constraint\n"
+"\n"
+"| `samplingProtocol` | \"Pollard walks\" | Must be a short name or URL referencing a method or sampling protocol\n"
+"| `sampleSizeValue` | 250 | Must pair with `sampleSizeUnit`\n"
+"| `sampleSizeUnit` | \"square_metre\" | Must match {latest-unit-of-measurement}[Unit of Measurement Vocabulary]\n"
+"| `samplingEffort` | \"Average of 30 Minutes walk along transect\" | Can be a free-text description\n"
+"| `eventRemarks` | \"No occurrences of Lepidoptera recorded for entire transect\" | Can be a free-text description\n"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:252
+#, no-wrap
+msgid "Dataset Metadata"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:255
+msgid ""
+"The dataset metadata should contain enough information to facilitate reuse "
+"of the data while preventing misinterpretation. Publishers should also "
+"provide evidence of the rigour that went into producing the data while "
+"acknowledging its various contributors and funders. Ultimately this may lead "
+"to new sources of collaboration and funding."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:269
+#, no-wrap
+msgid ""
+"| Field | Requirements | Examples\n"
+"\n"
+"| `Title` | is a concise name that describes the contents of the dataset and that distinguishes it from others| _\"Reef Life Survey: Global reef fish dataset\"_, _\"Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen\"_\n"
+"| `Description` | is a short paragraph (abstract) describing the content of the dataset. | _\"This dataset contains records of bony fishes and elasmobranchs collected by Reef Life Survey (RLS) divers along 50 m transects on shallow rocky and coral reefs, worldwide. Abundance information is available for all records found within quantitative survey limits (50 x 5 m swathes during a single swim either side of the transect line, each distinguished as a Block), and out-of-survey records are identified as presence-only (Method 0).\"_\n"
+"| `Publishing Organization` | the organization responsible for publishing (producing, releasing, holding) this resource. | _\"Reef Life Survey\"_\n"
+"| `License` | must be one of ﻿three machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0), which provide a standardized way to define appropriate uses of the dataset. | _\"This work is licensed under a http://creativecommons.org/licenses/by/4.0/legalcode[Creative Commons Attribution (CC-BY) 4.0 License].\"_\n"
+"| `Creator(s)` | the people and organizations who created the dataset, in priority order. Use of a personnel identifier such as an ORCID or ResearcherID is highly recommended. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Metadata Provider(s)` | the people and organizations who wrote the dataset metadata, in priority order. Use of a personnel identifier such as an ORCID or ResearcherID is highly recommended. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Contact(s)` | the people and organizations who should be contacted for more information about the resource or to whom putative problems with the dataset should be addressed. Use of a personnel identifier such as an ORCID or ResearcherID is highly recommended. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Project Identifier` | is a GUID or other identifier that is near globally unique. _Note this is required for BID projects._ | _\"BID-AF2015-0134-REG\"_\n"
+"| `Sampling Methods` | information about the sampling methodology used in creating the dataset, similar to the methods section of a journal article. _Note this is required for sampling event datasets._ | _See https://cloud.gbif.org/griis/resource?r=global#methods[here]_\n"
+"| `Citation` | how the dataset should be cited. Use of the xref:citation.adoc[IPT Citation Format] (based on DataCite's preferred citation format and that satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]) is highly recommended. | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
+msgstr ""

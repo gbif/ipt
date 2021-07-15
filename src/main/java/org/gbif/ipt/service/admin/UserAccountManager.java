@@ -83,6 +83,13 @@ public interface UserAccountManager {
    */
   void save(User user) throws IOException;
 
+  /**
+   * Get the email of the default administrator.
+   *
+   * @return email
+   */
+  String getDefaultAdminEmail();
+
   User getSetupUser();
 
   void setSetupUser(User setupLogin);

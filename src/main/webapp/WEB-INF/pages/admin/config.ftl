@@ -3,15 +3,15 @@
 
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
-<script type="text/javascript" src="${baseURL}/js/leaflet/leaflet.js"></script>
-<script type="text/javascript" src="${baseURL}/js/leaflet/tile.stamen.js"></script>
-<script type="text/javascript">
+<script src="${baseURL}/js/leaflet/leaflet.js"></script>
+<script src="${baseURL}/js/leaflet/tile.stamen.js"></script>
+<script>
     $(document).ready(function(){
         initHelp();
     });
 </script>
 <#if latitude?? && longitude??>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
             var map = L.map('locationMap').setView([${latitude}, ${longitude}], 10).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
             var layer = new L.StamenTileLayer("terrain");
@@ -40,6 +40,10 @@
             <div class="row g-3 mx-md-3 mx-1">
                 <div class="col-lg-6">
                     <@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
+                </div>
+
+                <div class="col-lg-6">
+                    <@input name="adminEmail" i18nkey="admin.config.adminEmail" help="i18n" size=80/>
                 </div>
 
                 <div class="col-lg-6">

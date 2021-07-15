@@ -6,7 +6,7 @@ organisationsTable macro: Generates a data table that has searching, pagination,
 - sortOrder: The sort order of the columnToSortOn
 -->
 <#macro organisationsTable numOrganisationsShown sEmptyTable columnToSortOn sortOrder>
-    <script type="text/javascript" charset="utf-8">
+    <script charset="utf-8">
         <#assign emptyString="--">
 
         /* organisation list */

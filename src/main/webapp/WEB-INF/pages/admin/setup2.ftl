@@ -80,7 +80,7 @@
 
             <div class="row g-2 mx-md-3 mx-1">
                 <div class="col-md-6">
-                    [@input name="baseURL" help="i18n" i18nkey="admin.config.baseUrl"/]
+                    [@input name="baseURL" i18nkey="admin.config.baseUrl"/]
                 </div>
             </div>
 
@@ -97,7 +97,7 @@
 
             <div class="row g-2 mx-md-3 mx-1">
                 <div class="col-md-6">
-                    [@input name="proxy" help="i18n" i18nkey="admin.config.proxy" /]
+                    [@input name="proxy" i18nkey="admin.config.proxy" /]
                 </div>
 
                 <div class="col-12">

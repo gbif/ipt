@@ -2,10 +2,10 @@
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-    <script type="text/javascript" src="${baseURL}/js/ajaxfileupload.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script src="${baseURL}/js/ajaxfileupload.js"></script>
+    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <title><@s.text name='manage.metadata.additional.title'/></title>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function () {
             initHelp();
 
@@ -81,11 +81,19 @@
             <!-- Resource Logo -->
             <div id="logofields" class="row g-3 mx-md-3 mx-1 pb-1 mt-1">
                 <div class="col-lg-6">
-                    <@input name="dateStamp" i18nkey="eml.dateStamp" help="i18n" disabled=true value='${eml.dateStamp?date?string("yyyy-MM-dd")}'/>
+                    <#if eml.dateStamp??>
+                        <@input name="dateStamp" value='${eml.dateStamp?date?string("yyyy-MM-dd")}' i18nkey="eml.dateStamp" help="i18n" disabled=true />
+                    <#else>
+                        <@input name="dateStamp" value="" i18nkey="eml.dateStamp" help="i18n" disabled=true />
+                    </#if>
                 </div>
 
                 <div class="col-lg-6">
-                    <@input name="eml.pubDate" i18nkey="eml.pubDate" help="i18n" disabled=true value='${eml.pubDate?date?string("yyyy-MM-dd")}'/>
+                    <#if eml.pubDate??>
+                        <@input name="eml.pubDate" value='${eml.pubDate?date?string("yyyy-MM-dd")}' i18nkey="eml.pubDate" help="i18n" disabled=true />
+                    <#else>
+                        <@input name="eml.pubDate" value="" i18nkey="eml.pubDate" help="i18n" disabled=true />
+                    </#if>
                 </div>
 
                 <div class="col-lg-9">

@@ -41,30 +41,37 @@
         </#if>
     </#macro>
 
-    <#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false maxlength=-1>
+    <#macro text name value="-99999" i18nkey="" errorfield="" size=40 rows=5 disabled=false help="" requiredField=false minlength=-1 maxlength=-1>
         <div>
             <div class="d-flex">
                 <#include "/WEB-INF/pages/macros/form_field_label.ftl">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
             </div>
-            <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}" <#if (maxlength>0)>maxlength="${maxlength}" </#if><#if disabled>readonly="readonly"</#if>>
-                      <#if value=="-99999">
-                          <@s.property value="${name}"/>
-                      <#else>
-                          ${value}
-                      </#if>
-            </textarea>
+            <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}"<#rt>
+                      <#if (minlength>0)> minlength="${minlength}"</#if><#t>
+                      <#if (maxlength>0)> maxlength="${maxlength}"</#if><#t>
+                      <#if requiredField> required</#if><#t>
+                      <#if disabled> readonly="readonly"</#if>><#t>
+                      <#if value=="-99999"><#t>
+                          <@s.property value="${name}"/><#t>
+                      <#else><#t>
+                          ${value}<#t>
+                      </#if><#t>
+            </textarea><#lt>
             <#include "/WEB-INF/pages/macros/form_field_error.ftl">
         </div>
     </#macro>
 
     <#-- has no label or help icon, and is used exclusively on basic metadata page description textareas -->
-    <#macro simpleText name value="-99999" errorfield="" size=40 rows=5 disabled=false requiredField=false maxlength=-1>
+    <#macro simpleText name value="-99999" errorfield="" size=40 rows=5 disabled=false requiredField=false minlength=-1 maxlength=-1>
         <div>
-            <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}" class="basic"
-                      <#if (maxlength>0)>maxlength="${maxlength}"
-                      </#if><#if disabled>readonly="readonly"</#if>><#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>
-            </textarea>
+            <textarea id="${name}" class="form-control" name="${name}" cols="${size}" rows="${rows}" class="basic"<#rt>
+                      <#if (minlength>0)> minlength="${minlength}"</#if><#t>
+                      <#if (maxlength>0)> maxlength="${maxlength}"</#if><#t>
+                      <#if requiredField> required</#if><#t>
+                      <#if disabled> readonly="readonly"</#if>><#t>
+                      <#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if><#t>
+            </textarea><#lt>
             <#include "/WEB-INF/pages/macros/form_field_error.ftl">
         </div>
     </#macro>
@@ -91,7 +98,7 @@
                 <#include "/WEB-INF/pages/macros/form_field_label.ftl">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
             </div>
-            <select name="${name}" id="${name}" size="${size}" class="form-select" <#if disabled>readonly="readonly"</#if>>
+            <select name="${name}" id="${name}" size="${size}" class="form-select" <#if disabled>readonly="readonly"</#if> <#if requiredField>required</#if>>
                 <#if includeEmpty>
                     <option value="" <#if (value!"")==""> selected="selected"</#if>></option>
                 </#if>

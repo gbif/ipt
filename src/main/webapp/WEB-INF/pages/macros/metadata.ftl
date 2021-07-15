@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 $(document).ready(function(){
     var	itemsCount=-1;
     var personnelItemsCount = -1;

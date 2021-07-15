@@ -1,9 +1,9 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageExtensions"/></title>
-    <script type="text/javascript" src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
             initHelp();
             $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='admin.extension.update.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
@@ -59,7 +59,7 @@
                         <div class="details table-responsive">
                             <table class="table table-sm table-borderless">
                                 <#if ext.issued??>
-                                    <tr><th class="col-3"><@s.text name="basic.issued"/></th><td>${ext.issued?date?string.medium}</td></tr>
+                                    <tr><th class="col-3"><@s.text name="basic.issued"/></th><td>${ext.issued?date?string.long}</td></tr>
                                 </#if>
                                 <tr><th class="col-3"><@s.text name="extension.properties"/></th><td>${ext.properties?size}</td></tr>
                                 <tr><th><@s.text name="basic.name"/></th><td>${ext.name}</td></tr>
@@ -147,7 +147,7 @@
             </p>
 
             <#if lastSynchronised?has_content>
-                <p><@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?date?string("yyyy-MM-dd HH:mm:ss")}</@s.param></@s.text></p>
+                <p><@s.text name="extension.last.synchronised"><@s.param>${lastSynchronised?datetime?string.long_short}</@s.param></@s.text></p>
             </#if>
 
             <form action='extensions.do' method='post'>

@@ -16,7 +16,7 @@
 
         <p class="mx-md-4 mx-2">
             <@s.text name="login.intro">
-                <@s.param>${admin.email}</@s.param>
+                <@s.param>${adminEmail}</@s.param>
             </@s.text>
         </p>
 
@@ -34,12 +34,12 @@
 
                 <#if email?has_content>
                     <p>
-                        <@s.text name="login.forgottenpassword"><@s.param>${admin.email}</@s.param></@s.text>
+                        <@s.text name="login.forgottenpassword"><@s.param>${adminEmail}</@s.param></@s.text>
                     </p>
                 </#if>
 
-                <div class="col-12">
-                    <@s.submit cssClass="btn btn-outline-gbif-primary" name="login" key="portal.login"/>
+                <div class="col-12 pt-3">
+                    <@s.submit cssClass="btn btn-outline-gbif-primary w-100" name="login" key="portal.login"/>
                 </div>
             </div>
         </form>

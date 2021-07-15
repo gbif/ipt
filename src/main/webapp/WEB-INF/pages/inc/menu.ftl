@@ -31,6 +31,10 @@
         <div class="container">
             <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
+                [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
+                [#else]
+                    <img class="testmode" alt="[@s.text name="menu.testMode"/]" src="${baseURL}/images/testmode.png" style="width: 100px;"/>
+                [/#if]
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,13 +58,16 @@
                     <li class="nav-item">
                         <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
-                    [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
-                    [#else]
-                        <img class="testmode" src="${baseURL}/images/testmode.png" style="width: 100px;"/>
-                    [/#if]
                 </ul>
 
                 <div class="d-xl-flex align-content-between">
+                    <!-- Health -->
+                    <div class="navbar-nav">
+                      <a href="${baseURL}/health.do" class="nav-link" title="[@s.text name="portal.health.title"/]">
+                          <img src="${baseURL}/images/gbif-heartbeat.svg" alt="Status">
+                      </a>
+                    </div>
+
                     <!-- Languages -->
                     <div id="navbarNavDropdown">
                         [#include "/WEB-INF/pages/inc/languages.ftl"/]
@@ -88,7 +95,7 @@
                             </li>
                         </ul>
                     [#else]
-                        <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center">
+                        <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center px-1">
                             <button class="btn btn-sm btn-light m-xl-auto navbar-button" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>

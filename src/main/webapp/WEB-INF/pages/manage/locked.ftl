@@ -1,7 +1,7 @@
 <#escape x as x?html>
 <#setting url_escaping_charset="UTF-8">
 <#include "/WEB-INF/pages/inc/header.ftl">
-<script type="text/javascript">
+<script>
     $(document).ready(function(){
         loadReport();
         var reporter = setInterval(loadReport, 1000);

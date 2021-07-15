@@ -44,6 +44,10 @@ public class DataDir {
   private DataDir() {
   }
 
+  public enum DirStatus {
+    NOT_EXIST, NO_ACCESS, READ_ONLY, READ_WRITE
+  }
+
   /**
    * Build and configure new IPT Data Directory instance from location settings file.
    *
@@ -161,6 +165,27 @@ public class DataDir {
    */
   public boolean isConfigured() {
     return dataDir != null && dataDir.exists();
+  }
+
+  /**
+   * Constructs an absolute path to the config folder of the data dir.
+   */
+  public File configDir() {
+    return dataFile(CONFIG_DIR);
+  }
+
+  /**
+   * Constructs an absolute path to the tmp folder of the data dir.
+   */
+  public File tmpRootDir() {
+    return dataFile(TMP_DIR);
+  }
+
+  /**
+   * Constructs an absolute path to the resources folder of the data dir.
+   */
+  public File resourcesDir() {
+    return dataFile(RESOURCES_DIR);
   }
 
   /**
@@ -387,5 +412,59 @@ public class DataDir {
   public File tmpFile(String prefix, String suffix) {
     String random = String.valueOf(RANDOM.nextInt());
     return tmpFile(prefix + random + suffix);
+  }
+
+  /**
+   * Datadir disk space
+   */
+
+  public long getDataDirTotalSpace() {
+    return dataDir.getTotalSpace();
+  }
+
+  public long getDataDirUsableSpace() {
+    return dataDir.getUsableSpace();
+  }
+
+  /**
+   * Get directory read/write status
+   */
+  public DirStatus getDirectoryReadWriteStatus(File dir) {
+    // No folder
+    if (dir == null || !dir.exists()) {
+      return DirStatus.NOT_EXIST;
+    }
+    // No access
+    else if (!dir.canRead()) {
+      return DirStatus.NO_ACCESS;
+    }
+    // Read only
+    else if (dir.canRead() && !dir.canWrite()) {
+      return DirStatus.READ_ONLY;
+    }
+    // Read / Write
+    else {
+      return DirStatus.READ_WRITE;
+    }
+  }
+
+  /**
+   * Get sub directories read/write status
+   * If one sub directory has not Read/Write status, its status is returned
+   */
+  public DirStatus getSubDirectoriesReadWriteStatus(File dir) {
+    File[] files = dir.listFiles();
+    if (files != null) {
+      for (File subDir : files) {
+        DirStatus status = getDirectoryReadWriteStatus(subDir);
+        if (status != DirStatus.READ_WRITE) {
+          return status;
+        }
+      }
+      return DirStatus.READ_WRITE;
+    }
+    else {
+      return DirStatus.NOT_EXIST;
+    }
   }
 }

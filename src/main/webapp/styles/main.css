@@ -47,10 +47,22 @@ header, .dropdown-menu {
     color: #61a861 !important;
 }
 
-.navbar-button:hover, .admin-item:hover {
+.navbar-button:hover {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 /* Logo, header, menu etc. END */
+
+
+/* Admin page styles START */
+.admin-item:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.admin-item {
+    transition: .5s;
+    transition-timing-function: ease-in-out;
+}
+/* Admin page styles END */
 
 
 /* Footer START */
@@ -94,6 +106,18 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):hover 
 
 .text-gbif-header {
     color: #4E565F !important;
+}
+
+.bg-gbif-primary {
+  background-color: #61a861 !important;
+}
+
+.bg-gbif-danger {
+  background-color: #e36370 !important;
+}
+
+.bg-gbif-header {
+  background-color: #4E565F !important;
 }
 
 
@@ -373,15 +397,15 @@ td.left_padding {
 }
 
 .cc_by {
-    background: url('../images/icons/cc-by.png');
+    background: url('../images/icons/cc-by.svg');
 }
 
 .cc_by_nc {
-    background: url('../images/icons/cc-by-nc.png');
+    background: url('../images/icons/cc-by-nc.svg');
 }
 
 .cc_zero {
-    background: url('../images/icons/cc-zero.png');
+    background: url('../images/icons/cc-zero.svg');
 }
 /* Licence logos styling END */
 
@@ -496,6 +520,13 @@ i {
 /* No decoration for popovers */
 a.popover-link, a.popover-link:hover, a.popover-link:focus {
     text-decoration: none !important;
+}
+
+
+/* Resource deletion buttons */
+.confirmDeletion {
+    border: none;
+    color: #212529;
 }
 
 

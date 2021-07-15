@@ -1,0 +1,87 @@
+= Release Notes
+
+*IPT Versions: pass:[2.5.*]*
+
+== Upgrade instructions
+
+WARNING: Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
+
+CAUTION: Once an IPT has been upgraded to 2.3.x or later from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
+
+Check your system meets the xref:requirements.adoc[installation requirements] for this release.
+
+The upgrade method depends on the original xref:installation.adoc#installation-method[installation method].
+
+=== Upgrades using Linux packages
+
+Users of Linux packages on Red Hat, CentOS, Debian, Ubuntu etc. may upgrade using the system package manager.
+
+[source,shell]
+----
+# Red Hat, CentOS etc:
+yum update ipt
+# Debian, Ubuntu etc:
+apt install ipt
+----
+
+These commands can be used to test a pre-release version on Red Hat/CentOS:
+
+[source,shell]
+----
+# Ensure the GBIF repository configuration is up-to-date:
+yum-config-manager --add-repo https://packages.gbif.org/gbif.repo
+
+# Install the latest pre-release/testing version:
+yum install --enablerepo=gbif-testing ipt
+
+# Roll back to a previous, stable version:
+yum downgrade ipt-2.4.2
+
+# Show all available versions, testing and stable:
+yum --showduplicates list --enablerepo=gbif-testing ipt
+----
+
+#TODO:# Debian instructions, once the 2.5.0-RC1 pre-release package is prepared.
+
+=== Upgrades using a servlet container
+
+TIP: When upgrading to version 2.5.0-RC1 or later, follow xref:installation.adoc#tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT.
+
+An upgrade can be performed in 4 steps:
+
+. Backup the existing data directory and any xref:customization.adoc[custom styling] (images, stylesheets, etc) previously applied to your IPT.
+. Replace the previous .war file with the latest edition, but keep the same name (e.g. `ipt.war`).
++
+NOTE: If you replace the .war file while Tomcat is stopped, be sure to delete the associated expanded directory before restarting Tomcat, so that the updated WAR file will be re-expanded when Tomcat restarts.
+
+. (If the data directory is not configured within Tomcat.) Immediately open the IPT in a web browser, and reuse the existing data directory on the initial IPT setup page
+. To be sure the upgrade worked, try logging in and look for the new version number in the footer. (_Restart Tomcat if the previous version still appears._)
+. Reapply your custom styling (if applicable)
+
+=== Upgrades using Docker
+
+See the xref:installation.adoc#installation-using-docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release.
+
+== Post-upgrade instructions
+
+Following the upgrade, a warning message may appear indicating the some resources failed to load. This is caused when an old resource is missing required metadata after not being republished for a long time. Resource managers can fix this problem by re-publishing the affected resources.
+
+New in IPT 2.3.x is the ability to publish sample-based data. Once the upgrade is complete, the IPT administrator must install the Darwin Core Event core. Note the Darwin Core Event core is installed by default in new installations.
+
+Additionally, the IPT administrator should update all installed cores and extensions to the latest versions. This will allow publishers to take advantage of any new terms and vocabularies included in the latest versions.
+
+== Important changes in this release
+
+The full list of new features is documented on the xref:releases.adoc[releases page].  Please pay particular attention to these points after upgrading:
+
+* IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work.
+* IPT 2.5.0 now includes a troubleshooting page, accessible only to administrators from within the Administration menu.
+* IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions.
+* IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)
+* The documentation has moved to this new location; links will be made from the old GitHub Wiki.
+
+If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release].
+
+== When all else fails
+
+See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list].

@@ -106,6 +106,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
       source.getRdbms().enableLargeResultSet(this.stmt);
       this.column = column + 1;
+      LOG.debug("Executing SQL {}", sql);
       this.rs = stmt.executeQuery(sql);
       this.hasNext = rs.next();
       sourceName = source.getName();
@@ -163,6 +164,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
       source.getRdbms().enableLargeResultSet(this.stmt);
+      LOG.debug("Executing SQL {}", source.getSql());
       this.rs = stmt.executeQuery(source.getSql());
       this.rowSize = rs.getMetaData().getColumnCount();
       this.hasNext = rs.next();
@@ -384,6 +386,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         if ((ss.getJdbcDriver() != null) && !ss.getJdbcDriver().contains("odbc")) {
             stmt.setFetchSize(FETCH_SIZE);
         }
+        LOG.debug("Executing SQL {}", ss.getSqlLimited(FETCH_SIZE));
         rs = stmt.executeQuery(ss.getSqlLimited(FETCH_SIZE));
         // get number of columns
         ResultSetMetaData meta = rs.getMetaData();
@@ -487,6 +490,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         if ((source.getJdbcDriver() != null) && !source.getJdbcDriver().contains("odbc")) {
             stmt.setFetchSize(1);
         }
+        LOG.debug("Executing SQL {}", source.getSqlLimited(1));
         rs = stmt.executeQuery(source.getSqlLimited(1));
         // get column metadata
         ResultSetMetaData meta = rs.getMetaData();
@@ -680,6 +684,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         if ((source.getJdbcDriver() != null) && !source.getJdbcDriver().contains("odbc")) {
             stmt.setFetchSize(rows);
         }
+        LOG.debug("Executing SQL {}", source.getSqlLimited(rows + 1));
         rs = stmt.executeQuery(source.getSqlLimited(rows + 1));
         // loop over result
         while (rows > 0 && rs.next()) {

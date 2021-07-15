@@ -1,12 +1,13 @@
-%define nr_ver 2.4.2
-%define release_number 1
+%define nr_ver 2.5.0
+%define nr_ver_extra -RC1
+%define release_number 0.1
 
 Name: ipt
 Version: %{nr_ver}
 Release: %{release_number}%{dist}
 License: ASL 2.0
 URL: https://www.gbif.org/ipt
-Source0: https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
+Source0: https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}%{nr_ver_extra}/ipt-%{nr_ver}%{nr_ver_extra}.war
 Source1: ipt.service
 Source2: ipt.sysconfig
 Source3: ipt-vhost.conf
@@ -73,6 +74,8 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 %systemd_postun_with_restart ipt.service
 
 %changelog
+* Fri Jun 25 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0-0.1
+- Publish IPT 2.5.0-RC1 pre-release.
 * Wed Sep 08 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.2-1
 - Publish IPT 2.4.2 release.
 * Wed Sep 02 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.1-1

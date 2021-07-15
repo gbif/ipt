@@ -70,6 +70,7 @@
     <action name="logfile" class="org.gbif.ipt.action.admin.LogsAction" method="logfile">
       <result name="success" type="stream">
         <param name="contentType">text/plain</param>
+        <param name="contentCharSet">UTF-8</param>
         <param name="inputName">inputStream</param>
         <param name="contentDisposition">filename="${logfile}"</param>
         <param name="bufferSize">1024</param>

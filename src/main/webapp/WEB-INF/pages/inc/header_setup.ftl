@@ -7,7 +7,7 @@
     <title>[@s.text name="admin.config.setup.title"/]</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap-5.0.0-beta3.min.css">
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css">
 
     <!-- IPT CSS -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
@@ -15,9 +15,9 @@
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
 
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
-    <script type="text/javascript" src="${baseURL}/js/modernizr.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/global.js"></script>
+    <script src="${baseURL}/js/modernizr.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+    <script src="${baseURL}/js/global.js"></script>
 
 </head>
 <body class="bg-light d-flex flex-column h-100">

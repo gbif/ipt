@@ -6,7 +6,7 @@
     <#assign auxTopNavbar=true />
     <#assign auxTopNavbarPage = "metadata" />
     <#assign currentMenu="manage"/>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
             initHelp();
         });
@@ -43,7 +43,7 @@
                     <#if keywordList?has_content && keywordList?lower_case == "null">
                         <@text value="" name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
                     <#else>
-                        <@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
+                        <@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true minlength=2 />
                     </#if>
                 </div>
             </#list>

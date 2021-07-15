@@ -8,7 +8,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
 -->
 <#macro resourcesTable shownPublicly numResourcesShown sEmptyTable columnToSortOn sortOrder>
 
-    <script type="text/javascript" charset="utf-8">
+    <script charset="utf-8">
         <#assign emptyString="--">
         <#assign dotDot="..">
         <#assign deletedString><@s.text name="manage.home.visible.deleted"/></#assign>
@@ -45,7 +45,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 '<a target="_blank" href="${baseURL}/resource?r=${r.shortname}#dataRecords">${r.recordsPublished!0}</a>',
                 '${r.modified?date}',
                 <#if r.published>'${(r.lastPublished?date)!}'<#else>'<@s.text name="portal.home.not.published"/>'</#if>,
-                '${(r.nextPublished?date?string("yyyy-MM-dd HH:mm:ss"))!'${emptyString}'}',
+                '${(r.nextPublished?date?string("yyyy-MM-dd HH:mm"))!'${emptyString}'}',
                 <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#elseif r.status=='DELETED'>'${deletedString}'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
                 <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${r.creator.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>]<#if r_has_next>,</#if>
             </#list>
