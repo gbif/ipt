@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-07-02 13:19\n"
+"POT-Creation-Date: 2021-07-15 10:20+0000\n"
+"PO-Revision-Date: 2021-07-15 10:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -225,7 +225,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:64
-msgid "Datasets require documentation. This is achieved in a DwC-A by including a *resource metadata document* that provides information about the dataset itself such as a description (abstract) of the dataset, the agents responsible for authorship, publication and documentation, bibliographic and citation information, collection methods and much more. GBIF currently supports a metadata profile based on the https://knb.ecoinformatics.org/#external//emlparser/docs/eml-2.1.1/index.html[Ecological Metadata Language] but other metadata standards exist and may be supported. The GBIF Metadata Profile's XML Schema description can be found on the http://rs.gbif.org/schema/eml-gbif-profile/[GBIF Schema Repository]"
+msgid "Datasets require documentation. This is achieved in a DwC-A by including a *resource metadata document* that provides information about the dataset itself such as a description (abstract) of the dataset, the agents responsible for authorship, publication and documentation, bibliographic and citation information, collection methods and much more. GBIF currently supports a metadata profile based on the {eml-location}/index.html[Ecological Metadata Language] but other metadata standards exist and may be supported. The GBIF Metadata Profile's XML Schema description can be found on the http://rs.gbif.org/schema/eml-gbif-profile/[GBIF Schema Repository]"
 msgstr ""
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
