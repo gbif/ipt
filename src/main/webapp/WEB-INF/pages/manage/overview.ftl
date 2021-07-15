@@ -667,21 +667,23 @@
 
                             <p>
                                 <#if resource.status=="PRIVATE">
-                                    <span class="badge rounded-pill bg-danger">
+                                    <span class="badge rounded-pill bg-gbif-danger">
                                         <@s.text name="resource.status.${resource.status?lower_case}"/>
                                     </span>
                                 <#else>
-                                    <span class="badge rounded-pill bg-success">
+                                    <span class="badge rounded-pill bg-gbif-primary">
                                         <@s.text name="resource.status.${resource.status?lower_case}"/>
                                     </span>
                                 </#if>
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
-                            <div class="text-gbif-danger">
-                                <i class="bi bi-exclamation-triangle"></i>
-                                <em><@s.text name="manage.overview.published.testmode.warning"/></em>
-                            </div>
+                            <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
+                                <p class="text-gbif-danger">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <em><@s.text name="manage.overview.published.testmode.warning"/></em>
+                                </p>
+                            </#if>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details table-responsive">
@@ -699,7 +701,18 @@
                                             </tr>
                                             <tr>
                                                 <th><@s.text name="manage.overview.visibility.organisation.contact"/></th>
-                                                <td>${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}</td>
+                                                <td>
+                                                    <#-- Check if name or email missing -->
+                                                    <#if resource.organisation.primaryContactName?? && resource.organisation.primaryContactEmail??>
+                                                        ${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}
+                                                    <#elseif resource.organisation.primaryContactName??>
+                                                        ${resource.organisation.primaryContactName!}
+                                                    <#elseif resource.organisation.primaryContactEmail??>
+                                                        ${resource.organisation.primaryContactEmail!}
+                                                    <#else>
+                                                        -
+                                                    </#if>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th><@s.text name="manage.overview.visibility.endorsing.node"/></th>

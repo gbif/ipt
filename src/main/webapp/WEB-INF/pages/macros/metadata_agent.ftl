@@ -286,20 +286,21 @@
             event.preventDefault();
             var $target = $(event.target);
             var index = $target.attr("id").split("-")[2];
-            $("#" + idPrefix + index + " [id$='firstName']").val("${primaryContact.firstName!}");
-            $("#" + idPrefix + index + " [id$='lastName']").val("${primaryContact.lastName!}");
-            $("#" + idPrefix + index + " [id$='position']").val("${primaryContact.position!}");
-            $("#" + idPrefix + index + " [id$='organisation']").val("${primaryContact.organisation!}");
-            $("#" + idPrefix + index + " [id$='address']").val("${primaryContact.address.address!}");
-            $("#" + idPrefix + index + " [id$='city']").val("${primaryContact.address.city!}");
-            $("#" + idPrefix + index + " [id$='province']").val("${primaryContact.address.province!}");
-            $("#" + idPrefix + index + " [id$='postalCode']").val("${primaryContact.address.postalCode!}");
-            $("#" + idPrefix + index + " [id$='country']").val("${primaryContact.address.country!}");
-            $("#" + idPrefix + index + " [id$='phone']").val("${primaryContact.phone!}");
-            $("#" + idPrefix + index + " [id$='email']").val("${primaryContact.email!}");
-            $("#" + idPrefix + index + " [id$='homepage']").val("${primaryContact.homepage!}");
-            $("#" + idPrefix + index + " [id$='directory']").val("${primaryContact.userIds[0].directory!}");
-            $("#" + idPrefix + index + " [id$='identifier']").val("${primaryContact.userIds[0].identifier!}");
+            // replace " with &quot; to prevent JS from failing
+            $("#" + idPrefix + index + " [id$='firstName']").val("${primaryContact.firstName!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='lastName']").val("${primaryContact.lastName!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='position']").val("${primaryContact.position!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='organisation']").val("${primaryContact.organisation!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='address']").val("${primaryContact.address.address!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='city']").val("${primaryContact.address.city!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='province']").val("${primaryContact.address.province!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='postalCode']").val("${primaryContact.address.postalCode!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='country']").val("${primaryContact.address.country!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='phone']").val("${primaryContact.phone!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='email']").val("${primaryContact.email!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='homepage']").val("${primaryContact.homepage!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='directory']").val("${primaryContact.userIds[0].directory!?replace("\"", "&quot;")}");
+            $("#" + idPrefix + index + " [id$='identifier']").val("${primaryContact.userIds[0].identifier!?replace("\"", "&quot;")}");
         }
 
         function setContactItemIndex(item, index) {
