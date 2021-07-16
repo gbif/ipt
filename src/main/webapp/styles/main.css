@@ -54,13 +54,63 @@ header, .dropdown-menu {
 
 
 /* Admin page styles START */
-.admin-item:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+.admin-col-listing .admin-col-listing-item {
+    position: relative;
+    display: block;
+    height: 100%;
+    padding: 4rem;
+    color: #4e565f;
+    transition: all .2s ease-in-out;
+    text-decoration: none;
 }
 
-.admin-item {
-    transition: .5s;
-    transition-timing-function: ease-in-out;
+.admin-col-listing.admin-col-listing-hover .admin-col-listing-item:hover {
+    z-index: 2;
+    color: #fff;
+    text-decoration: none;
+    background-color: #61a861;
+}
+
+.admin-col-listing-item-disabled:hover {
+    color: #4e565f !important;
+    background-color: #fff !important;
+}
+
+.admin-col-listing.admin-col-listing-hover .admin-col-listing-item:hover .admin-icon {
+    color: #fff;
+}
+
+.admin-col-listing .admin-col-listing-item .admin-icon {
+    color: #61a861;
+}
+
+.admin-icon {
+    font-size: 36px;
+}
+
+.admin-col-listing .admin-col-listing-item .admin-card-title {
+    margin-top: .5rem;
+}
+
+.admin-card {
+    display: block;
+    padding: 1px 0;
+    background-color: #fff;
+    border: none;
+}
+
+.admin-card .admin-card-title:last-child {
+    margin-bottom: 0;
+}
+
+.admin-card .card-body {
+    padding: 0 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-card-title {
+    font-size: 1rem;
 }
 /* Admin page styles END */
 
@@ -82,13 +132,13 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item) {
     color: #4BA2CE !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item):hover {
     color: #2c79a1 !important;
     text-decoration: underline !important;
 }
