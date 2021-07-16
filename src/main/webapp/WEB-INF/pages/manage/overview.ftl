@@ -603,7 +603,7 @@
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
                     <div class="mx-md-4 mx-2">
-                        <p class="mb-0">
+                        <p>
                             <#if resource.usesAutoPublishing()>
                                 <@s.text name="manage.overview.autopublish.intro.activated"/>
                             <#else>
@@ -611,9 +611,9 @@
                             </#if>
                         </p>
 
-                        <div class="details table-responsive">
-                            <table class="table table-sm table-borderless text-smaller">
-                                <#if resource.usesAutoPublishing()>
+                        <#if resource.usesAutoPublishing()>
+                            <div class="details table-responsive mt-3">
+                                <table class="table table-sm table-borderless text-smaller">
                                     <tr>
                                         <th class="col-4"><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
                                         <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
@@ -622,9 +622,9 @@
                                         <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
                                         <td>${resource.nextPublished?datetime?string.long_short}</td>
                                     </tr>
-                                </#if>
-                            </table>
-                        </div>
+                                </table>
+                            </div>
+                        </#if>
                     </div>
                 </div>
 
