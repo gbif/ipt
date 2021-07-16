@@ -9,6 +9,8 @@ asciidoc:
     idprefix: '@'
     idseparator: '-@'
     manual-version: 2.5
+    # EML
+    eml-location: http://web.archive.org/web/2013if_/http://knb.ecoinformatics.org/software/eml/eml-2.1.1
     # Cores
     latest-dwc-occurrence:   http://rs.gbif.org/core/dwc_occurrence_2020-07-15.xml
     date-dwc-occurrence:     2020-07-15
