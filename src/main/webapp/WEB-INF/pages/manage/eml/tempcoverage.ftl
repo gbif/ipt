@@ -194,7 +194,7 @@
             <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
         </h5>
 
-        <p class="mx-md-4 mx-2 mb-0">
+        <p class="mx-md-4 mx-2 mb-0 mb-1">
             <@s.text name='manage.metadata.tempcoverage.intro'/>
         </p>
 
@@ -202,7 +202,7 @@
             <!-- Adding the temporal coverages that already exists on the file -->
             <#assign next_agent_index=0 />
             <#list eml.temporalCoverages as temporalCoverage>
-                <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1" >
+                <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 mx-md-3 mx-1 border-bottom pb-3" >
                     <div class="d-flex justify-content-end">
                         <a id="removeLink-${temporalCoverage_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
                     </div>
@@ -214,7 +214,7 @@
                     <!-- Adding new subform -->
                     <#if "${temporalCoverage.type}" == "DATE_RANGE" >
                         <div id="date-${temporalCoverage_index}" class="typeForm col-12">
-                            <div class="row">
+                            <div class="row g-3">
                                 <div class="col-lg-6">
                                     <@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                                 </div>
@@ -227,7 +227,7 @@
                     <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                         <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                             <div>
-                                <@input date=true i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                <@input date=true i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                             </div>
 
                         </div>
@@ -274,12 +274,14 @@
         </div>
 
         <!-- DATE RANGE -->
-        <div id="date-99999" class="typeForm row g-3" style="display:none">
+        <div id="date-99999" class="typeForm col-12" style="display:none">
+            <div class="row g-3">
             <div class="col-lg-6">
                 <@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
             </div>
             <div class="col-lg-6">
                 <@input date=true i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+            </div>
             </div>
         </div>
 
