@@ -76,6 +76,8 @@
                     newSubForm.css("display", "");
                 }
                 theForm.append(newSubForm);
+
+                initInfoPopovers(newSubForm[0]);
             }
 
             /**
