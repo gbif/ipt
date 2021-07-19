@@ -48,7 +48,7 @@
                 addTypeForm(newForm, typeSubForm, true);
                 $("#temporals").append(newForm);
                 newForm.hide();
-                //Updating the componetsof the new 'sub-form'.
+                //Updating the components of the new 'sub-form'.
                 updateFields(idNewForm, count);
                 $("#temporal-" + count).slideDown("slow").css('zoom', 1);
 
@@ -76,8 +76,6 @@
                     newSubForm.css("display", "");
                 }
                 theForm.append(newSubForm);
-
-                initInfoPopovers(newSubForm[0]);
             }
 
             /**
@@ -113,6 +111,12 @@
                     $("#" + idNewForm + " [id$='endDate']").attr("id", "eml.temporalCoverages[" + index + "].endDate").attr("name", function () {
                         return $(this).attr("id");
                     });
+
+                    // replace generic 'inputName-startDate' and 'inputName-endDate' with a proper value at 'data-bs-content' attribute to be able to bind help options
+                    var popovers = $("#" + idNewForm + " a.popover-link");
+                    popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
+                    popovers[1].setAttribute("data-bs-content", popovers[1].getAttribute('data-bs-content').replace('inputName-endDate', "inputName-eml.temporalCoverages[" + index + "].endDate"))
+
                     initHelp("#date-" + index);
                 }
                 if (typeSubForm === FORMATION_PERIOD) {
@@ -134,8 +138,15 @@
                     $("#" + idNewForm + " [id$='startDate']").attr("id", "eml.temporalCoverages[" + index + "].startDate").attr("name", function () {
                         return $(this).attr("id");
                     });
+
+                    // replace generic 'inputName-startDate' with a proper value at 'data-bs-content' attribute to be able to bind help options
+                    var popovers = $("#" + idNewForm + " a.popover-link");
+                    popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
+
                     initHelp("#single-" + index);
                 }
+
+                initInfoPopovers($("#" + idNewForm)[0]);
             }
 
             // This event should work for the temporal coverage that already exist in the file.
@@ -174,6 +185,29 @@
                     calculateCount();
                 });
             }
+
+            $(document.body).on('click', '.helpOptionLink', function (e) {
+                e.preventDefault();
+                // get all link classes
+                var classes = $(this).attr('class').split(/\s+/);
+                var inputName, inputValue
+
+                for (var i = 0; i < classes.length; i++) {
+                    // get input name in order to set value
+                    if (classes[i].startsWith('inputName')) {
+                        // get rid of prefix; escape dots and brackets
+                        inputName = classes[i].replace('inputName-', '').replaceAll('.', '\\.').replaceAll('[', '\\[').replaceAll(']', '\\]');
+                    }
+
+                    // get value to be set
+                    if (classes[i].startsWith('inputValue')) {
+                        // get rid of prefix
+                        inputValue = classes[i].replace('inputValue-', '');
+                    }
+                }
+
+                $('#' + inputName).val(inputValue)
+            });
         });
     </script>
 

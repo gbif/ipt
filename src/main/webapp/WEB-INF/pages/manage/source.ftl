@@ -26,7 +26,7 @@
                 // get input name in order to set value
                 if (classes[i].startsWith('inputName')) {
                     // get rid of prefix, escape dots
-                    inputName = classes[i].replace('inputName-', '').replace('.', '\\.');
+                    inputName = classes[i].replace('inputName-', '').replaceAll('.', '\\.');
                 }
 
                 // get value to be set
