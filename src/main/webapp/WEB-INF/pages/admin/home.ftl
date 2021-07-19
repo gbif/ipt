@@ -20,31 +20,31 @@
 
 				<div class="card-body my-lg-3 mt-0 mb-3">
 					<div class="row gx-0 text-center admin-col-listing admin-col-listing-hover">
-						<div class="col-lg-3 col-12">
-							<a href="${baseURL}/admin/config.do" title="" class="admin-col-listing-item border-lg-right border-bottom">
+						<div class="col-xl-3 col-12">
+							<a href="${baseURL}/admin/config.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
 								<i class="bi bi-gear-fill admin-icon"></i>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.editConfig"/>
 								</h5>
 							</a>
 						</div>
-						<div class="col-lg-3 col-12">
-							<a href="${baseURL}/admin/bulk-publication.do" title="" class="admin-col-listing-item border-lg-right border-bottom">
+						<div class="col-xl-3 col-12">
+							<a href="${baseURL}/admin/bulk-publication.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
 								<i class="bi bi-stack admin-icon"></i>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.bulkPublication"/>
 								</h5>
 							</a>
 						</div>
-						<div class="col-lg-3 col-12">
-							<a href="${baseURL}/admin/users.do" title="" class="admin-col-listing-item border-lg-right border-bottom">
+						<div class="col-xl-3 col-12">
+							<a href="${baseURL}/admin/users.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
 								<i class="bi bi-people-fill admin-icon"></i>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.manageUsers"/>
 								</h5>
 							</a>
 						</div>
-						<div class="col-lg-3 col-12">
+						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/registration.do" title="" class="admin-col-listing-item border-bottom">
 								<i class="bi bi-cloud-arrow-up-fill admin-icon"></i>
 								<h5 class="admin-card-title">
@@ -52,19 +52,24 @@
 								</h5>
 							</a>
 						</div>
-						<div class="col-lg-3 col-12">
+						<div class="col-xl-3 col-12">
 							<#if !registeredIpt?has_content>
-								<a href="javascript:void(0);" title="" class="admin-col-listing-item border-lg-right border-lg-max-bottom text-gbif-header admin-col-listing-item-disabled">
+								<div href="javascript:void(0);" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom text-gbif-header admin-col-listing-item-disabled">
 									<i class="bi bi-building admin-icon text-gbif-header"></i>
 									<h5 class="admin-card-title">
+										<a tabindex="0" role="button"
+										   class="popover-link"
+										   data-bs-toggle="popover"
+										   data-bs-trigger="focus"
+										   data-bs-html="true"
+										   data-bs-content="<@s.text name="admin.home.editOrganisations.disabled" escapeHtml=true/>">
+											<i class="bi bi-exclamation-triangle-fill text-secondary"></i>
+										</a>
 										<@s.text name="admin.home.editOrganisations"/>
 									</h5>
-									<small class="pt-0 mt-0">
-										<@s.text name="admin.home.editOrganisations.disabled"/>
-									</small>
-								</a>
+								</div>
 							<#else>
-								<a href="${baseURL}/admin/organisations.do" title="" class="admin-col-listing-item border-lg-right border-lg-max-bottom">
+								<a href="${baseURL}/admin/organisations.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
 									<i class="bi bi-building admin-icon"></i>
 									<h5 class="admin-card-title">
 										<@s.text name="admin.home.editOrganisations"/>
@@ -72,16 +77,16 @@
 								</a>
 							</#if>
 						</div>
-						<div class="col-lg-3 col-12">
-							<a href="${baseURL}/admin/extensions.do" title="" class="admin-col-listing-item border-lg-right border-lg-max-bottom">
+						<div class="col-xl-3 col-12">
+							<a href="${baseURL}/admin/extensions.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
 								<i class="bi bi-collection-fill admin-icon"></i>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.manageExtensions"/>
 								</h5>
 							</a>
 						</div>
-						<div class="col-lg-3 col-12">
-							<a href="${baseURL}/admin/logs.do" title="" class="admin-col-listing-item border-lg-right">
+						<div class="col-xl-3 col-12">
+							<a href="${baseURL}/admin/logs.do" title="" class="admin-col-listing-item border-xl-right">
 								<i class="bi bi-journal-text admin-icon"></i>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.manageLogs"/>

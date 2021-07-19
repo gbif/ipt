@@ -64,6 +64,12 @@ header, .dropdown-menu {
     text-decoration: none;
 }
 
+@media (max-width: 1200px) {
+    .admin-col-listing .admin-col-listing-item {
+        padding: 2rem;
+    }
+}
+
 .admin-col-listing.admin-col-listing-hover .admin-col-listing-item:hover {
     z-index: 2;
     color: #fff;
