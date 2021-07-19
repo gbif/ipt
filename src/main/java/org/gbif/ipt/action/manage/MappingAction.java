@@ -87,9 +87,11 @@ public class MappingAction extends ManagerBaseAction {
   private final Map<String, Map<String, String>> vocabTerms = Maps.newHashMap();
   private ExtensionProperty coreid;
   private ExtensionProperty datasetId;
+  private ExtensionProperty dynamicProperties;
   private Integer mid;
   private PropertyMapping mappingCoreid;
   private boolean doiUsedForDatasetId;
+  private boolean generateJsonDynamicProperties;
 
   @Inject
   public MappingAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -221,6 +223,10 @@ public class MappingAction extends ManagerBaseAction {
 
   public ExtensionProperty getDatasetId() {
     return datasetId;
+  }
+
+  public ExtensionProperty getDynamicProperties() {
+    return dynamicProperties;
   }
 
   public Integer getMid() {
@@ -384,6 +390,7 @@ public class MappingAction extends ManagerBaseAction {
       readSource();
 
       datasetId = extensionManager.get(mapping.getExtension().getRowType()).getProperty(Constants.DWC_DATASET_ID);
+      dynamicProperties = extensionManager.get(mapping.getExtension().getRowType()).getProperty(Constants.DWC_DYNAMIC_PROPERTIES);
 
       // prepare all other fields
       for (int i = 0; i < mapping.getExtension().getProperties().size(); i++) {
@@ -423,6 +430,7 @@ public class MappingAction extends ManagerBaseAction {
 
       // ensure existing configuration re-loaded
       setDoiUsedForDatasetId(mapping.isDoiUsedForDatasetId());
+      setGenerateJsonDynamicProperties(mapping.isGenerateJsonDynamicProperties());
 
       if (!isHttpPost()) {
         validateAndReport();
@@ -498,6 +506,7 @@ public class MappingAction extends ManagerBaseAction {
       mapping.setFields(mappedFields);
       // persist other configurations, e.g. using DOI as datasetId
       mapping.setDoiUsedForDatasetId(doiUsedForDatasetId);
+      mapping.setGenerateJsonDynamicProperties(generateJsonDynamicProperties);
     }
     // update last modified dates
     Date lastModified = new Date();
@@ -550,6 +559,14 @@ public class MappingAction extends ManagerBaseAction {
 
   public void setDoiUsedForDatasetId(boolean doiUsedForDatasetId) {
     this.doiUsedForDatasetId = doiUsedForDatasetId;
+  }
+
+  public boolean isGenerateJsonDynamicProperties() {
+    return generateJsonDynamicProperties;
+  }
+
+  public void setGenerateJsonDynamicProperties(boolean generateJsonDynamicProperties) {
+    this.generateJsonDynamicProperties = generateJsonDynamicProperties;
   }
 
   /**

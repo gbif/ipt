@@ -1,0 +1,71 @@
+<resource>
+  <coreType>Occurrence</coreType>
+  <status>REGISTERED</status>
+  <emlVersion>3.0</emlVersion>
+  <lastPublished>2012-08-16 13:15:16.892 UTC</lastPublished>
+  <recordsPublished>2</recordsPublished>
+  <key>54b58d1a-a982-445a-b4c2-5f4e49c899be</key>
+  <organisation>f3e8e9a9-df60-40ca-bb71-7f49313b3150</organisation>
+  <creator>kbraak@gbif.org</creator>
+  <created>2012-08-14 17:31:49.546 UTC</created>
+  <modifier reference="../creator"/>
+  <modified>2012-08-16 14:30:31.779 UTC</modified>
+  <identifierStatus>PUBLIC_PENDING_PUBLICATION</identifierStatus>
+  <doi>
+    <prefix>10.5072</prefix>
+    <suffix>gc8gqc</suffix>
+  </doi>
+  <managers>
+    <user>jcuadra@gbif.org</user>
+  </managers>
+  <sources>
+    <filesource>
+      <resource reference="../../.."/>
+      <name>occurrence</name>
+      <encoding>UTF-8</encoding>
+      <dateFormat>YYYY-MM-DD</dateFormat>
+      <columns>18</columns>
+      <readable>true</readable>
+      <fieldsTerminatedBy>	</fieldsTerminatedBy>
+      <fieldsEnclosedBy></fieldsEnclosedBy>
+      <ignoreHeaderLines>1</ignoreHeaderLines>
+      <fileSize>4262</fileSize>
+      <rows>15</rows>
+      <lastModified>2012-08-16 12:20:19.819 UTC</lastModified>
+    </filesource>
+  </sources>
+  <mappings>
+    <mapping>
+      <source class="filesource" reference="../../../sources/filesource"/>
+      <extension>http://rs.tdwg.org/dwc/terms/Occurrence</extension>
+      <fields>
+        <field>
+          <index>2</index>
+          <term>http://rs.tdwg.org/dwc/terms/basisOfRecord</term>
+          <defaultValue></defaultValue>
+          <type>string</type>
+        </field>
+        <field>
+          <index>1</index>
+          <term>http://rs.tdwg.org/dwc/terms/scientificName</term>
+          <defaultValue></defaultValue>
+          <type>string</type>
+        </field>
+        <field>
+          <index>0</index>
+          <term>http://rs.tdwg.org/dwc/terms/occurrenceID</term>
+          <defaultValue></defaultValue>
+          <type>string</type>
+        </field>
+      </fields>
+      <idColumn>0</idColumn>
+      <idSuffix></idSuffix>
+      <filter>
+        <param></param>
+        <filterTime>AfterTranslation</filterTime>
+      </filter>
+      <doiUsedForDatasetId>false</doiUsedForDatasetId>
+      <generateJsonDynamicProperties>true</generateJsonDynamicProperties>
+    </mapping>
+  </mappings>
+</resource>

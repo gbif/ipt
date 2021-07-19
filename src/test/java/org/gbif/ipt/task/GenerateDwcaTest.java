@@ -313,6 +313,131 @@ public class GenerateDwcaTest {
     reader.close();
   }
 
+  /**
+   * Use generated JSON for DynamicProperties
+   */
+  @Test
+  public void testGenerateCoreFromSingleSourceFileJsonDynamicProperties() throws Exception {
+    // retrieve sample zipped resource XML configuration file, where setting "generated dynamic properties" has been turned on
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_generate_dynamic_properties.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_dynamic_properties.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
+    Map<String, Integer> recordsByExtension = generateDwca.call();
+    // count for occurrence core only
+    assertEquals(1, recordsByExtension.size());
+
+    // 2 rows in core file
+    String coreRowType = resource.getCoreRowType();
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, coreRowType);
+    int recordCount = recordsByExtension.get(resource.getCoreRowType());
+    assertEquals(2, recordCount);
+
+    // confirm existence of versioned (archived) DwC-A "dwca-3.0.zip"
+    File versionedDwca = new File(resourceDir, VERSIONED_ARCHIVE_FILENAME);
+    assertTrue(versionedDwca.exists());
+
+    // investigate the DwC-A
+    File dir = FileUtils.createTempDir();
+    CompressionUtil.decompressFile(dir, versionedDwca, true);
+
+    Archive archive = ArchiveFactory.openArchive(dir);
+    assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
+    assertEquals(0, archive.getCore().getId().getIndex().intValue());
+    assertEquals(4, archive.getCore().getFieldsSorted().size());
+
+    // confirm order of fields appear honors order of Occurrence Core Extension
+    assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
+    assertEquals("dynamicProperties", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
+    assertEquals("occurrenceID", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+    assertEquals("scientificName", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
+
+    // confirm data written to file
+    CSVReader reader = archive.getCore().getCSVReader();
+    // 1st record
+    String[] row = reader.next();
+    assertEquals("1", row[0]);
+    assertEquals("occurrence", row[1]);
+    assertEquals("{\"customValue\":\"val1\",\"datasetID\":\"ds_77\",\"kingdom\":\"animalia\"}", row[2]);
+    assertEquals("1", row[3]);
+    assertEquals("puma concolor", row[4]);
+
+    // 2nd record
+    row = reader.next();
+    assertEquals("2", row[0]);
+    assertEquals("occurrence", row[1]);
+    assertEquals("{\"customValue\":\"val2\",\"datasetID\":\"ds_77\",\"kingdom\":\"animalia\"}", row[2]);
+    assertEquals("2", row[3]);
+    assertEquals("pumm:concolor", row[4]);
+    reader.close();
+  }
+
+  /**
+   * Use standard mapping for DynamicProperties
+   */
+  @Test
+  public void testGenerateCoreFromSingleSourceFileStandardDynamicProperties() throws Exception {
+    // retrieve sample zipped resource XML configuration file, where setting "generated dynamic properties" has been turned off
+    // and standard mapping is used
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_standard_dynamic_properties.xml");
+    // create resource from single source file
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_dynamic_properties.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+      mockVocabulariesManager);
+    Map<String, Integer> recordsByExtension = generateDwca.call();
+    // count for occurrence core only
+    assertEquals(1, recordsByExtension.size());
+
+    // 2 rows in core file
+    String coreRowType = resource.getCoreRowType();
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, coreRowType);
+    int recordCount = recordsByExtension.get(resource.getCoreRowType());
+    assertEquals(2, recordCount);
+
+    // confirm existence of versioned (archived) DwC-A "dwca-3.0.zip"
+    File versionedDwca = new File(resourceDir, VERSIONED_ARCHIVE_FILENAME);
+    assertTrue(versionedDwca.exists());
+
+    // investigate the DwC-A
+    File dir = FileUtils.createTempDir();
+    CompressionUtil.decompressFile(dir, versionedDwca, true);
+
+    Archive archive = ArchiveFactory.openArchive(dir);
+    assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
+    assertEquals(0, archive.getCore().getId().getIndex().intValue());
+    assertEquals(4, archive.getCore().getFieldsSorted().size());
+
+    // confirm order of fields appear honors order of Occurrence Core Extension
+    assertEquals("basisOfRecord", archive.getCore().getFieldsSorted().get(0).getTerm().simpleName());
+    assertEquals("dynamicProperties", archive.getCore().getFieldsSorted().get(1).getTerm().simpleName());
+    assertEquals("occurrenceID", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
+    assertEquals("scientificName", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
+
+    // confirm data written to file
+    CSVReader reader = archive.getCore().getCSVReader();
+    // 1st record
+    String[] row = reader.next();
+    assertEquals("1", row[0]);
+    assertEquals("occurrence", row[1]);
+    assertEquals("val1", row[2]);
+    assertEquals("1", row[3]);
+    assertEquals("puma concolor", row[4]);
+
+    // 2nd record
+    row = reader.next();
+    assertEquals("2", row[0]);
+    assertEquals("occurrence", row[1]);
+    assertEquals("val2", row[2]);
+    assertEquals("2", row[3]);
+    assertEquals("pumm:concolor", row[4]);
+    reader.close();
+  }
+
   @Test
   public void testGenerateCoreFromSingleSourceFileNoIdMapped() throws Exception {
     // retrieve sample zipped resource XML configuration file, with no id mapped
