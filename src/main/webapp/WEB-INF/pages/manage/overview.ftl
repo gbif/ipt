@@ -316,7 +316,7 @@
                                     <i class="bi bi-exclamation-triangle"></i>
                                 </button>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
                                         <@s.text name="button.delete"/>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
@@ -338,7 +338,7 @@
                             </div>
                         <#else>
                             <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
                                     <@s.text name="button.delete"/>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
