@@ -151,6 +151,25 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin
 /* Links color with exception for some classes END */
 
 
+/* Datepicker styles START */
+.datepicker table tr td span.active, .datepicker table tr td span.active.disabled, .datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active:hover {
+    background-image: linear-gradient(to bottom, #61a861, #61a861) !important;
+}
+
+.datepicker table tr td.active, .datepicker table tr td.active.disabled, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active:hover {
+    background-image: linear-gradient(to bottom, #61a861, #61a861) !important;
+}
+
+.datepicker td, .datepicker th {
+    font-size: 1rem !important;
+}
+
+.datepicker-days td, .datepicker-days th {
+    width: 40px !important;
+}
+/* Datepicker styles END */
+
+
 /* Custom colors */
 .text-gbif-primary {
     color: #61a861 !important;

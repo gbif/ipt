@@ -43,16 +43,10 @@ function initHelp(context) {
     if (context === undefined) context = "";
 
     $(context + " .calendarInfo").each(function (i) {
-        if (context !== "") {
-            $(this).find("input").removeAttr("class");
-            $(this).find("input").addClass("form-control")
-            $(this).find(".ui-datepicker-trigger").remove();
-        }
         $(this).find("input").datepicker({
-            changeMonth: true,
-            changeYear: true,
-            constrainInput: false,
-            dateFormat: 'yy-mm-dd'
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            orientation: "bottom"
         });
     });
 

@@ -1,6 +1,10 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#setting number_format="#####.##">
+
+    <script src="${baseURL}/js/datepicker/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/datepicker/bootstrap-datepicker.min.css" />
+
     <script xmlns="http://www.w3.org/1999/html">
         var DATE_RANGE = "DATE_RANGE";
         var FORMATION_PERIOD = "FORMATION_PERIOD";
@@ -12,22 +16,6 @@
         $(document).ready(function () {
             initHelp();
             calculateCount();
-            styleCalendar();
-
-            $(this).find("#ui-datepicker-div").addClass("bg-body rounded shadow-sm px-2").css("border", "1px solid #ced4da");
-
-            function styleCalendar() {
-                if ($(".ui-datepicker-calendar")[0]){
-                    // add bootstrap styles to the calendar
-                    $(".ui-datepicker-calendar").addClass("table table-sm table-borderless");
-                    $(".ui-datepicker-title").addClass("d-flex");
-                    $(".ui-datepicker-month").addClass('form-select form-select-sm me-1');
-                    $(".ui-datepicker-year").addClass('form-select form-select-sm');
-                    $(".ui-corner-all").addClass("mx-1")
-                }
-
-                setTimeout(styleCalendar, 100);
-            }
 
             function calculateCount() {
                 var lastChild = $("#temporals .tempo:last-child").attr("id");
