@@ -256,7 +256,7 @@
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
                     <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
-                    <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a><br/><br/></#if>
+                    <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><br/><br/></#if>
                     <#if p.examples?has_content>
                         <em><@s.text name="basic.examples"/></em>: ${p.examples}
                     </#if>
@@ -372,7 +372,7 @@
                         <#if coreid??>
                             <#assign text1>
                                 <#if coreid.description?has_content>${coreid.description}</#if>
-                                <#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}">${coreid.link}</a></#if>
+                                <#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}" target="_blank">${coreid.link}</a></#if>
                                 <span class="idSuffix">
                                     <@s.text name='manage.mapping.info.linenumbers'/>
                                 </span>
