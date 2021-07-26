@@ -139,6 +139,21 @@
     }
 }
 
+@media (max-width: 1200px) {
+    .border-xl-max-top {
+        border-top: 1px solid #e3e7eb !important;
+    }
+    .border-xl-max-right {
+        border-right: 1px solid #e3e7eb !important;
+    }
+    .border-xl-max-bottom {
+        border-bottom: 1px solid #e3e7eb !important;
+    }
+    .border-xl-max-left {
+        border-left: 1px solid #e3e7eb !important;
+    }
+}
+
 @media (min-width: 1200px) {
     .border-xl-top {
         border-top: 1px solid #e3e7eb !important;

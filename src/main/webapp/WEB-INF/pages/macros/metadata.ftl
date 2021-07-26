@@ -373,7 +373,7 @@ $(document).ready(function(){
 			$("#add-button-"+index).click(function(event){
 				createTaxons(event);
 			});
-			if($("#item-"+index+" #subItems").children().size() == 0) {
+			if($("#item-"+index+" #subItems").children().length === 0) {
 				$("#plus-subItem-"+index).click();
 			};
 		<#break>

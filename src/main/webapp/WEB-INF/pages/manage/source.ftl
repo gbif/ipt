@@ -15,6 +15,29 @@
             e.preventDefault();
             $("#modalbox").hide();
         });
+
+        $(document.body).on('click', '.helpOptionLink', function (e) {
+            e.preventDefault();
+            // get all link classes
+            var classes = $(this).attr('class').split(/\s+/);
+            var inputName, inputValue
+
+            for (var i = 0; i < classes.length; i++) {
+                // get input name in order to set value
+                if (classes[i].startsWith('inputName')) {
+                    // get rid of prefix, escape dots
+                    inputName = classes[i].replace('inputName-', '').replaceAll('.', '\\.');
+                }
+
+                // get value to be set
+                if (classes[i].startsWith('inputValue')) {
+                    // get rid of prefix
+                    inputValue = classes[i].replace('inputValue-', '');
+                }
+            }
+
+            $('#' + inputName).val(inputValue)
+        });
     });
 </script>
 <#assign currentMenu = "manage"/>
@@ -145,7 +168,7 @@
                                 <@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
                             </div>
                             <div class="col-lg-6">
-                                <@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","a":"Single Quote"}/>
+                                <@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
                             </div>
                             <div class="col-lg-6">
                                 <@multivalue/>

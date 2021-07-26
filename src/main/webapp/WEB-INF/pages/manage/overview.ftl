@@ -316,7 +316,7 @@
                                     <i class="bi bi-exclamation-triangle"></i>
                                 </button>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
                                         <@s.text name="button.delete"/>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
@@ -338,7 +338,7 @@
                             </div>
                         <#else>
                             <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
                                     <@s.text name="button.delete"/>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
@@ -603,7 +603,7 @@
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
                     <div class="mx-md-4 mx-2">
-                        <p class="mb-0">
+                        <p>
                             <#if resource.usesAutoPublishing()>
                                 <@s.text name="manage.overview.autopublish.intro.activated"/>
                             <#else>
@@ -611,9 +611,9 @@
                             </#if>
                         </p>
 
-                        <div class="details table-responsive">
-                            <table class="table table-sm table-borderless text-smaller">
-                                <#if resource.usesAutoPublishing()>
+                        <#if resource.usesAutoPublishing()>
+                            <div class="details table-responsive mt-3">
+                                <table class="table table-sm table-borderless text-smaller">
                                     <tr>
                                         <th class="col-4"><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
                                         <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
@@ -622,9 +622,9 @@
                                         <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
                                         <td>${resource.nextPublished?datetime?string.long_short}</td>
                                     </tr>
-                                </#if>
-                            </table>
-                        </div>
+                                </table>
+                            </div>
+                        </#if>
                     </div>
                 </div>
 
@@ -667,21 +667,23 @@
 
                             <p>
                                 <#if resource.status=="PRIVATE">
-                                    <span class="badge rounded-pill bg-danger">
+                                    <span class="badge rounded-pill bg-gbif-danger">
                                         <@s.text name="resource.status.${resource.status?lower_case}"/>
                                     </span>
                                 <#else>
-                                    <span class="badge rounded-pill bg-success">
+                                    <span class="badge rounded-pill bg-gbif-primary">
                                         <@s.text name="resource.status.${resource.status?lower_case}"/>
                                     </span>
                                 </#if>
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
-                            <div class="text-gbif-danger">
-                                <i class="bi bi-exclamation-triangle"></i>
-                                <em><@s.text name="manage.overview.published.testmode.warning"/></em>
-                            </div>
+                            <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
+                                <p class="text-gbif-danger">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <em><@s.text name="manage.overview.published.testmode.warning"/></em>
+                                </p>
+                            </#if>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details table-responsive">
@@ -699,7 +701,18 @@
                                             </tr>
                                             <tr>
                                                 <th><@s.text name="manage.overview.visibility.organisation.contact"/></th>
-                                                <td>${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}</td>
+                                                <td>
+                                                    <#-- Check if name or email missing -->
+                                                    <#if resource.organisation.primaryContactName?? && resource.organisation.primaryContactEmail??>
+                                                        ${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}
+                                                    <#elseif resource.organisation.primaryContactName??>
+                                                        ${resource.organisation.primaryContactName!}
+                                                    <#elseif resource.organisation.primaryContactEmail??>
+                                                        ${resource.organisation.primaryContactEmail!}
+                                                    <#else>
+                                                        -
+                                                    </#if>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th><@s.text name="manage.overview.visibility.endorsing.node"/></th>

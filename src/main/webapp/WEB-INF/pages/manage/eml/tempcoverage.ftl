@@ -1,6 +1,10 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#setting number_format="#####.##">
+
+    <script src="${baseURL}/js/datepicker/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/datepicker/bootstrap-datepicker.min.css" />
+
     <script xmlns="http://www.w3.org/1999/html">
         var DATE_RANGE = "DATE_RANGE";
         var FORMATION_PERIOD = "FORMATION_PERIOD";
@@ -12,22 +16,6 @@
         $(document).ready(function () {
             initHelp();
             calculateCount();
-            styleCalendar();
-
-            $(this).find("#ui-datepicker-div").addClass("bg-body rounded shadow-sm px-2").css("border", "1px solid #ced4da");
-
-            function styleCalendar() {
-                if ($(".ui-datepicker-calendar")[0]){
-                    // add bootstrap styles to the calendar
-                    $(".ui-datepicker-calendar").addClass("table table-sm table-borderless");
-                    $(".ui-datepicker-title").addClass("d-flex");
-                    $(".ui-datepicker-month").addClass('form-select form-select-sm me-1');
-                    $(".ui-datepicker-year").addClass('form-select form-select-sm');
-                    $(".ui-corner-all").addClass("mx-1")
-                }
-
-                setTimeout(styleCalendar, 100);
-            }
 
             function calculateCount() {
                 var lastChild = $("#temporals .tempo:last-child").attr("id");
@@ -48,7 +36,7 @@
                 addTypeForm(newForm, typeSubForm, true);
                 $("#temporals").append(newForm);
                 newForm.hide();
-                //Updating the componetsof the new 'sub-form'.
+                //Updating the components of the new 'sub-form'.
                 updateFields(idNewForm, count);
                 $("#temporal-" + count).slideDown("slow").css('zoom', 1);
 
@@ -111,6 +99,12 @@
                     $("#" + idNewForm + " [id$='endDate']").attr("id", "eml.temporalCoverages[" + index + "].endDate").attr("name", function () {
                         return $(this).attr("id");
                     });
+
+                    // replace generic 'inputName-startDate' and 'inputName-endDate' with a proper value at 'data-bs-content' attribute to be able to bind help options
+                    var popovers = $("#" + idNewForm + " a.popover-link");
+                    popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
+                    popovers[1].setAttribute("data-bs-content", popovers[1].getAttribute('data-bs-content').replace('inputName-endDate', "inputName-eml.temporalCoverages[" + index + "].endDate"))
+
                     initHelp("#date-" + index);
                 }
                 if (typeSubForm === FORMATION_PERIOD) {
@@ -132,8 +126,15 @@
                     $("#" + idNewForm + " [id$='startDate']").attr("id", "eml.temporalCoverages[" + index + "].startDate").attr("name", function () {
                         return $(this).attr("id");
                     });
+
+                    // replace generic 'inputName-startDate' with a proper value at 'data-bs-content' attribute to be able to bind help options
+                    var popovers = $("#" + idNewForm + " a.popover-link");
+                    popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
+
                     initHelp("#single-" + index);
                 }
+
+                initInfoPopovers($("#" + idNewForm)[0]);
             }
 
             // This event should work for the temporal coverage that already exist in the file.
@@ -172,6 +173,29 @@
                     calculateCount();
                 });
             }
+
+            $(document.body).on('click', '.helpOptionLink', function (e) {
+                e.preventDefault();
+                // get all link classes
+                var classes = $(this).attr('class').split(/\s+/);
+                var inputName, inputValue
+
+                for (var i = 0; i < classes.length; i++) {
+                    // get input name in order to set value
+                    if (classes[i].startsWith('inputName')) {
+                        // get rid of prefix; escape dots and brackets
+                        inputName = classes[i].replace('inputName-', '').replaceAll('.', '\\.').replaceAll('[', '\\[').replaceAll(']', '\\]');
+                    }
+
+                    // get value to be set
+                    if (classes[i].startsWith('inputValue')) {
+                        // get rid of prefix
+                        inputValue = classes[i].replace('inputValue-', '');
+                    }
+                }
+
+                $('#' + inputName).val(inputValue)
+            });
         });
     </script>
 
@@ -192,7 +216,7 @@
             <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
         </h5>
 
-        <p class="mx-md-4 mx-2 mb-0">
+        <p class="mx-md-4 mx-2 mb-0 mb-1">
             <@s.text name='manage.metadata.tempcoverage.intro'/>
         </p>
 
@@ -200,7 +224,7 @@
             <!-- Adding the temporal coverages that already exists on the file -->
             <#assign next_agent_index=0 />
             <#list eml.temporalCoverages as temporalCoverage>
-                <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1" >
+                <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 mx-md-3 mx-1 border-bottom pb-3" >
                     <div class="d-flex justify-content-end">
                         <a id="removeLink-${temporalCoverage_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
                     </div>
@@ -212,7 +236,7 @@
                     <!-- Adding new subform -->
                     <#if "${temporalCoverage.type}" == "DATE_RANGE" >
                         <div id="date-${temporalCoverage_index}" class="typeForm col-12">
-                            <div class="row">
+                            <div class="row g-3">
                                 <div class="col-lg-6">
                                     <@input date=true i18nkey="eml.temporalCoverages.startDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                                 </div>
@@ -225,7 +249,7 @@
                     <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
                         <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                             <div>
-                                <@input date=true i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                <@input date=true i18nkey="eml.temporalCoverages.singleDate" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
                             </div>
 
                         </div>
@@ -272,12 +296,14 @@
         </div>
 
         <!-- DATE RANGE -->
-        <div id="date-99999" class="typeForm row g-3" style="display:none">
+        <div id="date-99999" class="typeForm col-12" style="display:none">
+            <div class="row g-3">
             <div class="col-lg-6">
                 <@input date=true i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
             </div>
             <div class="col-lg-6">
                 <@input date=true i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n" helpOptions={"YYYY-MM-DD":"YYYY-MM-DD"}/>
+            </div>
             </div>
         </div>
 
