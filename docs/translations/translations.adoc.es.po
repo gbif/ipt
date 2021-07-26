@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-06-28 11:11\n"
+"POT-Creation-Date: 2021-06-28 11:52+0000\n"
+"PO-Revision-Date: 2021-07-11 21:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -63,27 +63,27 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:18
 msgid "French"
-msgstr ""
+msgstr "Francés"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:19
 msgid "Japanese"
-msgstr ""
+msgstr "Japonés"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:20
 msgid "Portuguese"
-msgstr ""
+msgstr "Portugués"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:21
 msgid "Russian"
-msgstr ""
+msgstr "Ruso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:22
 msgid "Spanish"
-msgstr ""
+msgstr "Español"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:23
@@ -225,7 +225,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:84
-msgid "Some screenshot images can be translated, and others (without any English text) can be the same across all languages.  The default is for the same image to be used in all languages.  A different image must be uploaded in https://github.com/gbif/ipt[GitHub].  Create an image with the same filename and path, except with `en` changed to the target languag."
+msgid "Some screenshot images can be translated, and others (without any English text) can be the same across all languages.  The default is for the same image to be used in all languages.  A different image must be uploaded in https://github.com/gbif/ipt[GitHub].  Create an image with the same filename and path, except with `en` changed to the target language."
 msgstr ""
 
 #. type: Plain text
@@ -235,7 +235,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:88
-msgid "The syntax to include this image in the manual, `\\image::ipt2/home/IPTHome.png[]`, does not require translation."
+msgid "The syntax to include this image in the manual, `image::ipt2/home/IPTHome.png[]`, does not require translation."
 msgstr ""
 
 #. type: Title ===

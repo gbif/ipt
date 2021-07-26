@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-06-28 10:38\n"
+"PO-Revision-Date: 2021-07-12 03:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -78,7 +78,7 @@ msgstr "*Subtype* - El subtipo del recurso como figura en la lista desplegable d
 #: en/modules/ROOT/pages/home.adoc:16
 #, no-wrap
 msgid "**Records** - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource. For resources having data in one or more extension files, the number links to the Data Records page on the resource homepage showing a breakdown of record counts by extension.\n"
-msgstr ""
+msgstr "** Registros **: el número de filas de datos en el archivo de datos centrales del último archivo de Darwin Core publicado para el recurso. Para los recursos que tienen datos en uno o más archivos de extensión, el número se vincula a la página Registros de datos en la página de inicio del recurso que muestra un desglose de los recuentos de registros por extensión.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:17
