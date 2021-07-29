@@ -167,8 +167,6 @@ For any of the extensions that have not yet been installed in the IPT, there is 
 === Remove extension
 For any extension that has already been installed in the IPT, it can be removed by clicking the button labelled "Remove". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.
 
-image::ipt2/administration/IPTAdminExtensionsDetailVocabulary.png[]
-
 === Update extension
 For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished.
 
