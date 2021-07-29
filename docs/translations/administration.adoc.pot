@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"POT-Creation-Date: 2021-07-29 13:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -790,7 +790,6 @@ msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:162
-#: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsDetailVocabulary.png"
 msgstr ""
@@ -827,13 +826,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:172
+#: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
 msgid "Update extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:174
+#: en/modules/ROOT/pages/administration.adoc:172
 msgid ""
 "For any extension that has already been installed in the IPT, and is out-of-"
 "date, it can be updated by clicking the button labelled \"Update\". Updating "
@@ -845,19 +844,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:175
+#: en/modules/ROOT/pages/administration.adoc:173
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsUpdate.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:177
+#: en/modules/ROOT/pages/administration.adoc:175
 #, no-wrap
 msgid "View IPT logs"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:179
+#: en/modules/ROOT/pages/administration.adoc:177
 msgid ""
 "Messages generated from actions taken while running the IPT are logged to "
 "files for reference in the directory called \"logs\" within the IPT data "
@@ -871,7 +870,7 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:180
+#: en/modules/ROOT/pages/administration.adoc:178
 #, no-wrap
 msgid "ipt2/administration/IPTAdminLogs.png"
 msgstr ""
