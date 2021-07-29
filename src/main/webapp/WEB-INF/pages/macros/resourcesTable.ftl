@@ -118,7 +118,14 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 var searchValue = dt.search();
                 var searchParams = new URLSearchParams(window.location.search);
                 searchParams.set(SEARCH_PARAM, searchValue);
-                var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+                var newurl;
+
+                if (searchParams.toString() === 'search=') { // remove 'search=' string if search is empty
+                    newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                } else {
+                    newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+                }
+
                 window.history.pushState({path: newurl}, '', newurl);
               }
             });
