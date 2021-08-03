@@ -122,6 +122,13 @@
 <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 
+<style>
+    <#-- For HTML headers inside description -->
+    h1, h2, h3, h4, h5 {
+        font-size: 1.25rem !important;
+    }
+</style>
+
 <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.10.23.min.js"></script>
 <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
