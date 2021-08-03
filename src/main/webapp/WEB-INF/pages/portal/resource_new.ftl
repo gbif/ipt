@@ -214,7 +214,7 @@
                     <#list eml.description as para>
                         <#if para?has_content>
                             <p>
-                                <@textWithFormattedLink para/>
+                                <@para?interpret />
                             </p>
                         </#if>
                     </#list>
