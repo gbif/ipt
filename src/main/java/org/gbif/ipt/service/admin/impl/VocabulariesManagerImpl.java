@@ -500,10 +500,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // match vocabulary by identifier and issued date
       Vocabulary matched = null;
       for (Vocabulary v : registryManager.getVocabularies()) {
-        if (v.getUriString() != null && v.getUriString().equalsIgnoreCase(identifier)
-            && installed.getIssued() != null && v.getIssued() != null && installed.getIssued().compareTo(v.getIssued()) == 0) {
-          matched = v;
-          break;
+        if (v.getUriString() != null && v.getUriString().equalsIgnoreCase(identifier)) {
+          if (installed.getIssued() == null
+              || (installed.getIssued() != null && v.getIssued() != null && installed.getIssued().compareTo(v.getIssued()) < 0)) {
+            matched = v;
+            break;
+          }
         }
       }
       // verify the version was updated
