@@ -19,7 +19,7 @@
         </div>
 
         <#-- minimum info is the last name, organisation name, or position name -->
-        <div <#if dcPropertyType?has_content>property="dc:${dcPropertyType}" </#if> class="contactName text-gbif-primary">
+        <div <#if dcPropertyType?has_content>property="dc:${dcPropertyType}" </#if> class="contactName mb-1">
             <#if con.lastName?has_content>
                 ${con.firstName!} ${con.lastName!}
             <#elseif con.organisation?has_content>
@@ -29,7 +29,7 @@
             </#if>
         </div>
         <#-- we use this div to toggle the grouped information -->
-        <div>
+        <div class="text-smaller">
             <#if con.position?has_content>
                 <div class="contactPosition">
                     ${con.position!}
@@ -37,36 +37,36 @@
             </#if>
             <div class="address">
                 <#if con.organisation?has_content>
-                    <span>${con.organisation}</span>
+                    <div>${con.organisation}</div>
                 </#if>
 
                 <#if con.address.address?has_content>
-                    <span>${con.address.address!}</span>
+                    <div>${con.address.address!}</div>
                 </#if>
 
                 <#if con.address.postalCode?has_content || con.address.city?has_content>
-                    <span class="city">
+                    <div class="city">
                        <#if con.address.postalCode?has_content>
                            ${con.address.postalCode!}
                        </#if>
                         ${con.address.city!}
-                    </span>
+                    </div>
                 </#if>
 
                 <#if con.address.province?has_content>
-                    <span class="province">${con.address.province}</span>
+                    <div class="province">${con.address.province}</div>
                 </#if>
 
                 <#if con.address.country?has_content && con.address.country != 'UNKNOWN'>
-                    <span class="country">${con.address.country}</span>
+                    <div class="country">${con.address.country}</div>
                 </#if>
 
                 <#if con.email?has_content>
-                    <span class="email"><a href="mailto:${con.email}" title="email">${con.email}</a></span>
+                    <div class="email"><a href="mailto:${con.email}" title="email">${con.email}</a></div>
                 </#if>
 
                 <#if con.phone?has_content>
-                    <span class="phone">${con.phone}</span>
+                    <div class="phone">${con.phone}</div>
                 </#if>
 
             </div>
@@ -86,17 +86,10 @@
     </div>
 </#macro>
 
-<#-- Creates a column list of contacts, defaults to 2 columns -->
-<#macro contactList contacts contactType="" dcPropertyType="" columns=2>
+<#-- Creates a column list of contacts -->
+<#macro contactList contacts contactType="" dcPropertyType="" >
     <#list contacts as c>
-        <#if c_index%columns==0>
-            <div class="contact_row col${columns}">
-        </#if>
         <@contact con=c type=contactType dcPropertyType=dcPropertyType />
-        <#if c_index%columns==columns-1 || !c_has_next >
-            <!-- end of row -->
-            </div>
-        </#if>
     </#list>
 </#macro>
 
@@ -511,30 +504,30 @@
                 </h5>
 
                 <div class="row g-3 mx-md-4 mx-2">
-                    <div class="col-lg">
-                        <p><@s.text name='portal.resource.creator.intro'/>:</p>
+                    <div class="col-lg-6 col-xl-4">
+                        <p class="text-smaller fw-bold"><@s.text name='portal.resource.creator.intro'/>:</p>
                         <div>
                             <@contactList contacts=eml.creators dcPropertyType='creator'/>
                         </div>
                     </div>
 
-                    <div class="col-lg">
-                        <p><@s.text name='portal.resource.contact.intro'/>:</p>
+                    <div class="col-lg-6 col-xl-4">
+                        <p class="text-smaller fw-bold"><@s.text name='portal.resource.contact.intro'/>:</p>
                         <div>
                             <@contactList contacts=eml.contacts dcPropertyType='mediator'/>
                         </div>
                     </div>
 
-                    <div class="col-lg">
-                        <p><@s.text name='portal.metadata.provider.intro'/>:</p>
+                    <div class="col-lg-6 col-xl-4">
+                        <p class="text-smaller fw-bold"><@s.text name='portal.metadata.provider.intro'/>:</p>
                         <div>
                             <@contactList contacts=eml.metadataProviders dcPropertyType='contributor'/>
                         </div>
                     </div>
 
                     <#if (eml.associatedParties?size>0)>
-                        <div class="col-lg">
-                            <p><@s.text name='portal.associatedParties.intro'/>:</p>
+                        <div class="col-lg-6 col-xl-4">
+                            <p class="text-smaller fw-bold"><@s.text name='portal.associatedParties.intro'/>:</p>
                             <div>
                                 <@contactList contacts=eml.associatedParties dcPropertyType='contributor'/>
                             </div>
@@ -692,7 +685,7 @@
 
                     <#if (eml.project.personnel?size >0)>
                         <br>
-                        <p><@s.text name='eml.project.personnel.intro'/>:</p>
+                        <p class="text-smaller fw-bold"><@s.text name='eml.project.personnel.intro'/>:</p>
                         <div>
                             <@contactList eml.project.personnel/>
                         </div>
