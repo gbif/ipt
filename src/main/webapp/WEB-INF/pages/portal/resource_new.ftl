@@ -503,7 +503,7 @@
                     <@s.text name='portal.resource.contacts'/>
                 </h5>
 
-                <div class="row g-3 mx-md-4 mx-2">
+                <div class="row g-3 mx-md-4 mx-2 overflow-x-auto">
                     <div class="col-lg-6 col-xl-4">
                         <p class="text-smaller fw-bold"><@s.text name='portal.resource.creator.intro'/>:</p>
                         <div>
