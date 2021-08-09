@@ -850,9 +850,8 @@
             <div id="additional" class="mx-md-4 mx-2">
                 <div>
                     <#if eml.additionalInfo?has_content>
-                        <p><@textWithFormattedLink eml.additionalInfo/></p>
+                        <p class="overflow-x-auto"><@textWithFormattedLink eml.additionalInfo/></p>
                     </#if>
-
                     <div class="table-responsive">
                         <table class="text-smaller table table-sm table-borderless">
                             <#if eml.purpose?has_content>
