@@ -193,15 +193,15 @@
     <#-- Adds the CC icon. Only CC-BY-NC, CC-BY, and CC0 are supported -->
     <#macro licenseLogoClass rights>
         <#if rights?contains("CC-BY-NC")>
-            <a rel="license" id="cc_by_nc" class="cc_logo cc_by_nc"
+            <a rel="license" id="cc_by_nc" class="cc_logo cc_by_nc mt-2"
                href="http://creativecommons.org/licenses/by-nc/4.0/legalcode"
                title="Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License">&nbsp;</a>
         <#elseif rights?contains("CC-BY")>
-            <a rel="license" id="cc_by" class="cc_logo cc_by"
+            <a rel="license" id="cc_by" class="cc_logo cc_by mt-2"
                href="http://creativecommons.org/licenses/by/4.0/legalcode"
                title="Creative Commons Attribution (CC-BY) 4.0 License">&nbsp;</a>
         <#elseif rights?contains("CC0")>
-            <a rel="license" id="cc_zero" class="cc_logo cc_zero"
+            <a rel="license" id="cc_zero" class="cc_logo cc_zero mt-2"
                href="http://creativecommons.org/publicdomain/zero/1.0/legalcode"
                title="Creative Commons CCZero (CC0) 1.0 License">&nbsp;</a>
         </#if>
