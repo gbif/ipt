@@ -26,9 +26,11 @@ If you want to translate the user interface into another language, please email 
 
 == Translating the User Manual
 
-Translations for the user manual are in the CrowdIn folder `docs/translations`.  The user manual is written in https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], and some syntax is necessary in the translations – for example, `+++*bold*, _italic_ or `monospaced` text+++`.
+Translations for the user manual are in the Crowdin folder `docs/translations`.  The user manual is written in https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], and some syntax is necessary in the translations – for example, `+++*bold*, _italic_ or `monospaced` text+++`.
 
 Particular care is needed to ensure cross-references (links between pages and/or sections within pages) work in the translated versions.
+
+New translations added using Crowdin should appear in the https://ipt.gbif-uat.org/manual/[UAT version of this manual] around 15-60 minutes later.
 
 === Plain hyperlinks
 
