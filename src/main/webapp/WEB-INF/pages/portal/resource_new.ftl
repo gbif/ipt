@@ -210,7 +210,7 @@
             </div>
 
             <#if (eml.description?size>0)>
-                <div property="dc:abstract" class="mt-3">
+                <div property="dc:abstract" class="mt-3 overflow-x-auto">
                     <#list eml.description as para>
                         <#if para?has_content>
                             <p>
@@ -302,7 +302,12 @@
                             <ul class="no_bullets horizontal_graph">
                                 <!-- at top, show bar for core record count to enable comparison against extensions -->
                                 <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                                    <li><@extensionLink coreExt true/><div class="grey_bar">${coreCount?c}</div></li>
+                                    <li>
+                                        <@extensionLink coreExt true/>
+                                        <div class="grey_bar">
+                                            ${coreCount?c}
+                                        </div>
+                                    </li>
                                 </#if>
 
                                 <!-- below bar for core record count, show bars for extension record counts -->
@@ -310,7 +315,12 @@
                                     <#assign ext = action.getExtensionManager().get(k)!/>
                                     <#assign extCount = recordsByExtensionOrdered.get(k)!/>
                                     <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content && extCount?has_content>
-                                        <li><@extensionLink ext/><div class="grey_bar">${extCount?c}</div></li>
+                                        <li>
+                                            <@extensionLink ext/>
+                                            <div class="grey_bar">
+                                                ${extCount?c}
+                                            </div>
+                                        </li>
                                     </#if>
                                 </#list>
                             </ul>
@@ -703,7 +713,9 @@
                 </h5>
 
                 <div class="mx-md-4 mx-2">
-                    <p><@textWithFormattedLink eml.sampleDescription!no_description/></p>
+                    <p class="overflow-x-auto">
+                        <@textWithFormattedLink eml.sampleDescription!no_description/>
+                    </p>
 
                     <div class="table-responsive">
                         <table class="text-smaller table table-sm table-borderless">
@@ -724,7 +736,9 @@
                     </div>
 
                     <#if (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content)>
-                        <p><@s.text name='rtf.methods.description'/>&#58;</p>
+                        <p class="overflow-x-auto">
+                            <@s.text name='rtf.methods.description'/>&#58;
+                        </p>
                         <ol class="overflow-x-auto">
                             <#list eml.methodSteps as item>
                                 <#if (eml.methodSteps[item_index]?has_content)>
