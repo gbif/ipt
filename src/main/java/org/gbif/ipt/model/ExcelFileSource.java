@@ -83,7 +83,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       FileInputStream fis = new FileInputStream(file);
       return WorkbookFactory.create(fis);
     } catch (InvalidFormatException e) {
-      throw new IOException("Cannot open invalid excel speadsheet", e);
+      throw new IOException("Cannot open invalid excel spreadsheet", e);
     }
   }
 

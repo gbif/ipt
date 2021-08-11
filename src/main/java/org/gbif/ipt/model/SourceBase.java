@@ -46,7 +46,7 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
    * <li>All backslash character</li>
    * <li>All question mark character</li>
    * <li>All percent character</li>
-   * <li>All asterik character</li>
+   * <li>All asterisk character</li>
    * <li>All colon character</li>
    * <li>All pipe character</li>
    * <li>All less than character</li>
