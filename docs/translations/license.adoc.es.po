@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-12 20:54\n"
+"PO-Revision-Date: 2021-08-12 21:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -86,7 +86,7 @@ msgstr "Los pasos debajo explican como configurar el IPT con otra licencia para 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:28
 msgid "Locate the licenses.properties file e.g. `/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Open the file in a text editor, and do the following:"
-msgstr "Ubica el archivo licenses.properties e.g.`/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Abra el archivo en un editor de texto, y haga lo siguiente:"
+msgstr "Ubica el archivo licenses.properties, por ejemplo `/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Abra el archivo en un editor de texto, y haga lo siguiente:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:30
@@ -114,35 +114,37 @@ msgstr "Agregue una nueva propiedad definiendo la declaración de derechos de la
 msgid "license.text.<prefix>=Text\n"
 "# For example:\n"
 "license.text.odcby=This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Open Data Commons Attribution License (ODC-By) 1.0</a>.\n"
-msgstr ""
+msgstr "license.text.<prefix>=Texto\n"
+"# Por ejemplo:\n"
+"license.text.odcby=Este trabajo es licenciado bajo una <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Licencia de atribución Open Data Commons (ODC-By) 1.0</a>.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:46 en/modules/ROOT/pages/user-id.adoc:36
 msgid "Double check"
-msgstr ""
+msgstr "Doble verificación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:47
 msgid "the _prefix_ of both keys matches,"
-msgstr ""
+msgstr "el _prefijo_ de ambas llaves coincide,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:48
 msgid "an HTML anchor defining the license name and URL is included in the text since this is what makes the license machine readable,"
-msgstr ""
+msgstr "un ancho de HTML define el nombre de la licencia y la URL es incluida en el texto ya que esto es lo que hace que sea legible por la máquina de licencias,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:49
 msgid "the name used in the HTML anchor is the same as name used in the name property above."
-msgstr ""
+msgstr "el nombre usado en el ancho HTML es el mismo nombre que es usado en la propiedad anterior."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50
 msgid "Backup the licenses.properties file, since it will get overwritten the next time you upgrade your IPT"
-msgstr ""
+msgstr "Haga una copia de respaldo del archivo licenses.properties, ya que será sobrescrito la próxima vez que actualice su IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50 en/modules/ROOT/pages/user-id.adoc:39
 msgid "Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect"
-msgstr ""
+msgstr "Reinicie su contenedor de servlet (por ejemplo, Tomcat) para que la nueva configuración surta efecto"
 
