@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-29 13:59+0000\n"
-"PO-Revision-Date: 2021-07-29 14:18\n"
+"PO-Revision-Date: 2021-08-12 21:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -44,12 +44,12 @@ msgstr "ipt2/administration/IPTAdminBeforeRegistration.png"
 #: en/modules/ROOT/pages/administration.adoc:9
 #, no-wrap
 msgid "Configure IPT settings"
-msgstr "Configuración de las opciones del IPT"
+msgstr "Opciones de configuración el IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:11
 msgid "This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance."
-msgstr "Esta página permite a los usuarios con el rol Administrador, realizar y cambiar la configuración del IPT."
+msgstr "Esta página permite a un usuario con el rol Administrador, realizar y cambiar la configuración de este IPT."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:12
