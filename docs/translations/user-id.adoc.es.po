@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"PO-Revision-Date: 2021-08-12 21:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -30,12 +30,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:46 en/modules/ROOT/pages/user-id.adoc:36
 msgid "Double check"
-msgstr ""
+msgstr "Doble verificación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50 en/modules/ROOT/pages/user-id.adoc:39
 msgid "Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect"
-msgstr ""
+msgstr "Reinicie su contenedor de servlet (por ejemplo, Tomcat) para que la nueva configuración surta efecto"
 
 #. type: Title =
 #: en/modules/ROOT/pages/user-id.adoc:1
