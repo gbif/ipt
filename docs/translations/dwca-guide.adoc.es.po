@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-07-15 10:35\n"
+"PO-Revision-Date: 2021-08-12 22:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -29,7 +29,7 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:7
 #, no-wrap
 msgid "Suggested citation"
-msgstr ""
+msgstr "Citación sugerida"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
