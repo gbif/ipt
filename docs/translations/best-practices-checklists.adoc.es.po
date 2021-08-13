@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-12 22:09\n"
+"PO-Revision-Date: 2021-08-13 14:00\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -47,7 +47,7 @@ msgstr "Versión 2.1"
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:5
 #, no-wrap
 msgid "figures/cover_art_stilt.png"
-msgstr ""
+msgstr "figures/cover_art_stilt.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:7
@@ -83,7 +83,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:26
 msgid "_Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexicanus_"
-msgstr ""
+msgstr "_Imagen de portada: Gregory Basco, Black-necked stilt, Himantopus mexicanus_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:30
@@ -99,7 +99,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:33
 #, no-wrap
 msgid "Scope"
-msgstr ""
+msgstr "Alcance"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:36
