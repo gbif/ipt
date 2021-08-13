@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-29 13:59+0000\n"
-"PO-Revision-Date: 2021-08-12 21:43\n"
+"PO-Revision-Date: 2021-08-13 23:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -71,7 +71,7 @@ msgstr "Cuando la configuración del IPT es guardada, el IPT prueba la disponibi
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:22
 msgid "log out of and shut down the IPT."
-msgstr "Salga de su sección del IPT y ciérrelo."
+msgstr "Cierre sesión y apague el IPT."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:23
@@ -81,17 +81,17 @@ msgstr "En el directorio de datos para el IPT, abra con un editor de texto plano
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:24
 msgid "in the ipt.properties file, change the line starting with \"ipt.baseURL\" to the new URL with the new port, using the backslash to escape the colon character. For example, enter `ipt.baseURL=http\\://example.org\\:7001/ipt` for http://example.org:7001/ipt."
-msgstr "En el archivo ipt.properties cambie la línea de inicio “ipt.baseURL” a la nueva URL con el nuevo puerto, usando la barra invertida para evitar el carácter dos puntos. Por ejemplo, ingrese `ipt.baseURL=http\\://example.org\\:7001/ipt` para http://example.org:7001/ipt."
+msgstr "en el archivo ipt.properties cambie la línea de inicio “ipt.baseURL” a la nueva URL con el nuevo puerto, usando la barra invertida para evitar el carácter dos puntos. Por ejemplo, ingrese `ipt.baseURL=http\\://example.org\\:7001/ipt` para http://example.org:7001/ipt."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:25
 msgid "restart the IPT in the servlet container."
-msgstr "Reinicie el IPT en el contenedor del servlet."
+msgstr "reinicie el IPT en el contenedor del servlet."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:26
 msgid "update the metadata for the IPT as described in the next section of this user manual entitled \"Publish all resources\"."
-msgstr "Actualice los metadatos para el IPT como se describe en la siguiente sección titulada “Publicar Todos los Recursos”."
+msgstr "actualice los metadatos para el IPT como se describe en la siguiente sección titulada “Publicar Todos los Recursos”."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:30
