@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-13 19:44\n"
+"PO-Revision-Date: 2021-08-13 20:27\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,7 +36,7 @@ msgstr "Este manual de usuario se adapta y construye a partir de previos Manuale
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:9
 msgid "Wieczorek & Braak (2016). The GBIF Integrated Publishing Toolkit User Manual, version 2.3.4 Copenhagen: Global Biodiversity Information Facility."
-msgstr "Wieczorek y Braak (2016). El Manual de Usuario del Kit de Herramientas de Publicación Integrado de GBIF, versión 2.3.4 Copenhague: Servicio de Información sobre Diversidad Biológica Global"
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:10
