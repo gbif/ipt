@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-13 23:46\n"
+"PO-Revision-Date: 2021-08-14 00:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -126,25 +126,25 @@ msgstr "*Listas nomenclaturales (Nomencladores)* - Listas de nombres que incluye
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:40
 #, no-wrap
 msgid "*Taxonomic checklist* – These lists extend nomenclatural lists by adding taxonomic opinion in the form of explicit taxonomic status information and the inclusion of names placed in synonymy. Simple taxonomic lists in this category provide no specific circumscription details regarding the basis for the synonymy. Taxa are often organized into classifications. The term “*taxonomic catalogue*” may also be used to refer to instances of this, and the remaining categories, particularly if the resource includes verified publication and taxonomic status details.\n"
-msgstr ""
+msgstr "*Listado taxonómico* – Estas listas amplían las listas de nomenclatura al agregar opiniones taxonómicas en forma de información explícita sobre el estado taxonómico y la inclusión de nombres colocados en sinonimia. Los listados taxonómicos simples en esta categoría no proporcionan detalles de circunscripción específicos con respecto a la base de la sinonimia. Los taxones a menudo se organizan en clasificaciones. El término \"* catálogo taxonómico *\" también puede usarse para referirse a instancias de este y las categorías restantes, particularmente si el recurso incluye publicación verificada y detalles del estado taxonómico.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:41
 #, no-wrap
 msgid "*Annotated Checklists* - This category extends taxonomic checklists by adding other data types (annotations) to the core, synonymized checklist, such as common names, threat status, distribution and basic descriptive information. When the annotation types provide sufficient detail to effectively define, or circumscribe, a taxon, such as detailed diagnostic descriptions and illustrations, molecular data, specimens, etc., then the annotated list may fall into one of the two categories defined below.\n"
-msgstr ""
+msgstr "*Listados taxonómicos anotados* - Esta categoría amplía los listados taxonómicos al agregar otros tipos de datos (anotaciones) al listado taxonómico central, sinonimizado, como nombres comunes, estado de amenaza, distribución e información descriptiva básica. Cuando los tipos de anotaciones proporcionan suficiente detalle para definir o circunscribir de forma eficaz un taxón, como descripciones e ilustraciones de diagnóstico detalladas, datos moleculares, especímenes, etc., el listado anotado puede pertenecer a una de las dos categorías definidas a continuación.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:42
 #, no-wrap
 msgid "*Flora or Faunal lists* – These are typically books that provide detailed species accounts for a particular region. Details may include many of the data types included in annotated checklists but include specific data types, such as detailed descriptions and illustrations, specimen references and other details that explicitly define (circumscribe) the taxon within the scope of the region which is not necessarily global.\n"
-msgstr ""
+msgstr "*Listas de Flora o Fauna* – Estas suelen ser libros que proporcionan cuentas detalladas de especies para una región en particular. Los detalles pueden incluir muchos de los tipos de datos incluidos en los listados taxonómicos anotados, pero incluyen tipos de datos específicos, como descripciones e ilustraciones detalladas, referencias de especímenes y otros detalles que definen (circunscriben) explícitamente el taxón dentro del alcance de la región, que no es necesariamente global.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:43
 #, no-wrap
 msgid "*Monographs* – Monographs are detailed species accounts often published as books for a particular taxon group at the global scale. It will contain detailed nomenclature and synonymy and taxon circumscription details, that include textual descriptions and illustrations, details of specimens examined and included in the definition, and a bibliography of examined literature.\n"
-msgstr ""
+msgstr "*Monografías* - Las monografías son relatos detallados de especies que a menudo se publican como libros para un grupo taxonómico en particular a escala mundial. Contendrá nomenclatura detallada y detalles de sinonimia y circunscripción de taxón, que incluyen descripciones textuales e ilustraciones, detalles de especímenes examinados e incluidos en la definición, y una bibliografía de la literatura examinada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:45
