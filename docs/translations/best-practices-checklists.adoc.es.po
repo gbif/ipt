@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 03:05\n"
+"PO-Revision-Date: 2021-08-14 03:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -684,7 +684,7 @@ msgstr "Sinonimia Nomenclatural"
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:264
 #, no-wrap
 msgid "*Nomenclatural synonymy* is supported in the core data file through the use of the *dwc:originalNameUsageID* field. This field refers to the row representing the original taxon reference for the name. This record is recommended to provide a bibliographic citation in the *dwc:namePublishedIn* field, which refers to the publication in which the name was originally established.\n"
-msgstr ""
+msgstr "*Sinonimia Nomenclatural* está soportada en el archivo de datos principal mediante el uso del campo *dwc:originalNameUsageID*. Este campo se refiere a la fila que representa la referencia de taxón original para el nombre. Se recomienda este registro para proporcionar una cita bibliográfica en el campo *dwc:namePublishedIn*, que hace referencia a la publicación en la que se estableció originalmente el nombre.\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:271
@@ -693,28 +693,31 @@ msgid "| taxonID | scientificName | originalNameID | namePublishedIn\n\n"
 "| 1           | Tetrao afer Müller 1778             | 1                  | J. Syst. Nat 7:31\n"
 "| 2           | Pternistes afer (Müller 1778)       | 1                  |\n"
 "| 3           | Francolinus afer afer (Müller 1778) | 1                  |\n"
-msgstr ""
+msgstr "| taxonID | scientificName | originalNameID | namePublishedIn\n\n"
+"| 1           | Tetrao afer Müller 1778             | 1                  | J. Syst. Nat 7:31\n"
+"| 2           | Pternistes afer (Müller 1778)       | 1                  |\n"
+"| 3           | Francolinus afer afer (Müller 1778) | 1                  |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:274
 msgid "Nomenclatural and taxonomic synonyms may be designated in the same taxon record."
-msgstr ""
+msgstr "Los sinónimos nomenclaturales y taxonómicos pueden designarse en el mismo registro de taxón."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:276
 msgid "An *dwc:originalNameUsageID* must point to an existing record in the dataset. It is invalid to point to accepted taxa that do not exist as records."
-msgstr ""
+msgstr "Un *dwc:originalNameUsageID* debe apuntar a un registro existente en el conjunto de datos. No es válido señalar taxones aceptados que no existen como registros."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:277
 #, no-wrap
 msgid "Pro-parte Synonymy"
-msgstr ""
+msgstr "Sinonimia Pro-parte"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:280
 msgid "Sometimes the same name may be a synonym for more than one accepted taxon or may be both an accepted taxon name and a synonym. These are caused by splits and circumscription changes where, for example, a series of types may be divided among multiple taxa. The recommended practice for sharing pro-parte synonyms is represented in the example. In this example, *Vireo solitarius* is an accepted taxon name and it is also included in the synonymy for both *Vireo cassinii* and *Vireo plumbeus*. In the case of the synonyms, they are represented as a single record with accepted taxon reference concatenated in the *dwc:acceptedNameUsageID* field and separated by a pipe (“|”) character."
-msgstr ""
+msgstr "A veces, el mismo nombre puede ser sinónimo de más de un taxón aceptado o puede ser tanto un nombre de taxón aceptado como un sinónimo. Estos son causados por divisiones y cambios de circunscripción donde, por ejemplo, una serie de tipos puede dividirse entre múltiples taxones. La práctica recomendada para compartir sinónimos pro-parte se representa en el ejemplo. En este ejemplo, *Vireo solitarius* es un nombre de taxón aceptado y también se incluye en la sinonimia de *Vireo cassinii* y *Vireo plumbeus*. En el caso de los sinónimos, se representan como un solo registro con la referencia de taxón aceptada concatenada en el campo *dwc:acceptNameUsageID* y separados por un carácter de barra vertical (\"|\")."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:288
@@ -724,45 +727,49 @@ msgid "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
 "| 2           | Vireo cassinii     | 2                       | accepted\n"
 "| 3           | Vireo plumbeus     | 3                       | accepted\n"
 "| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte\n"
-msgstr ""
+msgstr "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
+"| 1           | Vireo solitarius   | 1                       | aceptado\n"
+"| 2           | Vireo cassinii     | 2                       | aceptado\n"
+"| 3           | Vireo plumbeus     | 3                       | aceptado\n"
+"| 4           | Vireo solitarius   | 2&#124;3                     | pro-parte\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:291
 msgid "IPT users should define the multi-value delimiter for each source file in the IPT. Refer to xref:manage-resources.adoc#source-data[Source Data section] of the IPT User Manual for additional guidance."
-msgstr ""
+msgstr "Los usuarios de IPT deben definir el delimitador de valores múltiples para cada archivo de origen en el IPT. Consulte xref:manage-resources.adoc#source-data[sección de Datos de origen] del Manual de usuario de IPT para obtener orientación adicional."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:292
 #, no-wrap
 msgid "Citation and Attribution"
-msgstr ""
+msgstr "Citación y Atribución"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:295
 msgid "Taxonomic checklists often represent significant intellectual and financial efforts on the part of the individuals and organizations who compile them. Some checklists may be derived from, or may reference, other source checklists to create new distinct thematic, regional or taxonomic views of the same source authority. Proper attribution and visibility of these sources is therefore a high priority."
-msgstr ""
+msgstr "Los listados taxonómicos a menudo representan importantes esfuerzos intelectuales y financieros por parte de las personas y organizaciones que los compilan. Algunos listados taxonómicos pueden derivarse de, o pueden hacer referencia a, otros listados taxonómicos de fuentes para crear nuevas vistas temáticas, regionales o taxonómicas distintas de la misma autoridad fuente. Por lo tanto, la atribución y visibilidad adecuadas de estas fuentes es una alta prioridad."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:297
 msgid "The DwC-A format provides a range of options and recommendations for providing proper citation and attribution. This range extends from global citation and attribution information that form part of the resource metadata down to record-level data elements. These options support the provision of multiple levels of attribution."
-msgstr ""
+msgstr "El formato DwC-A proporciona una variedad de opciones y recomendaciones para proporcionar citas y atribuciones adecuadas. Este rango se extiende desde la información global de citas y atribuciones que forman parte de los metadatos del recurso hasta los elementos de datos a nivel de registro. Estas opciones respaldan la provisión de múltiples niveles de atribución."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:298
 #, no-wrap
 msgid "Metadata Citation and Attribution"
-msgstr ""
+msgstr "Citación y Atribución de Metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:301
 msgid "The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and xref:gbif-metadata-profile.adoc[available] but specific citation and attribution-related elements include:"
-msgstr ""
+msgstr "El perfil de metadatos de GBIF admite elementos de datos a nivel de recursos que contribuyen a la cita y atribución y permiten una descripción detallada del alcance y la procedencia de un listado taxonómico. Una lista de referencia completa de todos los elementos de metadatos está más allá del alcance de este documento y xref:gbif-metadata-profile.adoc [diponible], pero los elementos específicos relacionados con la cita y la atribución incluyen:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:303
 #, no-wrap
 msgid "*Intellectual Property Rights* – The metadata profile contains a rights management statement for the resource, or a reference to a service providing such information, such as a Creative Commons license. It also includes an element describing the intended use and purpose of the dataset.\n"
-msgstr ""
+msgstr "*Derechos de Propiedad Intelectual* – El perfil de metadatos contiene una declaración de gestión de derechos para el recurso o una referencia a un servicio que proporciona dicha información, como una licencia Creative Commons. También incluye un elemento que describe el uso previsto y el propósito del conjunto de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:304
