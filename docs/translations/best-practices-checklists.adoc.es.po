@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 00:55\n"
+"PO-Revision-Date: 2021-08-14 01:15\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -287,63 +287,64 @@ msgstr "| scientificName                | scientificNameAuthorship\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:94
 msgid "Some databases separate a scientific name into a name part and an authorship part. In this case the *dwc:scientificName* and *dwc:scientificNameAuthorship* fields should be used."
-msgstr ""
+msgstr "Algunas bases de datos separan un nombre científico en una parte de nombre y una parte de autoría. En este caso, deben usarse los campos *dwc: scientificName* y *dwc: scientificNameAuthorship*."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:95
 #, no-wrap
 msgid "C. Separated into name parts"
-msgstr ""
+msgstr "C. Separado en Partes de Nombre"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:101
 #, no-wrap
 msgid "| Genus | specificEpithet | taxonRank | infraspecificEpithet | scientificNameAuthorship\n\n"
 "| Gerardia  | paupercula          | var.          | borealis                 | (Pennell) Deam\n"
-msgstr ""
+msgstr "| Genus | specificEpithet | taxonRank | infraspecificEpithet | scientificNameAuthorship\n\n"
+"| Gerardia  | paupercula          | var.          | borealis                 | (Pennell) Deam\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:104
 msgid "The Darwin Core provides a series of terms that enable scientific names to be separated into component parts. Some databases store species lists in such parsed components. In this case, sharing data in this form may be an option. If so, however, it is strongly recommended that an additional and complete name be composed from the parts and shared in the *dwc:scientificName* field (as in section A above). Note that in the table above, the Darwin Core term, *dwc:subgenus*, is not displayed but represents an additional name component."
-msgstr ""
+msgstr "Darwin Core proporciona una serie de términos que permiten separar los nombres científicos en partes componentes. Algunas bases de datos almacenan listas de especies en dichos componentes analizados. En este caso, compartir datos en este formulario puede ser una opción. Sin embargo, si es así, se recomienda encarecidamente que se componga un nombre adicional y completo a partir de las partes y se comparta en el campo *dwc:scientificName* (como en la sección A anterior). Tenga en cuenta que en la tabla anterior, el término Darwin Core, *dwc:subgenus*, no se muestra pero representa un componente de nombre adicional."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:105
 #, no-wrap
 msgid "Infrageneric Markers"
-msgstr ""
+msgstr "Marcadores Infragenéricos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:108
 msgid "If possible, please provide an infrageneric rank marker as part of the scientific name to avoid confusion with the original / basionym author. For example “*Ageratina subgen. Apoda* R.M.King & H.Rob” is preferred over “*Ageratina (Apoda)* R.M.King & H.Rob.” as the later *Apoda* could interpreted as a subgenus or as the basionym author."
-msgstr ""
+msgstr "Si es posible, proporcione un marcador de rango infragenérico como parte del nombre científico para evitar confusiones con el autor original / basónimo. Por ejemplo “*Ageratina subgen. Apoda* R.M.King & H.Rob\" es preferible a \"*Ageratina (Apoda)* R.M.King & H.Rob\". ya que el posterior *Apoda* podría interpretarse como un subgénero o como el autor del basónimo."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:109
 #, no-wrap
 msgid "Publishing Classifications"
-msgstr ""
+msgstr "Publicar Clasificaciones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:112
 msgid "The Darwin Core provides two basic options for publishing classifications or taxonomic hierarchies; normalized and denormalized. These two options account for the primary means by which most classifications are managed in databases."
-msgstr ""
+msgstr "Darwin Core proporciona dos opciones básicas para publicar clasificaciones o jerarquías taxonómicas; normalizado y desnormalizado. Estas dos opciones representan el medio principal por el que la mayoría de las clasificaciones se gestionan en las bases de datos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:113
 #, no-wrap
 msgid "Normalized Classifications (Parent/Child)"
-msgstr ""
+msgstr "Clasificaciones Normalizadas (Padre/Hijo)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:116
 msgid "The recommended way to share a classification is in a normalized format. This may also be referred to in a database as a \"parent-child relationship\" or an \"adjacency list\". In a normalized taxonomic hierarchy, each taxon is represented by a single row. This includes both species and all higher taxa in the classification. Each row has at least the following component data elements."
-msgstr ""
+msgstr "La forma recomendada de compartir una clasificación es en formato normalizado. Esto también se puede denominar en una base de datos como una \"relación padre-hijo\" o una \"lista de adyacencia\". En una jerarquía taxonómica normalizada, cada taxón está representado por una única fila. Esto incluye tanto las especies como todos los taxones superiores de la clasificación. Cada fila tiene al menos los siguientes elementos de datos de componentes."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:118
 msgid "A *dwc:taxonID* referring to the current taxon. *You can use whatever identifiers you have*."
-msgstr ""
+msgstr "A *dwc:taxonID* se refiere al taxón actual. *Puede utilizar los identificadores que tenga*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:119
