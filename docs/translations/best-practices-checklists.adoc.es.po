@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 04:04\n"
+"PO-Revision-Date: 2021-08-14 04:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -976,242 +976,242 @@ msgstr "Compartiendo Descripciones de Especies"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:362
 msgid "The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the {latest-description}[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the {latest-description-type}[description type vocabulary] be used to describe the descriptive information."
-msgstr ""
+msgstr "Se admite el intercambio de información descriptiva relacionada con un taxón. Los datos descriptivos se comparten como un archivo relacionado separado mediante la {latest-description}[extensión de descripción de taxón]. Los datos descriptivos pueden asignarse a distintos tipos de descripción y, dado que los datos se publican en una extensión, se pueden vincular varios registros descriptivos a un solo taxón, lo que respalda un conjunto relativamente rico de datos por taxón. Se recomienda que se utilice {latest-description-type}[vocabulario del tipo de descripción] para describir la información descriptiva."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:363
 #, no-wrap
 msgid "Multi-line descriptions"
-msgstr ""
+msgstr "Descripciones de múltiples líneas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:366
 msgid "Descriptive information should be limited to single paragraph text blocks. Multiple paragraphs containing line breaks should be avoided or carefully managed in order to maintain the integrity of the resultant text file output as the Darwin Core Archive. Multi-line data fields served as text files require the record delimiters, which are usually line break characters, to be distinct from the line breaks used within a multi-line field. The best method for supporting multiple lines in a single field is to replace breaking characters with a non-breaking character or character set that a user can replace with proper breaks when the data is parsed and used. One option is to use the HTML break tag `<br>`."
-msgstr ""
+msgstr "La información descriptiva debe limitarse a bloques de texto de un solo párrafo. Se deben evitar o administrar con cuidado varios párrafos que contengan saltos de línea para mantener la integridad de la salida del archivo de texto resultante como Archivo Darwin Core. Los campos de datos de varias líneas que se sirven como archivos de texto requieren que los delimitadores de registro, que normalmente son caracteres de salto de línea, sean distintos de los saltos de línea utilizados en un campo de varias líneas. El mejor método para admitir varias líneas en un solo campo es reemplazar los caracteres que se rompen con un carácter o un conjunto de caracteres que no se rompen y que el usuario puede reemplazar con los cortes adecuados cuando se analizan y utilizan los datos. Una opción es utilizar la etiqueta de interrupción HTML `<br>`."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:367
 #, no-wrap
 msgid "Sharing Species Distributions"
-msgstr ""
+msgstr "Compartiendo Distribuciones de Especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:370
 msgid "The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the {latest-species-distribution}[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area."
-msgstr ""
+msgstr "Se admite el intercambio de datos de distribución. Los datos de distribución se comparten como un archivo relacionado independiente utilizando la {latest-species-distribution}[extensión de distribución de especies]. Esto permite publicar varios registros de distribución por taxón. La extensión de distribución no solo se utiliza para designar descripciones de distribución nacionales o regionales, sino que también respalda la calificación de la distribución referenciada con respecto al estado de amenaza del taxón, ya sea introducido, nativo, etc., y otras propiedades que podrían ser vinculado a un área definida específica."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:372
 msgid "The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element."
-msgstr ""
+msgstr "La mejor práctica recomendada para especificar un área distinta es a través de un identificador de área conocido o que se pueda resolver y que se publique mediante el elemento dwc:localityID."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:374
 msgid "If the dwc:country element is used, it is recommended that the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes] be used."
-msgstr ""
+msgstr "Si se utiliza el elemento dwc:country, se recomienda utilizar los http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:375
 #, no-wrap
 msgid "Sharing References"
-msgstr ""
+msgstr "Compartir Referencias"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:378
 msgid "The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon."
-msgstr ""
+msgstr "Se apoya el intercambio de citas bibliográficas. Los datos bibliográficos se comparten como un archivo relacionado separado utilizando la {latest-reference}[extensión de referencias]. La extensión References se recomienda y está diseñada para su uso en el intercambio de información sobre sinonimia en monografías y listados taxonómicos anotados. Admite compartir una cita analizada y, por lo tanto, proporciona un formato de cita más granular que algunos de los elementos de datos de almacenamiento de citas en el archivo de datos principal, como dwc:namePublishedIn. Esta extensión admite la calificación taxonómica y nomenclatural de una referencia a través de la propiedad *dc:type*, que, cuando se usa con {latest-reference-type}[el vocabulario del tipo de referencia], se puede usar para distinguir un conjunto de referencias relacionadas con un taxón."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:379
 #, no-wrap
 msgid "Sharing Type information"
-msgstr ""
+msgstr "Compartir información de Tipos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:382
 msgid "The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the {latest-typesandspecimen}[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera."
-msgstr ""
+msgstr "Se apoya el intercambio de información sobre tipos y especímenes. Estos datos se comparten como un archivo relacionado independiente utilizando la {latest-typesandspecimen}[extensión de tipos y muestras]. Apoya el intercambio de información básica sobre especímenes tipo, especies tipo y géneros."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:383
 #, no-wrap
 msgid "Sharing Links and Identifiers"
-msgstr ""
+msgstr "Compartir Enlaces e Identificadores"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:386
 msgid "It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *mime type* in this field. A complete list of mime types is [available]."
-msgstr ""
+msgstr "Es posible compartir y describir varios enlaces a recursos externos relacionados utilizando {latest-identifier}[Alternate Identifier Extension]. Permite a los editores de datos incorporar enlaces a la base de datos o al documento de origen a través de identificadores que se pueden resolver. Se pueden proporcionar múltiples identificadores, quizás vinculando tanto a una página web como a una respuesta de servicio web más legible por máquina, para un solo taxón. Se recomienda que se incluya un formato para cada registro para permitir al usuario saber cómo interpretar la información de respuesta si un identificador se puede resolver. Esto generalmente se hace incluyendo el *tipo mime* en este campo. Está [disponible] una lista completa de tipos de mime."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:387
 #, no-wrap
 msgid "Creating a dynamic link to a species page"
-msgstr ""
+msgstr "Creando un enlace dinámico a páginas de especie"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:390
 msgid "Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The Darwin Core Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a Darwin Core Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF xref:gbif-metadata-profile.adoc[provides a complete guide the to Darwin Core metafile]."
-msgstr ""
+msgstr "A menudo, un enlace a una base de datos de origen sigue un formato común, que difiere solo en el número de identificación o el nombre de taxón utilizado en la URL. Esto puede resultar en un archivo de extensión extenso y detallado. El formato del Archivo Darwin Core admite una forma más eficiente de definir una plantilla de URL, que solo debe definirse una vez, y permite que se incruste una variable en la plantilla, lo que elimina la necesidad de repetir repetidamente un conjunto de URL para cada taxón del archivo de datos. Esto se hace a través del componente de metarchivo XML del Archivo Darwin Core. No usa la extensión References. Esto requiere editar el metarchivo XML, lo que requiere cierto grado de familiaridad con XML. GBIF xref: gbif-metadata-profile.adoc[proporciona una guía completa del metarchivo de Darwin Core]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:392
 msgid "The metafile supports the creation of variables in the metafile that may refer to a web page or web service call. This variable may be embedded in the URL and include a taxon identifier or the taxon name as one of the parameters in the URL. Any column in the published data can be referenced by enclosing the index number in curly braces “{}”. The taxon identifier in the core data file can also be referenced via the variable “\\{id}.” The following examples illustrate these features:"
-msgstr ""
+msgstr "El metarchivo admite la creación de variables en el metarchivo que pueden hacer referencia a una página web o una llamada de servicio web. Esta variable puede estar incrustada en la URL e incluir un identificador de taxón o el nombre de taxón como uno de los parámetros en la URL. Se puede hacer referencia a cualquier columna de los datos publicados encerrando el número de índice entre llaves “{}”. El identificador de taxón en el archivo de datos centrales también se puede hacer referencia a través de la variable \"\\{id}\". Los siguientes ejemplos ilustran estas características:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:394
 msgid "The Integrated Taxonomic Information System (ITIS) uses Taxonomic Serial Numbers (TSN) to provide links to taxon pages on its web site."
-msgstr ""
+msgstr "El Sistema Integrado de Información Taxonómica (ITIS) utiliza números de serie taxonómicos (TSN) para proporcionar enlaces a las páginas de taxones en su sitio web."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:397
 msgid "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=174375"
-msgstr ""
+msgstr "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=174375"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:399
 msgid "If a core data file is published using the ITIS TSN system a link can be composed and tied to the “identifier” term in the core data standard using the following syntax."
-msgstr ""
+msgstr "Si un archivo de datos núcleo se publica utilizando el sistema ITIS TSN, se puede componer y vincular un enlace al término \"identificador\" en el estándar de datos básicos utilizando la siguiente sintaxis."
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:402
 #, no-wrap
 msgid "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
-msgstr ""
+msgstr "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:405
 msgid "where the original numeric value is replaced by the variable `\\{id}`. This value would be derived from the core ID."
-msgstr ""
+msgstr "donde el valor numérico original se reemplaza por la variable `\\{id}`. Este valor se derivaría del ID del núcleo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:408
 msgid "The 2010 Catalogue of Life Annual Checklist provides similar identifiers. It also supports name-based searches that can also be encoded as URLs. For example,"
-msgstr ""
+msgstr "El Listado Taxonómico Anual del Catálogo de Vida 2010 proporciona identificadores similares. También admite búsquedas basadas en nombres que también se pueden codificar como URL. Por ejemplo,"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:412
 #, no-wrap
 msgid "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Struthio+camelus/match/1\n"
-msgstr ""
+msgstr "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Struthio+camelus/match/1\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:414
 msgid "embeds a scientific name “Struthio camelus” into a URL. Full scientific name combinations can be published in the core data file using the Darwin Core term “scientificName.” If we assume that this term represented the 12th column in our core data file we could use the syntax"
-msgstr ""
+msgstr "incrusta un nombre científico \"Struthio camelus\" en una URL. Las combinaciones de nombres científicos completos se pueden publicar en el archivo de datos principales utilizando el término básico de Darwin \"scientificName\". Si asumimos que este término representa la duodécima columna en nuestro archivo de datos central, podríamos usar la sintaxis"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:417
 #, no-wrap
 msgid "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
-msgstr ""
+msgstr "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:420
 msgid "where `\\{12}` represents the 12th column value that will be substituted in the URL."
-msgstr ""
+msgstr "donde `\\{12}` representa el valor de la duodécima columna que se sustituirá en la URL."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:422
 #, no-wrap
 msgid "GBIF Checklist Extensions"
-msgstr ""
+msgstr "Extensiones de Listados Taxonómicos de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:425
 msgid "The core data file in a checklist contains taxon records. The set of terms that can be used to describe a taxon record is defined by the Taxon (Core) Extension."
-msgstr ""
+msgstr "El archivo de datos núcleo en un listado taxonómico contiene registros de taxón. El conjunto de términos que se pueden utilizar para describir un registro de taxón está definido por la Extensión Taxon (Core)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:427
 msgid "Each taxon record can be extended with one or more records in an extension file. The set of terms that can be used to describe each extension record is defined by its Extension."
-msgstr ""
+msgstr "Cada registro de taxón se puede ampliar con uno o más registros en un archivo de extensión. El conjunto de términos que se pueden utilizar para describir cada registro de extensión está definido por su Extensión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:429
 msgid "Below is the complete list of Extensions that can be used to provide additional information about a taxon record:"
-msgstr ""
+msgstr "A continuación se muestra la lista completa de extensiones que se pueden utilizar para proporcionar información adicional sobre un registro de taxón:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:430
 #, no-wrap
 msgid "Taxon (Core) Extension"
-msgstr ""
+msgstr "Extensión de Taxón (Core)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:433
 msgid "Latest version issued: {latest-dwc-taxon}[{date-dwc-taxon}]"
-msgstr ""
+msgstr "Última versión publicada: {latest-dwc-taxon}[{date-dwc-taxon}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:435
 msgid "Use this set of terms to provide the fundamental information for a species checklist including classification, synonymy and other key elements. Each row in this list represents a taxon name, either an accepted name or a synonym. The terms in this class support different methods for representing classification information. Classifications can be shared “spreadsheet-style” with columns for Kingdom, Phylum, Class, etc. or they can be shared “database-style” with each taxon row possessing a field containing the ID of its immediate parent. Please note that the tables contain the complete list of acceptable terms. The minimum requirement for sharing a checklist is as little as a list of species although an accompanying ID is highly recommended. Use this list of terms to identify the terms that best match the data to be shared. Don’t be daunted by the term names. Read the description to locate relevant terms."
-msgstr ""
+msgstr "Utilice este conjunto de términos para proporcionar la información fundamental para un listado taxonómico de especies, incluida la clasificación, la sinonimia y otros elementos clave. Cada fila de esta lista representa un nombre de taxón, ya sea un nombre aceptado o un sinónimo. Los términos de esta clase admiten diferentes métodos para representar información de clasificación. Las clasificaciones se pueden compartir \"estilo hoja de cálculo\" con columnas para Reino, Filo, Clase, etc. o se pueden compartir \"estilo base de datos\" con cada fila de taxón que posee un campo que contiene el ID de su padre inmediato. Tenga en cuenta que las tablas contienen la lista completa de términos aceptables. El requisito mínimo para compartir un listado taxonómico es tan pequeño como una lista de especies, aunque se recomienda encarecidamente una identificación adjunta. Utilice esta lista de términos para identificar los términos que mejor coincidan con los datos que se compartirán. No se deje intimidar por los nombres de los términos. Lea la descripción para localizar los términos relevantes."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:436
 #, no-wrap
 msgid "Vernacular Names Extension"
-msgstr ""
+msgstr "Extensión de Nombres Vernáculos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:439
 msgid "Latest version issued: {latest-vernacularname}[{date-vernacularname}]"
-msgstr ""
+msgstr "Última versión publicada: {latest-vernacularname}[{date-vernacularname}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:441
 msgid "This extension provides the means to share information related to common (vernacular) names linked to taxa in the core data file. Multiple vernacular names can be linked to the same taxon via the taxonID."
-msgstr ""
+msgstr "Esta extensión proporciona los medios para compartir información relacionada con nombres comunes (vernáculos) vinculados a taxones en el archivo de datos central. Se pueden vincular varios nombres vernáculos al mismo taxón a través del taxonID."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:442
 #, no-wrap
 msgid "References Extension"
-msgstr ""
+msgstr "Extensión de Referencias"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:445
 msgid "Latest version issued: {latest-references}[{date-references}]"
-msgstr ""
+msgstr "Última versión publicada: {latest-references}[{date-references}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:447
 msgid "Use this extension to describe one or more bibliographic references related to a taxon in the core data file. Use the type field to qualify the references. This extension supports the sharing of referenced synonymic checklists."
-msgstr ""
+msgstr "Utilice esta extensión para describir una o más referencias bibliográficas relacionadas con un taxón en el archivo de datos núcleo. Utilice el campo de tipo para calificar las referencias. Esta extensión admite el intercambio de listados taxonómicos de sinónimos referenciadas."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:448
 #, no-wrap
 msgid "Species Distribution Extension"
-msgstr ""
+msgstr "Extensión de Distribución de Especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:451
 msgid "Latest version issued: {latest-species-distribution}[{date-species-distribution}]"
-msgstr ""
+msgstr "Última versión publicada: {latest-species-distribution}[{date-species-distribution}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:454
 msgid "Use this extension to share information on one or more distribution references for a taxon. One or more locality records may be linked to the same taxon. For example multiple localities, regions, or countries may be listed. Use this extension to describe the threat status for a taxon, seasonal distribution changes, and other properties linked to a taxon in a particular region."
-msgstr ""
+msgstr "Utilice esta extensión para compartir información sobre una o más referencias de distribución para un taxón. Uno o más registros de localidad pueden estar vinculados al mismo taxón. Por ejemplo, se pueden enumerar varias localidades, regiones o países. Utilice esta extensión para describir el estado de amenaza de un taxón, los cambios de distribución estacionales y otras propiedades vinculadas a un taxón en una región en particular."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:455
 #, no-wrap
 msgid "Species Description Extension"
-msgstr ""
+msgstr "Extensión de Descripción de Especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:458
 msgid "Latest version issued: {latest-description}[{date-description}]"
-msgstr ""
+msgstr "Última versión publicada: {latest-description}[{date-description}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:461
 msgid "Use this extension to provide descriptive text for a taxon. This is typically in the form of a single paragraph per record as would be normally stored in a database. Descriptions can be qualified by a type to indicate, for example that the description is related to, for example, the morphology conservation, reproduction, etc. Multiple descriptions equal multiple records in a descriptions file."
-msgstr ""
+msgstr "Utilice esta extensión para proporcionar texto descriptivo de un taxón. Por lo general, se presenta en forma de un solo párrafo por registro, como se almacenaría normalmente en una base de datos. Las descripciones se pueden calificar por un tipo para indicar, por ejemplo, que la descripción está relacionada, por ejemplo, con la conservación de la morfología, reproducción, etc. Varias descripciones equivalen a múltiples registros en un archivo de descripciones."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:462
@@ -1222,42 +1222,42 @@ msgstr "Identificadores Alternativos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:465
 msgid "Latest version issued: {latest-identifier}[{date-identifier}]"
-msgstr ""
+msgstr "Última versión publicada: {latest-identifier}[{date-identifier}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:467
 msgid "Use this extension if you have more than one identifier or link to information about the taxon. A source database, may, for example provide access to the source data records through a web page, a web service, and a resolvable identifier such as LSID, DOI or other means."
-msgstr ""
+msgstr "Utilice esta extensión si tiene más de un identificador o enlace a información sobre el taxón. Una base de datos de origen puede, por ejemplo, proporcionar acceso a los registros de datos de origen a través de una página web, un servicio web y un identificador que se puede resolver como LSID, DOI u otros medios."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:468
 #, no-wrap
 msgid "Types and Specimens Extension"
-msgstr ""
+msgstr "Extensión de Tipos y Especímenes"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:471
 msgid "Latest version issued: {latest-typesandspecimen}[{date-typesandspecimen}]"
-msgstr ""
+msgstr "Última versión publicada: {latest-typesandspecimen}[{date-typesandspecimen}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:473
 msgid "Use this extension to share data relating to one or more specimens or type references linked to the core taxon"
-msgstr ""
+msgstr "Utilice esta extensión para compartir datos relacionados con uno o más especímenes o referencias de tipo vinculadas al taxón principal"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:474
 #, no-wrap
 msgid "Resource Relationship Extension"
-msgstr ""
+msgstr "Extensión de Relación de Recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:477
 msgid "Latest version issued: {latest-resource-relation}[{date-resource-relation}]"
-msgstr ""
+msgstr "Última versión publicada: {latest-resource-relation}[{date-resource-relation}]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:478
 msgid "This extension is used to describe one or more relationships that the core taxon has with other taxa, either in the source list or included in the record. This extension could be used, for example, to provide a list of plant species (one record per species) pollinated by a bee species listed in the core species list."
-msgstr ""
+msgstr "Esta extensión se utiliza para describir una o más relaciones que el taxón principal tiene con otros taxones, ya sea en la lista de origen o incluidos en el registro. Esta extensión podría usarse, por ejemplo, para proporcionar una lista de especies de plantas (un registro por especie) polinizadas por una especie de abeja incluida en la lista de especies principales."
 
