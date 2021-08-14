@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 03:40\n"
+"PO-Revision-Date: 2021-08-14 04:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -851,127 +851,127 @@ msgstr "Caso de Uso 1 - Listado taxonómico compuestos por múltiples conjuntos 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:322
 msgid "A taxonomic dataset may be a composite of multiple contributing sources, each of which needs to be acknowledged in addition to the collective resource itself. There are many examples of this. Perhaps the largest such collective effort is the Catalogue of Life Annual Checklist which aims to provide a complete listing of all the worlds living species. The checklist itself is composed of individual datasets that represent major taxonomic groups. Each of these resources, in turn, may be composed of contributions from a sub-network of specialists."
-msgstr ""
+msgstr "Un conjunto de datos taxonómicos puede ser una combinación de múltiples fuentes contribuyentes, cada una de las cuales debe reconocerse además del recurso colectivo en sí. Hay muchos ejemplos de esto. Quizás el mayor esfuerzo colectivo de este tipo es el listado taxonómico anual del Catálogo de la Vida, que tiene como objetivo proporcionar una lista completa de todas las especies vivientes del mundo. El listado taxonómico en sí está compuesto por conjuntos de datos individuales que representan los principales grupos taxonómicos. Cada uno de estos recursos, a su vez, puede estar compuesto por contribuciones de una subred de especialistas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:324
 msgid "Other examples include the Pan-European Species list, which is composed of a number of contributing datasets that include Fauna Europaea, the European Register of Marine Species, Euro+Med PlantBase and others. The World Register of Marine Species represents another such network."
-msgstr ""
+msgstr "Otros ejemplos incluyen la Lista Pan-Europea de Especies, que se compone de varios conjuntos de datos contribuyentes que incluyen Fauna Europaea, el Registro Europeo de Especies Marinas, Euro + Med PlantBase y otros. El Registro Mundial de Especies Marinas (WoRMS) representa otra red de este tipo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:326
 msgid "The recommended practice for effectively documenting the provenance of these sorts of resources can be summarized as follows."
-msgstr ""
+msgstr "La práctica recomendada para documentar eficazmente la procedencia de este tipo de recursos se puede resumir de la siguiente manera."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:328
 msgid "A single metadata document is created to represent the collective resource itself, (e.g., the Catalogue of Life, the The World Register of Marine Species, etc.) This metadata document provides the proper citation, agents, rights, and other elements identified above. This document filename is referenced the Darwin Core Archive descriptor file, meta.xml. This links the document to the entire DwC-A dataset. Recommended best practice is that this file uses the GBIF metadata profile and be named EML.xml. In this case, the metadata descriptor XML would look like this:"
-msgstr ""
+msgstr "Se crea un único documento de metadatos para representar el recurso colectivo en sí (por ejemplo, el Catálogo de la Vida, el Registro Mundial de Especies Marinas, etc.). Este documento de metadatos proporciona la cita, los agentes, los derechos y otros elementos adecuados identificados anteriormente. El nombre de archivo de este documento se hace referencia al archivo descriptor del Archivo Darwin Core, meta.xml. Esto vincula el documento a todo el conjunto de datos DwC-A. La mejor práctica recomendada es que este archivo utilice el perfil de metadatos GBIF y se denomine EML.xml. En este caso, el XML del descriptor de metadatos se vería así:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:331
 #, no-wrap
 msgid "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
-msgstr ""
+msgstr "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:334
 msgid "Additional metadata documents can be created for each of the component datasets and included in the archive. This allows each sub-component dataset to be documented as completely as the “parent” dataset with its own recommended citation, contributing individuals etc. As these datasets do not document the entire collection, they are not referenced in the meta.xml descriptor file. Instead they are referenced from individual data records via the *dwc:datasetID* term. If the metadata documents are included in the archive itself, the *dwc:datasetID* equals the filename of the document. Alternatively, it could refer to a URL or some other unique and resolvable identifier for the information. A less recommended but alternative approach would be adding a URL to a simple web page that describes the dataset as opposed to a structured metadata document."
-msgstr ""
+msgstr "Se pueden crear documentos de metadatos adicionales para cada uno de los conjuntos de datos de componentes e incluirlos en el archivo. Esto permite que cada conjunto de datos de subcomponentes se documente tan completamente como el conjunto de datos \"principal\" con su propia cita recomendada, personas contribuyentes, etc. Como estos conjuntos de datos no documentan la colección completa, no se hace referencia a ellos en el archivo descriptor meta.xml. En su lugar, se hace referencia a ellos desde registros de datos individuales a través del término *dwc:datasetID*. Si los documentos de metadatos están incluidos en el archivo en sí, *dwc:datasetID* es igual al nombre de archivo del documento. Alternativamente, podría hacer referencia a una URL o algún otro identificador único y que se pueda resolver para la información. Un enfoque menos recomendado pero alternativo sería agregar una URL a una página web simple que describa el conjunto de datos en lugar de un documento de metadatos estructurado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:335
 msgid "To cite individuals at the record level, providing a 3rd level of citation, it is recommended to use the *dwc:nameAccordingTo* field. Additional record-level terms are provided above."
-msgstr ""
+msgstr "Para citar individuos a nivel de registro, proporcionando un tercer nivel de cita, se recomienda utilizar el campo *dwc:nameAccordingTo*. Más arriba se proporcionan términos adicionales a nivel de registro."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:336
 #, no-wrap
 msgid "Use Case 2 - Checklists derived from one or more authority sources"
-msgstr ""
+msgstr "Caso de Uso 2 - Listados taxonómicos derivados de una o más fuentes de autoridad"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:339
 msgid "A species checklist in this use case is compiled for a specific purpose but derives it’s basic taxonomic structure from one or more external taxonomic checklists that serve as *authority files*. The new compilation may include additional annotations to the basic source record that apply to the new lists focus. An example might be a European national species checklist derived from a database such as Fauna Europaea or the Catalogue of Life, which, in principle, provide the complete listing for a country as a subset of their own coverage. A national list may then add additional regional details such as a national threat status or some other property of interest, resulting in a new, derived dataset. In this case, it is important to be able to provide record-level attribution and linkages to the source dataset. The recommended means to do this are as follows."
-msgstr ""
+msgstr "En este caso de uso, un listado taxonómico de especies se compila para un propósito específico, pero su estructura taxonómica básica deriva de uno o más listados taxonómicos externos que sirven como *archivos de autoridad*. La nueva compilación puede incluir anotaciones adicionales al registro de origen básico que se aplican al enfoque de los nuevos listados. Un ejemplo podría ser listado taxonómicos de especies nacionales europeos derivado de una base de datos como Fauna Europaea o el Catálogo de la Vida, que, en principio, proporcionan la lista completa de un país como un subconjunto de su propia cobertura. Una lista nacional puede agregar detalles regionales adicionales, como un estado de amenaza nacional o alguna otra propiedad de interés, lo que da como resultado un nuevo conjunto de datos derivado. En este caso, es importante poder proporcionar atribuciones y vínculos a nivel de registro con el conjunto de datos de origen. Los medios recomendados para hacer esto son los siguientes."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:341
 msgid "A single metadata document is created to represent the new, derived resource itself (e.g., National Checklist of the Netherlands). Datasets that are referenced can be cited in this metadata document."
-msgstr ""
+msgstr "Se crea un único documento de metadatos para representar el nuevo recurso derivado en sí mismo (por ejemplo, Listado Taxonómico Nacional de los Países Bajos). Los conjuntos de datos a los que se hace referencia se pueden citar en este documento de metadatos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:342
 msgid "Fully described as organizations with a role of Contributor and links to the source web site."
-msgstr ""
+msgstr "Completamente descritas como organizaciones con un rol de Colaborador y enlaces al sitio web de origen."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:343
 msgid "Cited in the bibliographic section with the citation represented as recommended by the referenced dataset."
-msgstr ""
+msgstr "Citado en la sección bibliográfica con la cita representada según lo recomendado por el conjunto de datos referenciado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:344
 msgid "In the data files, additional attribution and linkages can be made at the record-level. This includes:"
-msgstr ""
+msgstr "En los archivos de datos, se pueden realizar atribuciones y vínculos adicionales a nivel de registro. Esto incluye:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:345
 msgid "Referencing the dataset by name in *dwc:datasetName*"
-msgstr ""
+msgstr "Hacer referencia al conjunto de datos por nombre en *dwc:datasetName*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:346
 msgid "Referencing the dataset by ID (such as URL) in *dwc:datasetID* and linking to the dataset home page"
-msgstr ""
+msgstr "Hacer referencia al conjunto de datos por ID (como URL) en *dwc:datasetID* y vincularlo a la página de inicio del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:347
 msgid "Providing a link to a corresponding species page on the referenced dataset web site using *dc:source*"
-msgstr ""
+msgstr "Proporcionar un enlace a la página de la especie correspondiente en el sitio web del conjunto de datos al que se hace referencia utilizando *dc:source*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:348
 msgid "If dc:source is reserved for pointing to URL for the derived database, a link to the source database can still be added using the Alternative Identifiers extension."
-msgstr ""
+msgstr "Si dc:source está reservado para apuntar a la URL de la base de datos derivada, aún se puede agregar un enlace a la base de datos de origen utilizando la extensión de Identificadores Alternativos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:349
 msgid "If the source dataset provides globally unique identifiers for the taxa referenced in the list, they can be used as the *taxonID* in the derived dataset. This ensures an explicit link to the source taxon and is highly recommended if available."
-msgstr ""
+msgstr "Si el conjunto de datos de origen proporciona identificadores únicos a nivel mundial para los taxones a los que se hace referencia en la lista, se pueden utilizar como *taxonID* en el conjunto de datos derivado. Esto asegura un enlace explícito al taxón de origen y es muy recomendable si está disponible."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:350
 msgid "Use the *dwc:nameAccordingTo* or *dwc:nameAccordingToID* to refer to the taxon definition in the corresponding source record as a citation or a URL."
-msgstr ""
+msgstr "Utilice *dwc:nameAccordingTo* o *dwc:nameAccordingToID* para hacer referencia a la definición de taxón en el registro de origen correspondiente como una cita o una URL."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:351
 #, no-wrap
 msgid "Sharing Vernacular Names"
-msgstr ""
+msgstr "Compartiendo Nombres Vernáculos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:354
 msgid "The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the {latest-vernacularname}[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers."
-msgstr ""
+msgstr "Se apoya el intercambio de datos de nombres vernáculos asociados con taxones en listados taxonómicos. Los nombres vernáculos se comparten como un archivo relacionado separado usando la {latest-vernacularname}[extensión de nombres vernáculos]. La extensión admite un rico conjunto de propiedades para describir usos de nombres vernáculos que incluyen calificadores regionales y morfológicos."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:355
 #, no-wrap
 msgid "figures/myristica_fragrans.png"
-msgstr ""
+msgstr "figures/myristica_fragrans.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:358
 msgid "Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 693 language code] for sharing language information. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilize the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
-msgstr ""
+msgstr "Los nombres vernáculos se referencian a través de una extensión, por lo tanto, deben estar vinculados a un taxón con nombre en el archivo de datos principal. Se recomienda además que un registro de nombres vernáculos proporcione una referencia de idioma que identifique el idioma representado por el uso del nombre vernáculo. La mejor práctica es utilizar el http://rs.gbif.org/vocabulary/iso/639-1.xml[Código de idioma ISO 693] para compartir información sobre el idioma. Los nombres vernáculos también pueden tener distintos usos regionales y esto se puede especificar mediante un elemento dwc:locality o, en un nivel menos preciso, utilizando un término dwc:country. Se recomienda que los nombres de países utilicen los http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:359
 #, no-wrap
 msgid "Sharing Species Descriptions"
-msgstr ""
+msgstr "Compartiendo Descripciones de Especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:362
