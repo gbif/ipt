@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 03:23\n"
+"PO-Revision-Date: 2021-08-14 03:40\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -775,78 +775,78 @@ msgstr "*Derechos de Propiedad Intelectual* – El perfil de metadatos contiene 
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:304
 #, no-wrap
 msgid "*Individuals and Organizations* – The metadata profile enables the description of any and all individuals, institutions or organizations that may be associated with a dataset. These agents may be ascribed different roles relative to the dataset and may include URLs to each resource. This section provides one method for describing and linking to individuals and organizations that have contributed to a checklist.\n"
-msgstr ""
+msgstr "*Individuos y organizaciones* – El perfil de metadatos permite la descripción de todas y cada una de los individuos, instituciones u organizaciones que pueden estar asociados con un conjunto de datos. A estos agentes se les pueden asignar diferentes roles en relación con el conjunto de datos y pueden incluir URL a cada recurso. Esta sección proporciona un método para describir y vincular a individuos y organizaciones que han contribuido a un listado taxonómico.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:305
 #, no-wrap
 msgid "*Source URL* – Links to the homepage of the source\n"
-msgstr ""
+msgstr "*URL de la fuente* – Enlaces a la página de inicio de la fuente\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:306
 #, no-wrap
 msgid "*Project Information* – If the checklist is linked to a particular project (e.g., “The Catalogue of Life”) there are a set of fields for describing the project in detail.\n"
-msgstr ""
+msgstr "*Información del proyecto* – Si el listado taxonómico está vinculado a un proyecto en particular (por ejemplo, \"El Catálogo de la Vida\"), hay un conjunto de campos para describir el proyecto en detalle.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:307
 #, no-wrap
 msgid "*Citation* – This element allows the checklist publisher to specify exactly how the checklist data should be cited when used. Example *“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”*\n"
-msgstr ""
+msgstr "*Citación* – Este elemento permite al editor del listado taxonómico especificar exactamente cómo se deben citar los datos del listado taxonómico cuando se utilicen. Ejemplo *“Apelantes W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). Registro mundial de especies marinas. Consultado en http://www.marinespecies.org el 22 de febrero de 2011”.*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:308
 #, no-wrap
 msgid "*Bibliography* – A complete bibliography of sources can be described and included in the metadata document.\n"
-msgstr ""
+msgstr "*Bibliografía* - Se puede describir e incluir una bibliografía completa de fuentes en el documento de metadatos.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:309
 #, no-wrap
 msgid "Data-level Citation and Attribution"
-msgstr ""
+msgstr "Citación y Atribución a nivel de Datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:312
 msgid "Attribution and citation information recorded in the metadata document is common to all data records in a dataset. In some cases, additional granularity is needed even down to individual records. In these cases, there are record-level terms that are recommended for use in specifying citation and attribution information."
-msgstr ""
+msgstr "La información sobre atribuciones y citas registrada en el documento de metadatos es común a todos los registros de datos de un conjunto de datos. En algunos casos, se necesita una granularidad adicional incluso en los registros individuales. En estos casos, existen términos a nivel de registro que se recomiendan para su uso al especificar la información de citas y atribuciones."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:314
 #, no-wrap
 msgid "*dwc:nameAccordingTo* : This term can be used to identify the individual or citation that serves as the authoritative taxonomic reference for the record. (Example “Erpenbeck, D.; Van Soest, R.W.M. 2002. Family Halichondriidae Gray, 1867. Pp. 787-816. In Hooper, J. N. A. & Van Soest, R. W. M. (ed.) Systema Porifera. A guide to the classification of sponges.”)\n"
-msgstr ""
+msgstr "*dwc:nameAccordingTo*: Este término puede usarse para identificar al individuo o cita que sirve como referencia taxonómica autorizada para el registro. (Ejemplo “Erpenbeck, D .; Van Soest, RWM 2002. Familia Halichondriidae Gray, 1867. Pp. 787-816. En Hooper, JNA & Van Soest, RWM (ed.) Systema Porifera. Una guía para la clasificación de esponjas.\")\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:315
 #, no-wrap
 msgid "*dwc:nameAccordingToID*: A unique identifier that returns the nameAccordingTo reference as described above. This could be a URL for example.\n"
-msgstr ""
+msgstr "*dwc:nameAccordingToID*: Un identificador único que devuelve la referencia nameAccordingTo como se describe arriba. Podría ser una URL, por ejemplo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:316
 #, no-wrap
 msgid "*dwc:datasetName*: If the record is derived from an external dataset this dataset can be cited as a text string. (Example, “World Register of Marine Species, cited on 12 April 2011”)\n"
-msgstr ""
+msgstr "*dwc:datasetName*: Si el registro se deriva de un conjunto de datos externo, este conjunto de datos se puede citar como una cadena de texto. (Ejemplo, \"Registro mundial de especies marinas, citado el 12 de abril de 2011\")\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:317
 #, no-wrap
 msgid "*dwc:datasetID* – An identifier that refers to a dataset, preferably resolvable.\n"
-msgstr ""
+msgstr "*dwc:datasetID* – Un identificador que se refiere a un conjunto de datos, preferiblemente que se pueda resolver.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:318
 #, no-wrap
 msgid "*dc:source* – Link to the source web page\n"
-msgstr ""
+msgstr "*dc:source* - Enlace a la página web de la fuente\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:319
 #, no-wrap
 msgid "Use Case 1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)"
-msgstr ""
+msgstr "Caso de Uso 1 - Listado taxonómico compuestos por múltiples conjuntos de datos que contribuyen (por ejemplo, Catálogo de la Vida, PESI, WoRMS)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:322
