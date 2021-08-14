@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 02:24\n"
+"PO-Revision-Date: 2021-08-14 03:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -528,7 +528,7 @@ msgstr "Los siguientes ejemplos ilustran configuraciones de datos que pueden aju
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:188
 msgid "This example identifies the referent taxon as the last column containing taxon values."
-msgstr ""
+msgstr "Este ejemplo identifica el taxón de referencia como la última columna que contiene los valores del taxón."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:199
@@ -541,12 +541,19 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    |\n"
 "| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
 "| 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 997         | Animalia    |            |           |           |            |\n"
+"| 998         | Animalia    | Chordata   |           |           |            |\n"
+"| 999         | Animalia    | Chordata   | Mammalia  |           |            |\n"
+"| 1000        | Animalia    | Chordata   | Mammalia  | Carnivora |            |\n"
+"| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    |\n"
+"| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
+"| 1003        | Animalia    | Chordata   | Mammalia  | Carnivora | Felidae    | Panthera tigris\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:202
 msgid "This example attempts is similar to A above but attempts to reduce integrity errors by only recording higher taxon names once"
-msgstr ""
+msgstr "Este ejemplo intenta es similar al anterior, pero intenta reducir los errores de integridad registrando solo los nombres de taxón más altos una vez."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:213
@@ -559,23 +566,30 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1001        |             |            |           |           | Felidae    |\n"
 "| 1002        |             |            |           |           |            | Panthera tigris\n"
 "| 1003        |             |            |           |           |            | Panthera leo\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 997         | Animalia    |            |           |           |            |\n"
+"| 998         |             | Chordata   |           |           |            |\n"
+"| 999         |             |            | Mammalia  |           |            |\n"
+"| 1000        |             |            |           | Carnivora |            |\n"
+"| 1001        |             |            |           |           | Felidae    |\n"
+"| 1002        |             |            |           |           |            | Panthera tigris\n"
+"| 1003        |             |            |           |           |            | Panthera leo\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:216
 msgid "Please avoid publishing data in these configurations."
-msgstr ""
+msgstr "Por favor, evite publicar datos en estas configuraciones."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:217
 #, no-wrap
 msgid "Publishing Synonymy"
-msgstr ""
+msgstr "Publicación de Sinonimias"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:220
 msgid "Darwin Core Archive supports the publication of synonyms in species checklists. A synonym is published as a separate record in the core data file. A synonym references the accepted taxon record through the use of the *dwc:acceptedNameUsageID* field. This field contains the *dwc:taxonID* representing the accepted taxon record. In the simplified example below, the first record represents the accepted name for a taxon and records 2 and 3 are synonyms."
-msgstr ""
+msgstr "El Archivo Darwin Core apoya la publicación de sinónimos en listados taxonómicos de especies. Un sinónimo se publica como un registro separado en el archivo de datos principal. Un sinónimo hace referencia al registro de taxón aceptado mediante el uso del campo *dwc:acceptNameUsageID*. Este campo contiene el *dwc:taxonID* que representa el registro de taxón aceptado. En el ejemplo simplificado a continuación, el primer registro representa el nombre aceptado para un taxón y los registros 2 y 3 son sinónimos."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:230
@@ -587,23 +601,29 @@ msgid "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclat
 "| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium\n"
 "| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium\n"
 "| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium\n"
-msgstr ""
+msgstr "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclaturalStatus\n\n"
+"| 1           | Coeligena helianthea (Lesson 1838)                | 1                  | accepted            |\n"
+"| 2           | Ornismya helianthea Lesson 1838                   | 1                  | Homotypic synonym   |\n"
+"| 3           | Helianthea helianthea (Lesson 1838) J. Gould 1848 | 1                  | Homotypic synonym   |\n"
+"| 4           | Helianthea typica Bonaparte 1850                  | 1                  | Heterotypic synonym | nomen dubium\n"
+"| 5           | Helianthea porphyrogaster Mulsant 1876            | 1                  | Heterotypic synonym | nomen dubium\n"
+"| 6           | Coeligena helianthea tamai Berlioz & Phelps 1953  | 1                  | Heterotypic synonym | nomen dubium\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:233
 msgid "A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is {latest-taxonomic-status}[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and {latest-nomenclatural-status}[supporting vocabulary]."
-msgstr ""
+msgstr "Se recomienda que un registro de sinónimos contenga un *dwc:taxonID* distinto o puede que no tenga *dwc:taxonID* en absoluto. *No debe* usar el mismo *dwc:taxonID* que el registro de taxón aceptado. La representación más simple de la sinonimia es la que se proporciona en el ejemplo anterior, donde los sinónimos se enumeran como registros distintos y \"apuntan\" al registro de taxón aceptado mediante *dwc:acceptNameUsageID*. Esta sinonimia simple apoya la publicación de listados taxonómicos básicos con detalles de sinónimos limitados a los elementos de la clase de taxón principal. El campo *dwc:taxonomicStatus* afirma el estado del registro. Un vocabulario recomendado para este campo es {latest-taxonomic-status}[disponible]. Se pueden incluir detalles de nomenclatura adicionales que también pueden respaldar la justificación detrás de la sinonimia utilizando el campo *dwc:nomenclaturalStatus* y {latest-nomenclatural-status}[vocabulario de apoyo]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:235
 msgid "Detailed synonymy can be supported by ensuring a unique *dwc:taxonID* is included in each synonym record and by utilizing the available extensions to support the sharing of checklist annotations. This supports the linking of one or more bibliographic records, specimen records and other data types supported by the <<GBIF Checklist Extensions>> to a single synonym record in the core data file. If a *dwc:taxonID* is not provided for a synonym record, extensions cannot be used as they rely on the *dwc:taxonID* to provide the link to the taxon record in the core file. A simplified example below illustrates the use of two files (expressed as tables) to provide a bibliography for a synonym using the References extension. The shared *dwc:taxonID* is highlighted in the example."
-msgstr ""
+msgstr "La sinonimia detallada se puede respaldar asegurando que se incluya un *dwc:taxonID* único en cada registro de sinónimos y utilizando las extensiones disponibles para respaldar el intercambio de anotaciones de listados taxonómicos. Esto admite la vinculación de uno o más registros bibliográficos, registros de muestras y otros tipos de datos admitidos por las <<GBIF Checklist Extensions>> a un solo registro de sinónimo en el archivo de datos principal. Si no se proporciona un *dwc:taxonID* para un registro de sinónimo, no se pueden usar extensiones ya que se basan en *dwc:taxonID* para proporcionar el enlace al registro de taxón en el archivo principal. Un ejemplo simplificado a continuación ilustra el uso de dos archivos (expresados como tablas) para proporcionar una bibliografía para un sinónimo usando la extensión References. El *dwc:taxonID* compartido se resalta en el ejemplo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:237
 #, no-wrap
 msgid "*Taxon.txt* data file\n"
-msgstr ""
+msgstr "Archivo de datos *Taxon.txt*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:244
@@ -612,13 +632,16 @@ msgid "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
 "| 1           | Coeligena helianthea  | 1                       | accepted\n"
 "| 2           | Ornismya helianthea   | 1                       | synonym\n"
 "| 3           | Helianthea helianthea | 1                       | synonym\n"
-msgstr ""
+msgstr "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
+"| 1           | Coeligena helianthea  | 1                       | aceptado\n"
+"| 2           | Ornismya helianthea   | 1                       | sinónimo\n"
+"| 3           | Helianthea helianthea | 1                       | sinónimo\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:247
 #, no-wrap
 msgid "*References.txt* data file\n"
-msgstr ""
+msgstr "Archivo de datos *References.txt*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:253
@@ -626,34 +649,36 @@ msgstr ""
 msgid "| taxonID | Bibliographic citation\n\n"
 "| 2           | Schmidt, O. 1870. Grundzüge einer Spongien-Fauna des atlantischen Gebietes. (Wilhelm Engelmann: Leipzig): iii-iv, 1-88, pls I-VI.\n"
 "| 2           | Laubenfels, M.W. De 1942. Porifera from Greenland and Baffinland collected by Capt. Robert A. Bartlett. Journal of the Washington Academy of Sciences 32(9): 263-269.\n"
-msgstr ""
+msgstr "| taxonID | Cita bibliográfica\n\n"
+"| 2           | Schmidt, O. 1870. Grundzüge einer Spongien-Fauna des atlantischen Gebietes. (Wilhelm Engelmann: Leipzig): iii-iv, 1-88, pls I-VI.\n"
+"| 2           | Laubenfels, M.W. De 1942. Porifera from Greenland and Baffinland collected by Capt. Robert A. Bartlett. Journal of the Washington Academy of Sciences 32(9): 263-269.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:256
 #, no-wrap
 msgid "*Other Synonymy Do’s and Don’ts*\n"
-msgstr ""
+msgstr "*Otras Sinonimias, que se debe y que no se debe hacer*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:258
 msgid "An *dwc:acceptedNameUsageID* must point to an existing record in the dataset. It is invalid to point to accepted taxa that do not exist as records."
-msgstr ""
+msgstr "Un *dwc:parentNameUsageID* debe apuntar a un registro existente en el conjunto de datos. No es válido señalar identificadores de taxón superiores que no existen como registros."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:259
 msgid "Do not confuse the *dwc:higherTaxonID* used to describe a classification with the *dwc:acceptedNameUsageID* used to describe the taxonomic status of a record."
-msgstr ""
+msgstr "No confunda el *dwc:higherTaxonID* utilizado para describir una clasificación con el *dwc:acceptedNameUsageID* utilizado para describir el estatus taxonómico de un registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:260
 msgid "Do not “chain” synonyms. A synonym should only point to accepted taxon records via *dwc:acceptedNameUsageID*. They should never point to another synonym."
-msgstr ""
+msgstr "No “encadene” sinónimos. Un sinónimo solo debe apuntar a registros de taxón aceptados a través de *dwc:acceptNameUsageID*. Nunca deben apuntar a otro sinónimo."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:261
 #, no-wrap
 msgid "Nomenclatural Synonymy"
-msgstr ""
+msgstr "Sinonimia Nomenclatural"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:264
