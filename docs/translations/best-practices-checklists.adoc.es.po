@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 01:42\n"
+"PO-Revision-Date: 2021-08-14 02:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -453,7 +453,7 @@ msgstr "cada columna de taxón superior está completamente poblada. Evite los e
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:156
 msgid "Ensure taxonomic integrity of the list. For example ensure that two species in a common genus share the same family. Ensure that if synonyms are included in separate rows, that their classification matches that of the accepted taxon."
-msgstr ""
+msgstr "Asegurar la integridad taxonómica de la lista. Por ejemplo, asegúrese de que dos especies de un género común compartan la misma familia. Asegúrese de que, si se incluyen sinónimos en filas separadas, su clasificación coincide con la del taxón aceptado."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:164
@@ -463,25 +463,29 @@ msgid "| taxonID | kingdom | phylum | class | order | family | scientificName\n\
 "| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo\n"
 "| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera\n"
 "| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis\n"
-msgstr ""
+msgstr "| taxonID | kingdom | phylum | class | order | family | scientificName\n\n"
+"| 1001        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera tigris\n"
+"| 1002        | Animalia    | Chordata   | Mammalia  | Carnivora   | Felidae    | Panthera leo\n"
+"| 1003        | Animalia    | Arthropoda | Insecta   | Hymenoptera | Apidae     | Apis mellifera\n"
+"| 1004        | Plantae     | --         | --        | --          | Poales     | Poa annularis\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:169
 #, no-wrap
 msgid "*Legibility* - The primary advantage of this format is that it is easy to read and the taxonomic hierarchy can be evaluated by simply reading columns.\n"
-msgstr ""
+msgstr "*Legibilidad* - La principal ventaja de este formato es que es fácil de leer y la jerarquía taxonómica se puede evaluar simplemente leyendo columnas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:170
 #, no-wrap
 msgid "*Convenient* – Spreadsheet applications and many relational databases make it easy to implement this structure for storing hierarchical data.\n"
-msgstr ""
+msgstr "*Conveniente* - Las aplicaciones de hojas de cálculo y muchas bases de datos relacionales facilitan la implementación de esta estructura para almacenar datos jerárquicos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:174
 #, no-wrap
 msgid "*Higher likelihood of referential integrity loss* – Higher taxa are repeated in this format which can increase the chance that two identical taxa may be spelled differently. Other similar risks are possible with this format. For example it is possible for two instances of the same taxon (example “Felidae”) to be assigned to two different parents, resulting in a conflict of hierarchical integrity.\n"
-msgstr ""
+msgstr "*Mayor probabilidad de pérdida de integridad referencial* - Los taxones más altos se repiten en este formato, lo que puede aumentar la posibilidad de que dos taxones idénticos se escriban de manera diferente. Otros riesgos similares son posibles con este formato. Por ejemplo, es posible que dos instancias del mismo taxón (por ejemplo, \"Felidae\") se asignen a dos padres diferentes, lo que da como resultado un conflicto de integridad jerárquica.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:175
