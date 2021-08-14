@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 01:15\n"
+"PO-Revision-Date: 2021-08-14 01:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,7 +35,7 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Species Checklists"
-msgstr "Mejores prácticas para la publicación de Listas de Especies"
+msgstr "Mejores prácticas para la publicación de Listados Taxonómicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:4
@@ -87,7 +87,7 @@ msgstr "GBIF (2017). Mejores Prácticas en la Publicación de Listados de Especi
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:26
 msgid "_Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexicanus_"
-msgstr "_Imagen de portada: Gregory Basco, Black-necked stilt, Himantopus mexicanus_"
+msgstr "_Imagen de portada: Gregory Basco, Tero Real, Himantopus mexicanus_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:30
@@ -126,7 +126,7 @@ msgstr "*Listas nomenclaturales (Nomencladores)* - Listas de nombres que incluye
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:40
 #, no-wrap
 msgid "*Taxonomic checklist* – These lists extend nomenclatural lists by adding taxonomic opinion in the form of explicit taxonomic status information and the inclusion of names placed in synonymy. Simple taxonomic lists in this category provide no specific circumscription details regarding the basis for the synonymy. Taxa are often organized into classifications. The term “*taxonomic catalogue*” may also be used to refer to instances of this, and the remaining categories, particularly if the resource includes verified publication and taxonomic status details.\n"
-msgstr "*Listado taxonómico* – Estas listas amplían las listas de nomenclatura al agregar opiniones taxonómicas en forma de información explícita sobre el estado taxonómico y la inclusión de nombres colocados en sinonimia. Los listados taxonómicos simples en esta categoría no proporcionan detalles de circunscripción específicos con respecto a la base de la sinonimia. Los taxones a menudo se organizan en clasificaciones. El término \"* catálogo taxonómico *\" también puede usarse para referirse a instancias de este y las categorías restantes, particularmente si el recurso incluye publicación verificada y detalles del estado taxonómico.\n"
+msgstr "*Listado taxonómico* – Estas listas amplían las listas de nomenclatura al agregar opiniones taxonómicas en forma de información explícita sobre el estado taxonómico y la inclusión de nombres colocados en sinonimia. Los listados taxonómicos simples en esta categoría no proporcionan detalles de circunscripción específicos con respecto a la base de la sinonimia. Los taxones a menudo se organizan en clasificaciones. El término \"*catálogo taxonómico*\" también puede usarse para referirse a instancias de este y las categorías restantes, particularmente si el recurso incluye publicación verificada y detalles del estado taxonómico.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:41
@@ -209,7 +209,7 @@ msgstr "Recomendaciones de formato de archivo de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:64
 msgid "For ease in understanding, we may use the terms *field* in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the *dwc:scientificName field* when referring to the Darwin Core term, *scientificName*."
-msgstr "Para facilitar la comprensión, podemos utilizar los términos *campo* en esta guía para hacer referencia al conjunto de términos de Darwin Core en el perfil de publicación taxonómica al que se asignarán los datos de un usuario. Por ejemplo, nos referiremos al uso del *campo dwc: scientificName* cuando nos refiramos al término Darwin Core, *scientificName*."
+msgstr "Para facilitar la comprensión, podemos utilizar los términos *campo* en esta guía para hacer referencia al conjunto de términos de Darwin Core en el perfil de publicación taxonómica al que se asignarán los datos de un usuario. Por ejemplo, nos referiremos al uso del *campo dwc:scientificName* cuando nos refiramos al término Darwin Core, *scientificName*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:66
@@ -268,7 +268,7 @@ msgstr "| scientificName\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:84
 msgid "The *dwc:scientificName* field stores the full scientific name of a taxon including authorship. This field should always be populated with data even if the names are split into component parts (as in C. below). Databases that do not provide a clean separation between the name part and the authorship part of the name should use this field for the entire concatenated name string. This may be needed for hybrid formulas, *sensu strictu* names, autonyms and other non-trivial binomials. This field is generally used in combination with the *dwc:taxonRank* field to store the scientific name parts of a full taxonomic list including the higher taxa."
-msgstr "El campo *dwc: scientificName* almacena el nombre científico completo de un taxón, incluida la autoría. Este campo siempre debe llenarse con datos incluso si los nombres están divididos en partes componentes (como en C. a continuación). Las bases de datos que no proporcionan una separación clara entre la parte del nombre y la parte de la autoría del nombre deben usar este campo para toda la cadena de nombres concatenados. Esto puede ser necesario para fórmulas híbridas, nombres *sensu stricto*, autónimos y otros binomios no triviales. Este campo se utiliza generalmente en combinación con el campo *dwc: taxonRank* para almacenar las partes del nombre científico de un listado taxonómico completo que incluye los taxones superiores."
+msgstr "El campo *dwc:scientificName* almacena el nombre científico completo de un taxón, incluida la autoría. Este campo siempre debe llenarse con datos incluso si los nombres están divididos en partes componentes (como en C. a continuación). Las bases de datos que no proporcionan una separación clara entre la parte del nombre y la parte de la autoría del nombre deben usar este campo para toda la cadena de nombres concatenados. Esto puede ser necesario para fórmulas híbridas, nombres *sensu stricto*, autónimos y otros binomios no triviales. Este campo se utiliza generalmente en combinación con el campo *dwc:taxonRank* para almacenar las partes del nombre científico de un listado taxonómico completo que incluye los taxones superiores."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:85
@@ -287,7 +287,7 @@ msgstr "| scientificName                | scientificNameAuthorship\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:94
 msgid "Some databases separate a scientific name into a name part and an authorship part. In this case the *dwc:scientificName* and *dwc:scientificNameAuthorship* fields should be used."
-msgstr "Algunas bases de datos separan un nombre científico en una parte de nombre y una parte de autoría. En este caso, deben usarse los campos *dwc: scientificName* y *dwc: scientificNameAuthorship*."
+msgstr "Algunas bases de datos separan un nombre científico en una parte de nombre y una parte de autoría. En este caso, deben usarse los campos *dwc:scientificName* y *dwc:scientificNameAuthorship*."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:95
@@ -349,22 +349,22 @@ msgstr "A *dwc:taxonID* se refiere al taxón actual. *Puede utilizar los identif
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:119
 msgid "The *dwc:scientificName* of the current taxon. Example: “*Panthera tigris*”"
-msgstr ""
+msgstr "El *dwc:scientificName* del taxón actual. Ejemplo: \"*Panthera tigris*\""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:120
 msgid "The *dwc:taxonRank* of the referent taxon. Example: “*species*”"
-msgstr ""
+msgstr "El *dwc:taxonRank * del taxón de referencia. Ejemplo: \"*especie*\""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:121
 msgid "A reference to the taxon identifier of the immediate parent taxon stored in the *dwc:parentNameUsageID*. In the example below, the parent of record 7, for “*Panthera tigris* (Linnaeus)” is record 6, the genus “*Panthera*.”"
-msgstr ""
+msgstr "Una referencia al identificador de taxón del taxón padre inmediato almacenado en *dwc:parentNameUsageID*. En el siguiente ejemplo, el padre del registro 7, para \"*Panthera tigris* (Linnaeus)\" es el registro 6, el género \"*Panthera*\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:123
 msgid "A sample classification for a single species, the tiger, “*Panthera tigris*”, is illustrated below. Note that the top-most member of a hierarchy has no parent so that the parent identifier should be empty. Note that *dwc:scientificName* provides a common field for storing the name in this case but that the full set of options for names is described above in Sharing Scientific Names."
-msgstr ""
+msgstr "A continuación se ilustra una clasificación de muestra para una sola especie, el tigre, “*Panthera tigris*”. Tenga en cuenta que el miembro superior de una jerarquía no tiene padre, por lo que el identificador principal debe estar vacío. Tenga en cuenta que *dwc:scientificName* proporciona un campo común para almacenar el nombre en este caso, pero que el conjunto completo de opciones para los nombres se describe anteriormente en Compartir Nombre Científicos."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:134
@@ -377,71 +377,78 @@ msgid "| taxonID | taxonRank | scientificName         | parentNameUsageID\n\n"
 "| 5           | Family        | Felidae                    | 4\n"
 "| 6           | Genus         | Panthera                   | 5\n"
 "| 7           | Species       | Panthera tigris (Linnaeus) | 6\n"
-msgstr ""
+msgstr "| taxonID | taxonRank | scientificName         | parentNameUsageID\n\n"
+"| 1           | Reino       | Animalia                   |\n"
+"| 2           | Filo        | Chordata                   | 1\n"
+"| 3           | Clase         | Mammalia                   | 2\n"
+"| 4           | Orden         | Carnivora                  | 3\n"
+"| 5           | Familia        | Felidae                    | 4\n"
+"| 6           | Género         | Panthera                   | 5\n"
+"| 7           | Especie       | Panthera tigris (Linnaeus) | 6\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:136
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:166
 #, no-wrap
 msgid "Advantages"
-msgstr ""
+msgstr "Ventajas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:139
 #, no-wrap
 msgid "*Efficiency* – A normalized classification stores a single reference for each taxon in the hierarchy.\n"
-msgstr ""
+msgstr "*Eficiencia* – Una clasificación normalizada almacena una única referencia para cada taxón en la jerarquía.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:140
 #, no-wrap
 msgid "*Referential integrity* – Each taxon component has a distinct identifier that explicitly references its immediate parent. It is easy to verify that the taxonomic hierarchy is complete and properly formed.\n"
-msgstr ""
+msgstr "*Integridad referencial* – Cada componente de taxón tiene un identificador distinto que hace referencia explícita a su padre inmediato. Es fácil verificar que la jerarquía taxonómica esté completa y debidamente formada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:141
 #, no-wrap
 msgid "*Extensibility* – All taxa are identified with distinct taxon identifiers. This enables higher taxa to be more richly documented through the use of extensions in the same manner as species records.\n"
-msgstr ""
+msgstr "*Extensibilidad*– Todos los taxones se identifican con identificadores de taxón distintos. Esto permite que los taxones superiores estén mejor documentados mediante el uso de extensiones de la misma manera que los registros de especies.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:142
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:171
 #, no-wrap
 msgid "Disadvantages"
-msgstr ""
+msgstr "Desventajas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:145
 #, no-wrap
 msgid "*Convenience* - A normalized classification does not provide an intuitive view of the classification hierarchy when viewed in raw tabular form. Many biologists manage classifications in a less efficient, but more visually intuitive, *denormalized format*, described below. Transforming a denormalized classification to the normalized form is difficult to manually perform.\n"
-msgstr ""
+msgstr "*Conveniencia* - Una clasificación normalizada no proporciona una vista intuitiva de la jerarquía de clasificación cuando se ve en forma tabular sin procesar. Muchos biólogos gestionan las clasificaciones en un formato *desnormalizado* menos eficiente, pero visualmente más intuitivo, que se describe a continuación. La transformación de una clasificación desnormalizada a la forma normalizada es difícil de realizar manualmente.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:147
 msgid "A *dwc:parentNameUsageID* must point to an existing record in the dataset. It is invalid to point to higher taxon identifiers that do not exist as records."
-msgstr ""
+msgstr "Un *dwc:parentNameUsageID* debe apuntar a un registro existente en el conjunto de datos. No es válido señalar identificadores de taxón superiores que no existen como registros."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:148
 #, no-wrap
 msgid "Denormalized Classifications"
-msgstr ""
+msgstr "Clasificaciones Desnormalizadas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:151
 msgid "This format is familiar to anyone who manages species information in spreadsheets. In a denormalized classification, each row of the data table refers to one of the terminal taxa, such as a species, and a complete set of parent taxa as a set of columns, one for each parent taxon."
-msgstr ""
+msgstr "Este formato es familiar para cualquiera que maneje información de especies en hojas de cálculo. En una clasificación desnormalizada, cada fila de la tabla de datos se refiere a uno de los taxones terminales, como una especie, y un conjunto completo de taxones parentales como un conjunto de columnas, una para cada taxón parental."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:153
 msgid "This format is not the recommended method for sharing taxonomic data using Darwin Core Archives but is supported by GBIF as it is in common use in many species lists. If this is the method by which data will be shared, it is highly recommended that"
-msgstr ""
+msgstr "Este formato no es el método recomendado para compartir datos taxonómicos utilizando Archivo Darwin Core, pero es compatible con GBIF, ya que es de uso común en muchas listas de especies. Si este es el método por el cual se compartirán los datos, se recomienda encarecidamente que"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:155
 msgid "Each higher taxon column is completely populated. Avoid blanks as in the Plantae example below."
-msgstr ""
+msgstr "cada columna de taxón superior está completamente poblada. Evite los espacios en blanco como en el ejemplo de Plantae a continuación."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:156
