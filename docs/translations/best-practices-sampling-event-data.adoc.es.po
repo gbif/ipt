@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 00:55\n"
+"PO-Revision-Date: 2021-08-14 04:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -90,12 +90,12 @@ msgstr "Codifique los valores nulos como cadenas vacías, es decir, sin caracter
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data"
-msgstr ""
+msgstr "Mejores Prácticas en la Publicación de Datos de Eventos de Muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
 msgid "Version 3.1"
-msgstr ""
+msgstr "Versión 3.1"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:14
