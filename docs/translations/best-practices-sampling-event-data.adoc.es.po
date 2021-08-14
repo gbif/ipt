@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 04:41\n"
+"PO-Revision-Date: 2021-08-14 05:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -105,12 +105,16 @@ msgid "| Version | Description             | Date of release | Author(s)\n\n"
 "| 2.0 | Transferred to wiki, major changes | May 2017   | Kyle Braak\n"
 "| 3.0 | Minor changes, clean up | Aug 2018   | Marie Grosjean\n"
 "| 3.1 | Conversion to Asciidoctor | May 2021 | Matthew Blissett\n"
-msgstr ""
+msgstr "| Versión | Descripción             | Fecha de publicación | Autor(es)\n\n"
+"| http://links.gbif.org/ipt-sample-data-primer[1.0]   | Versión de lanzamiento         | 2015    | Éamonn Ó Tuama\n"
+"| 2.0 | Transferido a wiki, cambios importantes | Mayo 2017   | Kyle Braak\n"
+"| 3.0 | Pequeños cambios, limpieza | Agosto 2018   | Marie Grosjean\n"
+"| 3.1 | Conversión a Asciidoctor | Mayo 2021 | Matthew Blissett\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:19
 msgid "GBIF (2017). Best Practices in Publishing Sampling-event data. Accessible online at https://ipt.gbif.org/manual/en/ipt/{manual-version}/best-practices-sampling-event-data"
-msgstr ""
+msgstr "GBIF (2017). Mejores prácticas en la publicación de datos de eventos de muestreo. Accesible en línea en https://ipt.gbif.org/manual/en/ipt/{manual-version}/best-practices-sampling-event-data"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:23
