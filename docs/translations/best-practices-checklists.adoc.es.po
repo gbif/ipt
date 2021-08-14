@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 02:01\n"
+"PO-Revision-Date: 2021-08-14 02:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -491,39 +491,39 @@ msgstr "*Mayor probabilidad de pérdida de integridad referencial* - Los taxones
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:175
 #, no-wrap
 msgid "*Lack of details for higher taxa* – This format treats higher taxa as properties of a species, not as separate taxon records themselves. Therefore, this format does not allow properties of higher taxa to be shared either in the core file or in any extensions.\n"
-msgstr ""
+msgstr "*Falta de detalles para taxones superiores* –  este formato trata a los taxones superiores como propiedades de una especie, no como registros de taxones separados en sí mismos. Por lo tanto, este formato no permite que las propiedades de taxones superiores se compartan ni en el archivo principal ni en ninguna extensión. \n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:176
 #, no-wrap
 msgid "Other classification-related recommendations"
-msgstr ""
+msgstr "Otras recomendaciones relacionadas con clasificaciones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:179
 msgid "Try to include a Kingdom and a nomenclatural code reference for all records even for basic species lists."
-msgstr ""
+msgstr "Intente incluir un Reino y una referencia de código de nomenclatura para todos los registros, incluso para las listas de especies básicas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:180
 msgid "Try to include Kingdom, Phylum and Family as a minimal classification for denormalized classifications."
-msgstr ""
+msgstr "Intente incluir Reino, Filo y Familia como una clasificación mínima para las clasificaciones desnormalizadas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:181
 msgid "If it is the same throughout the dataset, consider using a static mapping of the term and value. See the Darwin Core Archive How-to Guide at xref:dwca-guide.adoc[] for details on mapping global values."
-msgstr ""
+msgstr "Si es el mismo en todo el conjunto de datos, considere usar un mapeo estático del término y el valor. Consulte la Guía práctica de Darwin Core Archive en xref: dwca-guide.adoc[] para obtener detalles sobre el mapeo de valores globales."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:182
 #, no-wrap
 msgid "Classification Formats not recommended for publishing"
-msgstr ""
+msgstr "Formatos de Clasificación no recomendados para publicación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:185
 msgid "The following examples illustrate data configurations that can fit the profile *but are not recommended or supported by GBIF* (i.e., GBIF parsers would not handle these cases properly)"
-msgstr ""
+msgstr "Los siguientes ejemplos ilustran configuraciones de datos que pueden ajustarse al perfil *pero que GBIF no recomienda ni admite* (es decir, los analizadores de GBIF no manejarían estos casos correctamente)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:188
