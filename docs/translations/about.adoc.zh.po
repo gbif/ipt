@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-08-15 03:12\n"
+"PO-Revision-Date: 2021-08-15 03:38\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -25,7 +25,7 @@ msgstr "選單：關於"
 #. type: Plain text
 #: en/modules/ROOT/pages/about.adoc:4
 msgid "The default About page gives information about the current IPT installation, including information about the hosting organization, if that has been registered. This page is meant to be customized for the individual IPT instance by editing the file called about.ftl in the directory called \"config\" within the IPT data directory (see the information under the \"IPT Settings\" heading in the \"Administration Menu\" section). The about.ftl file is a FreeMarker template that can contain a combination of HTML and variable references of the form `${host.variable!\"alternate value if null\"}`. After making changes to the about.ftl file, the About page will have to be restarted to show the changes. Look at the default about.ftl file for examples of variables that can be included."
-msgstr ""
+msgstr "「關於」頁面提供此 IPT 裝置的資訊，包含所在機構（若已註冊的話）。透過編輯 IPT 資料目錄中 config 目錄的 about.ftl 檔案，此頁面用來提供個別 IPT 裝置的客製化內容（請見「管理」選單一節中有關「IPT 設定」一項）。about.ftl 是 FreeMarker 範本，其中包含許多 HTML 標籤及 `${host.variable!\"alternate value if null\"}` 變數。在修改 about.ftl 檔案之後，「關於」頁面將會反映所做的變更。預設的 about.ftl 中提供可用變數的範例。"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/about.adoc:5
