@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-07-03 07:24\n"
+"PO-Revision-Date: 2021-08-15 03:12\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/about.adoc:1
 #, no-wrap
 msgid "About Menu"
-msgstr "關於選單"
+msgstr "選單：關於"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/about.adoc:4
@@ -36,7 +36,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/about.adoc:8
 msgid "Here is the content of the about.ftl file resulting in the page as viewed above."
-msgstr ""
+msgstr "這裡是上面所顯示 about.ftl 的檔案內容。"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/about.adoc:14
