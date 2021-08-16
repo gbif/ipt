@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-16 22:39\n"
+"PO-Revision-Date: 2021-08-16 23:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -116,23 +116,23 @@ msgstr "Vaya a C: \\Archivos de programa (x86)\\Apache Software Foundation\\Tomc
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:31
 msgid "You should see a terminal window showing logs about starting up Tomcat. When you see"
-msgstr ""
+msgstr "Debería ver una ventana de consola que muestra el registro de los comandos de inicio de Tomcat. Cuando vea"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:34
 #, no-wrap
 msgid "INFO: Server startup in xxxx ms\n"
-msgstr ""
+msgstr "INFO: Server startup in xxxx ms\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:37
 msgid "That means the Tomcat is ready."
-msgstr ""
+msgstr "Eso significa que el Tomcat ha iniciado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:39
 msgid "You can also run the *tomcat8w* application by right-clicking it and choose \"run as administrator\". A service setting pane will be brought up, and you can decide you'd like to run Tomcat for once or make it start up automatically every time you boot Windows 8."
-msgstr ""
+msgstr "También puede ejecutar la aplicación * tomcat8w * haciendo clic con el botón derecho y eligiendo \"ejecutar como administrador\". Aparecerá un panel de configuración del servicio y puede decidir que desea ejecutar Tomcat por una vez o hacer que se inicie automáticamente cada vez que inicie Windows 8."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:41
