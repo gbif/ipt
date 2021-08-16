@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-16 19:06\n"
+"PO-Revision-Date: 2021-08-16 19:44\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -83,7 +83,7 @@ msgstr "GBIF (2011) Perfil de Metadatos de GBIF - Guía práctica, (contribució
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:12
 msgid "_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._"
-msgstr "_Portada Crédito de arte: John Giez, esporofito de helecho culantrillo, Adiatum sp._"
+msgstr "_Portada Crédito de arte: John Giez, esporofito de helecho Cabello de doncella, Adiatum sp._"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
@@ -120,13 +120,13 @@ msgstr "Una vez que el documento de metadatos ha sido escrito y validado, está 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:34
 msgid "Ultimately, the goal in publishing the metadata is that the data resource described therein can be fully documented and registered in the GBIF Registry. In so doing, the data resource becomes globally discoverable."
-msgstr ""
+msgstr "En última instancia, el objetivo al publicar los metadatos es que el recurso de datos descrito en ellos pueda ser completamente documentado y registrado en el Registro de GBIF. Al hacerlo, el recurso de datos se vuelve reconocible a nivel mundial."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:35
 #, no-wrap
 msgid "Metadata Publishing Solutions"
-msgstr ""
+msgstr "Soluciones de publicación de metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:38
@@ -137,7 +137,7 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:39
 #, no-wrap
 msgid "Publishing metadata using the IPT"
-msgstr ""
+msgstr "Publicación de metadatos usando la IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:42
@@ -186,7 +186,7 @@ msgstr "Cobertura Temporal"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
 msgid "Other Keywords"
-msgstr ""
+msgstr "Otras palabras clave"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:51
@@ -226,7 +226,7 @@ msgstr "Datos de la Colección"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
 msgid "Physical Data"
-msgstr ""
+msgstr "Datos físicos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:57
