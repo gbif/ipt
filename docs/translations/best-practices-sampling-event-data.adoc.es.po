@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 08:39\n"
+"PO-Revision-Date: 2021-08-16 08:57\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -421,36 +421,36 @@ msgstr "Elimine simplemente estas especies el conjunto de datos,"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:143
 msgid "Publishing the species identifications at Genus level only,"
-msgstr ""
+msgstr "Publicar las identificaciones de especies únicamente a nivel de Género,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:144
 msgid "Publishing the sensitive/protected species in a separate dataset,"
-msgstr ""
+msgstr "Publicar las especies sensibles/protegidas en un conjunto de datos separado,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:145
 msgid "Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records."
-msgstr ""
+msgstr "Publicar puntos no precisos para los datos sensibles en el conjunto de datos principal y publicar los detalles precisos en un conjunto de datos separado de acceso limitado, incluyendo todos los registros en ambos conjuntos de datos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:146
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:52
 #, no-wrap
 msgid "Preserving verbatim data"
-msgstr ""
+msgstr "Conservar los datos originales"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:149
 msgid "Although verbatim data and descriptions are not visible on the GBIF.org web interface, they are made available to the community through downloads. When entering verbatim description, make sure to link them to the original event or occurrence. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber."
-msgstr ""
+msgstr "Aunque los datos y descripciones originales no son visibles en la web de GBIF.org, ellos se ponen al alcance de la comunidad a través de descargas. Cuando introduzca descripciones originales, asegúrese de vincularlas con el evento o registro original. Por ejemplo, el ID o código proporcionado en el evento original debe ser introducido en dwc:fieldNumber; el ID o código proporcionado en la observación del registro original debe ser introducido en dwc:recordNumber."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:150
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
-msgstr ""
+msgstr "Publicar datos de proyectos como un conjunto de datos simple"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:153
@@ -749,7 +749,7 @@ msgstr ""
 msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
 "| 2320 | _Opisthograptis luteolata_ | 11 | individuals |\n"
 msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
-"| 2320 | _Opisthograptis luteolata_ | 11 | individuos |\n"
+"| 2320 | _Opisthograptis luteolata_ | 11 | individuals |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:310
@@ -761,7 +761,7 @@ msgstr "*_Opisthograptis luteolata_* : 11 individuos fueron observados en un per
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:311
 #, no-wrap
 msgid "Lepidoptera survey II"
-msgstr ""
+msgstr "Sondeo de Lepidópteros II"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:320
@@ -769,7 +769,9 @@ msgstr ""
 msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
 "| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |\n"
 "| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |\n"
-msgstr ""
+msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
+"| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |\n"
+"| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:329
@@ -777,13 +779,15 @@ msgstr ""
 msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
 "|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |\n"
 "| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |\n"
-msgstr ""
+msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
+"|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |\n"
+"| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:332
 #, no-wrap
 msgid "*Extension (Measurement-or-Fact) table*\n"
-msgstr ""
+msgstr "*Tabla de Extensiones (Medidas-o-Hechos)*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:340
@@ -793,7 +797,11 @@ msgid "| EventID | measurementType | measurementValue | measurementUnit | measur
 "| 1014-tr023m | Wind speed | light | | |\n"
 "| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  |\n"
 "| 1014-tr023m | AvgAltitude | 10 | m | Average altitude |\n"
-msgstr ""
+msgstr "| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...\n\n"
+"| 1014-tr023m | Temp | 20 | Degree C |  |\n"
+"| 1014-tr023m | Wind speed | light | | |\n"
+"| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  |\n"
+"| 1014-tr023m | AvgAltitude | 10 | m | Average altitude |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:346
