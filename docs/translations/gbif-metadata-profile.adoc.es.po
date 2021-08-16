@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-16 19:44\n"
+"PO-Revision-Date: 2021-08-16 20:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -131,7 +131,7 @@ msgstr "Soluciones de publicación de metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:38
 msgid "If sampling-event data, occurrence data or checklist data are being published using the IPT, there is a built-in metadata authoring functionality that can be used to write an accompanying metadata document conforming to the GMP. It may be convenient to use this tool for authoring metadata even if no data is being published, especially if there is a need to author and manage several metadata documents. On the other hand, if only a few metadata documents are needed, it might be easiest to generate them manually, for example by modifying a sample document. Below is a description of each of these methodologies."
-msgstr ""
+msgstr "Si los datos de eventos de muestreo, datos de presencia o ausencia de especies o los datos de la lista de verificación se publican usando la IPT, hay una funcionalidad integrada de creación de metadatos que se puede usar para escribir un documento de metadatos adjunto que cumpla con el PMG (Perfil de Metadatos de GBIF). Puede ser conveniente utilizar esta herramienta para crear metadatos incluso si no se publican datos, especialmente si es necesario crear y administrar varios documentos de metadatos. Por otro lado, si solo se necesitan unos cuantos documentos de metadatos, podría ser más fácil generarlos manualmente, por ejemplo modificando un documento de muestra. A continuación se describe cada una de esas metodologías."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:39
