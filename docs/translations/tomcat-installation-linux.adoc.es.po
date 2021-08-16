@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"PO-Revision-Date: 2021-08-16 15:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,12 +20,12 @@ msgstr ""
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:1
 #, no-wrap
 msgid "Install Tomcat on Linux"
-msgstr ""
+msgstr "Instalación de Tomcat en Linux"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:4
 msgid "Tomcat is usually installed using distribution packages."
-msgstr ""
+msgstr "Tomcat es generalmente usado los paquetes de la distribución."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:6
