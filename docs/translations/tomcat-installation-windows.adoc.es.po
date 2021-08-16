@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-16 17:37\n"
+"PO-Revision-Date: 2021-08-16 21:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -33,12 +33,12 @@ msgstr "Instalación de Tomcat 8 en Windows"
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:4
 msgid "This tutorial explains how to install the Apache Tomcat Java Servlet 8 on Windows 8.1 Pro. This document is not tested to work with other versions of Tomcat. For complete details, consult the specific documentation for those software installations."
-msgstr ""
+msgstr "Este tutorial explica cómo instalar Apache Tomcat Java Servlet 8 en Windows 8.1 Pro. Este documento no está probado para funcionar con otras versiones de Tomcat. Para obtener más información, consulte la documentación específica para la versión de software que requiere instalar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:7
 msgid "Please make sure the following conditions (software and version) are met before you continue."
-msgstr ""
+msgstr "Por favor asegúrese de cumplir las siguientes condiciones (software y versión) antes de continuar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:9
