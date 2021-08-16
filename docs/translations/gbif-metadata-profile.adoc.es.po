@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-16 17:36\n"
+"PO-Revision-Date: 2021-08-16 19:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -83,7 +83,7 @@ msgstr "GBIF (2011) Perfil de Metadatos de GBIF - Guía práctica, (contribució
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:12
 msgid "_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._"
-msgstr ""
+msgstr "_Portada Crédito de arte: John Giez, esporofito de helecho culantrillo, Adiatum sp._"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
