@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 07:03\n"
+"PO-Revision-Date: 2021-08-16 07:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -173,51 +173,51 @@ msgstr "Datos de eventos de muestreo"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:43
 msgid "The Darwin Core Archive format provides the structural framework for publishing sampling-event data. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one *core file*, listing the sampling events (sampling protocol, sample size, location, etc.) surrounded by a number of ‘*extensions*’, that describe related data types (such as species occurrences, measurements or facts related to the sampling event, etc). Links between core and extension records are made using an event identifier (*eventID*) data element. In this way, many extension records can exist for each single core event record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to sampling-event datasets."
-msgstr ""
+msgstr "El formato de Archivos Darwin Core proporciona el marco estructural para publicar datos de eventos de muestreo. Los Archivos Darwin Core constan de una serie de uno o más archivos de texto, en formato estándar delimitado por comas o tabulaciones. Estos archivos de texto están organizados de manera lógica en forma de estrella con un *archivo central*, que contiene los elementos básicos de los eventos de muestreo (protocolo de muestreo, tamaño de la muestra, localización, etc.) rodeados por una serie de '*extensiones*', que describen tipos de datos relacionados (como registros de especies, medidas o hechos relacionados con los eventos de muestreo, etc.). Las conexiones entre los registros centrales y los de las extensiones se realizan utilizando un elemento identificador de los datos del evento (*eventID*). De esta manera, pueden existir muchos registros de extensiones para cada registro central del evento. Este \"esquema en estrella\" proporciona un modelo de datos relacional simple que admite muchos tipos de anotaciones que son comunes a los conjuntos de datos de eventos de muestreo."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #: en/modules/ROOT/pages/dwca-guide.adoc:30
 #, no-wrap
 msgid "figures/dwc-a_event.png"
-msgstr ""
+msgstr "imagenes/dwc-a_event.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:48
 msgid "An alternative way to encode sampling-event data is listing the species occurrence in the core file, surrounded by a number of extensions, that describe the related data types (such as measurements relating to the species occurrences, etc). Note listing sampling events in the core file is preferable if a plot or site is the main focus of the study."
-msgstr ""
+msgstr "Una vía alternativa para codificar datos de eventos de muestreo es enlistar los registros de especies en el archivo central, rodeado de un número de extensiones, que describen los tipos de datos relacionados (como medidas relacionadas con los registros de especies, etc.). Enlistar eventos de muestreo en el archivo central es lo preferible si el foco central del estudio es una parcela o un área."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:51
 msgid "Be aware that the current DwC-A star schema such as does have limitations. For example, it does not allow to link measurements and facts to both events and occurrences in the same dataset.  Discussion on this prototype extension are taking place on GitHub but there is no solution available yet."
-msgstr ""
+msgstr "Tenga en cuenta que el actual esquema en estrella de DwC-A tiene limitaciones. No permite, por ejemplo, conectar medidas y hechos de eventos y registros en el mismo conjunto de datos. En GitHub tienen lugar discusiones sobre este tipo de extensión prototipo pero aún no existe una solución disponible."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:53
 msgid "[Marie Grosjean - 2020-10-15 Edit]: Please check the data quality requirements for Sampling-Events described https://www.gbif.org/data-quality-requirements-sampling-events[here]. Note that if you generate your Darwin Core Archive manually, you might need to add a recordID field containing unique identifiers. (This field is generated automatically if you are using an IPT.) For more information on the structure of a Darwin Core Archive, please check the https://dwc.tdwg.org/text/[TDWG Darwin Core text guide]. You can always check your archive with the GBIF data validator: https://www.gbif.org/tools/data-validator."
-msgstr ""
+msgstr "[Marie Grosjean - 2020-10-15 Edit]: Por favor, compruebe los requisitos de calidad de datos para los Eventos de muestreo descritos https://www.gbif.org/data-quality-requirements-sampling-events[aquí]. Tenga en cuenta que si genera su Archivo Darwin Core de manera manual, usted podría necesitar añadir un campo recordID que contenga identificadores únicos. (Este campo se genera de forma automática si está usando un IPT). Para más información sobre la estructura de un Archivo Darwin Core, por favor chequea la https://dwc.tdwg.org/text/[Guía de texto Darwin Core del TDWG]. Siempre puede comprobar su archivo con el validador de datos de GBIF: https://www.gbif.org/tools/data-validator."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:57
 msgid "For ease in understanding, we may use the terms *field* in this guide to refer to the Darwin Core set of terms in the sampling-event publishing profile to which a users data will be mapped. For example, we will refer to the use of the *dwc:scientificName field* when referring to the Darwin Core term, *scientificName*."
-msgstr ""
+msgstr "Para facilitar la comprensión, podemos utilizar los términos *campo* en esta guía para hacer referencia al conjunto de términos de Darwin Core en el perfil de publicación de eventos de muestreo al que se asignarán los datos de un usuario. Por ejemplo, nos referiremos al uso del *campo dwc:scientificName* cuando nos refiramos al término Darwin Core, *scientificName*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:59
 msgid "It is recommended to use TAB or Comma-Separated-Values instead of custom field delimiters and quotes."
-msgstr ""
+msgstr "Se recomienda utilizar tabulaciones o valores separados por comas (CSV) en lugar de delimitadores de campo personalizados y comillas."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:15
 #, no-wrap
 msgid "Sample size"
-msgstr ""
+msgstr "Tamaño de muestra"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:67
 msgid "The following Darwin Core fields store the sample size of a sampling event:"
-msgstr ""
+msgstr "Los siguientes ficheros Darwin Core almacenan el tamaño de muestra de un evento de muestreo:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:69
