@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 10:34\n"
+"PO-Revision-Date: 2021-08-16 10:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -203,17 +203,17 @@ msgstr "Muestreo de Macrófitos"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data - planned additions and notes for revision"
-msgstr ""
+msgstr "Buenas Prácticas en la Publicación de Datos de Eventos de Muestreo - Adiciones y notas planificadas para revisión"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:4
 msgid "Version 2.0"
-msgstr ""
+msgstr "Versión 2.0"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:6
 msgid "Additional information that could also be included or was previously included in xref:best-practices-sampling-event-data.adoc[]."
-msgstr ""
+msgstr "Información adicional que también podría ser incluida o fue previamente incluida en xref:best-practices-sampling-event-data.adoc[]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:13
