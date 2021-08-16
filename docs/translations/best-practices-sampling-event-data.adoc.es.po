@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 09:43\n"
+"PO-Revision-Date: 2021-08-16 10:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -472,91 +472,91 @@ msgstr "Los eventos de muestreo proporcionan mejor documentación y mayor benefi
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:160
 msgid "In order to do so, you should create a new sampling-event dataset and send an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations."
-msgstr ""
+msgstr "Para hacerlo, debe crear un nuevo conjunto de datos de eventos de muestreo y enviar un correo electrónico al servicio de asistencia de GBIF (helpdesk@gbif.org). En este correo, debe proporcionar los GUIDs tanto del conjunto de datos de presencia como del nuevo conjunto de datos. Entonces, podremos vincular el primer conjunto de datos con el más reciente antes de des-indexarlo, evitando así las duplicación de registros y conservando las citas."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr ""
+msgstr "Modelizar monitoreos continuos de individuos vivos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:164
 msgid "If your dataset contains continuous monitoring of live individuals, such as bird tracking data, you can use dwc:organismID to store the ID of the individual being tracked. In addition to that, you should represent each individual being tracked as a single event."
-msgstr ""
+msgstr "Si su conjunto de datos contiene monitoreos continuos de individuos vivos, tales como datos de seguimiento de aves, puede utilizar dwc:organismID para almacenar el ID del individuo que está siendo monitoreado. Además de eso, debe representar cada individuo monitoreado como un evento único."
 
 #.  TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded).
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:167
 #, no-wrap
 msgid "Continuous data quality improvement"
-msgstr ""
+msgstr "Mejora continua de la calidad de los datos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:169
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
-msgstr ""
+msgstr "Gestión de incidencias relacionadas con el conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:172
 msgid "If possible, we recommend tracking all the issues related to a given dataset using an issue management system such as the one provided by GitHub."
-msgstr ""
+msgstr "Si fuera posible, recomendamos hacer seguimiento de todas las incidencias relacionadas con un conjunto de datos en cuestión utilizando un sistema de gestión de incidencias tales como el proporcionado por GitHub."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
-msgstr ""
+msgstr "Compartir códigos y programas utilizados para producir o limpiar el conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:176
 msgid "Ideally, custom scripts and programs used to transform data should be made publicly available on GitHub. Other publishers will benefit from accessing these scripts along with detailed instructions on how to use them."
-msgstr ""
+msgstr "Idealmente, los códigos y programas personalizados utilizados para transformar los datos deberían ser compartidos en GitHub. Otros publicadores podrán beneficiarse del acceso a estos códigos junto a instrucciones detalladas sobre cómo utilizarlos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:177
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr ""
+msgstr "Describir datos de eventos de muestreo en metadatos de conjuntos de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:180
 msgid "Publishers should document their dataset as much as possible with a particular emphasis on sampling methodologies."
-msgstr ""
+msgstr "Los publicadores deberían documentar sus conjuntos de datos tanto como sea posible con especial enfásis en las metodologías de muestreo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:183
 msgid "Besides the https://www.gbif.org/data-quality-requirements-sampling-events[mandatory requirements], the metadata should include information about the extent of study, the sampling methods, the quality control and limitations of the study.  Although information about fieldwork can part of the data content, you may describe the sampling location and conditions in the metadata as well."
-msgstr ""
+msgstr "Además de https://www.gbif.org/data-quality-requirements-sampling-events[los requisitos obligatorios], los metadatos deberían incluir información sobre la extensión del estudio, los métodos de muestreo, el control de calidad y las limitaciones del estudio. Aunque la información sobre el trabajo de campo puede ser parte del contenido de los datos, se puede describir también en los metadatos la localización y condiciones del muestreo."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
 #, no-wrap
 msgid "Linking related datasets"
-msgstr ""
+msgstr "Vincular conjuntos de datos relacionados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:187
 msgid "Some datasets may come from the same research project or may be related in certain context. The current recommendation is to link them using a project identifier."
-msgstr ""
+msgstr "Algunos conjuntos de datos pueden proceder del mismo proyecto de investigación o puede estar relacionado en ciertos contextos. La recomendación actual es vincularlos utilizando un identificador de proyectos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:188
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
 #, no-wrap
 msgid "Listing related research"
-msgstr ""
+msgstr "Enumerar investigaciones relacionadas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:191
 msgid "You can make your dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc,. in the bibliographic citation or in the external link part of the metadata."
-msgstr ""
+msgstr "Puede facilitar la interpretación de su conjunto de datos incluyendo enlaces a trabajos publicados relacionados tales como artículos científicos, notas de proyectos, tesis, etc., en las citas bibliográficas o en la sección de enlaces externos de los metadatos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:192
