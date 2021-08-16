@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:22\n"
+"PO-Revision-Date: 2021-08-16 17:37\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -22,13 +22,13 @@ msgstr ""
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
 #, no-wrap
 msgid "Prerequisites"
-msgstr ""
+msgstr "Prerrequisitos"
 
 #. type: Title =
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:1
 #, no-wrap
 msgid "Install Tomcat 8 on Windows"
-msgstr ""
+msgstr "Instalación de Tomcat 8 en Windows"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:4
