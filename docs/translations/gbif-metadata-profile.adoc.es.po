@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-12 22:09\n"
+"PO-Revision-Date: 2021-08-16 16:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -49,7 +49,7 @@ msgstr "Citación sugerida"
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
 msgid "Instructions"
-msgstr ""
+msgstr "Instrucciones"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:7
