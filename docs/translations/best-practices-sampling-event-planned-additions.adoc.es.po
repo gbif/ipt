@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 06:45\n"
+"PO-Revision-Date: 2021-08-16 07:03\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -43,14 +43,14 @@ msgstr "¿Cómo expresar los datos de eventos de muestreo en DwC-A?"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:9
 #, no-wrap
 msgid "Sampling-event Metadata"
-msgstr ""
+msgstr "Metadatos de eventos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:40
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:10
 #, no-wrap
 msgid "Sampling-event Data"
-msgstr ""
+msgstr "Datos de eventos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
