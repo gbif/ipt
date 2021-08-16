@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-16 16:10\n"
+"PO-Revision-Date: 2021-08-16 16:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -45,5 +45,5 @@ msgstr "Puede configurar Tomcat para que se inicie automáticamente con `systemc
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-linux.adoc:11
 msgid "Most Linux users seem not to need any additional advice; if you do please ask on the xref:resources.adoc#ipt-mailing-list[mailing list]."
-msgstr ""
+msgstr "Pareciera ser que la mayoría de los usuarios de Linux no requieren asesoría adicional; si la requiere por favor pregunte en xref:resources.adoc#ipt-mailing-list[mailing list]."
 
