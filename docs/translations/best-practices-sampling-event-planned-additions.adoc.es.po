@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 07:36\n"
+"PO-Revision-Date: 2021-08-16 08:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -64,14 +64,14 @@ msgstr "Tamaño de muestra"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
 #, no-wrap
 msgid "Quantity and abundance"
-msgstr ""
+msgstr "Cantidad y abundancia"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:104
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
-msgstr ""
+msgstr "Cómo identificar de forma única los eventos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
