@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 10:56\n"
+"PO-Revision-Date: 2021-08-16 11:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -218,7 +218,7 @@ msgstr "Información adicional que también podría ser incluida o fue previamen
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:13
 msgid "#TODO:# Provide recommendations on how to work around limitations of DwC-A star schema such as not being able to relate measurements and facts to both events and occurrences in the same dataset. The current work around requires publishers to publish separate datasets. Note OBIS is prototyping an Extended Measurement or Facts Extension that could also help overcome this limitation. Discussion on this prototype extension is taking place in GitHub here. However, issues raised that this prototype extension does not explicitly make it clear if the measurement or fact relates to an occurrence or an event. One alternative is to add resourceID (and perhaps resourceType?) instead of adding eventID (and occurrenceID) as attribute to the measurement or fact extension as is explored by the OBIS extension."
-msgstr ""
+msgstr "#TODO:# Proporcionar recomendaciones sobre cómo solucionar las limitaciones del esquema en estrella de DwC-A como por ejemplo no ser capaz de relacionar las medidas y hechos de ambos eventos y registros en el mismo conjunto de datos. El solución actual en este sentido requiere que los publicadores publiquen los conjuntos de datos por separado. Tenga en cuenta que OBIS está creando un prototipo de una Extensión Extendida de Medidas y Hechos que podría también ayudar a superar esta limitación. El debate sobre esta extensión prototipo tiene lugar aquí en GitHub. Sin embargo, surgieron problemas de que esta incidencia prototipo no aclara explícitamente si la medición o el hecho se relaciona con un registro de presencia o un evento. Una alternativa es añadir resourceID (¿y quizás resourceType?) en vez de añadir eventID (y occurrenceID) como atributo en la extensión de medida o hecho como es explorado por la extensión de OBIS."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:18
