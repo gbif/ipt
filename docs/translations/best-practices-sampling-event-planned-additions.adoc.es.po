@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 09:43\n"
+"PO-Revision-Date: 2021-08-16 10:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -134,42 +134,42 @@ msgstr "Republicar datos de presencia como datos de eventos de muestreo"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr ""
+msgstr "Modelizar monitoreos continuos de individuos vivos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:169
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
-msgstr ""
+msgstr "Gestión de incidencias relacionadas con el conjunto de datos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
-msgstr ""
+msgstr "Compartir códigos y programas utilizados para producir o limpiar el conjunto de datos"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:177
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr ""
+msgstr "Describir datos de eventos de muestreo en metadatos de conjuntos de datos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
 #, no-wrap
 msgid "Linking related datasets"
-msgstr ""
+msgstr "Vincular conjuntos de datos relacionados"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:188
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
 #, no-wrap
 msgid "Listing related research"
-msgstr ""
+msgstr "Enumerar investigaciones relacionadas"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:192
