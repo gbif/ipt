@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-16 16:54\n"
+"PO-Revision-Date: 2021-08-16 17:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -100,22 +100,22 @@ msgstr "| Versión | Descripción  | Fecha de liberación | Autor(es) \n"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:26
 msgid "Documenting the provenance and scope of datasets is required in order to publish data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ that enable users to evaluate the fitness-for-use of a dataset."
-msgstr ""
+msgstr "Es necesario documentar la procedencia y alcance de los conjuntos de datos para publicar datos a través de la red de GBIF. La documentación de los conjuntos de datos es conocida como \"metadatos de los recursos\" que permite a los usuarios evaluar la aptitud para el uso de un conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:28
 msgid "There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Resource Metadata template (pending), or generating a metadata document manually. The guide also serves as a reference guide to the GBIF Metadata Profile itself."
-msgstr ""
+msgstr "Hay varias maneras de escribir un documento de metadatos conforme al Perfil de Metadatos de GBIF (GMP). Esta guía práctica recorrerá las formas más comunes, como el uso del editor de metadatos del kit de herramientas de publicación integrado de GBIF (IPT), la plantilla de los metadatos de los recursos de GBIF (pendiente), o la generación manual de un documento de metadatos. La guía también sirve como guía de referencia para el propio Perfil de Metadatos de GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:30
 msgid "If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
-msgstr ""
+msgstr "Si los metadatos que describen a un conjunto de datos se publican usando archivos Darwin Core (DwC-A), el archivo de metadatos se incluirá en el archivo DwC-A que lo agrupa junto con los datos (según los términos Darwin Core) que describe. Para obtener ayuda de cómo crear un archivo DwC-A completo consulte xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:32
 msgid "Once the metadata document has been written and validated, it is ready to be published."
-msgstr ""
+msgstr "Una vez que el documento de metadatos ha sido escrito y validado, está listo para ser publicado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:34
