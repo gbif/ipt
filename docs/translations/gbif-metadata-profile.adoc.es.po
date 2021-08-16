@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-16 16:30\n"
+"PO-Revision-Date: 2021-08-16 16:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -62,18 +62,18 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:1
 #, no-wrap
 msgid "GBIF Metadata Profile – How-to Guide"
-msgstr ""
+msgstr "Perfil de metadatos de GBIF - Guía práctica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:4
 msgid "Version 2.1."
-msgstr ""
+msgstr "Versión 2.1."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:5
 #, no-wrap
 msgid "figures/cover_art_adiatum.png"
-msgstr ""
+msgstr "figuras/cover_art_adiatum.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:10
@@ -92,7 +92,10 @@ msgid "| Version | Description                  | Date of release | Author(s)\n\
 "| 1.0     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR\n"
 "| 2.0     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak\n"
 "| 2.1     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett\n"
-msgstr ""
+msgstr "| Versión | Descripción  | Fecha de liberación | Autor(es) \n"
+"| 1.0 | Consistencias verificadas a través de documentos relevantes, enlaces actualizados a los sitios de producción, texto e imágenes actualizadas para reflejar las funcionalidades actuales. | 1° de Marzo de 2011 | KB, BK, MR \n"
+"| 2.0 | Transferido a la wiki, ediciones importantes | 19 de Junio de 2017 | Kyle Braak\n"
+"| 2.1 | Transferido a la documentación AsciiDoctor | 25 de mayo de 2021 | Matthew Blisset\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:26
