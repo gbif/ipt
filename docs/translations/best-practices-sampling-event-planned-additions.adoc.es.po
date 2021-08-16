@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 10:08\n"
+"PO-Revision-Date: 2021-08-16 10:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -183,21 +183,21 @@ msgstr "Ejemplos"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:92
 #, no-wrap
 msgid "Freshwater invertebrate survey"
-msgstr ""
+msgstr "Muestreo de invertebrados acuáticos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:222
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
-msgstr ""
+msgstr "Muestreo de invertebrados de agua salobre"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:257
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
 #, no-wrap
 msgid "Macrophyte survey"
-msgstr ""
+msgstr "Muestreo de Macrófitos"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:1
