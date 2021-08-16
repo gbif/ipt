@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 12:35\n"
+"PO-Revision-Date: 2021-08-16 13:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -248,17 +248,17 @@ msgstr "#TODO:# Guíe mejor a los usuarios sobre cómo publicar una jerarquía d
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:34
 msgid "#TODO:# Transfer information from FAQ above, guiding users how to publish presence/absence data in DwC with the proper use of dwc:occurrenceStatus"
-msgstr ""
+msgstr "#TODO:# Transferir información de las FAQ de arriba, guiando a los usuarios sobre cómo publicar datos de presencia/ausencia en DwC con el uso apropiado de dwc:occurrenceStatus"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:38
 msgid "#TODO:# Provide recommendations on how include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data."
-msgstr ""
+msgstr "#TODO:# Proporcionar recomendaciones sobre cómo incluir medios complementarios para una interpretación más sencilla de los datos. Por ejemplo, para datos de vegetación, es útil incluir un enlace a la lámina relevé original escaneada cuando se interpreten los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:43
 msgid "#TODO:# Advise publishers to use GUIDs, coupled with guidance on how to create GUIDs for applicable fields such as dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland."
-msgstr ""
+msgstr "#TODO:# Aconsejar a los publicadores a utilizar los GUIDs, al mismo tiempo que guiar sobre cómo crear GUIDs para campos aplicables tales como dwc:occurrenceID, dwc:eventID, dwc:organismID y dwc:locationID. Por ejemplo, es posible utilizar http://www.geonames.org/ para encontrar (o incluso generar nuevos) identificadores por dwc:locationID, ej.: http://sws.geonames.org/10793757/ es un GUID para un lago en Groenlandia."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:44
