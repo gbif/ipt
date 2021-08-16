@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-16 21:56\n"
+"PO-Revision-Date: 2021-08-16 22:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -33,7 +33,7 @@ msgstr "Instalación de Tomcat 8 en Windows"
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:4
 msgid "This tutorial explains how to install the Apache Tomcat Java Servlet 8 on Windows 8.1 Pro. This document is not tested to work with other versions of Tomcat. For complete details, consult the specific documentation for those software installations."
-msgstr "Este tutorial explica cómo instalar Apache Tomcat Java Servlet 8 en Windows 8.1 Pro. Este documento no está probado para funcionar con otras versiones de Tomcat. Para obtener más información, consulte la documentación específica para la versión de software que requiere instalar."
+msgstr "Este tutorial explica cómo instalar Apache Tomcat Java Servlet 8 en Windows Pro 8.1. Este documento no está probado para funcionar con otras versiones de Tomcat. Para obtener más información, consulte la documentación específica para la versión de software que requiere instalar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:7
@@ -43,34 +43,34 @@ msgstr "Por favor asegúrese de cumplir las siguientes condiciones (software y v
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:9
 msgid "The client version of Windows 8.1 Pro. This tutorial is written based on the 64-bit version of Windows 8.1 Professional."
-msgstr ""
+msgstr "La versión de cliente de Windows Pro 8.1. Este tutorial está escrito en base a la versión de 64 bits de Windows Professional 8.1"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:10
 msgid "The latest security upgrades."
-msgstr ""
+msgstr "Las últimas actualizaciones de seguridad."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:11
 msgid "Java 8 Framework installed. This tutorial is written based on version jre1.8.0_60 (Java Version 8 Update 60). Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in C:\\Program Files (x86)\\Java\\jre8. (Note from tester on Windows 8.1, I tried to install Java in the C:\\Program Files directory and it would not work. I had to put it in the (x86) folder)."
-msgstr ""
+msgstr "Instalación de Java 8 Framework. Este tutorial está escrito en base a la versión jre1.8.0_60 (Java Version 8 Update 60). Consulte http://java.com/en/download/ para instalar JRE. Esta página generalmente detectará su sistema operativo y le dará pistas sobre la versión correcta para descargar. Suponiendo que Java esté instalado en C:\\Archivos de programa (x86)\\Java\\jre8. (Nota del editor: En Windows 8.1, intenté instalar Java en el directorio C:\\Archivos de programa y no funcionó. Tuve que ponerlo en la carpeta (x86))."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:12
 msgid "Logged in as an administrator."
-msgstr ""
+msgstr "Inicio de sesión como administrador."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:13
 #, no-wrap
 msgid "Steps"
-msgstr ""
+msgstr "Pasos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:15
 #, no-wrap
 msgid "1. Download Tomcat 8.x"
-msgstr ""
+msgstr "Descargue Tomcat 8.x"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:18
