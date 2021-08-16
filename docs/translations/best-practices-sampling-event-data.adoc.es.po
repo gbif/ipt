@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 08:01\n"
+"PO-Revision-Date: 2021-08-16 08:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -320,82 +320,82 @@ msgstr "Cómo identificar de forma única los eventos de muestreo"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:108
 msgid "Each event is uniquely identified using dwc:eventID and occasionally dwc:parentEventID. Although the type and format of identifier is arbitrary we recommend that publishers choose persistent globally unique identifier.  In the absence of a GUID, publishers may reuse the original fieldNumber."
-msgstr ""
+msgstr "Cada evento se identifica de manera única utilizando dwc:eventID y ocasionalmente dwc:parentEventID. Aunque el tipo y formato del identificador es arbitrario, recomendamos que los publicadores seleccionen identificadores únicos globales y persistentes (GUID). En ausencia de GUID, los publicadores pueden rechazar el fieldNumber original. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:110
 msgid "Make sure to reuse existing stable identifiers and do not create a new identifier for an event when one is already declared."
-msgstr ""
+msgstr "Asegúrese de reutilizar identificadores estables existentes y no cree un nuevo identificador para un evento cuando ya haya uno aceptado."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
 #, no-wrap
 msgid "How to capture hierarchy of events"
-msgstr ""
+msgstr "Cómo expresar la jerarquía de eventos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:114
 msgid "Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3)."
-msgstr ""
+msgstr "Los eventos de muestreo pueden estar relacionados entre sí (ej.: muestras de nidos) mediante un identificador parental común. Por ejemplo, varios sub-eventos de muestreo en una parcela de Whittaker cada uno con sus propios eventID (ej.: \"A1:1\", \"A1:2\") compartirían un parentEventID común (ej.: \"A1\") lo que les permite vincularse entre sí fácilmente (ver Tabla 4 y Figura 3)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:116
 msgid "Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata."
-msgstr ""
+msgstr "Información más detallada sobre la naturaleza de la relación (ej.: parte de una serie de monitoreo) puede ser descrita en la sección de proyectos de los metadatos adjuntos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:118
 msgid "You may also refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
-msgstr ""
+msgstr "También puede dirigirse a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:119
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
 #, no-wrap
 msgid "How to capture absence data"
-msgstr ""
+msgstr "Cómo expresar datos de ausencia"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:122
 msgid "Refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]."
-msgstr ""
+msgstr "Diríjase a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:123
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
-msgstr ""
+msgstr "Cómo incluir multimedia complementaria"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:126
 msgid "You may choose to include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data."
-msgstr ""
+msgstr "Puede elegir incluir medios complementarios para facilitar la interpretación de los datos. Por ejemplo, para datos de vegetación es útil incluir un enlace a la lámina de relevé original escaneada cuando se interpreten los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:128
 msgid "The files associated have to be hosted on an external server and linked to the occurrence through the dwc:associatedMedia and dwc:associatedReferences. These files may be images, texts or a combination of both as long as the format type is specified. JPG, PNG, etc. images will be visible as thumbnails while PDFs will appear as clickable links."
-msgstr ""
+msgstr "Los ficheros asociados tienen que ser alojados en un servidor externo y enlazados la los registros a través de dwc:associatedMedia y dwc:associatedReferences. Estos ficheros pueden ser imágenes, textos o una combinación de ambos siempre que se especifique el tipo de formato. Las imágenes JPG, PNG, etc. serán visibles como miniaturas mientras que los PDFs aparecerán como enlaces clicables."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:129
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:39
 #, no-wrap
 msgid "Publishing sampling-event data"
-msgstr ""
+msgstr "Publicar datos de eventos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:131
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
 #, no-wrap
 msgid "Using GUIDs for identifiers"
-msgstr ""
+msgstr "Utilizar GUIDs como identificadores"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:134
 msgid "A number of fields require the usage of unique identifiers: dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID."
-msgstr ""
+msgstr "Numerosos campos requieren el uso de identificadores únicos: dwc:occurrenceID, dwc:eventID, dwc:organismID y dwc:locationID."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:136
