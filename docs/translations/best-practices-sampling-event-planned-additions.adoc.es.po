@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 11:18\n"
+"PO-Revision-Date: 2021-08-16 12:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -233,17 +233,17 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:25
 msgid "dwc:eventID should be a persistent globally unique identifier. Remember to reuse existing stable identifiers. Do not create a new identifier for the event when one already is declared."
-msgstr ""
+msgstr "dwc:eventID debe ser un identificador único globalmente persistente. Recuerde reutilizar los identificadores estables existentes. No cree un nuevo identificador para el evento cuando ya haya uno aceptado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:26
 msgid "In the absence of a GUID, and as a last resort, reuse the original fieldNumber."
-msgstr ""
+msgstr "En ausencia de un GUID, y como última opción, reutilza el fieldNumber original."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:30
 msgid "#TODO:# Better guide users how to publish a hierarchy of events (recursive data type) with the proper use of dwc:parentEventID"
-msgstr ""
+msgstr "#TODO:# Guíe mejor a los usuarios sobre cómo publicar una jerarquía de eventos (tipo de datos recursivos) con el uso apropiado de dwc:parentEventID"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:34
