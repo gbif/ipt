@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-16 07:36\n"
+"PO-Revision-Date: 2021-08-16 08:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -223,18 +223,18 @@ msgstr "Los siguientes ficheros Darwin Core almacenan el tamaño de muestra de u
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:69
 #, no-wrap
 msgid "*sampleSizeValue*: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.\n"
-msgstr ""
+msgstr "*sampleSizeValue*: un valor numérico para una medida del tamaño (duración en tiempo, longitud, área, volumen) de una muestra en un evento de muestreo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:70
 #, no-wrap
 msgid "*sampleSizeUnit*: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.\n"
-msgstr ""
+msgstr "*sampleSizeUnit*: la unidad de medida del tamaño (duración en tiempo, longitud, área o volumen) de una muestra en un evento de muestreo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:72
 msgid "The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. Examples are given in Table 1 below."
-msgstr ""
+msgstr "El valor de sampleSizeValue es un número y debe tener su correspondiente sampleSizeUnit. El valor de sampleSizeUnit debe restringirse únicamente al uso de unidades del Sistema Internacional o a otras unidades aceptadas para su uso en el Sistema Internacional (ej.: minuto, hora, día, litro) de acuerdo al {latest-unit-of-measurement}[Vocabulario de Unidades de Medida]. Se proporcionan ejemplos a continuación en la tabla 1."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:74
@@ -245,7 +245,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:75
 #, no-wrap
 msgid "sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre."
-msgstr ""
+msgstr "sampleSizeValue y SampleSizeUnit deben usarse de manera conjunta, ej.: 3 metros cuadrados o 1 litro."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:83
@@ -255,42 +255,46 @@ msgid "| sampleSizeValue | sampleSizeUnit\n\n"
 "| 3 | m2\n"
 "| 17 | km\n"
 "| 1 | litre\n"
-msgstr ""
+msgstr "| sampleSizeValue | sampleSizeUnit\n\n"
+"| 2 | horas\n"
+"| 3 | m2\n"
+"| 17 | km\n"
+"| 1 | litro\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:85
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
 #, no-wrap
 msgid "Quantity and abundance"
-msgstr ""
+msgstr "Cantidad y abundancia"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:88
 msgid "The following Darwin Core fields are also required to be used as a pair:"
-msgstr ""
+msgstr "Los siguientes archivos Darwin Core también deben ser usados en pareja:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:90
 #, no-wrap
 msgid "*organismQuantity*: a numeric or enumeration value for the quantity of organisms.\n"
-msgstr ""
+msgstr "*organismQuantity*: un valor numérico o de enumeración para la cantidad de organismos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:91
 #, no-wrap
 msgid "*organismQuantityType*: the type of quantification system used for the quantity of organisms.\n"
-msgstr ""
+msgstr "*organismQuantityType*: el tipo de sistema de cuantificación usado para la cantidad de organismos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:93
 msgid "Table 2 lists some example values. The value of organismQuantity is a number or enumeration, e.g., “27” for an organismQuantityType “individuals”, “12.5” for an organismQuantityType “%biomass”, or “r” for an organismQuantityType “BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity being measured) is expected to be drawn from a small controlled vocabulary with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, “%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with organismQuantity values: “+” on DominScale; “5” on BraunBlanquetScale; “45” for %Biomass."
-msgstr ""
+msgstr "La Tabla 2 enumera algunos valores como ejemplo. El valor de organismQuantity es un número o enumeración, ej.: “27” para un organismQuantityType “individuos”, “12,5” para un organismQuantityType “%biomasa”, o “r” para un organismQuantityType “BraunBlanquetScale”. El valor de organismQuantityType (ej.: la entidad que está siendo medida) debe ser extraído de un vocabulario controlado reducido con términos como “Individuos”, “%Biomasa”, “%Biovolumen”, “%Especies”, “%Covertura”, “BraunBlanquetScale”, “DominScale”. Ejemplos cuando se combinan con valores organismQuantity: “+” en DominScale; “5” en BraunBlanquetScale; “45” para %Biomasa."
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:94
 #, no-wrap
 msgid "organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale."
-msgstr ""
+msgstr "organismQuantity y organismQuantityType deben usarse de manera conjunta, ej.: un conteo de 14 individuos, o un valor de código \"r\" en la escala Braun Blanquet."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:102
@@ -300,14 +304,18 @@ msgid "| organismQuantity | organismQuantityType\n\n"
 "| r | BraunBlanquetScale\n"
 "| 0.4 | %Species\n"
 "| 31 | %Biomass\n"
-msgstr ""
+msgstr "| organismQuantity | organismQuantityType\n\n"
+"| 14 | individuos\n"
+"| r | BraunBlanquetScale\n"
+"| 0,4 | %Especies\n"
+"| 31 | %Biomasa\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:104
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
-msgstr ""
+msgstr "Cómo identificar de forma única los eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:108
