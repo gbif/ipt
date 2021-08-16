@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-16 17:16\n"
+"PO-Revision-Date: 2021-08-16 17:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -56,7 +56,7 @@ msgstr "Instrucciones"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:13
 #, no-wrap
 msgid "Document Control"
-msgstr ""
+msgstr "Documento de control"
 
 #. type: Title =
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:1
@@ -78,7 +78,7 @@ msgstr "figuras/cover_art_adiatum.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:10
 msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/gbif-metadata-profile"
-msgstr ""
+msgstr "GBIF (2011) Perfil de Metadatos de GBIF - Guía práctica, (contribución de Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accesible en línea en t: https://ipt.gbif.org/manual/en/ipt/{manual-version}/gbif-metadata-profile"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:12
