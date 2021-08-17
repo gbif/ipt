@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-17 20:04\n"
+"PO-Revision-Date: 2021-08-17 20:46\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -52,22 +52,22 @@ msgstr "Servidor de la Base de Datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:11
 msgid "setup a SQL view to use functions (can also be done in IPT SQL source definition)"
-msgstr ""
+msgstr "configurar una vista SQL para usar funciones (también se puede hacer en IPT SQL definición de fuente)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:12
 msgid "concatenation, splitting of strings: e.g. build full scientific name (watchout autonyms)"
-msgstr ""
+msgstr "concatenación, separación de cadenas: p. ej. construir el nombre científico completo (tener cuidado con los autónimos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:13
 msgid "format dates as ISO"
-msgstr ""
+msgstr "formato de fechas de acuerdo a ISO"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:14
 msgid "create year/month/day by parsing native SQL date types"
-msgstr ""
+msgstr "crear año/mes/día mediante el análisis sintáctico de tipos de fecha SQL nativos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:15
