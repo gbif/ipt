@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-07-02 13:19\n"
+"PO-Revision-Date: 2021-08-17 16:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,18 +25,18 @@ msgstr ""
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
 msgid "Instructions"
-msgstr ""
+msgstr "Instrucciones"
 
 #. type: Title =
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:1
 #, no-wrap
 msgid "Data Quality Checklist"
-msgstr ""
+msgstr "Comprobación de la calidad de los datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:4
 msgid "Use this checklist to help review biodiversity datasets. Note it is particularly suited for checking occurrence and sampling event datasets."
-msgstr ""
+msgstr "Use esta lista de comprobación para ayudar a revisar los conjuntos de datos sobre biodiversidad. Tenga en cuenta que es esta es ideal para comprobar los conjuntos de datos de ocurrencia y de eventos de muestreo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:6
@@ -71,7 +71,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:14
 msgid "Examples of events include a species observation, a physical specimen being collected, or a biological sampling event."
-msgstr ""
+msgstr "Algunos ejemplos de eventos son la observación de una especie, la recogida de un espécimen físico o un evento de muestreo biológico."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:16
@@ -113,7 +113,7 @@ msgstr ""
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:31
 #, no-wrap
 msgid "Quality checks"
-msgstr ""
+msgstr "Controles de calidad"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:33
