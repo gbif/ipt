@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 06:17\n"
+"PO-Revision-Date: 2021-08-17 06:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -334,7 +334,7 @@ msgstr "#TODO:# Proporcionar una recomendación sobre cómo gestionar problemas 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:78
 msgid "#TODO:# Provide a recommendation on how to make custom scripts and programs (e.g. for transforming cross table data) publicly available using GitHub, for the benefit of other publishers, just like INBO does for example. The recommendation should encourage users to include a detailed set of instructions on how to run the scripts to make them more usable."
-msgstr ""
+msgstr "#TODO:# Proporcionar una recomendación sobre cómo compartir códigos y programas personalizados (ej.: por ejemplo para la transformación de tablas de datos cruzadas) utilizando GitHub, para beneficio de todos los publicadores, tal y como hace INBO, por ejemplo. La recomendación debería fomentar que los usuarios incluyan un detallado conjunto de instrucciones sobre cómo utilizar los códigos para hacerlos más útiles."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:82
