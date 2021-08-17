@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-17 11:29\n"
+"PO-Revision-Date: 2021-08-17 11:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -56,7 +56,7 @@ msgstr "El formato de cita autogenerada incluye el número de versión y el DOI 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:12
 msgid "A detailed description of the IPT's citation format is described below. It is important to note that the format is based on DataCite’s preferred citation format, and satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]. For more information about the DataCite format, you can refer to Section 2.2 Citation of their http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Metadata Schema]. Each part of the citation is described in the table below, with several examples given afterwards."
-msgstr "A continuación se describe en detalle el formato de citas del IPT. Es importante tener en cuenta que el formato está basado en el formato de citas preferido por DataCite y es acorde a la https://www.force11.org/datacitation[Joint Declaración de los Principios de Citado de Datos]. Para más información sobre el formato de DataCite, puede dirijirse a la Sección 2.2 Citas de su http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Esquema de Metadatos]. Cada parte de la cita se describe en la siguiente tabla, incluyendo varios ejemplos."
+msgstr "A continuación se describe en detalle el formato de citas del IPT. Es importante tener en cuenta que el formato está basado en el formato de citas preferido por DataCite y es acorde a la https://www.force11.org/datacitation[Joint Declaración de los Principios de Citado de Datos]. Para más información sobre el formato de DataCite, puede dirijirse a la Sección 2.2 Citas de su http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Esquema de Metadatos]. Cada parte de la cita se describe en la siguiente tabla, incluyendo después varios ejemplos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/citation.adoc:13
@@ -94,19 +94,34 @@ msgid "| Citation Part\n"
 "| Type of resource published. A description of the type of resource constructed using the ResourceTypeGeneral/ResourceType pair: ResourceTypeGeneral will always be equal to “Dataset”, and the ResourceType is a single term specifying the specific type of dataset, e.g. \"Occurrence\" or \"Checklist\".\n\n"
 "| 7. Identifier\n"
 "| The DOI (digital object identifier) handle that resolves to the online dataset. If a DOI is lacking, a link to the online IPT dataset page will be used instead. A DOI is highly preferred, since the DOI guarantees persistent access, whereas the IPT URL can change. For citation purposes, DataCite recommends that DOIs are displayed as linkable, permanent URLs.\n"
-msgstr ""
+msgstr "| Parte de la cita\n"
+"| Descripción\n\n"
+"| 1. Creadores\n"
+"| Uno o más individuos, grupos o instituciones responsables de la creación del conjunto de datos. Todos los contribuyentes del conjunto de datos deberían ser enumerados - ver  https://www.force11.org/datacitation#JDCP2[principio 2 de citas de datos]. Los creadores deben ser conscientes, sin embargo, de que la lista completa puede ser recortada por la Revista durante la maquetación (ej.: De acuerdo a las http://www.nature.com/sdata/for-authors/submission-guidelines#references[guías de Nature] recortarán a partir del sexto creador). Los creadores deben incluir primero el apellido, seguido de las iniciales de sus nombres. Los creadores son incluidos en función de la importancia de su rol en la creación del conjunto de datos, siendo el creador más importante el que aparezca primero. Los creadores van separados por comas.\n\n"
+"| 2. AñoPublicación\n"
+"| Año en que la versión del conjunto de datos fue publicada.\n\n"
+"| 3. Título\n"
+"| Título del conjunto de datos. Solo la primera palabra del título debería ir en mayúsculas y el título debería ser escrito tal como aparece en el citado trabajo, concluyendo con un punto final.\n\n"
+"| 4. Versión\n"
+"| La versión del conjunto de datos. El IPT asigna un nuevo número de versión cada vez que el conjunto de datos se publica. La versión debería estar escrita así \"Versión versión_mayor.versión_menor\". El número de versión permite la \"identificación, acceso, y verificación de los datos específicos que respaldan una solicitud\" - ver https://www.force11.org/datacitation#JDCP7[principio 7 de citas de datos].\n\n"
+"| 5. Publicador\n"
+"| Institución que publica (y posee) el conjunto de datos. Para continuar dando crédito al repositorio que aloja los datos, el nombre del repositorio podría ser incluido en la sección de creadores.\n\n"
+"| 6. TipoRecurso\n"
+"| Tipo de recurso publicado. Una descripción del tipo de recurso que se forma utilizando la pareja TipoGeneralRecurso/TipoRecurso: TipoGeneralRecurso siempre será igual a \"Conjunto de datos\", y el TipoRecurso es un único término que concreta el tipo específico de conjunto de datos, ej.: \"Registros de Presencia\" o \"Listado de Especies\".\n\n"
+"| 7. Identificador\n"
+"| El Identificador de Objeto Digital (DOI, por sus siglas en inglés) que dirige al conjunto de datos online. Si no existe DOI, en su lugar se debe usar un enlace a la página del conjunto de datos en el IPT. Es altamente preferible utilizar un DOI, ya que el DOI garantiza acceso persistente, sin importar si la URL del IPT cambia. Para las futuras citas, DataCite recomienda que los DOIs se muestren como URLs permanentes y clicables.\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/citation.adoc:48
 #, no-wrap
 msgid "Example Citations"
-msgstr ""
+msgstr "Citas de ejemplo"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:50
 #, no-wrap
 msgid "Example citation for occurrence dataset, with institutional creator, and DOI:"
-msgstr ""
+msgstr "Ejemplo de cita para un conjunto de datos de registro de presencia, con creador institucional y DOI:"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:53
