@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-17 01:02\n"
+"PO-Revision-Date: 2021-08-17 20:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,7 +36,7 @@ msgstr "crear un identificador local si no existe"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:6
 msgid "create full dwc:scientificName including authorship"
-msgstr "Crear dwc:scientificName completo incluyendo el autor"
+msgstr "Crear dwc:scientificName completo incluyendo los datos de autoría"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:7
