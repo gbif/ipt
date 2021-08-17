@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-29 13:59+0000\n"
-"PO-Revision-Date: 2021-07-29 14:17\n"
+"PO-Revision-Date: 2021-08-17 06:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -20,12 +20,12 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:1
 #, no-wrap
 msgid "Administration Menu"
-msgstr ""
+msgstr "選單：系統管理"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:4
 msgid "This menu is visible only to users having the Admin role."
-msgstr ""
+msgstr "此選單只有系統管理員登入時顯示。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:6
