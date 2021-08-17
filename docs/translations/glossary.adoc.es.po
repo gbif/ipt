@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-13 20:56\n"
+"PO-Revision-Date: 2021-08-17 20:03\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -164,5 +164,5 @@ msgstr ""
 #: en/modules/ROOT/pages/glossary.adoc:25
 #, no-wrap
 msgid "*Visibility* - a term describing how a resource may be viewed (private, public, or registered).\n"
-msgstr ""
+msgstr "*Visibilidad* - un término que describe cómo se puede ver un recurso (privado, público, o registrado).\n"
 
