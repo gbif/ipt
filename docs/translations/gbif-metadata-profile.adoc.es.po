@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-16 20:43\n"
+"PO-Revision-Date: 2021-08-17 00:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -250,7 +250,7 @@ msgstr "Captura de pantalla de un cuadro de diálogo de ayuda para el término \
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:61
 #, no-wrap
 msgid "figures/ipt_help_dialog.png"
-msgstr ""
+msgstr "figuras/ipt_help_dialog.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:64
