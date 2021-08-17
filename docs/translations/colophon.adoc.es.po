@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"PO-Revision-Date: 2021-08-13 20:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,18 +20,18 @@ msgstr ""
 #: en/modules/ROOT/pages/colophon.adoc:1
 #, no-wrap
 msgid "Colophon"
-msgstr ""
+msgstr "Colofón"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:3
 #, no-wrap
 msgid "Citation"
-msgstr "Referencia"
+msgstr "Citación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:6
 msgid "This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:"
-msgstr ""
+msgstr "Este manual de usuario se adapta y construye a partir de previos Manuales de Usuario del IPT (Réveillon 2009). La citación recomendada para este Manual de Usuario es la siguiente:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:9
@@ -42,43 +42,43 @@ msgstr ""
 #: en/modules/ROOT/pages/colophon.adoc:10
 #, no-wrap
 msgid "Copyright"
-msgstr ""
+msgstr "Derechos de autor"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:13
 msgid "The GBIF Integrated Publishing Toolkit and this user manual are Copyright © 2016–2021 by the Global Biodiversity Information Facility Secretariat."
-msgstr ""
+msgstr "El Manual de Usuario del Kit de Herramientas de Publicación Integrado de GBIF y este manual de usuario está protegido por Derechos de autor © 2016–2021 por la Secretaría del Servicio Global de Información sobre Biodiversidad."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:14
 #, no-wrap
 msgid "License"
-msgstr ""
+msgstr "Licencia"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:17
 msgid "The GBIF Integrated Publishing Toolkit is open source software released under the Apache License Version 2.0. You may obtain a copy of this License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable law or agreed to in writing, software distributed under this License is distributed on an \"as is\" basis, without warranties of conditions of any kind, either express or implied. See the License for the specific language governing rights and limitations under the License."
-msgstr ""
+msgstr "El Integrated Publishing Toolkit de GBIF es un software de código abierto lanzado bajo la Licencia Apache Versión 2.0. Usted puede obtener una copia de esta Licencia en http://www.apache.org/licenses/LICENSE-2.0. A menos que lo exija la ley aplicable o se acuerde por escrito, el software distribuido bajo esta Licencia se distribuye \"tal cual\", sin garantías de condiciones de ningún tipo, ya sean expresas o implícitas. Vea la Licencia para lenguaje específico bajo los derechos y limitaciones que rigen en virtud de la Licencia."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:19
 msgid "This user manual is released under the Creative Commons Attribution-Non-commercial-Share Alike 3.0 Unported License. You may obtain a copy of this license at http://creativecommons.org/licenses/by-nc-sa/3.0/. Though you should consult the actual license document for details, in general terms the license states that you are free to copy, distribute, transmit, remix and adapt the work, under the following conditions:"
-msgstr ""
+msgstr "Este manual de usuario es lanzado bajo la Licencia Creative Commons Attribution-Non-commercial-Share Alike 3.0. Usted puede obtener una copia de esta licencia en http://creativecommons.org/licenses/by-nc-sa/3.0/. Aunque usted debe consultar el actual documento de licencia para obtener más detalles, en términos generales la licencia establece que usted es libre de copiar, distribuir, transmitir, modificar y adaptar el trabajo, bajo las siguientes condiciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:21
 msgid "you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);"
-msgstr ""
+msgstr "usted debe citar el trabajo en la manera especificada de esta página (pero no en una forma que sugiera que GBIF o que la Secretaría de GBIF lo respalda a usted o el uso que usted le de al trabajo);"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:22
 msgid "you may not use this work for commercial purposes;"
-msgstr ""
+msgstr "usted no puede usar este trabajo para propósitos comerciales;"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:23
 msgid "if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one."
-msgstr ""
+msgstr "si usted altera, transforma, o construye sobre este trabajo, usted puede distribuir el trabajo resultante sólo bajo la misma licencia o alguna similar a esta. "
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:24

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-07-02 13:18\n"
+"PO-Revision-Date: 2021-08-17 08:56\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -150,7 +150,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:55
 #, no-wrap
 msgid "FAQ"
-msgstr ""
+msgstr "問答集"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/checklist-data.adoc:42

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-07-15 10:35\n"
+"PO-Revision-Date: 2021-08-17 00:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -38,7 +38,7 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:7
 #, no-wrap
 msgid "Suggested citation"
-msgstr ""
+msgstr "Citación sugerida"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/core.adoc:13
@@ -49,41 +49,41 @@ msgstr ""
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
 msgid "Instructions"
-msgstr ""
+msgstr "Instrucciones"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:7
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:13
 #, no-wrap
 msgid "Document Control"
-msgstr ""
+msgstr "Documento de control"
 
 #. type: Title =
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:1
 #, no-wrap
 msgid "GBIF Metadata Profile – How-to Guide"
-msgstr ""
+msgstr "Perfil de metadatos de GBIF - Guía práctica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:4
 msgid "Version 2.1."
-msgstr ""
+msgstr "Versión 2.1."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:5
 #, no-wrap
 msgid "figures/cover_art_adiatum.png"
-msgstr ""
+msgstr "figuras/cover_art_adiatum.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:10
 msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/gbif-metadata-profile"
-msgstr ""
+msgstr "GBIF (2011) Perfil de Metadatos de GBIF - Guía práctica, (contribución de Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accesible en línea en t: https://ipt.gbif.org/manual/en/ipt/{manual-version}/gbif-metadata-profile"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:12
 msgid "_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._"
-msgstr ""
+msgstr "_Portada Crédito de arte: John Giez, esporofito de helecho Cabello de doncella, Adiatum sp._"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
@@ -92,59 +92,62 @@ msgid "| Version | Description                  | Date of release | Author(s)\n\
 "| 1.0     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR\n"
 "| 2.0     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak\n"
 "| 2.1     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett\n"
-msgstr ""
+msgstr "| Versión | Descripción  | Fecha de liberación | Autor(es) \n"
+"| 1.0 | Consistencias verificadas a través de documentos relevantes, enlaces actualizados a los sitios de producción, texto e imágenes actualizadas para reflejar las funcionalidades actuales. | 1° de Marzo de 2011 | KB, BK, MR \n"
+"| 2.0 | Transferido a la wiki, ediciones importantes | 19 de Junio de 2017 | Kyle Braak\n"
+"| 2.1 | Transferido a la documentación AsciiDoctor | 25 de mayo de 2021 | Matthew Blisset\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:26
 msgid "Documenting the provenance and scope of datasets is required in order to publish data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ that enable users to evaluate the fitness-for-use of a dataset."
-msgstr ""
+msgstr "Es necesario documentar la procedencia y alcance de los conjuntos de datos para publicar datos a través de la red de GBIF. La documentación de los conjuntos de datos es conocida como \"metadatos de los recursos\" que permite a los usuarios evaluar la aptitud para el uso de un conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:28
 msgid "There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Resource Metadata template (pending), or generating a metadata document manually. The guide also serves as a reference guide to the GBIF Metadata Profile itself."
-msgstr ""
+msgstr "Hay varias maneras de escribir un documento de metadatos conforme al Perfil de Metadatos de GBIF (GMP). Esta guía práctica recorrerá las formas más comunes, como el uso del editor de metadatos del kit de herramientas de publicación integrado de GBIF (IPT), la plantilla de los metadatos de los recursos de GBIF (pendiente), o la generación manual de un documento de metadatos. La guía también sirve como guía de referencia para el propio Perfil de Metadatos de GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:30
 msgid "If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
-msgstr ""
+msgstr "Si los metadatos que describen a un conjunto de datos se publican usando archivos Darwin Core (DwC-A), el archivo de metadatos se incluirá en el archivo DwC-A que lo agrupa junto con los datos (según los términos Darwin Core) que describe. Para obtener ayuda de cómo crear un archivo DwC-A completo consulte xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:32
 msgid "Once the metadata document has been written and validated, it is ready to be published."
-msgstr ""
+msgstr "Una vez que el documento de metadatos ha sido escrito y validado, está listo para ser publicado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:34
 msgid "Ultimately, the goal in publishing the metadata is that the data resource described therein can be fully documented and registered in the GBIF Registry. In so doing, the data resource becomes globally discoverable."
-msgstr ""
+msgstr "En última instancia, el objetivo al publicar los metadatos es que el recurso de datos descrito en ellos pueda ser completamente documentado y registrado en el Registro de GBIF. Al hacerlo, el recurso de datos se vuelve reconocible a nivel mundial."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:35
 #, no-wrap
 msgid "Metadata Publishing Solutions"
-msgstr ""
+msgstr "Soluciones de publicación de metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:38
 msgid "If sampling-event data, occurrence data or checklist data are being published using the IPT, there is a built-in metadata authoring functionality that can be used to write an accompanying metadata document conforming to the GMP. It may be convenient to use this tool for authoring metadata even if no data is being published, especially if there is a need to author and manage several metadata documents. On the other hand, if only a few metadata documents are needed, it might be easiest to generate them manually, for example by modifying a sample document. Below is a description of each of these methodologies."
-msgstr ""
+msgstr "Si los datos de eventos de muestreo, datos de presencia o ausencia de especies o los datos de la lista de verificación se publican usando la IPT, hay una funcionalidad integrada de creación de metadatos que se puede usar para escribir un documento de metadatos adjunto que cumpla con el PMG (Perfil de Metadatos de GBIF). Puede ser conveniente utilizar esta herramienta para crear metadatos incluso si no se publican datos, especialmente si es necesario crear y administrar varios documentos de metadatos. Por otro lado, si solo se necesitan unos cuantos documentos de metadatos, podría ser más fácil generarlos manualmente, por ejemplo modificando un documento de muestra. A continuación se describe cada una de esas metodologías."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:39
 #, no-wrap
 msgid "Publishing metadata using the IPT"
-msgstr ""
+msgstr "Publicación de metadatos usando la IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:42
 msgid "The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an xref:data-hosting-centres.adoc[IPT data hosting centre] instead of installing and maintaining their own installation."
-msgstr ""
+msgstr "La IPT contiene un editor de metadatos incorporado que permite completar fácilmente los metadatos de los recursos, validarlos y producir un archivo EML que es siempre un XML válido. Se recomienda a los usuarios que reutilicen un xref:data-hosting-centres.adoc[IPT data hosting centre] en lugar de instalar y dar mantenimiento a su propia instalación."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:44
 msgid "In total, the IPT has 12 different metadata forms that logically organize metadata entry:"
-msgstr ""
+msgstr "En total, la IPT tiene 12 formularios de metadatos diferentes que organizan lógicamente el ingreso de metadatos:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:46
@@ -183,7 +186,7 @@ msgstr "Cobertura Temporal"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
 msgid "Other Keywords"
-msgstr ""
+msgstr "Otras palabras clave"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:51
@@ -223,7 +226,7 @@ msgstr "Datos de la Colección"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
 msgid "Physical Data"
-msgstr ""
+msgstr "Datos físicos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:57
@@ -235,19 +238,19 @@ msgstr "Metadatos Adicionales"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:59
 msgid "The xref:manage-resources.adoc#metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1)."
-msgstr ""
+msgstr "El xref:manage-resources.adoc#metadata[IPT User Manual] pasa por cada formulario y sus respectivos campos con cierta profundidad. El formulario proporciona ayuda al usuario para comprender el significado de cada uno de los elementos (Figura 1)."
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:60
 #, no-wrap
 msgid "Screenshot of a help dialog for the term “Personnel Identifier"
-msgstr ""
+msgstr "Captura de pantalla de un cuadro de diálogo de ayuda para el término \"Identificador de la persona"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:61
 #, no-wrap
 msgid "figures/ipt_help_dialog.png"
-msgstr ""
+msgstr "figuras/ipt_help_dialog.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:64

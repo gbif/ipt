@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-07-02 13:17\n"
+"PO-Revision-Date: 2021-08-17 11:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,19 +35,19 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/checklist-data.adoc:10
 #: en/modules/ROOT/pages/occurrence-data.adoc:11
 msgid "Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names."
-msgstr ""
+msgstr "Finalmente, sus datos deben ser transformados a una estructura de tabla utilizando nombres de términos Darwin Core (DwC) como nombres de las columnas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:12
 #: en/modules/ROOT/pages/occurrence-data.adoc:13
 msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
-msgstr ""
+msgstr "Intente poner sus datos en el <<Templates,Excel template>>, que incluye todos los <<Required DwC Fields,required DwC fields>> y los <<Recommended DwC Fields,recommended DwC fields>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:14
 #: en/modules/ROOT/pages/occurrence-data.adoc:15
 msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible."
-msgstr ""
+msgstr "De manera alternativa, si sus datos están en una xref:database-connection.adoc[base de datos compatible], puede elaborar una tabla SQL (ver) utilizando nombres de columnas DwC. Sea cuidadoso para incluir todos los <<Required DwC Fields,required DwC fields>> y añada tantos <<Recommended DwC Fields,recommended DwC fields>> como sea posible."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:17
@@ -55,7 +55,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:23
 #, no-wrap
 msgid "Templates"
-msgstr ""
+msgstr "Modelos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:24
@@ -63,13 +63,13 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:30
 #, no-wrap
 msgid "Required DwC fields"
-msgstr ""
+msgstr "Campos DwC requeridos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:28
 #: en/modules/ROOT/pages/occurrence-data.adoc:32
 msgid "http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:30
@@ -77,13 +77,13 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:36
 #, no-wrap
 msgid "Recommended DwC fields"
-msgstr ""
+msgstr "Campos DwC recomendados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:33
 #: en/modules/ROOT/pages/occurrence-data.adoc:38
 msgid "http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] - and other higher taxonomy if possible"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] - y otros niveles taxonómicos mayores si es posible"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:36
@@ -92,7 +92,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:47
 #, no-wrap
 msgid "Exemplar datasets"
-msgstr ""
+msgstr "Conjuntos de datos ejemplares"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
@@ -101,7 +101,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:55
 #, no-wrap
 msgid "FAQ"
-msgstr ""
+msgstr "Preguntas frecuentes"
 
 #. type: Title =
 #: en/modules/ROOT/pages/occurrence-data.adoc:1

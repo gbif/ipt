@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-07-12 03:18\n"
+"POT-Creation-Date: 2021-07-29 13:59+0000\n"
+"PO-Revision-Date: 2021-08-13 23:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -44,12 +44,12 @@ msgstr "ipt2/administration/IPTAdminBeforeRegistration.png"
 #: en/modules/ROOT/pages/administration.adoc:9
 #, no-wrap
 msgid "Configure IPT settings"
-msgstr "Configuración de las opciones del IPT"
+msgstr "Opciones de configuración el IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:11
 msgid "This page allows a user having the Admin role to make and change settings for the characteristics of this IPT instance."
-msgstr "Esta página permite a los usuarios con el rol Administrador, realizar y cambiar la configuración del IPT."
+msgstr "Esta página permite a un usuario con el rol Administrador, realizar y cambiar la configuración de este IPT."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:12
@@ -71,7 +71,7 @@ msgstr "Cuando la configuración del IPT es guardada, el IPT prueba la disponibi
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:22
 msgid "log out of and shut down the IPT."
-msgstr "Salga de su sección del IPT y ciérrelo."
+msgstr "Cierre sesión y apague el IPT."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:23
@@ -81,17 +81,17 @@ msgstr "En el directorio de datos para el IPT, abra con un editor de texto plano
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:24
 msgid "in the ipt.properties file, change the line starting with \"ipt.baseURL\" to the new URL with the new port, using the backslash to escape the colon character. For example, enter `ipt.baseURL=http\\://example.org\\:7001/ipt` for http://example.org:7001/ipt."
-msgstr "En el archivo ipt.properties cambie la línea de inicio “ipt.baseURL” a la nueva URL con el nuevo puerto, usando la barra invertida para evitar el carácter dos puntos. Por ejemplo, ingrese `ipt.baseURL=http\\://example.org\\:7001/ipt` para http://example.org:7001/ipt."
+msgstr "en el archivo ipt.properties cambie la línea de inicio “ipt.baseURL” a la nueva URL con el nuevo puerto, usando la barra invertida para evitar el carácter dos puntos. Por ejemplo, ingrese `ipt.baseURL=http\\://example.org\\:7001/ipt` para http://example.org:7001/ipt."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:25
 msgid "restart the IPT in the servlet container."
-msgstr "Reinicie el IPT en el contenedor del servlet."
+msgstr "reinicie el IPT en el contenedor del servlet."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:26
 msgid "update the metadata for the IPT as described in the next section of this user manual entitled \"Publish all resources\"."
-msgstr "Actualice los metadatos para el IPT como se describe en la siguiente sección titulada “Publicar Todos los Recursos”."
+msgstr "actualice los metadatos para el IPT como se describe en la siguiente sección titulada “Publicar Todos los Recursos”."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:30
@@ -610,7 +610,6 @@ msgstr "Para propiedades que tienen vocabularios controlados, la información so
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:162
-#: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsDetailVocabulary.png"
 msgstr ""
@@ -638,35 +637,35 @@ msgid "For any extension that has already been installed in the IPT, it can be r
 msgstr "Cualquiera de las extensiones que ya haya sido instalada en el IPT, puede ser eliminada haciendo clic en el botón “Eliminar”. Las extensiones que estén siendo usadas para mapear los datos de algún recurso en el IPT, no pueden ser eliminadas. Cualquier intento mostrará un mensaje de error y una lista de recursos que están usando la extensión."
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:172
+#: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
 msgid "Update extension"
 msgstr "Actualizar una extensión"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:174
+#: en/modules/ROOT/pages/administration.adoc:172
 msgid "For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled \"Update\". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished."
 msgstr "Para cualquier extensión que ya se haya instalado en el IPT y esté desactualizada, se puede actualizar haciendo clic en el botón \"Actualizar\". La actualización de una extensión permite aprovechar los nuevos términos y vocabularios. Durante una actualización, las asignaciones existentes a los términos obsoletos se eliminarán y las asignaciones existentes a los términos obsoletos que han sido reemplazados por otro término se actualizarán automáticamente. Después de la actualización, todos los recursos afectados deben revisarse y volver a publicarse."
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:175
+#: en/modules/ROOT/pages/administration.adoc:173
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsUpdate.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:177
+#: en/modules/ROOT/pages/administration.adoc:175
 #, no-wrap
 msgid "View IPT logs"
 msgstr "Ver registros del IPT"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:179
+#: en/modules/ROOT/pages/administration.adoc:177
 msgid "Messages generated from actions taken while running the IPT are logged to files for reference in the directory called \"logs\" within the IPT data directory (see the information under the \"IPT Settings\" heading in the \"Administration Menu\" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labelled \"complete log file\". The contents of the complete log file may be useful when reporting an apparent bug."
 msgstr "Los mensajes generados de las acciones tomadas mientras se estaba corriendo el IPT, son registrados por referencia en archivos, en el directorio llamado logs dentro del directorio de datos del IPT (véase la información bajo el encabezado “Configuración del IPT” en la sección “Menú Administración\"). La página de la Actividad del Sistema muestra mensajes desde el archivo llamado admin.log, el cual contiene solamente aquellos mensajes que tienen una severidad mayor o igual a “ADVERTENCIA”. Los mensajes completos (contenidos en el archivo llamado debug.log) pueden ser abiertos o visualizados, haciendo clic sobre el enlace “archivo log completo”. El contenido del archivo log completo, puede ser útil cuando se reporte un aparente error."
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:180
+#: en/modules/ROOT/pages/administration.adoc:178
 #, no-wrap
 msgid "ipt2/administration/IPTAdminLogs.png"
 msgstr "ipt2/administration/IPTAdminLogs.png"
