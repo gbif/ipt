@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 11:52+0000\n"
-"PO-Revision-Date: 2021-08-17 16:47\n"
+"PO-Revision-Date: 2021-08-17 17:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -159,19 +159,19 @@ msgstr "Por lo tanto, una traducción cruzada es así:"
 #: en/modules/ROOT/pages/translations.adoc:53
 #, no-wrap
 msgid "click on the button labelled \"Add\" to open the <<Data Source selection page>>.\n"
-msgstr ""
+msgstr "click on the button labelled \"Add\" to open the <<Data Source selection page>>.\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:55
 #, no-wrap
 msgid "clic en el botón \"Agregar\" para abrir la <<Página de selección del Conjunto de Datos>>.\n"
-msgstr ""
+msgstr "clic en el botón \"Agregar\" para abrir la <<Página de selección del Conjunto de Datos>>.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/translations.adoc:57
 #, no-wrap
 msgid "Different-page crossreferences"
-msgstr ""
+msgstr "Referencias cruzadas de diferentes páginas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:60
