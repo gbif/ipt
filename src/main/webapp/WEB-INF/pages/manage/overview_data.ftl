@@ -40,7 +40,8 @@
                                         <#elseif src.isExcelSource()>
                                             <th class="col-4">${src.name} <@s.text name='manage.overview.source.excel'/></th>
                                             <td>
-                                                ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string.medium)!}
+                                                ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
+                                                ${(src.lastModified?datetime?string.medium)!}<br>
                                                 <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
                                             </td>
                                         <#elseif src.isUrlSource()>
