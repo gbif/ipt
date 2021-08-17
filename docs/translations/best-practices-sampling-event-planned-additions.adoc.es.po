@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 06:00\n"
+"PO-Revision-Date: 2021-08-17 06:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -304,32 +304,32 @@ msgstr "#TODO:# Proporcionar una recomendación sobre cómo publicar datos produ
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:63
 msgid "#TODO:# Provide rationale and guidance for migrating existing occurrence datasets to sampling event format. The following questions need to be answered:"
-msgstr ""
+msgstr "#TODO:# Proporcionar fundamentos y orientación para migrar conjuntos de datos de registros de presencia existentes a formato de evento de muestreo. Las siguientes cuestiones deben ser contestadas:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:64
 msgid "Should the sampling event version replace the existing occurrence version, or should both versions be kept online at the same time?"
-msgstr ""
+msgstr "¿La versión de eventos de muestreo debería ser reemplazada por la versión de registro de presencia o deberían ser mantenidas de manera online ambas al mismo tiempo?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:65
 msgid "If replacing, should the new sampling event version be assigned a brand new DOI?"
-msgstr ""
+msgstr "Si se reemplaza, ¿se debería asignar un nuevo DOI a la nueva versión de eventos de muestreo?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:66
 msgid "What are the benefits of producing the sampling event version?"
-msgstr ""
+msgstr "¿Cuáles son los beneficios de producir la versión de eventos de muestreo?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:70
 msgid "#TODO:# Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded)."
-msgstr ""
+msgstr "#TODO:# Proporcionar una recomendación sobre cómo modelizar monitoreos continuos de individuos vivos, tales como datos de seguimiento de aves mediante el uso de dwc:organismID para almacenar el ID del individuo monitoreado utilizando un único evento para representar cada individuo monitoreado (con registros de presencia asociados cuando fuesen registrados)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:74
 msgid "#TODO:# Provide a recommendation on how to manage issues related to the dataset using GitHub's issue management system, just like INBO does for example."
-msgstr ""
+msgstr "#TODO:# Proporcionar una recomendación sobre cómo gestionar problemas relacionados con el uso de conjuntos de datos utilizando el sistema de gestión de problemas de GitHub, tal y como hace INBO, por ejemplo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:78
