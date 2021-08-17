@@ -9,29 +9,36 @@ import org.gbif.utils.file.csv.CSVReaderFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
-/**
- * A delimited text file based source such as CSV or tab files.
- */
-public class TextFileSource extends SourceBase implements FileSource {
+public class UrlSource extends SourceBase implements RowIterable {
 
-  private static final Logger LOG = LogManager.getLogger(TextFileSource.class);
-  private static final String SUFFIX = ".txt";
+  private static final Logger LOG = LogManager.getLogger(UrlSource.class);
+
+  private URI url;
 
   private String fieldsTerminatedBy = "\t";
   private String fieldsEnclosedBy;
   private int ignoreHeaderLines = 0;
-  private File file;
+  private File file; // only for analyzing
   private long fileSize;
   private int rows;
   protected Date lastModified;
 
-  public Character getFieldQuoteChar() {
-    if (fieldsEnclosedBy == null || fieldsEnclosedBy.length() == 0) {
-      return null;
-    }
-    return fieldsEnclosedBy.charAt(0);
+  public URI getUrl() {
+    return url;
+  }
+
+  public void setUrl(URI url) {
+    this.url = url;
   }
 
   public String getFieldsEnclosedBy() {
@@ -50,6 +57,10 @@ public class TextFileSource extends SourceBase implements FileSource {
     return escape(fieldsTerminatedBy);
   }
 
+  public int getIgnoreHeaderLines() {
+    return ignoreHeaderLines;
+  }
+
   public File getFile() {
     return file;
   }
@@ -62,53 +73,12 @@ public class TextFileSource extends SourceBase implements FileSource {
     return FileUtils.formatSize(fileSize, 1);
   }
 
-  public int getIgnoreHeaderLines() {
-    return ignoreHeaderLines;
-  }
-
-  public Date getLastModified() {
-    return lastModified;
-  }
-
-  private CSVReader getReader() throws IOException {
-    return CSVReaderFactory.build(file, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
-  }
-
   public int getRows() {
     return rows;
   }
 
-  public ClosableReportingIterator<String[]> rowIterator() {
-    try {
-      return getReader();
-    } catch (IOException e) {
-      LOG.warn("Exception caught", e);
-    }
-    return null;
-  }
-
-  public List<String> columns() {
-    try {
-      CSVReader reader = getReader();
-      if (ignoreHeaderLines > 0) {
-        List<String> columns = Arrays.asList(reader.header);
-        reader.close();
-        return columns;
-      } else {
-        List<String> columns = new ArrayList<>();
-        // careful - the reader.header can be null. In this case set number of columns to 0
-        int numColumns = (reader.header == null) ? 0 : reader.header.length;
-        for (int x = 1; x <= numColumns; x++) {
-          columns.add("Column #" + x);
-        }
-        reader.close();
-        return columns;
-      }
-    } catch (IOException e) {
-      LOG.warn("Cant read source " + getName(), e);
-    }
-
-    return new ArrayList<>();
+  public Date getLastModified() {
+    return lastModified;
   }
 
   public void setFieldsEnclosedBy(String fieldsEnclosedBy) {
@@ -147,14 +117,64 @@ public class TextFileSource extends SourceBase implements FileSource {
     this.rows = rows;
   }
 
-  public String getPreferredFileSuffix() {
-    return SUFFIX;
+  public SourceType getSourceType() {
+    return SourceType.URL;
+  }
+
+  public Character getFieldQuoteChar() {
+    if (fieldsEnclosedBy == null || fieldsEnclosedBy.length() == 0) {
+      return null;
+    }
+    return fieldsEnclosedBy.charAt(0);
+  }
+
+  public ClosableReportingIterator<String[]> rowIterator() {
+    try {
+      return getReader();
+    } catch (IOException e) {
+      LOG.warn("Exception caught", e);
+    }
+    return null;
+  }
+
+  private CSVReader getReader() throws IOException {
+    InputStream input = url.toURL().openStream();
+    return CSVReaderFactory.build(input, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
+  }
+
+  public List<String> columns() {
+    List<String> columns = new ArrayList<>();
+
+    try (CSVReader reader = getReader()) {
+      if (ignoreHeaderLines > 0) {
+        columns = Arrays.asList(reader.header);
+      } else {
+        // careful - the reader.header can be null. In this case set number of columns to 0
+        int numColumns = (reader.header == null) ? 0 : reader.header.length;
+        for (int x = 1; x <= numColumns; x++) {
+          columns.add("Column #" + x);
+        }
+      }
+    } catch (IOException e) {
+      LOG.warn("Cant read source " + getName(), e);
+    }
+
+    return columns;
   }
 
   public Set<Integer> analyze() throws IOException {
-    setFileSize(getFile().length());
+    LOG.debug("Analyzing URL source {}", url);
+    if (file == null) {
+      LOG.debug("File is absent, downloading from the url");
+      try (InputStream in = url.toURL().openStream()) {
+        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        setFile(file);
+      }
+    }
+    setFileSize(file.length());
 
-    CSVReader reader = getReader();
+    CSVReader reader = CSVReaderFactory.build(file, getEncoding(), getFieldsTerminatedBy(), getFieldQuoteChar(), getIgnoreHeaderLines());
+
     while (reader.hasNext()) {
       reader.next();
     }
@@ -164,9 +184,5 @@ public class TextFileSource extends SourceBase implements FileSource {
     Set<Integer> emptyLines = reader.getEmptyLines();
     reader.close();
     return emptyLines;
-  }
-
-  public SourceType getSourceType() {
-    return SourceType.TEXT_FILE;
   }
 }

@@ -31,6 +31,7 @@ import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
@@ -677,6 +678,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("filesource", TextFileSource.class);
     xstream.alias("excelsource", ExcelFileSource.class);
     xstream.alias("sqlsource", SqlSource.class);
+    xstream.alias("urlsource", UrlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
     xstream.alias("versionhistory", VersionHistory.class);

@@ -10,9 +10,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.action.manage;
 
+import org.apache.commons.io.FilenameUtils;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -21,9 +21,11 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceBase;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.NotTextFileException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -33,6 +35,7 @@ import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +59,8 @@ public class SourceAction extends ManagerBaseAction {
   private Source source;
   private String rdbms;
   private String problem;
+  // URL
+  private String url;
   // file upload
   private File file;
   private String fileContentType;
@@ -67,6 +72,8 @@ public class SourceAction extends ManagerBaseAction {
   private int peekRows = 10;
   private int analyzeRows = 1000;
 
+  private String sourceType;
+
   @Inject
   public SourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, SourceManager sourceManager, JdbcSupport jdbcSupport, DataDir dataDir) {
@@ -77,6 +84,28 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public String add() throws IOException {
+    if ("source-sql".equals(sourceType)) {
+      // prepare a new, empty sql source
+      source = new SqlSource();
+      source.setResource(resource);
+      ((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
+    } else if ("source-url".equals(sourceType)) {
+      // prepare a new, empty url source
+      source = new UrlSource();
+      source.setResource(resource);
+      URI urlWrapped = URI.create(url);
+      try {
+        addUrl(urlWrapped);
+      } catch (NotTextFileException e) {
+        addActionError(getText("manage.source.invalidUrl"));
+        return ERROR;
+      }
+    } else {
+      // prepare a new, empty file source
+      source = new TextFileSource();
+      source.setResource(resource);
+    }
+
     boolean replace = false;
     // Are we going to overwrite any source file?
     File ftest = (File) session.get(Constants.SESSION_FILE);
@@ -136,7 +165,7 @@ public class SourceAction extends ManagerBaseAction {
           return INPUT;
         }
         try {
-          // treat as is - hopefully a simple text or excel file
+          // treat as is - hopefully a simple text or Excel file
           addDataFile(file, fileFileName);
         } catch (InvalidFilenameException e) {
           addActionError(getText("manage.source.invalidFileName"));
@@ -148,6 +177,32 @@ public class SourceAction extends ManagerBaseAction {
       }
     }
     return SUCCESS;
+  }
+
+  private void addUrl(URI url) throws NotTextFileException {
+    String filename = FilenameUtils.getBaseName(url.toString());
+    Source existingSource = resource.getSource(filename);
+    boolean replaced = existingSource != null;
+
+    try {
+      source = sourceManager.add(resource, url);
+      resource.setSourcesModified(new Date());
+      saveResource();
+      id = source.getName();
+
+      if (replaced) {
+        addActionMessage(getText("manage.source.replaced.existing", new String[] {source.getName()}));
+        // alert user if the number of columns changed
+        alertColumnNumberChange(resource.hasMappedSource(existingSource), source.getColumns(),
+            existingSource.getColumns());
+      } else {
+        addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
+      }
+    } catch (ImportException e) {
+      // even though we have problems with this source we'll keep it for manual corrections
+      LOG.error("Cannot add URL source " + url, e);
+      addActionError(getText("manage.source.cannot.add", new String[]{filename, e.getMessage()}));
+    }
   }
 
   /**
@@ -295,9 +350,7 @@ public class SourceAction extends ManagerBaseAction {
   @Override
   public void prepare() {
     super.prepare();
-    if (session.containsKey(Constants.SESSION_FILE_NUMBER_COLUMNS)) {
-      session.remove(Constants.SESSION_FILE_NUMBER_COLUMNS);
-    }
+    session.remove(Constants.SESSION_FILE_NUMBER_COLUMNS);
     if (id != null) {
       source = resource.getSource(id);
       if (source == null) {
@@ -307,15 +360,6 @@ public class SourceAction extends ManagerBaseAction {
         // store original number of columns, in case they change the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
       }
-    } else if (file == null) {
-      // prepare a new, empty sql source
-      source = new SqlSource();
-      source.setResource(resource);
-      ((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
-    } else {
-      // prepare a new, empty file source
-      source = new TextFileSource();
-      source.setResource(resource);
     }
   }
 
@@ -347,8 +391,7 @@ public class SourceAction extends ManagerBaseAction {
       } else {
         result = SUCCESS;
       }
-    } else {
-      // new one
+    } else { // new one
       if (file == null) {
         try {
           resource.addSource(source, false);
@@ -392,6 +435,14 @@ public class SourceAction extends ManagerBaseAction {
     if (StringUtils.trimToNull(analyze) != null) {
       this.analyze = true;
     }
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  public void setSourceType(String sourceType) {
+    this.sourceType = sourceType;
   }
 
   public void setFile(File file) {

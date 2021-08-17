@@ -37,14 +37,6 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   private int rows;
   protected Date lastModified;
 
-  private String escape(String x) {
-    if (x == null) {
-      return null;
-    }
-    return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r")
-      .replaceAll("\\f", "\\\\f");
-  }
-
   public File getFile() {
     return file;
   }
@@ -270,12 +262,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return Sets.newHashSet();
   }
 
-  private String unescape(String x) {
-    if (x == null) {
-      return null;
-    }
-    return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n'))
-      .replaceAll("\\\\r", String.valueOf('\r')).replaceAll("\\\\f", String.valueOf('\f'));
+  public SourceType getSourceType() {
+    return SourceType.EXCEL_FILE;
   }
-
 }

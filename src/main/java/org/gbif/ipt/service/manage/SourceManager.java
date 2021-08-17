@@ -3,13 +3,16 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.NotTextFileException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -33,10 +36,24 @@ public interface SourceManager {
    * @return file or excel source that has been added
    *
    * @throws ImportException if the file cant be copied or read
-   * @throws org.gbif.ipt.service.InvalidFilenameException if the source filename contained illegal characters
+   * @throws InvalidFilenameException if the source filename contained illegal characters
    */
   FileSource add(Resource resource, File file, @Nullable String sourceName)
     throws ImportException, InvalidFilenameException;
+
+  /**
+   * Adds one text file as a URL source to a resource configuration.
+   * The file will be analyzed to detect the character encoding and delimiters.
+   *
+   * @param resource   resource
+   * @param url        the text source file (URL) to be added to this resource
+   *
+   * @return URL source that has been added
+   *
+   * @throws ImportException if the file can't be copied or read
+   * @throws NotTextFileException if the source is not a text file
+   */
+  UrlSource add(Resource resource, URI url) throws ImportException, NotTextFileException;
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will

@@ -127,17 +127,22 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
 
   @Override
   public boolean isFileSource() {
-    return TextFileSource.class.isInstance(this);
+    return this instanceof TextFileSource;
   }
 
   @Override
   public boolean isExcelSource() {
-    return ExcelFileSource.class.isInstance(this);
+    return this instanceof ExcelFileSource;
   }
 
   @Override
   public boolean isSqlSource() {
-    return SqlSource.class.isInstance(this);
+    return this instanceof SqlSource;
+  }
+
+  @Override
+  public boolean isUrlSource() {
+    return this instanceof UrlSource;
   }
 
   @Override
@@ -183,5 +188,21 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   @Override
   public String toString() {
     return this.getClass().getSimpleName() + "[" + name + ";" + resource + "]";
+  }
+
+  protected String escape(String x) {
+    if (x == null) {
+      return null;
+    }
+    return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r")
+        .replaceAll("\\f", "\\\\f");
+  }
+
+  protected String unescape(String x) {
+    if (x == null) {
+      return null;
+    }
+    return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n'))
+        .replaceAll("\\\\r", String.valueOf('\r')).replaceAll("\\\\f", String.valueOf('\f'));
   }
 }

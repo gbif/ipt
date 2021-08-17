@@ -151,12 +151,7 @@
                 $(this).parent('form').submit();
             });
         });
-        $("#file").change(function() {
-            var usedFileName = $("#file").prop("value");
-            if(usedFileName != "") {
-                $("#add").attr("value", '<@s.text name="button.add"/>');
-            }
-        });
+
         $("#emlFile").change(function() {
             var usedFileName = $("#emlFile").prop("value");
             if(usedFileName != "") {
@@ -170,10 +165,49 @@
             $("#emlReplace").hide();
             $("#emlCancel").hide();
         });
+
+        $("#sourceType").change(function (e) {
+            var sourceType = this.options[e.target.selectedIndex].value;
+            console.log(sourceType)
+
+            if (sourceType === 'source-file') {
+                $("#url").hide();
+                $("#url").prop("value", "");
+                $("#file").show();
+                $("#clear").show();
+                $("#add").attr("value", '<@s.text name="button.add"/>');
+                $("#add").hide();
+            } else if (sourceType === 'source-url') {
+                $("#url").show();
+                $("#file").hide();
+                $("#file").prop("value", "");
+                $("#clear").show();
+                $("#add").attr("value", '<@s.text name="button.add"/>');
+                $("#add").show();
+            } else {
+                $("#file").hide();
+                $("#file").prop("value", "");
+                $("#url").hide();
+                $("#url").prop("value", "");
+                $("#clear").hide();
+                $("#add").attr("value", '<@s.text name="button.connectDB"/>');
+                $("#add").show();
+            }
+        })
+
+        $("#file").change(function() {
+            var usedFileName = $("#file").prop("value");
+            if (usedFileName !== "") {
+                var addButton = $('#add');
+                addButton.attr("value", '<@s.text name="button.add"/>');
+                addButton.show();
+            }
+        });
+
         $("#clear").click(function(event) {
             event.preventDefault();
             $("#file").prop("value", "");
-            $("#add").attr("value", '<@s.text name="button.connectDB"/>');
+            $("#add").hide();
         });
 
         $(function() {
