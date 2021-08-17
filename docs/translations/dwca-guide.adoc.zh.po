@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-07-15 10:35\n"
+"PO-Revision-Date: 2021-08-17 08:56\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -68,7 +68,7 @@ msgstr ""
 #: en/modules/ROOT/pages/dwca-guide.adoc:1
 #, no-wrap
 msgid "Darwin Core Archives – How-to Guide"
-msgstr ""
+msgstr "達爾文核心集檔案 — 操作導引"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/dwca-guide.adoc:5
