@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-17 21:05\n"
+"PO-Revision-Date: 2021-08-17 21:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -93,69 +93,70 @@ msgstr "convertir a UTF8"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:20
 msgid "use standard CSV (i.e. delimiter=`,` quotation=`\"`) or tab files"
-msgstr ""
+msgstr "usar el estándar CSV (es decir, separador de cadenas=`,` delimitador de cadenas=`\"`) o archivos separados por tabuladores"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:21
 msgid "make sure you have replaced line breaks, i.e. `\\r` `\\n` or `\\r\\n` with either simple spaces or use 2 characters `\\r` to escape the line break if the intention is to preserve them"
-msgstr ""
+msgstr "asegúrese de haber reemplazado los saltos de línea, es decir, `\\r`` \\n` o `\\r\\n` con espacios simples o use 2 caracteres `\\r` para escapar el salto de línea si la intención es preservarlos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:22
 msgid "encode nulls as empty fields, i.e. no characters between 2 delimiters, not `\\N` or `\\NULL`"
-msgstr ""
+msgstr "codificar valores nulos como campos vacíos, es decir, sin caracteres entre 2 delimitadores, ni `\\N` ni `\\NULL`"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-preparation.adoc:23
 #, no-wrap
 msgid "Utility: Character encoding converter - iconv"
-msgstr ""
+msgstr "Herramienta: Convertidor de codificación de caracteres - iconv"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:26
 msgid "Simple tool for Linux and Windows to convert character encodings of files."
-msgstr ""
+msgstr "Herramienta básica para Linux y Windows para convertir codificaciones de caracteres de archivos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:28
 msgid "http://en.wikipedia.org/wiki/Iconv"
-msgstr ""
+msgstr "http://en.wikipedia.org/wiki/Iconv"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:29
 #: en/modules/ROOT/pages/dwca-guide.adoc:218
 msgid "http://www.gnu.org/software/libiconv/"
-msgstr ""
+msgstr "http://www.gnu.org/software/libiconv/"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:30
 #: en/modules/ROOT/pages/dwca-guide.adoc:219
 msgid "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
-msgstr ""
+msgstr "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:32
 msgid "Examples:"
-msgstr ""
+msgstr "Ejemplos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:34
 msgid "convert character encodings from Windows-1252 to UTF-8 using http://unixhelp.ed.ac.uk/CGI/man-cgi?iconv[iconv]"
-msgstr ""
+msgstr "convertir la codificación de caracteres de Windows-1252 a UTF-8 usando\n"
+"http://unixhelp.ed.ac.uk/CGI/man-cgi?iconv[iconv]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
 #: en/modules/ROOT/pages/dwca-guide.adoc:148 en/modules/ROOT/pages/faq.adoc:184
 #: en/modules/ROOT/pages/faq.adoc:194
 msgid "{blank}"
-msgstr ""
+msgstr "{blank}"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/data-preparation.adoc:38
 #: en/modules/ROOT/pages/dwca-guide.adoc:225
 #, no-wrap
 msgid "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
-msgstr ""
+msgstr "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-preparation.adoc:40
@@ -171,7 +172,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:45
 msgid "http://www.unixguide.net/unix/sedoneliner.shtml"
-msgstr ""
+msgstr "http://www.unixguide.net/unix/sedoneliner.shtml"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:46
@@ -187,7 +188,7 @@ msgstr ""
 #: en/modules/ROOT/pages/data-preparation.adoc:50
 #, no-wrap
 msgid "sed -i.old \"s/\\\\\\\\N//g\" allNames.txt\n"
-msgstr ""
+msgstr "sed -i.old \"s/\\\\\\\\N//g\" todoslosnombres.txt\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:53
@@ -198,5 +199,5 @@ msgstr ""
 #: en/modules/ROOT/pages/data-preparation.adoc:56
 #, no-wrap
 msgid "sed 's/.$//'\n"
-msgstr ""
+msgstr "sed 's/.$//'\n"
 
