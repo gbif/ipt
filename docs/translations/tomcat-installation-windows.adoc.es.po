@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-16 23:08\n"
+"PO-Revision-Date: 2021-08-17 15:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -137,66 +137,66 @@ msgstr "También puede ejecutar la aplicación * tomcat8w * haciendo clic con el
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:41
 msgid "You can also start Tomcat (in Windows 8.1) from the Task Manager > Services tab."
-msgstr ""
+msgstr "También puede iniciar Tomcat (en Windows 8.1) desde el Administrador de tareas> pestaña Servicios."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:42
 #, no-wrap
 msgid "4. Test Tomcat"
-msgstr ""
+msgstr "4. Prueba de Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:44
 msgid "If Tomcat is running successfully following step 5, above, you should be able to see the Tomcat Welcome page at the following URL: http://localhost:8080/"
-msgstr ""
+msgstr "Si Tomcat se está ejecutando correctamente siguiendo el paso anterior, debería poder ver la página de bienvenida de Tomcat en la siguiente URL: http://localhost:8080/"
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:45
 #, no-wrap
 msgid "Tomcat Welcome Page"
-msgstr ""
+msgstr "Página de bienvenida de Tomcat"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:45
 #, no-wrap
 msgid "screenshots/Capturetomcat2.JPG"
-msgstr ""
+msgstr "captura de pantalla/Capturetomcat2.JPG"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:48
 msgid "With the admin credentials you entered during the setup wizard, you can access http://localhost:8080/manager/html where you can upload the ipt.war file to install IPT."
-msgstr ""
+msgstr "Con las credenciales de administrador que ingresó durante el asistente de configuración, puede acceder a http://localhost:8080/manager/html donde puede cargar el archivo ipt.war para instalar IPT."
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:49
 #, no-wrap
 msgid "Tomcat Manager Page"
-msgstr ""
+msgstr "Página de administración de Tomcat"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:49
 #, no-wrap
 msgid "screenshots/Capturetomcat4.JPG"
-msgstr ""
+msgstr "Captura de pantalla/Capturetomcat4.JPG"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:51
 #, no-wrap
 msgid "5. Shut down Tomcat"
-msgstr ""
+msgstr "5. Apagando Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:54
 msgid "Close the terminal windows will shut down Tomcat."
-msgstr ""
+msgstr "Cerrar la ventana de la terminal cerrará Tomcat."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:56
 msgid "Or, if you brought up Tomcat by using tomcat8w, stop Tomcat by clicking the stop button."
-msgstr ""
+msgstr "O, si abrió Tomcat usando tomcat8w, puede detener Tomcat haciendo clic en el botón de detener."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:57
 msgid "Or, in Task Manager > Services tab, stop Tomcat by \"right click\" and selecting \"stop\"."
-msgstr ""
+msgstr "O, en el Administrador de tareas> pestaña Servicios, detenga Tomcat haciendo \"clic derecho\" sobre el servicio  y seleccione \"detener\"."
 
