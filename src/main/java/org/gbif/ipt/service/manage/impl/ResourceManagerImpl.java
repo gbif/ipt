@@ -504,12 +504,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       if (arch.getCore() == null) {
         alog.error("manage.resource.create.core.invalid");
-        throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
+        throw new ImportException("Darwin Core Archive is invalid and does not have a core mapping");
       }
 
       if (arch.getCore().getRowType() == null) {
         alog.error("manage.resource.create.core.invalid.rowType");
-        throw new ImportException("Darwin core archive is invalid, core mapping has no rowType");
+        throw new ImportException("Darwin Core Archive is invalid, core mapping has no rowType");
       }
 
       // keep track of source files as a dwca might refer to the same source file multiple times
@@ -542,7 +542,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (!arch.getExtensions().isEmpty()) {
         if (map.getIdColumn() == null) {
           alog.error("manage.resource.create.core.invalid.id");
-          throw new ImportException("Darwin core archive is invalid, core mapping has no id element");
+          throw new ImportException("Darwin Core Archive is invalid, core mapping has no id element");
         }
 
         // read extension sources+mappings
@@ -557,7 +557,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           map = importMappings(alog, ext, s);
           if (map.getIdColumn() == null) {
             alog.error("manage.resource.create.core.invalid.coreid");
-            throw new ImportException("Darwin core archive is invalid, extension mapping has no coreId element");
+            throw new ImportException("Darwin Core Archive is invalid, extension mapping has no coreId element");
           }
 
           // ensure the extension contains a coreId term mapping with the correct coreId index
