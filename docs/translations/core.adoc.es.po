@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 16:31\n"
+"PO-Revision-Date: 2021-08-17 19:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "73 / 5000\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:6
 msgid "The IPT always ships with 3 cores installed by default: taxon, occurrence, and event. Since IPT 2.1, there is the possibility to add custom cores to the IPT, which is useful for communities prototyping new data standards. In this way, their community can start trying to map their data to the new core, and iteratively refine its set of properties."
-msgstr "El IPT siempre se envía con 3 núcleos instalados por defecto: taxón, ocurrencia y evento. Desde el IPT 2.1, existe la posibilidad de añadir núcleos personalizados al IPT, lo que resulta útil para las comunidades que crean prototipos de nuevos estándares de datos. De esta manera, su comunidad puede empezar a intentar mapear sus datos al nuevo núcleo, y refinar iterativamente su conjunto de propiedades."
+msgstr "El IPT siempre se instala con 3 clases del estándar Darwin Core cargados de forma predeterminada: \"taxon\", \"occurrence\" y \"event\". Desde la versión 2.1 de IPT, existe la posibilidad de agregar  clases personalizadas, lo que es útil para las comunidades que crean prototipos de nuevos estándares de datos. De esta manera, su comunidad puede comenzar a intentar mapear sus datos al nuevo estándar y refinar iterativamente su conjunto de propiedades."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:8
