@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"PO-Revision-Date: 2021-08-17 08:57\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -48,7 +48,7 @@ msgstr ""
 #: en/modules/ROOT/pages/release-notes.adoc:1
 #, no-wrap
 msgid "Release Notes"
-msgstr ""
+msgstr "發布通知"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:4
