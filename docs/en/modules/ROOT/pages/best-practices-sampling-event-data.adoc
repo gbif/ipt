@@ -179,7 +179,7 @@ Ideally, custom scripts and programs used to transform data should be made publi
 Publishers should document their dataset as much as possible with a particular emphasis on sampling methodologies.
 
 Besides the https://www.gbif.org/data-quality-requirements-sampling-events[mandatory requirements], the metadata should include information about the extent of study, the sampling methods, the quality control and limitations of the study.
-Although information about fieldwork can part of the data content, you may describe the sampling location and conditions in the metadata as well.
+Although information about fieldwork can be part of the data content, you may describe the sampling location and conditions in the metadata as well.
 
 === Linking related datasets
 

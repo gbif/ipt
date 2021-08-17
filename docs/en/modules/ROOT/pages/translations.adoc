@@ -93,4 +93,4 @@ The syntax to include this image in the manual, `image::ipt2/home/IPTHome.png[]`
 * Spanish (partial)
 * Traditional Chinese (started)
 
-If you want to translate the user interface into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English.
+If you want to translate the user manual into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English.
