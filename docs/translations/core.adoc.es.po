@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 22:51\n"
+"PO-Revision-Date: 2021-08-17 23:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -95,22 +95,23 @@ msgstr "*Configurar el IPT*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:27
 msgid "To configure the IPT to use the {sandbox-material-sample}[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
-msgstr ""
+msgstr "Para configurar el IPT para usar el {sandbox-material-sample} [Material de ejemplo del núcleo], por ejemplo, agregue las 2 líneas siguientes a `$IPT_DATA_DIR/config/ipt.properties`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:29
 msgid "be sure to escape any colons like above*"
-msgstr ""
+msgstr "asegúrese de escapar todos los dos puntos como antes*"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/core.adoc:33
 #, no-wrap
 msgid "ipt.core_rowTypes=http\\://rs.tdwg.org/dwc/terms/MaterialSample\n"
 "ipt.core_idTerms=http\\://rs.tdwg.org/dwc/terms/materialSampleID\n"
-msgstr ""
+msgstr "ipt.core_rowTypes=http\\://rs.tdwg.org/dwc/terms/MaterialSample\n"
+"ipt.core_idTerms=http\\://rs.tdwg.org/dwc/terms/materialSampleID\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:36
 msgid "This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe `|` character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then xref:administration.adoc#install-extension[install the core]. The core is now available to use in the IPT."
-msgstr ""
+msgstr "Esto configura el IPT para reconocer todas las extensiones con rowType http://rs.tdwg.org/dwc/terms/MaterialSample como tipos principales y para usar http://rs.tdwg.org/dwc/terms/materialSampleID como su identificador término. Se pueden especificar varios núcleos, delimitándolos con el carácter de barra vertical `|` (pipe). La primera entrada de ipt.core_idTerms es el ID de la primera entrada de core_rowTypes, y así sucesivamente. Por último, guarde el archivo ipt.properties, reinicie Tomcat y luego xref:Administration.adoc#install-extension [instalar el núcleo]. El núcleo ahora está disponible para su uso en el IPT."
 
