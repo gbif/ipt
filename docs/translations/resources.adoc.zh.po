@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"PO-Revision-Date: 2021-08-17 08:57\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/resources.adoc:1
 #, no-wrap
 msgid "Resources"
-msgstr ""
+msgstr "相關資源"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:3
@@ -37,7 +37,7 @@ msgstr ""
 #: en/modules/ROOT/pages/resources.adoc:6
 #, no-wrap
 msgid "GBIF Help Desk"
-msgstr ""
+msgstr "GBIF 服務台"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:8
@@ -48,7 +48,7 @@ msgstr ""
 #: en/modules/ROOT/pages/resources.adoc:9
 #, no-wrap
 msgid "GBIF Registry"
-msgstr ""
+msgstr "GBIF 登錄"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:11
