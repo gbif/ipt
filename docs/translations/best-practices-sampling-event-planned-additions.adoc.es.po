@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 08:57\n"
+"PO-Revision-Date: 2021-08-17 09:15\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -354,5 +354,5 @@ msgstr "#TODO:# Proporcionar recomendaciones sobre cómo facilitar la interpreta
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:96
 msgid "#TODO:# Update example based on Dutch Vegetation Database (LVD) version republished as sampling-event dataset. The Relevé extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
-msgstr ""
+msgstr "#TODO:# Ejemplo actualizado basado en la versión de la Base de Datos de Vegetación Holandesa (LVD) republicada como conjunto de datos de evento de muestreo. La extensión Relevé sufre cambios significativos respecto a la publicación del original. Para más información sobre LVD y los modelos de datos para datos de eventos de muestreo de vegetación ver: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
 
