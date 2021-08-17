@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-17 23:16\n"
+"PO-Revision-Date: 2021-08-17 23:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -67,7 +67,7 @@ msgstr "formato de fechas de acuerdo a ISO"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:14
 msgid "create year/month/day by parsing native SQL date types"
-msgstr "crear año/mes/día mediante el análisis sintáctico de tipos de fecha SQL nativos"
+msgstr "crear año/mes/día con el mapeo de tipos de dato nativos de SQL "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:15
@@ -83,7 +83,7 @@ msgstr "seleccione valores fijos (prefiera hacer esto en el mapeo IPT)"
 #: en/modules/ROOT/pages/data-preparation.adoc:17
 #, no-wrap
 msgid "Text Files Source"
-msgstr "Origen de archivos de texto"
+msgstr "Archivos de texto de origen"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:19
@@ -162,7 +162,7 @@ msgstr "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 #: en/modules/ROOT/pages/data-preparation.adoc:40
 #, no-wrap
 msgid "Utility: Unix Stream Editor,  SED"
-msgstr "Herramienta: Editor de flujo de Unix, SED"
+msgstr "Comando: Editor de secuencias de Unix (SED)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:43
