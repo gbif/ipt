@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 06:32\n"
+"PO-Revision-Date: 2021-08-17 08:57\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -339,17 +339,17 @@ msgstr "#TODO:# Proporcionar una recomendación sobre cómo compartir códigos y
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:82
 msgid "#TODO:# Advise publishers to document as much as possible about the sampling event, especially the sampling methodologies, before attempting to try and standardize it into DwC."
-msgstr ""
+msgstr "#TODO:# Aconsejar a los publicadores a documentar los eventos de muestreo tanto como sea posible, especialmente las metodologías de muestreo, antes de intentar estandarizarlo en DwC."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:86
 msgid "#TODO:# Advise publishers on how to link related datasets that come out of the same research context so they can be easily retrieved by the users. Publishers may have to publish separate datasets in order to work around the limitations of the DwC-A star schema. Publishers may also choose to publish separate occurrence datasets derived from the same sampling events. The current recommendation is to link them using Project.ID."
-msgstr ""
+msgstr "#TODO:# Asesorar a los publicadores sobre cómo vincular conjuntos de datos relacionados que proceden del mismo contexto de investigación para que puedan ser extraídos más fácilmente por parte de los usuarios. Los publicadores puede que tengan que publicar conjuntos de datos separados para superar las limitaciones del esquema en estrella de DwC. También puede que los publicadores elijan publicar conjuntos de datos separados de registros de presencia derivados de los mismos eventos de muestreo. La recomendación actual es vincularlos utilizando Project.ID."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:90
 msgid "#TODO:# Provide recommendations on how to make the dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc."
-msgstr ""
+msgstr "#TODO:# Proporcionar recomendaciones sobre cómo facilitar la interpretación del conjunto de datos incluyendo enlaces a trabajos publicados relacionados tales como artículos de prensa, notas de proyecto, tesis, etc."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:96
