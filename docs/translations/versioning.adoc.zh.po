@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:22\n"
+"PO-Revision-Date: 2021-08-17 08:57\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/versioning.adoc:1
 #, no-wrap
 msgid "Dataset Versioning Policy"
-msgstr ""
+msgstr "資料集版本政策"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:4
