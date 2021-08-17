@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 11:52+0000\n"
-"PO-Revision-Date: 2021-07-11 21:38\n"
+"PO-Revision-Date: 2021-08-17 16:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/translations.adoc:1
 #, no-wrap
 msgid "How to Translate"
-msgstr ""
+msgstr "Cómo traducir"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:4
@@ -242,7 +242,7 @@ msgstr ""
 #: en/modules/ROOT/pages/translations.adoc:89
 #, no-wrap
 msgid "Languages"
-msgstr ""
+msgstr "Idiomas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:92
