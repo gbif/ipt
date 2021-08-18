@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-18 16:34\n"
+"PO-Revision-Date: 2021-08-18 17:11\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -48,38 +48,38 @@ msgstr "No seleccione un directorio de datos que sea vulnerable a cambios o elim
 #: en/modules/ROOT/pages/installation.adoc:14
 #, no-wrap
 msgid "*The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan.*\n"
-msgstr ""
+msgstr "*Se debe realizar una copia de seguridad del directorio de datos con regularidad de acuerdo con un plan de recuperación de desastres adecuado.*\n"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:16
 msgid "Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation."
-msgstr ""
+msgstr "La pérdida del contenido del directorio de datos dará como resultado la pérdida de recursos, usuarios y otra información de configuración y personalizaciones para la instalación de IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:19
 msgid "If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory below, or during the first step of the IPT setup."
-msgstr ""
+msgstr "Si tiene un directorio de datos de un IPT que se estaba ejecutando anteriormente de la misma versión y desea usar esa configuración anterior (incluidos los usuarios y los recursos), puede ingresar la ruta absoluta de ese directorio de datos a continuación, o durante el primer paso de la configuración del IPT ."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:20
 #, no-wrap
 msgid "Installation method"
-msgstr ""
+msgstr "Método de instalación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:23
 msgid "There are several ways to install the IPT."
-msgstr ""
+msgstr "Hay varias formas de instalar el IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:25
 msgid "Users of *Red Hat*, *CentOS*, *Debian*, *Ubuntu* or similar may install directly from <<Installation from Linux packages,Linux packages>>.  This is the simplest method for the typical installation of a single IPT on a single server, and is also the easiest method to keep updated."
-msgstr ""
+msgstr "Los usuarios de * Red Hat *, * CentOS *, * Debian *, * Ubuntu * o similar pueden instalar directamente desde <<Instalación desde paquetes Linux, paquetes Linux >>. Este es el método más simple para la instalación típica de un solo IPT en un solo servidor, y también es el método más fácil de mantener actualizado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:26
 msgid "Other *Linux* users, all *MS Windows* users, and those who wish to run multiple IPTs on the same server should instead look at the section on <<Installation within a servlet container>>."
-msgstr ""
+msgstr "Otros usuarios de * Linux *, todos los usuarios de * MS Windows * y aquellos que deseen ejecutar múltiples IPT en el mismo servidor deberían consultar la sección sobre << Instalación dentro de un contenedor de servlets >>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:27
