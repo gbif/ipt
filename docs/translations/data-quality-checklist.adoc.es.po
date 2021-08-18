@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-18 09:29\n"
+"PO-Revision-Date: 2021-08-18 10:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -145,20 +145,21 @@ msgstr "| Check-ID | Campos | Requisitos\n\n"
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:46
 #, no-wrap
 msgid "If it was a species occurrence related event - how many species were there?"
-msgstr ""
+msgstr "Si fue un evento relacionado con presencia de especies - ¿cuántas especies había?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:52
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}.xml[GBIF Occurrence Status Vocabulary].\n"
-msgstr ""
+msgstr "| Check-ID | Fields | Requisitos\n\n"
+"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | La abundancia de especies debe completarse utilizando `individualCount` y la pareja `organismQuantity` & `organismQuantityType`. Para la abundancia relativa utiliza la pareja `organismQuantity` & `organismQuantityType` con valores para `organismQuantityType` procedentes del {latest-quantity-type}[Vocabulario GBIF para los Tipos Cuantitativos]. La abundancia cero (ausencia de especies) debe estar acompañada de `occurrenceStatus` marcada como \"ausencia\" por el {latest-occurrence-status}.xml[Vocabulario GBIF para el Estado de los Registros].\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:54
 #, no-wrap
 msgid "If it was a species occurrence related event - what species was it?"
-msgstr ""
+msgstr "Si fue un evento relacionado con presencia de especies - ¿qué especies había?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:61
@@ -166,13 +167,15 @@ msgstr ""
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the {latest-rank}[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
 "| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`).\n"
-msgstr ""
+msgstr "| Check-ID | Fields | Requisitos\n\n"
+"| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | El nombre científico completo con información sobre el autor y la fecha si se conocen debe ser incluidos en `scientificName`. Para evitar la ambigüedad, el `taxonRank` del nombre científico debería ser proporcionado como se indica en el {latest-rank}[Vocabulario GBIF sobre Clasificación Taxonómica]. Para evitar la ambigüedad, se debería también proporcionar el mayor nivel de taxonomía posible: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
+"| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | El identificador para el Taxón asignado al sujeto. Si el taxón se define de acuerdo a fuente bien conocidas, se recomienda rellenar el `nameAccordingTo` con el nombre de la fuente y el `nameAccordingToID` con el identificador para el Taxón asignado por la fuente (igual que en `taxonID`).\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:63
 #, no-wrap
 msgid "Case 1: Species observation from a camera trap"
-msgstr ""
+msgstr "Case 1: Observación de especies con una cámara trampa"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:85
