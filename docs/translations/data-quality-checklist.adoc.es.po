@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-18 10:24\n"
+"PO-Revision-Date: 2021-08-18 10:46\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -152,7 +152,7 @@ msgstr "Si fue un evento relacionado con presencia de especies - ¿cuántas espe
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}.xml[GBIF Occurrence Status Vocabulary].\n"
-msgstr "| Check-ID | Fields | Requisitos\n\n"
+msgstr "| Check-ID | Campos | Requisitos\n\n"
 "| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | La abundancia de especies debe completarse utilizando `individualCount` y la pareja `organismQuantity` & `organismQuantityType`. Para la abundancia relativa utiliza la pareja `organismQuantity` & `organismQuantityType` con valores para `organismQuantityType` procedentes del {latest-quantity-type}[Vocabulario GBIF para los Tipos Cuantitativos]. La abundancia cero (ausencia de especies) debe estar acompañada de `occurrenceStatus` marcada como \"ausencia\" por el {latest-occurrence-status}.xml[Vocabulario GBIF para el Estado de los Registros].\n"
 
 #. type: Title ====
@@ -167,7 +167,7 @@ msgstr "Si fue un evento relacionado con presencia de especies - ¿qué especies
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the {latest-rank}[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
 "| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`).\n"
-msgstr "| Check-ID | Fields | Requisitos\n\n"
+msgstr "| Check-ID | Campos | Requisitos\n\n"
 "| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | El nombre científico completo con información sobre el autor y la fecha si se conocen debe ser incluidos en `scientificName`. Para evitar la ambigüedad, el `taxonRank` del nombre científico debería ser proporcionado como se indica en el {latest-rank}[Vocabulario GBIF sobre Clasificación Taxonómica]. Para evitar la ambigüedad, se debería también proporcionar el mayor nivel de taxonomía posible: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
 "| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | El identificador para el Taxón asignado al sujeto. Si el taxón se define de acuerdo a fuente bien conocidas, se recomienda rellenar el `nameAccordingTo` con el nombre de la fuente y el `nameAccordingToID` con el identificador para el Taxón asignado por la fuente (igual que en `taxonID`).\n"
 
@@ -198,13 +198,30 @@ msgid "| Field | Value | Constraint\n\n"
 "| `taxonID` | http://www.gbif.org/species/5219219 | Must be a GUID or an identifier related to the source\n"
 "| `nameAccordingTo` | \"GBIF Backbone Taxonomy, May 2016\" | Must be reference including date\n"
 "| `nameAccordingToID` | \"http://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c\" | Must be a GUID or an identifier for the source\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `occurrenceID` | \"HAMAARAG:T0_L_049:6199\" | Debe ser un GUID o lo más cercano posible a un identificador único y global. Identificadores de números enteros no son validos.\n"
+"| `basisOfRecord` | \"MachineObservation\" | Debe coincidir con el {latest-basis-of-record}[Vocabulario de Tipos Darwin Core]\n"
+"| `individualCount` | 1 | Debe ser un número entero, 0 o superior\n"
+"| `organismQuantity` | 1 | Debe estar emparejado con `organismQuantityType`\n"
+"| `organismQuantityType` | \"individuals\" | Debe coincidir con el {latest-quantity-type}[Vocabulario GBIF sobre los Tipos Cuantitativos]\n"
+"| `occurrenceStatus` | \"present\" | Debe coincidir con el {latest-occurrence-status}[Vocabulario GBIF sobre el Estado de los Registros]\n"
+"| `scientificName` | \"Canis aureus Linnaeus, 1758\" | Debe ser el nombre científico completo, con información sobre el autor y la fecha si se conoce.\n"
+"| `taxonRank` | \"species\" | Debe coincidir con el {latest-rank}[Vocabulario GBIF sobre Clasificación de Taxones]\n"
+"| `kingdom` | \"Animalia\" | Debe ser el nombre científico completo del reino en el que está clasificado el taxón.\n"
+"| `phylum` | \"Chordata\" | Debe ser el nombre científico completo del filo o división en el que está clasificado el taxón.\n"
+"| `class` | \"Mammalia\" | Debe ser el nombre científico completo de la clase en la que está clasificado el taxón.\n"
+"| `order` | \"Carnivora\" | Debe ser el nombre científico completo del orden en el que está clasificado el taxón.\n"
+"| `family` | \"Canidae\" | Debe ser el nombre científico completo de la familia en la que está clasificado el taxón.\n"
+"| `genus` | \"Canis Linnaeus, 1758\" | Debe ser el nombre científico completo del género en el que está clasificado el taxón.\n"
+"| `taxonID` | http://www.gbif.org/species/5219219 | Debe ser un GUID o un identificador relacionado con la fuente.\n"
+"| `nameAccordingTo` | \"GBIF Backbone Taxonomy, May 2016\" | Debe ser una referencia que incluya fecha\n"
+"| `nameAccordingToID` | \"http://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c\" | Debe ser un GUID o un identificador para la fuente\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:87
 #, no-wrap
 msgid "Who acted in the event?"
-msgstr ""
+msgstr "¿Quién participó en el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:95
@@ -213,13 +230,16 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *who 1* | `recordedBy` | The full names of each person acting in the event (e.g. collecting, observing, etc) should be entered in `recordedBy` using the vertical bar as a separator. Note there is a separate field for capturing the person(s) making the identification (see below).\n"
 "| *who 2* | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen.\n"
 "| *who 3* | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *who 1* | `recordedBy` | Los nombres completos de cada persona que participó en el evento (ej.: colectando, observando, etc.) deberían ser introducidos en `recordedBy` utilizando la barra vertical como un separador. Tenga en cuenta que existe un campo separado para indicar la(s) persona(s) que realizó la identificación (ver más abajo).\n"
+"| *who 2* | `institutionCode`, `ownerInstitutionCode` | Un nombre o acrónimo de la institución que participó en el evento puede ser incluido en `institutionCode` y `ownerInstitutionCode`. Éstos pueden ser diferentes ya que `institutionCode` puede tener la custodia física de un espécimen y `ownerInstitutionCode` puede tener la propiedad legal del espécimen.\n"
+"| *who 3* | `identifiedBy` | Los nombres completos de cada persona, grupo u organización responsable de asignar el Taxón al sujeto en cuestión deberían se introducidos en `identifiedBy` utilizando la barra vertical como separador.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:97
 #, no-wrap
 msgid "Case 1: Two different people collecting and identifying a specimen"
-msgstr ""
+msgstr "Caso 1: Dos personas diferentes colectando e identificando un espécimen"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:106
@@ -229,13 +249,17 @@ msgid "| Field | Value | Constraint\n\n"
 "| `institutionCode` | \"ZMUC\" | Must be an acronym or name of an institution\n"
 "| `ownerInstitutionCode` | \"ZMUC\" | Must be an acronym or name of an institution\n"
 "| `identifiedBy` | \"Jan Pedersen\" | Must be names of one or more persons, groups or organizations\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `recordedBy` | \"Ole Karsholt\" | Debe ser el nombre de una o más personas\n"
+"| `institutionCode` | \"ZMUC\" | Debe ser un acrónimo o nombre de una institución\n"
+"| `ownerInstitutionCode` | \"ZMUC\" | Debe ser un acrónimo o nombre de una institución\n"
+"| `identifiedBy` | \"Jan Pedersen\" | Debe ser el nombre de una o más personas, grupo u organizaciones\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:108
 #, no-wrap
 msgid "When did the event take place?"
-msgstr ""
+msgstr "¿Cuándo tuvo lugar el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:118
