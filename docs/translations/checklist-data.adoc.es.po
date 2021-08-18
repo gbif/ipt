@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 11:05\n"
+"PO-Revision-Date: 2021-08-18 21:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -50,7 +50,7 @@ msgstr "Finalmente, sus datos deben ser transformados a una estructura de tabla 
 #: en/modules/ROOT/pages/checklist-data.adoc:12
 #: en/modules/ROOT/pages/occurrence-data.adoc:13
 msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
-msgstr "Intente poner sus datos en el <<Templates,Excel template>>, que incluye todos los <<Required DwC Fields,required DwC fields>> y los <<Recommended DwC Fields,recommended DwC fields>>."
+msgstr "Intente poner sus datos en el <<Modelos,modelo Excel>>, que incluye todos los <<Campos DwC requeridos,campos DwC requridos>> y los <<Campos DwC recomendados,campos DwC recomendados>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:14
@@ -61,7 +61,7 @@ msgstr "De manera alternativa, si sus datos están en una xref:database-connecti
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:16
 msgid "For extra guidance, you can refer to the guide xref:best-practices-checklists.adoc[Best Practices in Publishing Species Checklists] and look at the <<Exemplar Datasets,exemplar datasets>>."
-msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-checklists.adoc[Buenas Prácticas en la Publicación de Listados de Especies] y eche un vistazo a los <<Exemplar Datasets,exemplar datasets>>."
+msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-checklists.adoc[Buenas Prácticas en la Publicación de Listados de Especies] y eche un vistazo a los <<Conjuntos de datos ejemplares,conjuntos de datos ejemplares>>."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:17
