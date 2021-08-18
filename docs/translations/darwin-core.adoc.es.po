@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-17 15:33+0000\n"
-"PO-Revision-Date: 2021-08-18 07:30\n"
+"PO-Revision-Date: 2021-08-18 08:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -339,22 +339,22 @@ msgstr "Reconociendo que DwC solo cubre los metadatos básicos de la biodiversid
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:123
 msgid "Often multiple _subrecords_ for an extension is desired, such as many common names for a species or multiple images for a specimen.  In order to share these richer, related records the *star scheme* is used, whereby an extension consists of multiple records, each linked to a core dwc record. Any number of extension records potentially from different extensions (e.g. images & identification) for a single core record is possible."
-msgstr ""
+msgstr "A menudo, es deseable que haya múltiples _sub-registros_ para una extensión, como por ejemplo muchos nombres comunes para una especie o múltiples imágenes para un espécimen. Para compartir estos registros relacionados más enriquecidos se usa el esquema en estrella, por lo que una extensión consiste en múltiples registros, cada uno vinculado a un registro del núcleo dwc. Cualquier número de registro de extensiones potencialmente de diferentes extensiones (ej.: imágenes e identificaciones)  para un único registro del núcleo es posible."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:124
 #, no-wrap
 msgid "The Archive Format"
-msgstr ""
+msgstr "El Formato del Archivo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:130
 msgid "The Darwin Core Archive format provides a means to publish dwc records plus extensions in a relatively simple, text-based format.  A Darwin Core Archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file.  The format follows the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core text guidelines].  A typical package is illustrated in the diagram below and consists of components described in http://code.google.com/p/gbif-ecat/wiki/DwCArchive[details here]."
-msgstr ""
+msgstr "El Archivo Darwin Core proporciona un medio para publicar registros dwc más extensiones en un formato basado en texto relativamente sencillo. Un Archivo Darwin Core consta de un conjunto de ficheros de texto que son empaquetados en un paquete común y comprimidos en un único archivo. El formato sigue la http://rs.tdwg.org/dwc/terms/guides/text/index.htm[guía de textos Darwin Core]. Un paquete típico se ilustra en el diagrama de abajo y consta de los componentes descritos en detalle http://code.google.com/p/gbif-ecat/wiki/DwCArchive[aquí]."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/darwin-core.adoc:131
 #, no-wrap
 msgid "figures/dwca.png"
-msgstr ""
+msgstr "figures/dwca.png"
 
