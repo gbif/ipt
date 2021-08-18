@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 10:38\n"
+"PO-Revision-Date: 2021-08-12 21:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -157,7 +157,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:52
 msgid "Public URL"
-msgstr ""
+msgstr "URL pública"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:54

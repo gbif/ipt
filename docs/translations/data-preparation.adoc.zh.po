@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-06-28 11:11\n"
+"PO-Revision-Date: 2021-08-17 08:56\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/data-preparation.adoc:1
 #, no-wrap
 msgid "Data Preparation"
-msgstr ""
+msgstr "資料準備"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-preparation.adoc:3

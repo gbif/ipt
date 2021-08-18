@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:22\n"
+"PO-Revision-Date: 2021-08-17 15:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -22,179 +22,181 @@ msgstr ""
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
 #, no-wrap
 msgid "Prerequisites"
-msgstr ""
+msgstr "Prerrequisitos"
 
 #. type: Title =
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:1
 #, no-wrap
 msgid "Install Tomcat 8 on Windows"
-msgstr ""
+msgstr "Instalación de Tomcat 8 en Windows"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:4
 msgid "This tutorial explains how to install the Apache Tomcat Java Servlet 8 on Windows 8.1 Pro. This document is not tested to work with other versions of Tomcat. For complete details, consult the specific documentation for those software installations."
-msgstr ""
+msgstr "Este tutorial explica cómo instalar Apache Tomcat Java Servlet 8 en Windows Pro 8.1. Este documento no está probado para funcionar con otras versiones de Tomcat. Para obtener más información, consulte la documentación específica para la versión de software que requiere instalar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:7
 msgid "Please make sure the following conditions (software and version) are met before you continue."
-msgstr ""
+msgstr "Por favor asegúrese de cumplir las siguientes condiciones (software y versión) antes de continuar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:9
 msgid "The client version of Windows 8.1 Pro. This tutorial is written based on the 64-bit version of Windows 8.1 Professional."
-msgstr ""
+msgstr "La versión de cliente de Windows Pro 8.1. Este tutorial está escrito en base a la versión de 64 bits de Windows Professional 8.1"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:10
 msgid "The latest security upgrades."
-msgstr ""
+msgstr "Las últimas actualizaciones de seguridad."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:11
 msgid "Java 8 Framework installed. This tutorial is written based on version jre1.8.0_60 (Java Version 8 Update 60). Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in C:\\Program Files (x86)\\Java\\jre8. (Note from tester on Windows 8.1, I tried to install Java in the C:\\Program Files directory and it would not work. I had to put it in the (x86) folder)."
-msgstr ""
+msgstr "Instalación de Java 8 Framework. Este tutorial está escrito en base a la versión jre1.8.0_60 (Java Version 8 Update 60). Consulte http://java.com/en/download/ para instalar JRE. Esta página generalmente detectará su sistema operativo y le dará pistas sobre la versión correcta para descargar. Suponiendo que Java esté instalado en C:\\Archivos de programa (x86)\\Java\\jre8. (Nota del editor: En Windows 8.1, intenté instalar Java en el directorio C:\\Archivos de programa y no funcionó. Tuve que ponerlo en la carpeta (x86))."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:12
 msgid "Logged in as an administrator."
-msgstr ""
+msgstr "Inicio de sesión como administrador."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:13
 #, no-wrap
 msgid "Steps"
-msgstr ""
+msgstr "Pasos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:15
 #, no-wrap
 msgid "1. Download Tomcat 8.x"
-msgstr ""
+msgstr "1. Descargue Tomcat 8.x"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:18
 msgid "Download the latest stable Tomcat 8 Binary Distribution Core (32-bit/64-bit Windows Service Installer) release from https://tomcat.apache.org/download-80.cgi. This should put a file of the form apache-tomcat-8.x.x.exe (or apache-tomcat-8.x.x.tar if you download with Safari) into your Downloads folder."
-msgstr ""
+msgstr "Descargue la versión más reciente y estable de la distribución binaria de Tomcat 8 del núcleo (32-bit/64-bit Servicio Instalador de Windows) desde https://tomcat.apache.org/download-80.cgi. Esto debería descargar un archivo con el formato apache-tomcat-8.x.x.exe (o apache-tomcat-8.x.x.tar si lo descarga con Safari) en su carpeta de Descargas."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:19
 #, no-wrap
 msgid "2. Install Tomcat 8.x"
-msgstr ""
+msgstr "2. Instalación de Tomcat 8.x"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:22
 msgid "Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the tomcat_home.md[tomcat_home]/conf/tomcat-users.xml file and restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked)."
-msgstr ""
+msgstr "Haga doble clic en el ejecutable para iniciar el asistente de instalación. * Llene * la información para especificar * el puerto del conector *, * las credenciales de inicio de sesión del administrador de Tomcat * sin cambiar los roles. \n"
+"Si olvida proporcionar la información de las credenciales, tendrá que editar el archivo tomcat_home.md[tomcat_home]/conf/tomcat-users.xml y reiniciar Tomcat para refrescar los privilegios. (Tenga en cuenta que al probar este escenario, la configuración predeterminada del * puerto del conector * especificada ha \n"
+" funcionado)."
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:23
 #, no-wrap
 msgid "Apache Tomcat Setup Config Options"
-msgstr ""
+msgstr "Opciones de configuración de la instalación de Apache Tomcat "
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:23
 #, no-wrap
 msgid "screenshots/Capturetomcat1.JPG"
-msgstr ""
+msgstr "capturas de pantalla/Capturetomcat1.JPG"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:25
 #, no-wrap
 msgid "3. Run Tomcat"
-msgstr ""
+msgstr "Ejecutar Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:29
 msgid "Go to C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 8.0\\bin Double click the *tomcat8* application."
-msgstr ""
+msgstr "Vaya a C: \\Archivos de programa (x86)\\Apache Software Foundation\\Tomcat 8.0\\ bin Haga doble clic en la aplicación *tomcat8*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:31
 msgid "You should see a terminal window showing logs about starting up Tomcat. When you see"
-msgstr ""
+msgstr "Debería ver una ventana de consola que muestra el registro de los comandos de inicio de Tomcat. Cuando vea"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:34
 #, no-wrap
 msgid "INFO: Server startup in xxxx ms\n"
-msgstr ""
+msgstr "INFO: Server startup in xxxx ms\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:37
 msgid "That means the Tomcat is ready."
-msgstr ""
+msgstr "Eso significa que el Tomcat ha iniciado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:39
 msgid "You can also run the *tomcat8w* application by right-clicking it and choose \"run as administrator\". A service setting pane will be brought up, and you can decide you'd like to run Tomcat for once or make it start up automatically every time you boot Windows 8."
-msgstr ""
+msgstr "También puede ejecutar la aplicación * tomcat8w * haciendo clic con el botón derecho y eligiendo \"ejecutar como administrador\". Aparecerá un panel de configuración del servicio y puede decidir que desea ejecutar Tomcat por una vez o hacer que se inicie automáticamente cada vez que inicie Windows 8."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:41
 msgid "You can also start Tomcat (in Windows 8.1) from the Task Manager > Services tab."
-msgstr ""
+msgstr "También puede iniciar Tomcat (en Windows 8.1) desde el Administrador de tareas> pestaña Servicios."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:42
 #, no-wrap
 msgid "4. Test Tomcat"
-msgstr ""
+msgstr "4. Prueba de Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:44
 msgid "If Tomcat is running successfully following step 5, above, you should be able to see the Tomcat Welcome page at the following URL: http://localhost:8080/"
-msgstr ""
+msgstr "Si Tomcat se está ejecutando correctamente siguiendo el paso anterior, debería poder ver la página de bienvenida de Tomcat en la siguiente URL: http://localhost:8080/"
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:45
 #, no-wrap
 msgid "Tomcat Welcome Page"
-msgstr ""
+msgstr "Página de bienvenida de Tomcat"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:45
 #, no-wrap
 msgid "screenshots/Capturetomcat2.JPG"
-msgstr ""
+msgstr "captura de pantalla/Capturetomcat2.JPG"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:48
 msgid "With the admin credentials you entered during the setup wizard, you can access http://localhost:8080/manager/html where you can upload the ipt.war file to install IPT."
-msgstr ""
+msgstr "Con las credenciales de administrador que ingresó durante el asistente de configuración, puede acceder a http://localhost:8080/manager/html donde puede cargar el archivo ipt.war para instalar IPT."
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:49
 #, no-wrap
 msgid "Tomcat Manager Page"
-msgstr ""
+msgstr "Página de administración de Tomcat"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:49
 #, no-wrap
 msgid "screenshots/Capturetomcat4.JPG"
-msgstr ""
+msgstr "Captura de pantalla/Capturetomcat4.JPG"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:51
 #, no-wrap
 msgid "5. Shut down Tomcat"
-msgstr ""
+msgstr "5. Apagando Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:54
 msgid "Close the terminal windows will shut down Tomcat."
-msgstr ""
+msgstr "Cerrar la ventana de la terminal cerrará Tomcat."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:56
 msgid "Or, if you brought up Tomcat by using tomcat8w, stop Tomcat by clicking the stop button."
-msgstr ""
+msgstr "O, si abrió Tomcat usando tomcat8w, puede detener Tomcat haciendo clic en el botón de detener."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:57
 msgid "Or, in Task Manager > Services tab, stop Tomcat by \"right click\" and selecting \"stop\"."
-msgstr ""
+msgstr "O, en el Administrador de tareas> pestaña Servicios, detenga Tomcat haciendo \"clic derecho\" sobre el servicio  y seleccione \"detener\"."
 

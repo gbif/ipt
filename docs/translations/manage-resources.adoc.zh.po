@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-07-02 13:17\n"
+"PO-Revision-Date: 2021-08-17 08:23\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -96,7 +96,7 @@ msgstr "其他元數據"
 #: en/modules/ROOT/pages/manage-resources.adoc:1
 #, no-wrap
 msgid "Manage Resources Menu"
-msgstr ""
+msgstr "選單：資源管理"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:4

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-07-15 10:35\n"
+"PO-Revision-Date: 2021-08-17 21:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -29,26 +29,26 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:7
 #, no-wrap
 msgid "Suggested citation"
-msgstr ""
+msgstr "Citación sugerida"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #: en/modules/ROOT/pages/dwca-guide.adoc:30
 #, no-wrap
 msgid "figures/dwc-a_event.png"
-msgstr ""
+msgstr "imagenes/dwc-a_event.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:29
 #: en/modules/ROOT/pages/dwca-guide.adoc:218
 msgid "http://www.gnu.org/software/libiconv/"
-msgstr ""
+msgstr "http://www.gnu.org/software/libiconv/"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:30
 #: en/modules/ROOT/pages/dwca-guide.adoc:219
 msgid "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
-msgstr ""
+msgstr "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
@@ -62,7 +62,7 @@ msgstr ""
 #: en/modules/ROOT/pages/dwca-guide.adoc:225
 #, no-wrap
 msgid "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
-msgstr ""
+msgstr "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 
 #. type: Title =
 #: en/modules/ROOT/pages/dwca-guide.adoc:1

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-07-12 03:18\n"
+"PO-Revision-Date: 2021-08-12 21:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -102,7 +102,7 @@ msgstr "*Próxima publicación* - La fecha en la que el recurso será publicado 
 #: en/modules/ROOT/pages/home.adoc:20
 #, no-wrap
 msgid "RSS feed"
-msgstr ""
+msgstr "Canal RSS"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:22

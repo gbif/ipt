@@ -111,7 +111,7 @@ Checklists are confined to ± the taxonomic subset of all Darwin Core terms.
 See the xref:checklist-data.adoc[recommendations on how to publish species checklists].
 
 == The Darwin Core Archive
-Darwin Core archives (DwC-A) are the new, primary means of publishing data to the GBIF network.
+Darwin Core Archives (DwC-A) are the new, primary means of publishing data to the GBIF network.
 They contain an _entire dataset_, are based on _simple text files_ and can be created fairly easily without the IPT with _custom software_.
 
 === Darwin Core Extensions
@@ -123,8 +123,8 @@ In order to share these richer, related records the *star scheme* is used, where
 
 === The Archive Format
 
-The Darwin Core archive format provides a means to publish dwc records plus extensions in a relatively simple, text-based format.
-A Darwin Core archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file.
+The Darwin Core Archive format provides a means to publish dwc records plus extensions in a relatively simple, text-based format.
+A Darwin Core Archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file.
 The format follows the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core text guidelines].
 A typical package is illustrated in the diagram below and consists of components described in http://code.google.com/p/gbif-ecat/wiki/DwCArchive[details here].
 

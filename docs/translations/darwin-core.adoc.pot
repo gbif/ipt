@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
+"POT-Creation-Date: 2021-08-17 15:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -372,7 +372,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:116
 msgid ""
-"Darwin Core archives (DwC-A) are the new, primary means of publishing data "
+"Darwin Core Archives (DwC-A) are the new, primary means of publishing data "
 "to the GBIF network.  They contain an _entire dataset_, are based on _simple "
 "text files_ and can be created fairly easily without the IPT with _custom "
 "software_."
@@ -413,8 +413,8 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:130
 msgid ""
-"The Darwin Core archive format provides a means to publish dwc records plus "
-"extensions in a relatively simple, text-based format.  A Darwin Core archive "
+"The Darwin Core Archive format provides a means to publish dwc records plus "
+"extensions in a relatively simple, text-based format.  A Darwin Core Archive "
 "consists of a set of text files that are bundled into a common package and "
 "then zipped into a single archive file.  The format follows the http://rs."
 "tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core text guidelines].  A "
