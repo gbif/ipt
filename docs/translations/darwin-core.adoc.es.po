@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-17 15:33+0000\n"
-"PO-Revision-Date: 2021-08-17 15:55\n"
+"PO-Revision-Date: 2021-08-18 00:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,24 +25,24 @@ msgstr "Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:5
 msgid "Darwin Core is a http://www.tdwg.org/activities/darwincore/[TDWG] standard, which is based on the ideas of the popular http://dublincore.org/documents/dcmi-terms/[terms from the Dublin Core Metadata Initiative].  A fundamental principle of the Darwin Core as a library of terms is to keep the definition of terms distinct from the technology used to share them, e.g. XML or RDF."
-msgstr ""
+msgstr "Darwin Core es un estándar http://www.tdwg.org/activities/darwincore/[TDWG], el cual se basa en las ideas del popular http://dublincore.org/documents/dcmi-terms/[Dublin Core Metadata Initiative]. Un principio fundamental de el Darwin Core como una biblioteca de términos es mantener la definición de los términos separada de la tecnología usada para compartirla, p. ej. XML o RDF."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:6
 #, no-wrap
 msgid "IPT and Darwin Core"
-msgstr ""
+msgstr "IPT y Darwin Core"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:8
 msgid "The IPT has core biodiversity data types built-in, which are based on Darwin Core (DwC) terms. The dataset types are Occurrence, Checklist, and Metadata records, each of which has a fixed set of terms to describe it."
-msgstr ""
+msgstr "El IPT tiene integrados los principales tipos de datos de biodiversidad, se basa en los términos de Darwin Core. Los tipos de conjuntos de datos son registros de presencia \"Occurrence\", lista de verificación \"Checklist\" y metadatos \"Metadata\", cada uno de los cuales tiene un conjunto fijo de términos para describirlo."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:9
 #, no-wrap
 msgid "Darwin Core History"
-msgstr ""
+msgstr "Historia del Darwin Core"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:13
@@ -53,12 +53,12 @@ msgstr ""
 #: en/modules/ROOT/pages/darwin-core.adoc:14
 #, no-wrap
 msgid "Terms"
-msgstr ""
+msgstr "Términos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:16
 msgid "All Darwin Core terms are defined in http://rs.tdwg.org/dwc/terms/index.htm[Darwin Core Terms: a quick reference guide]."
-msgstr ""
+msgstr "Todos los términos Darwin Core son definidos en  http://rs.tdwg.org/dwc/terms/index.htm[Términos de Darwin Core: una guía de referencia rápida]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:20
