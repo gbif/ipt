@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-18 08:31\n"
+"PO-Revision-Date: 2021-08-18 08:59\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -46,7 +46,7 @@ msgstr "El listado de especies ayudará a asegurar que los datos están completo
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:8
 msgid "<<What event happened?>>"
-msgstr "<<¿Qué evento ha tenido lugar?>>"
+msgstr "<<¿Qué evento tuvo lugar?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:9
@@ -97,17 +97,17 @@ msgstr "A continuación, lea los metadatos del conjunto de datos para lograr un 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:26
 msgid "Next, load the data into https://openrefine.org/[OpenRefine]. This will allow https://docs.openrefine.org/manual/facets[faceted browsing] to get the big picture of the data."
-msgstr ""
+msgstr "Después, cargue los datos en https://openrefine.org/[OpenRefine]. Esto permitirá la https://docs.openrefine.org/manual/facets[navegación por temas] para obtener una visión de los datos a grandes rasgos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:28
 msgid "There are various ways each of the five Ws can be answered. Each 'check' relates to one or more Darwin Core fields. Therefore try to perform as many checks as possible based on the Darwin Core fields present in the dataset."
-msgstr ""
+msgstr "Existen varias vías para responder a las preguntas de más arriba. Cada \"comprobación\" se relaciona con uno o más campos Darwin Core. Por ello, intente realizar tantas comprobaciones como sea posible basadas en los campos Darwin Core incluidos en el conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:30
 msgid "Compile a list of all checks that fail and report them back to the data publisher, referring to each check by its 'Check-ID'. This will make providing feedback a less time consuming and verbose process."
-msgstr ""
+msgstr "Elabore una lista con todos los fallos y repórtelos al publicador de datos, haciendo referencia a cada comprobación mediante su 'Check-ID'. Esto hará que compartir comentarios sea un proceso detallado y que requiera menos tiempo."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:31
@@ -119,13 +119,13 @@ msgstr "Controles de calidad"
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:33
 #, no-wrap
 msgid "What event happened?"
-msgstr ""
+msgstr "¿Qué evento tuvo lugar?"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:35
 #, no-wrap
 msgid "What type of event was it?"
-msgstr ""
+msgstr "¿Qué tipo de evento fue?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:44
