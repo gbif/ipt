@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-17 15:33+0000\n"
-"PO-Revision-Date: 2021-08-18 06:48\n"
+"PO-Revision-Date: 2021-08-18 07:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -116,51 +116,52 @@ msgstr "La geografía y la taxonomía se pueden expresar como una jerarquía fle
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:41
 msgid "Taxonomic denormalized classification: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus`"
-msgstr ""
+msgstr "Clasificación taxonómica desnormalizada: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus`"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:42
 msgid "Geographic denormalized classification: `continent`, `waterBody`, `islandGroup`, `island`, `country` / `countryCode`, `stateProvince`, `county`, `municipality`"
-msgstr ""
+msgstr "Clasificación geográfica desnormalizada: `continent`, `waterBody`, `islandGroup`, `island`, `country` / `countryCode`, `stateProvince`, `county`, `municipality`"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:45
 msgid "As with full text ID terms above this introduces the possibility of _data integrity problems_, as the ID term might resolve into something different than the denormalized hierarchy. In this case the IPT follows the recommendation of the following precedence of terms for resolving the hierarchy:"
-msgstr ""
+msgstr "Al igual que con los términos ID de texto completo de arriba, éste introduce la posibilidad de _problemas de integridad de datos_ ya que el término ID podría resultar en algo diferente a la jerarquía desnormalizada. En este caso, el IPT sigue la recomendación del siguiente orden de términos para resolver la jerarquía:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/darwin-core.adoc:49
 #, no-wrap
 msgid "ID term >> Text term >> Denormalized term\n"
 "higherTaxonID >> higherTaxon >> kingdom,family,...\n"
-msgstr ""
+msgstr "Término ID >> término en texto >> término desnormalizado\n"
+"higherTaxonID >> higherTaxon >> kingdom,family,...\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:51
 #, no-wrap
 msgid "Verbatim terms"
-msgstr ""
+msgstr "Términos literales"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:55
 msgid "Quite a few terms have a corresponding verbatim term. This is to cater the publication of the exact verbatim transcription of certain attributes as they were found in the underlying specimen label, observation fieldbook or literature. This way the `verbatimEventDate` can be used to publish the exact transcription of the collecting date, while `eventDate` can be encoded in a standard ISO date time representation."
-msgstr ""
+msgstr "Algunos términos poseen su término literal correspondiente. Esto permite incluir la publicación de la transcripción original exacta de ciertos atributos tal y como se encontraron en la etiqueta del espécimen, la observación del cuaderno de campo o la bibliografía. De esta forma el `verbatimEventDate` puede ser utilizado para publicar la transcripción exacta de la fecha de colecta, mientras `eventDate` puede ser codificado en una representación estándar ISO de tiempo y fecha."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:56
 #, no-wrap
 msgid "Primary data"
-msgstr ""
+msgstr "Datos primarios"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:60
 msgid "All DwC terms can be used to describe an occurrence record.  It is recommended to publish at least the following terms.  Terms flagged with !!! have to be present to be recognized by the current GBIF indexing:"
-msgstr ""
+msgstr "Todos los términos DwC se pueden usar para describir registros de presencias de especies. Se recomienda publicar al menos los siguientes términos. Los términos marcados con !!! tienen que ser incluidos obligatoriamente para que el actual indexado de GBIF los reconozca:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:62
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord[basisOfRecord] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord[basisOfRecord] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:63
