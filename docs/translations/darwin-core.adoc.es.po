@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-17 15:33+0000\n"
-"PO-Revision-Date: 2021-08-18 07:12\n"
+"PO-Revision-Date: 2021-08-18 07:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -166,83 +166,83 @@ msgstr "http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord[basisOfRecord] !!!"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:63
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID[occurrenceID]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID[occurrenceID]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:64
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#institutionCode[institutionCode] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#institutionCode[institutionCode] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:65
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#collectionCode[collectionCode] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#collectionCode[collectionCode] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:66
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber[catalogNumber] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber[catalogNumber] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:67
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#recordedBy[recordedBy]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#recordedBy[recordedBy]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:68
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#eventDate[eventDate]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#eventDate[eventDate]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:69
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#year[year]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#year[year]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:70
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#typeStatus[typeStatus]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#typeStatus[typeStatus]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:71
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#scientificName[scientificName] !!!"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#scientificName[scientificName] !!!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:72
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#kingdom[kingdom]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#kingdom[kingdom]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:73
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#family[family]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#family[family]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:74
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#locality[locality]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#locality[locality]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:75
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#decimalLongitude[decimalLongitude]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#decimalLongitude[decimalLongitude]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:76
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#decimalLatitude[decimalLatitude]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#decimalLatitude[decimalLatitude]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:77
 msgid "http://rs.tdwg.org/dwc/terms/index.htm#coordinateUncertaintyInMeters[coordinateUncertaintyInMeters]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#coordinateUncertaintyInMeters[coordinateUncertaintyInMeters]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:78
 #, no-wrap
 msgid "Example"
-msgstr ""
+msgstr "Ejemplo"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/darwin-core.adoc:106
@@ -272,45 +272,69 @@ msgid "occurrenceID=96db9d09-596d-409c-8626-f4460078d0eb\n"
 "genus=Festuca\n"
 "specificEpithet=anatolica\n"
 "infraspecificEpithet=anatolica\n"
-msgstr ""
+msgstr "occurrenceID=96db9d09-596d-409c-8626-f4460078d0eb\n"
+"institutionCode=BGBM\n"
+"collectionCode=B\n"
+"basisOfRecord=preservedspecimen\n"
+"catalogNumber=1159\n"
+"eventDate=1999-08-06 00:00:00.0\n"
+"collector=Markus Döring\n"
+"continent=Asia\n"
+"country=TR\n"
+"stateProvince=Adana\n"
+"locality=Aladaglari, lower Narpiz Deresi, next to fountain, 2900m\n"
+"minimumElevationInMeters=2900\n"
+"decimalLatitude=37.82800\n"
+"decimalLongitude=35.13600\n"
+"geodeticDatum=WGS84\n"
+"identifiedBy=Markus Döring\n"
+"scientificName=Festuca anatolica subsp. anatolica\n"
+"kingdom=Plantae\n"
+"phylum=Magnoliophyta\n"
+"class=\n"
+"order=Cyperales\n"
+"family=Poaceae\n"
+"genus=Festuca\n"
+"specificEpithet=anatolica\n"
+"infraspecificEpithet=anatolica\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:108
 #, no-wrap
 msgid "Checklists"
-msgstr ""
+msgstr "Listados de especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:110
 msgid "Checklists are confined to ± the taxonomic subset of all Darwin Core terms."
-msgstr ""
+msgstr "Los listados de especies se limitan al ± subconjunto taxonómico de todos los términos Darwin Core."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:112
 msgid "See the xref:checklist-data.adoc[recommendations on how to publish species checklists]."
-msgstr ""
+msgstr "Ver las xref:checklist-data.adoc[recomendaciones sobre cómo publicar listados de especies]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:113
 #, no-wrap
 msgid "The Darwin Core Archive"
-msgstr ""
+msgstr "El Archivo Darwin Core"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:116
 msgid "Darwin Core Archives (DwC-A) are the new, primary means of publishing data to the GBIF network.  They contain an _entire dataset_, are based on _simple text files_ and can be created fairly easily without the IPT with _custom software_."
-msgstr ""
+msgstr "Los Archivos Darwin Core (DwC-A) son los nuevos medios primarios de publicación de datos en la red de GBIF. Contienen un _conjunto de datos completo_ están basado en _ficheros de texto simple_ y pueden ser creados da manera bastante sencilla sin el IPT con _programas personalizados_."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:117
 #, no-wrap
 msgid "Darwin Core Extensions"
-msgstr ""
+msgstr "Extensiones Darwin Core"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:120
 msgid "Recognizing that DwC only covers the core biodiversity metadata, extensions to Darwin core are a common need across all communities.  The simplest way to do so is to create new terms in a new namespace and simply extend a regular dwc record with these terms."
-msgstr ""
+msgstr "Reconociendo que DwC solo cubre los metadatos básicos de la biodiversidad, las extensiones a ese núcleo Darwin son una necesidad común para todas las comunidades. La forma más sencilla de hacerlas es crear nuevos términos en un nuevo espacio de nombres y simplemente ampliar un registro corriente dwc con estos términos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:123
