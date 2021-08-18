@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-18 17:11\n"
+"PO-Revision-Date: 2021-08-18 23:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -85,43 +85,45 @@ msgstr "Otros usuarios de * Linux *, todos los usuarios de * MS Windows * y aque
 #: en/modules/ROOT/pages/installation.adoc:27
 #, no-wrap
 msgid "*Docker* images are also available, see <<Installation using Docker>>.\n"
-msgstr ""
+msgstr "* Docker * Las imágenes también están disponibles, puede consultarse en<<Installation using Docker>>\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:28
 #, no-wrap
 msgid "Installation from Linux packages"
-msgstr ""
+msgstr "Instalación desde paquetes de Linux"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/installation.adoc:30
 #, no-wrap
 msgid "RPM (Red Hat, CentOS etc)"
-msgstr ""
+msgstr "RPM (Red Hat, CentOS etc)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:33
 msgid "To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:"
-msgstr ""
+msgstr "Para instalar IPT en Red Hat 7, CentOS 7 o similar, primero agregue el repositorio de paquetes GBIF e instale el paquete IPT:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:38
 #, no-wrap
 msgid "yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
 "yum install ipt\n"
-msgstr ""
+msgstr "yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
+"yum install ipt\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:41
 msgid "Optionally, edit `/etc/sysconfig/ipt` to change the default data directory and port.  Finally:"
-msgstr ""
+msgstr "Opcionalmente, edite `/etc/sysconfig/ipt` para cambiar el puerto y el directorio de datos predeterminados. Finalmente:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:46
 #, no-wrap
 msgid "systemctl enable ipt\n"
 "systemctl start ipt\n"
-msgstr ""
+msgstr "systemctl enable ipt\n"
+"systemctl start ipt\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:49
