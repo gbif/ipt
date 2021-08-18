@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-17 23:35\n"
+"PO-Revision-Date: 2021-08-18 00:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -52,7 +52,7 @@ msgstr "Servidor de la Base de Datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:11
 msgid "setup a SQL view to use functions (can also be done in IPT SQL source definition)"
-msgstr "configurar una vista SQL para usar funciones (también se puede hacer en IPT definición de fuente SQL )"
+msgstr "configurar una vista SQL para usar funciones (también se puede hacer en IPT definición de fuente SQL)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:12
@@ -162,7 +162,7 @@ msgstr "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 #: en/modules/ROOT/pages/data-preparation.adoc:40
 #, no-wrap
 msgid "Utility: Unix Stream Editor,  SED"
-msgstr "Comando: Editor de secuencias de Unix (SED)."
+msgstr "Herramienta: Editor de secuencias de Unix, SED"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:43
