@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-17 15:33+0000\n"
-"PO-Revision-Date: 2021-08-18 06:22\n"
+"PO-Revision-Date: 2021-08-18 06:48\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -95,7 +95,7 @@ msgstr "En ausencia de un identificador se pueden utilizar para referirse a otro
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:32
 msgid "They provide a human readable context that persists even if the identifier cannot be resolved"
-msgstr "Proporcionan un contexto legible por humanos que persiste incluso si el identificador no puede ser resuelto"
+msgstr "Proporcionan un contexto legible que persiste incluso si el identificador no puede ser resuelto"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:34
@@ -111,7 +111,7 @@ msgstr "Jerarquías desnormalizadas"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:39
 msgid "The geography and taxonomy can be expressed as a flexible hierarchy of places or taxa through the terms `higherParentNameUsage(ID)` and `higherGeography(ID)`.  In addition to this _adjacency list_ , the most popular ranks can be published as a denormalized hierarchy for each record, effectively repeating this information across many records. But it does provide a quick, short and human readable classification for each record in isolation of the entire dataset."
-msgstr ""
+msgstr "La geografía y la taxonomía se pueden expresar como una jerarquía flexible de lugares o taxones a través de los términos `higherParentNameUsage(ID)` y `higherGeography(ID)`. Además de esta _lista adyacente_, las clasificaciones más populares se pueden publicar como una jerarquía desnormalizada para cada registro, repitiendo de manera efectiva esta información a través de muchos registros. Pero proporciona una clasificación corta, rápida y legible para cada registro aislado del conjunto de datos completo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:41
