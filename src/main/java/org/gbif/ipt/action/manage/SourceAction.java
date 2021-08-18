@@ -25,7 +25,6 @@ import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
-import org.gbif.ipt.service.NotTextFileException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -35,6 +34,7 @@ import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
@@ -83,6 +83,12 @@ public class SourceAction extends ManagerBaseAction {
     this.dataDir = dataDir;
   }
 
+  public static void main(String[] args) throws Exception {
+    HttpURLConnection connection = (HttpURLConnection) URI.create("http://download.gbif.org/mpodolskiy/occurrence.txt").toURL().openConnection();
+    int responseCode = connection.getResponseCode();
+    System.out.println(connection.getContentType());
+  }
+
   public String add() throws IOException {
     if ("source-sql".equals(sourceType)) {
       // prepare a new, empty sql source
@@ -94,12 +100,30 @@ public class SourceAction extends ManagerBaseAction {
       source = new UrlSource();
       source.setResource(resource);
       URI urlWrapped = URI.create(url);
+
+      // check URL is fine otherwise throw an exception
       try {
-        addUrl(urlWrapped);
-      } catch (NotTextFileException e) {
-        addActionError(getText("manage.source.invalidUrl"));
+        HttpURLConnection connection = (HttpURLConnection) urlWrapped.toURL().openConnection();
+        int responseCode = connection.getResponseCode();
+
+        // check not found
+        if (responseCode == 404) {
+          addActionError(getText("manage.source.url.notFound", new String[] {url}));
+          return ERROR;
+        }
+
+        // check text file (or no extension)
+        String extension = FilenameUtils.getExtension(url);
+        if (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension)) {
+          addActionError(getText("manage.source.url.invalid", new String[] {url}));
+          return ERROR;
+        }
+      } catch (IOException e) {
+        addActionError(getText("manage.source.url.invalid", new String[] {url}));
         return ERROR;
       }
+
+      addUrl(urlWrapped);
     } else {
       // prepare a new, empty file source
       source = new TextFileSource();
@@ -179,7 +203,7 @@ public class SourceAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  private void addUrl(URI url) throws NotTextFileException {
+  private void addUrl(URI url) {
     String filename = FilenameUtils.getBaseName(url.toString());
     Source existingSource = resource.getSource(filename);
     boolean replaced = existingSource != null;
@@ -506,7 +530,7 @@ public class SourceAction extends ManagerBaseAction {
       } else if (id == null && resource.getSources().contains(source)) {
         addFieldError("source.name", getText("manage.source.unique"));
       }
-      if (SqlSource.class.isInstance(source)) {
+      if (source instanceof SqlSource) {
         // SQL SOURCE
         SqlSource src = (SqlSource) source;
         // pure ODBC connections need only a DSN, no server

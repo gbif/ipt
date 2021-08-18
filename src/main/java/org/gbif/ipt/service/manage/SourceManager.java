@@ -6,7 +6,6 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
-import org.gbif.ipt.service.NotTextFileException;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -51,9 +50,8 @@ public interface SourceManager {
    * @return URL source that has been added
    *
    * @throws ImportException if the file can't be copied or read
-   * @throws NotTextFileException if the source is not a text file
    */
-  UrlSource add(Resource resource, URI url) throws ImportException, NotTextFileException;
+  UrlSource add(Resource resource, URI url) throws ImportException;
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will

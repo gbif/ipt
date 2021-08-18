@@ -376,16 +376,15 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
-  public UrlSource add(Resource resource, URI url) throws ImportException, NotTextFileException {
+  public UrlSource add(Resource resource, URI url) throws ImportException {
     LOG.debug("ADDING URL SOURCE " + url);
 
     UrlSource src;
     String filename = FilenameUtils.getName(url.toString());
-    String suffix = FilenameUtils.getExtension(url.toString());
     String name = FilenameUtils.getBaseName(url.toString());
     LOG.debug("File name: {}", filename);
 
-    if (name != null && suffix != null && (suffix.equals("txt") || suffix.equals("tsv") || suffix.equals("csv"))) {
+    if (name != null) {
       src = new UrlSource();
       File file = new File(dataDir.tmpDir(), filename);
 
@@ -422,8 +421,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       analyze(src);
       return src;
     } else {
-      LOG.error("Text file expected behind URL");
-      throw new NotTextFileException("Not a text file. Extension must be one of these: .txt, .tsv, .csv");
+      throw new ImportException("Failed to get URL source's name");
     }
   }
 

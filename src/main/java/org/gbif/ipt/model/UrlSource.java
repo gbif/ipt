@@ -16,6 +16,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -156,7 +157,7 @@ public class UrlSource extends SourceBase implements RowIterable {
         }
       }
     } catch (IOException e) {
-      LOG.warn("Cant read source " + getName(), e);
+      LOG.warn("Can't read source " + getName(), e);
     }
 
     return columns;
@@ -164,13 +165,17 @@ public class UrlSource extends SourceBase implements RowIterable {
 
   public Set<Integer> analyze() throws IOException {
     LOG.debug("Analyzing URL source {}", url);
-    if (file == null) {
-      LOG.debug("File is absent, downloading from the url");
-      try (InputStream in = url.toURL().openStream()) {
-        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        setFile(file);
-      }
+    Set<Integer> emptyLines = new HashSet<>();
+
+    try (InputStream in = url.toURL().openStream()) {
+      Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      setFile(file);
+    } catch (IOException e) {
+      LOG.error("URL not readable {}", url);
+      setReadable(false);
+      return emptyLines;
     }
+
     setFileSize(file.length());
 
     CSVReader reader = CSVReaderFactory.build(file, getEncoding(), getFieldsTerminatedBy(), getFieldQuoteChar(), getIgnoreHeaderLines());
@@ -181,7 +186,7 @@ public class UrlSource extends SourceBase implements RowIterable {
     setColumns(reader.header == null ? 0 : reader.header.length);
     setRows(reader.getReadRows());
     setReadable(true);
-    Set<Integer> emptyLines = reader.getEmptyLines();
+    emptyLines = reader.getEmptyLines();
     reader.close();
     return emptyLines;
   }
