@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-18 10:46\n"
+"PO-Revision-Date: 2021-08-18 11:55\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -270,13 +270,18 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. If the start date resolution is specific to the day fill in `startDayOfYear`.\n"
 "| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Although it appears redundant, it is recommended trying to fill in `eventTime`, `year`, `month`, `day`, `startDayOfYear` and `endDayOfYear` for date ranges as completely as possible. If there is a date range spanning days, `day` is left blank. If there is a date range spanning months, `month` is left blank. If there is a date range spanning years, `year` is left blank. If the start date resolution is specific to the day fill in `startDayOfYear`. If the end date resolution is specific to the day fill in `endDayOfYear`.\n"
 "| *when 5* | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks`\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *when 1* | `eventDate` | La fecha, fecha-hora, rango de fecha o rango de fecha-hora durante la cual ocurrió el Evento debería ser introducido en `eventDate` en formato https://en.wikipedia.org/wiki/ISO_8601[ISO 8601]. Las fechas parciales pueden ser proporcionadas si incluyen al menos un año y mes, ej.: \"2007-03\".\n"
+"| *when 2* | `verbatimEventDate` | Si hay que convertir el valor original en https://en.wikipedia.org/wiki/ISO_8601[ISO 8601] `verbatimEventDate` debería ser completado con ese valor original.\n"
+"| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Aunque parezca repetitivo, se recomienda intentar rellenar el `year`, `month`, `day`, `eventTime` y `startDayOfYear` para fechas/fechas-horas únicas. Si la resolución de la fecha de inicio es específica para el día, rellenar en `startDayOfYear`.\n"
+"| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Aunque parezca repetitivo, se recomienda intentar rellenar lo más completo posible el `year`, `month`, `day`, `startDayOfYear` y `endDayOfYear` en el caso de rangos de fechas. Si el rango de fechas abarca varios días, dejar en blanco el campo `day`.  Si el rango de fechas abarca varios meses, dejar en blanco el campo `month`. Si el rango de fechas abarca varios años, dejar en blanco el campo `year`. Si la resolución de la fecha de inicio es específica para el día, rellenar en `startDayOfYear`. Si la resolución de la fecha de fin es específica para el día, rellenar en `endDayOfYear`.\n"
+"| *when 5* | `eventRemarks` | Si no se puede rellenar el campo `eventDate`, se debería al menos proporcionar una explicación en el campo `eventRemarks`\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:120
 #, no-wrap
 msgid "Case 1: Single date"
-msgstr ""
+msgstr "Caso 1: Fecha única"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:131
@@ -288,13 +293,19 @@ msgid "| Field | Value | Constraint\n\n"
 "| `day` | 20 | Must be between 1-31\n"
 "| `startDayOfYear` | 79 | Must be between 1-366\n"
 "| `verbatimEventDate` | \"Mar 20, 07\" | Original date or date description\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `eventDate` | 2007-03-20 | Debe estar en formato https://en.wikipedia.org/wiki/ISO_8601[ISO 8601]\n"
+"| `year` | 2007 | Debe ser un año de cuatro dígitos\n"
+"| `month` | 3 | Debe estar entre 1-12\n"
+"| `day` | 20 | Debe estar entre 1-31\n"
+"| `startDayOfYear` | 79 | Debe estar entre 1-366\n"
+"| `verbatimEventDate` | \"Mar 20, 07\" | La fecha original o la descripción de la fecha\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:133
 #, no-wrap
 msgid "Case 2: Date-time range spanning days"
-msgstr ""
+msgstr "Caso 2: Rango de fecha-hora abarcando varios días"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:146
@@ -308,13 +319,21 @@ msgid "| Field | Value\n\n"
 "| `startDayOfYear` | 79\n"
 "| `endDayOfYear` | 86\n"
 "| `verbatimEventDate` | \"The third week in March 07, for 6 hours starting at midnight.\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `eventDate` | 2007-03-20T00:00:00Z/2007-03-27T06:00:00Z\n"
+"| `eventTime` | 00:00:00Z/06:00:00Z\n"
+"| `year` | 2007\n"
+"| `month` | 3\n"
+"| `day` |\n"
+"| `startDayOfYear` | 79\n"
+"| `endDayOfYear` | 86\n"
+"| `verbatimEventDate` | \"La tercera semana de Marzo de 2007, durante 6 horas, empezando a medianoche.\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:148
 #, no-wrap
 msgid "Case 3: Partial date"
-msgstr ""
+msgstr "Caso 3: Fecha parcial"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:158
@@ -325,26 +344,32 @@ msgid "| Field | Value\n\n"
 "| `month` | 3\n"
 "| `day` |\n"
 "| `eventRemarks` | \"Exact collection day was never recorded\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `eventDate` | 2007-03\n"
+"| `year` | 2007\n"
+"| `month` | 3\n"
+"| `day` |\n"
+"| `eventRemarks` | \"El día exacto de la colecta nunca se registró\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:160
 #, no-wrap
 msgid "Case 4: Missing date"
-msgstr ""
+msgstr "Caso 4: Falta fecha"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:166
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `eventRemarks` | \"Event date was not found in legacy data\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `eventRemarks` | \"La fecha del evento no se encontró en los datos heredados\"\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:168
 #, no-wrap
 msgid "Where did the event take place?"
-msgstr ""
+msgstr "¿Dónde tuvo lugar el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:181
