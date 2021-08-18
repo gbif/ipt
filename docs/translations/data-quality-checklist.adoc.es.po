@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-18 08:07\n"
+"PO-Revision-Date: 2021-08-18 08:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -81,18 +81,18 @@ msgstr "De manera adicional, el listado de especies asegura que los <<Metadatos 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:20
 msgid "If the dataset has been registered with GBIF, give yourself a running start by reviewing the dataset's 'Stats' page. Here you can find the set of issues that GBIF discovered while interpreting the dataset:"
-msgstr ""
+msgstr "Si el conjunto de datos ha sido registrado con GBIF, comience revisando la página de \"Estadísticas\" del conjunto de datos. Aquí encontrará las incidencias que GBIF descubrió al interpretar el conjunto de datos:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:21
 #, no-wrap
 msgid "ipt2/InterpretationIssues2.png"
-msgstr ""
+msgstr "ipt2/InterpretationIssues2.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:24
 msgid "Next, read the dataset metadata to get a better understanding about the data."
-msgstr ""
+msgstr "A continuación, lea los metadatos del conjunto de datos para lograr un mejor conocimiento de los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:26
