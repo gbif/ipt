@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-13 20:56\n"
+"PO-Revision-Date: 2021-08-17 20:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -122,13 +122,13 @@ msgstr ""
 #: en/modules/ROOT/pages/glossary.adoc:19
 #, no-wrap
 msgid "*Resource* - in this user manual, resource refers to a data set and the metadata about it.\n"
-msgstr ""
+msgstr "*Recurso* - en este manual de usuario, un recurso se refiere a un conjunto de datos y los metadatos al respecto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:20
 #, no-wrap
 msgid "*Resource Managers* - IPT users having a role that allows them to create, change, and remove resources.\n"
-msgstr ""
+msgstr "*Administradores de Recurso* - los usuarios de IPT que tienen un rol que les permite crear, modificar, y remover recursos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:21
@@ -146,7 +146,7 @@ msgstr ""
 #: en/modules/ROOT/pages/glossary.adoc:23
 #, no-wrap
 msgid "*Sampling Event Resource* - A resource where the basis of the resource is sampling events as defined in the Darwin Core.\n"
-msgstr ""
+msgstr "*Recurso de Evento de Muestreo* - Un recurso donde la base del mismo son eventos de muestreo como se encuentran definidos en Darwin Core.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:24
@@ -158,11 +158,11 @@ msgstr ""
 #: en/modules/ROOT/pages/glossary.adoc:25
 #, no-wrap
 msgid "*Source Data* - in this user manual, the source data are the data that are mapped to core types and extensions within a resource and may consist of text files or a database.\n"
-msgstr ""
+msgstr "*Datos Origen* - en este manual de usuario, los datos origen son los datos que están relacionados a los tipos de core y a extensiones dentro de un recurso, y pueden consistir en archivos de texto o una base de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:25
 #, no-wrap
 msgid "*Visibility* - a term describing how a resource may be viewed (private, public, or registered).\n"
-msgstr ""
+msgstr "*Visibilidad* - un término que describe cómo se puede ver un recurso (privado, público, o registrado).\n"
 
