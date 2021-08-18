@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 16:31\n"
+"PO-Revision-Date: 2021-08-18 08:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -41,32 +41,32 @@ msgstr "Use esta lista de comprobación para ayudar a revisar los conjuntos de d
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:6
 msgid "The checklist will help ensure that the data is complete, meaning it contains valid answers to the five Ws:"
-msgstr ""
+msgstr "El listado de especies ayudará a asegurar que los datos están completos, respondiendo a las siguientes preguntas:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:8
 msgid "<<What event happened?>>"
-msgstr ""
+msgstr "<<¿Qué evento ha tenido lugar?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:9
 msgid "<<Who acted in the event?>>"
-msgstr ""
+msgstr "<<¿Quién ha participado en el evento?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:10
 msgid "<<When did the event take place?>>"
-msgstr ""
+msgstr "<<¿Cuándo tuvo lugar el evento?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:11
 msgid "<<Where did the event take place?>>"
-msgstr ""
+msgstr "<<¿Dónde tuvo lugar el evento?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:12
 msgid "<<Why did the event happen?>>"
-msgstr ""
+msgstr "<<¿Por qué tuvo lugar el evento?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:14
@@ -76,7 +76,7 @@ msgstr "Algunos ejemplos de eventos son la observación de una especie, la recog
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:16
 msgid "Additionally, the checklist ensures that the <<Dataset Metadata>> also contains answers to the five Ws in order to facilitate reuse of the data."
-msgstr ""
+msgstr "De manera adicional, el listado de especies asegura que los <<Metadatos del Conjunto de Datos>> contienen también respuestas a las preguntas anteriores para facilitar la reutilización de los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:20
