@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-19 08:49\n"
+"PO-Revision-Date: 2021-08-19 09:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -116,39 +116,39 @@ msgstr "¿Qué es un Archivo Darwin Core (DwC-A)?"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:27
 msgid "Darwin Core Archive (DwC-A) is a biodiversity informatics data standard that makes use of the Darwin Core terms to produce a single, self contained dataset for sharing species-level (taxonomic), species-occurrence data, and sampling-event data. An archive is a set of text files, in standard comma- or tab-delimited format, with a simple descriptor file (called *meta.xml*) to inform others how the files are organized. The format is defined in the https://dwc.tdwg.org/text/[Darwin Core Text Guidelines]. *It is the preferred format for publishing data in the GBIF network.*"
-msgstr ""
+msgstr "El Archivo Darwin Core (DwC-A) es un estándar de datos informáticos que utiliza los términos de Darwin Core para producir un conjunto de datos único e independiente para compartir niveles de especies (taxonómicos), datos de presencia de especies, y datos de eventos de muestreo. Un archivo es un conjunto de ficheros de texto, en formato estándar delimitado por comas o tabulaciones, con un fichero descriptor sencillo (denominado *meta.xml*) para informar a otros sobre cómo están organizado los ficheros. El formato está definido en la https://dwc.tdwg.org/text/[Guía de Textos Darwin Core]. *Es el formato preferido para la publicación de datos en la red de GBIF.*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:29
 msgid "The central idea of an archive is that its data files are logically arranged in a star-like manner, with one core data file surrounded by any number of ‘extension’ data files. Core and extension files contain data records, one per line. Each extension record (or ‘extension file row’) points to a record in the core file; in this way, many extension records can exist for each single core record. This is sometimes referred to as a “star schema”."
-msgstr ""
+msgstr "La idea central de un archivo es que sus ficheros de datos estén organizados de manera lógica en forma de estrella, con un fichero central de datos rodeado de un número de ficheros de extensión de datos. Los ficheros central y de extensión contienen registros de datos, uno por línea. Cada registro de extensión (o ‘fila del fichero de extensión’) apunta a un registro en el fichero central; de esta forma, pueden existir muchos registros de extensión para un mismo registro en el fichero central. A veces esto se denomina como \"esquema en forma de estrella\"."
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/dwca-guide.adoc:30
 #, no-wrap
 msgid "The components of a Darwin Core Archive."
-msgstr ""
+msgstr "Los componentes de un Archivo Darwin Core."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:33
 msgid "Sharing entire datasets as DwC-As allows simple and efficient data transfer of the whole dataset.  (Earlier systems, such as http://digir.sourceforge.net/[DiGIR] and http://tdwg.github.io/tapir/docs/tdwg_tapir_specification_2010-05-05.html[TAPIR], required the GBIF system to make many thousands of requests to retrieve all data in a single dataset, and there was a risk of data being missed.)"
-msgstr ""
+msgstr "Compartir conjuntos de datos completos como DwC-As permite la transferencia sencilla y eficiente de todo el conjunto de datos. (Sistemas anteriores, como http://digir.sourceforge.net/[DiGIR] y http://tdwg.github.io/tapir/docs/tdwg_tapir_specification_2010-05-05.html[TAPIR], requerían al sistema de GBIF hacer miles de solicitudes para cargar todos los datos en un único conjunto de datos, existiendo riesgo para la pérdida de datos.)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:35
 msgid "The production of a DwC-A requires the use of stable identifiers for core records, but not for extensions. For any kind of shared data it is therefore necessary to have some sort of local record identifiers. It is good practice to maintain – with the original data – identifiers that are stable over time and are not being reused after the record is deleted. If possible, please provide globally unique identifiers (GUID) instead of local ones. Refer to http://links.gbif.org/persistent_identifiers_guide_en_v1.pdf[A Beginner’s Guide to Persistent Identifiers] for more information about GUIDs. This identifier is referred to as the “core ID” in DwC-As and the specific Darwin Core term that it corresponds to is dependent on the data type being published."
-msgstr ""
+msgstr "La elaboración de un DwC-A requiere del uso de identificadores estables para registros centrales pero no para las extensiones. Para cualquier tipo de datos compartido es por ello necesario que haya algún tipo de identificador de registro local. Es una buena práctica mantener - con los datos originales - identificadores que sean estables en el tiempo y que no sean reutilizados cuando se elimine el registro. Si es posible, deben proveerse identificadores globales únicos (GUID, por sus siglas en inglés) en vez de otros locales. Diríjase a http://links.gbif.org/persistent_identifiers_guide_en_v1.pdf[Una Guía para Principantes sobre Identificadores Persistentes] para obtener más información sobre los GUIDs. Este identificador se incluye en el \"core ID\" en DwC-As y el término Darwin Core específico con el que se corresponde es dependiente del tipo de datos que está siendo publicado. "
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:36
 #, no-wrap
 msgid "DwC-A Components"
-msgstr ""
+msgstr "Componentes del DwC-A"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:39
 msgid "A DwC-A may consist of a single data file or multiple files, depending on the scope of the published data. The specific types of files that may be included in an archive are the following:"
-msgstr ""
+msgstr "Un DwC-A puede contener un único fichero de datos o múltiples ficheros, dependiendo del alcance de los datos publicados. Los tipos específicos de ficheros que se pueden incluir en un Archivo son los siguientes:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:42
