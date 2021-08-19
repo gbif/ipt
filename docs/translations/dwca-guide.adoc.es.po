@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-19 09:17\n"
+"PO-Revision-Date: 2021-08-19 09:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -155,13 +155,14 @@ msgstr "Un DwC-A puede contener un único fichero de datos o múltiples ficheros
 #, no-wrap
 msgid "*A required core data file* consisting of a standard set of http://rs.tdwg.org/dwc/terms/[Darwin Core terms]. The data file is formatted as *fielded text*, where data records are expressed as rows of text, and data elements (columns) are separated with a standard delimiter such as a tab or comma (commonly referred to as CSV or link:https://en.wikipedia.org/wiki/Comma-separated_values[‘comma-separated value’ files]). The first row of the data file may optionally contain data or represent a ‘header row’. In general, if a header row is included, it contains the names of the Darwin Core terms represented in the succeeding rows of data.\n"
 "GBIF currently supports the following three biodiversity data types as the basis for a core data file:\n"
-msgstr ""
+msgstr "*Un fichero central de datos requerido* consta de un conjunto estándar de http://rs.tdwg.org/dwc/terms/[términos Darwin Core]. El fichero de datos tiene un formato de *texto por campos*, donde los registros de datos se expresan como filas de texto, y los elementos (columnas) de datos están separados con un delimitador estándar como una tabulación o una coma (denominado comúnmente como CSV o link:https://en.wikipedia.org/wiki/Comma-separated_values[‘ficheros de valores separados por coma]). Opcionalmente, la primera fila del fichero de datos puede contener datos o representar una \"fila de encabezado\". En general, si se incluye una fila de encabezado, ésta contiene los nombres de los términos Darwin Core representados en las filas posteriores de datos.\n"
+"Actualmente, GBIF acepta los siguientes tres tipos de datos de biodiversidad como base para un fichero central de datos:\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:45
 #, no-wrap
 msgid "*Occurrence data* — The category of information pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.). Core files of this type are used to share information about a specific instance of a taxon such as a specimen or observation. The required core ID is represented by *dwc:occurrenceID*. The definitive list of Occurrence terms can be found in the {latest-dwc-occurrence}.xml[Occurrence (Core) Extension].\n"
-msgstr ""
+msgstr "*Datos de registros de presencia* - La categoría de información perteneciente a la evidencia de la presencia en la naturaleza, en una colección, o en un conjunto de datos (espécimen, observación, etc.). Los ficheros centrales de este tipo son utilizados para compartir información sobre una instancia específica de un taxón tal como un espécimen u observación. El ID central requerido está representado por *dwc:occurrenceID*. La lista definitiva de términos de registros de presencia puede encontrarse en las {latest-dwc-occurrence}.xml[Extensiones (Núcleo) de los Registros de Presencia].\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:46
