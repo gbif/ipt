@@ -24,8 +24,7 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.RecordFilter.Comparator;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.TextFileSource;
-import org.gbif.ipt.model.UrlSource;
+import org.gbif.ipt.model.SourceWithHeader;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -451,16 +450,15 @@ public class MappingAction extends ManagerBaseAction {
   }
 
   private void readSource() {
-    if (mapping.getSource() == null) {
+    Source src = mapping.getSource();
+    if (src == null) {
       columns = new ArrayList<>();
     } else {
-      Source src = mapping.getSource();
       peek = sourceManager.peek(src, 5);
-
       // If user wants to import a source without a header lines, the columns are going to be numbered with the first
       // non-null value as an example. Otherwise, read the file/database normally.
       if ((src.isUrlSource() || src.isFileSource())
-          && ((TextFileSource) src).getIgnoreHeaderLines() == 0) {
+          && ((SourceWithHeader) src).getIgnoreHeaderLines() == 0) {
         columns = mapping.getColumns(peek);
       } else {
         columns = sourceManager.columns(src);

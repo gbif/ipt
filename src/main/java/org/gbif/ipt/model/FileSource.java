@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * A file based data source for the IPT.
  */
-public interface FileSource extends Source, RowIterable {
+public interface FileSource extends Source, RowIterable, SourceWithHeader {
 
   File getFile();
 

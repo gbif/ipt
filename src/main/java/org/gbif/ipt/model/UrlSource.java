@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class UrlSource extends SourceBase implements RowIterable {
+public class UrlSource extends SourceBase implements RowIterable, SourceWithHeader {
 
   private static final Logger LOG = LogManager.getLogger(UrlSource.class);
 
