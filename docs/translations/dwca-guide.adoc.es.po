@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-19 16:27\n"
+"PO-Revision-Date: 2021-08-19 17:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -169,7 +169,7 @@ msgstr "*Datos de registros de presencia* - La categoría de información perten
 #: en/modules/ROOT/pages/dwca-guide.adoc:47
 #, no-wrap
 msgid "*Checklist data* — The category of information pertaining to taxa or taxon concepts, such as species. Core files of this type are used to share annotated species checklists, taxonomic catalogues, and other information about taxa. The required core ID is represented by *dwc:taxonID*. The definitive list of core Taxon terms can be found in the {latest-dwc-taxon}.xml[Taxon (Core) Extension].\n"
-msgstr "*Datos de listados de especies*  - La categoría de información pertenciente a los taxones o concpetos de taxón como las especies. Los ficheros centrales de este tipo son usados para compartir listados de especies, taxonómicos o catálogos, y otra información sobre taxones. El ID central requerido está representado por *dwc:taxonID*. La lista definitiva de términos centrales de Taxón puede encontrarse en las {latest-dwc-taxon}.xml[Extensiones (Núcleo) de Taxón].\n"
+msgstr "*Datos de listados de especies*  - La categoría de información perteneciente a los taxones o conceptos de taxón como las especies. Los ficheros centrales de este tipo son usados para compartir listados de especies, taxonómicos o catálogos, y otra información sobre taxones. El ID central requerido está representado por *dwc:taxonID*. La lista definitiva de términos centrales de Taxón puede encontrarse en las {latest-dwc-taxon}.xml[Extensiones (Núcleo) de Taxón].\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:48
@@ -328,7 +328,7 @@ msgstr "Usted quisiera documentar conjuntos de datos utilizando el Perfil de Met
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:94
 msgid "<<Publishing DwC-A using GBIF Spreadsheet Templates>> is most suitable when:"
-msgstr "<<Publicar DwC-A usando Modelos de Hojas de Cálculo de GBIF>> es lo más adecuado cuando:"
+msgstr "<<Publicar DwC-A usando Plantillas de GBIF de Hojas de Cálculo>> es lo más adecuado cuando:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:96
