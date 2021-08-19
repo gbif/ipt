@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-30 14:42+0000\n"
-"PO-Revision-Date: 2021-06-30 15:16\n"
+"PO-Revision-Date: 2021-08-19 19:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,62 +20,62 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:3
 msgid "xref:introduction.adoc[]"
-msgstr ""
+msgstr "xref:introduction.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:4
 msgid "xref:getting-started.adoc[]"
-msgstr ""
+msgstr "xref:getting-started.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:5
 msgid "xref:requirements.adoc[]"
-msgstr ""
+msgstr "xref:requirements.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:6
 msgid "xref:data-hosting-centres.adoc[]"
-msgstr ""
+msgstr "xref:data-hosting-centres.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:7
 msgid "xref:installation.adoc[]"
-msgstr ""
+msgstr "xref:installation.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:8
 msgid "xref:tomcat-installation-linux.adoc[]"
-msgstr ""
+msgstr "xref:tomcat-installation-linux.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:9
 msgid "xref:tomcat-installation-windows.adoc[]"
-msgstr ""
+msgstr "xref:tomcat-installation-windows.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:10
 msgid "xref:initial-setup.adoc[]"
-msgstr ""
+msgstr "xref:initial-setup.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:11
 msgid "xref:overview.adoc[]"
-msgstr ""
+msgstr "xref:overview.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:12
 msgid "xref:home.adoc[]"
-msgstr ""
+msgstr "xref:home.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:13
 msgid "xref:manage-resources.adoc[]"
-msgstr ""
+msgstr "xref:manage-resources.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:14
 msgid "xref:administration.adoc[]"
-msgstr ""
+msgstr "xref:administration.adoc[]"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:15
@@ -121,7 +121,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:24
 msgid "Best Practice Guides"
-msgstr ""
+msgstr "Guías de mejores prácticas"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:25
@@ -136,7 +136,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:27
 msgid "Occurrence Data (pending)"
-msgstr ""
+msgstr "Datos de ocurrencia (pendiente) "
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:28
@@ -151,7 +151,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:30
 msgid "Contributing"
-msgstr ""
+msgstr "Contribuyendo"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:31
@@ -166,7 +166,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:33
 msgid "Customization"
-msgstr ""
+msgstr "Personalización"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:34
