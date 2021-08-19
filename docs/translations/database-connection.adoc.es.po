@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:24\n"
+"PO-Revision-Date: 2021-08-19 08:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,86 +20,86 @@ msgstr ""
 #: en/modules/ROOT/pages/database-connection.adoc:1
 #, no-wrap
 msgid "Supported Databases"
-msgstr ""
+msgstr "Bases de datos compatibles"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:4
 msgid "This section provides information about the source database types supported by the IPT"
-msgstr ""
+msgstr "Esta sección proporciona información sobre los tipos de bases de datos que son aceptadas por el IPT"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/database-connection.adoc:5
 #, no-wrap
 msgid "Supported default databases"
-msgstr ""
+msgstr "Bases de datos compatibles por defecto"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:8
 msgid "The IPT can use database connections to import data from tables or views. Currently the following databases are supported out of the box:"
-msgstr ""
+msgstr "El IPT puede utilizar conexiones a bases de datos para importar datos de tablas o imágenes. Actualmente, las siguientes bases de datos son compatibles para su uso inmediato:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:10
 msgid "Microsoft SQL Server"
-msgstr ""
+msgstr "Microsoft SQL Server"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:11
 msgid "MySQL"
-msgstr ""
+msgstr "MySQL"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:12
 msgid "Oracle"
-msgstr ""
+msgstr "Oracle"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:13
 msgid "PostgreSQL"
-msgstr ""
+msgstr "PostgreSQL"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:14
 msgid "Sybase databases"
-msgstr ""
+msgstr "Bases de datos Sybase"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/database-connection.adoc:15
 #, no-wrap
 msgid "Adding new JDBC drivers"
-msgstr ""
+msgstr "Añadir nuevos controladores JDBC"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:18
 msgid "You can add your own JDBC drivers to the IPT if needed. For example if you prefer to use the Microsoft JDBC driver for SQL Server or want to add one for SQLite. The following steps assume you have a working IPT installed with an \"exploded\" WAR, i.e. you have a folder `ipt` (or however you named your instance) in your application server's webapps folder. The IPT needs to be stopped before you start adding a driver:"
-msgstr ""
+msgstr "Puede añadir sus propios controladores JDBC al IPT si es necesario. Por ejemplo, si prefiere utilizar el controlador JDBC de Microsoft para SQL Server o desea añadir uno para SQLite. Los pasos siguientes asumen que usted tiene un IPT instalado trabajando con un archivo \"exploded\" WAR, por ejemplo si tiene una carpeta de `ipt` (o como usted la denomine) en su carpeta de aplicaciones web del servidor de aplicaciones. Es necesario detener el IPT antes de añadir un controlador:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/database-connection.adoc:19
 #, no-wrap
 msgid "Add JDBC driver JAR to classpath"
-msgstr ""
+msgstr "Añadir JAR del controlador JDBC a la ruta de clase"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:22
 msgid "First get hold of the JAR file of the driver you want to add, for example download the SQLite jar here: https://bitbucket.org/xerial/sqlite-jdbc/downloads"
-msgstr ""
+msgstr "Primero, obtenga el archivo JAR del controlador que quiera añadir, por ejemplo puede descargar el jar de SQLite aquí: https://bitbucket.org/xerial/sqlite-jdbc/downloads"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:24
 msgid "You need to copy this jar into the classpath of your webapp. The simplest is to copy it to the `ipt/WEB-INF/lib` directory."
-msgstr ""
+msgstr "Necesita copiar este jar en la ruta de clase de su aplicación web. Lo más sencillo es copiarlo en el directorio `ipt/WEB-INF/lib`."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/database-connection.adoc:25
 #, no-wrap
 msgid "Modify jdbc.properties"
-msgstr ""
+msgstr "Modifica jdbc.properties"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:28
 msgid "In order for the IPT to understand which drivers are available and how to construct the JDBC URL for it, we maintain a simple properties file with all the information. Open `ipt/WEB-INF/classes/jdbc.properties` and inspect the existing entries, for example for PostgreSQL:"
-msgstr ""
+msgstr "Para entender qué controladores están disponibles para el IPT y cómo construirle la URL del JDBC, mantenemos un sencillo archivo de propiedades con toda la información. Abra `ipt/WEB-INF/classes/jdbc.properties` y explore las entradas existentes, por ejemplo para PostgreSQL:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/database-connection.adoc:35
@@ -109,37 +109,41 @@ msgid "# PostgreSQL driver\n"
 "pgsql.driver=org.postgresql.Driver\n"
 "pgsql.url=jdbc:postgresql://{host}/{database}\n"
 "pgsql.limitType=LIMIT\n"
-msgstr ""
+msgstr "# PostgreSQL driver\n"
+"pgsql.title=PostgreSQL\n"
+"pgsql.driver=org.postgresql.Driver\n"
+"pgsql.url=jdbc:postgresql://{host}/{database}\n"
+"pgsql.limitType=LIMIT\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:38
 msgid "There are 4 properties that you need to add for each driver. All 4 have to start with the same prefix that you can freely choose without any further meaning:"
-msgstr ""
+msgstr "Hay 4 propiedades que necesita añadir para cada controlador. Las 4 tienen que empezar con el mismo prefijo que puede elegir libremente sin ningún otro significado:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:40
 msgid "`title`: The title to be displayed in the IPT for this driver"
-msgstr ""
+msgstr "`title`: El título que se mostrará en el IPT para este controlador"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:41
 msgid "`driver`: The driver java class to be used when connecting"
-msgstr ""
+msgstr "`driver`: La clase de controlador java que usará cuando se conecte"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:42
 msgid "`url`: A template to build the url for connecting. There are 2 variables that can be used in the url string which will be replaced by the actual settings configured: `\\{host}` and `\\{database}`"
-msgstr ""
+msgstr "`url`: Un modelo para construir la url para la conexión. Existen 2 variables que pueden ser usadas en la cadena de la url que serán reemplazadas por las opciones reales configuradas: `\\{host}` y `\\{database}`"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:43
 msgid "`limitType`: How to limit the amount of data returned. Possible values are `LIMIT`, `TOP`, `ROWNUM`. This is driver specific."
-msgstr ""
+msgstr "`limitType`: Cómo limitar la cantidad de datos devueltos. Posibles valores son `LIMIT`, `TOP`, `ROWNUM`. Esto es específico del driver."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:45
 msgid "In the SQLite example above the driver connects to a file, so no `\\{host}` is used in the url template. Please add the following to the jdbc.properties to add the SQLite driver:"
-msgstr ""
+msgstr "En el ejemplo de SQLite de más arriba, el controlador conecta con un archivo, así que `\\{host}` no se usa en el modelo de url. Por favor, añada lo siguiente a jdbc.properties para añadir el controlador SQLite:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/database-connection.adoc:55
@@ -152,10 +156,17 @@ msgid "# SQLite driver\n"
 "sqlite.driver=org.sqlite.JDBC\n"
 "sqlite.url=jdbc:sqlite:{database}\n"
 "sqlite.limitType=LIMIT\n"
-msgstr ""
+msgstr "# SQLite driver\n"
+"# uses files only, so {host} is ignored\n"
+"# database example on Windows: C:/work/mydatabase.db\n"
+"# database example on Linux: /home/leo/work/mydatabase.db\n"
+"sqlite.title=SQLite\n"
+"sqlite.driver=org.sqlite.JDBC\n"
+"sqlite.url=jdbc:sqlite:{database}\n"
+"sqlite.limitType=LIMIT\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:57
 msgid "Now you can restart the IPT and use the new driver for mapping SQLite data sources."
-msgstr ""
+msgstr "Ahora puede reiniciar el IPT y utilizar el nuevo controlador para mapear fuentes de datos SQLite."
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-18 11:55\n"
+"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"PO-Revision-Date: 2021-08-19 10:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/core.adoc:13
 #: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
@@ -383,13 +383,21 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *where 6* |`informationWitheld` | If the point location should exist, but has not been entered, an explanation should be provided in `informationWitheld`.\n"
 "| *where 7* | `georeferenceRemarks` | If the point location does not exist, or the point location is calculated from the cent er of a grid cell (versus from GPS reading) an explanation should be provided in `georeferenceRemarks`.\n"
 "| *where 8* | `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | As much supplementary information as possible about the location should also be provided. If no `country` and `countryCode` can be provided then an explanation as to why should be entered in `locationRemarks`\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *where 1* | `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | Las coordenadas de localización por puntos se deben introducir en grados decimales en `decimalLatitude` y `decimalLongitude`. El sistema de referencia espacial en el que se basan las coordenadas se debe introducir en `geodeticDatum` utilizando el código EPSG si se conoce, ej.: \"EPSG:4326\". De lo contrario, se debe usar un vocabulario controlado para el nombre o código del `geodeticDatum` si se conoce, ej.: \"WGS84\". Si ninguno de estos es conocido, utilizar el valor \"unknown\".\n"
+"| *where 2* |`footprintWKT`, `footprintSRS` | Para proporcionar una localización específica por forma introduzca una representación en archivo de Text Bien Conocido (WKT, por sus siglas en inglés) para la forma en el campo `footprintWKT`. El sistema de referencia espacial en el que se basa la forma se debe introducir en `footprintSRS` utilizando el código EPSG, ej.: \"EPSG:4326\".\n"
+"| *where 3* |`coordinateUncertaintyInMeters`, `dataGeneralizations` | `coordinateUncertaintyInMeters` debe expresar la incertidumbre de la lectura del GPS en metros. Para grandes incertidumbres (más de 1.000 metros) comprobar `dataGeneralizations` para ver si la localización fue generalizada a propósito, ej.: para proteger especies sensibles.\n"
+"| *where 4* |`verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` | Si las coordenadas originales de localización por puntos tuvieran que ser convertidas desde otro sistema de coordenadas como 'grados minutos segundos' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` deberían ser rellenados con las coordenadas originales de la Localización.\n"
+"| *where 5* | `dataGeneralizations` | Si se tomaron acciones para expresar la localización por puntos de manera menos específica que la original o la coordinateUncertaintyInMeters es muy alta, se debe introducir una explicación en `dataGeneralizations`.\n"
+"| *where 6* |`informationWitheld` | Si la localización por puntos debe estar presente pero no se ha introducido, debería proporcionarse una explicación en `informationWitheld`.\n"
+"| *where 7* | `georeferenceRemarks` | Si la localización por puntos no existe o se ha calculado a partir del centro de una celda (en comparación a las lecturas GPS), se debería introducir una explicación en `georeferenceRemarks`.\n"
+"| *where 8* | `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | Se debe proporcionar tanta información adicional sobre la localización como sea posible. Si no se puede proporcionar el `country` y el `countryCode`, se debería introducir una explicación de por qué en `locationRemarks`\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:183
 #, no-wrap
 msgid "Case 1: Point location converted from degrees minutes seconds to decimal degrees"
-msgstr ""
+msgstr "Caso 1: Localización por puntos convertida de grados minutos segundos a grados decimales"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:202
@@ -409,13 +417,27 @@ msgid "| Field | Value | Constraint\n\n"
 "| `stateProvince` | \"New York\" |\n"
 "| `county` | \"Tomkins County\" |\n"
 "| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | Must be a specific description of the place\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `decimalLatitude` | 42.4566 | Debe estar entre -90 y 90, ambos inclusive\n"
+"| `decimalLongitude` | -76.45442 | Debe estar entre -180 y 180, ambos inclusive\n"
+"| `geodeticDatum` | \"EPSG:4326\" | Idealmente un http://spatialreference.org/ref/epsg/wgs-84/[código EPSG] o vocabulario controlado, si no \"unknown\"\n"
+"| `coordinateUncertaintyInMeters` | 500 | Cero NO es un valor válido\n"
+"| `verbatimCoordinates` | 42° 27' 23.76\", -76° 27' 15.91\" |\n"
+"| `verbatimLatitude` | 42° 27' 23.76\" |\n"
+"| `verbatimLongitude` | -76° 27' 15.91\" |\n"
+"| `verbatimCoordinateSystem` | \"grados minutos segundos\" |\n"
+"| `continent` | \"North America\" | Preferiblemente nombres en inglés de acuerdo a http://www.getty.edu/research/tools/vocabularies/tgn/[Tesauros de Nombres Geográficos de Getty]\n"
+"| `country` | \"United States\" | Preferiblemente nombres en inglés de acuerdo a http://www.getty.edu/research/tools/vocabularies/tgn/[Tesauros de Nombres Geográficos de Getty]\n"
+"| `countryCode` | \"US\" | Deben ser https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2[códigos de países ISO 3166-1-alpha-2]\n"
+"| `stateProvince` | \"New York\" |\n"
+"| `county` | \"Tomkins County\" |\n"
+"| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | Debe ser una descripción específica del lugar\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:204
 #, no-wrap
 msgid "Case 2: Point location that was generalized"
-msgstr ""
+msgstr "Caso 2: Localización por puntos que fue generalizada"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:214
@@ -426,52 +448,60 @@ msgid "| Field | Value\n\n"
 "| `geodeticDatum` | \"EPSG:4326\"\n"
 "| `coordinateUncertaintyInMeters` | 5000\n"
 "| `dataGeneralizations` | \"Point location obscured by a factor of 5000m\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `decimalLatitude` | 42.44\n"
+"| `decimalLongitude` | -76.33\n"
+"| `geodeticDatum` | \"EPSG:4326\"\n"
+"| `coordinateUncertaintyInMeters` | 5000\n"
+"| `dataGeneralizations` | \"Localización por puntos difuminada por un factor de 5.000m\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:216
 #, no-wrap
 msgid "Case 3: Point location exists but not provided"
-msgstr ""
+msgstr "Caso 3: La localización por puntos existe pero no se ha proporcionado"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:222
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `informationWitheld` | \"Point location hidden to protect sensitive species. Available upon request.\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `informationWitheld` | \"Localización por puntos escondida para proteger especies sensibles. Disponible mediante solicitud.\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:224
 #, no-wrap
 msgid "Case 4: Point location does not exist"
-msgstr ""
+msgstr "Caso 4: La localización por puntos no existe"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:230
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `dataGeneralizations` | \"Point location was not found in legacy data\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `dataGeneralizations` | \"La localización por puntos no se encontró en los datos heredados\"\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:232
 #, no-wrap
 msgid "Why did the event happen?"
-msgstr ""
+msgstr "¿Por qué tuvo lugar el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:238
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | El nombre del método o protocolo de muestreo utilizado para crear el evento debe ser introducido en `samplingProtocol`. Una URL referenciando la descripción es preferible a extensas descripciones de métodos. Un protocolo de muestreo debe definir su área, duración, etc. utilizando la pareja `sampleSizeValue` & `sampleSizeUnit`, con valores para `sampleSizeUnit` procedentes del {latest-unit-of-measurement}[Vocabulario de Unidades de Medidas]. Se pueden introducir descripciones más genéricas del esfuerzo o duración del muestreo en `samplingEffort`. Si se desconoce la información sobre el área o la duración, `eventRemarks` debe proporcionar una explicación de por qué.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:240
 #, no-wrap
 msgid "Case 1: Because of a butterfly monitoring scheme"
-msgstr ""
+msgstr "Caso 1: Debido a un esquema de monitoreo de mariposas"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:250
@@ -482,18 +512,23 @@ msgid "| Field | Value | Constraint\n\n"
 "| `sampleSizeUnit` | \"square_metre\" | Must match {latest-unit-of-measurement}[Unit of Measurement Vocabulary]\n"
 "| `samplingEffort` | \"Average of 30 Minutes walk along transect\" | Can be a free-text description\n"
 "| `eventRemarks` | \"No occurrences of Lepidoptera recorded for entire transect\" | Can be a free-text description\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `samplingProtocol` | \"Caminatas polares\" | Debe ser un nombre corto o un URL con referencia a un método o protocolo de muestreo\n"
+"| `sampleSizeValue` | 250 | Debe emparejarse con `sampleSizeUnit`\n"
+"| `sampleSizeUnit` | \"square_metre\" | Debe coincidir con el {latest-unit-of-measurement}[Vocabulario de Unidades de Medida]\n"
+"| `samplingEffort` | \"Un promedio de 30 minutos caminando en el transecto\" | Puede ser una descripción de texto libre\n"
+"| `eventRemarks` | \"No se obtienen registros de Lepidoptera en todo el transecto\" | Puede ser una descripción de texto libre\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:252
 #, no-wrap
 msgid "Dataset Metadata"
-msgstr ""
+msgstr "Metadatos del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:255
 msgid "The dataset metadata should contain enough information to facilitate reuse of the data while preventing misinterpretation. Publishers should also provide evidence of the rigour that went into producing the data while acknowledging its various contributors and funders. Ultimately this may lead to new sources of collaboration and funding."
-msgstr ""
+msgstr "Los metadatos del conjunto de datos deberían contener suficiente información para facilitar la reutilización de los datos y se previene la malinterpretaciones. Los publicadores deberían también proporcionar evidencias del rigor con el que se obtuvieron los datos y agradecer a sus varios contribuidores y financiadores. En última instancia, esto puede conducir a nuevas fuentes de financiación y colaboración."
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:269
@@ -509,5 +544,15 @@ msgid "| Field | Requirements | Examples\n\n"
 "| `Project Identifier` | is a GUID or other identifier that is near globally unique. _Note this is required for BID projects._ | _\"BID-AF2015-0134-REG\"_\n"
 "| `Sampling Methods` | information about the sampling methodology used in creating the dataset, similar to the methods section of a journal article. _Note this is required for sampling event datasets._ | _See https://cloud.gbif.org/griis/resource?r=global#methods[here]_\n"
 "| `Citation` | how the dataset should be cited. Use of the xref:citation.adoc[IPT Citation Format] (based on DataCite's preferred citation format and that satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]) is highly recommended. | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
-msgstr ""
+msgstr "| Campo | Requisitos | Ejemplos\n\n"
+"| `Title` | es un nombre conciso que describe los contenidos del conjunto de datos y que lo distingue de otros. | _\"Reef Life Survey: Global reef fish dataset\"_, _\"Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen\"_\n"
+"| `Description` | es un párrafo (resumen) corto que describe el contenido del conjunto de datos. | _\"Este conjunto de datos contiene registros de peces óseos y elasmobranquios colectados por buceadores de Reef Life Survey (RLS) en transectos de 50 m en arrecifes de coral rocosos poco profundos de todo el mundo. La información sobre abundancia está disponible para todos los registros encontrados dentro de unos límites de muestreo cuantitativos (franjas de 50 x 5 m durante una única inmersión a cada lado de la línea del transecto, distinguido cada uno como un Bloque), y los registros fuera de muestreo se identifican únicamente como presencias (Método 0).\"_\n"
+"| `Publishing Organization` | la organización responsable de la publicación (producción, lanzamiento y tenencia) de este recurso. | _\"Reef Life Survey\"_\n"
+"| `License` | debe ser una de las tres opciones legibles por máquinas (CC0 1.0, CC-BY 4.0 o CC-BY-NC 4.0), que proporcionan una forma estandarizada para definir los usos apropiados del conunto de datos. | _\"Este trabajo está protegido por una  http://creativecommons.org/licenses/by/4.0/legalcode[Liciencia Creative Commons de Reconocimiento (CC-BY) 4.0].\"_\n"
+"| `Creator(s)` | las personas y organizaciones que crearon el conjunto de datos, en orden de prioridad. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Metadata Provider(s)` | las personas y organizaciones que escribieron los metadatos del conjunto de datos, en orden de prioridad. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Contact(s)` | las personas y organizaciones que deberían ser contactadas para obtener más información sobre el recurso o a las que se deben comunicar los problemas que presenta el conjunto de datos. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Project Identifier` | es un GUID u otro identificador que está cerca de ser global y único. _Tenga en cuenta que esto es obligatorio para proyectos BID._ | _\"BID-AF2015-0134-REG\"_\n"
+"| `Sampling Methods` | información sobre la metodología de muestreo utilizada en la creación del conjunto de datos, similar a la sección de métodos de un artículo científico. _Tenga en cuenta que esto es obligatorio para conjuntos de datos de eventos de muestreo._ | _Ver https://cloud.gbif.org/griis/resource?r=global#methods[here]_\n"
+"| `Citation` | cómo debería ser citado el conjunto de datos. Se recomienda encarecidamente utilizar el xref:citation.adoc[Formato de Citas del IPT] (basado en el formato de citas preferido por DataCite's y que cumple la  https://www.force11.org/datacitation[Declaración Conjunta de los Principios de Citas de Datos]). | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
 
