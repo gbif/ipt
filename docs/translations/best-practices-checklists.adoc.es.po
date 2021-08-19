@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-14 04:41\n"
+"PO-Revision-Date: 2021-08-19 09:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -92,7 +92,7 @@ msgstr "_Imagen de portada: Gregory Basco, Tero Real, Himantopus mexicanus_"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:30
 msgid "This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share taxonomic checklist information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core taxonomic data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "Esta guía proporciona detalles sobre cómo utilizar el formato Darwin Core Archive (DwC-A) como un medio para compartir información de listados taxonómicos de manera estándar. Se centra en componentes específicos del formato Darwin Core Archive y en algunas de las extensiones de apoyo a la clase de datos taxonómicos básicos, y ofrece recomendaciones sobre cómo utilizar mejor estos componentes para maximizar el valor de los datos compartidos. Esta guía no proporciona una descripción detallada del formato de Darwin Core Archive; en su lugar, consulte la xref: darwin-core.adoc [Guía práctica e Darwin Core Archives]."
+msgstr "Esta guía proporciona detalles sobre cómo utilizar el formato Darwin Core Archive (DwC-A) como un medio para compartir información de listados taxonómicos de manera estándar. Se centra en componentes específicos del formato Darwin Core Archive y en algunas de las extensiones de apoyo a la clase de datos taxonómicos básicos, y ofrece recomendaciones sobre cómo utilizar mejor estos componentes para maximizar el valor de los datos compartidos. Esta guía no proporciona una descripción detallada del formato de Darwin Core Archive; en su lugar, consulte la xref: darwin-cor.adoc [Guía práctca e Darwin Core Archives]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:32
@@ -160,7 +160,7 @@ msgstr "Formato del Archivo Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:49
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or Gzip) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "Archivo Darwin Core (DwC-A) es un estándar de datos informáticos que utiliza los términos de Darwin Core para producir un conjunto de datos único e independiente para los datos del listado taxonómico. La recopilación de archivos en un archivo forma un conjunto de datos autónomo, que se puede proporcionar como un solo archivo comprimido (Zip o Gzip). Un conjunto de datos se compone de un documento de metadatos descriptivo y un conjunto de uno o más archivos de datos. Para obtener más información sobre DwC-A, consulte la xref: darwin-core.adoc[Guía práctica de los archivos de Darwin Core]."
+msgstr "Archivo Darwin Core (DwC-A) es un estándar de datos informáticos que utiliza los términos de Darwin Core para producir un conjunto de datos único e independiente para los datos del listado taxonómico. La recopilación de archivos en un archivo forma un conjunto de datos autónomo, que se puede proporcionar como un solo archivo comprimido (Zip o Gzip). Un conjunto de datos se compone de un documento de metadatos descriptivo y un conjunto de uno o más archivos de datos. Para obtener más información sobre DwC-A, consulte la xref:darwin-core.adoc[Guía práctica de los archivos de Darwin Core]."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:50
@@ -171,7 +171,7 @@ msgstr "Metadatos de Listado Taxonómico"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:53
 msgid "Documenting the provenance and scope of datasets is required in order to publish checklist data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the scope and intended function of the list, methodologies and resources used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for species checklists based on the Ecological Metadata Language. A How-to guide describes all the options for describing a species checklist using this format. See xref:gbif-metadata-profile.adoc[]."
-msgstr "Es necesario documentar la procedencia y el alcance de los conjuntos de datos para publicar los datos del listado taxonómico a través de la red GBIF. La documentación del conjunto de datos se denomina \"metadatos de recursos\" y permite a los usuarios evaluar la idoneidad para el uso de un conjunto de datos. Puede describir el alcance y la función prevista del listados, las metodologías y los recursos utilizados para su compilación, y las personas y organizaciones involucradas en su creación y gestión. Los metadatos se comparten en un Archivo Darwin Core como un documento XML. GBIF proporciona un perfil de metadatos para listados taxonómicos de especies basado en el lenguaje de metadatos ecológicos. Una guía práctica describe todas las opciones para describir un listado taxonómico de especies utilizando este formato. Consulte xref: gbif-metadata-profile.adoc[]."
+msgstr "Es necesario documentar la procedencia y el alcance de los conjuntos de datos para publicar los datos del listado taxonómico a través de la red GBIF. La documentación del conjunto de datos se denomina \"metadatos de recursos\" y permite a los usuarios evaluar la idoneidad para el uso de un conjunto de datos. Puede describir el alcance y la función prevista del listados, las metodologías y los recursos utilizados para su compilación, y las personas y organizaciones involucradas en su creación y gestión. Los metadatos se comparten en un Archivo Darwin Core como un documento XML. GBIF proporciona un perfil de metadatos para listados taxonómicos de especies basado en el lenguaje de metadatos ecológicos. Una guía práctica describe todas las opciones para describir un listado taxonómico de especies utilizando este formato. Consulte xref: gbif-metadata-profie.adoc[]."
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:54
@@ -512,7 +512,7 @@ msgstr "Intente incluir Reino, Filo y Familia como una clasificación mínima pa
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:181
 msgid "If it is the same throughout the dataset, consider using a static mapping of the term and value. See the Darwin Core Archive How-to Guide at xref:dwca-guide.adoc[] for details on mapping global values."
-msgstr "Si es el mismo en todo el conjunto de datos, considere usar un mapeo estático del término y el valor. Consulte la Guía práctica de Darwin Core Archive en xref: dwca-guide.adoc[] para obtener detalles sobre el mapeo de valores globales."
+msgstr "Si es el mismo en todo el conjunto de datos, considere usar un mapeo estático del término y el valor. Consulte la Guía práctica de Darwin Core Archive en xref:dwca-guide.adoc[] para obtener detalles sobre el mapeo de valores globales."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:182
@@ -736,7 +736,7 @@ msgstr "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:291
 msgid "IPT users should define the multi-value delimiter for each source file in the IPT. Refer to xref:manage-resources.adoc#source-data[Source Data section] of the IPT User Manual for additional guidance."
-msgstr "Los usuarios de IPT deben definir el delimitador de valores múltiples para cada archivo de origen en el IPT. Consulte xref:manage-resources.adoc#source-data[sección de Datos de origen] del Manual de usuario de IPT para obtener orientación adicional."
+msgstr "Los usuarios de IPT deben definir el delimitador de valores múltiples para cada archivo de origen en el IPT. Consulte xref:manage-resources.adoc#canjunto-de-datos[sección de Datos de origen] del Manual de usuario de IPT para obtener orientación adicional."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:292
@@ -763,7 +763,7 @@ msgstr "Citación y Atribución de Metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:301
 msgid "The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and xref:gbif-metadata-profile.adoc[available] but specific citation and attribution-related elements include:"
-msgstr "El perfil de metadatos de GBIF admite elementos de datos a nivel de recursos que contribuyen a la cita y atribución y permiten una descripción detallada del alcance y la procedencia de un listado taxonómico. Una lista de referencia completa de todos los elementos de metadatos está más allá del alcance de este documento y xref:gbif-metadata-profile.adoc [diponible], pero los elementos específicos relacionados con la cita y la atribución incluyen:"
+msgstr "El perfil de metadatos de GBIF admite elementos de datos a nivel de recursos que contribuyen a la cita y atribución y permiten una descripción detallada del alcance y la procedencia de un listado taxonómico. Una lista de referencia completa de todos los elementos de metadatos está más allá del alcance de este documento y xref:gbif-metadata-profile.adoc[diponible], pero los elementos específicos relacionados con la cita y la atribución incluyen:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:303
@@ -1052,7 +1052,7 @@ msgstr "Creando un enlace dinámico a páginas de especie"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:390
 msgid "Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The Darwin Core Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a Darwin Core Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF xref:gbif-metadata-profile.adoc[provides a complete guide the to Darwin Core metafile]."
-msgstr "A menudo, un enlace a una base de datos de origen sigue un formato común, que difiere solo en el número de identificación o el nombre de taxón utilizado en la URL. Esto puede resultar en un archivo de extensión extenso y detallado. El formato del Archivo Darwin Core admite una forma más eficiente de definir una plantilla de URL, que solo debe definirse una vez, y permite que se incruste una variable en la plantilla, lo que elimina la necesidad de repetir repetidamente un conjunto de URL para cada taxón del archivo de datos. Esto se hace a través del componente de metarchivo XML del Archivo Darwin Core. No usa la extensión References. Esto requiere editar el metarchivo XML, lo que requiere cierto grado de familiaridad con XML. GBIF xref: gbif-metadata-profile.adoc[proporciona una guía completa del metarchivo de Darwin Core]."
+msgstr "A menudo, un enlace a una base de datos de origen sigue un formato común, que difiere solo en el número de identificación o el nombre de taxón utilizado en la URL. Esto puede resultar en un archivo de extensión extenso y detallado. El formato del Archivo Darwin Core admite una forma más eficiente de definir una plantilla de URL, que solo debe definirse una vez, y permite que se incruste una variable en la plantilla, lo que elimina la necesidad de repetir repetidamente un conjunto de URL para cada taxón del archivo de datos. Esto se hace a través del componente de metarchivo XML del Archivo Darwin Core. No usa la extensión References. Esto requiere editar el metarchivo XML, lo que requiere cierto grado de familiaridad con XML. GBIF xref:gbif-metadata-profile.adoc[proporciona una guía completa del metarchivo de Darwin Core]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:392
