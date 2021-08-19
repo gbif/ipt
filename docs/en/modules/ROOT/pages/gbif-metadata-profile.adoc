@@ -4,21 +4,22 @@ Version 2.1.
 
 image::figures/cover_art_adiatum.png[]
 
-== Suggested citation
-
-> GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Eamonn, Braak, K. Remsen, D.), Copenhagen: Global Biodiversity Information Facility ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/gbif-metadata-profile
-
-_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._
-
 == Document Control
 
 |===
 | Version | Description                  | Date of release | Author(s)
 
-| 1.0     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR
-| 2.0     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak
-| 2.1     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett
+| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0]     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR
+| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak
+| xref:gbif-metadata-profile.adoc[2.1]     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett
 |===
+
+== Suggested citation
+
+// The date uses the last change, ignoring formatting etc.
+> GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile
+
+_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._
 
 == Introduction
 
@@ -201,13 +202,13 @@ There are several fields that could represent either a person or an organization
 
 | {eml-location}/eml-party.html#surName[surName] | Subfield of individualName field. The surname field is used for the last name of the individual associated with the resource. This is typically the family name of an individual, for example, the name by which s/he is referred to in citations. E.g. Carson
 
-| {eml-location}/eml-party.html#organizationName[organizationName]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | The full name of the organization that is associated with the resource. This field is intended to describe which institution or overall organization is associated with the resource being described. E.g., National Center for Ecological Analysis and Synthesis
+| {eml-location}/eml-party.html#organizationName[organizationName] | The full name of the organization that is associated with the resource. This field is intended to describe which institution or overall organization is associated with the resource being described. E.g., National Center for Ecological Analysis and Synthesis
 
 | {eml-location}/eml-party.html#positionName[positionName]| This field is intended to be used instead of a particular person or full organization name. If the associated person that holds the role changes frequently, then Position Name would be used for consistency. Note that this field, used in conjunction with 'organizationName' and 'individualName' make up a single logical originator. Because of this, an originator with only the individualName of 'Joe Smith' is NOT the same as an originator with the name of 'Joe Smith' and the organizationName of 'NSF'. Also, the positionName should not be used in conjunction with individualName unless only that individual at that position would be considered an originator for the data package. If a positionName is used in conjunction with an organizationName, then that implies that any person who currently occupies said positionName at organizationName is the originator of the data package. E.g., HAST herbarium data manager
 
 | {eml-location}/eml-party.html#electronicMailAddress[electronicMailAddress] | The electronic mail address is the email address for the party. It is intended to be an Internet SMTP email address, which should consist of a username followed by the @ symbol, followed by the email server domain name address. E.g. jcuadra@gbif.org
 
-| {eml-location}/eml-party.html#deliveryPoint[deliveryPoint] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        The delivery point field is used for the physical address for postal communication. E.g., GBIF Secretariat, Universitetsparken 15
+| {eml-location}/eml-party.html#deliveryPoint[deliveryPoint] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The delivery point field is used for the physical address for postal communication. E.g., GBIF Secretariat, Universitetsparken 15
 
 | {eml-location}/eml-party.html#role[role] | Use this field to describe the role the party played with respect to the resource. E.g. technician, reviewer, principal investigator, etc.
 

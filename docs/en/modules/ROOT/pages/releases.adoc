@@ -63,7 +63,7 @@ Version 2.4.0 fixes security vulnerabilities in Apache Jackson and Apache Struts
 == *2.3.6* – July 2018
 
 * xref:2.4@release-notes.adoc[IPT v2.3.6 Release Notes]
-* xref:2.4@index.adoc[User Manual]
+* https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
 * Addressed https://github.com/gbif/ipt/milestone/7?closed=1[20 issues].
 * Translated into 7 languages
 
@@ -74,7 +74,7 @@ https://github.com/gbif/ipt/issues/1411[An issue] remains with custom DOIs from 
 == *2.3.5* – October 2017
 
 * xref:2.4@release-notes.adoc[IPT v2.3.5 Release Notes]
-* xref:2.4@index.adoc[User Manual]
+* https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
 * Addressed https://github.com/gbif/ipt/projects/3[27 issues]: 6 Defects, 7 Enhancements and 15 Other
 * Translated into 7 languages
 
@@ -83,7 +83,7 @@ Version 2.3.4 fixes a https://struts.apache.org/docs/s2-045.html[security vulner
 == *2.3.4* – March 2017
 
 * xref:2.4@release-notes.adoc[IPT v2.3.4 Release Notes]
-* xref:2.4@index.adoc[User Manual]
+* https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
 * Addressed https://github.com/gbif/ipt/projects/3[6 issues]: 3 Defects, 2 Enhancements and 1 Other
 * Translated into 7 languages
 
@@ -92,7 +92,7 @@ Version 2.3.4 fixes a https://struts.apache.org/docs/s2-045.html[security vulner
 == *2.3.3* – December 2016
 
 * xref:2.4@release-notes.adoc[IPT v2.3.3 Release Notes]
-* xref:2.4@index.adoc[User Manual]
+* https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]
 * Addressed https://github.com/gbif/ipt/projects/1[88 issues]: 22 Defects, 17 Enhancements, 36 Won’t fix, 10 Duplicates, and 3 Other
 * Translated into 7 languages
 
@@ -140,7 +140,7 @@ A description of the exciting new features added to the IPT in version 2.3.3 are
 == *2.0.3* – November 2011
 
 * xref:2.4@ipt-release-notes-2_0_3.adoc[IPT v2.0.3 Release Notes]
-* https://github.com/gbif/ipt/wiki/IPTUserManualv203.wiki[IPT v2.0.3 User Manual]
+* https://github.com/gbif/ipt/wiki/IPTUserManualv203.wiki[User Manual]
 * https://gbif.blogspot.com/2011/11/important-quality-boost-for-gbif-data.html[Release Announcement]
 * Addressed https://github.com/gbif/ipt/milestone/12?closed=1[85 issues]: 43 defects, 31 enhancements, 3 Patches, 7 Won’t fix, and 1 Duplicate
 * Translated into 3 languages (French and Spanish translations added)

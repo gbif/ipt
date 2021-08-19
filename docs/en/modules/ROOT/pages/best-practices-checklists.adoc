@@ -11,16 +11,17 @@ image::figures/cover_art_stilt.png[]
 
 | 1.0     | Release Version         | 1 April 2011    | David Remsen
 
-| http://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen
+| https://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen
 
-| 2.0 | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak
+| https://github.com/gbif/ipt/wiki/BestPracticesChecklists[2.0] | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak
 
 | xref:best-practices-checklists.adoc[2.1] | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett
 |===
 
 == Suggested citation
 
-> GBIF (2017). Best Practices in Publishing Species Checklists. Accessible online at https://ipt.gbif.org/manual/en/ipt/{manual-version}/best-practices-checklists
+// The date uses the last change, ignoring formatting etc.
+> GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists
 
 _Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexicanus_
 

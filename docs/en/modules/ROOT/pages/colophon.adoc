@@ -2,14 +2,33 @@
 
 == Citation
 
-This user manual adapts and builds upon the previous IPT User Manual (Réveillon 2009). The recommended citation for this user Manual is as follows:
+// If English
+ifeval::["{language}" == "en"]
+This user manual adapts and builds upon the previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The recommended citation for this user manual is as follows:
+endif::[]
+// Else
+ifeval::["{language}" != "en"]
+The link:../../../en/[English user manual] adapts and builds upon the previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The recommended citation for the English user manual is as follows:
+// Endif
+endif::[]
 
+// English user manual citation
 [quote]
-Wieczorek & Braak (2016). The GBIF Integrated Publishing Toolkit User Manual, version 2.3.4 Copenhagen: Global Biodiversity Information Facility.
+Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/{page-component-version}/
+
+// If not English
+ifeval::["{language}" != "en"]
+This TRANSLATORS_PUT_YOUR_LANGUAGE_HERE translation of the user manual is contributed by TRANSLATORS_CREDIT_YOURSELVES.  The recommended citation for this translation into YOUR_LANGUAGE_HERE is as follows:
+
+// Translated user manual citation
+[quote]
+Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/{page-component-version}/
+// Endif
+endif::[]
 
 == Copyright
 
-The GBIF Integrated Publishing Toolkit and this user manual are Copyright © 2016–2021 by the Global Biodiversity Information Facility Secretariat.
+The GBIF Integrated Publishing Toolkit and this user manual are Copyright © 2016–{localyear} by the Global Biodiversity Information Facility Secretariat.
 
 == License
 
@@ -23,5 +42,8 @@ This user manual is released under the Creative Commons Attribution-Non-commerci
 
 == References
 
-// https://www.sprep.org/att/irc/ecopies/global/316.pdf
-Réveillon, A. 2009. The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
+// GitHub and Google Code versions
+Wieczorek J & Braak K (2016) The GBIF Integrated Publishing Toolkit User Manual, version 2.3.4. Copenhagen: GBIF Secretariat. https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki
+
+// https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/gbif-providertoolkit/GBIF_IPT_User_Manual_1.0.pdf
+Réveillon A (2009) The GBIF Integrated Publishing Toolkit User Manual, version 1.0. Copenhagen: GBIF Secretariat. https://links.gbif.org/ipt_manual_1.0

@@ -1,21 +1,22 @@
 = Best Practices in Publishing Sampling-event data
 
-Version 3.1
+Version 2.2
 
 == Document control
 
 |===
 | Version | Description             | Date of release | Author(s)
 
-| http://links.gbif.org/ipt-sample-data-primer[1.0]   | Release Version         | 2015    | Éamonn Ó Tuama
+| https://links.gbif.org/ipt-sample-data-primer[1.0]   | Release Version         | 2015    | Éamonn Ó Tuama
 | 2.0 | Transferred to wiki, major changes | May 2017   | Kyle Braak
-| 3.0 | Minor changes, clean up | Aug 2018   | Marie Grosjean
-| 3.1 | Conversion to Asciidoctor | May 2021 | Matthew Blissett
+| https://github.com/gbif/ipt/wiki/BestPracticesSamplingEventData[2.1] | Minor changes, clean up | Aug 2018   | Marie Grosjean
+| xref:best-practices-sampling-event-data.adoc[2.2] | Conversion to Asciidoctor | May 2021 | Matthew Blissett
 |===
 
 == Suggested citation
 
-> GBIF (2017). Best Practices in Publishing Sampling-event data. Accessible online at https://ipt.gbif.org/manual/en/ipt/{manual-version}/best-practices-sampling-event-data
+// The date uses the last change, ignoring formatting etc.
+> GBIF (2018) Best Practices in Publishing Sampling-event data, version 2.2. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-sampling-event-data
 
 == Introduction
 
