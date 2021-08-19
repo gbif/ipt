@@ -51,7 +51,7 @@ image::figures/core_data_file.png[A core data file is a simple, tabular, text fi
 
 . *Optional “extension” files* support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may apply only to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the http://rs.gbif.org/extension/[GBIF Extension Repository].
 +
-image::figures/extension_data_file.png'[An extension is linked to the core file via the common taxon ID]
+image::figures/extension_data_file.png[An extension is linked to the core file via the common taxon ID]
 
 . A descriptor *metafile* describes how the files in your archive are organized. It describes the files in the archive and maps each data column to a corresponding standard Darwin Core or Extension term. The metafile is a relatively simple XML file format. GBIF provides an online tool for making this file but the format is simple enough that many data administrators will be able to generate it manually. These options are described in the Publishing Options section of this document.
 +
@@ -66,7 +66,7 @@ image::figures/meta_file.png[The metafile describes the file names and fields in
 --
 image::figures/metadata_file.png[A metadata document describes the complete dataset]
 
-The entire collection of files (core data, extensions, metafile, and resource metadata) should be compressed into a single archive file. The supported compression formats are https://en.wikipedia.org/wiki/ZIP_(file_format[ZIP]) and https://en.wikipedia.org/wiki/Tar_(file_format[TAR.GZ/TGZ]).
+The entire collection of files (core data, extensions, metafile, and resource metadata) should be compressed into a single archive file. The supported compression formats are https://en.wikipedia.org/wiki/ZIP_(file_format)[ZIP] and https://en.wikipedia.org/wiki/Tar_(file_format)[TAR.GZ/TGZ].
 
 image::figures/zipped_archive.png[Text files are zipped into a single archive]
 
