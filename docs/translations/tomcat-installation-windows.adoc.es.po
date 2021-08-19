@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-17 15:30\n"
+"POT-Creation-Date: 2021-08-19 13:14+0000\n"
+"PO-Revision-Date: 2021-08-19 13:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -85,10 +85,8 @@ msgstr "2. Instalación de Tomcat 8.x"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:22
-msgid "Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the tomcat_home.md[tomcat_home]/conf/tomcat-users.xml file and restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked)."
-msgstr "Haga doble clic en el ejecutable para iniciar el asistente de instalación. * Llene * la información para especificar * el puerto del conector *, * las credenciales de inicio de sesión del administrador de Tomcat * sin cambiar los roles. \n"
-"Si olvida proporcionar la información de las credenciales, tendrá que editar el archivo tomcat_home.md[tomcat_home]/conf/tomcat-users.xml y reiniciar Tomcat para refrescar los privilegios. (Tenga en cuenta que al probar este escenario, la configuración predeterminada del * puerto del conector * especificada ha \n"
-" funcionado)."
+msgid "Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the `conf/tomcat-users.xml` file from the Tomcat configuration directory, then restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked)."
+msgstr ""
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:23
