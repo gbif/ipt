@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-18 21:05\n"
+"PO-Revision-Date: 2021-08-19 08:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -119,7 +119,7 @@ msgstr "GBIF (2017). Mejores prácticas en la publicación de datos de eventos d
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:23
 msgid "This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share sampling-event information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core event data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "Esta guía proporciona detalles sobre cómo utilizar el formato Darwin Core Archive (DwC-A) como medio para compartir información de eventos de muestreo de manera estándar. Se centra en componentes específicos del formato Darwin Core Archive y en algunas de las extensiones de apoyo a los principales datos de eventos, y ofrece recomendaciones sobre cómo utilizar mejor estos componentes para maximizar el valor de los datos compartidos. Esta guía no proporciona una descripción detallada del formato Darwin Core Archive; para ello, consulte la xref: darwin-core.adoc [Guía práctica de Darwin Core Archives]."
+msgstr "Esta guía proporciona detalles sobre cómo utilizar el formato de Archivo Darwin Core (DwC-A) como medio para compartir información de eventos de muestreo de manera estándar. Se centra en componentes específicos del formato de Archivo Darwin Core y en algunas de las extensiones de apoyo a los principales datos de eventos, y ofrece recomendaciones sobre cómo utilizar mejor estos componentes para maximizar el valor de los datos compartidos. Esta guía no proporciona una descripción detallada del formato de Archivo Darwin Core; para ello, consulte la xref: darwin-core.adoc [Guía práctica de Archivos Darwin Core]."
 
 #.  By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource.
 #. type: Plain text
@@ -149,7 +149,7 @@ msgstr "¿Cómo expresar los datos de eventos de muestreo en DwC-A?"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:35
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or GZIP) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "El Darwin Core Archive (DwC-A) es un estándar de datos informáticos que utiliza los términos de Darwin Core para producir un conjunto de datos único e independiente para datos de listas de especies. La recopilación de ficheros en un archivo forma un conjunto de datos autónomo, que puede proporcionarse como un único archivo comprimido (Zip o GZIP). Un conjunto de datos está compuesto por un documento de metadatos descriptivo y un conjunto de uno o más ficheros de datos. Para obtener más información sobre DwC-A, consulte la xref: darwin-core.adoc[Guía práctica sobre Archivos Darwin Core]."
+msgstr "El Archivo Darwin Core (DwC-A) es un estándar de datos informáticos que utiliza los términos de Darwin Core para producir un conjunto de datos único e independiente para datos de listas de especies. La recopilación de ficheros en un archivo forma un conjunto de datos autónomo, que puede proporcionarse como un único archivo comprimido (Zip o GZIP). Un conjunto de datos está compuesto por un documento de metadatos descriptivo y un conjunto de uno o más ficheros de datos. Para obtener más información sobre DwC-A, consulte la xref: darwin-core.adoc[Guía práctica sobre Archivos Darwin Core]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:36
