@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 21:55\n"
+"PO-Revision-Date: 2021-08-19 22:10\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -609,18 +609,18 @@ msgstr "Normalmente GBIF tardará entre 5 y 60 minutos en comenzar la indexació
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:233
 msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
-msgstr ""
+msgstr "Si cree que GBIF no pudo indexar su conjunto de datos satisfactoriamente, envíe sus comentarios directamente a través de GBF.org, o envíe un correo electrónico al servicio de asistencia técnica de GBIF<helpdesk@gbif.org> para investigar lo que sucedió. Si está interesado en saber por qué es posible que GBIF no haya (re)indexado su conjunto de datos, consulte lo siguiente."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:234
 #, no-wrap
 msgid "Why hasn't GBIF (re)indexed my dataset yet?"
-msgstr ""
+msgstr "¿Por qué GBIF no (re)indexó todavía mi conjunto de datos?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:237
 msgid "Occasionally, GBIF turns off its indexing service for maintenance (see the links in the previous question). This is the most common reason why datasets aren't indexed as quickly as expected."
-msgstr ""
+msgstr "Eventualmente, GBIF apaga su servicio de indexación para mantenimiento (vea los enlaces en la pregunta anterior). Esta es la razón más frecuente de por qué los conjuntos de datos no son indexados tan rápido como se espera."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:239
