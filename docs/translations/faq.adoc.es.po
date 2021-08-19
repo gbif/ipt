@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 22:54\n"
+"PO-Revision-Date: 2021-08-19 23:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -641,18 +641,18 @@ msgstr "GBIF automáticamente intenta reindexar un conjunto de datos registrado 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:245
 msgid "To cater to datasets not published using the IPT, GBIF automatically attempts to reindex all registered datasets every 7 days."
-msgstr ""
+msgstr "Para atender a los conjuntos de datos no publicados mediante el IPT, GBIF automáticamente intenta reindexar cada 7 días todos los conjuntos de datos registrados."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:247
 msgid "GBIF will only reindex a dataset if its last published date has changed since the last time it was indexed."
-msgstr ""
+msgstr "GBIF solo volverá a indexar un conjunto de datos si su última fecha de publicación ha cambiado desde la última vez que se indexó."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:248
 #, no-wrap
 msgid "What type of datasets does GBIF index/support?"
-msgstr ""
+msgstr "¿Qué tipos de conjuntos de datos GBIF indexa/admite?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:251
