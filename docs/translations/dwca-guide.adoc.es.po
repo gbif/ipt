@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-15 10:20+0000\n"
-"PO-Revision-Date: 2021-08-18 21:05\n"
+"PO-Revision-Date: 2021-08-19 08:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:4
 #: en/modules/ROOT/pages/dwca-guide.adoc:4
 msgid "Version 2.1"
-msgstr ""
+msgstr "Versión 2.1"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
@@ -55,7 +55,7 @@ msgstr "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
 #: en/modules/ROOT/pages/dwca-guide.adoc:148 en/modules/ROOT/pages/faq.adoc:184
 #: en/modules/ROOT/pages/faq.adoc:194
 msgid "{blank}"
-msgstr ""
+msgstr "{blank}"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/data-preparation.adoc:38
@@ -68,20 +68,20 @@ msgstr "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 #: en/modules/ROOT/pages/dwca-guide.adoc:1
 #, no-wrap
 msgid "Darwin Core Archives – How-to Guide"
-msgstr ""
+msgstr "Archivos Darwin Core - Guía Práctica"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/dwca-guide.adoc:5
 #, no-wrap
 msgid "figures/cover_art_cicindelinae.png"
-msgstr ""
+msgstr "figures/cover_art_cicindelinae.png"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:7
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:13
 #, no-wrap
 msgid "Document Control"
-msgstr ""
+msgstr "Control Documental"
 
 #. type: Table
 #: en/modules/ROOT/pages/dwca-guide.adoc:16
@@ -91,23 +91,27 @@ msgid "| Version | Description                  | Date of release | Author(s)\n\
 "| 2.0     | Transferred to wiki, major edits | 9 May 2017      | Kyle Braak\n"
 "| https://github.com/gbif/ipt/wiki/DwCAHowToGuide[2.1]     | Minor edits, updating links etc  | 8 February 2021 | Matthew Blissett\n"
 "| xref:dwca-guide.adoc[2.2]     | Conversion to AsciiDoc  | 25 May 2021 | Matthew Blissett\n"
-msgstr ""
+msgstr "| Versión | Descripción                  | Fecha de lanzamiento | Autor(es)\n\n"
+"| http://links.gbif.org/gbif_dwc-a_how_to_guide_en_v1[1.0]    | Revisión y adiciones de contenido | Abril 2011     | David Remsen, Markus Döring\n"
+"| 2.0     | Transferido a wiki, principales ediciones | 9 Mayo 2017      | Kyle Braak\n"
+"| https://github.com/gbif/ipt/wiki/DwCAHowToGuide[2.1]     | Ediciones menores, actualización de enlaces, etc.  | 8 Febrero 2021 | Matthew Blissett\n"
+"| xref:dwca-guide.adoc[2.2]     | Conversión a AsciiDoc  | 25 Mayo 2021 | Matthew Blissett\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:21
 msgid "GBIF (2021). Darwin Core Archives – How-to Guide, version 2.1, released on 8 February 2021, (contributions by Remsen D, Braak, K, Döring M, Robertson, T, Blissett M), Copenhagen: Global Biodiversity Information Facility, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/dwca-guide"
-msgstr ""
+msgstr "GBIF (2021). Darwin Core Archives – How-to Guide, version 2.1, released on 8 February 2021, (contributions by Remsen D, Braak, K, Döring M, Robertson, T, Blissett M), Copenhagen: Global Biodiversity Information Facility, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/dwca-guide"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:23
 msgid "_Cover art credit: Kim Wismann, Cicindelinae_"
-msgstr ""
+msgstr "_Crédito de la portada: Kim Wismann, Cicindelinae_"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:24
 #, no-wrap
 msgid "What is Darwin Core Archive (DwC-A)?"
-msgstr ""
+msgstr "¿Qué es un Archivo Darwin Core (DwC-A)?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:27
