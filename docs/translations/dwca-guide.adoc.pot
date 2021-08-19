@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-19 13:14+0000\n"
+"POT-Creation-Date: 2021-08-19 13:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -239,7 +239,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/dwca-guide.adoc:54
 #, no-wrap
-msgid "figures/extension_data_file.png'"
+msgid "figures/extension_data_file.png"
 msgstr ""
 
 #. type: Plain text
@@ -308,8 +308,8 @@ msgid ""
 "The entire collection of files (core data, extensions, metafile, and "
 "resource metadata) should be compressed into a single archive file. The "
 "supported compression formats are https://en.wikipedia.org/wiki/"
-"ZIP_(file_format[ZIP]) and https://en.wikipedia.org/wiki/"
-"Tar_(file_format[TAR.GZ/TGZ])."
+"ZIP_(file_format)[ZIP] and https://en.wikipedia.org/wiki/Tar_(file_format)"
+"[TAR.GZ/TGZ]."
 msgstr ""
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
