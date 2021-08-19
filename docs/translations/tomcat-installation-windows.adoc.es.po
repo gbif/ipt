@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-08-19 13:28\n"
+"PO-Revision-Date: 2021-08-19 20:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -86,7 +86,7 @@ msgstr "2. Instalación de Tomcat 8.x"
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:22
 msgid "Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the `conf/tomcat-users.xml` file from the Tomcat configuration directory, then restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked)."
-msgstr ""
+msgstr "Haga doble clic en el ejecutable para iniciar el asistente de instalación. * Llene * la información necesaria para especificar * el puerto del conector *, * las credenciales de inicio de sesión del administrador de Tomcat * sin cambiar los roles. Si olvida proporcionar la información de la credencial, tendrá que editar el archivo `conf/tomcat-users.xml` del directorio de configuración de Tomcat, luego debe reiniciar Tomcat para  actualizar los permisos. (Tenga en cuenta que al probar este escenario, la configuración predeterminada del * puerto del conector * sugerida funcionó)."
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:23
