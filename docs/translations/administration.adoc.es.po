@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-29 13:59+0000\n"
-"PO-Revision-Date: 2021-08-13 23:29\n"
+"PO-Revision-Date: 2021-08-19 09:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -313,7 +313,7 @@ msgstr "*No hay conexión a Internet* - Para un funcionamiento apropiado, el IPT
 #: en/modules/ROOT/pages/administration.adoc:83
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
-msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref: initial-setup.adoc[Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Configurar opciones de IPT>>).\n"
+msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref:initial-setup.adoc[Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Configurar opciones de IPT>>).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:84
