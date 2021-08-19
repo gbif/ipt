@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 19:32\n"
+"PO-Revision-Date: 2021-08-19 19:48\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -242,7 +242,7 @@ msgstr "¿Cómo puedo configurar mi IPT para asignar DOI a los conjuntos de dato
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:94
 msgid "In order to assign DOIs to datasets, the IPT must be configured with a DataCite account, which has itself been configured to mint DOIs under the IPT's domain."
-msgstr ""
+msgstr "Para asignar DOI a los conjuntos de datos, el IPT debe configurarse con una cuenta DataCite, que a su vez se ha configurado para crear DOI bajo el dominio del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:96
