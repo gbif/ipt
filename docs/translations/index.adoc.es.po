@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 12:39\n"
+"PO-Revision-Date: 2021-08-19 19:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -33,7 +33,7 @@ msgstr "De lo contrario, si quiere configurar su propia instancia del IPT, la xr
 #: en/modules/ROOT/pages/index.adoc:28
 #, no-wrap
 msgid "How to publish biodiversity data through GBIF.org using the IPT"
-msgstr ""
+msgstr "Cómo publicar datos sobre biodiversidad a través de GBIF.org usando el IPT"
 
 #. type: Title =
 #: en/modules/ROOT/pages/index.adoc:1
