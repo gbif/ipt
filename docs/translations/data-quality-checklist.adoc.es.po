@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-19 06:17\n"
+"PO-Revision-Date: 2021-08-19 06:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -397,7 +397,7 @@ msgstr "| Check-ID | Campos | Requisitos\n\n"
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:183
 #, no-wrap
 msgid "Case 1: Point location converted from degrees minutes seconds to decimal degrees"
-msgstr ""
+msgstr "Caso 1: Localización por puntos convertida de grados minutos segundos a grados decimales"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:202
@@ -417,13 +417,27 @@ msgid "| Field | Value | Constraint\n\n"
 "| `stateProvince` | \"New York\" |\n"
 "| `county` | \"Tomkins County\" |\n"
 "| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | Must be a specific description of the place\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `decimalLatitude` | 42.4566 | Debe estar entre -90 y 90, ambos inclusive\n"
+"| `decimalLongitude` | -76.45442 | Debe estar entre -180 y 180, ambos inclusive\n"
+"| `geodeticDatum` | \"EPSG:4326\" | Idealmente un http://spatialreference.org/ref/epsg/wgs-84/[código EPSG] o vocabulario controlado, si no \"unknown\"\n"
+"| `coordinateUncertaintyInMeters` | 500 | Cero NO es un valor válido\n"
+"| `verbatimCoordinates` | 42° 27' 23.76\", -76° 27' 15.91\" |\n"
+"| `verbatimLatitude` | 42° 27' 23.76\" |\n"
+"| `verbatimLongitude` | -76° 27' 15.91\" |\n"
+"| `verbatimCoordinateSystem` | \"grados minutos segundos\" |\n"
+"| `continent` | \"North America\" | Preferiblemente nombres en inglés de acuerdo a http://www.getty.edu/research/tools/vocabularies/tgn/[Tesauros de Nombres Geográficos de Getty]\n"
+"| `country` | \"United States\" | Preferiblemente nombres en inglés de acuerdo a http://www.getty.edu/research/tools/vocabularies/tgn/[Tesauros de Nombres Geográficos de Getty]\n"
+"| `countryCode` | \"US\" | Deben ser https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2[códigos de países ISO 3166-1-alpha-2]\n"
+"| `stateProvince` | \"New York\" |\n"
+"| `county` | \"Tomkins County\" |\n"
+"| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | Debe ser una descripción específica del lugar\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:204
 #, no-wrap
 msgid "Case 2: Point location that was generalized"
-msgstr ""
+msgstr "Caso 2: Localización por puntos que fue generalizada"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:214
@@ -434,52 +448,60 @@ msgid "| Field | Value\n\n"
 "| `geodeticDatum` | \"EPSG:4326\"\n"
 "| `coordinateUncertaintyInMeters` | 5000\n"
 "| `dataGeneralizations` | \"Point location obscured by a factor of 5000m\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `decimalLatitude` | 42.44\n"
+"| `decimalLongitude` | -76.33\n"
+"| `geodeticDatum` | \"EPSG:4326\"\n"
+"| `coordinateUncertaintyInMeters` | 5000\n"
+"| `dataGeneralizations` | \"Localización por puntos difuminada por un factor de 5.000m\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:216
 #, no-wrap
 msgid "Case 3: Point location exists but not provided"
-msgstr ""
+msgstr "Caso 3: La localización por puntos existe pero no se ha proporcionado"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:222
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `informationWitheld` | \"Point location hidden to protect sensitive species. Available upon request.\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `informationWitheld` | \"Localización por puntos escondida para proteger especies sensibles. Disponible mediante solicitud.\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:224
 #, no-wrap
 msgid "Case 4: Point location does not exist"
-msgstr ""
+msgstr "Caso 4: La localización por puntos no existe"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:230
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `dataGeneralizations` | \"Point location was not found in legacy data\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `dataGeneralizations` | \"La localización por puntos no se encontró en los datos heredados\"\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:232
 #, no-wrap
 msgid "Why did the event happen?"
-msgstr ""
+msgstr "¿Por qué tuvo lugar el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:238
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
 "| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | El nombre del método o protocolo de muestreo utilizado para crear el evento debe ser introducido en `samplingProtocol`. Una URL referenciando la descripción es preferible a extensas descripciones de métodos. Un protocolo de muestreo debe definir su área, duración, etc. utilizando la pareja `sampleSizeValue` & `sampleSizeUnit`, con valores para `sampleSizeUnit` procedentes del {latest-unit-of-measurement}[Vocabulario de Unidades de Medidas]. Se pueden introducir descripciones más genéricas del esfuerzo o duración del muestreo en `samplingEffort`. Si se desconoce la información sobre el área o la duración, `eventRemarks` debe proporcionar una explicación de por qué.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:240
 #, no-wrap
 msgid "Case 1: Because of a butterfly monitoring scheme"
-msgstr ""
+msgstr "Caso 1: Debido a un esquema de monitoreo de mariposas"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:250
