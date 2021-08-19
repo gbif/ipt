@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 17:38\n"
+"PO-Revision-Date: 2021-08-19 18:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -90,35 +90,35 @@ msgstr "Obtengo el siguiente error: \"The data directory '/directory' is not wri
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:26
 msgid "Assuming you are running Tomcat, you need to ensure the user running Tomcat has permissions on the directory. To find out the user running Tomcat on Linux, open a shell and enter the following command:"
-msgstr ""
+msgstr "Suponiendo que está ejecutando el Tomcat, debe asegurarse que el usuario que ejecuta el Tomcat tenga permisos en el directorio. Para averiguar el usuario que está ejecutando Tomcat en Linux, abra un shell e ingrese el siguiente comando:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:29
 #, no-wrap
 msgid "$ ps waux | grep tomcat\n"
-msgstr ""
+msgstr "$ ps waux | grep tomcat\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:32
 msgid "If the user is \"tomcatuser\", and this user belongs to group \"tomcatgroup\" then change the ownership of the IPT data directory (and its child folders and files) by entering the following command:"
-msgstr ""
+msgstr ".i el usuario es un \"tomcatuser\" y este usuario pertenece al grupo \"tomcatgroup\", cambie la propiedad del directorio de datos del IPT (y sus sub carpetas y archivos) ingresando el siguiente comando:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:35
 #, no-wrap
 msgid "$ chown -R tomcatuser:tomcatgroup directory/\n"
-msgstr ""
+msgstr "$ chown -R tomcatuser:tomcatgroup directory/\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:38
 msgid "To ensure only this user has write permission, enter the following command:"
-msgstr ""
+msgstr "Para asegurarse de que solo este usuario tenga permiso de escritura, ingrese el siguiente comando:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:41
 #, no-wrap
 msgid "$ chmod -R 755 directory/\n"
-msgstr ""
+msgstr "$ chmod -R 755 directory/\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:44
