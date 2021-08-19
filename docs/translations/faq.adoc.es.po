@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 22:10\n"
+"PO-Revision-Date: 2021-08-19 22:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -625,18 +625,18 @@ msgstr "Eventualmente, GBIF apaga su servicio de indexación para mantenimiento 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:239
 msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened."
-msgstr ""
+msgstr "Si cree que GBIF no pudo indexar su conjunto de datos, envíe sus comentarios directamente a través de GBF.org, o envíe un correo electrónico al servicio de asistencia técnica de GBIF<helpdesk@gbif.org> para investigar lo que sucedió."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:240
 #, no-wrap
 msgid "How often does GBIF reindex my dataset?"
-msgstr ""
+msgstr "¿Con qué frecuencia GBIF reindexa mis conjuntos de datos?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:243
 msgid "GBIF automatically attempts to reindex a registered dataset each time its registration is updated. This happens each time the dataset gets republished via the IPT."
-msgstr ""
+msgstr "GBIF automáticamente intenta reindexar un conjunto de datos registrado cada vez que se actualiza su registro. Esto sucede cada vez que el conjunto de datos se vuelve a publicar a través del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:245
