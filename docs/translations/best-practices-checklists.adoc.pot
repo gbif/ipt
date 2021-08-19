@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"POT-Creation-Date: 2021-08-19 10:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,12 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:3
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:27
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
 #: en/modules/ROOT/pages/customization.adoc:3
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
@@ -64,9 +64,9 @@ msgid ""
 "\n"
 "| 1.0     | Release Version         | 1 April 2011    | David Remsen\n"
 "\n"
-"| http://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen\n"
+"| https://links.gbif.org/checklist_best_practices[1.11] | Minor editorial changes | 28 April 2011   | David Remsen\n"
 "\n"
-"| 2.0 | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak\n"
+"| https://github.com/gbif/ipt/wiki/BestPracticesChecklists[2.0] | Transferred to wiki, major changes | 30 March 2017   | Kyle Braak\n"
 "\n"
 "| xref:best-practices-checklists.adoc[2.1] | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett\n"
 msgstr ""
@@ -75,27 +75,28 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:16
 #: en/modules/ROOT/pages/dwca-guide.adoc:18
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:7
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
 #, no-wrap
 msgid "Suggested citation"
 msgstr ""
 
+#.  The date uses the last change, ignoring formatting etc.
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:24
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:25
 msgid ""
-"GBIF (2017). Best Practices in Publishing Species Checklists. Accessible "
-"online at https://ipt.gbif.org/manual/en/ipt/{manual-version}/best-practices-"
-"checklists"
+"GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. "
+"Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-"
+"version}/best-practices-checklists"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:26
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:27
 msgid ""
 "_Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexicanus_"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:30
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:31
 msgid ""
 "This guide provides details on how to utilize the Darwin Core Archive (DwC-"
 "A) format as a means to share taxonomic checklist information in a standard "
@@ -108,7 +109,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:32
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:33
 msgid ""
 "The DwC-A format and the specific profile described here represent an "
 "internationally recognized and ratified data exchange format for sharing "
@@ -132,13 +133,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:33
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:34
 #, no-wrap
 msgid "Scope"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:36
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:37
 msgid ""
 "The terms “species checklist” and taxonomic “catalogue” may refer to an "
 "overlapping range of taxonomic resources. All of these products contain sets "
@@ -152,43 +153,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:38
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:39
 #, no-wrap
 msgid "*Name lists* – Simple lists of species names with no explicit indication of taxonomic status, but generally implied to consist of accepted names of taxa. Such lists are generally intended to identify a set of taxa included within some regional or thematic context.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:39
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:40
 #, no-wrap
 msgid "*Nomenclatural lists (Nomenclators)* – Lists of names including the nominal taxa, meaning the registry of published usages of scientific names representing nomenclatural acts as governed by the respective Codes of Nomenclature. Most of these acts are ‘original descriptions’ of new scientific names, but other acts may include emendations, lectotypifications, and other acts as governed by the Codes. Synonymy is not included in these lists as taxonomic concept, but only as newly established combination (for botanists) linked to a basionym, thus providing a nomenclatural synonym.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:40
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:41
 #, no-wrap
 msgid "*Taxonomic checklist* – These lists extend nomenclatural lists by adding taxonomic opinion in the form of explicit taxonomic status information and the inclusion of names placed in synonymy. Simple taxonomic lists in this category provide no specific circumscription details regarding the basis for the synonymy. Taxa are often organized into classifications. The term “*taxonomic catalogue*” may also be used to refer to instances of this, and the remaining categories, particularly if the resource includes verified publication and taxonomic status details.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:41
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:42
 #, no-wrap
 msgid "*Annotated Checklists* - This category extends taxonomic checklists by adding other data types (annotations) to the core, synonymized checklist, such as common names, threat status, distribution and basic descriptive information. When the annotation types provide sufficient detail to effectively define, or circumscribe, a taxon, such as detailed diagnostic descriptions and illustrations, molecular data, specimens, etc., then the annotated list may fall into one of the two categories defined below.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:42
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:43
 #, no-wrap
 msgid "*Flora or Faunal lists* – These are typically books that provide detailed species accounts for a particular region. Details may include many of the data types included in annotated checklists but include specific data types, such as detailed descriptions and illustrations, specimen references and other details that explicitly define (circumscribe) the taxon within the scope of the region which is not necessarily global.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:43
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:44
 #, no-wrap
 msgid "*Monographs* – Monographs are detailed species accounts often published as books for a particular taxon group at the global scale. It will contain detailed nomenclature and synonymy and taxon circumscription details, that include textual descriptions and illustrations, details of specimens examined and included in the definition, and a bibliography of examined literature.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:45
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:46
 msgid ""
 "The Darwin Core Archive format with the <<GBIF Checklist Extensions>> "
 "supports the exchange of key data elements within all of these checklist "
@@ -200,13 +201,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:46
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:47
 #, no-wrap
 msgid "Darwin Core Archive Format"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:49
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:50
 msgid ""
 "Darwin Core Archive (DwC-A) is an informatics data standard that makes use "
 "of the Darwin Core terms to produce a single, self-contained dataset for "
@@ -218,13 +219,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:50
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:51
 #, no-wrap
 msgid "Checklist Metadata"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:53
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:54
 msgid ""
 "Documenting the provenance and scope of datasets is required in order to "
 "publish checklist data through the GBIF network. Dataset documentation is "
@@ -239,14 +240,14 @@ msgid ""
 msgstr ""
 
 #. type: Title =
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:54
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:55
 #: en/modules/ROOT/pages/checklist-data.adoc:1
 #, no-wrap
 msgid "Checklist Data"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:57
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:58
 msgid ""
 "The Darwin Core Archive format provides the structural framework for "
 "publishing species checklists. Darwin Core Archives consist of a series of "
@@ -262,28 +263,28 @@ msgid ""
 msgstr ""
 
 #. type: Block title
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:58
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:44
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:59
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #, no-wrap
 msgid "Darwin Core Archive data files in 'star schema'"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:59
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:60
 #, no-wrap
 msgid "figures/dwc-a_checklist.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:61
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:54
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:62
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:55
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:14
 #, no-wrap
 msgid "Data file formatting recommendations"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:64
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:65
 msgid ""
 "For ease in understanding, we may use the terms *field* in this guide to "
 "refer to the Darwin Core set of terms in the taxonomic publishing profile to "
@@ -293,27 +294,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:66
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:67
 msgid ""
 "It is recommended to use tab or Comma-Separated-Values instead of custom "
 "field delimiters and quotes."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:67
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:60
-msgid "Be careful and consistent with quotation."
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:68
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:61
-msgid "Encode text files as UTF-8"
+msgid "Be careful and consistent with quotation."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:69
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:62
+msgid "Encode text files as UTF-8"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:70
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:63
 msgid ""
 "Make sure you replace all line breaks in a data field, i.e. `\\r` `\\n` or `"
 "\\r\\n` with either simple spaces or use 2 characters like `$$` to replace `"
@@ -322,34 +323,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:70
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:63
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:71
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
 msgid ""
 "Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `"
 "\\N` or `\\NULL`, but no other text sequence!"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:71
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:72
 #, no-wrap
 msgid "Sharing Scientific Names"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:74
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:75
 msgid ""
 "The Darwin Core supports more than one way to share a scientific name. This "
 "includes the following options:"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:75
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:76
 #, no-wrap
 msgid "A. Concatenated in the scientificName field"
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:81
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:82
 #, no-wrap
 msgid ""
 "| scientificName\n"
@@ -358,7 +359,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:84
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:85
 msgid ""
 "The *dwc:scientificName* field stores the full scientific name of a taxon "
 "including authorship. This field should always be populated with data even "
@@ -372,13 +373,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:85
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:86
 #, no-wrap
 msgid "B. Separate Name and Authorship parts"
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:91
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:92
 #, no-wrap
 msgid ""
 "| scientificName                | scientificNameAuthorship\n"
@@ -387,7 +388,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:94
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:95
 msgid ""
 "Some databases separate a scientific name into a name part and an authorship "
 "part. In this case the *dwc:scientificName* and *dwc:"
@@ -395,13 +396,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:95
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:96
 #, no-wrap
 msgid "C. Separated into name parts"
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:101
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:102
 #, no-wrap
 msgid ""
 "| Genus | specificEpithet | taxonRank | infraspecificEpithet | scientificNameAuthorship\n"
@@ -410,7 +411,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:104
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:105
 msgid ""
 "The Darwin Core provides a series of terms that enable scientific names to "
 "be separated into component parts. Some databases store species lists in "
@@ -423,13 +424,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:105
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:106
 #, no-wrap
 msgid "Infrageneric Markers"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:108
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:109
 msgid ""
 "If possible, please provide an infrageneric rank marker as part of the "
 "scientific name to avoid confusion with the original / basionym author. For "
@@ -439,13 +440,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:109
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:110
 #, no-wrap
 msgid "Publishing Classifications"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:112
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:113
 msgid ""
 "The Darwin Core provides two basic options for publishing classifications or "
 "taxonomic hierarchies; normalized and denormalized. These two options "
@@ -454,13 +455,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:113
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:114
 #, no-wrap
 msgid "Normalized Classifications (Parent/Child)"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:116
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:117
 msgid ""
 "The recommended way to share a classification is in a normalized format. "
 "This may also be referred to in a database as a \"parent-child relationship"
@@ -471,25 +472,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:118
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:119
 msgid ""
 "A *dwc:taxonID* referring to the current taxon. *You can use whatever "
 "identifiers you have*."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:119
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:120
 msgid ""
 "The *dwc:scientificName* of the current taxon. Example: “*Panthera tigris*”"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:120
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:121
 msgid "The *dwc:taxonRank* of the referent taxon. Example: “*species*”"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:121
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:122
 msgid ""
 "A reference to the taxon identifier of the immediate parent taxon stored in "
 "the *dwc:parentNameUsageID*. In the example below, the parent of record 7, "
@@ -497,7 +498,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:123
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:124
 msgid ""
 "A sample classification for a single species, the tiger, “*Panthera "
 "tigris*”, is illustrated below. Note that the top-most member of a hierarchy "
@@ -508,7 +509,7 @@ msgid ""
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:134
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:135
 #, no-wrap
 msgid ""
 "| taxonID | taxonRank | scientificName         | parentNameUsageID\n"
@@ -523,45 +524,45 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:136
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:166
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:137
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:167
 #, no-wrap
 msgid "Advantages"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:139
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:140
 #, no-wrap
 msgid "*Efficiency* – A normalized classification stores a single reference for each taxon in the hierarchy.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:140
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:141
 #, no-wrap
 msgid "*Referential integrity* – Each taxon component has a distinct identifier that explicitly references its immediate parent. It is easy to verify that the taxonomic hierarchy is complete and properly formed.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:141
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:142
 #, no-wrap
 msgid "*Extensibility* – All taxa are identified with distinct taxon identifiers. This enables higher taxa to be more richly documented through the use of extensions in the same manner as species records.\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:142
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:171
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:143
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:172
 #, no-wrap
 msgid "Disadvantages"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:145
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:146
 #, no-wrap
 msgid "*Convenience* - A normalized classification does not provide an intuitive view of the classification hierarchy when viewed in raw tabular form. Many biologists manage classifications in a less efficient, but more visually intuitive, *denormalized format*, described below. Transforming a denormalized classification to the normalized form is difficult to manually perform.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:147
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:148
 msgid ""
 "A *dwc:parentNameUsageID* must point to an existing record in the dataset. "
 "It is invalid to point to higher taxon identifiers that do not exist as "
@@ -569,13 +570,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:148
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:149
 #, no-wrap
 msgid "Denormalized Classifications"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:151
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:152
 msgid ""
 "This format is familiar to anyone who manages species information in "
 "spreadsheets. In a denormalized classification, each row of the data table "
@@ -584,7 +585,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:153
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:154
 msgid ""
 "This format is not the recommended method for sharing taxonomic data using "
 "Darwin Core Archives but is supported by GBIF as it is in common use in many "
@@ -593,14 +594,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:155
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:156
 msgid ""
 "Each higher taxon column is completely populated. Avoid blanks as in the "
 "Plantae example below."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:156
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:157
 msgid ""
 "Ensure taxonomic integrity of the list. For example ensure that two species "
 "in a common genus share the same family. Ensure that if synonyms are "
@@ -609,7 +610,7 @@ msgid ""
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:164
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:165
 #, no-wrap
 msgid ""
 "| taxonID | kingdom | phylum | class | order | family | scientificName\n"
@@ -621,51 +622,51 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:169
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:170
 #, no-wrap
 msgid "*Legibility* - The primary advantage of this format is that it is easy to read and the taxonomic hierarchy can be evaluated by simply reading columns.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:170
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:171
 #, no-wrap
 msgid "*Convenient* – Spreadsheet applications and many relational databases make it easy to implement this structure for storing hierarchical data.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:174
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:175
 #, no-wrap
 msgid "*Higher likelihood of referential integrity loss* – Higher taxa are repeated in this format which can increase the chance that two identical taxa may be spelled differently. Other similar risks are possible with this format. For example it is possible for two instances of the same taxon (example “Felidae”) to be assigned to two different parents, resulting in a conflict of hierarchical integrity.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:175
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:176
 #, no-wrap
 msgid "*Lack of details for higher taxa* – This format treats higher taxa as properties of a species, not as separate taxon records themselves. Therefore, this format does not allow properties of higher taxa to be shared either in the core file or in any extensions.\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:176
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:177
 #, no-wrap
 msgid "Other classification-related recommendations"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:179
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:180
 msgid ""
 "Try to include a Kingdom and a nomenclatural code reference for all records "
 "even for basic species lists."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:180
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:181
 msgid ""
 "Try to include Kingdom, Phylum and Family as a minimal classification for "
 "denormalized classifications."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:181
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:182
 msgid ""
 "If it is the same throughout the dataset, consider using a static mapping of "
 "the term and value. See the Darwin Core Archive How-to Guide at xref:dwca-"
@@ -673,13 +674,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:182
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:183
 #, no-wrap
 msgid "Classification Formats not recommended for publishing"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:185
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:186
 msgid ""
 "The following examples illustrate data configurations that can fit the "
 "profile *but are not recommended or supported by GBIF* (i.e., GBIF parsers "
@@ -687,14 +688,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:188
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:189
 msgid ""
 "This example identifies the referent taxon as the last column containing "
 "taxon values."
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:199
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:200
 #, no-wrap
 msgid ""
 "| taxonID | kingdom | phylum | class | order | family | scientificName\n"
@@ -709,14 +710,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:202
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:203
 msgid ""
 "This example attempts is similar to A above but attempts to reduce integrity "
 "errors by only recording higher taxon names once"
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:213
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:214
 #, no-wrap
 msgid ""
 "| taxonID | kingdom | phylum | class | order | family | scientificName\n"
@@ -731,18 +732,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:216
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:217
 msgid "Please avoid publishing data in these configurations."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:217
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:218
 #, no-wrap
 msgid "Publishing Synonymy"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:220
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:221
 msgid ""
 "Darwin Core Archive supports the publication of synonyms in species "
 "checklists. A synonym is published as a separate record in the core data "
@@ -754,7 +755,7 @@ msgid ""
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:230
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:231
 #, no-wrap
 msgid ""
 "| taxonID | scientificName | acceptedNameID | taxonomicStatus | nomenclaturalStatus\n"
@@ -768,7 +769,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:233
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:234
 msgid ""
 "A synonym record is recommended to contain a distinct *dwc:taxonID* or it "
 "may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* "
@@ -786,7 +787,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:235
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:236
 msgid ""
 "Detailed synonymy can be supported by ensuring a unique *dwc:taxonID* is "
 "included in each synonym record and by utilizing the available extensions to "
@@ -802,13 +803,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:237
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:238
 #, no-wrap
 msgid "*Taxon.txt* data file\n"
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:244
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:245
 #, no-wrap
 msgid ""
 "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n"
@@ -819,13 +820,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:247
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:248
 #, no-wrap
 msgid "*References.txt* data file\n"
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:253
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:254
 #, no-wrap
 msgid ""
 "| taxonID | Bibliographic citation\n"
@@ -835,13 +836,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:256
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:257
 #, no-wrap
 msgid "*Other Synonymy Do’s and Don’ts*\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:258
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:259
 msgid ""
 "An *dwc:acceptedNameUsageID* must point to an existing record in the "
 "dataset. It is invalid to point to accepted taxa that do not exist as "
@@ -849,7 +850,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:259
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:260
 msgid ""
 "Do not confuse the *dwc:higherTaxonID* used to describe a classification "
 "with the *dwc:acceptedNameUsageID* used to describe the taxonomic status of "
@@ -857,7 +858,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:260
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:261
 msgid ""
 "Do not “chain” synonyms. A synonym should only point to accepted taxon "
 "records via *dwc:acceptedNameUsageID*. They should never point to another "
@@ -865,19 +866,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:261
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:262
 #, no-wrap
 msgid "Nomenclatural Synonymy"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:264
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:265
 #, no-wrap
 msgid "*Nomenclatural synonymy* is supported in the core data file through the use of the *dwc:originalNameUsageID* field. This field refers to the row representing the original taxon reference for the name. This record is recommended to provide a bibliographic citation in the *dwc:namePublishedIn* field, which refers to the publication in which the name was originally established.\n"
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:271
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:272
 #, no-wrap
 msgid ""
 "| taxonID | scientificName | originalNameID | namePublishedIn\n"
@@ -888,14 +889,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:274
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:275
 msgid ""
 "Nomenclatural and taxonomic synonyms may be designated in the same taxon "
 "record."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:276
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:277
 msgid ""
 "An *dwc:originalNameUsageID* must point to an existing record in the "
 "dataset. It is invalid to point to accepted taxa that do not exist as "
@@ -903,13 +904,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:277
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:278
 #, no-wrap
 msgid "Pro-parte Synonymy"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:280
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:281
 msgid ""
 "Sometimes the same name may be a synonym for more than one accepted taxon or "
 "may be both an accepted taxon name and a synonym. These are caused by splits "
@@ -923,7 +924,7 @@ msgid ""
 msgstr ""
 
 #. type: Table
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:288
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:289
 #, no-wrap
 msgid ""
 "| taxonID | scientificName | acceptedNameUsageID | taxonomicStatus\n"
@@ -935,7 +936,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:291
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:292
 msgid ""
 "IPT users should define the multi-value delimiter for each source file in "
 "the IPT. Refer to xref:manage-resources.adoc#source-data[Source Data "
@@ -943,13 +944,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:292
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:293
 #, no-wrap
 msgid "Citation and Attribution"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:295
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:296
 msgid ""
 "Taxonomic checklists often represent significant intellectual and financial "
 "efforts on the part of the individuals and organizations who compile them. "
@@ -960,7 +961,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:297
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:298
 msgid ""
 "The DwC-A format provides a range of options and recommendations for "
 "providing proper citation and attribution. This range extends from global "
@@ -970,13 +971,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:298
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:299
 #, no-wrap
 msgid "Metadata Citation and Attribution"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:301
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:302
 msgid ""
 "The GBIF Metadata profile supports resource-level data elements that "
 "contribute to citation and attribution and enable detailed description of "
@@ -987,49 +988,49 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:303
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:304
 #, no-wrap
 msgid "*Intellectual Property Rights* – The metadata profile contains a rights management statement for the resource, or a reference to a service providing such information, such as a Creative Commons license. It also includes an element describing the intended use and purpose of the dataset.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:304
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:305
 #, no-wrap
 msgid "*Individuals and Organizations* – The metadata profile enables the description of any and all individuals, institutions or organizations that may be associated with a dataset. These agents may be ascribed different roles relative to the dataset and may include URLs to each resource. This section provides one method for describing and linking to individuals and organizations that have contributed to a checklist.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:305
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:306
 #, no-wrap
 msgid "*Source URL* – Links to the homepage of the source\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:306
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:307
 #, no-wrap
 msgid "*Project Information* – If the checklist is linked to a particular project (e.g., “The Catalogue of Life”) there are a set of fields for describing the project in detail.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:307
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:308
 #, no-wrap
 msgid "*Citation* – This element allows the checklist publisher to specify exactly how the checklist data should be cited when used. Example *“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”*\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:308
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:309
 #, no-wrap
 msgid "*Bibliography* – A complete bibliography of sources can be described and included in the metadata document.\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:309
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:310
 #, no-wrap
 msgid "Data-level Citation and Attribution"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:312
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:313
 msgid ""
 "Attribution and citation information recorded in the metadata document is "
 "common to all data records in a dataset. In some cases, additional "
@@ -1039,43 +1040,43 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:314
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:315
 #, no-wrap
 msgid "*dwc:nameAccordingTo* : This term can be used to identify the individual or citation that serves as the authoritative taxonomic reference for the record. (Example “Erpenbeck, D.; Van Soest, R.W.M. 2002. Family Halichondriidae Gray, 1867. Pp. 787-816. In Hooper, J. N. A. & Van Soest, R. W. M. (ed.) Systema Porifera. A guide to the classification of sponges.”)\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:315
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:316
 #, no-wrap
 msgid "*dwc:nameAccordingToID*: A unique identifier that returns the nameAccordingTo reference as described above. This could be a URL for example.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:316
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:317
 #, no-wrap
 msgid "*dwc:datasetName*: If the record is derived from an external dataset this dataset can be cited as a text string. (Example, “World Register of Marine Species, cited on 12 April 2011”)\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:317
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:318
 #, no-wrap
 msgid "*dwc:datasetID* – An identifier that refers to a dataset, preferably resolvable.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:318
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:319
 #, no-wrap
 msgid "*dc:source* – Link to the source web page\n"
 msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:319
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:320
 #, no-wrap
 msgid "Use Case 1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:322
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:323
 msgid ""
 "A taxonomic dataset may be a composite of multiple contributing sources, "
 "each of which needs to be acknowledged in addition to the collective "
@@ -1088,7 +1089,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:324
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:325
 msgid ""
 "Other examples include the Pan-European Species list, which is composed of a "
 "number of contributing datasets that include Fauna Europaea, the European "
@@ -1097,14 +1098,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:326
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:327
 msgid ""
 "The recommended practice for effectively documenting the provenance of these "
 "sorts of resources can be summarized as follows."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:328
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:329
 msgid ""
 "A single metadata document is created to represent the collective resource "
 "itself, (e.g., the Catalogue of Life, the The World Register of Marine "
@@ -1117,13 +1118,13 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:331
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:332
 #, no-wrap
 msgid "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:334
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:335
 msgid ""
 "Additional metadata documents can be created for each of the component "
 "datasets and included in the archive. This allows each sub-component dataset "
@@ -1140,7 +1141,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:335
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:336
 msgid ""
 "To cite individuals at the record level, providing a 3rd level of citation, "
 "it is recommended to use the *dwc:nameAccordingTo* field. Additional record-"
@@ -1148,13 +1149,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:336
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:337
 #, no-wrap
 msgid "Use Case 2 - Checklists derived from one or more authority sources"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:339
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:340
 msgid ""
 "A species checklist in this use case is compiled for a specific purpose but "
 "derives it’s basic taxonomic structure from one or more external taxonomic "
@@ -1171,7 +1172,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:341
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:342
 msgid ""
 "A single metadata document is created to represent the new, derived resource "
 "itself (e.g., National Checklist of the Netherlands). Datasets that are "
@@ -1179,47 +1180,47 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:342
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:343
 msgid ""
 "Fully described as organizations with a role of Contributor and links to the "
 "source web site."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:343
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:344
 msgid ""
 "Cited in the bibliographic section with the citation represented as "
 "recommended by the referenced dataset."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:344
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:345
 msgid ""
 "In the data files, additional attribution and linkages can be made at the "
 "record-level. This includes:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:345
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:346
 msgid "Referencing the dataset by name in *dwc:datasetName*"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:346
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:347
 msgid ""
 "Referencing the dataset by ID (such as URL) in *dwc:datasetID* and linking "
 "to the dataset home page"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:347
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:348
 msgid ""
 "Providing a link to a corresponding species page on the referenced dataset "
 "web site using *dc:source*"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:348
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:349
 msgid ""
 "If dc:source is reserved for pointing to URL for the derived database, a "
 "link to the source database can still be added using the Alternative "
@@ -1227,7 +1228,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:349
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:350
 msgid ""
 "If the source dataset provides globally unique identifiers for the taxa "
 "referenced in the list, they can be used as the *taxonID* in the derived "
@@ -1236,20 +1237,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:350
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:351
 msgid ""
 "Use the *dwc:nameAccordingTo* or *dwc:nameAccordingToID* to refer to the "
 "taxon definition in the corresponding source record as a citation or a URL."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:351
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:352
 #, no-wrap
 msgid "Sharing Vernacular Names"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:354
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:355
 msgid ""
 "The sharing of vernacular name data associated with taxa in taxonomic "
 "checklists is supported. Vernacular names are shared as a separate, related "
@@ -1259,13 +1260,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:355
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:356
 #, no-wrap
 msgid "figures/myristica_fragrans.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:358
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:359
 msgid ""
 "Vernacular names are referenced via an extension, therefore they must be "
 "linked to a named taxon in the parent core data file. It is further "
@@ -1280,13 +1281,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:359
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:360
 #, no-wrap
 msgid "Sharing Species Descriptions"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:362
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:363
 msgid ""
 "The sharing of descriptive information related to a taxon is supported. "
 "Descriptive data are shared as a separate, related file using the via the "
@@ -1299,13 +1300,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:363
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:364
 #, no-wrap
 msgid "Multi-line descriptions"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:366
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:367
 msgid ""
 "Descriptive information should be limited to single paragraph text blocks. "
 "Multiple paragraphs containing line breaks should be avoided or carefully "
@@ -1320,13 +1321,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:367
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:368
 #, no-wrap
 msgid "Sharing Species Distributions"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:370
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:371
 msgid ""
 "The sharing of distribution data is supported. Distribution data are shared "
 "as a separate, related file using the {latest-species-distribution}[Species "
@@ -1339,7 +1340,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:372
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:373
 msgid ""
 "The recommended best practice for specifying a distinct area is via a "
 "resolve-able or well-known area identifier published via the dwc:localityID "
@@ -1347,20 +1348,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:374
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:375
 msgid ""
 "If the dwc:country element is used, it is recommended that the http://rs."
 "gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes] be used."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:375
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:376
 #, no-wrap
 msgid "Sharing References"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:378
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:379
 msgid ""
 "The sharing of bibliographic citations is supported. Bibliographic data are "
 "shared as a separate, related file using the {latest-references}[References "
@@ -1376,13 +1377,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:379
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:380
 #, no-wrap
 msgid "Sharing Type information"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:382
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:383
 msgid ""
 "The sharing of information about types and specimens is supported. These "
 "data are shared as a separate, related file using the {latest-"
@@ -1391,13 +1392,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:383
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:384
 #, no-wrap
 msgid "Sharing Links and Identifiers"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:386
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:387
 msgid ""
 "It is possible to share and describe multiple links to related external "
 "resources using the {latest-identifier}[Alternate Identifier Extension]. It "
@@ -1412,13 +1413,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:387
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:388
 #, no-wrap
 msgid "Creating a dynamic link to a species page"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:390
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:391
 msgid ""
 "Often, a link back to a source database follows a common format, differing "
 "only in the identifier number or taxon name used in the URL. This can result "
@@ -1434,7 +1435,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:392
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:393
 msgid ""
 "The metafile supports the creation of variables in the metafile that may "
 "refer to a web page or web service call. This variable may be embedded in "
@@ -1446,21 +1447,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:394
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:395
 msgid ""
 "The Integrated Taxonomic Information System (ITIS) uses Taxonomic Serial "
 "Numbers (TSN) to provide links to taxon pages on its web site."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:397
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:398
 msgid ""
 "http://www.itis.gov/servlet/SingleRpt/SingleRpt?"
 "search_topic=TSN&search_value=174375"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:399
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:400
 msgid ""
 "If a core data file is published using the ITIS TSN system a link can be "
 "composed and tied to the “identifier” term in the core data standard using "
@@ -1468,20 +1469,20 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:402
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:403
 #, no-wrap
 msgid "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value={id}\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:405
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:406
 msgid ""
 "where the original numeric value is replaced by the variable `\\{id}`. This "
 "value would be derived from the core ID."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:408
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:409
 msgid ""
 "The 2010 Catalogue of Life Annual Checklist provides similar identifiers. It "
 "also supports name-based searches that can also be encoded as URLs. For "
@@ -1489,13 +1490,13 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:412
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:413
 #, no-wrap
 msgid "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Struthio+camelus/match/1\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:414
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:415
 msgid ""
 "embeds a scientific name “Struthio camelus” into a URL. Full scientific name "
 "combinations can be published in the core data file using the Darwin Core "
@@ -1504,26 +1505,26 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:417
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:418
 #, no-wrap
 msgid "<field default=\"http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/{12}/match/1\" term=\"http://purl.org/dc/terms/identifier\"/>\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:420
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:421
 msgid ""
 "where `\\{12}` represents the 12th column value that will be substituted in "
 "the URL."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:422
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:423
 #, no-wrap
 msgid "GBIF Checklist Extensions"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:425
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:426
 msgid ""
 "The core data file in a checklist contains taxon records. The set of terms "
 "that can be used to describe a taxon record is defined by the Taxon (Core) "
@@ -1531,7 +1532,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:427
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:428
 msgid ""
 "Each taxon record can be extended with one or more records in an extension "
 "file. The set of terms that can be used to describe each extension record is "
@@ -1539,25 +1540,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:429
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:430
 msgid ""
 "Below is the complete list of Extensions that can be used to provide "
 "additional information about a taxon record:"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:430
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:431
 #, no-wrap
 msgid "Taxon (Core) Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:433
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:434
 msgid "Latest version issued: {latest-dwc-taxon}[{date-dwc-taxon}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:435
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:436
 msgid ""
 "Use this set of terms to provide the fundamental information for a species "
 "checklist including classification, synonymy and other key elements. Each "
@@ -1575,18 +1576,18 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:436
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:437
 #, no-wrap
 msgid "Vernacular Names Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:439
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:440
 msgid "Latest version issued: {latest-vernacularname}[{date-vernacularname}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:441
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:442
 msgid ""
 "This extension provides the means to share information related to common "
 "(vernacular) names linked to taxa in the core data file. Multiple vernacular "
@@ -1594,18 +1595,18 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:442
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:443
 #, no-wrap
 msgid "References Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:445
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:446
 msgid "Latest version issued: {latest-references}[{date-references}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:447
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:448
 msgid ""
 "Use this extension to describe one or more bibliographic references related "
 "to a taxon in the core data file. Use the type field to qualify the "
@@ -1614,20 +1615,20 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:448
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:449
 #, no-wrap
 msgid "Species Distribution Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:451
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:452
 msgid ""
 "Latest version issued: {latest-species-distribution}[{date-species-"
 "distribution}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:454
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:455
 msgid ""
 "Use this extension to share information on one or more distribution "
 "references for a taxon. One or more locality records may be linked to the "
@@ -1638,18 +1639,18 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:455
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:456
 #, no-wrap
 msgid "Species Description Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:458
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:459
 msgid "Latest version issued: {latest-description}[{date-description}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:461
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:462
 msgid ""
 "Use this extension to provide descriptive text for a taxon. This is "
 "typically in the form of a single paragraph per record as would be normally "
@@ -1660,18 +1661,18 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:462
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:463
 #, no-wrap
 msgid "Alternative Identifiers"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:465
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:466
 msgid "Latest version issued: {latest-identifier}[{date-identifier}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:467
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:468
 msgid ""
 "Use this extension if you have more than one identifier or link to "
 "information about the taxon. A source database, may, for example provide "
@@ -1680,38 +1681,38 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:468
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:469
 #, no-wrap
 msgid "Types and Specimens Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:471
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:472
 msgid ""
 "Latest version issued: {latest-typesandspecimen}[{date-typesandspecimen}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:473
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:474
 msgid ""
 "Use this extension to share data relating to one or more specimens or type "
 "references linked to the core taxon"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:474
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:475
 #, no-wrap
 msgid "Resource Relationship Extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:477
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:478
 msgid ""
 "Latest version issued: {latest-resource-relation}[{date-resource-relation}]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:478
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:479
 msgid ""
 "This extension is used to describe one or more relationships that the core "
 "taxon has with other taxa, either in the source list or included in the "
