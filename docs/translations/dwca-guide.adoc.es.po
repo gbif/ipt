@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:54\n"
+"PO-Revision-Date: 2021-08-19 12:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -380,12 +380,12 @@ msgstr "Publicar DwC-A usando el IPT"
 #: en/modules/ROOT/pages/dwca-guide.adoc:111
 #, no-wrap
 msgid "*Assumption: Your data are already stored as a CSV/tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Ideally, you are already using Darwin Core terms as column names, although this is not required.*\n"
-msgstr ""
+msgstr "*Supuesto: Sus datos ya están almacenados como un fichero de texto CSV/tab, o en uno de los sistemas de gestión de bases de datos relacionales aceptados (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Lo ideal sería que ya esté usando los términos de Darwin Core como nombres de columnas, aunque esto no es necesario.*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:113
 msgid "The https://www.gbif.org/ipt[Integrated Publishing Toolkit (IPT)] is GBIF’s flagship tool for publishing DwC-As."
-msgstr ""
+msgstr "La https://www.gbif.org/ipt[Herramienta de Publicación Integrada (IPT)] es la herramienta insignia de GBIF para la publicación de DwC-As."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:115
