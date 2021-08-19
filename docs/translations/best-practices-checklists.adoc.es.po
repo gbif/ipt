@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:52\n"
+"PO-Revision-Date: 2021-08-19 12:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -83,7 +83,7 @@ msgstr "Citación sugerida"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:25
 msgid "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
-msgstr ""
+msgstr "GBIF (2017) Mejores Prácticas en la Publicación de Listados de Especies, versión 2.1. Copenhague: Secretariado de GBIF. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:27
