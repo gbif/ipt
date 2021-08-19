@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:54\n"
+"POT-Creation-Date: 2021-08-19 13:14+0000\n"
+"PO-Revision-Date: 2021-08-19 13:29\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -191,7 +191,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:54
-msgid "[Marie Grosjean - 2020-10-15 Edit]: Please check the data quality requirements for Sampling-Events described https://www.gbif.org/data-quality-requirements-sampling-events[here]. Note that if you generate your Darwin Core Archive manually, you might need to add a recordID field containing unique identifiers. (This field is generated automatically if you are using an IPT.) For more information on the structure of a Darwin Core Archive, please check the https://dwc.tdwg.org/text/[TDWG Darwin Core text guide]. You can always check your archive with the GBIF data validator: https://www.gbif.org/tools/data-validator."
+msgid "Please check the https://www.gbif.org/data-quality-requirements-sampling-events[data quality requirements for sampling events]. Note that if you generate your Darwin Core Archive manually, you might need to add a recordID field containing unique identifiers. (This field is generated automatically if you are using an IPT.) For more information on the structure of a Darwin Core Archive, please check the https://dwc.tdwg.org/text/[TDWG Darwin Core text guide]. You can always check your archive with the https://www.gbif.org/tools/data-validator[GBIF data validator]."
 msgstr ""
 
 #. type: Plain text
