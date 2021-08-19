@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 20:23\n"
+"PO-Revision-Date: 2021-08-19 20:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -262,39 +262,39 @@ msgstr "Si trabaja para un nodo GBIF de algún país, contacte a mailto:helpdesk
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:102
 msgid "The following well-maintained IPTs have all been configured with a DataCite accounts, can assign DOIs to datasets, and are thus recognized as a repository in BioSharing.org, which is used by journals such as Nature to refer their authors to one or more repositories that are appropriate for the type of data they have."
-msgstr ""
+msgstr "Los siguientes IPT han sido configurados con cuentas DataCite, pueden asignar DOI a los conjuntos de datos y se reconocen como repositorio en BioSharing.org, que es usado por revistas como Nature para referir a sus autores a uno o mas repositorios que son adecuados para el tipo de datos que poseen."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:104
 msgid "http://www.gbif.es/ipt/[GBIF Spain IPT] - https://biosharing.org/biodbcore-000854[BioSharing record]"
-msgstr ""
+msgstr "http://www.gbif.es/ipt/[GBIF España IPT] - https://biosharing.org/biodbcore-000854[Registro de BioSharing]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:105
 msgid "http://data.canadensys.net/ipt/[Canadensys IPT] - https://biosharing.org/biodbcore-000855[BioSharing record]"
-msgstr ""
+msgstr "http://data.canadensys.net/ipt/[IPT Canadensys] - https://biosharing.org/biodbcore-000855[Registro de BioSharing]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:106
 msgid "http://ipt.biodiversidad.co/sib/[GBIF Colombia IPT] - https://biosharing.org/biodbcore-000856[BioSharing record]"
-msgstr ""
+msgstr "http://ipt.biodiversidad.co/sib/[GBIF Colombia IPT] - https://biosharing.org/biodbcore-000856[Registro de BioSharing]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:108
 msgid "Authors in Spain are already depositing their standardized data in the GBIF Spain IPT, e.g. the following dataset http://doi.org/10.15470/qomfu6 underlies this Scientific Data Data Descriptor: http://doi.org/10.1038/sdata.2016.85"
-msgstr ""
+msgstr "Los autores en España están depositados sus datos estandarizados en el IPT de GBIF España, p. ej. el siguiente conjunto de datos http://doi.org/10.15470/qomfu6 basado en este Descriptor de datos de datos científicos: http://doi.org/10.1038/sdata.2016.85"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/faq.adoc:109
 #, no-wrap
 msgid "Usage"
-msgstr ""
+msgstr "Utilización"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:111
 #, no-wrap
 msgid "Why do published files contain broken lines?"
-msgstr ""
+msgstr "¿Por qué los archivos publicados contienen líneas discontinuas?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:113
