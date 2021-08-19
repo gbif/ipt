@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 18:01\n"
+"PO-Revision-Date: 2021-08-19 18:26\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -123,7 +123,7 @@ msgstr "$ chmod -R 755 directory/\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:44
 msgid "On systems with security sandboxing, you may need to grant permissions to the directory.  For example, on Debian you need to add a SystemD override:"
-msgstr ""
+msgstr "En sistemas con seguridad de aislamiento, es posible que deba otorgar permisos al directorio. Por ejemplo, en Debian hay que añadir una anulación de SystemD:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:51
@@ -133,7 +133,11 @@ msgid "$ systemctl edit syslog.service\n"
 "ReadWritePaths=/path/to/directory/\n"
 "$ systemctl daemon-reload\n"
 "$ systemctl restart tomcat8\n"
-msgstr ""
+msgstr "$ systemctl edit syslog.service\n"
+"[Service]\n"
+"ReadWritePaths=/path/to/directory/\n"
+"$ systemctl daemon-reload\n"
+"$ systemctl restart tomcat8\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:54
