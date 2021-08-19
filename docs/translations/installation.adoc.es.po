@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-19 19:17\n"
+"PO-Revision-Date: 2021-08-19 19:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -326,37 +326,37 @@ msgstr "Si necesita encontrar la dirección IP \"predeterminada\" de su máquina
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:152
 msgid "Run a specific version from https://hub.docker.com/r/gbif/ipt/tags[those available] by using `gbif/ipt:version` rather than `gbif/ipt`."
-msgstr ""
+msgstr "Ejecute una versión específica desde https://hub.docker.com/r/gbif/ipt/tags[las disponibles] usando `gbif/ipt:version` en lugar de`gbif/ipt`."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:153
 #, no-wrap
 msgid "Opening the IPT to the Internet"
-msgstr ""
+msgstr "Abrir el IPT a internet"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:156
 msgid "You will probably need to work with your system or network administrator for the IPT to be available on the Internet."
-msgstr ""
+msgstr "Probablemente necesitará trabajar con su sistema o administrador de red para que el IPT esté disponible en Internet."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:158
 msgid "You will need a DNS name for the server (\"`ipt.example.org`\") and the firewall to allow access."
-msgstr ""
+msgstr "Necesitará un nombre DNS para el servidor (\"` ipt.example.org` \") y permitir el acceso en el firewall."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:160
 msgid "Many people use Apache HTTPD as a reverse proxy, often to provide HTTPS access or to allow sharing other websites on the same server."
-msgstr ""
+msgstr "Mucha gente usa Apache HTTPD como proxy inverso, a menudo para proporcionar acceso HTTPS o para permitir compartir otros sitios web en el mismo servidor."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:162
 msgid "The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths https://ipt.gbif.org/media/[`/media`] and https://ipt.gbif.org/icons/[`/icons`] are excluded from being passed to the IPT, to allow hosting static image files (such as occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/."
-msgstr ""
+msgstr "La configuración utilizada por `ipt.gbif.org` se muestra aquí como ejemplo. Utiliza Apache HTTPD, con el módulo `mod_proxy` instalado. Las rutas https://ipt.gbif.org/media/[`/media`] y https://ipt.gbif.org/icons/[`/icons`] están excluidas del paso al IPT, para permitir alojar archivos de imágenes estáticas (como imágenes de los registros de colecta u observación) en el mismo servidor. Las solicitudes a http://ipt.gbif.org/ se redirigen al sitio seguro https://ipt.gbif.org/."
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:167
 #, no-wrap
 msgid "include::partial$apache-configuration-example.conf[]\n"
-msgstr ""
+msgstr "include::partial$apache-configuration-example.conf[]\n"
 
