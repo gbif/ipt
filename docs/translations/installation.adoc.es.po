@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-19 00:34\n"
+"PO-Revision-Date: 2021-08-19 09:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -194,7 +194,7 @@ msgstr "El IPT ha sido probado y funciona bien con Tomcat 7, 8 o 9. La documenta
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:75
 msgid "Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or xref:tomcat-installation-windows.adoc[Windows], or refer to the Tomcat documentation."
-msgstr "Instalación de Tomcat: consulte nuestra guía para xref: tomcat-installation-linux.adoc [instalación de Tomcat en Linux] o xref: tomcat-installation-windows.adoc [Windows], o consulte la documentación de Tomcat."
+msgstr "Instalación de Tomcat: consulte nuestra guía para xref:tomcat-installation-linux.adoc[instalación de Tomcat en Linux] o xref:tomcat-installation-windows.adoc[Windows], o consulte la documentación de Tomcat."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:77
@@ -250,7 +250,7 @@ msgstr "Descargue la última versión WAR de IPT desde xref:releases.adoc[págin
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:106
 msgid "If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help."
-msgstr "Si la instalación no se inicia, consulte el archivo de registro `catalina.out` y consulte xref: faq.adoc [FAQ] para obtener ayuda."
+msgstr "Si la instalación no se inicia, consulte el archivo de registro `catalina.out` y consulte xref:faq.adoc[FAQ] para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:109
