@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-08-19 13:29\n"
+"POT-Creation-Date: 2021-08-19 13:29+0000\n"
+"PO-Revision-Date: 2021-08-19 14:02\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -199,7 +199,7 @@ msgstr ""
 #. type: Target for macro image
 #: en/modules/ROOT/pages/dwca-guide.adoc:54
 #, no-wrap
-msgid "figures/extension_data_file.png'"
+msgid "figures/extension_data_file.png"
 msgstr ""
 
 #. type: Plain text
@@ -243,7 +243,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:70
-msgid "The entire collection of files (core data, extensions, metafile, and resource metadata) should be compressed into a single archive file. The supported compression formats are https://en.wikipedia.org/wiki/ZIP_(file_format[ZIP]) and https://en.wikipedia.org/wiki/Tar_(file_format[TAR.GZ/TGZ])."
+msgid "The entire collection of files (core data, extensions, metafile, and resource metadata) should be compressed into a single archive file. The supported compression formats are https://en.wikipedia.org/wiki/ZIP_(file_format)[ZIP] and https://en.wikipedia.org/wiki/Tar_(file_format)[TAR.GZ/TGZ]."
 msgstr ""
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
