@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 20:41\n"
+"PO-Revision-Date: 2021-08-19 20:57\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -299,12 +299,12 @@ msgstr "¿Por qué los archivos publicados contienen líneas discontinuas?"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:113
 msgid "The IPT does not support source files that have multi-line fields (fields that include a newline character (`\\n`) or carriage return (`\\r`)) even if you have specified a field quote (a single character that encloses every field/column in a row) in the source's configuration."
-msgstr ""
+msgstr "El IPT no admite archivos de origen que tienen campos de varias líneas (campos que incluyen el carácter de nueva línea (`\\n`) o de retorno de carro (`\\r`)) incluso si ha especificado un carácter separador de campo (un carácter que delimita cada campo/columna en un renglón) en la configuración del origen. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:115
 msgid "Unless these line breaking characters are removed, the IPT will publish files with broken lines (the columns will appear mixed up)."
-msgstr ""
+msgstr "A menos que se eliminen estos caracteres de salto de línea, el IPT publicará archivos con líneas discontinuas (las columnas aparecerán mezcladas)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:117
@@ -577,29 +577,29 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:222
 msgid "Restart the new IPT server"
-msgstr ""
+msgstr "Reinicie el nuevo servidor IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:223
 msgid "Publish the dataset in the new IPT (updates the endpoint)."
-msgstr ""
+msgstr "Publique el conjunto de datos en el nuevo IPT (actualiza el punto terminal)."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/faq.adoc:224
 #, no-wrap
 msgid "Indexing by GBIF"
-msgstr ""
+msgstr "Indexación por GBIF"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:226
 #, no-wrap
 msgid "How long does it take GBIF to start (re)indexing my dataset?"
-msgstr ""
+msgstr "¿Cuánto tiempo tarda GBIF en comenzar a reindexar mi conjunto de datos?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:229
 msgid "The answer depends on how long GBIF's indexing queue is, how big your dataset it and whether GBIF's indexing service is turned on."
-msgstr ""
+msgstr "La respuesta depende de la longitud de la cola de indexación de GBIF, del tamaño de su conjunto de datos y de si el servicio de indexación de GBIF está activado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:231
