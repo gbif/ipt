@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 18:26\n"
+"PO-Revision-Date: 2021-08-19 18:47\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -142,29 +142,29 @@ msgstr "$ systemctl edit syslog.service\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:54
 msgid "Note that if you are running your IPT on a windows operating system, you will need to check that your folder didn't revert to read-only permissions."
-msgstr ""
+msgstr "Tenga en cuenta que si está ejecutando su IPT en el sistema operativo Windows, deberá verificar que su carpeta no haya vuelto a los permisos de solo lectura."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:55
 #, no-wrap
 msgid "How can I change the IPT's default language?"
-msgstr ""
+msgstr "¿Cómo puedo cambiar el idioma predeterminado del IPT?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:58
 msgid "The IPT's default language is English, and there is no way to change the default language via the user interface."
-msgstr ""
+msgstr "El idioma por default del IPT es el inglés y no hay forma de cambiarlo en la interfaz de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:60
 msgid "It can be changed easily by manual configuration though. To change the default language from English to Portuguese for example, first locate the `struts.properties` file (if the IPT is deployed in Tomcat for example, it would be located in `tomcat/webapps/ipt/WEB-INF/classes`). Then update the `struts.locale` property to:"
-msgstr ""
+msgstr "Sin embargo, se puede cambiar fácilmente mediante la configuración manual. Para cambiar el idioma predeterminado del Inglés al Portugués por ejemplo, primero ubique el archivo `struts.properties` (si el IPT está instalado en Tomcat por ejemplo, debe ubicarse en `tomcat/webapps/ipt/WEB-INF/classes`). Luego actualice la propiedad `struts.locale` a:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:63
 #, no-wrap
 msgid "struts.locale=pt\n"
-msgstr ""
+msgstr "struts.locale=pt\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:66
