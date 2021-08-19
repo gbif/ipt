@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-19 20:24\n"
+"PO-Revision-Date: 2021-08-19 20:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -108,10 +108,10 @@ msgstr "La lista de correo de IPT [https://lists.gbif.org/mailman/listinfo/ipt/]
 #: en/modules/ROOT/pages/resources.adoc:26
 #, no-wrap
 msgid "IPT test installation"
-msgstr ""
+msgstr "Instalación de IPT de prueba"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:27
 msgid "GBIF provides a functional installation of the IPT for evaluation and testing purposes. The test installation of the latest release can be found at https://ipt.gbif.org/."
-msgstr ""
+msgstr "GBIF proporciona una instalación funcional del IPT con fines de evaluación y prueba. La instalación de prueba de la última versión se puede encontrar en https://ipt.gbif.org/."
 
