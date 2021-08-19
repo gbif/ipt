@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-19 16:09\n"
+"PO-Revision-Date: 2021-08-19 16:27\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -746,46 +746,46 @@ msgstr "Concatenar o dividir cadenas según sea necesario, p. ej. para construir
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:247
 msgid "Format dates to conform to https://en.wikipedia.org/wiki/ISO_8601[ISO datetime format] (1990-02-03, or 1990-02 if the day is unknown, 1990 if the month is also unknown, 1990-02-03/1990-02-28 to give a range)."
-msgstr ""
+msgstr "Aplicar formato a las fechas para ajustarse al https://en.wikipedia.org/wiki/ISO_8601[formato de fecha y hora ISO] (1990-02-03 o 1990-02 si se desconoce el día, 1990 si el mes también se desconoce, 1990-02-03/1990-02-28 para dar un rango)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:248
 msgid "Create year/month/day by parsing native SQL date types"
-msgstr ""
+msgstr "Cree año/mes/día mapeando los tipos de fecha nativos de SQL"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:249
 msgid "Use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms, or specimen and observations"
-msgstr ""
+msgstr "Utilizar UNION para unir 2 o más tablas, p. ej. taxones aceptados y sinónimos o especímenes y observaciones"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:250
 #, no-wrap
 msgid "DwC-A Examples"
-msgstr ""
+msgstr "Ejemplos para el archivo DwC-A"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:253
 msgid "The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provided a set of example DwC-As for each type of data:"
-msgstr ""
+msgstr "La guía xref:how-to-publish.adoc[Cómo publicar datos de biodiversidad a través de GBIF.org] proporciona un conjunto de ejemplos DwC-A para cada tipo de datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:255
 msgid "Checklist data: xref:checklist-data.adoc#exemplar-datasets[examplar datasets]"
-msgstr ""
+msgstr "Lista de verificación de datos: xref:checklist-data.adoc#exelar-datasets [conjunto de datos de ejemplo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:256
 msgid "Occurrence data: xref:occurrence-data.adoc#exemplar-datasets[examplar datasets]"
-msgstr ""
+msgstr "Datos de presencia o ausencia de especies: xref:occurrence-data.adoc#exemplar-datasets[conjunto de datos de ejemplo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:257
 msgid "Sampling-event data: xref:sampling-event-data.adoc#exemplar-datasets[examplar datasets]"
-msgstr ""
+msgstr "Datos de eventos de muestreo: xref:sampling-event-data.adoc#exemplar-datasets[conjunto de datos de ejemplo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:257
 msgid "Resource metadata: xref:resource-metadata.adoc#exemplar-datasets[examplar datasets]"
-msgstr ""
+msgstr "Metadatos del recurso: xref:resource-metadata.adoc#exemplar-datasets[conjunto de datos de ejemplo]"
 
