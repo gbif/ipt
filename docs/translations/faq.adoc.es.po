@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 20:57\n"
+"PO-Revision-Date: 2021-08-19 21:55\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -604,7 +604,7 @@ msgstr "La respuesta depende de la longitud de la cola de indexación de GBIF, d
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:231
 msgid "Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (those with several million records) so please be patient. At the bottom of the https://www.gbif.org/health[GBIF health page] the length of the indexing queue is shown, and the full queue can be seen on the https://registry.gbif.org/monitoring/running-crawls[Crawl Monitor]."
-msgstr ""
+msgstr "Normalmente GBIF tardará entre 5 y 60 minutos en comenzar la indexación de su conjunto de datos. Puede llevar varias horas terminar la indexación de grandes conjuntos de datos una vez que se inician (aquellos con varios millones de registros), así que tenga paciencia. En la parte inferior de la https://www.gbif.org/health[página GBIF de salud del sistema] se muestra la longitud de la cola de indexación, y la cola completa se puede visualizar en el https://registry.gbif.org/monitoring/running-crawls[Monitor de avance]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:233
