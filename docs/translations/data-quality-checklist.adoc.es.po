@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-19 06:42\n"
+"PO-Revision-Date: 2021-08-19 07:33\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -512,18 +512,23 @@ msgid "| Field | Value | Constraint\n\n"
 "| `sampleSizeUnit` | \"square_metre\" | Must match {latest-unit-of-measurement}[Unit of Measurement Vocabulary]\n"
 "| `samplingEffort` | \"Average of 30 Minutes walk along transect\" | Can be a free-text description\n"
 "| `eventRemarks` | \"No occurrences of Lepidoptera recorded for entire transect\" | Can be a free-text description\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `samplingProtocol` | \"Caminatas polares\" | Debe ser un nombre corto o un URL con referencia a un método o protocolo de muestreo\n"
+"| `sampleSizeValue` | 250 | Debe emparejarse con `sampleSizeUnit`\n"
+"| `sampleSizeUnit` | \"square_metre\" | Debe coincidir con el {latest-unit-of-measurement}[Vocabulario de Unidades de Medida]\n"
+"| `samplingEffort` | \"Un promedio de 30 minutos caminando en el transecto\" | Puede ser una descripción de texto libre\n"
+"| `eventRemarks` | \"No se obtienen registros de Lepidoptera en todo el transecto\" | Puede ser una descripción de texto libre\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:252
 #, no-wrap
 msgid "Dataset Metadata"
-msgstr ""
+msgstr "Metadatos del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:255
 msgid "The dataset metadata should contain enough information to facilitate reuse of the data while preventing misinterpretation. Publishers should also provide evidence of the rigour that went into producing the data while acknowledging its various contributors and funders. Ultimately this may lead to new sources of collaboration and funding."
-msgstr ""
+msgstr "Los metadatos del conjunto de datos deberían contener suficiente información para facilitar la reutilización de los datos y se previene la malinterpretaciones. Los publicadores deberían también proporcionar evidencias del rigor con el que se obtuvieron los datos y agradecer a sus varios contribuidores y financiadores. En última instancia, esto puede conducir a nuevas fuentes de financiación y colaboración."
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:269
@@ -539,5 +544,15 @@ msgid "| Field | Requirements | Examples\n\n"
 "| `Project Identifier` | is a GUID or other identifier that is near globally unique. _Note this is required for BID projects._ | _\"BID-AF2015-0134-REG\"_\n"
 "| `Sampling Methods` | information about the sampling methodology used in creating the dataset, similar to the methods section of a journal article. _Note this is required for sampling event datasets._ | _See https://cloud.gbif.org/griis/resource?r=global#methods[here]_\n"
 "| `Citation` | how the dataset should be cited. Use of the xref:citation.adoc[IPT Citation Format] (based on DataCite's preferred citation format and that satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]) is highly recommended. | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
-msgstr ""
+msgstr "| Campo | Requisitos | Ejemplos\n\n"
+"| `Title` | es un nombre conciso que describe los contenidos del conjunto de datos y que lo distingue de otros. | _\"Reef Life Survey: Global reef fish dataset\"_, _\"Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen\"_\n"
+"| `Description` | es un párrafo (resumen) corto que describe el contenido del conjunto de datos. | _\"Este conjunto de datos contiene registros de peces óseos y elasmobranquios colectados por buceadores de Reef Life Survey (RLS) en transectos de 50 m en arrecifes de coral rocosos poco profundos de todo el mundo. La información sobre abundancia está disponible para todos los registros encontrados dentro de unos límites de muestreo cuantitativos (franjas de 50 x 5 m durante una única inmersión a cada lado de la línea del transecto, distinguido cada uno como un Bloque), y los registros fuera de muestreo se identifican únicamente como presencias (Método 0).\"_\n"
+"| `Publishing Organization` | la organización responsable de la publicación (producción, lanzamiento y tenencia) de este recurso. | _\"Reef Life Survey\"_\n"
+"| `License` | debe ser una de las tres opciones legibles por máquinas (CC0 1.0, CC-BY 4.0 o CC-BY-NC 4.0), que proporcionan una forma estandarizada para definir los usos apropiados del conunto de datos. | _\"Este trabajo está protegido por una  http://creativecommons.org/licenses/by/4.0/legalcode[Liciencia Creative Commons de Reconocimiento (CC-BY) 4.0].\"_\n"
+"| `Creator(s)` | las personas y organizaciones que crearon el conjunto de datos, en orden de prioridad. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Metadata Provider(s)` | las personas y organizaciones que escribieron los metadatos del conjunto de datos, en orden de prioridad. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Contact(s)` | las personas y organizaciones que deberían ser contactadas para obtener más información sobre el recurso o a las que se deben comunicar los problemas que presenta el conjunto de datos. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Project Identifier` | es un GUID u otro identificador que está cerca de ser global y único. _Tenga en cuenta que esto es obligatorio para proyectos BID._ | _\"BID-AF2015-0134-REG\"_\n"
+"| `Sampling Methods` | información sobre la metodología de muestreo utilizada en la creación del conjunto de datos, similar a la sección de métodos de un artículo científico. _Tenga en cuenta que esto es obligatorio para conjuntos de datos de eventos de muestreo._ | _Ver https://cloud.gbif.org/griis/resource?r=global#methods[here]_\n"
+"| `Citation` | cómo debería ser citado el conjunto de datos. Se recomienda encarecidamente utilizar el xref:citation.adoc[Formato de Citas del IPT] (basado en el formato de citas preferido por DataCite's y que cumple la  https://www.force11.org/datacitation[Declaración Conjunta de los Principios de Citas de Datos]). | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
 
