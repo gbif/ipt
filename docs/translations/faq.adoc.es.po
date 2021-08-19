@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 20:08\n"
+"PO-Revision-Date: 2021-08-19 20:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -252,12 +252,12 @@ msgstr "La cuenta de la organización titular ya debe estar asociada al IPT como
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:98
 msgid "All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the \"Account activated\" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:administration.adoc#edit-organization[Edit Organization] section of the User Manual."
-msgstr ""
+msgstr "Todo lo que queda es agregar la información de la organización a la cuenta DataCite (p. ej. el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration.adoc#edit-organization[Edición de la Organización] del manual de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:100
 msgid "If you work for a GBIF ‘country' Node, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] to enquire about getting a free DataCite account. GBIF has its own account with DataCite and may be able to provide 'country' Nodes with their own free account (determined on a case by case basis). GBIF has done this for Spain and Colombia so far, both of which have a strong track record of keeping their IPTs online near 100% of the time."
-msgstr ""
+msgstr "Si trabaja para un nodo GBIF de algún país, contacte a mailto:helpdesk@gbif.org[GBIF Helpdesk] para solicitar información de cómo obtener una cuenta DataCite gratuita. GBIF tiene su propia cuenta DataCite y puede proveer a los nodos de los países una cuenta gratuita (determinándolo caso por caso). GBIF ha hecho esto para España y Colombia hasta el momento, ambos tienen un sólido historial de mantener su IPT en línea casi el 100% del tiempo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:102
