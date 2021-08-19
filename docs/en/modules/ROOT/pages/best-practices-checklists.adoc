@@ -383,7 +383,7 @@ The sharing of information about types and specimens is supported. These data ar
 
 == Sharing Links and Identifiers
 
-It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *mime type* in this field. A complete list of mime types is [available].
+It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolveable identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *media type* (or *MIME type*) in this field. A complete list of media types is https://www.iana.org/assignments/media-types/media-types.xhtml[available here].
 
 === Creating a dynamic link to a species page
 

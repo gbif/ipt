@@ -132,7 +132,7 @@ GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that ser
 
 Each template provides inline help and instructions in the worksheets.
 
-To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a dataHostingCentres[trusted data hosting centre] located in your country.
+To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a xref:data-hosting-centres.adoc[trusted data hosting centre] located in your country.
 
 === Publishing DwC-A manually
 
@@ -201,7 +201,7 @@ Advanced users can request permission to register datasets in bulk, by integrati
 
 === Required and recommended terms
 
-The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:
+The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:
 
 . Checklist data: xref:checklist-data.adoc#required-dwc-fields[required terms] / xref:checklist-data.adoc#recommended-dwc-fields[recommended terms]
 . Occurrence data: xref:occurrence-data.adoc#required-dwc-fields[required terms] / xref:occurrence-data.adoc#recommended-dwc-fields[recommended terms]
