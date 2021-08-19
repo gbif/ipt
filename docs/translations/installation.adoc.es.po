@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-19 00:15\n"
+"PO-Revision-Date: 2021-08-19 00:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -245,17 +245,17 @@ msgstr "Despliegue de IPT"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:104
 msgid "Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt"
-msgstr ""
+msgstr "Descargue la última versión WAR de IPT desde xref:releases.adoc[página de versiones] y cámbiele el nombre a `ipt.war` (o similar, que coincida con` ipt.xml` del paso 2 si se usa). Copie el archivo `ipt.war` en la carpeta de aplicaciones web de Tomcat y luego inicie Tomcat si aún no se está ejecutando. A continuación, puede invocar el IPT en un navegador web que se ejecute en el mismo servidor utilizando la siguiente URL: http://localhost:8080/ipt"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:106
 msgid "If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help."
-msgstr ""
+msgstr "Si la instalación no se inicia, consulte el archivo de registro `catalina.out` y consulte xref: faq.adoc [FAQ] para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:109
 msgid "Successful deployment of the IPT within a servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's name and port, followed by /ipt (e.g., http://server.example.org:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL."
-msgstr ""
+msgstr "La instalación exitosa de IPT dentro de un contenedor de servlet hará que el IPT sea accesible a través de un navegador web en una URL determinada por el nombre y el puerto del servidor seguido de /ipt (por ejemplo, http://server.example.org:8080/ipt). Si la instalación fue exitosa, la página de configuración inicial de IPT aparecerá en el navegador web al solicitar la URL de IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:113
