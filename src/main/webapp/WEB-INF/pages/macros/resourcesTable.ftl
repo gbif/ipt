@@ -37,7 +37,8 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
         /* resources list */
         var aDataSet = [
             <#list resources as r>
-            [<#if r.eml.logoUrl?has_content>'<img class="resourceminilogo" src="${r.eml.logoUrl}" />'<#else>'${emptyString}'</#if>,
+            [
+                <#if r.eml.logoUrl?has_content>'<img class="resourceminilogo" src="${r.eml.logoUrl}" />'<#else>'${emptyString}'</#if>,
                 "<a href='${baseURL}<#if !shownPublicly>/manage</#if>/resource?r=${r.shortname}'><if><#if r.title?has_content>${r.title?replace("\'", "\\'")?replace("\"", '\\"')}<#else>${r.shortname}</#if></a>",
                 '<#if r.status=='REGISTERED' && r.organisation??>${r.organisation.alias?replace("\'", "\\'")?replace("\"", '\\"')!r.organisation.name?replace("\'", "\\'")?replace("\"", '\\"')}<#elseif r.status=='REGISTERED'><@s.text name="manage.home.unknown.organisation"/><#else><@s.text name="manage.home.not.registered"/></#if>',
                 <#if r.coreType?has_content && types[r.coreType?lower_case]?has_content>'${types[r.coreType?lower_case]?replace("\'", "\\'")?replace("\"", '\\"')?cap_first!}'<#else>'${emptyString}'</#if>,
@@ -47,7 +48,10 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 <#if r.published>'${(r.lastPublished?date)!}'<#else>'<@s.text name="portal.home.not.published"/>'</#if>,
                 '${(r.nextPublished?date?string("yyyy-MM-dd HH:mm"))!'${emptyString}'}',
                 <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#elseif r.status=='DELETED'>'${deletedString}'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
-                <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${r.creator.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>]<#if r_has_next>,</#if>
+                <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${r.creator.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>,
+                '${r.shortname}'
+            ]
+            <#if r_has_next>,</#if>
             </#list>
         ];
 
@@ -87,7 +91,8 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     { "sTitle": "<@s.text name="manage.home.last.publication" />", "bSearchable": false},
                     { "sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false},
                     { "sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "bVisible": <#if shownPublicly>false<#else>true</#if>},
-                    { "sTitle": "<@s.text name="portal.home.author"/>", "bVisible": <#if shownPublicly>false<#else>true</#if>}
+                    { "sTitle": "<@s.text name="portal.home.author"/>", "bVisible": <#if shownPublicly>false<#else>true</#if>},
+                    { "sTitle": "<@s.text name="resource.shortname"/>", "bVisible": false}
                 ],
                 "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
                 "aoColumnDefs": [
