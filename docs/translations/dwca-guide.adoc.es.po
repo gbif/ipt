@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 12:39\n"
+"PO-Revision-Date: 2021-08-19 12:59\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -456,23 +456,23 @@ msgstr "Para publicar los datos como un DwC-A, carga los modelos en el IPT. Util
 #: en/modules/ROOT/pages/dwca-guide.adoc:137
 #, no-wrap
 msgid "Publishing DwC-A manually"
-msgstr ""
+msgstr "Publicar DwC-A manualmente"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:140
 #, no-wrap
 msgid "*Assumption: Data is already in a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). The publisher does not wish to host an IPT instance but does have access to a web server.*\n"
-msgstr ""
+msgstr "*Supuesto: Los datos están ya en un archivo de texto CSV/Tab, o en uno de los sistemas de gestión de bases de datos relacionales aceptados (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). El publicador no desea alojar una instancia de IPT pero tiene acceso a un servidor web.*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:142
 msgid "DwC-As can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system."
-msgstr ""
+msgstr "DwC-A puede crearse sin instalar ningún programa específico. Estas instrucciones van dirigidas a los gestores de datos que son familiares con el conjunto de datos a publicar y se sienten cómodos trabajando con su sistema de gestión de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:144
 msgid "Below is a set of instructions on how to manually create a DwC-Archive:"
-msgstr ""
+msgstr "A continuación, se muestra un conjunto de instrucciones sobre cómo crear de manera manual un Archivo DwC:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:146
