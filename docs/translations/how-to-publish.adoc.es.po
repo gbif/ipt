@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 19:16\n"
+"PO-Revision-Date: 2021-08-19 19:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -78,24 +78,24 @@ msgstr "En su forma más simple, GBIF permite compartir información que describ
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:13
 msgid "Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users."
-msgstr ""
+msgstr "Se recomienda a los publicadores de datos que compartan sus datos utilizando la clase más rica y apropiada. Esto maximiza la utilidad de los datos para los usuarios."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:15
 msgid "To give yourself an introduction to how the IPT can be used to publish biodiversity data through GBIF.org, it's highly recommended watching this concise 25 minute live demo below:"
-msgstr ""
+msgstr "Para darse una introducción a cómo se puede utilizar el IPT para publicar datos de biodiversidad a través de GBIF.org, se recomienda ver esta concisa demostración en vivo de 25 minutos a continuación:"
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17
 #: en/modules/ROOT/pages/index.adoc:28
 #, no-wrap
 msgid "How to publish biodiversity data through GBIF.org using the IPT"
-msgstr ""
+msgstr "Cómo publicar datos sobre biodiversidad a través de GBIF.org usando el IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:23
 msgid "You require an account on a GBIF Integrated Publishing Toolkit (IPT) to publish your data."
-msgstr ""
+msgstr "Usted necesita una cuenta en un Integrated Publishing Toolkit (IPT) de GBIF para publicar sus datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:24
@@ -105,17 +105,17 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:25
 msgid "Hint: you could install and maintain your own IPT instance if you have technical skills and capacity to maintain it online near 100% of the time."
-msgstr ""
+msgstr "Sugerencia: puede instalar y mantener su propia instancia de IPT si tiene las habilidades técnicas y la capacidad para mantenerla en línea cerca del 100% del tiempo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:26
 msgid "Hint: if no data hosting centre exists in your country, and you or your organization don't have the technical skills and capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance."
-msgstr ""
+msgstr "Sugerencia: si no existe un nodo oficial de datos en su país, y usted o su organización no tienen las habilidades técnicas y la capacidad para albergar un IPT, puede comunicarse con el Servicio de Asistencia de GBIF <helpdesk@gbif.org> para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:27
 msgid "Assuming that you would like to register your dataset with GBIF and make it globally discoverable via https://www.gbif.org[GBIF.org], your dataset must be affiliated with an organization that is registered with GBIF."
-msgstr ""
+msgstr "Suponiendo que usted desea registrar su conjunto de datos con GBIF y hacerlo reconocible a nivel mundial a través de https://www.gbif.org [GBIF.org], su conjunto de datos debe estar afiliado a una organización que esté registrada en GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:28
@@ -125,7 +125,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:29
 msgid "Hint: if you aren't affiliated with any organization, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data."
-msgstr ""
+msgstr "Sugerencia: si usted no está afiliado a ninguna organización, puede ponerse en contacto con el Servicio de Asistencia de GBIF <helpdesk@gbif.org> para obtener ayuda. Mientras tanto, puede proceder a publicar sus datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:33
