@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 19:16\n"
+"PO-Revision-Date: 2021-08-19 19:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -211,33 +211,33 @@ msgstr "¿Qué conexiones de salida hace el IPT?"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:82
 msgid "During setup, and in test mode, the IPT makes secure HTTPS outgoing connections to https://gbrds.gbif-uat.org and https://tools.gbif.org."
-msgstr ""
+msgstr "Durante la configuración y en modo de prueba, el IPT hace conexiones HTTPS seguras a https://gbrds.gbif-uat.org and https://tools.gbif.org."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:84
 msgid "If configured in production mode, the IPT makes secure HTTPS outgoing connections to https://gbrds.gbif.org."
-msgstr ""
+msgstr "Si se configura en modo de producción, el IPT hace conexiones HTTPS seguras a https://gbrds.gbif.org."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:86
 msgid "In both modes, the IPT makes normal HTTP outgoing connections to http://rs.gbif.org.  If you install particular additional vocabularies, the IPT will retrieve them from raw.githubusercontent.com or eol.org."
-msgstr ""
+msgstr "En ambos modos, el IPT hace conexiones HTTP normales a http://rs.gbif.org. Si instala vocabularios adicionales, el IPT los recuperará de raw.githubusercontent.com o de eol.org."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:88
 msgid "We recommend configuring your firewall to allow outbound access on ports 80 and 443 to all GBIF servers: `130.225.43.0/24`."
-msgstr ""
+msgstr "Recomendamos configurar su firewall para permitir el acceso saliente en los puertos 80 y 443 a todos los servidores GBIF: `130.225.43.0/24`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:90
 msgid "Before version 2.3.4, connections were made using HTTP, rather than HTTPS, to http://gbrds.gbif.org and http://gbrdsdev.gbif.org.  HTTP connections use port 80."
-msgstr ""
+msgstr "Antes de la versión 2.3.4, las conexiones se realizaban mediante HTTP, en lugar de HTTPS a http://gbrds.gbif.org y http://gbrdsdev.gbif.org.  Las conexiones HTTP usan el puerto 80."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:91
 #, no-wrap
 msgid "How can I configure my IPT to assign DOIs to datasets?"
-msgstr ""
+msgstr "¿Cómo puedo configurar mi IPT para asignar DOI a los conjuntos de datos?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:94
