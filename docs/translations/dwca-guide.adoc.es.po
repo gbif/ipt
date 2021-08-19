@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 12:59\n"
+"POT-Creation-Date: 2021-08-19 13:14+0000\n"
+"PO-Revision-Date: 2021-08-19 13:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -449,8 +449,8 @@ msgstr "Todos los modelos proporcionan ayuda e instrucciones en línea en las ho
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:136
-msgid "To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a dataHostingCentres[trusted data hosting centre] located in your country."
-msgstr "Para publicar los datos como un DwC-A, carga los modelos en el IPT. Utiliza el editor incorporado de metadatos del IPT para introducir los metadatos del conjunto de datos. La guía howToPublish[Cómo publicar datos de biodiversidad a través de GBIF.org] proporciona un conjunto de sencillas instrucciones sobre cómo hacerlo. Si necesita un cuenta en un IPT, se recomienda encarecidamente que la solicite en un dataHostingCentres[centro de alojamiento de datos de confianza] ubicado en su país."
+msgid "To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a xref:data-hosting-centres.adoc[trusted data hosting centre] located in your country."
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:137
@@ -661,7 +661,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:205
-msgid "The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:"
+msgid "The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:"
 msgstr ""
 
 #. type: Plain text
