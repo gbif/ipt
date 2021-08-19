@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 11:20\n"
+"PO-Revision-Date: 2021-08-19 12:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -37,7 +37,7 @@ msgstr "Este manual de usuario se adapta y construye a partir de previos Manuale
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:13
 msgid "The link:../../../en/[English user manual] adapts and builds upon the previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The recommended citation for the English user manual is as follows:"
-msgstr ""
+msgstr "El enlace: ../../../ en / [English user manual] se adapta y se basa en los manuales de usuario de IPT anteriores (Réveillon 2009, Wieczorek & Braak 2016). La cita recomendada para el manual del usuario en español es la siguiente:"
 
 #.  English user manual citation
 #. type: Plain text
