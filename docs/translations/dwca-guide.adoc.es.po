@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-19 14:02\n"
+"PO-Revision-Date: 2021-08-19 16:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -736,12 +736,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:244
 msgid "Here are some other recommendations for generating data using SQL queries/functions:"
-msgstr ""
+msgstr "Otras recomendaciones para la generación de datos usando consultas/funciones de SQL:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:246
 msgid "Concatenate or split strings as required, e.g. to construct the full scientific name string (watch out for autonyms)"
-msgstr ""
+msgstr "Concatenar o dividir cadenas según sea necesario, p. ej. para construir la cadena del nombre científico completo (cuidado con los autónimos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:247
