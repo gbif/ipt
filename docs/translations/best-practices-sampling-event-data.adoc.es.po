@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:52\n"
+"PO-Revision-Date: 2021-08-19 12:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -240,7 +240,7 @@ msgstr "El valor de sampleSizeValue es un número y debe tener su correspondient
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:75
 msgid "You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr ""
+msgstr "Puede representar un área de muestreo utilizando una forma WKT apropiada o una ubicación de punto de latitud / longitud. Si se hace correctamente, también se puede derivar el muestreo de la dirección en que se llevó a cabo. Por ejemplo, una línea de arrastre oceánica representada con una forma WKT LINESTRING permite determinar la dirección de la red de arrastre basándose en la notación estándar para escribir los puntos de inicio y finalización."
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:76
