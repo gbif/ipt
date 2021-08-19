@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-07-02 13:07+0000\n"
-"PO-Revision-Date: 2021-08-17 09:15\n"
+"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"PO-Revision-Date: 2021-08-19 10:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -17,183 +17,183 @@ msgstr ""
 "X-Crowdin-File-ID: 94\n"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:61
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:54
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:62
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:55
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:14
 #, no-wrap
 msgid "Data file formatting recommendations"
 msgstr "Recomendaciones de formato de archivo de datos"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:29
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:7
 #, no-wrap
 msgid "What is sampling-event data?"
 msgstr "¿Qué son los datos de eventos de muestreo?"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:32
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:33
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:8
 #, no-wrap
 msgid "How to express sampling-event data in DwC-A?"
 msgstr "¿Cómo expresar los datos de eventos de muestreo en DwC-A?"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:36
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:37
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:9
 #, no-wrap
 msgid "Sampling-event Metadata"
 msgstr "Metadatos de eventos de muestreo"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:40
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:41
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:10
 #, no-wrap
 msgid "Sampling-event Data"
 msgstr "Datos de eventos de muestreo"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:65
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:15
 #, no-wrap
 msgid "Sample size"
 msgstr "Tamaño de muestra"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:85
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:86
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
 #, no-wrap
 msgid "Quantity and abundance"
 msgstr "Cantidad y abundancia"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:104
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:105
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
 #, no-wrap
 msgid "How to uniquely identify sampling events"
 msgstr "Cómo identificar de forma única los eventos de muestreo"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
 #, no-wrap
 msgid "How to capture hierarchy of events"
 msgstr "Cómo expresar la jerarquía de eventos"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:119
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
 #, no-wrap
 msgid "How to capture absence data"
 msgstr "Cómo expresar datos de ausencia"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:123
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
 msgstr "Cómo incluir multimedia complementaria"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:129
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:39
 #, no-wrap
 msgid "Publishing sampling-event data"
 msgstr "Publicar datos de eventos de muestreo"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:131
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:132
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
 #, no-wrap
 msgid "Using GUIDs for identifiers"
 msgstr "Utilizar GUIDs como identificadores"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:146
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:147
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:52
 #, no-wrap
 msgid "Preserving verbatim data"
 msgstr "Conservar los datos originales"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:150
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:151
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
 msgstr "Publicar datos de proyectos como un conjunto de datos simple"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:154
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:155
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
 msgstr "Republicar datos de presencia como datos de eventos de muestreo"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
 msgstr "Modelizar monitoreos continuos de individuos vivos"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:169
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:170
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
 #, no-wrap
 msgid "Managing issues related to the dataset"
 msgstr "Gestión de incidencias relacionadas con el conjunto de datos"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
 #, no-wrap
 msgid "Sharing scripts and programs used to produce or clean the dataset"
 msgstr "Compartir códigos y programas utilizados para producir o limpiar el conjunto de datos"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:177
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:178
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
 msgstr "Describir datos de eventos de muestreo en metadatos de conjuntos de datos"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:185
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
 #, no-wrap
 msgid "Linking related datasets"
 msgstr "Vincular conjuntos de datos relacionados"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:188
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:189
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
 #, no-wrap
 msgid "Listing related research"
 msgstr "Enumerar investigaciones relacionadas"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:192
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:193
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:91
 #, no-wrap
 msgid "Examples"
 msgstr "Ejemplos"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:196
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:197
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:92
 #, no-wrap
 msgid "Freshwater invertebrate survey"
 msgstr "Muestreo de invertebrados acuáticos"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:222
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:223
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
 msgstr "Muestreo de invertebrados de agua salobre"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:257
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:258
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
 #, no-wrap
 msgid "Macrophyte survey"
