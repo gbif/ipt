@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:53\n"
+"PO-Revision-Date: 2021-08-20 11:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,44 +20,44 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:1
 #, no-wrap
 msgid "Releases"
-msgstr ""
+msgstr "Versiones"
 
 #. type: Block title
 #: en/modules/ROOT/pages/releases.adoc:4
 #, no-wrap
 msgid "Latest stable release"
-msgstr ""
+msgstr "Últimas versiones estables"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<2-4-2-september-2020,2.4.2>>."
-msgstr ""
+msgstr "La versión estable actual es la <<2-4-2-september-2020,2.4.2>>"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
 msgid "You are reading the manual for version 2.5.0-RC1.  You might prefer to read the manual for xref:2.4@releases.adoc[version 2.4]."
-msgstr ""
+msgstr "Está leyendo el manual para la versión 2.5.0-RC1. Quizás prefiera leer el manual para la xref:2.4@releases.adoc[versión 2.4]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:11
 #, no-wrap
 msgid "*2.5.0* – Expected in August 2021"
-msgstr ""
+msgstr "*2.5.0* – Esperada para agosto de 2021"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:14
 msgid "Version 2.5.0 of the IPT is expected to be released in August 2021.  In preparation for this, a _release candidate_ version 2.5.0-RC1 is now available, alongside this version 2.5 user manual."
-msgstr ""
+msgstr "Se espera que el lanzamiento de la versión 2.5.0 del IPT tenga lugar en agosto de 2021. En preparación para esto, una versión_candidata_de_lanzamiento 2.5.9-RC1 está ya disponible, junto a esta versión del manual de usuario de la versión 2.5."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:16
 msgid "This is a *release candidate* made available for testing.  *It is not suitable for production use.*"
-msgstr ""
+msgstr "Esta es una *versión candidata* disponible para testeo. *No es apropiada para uso de producción.*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:18
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0-RC1/ipt-2.5.0-RC1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0-RC1/ipt-2.5.0-RC1.war[Descarga de WAR], xref:installation.adoc#installation-from-linux-packages[paquetes Linux] o xref:installation.adoc#installation-from-docker[uso de Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
