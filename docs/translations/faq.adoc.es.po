@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 08:34\n"
+"PO-Revision-Date: 2021-08-20 14:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -482,22 +482,22 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:175
 #, no-wrap
 msgid "How do I change the hosting organization of my IPT?"
-msgstr ""
+msgstr "¿Cómo cambio la organización de alojamiento de mi IPT?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:178
 msgid "the instructions below assume your IPT has already been registered and involve manual changes requiring technical competence."
-msgstr ""
+msgstr "las instrucciones a continuación asumen que su IPT ya ha sido registrado e implican cambios manuales que requieren competencia técnica."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:180
 msgid "First, ensure the desired hosting organization has been added to your IPT. You can do this through the user interface. For help adding a new organization to your IPT, refer to xref:administration.adoc#add-organization[this section] of the user manual."
-msgstr ""
+msgstr "Primero, asegure que la organización de alojamiento deseada haya sido agregada a su IPT. Puede hacerlo a través de la interfaz de usuario. Para obtener ayuda para agregar una nueva organización a su IPT, consulte xref:administration.adoc#add-organization[esta sección] del manual de usuario. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:182
 msgid "Next, perform the following 2 manual changes to the registration2.xml file located inside the /config folder of your IPT Data Directory:"
-msgstr ""
+msgstr "A continuación, realice los siguientes 2 cambios manuales en el archivo registration2.xml ubicado en el /config folder del directorio de datos de su IPT:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:191
