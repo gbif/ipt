@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-20 16:51\n"
+"PO-Revision-Date: 2021-08-20 17:13\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -93,70 +93,70 @@ msgstr "título"
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:25
 msgid "description"
-msgstr ""
+msgstr "descripción"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:26
 msgid "publishing organization"
-msgstr ""
+msgstr "Organización publicadora"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:27
 msgid "type"
-msgstr ""
+msgstr "Tipo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:28
 msgid "license"
-msgstr ""
+msgstr "Licencia"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:29
 msgid "contact(s)"
-msgstr ""
+msgstr "contacto(s)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:30
 msgid "creator(s)"
-msgstr ""
+msgstr "creador(es)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:31
 msgid "metadata provider(s)"
-msgstr ""
+msgstr "proveedores de los metadatos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:32
 #, no-wrap
 msgid "Recommended metadata fields"
-msgstr ""
+msgstr "Campos de los metadatos recomendados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:35
 msgid "sampling methodology - in situations where data comes from a sampling event"
-msgstr ""
+msgstr "metodología de muestreo - en situaciones en las que los datos provienen de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:36
 msgid "citation - to ensure your dataset gets cited the way you want"
-msgstr ""
+msgstr "cita - para garantizar que su conjunto de datos se cite de la manera que desee"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:40
 msgid "Inter-Valley Soil Comparative Survey of the McMurdo Dry Valleys: https://ipt.biodiversity.aq/eml.do?r=ictar_ivscs&v=1.0[EML] / https://ipt.biodiversity.aq/resource.do?r=ictar_ivscs[IPT homepage]"
-msgstr ""
+msgstr "Estudio comparativo de suelos entre valles de los valles secos de McMurdo:https://ipt.biodiversity.aq/eml.do?r=ictar_ivscs&v=1.0[EML] / https://ipt.biodiversity.aq/resource.do?r=ictar_ivscs[Página en IPT]"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resource-metadata.adoc:41
 #, no-wrap
 msgid "FAQ:"
-msgstr ""
+msgstr "Preguntas frecuentes:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:43
 #, no-wrap
 msgid "Q. What should I do if my data cannot be made freely available?"
-msgstr ""
+msgstr "Q. ¿Qué debo hacer si mis datos no pueden estar disponibles de manera gratuita?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:46
