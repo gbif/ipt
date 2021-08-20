@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 20:23\n"
+"PO-Revision-Date: 2021-08-20 08:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -115,7 +115,7 @@ msgstr "Sugerencia: si no existe un nodo oficial de datos en su país, y usted o
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:27
 msgid "Assuming that you would like to register your dataset with GBIF and make it globally discoverable via https://www.gbif.org[GBIF.org], your dataset must be affiliated with an organization that is registered with GBIF."
-msgstr "Suponiendo que usted desea registrar su conjunto de datos con GBIF y hacerlo reconocible a nivel mundial a través de https://www.gbif.org [GBIF.org], su conjunto de datos debe estar afiliado a una organización que esté registrada en GBIF."
+msgstr "Suponiendo que usted desea registrar su conjunto de datos con GBIF y hacerlo reconocible a nivel mundial a través de https://www.gbif.org/es/[GBIF.org], su conjunto de datos debe estar afiliado a una organización que esté registrada en GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:28
