@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 11:41\n"
+"PO-Revision-Date: 2021-08-20 11:57\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -135,60 +135,61 @@ msgstr "Abordada https://github.com/gbif/ipt/milestone/9?closed=1[1 incidencia].
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:44
 msgid "Version 2.4.2 fixes a minor security vulnerability in Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:2.4@release-notes.adoc[Release Notes].  An improvement to memory use when large datasets are read from a PostgreSQL server is also included."
-msgstr ""
+msgstr "La versión 2.4.2 fija una vulnerabilidad menor a la seguridad en Apache Struts, que utiliza el IPT. Los usuarios deberían planificar una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]. También se ha incluido una mejora para el uso de memoria cuando se leen conjuntos de datos grandes desde un servidor PostgreSQL."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:45
 #, no-wrap
 msgid "*2.4.1* – September 2020"
-msgstr ""
+msgstr "*2.4.1* - Septiembre de 2020"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:48
 msgid "xref:2.4@release-notes.adoc[IPT v2.4.1 Release Notes]"
-msgstr ""
+msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.4.1]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:50
 msgid "Addressed https://github.com/gbif/ipt/milestone/25?closed=1[12 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/25?closed=1[12 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:53
 msgid "Version 2.4.1 fixes a security vulnerability in Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:2.4@release-notes.adoc[Release Notes]."
-msgstr ""
+msgstr "La versión 2.4.1 fija una vulnerabilidad a la seguridad en Apache Struts, que utiliza el IPT. Los usuarios deberían planificar una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:54
 #, no-wrap
 msgid "*2.4.0* – July 2019"
-msgstr ""
+msgstr "*2.4.0* – Julio de 2019"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:57
 msgid "xref:2.4@release-notes.adoc[IPT v2.4.0 Release Notes]"
-msgstr ""
+msgstr "xref:2.4@release-notes.adoc[Notas de la Versión del IPT v2.4.0]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:59
 msgid "Addressed https://github.com/gbif/ipt/milestone/8?closed=1[19 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/8?closed=1[19 incidencias].\n"
+" "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:62
 msgid "Version 2.4.0 fixes security vulnerabilities in Apache Jackson and Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:2.4@release-notes.adoc[Release Notes].  It also updates the integration for custom DOIs from DataCite, and removes (unused) support for DOIs from EZID.  The version number has been updated to 2.4.0 to reflect the removal of support for EZID."
-msgstr ""
+msgstr "La versión 2.4.0 fija vulnerabilidades de seguridad en Apache Jackson y Apache Struts, que utiliza el IPT. Los usuarios deberían planificar una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]. También se actualiza la integración para DOIs personalizados desde DataCite, y elimina el soporte para DOIs (sin uso) de EZID. El número de versión ha sido actualizado a 2.4.0 para reflejar la eliminación del soporte para EZID."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:63
 #, no-wrap
 msgid "*2.3.6* – July 2018"
-msgstr ""
+msgstr "*2.3.6* - Julio de 2018"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:66
 msgid "xref:2.4@release-notes.adoc[IPT v2.3.6 Release Notes]"
-msgstr ""
+msgstr "xref:2.4@release-notes.adoc[Notas de la versión IPT v2.3.6]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:67
@@ -196,38 +197,38 @@ msgstr ""
 #: en/modules/ROOT/pages/releases.adoc:87
 #: en/modules/ROOT/pages/releases.adoc:96
 msgid "https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]"
-msgstr ""
+msgstr "https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[Manual de Usuarios] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:68
 msgid "Addressed https://github.com/gbif/ipt/milestone/7?closed=1[20 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/7?closed=1[20 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:71
 msgid "Version 2.3.6 fixes a security vulnerability in JQuery, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:2.4@release-notes.adoc[Release Notes]."
-msgstr ""
+msgstr "La versión 2.3.6 fija una vulnerabilidad de seguridad en JQuery, que utiliza el IPT. Los usuarios deberían planificar una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:73
 msgid "https://github.com/gbif/ipt/issues/1411[An issue] remains with custom DOIs from DataCite. If necessary, a further release of the IPT will be made in July or August."
-msgstr ""
+msgstr "https://github.com/gbif/ipt/issues/1411[Una incidencia] permanece con DOIs personalizados de DataCite. Si fuese necesario, se lanzará otra versión del IPT en julio o agosto."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:74
 #, no-wrap
 msgid "*2.3.5* – October 2017"
-msgstr ""
+msgstr "*2.3.5* – Octubre de 2017"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:77
 msgid "xref:2.4@release-notes.adoc[IPT v2.3.5 Release Notes]"
-msgstr ""
+msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.5]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:79
 msgid "Addressed https://github.com/gbif/ipt/projects/3[27 issues]: 6 Defects, 7 Enhancements and 15 Other"
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/projects/3[27 incidencias]: 6 Defectos, 7 Mejoras y 15 de Otro tipo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:82
