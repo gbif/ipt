@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 14:37\n"
+"PO-Revision-Date: 2021-08-20 15:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2048,13 +2048,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:541
 #, no-wrap
 msgid "*Version*: - the version number tracking the major_version.minor_version of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the \"View\" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the \"Preview\" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
-msgstr "*Versión*: - el número de seguimiento de la versión_mayor. versión_menor de la versión pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el editor del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, a la que se le haya reservado un nuevo DOI. Para una descripción detallada de la política de versionamiento del IPT haga clic xref:versioning.adoc[aquí]. En la columna de versión actual, haga clic en el botón “Ver\" para image:ipt2/manage/checkmark.png[width=40,height=40] ver la página principal de la versión actual. Asumiendo que un Archivo Darwin Core ha sido publicado, haga clic en para confirmar que se utilice el https://tools.gbif.org/dwca-validator/[Validador de Archivos Darwin Core]. En la columna de versión pendiente, haga clic en \"Vista previa\" para ver una imagen preliminar de la página principal de la versión pendiente. La página principal preliminar es privada y sólo puede ser vista por el editor del recurso, lo cual le permite asegurarse de que el recurso está listo para ser publicado.\n"
+msgstr "*Versión*: - el número de versión que sigue la versión_mayor.versión_menor de la versión actual/pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el editor del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, hecho que se realiza reservando un nuevo DOI. Una descripción detallada de la política de versiones del IPT se explica en xref:versioning.adoc[Política de versiones de conjuntos de datos]. En la columna de la versión actual, haga clic en el botón \"Ver\" para ver la página de inicio de la versión actual. Suponiendo que se haya publicado un DwC-A, haga clic en image:ipt2/manage/checkmark.png[width=40,height=40] para validarlo utilizando el https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. En la columna de la versión pendiente, haga clic en el botón \"Vista previa\" para ver una vista preliminar de la página de inicio de la versión pendiente. La vista previa de la página de inicio es privada sólo para los editores de recursos, y les permite asegurarse que el recurso está listo para ser publicado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:542
 #, no-wrap
 msgid "*Visibility*: - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.\n"
-msgstr "*Visibilidad*: - la visibilidad de la versión pendiente. Para poder registrar el recurso a través de GBIF, el editor del recurso debe asegurarse de que la versión esté pública. Para asignar un DOI al recurso, el editor debe asegurarse de que la versión esté pública.\n"
+msgstr "*Visibilidad*: - la visibilidad de la versión actual/pendiente. Para poder registrar el recurso a través de GBIF, el editor del recurso debe asegurarse que la versión esté pública. Para asignar un DOI al recurso, el editor debe asegurarse que la versión esté pública.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:543
@@ -2066,7 +2066,7 @@ msgstr "*DOI*: - El DOI de la versión pendiente. El DOI de la versión actual n
 #: en/modules/ROOT/pages/manage-resources.adoc:544
 #, no-wrap
 msgid "*Data License*: - the license applied to the resource. In order to register the resource with GBIF, the resource manager must ensure a license equivalent to either CC0, CC-BY, or CC-BY-NC is applied to the resource. GBIF's licensing policy is described https://www.gbif.org/terms/licences[here].\n"
-msgstr "*Licencia de los Datos*: - la licencia asignada al recurso. Para registrar un recurso a través de GIBF, el editor del recurso debe asegurarse de aplicar una licencia equivalente a la CC0, CC-BY, o la CC-BY-NC. La política de licenciamiento de GBIF se describe https://www.gbif.org/terms/licences[aquí].\n"
+msgstr "*Licencia de los Datos*: - la licencia asignada al recurso. Para registrar un recurso a través de GBIF, el editor del recurso debe asegurarse de aplicar una licencia equivalente a CC0, CC-BY, o CC-BY-NC. La política de licenciamiento de GBIF se describe https://www.gbif.org/terms/licences[aquí].\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:545
@@ -2268,7 +2268,7 @@ msgstr "Visibilidad"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:595
 msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be assigned a DOI or registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
-msgstr "El área \"Visibilidad\" de la página \"Recursos\" permite a los usuarios, que tengan derechos de edición sobre el recurso, cambiar su estado de visibilidad. La visibilidad de un recurso determina quién puede verlo, y si al recurso le fue asignado un DOI o está registrado en GBIF. De forma predeterminada, cada recurso sólo es visible para el usuario que lo creó, y para otros usuarios que tienen el rol Administrador en el IPT donde se crea el recurso. Consulte la información en seguida para tener más información acerca de cada estado de visibilidad."
+msgstr "El área de Visibilidad de la página de Gestión de Recursos permite a los usuarios con derechos de edición del recurso cambiar su estado de visibilidad. La visibilidad de un recurso determina quién podrá verlo, y si al recurso puede ser asignado un DOI o registrado en GBIF. Por defecto, cada recurso es visible sólo para el usuario que lo creó y para cualquier otro usuario que tenga el rol de Administrador en el IPT donde se creó el recurso. Para explicar cada estado de visibilidad, consulte la siguiente información."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:597
