@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 00:04\n"
+"PO-Revision-Date: 2021-08-20 00:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -315,23 +315,23 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:118
 #, no-wrap
 msgid "Why do published files not include all records?"
-msgstr ""
+msgstr "¿Por qué los archivos publicados no incluyen todos los registros?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:120
 msgid "Check the publication log for exceptions such as:"
-msgstr ""
+msgstr "Consulte la bitácora de la publicación para excepciones como:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:123
 #, no-wrap
 msgid "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP\n"
-msgstr ""
+msgstr "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:126
 msgid "that means you have invalid date value in your data source, which, in this case, is `0000-00-00 00:00:00`."
-msgstr ""
+msgstr "esto quiere decir que tiene un valor de fecha no válido en su origen de datos, que en este caso es`0000-00-00 00:00:00`. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:129
@@ -525,28 +525,28 @@ msgstr "Reiniciar Tomcat."
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:206
 msgid "Last, press the \"update registration\" button on the Edit GBIF Registration page. This will propagate the change to the GBIF Registry. For further information about what this update does, you can refer to xref:administration.adoc#edit-gbif-registration[this section] of the user manual."
-msgstr ""
+msgstr "Por último presione el botón \"actualizar registro\" en la página de Edición del Registro de GBIF. Esto propagará el cambio hacia el Registro de GBIF. Para mayor información acerca de esta actualización, puede consultar xref:administration.adoc#edit-gbif-registration[esta sección] del manual de usuario. "
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:207
 #, no-wrap
 msgid "How do I reset the admin password?"
-msgstr ""
+msgstr "¿Cómo restablezco la contraseña del administrador?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:210
 msgid "If you have forgotten the admin password, the server administrator will need to reset it."
-msgstr ""
+msgstr "Si ha olvidado la contraseña del administrador, el administrador del servidor deberá restablecerla."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:212
 msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `VRRUXOTCtdCkQr40SrHdrnUJurTOYMW9`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
-msgstr ""
+msgstr "Usando un editor de texto, abra el archivo `config/users.xml` del directorio de datos del IPT. Busque el usuario administrador (con `role=\"Admin\"`) y reemplace la contraseña encriptada con `VRRUXOTCtdCkQr40SrHdrnUJurTOYMW9`. Reinicie el IPT. A continuación puede iniciar como un usuario administrador con la contraseña `Ga_1bxiedrvNHSyK` — por supuesto, esta contraseña debe ser cambiada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:214
 msgid "If they prefer, a Java developer could modify the https://github.com/gbif/ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest.java[PBEEncryptTest class] to generate a hash for a different password, or decrypt the lost password (but see https://github.com/gbif/ipt/issues/1460[issue 1460])."
-msgstr ""
+msgstr "Si lo prefiere, un desarrollador de Java podría modificar la https://github.com/gbif/ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest.java[clase PBEEncryptTest] para generar un hash para una contraseña diferente, o desencriptar la contraseña olvidada (pero consulte https://github.com/gbif/ipt/issues/1460[issue 1460])."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:215
