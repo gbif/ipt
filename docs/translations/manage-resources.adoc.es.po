@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 14:15\n"
+"PO-Revision-Date: 2021-08-20 14:37\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -129,7 +129,7 @@ msgstr "Cuando la página \"Gestión de Recursos\" se abre por primera vez, mues
 #: en/modules/ROOT/pages/manage-resources.adoc:13
 #, no-wrap
 msgid "*Visibility* - a category stating who has access to view the resource. If the resource is \"Public\", all users will be able to see it on the xref:home.adoc#public-resource-table[Public Resources Table] on the Home page. If the resource is \"Private\", it will be visible in the Manage Resources table only to the user who created it, to those who have been invited to manage it, and to users having the Admin role. Details about inviting others to manage a resource are given in the \"Resource Managers\" section under the \"Resource Overview\" heading in the \"Manage Resources\" section.\n"
-msgstr "*Visibilidad* - Una categoría que establece quién tiene acceso a la visualización del recurso. Si el recurso es \"Público\", todos los usuarios podrán verlo en la xref:home.adoc#table-de-recursos-publicos[Tabla de recursos Públicos] en la página de Inicio. Si el recurso es \"Privado\", será visible en la \"Tabla Gestión de Recursos\" sólo para el usuario que lo creó, para quienes han sido invitados a administrarlo, y para los usuarios que tienen el rol Editor. Detalles acerca de cómo invitar a otros a administrar un recurso se encuentran en la sección \"Editores de Recursos\" bajo el encabezado \"Vista General del Recurso\" en la sección \"Gestión de Recursos\".\n"
+msgstr "*Visibilidad* - una categoría que indica quién tiene acceso a ver el recurso. Si el recurso es \"Público\", todos los usuarios podrán verlo en la tabla xref:home.adoc#public-resource-table[Tabla de recursos públicos] de la página de inicio. Si el recurso es \"Privado\", será visible en la tabla de Gestión de Recursos sólo para el usuario que lo creó, para aquellos que hayan sido invitados a editarlo y para los usuarios que tengan el rol de Administrador. Los detalles sobre cómo invitar a otras personas a editar un recurso se encuentran en la sección \"Editores de Recursos\", en el apartado \"Vista General del Recurso\" de la sección \"Gestionar recursos\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:14
@@ -210,7 +210,7 @@ msgstr "Cargar una carpeta comprimida con un recurso IPT configurado"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:37
 msgid "It is possible to create a copy of a resource from its zipped IPT resource configuration folder. The only condition is that the resource must have been created under a compatible version of the IPT. Effectively, this will copy all the resource's metadata, source data, and mappings. It will *not* copy the resource's registration information, version history, DOI(s), version number, managers, publication status, created date, last publication date, or even preserve the resource short name."
-msgstr "Es posible crear una copia de un recurso a partir de una carpeta comprimida con el recurso IPT configurado. La única condición es que el recurso debe haber sido creado bajo una versión compatible del IPT. De manera efectiva, este copiará todos los metadatos del recurso, los datos del recurso, y el mapeo. No copiará la información de registro del recurso, editores, ni conservará el nombre corto del recurso."
+msgstr "Es posible crear una copia de un recurso a partir de su carpeta de configuración de recursos IPT en formato comprimido. La única condición es que el recurso se haya creado con una versión compatible del IPT. En efecto, esto copiará todos los metadatos, datos de origen y asignaciones del recurso. *No* copiará la información de registro del recurso, el historial de versiones, los DOI, el número de versión, los editores, el estado de publicación, la fecha de creación, la fecha de última publicación, ni siquiera conservará el nombre corto del recurso."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:39
@@ -617,7 +617,7 @@ msgstr "Seleccione el conjunto de datos a mapear y luego haga clic en el botón 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:151
 msgid "After a new mapping has been added, it will be visible in the right-hand column of the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the \"Edit\" button beside a mapping to modify it, or click the preview icon image:ipt2/manage/preview.png[width=32,height=31] to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version."
-msgstr "Luego de que se ha agregado un nuevo mapeo, éste será visible en la columna de la derecha del área Mapeo Darwin Core. Esta área tendrá una lista de todos los mapeos del recurso, divididos en mapeos del estándar y mapeos de las extensiones. Haga clic en el botón \"Editar\" junto a un mapeo para modificarlo o haga clic en el ícono de \"Vista previa\" image:ipt2/manage/preview.png[width=32,height=31] para tener una vista preliminar del mapeo. Se recomienda que el editor del recurso utilice la vista previa para hacer una revisión del mapeo antes de publicar una nueva versión."
+msgstr "Una vez se agrega un nuevo mapeo, éste será visible en la columna de la derecha del área Mapeos Darwin Core. Esta área contendrá una lista de todas los mapeos del recurso divididas en mapeos por Tipos de Core y mapeos por Extensiones. Haga clic en el botón \"Editar\" junto a un mapeo para modificarlo, o haga clic en el icono de vista previa image:ipt2/manage/preview.png[width=32,height=31] para obtener una vista preliminar del mapeo. Se recomienda a los editores de recursos que itilicen la vista previa para hacer una revisión de todos los mapeos antes de publicar una nueva versión."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:152
@@ -1990,7 +1990,7 @@ msgstr "el usuario tiene el rol de \"Editor con/sin derechos de registro\"."
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:520
 msgid "When the resource is registered or the resource has been assigned a DOI, however, only users with the role \"Manager with registration rights\" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). After pressing the \"Publish\" button, a confirmation dialog will appear. The dialog varies depending on whether the pending version is a major version change or minor version change:"
-msgstr "Cuando el recurso está registrado o se le ha sido asignado un DOI, sin embargo, sólo los usuarios con el rol \"Editor con derechos de registro\" pueden publicar, ya que el registro del recurso se actualiza en cada publicación (véase la explicación para Rol en la sección \"Crear un Nuevo Usuario\" bajo el encabezado \"Configurar Cuentas de Usuario\" de la sección \"Menú Administración\"). Luego de hacer clic en el botón \"Publicar\", aparecerá un cuadro de diálogo de confirmación. El cuadro de diálogo cambiará dependiendo de si la versión pendiente contiene cambios mayores o si contiene cambios menores:"
+msgstr "Sin embargo, cuando el recurso está registrado o se le ha asignado un DOI, sólo los usuarios con el rol \"Editor con derechos de registro\" pueden publicar, ya que el registro del recurso se actualiza durante cada publicación (véase la explicación del rol en la sección \"Crear un nuevo usuario\" en el apartado \"Configurar cuentas de usuario\" de la sección \"Menú de Administración\"). Tras pulsar el botón \"Publicar\", aparecerá un diálogo de confirmación. El diálogo varía en función de si la versión pendiente es un cambio de versión mayor o menor:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:521
@@ -2048,13 +2048,13 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:541
 #, no-wrap
 msgid "*Version*: - the version number tracking the major_version.minor_version of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. In the current version column, click the \"View\" button to see the current version's homepage. Assuming a DwC-A has been published, click image:ipt2/manage/checkmark.png[width=40,height=40] the to validate it using the https://tools.gbif.org/dwca-validator/[Darwin Core Archive Validator]. In the pending version column, click the \"Preview\" button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
-msgstr "*Versión*: - El número de seguimiento de la versión_mayor. versión_menor de la versión pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el editor del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, a la que se le haya reservado un nuevo DOI. Para una descripción detallada de la política de versionamiento del IPT haga clic xref:versioning.adoc[aquí]. En la columna de versión actual, haga clic en el botón “Ver\" para image:ipt2/manage/checkmark.png[width=40,height=40] ver la página principal de la versión actual. Asumiendo que un Archivo Darwin Core ha sido publicado, haga clic en para confirmar que se utilice el https://tools.gbif.org/dwca-validator/[Validador de Archivos Darwin Core]. En la columna de versión pendiente, haga clic en \"Vista previa\" para ver una imagen preliminar de la página principal de la versión pendiente. La página principal preliminar es privada y sólo puede ser vista por el editor del recurso, lo cual le permite asegurarse de que el recurso está listo para ser publicado.\n"
+msgstr "*Versión*: - el número de seguimiento de la versión_mayor. versión_menor de la versión pendiente. Cada vez que el recurso es sometido a cambios científicamente significativos, el editor del recurso debe asegurarse que la versión pendiente tenga una nueva versión mayor, a la que se le haya reservado un nuevo DOI. Para una descripción detallada de la política de versionamiento del IPT haga clic xref:versioning.adoc[aquí]. En la columna de versión actual, haga clic en el botón “Ver\" para image:ipt2/manage/checkmark.png[width=40,height=40] ver la página principal de la versión actual. Asumiendo que un Archivo Darwin Core ha sido publicado, haga clic en para confirmar que se utilice el https://tools.gbif.org/dwca-validator/[Validador de Archivos Darwin Core]. En la columna de versión pendiente, haga clic en \"Vista previa\" para ver una imagen preliminar de la página principal de la versión pendiente. La página principal preliminar es privada y sólo puede ser vista por el editor del recurso, lo cual le permite asegurarse de que el recurso está listo para ser publicado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:542
 #, no-wrap
 msgid "*Visibility*: - the visibility of the current/pending version. In order to register the resource with GBIF, the resource manager must ensure the current version is public. In order to assign a DOI to a resource, the resource manager must ensure the pending version is public.\n"
-msgstr "*Visibilidad*: - La visibilidad de la versión pendiente. Para poder registrar el recurso a través de GBIF, el editor del recurso debe asegurarse de que la versión esté pública. Para asignar un DOI al recurso, el editor debe asegurarse de que la versión esté pública.\n"
+msgstr "*Visibilidad*: - la visibilidad de la versión pendiente. Para poder registrar el recurso a través de GBIF, el editor del recurso debe asegurarse de que la versión esté pública. Para asignar un DOI al recurso, el editor debe asegurarse de que la versión esté pública.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:543
@@ -2066,7 +2066,7 @@ msgstr "*DOI*: - El DOI de la versión pendiente. El DOI de la versión actual n
 #: en/modules/ROOT/pages/manage-resources.adoc:544
 #, no-wrap
 msgid "*Data License*: - the license applied to the resource. In order to register the resource with GBIF, the resource manager must ensure a license equivalent to either CC0, CC-BY, or CC-BY-NC is applied to the resource. GBIF's licensing policy is described https://www.gbif.org/terms/licences[here].\n"
-msgstr "*Licencia de los Datos*: - La licencia asignada al recurso. Para registrar un recurso a través de GIBF, el editor del recurso debe asegurarse de aplicar una licencia equivalente a la CC0, CC-BY, o la CC-BY-NC. La política de licenciamiento de GBIF se describe https://www.gbif.org/terms/licences[aquí].\n"
+msgstr "*Licencia de los Datos*: - la licencia asignada al recurso. Para registrar un recurso a través de GIBF, el editor del recurso debe asegurarse de aplicar una licencia equivalente a la CC0, CC-BY, o la CC-BY-NC. La política de licenciamiento de GBIF se describe https://www.gbif.org/terms/licences[aquí].\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:545
@@ -2078,7 +2078,7 @@ msgstr "*Publicado en*: - La fecha en la cual la versión actual fue publicada /
 #: en/modules/ROOT/pages/manage-resources.adoc:546
 #, no-wrap
 msgid "*Publication log*: - click the download button to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the Publishing Status page section. This is not applicable to the pending version.\n"
-msgstr "*Log del reporte*: - Este enlace inicia la descarga de un archivo \"publication.log\", que contiene el resultado detallado del proceso de la versión que se está publicando. El editor del recurso puede utilizar el reporte de publicación para identificar por ejemplo: problemas durante la publicación. A continuación encontrará información más detallada sobre los contenidos del reporte en la página de la sección Estado de la Publicación. Este reporte no aplica para la versión pendiente.\n"
+msgstr "*Log del reporte*: - haga click en boton de descarga para recuperar el archivo \"publication.log\", que contiene el detalle del proceso de publicación para la versión que se está publicando. El editor del recurso puede utilizar el reporte de publicación para identificar por ejemplo: problemas durante la publicación. A continuación encontrará información más detallada sobre los contenidos del reporte en la página de la sección Estado de la Publicación. Este reporte no aplica para la versión pendiente.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:547
