@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-08-19 13:28\n"
+"PO-Revision-Date: 2021-08-20 08:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1042,7 +1042,7 @@ msgstr "Compartir Enlaces e Identificadores"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:387
 msgid "It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolveable identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *media type* (or *MIME type*) in this field. A complete list of media types is https://www.iana.org/assignments/media-types/media-types.xhtml[available here]."
-msgstr ""
+msgstr "Es posible compartir y describir varios enlaces a recursos externos relacionados utilizando {latest-identifier}[Alternate Identifier Extension]. Permite a los editores de datos incorporar enlaces a la base de datos o al documento de origen a través de identificadores que se pueden resolver. Se pueden proporcionar múltiples identificadores, quizás vinculando tanto a una página web como a una respuesta de servicio web más legible por máquina, para un solo taxón. Se recomienda que se incluya un formato para cada registro para permitir al usuario saber cómo interpretar la información de respuesta si un identificador se puede resolver. Esto generalmente se hace incluyendo el *tipo de medio* (o *tipo MIME*) en este campo. Está https://www.iana.org/assignments/media-types/media-types.xhtml[disponible] una lista completa de tipos de medio."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:388
