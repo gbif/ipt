@@ -21,7 +21,7 @@ link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[imag
 
 Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}.xml[list].
 
-==== Required DwC fields
+=== Required DwC fields
 
 * http://rs.tdwg.org/dwc/terms/#taxonID[taxonID]
 * http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]

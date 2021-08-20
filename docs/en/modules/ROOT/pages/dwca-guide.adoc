@@ -17,7 +17,8 @@ image::figures/cover_art_cicindelinae.png[]
 
 == Suggested citation
 
-> GBIF (2021). Darwin Core Archives – How-to Guide, version 2.1, released on 8 February 2021, (contributions by Remsen D, Braak, K, Döring M, Robertson, T, Blissett M), Copenhagen: Global Biodiversity Information Facility, accessible online at: https://ipt.gbif.org/manual/en/ipt/{manual-version}/dwca-guide
+// The date uses the last change, ignoring formatting etc.
+> GBIF (2021) Darwin Core Archives – How-to Guide, version 2.2. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/dwca-guide
 
 _Cover art credit: Kim Wismann, Cicindelinae_
 
@@ -50,7 +51,7 @@ image::figures/core_data_file.png[A core data file is a simple, tabular, text fi
 
 . *Optional “extension” files* support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may apply only to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the http://rs.gbif.org/extension/[GBIF Extension Repository].
 +
-image::figures/extension_data_file.png'[An extension is linked to the core file via the common taxon ID]
+image::figures/extension_data_file.png[An extension is linked to the core file via the common taxon ID]
 
 . A descriptor *metafile* describes how the files in your archive are organized. It describes the files in the archive and maps each data column to a corresponding standard Darwin Core or Extension term. The metafile is a relatively simple XML file format. GBIF provides an online tool for making this file but the format is simple enough that many data administrators will be able to generate it manually. These options are described in the Publishing Options section of this document.
 +
@@ -65,7 +66,7 @@ image::figures/meta_file.png[The metafile describes the file names and fields in
 --
 image::figures/metadata_file.png[A metadata document describes the complete dataset]
 
-The entire collection of files (core data, extensions, metafile, and resource metadata) should be compressed into a single archive file. The supported compression formats are https://en.wikipedia.org/wiki/ZIP_(file_format[ZIP]) and https://en.wikipedia.org/wiki/Tar_(file_format[TAR.GZ/TGZ]).
+The entire collection of files (core data, extensions, metafile, and resource metadata) should be compressed into a single archive file. The supported compression formats are https://en.wikipedia.org/wiki/ZIP_(file_format)[ZIP] and https://en.wikipedia.org/wiki/Tar_(file_format)[TAR.GZ/TGZ].
 
 image::figures/zipped_archive.png[Text files are zipped into a single archive]
 
@@ -131,7 +132,7 @@ GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that ser
 
 Each template provides inline help and instructions in the worksheets.
 
-To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a dataHostingCentres[trusted data hosting centre] located in your country.
+To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a xref:data-hosting-centres.adoc[trusted data hosting centre] located in your country.
 
 === Publishing DwC-A manually
 
@@ -200,7 +201,7 @@ Advanced users can request permission to register datasets in bulk, by integrati
 
 === Required and recommended terms
 
-The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:
+The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:
 
 . Checklist data: xref:checklist-data.adoc#required-dwc-fields[required terms] / xref:checklist-data.adoc#recommended-dwc-fields[recommended terms]
 . Occurrence data: xref:occurrence-data.adoc#required-dwc-fields[required terms] / xref:occurrence-data.adoc#recommended-dwc-fields[recommended terms]
