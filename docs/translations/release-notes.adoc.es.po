@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"PO-Revision-Date: 2021-08-20 08:59\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -21,66 +21,66 @@ msgstr ""
 #: en/modules/ROOT/pages/release-notes.adoc:5
 #, no-wrap
 msgid "Upgrade instructions"
-msgstr ""
+msgstr "Instrucciones de actualización"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:38
 #: en/modules/ROOT/pages/release-notes.adoc:65
 #, no-wrap
 msgid "Post-upgrade instructions"
-msgstr ""
+msgstr "Instrucciones para después de la actualización"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:39
 #: en/modules/ROOT/pages/release-notes.adoc:73
 #, no-wrap
 msgid "Important changes in this release"
-msgstr ""
+msgstr "Cambios importantes en esta versión"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
 #: en/modules/ROOT/pages/release-notes.adoc:85
 #, no-wrap
 msgid "When all else fails"
-msgstr ""
+msgstr "Cuando todo lo demás falla"
 
 #. type: Title =
 #: en/modules/ROOT/pages/release-notes.adoc:1
 #, no-wrap
 msgid "Release Notes"
-msgstr ""
+msgstr "Notas de la Versión"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:4
 #, no-wrap
 msgid "*IPT Versions: pass:[2.5.*]*\n"
-msgstr ""
+msgstr "*Versiones IPT: pass:[2.5.*]*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:8
 msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general."
-msgstr ""
+msgstr "Asegúrese de *realizar copia de seguridad del directorio de datos del IPT antes de ejecutar una actualización*. Según los xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Criterios de los Centros de Alojamiento de Datos], se recomienda encarecidamente realizar copias de seguridad programadas para los directorios de datos del IPT en general. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:10
 msgid "Once an IPT has been upgraded to 2.3.x or later from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files."
-msgstr ""
+msgstr "Una vez que el IPT ha sido actualizado a 2.3.x o posterior desde la versión 2.2 o anterior, no será posible volver a una versión anterior debido a cambios en la configuración de los archivos del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:12
 msgid "Check your system meets the xref:requirements.adoc[installation requirements] for this release."
-msgstr ""
+msgstr "Compruebe que su sistema reúne los xref:requirements.adoc[requisitos de instalación] para esta versión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:14
 msgid "The upgrade method depends on the original xref:installation.adoc#installation-method[installation method]."
-msgstr ""
+msgstr "El método de actualización depende del xref:installation.adoc#installation-method[método de instalación] original."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/release-notes.adoc:15
 #, no-wrap
 msgid "Upgrades using Linux packages"
-msgstr ""
+msgstr "Actualizaciones utilizando paquetes Linux"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:18
