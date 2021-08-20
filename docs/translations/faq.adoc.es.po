@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 00:43\n"
+"PO-Revision-Date: 2021-08-20 01:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -309,7 +309,7 @@ msgstr "A menos que se eliminen estos caracteres de salto de línea, el IPT publ
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:117
 msgid "To solve this, you can remove these line breaking characters from the source file, replace the source file with the new one, and republish the resource. Remember that when uploading a source file, you can tell the IPT to replace the file with a new one as long as they both have the same name. That way the mappings don't have to be redone."
-msgstr ""
+msgstr "Para solucionar esto, puede eliminar estos caracteres de salto de línea del archivo origen, reemplace el archivo origen con el nuevo y vuelva a publicar el recurso. Recuerde que al cargar un archivo origen, puede decir al IPT que reemplace el archivo con uno nuevo siempre que ambos tengan el mismo nombre. De esa forma, no es necesario rehacer los mapeos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:118
@@ -394,7 +394,7 @@ msgstr "¿Cómo cambio la organización que publica mi recurso? El menú despleg
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:149
 msgid "Please be aware the publishing organization cannot be changed after the resource has been either registered with GBIF or assigned a DOI."
-msgstr ""
+msgstr "Tenga en cuenta que la organización que publica el recurso no se puede cambiar después de que el recurso se haya registrado en GBIF o se le haya asignado un DOI."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:151
