@@ -145,7 +145,11 @@ image::ipt2/manage/IPTManageResourceSourceSummary.png[]
 
 Click on the button labelled "Clear" to remove the choice of URL and return to the previous state before any data source was selected. Or, click on the button labelled "Add" to open the Source Data URL detail page.
 
-From this point, the process is very similar to using a file as a data source.  See the <<File as a data source>> section for an explanation of the page.
+This page shows the name of the resource along with a summary of the URL characteristics (readability, number of columns detected, URL location, the number of rows detected, and the date the URL was last loaded into the IPT). The Source Data URL detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file.
+
+image::ipt2/manage/IPTManageResourceSourceURL.png[]
+
+From this point, the process is very similar to using a file as a data source.  See the <<File as data source>> section for an explanation of the page.
 
 === Darwin Core Mappings
 This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed.

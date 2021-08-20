@@ -5,7 +5,10 @@
 ====
 The current, stable release is version <<2-4-2-september-2020,2.4.2>>.
 
-You are reading the manual for version 2.5.0-RC1.  You might prefer to read the manual for xref:2.4@releases.adoc[version 2.4].
+You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen.
+ifeval::["{language}" != "en"]
+Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE.
+endif::[]
 ====
 
 == *2.5.0* – Expected in August 2021
@@ -17,16 +20,12 @@ CAUTION: This is a *release candidate* made available for testing.  *It is not s
 * https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0-RC1/ipt-2.5.0-RC1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.5.0 Release Notes]
 * xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/27?closed=1[63 issues].
+* Addressed https://github.com/gbif/ipt/milestone/27?closed=1[80 issues].
 * Translated into 7 languages
 
 Users may install this pre-release version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].
 
-This version addresses 63 issues including the famous "double log in bug" and brings in a fresher looking user interface. There are 7 further issues that we will address before the final release.
-
-Users of the IPT are encouraged to explore functions they are familiar with and run any applicable security tests.
-
-Translators are requested to update any missing UI translations and (optionally) begin translation of this user manual.  Please see the xref:translations.adoc[translations page].
+This version addresses 80 issues, including the famous "double log in bug", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish.
 
 //No release date has been set yet for the next release.
 //Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
