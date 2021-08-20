@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 00:28\n"
+"PO-Revision-Date: 2021-08-20 00:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -336,60 +336,60 @@ msgstr "esto quiere decir que tiene un valor de fecha no válido en su origen de
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:129
 msgid "To solve this, you can update the value with \"Null\" value, and update the resource.  Usually, you can rely on the log message to identify the column of interest, like in the example above, it says \"column 65,\" which is the 65th column in the data source."
-msgstr ""
+msgstr "Para resolver esto, puede actualizar el valor con \"Null\" y actualizar el recurso. Por lo general, puede basarse en el mensaje de la bitácora para identificar la columna de interés, como en el ejemplo anterior, dice \"columna 65\", que es la columna 65 en la fuente de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:131
 msgid "The `0000-00-00 00:00:00` value in your SQL table could be resulted when importing, while having defined the column with \"Not Null\" and default value as `0000-00-00 00:00:00`."
-msgstr ""
+msgstr "El valor `0000-00-00 00:00:00` en su tabla SQL podría resultar al importar, mientras se ha mantenido la columna con \"Not null\" y el valor predeterminado como `0000-00-00 00: 00: 00`."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:132
 #, no-wrap
 msgid "What does the error \"No space left on device\" mean and how do I fix it?"
-msgstr ""
+msgstr "¿Qué significa el error \"No space left on device\" y cómo lo soluciono?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:134
 msgid "If you found an exception such as:"
-msgstr ""
+msgstr "Si encontró una excepción como:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:137
 #, no-wrap
 msgid "Caused by: java.io.IOException: No space left on device\n"
-msgstr ""
+msgstr "Caused by: java.io.IOException: No space left on device\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:140
 msgid "in your publication log file, it means there is no space left in the disk partition that contains your IPT data directory."
-msgstr ""
+msgstr "en su bitácora de publicación, significa que no queda espacio en la partición del disco que contiene su directorio de datos IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:142
 msgid "To solve this, you can:"
-msgstr ""
+msgstr "Para solucionar esto, puede:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:144
 msgid "Allocate more space to this partition."
-msgstr ""
+msgstr "Asignar más espacio a esta partición."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:145
 msgid "Move your IPT data directory to another partition where there is more space available. (Refer to the xref:installation.adoc[installation instructions] to change the location of the data directory)."
-msgstr ""
+msgstr "Mover su directorio de datos IPT a otra partición donde haya mas espacio disponible. (Consulte las xref:installation.adoc[instrucciones de instalación] para cambiar la ubicación del directorio de datos)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:146
 msgid "Free up disk space (e.g. deleting temporary files, remove unused applications, etc)"
-msgstr ""
+msgstr "Liberar espacio en disco (por ejemplo, eliminar archivos temporales, eliminar aplicaciones no utilizadas, etc.)"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:147
 #, no-wrap
 msgid "How do I change the publishing organization of my resource? The drop down on the Basic Metadata page is disabled."
-msgstr ""
+msgstr "¿Cómo cambio la organización que publica mi recurso? El menú desplegable de la página de metadatos básicos está desactivado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:149
