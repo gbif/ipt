@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-20 07:13\n"
+"PO-Revision-Date: 2021-08-20 07:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -549,32 +549,32 @@ msgstr "El fichero de descripción del recurso (eml.xml) es un XML válido y se 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:172
 msgid "Referential integrity — that mapped ID terms in extension files reference existing core records."
-msgstr ""
+msgstr "Integridad referencial - que los términos ID mapeados en los ficheros de extensiones hagan referencia a registros existentes en los registros del fichero central."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:173
 msgid "All core IDs are unique"
-msgstr ""
+msgstr "Todos los IDs del fichero central son únicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:174
 msgid "That no verbatim null values are found in the data. For example NULL or \\N"
-msgstr ""
+msgstr "Que no se hallen valores originales nulos en los datos. Por ejemplo NULL o \\N"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:175
 msgid "Taxonomy and locations pass typical GBIF interpretation processes (e.g. coordinates are within the specified country)"
-msgstr ""
+msgstr "La taxonomía y las localizaciones pasan típicos procesos de interpretación de GBIF (ej.: las coordenadas se encuentran en el país específico)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:177
 msgid "To use the validator:"
-msgstr ""
+msgstr "Para utilizar el validador:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:179
 msgid "Upload the DwC-A using the form provided in the Validator web page."
-msgstr ""
+msgstr "Cargue el DwC-A utilizando el formulario proporcionado en la página web del Validador."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:180
@@ -584,23 +584,23 @@ msgstr "Validar"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:181
 msgid "Review the response that and address any validation errors"
-msgstr ""
+msgstr "Revise la respuesta y aborde cualquier error de validación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:182
 msgid "Repeat the process until the file is successfully validated."
-msgstr ""
+msgstr "Repita el proceso hasta que el fichero haya sido validado satisfactoriamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:183
 msgid "Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org)."
-msgstr ""
+msgstr "Si se bloquea, contacte con el Servicio de Asistencia de GBIF (helpdesk@gbif.org)."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:184
 #, no-wrap
 msgid "Registration of DwC-As with GBIF"
-msgstr ""
+msgstr "Registo de DwC-As en GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:187
