@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-20 19:38\n"
+"PO-Revision-Date: 2021-08-20 19:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -91,7 +91,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:20
 msgid "The landing page of the old major version points (has a link) to the new version, with an explanation of the status of the old version."
-msgstr ""
+msgstr "La página de destino de la antigua versión mayor apunta (tiene un enlace) a la nueva versión, con una explicación de el estado de la versión anterior."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:21
@@ -101,7 +101,7 @@ msgstr "Los conjuntos de datos eliminados tienen una página de IPT de destino q
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22
 msgid "The DOI metadata should be as rich as possible, including where possible (a) alternate identifiers for the dataset, (b) relationships to other versions, (c) relationships to articles the dataset cites, (d) ORCID where contacts are listed, etc."
-msgstr ""
+msgstr "Los metadatos con DOI deben ser tan valiosos como sea posible, incluyendo cuando sea posible (a) identificadores alternos del conjunto de datos, (b) relaciones con otras versiones, (c) relaciones con artículos que citan al conjunto de datos, (c) ORCID donde los contactos son mencionados, etc."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22
