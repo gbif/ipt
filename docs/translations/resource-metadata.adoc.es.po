@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-20 17:28\n"
+"PO-Revision-Date: 2021-08-20 17:55\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -191,29 +191,29 @@ msgstr "Q. ¿Puedo agregar un enlace al conjunto de datos relacionando un artíc
 #: en/modules/ROOT/pages/resource-metadata.adoc:56
 #, no-wrap
 msgid "*A.* Yes. To do so, add a citation to the data paper to the bibliographic citations list. Take special care to include the data paper's DOI as part of the citation. It should be written as a linkable URL (e.g. https://doi.org/10.1038/sdata.2017.16). This will make it possible to discover the data paper when reading the resource metadata.\n"
-msgstr ""
+msgstr "*A.* Sí. Para hacerlo, agregue una cita del artículo a la lista de citas bibliográficas. Tenga especial cuidado de incluir el DOI del artículo como parte de la cita. Debe escribirse como una URL enlazable (por ejemplo, https://doi.org/10.1038/sdata.2017.16). Esto permitirá descubrir el artículo al leer los metadatos del recurso.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:57
 #, no-wrap
 msgid "Q. GBIF assigned my dataset a DOI - can I add this to my metadata?"
-msgstr ""
+msgstr "Q. GBIF asignó un DOI a mi conjunto de datos - ¿Puedo agregarlo a mis metadatos?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:60
 #, no-wrap
 msgid "*A.* Yes. To do so, add the GBIF DOI, written as a linkable URL (e.g. https://doi.org/10.15468/nc6rxy) in the following places:\n"
-msgstr ""
+msgstr "*A.* Si. Para hacerlo, agregue el DOI, escrito como una URL enlazable (p. ej. https://doi.org/10.15468/nc6rxy) en los siguientes lugares:\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:62
 msgid "Citation DOI (remember to turn on citation xref:manage-resources.adoc#citations[auto-generation], to ensure your dataset's citation complies with the xref:citation.adoc[best-practice format])."
-msgstr ""
+msgstr "Cita con DOI (recuerde activar las citas con xref:manage-resources.adoc#citations[generación automática], para asegurarse de que la cita de su conjunto de datos cumpla con el xref:citation.adoc[formato de mejores prácticas])."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:63
 msgid "Alternate identifiers list"
-msgstr ""
+msgstr "Lista de identificadores alternativos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:65
