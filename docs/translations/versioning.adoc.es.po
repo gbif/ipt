@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-20 18:39\n"
+"PO-Revision-Date: 2021-08-20 19:00\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -46,7 +46,7 @@ msgstr "Las versiones mayores y menores son usadas para realizar un seguimiento 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:11
 msgid "The version number uses the syntax major_version.minor_version."
-msgstr ""
+msgstr "El número de versión utiliza la sintaxis versión_mayor.versión_menor."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:12
