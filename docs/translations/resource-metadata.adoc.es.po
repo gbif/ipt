@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-20 17:13\n"
+"PO-Revision-Date: 2021-08-20 17:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -162,30 +162,30 @@ msgstr "Q. ¿Qué debo hacer si mis datos no pueden estar disponibles de manera 
 #: en/modules/ROOT/pages/resource-metadata.adoc:46
 #, no-wrap
 msgid "*A.* You should publicize its existence by publishing metadata about it. You can indicate the data can be made available by request, to encourage future collaboration and meta-analysis.\n"
-msgstr ""
+msgstr "*A.* Debe dar a conocer su existencia mediante la publicación de sus metadatos. Puede indicar que los datos pueden estar disponibles por solicitud, para fomentar la colaboración y el metaanálisis en el futuro.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:47
 #, no-wrap
 msgid "Q. How can I apply a license to my dataset?"
-msgstr ""
+msgstr "Q. ¿Cómo puedo aplicar una licencia a mi conjunto de datos?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:50
 #, no-wrap
 msgid "*A.* Simply use the IPT's built-in metadata editor following xref:applying-license.adoc#dataset-level[these instructions].\n"
-msgstr ""
+msgstr "*A.* Utilice el editor de los metadatos integrado del IPT siguiendo xref:applying-license.adoc#dataset-level[estas instrucciones].\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:52
 msgid "Alternatively if your metadata is already in EML you should assign the dataset a machine readable license before uploading it to the IPT following xref:applying-license.adoc#supplementary-information[these instructions]."
-msgstr ""
+msgstr "Opcionalmente, si sus metadatos están en EML asigne al conjunto de datos una licencia \"machine readable\" antes de cargarlo al IPT siguiendo xref:applying-license.adoc#supplementary-information[estas instrucciones]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:53
 #, no-wrap
 msgid "Q. Can I add a link to the dataset's related data paper?"
-msgstr ""
+msgstr "Q. ¿Puedo agregar un enlace al conjunto de datos relacionando un artículo?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:56
