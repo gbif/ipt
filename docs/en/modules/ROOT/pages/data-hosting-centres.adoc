@@ -30,29 +30,24 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 == Data Hosting Centres by Theme
 
-* <<Freshwater Data>>
-* <<Marine Data>>
-* <<Vertebrate Data>>
+* <<Freshwater data>>
+* <<Marine data>>
+* <<Vertebrate data>>
 
 == Data Hosting Centres by Location
 
 * <<Belgium>>
-* <<Benin>>
-* <<Burkina Faso>>
 * <<Canada>> ⭐
 * <<Colombia>> ⭐
 * <<Denmark>>
 * <<Finland>>
-* <<France>>
-* <<Mauritania>>
-* <<Madagascar>>
+* <<France>> (also for Benin, Botswana, Burkina Faso, Cameroon, Côte d'Ivoire, Gabon, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo and Uganda)
 * <<Norway>>
 * <<Portugal>>
 * <<South Africa>>
 * <<Spain>> ⭐
 * <<Sweden>>
 * <<Taiwan>>
-* <<Togo>>
 * <<USA>>
 
 ⭐ Designates a country with an IPT serving as a repository, able to assign DOIs to datasets underlying scientific publications in journals such as https://www.nature.com/sdata/[Scientific Data].
@@ -83,7 +78,7 @@ The Research Institute for Nature and Forest (INBO) also provides http://data.in
 * http://www.natuurpunt.be[Natuurpunt]
 * http://www.vmm.be[Flemish Environment Agency VMM]
 
-The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] & http://www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. Publishers of marine data should refer to the section <<Marine Data>>.
+The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] & http://www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. Publishers of marine data should refer to the section <<Marine data>>.
 
 == Canada
 

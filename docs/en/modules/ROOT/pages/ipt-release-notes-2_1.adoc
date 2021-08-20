@@ -33,7 +33,7 @@ Upgrading from 2.0.3, once the upgrade is complete, resource managers should:
 . Other
 ** IPT 2.1 now explicitly writes the occurrenceID/taxonID in the published Darwin Core Archive. In previous versions, the value mapped to the occurrenceID/taxonID was written to the ID column in the Darwin Core Archive.
 ** IPT 2.1 now supports uploading Excel files as data sources. https://tools.gbif.org/spreadsheet-processor/[GBIF Spreadsheet Templates] can be used to create new resources, but they have to be converted into a Darwin Core Archive first.
-** GBIF has released a new IPT2Core.md[guide] on how to add custom cores to the IPT, aimed advaned users and communities prototyping new data standards.
+** GBIF has released a new xref:core.adoc[guide] on how to add custom cores to the IPT, aimed advanced users and communities prototyping new data standards.
 
 == Dependency Notes
 

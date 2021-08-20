@@ -18,7 +18,7 @@ Download the latest stable Tomcat 8 Binary Distribution Core (32-bit/64-bit Wind
 
 === 2. Install Tomcat 8.x
 
-Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the tomcat_home.md[tomcat_home]/conf/tomcat-users.xml file and restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked).
+Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the [tomcat_home]/conf/tomcat-users.xml file and restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked).
 
 image::screenshots/Capturetomcat1.JPG[Apache Tomcat Setup Config Options]
 

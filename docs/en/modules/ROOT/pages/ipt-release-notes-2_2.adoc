@@ -24,8 +24,8 @@ Only applicable to *upgrades from 2.0.5*, resource managers should check the geo
 
 === C. New Features / Other
 
-* IPT 2.2 now supports assigning DOIs to resources. To enable this feature, the IPT administrator must configure the IPT with a DataCite or EZID account. Please see these IPT2ManualNotes#Configure_Organisations.md[instructions] for help. To understand how the IPT assigns DOIs to datasets, refer to the IPT2DOIWorkflow.md[IPT's DOI workflows] page in the IPT wiki.
-* IPT 2.2 supports automatic generation of the resource citation. Please see these IPT2ManualNotes#Citations.md[instructions] for help.
+* IPT 2.2 now supports assigning DOIs to resources. To enable this feature, the IPT administrator must configure the IPT with a DataCite or EZID account. Please see these xref:administration.adoc#configure-organisations[instructions] for help. To understand how the IPT assigns DOIs to datasets, refer to the xref:doi-workflow.adoc[IPT's DOI workflows] page in the IPT wiki.
+* IPT 2.2 supports automatic generation of the resource citation. Please see these xref:manage-resources.adoc#citations[instructions] for help.
 * IPT 2.2 performs http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] validation on all occurrence records. The implication is that each http://rs.gbif.org/core/dwc_occurrence.xml[Occurrence] mapping must map the http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] term, and each http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] value must match the http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary].
 * IPT 2.2 publishes resource metadata using a new version of the http://rs.gbif.org/schema/eml-gbif-profile/1.1/[GBIF Metadata Profile (v1.1)]. Publishers can now take advantage of the following changes:
 ** it is possible to enter multiple resource contacts, creators, metadata providers, and project personnel
@@ -33,8 +33,8 @@ Only applicable to *upgrades from 2.0.5*, resource managers should check the geo
 ** it is possible to enter an identifier and description for a project
 ** it is possible to specify the update frequency of a dataset using a controlled vocabulary or providing a general description
 ** it is possible to store a machine readable license (storing both the URL and title of the license)
-* IPT 2.2 fixes a longstanding https://code.google.com/p/gbif-providertoolkit/issues/detail?id=817[bug] when running the IPT using an Apache Reverse Proxy. Please refer to the improved IPTServerPreparation.md[Server Preparation] wiki page for assistance using a reverse proxy or virtual host name for your IPT instance.
-* A new IPT2ApplyingLicense.md[guide] on how to apply a license to a dataset has been added to the IPT wiki.
+* IPT 2.2 fixes a longstanding https://code.google.com/p/gbif-providertoolkit/issues/detail?id=817[bug] when running the IPT using an Apache Reverse Proxy. Please refer to the improved xref:server-preparation.adoc[Server Preparation] wiki page for assistance using a reverse proxy or virtual host name for your IPT instance.
+* A new xref:applying-license.adoc[guide] on how to apply a license to a dataset has been added to the IPT wiki.
 
 == Dependency Notes
 

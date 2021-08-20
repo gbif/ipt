@@ -330,7 +330,7 @@ The additionalMetadata field is a container for any other relevant metadata that
 
 | metadataLanguage | The language in which the metadata document (as opposed to the resource being described by the metadata) is written. Composed of an ISO639-2/T three-letter language code and an ISO3166-1 three-letter country code. E.g., en_GB
 
-| hierarchyLevel | Dataset level to which the metadata applies; default value is “dataset”[8] E.g., dataset
+| hierarchyLevel | Dataset level to which the metadata applies; default value is “dataset” E.g., dataset
 
 | {eml-location}/eml-literature.html#citation[citation] | The citation for the work itself. See {eml-location}/eml-literature.html#citation[eml]
 

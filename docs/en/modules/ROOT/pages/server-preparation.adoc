@@ -23,7 +23,8 @@ If the installation doesn't start please check the `catalina.out` logfile, and r
 
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
-video:|116142276[vimeo]
+[.responsive-video]
+video::116142276[vimeo,width=100%]
 
 === Jetty
 

@@ -1,6 +1,6 @@
 = Best Practices in Publishing Species Checklists
 
-Version 2.0
+Version 2.1
 
 image::figures/cover_art_stilt.png[]
 
@@ -20,7 +20,7 @@ image::figures/cover_art_stilt.png[]
 
 == Suggested citation
 
-> GBIF (2017). Best Practices in Publishing Species Checklists. Accessible online at #TODO#
+> GBIF (2017). Best Practices in Publishing Species Checklists. Accessible online at https://ipt.gbif.org/manual/en/ipt/2.4/best-practices-checklists
 
 _Cover art credit: Gregory Basco, Black-necked stilt, Himantopus mexicanus_
 
@@ -231,7 +231,7 @@ Darwin Core Archive supports the publication of synonyms in species checklists. 
 
 A synonym record is recommended to contain a distinct *dwc:taxonID* or it may have no *dwc:taxonID* at all. It *must not* use the same *dwc:taxonID* as the accepted taxon record. The simplest representation of synonymy is as provided in the example above where synonyms are listed as distinct records and ‘point’ to the accepted taxon record using the *dwc:acceptedNameUsageID*. This simple synonymy supports the publication of basic taxonomic checklists with synonym details limited to the core taxon class elements. The *dwc:taxonomicStatus* field affirms the status of the record. A recommended vocabulary for this field is http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml[available]. Additional nomenclatural details that may also support the rationale behind the synonymy may be included using the *dwc:nomenclaturalStatus* field and http://rs.gbif.org/vocabulary/gbif/nomenclatural_status.xml[supporting vocabulary].
 
-Detailed synonymy can be supported by ensuring a unique *dwc:taxonID* is included in each synonym record and by utilising the available extensions to support the sharing of checklist annotations. This supports the linking of one or more bibliographic records, specimen records and other data types supported by the [[GBIF Checklist Extensions|BestPracticesChecklists#gbif-checklist-extensions]] to a single synonym record in the core data file. If a *dwc:taxonID* is not provided for a synonym record, extensions cannot be used as they rely on the *dwc:taxonID* to provide the link to the taxon record in the core file. A simplified example below illustrates the use of two files (expressed as tables) to provide a bibliography for a synonym using the References extension. The shared *dwc:taxonID* is highlighted in the example.
+Detailed synonymy can be supported by ensuring a unique *dwc:taxonID* is included in each synonym record and by utilising the available extensions to support the sharing of checklist annotations. This supports the linking of one or more bibliographic records, specimen records and other data types supported by the <<GBIF Checklist Extensions>> to a single synonym record in the core data file. If a *dwc:taxonID* is not provided for a synonym record, extensions cannot be used as they rely on the *dwc:taxonID* to provide the link to the taxon record in the core file. A simplified example below illustrates the use of two files (expressed as tables) to provide a bibliography for a synonym using the References extension. The shared *dwc:taxonID* is highlighted in the example.
 
 *Taxon.txt* data file
 
@@ -382,7 +382,7 @@ The sharing of information about types and specimens is supported. These data ar
 
 == Sharing Links and Identifiers
 
-It is possible to share and describe multiple links to related external resources using the http://rs.gbif.org/extension/gbif/1.0/identifier.xml[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *mime type* in this field. A complete list of mime types is [available].
+It is possible to share and describe multiple links to related external resources using the http://rs.gbif.org/extension/gbif/1.0/identifier.xml[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolve-able identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *mime type* in this field. A complete list of mime types is https://www.iana.org/assignments/media-types/media-types.xhtml[available].
 
 === Creating a dynamic link to a species page
 
