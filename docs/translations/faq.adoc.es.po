@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 01:08\n"
+"PO-Revision-Date: 2021-08-20 04:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -415,12 +415,12 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:156
 #, no-wrap
 msgid "How do I change the type of an existing resource?"
-msgstr ""
+msgstr "¿Cómo cambio el tipo de un recurso existente?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:159
 msgid "The type of a resource is derived from its core mapping:"
-msgstr ""
+msgstr "El tipo de un recurso se deriva de su mapeo con el estándar:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:161
