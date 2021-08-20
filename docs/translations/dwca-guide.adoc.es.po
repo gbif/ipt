@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-20 07:29\n"
+"PO-Revision-Date: 2021-08-20 08:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -605,84 +605,84 @@ msgstr "Registo de DwC-As en GBIF"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:187
 msgid "An entry for the resource must be made in the GBIF Registry that enables the resource to be discoverable and accessible. Each new registration needs to be associated with a publishing organization that has been formally endorsed by a GBIF Participant Node manager. This is a simple quality control step required by the GBIF Participant Node Managers Committee."
-msgstr ""
+msgstr "Se debe incluir una entrada del recurso en el Registro de GBIF permitiéndole ser descubierto y estar accesible. Cada nuevo registro debe estar asociado con una organización publicadora que haya sido formalmente registrada por un administrador de un Nodo Participante en GBIF. Esto es un simple control de calidad requerido por el Comité de Administradores de Nodos Participantes en GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:189
 msgid "Fortunately, the IPT and GBIF API support automatic registration for datasets. Otherwise if you are publishing DwC-As manually, initiate registration by sending an email to helpdesk@gbif.org with the following information:"
-msgstr ""
+msgstr "Afortunadamente, las API del IPT y de GBIF dan soporte para el registro automático de conjuntos de datos. De lo contrario, si usted está publicando DwC-As de manera manual, inicie el registro enviando un correo electrónico a helpdesk@gbif.org con la siguiente información:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:191
 msgid "Dataset title"
-msgstr ""
+msgstr "Título del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:192
 msgid "Dataset description (copied from metadata file)"
-msgstr ""
+msgstr "Descripción del conjunto de datos (copiada del fichero de metadatos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:193
 msgid "Publishing organization name (must be registered in GBIF, otherwise register it by filling in this https://www.gbif.org/become-a-publisher[online questionnaire])."
-msgstr ""
+msgstr "Nombre de la organización publicadora (debe estar registrada en GBIF, de lo contrario regístrela rellenando este https://www.gbif.org/become-a-publisher[cuestionario online])."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:194
 msgid "Your relation to this organization"
-msgstr ""
+msgstr "Su relación con esta organización"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:195
 msgid "Dataset URL (publicly accessible address of zipped DwC-A)"
-msgstr ""
+msgstr "URL del conjunto de datos (dirección de acceso público al DwC-A comprimido)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:197
 msgid "You will receive a confirmation email, and a URL representing the resource entry in the Registry."
-msgstr ""
+msgstr "Recibirá un correo electrónico de confirmación y una URL de la entrada del recurso en el Registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:199
 msgid "Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the helpdesk for more information."
-msgstr ""
+msgstr "Los usuarios avanzados pueden solicitar permiso para registrar conjuntos de datos en masa, integrando la API de GBIF en sus sistemas existentes. Se proporciona un https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[ejemplo básico] de un script de shell de Linux (Bash); contacte al servicio de asistencia para más información."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:200
 #, no-wrap
 msgid "Annex: Preparing Your Data"
-msgstr ""
+msgstr "Anexo: Prepare sus Datos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:202
 #, no-wrap
 msgid "Required and recommended terms"
-msgstr ""
+msgstr "Términos requeridos y recomendados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:205
 msgid "The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:"
-msgstr ""
+msgstr "La guía xref:how-to-publish.adoc[Cómo publicar datos de biodiversidad a través de GBIF.org] proporciona un conjunto de términos requeridos y recomendados para cada tipo de datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:207
 msgid "Checklist data: xref:checklist-data.adoc#required-dwc-fields[required terms] / xref:checklist-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "Datos de listados de especies: xref:checklist-data.adoc#required-dwc-fields[términos requeridos] / xref:checklist-data.adoc#recommended-dwc-fields[términos recomendados]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:208
 msgid "Occurrence data: xref:occurrence-data.adoc#required-dwc-fields[required terms] / xref:occurrence-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "Datos de presencias de especies: xref:occurrence-data.adoc#required-dwc-fields[términos requeridos terms] / xref:occurrence-data.adoc#recommended-dwc-fields[términos recomendados]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:209
 msgid "Sampling-event data: xref:sampling-event-data.adoc#required-dwc-fields[required terms] / xref:sampling-event-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "Datos de eventos de muestreo: xref:sampling-event-data.adoc#required-dwc-fields[términos requeridos] / xref:sampling-event-data.adoc#recommended-dwc-fields[términos recomendados]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:210
 msgid "Resource metadata: xref:resource-metadata.adoc#required-dwc-fields[required terms] / xref:resource-metadata.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "Metadatos de recursos: xref:resource-metadata.adoc#required-dwc-fields[términos requeridos terms] / xref:resource-metadata.adoc#recommended-dwc-fields[términos recomendados]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:211
@@ -693,33 +693,33 @@ msgstr "Codificación de caracteres"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:214
 msgid "Recommended best practice is to encode text (data) files using UTF-8."
-msgstr ""
+msgstr "La mejor práctica recomendada es codificar archivos (de datos) de texto utilizando UTF-8."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:216
 msgid "The following tools for Linux, Mac and Windows can be used to convert character encodings of files:"
-msgstr ""
+msgstr "Las siguientes herramientas para Linux, Mac y Windows se pueden utilizar para convertir codificaciones de caracteres de archivos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:218
 msgid "https://en.wikipedia.org/wiki/Iconv"
-msgstr ""
+msgstr "https://en.wikipedia.org/wiki/Iconv"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:222
 msgid "Ex.: Convert character encodings from Windows-1252 to UTF-8 using https://linux.die.net/man/1/iconv[*iconv*]:"
-msgstr ""
+msgstr "Ej.: Convertir codificaciones de caracteres de Windows-1252 a UTF-8 usando https://linux.die.net/man/1/iconv[*iconv*]:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:228
 #, no-wrap
 msgid "Data From a Database"
-msgstr ""
+msgstr "Datos desde una Base de Datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:231
 msgid "It is easy to produce delimited text files from a database using the SQL commands. For MySQL, use the `SELECT INTO outfile` command. The encoding of the resulting file will depend on the server variables and collations used, and might need to be modified before the operation is done. Note that MySQL will export NULL values as `\\N` by default. Use the IFNULL() function as shown in the following example to avoid this:"
-msgstr ""
+msgstr "Es sencillo producir archivos de texto delimitado desde una base de datos utilizando comandos SQL. Para MySQL, utilice el comando `SELECT INTO outfile`. La codificación del archivo resultante dependerá de las variables del servidor y de las intercalaciones utilizadas, y es posible que requieran ser modificadas antes de que acabe la operación. Tenga en cuenta que MySQL exportará valores NULL como `\\N` por defecto. Utilice la función IFNULL() como se muestra en el siguiente enlace para evitar esto:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/dwca-guide.adoc:241
@@ -731,7 +731,13 @@ msgid "SELECT\n"
 "  OPTIONALLY ENCLOSED BY '\"'\n"
 "  LINES TERMINATED BY '\\n'\n"
 "  FROM dwc;\n"
-msgstr ""
+msgstr "SELECT\n"
+"  IFNULL(id, ''), IFNULL(scientific_name, ''), IFNULL(count,'')\n"
+"  INTO outfile '/tmp/dwc.txt'\n"
+"  FIELDS TERMINATED BY ','\n"
+"  OPTIONALLY ENCLOSED BY '\"'\n"
+"  LINES TERMINATED BY '\\n'\n"
+"  FROM dwc;\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:244
@@ -772,7 +778,7 @@ msgstr "La guía xref:how-to-publish.adoc[Cómo publicar datos de biodiversidad 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:255
 msgid "Checklist data: xref:checklist-data.adoc#exemplar-datasets[examplar datasets]"
-msgstr "Lista de verificación de datos: xref:checklist-data.adoc#exelar-datasets [conjunto de datos de ejemplo]"
+msgstr "Lista de verificación de datos: xref:checklist-data.adoc#exelar-datasets[conjunto de datos de ejemplo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:256
