@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-20 08:04\n"
+"PO-Revision-Date: 2021-08-20 14:15\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -210,7 +210,7 @@ msgstr "figures/extension_data_file.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:57
 msgid "A descriptor *metafile* describes how the files in your archive are organized. It describes the files in the archive and maps each data column to a corresponding standard Darwin Core or Extension term. The metafile is a relatively simple XML file format. GBIF provides an online tool for making this file but the format is simple enough that many data administrators will be able to generate it manually. These options are described in the Publishing Options section of this document."
-msgstr "Un *metarchivo* describe como se organizan los ficheros en tu Archivo. Describe los ficheros en el Archivo y relaciona cada columna de datos con un término correspondiente del estándar Darwin Core o sus Extensiones. El metarchivo es un fichero en formato XML relativamente simple. GBIF proporciona una herramienta online para elaborar este fichero pero el formato es tan sencillo que muchos gestores de datos serán capaces de generarlo manualmente. Estas opciones se describen el la sección Opciones de Publicación de este documento."
+msgstr "Un descriptor *metafile* describe cómo están organizados los contenidos de su archivo. Describe los contenidos del archivo y asigna cada columna de datos a un término  del estándar Darwin Core o Extensión. El metafile es un formato de archivo XML relativamente simple. GBIF proporciona una herramienta online para hacer este archivo, pero el formato es lo suficientemente simple como para que muchos administradores de datos puedan generarlo manualmente. Estas opciones se describen en la sección Opciones de Publicación de este documento."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:60
@@ -467,7 +467,7 @@ msgstr "*Supuesto: Los datos están ya en un archivo de texto CSV/Tab, o en uno 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:142
 msgid "DwC-As can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system."
-msgstr "DwC-A puede crearse sin instalar ningún programa específico. Estas instrucciones van dirigidas a los gestores de datos que son familiares con el conjunto de datos a publicar y se sienten cómodos trabajando con su sistema de gestión de datos."
+msgstr "DwC-A puede crearse sin instalar ningún programa específico. Estas instrucciones van dirigidas a los editores de datos que están familiarizados con el conjunto de datos a publicar y se sienten cómodos trabajando con su sistema de gestión de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:144
