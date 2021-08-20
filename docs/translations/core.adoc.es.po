@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:53\n"
+"PO-Revision-Date: 2021-08-20 08:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,8 +25,7 @@ msgstr "Agregar un nuevo estándar"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:4
 msgid "This page contains configuration instructions for advanced IPT users only"
-msgstr "73 / 5000\n"
-"Esta página contiene instrucciones de configuración solo para usuarios avanzados de IPT "
+msgstr "Esta página contiene instrucciones de configuración solo para usuarios avanzados de IPT "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:6
@@ -73,7 +72,7 @@ msgstr "*Escribir la definición del núcleo XML*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:18
 msgid "The core XML definition has to comply with the http://rs.gbif.org/schema/extension.xsd[GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as the {latest-dwc-occurrence}.xml[Darwin Core Occurrence Core]. Please note, the core definition must contain a property that serves as the record identifier (e.g. http://rs.tdwg.org/dwc/terms/occurrenceID for the Occurrence core, or http://rs.tdwg.org/dwc/terms/eventID for the Event Core. The process of creating a new non-core extension is exactly the same as for a core extension. The process of creating a new vocabulary (as a data type for a property within the core, or non-core extension) is different only in that the XML definition has to comply with the http://rs.gbif.org/schema/thesaurus.xsd[GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as the {latest-basis-of-record}[Darwin Core Type vocabulary]."
-msgstr "La definición XML del núcleo debe cumplir con el http://rs.gbif.org/schema/extension.xsd[GBIF Extension Schema]. Es más fácil simplemente adaptar una definición de núcleo existente, como {latest-dwc-occurrence}.xml [Darwin Core Occurrence Core]. Tenga en cuenta que la definición principal debe contener una propiedad que sirva como identificador de registro (por ejemplo, http://rs.tdwg.org/dwc/terms/occurrenceID para el núcleo de la ocurrencia, o http://rs.tdwg.org/dwc/terms/eventID para Event Core. El proceso de creación de una nueva extensión no principal es exactamente el mismo que para una extensión principal. El proceso de creación de un nuevo vocabulario (como un tipo de datos para una propiedad dentro del núcleo, o no -core) es diferente solo en que la definición XML tiene que cumplir con el http://rs.gbif.org/schema/thesaurus.xsd[GBIF Thesaurus Schema]. Una vez más, es más fácil adaptar una definición de vocabulario existente , como la  {latest-basis-of-record} [Vocabulario de Darwin Core Type]."
+msgstr "La definición XML del núcleo debe cumplir con el http://rs.gbif.org/schema/extension.xsd[GBIF Extension Schema]. Es más fácil simplemente adaptar una definición de núcleo existente, como {latest-dwc-occurrence}.xml[Darwin Core Occurrence Core]. Tenga en cuenta que la definición principal debe contener una propiedad que sirva como identificador de registro (por ejemplo, http://rs.tdwg.org/dwc/terms/occurrenceID para el núcleo de la ocurrencia, o http://rs.tdwg.org/dwc/terms/eventID para Event Core. El proceso de creación de una nueva extensión no principal es exactamente el mismo que para una extensión principal. El proceso de creación de un nuevo vocabulario (como un tipo de datos para una propiedad dentro del núcleo, o no -core) es diferente solo en que la definición XML tiene que cumplir con el http://rs.gbif.org/schema/thesaurus.xsd[GBIF Thesaurus Schema]. Una vez más, es más fácil adaptar una definición de vocabulario existente, como la  {latest-basis-of-record}[Vocabulario de Darwin Core Type]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:20
@@ -95,7 +94,7 @@ msgstr "*Configurar el IPT*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:27
 msgid "To configure the IPT to use the {sandbox-material-sample}[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
-msgstr "Para configurar el IPT para usar el {sandbox-material-sample} [Material de ejemplo del núcleo], por ejemplo, agregue las 2 líneas siguientes a `$IPT_DATA_DIR/config/ipt.properties`."
+msgstr "Para configurar el IPT para usar el {sandbox-material-sample}[Material de ejemplo del núcleo], por ejemplo, agregue las 2 líneas siguientes a `$IPT_DATA_DIR/config/ipt.properties`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:29
@@ -113,5 +112,5 @@ msgstr "ipt.core_rowTypes=http\\://rs.tdwg.org/dwc/terms/MaterialSample\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:36
 msgid "This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe `|` character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then xref:administration.adoc#install-extension[install the core]. The core is now available to use in the IPT."
-msgstr "Esto configura el IPT para reconocer todas las extensiones con rowType http://rs.tdwg.org/dwc/terms/MaterialSample como tipos principales y para usar http://rs.tdwg.org/dwc/terms/materialSampleID como su identificador término. Se pueden especificar varios núcleos, delimitándolos con el carácter de barra vertical `|` (pipe). La primera entrada de ipt.core_idTerms es el ID de la primera entrada de core_rowTypes, y así sucesivamente. Por último, guarde el archivo ipt.properties, reinicie Tomcat y luego xref:Administration.adoc#install-extension [instalar el núcleo]. El núcleo ahora está disponible para su uso en el IPT."
+msgstr "Esto configura el IPT para reconocer todas las extensiones con rowType http://rs.tdwg.org/dwc/terms/MaterialSample como tipos principales y para usar http://rs.tdwg.org/dwc/terms/materialSampleID como su identificador término. Se pueden especificar varios núcleos, delimitándolos con el carácter de barra vertical `|` (pipe). La primera entrada de ipt.core_idTerms es el ID de la primera entrada de core_rowTypes, y así sucesivamente. Por último, guarde el archivo ipt.properties, reinicie Tomcat y luego xref:Administration.adoc#install-extension[instalar el núcleo]. El núcleo ahora está disponible para su uso en el IPT."
 
