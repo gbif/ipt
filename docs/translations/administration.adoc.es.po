@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-29 13:59+0000\n"
-"PO-Revision-Date: 2021-08-19 09:16\n"
+"PO-Revision-Date: 2021-08-20 14:15\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -202,7 +202,7 @@ msgstr "*Apellido* - El apellido del usuario.\n"
 #: en/modules/ROOT/pages/administration.adoc:54
 #, no-wrap
 msgid "*Role* - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role \"Manager without registration rights\" are able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Users having the role \"Manager with registration rights\" have the additional capability to register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.\n"
-msgstr "*Rol* - El rol que tendrá el usuario dentro del IPT. Usuarios con el rol “Administrador” pueden hacer cambios en todos los aspectos del IPT. Usuarios con el rol “Gestor sin derechos de registrar” están en la capacidad de crear, editar, eliminar y administrar los recursos que ellos crearon o aquellos a los que fueron invitados para administrar dentro del IPT. Usuarios con el rol “Gestor con derechos de registrar” están en la capacidad adicional de registrar los recursos en la red GBIF. Otros usuarios pueden ingresar al IPT y ver los recursos, pero no podrán hacer cambios.\n"
+msgstr "*Rol* - El rol que tendrá el usuario dentro del IPT. Usuarios con el rol “Administrador” pueden hacer cambios en todos los aspectos del IPT. Usuarios con el rol “Editor sin derechos de registro” están en la capacidad de crear, editar, eliminar y administrar los recursos que ellos crearon o aquellos a los que fueron invitados para administrar dentro del IPT. Usuarios con el rol “Editor con derechos de registro” están en la capacidad adicional de registrar los recursos en la red GBIF. Otros usuarios pueden ingresar al IPT y ver los recursos, pero no podrán hacer cambios.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:55
@@ -275,7 +275,7 @@ msgstr "Igualmente, la instalación del IPT siempre debe tener al menos un usuar
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:72
 msgid "Each resource must have at least one associated user having either the Admin or one of the Manager roles, so the last remaining Manager of a resource can not be deleted. To remove that user, first associate another user having the Admin or one of the Manager roles with any resources for which the user you wish to delete is the last remaining manager. Refer to the information under xref:manage-resources.adoc#resource-managers[Resource Managers] to see how new managers can be assigned."
-msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que tenga el rol Administrador o uno de los otros roles de Administrador, de tal forma que el último Gestor de un recurso no pueda ser eliminado. Para eliminar aquel usuario, primero se debe asociar otro usuario que tenga uno de los roles de Gestor, con el recurso al cual el usuario desea eliminarle el último gestor del mismo. Para saber cómo pueden ser asignados los nuevos gestores, consulte la información de xref:manage-resources.adoc#gestores-del-recurso[Gestores del recurso]."
+msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que tenga el rol Administrador o uno de los otros roles de Editor, de tal forma que el último Editor de un recurso no pueda ser eliminado. Para eliminar aquel usuario, primero se debe asociar otro usuario que tenga uno de los roles de Editor, con el recurso al cual el usuario desea eliminarle el último editor del mismo. Para saber cómo pueden ser asignados los nuevos editores, consulte la información de xref:manage-resources.adoc#gestores-del-recurso[Editores del recurso]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:73
