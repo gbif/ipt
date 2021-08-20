@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 11:48+0000\n"
-"PO-Revision-Date: 2021-08-20 16:36\n"
+"PO-Revision-Date: 2021-08-20 16:51\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -51,44 +51,44 @@ msgstr "ipt2/flow-rm.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:10
 msgid "Ultimately your metadata needs to be transformed into an XML metadata document. The XML must conform to the GBIF Metadata Profile, which is based on the Ecological Metadata Language (EML)."
-msgstr ""
+msgstr "Finalmente, sus metadatos deben transformarse en un documento de metadatos XML. El XML debe ajustarse al perfil de metadatos de GBIF, que se basa en el Lenguaje de metadatos ecológicos (EML)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:12
 msgid "No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata. The IPT makes sure it's in the proper valid XML format."
-msgstr ""
+msgstr "No existe una plantilla en Excel para los metadatos de recursos. Utilice el editor de metadatos integrado de el IPT para completar los metadatos. El IPT se asegura de que esté en el formato XML válido."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:14
 msgid "Alternatively if your metadata is already in EML or Dublin Core, you can upload it in these formats to the IPT. Guidance on how to do that can be found xref:manage-resources.adoc#upload-a-metadata-file[here]."
-msgstr ""
+msgstr "Opcionalmente si sus metadatos están en un formato EML o de Dublin Core, puede cargarlos en esos formatos al IPT. Puede encontrar orientación sobre cómo hacerlo xref:manage-resources.adoc#upload-a-metadata-file[aquí]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:16
 msgid "For extra guidance, you can look at the <<Exemplar datasets>>."
-msgstr ""
+msgstr "Para obtener orientación adicional, puede consultar los << Conjuntos de datos de ejemplares >>."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:17
 #, no-wrap
 msgid "Template"
-msgstr ""
+msgstr "Plantilla"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:20
 msgid "No Excel template exists for resource metadata. Simply use the IPT's built-in metadata editor to populate the metadata."
-msgstr ""
+msgstr "No existe una plantilla en Excel para los metadatos de recursos. Utilice el editor de metadatos integrado de el IPT para completar los metadatos. "
 
 #. type: Title ===
 #: en/modules/ROOT/pages/resource-metadata.adoc:21
 #, no-wrap
 msgid "Required metadata fields"
-msgstr ""
+msgstr "Campos obligatorios de los metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:24
 msgid "title"
-msgstr ""
+msgstr "título"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resource-metadata.adoc:25
