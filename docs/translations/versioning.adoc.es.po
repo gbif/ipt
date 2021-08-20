@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-20 20:12\n"
+"PO-Revision-Date: 2021-08-20 20:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/versioning.adoc:1
 #, no-wrap
 msgid "Dataset Versioning Policy"
-msgstr "Política del control de versiones del conjuntos de datos"
+msgstr "Política del control de versiones del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:4
@@ -81,7 +81,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:18
 msgid "Every major and minor version of a dataset has its own IPT landing page, making the archived version of the dataset (DwC-A, EML) freely available for download. Of course only landing pages of publicly available versions will be freely accessible on the Internet."
-msgstr ""
+msgstr "Cada versión mayor y menor de un conjunto de datos tiene su propia página de IPT, permitiendo que la versión archivada del conjunto de datos (DwC-A, EML) esté disponible para su libre descarga. Por supuesto, solo las páginas de las versiones disponibles públicamente serán de libre acceso en internet."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:19
@@ -96,7 +96,7 @@ msgstr "La página de destino de la anterior versión mayor apunta (tiene un enl
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:21
 msgid "Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI, all its versions are archived otherwise its permanently deleted."
-msgstr ""
+msgstr "Los conjuntos de datos eliminados tienen una página IPT que explica que se eliminó el conjunto de datos. Si el conjunto de datos eliminado tenía asignado un DOI, todas sus versiones son almacenadas, de lo contrario es eliminado permanentemente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22
