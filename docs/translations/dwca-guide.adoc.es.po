@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-20 06:23\n"
+"PO-Revision-Date: 2021-08-20 06:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -450,7 +450,7 @@ msgstr "Todos los modelos proporcionan ayuda e instrucciones en línea en las ho
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:136
 msgid "To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a xref:data-hosting-centres.adoc[trusted data hosting centre] located in your country."
-msgstr ""
+msgstr "Para publicar los datos como un DwC-A, cargue los modelos en el IPT. Utilice el editor de metadatos incorporado. La guía xref:how-to-publish.adoc[Cómo publicar datos de biodiversidad a través de GBIF.org] proporciona un conjunto de instrucciones sencillas sobre cómo hacerlo. Si requiere una cuenta en un IPT, se recomienda encarecidamente que la solicite a un xref:data-hosting-centres.adoc[centro de alojamiento de datos de confianza] ubicado en su país."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:137
@@ -477,12 +477,12 @@ msgstr "A continuación, se muestra un conjunto de instrucciones sobre cómo cre
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:146
 msgid "Unless the data are already stored in a CSV/Tab text file, the publisher needs to prepare a text file(s) from the source. If the data are stored in a database, generate an output of delimited text from the source database into an outfile. Most database management systems support this process; an example is given in the Annex to this guide, below, in the section “Outputting Data From a MySQL Database Into a Textfile”. As the metafile maps the columns of the text file to Darwin Core terms, it is not necessary to use Darwin Core terms as column header in the resultant text file, though it may help to reduce errors. A general recommendation is to produce a single core data file and a single file for each extension if the intention is to output data tied to an extension."
-msgstr ""
+msgstr "A menos que los datos estén ya almacenados en un archivo de texto CSV/Tab, el publicador necesitará preparar un archivo de texto o varios desde la fuente. Si los datos están almacenados en una base de datos, genere un archivo de salida de texto delimitado a partir de la base de datos de origen. La mayoría de sistemas de gestión de bases de datos apoyan este proceso; se proporciona un ejemplo en el Anexo de esta guía, más adelante, en la sección “Producción de Datos Desde una Base de Datos MySQL a un Archivo de Texto”. Como el metarchivo ya relaciona las columnas del archivo de texto con los términos Darwin Core, no es necesario utilizar los términos Darwin Core como encabezado de las columnas en el archivo de texto resultante, sin embargo hacerlo puede ayudar a reducir errores. Una recomendación general sería producir un único fichero central de datos y un único fichero por cada extensión si la intención es producir datos unidos a una extensión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:147
 msgid "Create a Metafile: There are three different ways to generate the file:"
-msgstr ""
+msgstr "Crear un Metarchivo: Existen tres formas diferentes de generar el fichero:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:148
