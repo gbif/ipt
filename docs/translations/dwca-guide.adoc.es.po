@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-20 06:53\n"
+"PO-Revision-Date: 2021-08-20 07:13\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -487,64 +487,64 @@ msgstr "Crear un Metarchivo: Existen tres formas diferentes de generar el ficher
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:148
 msgid "Create it manually by using an XML editor and using a sample metafile as a guiding example. A complete description of the metafile format can be found in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core Text Guide]."
-msgstr ""
+msgstr "Créelo manualmente utilizando un editor XML y usando un metarchivo de muestra como ejemplo. Se puede encontrar una descripción completa del formato del metarchivo en la http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Guía de Texto Darwin Core]."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/dwca-guide.adoc:152
 #, no-wrap
 msgid "figures/dwc-a_assistant.png"
-msgstr ""
+msgstr "figures/dwc-a_assistant.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:155
 msgid "Create it using the online application http://tools.gbif.org/dwca-assistant/[Darwin Core Archive Assistant] Simply select the fields of data to be published, provide some details about the files and save the resultant XML. This only needs to be done once unless the set of published fields changes at some later time."
-msgstr ""
+msgstr "Créelo utilizando la herramienta web http://tools.gbif.org/dwca-assistant/[Asistente de Archivos Darwin Core]. Simplemente, seleccione los campos de los datos a publicar, proporcione algunos detalles sobre los ficheros y guarde el XML resultante. Esto solo es necesario hacerlo una vez a menos que el conjunto de campos publicados cambie en el futuro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:157
 msgid "this tool is no longer supported by GBIF. Support for the Event core is missing. Publishers also need to manually add term dwc:taxonID to Taxon core and dwc:occurrenceID to Occurrence core, to ensure they are explicitly included."
-msgstr ""
+msgstr "esta herramienta ya no es compatible con GBIF. Falta soporte para el Evento central. Los publicadores necesitan también añadir de forma manual el término dwc:taxonID a los taxones centrales y dwc:occurrenceID a las presencias de especies centrales, para asegurar que se han incluido."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:160
 msgid "Create a metadata file (eml.xml) that describes the data resource. Complete instructions on doing this are available in the xref:gbif-metadata-profile.adoc[GBIF Extended Metadata Profile: How-To Guide]. It is best practice to include a metadata file and the simplest way to produce one is using the IPT's built-in metadata editor."
-msgstr ""
+msgstr "Cree un fichero de metadatos (eml.xml) que describa la fuente de datos. Puede encontrar instrucciones completas sobre cómo hacerlo en el xref:gbif-metadata-profile.adoc[Perfil de Metadatos Extendidos de GBIF: Guía Práctica]. La mejor práctica es incluir un fichero de metadatos y la forma más sencilla de hacerlo es mediante el uso del editor de metadatos incorporado del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:161
 msgid "Ensure the data files, the metafile (meta.xml) and metadata file (eml.xml) are in the same directory or folder. Compress the folder using one of the support compression formats. The result is a DwC-A."
-msgstr ""
+msgstr "Asegúrese de que los ficheros de datos, el metarchivo (meta.xml) y el fichero de metadatos (eml.xml) están en el mismo directorio o carpeta. Comprima la carpeta utilizando uno de los formatos compatibles. El resultado es un DwC-A."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:163
 msgid "Metadata authored using IPT can be output as an RTF document, which can then be submitted as ‘Data Paper’ manuscript to Zookeys, PhytoKeys and BioRisks. See instructions to authors for ‘Data Paper’ submission to these journals."
-msgstr ""
+msgstr "Los metadatos creados mediante el IPT pueden generarse como un documento RTF que podría ser enviado como un manuscrito de ‘Artículo de Datos’ a Zookeys, PhytoKeys y BioRisks. Explore las instrucciones dirigida a los autores para el envío de ‘Artículos de Datos’ a estas revistas."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:164
 #, no-wrap
 msgid "Validation of DwC-As"
-msgstr ""
+msgstr "Validación de DwC-As"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:167
 msgid "GBIF provides an online https://www.gbif.org/tools/data-validator[DwC-Archive Validator] that performs the following checks:"
-msgstr ""
+msgstr "GBIF proporciona un https://www.gbif.org/tools/data-validator[Validador de Archivos DwC] online que ejecuta las siguientes comprobaciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:169
 msgid "The metafile (meta.xml) is valid XML and complies with the http://rs.tdwg.org/dwc/terms/guides/text/[Darwin Core Text Guidelines]."
-msgstr ""
+msgstr "El metarchivo (meta.xml) es un XML válido y se ajusta a las http://rs.tdwg.org/dwc/terms/guides/text/[Guías de Texto Darwin Core]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:170
 msgid "The content complies with the known extensions and terms registered within the GBIF network. Note GBIF runs a production and a development registry that keeps track of extensions; the validator uses the production registry."
-msgstr ""
+msgstr "El contenido se ajusta a las extensiones conocidas y términos registrados por la red de GBIF. Tenga en cuenta que GBIF ejecuta un registro de producción y de desarrollo que permite el seguimiento de extensiones; el validador utiliza el registro de producción."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:171
 msgid "The resource description file (eml.xml) is valid XML and complies with the GBIF Metadata Profile schema and the official EML schema."
-msgstr ""
+msgstr "El fichero de descripción del recurso (eml.xml) es un XML válido y se ajusta al esquema del Perfil de Metadatos de GBIF y al esquema oficial de un EML."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:172
