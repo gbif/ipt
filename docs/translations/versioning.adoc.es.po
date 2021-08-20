@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-20 19:00\n"
+"PO-Revision-Date: 2021-08-20 19:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -96,7 +96,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:21
 msgid "Deleted datasets have an IPT landing page that explains the dataset was removed. It the deleted dataset was assigned a DOI, all its versions are archived otherwise its permanently deleted."
-msgstr ""
+msgstr "Los conjuntos de datos eliminados tienen una página de IPT de destino que explica que el conjunto de datos fue eliminado. Si el conjunto de datos eliminado tenía asignado un DOI, todas sus versiones se archivan, de lo contrario, se eliminará permanentemente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22
@@ -106,5 +106,5 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:22
 msgid "The dataset citation, should always include the version number, replacing the need to use an Access Date and Time for citing time series datasets, for example."
-msgstr ""
+msgstr "La cita del conjunto de datos, siempre incluye el número de versión, reemplazando la necesidad de usar una fecha y hora de acceso para citar conjuntos de datos de series temporales, por ejemplo."
 
