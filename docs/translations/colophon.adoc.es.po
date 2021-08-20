@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:53\n"
+"PO-Revision-Date: 2021-08-19 13:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,13 +31,13 @@ msgstr "Citación"
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:8
 msgid "This user manual adapts and builds upon the previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The recommended citation for this user manual is as follows:"
-msgstr "Este manual de usuario se adapta y construye a partir de previos Manuales de Usuario del IPT (Réveillon 2009, Wieczorek & Braak 2016). La citación recomendada para este Manual de Usuario es la siguiente:"
+msgstr ""
 
 #.  Endif
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:13
 msgid "The link:../../../en/[English user manual] adapts and builds upon the previous IPT User Manuals (Réveillon 2009, Wieczorek & Braak 2016). The recommended citation for the English user manual is as follows:"
-msgstr ""
+msgstr "El link:../../../en/[manual de usuario original en inglés] se adapta y se basa en los manuales de usuario de IPT anteriores (Réveillon 2009, Wieczorek & Braak 2016). La cita recomendada para el manual del usuario en inglés es la siguiente:"
 
 #.  English user manual citation
 #. type: Plain text
@@ -48,14 +48,14 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:22
 msgid "This TRANSLATORS_PUT_YOUR_LANGUAGE_HERE translation of the user manual is contributed by TRANSLATORS_CREDIT_YOURSELVES.  The recommended citation for this translation into YOUR_LANGUAGE_HERE is as follows:"
-msgstr ""
+msgstr "La traducción de esta versión al español es una contribución del equipo Coordinador del Sistema de Información sobre la Biodiversidad de Colombia (http://www.sibcolombia.net/[SIB Colombia]), en especial de Néstor Beltrán y Valerie Dean. La citación recomendada para esta traducción al español es la siguiente:"
 
 #.  Translated user manual citation
 #.  Endif
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:27
 msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/{page-component-version}/"
-msgstr ""
+msgstr "Wieczorek J & Braak K ({localyear}) Manual de usuario para el Integrated Publishing Toolkit de GBIF, versión {page-component-version}. (Beltran N & Dean V, trad.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/{page-component-version}/"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:29

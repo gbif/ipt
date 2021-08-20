@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:54\n"
+"POT-Creation-Date: 2021-08-19 13:29+0000\n"
+"PO-Revision-Date: 2021-08-20 14:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -169,7 +169,7 @@ msgstr "*Datos de registros de presencia* - La categoría de información perten
 #: en/modules/ROOT/pages/dwca-guide.adoc:47
 #, no-wrap
 msgid "*Checklist data* — The category of information pertaining to taxa or taxon concepts, such as species. Core files of this type are used to share annotated species checklists, taxonomic catalogues, and other information about taxa. The required core ID is represented by *dwc:taxonID*. The definitive list of core Taxon terms can be found in the {latest-dwc-taxon}.xml[Taxon (Core) Extension].\n"
-msgstr "*Datos de listados de especies*  - La categoría de información pertenciente a los taxones o concpetos de taxón como las especies. Los ficheros centrales de este tipo son usados para compartir listados de especies, taxonómicos o catálogos, y otra información sobre taxones. El ID central requerido está representado por *dwc:taxonID*. La lista definitiva de términos centrales de Taxón puede encontrarse en las {latest-dwc-taxon}.xml[Extensiones (Núcleo) de Taxón].\n"
+msgstr "*Datos de listados de especies*  - La categoría de información perteneciente a los taxones o conceptos de taxón como las especies. Los ficheros centrales de este tipo son usados para compartir listados de especies, taxonómicos o catálogos, y otra información sobre taxones. El ID central requerido está representado por *dwc:taxonID*. La lista definitiva de términos centrales de Taxón puede encontrarse en las {latest-dwc-taxon}.xml[Extensiones (Núcleo) de Taxón].\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:48
@@ -204,13 +204,13 @@ msgstr "Una extensión se vincula con el fichero central mediante el ID común d
 #. type: Target for macro image
 #: en/modules/ROOT/pages/dwca-guide.adoc:54
 #, no-wrap
-msgid "figures/extension_data_file.png'"
-msgstr "figures/extension_data_file.png'"
+msgid "figures/extension_data_file.png"
+msgstr "figures/extension_data_file.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:57
 msgid "A descriptor *metafile* describes how the files in your archive are organized. It describes the files in the archive and maps each data column to a corresponding standard Darwin Core or Extension term. The metafile is a relatively simple XML file format. GBIF provides an online tool for making this file but the format is simple enough that many data administrators will be able to generate it manually. These options are described in the Publishing Options section of this document."
-msgstr "Un *metarchivo* describe como se organizan los ficheros en tu Archivo. Describe los ficheros en el Archivo y relaciona cada columna de datos con un término correspondiente del estándar Darwin Core o sus Extensiones. El metarchivo es un fichero en formato XML relativamente simple. GBIF proporciona una herramienta online para elaborar este fichero pero el formato es tan sencillo que muchos gestores de datos serán capaces de generarlo manualmente. Estas opciones se describen el la sección Opciones de Publicación de este documento."
+msgstr "Un descriptor *metafile* describe cómo están organizados los contenidos de su archivo. Describe los contenidos del archivo y asigna cada columna de datos a un término  del estándar Darwin Core o Extensión. El metafile es un formato de archivo XML relativamente simple. GBIF proporciona una herramienta online para hacer este archivo, pero el formato es lo suficientemente simple como para que muchos administradores de datos puedan generarlo manualmente. Estas opciones se describen en la sección Opciones de Publicación de este documento."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:60
@@ -248,8 +248,8 @@ msgstr "figures/metadata_file.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:70
-msgid "The entire collection of files (core data, extensions, metafile, and resource metadata) should be compressed into a single archive file. The supported compression formats are https://en.wikipedia.org/wiki/ZIP_(file_format[ZIP]) and https://en.wikipedia.org/wiki/Tar_(file_format[TAR.GZ/TGZ])."
-msgstr "Toda la colección de ficheros (datos centrales, extensiones, metarchivos, y metadatos de recursos) deberían estar comprimidos en un único archivo. Los formatos de compresión aceptados son https://en.wikipedia.org/wiki/ZIP_(file_format[ZIP]) y https://en.wikipedia.org/wiki/Tar_(file_format[TAR.GZ/TGZ])."
+msgid "The entire collection of files (core data, extensions, metafile, and resource metadata) should be compressed into a single archive file. The supported compression formats are https://en.wikipedia.org/wiki/ZIP_(file_format)[ZIP] and https://en.wikipedia.org/wiki/Tar_(file_format)[TAR.GZ/TGZ]."
+msgstr "Todos los ficheros de la colección (datos centrales, extensiones, metarchivos y metadatos de recursos) debería estar comprimidos en un único archivo. Los formatos de compresión aceptados son https://en.wikipedia.org/wiki/ZIP_(file_format)[ZIP] y https://en.wikipedia.org/wiki/Tar_(file_format)[TAR.GZ/TGZ]."
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/dwca-guide.adoc:71
@@ -328,7 +328,7 @@ msgstr "Usted quisiera documentar conjuntos de datos utilizando el Perfil de Met
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:94
 msgid "<<Publishing DwC-A using GBIF Spreadsheet Templates>> is most suitable when:"
-msgstr "<<Publicar DwC-A usando Modelos de Hojas de Cálculo de GBIF>> es lo más adecuado cuando:"
+msgstr "<<Publicar DwC-A usando Plantillas de GBIF de Hojas de Cálculo>> es lo más adecuado cuando:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:96
@@ -380,201 +380,201 @@ msgstr "Publicar DwC-A usando el IPT"
 #: en/modules/ROOT/pages/dwca-guide.adoc:111
 #, no-wrap
 msgid "*Assumption: Your data are already stored as a CSV/tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Ideally, you are already using Darwin Core terms as column names, although this is not required.*\n"
-msgstr ""
+msgstr "*Supuesto: Sus datos ya están almacenados como un fichero de texto CSV/tab, o en uno de los sistemas de gestión de bases de datos relacionales aceptados (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). Lo ideal sería que ya esté usando los términos de Darwin Core como nombres de columnas, aunque esto no es necesario.*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:113
 msgid "The https://www.gbif.org/ipt[Integrated Publishing Toolkit (IPT)] is GBIF’s flagship tool for publishing DwC-As."
-msgstr ""
+msgstr "La https://www.gbif.org/ipt[Herramienta de Publicación Integrada (IPT)] es la herramienta insignia de GBIF para la publicación de DwC-As."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:115
 #: en/modules/ROOT/pages/index.adoc:36
 msgid "The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server."
-msgstr ""
+msgstr "La forma más sencilla de empezar a utilizar el IPT es solicitar una cuenta gratuita en un xref:data-hosting-centres.adoc[centro de almacenamiento de datos de confianza] permitiéndole gestionar sus propias bases de datos y publicarlas a través de GBIF.org sin la molestia de configurar y mantener el IPT en su propio servidor."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:117
 #: en/modules/ROOT/pages/index.adoc:38
 msgid "Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point."
-msgstr ""
+msgstr "De lo contrario, si quiere configurar su propia instancia del IPT, la xref:getting-started.adoc[Guía de Introducción] es su punto de inicio. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:119
 msgid "The IPT can be used to publish resource metadata, occurrence data, checklist data, and sampling-event data. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so."
-msgstr ""
+msgstr "El IPT puede ser utilizado para publicar metadatos de recursos, datos de registros de presencia, datos de listados de especies, y datos de eventos de muestreo. La guía xref:how-to-publish.adoc[Cómo publicar datos de biodiversidad a través de GBIF.org] proporciona un conjunto de instrucciones sencillas sobre cómo hacerlo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:121
 msgid "The IPT outputs a DwC-A during publishing and supports automatic registration in the GBIF network. See the xref:manage-resources.adoc#visibility[IPT User Manual] for further details."
-msgstr ""
+msgstr "El IPT genera un DwC-A durante la publicación y apoya el registro automático en la red de GBIF. Para más detalles consulte el xref:manage-resources.adoc#visibility[Manual de Usuarios del IPT]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:122
 #, no-wrap
 msgid "Publishing DwC-A using GBIF Spreadsheet Templates"
-msgstr ""
+msgstr "Publicar DwC-A utilizando Modelos de Hojas de Cálculo de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:125
 #, no-wrap
 msgid "*Assumption: The occurrence data, simple taxonomic data, or sampling-event data to be published are not yet captured in digital format OR a simple solution for creating a metadata document to describe a dataset is desired.*\n"
-msgstr ""
+msgstr "*Supuesto: Los datos de presencia de especies, datos taxonómicos simples, o datos de eventos de muestreo a publicar no se han obtenido aún en formato digital O se desea una solución sencilla para la creación de un documento de metadatos para describir un conjunto de datos.*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:127
 msgid "GBIF provides a set of pre-configured Microsoft Excel spreadsheet files that serve as templates for capturing occurrence data, checklist data, and sampling-event data:"
-msgstr ""
+msgstr "GBIF proporciona un conjunto de hojas de cálculo de Microsoft Excel pre-configuradas que sirven de modelo para obtener datos de presencia de especies, datos de listados de especies y datos de eventos de muestreo:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:129
 msgid "xref:checklist-data.adoc#templates[Checklist data template]: suitable for basic species checklists"
-msgstr ""
+msgstr "xref:checklist-data.adoc#templates[Modelo de datos de listados de especies]: apropiado para listados de especies básicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:130
 msgid "xref:occurrence-data.adoc#templates[Occurrence data template]: suitable for occurrence data (specimen, observation)"
-msgstr ""
+msgstr "xref:occurrence-data.adoc#templates[Modelos de datos de presencia de especies]: apropiado para datos de presencia de especies (espécimen, observación)"
 
 #. .  Resource metadata template: suitable for composing a metadata document - pending but imminent
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:132
 msgid "xref:sampling-event-data.adoc#templates[Sampling-event data template]: suitable for sampling-event data"
-msgstr ""
+msgstr "xref:sampling-event-data.adoc#templates[Modelo de datos de eventos de muestreo]: apropiado para datos de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:134
 msgid "Each template provides inline help and instructions in the worksheets."
-msgstr ""
+msgstr "Todos los modelos proporcionan ayuda e instrucciones en línea en las hojas de trabajo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:136
-msgid "To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a dataHostingCentres[trusted data hosting centre] located in your country."
-msgstr ""
+msgid "To publish the data as a DwC-A, upload the templates to the IPT. Use the IPT's built-in metadata editor to enter dataset metadata. The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a simple set of instructions how to do so. If you require an account on an IPT, it is highly recommended that you request an account on a xref:data-hosting-centres.adoc[trusted data hosting centre] located in your country."
+msgstr "Para publicar los datos como un DwC-A, cargue los modelos en el IPT. Utilice el editor de metadatos incorporado. La guía xref:how-to-publish.adoc[Cómo publicar datos de biodiversidad a través de GBIF.org] proporciona un conjunto de instrucciones sencillas sobre cómo hacerlo. Si requiere una cuenta en un IPT, se recomienda encarecidamente que la solicite a un xref:data-hosting-centres.adoc[centro de alojamiento de datos de confianza] ubicado en su país."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:137
 #, no-wrap
 msgid "Publishing DwC-A manually"
-msgstr ""
+msgstr "Publicar DwC-A manualmente"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:140
 #, no-wrap
 msgid "*Assumption: Data is already in a CSV/Tab text file, or in one of the supported relational database management systems (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). The publisher does not wish to host an IPT instance but does have access to a web server.*\n"
-msgstr ""
+msgstr "*Supuesto: Los datos están ya en un archivo de texto CSV/Tab, o en uno de los sistemas de gestión de bases de datos relacionales aceptados (MySQL, PostgreSQL, Microsoft SQL Server, Oracle, Sybase). El publicador no desea alojar una instancia de IPT pero tiene acceso a un servidor web.*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:142
 msgid "DwC-As can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system."
-msgstr ""
+msgstr "Los DwC-A se pueden crear sin necesidad de instalar un software específico. Estas instrucciones van dirigidas a los administradores de datos que están familiarizados con el conjunto de datos que se va a publicar y se sienten cómodos trabajando con su sistema de gestión de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:144
 msgid "Below is a set of instructions on how to manually create a DwC-Archive:"
-msgstr ""
+msgstr "A continuación, se muestra un conjunto de instrucciones sobre cómo crear de manera manual un Archivo DwC:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:146
 msgid "Unless the data are already stored in a CSV/Tab text file, the publisher needs to prepare a text file(s) from the source. If the data are stored in a database, generate an output of delimited text from the source database into an outfile. Most database management systems support this process; an example is given in the Annex to this guide, below, in the section “Outputting Data From a MySQL Database Into a Textfile”. As the metafile maps the columns of the text file to Darwin Core terms, it is not necessary to use Darwin Core terms as column header in the resultant text file, though it may help to reduce errors. A general recommendation is to produce a single core data file and a single file for each extension if the intention is to output data tied to an extension."
-msgstr ""
+msgstr "A menos que los datos estén ya almacenados en un archivo de texto CSV/Tab, el publicador necesitará preparar un archivo de texto o varios desde la fuente. Si los datos están almacenados en una base de datos, genere un archivo de salida de texto delimitado a partir de la base de datos de origen. La mayoría de sistemas de gestión de bases de datos apoyan este proceso; se proporciona un ejemplo en el Anexo de esta guía, más adelante, en la sección “Producción de Datos Desde una Base de Datos MySQL a un Archivo de Texto”. Como el metarchivo ya relaciona las columnas del archivo de texto con los términos Darwin Core, no es necesario utilizar los términos Darwin Core como encabezado de las columnas en el archivo de texto resultante, sin embargo hacerlo puede ayudar a reducir errores. Una recomendación general sería producir un único fichero central de datos y un único fichero por cada extensión si la intención es producir datos unidos a una extensión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:147
 msgid "Create a Metafile: There are three different ways to generate the file:"
-msgstr ""
+msgstr "Crear un Metarchivo: Existen tres formas diferentes de generar el fichero:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:148
 msgid "Create it manually by using an XML editor and using a sample metafile as a guiding example. A complete description of the metafile format can be found in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core Text Guide]."
-msgstr ""
+msgstr "Créelo manualmente utilizando un editor XML y usando un metarchivo de muestra como ejemplo. Se puede encontrar una descripción completa del formato del metarchivo en la http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Guía de Texto Darwin Core]."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/dwca-guide.adoc:152
 #, no-wrap
 msgid "figures/dwc-a_assistant.png"
-msgstr ""
+msgstr "figures/dwc-a_assistant.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:155
 msgid "Create it using the online application http://tools.gbif.org/dwca-assistant/[Darwin Core Archive Assistant] Simply select the fields of data to be published, provide some details about the files and save the resultant XML. This only needs to be done once unless the set of published fields changes at some later time."
-msgstr ""
+msgstr "Créelo utilizando la herramienta web http://tools.gbif.org/dwca-assistant/[Asistente de Archivos Darwin Core]. Simplemente, seleccione los campos de los datos a publicar, proporcione algunos detalles sobre los ficheros y guarde el XML resultante. Esto solo es necesario hacerlo una vez a menos que el conjunto de campos publicados cambie en el futuro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:157
 msgid "this tool is no longer supported by GBIF. Support for the Event core is missing. Publishers also need to manually add term dwc:taxonID to Taxon core and dwc:occurrenceID to Occurrence core, to ensure they are explicitly included."
-msgstr ""
+msgstr "esta herramienta ya no es compatible con GBIF. Falta soporte para el Evento central. Los publicadores necesitan también añadir de forma manual el término dwc:taxonID a los taxones centrales y dwc:occurrenceID a las presencias de especies centrales, para asegurar que se han incluido."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:160
 msgid "Create a metadata file (eml.xml) that describes the data resource. Complete instructions on doing this are available in the xref:gbif-metadata-profile.adoc[GBIF Extended Metadata Profile: How-To Guide]. It is best practice to include a metadata file and the simplest way to produce one is using the IPT's built-in metadata editor."
-msgstr ""
+msgstr "Cree un fichero de metadatos (eml.xml) que describa la fuente de datos. Puede encontrar instrucciones completas sobre cómo hacerlo en el xref:gbif-metadata-profile.adoc[Perfil de Metadatos Extendidos de GBIF: Guía Práctica]. La mejor práctica es incluir un fichero de metadatos y la forma más sencilla de hacerlo es mediante el uso del editor de metadatos incorporado del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:161
 msgid "Ensure the data files, the metafile (meta.xml) and metadata file (eml.xml) are in the same directory or folder. Compress the folder using one of the support compression formats. The result is a DwC-A."
-msgstr ""
+msgstr "Asegúrese de que los ficheros de datos, el metarchivo (meta.xml) y el fichero de metadatos (eml.xml) están en el mismo directorio o carpeta. Comprima la carpeta utilizando uno de los formatos compatibles. El resultado es un DwC-A."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:163
 msgid "Metadata authored using IPT can be output as an RTF document, which can then be submitted as ‘Data Paper’ manuscript to Zookeys, PhytoKeys and BioRisks. See instructions to authors for ‘Data Paper’ submission to these journals."
-msgstr ""
+msgstr "Los metadatos creados mediante el IPT pueden generarse como un documento RTF que podría ser enviado como un manuscrito de ‘Artículo de Datos’ a Zookeys, PhytoKeys y BioRisks. Explore las instrucciones dirigida a los autores para el envío de ‘Artículos de Datos’ a estas revistas."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:164
 #, no-wrap
 msgid "Validation of DwC-As"
-msgstr ""
+msgstr "Validación de DwC-As"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:167
 msgid "GBIF provides an online https://www.gbif.org/tools/data-validator[DwC-Archive Validator] that performs the following checks:"
-msgstr ""
+msgstr "GBIF proporciona un https://www.gbif.org/tools/data-validator[Validador de Archivos DwC] online que ejecuta las siguientes comprobaciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:169
 msgid "The metafile (meta.xml) is valid XML and complies with the http://rs.tdwg.org/dwc/terms/guides/text/[Darwin Core Text Guidelines]."
-msgstr ""
+msgstr "El metarchivo (meta.xml) es un XML válido y se ajusta a las http://rs.tdwg.org/dwc/terms/guides/text/[Guías de Texto Darwin Core]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:170
 msgid "The content complies with the known extensions and terms registered within the GBIF network. Note GBIF runs a production and a development registry that keeps track of extensions; the validator uses the production registry."
-msgstr ""
+msgstr "El contenido se ajusta a las extensiones conocidas y términos registrados por la red de GBIF. Tenga en cuenta que GBIF ejecuta un registro de producción y de desarrollo que permite el seguimiento de extensiones; el validador utiliza el registro de producción."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:171
 msgid "The resource description file (eml.xml) is valid XML and complies with the GBIF Metadata Profile schema and the official EML schema."
-msgstr ""
+msgstr "El fichero de descripción del recurso (eml.xml) es un XML válido y se ajusta al esquema del Perfil de Metadatos de GBIF y al esquema oficial de un EML."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:172
 msgid "Referential integrity — that mapped ID terms in extension files reference existing core records."
-msgstr ""
+msgstr "Integridad referencial - que los términos ID mapeados en los ficheros de extensiones hagan referencia a registros existentes en los registros del fichero central."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:173
 msgid "All core IDs are unique"
-msgstr ""
+msgstr "Todos los IDs del fichero central son únicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:174
 msgid "That no verbatim null values are found in the data. For example NULL or \\N"
-msgstr ""
+msgstr "Que no se hallen valores originales nulos en los datos. Por ejemplo NULL o \\N"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:175
 msgid "Taxonomy and locations pass typical GBIF interpretation processes (e.g. coordinates are within the specified country)"
-msgstr ""
+msgstr "La taxonomía y las localizaciones pasan típicos procesos de interpretación de GBIF (ej.: las coordenadas se encuentran en el país específico)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:177
 msgid "To use the validator:"
-msgstr ""
+msgstr "Para utilizar el validador:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:179
 msgid "Upload the DwC-A using the form provided in the Validator web page."
-msgstr ""
+msgstr "Cargue el DwC-A utilizando el formulario proporcionado en la página web del Validador."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:180
@@ -584,105 +584,105 @@ msgstr "Validar"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:181
 msgid "Review the response that and address any validation errors"
-msgstr ""
+msgstr "Revise la respuesta y aborde cualquier error de validación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:182
 msgid "Repeat the process until the file is successfully validated."
-msgstr ""
+msgstr "Repita el proceso hasta que el fichero haya sido validado satisfactoriamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:183
 msgid "Contact the GBIF Helpdesk if you get stuck (helpdesk@gbif.org)."
-msgstr ""
+msgstr "Si se bloquea, contacte con el Servicio de Asistencia de GBIF (helpdesk@gbif.org)."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:184
 #, no-wrap
 msgid "Registration of DwC-As with GBIF"
-msgstr ""
+msgstr "Registo de DwC-As en GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:187
 msgid "An entry for the resource must be made in the GBIF Registry that enables the resource to be discoverable and accessible. Each new registration needs to be associated with a publishing organization that has been formally endorsed by a GBIF Participant Node manager. This is a simple quality control step required by the GBIF Participant Node Managers Committee."
-msgstr ""
+msgstr "Se debe incluir una entrada del recurso en el Registro de GBIF permitiéndole ser descubierto y estar accesible. Cada nuevo registro debe estar asociado con una organización publicadora que haya sido formalmente registrada por un administrador de un Nodo Participante en GBIF. Esto es un simple control de calidad requerido por el Comité de Administradores de Nodos Participantes en GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:189
 msgid "Fortunately, the IPT and GBIF API support automatic registration for datasets. Otherwise if you are publishing DwC-As manually, initiate registration by sending an email to helpdesk@gbif.org with the following information:"
-msgstr ""
+msgstr "Afortunadamente, las API del IPT y de GBIF dan soporte para el registro automático de conjuntos de datos. De lo contrario, si usted está publicando DwC-As de manera manual, inicie el registro enviando un correo electrónico a helpdesk@gbif.org con la siguiente información:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:191
 msgid "Dataset title"
-msgstr ""
+msgstr "Título del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:192
 msgid "Dataset description (copied from metadata file)"
-msgstr ""
+msgstr "Descripción del conjunto de datos (copiada del fichero de metadatos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:193
 msgid "Publishing organization name (must be registered in GBIF, otherwise register it by filling in this https://www.gbif.org/become-a-publisher[online questionnaire])."
-msgstr ""
+msgstr "Nombre de la organización publicadora (debe estar registrada en GBIF, de lo contrario regístrela rellenando este https://www.gbif.org/become-a-publisher[cuestionario online])."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:194
 msgid "Your relation to this organization"
-msgstr ""
+msgstr "Su relación con esta organización"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:195
 msgid "Dataset URL (publicly accessible address of zipped DwC-A)"
-msgstr ""
+msgstr "URL del conjunto de datos (dirección de acceso público al DwC-A comprimido)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:197
 msgid "You will receive a confirmation email, and a URL representing the resource entry in the Registry."
-msgstr ""
+msgstr "Recibirá un correo electrónico de confirmación y una URL de la entrada del recurso en el Registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:199
 msgid "Advanced users can request permission to register datasets in bulk, by integrating the GBIF API into their existing systems.  A https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[basic example] is provided as a Linux (Bash) shell script; contact the helpdesk for more information."
-msgstr ""
+msgstr "Los usuarios avanzados pueden solicitar permiso para registrar conjuntos de datos en masa, integrando la API de GBIF en sus sistemas existentes. Se proporciona un https://github.com/gbif/registry/tree/master/registry-examples/src/test/scripts[ejemplo básico] de un script de shell de Linux (Bash); contacte al servicio de asistencia para más información."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/dwca-guide.adoc:200
 #, no-wrap
 msgid "Annex: Preparing Your Data"
-msgstr ""
+msgstr "Anexo: Prepare sus Datos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:202
 #, no-wrap
 msgid "Required and recommended terms"
-msgstr ""
+msgstr "Términos requeridos y recomendados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:205
-msgid "The guide howToPublish[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:"
-msgstr ""
+msgid "The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provides a set of required and recommended terms for each type of data:"
+msgstr "La guía xref:how-to-publish.adoc[Cómo publicar datos de biodiversidad a través de GBIF.org] proporciona un conjunto de términos requeridos y recomendados para cada tipo de datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:207
 msgid "Checklist data: xref:checklist-data.adoc#required-dwc-fields[required terms] / xref:checklist-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "Datos de listados de especies: xref:checklist-data.adoc#required-dwc-fields[términos requeridos] / xref:checklist-data.adoc#recommended-dwc-fields[términos recomendados]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:208
 msgid "Occurrence data: xref:occurrence-data.adoc#required-dwc-fields[required terms] / xref:occurrence-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "Datos de presencias de especies: xref:occurrence-data.adoc#required-dwc-fields[términos requeridos terms] / xref:occurrence-data.adoc#recommended-dwc-fields[términos recomendados]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:209
 msgid "Sampling-event data: xref:sampling-event-data.adoc#required-dwc-fields[required terms] / xref:sampling-event-data.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "Datos de eventos de muestreo: xref:sampling-event-data.adoc#required-dwc-fields[términos requeridos] / xref:sampling-event-data.adoc#recommended-dwc-fields[términos recomendados]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:210
 msgid "Resource metadata: xref:resource-metadata.adoc#required-dwc-fields[required terms] / xref:resource-metadata.adoc#recommended-dwc-fields[recommended terms]"
-msgstr ""
+msgstr "Metadatos de recursos: xref:resource-metadata.adoc#required-dwc-fields[términos requeridos terms] / xref:resource-metadata.adoc#recommended-dwc-fields[términos recomendados]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:211
@@ -693,33 +693,33 @@ msgstr "Codificación de caracteres"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:214
 msgid "Recommended best practice is to encode text (data) files using UTF-8."
-msgstr ""
+msgstr "La mejor práctica recomendada es codificar archivos (de datos) de texto utilizando UTF-8."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:216
 msgid "The following tools for Linux, Mac and Windows can be used to convert character encodings of files:"
-msgstr ""
+msgstr "Las siguientes herramientas para Linux, Mac y Windows se pueden utilizar para convertir codificaciones de caracteres de archivos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:218
 msgid "https://en.wikipedia.org/wiki/Iconv"
-msgstr ""
+msgstr "https://en.wikipedia.org/wiki/Iconv"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:222
 msgid "Ex.: Convert character encodings from Windows-1252 to UTF-8 using https://linux.die.net/man/1/iconv[*iconv*]:"
-msgstr ""
+msgstr "Ej.: Convertir codificaciones de caracteres de Windows-1252 a UTF-8 usando https://linux.die.net/man/1/iconv[*iconv*]:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:228
 #, no-wrap
 msgid "Data From a Database"
-msgstr ""
+msgstr "Datos desde una Base de Datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:231
 msgid "It is easy to produce delimited text files from a database using the SQL commands. For MySQL, use the `SELECT INTO outfile` command. The encoding of the resulting file will depend on the server variables and collations used, and might need to be modified before the operation is done. Note that MySQL will export NULL values as `\\N` by default. Use the IFNULL() function as shown in the following example to avoid this:"
-msgstr ""
+msgstr "Es sencillo producir archivos de texto delimitado desde una base de datos utilizando comandos SQL. Para MySQL, utilice el comando `SELECT INTO outfile`. La codificación del archivo resultante dependerá de las variables del servidor y de las intercalaciones utilizadas, y es posible que requieran ser modificadas antes de que acabe la operación. Tenga en cuenta que MySQL exportará valores NULL como `\\N` por defecto. Utilice la función IFNULL() como se muestra en el siguiente enlace para evitar esto:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/dwca-guide.adoc:241
@@ -731,61 +731,67 @@ msgid "SELECT\n"
 "  OPTIONALLY ENCLOSED BY '\"'\n"
 "  LINES TERMINATED BY '\\n'\n"
 "  FROM dwc;\n"
-msgstr ""
+msgstr "SELECT\n"
+"  IFNULL(id, ''), IFNULL(scientific_name, ''), IFNULL(count,'')\n"
+"  INTO outfile '/tmp/dwc.txt'\n"
+"  FIELDS TERMINATED BY ','\n"
+"  OPTIONALLY ENCLOSED BY '\"'\n"
+"  LINES TERMINATED BY '\\n'\n"
+"  FROM dwc;\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:244
 msgid "Here are some other recommendations for generating data using SQL queries/functions:"
-msgstr ""
+msgstr "Otras recomendaciones para la generación de datos usando consultas/funciones de SQL:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:246
 msgid "Concatenate or split strings as required, e.g. to construct the full scientific name string (watch out for autonyms)"
-msgstr ""
+msgstr "Concatenar o dividir cadenas según sea necesario, p. ej. para construir la cadena del nombre científico completo (cuidado con los autónimos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:247
 msgid "Format dates to conform to https://en.wikipedia.org/wiki/ISO_8601[ISO datetime format] (1990-02-03, or 1990-02 if the day is unknown, 1990 if the month is also unknown, 1990-02-03/1990-02-28 to give a range)."
-msgstr ""
+msgstr "Aplicar formato a las fechas para ajustarse al https://en.wikipedia.org/wiki/ISO_8601[formato de fecha y hora ISO] (1990-02-03 o 1990-02 si se desconoce el día, 1990 si el mes también se desconoce, 1990-02-03/1990-02-28 para dar un rango)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:248
 msgid "Create year/month/day by parsing native SQL date types"
-msgstr ""
+msgstr "Cree año/mes/día mapeando los tipos de fecha nativos de SQL"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:249
 msgid "Use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms, or specimen and observations"
-msgstr ""
+msgstr "Utilizar UNION para unir 2 o más tablas, p. ej. taxones aceptados y sinónimos o especímenes y observaciones"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/dwca-guide.adoc:250
 #, no-wrap
 msgid "DwC-A Examples"
-msgstr ""
+msgstr "Ejemplos para el archivo DwC-A"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:253
 msgid "The guide xref:how-to-publish.adoc[How to publish biodiversity data through GBIF.org] provided a set of example DwC-As for each type of data:"
-msgstr ""
+msgstr "La guía xref:how-to-publish.adoc[Cómo publicar datos de biodiversidad a través de GBIF.org] proporciona un conjunto de ejemplos DwC-A para cada tipo de datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:255
 msgid "Checklist data: xref:checklist-data.adoc#exemplar-datasets[examplar datasets]"
-msgstr ""
+msgstr "Lista de verificación de datos: xref:checklist-data.adoc#exelar-datasets[conjunto de datos de ejemplo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:256
 msgid "Occurrence data: xref:occurrence-data.adoc#exemplar-datasets[examplar datasets]"
-msgstr ""
+msgstr "Datos de presencia o ausencia de especies: xref:occurrence-data.adoc#exemplar-datasets[conjunto de datos de ejemplo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:257
 msgid "Sampling-event data: xref:sampling-event-data.adoc#exemplar-datasets[examplar datasets]"
-msgstr ""
+msgstr "Datos de eventos de muestreo: xref:sampling-event-data.adoc#exemplar-datasets[conjunto de datos de ejemplo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:257
 msgid "Resource metadata: xref:resource-metadata.adoc#exemplar-datasets[examplar datasets]"
-msgstr ""
+msgstr "Metadatos del recurso: xref:resource-metadata.adoc#exemplar-datasets[conjunto de datos de ejemplo]"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:53\n"
+"PO-Revision-Date: 2021-08-20 10:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -218,17 +218,17 @@ msgstr "Información adicional que también podría ser incluida o fue previamen
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:13
 msgid "#TODO:# Provide recommendations on how to work around limitations of DwC-A star schema such as not being able to relate measurements and facts to both events and occurrences in the same dataset. The current work around requires publishers to publish separate datasets. Note OBIS is prototyping an Extended Measurement or Facts Extension that could also help overcome this limitation. Discussion on this prototype extension is taking place in GitHub here. However, issues raised that this prototype extension does not explicitly make it clear if the measurement or fact relates to an occurrence or an event. One alternative is to add resourceID (and perhaps resourceType?) instead of adding eventID (and occurrenceID) as attribute to the measurement or fact extension as is explored by the OBIS extension."
-msgstr "#TODO:# Proporcionar recomendaciones sobre cómo solucionar las limitaciones del esquema en estrella de DwC-A como por ejemplo no ser capaz de relacionar las medidas y hechos de ambos eventos y registros en el mismo conjunto de datos. El solución actual en este sentido requiere que los publicadores publiquen los conjuntos de datos por separado. Tenga en cuenta que OBIS está creando un prototipo de una Extensión Extendida de Medidas y Hechos que podría también ayudar a superar esta limitación. El debate sobre esta extensión prototipo tiene lugar aquí en GitHub. Sin embargo, surgieron problemas de que esta incidencia prototipo no aclara explícitamente si la medición o el hecho se relaciona con un registro de presencia o un evento. Una alternativa es añadir resourceID (¿y quizás resourceType?) en vez de añadir eventID (y occurrenceID) como atributo en la extensión de medida o hecho como es explorado por la extensión de OBIS."
+msgstr "#PORHACER:# Proporcionar recomendaciones sobre cómo solucionar las limitaciones del esquema en estrella de DwC-A como por ejemplo no ser capaz de relacionar las medidas y hechos de ambos eventos y registros en el mismo conjunto de datos. La solución actual en este sentido requiere que los publicadores publiquen los conjuntos de datos por separado. Tenga en cuenta que OBIS está creando un prototipo de una Extensión Extendida de Medidas y Hechos que podría también ayudar a superar esta limitación. El debate sobre esta extensión prototipo tiene lugar aquí en GitHub. Sin embargo, surgieron problemas de que esta incidencia prototipo no aclara explícitamente si la medición o el hecho se relaciona con un registro de presencia o un evento. Una alternativa es añadir resourceID (¿y quizás resourceType?) en vez de añadir eventID (y occurrenceID) como atributo en la extensión de medida o hecho como es explorado por la extensión de OBIS."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:18
 msgid "#TODO:# Provide recommendations on how to represent the sampling area by choosing the appropriate WKT shape or simple latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr ""
+msgstr "#TODO:# Proporcione recomendaciones sobre cómo representar el área de muestreo eligiendo la forma WKT apropiada o la ubicación del punto de latitud / longitud simple. Si se hace correctamente, también se puede derivar el muestreo de la dirección en que se llevó a cabo. Por ejemplo, una línea de arrastre oceánica representada con una forma WKT LINESTRING permite determinar la dirección de la red de arrastre basándose en la notación estándar para escribir los puntos de inicio y finalización."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:23
 msgid "#TODO:# Better guide users on how to fill in dwc:eventID and dwc:parentEventID using persistent globally unique identifiers:"
-msgstr ""
+msgstr "#TODO:# Guíe mejor a los usuarios sobre cómo completar dwc:eventID y dwc:parentEventID utilizando identificadores únicos globales persistentes:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:25
@@ -243,22 +243,22 @@ msgstr "En ausencia de un GUID, y como última opción, reutilza el fieldNumber 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:30
 msgid "#TODO:# Better guide users how to publish a hierarchy of events (recursive data type) with the proper use of dwc:parentEventID"
-msgstr "#TODO:# Guíe mejor a los usuarios sobre cómo publicar una jerarquía de eventos (tipo de datos recursivos) con el uso apropiado de dwc:parentEventID"
+msgstr "#PORHACER:# Guiar mejor a los usuarios sobre cómo publicar una jerarquía de eventos (tipo de datos recursivos) con el uso apropiado de dwc:parentEventID"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:34
 msgid "#TODO:# Transfer information from FAQ above, guiding users how to publish presence/absence data in DwC with the proper use of dwc:occurrenceStatus"
-msgstr "#TODO:# Transferir información de las FAQ de arriba, guiando a los usuarios sobre cómo publicar datos de presencia/ausencia en DwC con el uso apropiado de dwc:occurrenceStatus"
+msgstr "#PORHACER:# Transferir información de las FAQ de arriba, guiando a los usuarios sobre cómo publicar datos de presencia/ausencia en DwC con el uso apropiado de dwc:occurrenceStatus"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:38
 msgid "#TODO:# Provide recommendations on how include supplementary media in order to make the data easier to interpret. For example for vegetation data, it is helpful to include a link to the original scanned relevé sheet when interpreting the data."
-msgstr "#TODO:# Proporcionar recomendaciones sobre cómo incluir medios complementarios para una interpretación más sencilla de los datos. Por ejemplo, para datos de vegetación, es útil incluir un enlace a la lámina relevé original escaneada cuando se interpreten los datos."
+msgstr "#PORHACER:# Proporcionar recomendaciones sobre cómo incluir medios complementarios para una interpretación más sencilla de los datos. Por ejemplo, para datos de vegetación, es útil incluir un enlace a la lámina relevé original escaneada cuando se interpreten los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:43
 msgid "#TODO:# Advise publishers to use GUIDs, coupled with guidance on how to create GUIDs for applicable fields such as dwc:occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland."
-msgstr "#TODO:# Aconsejar a los publicadores a utilizar los GUIDs, al mismo tiempo que guiar sobre cómo crear GUIDs para campos aplicables tales como dwc:occurrenceID, dwc:eventID, dwc:organismID y dwc:locationID. Por ejemplo, es posible utilizar http://www.geonames.org/ para encontrar (o incluso generar nuevos) identificadores por dwc:locationID, ej.: http://sws.geonames.org/10793757/ es un GUID para un lago en Groenlandia."
+msgstr "#PORHACER:# Aconsejar a los publicadores a utilizar los GUIDs, al mismo tiempo que guiar sobre cómo crear GUIDs para campos aplicables tales como dwc:occurrenceID, dwc:eventID, dwc:organismID y dwc:locationID. Por ejemplo, es posible utilizar http://www.geonames.org/ para encontrar (o incluso generar nuevos) identificadores por dwc:locationID, ej.: http://sws.geonames.org/10793757/ es un GUID para un lago en Groenlandia."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:44
@@ -269,7 +269,7 @@ msgstr "Rellenar los términos requeridos y recomendados"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:47
 msgid "#TODO:# Guide users how to obfuscate the location of sensitive species, such as by:"
-msgstr "#TODO:# Guiar a los usuarios sobre cómo difuminar la localización de las especies sensibles, como por ejemplo:"
+msgstr "#PORHACER:# Guiar a los usuarios sobre cómo difuminar la localización de las especies sensibles, como por ejemplo:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:48
@@ -294,17 +294,17 @@ msgstr "Publicar puntos no precisos para los datos sensibles en el conjunto de d
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:55
 msgid "#TODO:# Guide users how to enter verbatim descriptions. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber."
-msgstr "#TODO:# Guiar a los usuarios sobre cómo introducir las descripciones originales. Por ejemplo, el ID o código proporcionado para el evento original debe ser introducido en  dwc:fieldNumber; el ID o código proporcionado para la observación del registro debe ser introducido en dwc:recordNumber."
+msgstr "#PORHACER:# Guiar a los usuarios sobre cómo introducir las descripciones originales. Por ejemplo, el ID o código proporcionado para el evento original debe ser introducido en  dwc:fieldNumber; el ID o código proporcionado para la observación del registro debe ser introducido en dwc:recordNumber."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:59
 msgid "#TODO:# Provide a recommendation on how to publish data produced from large projects. The current recommendation is to publish a single dataset, because dividing it into multiple datasets results in more duplication of effort entering metadata. Publishers insisting on publishing multiple datasets should link them using Project.ID in EML."
-msgstr "#TODO:# Proporcionar una recomendación sobre cómo publicar datos producidos por grandes proyectos. La recomendación actual es publicar un único conjunto de datos porque dividirlos en múltiples conjuntos de datos resulta en una mayor duplicación de en la introducción de metadatos. Los publicadores que insisten en publicar múltiples conjuntos de datos deberían vincularlos entre sí utilizando Project.ID en EML."
+msgstr "#PORHACER:# Proporcionar una recomendación sobre cómo publicar datos producidos por grandes proyectos. La recomendación actual es publicar un único conjunto de datos porque dividirlos en múltiples conjuntos de datos resulta en una mayor duplicación de en la introducción de metadatos. Los publicadores que insisten en publicar múltiples conjuntos de datos deberían vincularlos entre sí utilizando Project.ID en EML."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:63
 msgid "#TODO:# Provide rationale and guidance for migrating existing occurrence datasets to sampling event format. The following questions need to be answered:"
-msgstr "#TODO:# Proporcionar fundamentos y orientación para migrar conjuntos de datos de registros de presencia existentes a formato de evento de muestreo. Las siguientes cuestiones deben ser contestadas:"
+msgstr "#PORHACER:# Proporcionar fundamentos y orientación para migrar conjuntos de datos de registros de presencia existentes a formato de evento de muestreo. Las siguientes cuestiones deben ser contestadas:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:64
@@ -324,35 +324,35 @@ msgstr "¿Cuáles son los beneficios de producir la versión de eventos de muest
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:70
 msgid "#TODO:# Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded)."
-msgstr "#TODO:# Proporcionar una recomendación sobre cómo modelizar monitoreos continuos de individuos vivos, tales como datos de seguimiento de aves mediante el uso de dwc:organismID para almacenar el ID del individuo monitoreado utilizando un único evento para representar cada individuo monitoreado (con registros de presencia asociados cuando fuesen registrados)."
+msgstr "#PORHACER:# Proporcionar una recomendación sobre cómo modelizar monitoreos continuos de individuos vivos, tales como datos de seguimiento de aves mediante el uso de dwc:organismID para almacenar el ID del individuo monitoreado utilizando un único evento para representar cada individuo monitoreado (con registros de presencia asociados cuando fuesen registrados)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:74
 msgid "#TODO:# Provide a recommendation on how to manage issues related to the dataset using GitHub's issue management system, just like INBO does for example."
-msgstr "#TODO:# Proporcionar una recomendación sobre cómo gestionar problemas relacionados con el uso de conjuntos de datos utilizando el sistema de gestión de problemas de GitHub, tal y como hace INBO, por ejemplo."
+msgstr "#PORHACER:# Proporcionar una recomendación sobre cómo gestionar problemas relacionados con el uso de conjuntos de datos utilizando el sistema de gestión de problemas de GitHub, tal y como hace INBO, por ejemplo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:78
 msgid "#TODO:# Provide a recommendation on how to make custom scripts and programs (e.g. for transforming cross table data) publicly available using GitHub, for the benefit of other publishers, just like INBO does for example. The recommendation should encourage users to include a detailed set of instructions on how to run the scripts to make them more usable."
-msgstr "#TODO:# Proporcionar una recomendación sobre cómo compartir códigos y programas personalizados (ej.: por ejemplo para la transformación de tablas de datos cruzadas) utilizando GitHub, para beneficio de todos los publicadores, tal y como hace INBO, por ejemplo. La recomendación debería fomentar que los usuarios incluyan un detallado conjunto de instrucciones sobre cómo utilizar los códigos para hacerlos más útiles."
+msgstr "#PORHACER:# Proporcionar una recomendación sobre cómo compartir códigos y programas personalizados (ej.: por ejemplo para la transformación de tablas de datos cruzadas) utilizando GitHub, para beneficio de todos los publicadores, tal y como hace INBO, por ejemplo. La recomendación debería fomentar que los usuarios incluyan un detallado conjunto de instrucciones sobre cómo utilizar los códigos para hacerlos más útiles."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:82
 msgid "#TODO:# Advise publishers to document as much as possible about the sampling event, especially the sampling methodologies, before attempting to try and standardize it into DwC."
-msgstr "#TODO:# Aconsejar a los publicadores a documentar los eventos de muestreo tanto como sea posible, especialmente las metodologías de muestreo, antes de intentar estandarizarlo en DwC."
+msgstr "#PORHACER:# Aconsejar a los publicadores a documentar los eventos de muestreo tanto como sea posible, especialmente las metodologías de muestreo, antes de intentar estandarizarlo en DwC."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:86
 msgid "#TODO:# Advise publishers on how to link related datasets that come out of the same research context so they can be easily retrieved by the users. Publishers may have to publish separate datasets in order to work around the limitations of the DwC-A star schema. Publishers may also choose to publish separate occurrence datasets derived from the same sampling events. The current recommendation is to link them using Project.ID."
-msgstr "#TODO:# Asesorar a los publicadores sobre cómo vincular conjuntos de datos relacionados que proceden del mismo contexto de investigación para que puedan ser extraídos más fácilmente por parte de los usuarios. Los publicadores puede que tengan que publicar conjuntos de datos separados para superar las limitaciones del esquema en estrella de DwC. También puede que los publicadores elijan publicar conjuntos de datos separados de registros de presencia derivados de los mismos eventos de muestreo. La recomendación actual es vincularlos utilizando Project.ID."
+msgstr "#PORHACER:# Asesorar a los publicadores sobre cómo vincular conjuntos de datos relacionados que proceden del mismo contexto de investigación para que puedan ser extraídos más fácilmente por parte de los usuarios. Los publicadores puede que tengan que publicar conjuntos de datos separados para superar las limitaciones del esquema en estrella de DwC. También puede que los publicadores elijan publicar conjuntos de datos separados de registros de presencia derivados de los mismos eventos de muestreo. La recomendación actual es vincularlos utilizando Project.ID."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:90
 msgid "#TODO:# Provide recommendations on how to make the dataset easier to interpret by including links to related published works such as journal articles, project notes, thesis, etc."
-msgstr "#TODO:# Proporcionar recomendaciones sobre cómo facilitar la interpretación del conjunto de datos incluyendo enlaces a trabajos publicados relacionados tales como artículos de prensa, notas de proyecto, tesis, etc."
+msgstr "#PORHACER:# Proporcionar recomendaciones sobre cómo facilitar la interpretación del conjunto de datos incluyendo enlaces a trabajos publicados relacionados tales como artículos de prensa, notas de proyecto, tesis, etc."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:96
 msgid "#TODO:# Update example based on Dutch Vegetation Database (LVD) version republished as sampling-event dataset. The Relevé extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
-msgstr "#TODO:# Ejemplo actualizado basado en la versión de la Base de Datos de Vegetación Holandesa (LVD) republicada como conjunto de datos de evento de muestreo. La extensión Relevé sufre cambios significativos respecto a la publicación del original. Para más información sobre LVD y los modelos de datos para datos de eventos de muestreo de vegetación ver: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
+msgstr "#PORHACER:# Ejemplo actualizado basado en la versión de la Base de Datos de Vegetación Holandesa (LVD) republicada como conjunto de datos de evento de muestreo. La extensión Relevé sufre cambios significativos respecto a la publicación del original. Para más información sobre LVD y los modelos de datos para datos de eventos de muestreo de vegetación ver: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
 
