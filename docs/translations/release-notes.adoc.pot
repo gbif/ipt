@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"POT-Creation-Date: 2021-08-20 15:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -235,7 +235,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:68
 msgid ""
-"Following the upgrade, a warning message may appear indicating the some "
+"Following the upgrade, a warning message may appear indicating that some "
 "resources failed to load. This is caused when an old resource is missing "
 "required metadata after not being republished for a long time. Resource "
 "managers can fix this problem by re-publishing the affected resources."

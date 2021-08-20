@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"POT-Creation-Date: 2021-08-20 15:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,15 +197,15 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/launch.adoc:33
-msgid "Add/update user manual content - see issues labelled as `UserManual`."
+msgid "Add/update user manual content – see issues labelled as `UserManual`."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/launch.adoc:34
 msgid ""
-"After applying all changes in English, request Spanish translators (e.g. SIB "
-"Colombia) to apply all changes to the Spanish user manual also (process not "
-"yet clear for the Antora system)."
+"After applying all changes in English, send a message using Crowdin to "
+"request translators translate the user manual, though note this does not "
+"block the software release."
 msgstr ""
 
 #. type: Plain text
@@ -316,81 +316,88 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/launch.adoc:54
-msgid ""
-"http://eubon-ipt.gbif.org/[TEST EU BON IPT] — vanilla. Note this runs in "
-"test mode but is treated like it's in production as it's embedded in EU "
-"BON's portal."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:55
 msgid "Update Test/Sandbox instances:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:56
+#: en/modules/ROOT/pages/launch.adoc:55
 msgid ""
 "https://ipt.gbif.org/[Demo IPT] — vanilla. Note It is always a good idea to "
 "cleanup old resources to save disk space."
 msgstr ""
 
 #. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:56
+msgid "https://ipt.gbif-uat.org/[UAT IPT] — vanilla."
+msgstr ""
+
+#. type: Plain text
 #: en/modules/ROOT/pages/launch.adoc:57
-msgid "https://ipt.gbif-uat.org/[UAT IPT] — vanilla"
+msgid "https://ipt.gbif-dev.org/[Development IPT] — vanilla."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/launch.adoc:58
-msgid "https://ipt.gbif-dev.org/[Development IPT] — vanilla"
+msgid ""
+"https://training-ipt-a.gbif.org/[Training IPT A], https://training-ipt-b."
+"gbif.org/[B] and https://training-ipt-c.gbif.org/[C] — customized.  This "
+"update can be delayed if required by the Participation team."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/launch.adoc:59
+msgid ""
+"http://eubon-ipt.gbif-uat.org/[Test EU BON IPT] — vanilla. Seems no longer "
+"to be used."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:60
 msgid "Simple customizations for the above IPTs are done by"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:62
+#: en/modules/ROOT/pages/launch.adoc:63
 msgid ""
 "changing the logo image in https://github.com/gbif/ipt/blob/master/src/main/"
 "webapp/WEB-INF/pages/inc/menu.ftl#L12[menu.ftl#L12],"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:63
+#: en/modules/ROOT/pages/launch.adoc:64
 msgid ""
 "removing the test image in https://github.com/gbif/ipt/blob/master/src/main/"
 "webapp/WEB-INF/pages/inc/menu.ftl#L20[menu.ftl#L20] (where applicable) and"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:64
+#: en/modules/ROOT/pages/launch.adoc:65
 msgid ""
 "tweaking the CSS in https://github.com/gbif/ipt/blob/master/src/main/webapp/"
 "styles/main.css#L297[main.css#L297]."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:66
+#: en/modules/ROOT/pages/launch.adoc:67
 msgid ""
 "before an upgrade, the custom logo image(s) and CSS need to be backed-up/"
 "preserved and then copied back to the expanded data directory."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:69
+#: en/modules/ROOT/pages/launch.adoc:70
 msgid ""
 "For a major or minor release (but not a patch release), add a new version to "
 "the user manual"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:70
+#: en/modules/ROOT/pages/launch.adoc:71
 msgid "Publish blog post"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:71
+#: en/modules/ROOT/pages/launch.adoc:72
 msgid ""
 "Publicize in some detail, select improvements that users will value. For "
 "example, here is an example blog post for http://gbif.blogspot.com/2015/03/"
@@ -398,26 +405,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:72
+#: en/modules/ROOT/pages/launch.adoc:73
 msgid ""
 "Be sure to acknowledge volunteer translators and coders that contributed to "
 "the release."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:73
+#: en/modules/ROOT/pages/launch.adoc:74
 msgid ""
 "Review the blog post with the help of the GBIF Communications team before "
 "publishing."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:74
-msgid "Update xref:releases.adoc[release history]"
+#: en/modules/ROOT/pages/launch.adoc:75
+msgid "Update xref:releases.adoc[release history]."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:75
+#: en/modules/ROOT/pages/launch.adoc:76
 msgid ""
 "Add section for new version including a link to the .war download, release "
 "notes, user manual, how many issues were addressed broken down by type, blog "
@@ -425,56 +432,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:76
-msgid "Update xref:index.adoc#roadmap[Roadmap]"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/launch.adoc:77
-msgid ""
-"Keep this in sync with the https://github.com/gbif/ipt/blob/master/README."
-"md[GitHub IPT Read-me] and https://www.gbif.org/ipt[GBIF.org IPT page], "
-"which also show the Roadmap and get updated in subsequent steps below."
+msgid "Add/update a plan for the next release, or use the generic statement."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/launch.adoc:78
 msgid ""
-"Update https://github.com/gbif/ipt/blob/master/README.md[GitHub IPT Read-me]"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:79
-msgid ""
-"Advertise the new version, highlighting what changes will be interesting and "
-"valuable to users linking to blog post when applicable."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:80
-msgid "Update https://www.gbif.org/ipt[GBIF.org IPT page]"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:81
-msgid "Mirror relevant changes made to IPT Read-me in step above"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:82
-msgid ""
-"Update IPT uptake statistics, e.g. number of installations and number of "
-"countries having installations displayed at bottom of map."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:83
-msgid ""
 "Announce to https://lists.gbif.org/mailman/listinfo/ipt[IPT mailing list]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:84
+#: en/modules/ROOT/pages/launch.adoc:79
 msgid ""
 "Keep the message short so that people actually read it, linking to the blog "
 "post when applicable that has more detailed information about the release. "
@@ -486,37 +455,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:85
+#: en/modules/ROOT/pages/launch.adoc:80
 msgid ""
 "Highlight GBIF's vigilance in keeping the IPT secure, while reminding people "
 "of the importance of updating their instance with this latest version."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:86
+#: en/modules/ROOT/pages/launch.adoc:81
 msgid "Broadcast on social media"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:87
+#: en/modules/ROOT/pages/launch.adoc:82
 msgid ""
 "Done using the https://www.facebook.com/gbifnews[GBIF Facebook] and https://"
 "twitter.com/GBIF[GBIF Twitter] accounts via the GBIF Communications team"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:88
+#: en/modules/ROOT/pages/launch.adoc:83
 msgid "Reward volunteers"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:89
+#: en/modules/ROOT/pages/launch.adoc:84
 msgid ""
 "Say thank you again, in addition to saying it in the blog post and mailing "
 "list announcement."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/launch.adoc:89
+#: en/modules/ROOT/pages/launch.adoc:84
 msgid "Encourage volunteers to include this experience on their CV."
 msgstr ""
