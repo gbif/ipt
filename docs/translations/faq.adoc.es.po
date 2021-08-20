@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 04:26\n"
+"PO-Revision-Date: 2021-08-20 08:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -247,12 +247,12 @@ msgstr "Para asignar DOI a los conjuntos de datos, el IPT debe configurarse con 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:96
 msgid "The account holding organization must already be associated to the IPT as an organization. For help associating an organization to your IPT, you can refer to the xref:administration.adoc#add-organization[Add Organization] section of the User Manual."
-msgstr "La cuenta de la organización titular ya debe estar asociada al IPT como una organización. Para obtener ayuda para asociar una organización a su IPT, puede consultar la sección xref:Administration.adoc#add-organization [Agregar organización] del Manual del usuario."
+msgstr "La cuenta de la organización titular ya debe estar asociada al IPT como una organización. Para obtener ayuda para asociar una organización a su IPT, puede consultar la sección xref:administration.adoc#agregar-organización[Agregar organización] del Manual del usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:98
 msgid "All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the \"Account activated\" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:administration.adoc#edit-organization[Edit Organization] section of the User Manual."
-msgstr "Todo lo que queda es agregar la información de la organización a la cuenta DataCite (p. ej. el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration.adoc#edit-organization[Edición de la Organización] del manual de usuario."
+msgstr "Todo lo que queda es agregar la información de la organización a la cuenta DataCite (p. ej. el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration.adoc#edición-de-la-organización[Edición de la Organización] del manual de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:100
@@ -331,7 +331,7 @@ msgstr "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from c
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:126
 msgid "that means you have invalid date value in your data source, which, in this case, is `0000-00-00 00:00:00`."
-msgstr "esto quiere decir que tiene un valor de fecha no válido en su origen de datos, que en este caso es`0000-00-00 00:00:00`. "
+msgstr "esto quiere decir que tiene un valor de fecha no válido en su origen de datos, que en este caso es `0000-00-00 00:00:00`. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:129
