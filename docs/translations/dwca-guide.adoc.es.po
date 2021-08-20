@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-20 14:15\n"
+"PO-Revision-Date: 2021-08-20 14:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -467,7 +467,7 @@ msgstr "*Supuesto: Los datos están ya en un archivo de texto CSV/Tab, o en uno 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:142
 msgid "DwC-As can be created without installing any dedicated software. These instructions target data managers who are familiar with the dataset to be published and are comfortable working with their data management system."
-msgstr "DwC-A puede crearse sin instalar ningún programa específico. Estas instrucciones van dirigidas a los editores de datos que están familiarizados con el conjunto de datos a publicar y se sienten cómodos trabajando con su sistema de gestión de datos."
+msgstr "Los DwC-A se pueden crear sin necesidad de instalar un software específico. Estas instrucciones van dirigidas a los administradores de datos que están familiarizados con el conjunto de datos que se va a publicar y se sienten cómodos trabajando con su sistema de gestión de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:144
