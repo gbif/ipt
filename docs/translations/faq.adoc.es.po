@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 04:08\n"
+"PO-Revision-Date: 2021-08-20 04:26\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -425,22 +425,22 @@ msgstr "El tipo de un recurso se deriva de su mapeo con el estándar:"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:161
 msgid "If the core mapping is to the {latest-dwc-occurrence}.xml[Occurrence extension], the type is equal to \"occurrence\"."
-msgstr ""
+msgstr "Si el mapeo con el estándar es a  {latest-dwc-occurrence}.xml[Extensión de registros de presencia de especies], el tipo es igual a \"occurrence\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:162
 msgid "If the core mapping is to the {latest-dwc-taxon}.xml[Taxon extension], the type is equal to \"checklist\"."
-msgstr ""
+msgstr "Si el mapeo con el estándar es a {latest-dwc-taxon}.xml[Extensión del taxón], el tipo es igual a \"checklist\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:163
 msgid "If the core mapping is to the {latest-dwc-event}.xml[Event extension], the type is equal to \"sampling-event\"."
-msgstr ""
+msgstr "Si el mapeo con el estándar es a {latest-dwc-event}.xml[Extensión de evento], el tipo es igual a \"sampling-event\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:164
 msgid "If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to \"other\"."
-msgstr ""
+msgstr "Si el mapeo con el estándar no es igual a alguno de los estándares predeterminados de el IPT  (Occurrence, Taxon o Event), el tipo es igual a \"other\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:166
