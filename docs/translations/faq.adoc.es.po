@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 15:05\n"
+"PO-Revision-Date: 2021-08-20 15:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -399,17 +399,17 @@ msgstr "Tenga en cuenta que la organización que publica el recurso no se puede 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:151
 msgid "In order to change the publishing organization, you need to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here]."
-msgstr ""
+msgstr "Para cambiar la organización que publica, debe volver a publicar el recurso y luego reestablecer la organización deseada. Para simplificar el proceso, puede volver a generar el conjunto de datos desde su carpeta de recursos IPT comprimida. Las instrucciones de como realizarlo se encuentran xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:153
 msgid "You should migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]. Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
-msgstr ""
+msgstr "Migrar el recurso desde la organización anterior que publica a la nueva organización siguiendo xref:manage-resources.adoc#migrate-a-resource[estas instrucciones]. Preste especial atención al paso 5, en el que deberá solicitar al servicio de asistencia de GBIF que actualice el Registro de GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:155
 msgid "Lastly, you can delete old resource using the \"Delete from the IPT only (orphan)\" option on the edit resource page."
-msgstr ""
+msgstr "Por último, puede eliminar el recurso antiguo utilizando la opción \"Eliminar solo del IPT (huérfano)\" en la página de edición del recurso."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:156
@@ -476,7 +476,7 @@ msgstr "utilice la cita del IPT xref:manage-resources.adoc#citations[Función de
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:174
 msgid "use the IPT's import by xref:manage-resources.adoc#taxonomic-coverage[Taxon list feature] instead of supplying each taxon manually one at a time when entering the taxonomic coverage."
-msgstr ""
+msgstr "utilice la importación del IPT por xref:manage-resources.adoc#taxonomic-coverage[Función de lista de taxón] en lugar de proporcionar cada taxón manualmente uno a uno al ingresar la cobertura taxonómica."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:175
