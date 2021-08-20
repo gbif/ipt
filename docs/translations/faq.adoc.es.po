@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 14:36\n"
+"PO-Revision-Date: 2021-08-20 15:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -451,27 +451,27 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:167
 #, no-wrap
 msgid "What are some tricks to simplify the authoring and maintenance of metadata?"
-msgstr ""
+msgstr "¿Cuáles son algunos trucos para simplificar la creación y el mantenimiento de los metadatos?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:169
 msgid "Datasets can change over time. Keeping the dataset metadata up to date can be a burden, as inconsistencies can begin to creep in over time. Below is a list of tricks you can use to simplify the authoring of metadata and make it easier to maintain over time:"
-msgstr ""
+msgstr "Los conjuntos de datos pueden cambiar con el tiempo. Mantener los metadatos de los conjuntos de datos actualizados puede ser una carga, ya que las inconsistencias pueden comenzar a aparecer con el paso del tiempo. A continuación, se muestra una lista de trucos que puede utilizar para simplificar la creación de los metadatos y facilitar su mantenimiento a través del tiempo:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:171
 msgid "use a contact's ORCID instead of supplying their email and other fields which are likely change if the person changes jobs. For more information about how to supply an ORCID see xref:manage-resources.adoc#basic-metadata[here]."
-msgstr ""
+msgstr "use el ORCID de un contacto en lugar de proporcionar su correo electrónico y otros campos que son susceptibles al cambio si la persona cambia de trabajo. Para más información de cómo proporcionar un contacto ORCID consulte xref:manage-resources.adoc#basic-metadata[aquí]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:172
 msgid "for datasets that continue to change/grow (versus static datasets) avoid specifying exact counts in textual descriptions, e.g. for record or taxa counts."
-msgstr ""
+msgstr "para conjuntos de datos que continúan cambiando/creciendo (versus conjuntos de datos estáticos) evite especificar recuentos exactos en descripciones textuales, p. ej. para registros o recuentos de taxones."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:173
 msgid "use the IPT's citation xref:manage-resources.adoc#citations[Auto-generation feature] instead of supplying a manually created data citation."
-msgstr ""
+msgstr "utilice la cita del IPT xref:manage-resources.adoc#citations[Función de generación automática] en lugar de proporcionar una cita de los datos creada manualmente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:174
@@ -506,7 +506,10 @@ msgid "<registration>\n"
 "  <registry>\n"
 "    <hostingOrganisation>\n"
 "      <key>UUID of desired hosting organization</key>\n"
-msgstr ""
+msgstr "<registration>\n"
+"  <registry>\n"
+"    <hostingOrganisation>\n"
+"      <key>UUID de la deseada organización de alojo</key>\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:201
@@ -515,7 +518,10 @@ msgid "<registration>\n"
 "  <registry>\n"
 "    <ipt>\n"
 "      <organisationKey>UUID of desired hosting organization</key>\n"
-msgstr ""
+msgstr "<registration>\n"
+"  <registry>\n"
+"    <ipt>\n"
+"      <organisationKey>UUID de la deseada organización de alojo</key>\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:204
