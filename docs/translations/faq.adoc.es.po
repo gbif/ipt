@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 15:29\n"
+"PO-Revision-Date: 2021-08-20 15:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -445,7 +445,7 @@ msgstr "Si el mapeo con el estándar no es igual a alguno de los estándares pre
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:166
 msgid "Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published."
-msgstr ""
+msgstr "Por lo tanto, para cambiar el tipo de recurso, debe cambiar su mapeo con los términos. Para cambiar un recurso de tipo \"occurrence\" al tipo \"checklist\", por ejemplo, simplemente elimine todo el mapeo con los términos de la extensión \"occurrence\" y luego vuelva a crear el mapeo para los términos de \"Taxon\". Para finalizar el cambio se debe publicar una nueva versión del recurso. Si el recurso se ha registrado con GBIF, su tipo se actualizará automáticamente después de que se haya vuelto a publicar."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:167
