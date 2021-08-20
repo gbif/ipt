@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 15:05\n"
+"PO-Revision-Date: 2021-08-20 15:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2078,7 +2078,7 @@ msgstr "*Publicado en*: - La fecha en la cual la versión actual fue publicada /
 #: en/modules/ROOT/pages/manage-resources.adoc:546
 #, no-wrap
 msgid "*Publication log*: - click the download button to retrieve the \"publication.log\" of the current version. The resource manager can use the publication log to diagnose why publication failed for example. A more detailed description of its contents is described below in the Publishing Status page section. This is not applicable to the pending version.\n"
-msgstr "*Log del reporte*: - haga click en boton de descarga para recuperar el archivo \"publication.log\", que contiene el detalle del proceso de publicación para la versión que se está publicando. El editor del recurso puede utilizar el reporte de publicación para identificar por ejemplo: problemas durante la publicación. A continuación encontrará información más detallada sobre los contenidos del reporte en la página de la sección Estado de la Publicación. Este reporte no aplica para la versión pendiente.\n"
+msgstr "*Log de publicación*: - haga clic en el botón de descarga para recuperar el \"publication.log\" de la versión actual. El editor de recursos puede utilizar el registro de publicación para identificar, por ejemplo, por qué ha fallado la publicación. Una descripción más detallada de su contenido se describe más adelante en la sección de la página Estado de la Publicación. Esto no es aplicable a la versión pendiente.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:547
@@ -2162,7 +2162,7 @@ msgstr "Asignar DOIs a los Recursos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:571
 msgid "Best practice is to assign a new DOI to the resource every time it undergoes a scientifically significant change. To enable the IPT to assign DOIs to resources, the IPT administrator must first configure an organization associated to the IPT with a DataCite account. Refer to the \"Configure Organizations\" section for help doing this. Otherwise the DOI buttons in the Published Versions sections are hidden from view. Once a DataCite account has been activated in the IPT, resource managers can reserve, delete, register, deactivate, and reactivate DOIs for their resources using this account. Each of these DOI operations is explained in detail below. For more help understanding how the IPT assigns DOIs to datasets, refer to the xref:doi-workflow.adoc[DOI Workflows] page in the IPT wiki."
-msgstr "Una práctica adecuada es asignarle un nuevo DOI al recurso cada vez que sea sometido a un cambio científicamente significativo. Para permitir que el IPT asigne DOIs a los recursos, el administrador del IPT debe configurar primero una organización asociada al IPT con una cuenta en DataCite o EZID. Consulte la sección \" Configurar Organizaciones\" para ayuda sobre esta opción. De otra forma los botones del DOI en la sección de Versiones Publicadas estarán ocultos. Una vez se hayan activado las cuentas en DataCite o EZID en el IPT, los editores del recurso podrán reservar, eliminar, registrar, desactivar y reactivar los DOIs de sus recursos utilizando esta cuenta. Cada una de estas operaciones con DOIs son explicadas detalladamente a continuación. Para obtener más ayuda acerca de cómo el IPT asigna DOIs a los conjuntos de datos, consulte la página de xref:doi-workflow.adoc[Flujo de trabajo de los DOIs del IPT] en el wiki del IPT."
+msgstr "La mejor práctica es asignar un nuevo DOI al recurso cada vez que se produzca un cambio científicamente significativo. Para que el IPT pueda asignar DOI a los recursos, el administrador del IPT debe configurar primero una organización asociada al IPT con una cuenta de DataCite. Consulte la sección \"Configurar Organizaciones\" para obtener ayuda al respecto. De lo contrario, los botones de DOI en las secciones de Versiones Publicadas estarán ocultos a la vista. Una vez que se ha activado una cuenta DataCite en el IPT, los gestores de recursos pueden reservar, eliminar, registrar, desactivar y reactivar los DOI para sus recursos utilizando esta cuenta. Cada una de estas operaciones de DOI se explica en detalle a continuación. Si desea más ayuda para entender cómo el IPT asigna los DOI a los conjuntos de datos, consulte la página xref:doi-workflow.adoc[Flujo de trabajo del DOI] en la wiki del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:573
@@ -2227,7 +2227,7 @@ msgstr "*Vista General del Recurso* - Este enlace dirige a la \"Página de Visua
 #: en/modules/ROOT/pages/manage-resources.adoc:586
 #, no-wrap
 msgid "*Publication log* - This link initiates a download of a file named \"publication.log\", which contains the detailed output of the publication process. This file contains specific information to help managers identify problems during publication such as:\n"
-msgstr "*Reporte de publicación* - Este enlace inicia la descarga de un archivo \"publication.log\", que contiene el resultado detallado del proceso de publicación. Este archivo contendrá información específica para ayudar a los editores a identificar problemas durante la publicación como:\n"
+msgstr "*Log de publicación* - Este enlace inicia la descarga de un archivo llamado \"publication.log\", que contiene la salida detallada del proceso de publicación. Este archivo contiene información específica para ayudar a los editores a identificar problemas durante la publicación, como por ejemplo:\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:587
