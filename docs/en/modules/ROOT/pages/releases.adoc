@@ -20,12 +20,12 @@ endif::[]
 * https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.5.0 Release Notes]
 * xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/27?closed=1[80 issues].
+* Addressed https://github.com/gbif/ipt/milestone/27?closed=1[81 issues].
 * Translated into 7 languages
 
 Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
-This version addresses 80 issues, including the famous "double log in bug", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish.
+This version addresses 81 issues, including the famous "double log in bug", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish.
 
 No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
 
