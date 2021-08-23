@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-20 15:30+0000\n"
-"PO-Revision-Date: 2021-08-20 15:55\n"
+"PO-Revision-Date: 2021-08-23 11:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -533,7 +533,7 @@ msgstr "Los publicadores deberían documentar sus conjuntos de datos tanto como 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
 msgid "Besides the https://www.gbif.org/data-quality-requirements-sampling-events[mandatory requirements], the metadata should include information about the extent of study, the sampling methods, the quality control and limitations of the study.  Although information about fieldwork can be part of the data content, you may describe the sampling location and conditions in the metadata as well."
-msgstr ""
+msgstr "Además de https://www.gbif.org/data-quality-requirements-sampling-events[los requisitos obligatorios], los metadatos deberían incluir información sobre la extensión del estudio, los métodos de muestreo, el control de calidad y las limitaciones del estudio. Aunque la información sobre el trabajo de campo puede ser parte del contenido de los datos, se puede describir también en los metadatos la localización y condiciones del muestreo."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:185
