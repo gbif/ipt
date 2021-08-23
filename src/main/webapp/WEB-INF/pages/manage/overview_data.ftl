@@ -101,8 +101,12 @@
                             <div class="col-12">
                                 <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.connect"/>
                                 <@s.submit name="clear" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.clear"/>
-                                <@s.submit name="cancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel" method="cancelOverwrite"/>
                             </div>
+                        </div>
+                    </form>
+                    <form action='canceloverwrite.do' method='post'>
+                        <div style="display: none;">
+                            <@s.submit name="canceloverwrite" key="button.cancel" cssClass="btn btn-sm btn-outline-secondary my-1"/>
                         </div>
                     </form>
                 </div>

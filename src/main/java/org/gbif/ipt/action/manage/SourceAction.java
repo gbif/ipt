@@ -283,7 +283,7 @@ public class SourceAction extends ManagerBaseAction {
 
   public String cancelOverwrite() {
     removeSessionFile();
-    return INPUT;
+    return SUCCESS;
   }
 
   /**
