@@ -174,14 +174,19 @@ public class SetupAction extends BaseAction {
    */
   public String setup() {
     if (isHttpPost() && dataDirPath != null) {
-
       // since IPT v2.2, user must check that they have read and understood disclaimer
       if (!readDisclaimer) {
         addFieldError("readDisclaimer", getText("admin.config.setup.read.error"));
         return INPUT;
       }
+    }
 
-      File dd = new File(dataDirPath.trim());
+    if ((dataDir.dataDir != null && (!dataDir.dataDir.exists() || dataDir.isConfiguredButEmpty())) ||
+      isHttpPost() && dataDirPath != null) {
+
+      LOG.info("Set up data directory {}", dataDir.dataDir);
+
+      File dd = dataDirPath != null ? new File(dataDirPath.trim()) : dataDir.dataDir;
       try {
         if (dd.isAbsolute()) {
           boolean created = configManager.setDataDir(dd);
@@ -206,8 +211,10 @@ public class SetupAction extends BaseAction {
         addActionError(msg);
       }
     }
+
     if (dataDir.isConfigured()) {
       // the data dir is already/now configured, skip the first setup step
+      LOG.info("Skipping setup step 1");
       return SUCCESS;
     }
     return INPUT;

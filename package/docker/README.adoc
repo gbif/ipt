@@ -8,7 +8,7 @@ We regularly publish IPT releases as Docker images to https://hub.docker.com/r/g
 
 == To run the Docker image
 
-Refer to https://ipt.gbif.org/manual/en/ipt/2.5/installation/#_installation_using_docker[Installation using Docker] in the IPT User Manual.
+Refer to https://ipt.gbif.org/manual/en/ipt/2.5/installation#installation-using-docker[Installation using Docker] in the IPT User Manual.
 
 == Upgrading
 
@@ -18,10 +18,10 @@ Note that, for better consistency with the https://en.wikipedia.org/wiki/Filesys
 
 (This process is for GBIF developers.)
 
-. `docker build --pull --build-arg IPT_VERSION=2.4.2 -t gbif/ipt:2.4.2 .`
+. `docker build --pull --build-arg IPT_VERSION=2.5.0 -t gbif/ipt:2.5.0 .`
 . *Test the resulting image!*
 +
-`docker run --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt:2.4.2`
+`docker run --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt:2.5.0`
 
-. `docker push gbif/ipt:2.4.2` (stop here for a pre-release)
-. `docker tag gbif/ipt:2.4.2 gbif/ipt:latest && docker push gbif/ipt:latest`
+. `docker push gbif/ipt:2.5.0` (stop here for a pre-release)
+. `docker tag gbif/ipt:2.5.0 gbif/ipt:latest && docker push gbif/ipt:latest`
