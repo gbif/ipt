@@ -83,12 +83,6 @@ public class SourceAction extends ManagerBaseAction {
     this.dataDir = dataDir;
   }
 
-  public static void main(String[] args) throws Exception {
-    HttpURLConnection connection = (HttpURLConnection) URI.create("http://download.gbif.org/mpodolskiy/occurrence.txt").toURL().openConnection();
-    int responseCode = connection.getResponseCode();
-    System.out.println(connection.getContentType());
-  }
-
   public String add() throws IOException {
     if ("source-sql".equals(sourceType)) {
       // prepare a new, empty sql source
@@ -289,7 +283,7 @@ public class SourceAction extends ManagerBaseAction {
 
   public String cancelOverwrite() {
     removeSessionFile();
-    return INPUT;
+    return SUCCESS;
   }
 
   /**

@@ -227,7 +227,7 @@
                     },
                     '<@s.text name="basic.no"/>' : function(){
                         $(this).dialog("close");
-                        $("#cancel").click();
+                        $("#canceloverwrite").click();
                     }
                 },
                 // modal window fixed positioning to prevent page elements from changing position
