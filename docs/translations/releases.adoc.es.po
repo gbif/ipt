@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 12:54\n"
+"POT-Creation-Date: 2021-08-23 09:30+0000\n"
+"PO-Revision-Date: 2021-08-23 09:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -30,423 +30,445 @@ msgstr "Últimas versiones estables"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
-msgid "The current, stable release is version <<2-4-2-september-2020,2.4.2>>."
-msgstr "La versión estable actual es la <<2-4-2-september-2020,2.4.2>>"
+msgid "The current, stable release is version <<2-5-0-august-2021,2.5.0>>."
+msgstr ""
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
-msgid "You are reading the manual for version 2.5.0-RC1.  You might prefer to read the manual for xref:2.4@releases.adoc[version 2.4]."
-msgstr "Está leyendo el manual para la versión 2.5.0-RC1. Quizás prefiera leer el manual para la xref:2.4@releases.adoc[versión 2.4]."
+msgid "You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen."
+msgstr ""
 
-#. type: Title ==
+#. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
-#, no-wrap
-msgid "*2.5.0* – Expected in August 2021"
-msgstr "*2.5.0* – Esperada para agosto de 2021"
+msgid "Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
+msgstr ""
 
-#. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:14
-msgid "Version 2.5.0 of the IPT is expected to be released in August 2021.  In preparation for this, a _release candidate_ version 2.5.0-RC1 is now available, alongside this version 2.5 user manual."
-msgstr "Se espera que el lanzamiento de la versión 2.5.0 del IPT tenga lugar en agosto de 2021. En preparación para esto, una versión_candidata_de_lanzamiento 2.5.9-RC1 está ya disponible, junto a esta versión del manual de usuario de la versión 2.5."
-
-#. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:16
-msgid "This is a *release candidate* made available for testing.  *It is not suitable for production use.*"
-msgstr "Esta es una *versión candidata* disponible para testeo. *No es apropiada para uso de producción.*"
-
-#. type: Plain text
+#.  Next release text kept for reuse, as it will be part of the Crowdin translation memory.
+#. Version 2.5.1 of the IPT is expected to be released in Month 2021.  In preparation for this, a _release candidate_ version 2.5.1-RC1 is now available.
+#. CAUTION: This is a *release candidate* made available for testing.  *It is not suitable for production use.*
+#. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:18
-msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0-RC1/ipt-2.5.0-RC1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0-RC1/ipt-2.5.0-RC1.war[Descarga de WAR], xref:installation.adoc#installation-from-linux-packages[paquetes Linux] o xref:installation.adoc#installation-from-docker[uso de Docker]"
+#, no-wrap
+msgid "*2.5.0* – August 2021"
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:19
+#: en/modules/ROOT/pages/releases.adoc:21
+msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[Descarga de WAR], xref:installation.adoc#installation-from-linux-packages[paquetes Linux] o xref:installation.adoc#installation-from-docker[uso de Docker]"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:22
 msgid "xref:2.5@release-notes.adoc[IPT v2.5.0 Release Notes]"
 msgstr "xref:2.5@release-notes.adoc[Notas de la Versión IPT v2.5.0]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:20
+#: en/modules/ROOT/pages/releases.adoc:23
 msgid "xref:2.5@index.adoc[User Manual]"
 msgstr "xref:2.5@index.adoc[Manual del Usuario]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:21
-msgid "Addressed https://github.com/gbif/ipt/milestone/27?closed=1[63 issues]."
-msgstr "Abordadas https://github.com/gbif/ipt/milestone/27?closed=1[63 incidencias]."
+#: en/modules/ROOT/pages/releases.adoc:24
+msgid "Addressed https://github.com/gbif/ipt/milestone/27?closed=1[81 issues]."
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:22
-#: en/modules/ROOT/pages/releases.adoc:42
-#: en/modules/ROOT/pages/releases.adoc:51
-#: en/modules/ROOT/pages/releases.adoc:60
-#: en/modules/ROOT/pages/releases.adoc:69
-#: en/modules/ROOT/pages/releases.adoc:80
-#: en/modules/ROOT/pages/releases.adoc:89
-#: en/modules/ROOT/pages/releases.adoc:98
+#: en/modules/ROOT/pages/releases.adoc:25
+#: en/modules/ROOT/pages/releases.adoc:40
+#: en/modules/ROOT/pages/releases.adoc:49
+#: en/modules/ROOT/pages/releases.adoc:58
+#: en/modules/ROOT/pages/releases.adoc:67
+#: en/modules/ROOT/pages/releases.adoc:78
+#: en/modules/ROOT/pages/releases.adoc:87
+#: en/modules/ROOT/pages/releases.adoc:96
 msgid "Translated into 7 languages"
 msgstr "Traducida en 7 idiomas"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:24
-msgid "Users may install this pre-release version following the instructions in the xref:2.5@release-notes.adoc[Release Notes]."
-msgstr "Los usuarios pueden instalar la versión de pre-lanzamiento siguiendo las instrucciones de las xref:2.5@release-notes.adoc[Notas de la Versión]."
+#: en/modules/ROOT/pages/releases.adoc:27
+msgid "Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide]."
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:26
-msgid "This version addresses 63 issues including the famous \"double log in bug\" and brings in a fresher looking user interface. There are 7 further issues that we will address before the final release."
-msgstr "Esta versión aborda 63 incidencias incluyendo el famoso \"error de doble inicio de sesión\" y trae una interfaz de usuario de aspecto más fresco. Existen otras 7 incidencias que serán abordadas antes del lanzamiento final."
+#: en/modules/ROOT/pages/releases.adoc:29
+msgid "This version addresses 81 issues, including the famous \"double log in bug\", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish."
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:28
-msgid "Users of the IPT are encouraged to explore functions they are familiar with and run any applicable security tests."
-msgstr "Animamos a los usuarios del IPT a explorar las funciones con las que estan familiarizados y a ejecutar cualquier prueba de seguridad aplicable."
+#: en/modules/ROOT/pages/releases.adoc:31
+msgid "No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub]."
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:30
-msgid "Translators are requested to update any missing UI translations and (optionally) begin translation of this user manual.  Please see the xref:translations.adoc[translations page]."
-msgstr "Rogamos a los traductores que actualicen cualquier traducción de la interfaz de usuario y (opcionalmente) comiencen con la traducción de este manual de usuarios. Por favor, consulte la xref:translations.adoc[página de traducciones]."
+#: en/modules/ROOT/pages/releases.adoc:33
+msgid "Minor issues and security issues will be addressed in patch releases."
+msgstr "Los problemas menores y los asuntos de seguridad se abordarán en parches para las diferentes versiones."
 
-#. No release date has been set yet for the next release.
-#. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-#. Minor issues and security issues will be addressed in patch releases.
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:36
+#: en/modules/ROOT/pages/releases.adoc:34
 #, no-wrap
 msgid "*2.4.2* – September 2020"
 msgstr "*2.4.2* - Septiembre de 2020"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:39
+#: en/modules/ROOT/pages/releases.adoc:37
 msgid "xref:2.4@release-notes.adoc[IPT v2.4.2 Release Notes]"
 msgstr "xref:2.4@release-notes.adoc[Notas de la versión IPT v2.4.2]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:40
-#: en/modules/ROOT/pages/releases.adoc:49
-#: en/modules/ROOT/pages/releases.adoc:58
+#: en/modules/ROOT/pages/releases.adoc:38
+#: en/modules/ROOT/pages/releases.adoc:47
+#: en/modules/ROOT/pages/releases.adoc:56
 msgid "xref:2.4@index.adoc[User Manual]"
 msgstr "xref:2.4@index.adoc[Manual de Usuarios]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:41
+#: en/modules/ROOT/pages/releases.adoc:39
 msgid "Addressed https://github.com/gbif/ipt/milestone/9?closed=1[1 issue]."
 msgstr "Abordada https://github.com/gbif/ipt/milestone/9?closed=1[1 incidencia]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:44
+#: en/modules/ROOT/pages/releases.adoc:42
 msgid "Version 2.4.2 fixes a minor security vulnerability in Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:2.4@release-notes.adoc[Release Notes].  An improvement to memory use when large datasets are read from a PostgreSQL server is also included."
 msgstr "La versión 2.4.2 soluciona una vulneración menor de la seguridad en Apache Struts, que utiliza el IPT. Los usuarios deberían planificar una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]. También se ha incluido una mejora para el uso de memoria cuando se leen conjuntos de datos grandes desde un servidor PostgreSQL."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:45
+#: en/modules/ROOT/pages/releases.adoc:43
 #, no-wrap
 msgid "*2.4.1* – September 2020"
 msgstr "*2.4.1* - Septiembre de 2020"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:48
+#: en/modules/ROOT/pages/releases.adoc:46
 msgid "xref:2.4@release-notes.adoc[IPT v2.4.1 Release Notes]"
 msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.4.1]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:50
+#: en/modules/ROOT/pages/releases.adoc:48
 msgid "Addressed https://github.com/gbif/ipt/milestone/25?closed=1[12 issues]."
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/25?closed=1[12 incidencias]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:53
+#: en/modules/ROOT/pages/releases.adoc:51
 msgid "Version 2.4.1 fixes a security vulnerability in Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:2.4@release-notes.adoc[Release Notes]."
 msgstr "La versión 2.4.1 soluciona una vulneración de la seguridad en Apache Struts, que utiliza el IPT. Los usuarios deberían planificar una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:54
+#: en/modules/ROOT/pages/releases.adoc:52
 #, no-wrap
 msgid "*2.4.0* – July 2019"
 msgstr "*2.4.0* – Julio de 2019"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:57
+#: en/modules/ROOT/pages/releases.adoc:55
 msgid "xref:2.4@release-notes.adoc[IPT v2.4.0 Release Notes]"
 msgstr "xref:2.4@release-notes.adoc[Notas de la Versión del IPT v2.4.0]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:59
+#: en/modules/ROOT/pages/releases.adoc:57
 msgid "Addressed https://github.com/gbif/ipt/milestone/8?closed=1[19 issues]."
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/8?closed=1[19 incidencias].\n"
 " "
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:62
+#: en/modules/ROOT/pages/releases.adoc:60
 msgid "Version 2.4.0 fixes security vulnerabilities in Apache Jackson and Apache Struts, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:2.4@release-notes.adoc[Release Notes].  It also updates the integration for custom DOIs from DataCite, and removes (unused) support for DOIs from EZID.  The version number has been updated to 2.4.0 to reflect the removal of support for EZID."
 msgstr "La versión 2.4.0 soluciona vulneraciones de seguridad en Apache Jackson y Apache Struts, que utiliza el IPT. Los usuarios deberían planificar una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]. También se actualiza la integración para DOIs personalizados desde DataCite, y elimina el soporte para DOIs (sin uso) de EZID. El número de versión ha sido actualizado a 2.4.0 para reflejar la eliminación del soporte para EZID."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:63
+#: en/modules/ROOT/pages/releases.adoc:61
 #, no-wrap
 msgid "*2.3.6* – July 2018"
 msgstr "*2.3.6* - Julio de 2018"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:66
+#: en/modules/ROOT/pages/releases.adoc:64
 msgid "xref:2.4@release-notes.adoc[IPT v2.3.6 Release Notes]"
 msgstr "xref:2.4@release-notes.adoc[Notas de la versión IPT v2.3.6]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:67
-#: en/modules/ROOT/pages/releases.adoc:78
-#: en/modules/ROOT/pages/releases.adoc:87
-#: en/modules/ROOT/pages/releases.adoc:96
+#: en/modules/ROOT/pages/releases.adoc:65
+#: en/modules/ROOT/pages/releases.adoc:76
+#: en/modules/ROOT/pages/releases.adoc:85
+#: en/modules/ROOT/pages/releases.adoc:94
 msgid "https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]"
 msgstr "https://github.com/gbif/ipt/wiki/IPTManualNotes.wiki[Manual de Usuarios] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:68
+#: en/modules/ROOT/pages/releases.adoc:66
 msgid "Addressed https://github.com/gbif/ipt/milestone/7?closed=1[20 issues]."
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/7?closed=1[20 incidencias]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:71
+#: en/modules/ROOT/pages/releases.adoc:69
 msgid "Version 2.3.6 fixes a security vulnerability in JQuery, which the IPT uses. Users should plan to upgrade to this version following the instructions in the xref:2.4@release-notes.adoc[Release Notes]."
 msgstr "La versión 2.3.6 soluciona una vulneración de seguridad en JQuery, que utiliza el IPT. Los usuarios deberían planificar una actualización de esta versión siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:73
+#: en/modules/ROOT/pages/releases.adoc:71
 msgid "https://github.com/gbif/ipt/issues/1411[An issue] remains with custom DOIs from DataCite. If necessary, a further release of the IPT will be made in July or August."
 msgstr "https://github.com/gbif/ipt/issues/1411[Una incidencia] permanece con DOIs personalizados de DataCite. Si fuese necesario, se lanzará otra versión del IPT en julio o agosto."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:74
+#: en/modules/ROOT/pages/releases.adoc:72
 #, no-wrap
 msgid "*2.3.5* – October 2017"
 msgstr "*2.3.5* – Octubre de 2017"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:77
+#: en/modules/ROOT/pages/releases.adoc:75
 msgid "xref:2.4@release-notes.adoc[IPT v2.3.5 Release Notes]"
 msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.5]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:79
+#: en/modules/ROOT/pages/releases.adoc:77
 msgid "Addressed https://github.com/gbif/ipt/projects/3[27 issues]: 6 Defects, 7 Enhancements and 15 Other"
 msgstr "Abordadas https://github.com/gbif/ipt/projects/3[27 incidencias]: 6 Defectos, 7 Mejoras y 15 de Otro tipo"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:82
-#: en/modules/ROOT/pages/releases.adoc:91
+#: en/modules/ROOT/pages/releases.adoc:80
+#: en/modules/ROOT/pages/releases.adoc:89
 msgid "Version 2.3.4 fixes a https://struts.apache.org/docs/s2-045.html[security vulnerability] that was discovered in the Apache Struts web framework, which the IPT uses. This security vulnerability affects all IPT versions, including 2.3.3, therefore all users should plan to upgrade to this version immediately following the instructions in the xref:2.4@release-notes.adoc[Release Notes]."
 msgstr "La versión 2.3.4 soluciona una https://struts.apache.org/docs/s2-045.html[vulnerabilidad de seguridad] que fue descubierta en el marco de trabajo web de Apache Struts, que utiliza el IPT. Esta vulneración afecta a todas las versiones del IPT, incluyendo la 2.3.3, por ello todos los usuarios deberían planificar una actualización de esta versión inmediatamente siguiendo las instrucciones de las xref:2.4@release-notes.adoc[Notas de la Versión]."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:83
+#: en/modules/ROOT/pages/releases.adoc:81
 #, no-wrap
 msgid "*2.3.4* – March 2017"
 msgstr "*2.3.4* - Marzo de 2017"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:86
+#: en/modules/ROOT/pages/releases.adoc:84
 msgid "xref:2.4@release-notes.adoc[IPT v2.3.4 Release Notes]"
 msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.4]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:88
+#: en/modules/ROOT/pages/releases.adoc:86
 msgid "Addressed https://github.com/gbif/ipt/projects/3[6 issues]: 3 Defects, 2 Enhancements and 1 Other"
 msgstr "Abordadas https://github.com/gbif/ipt/projects/3[6 incidencias]: 3 Defectos, 2 Mejoras y 1 de Otro tipo"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:92
+#: en/modules/ROOT/pages/releases.adoc:90
 #, no-wrap
 msgid "*2.3.3* – December 2016"
 msgstr "*2.3.3* - Diciembre de 2016"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:95
+#: en/modules/ROOT/pages/releases.adoc:93
 msgid "xref:2.4@release-notes.adoc[IPT v2.3.3 Release Notes]"
 msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.3]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:97
+#: en/modules/ROOT/pages/releases.adoc:95
 msgid "Addressed https://github.com/gbif/ipt/projects/1[88 issues]: 22 Defects, 17 Enhancements, 36 Won’t fix, 10 Duplicates, and 3 Other"
 msgstr "Abordadas https://github.com/gbif/ipt/projects/1[88 incidencias]: 22 Defectos, 17 Mejoras, 36 No se Solucionan, 10 Duplicados y 3 de Otro tipo"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:100
+#: en/modules/ROOT/pages/releases.adoc:98
 msgid "A description of the exciting new features added to the IPT in version 2.3.3 are described in https://gbif.blogspot.com/2017/01/ipt-v233-your-repository-for.html[this blog post]. Additionally, please note that GBIF recently released a new set of Microsoft Excel templates for uploading data to the IPT. The new templates provide a simpler solution for capturing, formatting and uploading three types of GBIF data classes: xref:sampling-event-data.adoc[sampling-event data], xref:occurrence-data.adoc[occurrence data], and xref:checklist-data.adoc[checklist data]. More information about these templates can be found in https://www.gbif.org/newsroom/news/new-darwin-core-spreadsheet-templates[this news article]."
 msgstr "En https://gbif.blogspot.com/2017/01/ipt-v233-your-repository-for.html[esta entrada del blog] se describen las nuevas características añadidas al IPT en la versión 2.3.3. Además, tenga en cuenta, por favor, que GBIF lanzó recientemente un nuevo conjunto de modelos de Microsoft Excel para la carga de datos en el IPT. Los nuevos modelos proporcionan una solución más simple para la captura, formateo y subida de los tres tipos de datos de GBIF: xref:sampling-event-data.adoc[datos de eventos de muestro], xref:occurrence-data.adoc[datos de presencias de especies], y xref:checklist-data.adoc[datos de listados de especies]. Se puede encontrar más información sobre estos modelos en https://www.gbif.org/newsroom/news/new-darwin-core-spreadsheet-templates[esta noticia]."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:101
+#: en/modules/ROOT/pages/releases.adoc:99
 #, no-wrap
 msgid "*2.3* – September 2015"
 msgstr "*2.3* - Septiembre de 2015"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:104
+#: en/modules/ROOT/pages/releases.adoc:102
 msgid "xref:2.4@ipt-release-notes-2_3.adoc[IPT v2.3 Release Notes]"
 msgstr "xref:2.4@ipt-release-notes-2_3.adoc[Notas de la Versión IPT v2.3]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:105
+#: en/modules/ROOT/pages/releases.adoc:103
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]"
 msgstr "https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[Manual de Usuarios] https://github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:106
+#: en/modules/ROOT/pages/releases.adoc:104
 msgid "Addressed https://github.com/gbif/ipt/milestone/20?closed=1[38 issues]: 15 Defects, 15 Enhancements, 4 Won’t fix, and 4 that were considered as Tasks"
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/20?closed=1[38 incidencias]: 15 Defectos, 15 Mejoras, 4 No se Solucionan y 4 que fueron consideradas como Tareas"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:107
-#: en/modules/ROOT/pages/releases.adoc:115
+#: en/modules/ROOT/pages/releases.adoc:105
+#: en/modules/ROOT/pages/releases.adoc:113
 msgid "Translated into 6 languages"
 msgstr "Traducida en 6 idiomas"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:108
+#: en/modules/ROOT/pages/releases.adoc:106
 #, no-wrap
 msgid "*2.2* – March 2015"
 msgstr "*2.2* - Marzo de 2015"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:111
+#: en/modules/ROOT/pages/releases.adoc:109
 msgid "xref:2.4@ipt-release-notes-2_2.adoc[IPT v2.2 Release Notes]"
 msgstr "xref:2.4@ipt-release-notes-2_2.adoc[Notas de la Versión IPT v2.2]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:112
+#: en/modules/ROOT/pages/releases.adoc:110
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[User Manual]"
 msgstr "https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[Manual de Usuarios]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:113
+#: en/modules/ROOT/pages/releases.adoc:111
 msgid "https://gbif.blogspot.com/2015/03/ipt-v22.html[Release Announcement]"
 msgstr "https://gbif.blogspot.com/2015/03/ipt-v22.html[Anuncio del Lanzamiento]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:114
+#: en/modules/ROOT/pages/releases.adoc:112
 msgid "Addressed https://github.com/gbif/ipt/milestone/18?closed=1[74 issues]: 20 Defects, 26 Enhancements, 16 Won’t fix, 6 Duplicates, 2 Other, 1 Task, and 3 that were considered as Invalid"
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/18?closed=1[74 incidencias]: 20 Defectos, 26 Mejoras, 16 No se Solucionan, 6 Duplicados, 2 de Otro tipo, 1 Tarea y 3 que fueron consideradas Invalidas"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:116
+#: en/modules/ROOT/pages/releases.adoc:114
 #, no-wrap
 msgid "*2.1* – April 2014"
 msgstr "*2.1* - Abril de 2014"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:119
+#: en/modules/ROOT/pages/releases.adoc:117
 msgid "xref:2.4@ipt-release-notes-2_1.adoc[IPT v2.1 Release Notes]"
 msgstr "xref:2.4@ipt-release-notes-2_1.adoc[Notas de la Versión IPT v2.1]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:120
+#: en/modules/ROOT/pages/releases.adoc:118
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv21.wiki[User Manual]"
 msgstr "https://github.com/gbif/ipt/wiki/IPTUserManualv21.wiki[Manual de Usuarios]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:121
+#: en/modules/ROOT/pages/releases.adoc:119
 msgid "https://gbif.blogspot.com/2014/04/ipt-v21.html[Release Announcement]"
 msgstr "https://gbif.blogspot.com/2014/04/ipt-v21.html[Anuncio del Lanzamiento]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:122
+#: en/modules/ROOT/pages/releases.adoc:120
 msgid "Addressed https://github.com/gbif/ipt/milestone/16?closed=1[85 issues]: 38 Defects, 11 Enhancements, 18 Won’t fix, 6 Duplicates, 1 Other, and 11 that were considered as Invalid"
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/16?closed=1[85 incidencias]: 38 Defectos, 11 Mejoras, 18 No se Solucionan, 6 Duplicados, 1 de Otro tipo y 11 que fueron considerados Invalidos"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:123
+#: en/modules/ROOT/pages/releases.adoc:121
 msgid "Translated into 6 languages (Japanese translation added)"
 msgstr "Traducida en 6 idiomas (añadida traducción al japonés)"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:124
+#: en/modules/ROOT/pages/releases.adoc:122
 #, no-wrap
 msgid "*2.0.5* – May 2013"
 msgstr "*2.0.5* - Mayo de 2013"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:127
+#: en/modules/ROOT/pages/releases.adoc:125
 msgid "xref:2.4@ipt-release-notes-2_0_5.adoc[IPT v2.0.5 Release Notes]"
 msgstr "xref:2.4@ipt-release-notes-2_0_5.adoc[Notas de la Versión IPT v2.0.5]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:128
+#: en/modules/ROOT/pages/releases.adoc:126
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv205.wiki[User Manual]"
 msgstr "https://github.com/gbif/ipt/wiki/IPTUserManualv205.wiki[Manual de Usuarios]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:129
+#: en/modules/ROOT/pages/releases.adoc:127
 msgid "https://gbif.blogspot.com/2013/05/ipt-v205-released-melhor-versao-ate-o.html[Release Announcement]"
 msgstr "https://gbif.blogspot.com/2013/05/ipt-v205-released-melhor-versao-ate-o.html[Anuncio del Lanzamiento]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:130
+#: en/modules/ROOT/pages/releases.adoc:128
 msgid "Addressed https://github.com/gbif/ipt/milestone/14?closed=1[45 issues]: 15 Defects, 17 Enhancements, 2 Patches, 7 Won’t fix, 3 Duplicates, and 1 that was considered as Invalid"
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/14?closed=1[45 incidencias]: 15 Defectos, 17 Mejoras, 2 Parches, 7 No se Solucionan, 3 Duplicados y 1 que fue considerada Invalida"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:131
+#: en/modules/ROOT/pages/releases.adoc:129
 msgid "Translated into 5 languages (Portuguese translation added)"
 msgstr "Traducida en 5 idiomas (añadida traducción al portugués)"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:132
+#: en/modules/ROOT/pages/releases.adoc:130
 #, no-wrap
 msgid "*2.0.4* – October 2012"
 msgstr "*2.0.4* - Octubre de 2012"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:135
+#: en/modules/ROOT/pages/releases.adoc:133
 msgid "xref:2.4@ipt-release-notes-2_0_4.adoc[IPT v2.0.4 Release Notes]"
 msgstr "xref:2.4@ipt-release-notes-2_0_4.adoc[Notas de la Versión IPT v2.0.4]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:136
+#: en/modules/ROOT/pages/releases.adoc:134
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv204.wiki[User Manual]"
 msgstr "https://github.com/gbif/ipt/wiki/IPTUserManualv204.wiki[Manual de Usuarios]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:137
+#: en/modules/ROOT/pages/releases.adoc:135
 msgid "https://gbif.blogspot.com/2012/10/ipt-v204-released.html[Release Announcement]"
 msgstr "https://gbif.blogspot.com/2012/10/ipt-v204-released.html[Anuncio del Lanzamiento]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:138
+#: en/modules/ROOT/pages/releases.adoc:136
 msgid "Addressed https://github.com/gbif/ipt/milestone/13?closed=1[108 issues]: 38 Defects, 35 Enhancements, 7 Other, 5 Patches, 18 Won't fix, 4 Duplicates, and 1 that was considered as Invalid"
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/13?closed=1[108 incidencias]: 38 Defectos, 35 Mejoras, 7 de Otro tipo, 5 Parches, 18 No se Solucionan, 4 Duplicados y 1 que fue considerada como Invalida"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:139
+#: en/modules/ROOT/pages/releases.adoc:137
 msgid "Translated into 4 languages (Traditional Chinese translation added)"
 msgstr "Traducida en 4 idiomas (añadida traducción a chino tradicional)"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:140
+#: en/modules/ROOT/pages/releases.adoc:138
 #, no-wrap
 msgid "*2.0.3* – November 2011"
 msgstr "*2.0.3*  Noviembre de 2011"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:143
+#: en/modules/ROOT/pages/releases.adoc:141
 msgid "xref:2.4@ipt-release-notes-2_0_3.adoc[IPT v2.0.3 Release Notes]"
 msgstr "xref:2.4@ipt-release-notes-2_0_3.adoc[Notas de la Versión IPT v2.0.3]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:144
+#: en/modules/ROOT/pages/releases.adoc:142
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv203.wiki[User Manual]"
 msgstr "https://github.com/gbif/ipt/wiki/IPTUserManualv203.wiki[Manual de Usuarios]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:145
+#: en/modules/ROOT/pages/releases.adoc:143
 msgid "https://gbif.blogspot.com/2011/11/important-quality-boost-for-gbif-data.html[Release Announcement]"
 msgstr "https://gbif.blogspot.com/2011/11/important-quality-boost-for-gbif-data.html[Anuncio del Lanzamiento]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:146
+#: en/modules/ROOT/pages/releases.adoc:144
 msgid "Addressed https://github.com/gbif/ipt/milestone/12?closed=1[85 issues]: 43 defects, 31 enhancements, 3 Patches, 7 Won’t fix, and 1 Duplicate"
 msgstr "Abordadas https://github.com/gbif/ipt/milestone/12?closed=1[85 incidencias]: 43 defectos, 31 Mejoras, 3 Parches, 7 No se Solucionan y 1 Duplicado"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:146
+#: en/modules/ROOT/pages/releases.adoc:145
 msgid "Translated into 3 languages (French and Spanish translations added)"
 msgstr "Traducida en 3 idiomas (añadidas traducciones a francés y español)"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/releases.adoc:146
+#, no-wrap
+msgid "*2.0.2* – June 2011"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:149
+msgid "https://lists.gbif.org/pipermail/ipt/2011-June/000352.html[Release Announcement]"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/releases.adoc:150
+#, no-wrap
+msgid "*2.0.1* – February 2011"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:153
+msgid "First IPT version 2 release"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:153
+msgid "https://lists.gbif.org/pipermail/ipt/2011-February/000309.html[Release Announcement]"
+msgstr ""
 

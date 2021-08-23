@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 19:32\n"
+"PO-Revision-Date: 2021-08-21 22:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -109,29 +109,29 @@ msgstr "La carencia de herramientas apropiadas para la publicación de determina
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:26
 msgid "To understand how the IPT works, try watching this concise 25 minute live demo showing how a dataset gets properly published and registered through GBIF.org."
-msgstr ""
+msgstr "Para comprender cómo funciona el IPT, intente ver esta demostración en vivo concisa de 25 minutos que muestra cómo un conjunto de datos se publica y registra correctamente a través de GBIF.org."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:31
 #, no-wrap
 msgid "Users"
-msgstr ""
+msgstr "Usuarios"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:34
 msgid "If you're only interested in trying out the IPT please request an account on the https://ipt.gbif.org/[Demo IPT] by sending an email to helpdesk@gbif.org."
-msgstr ""
+msgstr "Si solo está interesado en probar el IPT, solicite una cuenta en https://ipt.gbif.org/[Demo IPT] enviando un correo electrónico a helpdesk@gbif.org."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:40
 msgid "Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List], which serves as a support group for IPT users. It is essential that the IPT is kept up to date to be as secure and robust as possible, so if you are responsible for administering an IPT, then you should be signed up to be notified of new releases so that you can update immediately."
-msgstr ""
+msgstr "Asegúrese de registrarse en https://lists.gbif.org/mailman/listinfo/ipt/[Lista de correo de IPT], que sirve como grupo de apoyo para los usuarios de IPT. Es esencial que el IPT se mantenga actualizado para que sea lo más seguro y robusto posible, por lo que si usted es responsable de administrar un IPT, debe registrarse para recibir notificaciones de nuevas versiones para que pueda actualizar de inmediato."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:41
 #, no-wrap
 msgid "Developers"
-msgstr ""
+msgstr "Desarrolladores"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:44
@@ -142,31 +142,31 @@ msgstr ""
 #: en/modules/ROOT/pages/index.adoc:45
 #, no-wrap
 msgid "Translators"
-msgstr ""
+msgstr "Traductores"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:48
 msgid "The IPT user interface and manual both need internationalization, but it's a community effort and everyone is welcome to join. Full instructions aimed at translators can be found xref:translations.adoc[here]."
-msgstr ""
+msgstr "La interfaz de usuario y el manual de IPT necesitan internacionalización, pero es un esfuerzo de la comunidad y todos son bienvenidos a unirse. Las instrucciones completas dirigidas a los traductores se pueden encontrar xref:translations.adoc[here]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:50
 msgid "Thanks to an enormous community effort, and by leveraging the power of the https://crowdin.com/project/gbif-ipt[Crowdin] localization tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian."
-msgstr ""
+msgstr "Gracias a un enorme esfuerzo de la comunidad y al aprovechar el poder de la herramienta de localización https://crowdin.com/project/gbif-ipt[Crowdin], la interfaz de usuario ya se ha traducido a siete idiomas diferentes: inglés, francés, español , chino tradicional, portugués brasileño, japonés y ruso."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:51
 #, no-wrap
 msgid "Acknowledgements"
-msgstr ""
+msgstr "Agradecimientos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:54
 msgid "A large number of dedicated volunteers contribute to the success of this software. With your help, the IPT has become a successful tool in use all around the world."
-msgstr ""
+msgstr "Un gran número de voluntarios dedicados contribuyen al éxito de este software. Con su ayuda, el IPT se ha convertido en una herramienta exitosa que se utiliza en todo el mundo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:55
 msgid "https://crowdin.com/[Crowdin] is kindly supporting this open source project by giving GBIF a free access to its localization management platform. Crowdin makes it possible to manage a large number of concurrent translations."
-msgstr ""
+msgstr "https://crowdin.com/[Crowdin] amablemente apoya este proyecto de código abierto al darle a GBIF acceso gratuito a su plataforma de gestión de localización. Crowdin permite gestionar un gran número de traducciones simultáneas."
 

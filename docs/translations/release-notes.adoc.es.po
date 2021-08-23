@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-20 14:15\n"
+"POT-Creation-Date: 2021-08-20 15:30+0000\n"
+"PO-Revision-Date: 2021-08-20 15:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -200,8 +200,8 @@ msgstr "Vea las instrucciones de xref:installation.adoc#installation-using-docke
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:68
-msgid "Following the upgrade, a warning message may appear indicating the some resources failed to load. This is caused when an old resource is missing required metadata after not being republished for a long time. Resource managers can fix this problem by re-publishing the affected resources."
-msgstr "Tras la actualización, un mensaje de alerta puede aparecer indicando que algunos recursos fallaron al cargar. Esto sucede cuando faltan los metadatos obligatorios de un recurso antiguo que no se ha publicado desde hace mucho tiempo. Los editores pueden solucionar este problema mediante la re-publicación de los recursos afectados."
+msgid "Following the upgrade, a warning message may appear indicating that some resources failed to load. This is caused when an old resource is missing required metadata after not being republished for a long time. Resource managers can fix this problem by re-publishing the affected resources."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:70
