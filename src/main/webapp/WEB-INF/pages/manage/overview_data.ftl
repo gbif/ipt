@@ -67,7 +67,7 @@
                                               <i class="bi bi-download"></i>
                                             </a>
                                             </#if>
-                                            <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
+                                            <a class="btn btn-sm btn-outline-secondary" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                                               <@s.text name='button.edit'/>
                                             </a>
                                           </div>
@@ -156,7 +156,7 @@
                                             <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                            <a class="btn btn-sm btn-outline-secondary" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <@s.text name='button.edit'/>
                                             </a>
                                         </div>
@@ -180,7 +180,7 @@
                                                         <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                        <a class="btn btn-sm btn-outline-secondary" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <@s.text name='button.edit'/>
                                                         </a>
                                                     </div>
