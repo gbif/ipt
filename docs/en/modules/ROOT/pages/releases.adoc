@@ -3,7 +3,7 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<2-4-2-september-2020,2.4.2>>.
+The current, stable release is version <<2-5-0-august-2021,2.5.0>>.
 
 You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
@@ -11,26 +11,25 @@ Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGU
 endif::[]
 ====
 
-== *2.5.0* – Expected in August 2021
+// Next release text kept for reuse, as it will be part of the Crowdin translation memory.
+//Version 2.5.1 of the IPT is expected to be released in Month 2021.  In preparation for this, a _release candidate_ version 2.5.1-RC1 is now available.
+//CAUTION: This is a *release candidate* made available for testing.  *It is not suitable for production use.*
 
-Version 2.5.0 of the IPT is expected to be released in August 2021.  In preparation for this, a _release candidate_ version 2.5.0-RC1 is now available, alongside this version 2.5 user manual.
+== *2.5.0* – August 2021
 
-CAUTION: This is a *release candidate* made available for testing.  *It is not suitable for production use.*
-
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0-RC1/ipt-2.5.0-RC1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.5.0 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/27?closed=1[80 issues].
 * Translated into 7 languages
 
-Users may install this pre-release version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].
+Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
 This version addresses 80 issues, including the famous "double log in bug", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish.
 
-//No release date has been set yet for the next release.
-//Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
 
-//Minor issues and security issues will be addressed in patch releases.
+Minor issues and security issues will be addressed in patch releases.
 
 == *2.4.2* – September 2020
 
@@ -143,3 +142,12 @@ A description of the exciting new features added to the IPT in version 2.3.3 are
 * https://gbif.blogspot.com/2011/11/important-quality-boost-for-gbif-data.html[Release Announcement]
 * Addressed https://github.com/gbif/ipt/milestone/12?closed=1[85 issues]: 43 defects, 31 enhancements, 3 Patches, 7 Won’t fix, and 1 Duplicate
 * Translated into 3 languages (French and Spanish translations added)
+
+== *2.0.2* – June 2011
+
+* https://lists.gbif.org/pipermail/ipt/2011-June/000352.html[Release Announcement]
+
+== *2.0.1* – February 2011
+
+* First IPT version 2 release
+* https://lists.gbif.org/pipermail/ipt/2011-February/000309.html[Release Announcement]
