@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-23 09:02+0000\n"
-"PO-Revision-Date: 2021-08-23 09:07\n"
+"POT-Creation-Date: 2021-08-23 09:30+0000\n"
+"PO-Revision-Date: 2021-08-23 09:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -55,7 +55,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[Descarga de WAR], xref:installation.adoc#installation-from-linux-packages[paquetes Linux] o xref:installation.adoc#installation-from-docker[uso de Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:22
@@ -69,7 +69,7 @@ msgstr "xref:2.5@index.adoc[Manual del Usuario]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:24
-msgid "Addressed https://github.com/gbif/ipt/milestone/27?closed=1[80 issues]."
+msgid "Addressed https://github.com/gbif/ipt/milestone/27?closed=1[81 issues]."
 msgstr ""
 
 #. type: Plain text
@@ -91,7 +91,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
-msgid "This version addresses 80 issues, including the famous \"double log in bug\", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish."
+msgid "This version addresses 81 issues, including the famous \"double log in bug\", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish."
 msgstr ""
 
 #. type: Plain text
