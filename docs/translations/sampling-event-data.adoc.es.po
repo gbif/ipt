@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-23 05:52\n"
+"PO-Revision-Date: 2021-08-23 07:27\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -100,7 +100,7 @@ msgstr "Datos de Eventos de Muestreo"
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:6
 msgid "Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, eco-genomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata] and the same standard elements as in xref:occurrence-data.adoc[Occurrence Data]."
-msgstr ""
+msgstr "Recursos que muestran no solo la evidencia de la presencia de una especie en un lugar y momento particular, sino también suficiente detalle para evaluar la composición de las comunidades para un grupo taxonómico más amplio o la abundancia relativa de especies en múltiples momentos y lugares. Tales conjuntos de datos derivan de protocolos estandarizados para medir y observar la biodiversidad. Algunos ejemplos incluyen los transectos de vegetación, los datos estandarizados de censos de aves, muestras eco-genómicas, etc. Indicando que protocolo se siguió, estos conjuntos de datos añaden a los de Presencia de Especies información sobre qué registro de presencia deriva de un evento de muestro siguiendo el protocolo e, idealmente, la abundancia relativa (mediante una medida numérica apropiada) de las especies registradas en la muestra. Estos elementos adicionales pueden soportar mejores comparaciones de los datos de diferentes momentos y lugares (donde se indique el mismo protocolo) y, en algunos casos, puede permitir a los investigadores inferir ausencias de especies particulares de lugares particulares. Estos conjuntos de datos incluyen la misma información descriptiva básica de los xref:resource-metadata.adoc[metadatos de Recursos] y los mismos elementos estándar de xref:occurrence-data.adoc[Datos de Presencia de Especies]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/sampling-event-data.adoc:7
