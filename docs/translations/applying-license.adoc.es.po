@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 19:02\n"
+"PO-Revision-Date: 2021-08-24 19:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -93,17 +93,17 @@ msgstr "En caso de que diferentes licencias apliquen a componentes separados de 
 #: en/modules/ROOT/pages/applying-license.adoc:26
 #, no-wrap
 msgid "Record Level"
-msgstr ""
+msgstr "Nivel de Registro"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:29
 msgid "All licenses specified at the *record level* should comply with the license at the dataset level."
-msgstr ""
+msgstr "Todas las licencias especificadas bajo el *nivel de registro* deben ser coherentes con la licencia a nivel del conjunto de datos. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:31
 msgid "To apply a license at the *record level* using the IPT, publishers should use/map to the Darwin Core term http://rs.tdwg.org/dwc/terms/index.htm#dcterms:license[license]. As per Darwin Core's recommendation, the URI of the license should be used to populate the license. Be careful not to add contradictory usage restrictions in the Darwin Core term http://rs.tdwg.org/dwc/terms/index.htm#dcterms:accessRights[accessRights]. In theory, the license should provide sufficient access rights information without having to specify them in accessRights also."
-msgstr ""
+msgstr "Para aplicar una licencia en el *nivel de registro* usando el IPT, los publicadores deben usar/mapear el término de Darwin Core http://rs.tdwg.org/dwc/terms/index.htm#dcterms:license[license]. Según la recomendación de Darwin Core, el URI de la licencia debe usarse para completar la licencia. Tenga cuidado de no agregar restricciones de uso contradictorias en el término de Darwin Core http://rs.tdwg.org/dwc/terms/index.htm#dcterms:accessRights[accessRights]. En teoría, la licencia debería proporcionar suficiente información sobre los derechos de acceso sin tener que especificarlos también en accessRights."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:33
