@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 16:37\n"
+"PO-Revision-Date: 2021-08-24 16:55\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -55,18 +55,18 @@ msgstr "Puede encontrar más información sobre las novedades en la licencia 4.0
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:13
 msgid "The remainder of this page describes how to properly apply a license to a dataset, and how to ensure consistency at the dataset level and the record level."
-msgstr ""
+msgstr "El resto de esta página describe cómo aplicar correctamente una licencia a un conjunto de datos, y cómo garantizar la coherencia a nivel del conjunto de datos y del nivel del registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:15
 msgid "Please note that CC0 is technically a waiver."
-msgstr ""
+msgstr "Tenga en cuenta que CC0 es técnicamente una exención."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:16
 #, no-wrap
 msgid "Dataset Level"
-msgstr ""
+msgstr "Nivel de Conjunto de Datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:19
