@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:15\n"
+"PO-Revision-Date: 2021-08-24 20:08\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,32 +35,32 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/customization.adoc:1
 #, no-wrap
 msgid "How to Style Your IPT"
-msgstr ""
+msgstr "Cómo Diseñar su IPT"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/customization.adoc:6
 msgid "Customization using `custom.css` does not work in version 2.5.0, see https://github.com/gbif/ipt/issues/1634[this issue]."
-msgstr ""
+msgstr "La personalización usando `custom.css` no funciona en la versión 2.5.0, vea https://github.com/gbif/ipt/issues/1634[this issue]."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/customization.adoc:8
 msgid "Basic customizations can be made by editing `$tomcat/webapps/ipt/styles/main.css`."
-msgstr ""
+msgstr "Se pueden realizar personalizaciones básicas editando `$tomcat/webapps/ipt/styles/main.css`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:11
 msgid "Styling an IPT requires deployment using a servlet container like Tomcat.  A deployment from Linux packages or Docker could only be styled by overriding the `custom.css` file in a forward proxy."
-msgstr ""
+msgstr "Diseñar un IPT requiere implementación utilizando un contenedor de servlets como Tomcat. Una implementación de paquetes de Linux o Docker sólo se puede diseñar anulando el archivo `custom.css` en un proxy de reenvío."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:15
 msgid "The following guide explains how to customize the IPT, and preserve your customization when upgrading your IPT's version."
-msgstr ""
+msgstr "La siguiente guía explica cómo personalizar el IPT, y cómo conservar su personalización al actualizar la versión de su IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:17
 msgid "In short, customization can be achieved by applying CSS overrides."
-msgstr ""
+msgstr "En resumen, la personalización se puede lograr aplicando anulaciones de CSS."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:19
