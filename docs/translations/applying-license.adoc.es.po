@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 17:16\n"
+"PO-Revision-Date: 2021-08-24 18:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -87,7 +87,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:25
 msgid "In case different licenses apply to separate components of a dataset, the recommended best practice is to publish each component separately having their own metadata and identifier (e.g. DOI). This recommendation is in compliance with DataCite's recommended practice for such cases."
-msgstr ""
+msgstr "En caso de que diferentes licencias apliquen a componentes separados de un conjunto de datos, la mejor práctica recomendada es publicar cada componente por separado con sus propios metadatos y su propio identificador (por ejemplo, el DOI). Esta recomendación cumple con las recomendaciones de DataCite para tales casos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:26
@@ -108,19 +108,19 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:33
 msgid "Please note the Darwin Core term http://rs.tdwg.org/dwc/terms/history/#dcterms:rights[rights] has now been deprecated and should no longer be used."
-msgstr ""
+msgstr "Tenga en cuenta que el término de Darwin Core http://rs.tdwg.org/dwc/terms/history/#dcterms:rights[rights] ha quedado obsoleto y ya no debería utilizarse."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:34
 #, no-wrap
 msgid "Supplementary Information"
-msgstr ""
+msgstr "Información Adicional"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/applying-license.adoc:36
 #, no-wrap
 msgid "How To Manually Apply a License"
-msgstr ""
+msgstr "Cómo Aplicar una Licencia Manualmente"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:39
