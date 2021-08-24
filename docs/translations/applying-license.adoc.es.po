@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 18:31\n"
+"PO-Revision-Date: 2021-08-24 19:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -125,23 +125,23 @@ msgstr "Cómo Aplicar una Licencia Manualmente"
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:39
 msgid "Resource metadata can be populated automatically from an EML metadata document during resource creation. A license supplied in the EML document is interpretable so long as it is supplied in a machine readable format."
-msgstr ""
+msgstr "Los Recursos de metadatos se pueden completar automáticamente desde un documento de metadatos en EML durante la creación de recursos. Una licencia proporcionada en el documento EML es interpretable siempre que se proporcione en un formato legible por máquina."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:41
 msgid "To supply a license in EML in a machine readable format, use the `<ulink>` element inside `<intellectualRights><para>` to specify both the title and URL of the license. Be aware that documents complying with the GBIF Metadata Profile must use the latest version of the schema (v1.1) for this to be valid XML."
-msgstr ""
+msgstr "Para proporcionar una licencia en EML en un formato legible por máquina, utilice el elemento `<ulink>` dentro de `<intellectualRights><para>` para especificar tanto el título como la URL de la licencia. Tenga en cuenta que los documentos que cumplen con el Perfil de Metadatos de GBIF deben utilizar la última versión del esquema (v1.1) para que sea un XML válido."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:43
 msgid "Below is an example `<intellectualRights>` for the three licenses that GBIF supports demonstrating how to provide them in machine readable format. To apply, simply replace the `<intellectualRights>` block in your EML document with the `<intellectualRights>` below corresponding to the license of your choice."
-msgstr ""
+msgstr "A continuación se muestra un ejemplo de `<intellectualRights>` para las tres licencias que GBIF admite y muestra cómo proporcionarlas en formato legible por máquina. Para aplicar, simplemente reemplace el bloque `<intellectualRights>` en su documento EML con el `<intellectualRights>` a continuación correspondiente a la licencia de su elección."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/applying-license.adoc:44
 #, no-wrap
 msgid "Public Domain (CC0 1.0)"
-msgstr ""
+msgstr "Dominio Público (CC0 1.0)"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/applying-license.adoc:50
@@ -149,13 +149,15 @@ msgstr ""
 msgid "<intellectualRights>\n"
 "   <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction</para>\n"
 "</intellectualRights>\n"
-msgstr ""
+msgstr "<intellectualRights>\n"
+"   <para> En la medida de lo posible por ley, el editor ha renunciado a todos los derechos sobre estos datos y los ha dedicado al  <ulink url=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\"><citetitle> Dominio público (CC0 1.0) </citetitle></ulink>. Los usuarios pueden copiar, modificar, distribuir y utilizar el trabajo, incluso con fines comerciales, sin restricción </para>\n"
+"</intellectualRights>\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/applying-license.adoc:52
 #, no-wrap
 msgid "Creative Commons Attribution (CC-BY) 4.0"
-msgstr ""
+msgstr "Atribución Creative Commons (CC-BY) 4.0"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/applying-license.adoc:58
@@ -163,13 +165,15 @@ msgstr ""
 msgid "<intellectualRights>\n"
 "  <para>This work is licensed under a <ulink url=\"http://creativecommons.org/licenses/by/4.0/legalcode\"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>\n"
 "</intellectualRights>\n"
-msgstr ""
+msgstr "<intellectualRights>\n"
+"  <para>Este contenido se encuentra bajo una <ulink url=\"http://creativecommons.org/licenses/by/4.0/legalcode\"><citetitle>Licencia de Atribución Creative Commons (CC-BY) 4.0</citetitle></ulink>.</para>\n"
+"</intellectualRights>\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/applying-license.adoc:60
 #, no-wrap
 msgid "Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0"
-msgstr ""
+msgstr "Atribución No Comercial de Creative Commons (CC-BY-NC) 4.0"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/applying-license.adoc:66
@@ -177,5 +181,7 @@ msgstr ""
 msgid "<intellectualRights>\n"
 "  <para>This work is licensed under a <ulink url=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>\n"
 "</intellectualRights>\n"
-msgstr ""
+msgstr "<intellectualRights>\n"
+"  <para>Este contenido se encuentra bajo una <ulink url=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\"><citetitle> Licencia de Atribución No Comercial de Creative Commons (CC-BY-NC) 4.0 </citetitle></ulink>.</para>\n"
+"</intellectualRights>\n"
 
