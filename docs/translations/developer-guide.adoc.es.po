@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-24 17:16\n"
+"PO-Revision-Date: 2021-08-24 17:44\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -121,13 +121,13 @@ msgstr "Guice"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:38
 msgid "`IptModule` contains wiring, but interfaces are annotated directly with `@ImplementedBy(ConfigManagerImpl.class)`"
-msgstr ""
+msgstr "`IptModule` contiene conexiones, pero las interfaces se anotan directamente con `@ImplementedBy (ConfigManagerImpl.class)`"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:39
 #, no-wrap
 msgid "Configuration"
-msgstr ""
+msgstr "Configuración"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:42
