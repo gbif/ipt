@@ -1,5 +1,5 @@
 %define nr_ver 2.5.0
-%define nr_ver_extra -RC1
+%define nr_ver_extra %nil
 %define release_number 0.1
 
 Name: ipt
@@ -74,9 +74,11 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 %systemd_postun_with_restart ipt.service
 
 %changelog
-* Fri Jun 25 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0-0.1
+* Mon Aug 23 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0-0.1
+- Publish IPT 2.5.0 release.
+* Fri Jun 25 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0RC1-0.1
 - Publish IPT 2.5.0-RC1 pre-release.
-* Wed Sep 08 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.2-1
+* Tue Sep 08 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.2-1
 - Publish IPT 2.4.2 release.
 * Wed Sep 02 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.1-1
 - Publish IPT 2.4.1 release.
