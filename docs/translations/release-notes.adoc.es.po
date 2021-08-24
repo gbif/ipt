@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-24 08:54+0000\n"
-"PO-Revision-Date: 2021-08-24 09:12\n"
+"POT-Creation-Date: 2021-08-24 11:55+0000\n"
+"PO-Revision-Date: 2021-08-24 12:15\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -39,7 +39,7 @@ msgstr "Cambios importantes en esta versión"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
-#: en/modules/ROOT/pages/release-notes.adoc:85
+#: en/modules/ROOT/pages/release-notes.adoc:86
 #, no-wrap
 msgid "When all else fails"
 msgstr "Cuando todo lo demás falla"
@@ -240,12 +240,17 @@ msgid "The documentation has moved to this new location; links have been made fr
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:84
+#: en/modules/ROOT/pages/release-notes.adoc:83
+msgid "xref:customization.adoc[Customization] (styling etc) using `custom.css` is broken in this release, see this https://github.com/gbif/ipt/issues/1634[issue]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:85
 msgid "If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release]."
 msgstr "Si está actualizando desde una versión anterior a la 2.4, por favor, consulte las notas de la xref:2.4@release-notes.adoc[versión antigua]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:87
+#: en/modules/ROOT/pages/release-notes.adoc:88
 msgid "See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list]."
 msgstr "Explore las xref:faq.adoc[FAQ], que continúan siendo actualizadas con buenas preguntas, o pregunte en la https://lists.gbif.org/mailman/listinfo/ipt/[lista de mailing del IPT]."
 
