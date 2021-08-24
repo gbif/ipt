@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-24 23:14\n"
+"PO-Revision-Date: 2021-08-24 23:46\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -51,12 +51,12 @@ msgstr "El número de versión utiliza la sintaxis versión_mayor.versión_menor
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:12
 msgid "A new major version is assigned to the dataset (a) the first time it’s published, or (b) after it has been republished following one or more scientifically significant changes to the dataset. The publisher must decide what constitutes a scientifically significant change (see definition below for help)."
-msgstr ""
+msgstr "Se asigna una nueva versión principal al conjunto de datos (a) la primera vez que este es publicado o (b) después de que el conjunto de datos se ha vuelto a publicar con uno o más cambios científicamente significativos. El publicador debe decidir qué constituye un cambio científicamente significativo (consulte la definición a continuación para obtener ayuda). "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:13
 msgid "A scientifically significant change (a) typically affects the majority of records in the dataset, and (b) could change the results of a scientific analysis using the dataset."
-msgstr ""
+msgstr "Un cambio científicamente significativo (a) generalmente afecta a la mayoría de los registros del conjunto de datos y (b) puede cambiar el resultado de un análisis científico al utilizar el conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:14
