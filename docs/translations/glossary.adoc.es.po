@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-24 16:12\n"
+"PO-Revision-Date: 2021-08-24 18:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -26,7 +26,7 @@ msgstr "Glosario"
 #: en/modules/ROOT/pages/glossary.adoc:3
 #, no-wrap
 msgid "*Checklist Resource* - a resource having information about one of many types of taxon-related lists.\n"
-msgstr "*Recurso de listas de especies* - un recurso que contiene información sobre uno o más tipos de listas relacionadas con taxones.\n"
+msgstr "*Recurso de Listas de Especies* - un recurso que contiene información sobre uno o más tipos de listas relacionadas con taxones.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:4
