@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-20 15:30+0000\n"
+"POT-Creation-Date: 2021-08-24 08:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -148,13 +148,7 @@ msgid ""
 "yum --showduplicates list --enablerepo=gbif-testing ipt\n"
 msgstr ""
 
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:45
-msgid ""
-"#TODO:# Debian instructions, once the 2.5.0-RC1 pre-release package is "
-"prepared."
-msgstr ""
-
+#.  #TODO:# Debian instructions, once the 2.5.0-RC1 pre-release package is prepared.
 #. type: Title ===
 #: en/modules/ROOT/pages/release-notes.adoc:46
 #, no-wrap
@@ -164,7 +158,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:49
 msgid ""
-"When upgrading to version 2.5.0-RC1 or later, follow xref:installation."
+"When upgrading to version 2.5.0 or later, follow xref:installation."
 "adoc#tomcat[step 2] of the installation instructions to set a data directory "
 "location.  You will no longer need to reconfigure the data directory each "
 "time you upgrade the IPT."
@@ -277,8 +271,8 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:79
 msgid ""
-"IPT 2.5.0 now includes a troubleshooting page, accessible only to "
-"administrators from within the Administration menu."
+"IPT 2.5.0 now includes a troubleshooting page, with full details accessible "
+"only to administrators, accessible from the main menu."
 msgstr ""
 
 #. type: Plain text
@@ -300,7 +294,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:82
 msgid ""
-"The documentation has moved to this new location; links will be made from "
+"The documentation has moved to this new location; links have been made from "
 "the old GitHub Wiki."
 msgstr ""
 
