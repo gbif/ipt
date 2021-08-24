@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-19 17:05\n"
+"PO-Revision-Date: 2021-08-24 15:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -86,7 +86,7 @@ msgstr "*Metadatos* - en este manual de usuario, los metadatos se refieren a la 
 #: en/modules/ROOT/pages/glossary.adoc:13
 #, no-wrap
 msgid "*Metadata Resource* - a resource having information about a data set, but without having the actual primary data. A metadata resource might give information about a collection that has not yet been digitized, for example.\n"
-msgstr "*Metadatos del Recurso* - un recurso que tiene la información acerca de un conjunto de datos, sin tener el conjunto de datos primario. Un metadato del recurso puede proporcionar información sobre una colección que aún no ha sido digitalizada, por ejemplo.\n"
+msgstr "*Recurso de Metadatos* - un recurso que contiene información sobre un conjunto de datos, pero sin tener el conjunto de datos primario. Un recurso de metadatos podría ofrecer información sobre una colección que aún no ha sido digitalizada, por ejemplo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:14
@@ -116,19 +116,19 @@ msgstr "*Lanzamiento Publicado* - una versión de un recurso que ha sido produci
 #: en/modules/ROOT/pages/glossary.adoc:18
 #, no-wrap
 msgid "*Registered* - a state of a public resource or of an IPT instance in which anyone can discover it through the GBIF Registry.\n"
-msgstr "*Registrado* - el estado de un recurso público o de una instancia IPT en donde cualquiera puede descubrirlo a través del Registro de GBIF.\n"
+msgstr "*Registrado* - el estado de un recurso y público a través de una instancia IPT que cualquiera puede encontrar a través de el Registro de GBIF.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:19
 #, no-wrap
 msgid "*Resource* - in this user manual, resource refers to a data set and the metadata about it.\n"
-msgstr "*Recurso* - en este manual de usuario, un recurso se refiere a un conjunto de datos y los metadatos al respecto.\n"
+msgstr "*Recurso* - en este manual de usuario, un recurso se refiere a un conjunto de datos y sus respectivos metadatos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:20
 #, no-wrap
 msgid "*Resource Managers* - IPT users having a role that allows them to create, change, and remove resources.\n"
-msgstr "*Administradores de Recurso* - los usuarios de IPT que tienen un rol que les permite crear, modificar, y remover recursos.\n"
+msgstr "*Editores de Recurso* - los usuarios de IPT que tienen un rol que les permite crear, modificar, y eliminar recursos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/glossary.adoc:21
