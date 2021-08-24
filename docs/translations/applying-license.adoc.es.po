@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 16:13\n"
+"PO-Revision-Date: 2021-08-24 16:37\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -45,12 +45,12 @@ msgstr "De acuerdo con la http://www.gbif.org/terms/licences[GBIF licensing poli
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:9
 msgid "You should always use the latest version of the Creative Commons licenses in order to take advantage of the many improvements described on the https://wiki.creativecommons.org/wiki/License_Versions[license versions page]. In particular, 4.0 is meant to be better suited to international use, and use in many different contexts, including https://blog.creativecommons.org/2011/08/23/data-governance-our-idea-for-the-moore-foundation/[sharing data]."
-msgstr ""
+msgstr "Usted siempre debe usar la última versión de las licencias de Creative Commons para aprovechar al máximo las mejoras descritas en la https://wiki.creativecommons.org/wiki/License_Versions[license versions page]. En particular, la licencia 4.0 está destinada a adaptarse mejor al uso internacional, y se puede usar en muchos contextos distintos, incluido https://blog.creativecommons.org/2011/08/23/data-governance-our-idea-for-the-moore-foundation/[sharing data]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:11
 msgid "More information about what's new in the 4.0 CC license suite can be found https://creativecommons.org/version4/[here]. This is the version supported by the since version v2.3.2 of the IPT."
-msgstr ""
+msgstr "Puede encontrar más información sobre las novedades en la licencia 4.0 CC  en https://creativecommons.org/version4/[here]. Esta es la versión compatible con la versión v2.3.2 del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:13
