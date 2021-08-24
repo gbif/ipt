@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-20 20:38\n"
+"PO-Revision-Date: 2021-08-24 23:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -76,7 +76,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:17
 msgid "A detailed summary of what has changed since the last publication should ideally be entered by the publisher before any new major or minor version of the dataset can be published."
-msgstr ""
+msgstr "Idealmente, un resumen detallado acerca de qué cambió desde la última publicación debería ser ingresado por el publicador antes de que alguna nueva versión del conjunto de datos pueda ser publicada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:18
