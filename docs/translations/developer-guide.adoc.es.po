@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-24 16:56\n"
+"PO-Revision-Date: 2021-08-24 17:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -81,41 +81,42 @@ msgstr "El IPT usa Maven para administrar las dependencias y el proceso de const
 #: en/modules/ROOT/pages/developer-guide.adoc:20
 #, no-wrap
 msgid "Running the application in Jetty"
-msgstr ""
+msgstr "Ejecutando la aplicación en Jetty"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/developer-guide.adoc:26
 #, no-wrap
 msgid "$ cd ipt\n"
 "$ mvn -DskipTests\n"
-msgstr ""
+msgstr "$ cd ipt\n"
+"$ mvn -DskipTests\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:29
 msgid "This command starts up the IPT via the Jetty plugin on port 8080. You should be able to see the IPT running by opening http://localhost:8080 in your web browser."
-msgstr ""
+msgstr "Este comando inicia el IPT a través del complemento Jetty en el puerto 8080. Debería poder ver el IPT en ejecución abriendo http://localhost:8080 en su navegador web."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:30
 #, no-wrap
 msgid "Git"
-msgstr ""
+msgstr "Git"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:32
 msgid "Please don't check in unused files."
-msgstr ""
+msgstr "Por favor no registre archivos en desuso."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:34
 msgid "Code in the master branch should always compile and allow the startup of Jetty using Maven!"
-msgstr ""
+msgstr "¡El código en la rama maestra siempre debe compilarse y permitir el inicio de Jetty usando Maven!"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:35
 #, no-wrap
 msgid "Guice"
-msgstr ""
+msgstr "Guice"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:38
