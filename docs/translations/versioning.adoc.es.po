@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-24 23:46\n"
+"PO-Revision-Date: 2021-08-25 00:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,7 +25,7 @@ msgstr "Política del control de versiones del conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:4
 msgid "The IPT carefully tracks the major and minor version changes for a dataset so that each published version can be unambiguously identified, and users can easily see when significant changes to the dataset occurred. The relationship between all versions is visible in the version history table (on its homepage) and also gets documented in the DOI metadata."
-msgstr "El IPT rastrea de manera cuidadosa los cambios de las versiones mayores y menores de un conjunto de datos, para que cada versión publicada pueda identificarse sin ambigüedades y los usuarios puedan ver fácilmente cuándo sucedieron cambios significativos en el conjunto de datos. La relación entre las versiones es visible en la tabla de la historia de las versiones (en su página de inicio) y también se documenta en los metadatos DOI."
+msgstr "El IPT rastrea de manera cuidadosa los cambios de las versiones principales y secundarias de un conjunto de datos, para que cada versión publicada pueda identificarse sin ambigüedades y los usuarios puedan ver fácilmente cuándo sucedieron cambios significativos en el conjunto de datos. La relación entre las versiones es visible en la tabla de la historia de las versiones (en su página de inicio) y también se documenta en los metadatos DOI."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:6
@@ -41,12 +41,12 @@ msgstr "Política del control de versiones"
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:10
 msgid "Major and minor versions are used to track a dataset's changes through time."
-msgstr "Las versiones mayores y menores son usadas para realizar un seguimiento de los cambios de un conjunto de datos a través del tiempo."
+msgstr "Las versiones principales y secundarias son usadas para realizar un seguimiento de los cambios de un conjunto de datos a través del tiempo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:11
 msgid "The version number uses the syntax major_version.minor_version."
-msgstr "El número de versión utiliza la sintaxis versión_mayor.versión_menor."
+msgstr "El número de versión utiliza la sintaxis versión_principal.versión_secundaria."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:12
@@ -61,22 +61,22 @@ msgstr "Un cambio científicamente significativo (a) generalmente afecta a la ma
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:14
 msgid "A new major version leads to the creation of a new DOI, whereas a new minor version does not."
-msgstr ""
+msgstr "Una nueva versión principal deriva la creación de un nuevo DOI, mientras que una nueva versión secundaria no."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:15
 msgid "A new minor version is assigned to the dataset every time the dataset is published, and it isn’t appropriate to assign it a new major version."
-msgstr ""
+msgstr "Una nueva versión secundaria se asigna al conjunto de datos cada vez que es publicado y no es adecuado asignarle una nueva versión principal."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:16
 msgid "For continuously updated datasets (e.g. time series datasets), a new minor version is assigned to the dataset each time it is republished, so long as ongoing additions don’t change pre-existing records in a scientifically significant way. This decision must be made by the publisher."
-msgstr ""
+msgstr "Para los conjuntos de datos que se actualizan continuamente (p. ej. conjuntos de datos de series de tiempo), se asigna una nueva versión secundaria cada vez que se vuelve a publicar, siempre que las adiciones continuas no cambien los registros preexistentes de una manera científicamente significativa. Esta decisión debe tomarla el publicador."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:17
 msgid "A detailed summary of what has changed since the last publication should ideally be entered by the publisher before any new major or minor version of the dataset can be published."
-msgstr "Idealmente, un resumen detallado acerca de qué cambió desde la última publicación debería ser ingresado por el publicador antes de que alguna nueva versión del conjunto de datos pueda ser publicada."
+msgstr "Idealmente, un resumen detallado acerca de qué cambió desde la última publicación debería ser ingresado por el publicador antes de que alguna nueva versión principal o secundaria del conjunto de datos sea publicada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/versioning.adoc:18
