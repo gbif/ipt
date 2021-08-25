@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-25 00:36\n"
+"PO-Revision-Date: 2021-08-25 00:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -45,68 +45,68 @@ msgstr "Un centro de alojamiento de datos (DHC) le proporciona una cuenta en su 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:8
 msgid "Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language."
-msgstr ""
+msgstr "Se recomienda ampliamente el uso de un DHC debido a que le ahorrará tiempo y dinero al configurar su propia instancia de IPT y podrá recibir servicio de asistencia técnica en su idioma."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:10
 msgid "Please use this page to discover a trusted DHC by country or by theme that is right for you. If no appropriate DHC exists, or the DHC doesn't reply promptly to your enquiry, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] for assistance."
-msgstr ""
+msgstr "Utilice esta página para encontrar un DHC de confianza por país o por tema que sea adecuado para usted. Si no existe un DHC adecuado o el DHC no responde rápidamente su consulta, comuníquese con mailto:helpdesk@gbif.org[GBIF Helpdesk] para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:12
 msgid "Please note that to qualify as a trusted DHC, the centre must meet a strict set of criteria. Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset is backed up."
-msgstr ""
+msgstr "Tenga en cuenta que para calificar como un DHC de confianza, el centro debe cumplir con un estricto conjunto de criterios. De esta manera, puede confiar en que el DHC mantendrá su IPT en línea cerca del 100% del tiempo, y se asegurarán de que se haga una copia de seguridad de su conjunto de datos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:13
 #, no-wrap
 msgid "Data Hosting Centre Criteria"
-msgstr ""
+msgstr "Criterios del centro de alojamiento de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:16
 msgid "A DHC must meet the following set of strict requirements in order to be recommended to publishers:"
-msgstr ""
+msgstr "Un DHC debe cumplir con el siguiente conjunto de requisitos estrictos para ser recomendado a los publicadores:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:18
 msgid "Their IPT is online near 100% of the time"
-msgstr ""
+msgstr "Su IPT está en línea casi el 100% del tiempo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:19
 msgid "They can properly administer their IPT:"
-msgstr ""
+msgstr "Pueden administrar adecuadamente su IPT:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:20
 msgid "Keeping it up-to-date with latest version"
-msgstr ""
+msgstr "Manteniéndolo actualizado con la última versión"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:21
 msgid "Ensuring the IPT data directory is regularly backed-up"
-msgstr ""
+msgstr "Asegurando que el directorio de datos del IPT se respalde de manera regular"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:22
 msgid "Managing user accounts"
-msgstr ""
+msgstr "Administrando las cuentas de usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:23
 msgid "Managing IPT cores and extensions"
-msgstr ""
+msgstr "Administrando las extensiones y estándares"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:24
 msgid "They have a proven track-record of hosting data for publishers in their country"
-msgstr ""
+msgstr "Tienen un historial comprobado de alojamiento de datos para publicadores en su país."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:25
 msgid "They can provide prompt and knowledgeable helpdesk support:"
-msgstr ""
+msgstr "Pueden proporcionar asistencia técnica rápida y con conocimientos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:26
