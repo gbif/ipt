@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:15\n"
+"PO-Revision-Date: 2021-08-25 00:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,12 +35,12 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:1
 #, no-wrap
 msgid "Data Hosting Centres"
-msgstr ""
+msgstr "Centros de alojamiento de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:6
 msgid "A data hosting centre (DHC) can provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through https://www.gbif.org[GBIF.org]."
-msgstr ""
+msgstr "Un centro de alojamiento de datos (DHC) le proporciona una cuenta en su IPT, lo que le permite administrar sus propios conjuntos de datos y publicarlos a través de https://www.gbif.org[GBIF.org]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:8
