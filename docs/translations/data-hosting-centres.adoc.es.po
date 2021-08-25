@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-25 00:54\n"
+"PO-Revision-Date: 2021-08-25 01:13\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -111,28 +111,28 @@ msgstr "Pueden proporcionar asistencia técnica rápida y con conocimientos:"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:26
 msgid "They know how to use the IPT to publish data through GBIF.org"
-msgstr ""
+msgstr "Saben cómo usar el IPT para publicar datos a través de GBIF.org"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:27
 msgid "They know about biodiversity data standards in general"
-msgstr ""
+msgstr "Conocen los estándares de datos de biodiversidad en general"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:28
 msgid "They know how to publish data papers"
-msgstr ""
+msgstr "Saben cómo publicar artículos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:30
 msgid "If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org."
-msgstr ""
+msgstr "Si cree que su DHC cumple con estos estándares y le gustaría ofrecer sus servicios a los editores de su país, envíe un correo electrónico a mailto: helpdesk@gbif.org."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:31
 #, no-wrap
 msgid "Data Hosting Centres by Theme"
-msgstr ""
+msgstr "Centros de alojamiento de datos por tema"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:34
@@ -142,58 +142,58 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:35
 msgid "<<Marine data>>"
-msgstr ""
+msgstr "<<Datos marinos>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:36
 msgid "<<Vertebrate data>>"
-msgstr ""
+msgstr "<<Datos de vertebrados>>"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:37
 #, no-wrap
 msgid "Data Hosting Centres by Location"
-msgstr ""
+msgstr "Centros de alojamiento de datos por ubicación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:40
 msgid "<<Belgium>>"
-msgstr ""
+msgstr "<<Bélgica>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:41
 msgid "<<Canada>> ⭐"
-msgstr ""
+msgstr "<<Canadá>> ⭐"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:42
 msgid "<<Colombia>> ⭐"
-msgstr ""
+msgstr "<<Colombia>> ⭐"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:43
 msgid "<<Denmark>>"
-msgstr ""
+msgstr "<<Dinamarca>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:44
 msgid "<<Finland>>"
-msgstr ""
+msgstr "<<Finlandia>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:45
 msgid "<<France>> (also for Benin, Botswana, Burkina Faso, Cameroon, Côte d'Ivoire, Gabon, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo and Uganda)"
-msgstr ""
+msgstr "<<Francia>> (también para Benín, Botswana, Burkina Faso, Camerún, Costa de Marfil, Gabón, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo y Uganda)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:46
 msgid "<<Norway>>"
-msgstr ""
+msgstr "<<Noruega>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:47
 msgid "<<Portugal>>"
-msgstr ""
+msgstr "<<Portugal>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:48
