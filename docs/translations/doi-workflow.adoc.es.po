@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-25 16:41\n"
+"PO-Revision-Date: 2021-08-25 17:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,7 +42,7 @@ msgstr "Asignación de nuevos DOIs a un Conjunto de Datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:10
 msgid "Ideally publishers assign a new DOI to a dataset each time it undergoes a scientifically significant change. This differentiates major versions from each other, and allows them to be uniquely cited."
-msgstr ""
+msgstr "Idealmente, los editores asignan un nuevo DOI a un conjunto de datos cada vez que se somete a un cambio científicamente significativo. Esto diferencia las versiones mayores entre sí y permite que se citen de forma única."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:12
