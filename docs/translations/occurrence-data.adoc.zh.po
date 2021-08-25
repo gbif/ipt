@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:16\n"
+"PO-Revision-Date: 2021-08-25 11:34\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -29,7 +29,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "介紹"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:10
@@ -63,7 +63,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:30
 #, no-wrap
 msgid "Required DwC fields"
-msgstr ""
+msgstr "必填的達爾文核心集欄位"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:28
@@ -77,7 +77,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:36
 #, no-wrap
 msgid "Recommended DwC fields"
-msgstr ""
+msgstr "建議填寫的達爾文核心集欄位"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:33
@@ -118,7 +118,7 @@ msgstr ""
 #: en/modules/ROOT/pages/occurrence-data.adoc:6
 #, no-wrap
 msgid "How to transform your data into occurrence data"
-msgstr ""
+msgstr "如何將您的資料轉換為物種出現紀錄"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/occurrence-data.adoc:8
@@ -193,7 +193,7 @@ msgstr ""
 #: en/modules/ROOT/pages/occurrence-data.adoc:48
 #, no-wrap
 msgid "Q. How do I indicate a species was absent?"
-msgstr ""
+msgstr "問：如何表示某地沒有這個物種（指出物種的缺如狀態）？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
@@ -205,7 +205,7 @@ msgstr ""
 #: en/modules/ROOT/pages/occurrence-data.adoc:52
 #, no-wrap
 msgid "Q. How can I generalize sensitive species occurrence data?"
-msgstr ""
+msgstr "問：如何模糊化敏感物種的出現紀錄？ "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:55
@@ -236,7 +236,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:63
 msgid "its sensitivity category"
-msgstr ""
+msgstr "敏感度類別"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:64
