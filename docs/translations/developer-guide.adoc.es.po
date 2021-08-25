@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-25 16:21\n"
+"PO-Revision-Date: 2021-08-25 17:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -203,27 +203,27 @@ msgstr "`POSTAction.java` simplifica el trabajo con formularios. Para modificar 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:71
 msgid "`prepare()`: load existing values based on \"id\" parameter and request object."
-msgstr ""
+msgstr "`prepare ()`: carga los valores existentes basados en el parámetro \"id\" y el objeto de solicitud."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:72
 msgid "`save()`: persist data AFTER the parameters interceptor did its job."
-msgstr ""
+msgstr "`save ()`: persiste los datos DESPUÉS de que el interceptor de parámetros hizo su trabajo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:73
 msgid "`delete()`: this method is called when a `POST` with a `delete=anything_but_null` parameter is received."
-msgstr ""
+msgstr "`delete ()`: este método se llama cuando se recibe un `POST` con un parámetro` delete = anything_but_null`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:75
 msgid "If the `id` given does not exist you can set the `notFound` property to true in any of the above methods. The action will then return a 404 result name."
-msgstr ""
+msgstr "Si el `id` dado no existe, puede establecer la propiedad` notFound` en \"true\" en cualquiera de los métodos anteriores. La acción luego devolverá un nombre de resultado 404."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:77
 msgid "To do validation, implement the `validate()` method of an action (instead of using XML validation definitions). See `SetupAction.java` as an example. Validation requires an `input` result name that shows the form when the form was not valid. Using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/docs/fielderror.html"
-msgstr ""
+msgstr "Para realizar la validación, implemente el método `validate ()` de una acción (en lugar de usar definiciones de validación XML). Consulte `SetupAction.java` como ejemplo. La validación requiere un nombre de resultado de \"input\" que muestre el formulario cuando el formulario no era válido. Usando el tema simple, también necesitamos declarar dónde mostrar los comentarios de validación: http://struts.apache.org/docs/fielderror.html"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:78
@@ -234,17 +234,17 @@ msgstr "Diseño HTML"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:81
 msgid "Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using Struts or JSP URL tags!"
-msgstr ""
+msgstr "Los enlaces deben utilizarse siempre  con `+++ $ {} URLbase /my/ipt/link.do +++ ', ¡por lo que rogamos se abstenga de utilizar etiquetas de Struts o JSP URL!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:83
 msgid "Forms use the `forms.ftl` macros instead of Struts 2 tags, such as the internationalization `@select` drop downs."
-msgstr ""
+msgstr "Los formularios utilizan las macros `forms.ftl` en lugar de las etiquetas Struts 2, como los menús desplegables de internacionalización` @ select`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:85
 msgid "Buttons use proper buttons or `input@type=submit` (forms) for add, delete, edit, create actions."
-msgstr ""
+msgstr "Los botones usan los botones adecuados o `input @ type = submit` (formularios) para agregar, eliminar, editar y crear acciones."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:87
@@ -254,12 +254,12 @@ msgstr "Guías de las mejores practicas generales"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:89
 msgid "http://htmldog.com/articles/formlayout/"
-msgstr ""
+msgstr "http://htmldog.com/articles/formlayout/"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:90
 msgid "https://www.sherpaglobal.com/top-10-html-form-layout-best-practices/"
-msgstr ""
+msgstr "https://www.sherpaglobal.com/top-10-html-form-layout-best-practices/"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:91
@@ -270,17 +270,17 @@ msgstr "JavaScript"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:94
 msgid "Only use jQuery (https://jquery.com/) for custom code."
-msgstr ""
+msgstr "Utilice solo jQuery (https://jquery.com/) para el código personalizado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:96
 msgid "Use jConfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when asking for confirmation, e.g. deletes."
-msgstr ""
+msgstr "Utilice el complemento jConfirmation (https://github.com/hdytsgt/jConfirmAction) cuando solicite confirmación, p. Ej. elimina."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:98
 msgid "Use jQuery dataTables (https://www.datatables.net/) plugin to enhance HTML tables with pagination, searching, etc."
-msgstr ""
+msgstr "Utilice el complemento jQuery dataTables (https://www.datatables.net/) para mejorar las tablas HTML con paginación, búsqueda, etc."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:99
@@ -291,12 +291,12 @@ msgstr "CSS"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:102
 msgid "https://960.gs/[960 grid system] is used for page layouts."
-msgstr ""
+msgstr "https://960.gs/[960 grid system] se utiliza para diseños de página."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:104
 msgid "Keep number of CSS classes to a minimum and consider using page specific CSS in `<head><style>` on that page."
-msgstr ""
+msgstr "Mantenga el número de clases de CSS al mínimo y considere usar CSS específico de la página en `<head> <style>` en esa página."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:105
@@ -307,7 +307,7 @@ msgstr "Administradores"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:108
 msgid "2 tier architecture only with interfaces + implementation."
-msgstr ""
+msgstr "Arquitectura de 2 niveles solo con interfaces + implementación."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:109
@@ -318,10 +318,10 @@ msgstr "Internacionalización"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:112
 msgid "Templates, actions and also important service messages should be localized using a single `ResourceBundle`."
-msgstr ""
+msgstr "Las plantillas, las acciones y también los mensajes de servicio importantes deben localizarse utilizando un solo `ResourceBundle`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:113
 msgid "Translated vocabularies can be used to populate select drop downs easily by calling `getI18nVocab(…)`."
-msgstr ""
+msgstr "Los vocabularios traducidos se pueden usar para completar los menús desplegables seleccionados fácilmente llamando a `getI18nVocab (…)`."
 
