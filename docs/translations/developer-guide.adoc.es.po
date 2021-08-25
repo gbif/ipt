@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-24 17:44\n"
+"PO-Revision-Date: 2021-08-25 00:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -132,58 +132,58 @@ msgstr "Configuración"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:42
 msgid "Inside WEB-INF of a running IPT is a single file `datadir.location`.  It points to the currently used data directory where all configuration and data is stored. If this file is deleted the setup interceptor will ask the user to assign a new (potentially existing) data directory."
-msgstr ""
+msgstr "Dentro de WEB-INF de un IPT en ejecución hay un solo archivo `datadir.location`. Apunta al directorio de datos utilizado actualmente donde se almacenan toda la configuración y los datos. Si se elimina este archivo, el interceptor de instalación le pedirá al usuario que asigne un directorio de datos nuevo (potencialmente existente)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:44
 msgid "The hidden file `.gbifreg` indicates whether the data directory is linked to the production or test registry. Once set, this cannot be changed from the UI!"
-msgstr ""
+msgstr "El archivo oculto \".gbifreg\" indica si el directorio de datos está vinculado al registro de producción o de prueba. Una vez configurado, esto no se puede cambiar desde la interfaz de usuario. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:46
 msgid "`AppConfig.java` contains all IPT wide configuration, in particular the `baseURL` (referred to in the UI and documentation as the \"Public URL\") for the application."
-msgstr ""
+msgstr "`AppConfig.java` contiene toda la configuración de IPT, en particular la` baseURL` (a la que se hace referencia en la interfaz de usuario y la documentación como la \"URL pública\") de la aplicación."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/developer-guide.adoc:47
 #, no-wrap
 msgid "Struts2"
-msgstr ""
+msgstr "Struts2"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:50
 msgid "`BaseAction.java` supplies the `AppConfig`, implements session aware and gives access to current user, implements a simpler `TextProvider` which is faster than the native Struts 2 one."
-msgstr ""
+msgstr "`BaseAction.java` proporciona el` AppConfig`, implementa el reconocimiento de sesión y da acceso al usuario actual, implementa un `TextProvider` más simple que es más rápido que el nativo Struts 2."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:52
 msgid "`SetupAndCancelInterceptor.java` checks if the data directory is configured and an admin user exists - otherwise redirects to the respective setup page."
-msgstr ""
+msgstr "`SetupAndCancelInterceptor.java` comprueba si el directorio de datos está configurado y existe un usuario administrador; de lo contrario, redirige a la página de configuración correspondiente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:54
 msgid "For each package (`root`, `portal`, `manage`, `admin`) its own interceptor stack exists."
-msgstr ""
+msgstr "Para cada paquete (`root`,` portal`, `manage`,` admin`) existe su propia pila de intercepción."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:56
 msgid "The \"input\" result name is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesn't validate."
-msgstr ""
+msgstr "El nombre del resultado de \"entrada\" se utiliza para mostrar el formulario. Por lo tanto, podemos usar el interceptor de validación estándar que usa el resultado de entrada cuando los datos no se validan."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:58
 msgid "The \"success\" result name is called when the form submit succeeded. In many cases this should simply be a redirect to another, often the corresponding list, action."
-msgstr ""
+msgstr "El nombre del resultado \"exitoso\" se llama cuando el envío del formulario se realizó correctamente. En muchos casos, esto debería ser simplemente una redirección a otra acción, a menudo la lista correspondiente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:60
 msgid "The action implements preparable, request aware and the execute method."
-msgstr ""
+msgstr "Las acciones que se pueden preparar, solicitud de cuenta y el método de ejecución."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:62
 msgid "execute: `FormAction` determines if a `POST` or `GET` is used and calls save (`POST`), delete (`POST + delete=true`) or nothing (`GET`)."
-msgstr ""
+msgstr "ejecutar: `FormAction` determina si se usa un` POST` o `GET` y llama a guardar (` POST`), eliminar (`POST + eliminar = verdadero`) o nada (` GET`)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:64
@@ -229,7 +229,7 @@ msgstr ""
 #: en/modules/ROOT/pages/developer-guide.adoc:78
 #, no-wrap
 msgid "HTML Design"
-msgstr ""
+msgstr "Diseño HTML"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:81
@@ -249,7 +249,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:87
 msgid "General best practice guides:"
-msgstr ""
+msgstr "Guías de las mejores practicas generales"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:89
@@ -265,7 +265,7 @@ msgstr ""
 #: en/modules/ROOT/pages/developer-guide.adoc:91
 #, no-wrap
 msgid "JavaScript"
-msgstr ""
+msgstr "JavaScript"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:94
