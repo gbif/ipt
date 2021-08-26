@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 19:53\n"
+"PO-Revision-Date: 2021-08-26 11:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -82,7 +82,7 @@ msgstr "Para aplicar una licencia a *nivel de conjunto de datos* en el IPT, elij
 #: en/modules/ROOT/pages/applying-license.adoc:22
 #, no-wrap
 msgid "ipt2/v22/LicenseDropdownWide.png"
-msgstr ""
+msgstr "ipt2/v22/LicenseDropdownWide.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:25
