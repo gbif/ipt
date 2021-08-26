@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-26 01:44\n"
+"PO-Revision-Date: 2021-08-26 02:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -64,7 +64,7 @@ msgstr "IPT GitHub 專案網站"
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:14
 msgid "The https://github.org/gbif/ipt[IPT GitHub site] is the project repository for all of the open source code, management, and documentation of the IPT."
-msgstr "[IPT GitHub 專案網站](https://github.org/gbif/ipt) 存放 IPT 專案所有的開源程式碼、管理內容及文件。"
+msgstr "[IPT GitHub 專案網站](https://github.org/gbif/ipt)存放 IPT 專案所有的開源程式碼、管理內容及文件。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:15
