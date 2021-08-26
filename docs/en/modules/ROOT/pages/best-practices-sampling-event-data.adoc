@@ -392,7 +392,7 @@ Several environmental measurements (e.g., temperature, wind speed, cloudiness) a
 |===
 
 .A Schematic of a Whittaker plot consisting of 13 sub-plots of varying area.
-image::figures/whittaker-plot.png[]
+image::figures/whittaker_plot.png[]
 
 === Additional information that could also be included or was previously included
 
