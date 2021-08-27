@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:24\n"
+"PO-Revision-Date: 2021-08-27 13:22\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,18 +25,18 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:4
 msgid "To understand how the IPT produces the DataCite metadata from the EML and IPT resource properties you can refer to the mappings below."
-msgstr ""
+msgstr "Para entender cómo el IPT produce los metadatos DataCite a partir de las propiedades de recursos de EML e IPT, puede consultar las correspondencias a continuación."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/datacite-mappings.adoc:5
 #, no-wrap
 msgid "Mappings"
-msgstr ""
+msgstr "Mapeo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:8
 msgid "Legend:"
-msgstr ""
+msgstr "Leyenda:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:10
