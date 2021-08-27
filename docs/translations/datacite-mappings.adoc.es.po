@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-27 13:22\n"
+"PO-Revision-Date: 2021-08-27 13:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,25 +42,25 @@ msgstr "Leyenda:"
 #: en/modules/ROOT/pages/datacite-mappings.adoc:10
 #, no-wrap
 msgid "*DataCite property*: lists the name of the DataCite metadata property\n"
-msgstr ""
+msgstr "*Propiedad DataCite*: enumera el nombre de la propiedad de metadatos Datacite\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:11
 #, no-wrap
 msgid "*Obl.*: Obligation, the property is (M) mandatory, \\(R) recommended, and (O) optional\n"
-msgstr ""
+msgstr "*Obl.*: Obligación, la propiedad es (M) obligatoria, \\(R) recomendada y (O)opcional\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:12
 #, no-wrap
 msgid "*Occ*: Occurrence/cardinality, the property is (1-n) required and repeatable, (1) required but not repeatable, (0-n) optional and repeatable, (0-1) optional but not repeatable\n"
-msgstr ""
+msgstr "*Occ*: Ocurrencia/cardinalidad, la propiedad es (1-n) requerida y repetible, (1) requerida pero no repetible, (0-n) opcional y repetible, (0-1) opcional pero no repetible\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:13
 #, no-wrap
 msgid "*IPT/EML property*: IPT resource property, or EML property the DataCite property maps to\n"
-msgstr ""
+msgstr "*Propiedad IPT/EML*: Propiedad del recurso IPT, o propiedad EML a la que corresponde la propiedad DataCite\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/datacite-mappings.adoc:60
