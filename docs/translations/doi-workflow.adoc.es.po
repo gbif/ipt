@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-27 00:14\n"
+"PO-Revision-Date: 2021-08-27 00:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/doi-workflow.adoc:1
 #, no-wrap
 msgid "DOI Workflows"
-msgstr ""
+msgstr "DOI Flujos de proceso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:4
@@ -47,17 +47,17 @@ msgstr "Idealmente, los editores asignan un nuevo DOI a un conjunto de datos cad
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:12
 msgid "The first step in assigning a DOI to a dataset, is reserving a DOI.  A publisher may reserve a DOI for a dataset after the mandatory metadata has been entered. The advantage of a reserved DOI is that it can be included in a manuscript prior to a dataset's official release."
-msgstr ""
+msgstr "El primer paso para asignar un DOI a un conjunto de datos, es reservar un DOI. Un publicador puede reservar un DOI para un conjunto de datos después de que se hayan ingresado los metadatos obligatorios. La ventaja de un DOI reservado es que se puede incluir en un manuscrito antes de la publicación oficial del conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:14
 msgid "The DOI will get registered the next time the resource is published, provided the resource is publicly available. This results in a major version change."
-msgstr ""
+msgstr "El DOI se registrará la próxima vez que se publique el recurso, siempre que el recurso esté disponible públicamente. Esto da como resultado un cambio en la versión principal."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:16
 msgid "Until the reserved DOI gets registered it can still be deleted. A graphical representation of this workflow is below:"
-msgstr ""
+msgstr "Hasta que el DOI reservado se registre, aún se puede eliminar. A continuación, se muestra una representación gráfica de este flujo de proceso:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/doi-workflow.adoc:17
