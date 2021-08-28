@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:15\n"
+"PO-Revision-Date: 2021-08-28 05:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -90,7 +90,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data"
-msgstr ""
+msgstr "發布調查活動資料的最佳實務導引"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
