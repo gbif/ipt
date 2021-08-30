@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-30 23:33\n"
+"PO-Revision-Date: 2021-08-30 23:52\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -372,7 +372,7 @@ msgstr "Dinamarca"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:100
 msgid "The http://danbif.dk/[Danish Biodiversity Information Facility (DanBIF)] provides helpdesk support to new publishers in Denmark, and hosting support for datasets on the http://danbif.au.dk/ipt/[DanBIF IPT]. Please contact DanBIF <icalabuig@snm.ku.dk> for assistance."
-msgstr "El  http://danbif.dk/[Servicio Danés de Información sobre Biodiversidad (DanBIF)] brinda soporte técnico a los nuevos editores en Dinamarca y soporte de alojamiento para conjuntos de datos en http://danbif.au.dk/ipt/[IPT DanBIF]. Comuníquese con DanBIF <icalabuig@snm.ku.dk> para obtener ayuda."
+msgstr "El  http://danbif.dk/[Servicio Danés de Información sobre Biodiversidad (DanBIF)] brinda soporte técnico a los nuevos publicadores en Dinamarca y soporte de alojamiento para conjuntos de datos en http://danbif.au.dk/ipt/[IPT DanBIF]. Comuníquese con DanBIF <icalabuig@snm.ku.dk> para obtener ayuda."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:101
@@ -394,7 +394,7 @@ msgstr "Francia"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:108
 msgid "http://www.gbif.fr/[GBIF France] provides helpdesk support to new publishers and hosts an IPT for each of these countries:"
-msgstr ""
+msgstr "http://www.gbif.fr/[GBIF Francia] proporciona asistencia técnica a los nuevos publicadores y aloja un IPT para cada uno de estos países:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:110
