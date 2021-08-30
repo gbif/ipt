@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-25 01:13\n"
+"PO-Revision-Date: 2021-08-30 22:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -137,7 +137,7 @@ msgstr "Centros de alojamiento de datos por tema"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:34
 msgid "<<Freshwater data>>"
-msgstr ""
+msgstr "<<Datos dulceacuícolas>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:35
@@ -198,38 +198,38 @@ msgstr "<<Portugal>>"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:48
 msgid "<<South Africa>>"
-msgstr ""
+msgstr "<<Sudáfrica>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:49
 msgid "<<Spain>> ⭐"
-msgstr ""
+msgstr "<<España>> ⭐"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:50
 msgid "<<Sweden>>"
-msgstr ""
+msgstr "<<Suecia>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:51
 msgid "<<Taiwan>>"
-msgstr ""
+msgstr "<<Taiwán>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:52
 msgid "<<USA>>"
-msgstr ""
+msgstr "<<EUA>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:54
 msgid "⭐ Designates a country with an IPT serving as a repository, able to assign DOIs to datasets underlying scientific publications in journals such as https://www.nature.com/sdata/[Scientific Data]."
-msgstr ""
+msgstr "⭐Designa a un país con un IPT que actúa como repositorio, capaz de asignar DOI a conjuntos de datos de publicaciones científicas en revistas como https://www.nature.com/sdata/[Datos científicos]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:55
 #, no-wrap
 msgid "Belgium"
-msgstr ""
+msgstr "Bélgica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:58
