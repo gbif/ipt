@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-08-19 20:41\n"
+"PO-Revision-Date: 2021-08-26 09:21\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -98,7 +98,7 @@ msgstr "Opciones de configuración de la instalación de Apache Tomcat "
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:23
 #, no-wrap
 msgid "screenshots/Capturetomcat1.JPG"
-msgstr "capturas de pantalla/Capturetomcat1.JPG"
+msgstr "screenshots/Capturetomcat1.JPG"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:25
@@ -158,7 +158,7 @@ msgstr "Página de bienvenida de Tomcat"
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:45
 #, no-wrap
 msgid "screenshots/Capturetomcat2.JPG"
-msgstr "captura de pantalla/Capturetomcat2.JPG"
+msgstr "screenshots/Capturetomcat2.JPG"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:48
@@ -175,7 +175,7 @@ msgstr "Página de administración de Tomcat"
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:49
 #, no-wrap
 msgid "screenshots/Capturetomcat4.JPG"
-msgstr "Captura de pantalla/Capturetomcat4.JPG"
+msgstr "screenshots/Capturetomcat4.JPG"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:51

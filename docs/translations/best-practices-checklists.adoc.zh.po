@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-08-19 13:29\n"
+"POT-Creation-Date: 2021-08-24 11:55+0000\n"
+"PO-Revision-Date: 2021-08-28 05:23\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:28
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/customization.adoc:12
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
@@ -35,7 +35,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Species Checklists"
-msgstr ""
+msgstr "發布物種名錄的最佳實務導引"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:4
@@ -163,7 +163,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:51
 #, no-wrap
 msgid "Checklist Metadata"
-msgstr ""
+msgstr "名錄詮釋資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:54
@@ -175,7 +175,7 @@ msgstr ""
 #: en/modules/ROOT/pages/checklist-data.adoc:1
 #, no-wrap
 msgid "Checklist Data"
-msgstr ""
+msgstr "物種名錄資料"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:58
