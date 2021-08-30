@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-30 22:54\n"
+"PO-Revision-Date: 2021-08-30 23:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -319,44 +319,44 @@ msgstr "http://www.natuurpunt.be[Natuurpunt]"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:80
 msgid "http://www.vmm.be[Flemish Environment Agency VMM]"
-msgstr ""
+msgstr "http://www.vmm.be[Agencia Flamenca de Medio Ambiente VMM]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:82
 msgid "The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] & http://www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. Publishers of marine data should refer to the section <<Marine data>>."
-msgstr ""
+msgstr "El Instituto Marino Flanders (VLIZ) aloja un servidor con múltiples instalaciones del IPT para http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] y http://www.emodnet-biology.eu [EMODnet Biology] en http://ipt.vliz.be. Los publicadores de datos marinos deben consultar la sección <<Datos marinos>>."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:83
 #, no-wrap
 msgid "Canada"
-msgstr ""
+msgstr "Canadá"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:86
 msgid "The http://www.cbif.gc.ca/[Canadian Biodiversity Information Facility (CBIF)] does not run an IPT."
-msgstr ""
+msgstr "El http://www.cbif.gc.ca/[Servicio Canadiense de Información sobre Biodiversidad (CBIF)] no ejecuta un IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:88
 msgid "Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the http://data.canadensys.net/ipt[Canadensys IPT]. Please contact Canadensys <canadensys.network@gmail.com> for assistance."
-msgstr ""
+msgstr "Por lo tanto, se recomienda que se comunique con a Canadensys, que brinda ayuda técnica a los publicadores nuevos en Canadá, y soporte de alojamiento para conjuntos de datos http://data.canadensys.net/ipt[IPT Canadensys]. Contacte a Canadensys <canadensys.network@gmail.com> para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:90
 msgid "The http://data.canadensys.net/ipt[Canadensys IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000855[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
-msgstr ""
+msgstr "El http://data.canadensys.net/ipt[IPT Canadensys] se reconoce como un repositorio en https://fairsharing.org/biodbcore-000855[FAIRSharing.org]. Un número cada vez mayor de revistas dirige a los autores a un repositorio apropiado en FAIRSharing.org para garantizar que los datos de las publicaciones científicas se depositen de manera estandarizada."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:91
 #, no-wrap
 msgid "Colombia"
-msgstr ""
+msgstr "Colombia"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:94
 msgid "The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the http://ipt.sibcolombia.net/sib/[SiB Colombia IPT]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance."
-msgstr ""
+msgstr "El http://www.sibcolombia.net/[Sistema de Información de Biodiversidad Colombiano (SiB Colombia)] proporciona servicio de soporte técnico a los publicadores nuevos en Colombia y soporte de alojamiento de conjuntos de datos en http://ipt.sibcolombia.net/sib/[IPT SiB Colombia]. Contacte al SiB Colombia <sib@humboldt.org.co> para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:96
