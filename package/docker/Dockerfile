@@ -1,5 +1,5 @@
 FROM tomcat:8.5-jdk8
-LABEL MAINTAINERS="Markus Döring <mdoering@gbif.org>, Matthew Blissett <mblissett@gbif.org>"
+LABEL MAINTAINERS="Matthew Blissett <mblissett@gbif.org>"
 
 ARG IPT_VERSION
 ARG IPT_NAME=ROOT
