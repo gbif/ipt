@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-20 15:30+0000\n"
-"PO-Revision-Date: 2021-08-20 16:36\n"
+"POT-Creation-Date: 2021-08-24 11:55+0000\n"
+"PO-Revision-Date: 2021-08-26 09:21\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:28
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/customization.adoc:12
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
@@ -42,7 +42,6 @@ msgstr "Citación sugerida"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/core.adoc:13
-#: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
@@ -73,7 +72,7 @@ msgstr "Versión 2.1."
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:5
 #, no-wrap
 msgid "figures/cover_art_adiatum.png"
-msgstr "figuras/cover_art_adiatum.png"
+msgstr "figures/cover_art_adiatum.png"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:15
@@ -248,7 +247,7 @@ msgstr "Captura de pantalla de un cuadro de diálogo de ayuda para el término \
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:62
 #, no-wrap
 msgid "figures/ipt_help_dialog.png"
-msgstr "figuras/ipt_help_dialog.png"
+msgstr "figures/ipt_help_dialog.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:65
@@ -265,7 +264,7 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:67
 #, no-wrap
 msgid "figures/ipt_field_validation.png"
-msgstr ""
+msgstr "figures/ipt_field_validation.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:70
@@ -292,7 +291,7 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:76
 #, no-wrap
 msgid "figures/ipt_published_versions.png"
-msgstr ""
+msgstr "figures/ipt_published_versions.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:79

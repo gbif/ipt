@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-20 15:30+0000\n"
+"POT-Creation-Date: 2021-08-26 08:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,7 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:36
 msgid ""
 "Example link to the account information page for the logged in user: image:"
-"ipt2/Control-LinkExample.png[]"
+"ipt2/controls/Control-LinkExample.png[]"
 msgstr ""
 
 #. type: Plain text
@@ -176,13 +176,13 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:44
 #, no-wrap
-msgid "**Trash icon** image:ipt2/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.\n"
+msgid "**Trash icon** image:ipt2/controls/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:46
 #, no-wrap
-msgid "**Calendar icon** image:ipt2/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.\n"
+msgid "**Calendar icon** image:ipt2/controls/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.\n"
 msgstr ""
 
 #. type: Plain text
@@ -194,7 +194,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:50
-msgid "image:ipt2/Control-TextBoxWithCalendarOpen.png[]"
+msgid "image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]"
 msgstr ""
 
 #. type: Plain text
@@ -207,14 +207,14 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:55
 msgid ""
 "Example table sorted in ascending order by the column labelled \"Name\".  "
-"image:ipt2/Control-TableSortedAscending.png[]"
+"image:ipt2/controls/Control-TableSortedAscending.png[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:58
 msgid ""
 "Example table sorted in descending order by the column labelled \"Type\".  "
-"image:ipt2/Control-TableSortedDescending.png[]"
+"image:ipt2/controls/Control-TableSortedDescending.png[]"
 msgstr ""
 
 #. type: Title ===

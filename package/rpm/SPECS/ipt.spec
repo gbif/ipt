@@ -1,6 +1,8 @@
 %define nr_ver 2.5.0
-%define nr_ver_extra -RC1
-%define release_number 0.1
+# Set to -RC1 etc for release candidates, and %nil for releases
+%define nr_ver_extra %nil
+# Set to 0.1 etc for release candidates, and 1 etc for releases
+%define release_number 1
 
 Name: ipt
 Version: %{nr_ver}
@@ -74,9 +76,11 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 %systemd_postun_with_restart ipt.service
 
 %changelog
-* Fri Jun 25 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0-0.1
+* Mon Aug 23 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0-1
+- Publish IPT 2.5.0 release.
+* Fri Jun 25 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0RC1-0.1
 - Publish IPT 2.5.0-RC1 pre-release.
-* Wed Sep 08 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.2-1
+* Tue Sep 08 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.2-1
 - Publish IPT 2.4.2 release.
 * Wed Sep 02 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.1-1
 - Publish IPT 2.4.1 release.

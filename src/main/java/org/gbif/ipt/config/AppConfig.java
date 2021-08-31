@@ -371,7 +371,7 @@ public class AppConfig {
         props.load(configStream);
         LOG.debug("Loaded default configuration from application.properties in classpath");
       }
-      if (dataDir.dataDir != null && dataDir.dataDir.exists()) {
+      if (dataDir.isConfigured()) {
         // load user configuration properties from data dir ipt.properties (if it exists)
         File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
         if (userCfgFile.exists()) {
