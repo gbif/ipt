@@ -280,7 +280,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public Cookie getCookie(String name) {
     if (req != null) {
       for (Cookie c : req.getCookies()) {
-        if (c.getName().equals(name)) {
+        if (name.equals(c.getName())) {
           return c;
         }
       }

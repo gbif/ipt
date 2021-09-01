@@ -34,7 +34,7 @@ public class ExtensionMapping implements Serializable {
   private Source source;
   private Extension extension; // persist only the rowType
   // TreeSet will ensure set of PropertyMappings remain ordered
-  private Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
+  private Set<PropertyMapping> fields = new TreeSet<>();
   private Integer idColumn;
   private String idSuffix;
   private RecordFilter filter;
@@ -49,7 +49,7 @@ public class ExtensionMapping implements Serializable {
   public List<String> getColumns(List<String[]> peek) {
     if (!peek.isEmpty()) {
       int columnsCount = peek.get(0).length;
-      List<String> columns = new ArrayList<String>(columnsCount);
+      List<String> columns = new ArrayList<>(columnsCount);
       for (int count = 0; count < columnsCount; count++) {
         String value = null;
         for (String[] row : peek) {
@@ -68,7 +68,7 @@ public class ExtensionMapping implements Serializable {
       }
       return columns;
     }
-    return new ArrayList<String>();
+    return new ArrayList<>();
   }
 
   public Extension getExtension() {

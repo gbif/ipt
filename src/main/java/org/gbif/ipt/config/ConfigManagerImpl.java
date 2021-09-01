@@ -211,11 +211,57 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     LOG.info("Loading resource configurations ...");
     // default creator used to populate missing resource creator when loading resources
     User defaultCreator = (userManager.list(Role.Admin).isEmpty()) ? null : userManager.list(Role.Admin).get(0);
-    resourceManager.load(dataDir.dataFile(DataDir.RESOURCES_DIR), defaultCreator);
+    File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
+    checkResourcesDirAtStartup(resourcesDir);
+    resourceManager.load(resourcesDir, defaultCreator);
 
     // start publishing monitor
     LOG.info("Starting Publishing Monitor...");
     publishingMonitor.start();
+  }
+
+  private void checkResourcesDirAtStartup(File resourcesDir) {
+    DataDir.DirStatus status = dataDir.getDirectoryReadWriteStatus(resourcesDir);
+    switch (status) {
+      case NOT_EXIST:
+        // No folder /resources
+        LOG.error("Resources directory does not exist: " + resourcesDir);
+        warnings.addStartupError("Resources directory does not exist: " + resourcesDir);
+        break;
+      case NO_ACCESS:
+        // No access to folder /resources
+        LOG.error("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
+        warnings.addStartupError("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
+        break;
+      case READ_ONLY:
+        // No write access to folder /resources
+        LOG.error("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
+        warnings.addStartupError("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
+        break;
+      case READ_WRITE:
+        // Write access to folder /resources
+        // Check subdirectories
+        File[] files = resourcesDir.listFiles();
+        if (files != null) {
+          for (File subResourceDir : files) {
+            DataDir.DirStatus subStatus = dataDir.getDirectoryReadWriteStatus(subResourceDir);
+            switch (subStatus) {
+              case NOT_EXIST:
+              case NO_ACCESS:
+                // No access to sub folders of /resources
+                LOG.error("At least one resource directory cannot be read. Please check access rights for: " + subResourceDir);
+                warnings.addStartupError("At least one resource directory cannot be read. Please check access rights for: " + subResourceDir);
+                break;
+              case READ_ONLY:
+                // No write access to sub folders of /resources
+                LOG.error("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
+                warnings.addStartupError("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
+                break;
+            }
+          }
+        }
+        break;
+    }
   }
 
   private void reloadLogger() {
@@ -427,4 +473,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     return false;
   }
 
+  public void setAdminEmail(String adminEmail) {
+    cfg.setProperty(AppConfig.ADMIN_EMAIL, adminEmail);
+  }
 }

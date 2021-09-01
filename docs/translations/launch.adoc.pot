@@ -1,0 +1,491 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-08-20 15:30+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/applying-license.adoc:3
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
+#: en/modules/ROOT/pages/citation.adoc:5
+#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
+#: en/modules/ROOT/pages/launch.adoc:3
+#: en/modules/ROOT/pages/occurrence-data.adoc:3
+#: en/modules/ROOT/pages/sampling-event-data.adoc:3
+#, no-wrap
+msgid "Introduction"
+msgstr ""
+
+#. type: Title =
+#: en/modules/ROOT/pages/launch.adoc:1
+#, no-wrap
+msgid "New IPT Version Launch Procedure"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:6
+msgid ""
+"A checklist documenting the ordered steps of the release and launch "
+"procedure of the IPT. Learn as you go – review and adjust the process to "
+"streamline it."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:8
+msgid ""
+"Many players are involved in the process, not least the GBIF Communications "
+"team and GBIF Systems Administrator. Make sure they are on standby ready to "
+"help before embarking on the launch."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:9
+#, no-wrap
+msgid "Pre-release steps"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:12
+msgid "Label all issues related to version"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:13
+msgid ""
+"Label issues with issue type (`Bug`, `Enhancement`, `Duplicate`, `Won’t "
+"fix`, etc.), used in statistical reporting."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:14
+msgid "Label issues requiring a change in the user manual with `UserManual`."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:15
+msgid ""
+"Assign milestone to each issue, used to group all issues addressed since "
+"last version was released. For example, here are https://github.com/gbif/ipt/"
+"issues?q=is%3Aissue+milestone%3A2.3.5+is%3Aclosed[all issues addressed in "
+"version 2.3.5]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:16
+msgid "Finalize work"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:17
+msgid ""
+"Work on each issue should be considered \"Done\". The meaning of \"Done\" "
+"being understood and agreed on by the entire team, but ideally this also "
+"includes having written automated testing, performed code reviews as well as "
+"UI testing."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:18
+msgid "Finalize translations"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:19
+msgid ""
+"Work translating each language (by volunteer translators in https://crowdin."
+"com/project/gbif-ipt[Crowdin]) should be both 100% translated and approved."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:20
+msgid "The translation pull request from Crowdin should be merged."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:21
+msgid ""
+"Open the https://ipt.gbif-uat.org/[UAT IPT] to volunteer translators to "
+"verify their work _in vivo_ (see step below)."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:22
+msgid "Test release candidate"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:23
+msgid ""
+"Update the https://ipt.gbif-uat.org/[UAT IPT] with the release candidate.  "
+"There is a helper script in `/etc/ipt/upgrade`."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:24
+msgid ""
+"When it makes sense, invite volunteer testers to join efforts by sending an "
+"invitation to the https://lists.gbif.org/mailman/listinfo/ipt[IPT mailing "
+"list] explaining how to request an account on the https://ipt.gbif-uat.org/"
+"[UAT IPT] and what areas of testing to focus on."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:25
+msgid ""
+"Test new features — issues labelled as `Enhancement`. Directly involve the "
+"reporter of the enhancement in testing, to verify its implementation meets "
+"their expectations."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:26
+msgid ""
+"Test bug fixes — issues labelled as `Bug`. Try to reproduce the bug "
+"following the detailed instructions provided in the issue description."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:27
+msgid ""
+"Test all areas possibly affected by code changes. Build a list of affected "
+"areas to test by scanning the commit history."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:28
+msgid ""
+"Always ensure that GBIF can index the data published by the IPT, for example "
+"using the GBIF Data Validator."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:29
+msgid ""
+"Put on different user hats, testing as an \"Admin\", \"Manager\" and "
+"\"Manager with registration rights\"."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:30
+msgid "Where applicable, test the IPT in both production and test mode."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:31
+msgid "Where applicable, perform cross-browser testing."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:32
+msgid "Update the xref:index.adoc[User Manual]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:33
+msgid "Add/update user manual content – see issues labelled as `UserManual`."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:34
+msgid ""
+"After applying all changes in English, send a message using Crowdin to "
+"request translators translate the user manual, though note this does not "
+"block the software release."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:35
+msgid "Update Release Notes"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:36
+msgid ""
+"The Release Notes should contain all the information needed to properly "
+"upgrade their IPT to the latest version. Typically it contains the following "
+"sections:"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:37
+#: en/modules/ROOT/pages/release-notes.adoc:5
+#, no-wrap
+msgid "Upgrade instructions"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:38
+#: en/modules/ROOT/pages/release-notes.adoc:65
+#, no-wrap
+msgid "Post-upgrade instructions"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:39
+#: en/modules/ROOT/pages/release-notes.adoc:73
+#, no-wrap
+msgid "Important changes in this release"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:40
+#: en/modules/ROOT/pages/release-notes.adoc:85
+#, no-wrap
+msgid "When all else fails"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:41
+#, no-wrap
+msgid "Release and public launch steps"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:44
+msgid "Release the new version using Jenkins"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:45
+msgid "Check the WAR, RPM and Docker image have been released!"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:46
+msgid ""
+"Create a release on GitHub (using the same tag), so people watching the "
+"repository are notified."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:47
+msgid "Update GBIF IPTs to new version"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:48
+msgid ""
+"Update production instances. There is a helper script in `/mnt/auto/ipt-data/"
+"upgrade`:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:49
+msgid "https://cloud.gbif.org/bid[BID IPT] — customized (see below for help)."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:50
+msgid ""
+"https://cloud.gbif.org/eubon[EU BON IPT] — customized (see below for help)."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:51
+msgid ""
+"https://cloud.gbif.org/griis[GRIIS IPT] — customized (see below for help)."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:52
+msgid ""
+"https://cloud.gbif.org/[Regional IPTs] — vanilla IPTs on cloud.gbif.org."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:53
+msgid ""
+"https://giasip.gbif.org[GIASIP IPT] — vanilla. Note this runs in test mode "
+"but is treated like it's in production."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:54
+msgid "Update Test/Sandbox instances:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:55
+msgid ""
+"https://ipt.gbif.org/[Demo IPT] — vanilla. Note It is always a good idea to "
+"cleanup old resources to save disk space."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:56
+msgid "https://ipt.gbif-uat.org/[UAT IPT] — vanilla."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:57
+msgid "https://ipt.gbif-dev.org/[Development IPT] — vanilla."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:58
+msgid ""
+"https://training-ipt-a.gbif.org/[Training IPT A], https://training-ipt-b."
+"gbif.org/[B] and https://training-ipt-c.gbif.org/[C] — customized.  This "
+"update can be delayed if required by the Participation team."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:59
+msgid ""
+"http://eubon-ipt.gbif-uat.org/[Test EU BON IPT] — vanilla. Seems no longer "
+"to be used."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:60
+msgid "Simple customizations for the above IPTs are done by"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:63
+msgid ""
+"changing the logo image in https://github.com/gbif/ipt/blob/master/src/main/"
+"webapp/WEB-INF/pages/inc/menu.ftl#L12[menu.ftl#L12],"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:64
+msgid ""
+"removing the test image in https://github.com/gbif/ipt/blob/master/src/main/"
+"webapp/WEB-INF/pages/inc/menu.ftl#L20[menu.ftl#L20] (where applicable) and"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:65
+msgid ""
+"tweaking the CSS in https://github.com/gbif/ipt/blob/master/src/main/webapp/"
+"styles/main.css#L297[main.css#L297]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:67
+msgid ""
+"before an upgrade, the custom logo image(s) and CSS need to be backed-up/"
+"preserved and then copied back to the expanded data directory."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:70
+msgid ""
+"For a major or minor release (but not a patch release), add a new version to "
+"the user manual"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:71
+msgid "Publish blog post"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:72
+msgid ""
+"Publicize in some detail, select improvements that users will value. For "
+"example, here is an example blog post for http://gbif.blogspot.com/2015/03/"
+"ipt-v22.html[IPT v2.2]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:73
+msgid ""
+"Be sure to acknowledge volunteer translators and coders that contributed to "
+"the release."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:74
+msgid ""
+"Review the blog post with the help of the GBIF Communications team before "
+"publishing."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:75
+msgid "Update xref:releases.adoc[release history]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:76
+msgid ""
+"Add section for new version including a link to the .war download, release "
+"notes, user manual, how many issues were addressed broken down by type, blog "
+"post and a short summary of what changed."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:77
+msgid "Add/update a plan for the next release, or use the generic statement."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:78
+msgid ""
+"Announce to https://lists.gbif.org/mailman/listinfo/ipt[IPT mailing list]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:79
+msgid ""
+"Keep the message short so that people actually read it, linking to the blog "
+"post when applicable that has more detailed information about the release. "
+"Here are a couple example announcements for https://lists.gbif.org/pipermail/"
+"ipt/2015-March/000591.html[2.2 major release], https://lists.gbif.org/"
+"pipermail/ipt/2017-January/000666.html[2.3.3 minor release] and https://"
+"lists.gbif.org/pipermail/ipt/2017-March/000671.html[2.3.4 security patch "
+"release]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:80
+msgid ""
+"Highlight GBIF's vigilance in keeping the IPT secure, while reminding people "
+"of the importance of updating their instance with this latest version."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:81
+msgid "Broadcast on social media"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:82
+msgid ""
+"Done using the https://www.facebook.com/gbifnews[GBIF Facebook] and https://"
+"twitter.com/GBIF[GBIF Twitter] accounts via the GBIF Communications team"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:83
+msgid "Reward volunteers"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:84
+msgid ""
+"Say thank you again, in addition to saying it in the blog post and mailing "
+"list announcement."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/launch.adoc:84
+msgid "Encourage volunteers to include this experience on their CV."
+msgstr ""

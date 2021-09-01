@@ -42,6 +42,7 @@ public class ConfigAction extends POSTAction {
   protected Boolean debug;
   protected Boolean analyticsGbif;
   protected String analyticsKey;
+  protected String adminEmail;
   protected Double latitude;
   protected Double longitude;
   protected Boolean archivalMode;
@@ -61,6 +62,10 @@ public class ConfigAction extends POSTAction {
 
   public String getAnalyticsKey() {
     return cfg.getAnalyticsKey();
+  }
+
+  public String getAdminEmail() {
+    return cfg.getAdminEmail();
   }
 
   public String getBaseUrl() {
@@ -158,8 +163,14 @@ public class ConfigAction extends POSTAction {
       }
     }
 
-    // http proxy
+    try {
+      configManager.setAdminEmail(adminEmail);
+    } catch (InvalidConfigException e) {
+      addActionError(getText(e.getMessage()) + " " + adminEmail);
+      return INPUT;
+    }
 
+    // http proxy
     try {
       configManager.setProxy(proxy);
     } catch (InvalidConfigException e) {
@@ -250,6 +261,10 @@ public class ConfigAction extends POSTAction {
   }
 
   // Getters / Setters follow
+  public void setAdminEmail(String adminEmail) {
+    this.adminEmail = adminEmail;
+  }
+
   public void setBaseUrl(String baseUrl) {
     this.baseUrl = baseUrl;
   }

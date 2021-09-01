@@ -38,6 +38,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
@@ -50,7 +54,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private final ClosableReportingIterator<String[]> rows;
     private final int column;
 
-    ColumnIterator(FileSource source, int column) throws IOException {
+    ColumnIterator(RowIterable source, int column) throws IOException {
       rows = source.rowIterator();
       this.column = column;
     }
@@ -106,6 +110,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
       source.getRdbms().enableLargeResultSet(this.stmt);
       this.column = column + 1;
+      LOG.debug("Executing SQL {}", sql);
       this.rs = stmt.executeQuery(sql);
       this.hasNext = rs.next();
       sourceName = source.getName();
@@ -163,6 +168,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this.conn = getDbConnection(source);
       this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
       source.getRdbms().enableLargeResultSet(this.stmt);
+      LOG.debug("Executing SQL {}", source.getSql());
       this.rs = stmt.executeQuery(source.getSql());
       this.rowSize = rs.getMetaData().getColumnCount();
       this.hasNext = rs.next();
@@ -277,6 +283,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setDateFormat(from.getDateFormat());
   }
 
+  public static void copyArchiveFileProperties(ArchiveFile from, UrlSource to) {
+    to.setEncoding(from.getEncoding());
+    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? null : from.getFieldsEnclosedBy().toString());
+    to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
+    to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
+    to.setDateFormat(from.getDateFormat());
+  }
+
   /**
    * Tests if the the file name is composed of alpha-numeric characters, plus ".", "-", "_", ")", "(", and " ".
    *
@@ -362,13 +376,99 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+  public UrlSource add(Resource resource, URI url) throws ImportException {
+    LOG.debug("ADDING URL SOURCE " + url);
+
+    UrlSource src;
+    String filename = FilenameUtils.getName(url.toString());
+    String name = FilenameUtils.getBaseName(url.toString());
+    LOG.debug("File name: {}", filename);
+
+    if (name != null) {
+      src = new UrlSource();
+      File file = new File(dataDir.tmpDir(), filename);
+
+      try (InputStream in = url.toURL().openStream()) {
+        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        src.setFile(file);
+        // analyze individual files using the dwca reader
+        Archive arch = ArchiveFactory.openArchive(src.getFile());
+        copyArchiveFileProperties(arch.getCore(), src);
+      } catch (UnknownDelimitersException e) {
+        // this file is invalid
+        LOG.warn(e.getMessage());
+        throw new ImportException(e);
+      } catch (IOException e) {
+        LOG.warn(e.getMessage());
+        throw new ImportException(e);
+      } catch (UnsupportedArchiveException e) {
+        // fine, can't read it with dwca library, but might still be a valid file for manual setup
+        LOG.warn(e.getMessage());
+      }
+
+      src.setName(name);
+      src.setUrl(url);
+      src.setResource(resource);
+
+      try {
+        src.setLastModified(new Date());
+
+        resource.addSource(src, true);
+      } catch (AlreadyExistingException e) {
+        throw new ImportException(e);
+      }
+
+      analyze(src);
+      return src;
+    } else {
+      throw new ImportException("Failed to get URL source's name");
+    }
+  }
+
   public String analyze(Source source) {
     if (source instanceof SqlSource) {
       return analyze((SqlSource) source);
-
+    } else if (source instanceof UrlSource) {
+      return analyze((UrlSource) source);
     } else {
       return analyze((FileSource) source);
     }
+  }
+
+  private String analyze(UrlSource src) {
+    BufferedWriter logWriter = null;
+    File logFile = dataDir.sourceLogFile(src.getResource().getShortname(), src.getName());
+    try {
+      FileUtils.deleteQuietly(logFile);
+
+      Set<Integer> emptyLines;
+      try {
+        emptyLines = src.analyze();
+      } catch (IOException e) {
+        return e.getMessage();
+      }
+
+      logWriter = new BufferedWriter(new FileWriter(logFile));
+      logWriter.write(
+          "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
+      if (!emptyLines.isEmpty()) {
+        for (Integer i : Ordering.natural().sortedCopy(emptyLines)) {
+          logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+        }
+      } else {
+        logWriter.write("No rows were skipped in this source");
+      }
+
+      logWriter.flush();
+    } catch (IOException e) {
+      LOG.warn("Can't write source log file " + logFile.getAbsolutePath(), e);
+    } finally {
+      if (logWriter != null) {
+        IOUtils.closeQuietly(logWriter);
+      }
+    }
+
+    return null;
   }
 
   private String analyze(SqlSource ss) {
@@ -384,6 +484,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         if ((ss.getJdbcDriver() != null) && !ss.getJdbcDriver().contains("odbc")) {
             stmt.setFetchSize(FETCH_SIZE);
         }
+        LOG.debug("Executing SQL {}", ss.getSqlLimited(FETCH_SIZE));
         rs = stmt.executeQuery(ss.getSqlLimited(FETCH_SIZE));
         // get number of columns
         ResultSetMetaData meta = rs.getMetaData();
@@ -445,7 +546,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         logWriter.write("No rows were skipped in this source");
       }
 
-
       logWriter.flush();
 
     } catch (IOException e) {
@@ -471,6 +571,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (source instanceof SqlSource) {
       return columns((SqlSource) source);
     }
+
+    if (source instanceof UrlSource) {
+      return ((UrlSource) source).columns();
+    }
+
     return ((FileSource) source).columns();
   }
 
@@ -487,6 +592,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         if ((source.getJdbcDriver() != null) && !source.getJdbcDriver().contains("odbc")) {
             stmt.setFetchSize(1);
         }
+        LOG.debug("Executing SQL {}", source.getSqlLimited(1));
         rs = stmt.executeQuery(source.getSqlLimited(1));
         // get column metadata
         ResultSetMetaData meta = rs.getMetaData();
@@ -633,9 +739,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       } else {
         return new SqlColumnIterator(src, column);
       }
-
     } else {
-      return new ColumnIterator((FileSource) source, column);
+      return new ColumnIterator((RowIterable) source, column);
     }
   }
 
@@ -646,12 +751,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   public List<String[]> peek(Source source, int rows) {
     if (source instanceof SqlSource) {
       return peek((SqlSource) source, rows);
+    } else {
+      // Excel, file and URL sources
+      return peek((RowIterable) source, rows);
     }
-    // both excel and file implement FileSource
-    return peek((FileSource) source, rows);
   }
 
-  private List<String[]> peek(FileSource source, int rows) {
+  private List<String[]> peek(RowIterable source, int rows) {
     List<String[]> preview = Lists.newArrayList();
     if (source != null) {
       try (ClosableReportingIterator<String[]> iter = source.rowIterator()){
@@ -660,7 +766,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           preview.add(iter.next());
         }
       } catch (Exception e) {
-        LOG.warn("Can't peek into source " + source.getName(), e);
+        LOG.warn("Can't peek into source " + ((Source) source).getName(), e);
       }
     }
 
@@ -680,6 +786,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         if ((source.getJdbcDriver() != null) && !source.getJdbcDriver().contains("odbc")) {
             stmt.setFetchSize(rows);
         }
+        LOG.debug("Executing SQL {}", source.getSqlLimited(rows + 1));
         rs = stmt.executeQuery(source.getSqlLimited(rows + 1));
         // loop over result
         while (rows > 0 && rs.next()) {
@@ -727,9 +834,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     try {
       if (source instanceof SqlSource) {
         return new SqlRowIterator((SqlSource) source);
+      } else {
+        // Excel, file and URL sources
+        return ((RowIterable) source).rowIterator();
       }
-      // both excel and file implement FileSource
-      return ((FileSource) source).rowIterator();
 
     } catch (Exception e) {
       LOG.error("Exception while reading source " + source.getName(), e);

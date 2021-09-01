@@ -1,0 +1,734 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-08-20 15:30+0000\n"
+"PO-Revision-Date: 2021-08-20 16:36\n"
+"Last-Translator: \n"
+"Language-Team: Spanish, Colombia\n"
+"Language: es_CO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: es-CO\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/gbif-metadata-profile.adoc.pot\n"
+"X-Crowdin-File-ID: 126\n"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/applying-license.adoc:3
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
+#: en/modules/ROOT/pages/citation.adoc:5
+#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
+#: en/modules/ROOT/pages/launch.adoc:3
+#: en/modules/ROOT/pages/occurrence-data.adoc:3
+#: en/modules/ROOT/pages/sampling-event-data.adoc:3
+#, no-wrap
+msgid "Introduction"
+msgstr "Introducción"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:21
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:16
+#: en/modules/ROOT/pages/dwca-guide.adoc:18
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
+#, no-wrap
+msgid "Suggested citation"
+msgstr "Citación sugerida"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/core.adoc:13
+#: en/modules/ROOT/pages/customization.adoc:9
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:17
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
+#: en/modules/ROOT/pages/how-to-publish.adoc:30
+#: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
+#, no-wrap
+msgid "Instructions"
+msgstr "Instrucciones"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/dwca-guide.adoc:7
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:7
+#, no-wrap
+msgid "Document Control"
+msgstr "Documento de control"
+
+#. type: Title =
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:1
+#, no-wrap
+msgid "GBIF Metadata Profile – How-to Guide"
+msgstr "Perfil de metadatos de GBIF - Guía práctica"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:4
+msgid "Version 2.1."
+msgstr "Versión 2.1."
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:5
+#, no-wrap
+msgid "figures/cover_art_adiatum.png"
+msgstr "figuras/cover_art_adiatum.png"
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:15
+#, no-wrap
+msgid "| Version | Description                  | Date of release | Author(s)\n\n"
+"| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0]     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR\n"
+"| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak\n"
+"| xref:gbif-metadata-profile.adoc[2.1]     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett\n"
+msgstr ""
+
+#.  The date uses the last change, ignoring formatting etc.
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
+msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
+msgid "_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._"
+msgstr "_Portada Crédito de arte: John Giez, esporofito de helecho Cabello de doncella, Adiatum sp._"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:27
+msgid "Documenting the provenance and scope of datasets is required in order to publish data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ that enable users to evaluate the fitness-for-use of a dataset."
+msgstr "Es necesario documentar la procedencia y alcance de los conjuntos de datos para publicar datos a través de la red de GBIF. La documentación de los conjuntos de datos es conocida como \"metadatos de los recursos\" que permite a los usuarios evaluar la aptitud para el uso de un conjunto de datos."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:29
+msgid "There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Resource Metadata template (pending), or generating a metadata document manually. The guide also serves as a reference guide to the GBIF Metadata Profile itself."
+msgstr "Hay varias maneras de escribir un documento de metadatos conforme al Perfil de Metadatos de GBIF (GMP). Esta guía práctica recorrerá las formas más comunes, como el uso del editor de metadatos del kit de herramientas de publicación integrado de GBIF (IPT), la plantilla de los metadatos de los recursos de GBIF (pendiente), o la generación manual de un documento de metadatos. La guía también sirve como guía de referencia para el propio Perfil de Metadatos de GBIF."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:31
+msgid "If metadata describing a dataset are also being published using Darwin Core Archives (DwC-A), the metadata file will be included in the DwC-A file that bundles it together with the data (based on the Darwin Core terms) that it describes. For help with making the complete DwC-A, refer to the xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
+msgstr "Si los metadatos que describen a un conjunto de datos se publican usando archivos Darwin Core (DwC-A), el archivo de metadatos se incluirá en el archivo DwC-A que lo agrupa junto con los datos (según los términos Darwin Core) que describe. Para obtener ayuda de cómo crear un archivo DwC-A completo consulte xref:dwca-guide.adoc[Darwin Core Archive: How-To Guide]."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:33
+msgid "Once the metadata document has been written and validated, it is ready to be published."
+msgstr "Una vez que el documento de metadatos ha sido escrito y validado, está listo para ser publicado."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:35
+msgid "Ultimately, the goal in publishing the metadata is that the data resource described therein can be fully documented and registered in the GBIF Registry. In so doing, the data resource becomes globally discoverable."
+msgstr "En última instancia, el objetivo al publicar los metadatos es que el recurso de datos descrito en ellos pueda ser completamente documentado y registrado en el Registro de GBIF. Al hacerlo, el recurso de datos se vuelve reconocible a nivel mundial."
+
+#. type: Title ==
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:36
+#, no-wrap
+msgid "Metadata Publishing Solutions"
+msgstr "Soluciones de publicación de metadatos"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:39
+msgid "If sampling-event data, occurrence data or checklist data are being published using the IPT, there is a built-in metadata authoring functionality that can be used to write an accompanying metadata document conforming to the GMP. It may be convenient to use this tool for authoring metadata even if no data is being published, especially if there is a need to author and manage several metadata documents. On the other hand, if only a few metadata documents are needed, it might be easiest to generate them manually, for example by modifying a sample document. Below is a description of each of these methodologies."
+msgstr "Si los datos de eventos de muestreo, datos de presencia o ausencia de especies o los datos de la lista de verificación se publican usando la IPT, hay una funcionalidad integrada de creación de metadatos que se puede usar para escribir un documento de metadatos adjunto que cumpla con el PMG (Perfil de Metadatos de GBIF). Puede ser conveniente utilizar esta herramienta para crear metadatos incluso si no se publican datos, especialmente si es necesario crear y administrar varios documentos de metadatos. Por otro lado, si solo se necesitan unos cuantos documentos de metadatos, podría ser más fácil generarlos manualmente, por ejemplo modificando un documento de muestra. A continuación se describe cada una de esas metodologías."
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:40
+#, no-wrap
+msgid "Publishing metadata using the IPT"
+msgstr "Publicación de metadatos usando la IPT"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:43
+msgid "The IPT contains a built-in metadata editor that allows you to easily fill in resource metadata, validate it, and produce an EML file that is always valid XML. Users are recommended to reuse an xref:data-hosting-centres.adoc[IPT data hosting centre] instead of installing and maintaining their own installation."
+msgstr "La IPT contiene un editor de metadatos incorporado que permite completar fácilmente los metadatos de los recursos, validarlos y producir un archivo EML que es siempre un XML válido. Se recomienda a los usuarios que reutilicen un xref:data-hosting-centres.adoc[IPT data hosting centre] en lugar de instalar y dar mantenimiento a su propia instalación."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:45
+msgid "In total, the IPT has 12 different metadata forms that logically organize metadata entry:"
+msgstr "En total, la IPT tiene 12 formularios de metadatos diferentes que organizan lógicamente el ingreso de metadatos:"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:47
+#: en/modules/ROOT/pages/manage-resources.adoc:272
+#, no-wrap
+msgid "Basic Metadata"
+msgstr "Metadatos Básicos"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:141
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:261
+#: en/modules/ROOT/pages/manage-resources.adoc:315
+#, no-wrap
+msgid "Geographic Coverage"
+msgstr "Cobertura Geográfica"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:140
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:243
+#: en/modules/ROOT/pages/manage-resources.adoc:326
+#, no-wrap
+msgid "Taxonomic Coverage"
+msgstr "Cobertura Taxonómica"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:142
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:279
+#: en/modules/ROOT/pages/manage-resources.adoc:350
+#, no-wrap
+msgid "Temporal Coverage"
+msgstr "Cobertura Temporal"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:51
+msgid "Other Keywords"
+msgstr "Otras palabras clave"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
+#: en/modules/ROOT/pages/manage-resources.adoc:389
+#, no-wrap
+msgid "Associated Parties"
+msgstr "Partes Asociadas"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
+#: en/modules/ROOT/pages/manage-resources.adoc:400
+#, no-wrap
+msgid "Project Data"
+msgstr "Datos del Proyecto"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
+#: en/modules/ROOT/pages/manage-resources.adoc:419
+#, no-wrap
+msgid "Sampling Methods"
+msgstr "Métodos de Muestreo"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
+#: en/modules/ROOT/pages/manage-resources.adoc:432
+#, no-wrap
+msgid "Citations"
+msgstr "Referencias"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:56
+#: en/modules/ROOT/pages/manage-resources.adoc:460
+#, no-wrap
+msgid "Collection Data"
+msgstr "Datos de la Colección"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:57
+msgid "Physical Data"
+msgstr "Datos físicos"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
+#: en/modules/ROOT/pages/manage-resources.adoc:511
+#, no-wrap
+msgid "Additional Metadata"
+msgstr "Metadatos Adicionales"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:60
+msgid "The xref:manage-resources.adoc#metadata[IPT User Manual] goes through each form and its respective fields in some depth. The form provides help dialogues to aid the user in understanding what an element means (Figure 1)."
+msgstr "El xref:manage-resources.adoc#metadata[Manual de usuario del IPT] aborda cada formulario y sus respectivos campos con cierta profundidad. El formulario proporciona ayuda al usuario para comprender el significado de cada uno de los elementos (Figura 1)."
+
+#. type: Block title
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:61
+#, no-wrap
+msgid "Screenshot of a help dialog for the term “Personnel Identifier"
+msgstr "Captura de pantalla de un cuadro de diálogo de ayuda para el término \"Identificador de la persona"
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:62
+#, no-wrap
+msgid "figures/ipt_help_dialog.png"
+msgstr "figuras/ipt_help_dialog.png"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:65
+msgid "To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2)."
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:66
+#, no-wrap
+msgid "Screenshot of the field validation message displayed when an email field is submitted with an irregular email address."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:67
+#, no-wrap
+msgid "figures/ipt_field_validation.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:70
+msgid "For further reference, a description of each element in the GBIF Metadata Profile can be found below with an accompanying example."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:72
+msgid "The IPT publishes the metadata document and ensures that it is validated against the GBIF Metadata Profile so the user does not have to worry about validation."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:74
+msgid "If at any time the metadata are modified, the user only has to update the document and click the “Publish” button on the Manage Resource page to publish a new version of the document (resource) (Figure 3)."
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:75
+#, no-wrap
+msgid "Screenshot of the Published Versions section of the Manage Resource page of the IPT."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:76
+#, no-wrap
+msgid "figures/ipt_published_versions.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:79
+msgid "At any point, the resource manager can choose to make the resource publicly available on the Internet and subsequently even register it with GBIF making it globally discoverable."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:80
+#, no-wrap
+msgid "Publishing metadata using the GBIF Metadata Template"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:83
+msgid "The GBIF Metadata Template is similar to a manuscript template that makes it easy to author resource metadata. Once data have been entered into the template, a metadata author will have to enter it into the IPT via the metadata editor. The required fields will all be clearly indicated. The IPT metadata editor ensures that all mandatory fields have been filled in and that any fields using controlled vocabularies get entered correctly, e.g. the country field. The IPT also ensures the generated metadata document is valid XML and validates against the GBIF Metadata Profile. Ultimately this two-step process (1. metadata template → 2. IPT metadata editor) can be used to generate a valid resource metadata document."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:85
+msgid "Where there is doubt about what a field means, refer to this guide to look up the description of its corresponding element with an accompanying example."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:86
+#, no-wrap
+msgid "Publishing metadata manually"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+msgid "Below is a simple set of instructions for non-IPT users wishing to generate their own custom EML XML file complying with the latest version of the GBIF Metadata Profile: *1.1*.  Refer to the following list to ensure it is completed properly:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:93
+msgid "Use the schema location for version 1.1 of the GBIF Metadata Profile in the `<eml:eml>` root element: `<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\" ...>`."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:94
+msgid "Set the `packageId` attribute inside the `<eml:eml>` root element. Remember, the `packageId` should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'` for the 1st version of the document, `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'` for the 2nd version, and so on."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:95
+msgid "Fill in all mandatory metadata elements specified by the schema, plus any additional metadata elements desired. When updating an existing EML file using an earlier version of the GBIF Metadata Profile, refer to the section below for a list of what's new in this version."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:96
+msgid "Ensure the EML file is valid XML. For assistance, refer to <<Validation of metadata,this section>>."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:97
+#, no-wrap
+msgid "Validation of metadata"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:100
+msgid "It is essential the XML metadata document is valid, both as an XML document and as validating against the GML schema. There are several options for how to do this. The https://www.oxygenxml.com/[Oxygen XML Editor] is an excellent tool with built-in validator you can use to do this. Java programmers could also do this for example by using the https://github.com/gbif/registry/blob/master/registry-metadata/src/main/java/org/gbif/registry/metadata/EmlValidator.java[EmlValidator.java] from the GBIF registry-metadata project."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:101
+#, no-wrap
+msgid "What changed in version 1.1 of the GMP since 1.0.2?"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:104
+#, no-wrap
+msgid "*Support for a machine readable license.* Note instructions on how to provide a machine readable license can be found xref:license.adoc[here].\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:105
+#, no-wrap
+msgid "Support for multiple contacts, creators, metadataProvider and project personnel\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:106
+#, no-wrap
+msgid "Support for userIds for any agent (e.g. ORCID)\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:107
+#, no-wrap
+msgid "Support for providing information about the frequency with which changes are made to the dataset\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:108
+#, no-wrap
+msgid "Support for providing a project identifier (e.g. to associate datasets under a common project)\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:109
+#, no-wrap
+msgid "The description can be broken into separate paragraphs versus all lumped into one\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:110
+#, no-wrap
+msgid "Support for providing information about multiple collections\n"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:111
+#, no-wrap
+msgid "Example files"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:114
+msgid "An example EML complying with v1.1 of the GBIF Metadata Profile can be found https://cloud.gbif.org/griis/eml.do?r=global&v=2.0[here]. Note this file has been generated by the https://cloud.gbif.org/griis/[GRIIS IPT]."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:115
+#, no-wrap
+msgid "Annex"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:117
+#, no-wrap
+msgid "Background to the GBIF Metadata Profile"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:120
+msgid "Metadata, literally “data about data” are an essential component of a data management system, describing such aspects as the “who, what, where, when and how” pertaining to a resource. In the GBIF context, resources are datasets, loosely defined as collections of related data, the granularity of which is determined by the data custodian. Metadata can occur in several levels of completeness. In general, metadata should allow a prospective end user of data to:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:122
+msgid "Identify/discover its existence,"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:123
+msgid "Learn how to access or acquire the data,"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:124
+msgid "Understand its fitness-for-use, and"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:125
+msgid "Learn how to transfer (obtain a copy of) the data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:127
+msgid "The GBIF Metadata Profile (GMP) was developed in order to standardize how resources get described at the dataset level in the GBIF http://www.gbif.org[Data Portal]. This profile can be transformed to other common metadata formats such as the http://marinemetadata.org/references/iso19139[ISO 19139 metadata profile]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:129
+msgid "In the GMP there is a minimum set of mandatory elements required for identification, but it is recommended that as many elements be used as possible to ensure the metadata are as descriptive and complete as possible."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:130
+#, no-wrap
+msgid "Metadata Elements"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:133
+msgid "The GBIF Metadata Profile is primarily based on the {eml-location}/index.html[Ecological Metadata Language (EML)]. The GBIF profile utilizes a subset of EML and extends it to include additional requirements that are not accommodated in the EML specification. The following tables provide short descriptions of the profile elements, and where relevant, links to more complete EML descriptions. The elements are categorized as follows:"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:135
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:146
+#, no-wrap
+msgid "Dataset (Resource)"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:136
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:176
+#, no-wrap
+msgid "Project"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:137
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:194
+#, no-wrap
+msgid "People and Organizations"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:138
+msgid "Keyword Set (General Keywords)"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:139
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:239
+#, no-wrap
+msgid "Coverage"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:143
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:293
+#, no-wrap
+msgid "Methods"
+msgstr "Métodos"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:144
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:311
+#, no-wrap
+msgid "Intellectual Property Rights"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:145
+msgid "Additional Metadata + NCD (Natural Collections Descriptions Data) Related"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:149
+msgid "The dataset field has elements relating to a single dataset (resource)."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:174
+#, no-wrap
+msgid "| Term name | Description\n\n"
+"| {eml-location}/eml-resource.html#alternateIdentifier[alternateIdentifier] | It is a Universally Unique Identifier (UUID) for the EML document and not for the dataset. This term is optional. A list of different identifiers can be supplied. E.g., 619a4b95-1a82-4006-be6a-7dbe3c9b33c5.\n\n"
+"| {eml-location}/eml-resource.html#title[title] | A description of the resource that is being documented that is long enough to differentiate it from other similar resources. Multiple titles may be provided, particularly when trying to express the title in more than one language (use the \"xml:lang\" attribute to indicate the language if not English/en). E.g. Vernal pool amphibian density data, Isla Vista, 1990-1996.\n\n"
+"| {eml-location}/eml-resource.html#creator[creator] | The resource creator is the person or organization responsible for creating the resource itself. See section “People and Organizations” for more details.\n\n"
+"| {eml-location}/eml-resource.html#metadataProvider[metadataProvider] | The metadataProvider is the person or organization responsible for providing documentation for the resource. See section “People and Organizations” for more details.\n\n"
+"| {eml-location}/eml-resource.html#associatedParty[associatedParty] | An associatedParty is another person or organization that is associated with the resource. These parties might play various roles in the creation or maintenance of the resource, and these roles should be indicated in the \"role\" element. See section “People and Organizations” for more details.\n\n"
+"| {eml-location}/eml-resource.html#contact[contact] | The contact field contains contact information for this dataset. This is the person or institution to contact with questions about the use, interpretation of a data set. See section “People and Organizations” for more details.\n\n"
+"| {eml-location}/eml-resource.html#pubDate[pubDate] | The date that the resource was published. The format should be represented as: CCYY, which represents a 4 digit year, or as CCYY-MM-DD, which denotes the full year, month, and day. Note that month and day are optional components. Formats must conform to ISO 8601. E.g. 2010-09-20.\n\n"
+"| {eml-location}/eml-resource.html#language[language] | The language in which the resource (not the metadata document) is written. This can be a well-known language name, or one of the ISO language codes to be more precise. GBIF recommendation is to use the ISO language code (https://api.gbif.org/v1/enumeration/language). E.g., English.\n\n"
+"| {eml-location}/eml-resource.html#additionalInfo[additionalInfo] | Information regarding omissions, instructions or other annotations that resource managers may wish to include with a dataset. Basically, any information that is not characterized by the other resource metadata fields.\n\n"
+"| {eml-location}/eml-resource.html#url[url] | The URL of the resource that is available online.\n\n"
+"| {eml-location}/eml-resource.html#abstract[abstract] | A brief overview of the resource that is being documented.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:179
+msgid "The project field contains information on the project in which this dataset was collected. It includes information such as project personnel, funding, study area, project design and related projects."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:192
+#, no-wrap
+msgid "| Term | Definition\n\n"
+"| {eml-location}/eml-project.html#title[title]  | A descriptive title for the research project. E.g., Species diversity in Tennessee riparian habitats\n\n"
+"| {eml-location}/eml-project.html#personnel[personnel] | The personnel field is used to document people involved in a research project by providing contact information and their role in the project.\n\n"
+"| {eml-location}/eml-project.html#funding[funding] | The funding field is used to provide information about funding sources for the project such as: grant and contract numbers; names and addresses of funding sources.\n\n"
+"| {eml-location}/eml-project.html#studyAreaDescription[studyAreaDescription] | The studyAreaDescription field documents the physical area associated with the research project. It can include descriptions of the geographic, temporal, and taxonomic coverage of the research location and descriptions of domains (themes) of interest such as climate, geology, soils or disturbances.\n\n"
+"| {eml-location}/eml-project.html#designDescription[designDescription] | The field designDescription contains general textual descriptions of research design. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work. Literature citations may also be used to describe the research design.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:197
+msgid "There are several fields that could represent either a person or an organization. Below is a list of the various fields used to describe a person or organization."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:225
+#, no-wrap
+msgid "| Term | Definition\n\n"
+"| {eml-location}/eml-party.html#givenName[givenName] | Subfield of individualName field. The given name field can be used for the first name of the individual associated with the resource, or for any other names that are not intended to be alphabetized (as appropriate). E.g., Jonny\n\n"
+"| {eml-location}/eml-party.html#surName[surName] | Subfield of individualName field. The surname field is used for the last name of the individual associated with the resource. This is typically the family name of an individual, for example, the name by which s/he is referred to in citations. E.g. Carson\n\n"
+"| {eml-location}/eml-party.html#organizationName[organizationName] | The full name of the organization that is associated with the resource. This field is intended to describe which institution or overall organization is associated with the resource being described. E.g., National Center for Ecological Analysis and Synthesis\n\n"
+"| {eml-location}/eml-party.html#positionName[positionName]| This field is intended to be used instead of a particular person or full organization name. If the associated person that holds the role changes frequently, then Position Name would be used for consistency. Note that this field, used in conjunction with 'organizationName' and 'individualName' make up a single logical originator. Because of this, an originator with only the individualName of 'Joe Smith' is NOT the same as an originator with the name of 'Joe Smith' and the organizationName of 'NSF'. Also, the positionName should not be used in conjunction with individualName unless only that individual at that position would be considered an originator for the data package. If a positionName is used in conjunction with an organizationName, then that implies that any person who currently occupies said positionName at organizationName is the originator of the data package. E.g., HAST herbarium data manager\n\n"
+"| {eml-location}/eml-party.html#electronicMailAddress[electronicMailAddress] | The electronic mail address is the email address for the party. It is intended to be an Internet SMTP email address, which should consist of a username followed by the @ symbol, followed by the email server domain name address. E.g. jcuadra@gbif.org\n\n"
+"| {eml-location}/eml-party.html#deliveryPoint[deliveryPoint] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The delivery point field is used for the physical address for postal communication. E.g., GBIF Secretariat, Universitetsparken 15\n\n"
+"| {eml-location}/eml-party.html#role[role] | Use this field to describe the role the party played with respect to the resource. E.g. technician, reviewer, principal investigator, etc.\n\n"
+"| {eml-location}/eml-party.html#phone[phone] | The phone field describes information about the responsible party's telephone, be it a voice phone, fax. E.g. +4530102040\n\n"
+"| {eml-location}/eml-party.html#postalCode[postalCode] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The postal code is equivalent to a U.S. zip code, or the number used for routing to an international address.  E.g., 52000.\n\n"
+"| {eml-location}/eml-party.html#city[city] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The city field is used for the city name of the contact associated with a particular resource. E.g. San Diego.\n"
+"| {eml-location}/eml-party.html#administrativeArea[administrativeArea] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The administrative area field is the equivalent of a 'state' in the U.S., or Province in Canada. This field is intended to accommodate the many types of international administrative areas. E.g. Colorado\n\n"
+"| {eml-location}/eml-party.html#country[country] | Subfield of the address field that describes the physical or electronic address of the responsible party for a resource. The country field is used for the name of the contact's country. The country name is most often derived from the ISO 3166 country code list. E.g., Japan.\n\n"
+"| {eml-location}/eml-party.html#onlineUrl[onlineUrl] | A link to associated online information, usually a web site. When the party represents an organization, this is the URL to a website or other online information about the organization. If the party is an individual, it might be their personal web site or other related online information about the party. E.g., https://www.example.edu/botany.\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:227
+#, no-wrap
+msgid "KeywordSet (General Keywords)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:230
+msgid "The keywordSet field is a wrapper for the keyword and keywordThesaurus elements, both of which are required together."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:237
+#, no-wrap
+msgid "| Term         | Definition\n\n"
+"| {eml-location}/eml-resource.html#keyword[keyword] | A keyword or key phrase that concisely describes the resource or is related to the resource. Each keyword field should contain one and only one keyword (i.e., keywords should not be separated by commas or other delimiters). E.g., biodiversity.\n\n"
+"| {eml-location}/eml-resource.html#keywordThesaurus[keywordThesaurus]| The name of the official keyword thesaurus from which keyword was derived. If an official thesaurus name does not exist, please keep a placeholder value such as “N/A” instead of removing this element as it is required together with the keyword element to constitute a keywordSet. E.g., IRIS keyword thesaurus.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:242
+msgid "Describes the extent of the coverage of the resource in terms of its *spatial* extent, *temporal* extent, and *taxonomic* extent."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:246
+msgid "A container for taxonomic information about a resource. It includes a list of species names (or higher level ranks) from one or more classification systems. Please note the taxonomic classifications should not be nested, just listed one after the other."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:259
+#, no-wrap
+msgid "| Term                 | Definition\n\n"
+"| {eml-location}/eml-coverage.html#generalTaxonomicCoverage[generalTaxonomicCoverage] | Taxonomic Coverage is a container for taxonomic information about a resource. It includes a list of species names (or higher level ranks) from one or more classification systems. A description of the range of taxa addressed in the data set or collection. Use a simple comma separated list of taxa. E.g., \"All vascular plants were identified to family or species, mosses and lichens were identified as moss or lichen.\"\n\n"
+"| {eml-location}/eml-coverage.html#taxonomicClassification[taxonomicClassification] | Information about the range of taxa addressed in the dataset or collection.\n\n"
+"| {eml-location}/eml-coverage.html#taxonRankName[taxonRankName]| The name of the taxonomic rank for which the Taxon rank value is provided. E.g., phylum, class, genus, species.\n\n"
+"| {eml-location}/eml-coverage.html#taxonRankValue[taxonRankValue] | The name representing the taxonomic rank of the taxon being described. E.g. Acer would be an example of a genus rank value, and rubrum would be an example of a species rank value, together indicating the common name of red maple. It is recommended to start with Kingdom and include ranks down to the most detailed level possible.\n\n"
+"| {eml-location}/eml-coverage.html#commonName[commonName]              | Applicable common names; these common names may be general descriptions of a group of organisms if appropriate. E.g., invertebrates, waterfowl.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:264
+msgid "A container for spatial information about a resource; allows a bounding box for the overall coverage (in lat long), and also allows description of arbitrary polygons with exclusions."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:277
+#, no-wrap
+msgid "| Term                | Definition\n\n"
+"| {eml-location}/eml-coverage.html#geographicDescription[geographicDescription] | A short text description of a dataset's geographic areal domain. A text description is especially important to provide a geographic setting when the extent of the dataset cannot be well described by the \"boundingCoordinates\". E.g., \"Manistee River watershed\", \"extent of 7 1/2 minute quads containing any property belonging to Yellowstone National Park\"\n\n"
+"| {eml-location}/eml-coverage.html#westBoundingCoordinate[westBoundingCoordinate]| Subfield of boundingCoordinates field covering the W margin of a bounding box. The longitude in decimal degrees of the western-most point of the bounding box that is being described. E.g., -18.25, +25, 45.24755.\n\n"
+"| {eml-location}/eml-coverage.html#eastBoundingCoordinate[eastBoundingCoordinate]| Subfield of boundingCoordinates field covering the E margin of a bounding box. The longitude in decimal degrees of the eastern-most point of the bounding box that is being described.   E.g., -18.25, +25, 45.24755.\n\n"
+"| {eml-location}/eml-coverage.html#northBoundingCoordinate[northBoundingCoordinate] | Subfield of boundingCoordinates field covering the N margin of a bounding box.  The longitude in decimal degrees of the northern-most point of the bounding box that is being described. E.g., -18.25, +25, 65.24755.\n\n"
+"| {eml-location}/eml-coverage.html#northBoundingCoordinate[southBoundingCoordinate] | Subfield of boundingCoordinates field covering the S margin of a bounding box. The longitude in decimal degrees of the southern-most point of the bounding box that is being described. E.g., -118.25, +25, 84.24755.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:282
+msgid "This container allows coverage to be a single point in time, multiple points in time, or a range of dates."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:291
+#, no-wrap
+msgid "| Term       | Definition\n\n"
+"| {eml-location}/eml-coverage.html#beginDate[beginDate] | Subfield of rangeOfDates field: It may be used multiple times with a endDate field to document multiple date ranges.   A single time stamp signifying the beginning of some time period. The calendar date field is used to express a date, giving the year, month, and day. The format should be one that complies with the International Standards Organization's standard 8601. The recommended format for EML is YYYY-MM-DD, where Y is the four digit year, M is the two digit month code (01 - 12, where January = 01), and D is the two digit day of the month (01 - 31). This field can also be used to enter just the year portion of a date.  E.g. 2010-09-20\n\n"
+"| {eml-location}/eml-coverage.html#endDate[endDate]| Subfield of rangeOfDates field: It may be used multiple times with a beginDate field to document multiple date ranges.  A single time stamp signifying the end of some time period. The calendar date field is used to express a date, giving the year, month, and day. The format should be one that complies with the International Standards Organization's standard 8601. The recommended format for EML is YYYY-MM-DD, where Y is the four digit year, M is the two digit month code (01 - 12, where January = 01), and D is the two digit day of the month (01 - 31). This field can also be used to enter just the year portion of a date. E.g. 2010-09-20.\n\n"
+"| {eml-location}/eml-coverage.html#singleDateTime[singleDateTime] | The SingleDateTime field is intended to describe a single date and time for an event.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:296
+msgid "This field documents scientific methods used in the collection of the resource. It includes information on items such as tools, instrument calibration and software."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:309
+#, no-wrap
+msgid "| Term            | Definition\n\n"
+"| {eml-location}/eml-methods.html#methodStep[methodStep] | The methodStep field allows for repeated sets of elements that document a series of procedures followed to produce a data object. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken.\n\n"
+"| {eml-location}/eml-methods.html#qualityControl[qualityControl] | The qualityControl field provides a location for the description of actions taken to either control or assess the quality of data resulting from the associated method step.\n\n"
+"| {eml-location}/eml-methods.html#sampling[sampling]  | Description of sampling procedures including the geographic, temporal and taxonomic coverage of the study.\n\n"
+"| {eml-location}/eml-methods.html#studyExtent[studyExtent] | Subfield of the sampling field. The coverage field allows for a textual description of the specific sampling area, the sampling frequency (temporal boundaries, frequency of occurrence), and groups of living organisms sampled (taxonomic coverage). The field studyExtent represents both a specific sampling area and the sampling frequency (temporal boundaries, frequency of occurrence). The geographic studyExtent is usually a surrogate (representative area of) for the larger area documented in the \"studyAreaDescription\".\n\n"
+"| {eml-location}/eml-methods.html#samplingDescription[samplingDescription] | Subfield of the sampling field. The samplingDescription field allows for a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:314
+msgid "Contain a rights management statement for the resource, or a reference to a service providing such information."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:321
+#, no-wrap
+msgid "| Term           | Definition\n\n"
+"| {eml-location}/eml-dataset.html#purpose[purpose] | A description of the purpose of this dataset.\n\n"
+"| {eml-location}/eml-resource.html#intellectualRights[intellectualRights] | A rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might include requirements for use, requirements for attribution, or other requirements the owner would like to impose. E.g., © 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:323
+#, no-wrap
+msgid "Additional Metadata + http://www.tdwg.org/activities/ncd/[Natural Collections Description Data (NCD)] Related"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:326
+msgid "The additionalMetadata field is a container for any other relevant metadata that pertains to the resource being described. This field allows EML to be extensible in that any XML-based metadata can be included in this element. The elements provided here in the GMP include those required for conformance with ISO 19139 and a subset of NCD (Natural Collections Descriptions) elements."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:359
+#, no-wrap
+msgid "| Term                   | Definition\n\n"
+"| dateStamp | The dateTime the metadata document was created or modified. E.g., 2002-10-23T18:13:51.235+01:00\n\n"
+"| metadataLanguage | The language in which the metadata document (as opposed to the resource being described by the metadata) is written. Composed of an ISO639-2/T three-letter language code and an ISO3166-1 three-letter country code. E.g., en_GB\n\n"
+"| hierarchyLevel | Dataset level to which the metadata applies; default value is “dataset” E.g., dataset\n\n"
+"| {eml-location}/eml-literature.html#citation[citation] | The citation for the work itself. See {eml-location}/eml-literature.html#citation[eml]\n\n"
+"| bibliography | A list of citations (see below) that form a bibliography on literature related / used in the dataset\n\n"
+"| physical | A container element for all of the elements that let you describe the internal/external characteristics and distribution of a data object (e.g., dataObject, dataFormat, distribution). Can repeat.\n\n"
+"| resourceLogoUrl | URL of the logo associated with a resource. E.g., http://www.gbif.org/logo.jpg\n\n"
+"| parentCollectionIdentifier | Subfield of collection field. Is an optional field. Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built.\n\n"
+"| collectionName | Subfield of collection field. Is an optional field. Official name of the Collection in the local language.\n\n"
+"| collectionIdentifier | Subfield of collection field.  Is an optional field. The URI (LSID or URL) of the collection. In RDF, used as URI of the collection resource.\n\n"
+"| formationPeriod | Text description of the time period during which the collection was assembled. E.g., \"Victorian\", or \"1922 - 1932\", or \"c. 1750\".\n\n"
+"| livingTimePeriod | Time period during which biological material was alive (for palaeontological collections).\n\n"
+"| specimenPreservationMethod | Picklist keyword indicating the process or technique used to prevent physical deterioration of non-living collections. Expected to contain an instance from the Specimen Preservation Method Type Term vocabulary.   E.g., formaldehyde.\n\n"
+"| jgtiCuratorialUnit\n"
+"a| A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by\n\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:360
+#, no-wrap
+msgid "an exact number of “JGI-units” in the collection plus a measure of uncertainty (± x);\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:363
+#, no-wrap
+msgid "a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted.\n\n"
+"The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitized. This is to avoid having to update the numbers too often. The number of non-public data (not digitized or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.\n"
+msgstr ""
+

@@ -1,67 +1,44 @@
 [#ftl output_format="HTML"]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-    <head>
-	    <meta name="copyright" lang="en" content="GBIF" />
-		<title>[@s.text name="admin.config.setup.title"/]</title>
-		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/reset.css" />
-		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/text.css" />
-		<link rel="stylesheet" type="text/css" media="all" href="${baseURL}/styles/960_24_col.css" />
- 		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css"/>
-		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/font-awesome.min.css" media="all" />			
- 		<link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
-	<!-- for css overrides needed for customizations -->
-		<link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
+<html lang="en" class="h-100">
+<head>
+    <meta name="copyright" lang="en" content="GBIF" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>[@s.text name="admin.config.setup.title"/]</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css">
+
+    <!-- IPT CSS -->
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
+
+    <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
+
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
-    <script type="text/javascript" src="${baseURL}/js/modernizr.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/jquery/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="${baseURL}/js/global.js"></script>
+    <script src="${baseURL}/js/modernizr.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-3.5.1.min.js"></script>
+    <script src="${baseURL}/js/global.js"></script>
 
-		<style>
-      h1 {
-      	color: #077A2D;
-      	font-size: 30px;
-      }
-		</style>
-    <script type="text/javascript">
-      $(document).ready(function(){
-        initHelp();
-      	[#-- see global.js for function defs --]
-      	initMenu();
-      });
-    </script>
+</head>
+<body class="bg-light d-flex flex-column h-100">
 
- 	</head>
- 	<body>
-		<div class="page clearfix" id="page">
-			<header id="section-header" class="section section-header">
-        <div id="zone-user-wrapper" class="zone-wrapper zone-user-wrapper clearfix">
-          <div id="zone-user" class="zone zone-user clearfix container_24">
-            <div class="region-inner region-branding-inner">
-              <div class="branding-data clearfix">
-                <div class="logo-img">
-                  <a href="${baseURL}" rel="home" title="GBIF Logo" class="active">
-                    <img src="${baseURL}/images/GBIF-2015-standard-ipt.png" />
-                  </a>
+<header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-gbif-green-gradient py-1 shadow-sm">
+        <div class="container">
+            <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
+                <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <div class="navbar-nav me-auto mb-2 mb-lg-0"></div>
+                <div class="d-flex">
+                    [#include "/WEB-INF/pages/inc/languages.ftl"/]
                 </div>
-                <hgroup class="site-name-slogan">
-                  <h1 class="site-name"><a href="${baseURL}" rel="home" title="Home" class="active">Integrated Publishing Toolkit</a><span class="logoSuperscript">(IPT)</span></h1>
-                  <h6 class="site-slogan">free and open access to biodiversity data</h6>
-                </hgroup>
-                <div id="region-user-second" class="region-inner region-user-second-inner">
-                  <ul id="language-menu">
-                    <li>
-                      [#include "/WEB-INF/pages/inc/languages.ftl"/]
-                    </li>
-                  </ul>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-    </header>
-    <section id="section-content" class="section section-content menu-pull">
-      <div id="zone-content-wrapper" class="zone-wrapper zone-content-wrapper clearfix">  
-        <div id="zone-content" class="zone zone-content clearfix container_24"> 
-          <div class="grid_18 region region-content" id="region-content">
-      		
+    </nav>
+
+</header>

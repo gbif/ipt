@@ -48,11 +48,15 @@ public class AppConfig {
   public static final String IPT_LATITUDE = "location.lat";
   public static final String IPT_LONGITUDE = "location.lon";
   public static final String DEV_VERSION = "dev.version";
+  public static final String ADMIN_EMAIL = "admin.email";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   private Properties properties = new Properties();
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
   private DataDir dataDir;
   private REGISTRY_TYPE type;
+
+  public static final int CSRF_TOKEN_EXPIRATION = 15 * 60; // in seconds
+  public static final int CSRF_PAGE_REFRESH_DELAY = 10 * 60 * 1000; // in milliseconds, should be lower than CSRF_TOKEN_EXPIRATION
 
   // to support compatibility with historical data directories, we default to the original hard coded
   // types that were scattered across the code.
@@ -130,6 +134,10 @@ public class AppConfig {
     return base;
   }
 
+  public String getAdminEmail() {
+    return properties.getProperty(ADMIN_EMAIL);
+  }
+
   public DataDir getDataDir() {
     return dataDir;
   }
@@ -164,6 +172,10 @@ public class AppConfig {
     } catch (NumberFormatException e) {
       return 3;
     }
+  }
+
+  public int getCsrfPageRefreshDelay() {
+    return CSRF_PAGE_REFRESH_DELAY;
   }
 
   public String getProperty(String key) {
@@ -359,7 +371,7 @@ public class AppConfig {
         props.load(configStream);
         LOG.debug("Loaded default configuration from application.properties in classpath");
       }
-      if (dataDir.dataDir != null && dataDir.dataDir.exists()) {
+      if (dataDir.isConfigured()) {
         // load user configuration properties from data dir ipt.properties (if it exists)
         File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
         if (userCfgFile.exists()) {

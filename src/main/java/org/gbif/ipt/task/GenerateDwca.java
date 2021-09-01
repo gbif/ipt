@@ -641,6 +641,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       addMessage(Level.INFO, msg);
     }
 
+    if (!coreFile.hasTerm(id)) {
+      addMessage(Level.WARN, coreFile.getTitle() + " does not have the core ID field " + id.simpleName()
+          + ". The data cannot be indexed on GBIF.");
+    }
+
     // reporting
     currRecords = 0;
     currRecordsSkipped = 0;

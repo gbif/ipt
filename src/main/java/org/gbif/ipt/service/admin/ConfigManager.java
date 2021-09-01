@@ -114,4 +114,9 @@ public interface ConfigManager {
    */
   boolean setupComplete();
 
+  /**
+   * Simple wrapper around AppConfig to set the IPT administrator email.
+   * The modified AppConfig is not immediately persisted - remember to call save() at some point!
+   */
+  void setAdminEmail(String adminEmail);
 }

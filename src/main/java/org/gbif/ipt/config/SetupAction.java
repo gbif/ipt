@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -91,8 +92,21 @@ public class SetupAction extends BaseAction {
     if (Strings.isNullOrEmpty(baseURL)) {
       // try to detect default values if not yet configured
       if (StringUtils.trimToNull(cfg.getBaseUrl()) == null) {
-        // Tries to guess the current baseURL on the running server from the context
+        Enumeration<String> headerNames = req.getHeaderNames();
+        if (headerNames != null) {
+          LOG.debug("Dumping request headers used to detect initial baseURL");
+          while (headerNames.hasMoreElements()) {
+            String header = headerNames.nextElement();
+            LOG.debug("» {}: {}", header, req.getHeader(header));
+          }
+        }
+
+        // Try to guess the current baseURL on the running server from the context
         baseURL = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
+        if ("https".equalsIgnoreCase(req.getHeader("X-Forwarded-Proto"))) {
+          baseURL = baseURL.replaceFirst("^http://", "https://");
+        }
+
         LOG.info("Auto-Detected IPT BaseURL=" + baseURL);
       } else {
         baseURL = cfg.getBaseUrl();
@@ -160,14 +174,19 @@ public class SetupAction extends BaseAction {
    */
   public String setup() {
     if (isHttpPost() && dataDirPath != null) {
-
       // since IPT v2.2, user must check that they have read and understood disclaimer
       if (!readDisclaimer) {
         addFieldError("readDisclaimer", getText("admin.config.setup.read.error"));
         return INPUT;
       }
+    }
 
-      File dd = new File(dataDirPath.trim());
+    if ((dataDir.dataDir != null && (!dataDir.dataDir.exists() || dataDir.isConfiguredButEmpty())) ||
+      isHttpPost() && dataDirPath != null) {
+
+      LOG.info("Set up data directory {}", dataDir.dataDir);
+
+      File dd = dataDirPath != null ? new File(dataDirPath.trim()) : dataDir.dataDir;
       try {
         if (dd.isAbsolute()) {
           boolean created = configManager.setDataDir(dd);
@@ -192,8 +211,10 @@ public class SetupAction extends BaseAction {
         addActionError(msg);
       }
     }
+
     if (dataDir.isConfigured()) {
       // the data dir is already/now configured, skip the first setup step
+      LOG.info("Skipping setup step 1");
       return SUCCESS;
     }
     return INPUT;
@@ -253,6 +274,8 @@ public class SetupAction extends BaseAction {
           if (getModeSelected().equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
             if (URLUtils.isLocalhost(burl)) {
               addFieldError("baseURL", getText("admin.config.baseUrl.invalidBaseURL"));
+              // get the correct baseURL from context
+              baseURL = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
               return INPUT;
             } else if (URLUtils.isHostName(burl)) {
               // warn the base URL is same as machine name so user ensures it is visible on the Internet

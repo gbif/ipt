@@ -1,0 +1,335 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-08-17 15:33+0000\n"
+"PO-Revision-Date: 2021-08-17 15:55\n"
+"Last-Translator: \n"
+"Language-Team: Chinese Traditional\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: zh-TW\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/darwin-core.adoc.pot\n"
+"X-Crowdin-File-ID: 106\n"
+
+#. type: Title =
+#: en/modules/ROOT/pages/darwin-core.adoc:1
+#, no-wrap
+msgid "Darwin Core"
+msgstr "達爾文核心集"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:5
+msgid "Darwin Core is a http://www.tdwg.org/activities/darwincore/[TDWG] standard, which is based on the ideas of the popular http://dublincore.org/documents/dcmi-terms/[terms from the Dublin Core Metadata Initiative].  A fundamental principle of the Darwin Core as a library of terms is to keep the definition of terms distinct from the technology used to share them, e.g. XML or RDF."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/darwin-core.adoc:6
+#, no-wrap
+msgid "IPT and Darwin Core"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:8
+msgid "The IPT has core biodiversity data types built-in, which are based on Darwin Core (DwC) terms. The dataset types are Occurrence, Checklist, and Metadata records, each of which has a fixed set of terms to describe it."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/darwin-core.adoc:9
+#, no-wrap
+msgid "Darwin Core History"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:13
+msgid "Until the ratification of Darwin Core as a standard it was used to describe primary species occurrence data, in particular through DiGIR and XML encoding.  When we were looking for a very simple checklist data exchange format and with the rise of tagging of species on Flickr, it became apparent that simple terms for biodiversity in the tradition of Dublin Core would be very useful - and indeed very much overlapping with the Darwin Core terms in use already."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/darwin-core.adoc:14
+#, no-wrap
+msgid "Terms"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:16
+msgid "All Darwin Core terms are defined in http://rs.tdwg.org/dwc/terms/index.htm[Darwin Core Terms: a quick reference guide]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:20
+msgid "A single DwC term, in IPT often called a property, can be used once for each record.  Generally it is free text, but the definition often recommends certain formats or vocabularies to use, e.g. the ISO 2 letter country codes for the `dwc:countryCode` term."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/darwin-core.adoc:21
+#, no-wrap
+msgid "Patterns"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/darwin-core.adoc:22
+#, no-wrap
+msgid "ID terms"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:26
+msgid "DwC provides many of terms for identifiers. Some can be used to define a record (such as occurrenceID for an Occurrence record; taxonID for a Taxon record), while others (such as higherGeographyID) refer to an identifier for information stored outside the record.  For example `namePublishedInID` is used to refer to an identifier (perhaps a DOI or other resolvable identifier) for the publication in which a scientificName was originally established.  Note that `taxonID` used within an occurrence dataset would function as a pointer to a taxon defined somewhere else, such as in a checklist dataset, while `taxonID` within a Taxon record would act as the identifier for that record."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:29
+msgid "Most ID terms have a corresponding full text term, e.g. `acceptedNameUsageID` and `acceptedNameUsage`.  These serve two purposes:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:31
+msgid "In the absence of an identifier they can be used to refer to another record, in this case the accepted/valid taxon."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:32
+msgid "They provide a human readable context that persists even if the identifier cannot be resolved"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:34
+msgid "It therefore makes sense to provide both if possible."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/darwin-core.adoc:35
+#, no-wrap
+msgid "Denormalized Hierarchies"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:39
+msgid "The geography and taxonomy can be expressed as a flexible hierarchy of places or taxa through the terms `higherParentNameUsage(ID)` and `higherGeography(ID)`.  In addition to this _adjacency list_ , the most popular ranks can be published as a denormalized hierarchy for each record, effectively repeating this information across many records. But it does provide a quick, short and human readable classification for each record in isolation of the entire dataset."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:41
+msgid "Taxonomic denormalized classification: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus`"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:42
+msgid "Geographic denormalized classification: `continent`, `waterBody`, `islandGroup`, `island`, `country` / `countryCode`, `stateProvince`, `county`, `municipality`"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:45
+msgid "As with full text ID terms above this introduces the possibility of _data integrity problems_, as the ID term might resolve into something different than the denormalized hierarchy. In this case the IPT follows the recommendation of the following precedence of terms for resolving the hierarchy:"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/darwin-core.adoc:49
+#, no-wrap
+msgid "ID term >> Text term >> Denormalized term\n"
+"higherTaxonID >> higherTaxon >> kingdom,family,...\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/darwin-core.adoc:51
+#, no-wrap
+msgid "Verbatim terms"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:55
+msgid "Quite a few terms have a corresponding verbatim term. This is to cater the publication of the exact verbatim transcription of certain attributes as they were found in the underlying specimen label, observation fieldbook or literature. This way the `verbatimEventDate` can be used to publish the exact transcription of the collecting date, while `eventDate` can be encoded in a standard ISO date time representation."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/darwin-core.adoc:56
+#, no-wrap
+msgid "Primary data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:60
+msgid "All DwC terms can be used to describe an occurrence record.  It is recommended to publish at least the following terms.  Terms flagged with !!! have to be present to be recognized by the current GBIF indexing:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:62
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord[basisOfRecord] !!!"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:63
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID[occurrenceID]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:64
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#institutionCode[institutionCode] !!!"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:65
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#collectionCode[collectionCode] !!!"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:66
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber[catalogNumber] !!!"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:67
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#recordedBy[recordedBy]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:68
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#eventDate[eventDate]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:69
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#year[year]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:70
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#typeStatus[typeStatus]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:71
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#scientificName[scientificName] !!!"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:72
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#kingdom[kingdom]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:73
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#family[family]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:74
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#locality[locality]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:75
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#decimalLongitude[decimalLongitude]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:76
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#decimalLatitude[decimalLatitude]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:77
+msgid "http://rs.tdwg.org/dwc/terms/index.htm#coordinateUncertaintyInMeters[coordinateUncertaintyInMeters]"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/darwin-core.adoc:78
+#, no-wrap
+msgid "Example"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/darwin-core.adoc:106
+#, no-wrap
+msgid "occurrenceID=96db9d09-596d-409c-8626-f4460078d0eb\n"
+"institutionCode=BGBM\n"
+"collectionCode=B\n"
+"basisOfRecord=preservedspecimen\n"
+"catalogNumber=1159\n"
+"eventDate=1999-08-06 00:00:00.0\n"
+"collector=Markus Döring\n"
+"continent=Asia\n"
+"country=TR\n"
+"stateProvince=Adana\n"
+"locality=Aladaglari, lower Narpiz Deresi, next to fountain, 2900m\n"
+"minimumElevationInMeters=2900\n"
+"decimalLatitude=37.82800\n"
+"decimalLongitude=35.13600\n"
+"geodeticDatum=WGS84\n"
+"identifiedBy=Markus Döring\n"
+"scientificName=Festuca anatolica subsp. anatolica\n"
+"kingdom=Plantae\n"
+"phylum=Magnoliophyta\n"
+"class=\n"
+"order=Cyperales\n"
+"family=Poaceae\n"
+"genus=Festuca\n"
+"specificEpithet=anatolica\n"
+"infraspecificEpithet=anatolica\n"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/darwin-core.adoc:108
+#, no-wrap
+msgid "Checklists"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:110
+msgid "Checklists are confined to ± the taxonomic subset of all Darwin Core terms."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:112
+msgid "See the xref:checklist-data.adoc[recommendations on how to publish species checklists]."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/darwin-core.adoc:113
+#, no-wrap
+msgid "The Darwin Core Archive"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:116
+msgid "Darwin Core Archives (DwC-A) are the new, primary means of publishing data to the GBIF network.  They contain an _entire dataset_, are based on _simple text files_ and can be created fairly easily without the IPT with _custom software_."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/darwin-core.adoc:117
+#, no-wrap
+msgid "Darwin Core Extensions"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:120
+msgid "Recognizing that DwC only covers the core biodiversity metadata, extensions to Darwin core are a common need across all communities.  The simplest way to do so is to create new terms in a new namespace and simply extend a regular dwc record with these terms."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:123
+msgid "Often multiple _subrecords_ for an extension is desired, such as many common names for a species or multiple images for a specimen.  In order to share these richer, related records the *star scheme* is used, whereby an extension consists of multiple records, each linked to a core dwc record. Any number of extension records potentially from different extensions (e.g. images & identification) for a single core record is possible."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/darwin-core.adoc:124
+#, no-wrap
+msgid "The Archive Format"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/darwin-core.adoc:130
+msgid "The Darwin Core Archive format provides a means to publish dwc records plus extensions in a relatively simple, text-based format.  A Darwin Core Archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file.  The format follows the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core text guidelines].  A typical package is illustrated in the diagram below and consists of components described in http://code.google.com/p/gbif-ecat/wiki/DwCArchive[details here]."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/darwin-core.adoc:131
+#, no-wrap
+msgid "figures/dwca.png"
+msgstr ""
+

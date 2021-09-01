@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"PO-Revision-Date: 2021-08-18 16:15\n"
+"Last-Translator: \n"
+"Language-Team: Spanish, Colombia\n"
+"Language: es_CO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: es-CO\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/initial-setup.adoc.pot\n"
+"X-Crowdin-File-ID: 136\n"
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/administration.adoc:7
+#: en/modules/ROOT/pages/initial-setup.adoc:67
+#, no-wrap
+msgid "ipt2/administration/IPTAdminBeforeRegistration.png"
+msgstr "ipt2/administration/IPTAdminBeforeRegistration.png"
+
+#. type: Title =
+#: en/modules/ROOT/pages/initial-setup.adoc:1
+#, no-wrap
+msgid "Initial Setup"
+msgstr "Configuración inicial del IPT"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/initial-setup.adoc:3
+#: en/modules/ROOT/pages/installation.adoc:3
+#, no-wrap
+msgid "Data directory"
+msgstr "Directorio de Datos"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:6
+msgid "This step is only shown if the data directory was not already configured during installation."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:8
+msgid "The first time the IPT is run, you will be presented with a few simple steps to prepare the IPT for use. The IPT setup page (see screen image, below) is the first of two setup pages. It requires publishers to confirm that they have read and understand a disclaimer regarding data licensing. Next it requires a location where the data for the IPT installation can be stored. The format of the location entered on the page must conform with the standard for an absolute path to a directory on the operating system where the IPT is installed; relative paths are not supported. For example, use a path such as `C:\\datadir` for Windows environments or `/srv/datadir` for Unix and Mac OS X environments. The IPT must have write permission to the selected location. If it does, the path can be entered in the text box provided and then click on the button labelled \"Save\" - the directory will be created if it doesn't already exist. It is permissible to create the data directory first with the appropriate write permissions, then enter the absolute path to the directory in the text box and click on the \"Save\" button."
+msgstr "La primera vez que el IPT sea ejecutado, se presentarán unos pasos simples para preparar el IPT para su uso. La página de instalación del IPT (ver imagen de la pantalla a continuación) es la primera de dos páginas de instalación y requiere una ubicación en la que se puedan almacenar los datos para la instalación del IPT. El formato de la ubicación introducida en la página debe cumplir con el estándar para una ruta absoluta a un directorio en el sistema operativo en el que está instalado el IPT, este formato no soporta rutas relativas. Por ejemplo, utilice una ruta como `C:\\datadir` para entornos Windows o `/srv/datadir` para entornos Unix y Mac OS X. El IPT debe tener permiso de escritura en la ubicación seleccionada. Si lo tiene, la ruta se puede introducir en el cuadro de texto y luego hacer clic en el botón \"Guardar\", con lo cual se creará el directorio en caso de que este no exista. Es posible crear primero el directorio de datos con los permisos de escritura adecuados, y a continuación introducir la ruta absoluta al directorio en el cuadro de texto y hacer clic en el botón \"Guardar\"."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:10
+msgid "Do not select a data directory that is vulnerable to inadvertent changes or removal. Do not use `/tmp`, for example, on systems where this folder may be emptied on a system restart. *The data directory should be backed up regularly in keeping with an appropriate disaster recovery plan.* Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation."
+msgstr "no seleccione un directorio de datos que sea vulnerable a cambios o eliminaciones accidentales. No utilice /tmp, por ejemplo, en sistemas en los que se elimine el contenido de esta carpeta en un reinicio del sistema. *Se deberá realizar una copia de seguridad del directorio de datos con regularidad, de acuerdo con un plan apropiado de recuperación ante desastres.* La pérdida de los contenidos del directorio de datos tendrá como resultado la pérdida de recursos, del usuario y de otra información de configuración y personalizaciones a la instalación IPT."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:12
+msgid "If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup. Clicking on \"Save\" in this case will bypass the page titled IPT setup II and present the IPT Administration page."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:14
+msgid "If you receive an error stating the location is not writable, see xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[the FAQ item on this]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:16
+msgid "Click on the language name in the upper right hand corner to see whether your preferred language is available to use the IPT in."
+msgstr "haga clic en el nombre del idioma que está en la esquina superior derecha para verificar si el idioma de su preferencia está disponible para usar el IPT."
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/initial-setup.adoc:17
+#, no-wrap
+msgid "ipt2/setup/IPTSetup1.png"
+msgstr "ipt2/setup/IPTSetup1.png"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/initial-setup.adoc:19
+#, no-wrap
+msgid "Administrator user and URLs"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:21
+msgid "If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:23
+msgid "Default administrator"
+msgstr "Administrador predeterminado"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:26
+msgid "The default administrator will have a distinct login and the authority to make changes to all aspects of the IPT installation. The default administrator will be able to make additional user accounts, including other administrators having the same authority to make changes. Though administrators can be added and removed, the IPT must always have at least one."
+msgstr "El Administrador predeterminado tendrá un nombre de usuario definido y la autoridad para realizar cambios en todos los aspectos de la instalación del IPT. Puede crear cuentas de usuario adicionales, incluyendo otros administradores que tengan la misma autoridad para hacer cambios. Aunque los administradores pueden ser añadidos y eliminados, el IPT siempre debe tener al menos un responsable asignado."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:28
+#, no-wrap
+msgid "*Email* - the full, active email address of the default administrator of the IPT installation.\n"
+msgstr "*Correo electrónico* - La dirección de correo electrónico completa y activa del administrador predeterminado en la instalación del IPT.\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:29
+#, no-wrap
+msgid "*First name* - the first name of the default administrator.\n"
+msgstr "*Nombre* - El nombre del administrador predeterminado.\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:30
+#, no-wrap
+msgid "*Last name* - the last name of the default administrator.\n"
+msgstr "*Apellido* - El apellido del administrador predeterminado.\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:31
+#, no-wrap
+msgid "*Password* - a password for the default administrator.\n"
+msgstr "*Contraseña* - Una contraseña para el administrador predeterminado.\n"
+
+#. type: delimited block =
+#: en/modules/ROOT/pages/initial-setup.adoc:35
+msgid "The password should be made secure and safe from loss, as it is not recoverable from the IPT application."
+msgstr "La contraseña debe ser segura y estar a salvo de perderse, ya que no es recuperable desde la aplicación del IPT."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:37
+#, no-wrap
+msgid "*Verify password* - an exact copy of the password as entered in the Password text box to confirm that it was entered as intended.\n"
+msgstr "*Verificar contraseña* - Una copia exacta de la contraseña tal como se ingresó en el cuadro de texto Contraseña, para confirmar que se haya ingresado correctamente.\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:40
+msgid "IPT Mode"
+msgstr "Modo del IPT"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:43
+msgid "for a given installation, this selection is final and cannot be changed later on."
+msgstr "para una instalación dada, esta selección es definitiva y no puede ser cambiada posteriormente."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:45
+msgid "The IPT mode decides whether or not the hosted resources will be indexed for public search access by GBIF. GBIF recommends IPT administrators try Test mode first in order to understand the registration process, and then reinstall in Production mode for formal data publishing. To switch from test to production mode or vice versa, you will have to reinstall your IPT and repeat any configurations you made."
+msgstr "El modo del IPT determina si los recursos alojados serán o no indexados por GBIF, con el fin de facilitar el acceso público. GBIF recomienda a los administradores del IPT, usar en un principio el modo Prueba para entender el proceso de registro, y luego reinstalarlo en modo Producción para efectuar publicaciones formales."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:47
+#, no-wrap
+msgid "*IPT mode*\n"
+msgstr "*Modo del IPT*\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:49
+msgid "Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (which can be requested from DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:52
+msgid "Public URL"
+msgstr "URL pública"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:54
+msgid "The public, Internet-accessible URL that points to the root of this IPT installation. The URL is detected automatically if possible.  On production systems it needs to be accessible via the Internet in order for the IPT to function fully.  Configuring the IPT Public URL to use localhost, for example, will not allow the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow resources to be publicly accessible."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:56
+msgid "Institutional proxy URL (optional)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:58
+msgid "If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `\\http://proxy.example.org:8080`."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/initial-setup.adoc:59
+#, no-wrap
+msgid "ipt2/setup/IPTSetup2.png"
+msgstr "ipt2/setup/IPTSetup2.png"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:62
+msgid "When all of the information on the page is complete and correct, click on the button labelled \"Save\" to complete the IPT setup process. If a problem occurs, an error message will appear at the top of the page with recommendations about how to resolve the issue. Provided the issue has been resolved, restarting the web server will make it disappear. If the setup is successful, a page confirming the success of the setup will appear."
+msgstr "Cuando toda la información en la página esté completa y correcta, haga clic en el botón \"Guardar\" para completar el proceso de instalación del IPT. Si se presenta algún problema, aparecerá un mensaje de error en la parte superior de la página con recomendaciones acerca de cómo resolverlo. Siempre y cuando el problema haya sido resuelto, al reiniciar el servidor web este mensaje de error desaparecerá. Si la configuración fue exitosa, aparecerá una página de confirmación de la configuración."
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/initial-setup.adoc:63
+#, no-wrap
+msgid "ipt2/setup/IPTSetupFinished.png"
+msgstr "ipt2/setup/IPTSetupFinished.png"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:66
+msgid "Click on the button labelled \"Continue\" to open the IPT Administration page (see the screen image, below), from which further configuration of the IPT can be accomplished. Please review the explanations of all of the Administration functions before continuing. Details about the options presented on this screen are given in the xref:administration.adoc[Administration Menu] section. Before adding data resources to the IPT, the administrator must, at a minimum, verify the IPT settings, set the GBIF registration options, and associate the IPT with an organization. The Organizations button is disabled by default until the GBIF registration options have been set."
+msgstr "Haga clic en el botón \"Continuar\" para abrir la página de Administración del IPT (véase a continuación la imagen de la pantalla), en la que se pueden realizar configuraciones adicionales. Por favor revise la explicación de todas las funciones de Administración antes de continuar. Detalles sobre las opciones presentadas en esta pantalla se muestran en la sección xref:administration.adoc[Menú Administración]. Antes de añadir fuentes de datos al IPT, el administrador debe, como mínimo, verificar la configuración del IPT, definir las opciones de registro en GBIF, y asociar el IPT con una organización. El botón “Organizaciones” estará desactivado predeterminadamente hasta que se hayan establecido las opciones de registro en GBIF."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/initial-setup.adoc:69
+msgid "Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the following sections of this user manual."
+msgstr ""
+

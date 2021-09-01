@@ -1,0 +1,1171 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-08-20 15:30+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/applying-license.adoc:3
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
+#: en/modules/ROOT/pages/citation.adoc:5
+#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:3
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
+#: en/modules/ROOT/pages/launch.adoc:3
+#: en/modules/ROOT/pages/occurrence-data.adoc:3
+#: en/modules/ROOT/pages/sampling-event-data.adoc:3
+#, no-wrap
+msgid "Introduction"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:7
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:5
+#, no-wrap
+msgid "Document control"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:21
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:16
+#: en/modules/ROOT/pages/dwca-guide.adoc:18
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:17
+#, no-wrap
+msgid "Suggested citation"
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:59
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
+#, no-wrap
+msgid "Darwin Core Archive data files in 'star schema'"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:62
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:55
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:14
+#, no-wrap
+msgid "Data file formatting recommendations"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:68
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:61
+msgid "Be careful and consistent with quotation."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:69
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:62
+msgid "Encode text files as UTF-8"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:70
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:63
+msgid ""
+"Make sure you replace all line breaks in a data field, i.e. `\\r` `\\n` or `"
+"\\r\\n` with either simple spaces or use 2 characters like `$$` to replace `"
+"\\r` to escape the line break if the intention is to preserve them. Another "
+"option is to replace line breaks with the HTML `<br>` tag."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:71
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
+msgid ""
+"Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `"
+"\\N` or `\\NULL`, but no other text sequence!"
+msgstr ""
+
+#. type: Title =
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:1
+#, no-wrap
+msgid "Best Practices in Publishing Sampling-event data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
+msgid "Version 2.2"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:14
+#, no-wrap
+msgid ""
+"| Version | Description             | Date of release | Author(s)\n"
+"\n"
+"| https://links.gbif.org/ipt-sample-data-primer[1.0]   | Release Version         | 2015    | Éamonn Ó Tuama\n"
+"| 2.0 | Transferred to wiki, major changes | May 2017   | Kyle Braak\n"
+"| https://github.com/gbif/ipt/wiki/BestPracticesSamplingEventData[2.1] | Minor changes, clean up | Aug 2018   | Marie Grosjean\n"
+"| xref:best-practices-sampling-event-data.adoc[2.2] | Conversion to Asciidoctor | May 2021 | Matthew Blissett\n"
+msgstr ""
+
+#.  The date uses the last change, ignoring formatting etc.
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
+msgid ""
+"GBIF (2018) Best Practices in Publishing Sampling-event data, version 2.2. "
+"Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-"
+"version}/best-practices-sampling-event-data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:24
+msgid ""
+"This guide provides details on how to utilize the Darwin Core Archive (DwC-"
+"A) format as a means to share sampling-event information in a standard way. "
+"It focuses on specific components of the Darwin Core Archive format, and "
+"some of the supporting extensions to the core event data class, and provides "
+"recommendations on how to best utilize these components to maximize the "
+"value of the shared data. This guide does not provide a detailed overview of "
+"the Darwin Core Archive format, instead please refer to the xref:darwin-core."
+"adoc[Darwin Core Archives How-to Guide]."
+msgstr ""
+
+#.  By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource.
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:28
+msgid ""
+"The DwC-A format and the specific profile described here represent an "
+"internationally recognized and ratified data exchange format for sharing "
+"sampling-event data. All data exchange standards must strike a balance "
+"between the technical scope and capacity on one hand, and social acceptance "
+"and uptake on the other. Simple solutions sacrifice coverage and complexity "
+"in favour of ease-of-use. Highly complex formats provide more complete "
+"solutions for representing any type of data but at the expense of simplicity "
+"and require supporting software and expertise. The Darwin Core Archive "
+"format represents an intermediate position between the two ends of this "
+"spectrum. It focuses on the key elements of sampling-event data and enables "
+"an enriched set of data types to be linked to this core structure. The data "
+"contained in an archive can be readily understood and used by many "
+"ecologists and data managers familiar with basic structured text files. With "
+"this international standard, GBIF hopes to facilitate sampling-event data "
+"sharing and promote common approaches to cite and recognize the work of the "
+"community creating and handling sampling-event data.  A standard format also "
+"increases relevance and utility."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:29
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:7
+#, no-wrap
+msgid "What is sampling-event data?"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:32
+msgid ""
+"Sampling-event data is a type of data available from thousands of "
+"environmental, ecological, and natural resource investigations. These can be "
+"one-off studies or monitoring programs. Such data are usually quantitative, "
+"calibrated, and follow certain protocols so that changes and trends of "
+"populations can be detected. This is in contrast to opportunistic "
+"observation and collection data, which today form a significant proportion "
+"of openly accessible biodiversity data."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:33
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:8
+#, no-wrap
+msgid "How to express sampling-event data in DwC-A?"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:36
+msgid ""
+"Darwin Core Archive (DwC-A) is an informatics data standard that makes use "
+"of the Darwin Core terms to produce a single, self-contained dataset for "
+"checklist data. The collection of files in an archive form a self-contained "
+"dataset, which can be provided as a single compressed (Zip or GZIP) file. A "
+"dataset is composed of a descriptive metadata document and a set of one or "
+"more data files. For more information about DwC-A refer to the xref:darwin-"
+"core.adoc[Darwin Core Archives How-to Guide]."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:37
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:9
+#, no-wrap
+msgid "Sampling-event Metadata"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:40
+msgid ""
+"Documenting the provenance and scope of datasets is required in order to "
+"publish sampling-event data through the GBIF network. Dataset documentation "
+"is referred to as ‘resource metadata’ and enables users to evaluate the "
+"fitness-for-use of a dataset. It may describe the sampling methodologies "
+"used for its compilation, and the individuals and organizations involved in "
+"its creation and management. Metadata is shared in a Darwin Core Archive as "
+"an XML document. GBIF provides a metadata profile for sampling-event "
+"datasets based on the Ecological Metadata Language. A How-to guide describes "
+"all the options for describing a sampling-event dataset using this format. "
+"See xref:gbif-metadata-profile.adoc[]."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:41
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:10
+#, no-wrap
+msgid "Sampling-event Data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:44
+msgid ""
+"The Darwin Core Archive format provides the structural framework for "
+"publishing sampling-event data. Darwin Core Archives consist of a series of "
+"one or more text files, in standard comma- or tab-delimited format. The "
+"files are logically arranged in a star-like manner with one *core file*, "
+"listing the sampling events (sampling protocol, sample size, location, etc.) "
+"surrounded by a number of ‘*extensions*’, that describe related data types "
+"(such as species occurrences, measurements or facts related to the sampling "
+"event, etc). Links between core and extension records are made using an "
+"event identifier (*eventID*) data element. In this way, many extension "
+"records can exist for each single core event record. This “star-schema” "
+"provides a simple relational data model that supports many types of "
+"annotations that are common to sampling-event datasets."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:46
+#: en/modules/ROOT/pages/dwca-guide.adoc:31
+#, no-wrap
+msgid "figures/dwc-a_event.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:49
+msgid ""
+"An alternative way to encode sampling-event data is listing the species "
+"occurrence in the core file, surrounded by a number of extensions, that "
+"describe the related data types (such as measurements relating to the "
+"species occurrences, etc). Note listing sampling events in the core file is "
+"preferable if a plot or site is the main focus of the study."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:52
+msgid ""
+"Be aware that the current DwC-A star schema such as does have limitations. "
+"For example, it does not allow to link measurements and facts to both events "
+"and occurrences in the same dataset.  Discussion on this prototype extension "
+"are taking place on GitHub but there is no solution available yet."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:54
+msgid ""
+"Please check the https://www.gbif.org/data-quality-requirements-sampling-"
+"events[data quality requirements for sampling events]. Note that if you "
+"generate your Darwin Core Archive manually, you might need to add a recordID "
+"field containing unique identifiers. (This field is generated automatically "
+"if you are using an IPT.) For more information on the structure of a Darwin "
+"Core Archive, please check the https://dwc.tdwg.org/text/[TDWG Darwin Core "
+"text guide]. You can always check your archive with the https://www.gbif.org/"
+"tools/data-validator[GBIF data validator]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:58
+msgid ""
+"For ease in understanding, we may use the terms *field* in this guide to "
+"refer to the Darwin Core set of terms in the sampling-event publishing "
+"profile to which a users data will be mapped. For example, we will refer to "
+"the use of the *dwc:scientificName field* when referring to the Darwin Core "
+"term, *scientificName*."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:60
+msgid ""
+"It is recommended to use TAB or Comma-Separated-Values instead of custom "
+"field delimiters and quotes."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:65
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:15
+#, no-wrap
+msgid "Sample size"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:68
+msgid ""
+"The following Darwin Core fields store the sample size of a sampling event:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:70
+#, no-wrap
+msgid "*sampleSizeValue*: a numeric value for a measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:71
+#, no-wrap
+msgid "*sampleSizeUnit*: the unit of measurement of the size (time duration, length, area, or volume) of a sample in a sampling event.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:73
+msgid ""
+"The value of sampleSizeValue is a number and must have a corresponding "
+"sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only "
+"SI units/derived units or other non-SI units accepted for use within the SI "
+"(e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit "
+"of Measurement Vocabulary]. Examples are given in Table 1 below."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:75
+msgid ""
+"You may represent a sampling area by using an appropriate WKT shape or "
+"latitude/longitude point location. Done correctly, the direction sampling "
+"was carried out can also be derived. For example, an ocean trawl line "
+"represented using a WKT shape LINESTRING allows the direction of the trawl "
+"to be determined based on the standard notation for writing the start and "
+"end points."
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:76
+#, no-wrap
+msgid "sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:84
+#, no-wrap
+msgid ""
+"| sampleSizeValue | sampleSizeUnit\n"
+"\n"
+"| 2 | hour\n"
+"| 3 | m2\n"
+"| 17 | km\n"
+"| 1 | litre\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:86
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:19
+#, no-wrap
+msgid "Quantity and abundance"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:89
+msgid ""
+"The following Darwin Core fields are also required to be used as a pair:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:91
+#, no-wrap
+msgid "*organismQuantity*: a numeric or enumeration value for the quantity of organisms.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:92
+#, no-wrap
+msgid "*organismQuantityType*: the type of quantification system used for the quantity of organisms.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:94
+msgid ""
+"Table 2 lists some example values. The value of organismQuantity is a number "
+"or enumeration, e.g., “27” for an organismQuantityType “individuals”, “12.5” "
+"for an organismQuantityType “%biomass”, or “r” for an organismQuantityType "
+"“BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity "
+"being measured) is expected to be drawn from a small controlled vocabulary "
+"with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, "
+"“%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with "
+"organismQuantity values: “+” on DominScale; “5” on BraunBlanquetScale; “45” "
+"for %Biomass."
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:95
+#, no-wrap
+msgid "organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:103
+#, no-wrap
+msgid ""
+"| organismQuantity | organismQuantityType\n"
+"\n"
+"| 14 | individuals\n"
+"| r | BraunBlanquetScale\n"
+"| 0.4 | %Species\n"
+"| 31 | %Biomass\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:105
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:20
+#, no-wrap
+msgid "How to uniquely identify sampling events"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:109
+msgid ""
+"Each event is uniquely identified using dwc:eventID and occasionally dwc:"
+"parentEventID. Although the type and format of identifier is arbitrary we "
+"recommend that publishers choose persistent globally unique identifier.  In "
+"the absence of a GUID, publishers may reuse the original fieldNumber."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
+msgid ""
+"Make sure to reuse existing stable identifiers and do not create a new "
+"identifier for an event when one is already declared."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:27
+#, no-wrap
+msgid "How to capture hierarchy of events"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:115
+msgid ""
+"Sampling events can be related to each other (e.g., nested samples) via a "
+"common parent identifier. For example, several sub-sampling events within a "
+"Whittaker Plot each with their own eventID (e.g., “A1:1”, “A1:2”) would "
+"share a common parentEventID (e.g., “A1”) thus enabling them to be linked "
+"together easily (see Table 4 and Figure 3)."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:117
+msgid ""
+"Further information on the nature of the relationship (e.g. part of a "
+"monitoring series) can be described in the project section of the "
+"accompanying metadata."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:119
+msgid ""
+"You may also refer to the following xref:sampling-event-data.adoc#q-how-do-i-"
+"publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:31
+#, no-wrap
+msgid "How to capture absence data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:123
+msgid ""
+"Refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-"
+"absence-data[FAQ]."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
+#, no-wrap
+msgid "How to include supplementary multimedia"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:127
+msgid ""
+"You may choose to include supplementary media in order to make the data "
+"easier to interpret. For example for vegetation data, it is helpful to "
+"include a link to the original scanned relevé sheet when interpreting the "
+"data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:129
+msgid ""
+"The files associated have to be hosted on an external server and linked to "
+"the occurrence through the dwc:associatedMedia and dwc:associatedReferences. "
+"These files may be images, texts or a combination of both as long as the "
+"format type is specified. JPG, PNG, etc. images will be visible as "
+"thumbnails while PDFs will appear as clickable links."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:39
+#, no-wrap
+msgid "Publishing sampling-event data"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:132
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
+#, no-wrap
+msgid "Using GUIDs for identifiers"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:135
+msgid ""
+"A number of fields require the usage of unique identifiers: dwc:"
+"occurrenceID, dwc:eventID, dwc:organismID and dwc:locationID."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:137
+msgid ""
+"As mentioned previously, although no particular format is enforced, we "
+"advise publishers to use Global Unique IDentifiers (GUIDs). There are a few "
+"online services which can provide such identifiers. For example, it is "
+"possible to use http://www.geonames.org/ to find (or even generate new) "
+"identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a "
+"GUID for a lake in Greenland."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:138
+#, no-wrap
+msgid "Protect location of sensitive species"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:141
+msgid ""
+"If your dataset contains sensitive species, there are several ways to handle "
+"it:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:143
+msgid "Simply removing these species from the dataset,"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:144
+msgid "Publishing the species identifications at Genus level only,"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:145
+msgid "Publishing the sensitive/protected species in a separate dataset,"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:146
+msgid ""
+"Publish obfuscated sensitive data points in the main dataset and publish non-"
+"obfuscated details in an access-limited separate dataset, both datasets "
+"including all data records."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:147
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:52
+#, no-wrap
+msgid "Preserving verbatim data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:150
+msgid ""
+"Although verbatim data and descriptions are not visible on the GBIF.org web "
+"interface, they are made available to the community through downloads. When "
+"entering verbatim description, make sure to link them to the original event "
+"or occurrence. For example, the ID or code given to the original event "
+"should be entered into dwc:fieldNumber; the ID or code given to the original "
+"occurrence observation should be entered into dwc:recordNumber."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:151
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
+#, no-wrap
+msgid "Publishing project data as a single dataset"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:154
+msgid ""
+"Data produced from a large sampling project should be published as a single "
+"dataset if possible. If you must publish multiple datasets, we encourage "
+"linking them using a common project identifier in the metadata."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:155
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
+#, no-wrap
+msgid "Republishing occurrence data as sampling-event data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:159
+msgid ""
+"Sampling events provide better documentation and benefit both the scientific "
+"community and policy makers (https://www.gbif.org/sampling-event-data[read "
+"more]).  We encourage strongly the republishing of occurrence data as "
+"sampling-event data when possible."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
+msgid ""
+"In order to do so, you should create a new sampling-event dataset and send "
+"an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should "
+"provide the UUIDs of both the occurrence dataset and the new dataset. We "
+"will then be able to link the first dataset to the newest one before de-"
+"indexing it thereby avoiding occurrence duplication and preserving citations."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
+#, no-wrap
+msgid "Modelling continuous monitoring of live individuals"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:165
+msgid ""
+"If your dataset contains continuous monitoring of live individuals, such as "
+"bird tracking data, you can use dwc:organismID to store the ID of the "
+"individual being tracked. In addition to that, you should represent each "
+"individual being tracked as a single event."
+msgstr ""
+
+#.  TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded).
+#. type: Title ==
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:168
+#, no-wrap
+msgid "Continuous data quality improvement"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:170
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:71
+#, no-wrap
+msgid "Managing issues related to the dataset"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
+msgid ""
+"If possible, we recommend tracking all the issues related to a given dataset "
+"using an issue management system such as the one provided by GitHub."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:75
+#, no-wrap
+msgid "Sharing scripts and programs used to produce or clean the dataset"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:177
+msgid ""
+"Ideally, custom scripts and programs used to transform data should be made "
+"publicly available on GitHub. Other publishers will benefit from accessing "
+"these scripts along with detailed instructions on how to use them."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:178
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
+#, no-wrap
+msgid "Describing sampling-event data in dataset metadata"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:181
+msgid ""
+"Publishers should document their dataset as much as possible with a "
+"particular emphasis on sampling methodologies."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
+msgid ""
+"Besides the https://www.gbif.org/data-quality-requirements-sampling-"
+"events[mandatory requirements], the metadata should include information "
+"about the extent of study, the sampling methods, the quality control and "
+"limitations of the study.  Although information about fieldwork can be part "
+"of the data content, you may describe the sampling location and conditions "
+"in the metadata as well."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:185
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:83
+#, no-wrap
+msgid "Linking related datasets"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:188
+msgid ""
+"Some datasets may come from the same research project or may be related in "
+"certain context. The current recommendation is to link them using a project "
+"identifier."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:189
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:87
+#, no-wrap
+msgid "Listing related research"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:192
+msgid ""
+"You can make your dataset easier to interpret by including links to related "
+"published works such as journal articles, project notes, thesis, etc,. in "
+"the bibliographic citation or in the external link part of the metadata."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:193
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:91
+#, no-wrap
+msgid "Examples"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:196
+msgid ""
+"Following are some examples of typical sampling-event data sets. In each "
+"case, the key fields in the Event core and Occurrence extension are "
+"provided. For some examples, additional extensions such as Relevé and "
+"measurement-or-fact are also included."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:197
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:92
+#, no-wrap
+msgid "Freshwater invertebrate survey"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:200
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:226
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:293
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:315
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:351
+#, no-wrap
+msgid "*Core (Event) table*\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:206
+#, no-wrap
+msgid ""
+"| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude\n"
+"\n"
+"| C_1428 | AQEM | 1.25 | m^2 | 2006-06-21 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369\n"
+"| B_1538 | AQEM | 1.25 | m^2 | 2008-11-06 | Kinzig W3 Bulau | 50.1316 | 8.9657\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:209
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:235
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:269
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:301
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:324
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:360
+#, no-wrap
+msgid "*Extension (Occurrence) table*\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:217
+#, no-wrap
+msgid ""
+"| EventID | scientificName | organismQuantity | organismQuantityType | ...\n"
+"\n"
+"| C_1428 | _Baetis rhodani_ | 14 | individuals |\n"
+"| C_1428 | _Ephemera danica_ | 15 | individuals |\n"
+"| C_1428 | _Gyraulus albus_ | 2 | individuals |\n"
+"| B_1538 | _Serratella ignita_ | 318 | individuals |\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:220
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:253
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:285
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:309
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:344
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:371
+#, no-wrap
+msgid "*Explanation*\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:222
+msgid ""
+"_Ephemera danica_ : A total of 14 individuals from 1.25 square meters were "
+"obtained in this sampling event. The derived individuals per sq meter count "
+"is 11.2 (14/1.25)."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:223
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
+#, no-wrap
+msgid "Brackish water invertebrates survey"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:232
+#, no-wrap
+msgid ""
+"| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n"
+"\n"
+"| IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
+"| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:241
+#, no-wrap
+msgid ""
+"| EventID | scientificName | organismQuantity | organismQuantityType | ...\n"
+"\n"
+"| IA1 | _Abra ovata_ | 57 | individuals |\n"
+"| IA3 | _Bittium reticulatum_ | 113 | individuals |\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:244
+#, no-wrap
+msgid "*Extension (Measuremenr-or-Fact) table*\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:250
+#, no-wrap
+msgid ""
+"| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...\n"
+"\n"
+"| IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | --\n"
+"| IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | --\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:255
+#, no-wrap
+msgid "*_Abra ovata_* : A total of 57 individuals from 0.04 square meters were obtained in sampling event IA1.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:257
+msgid ""
+"Each event can also have measurements or facts associated with it, e.g., "
+"environmental measurements like sediment temperature and redox potential "
+"(Eh)."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:258
+#: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
+#, no-wrap
+msgid "Macrophyte survey"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:261
+msgid ""
+"Note that this example is based on Dutch Vegetation Database (LVD) previous "
+"version republished as sampling-event dataset. The Relevé extension "
+"underwent significant changes following the publication of the primer. For "
+"more information about LVD and the data model for vegetation sampling-event "
+"data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-"
+"secret.html"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:266
+#, no-wrap
+msgid ""
+"| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n"
+"\n"
+"| 1001 | Braun Blanquet | 100 | m^2 | 09/08/2012 | Kinzig O3 Rothenbergen | 50.18689 | 9.100369 |\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:274
+#, no-wrap
+msgid ""
+"| EventID | scientificName | organismQuantity | organismQuantityType | ...\n"
+"\n"
+"| 1001 | _Acer psuedoplatanus_ | r | BraunBlanquetScale |\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:277
+#, no-wrap
+msgid "*Extension (Relevé) table*\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:282
+#, no-wrap
+msgid ""
+"| EventID | syntaxonCode | inclination | coverTotal | treesCover | coverShrubs | highTreeLayerHeight | highHerbLayerMeanHeight | mossesIdentified | ...\n"
+"\n"
+"| 1001 | 843200 | 40 | 100 | 95 | 50 | 25 | 40 | Y | --\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:287
+#, no-wrap
+msgid "*_Acer psuedoplatanus_* : In the 100 sq meters surveyed, the abundance of the species was reported as “r” on the Braun Blanquet scale.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:289
+msgid ""
+"Additional vegetation plot measurements such as vegetation community type "
+"(syntaxon) % coverage values that are typical of TurboVeg type databases are "
+"captured in a Relevé (vegetation-plot) extension."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:290
+#, no-wrap
+msgid "Lepidoptera survey I"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:298
+#, no-wrap
+msgid ""
+"| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n"
+"\n"
+"| 2320 | Jalas-model light trap with 160W ML matt lamp | 16 | day | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ...\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:306
+#, no-wrap
+msgid ""
+"| EventID | scientificName | organismQuantity | organismQuantityType | ...\n"
+"\n"
+"| 2320 | _Opisthograptis luteolata_ | 11 | individuals |\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:311
+#, no-wrap
+msgid "*_Opisthograptis luteolata_* : 11 individuals were observed over the sampling period of 16 days. The derived number of individuals per day is 0.68 (11/16).\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:312
+#, no-wrap
+msgid "Lepidoptera survey II"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:321
+#, no-wrap
+msgid ""
+"| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n"
+"\n"
+"| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |\n"
+"| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:330
+#, no-wrap
+msgid ""
+"| EventID | scientificName | organismQuantity | organismQuantityType | ...\n"
+"\n"
+"|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |\n"
+"| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:333
+#, no-wrap
+msgid "*Extension (Measurement-or-Fact) table*\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:341
+#, no-wrap
+msgid ""
+"| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...\n"
+"\n"
+"| 1014-tr023m | Temp | 20 | Degree C |  |\n"
+"| 1014-tr023m | Wind speed | light | | |\n"
+"| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  |\n"
+"| 1014-tr023m | AvgAltitude | 10 | m | Average altitude |\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:347
+#, no-wrap
+msgid ""
+"*_Pieras rapae_* :  A total of 1 individual from 250 sq metres was obtained in this sampling event.\n"
+"Several environmental measurements (e.g., temperature, wind speed, cloudiness) are included in a measurement-or-facts extension.\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:348
+#, no-wrap
+msgid "Reef fish survey"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:357
+#, no-wrap
+msgid ""
+"| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n"
+"\n"
+"| 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 |\n"
+"| 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 |\n"
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:368
+#, no-wrap
+msgid ""
+"| EventID | scientificName | organismQuantity | organismQuantityType | ...\n"
+"\n"
+"| 506003329 | Acanthurus nigricans | 42 | individuals |\n"
+"| 506003329 | Acanthurus xanthopterus | 1 | individuals |\n"
+"| 506003329 | Aulostomus chinensis | 4 | individuals |\n"
+"| 506003329 | Axoclinus cocoensis | 1 | individuals |\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:373
+#, no-wrap
+msgid "*_Aulostomus chinensis_* : A total of 4 individuals from 500 sq metres were obtained in this sampling event.\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:374
+#, no-wrap
+msgid "Nested samples"
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:376
+#, no-wrap
+msgid "Several sub-plots may be related to the parentEventID as in this example of a Whittaker plot consisting of 13 sub-plots (see Figure 3 for plot layout)."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:394
+#, no-wrap
+msgid ""
+"| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n"
+"\n"
+"| A1 |  | Modified Whittaker Plot | 1000 | m^2 | 1984-03-18 | Monarch | 55.72 | 13.28 |\n"
+"| A1.1 | A1 |  | 100 | m^2 |  |  | | |\n"
+"| A1.2 | A1 |  | 10 | m^2 |  |  | | |\n"
+"| A1.3 | A1 |  | 10 | m^2 |  |  | | |\n"
+"| A1.4 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.5 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.6 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.7 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.8 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.9 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.10 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.11 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.12 | A1 |  | 1 | m^2 |  |  | | |\n"
+"| A1.13 | A1 |  | 1 | m^2 |  |  | | |\n"
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:396
+#, no-wrap
+msgid "A Schematic of a Whittaker plot consisting of 13 sub-plots of varying area."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:397
+#, no-wrap
+msgid "figures/whittaker_plot.png"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:399
+#, no-wrap
+msgid "Additional information that could also be included or was previously included"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:402
+msgid ""
+"The Event core elements are mainly drawn from the DwC classes Event, "
+"Location and Geological Context (Table 3). The Occurrence extension elements "
+"are drawn from the Occurrence, Taxon and Identification classes. For reasons "
+"of consistency, the Occurrence extension includes all terms found in the "
+"Occurrence core. Thus Event, Location and Geological Context terms are also "
+"listed for the Occurrence extension but are actually redundant. Note the IPT "
+"hides redundant terms by default when mapping for the user’s convenience."
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:403
+#, no-wrap
+msgid "Placement of the sample related terms in the Event core and Occurrence extension."
+msgstr ""
+
+#. type: Table
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:411
+#, no-wrap
+msgid ""
+"| Event Core\n"
+"| eventID, parentEventID, samplingProtocol, sampleSizeValue, sampleSizeUnit, samplingTaxaRange, siteTreatment, siteID, layer\n"
+"\n"
+"| Occurrence Extension\n"
+"| eventID, organismQuantity, organismQuantityType, siteID+, layer+\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:414
+msgid "The \"+\" symbol indicates proposed new terms not yet ratified."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:415
+#, no-wrap
+msgid "Planned additions and notes for revision:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:417
+msgid "xref:best-practices-sampling-event-planned-additions.adoc[]"
+msgstr ""

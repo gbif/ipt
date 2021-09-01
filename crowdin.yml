@@ -1,3 +1,5 @@
 files:
   - source: /src/main/resources/ApplicationResources_en.properties
     translation: /src/main/resources/ApplicationResources_%two_letters_code%.properties
+  - source: /docs/translations/*.pot
+    translation: /docs/translations/%file_name%.%two_letters_code%.po

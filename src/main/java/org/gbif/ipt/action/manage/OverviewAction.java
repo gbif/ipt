@@ -202,6 +202,35 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
+   * Deletes a resource from the IPT only.
+   */
+  public String deleteFromIpt() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (delete) {
+      if (resource.getStatus().equals(PublicationStatus.DELETED)) {
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+            resource.getStatus().toString()}));
+        return INPUT;
+      }
+      try {
+        resourceManager.deleteResourceFromIpt(resource);
+        return HOME;
+      } catch (IOException e) {
+        String msg = getText("manage.resource.delete.failed");
+        LOG.error(msg, e);
+        addActionError(msg);
+        addActionExceptionWarning(e);
+      }
+    } else {
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+          resource.getStatus().toString()}));
+    }
+    return SUCCESS;
+  }
+
+  /**
    * Deletes a resource different ways depending on whether it was ever assigned a DOI or not.
    * </br>
    * If this resource was assigned a DOI, it makes the DOI unavailable meaning it still resolves, but to a page

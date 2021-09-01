@@ -1,27 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>jConfirmAction Demo</title>
  		<link rel="stylesheet" type="text/css" href="../styles/main.css"/>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>	
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.js"></script>
-		<link media="all" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" rel="stylesheet">
-		<script type="text/javascript" src="jconfirmation.jquery.js"></script>
-		<script type="text/javascript">
-			
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.js"></script>
+		<link media="all" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" rel="stylesheet">
+		<script src="jconfirmation.jquery.js"></script>
+		<script>
+
 			$(document).ready(function() {
 				$('.ask-large').jConfirmAction({question : "Have you ever thought about getting a decent job? If you havent, please indicate with yes and we will do the best we can for you.", yesAnswer : "Yes", cancelAnswer : "No, never"});
 				$('.ask-custom').jConfirmAction({question : "Anda Yakin?", yesAnswer : "Ya", cancelAnswer : "Tidak"});
 				$('.ask').jConfirmAction();
 			});
-			
+
 		</script>
 </head>
 <body>
 	<div id="wrapper">
-		<div id="content">		
+		<div id="content">
             <div id="dialog-confirm" title="Are you sure?" style="display: none;">
 			</div>
 			<h1>jConfirmAction Demo</h1>
@@ -31,7 +31,7 @@
 	: <a href="jconfirmation_test_delete.html" class="ask">Delete Me</a>
 	<hr/>
 	<label>Using Plugin With Forms</label>
-	: 
+	:
 	<form action="jconfirmation_test_delete.html">
 		<input type="text" name="test" value="testing" />
 		<br/>
@@ -41,7 +41,7 @@
 	<hr/>
 	<label>Customized Language (Indonesian) </label>
 	: <a href="jconfirmation_test_delete.html" class="ask-custom"><img src="../images/trash.png" border="0" align="absbottom" /></a>
-	
+
 	<hr/>
 	<label>Large labels </label>
 	: <a href="jconfirmation_test_delete.html" class="ask-large"><img src="../images/trash.png" border="0" align="absbottom" /></a>

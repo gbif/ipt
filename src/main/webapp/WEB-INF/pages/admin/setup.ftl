@@ -2,38 +2,50 @@
 [#include "/WEB-INF/pages/inc/header_setup.ftl"]
 [#include "/WEB-INF/pages/macros/forms.ftl"]
 
-<div class="grid_18">
-		<h1 class="twenty_top">[@s.text name="admin.config.setup.title"/]</h1>
-		
-			[@s.actionmessage/]
-			[#if warnings?size>0]		    
-			 <ul class="warnMessage">
-			 [#list warnings as w]
-	          <li><span>${w!}</span></li>
-			 [/#list]
-             </ul>
-            [/#if]
-			[@s.actionerror/]
+<main class="container">
 
-  		[@s.form action="setup.do" method="post"]
-      <h2 class="subTitle">[@s.text name="admin.config.setup.disclaimer.title"/]&nbsp;<span class="fa-stack icon-warning"><i class="fa fa-circle fa-stack-1x icon-shadow"></i><i class="fa fa-exclamation fa-stack-1x"></i></span></h2>
-      <p>[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
-      <p>[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
-      <p>
-        [@s.fielderror]
-          [@s.param value="%{'readDisclaimer'}" /]
-        [/@s.fielderror]
-        [@s.checkbox name="readDisclaimer" value="readDisclaimer" /]&nbsp;
-        [@s.text name="admin.config.setup.read"/]
-      </p>
+    <form action="setup.do" method="post" class="needs-validation" novalidate>
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
 
-      <h2 class="subTitle">[@s.text name="admin.config.server.data.dir"/]</h2>
-      <p>[@s.text name="admin.config.setup.welcome"/]</p>
-      <p>[@s.text name="admin.config.setup.instructions"/]</p>
-      <p>[@s.text name="admin.config.setup.examples"/]</p>
-			[@s.textfield key="admin.config.setup.datadir" name="dataDirPath" size="80" required="true"/]
-      [@s.submit cssClass="button" name="save" key="button.save"/]
-		[/@s.form]
+            [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
+
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+                [@s.text name="admin.config.setup.title"/]
+            </h5>
+
+            <h5 class="text-gbif-header mx-md-4 mx-2">
+                [@s.text name="admin.config.setup.disclaimer.title"/]
+            </h5>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
+
+            <div class="mx-md-4 mx-2">
+                [@checkbox name="readDisclaimer" value="readDisclaimer" i18nkey="admin.config.setup.read"/]
+            </div>
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom">
+                [@s.text name="admin.config.server.data.dir"/]
+            </h5>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.welcome"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.instructions"/]</p>
+            <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.examples"/]</p>
+
+            <div class="row g-3 mx-md-3 mx-1">
+                <div class="col-12">
+                    [@input name="dataDirPath" type="text" i18nkey="admin.config.setup.datadir" /]
+                </div>
+
+                <div class="col-12">
+                    [@s.submit cssClass="btn btn-outline-gbif-primary" name="save" id="submitDatadir" key="button.save"/]
+                </div>
+            </div>
+
+        </div>
+    </form>
+</main>
 </div>
-</div>
+
+
 [#include "/WEB-INF/pages/inc/footer.ftl"]

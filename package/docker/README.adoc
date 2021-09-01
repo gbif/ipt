@@ -1,0 +1,27 @@
+= Docker IPT
+
+A Docker image for the https://www.gbif.org/ipt[GBIF IPT].
+
+The image builds upon the Docker community Tomcat 8.5 / OpenJDK 8 / Debian stable image.
+
+We regularly publish IPT releases as Docker images to https://hub.docker.com/r/gbif/ipt/[Docker Hub].
+
+== To run the Docker image
+
+Refer to https://ipt.gbif.org/manual/en/ipt/2.5/installation#installation-using-docker[Installation using Docker] in the IPT User Manual.
+
+== Upgrading
+
+Note that, for better consistency with the https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard[Filesystem Hierarchy Standard], from version 2.4.0 the IPT's default data directory is `/srv/ipt`, *not* `/usr/local/ipt`.  This can be overridden, see the manual.
+
+== To build and deploy the Docker image
+
+(This process is for GBIF developers.)
+
+. `docker build --pull --build-arg IPT_VERSION=2.5.0 -t gbif/ipt:2.5.0 .`
+. *Test the resulting image!*
++
+`docker run --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt:2.5.0`
+
+. `docker push gbif/ipt:2.5.0` (stop here for a pre-release)
+. `docker tag gbif/ipt:2.5.0 gbif/ipt:latest && docker push gbif/ipt:latest`

@@ -1,0 +1,242 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/dwca-guide.adoc:115
+#: en/modules/ROOT/pages/index.adoc:36
+msgid ""
+"The simplest way to begin using the IPT is to request a free account on a "
+"xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to "
+"manage your own datasets and publish them through GBIF.org without the "
+"hassle of setting up and maintaining the IPT on your own server."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/dwca-guide.adoc:117
+#: en/modules/ROOT/pages/index.adoc:38
+msgid ""
+"Otherwise if want to setup your own instance of the IPT the xref:getting-"
+"started.adoc[Getting Started Guide] is your entry point."
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/how-to-publish.adoc:17
+#: en/modules/ROOT/pages/index.adoc:28
+#, no-wrap
+msgid "How to publish biodiversity data through GBIF.org using the IPT"
+msgstr ""
+
+#. type: Title =
+#: en/modules/ROOT/pages/index.adoc:1
+#, no-wrap
+msgid "GBIF Integrated Publishing Toolkit (IPT) User Manual"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:4
+msgid ""
+"The GBIF Integrated Publishing Toolkit (IPT) is a freely available open "
+"source web application that makes it easy to share four types of "
+"biodiversity-related information:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:6
+msgid "primary taxon occurrence data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:7
+msgid "taxon checklists"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:8
+msgid "sampling event data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:9
+msgid "general metadata about data sources."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:11
+msgid ""
+"An IPT instance as well as the data and metadata registered through the IPT "
+"are connected to the GBIF Registry, are indexed for consultation via the "
+"GBIF network and portal, and are made accessible for public use.  The IPT "
+"can also be configured with a DataCite account in order to assign DOIs to "
+"datasets transforming it into a data repository.  More information about the "
+"GBIF IPT can be found at the https://www.gbif.org/ipt[IPT website]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:16
+msgid ""
+"Founded and funded by governments in 2001, The Global Biodiversity "
+"Information Facility (GBIF) is the world's largest multi-lateral initiative "
+"for enabling free access to biodiversity data via the Internet. https://www."
+"gbif.org/participation/participant-list[GBIF's diverse Participants] include "
+"primarily countries and international organizations. GBIF also has formal "
+"partnerships with relevant international treaty bodies. GBIF's mission is to "
+"promote and enable free and open access to biodiversity data worldwide via "
+"the Internet to underpin science, conservation and sustainable development. "
+"More information about GBIF can be found at https://www.gbif.org/[GBIF.org]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:18
+msgid ""
+"Several factors have provided motivation for GBIF to lead the development of "
+"the IPT:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:20
+msgid ""
+"limitations of previous publishing tools (DiGIR, TAPIR, BioCASe) to easily "
+"publish and transfer large datasets;"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:21
+msgid ""
+"the need to reduce the load on both the publisher's server, and GBIF's "
+"server during indexing. The reason being that indexing from DiGIR, TAPIR, or "
+"BioCASe caused heavy loads due to repeated HTTP request-response "
+"interactions."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:22
+msgid ""
+"the need to speed up the process of indexing biodiversity occurrence "
+"datasets;"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:23
+msgid ""
+"the need to offer additional benefits and services to the data publishers to "
+"encourage data publication;"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:24
+msgid ""
+"the lack of appropriate tools to publish certain types of biodiversity data, "
+"such as names checklists and data set metadata."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:26
+msgid ""
+"To understand how the IPT works, try watching this concise 25 minute live "
+"demo showing how a dataset gets properly published and registered through "
+"GBIF.org."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/index.adoc:31
+#, no-wrap
+msgid "Users"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:34
+msgid ""
+"If you're only interested in trying out the IPT please request an account on "
+"the https://ipt.gbif.org/[Demo IPT] by sending an email to helpdesk@gbif.org."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:40
+msgid ""
+"Be sure to sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT "
+"Mailing List], which serves as a support group for IPT users. It is "
+"essential that the IPT is kept up to date to be as secure and robust as "
+"possible, so if you are responsible for administering an IPT, then you "
+"should be signed up to be notified of new releases so that you can update "
+"immediately."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/index.adoc:41
+#, no-wrap
+msgid "Developers"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:44
+msgid ""
+"The core development of the IPT is directed by GBIF, but the coding is a "
+"community effort and everyone is welcome to join. Start by browsing the "
+"https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd "
+"like to start working on. Kindly note that contributions are welcome in the "
+"form of a https://help.github.com/articles/creating-a-pull-request/[pull "
+"request] using a branch or fork of the repository. Full instructions aimed "
+"at developers can be found xref:developer-guide.adoc[here]."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/index.adoc:45
+#, no-wrap
+msgid "Translators"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:48
+msgid ""
+"The IPT user interface and manual both need internationalization, but it's a "
+"community effort and everyone is welcome to join. Full instructions aimed at "
+"translators can be found xref:translations.adoc[here]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:50
+msgid ""
+"Thanks to an enormous community effort, and by leveraging the power of the "
+"https://crowdin.com/project/gbif-ipt[Crowdin] localization tool, the user "
+"interface has already been translated into seven different languages: "
+"English, French, Spanish, Traditional Chinese, Brazilian Portuguese, "
+"Japanese, and Russian."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/index.adoc:51
+#, no-wrap
+msgid "Acknowledgements"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:54
+msgid ""
+"A large number of dedicated volunteers contribute to the success of this "
+"software. With your help, the IPT has become a successful tool in use all "
+"around the world."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/index.adoc:55
+msgid ""
+"https://crowdin.com/[Crowdin] is kindly supporting this open source project "
+"by giving GBIF a free access to its localization management platform. "
+"Crowdin makes it possible to manage a large number of concurrent "
+"translations."
+msgstr ""

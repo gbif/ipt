@@ -26,7 +26,11 @@ public interface Source {
 
   boolean isSqlSource();
 
+  boolean isUrlSource();
+
   boolean isReadable();
+
+  SourceType getSourceType();
 
   void setColumns(int columns);
 

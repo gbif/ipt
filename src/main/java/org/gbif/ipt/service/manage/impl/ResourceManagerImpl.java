@@ -31,6 +31,7 @@ import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
@@ -420,6 +421,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         res.setMetadataModified(null);
         res.setMappingsModified(null);
         res.setSourcesModified(null);
+        // reset first and last published dates
+        res.getEml().setDateStamp((Date) null);
+        res.getEml().setPubDate(null);
         // add resource to IPT
         save(res);
       }
@@ -473,6 +477,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     res.setCreated(new Date());
     res.setCreator(creator);
     res.setCoreType(type);
+    // first and last published dates are nulls
+    res.getEml().setDateStamp(((Date) null));
+    res.getEml().setPubDate(null);
     // create dir
     try {
       save(res);
@@ -498,12 +505,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       if (arch.getCore() == null) {
         alog.error("manage.resource.create.core.invalid");
-        throw new ImportException("Darwin core archive is invalid and does not have a core mapping");
+        throw new ImportException("Darwin Core Archive is invalid and does not have a core mapping");
       }
 
       if (arch.getCore().getRowType() == null) {
         alog.error("manage.resource.create.core.invalid.rowType");
-        throw new ImportException("Darwin core archive is invalid, core mapping has no rowType");
+        throw new ImportException("Darwin Core Archive is invalid, core mapping has no rowType");
       }
 
       // keep track of source files as a dwca might refer to the same source file multiple times
@@ -536,7 +543,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (!arch.getExtensions().isEmpty()) {
         if (map.getIdColumn() == null) {
           alog.error("manage.resource.create.core.invalid.id");
-          throw new ImportException("Darwin core archive is invalid, core mapping has no id element");
+          throw new ImportException("Darwin Core Archive is invalid, core mapping has no id element");
         }
 
         // read extension sources+mappings
@@ -551,7 +558,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           map = importMappings(alog, ext, s);
           if (map.getIdColumn() == null) {
             alog.error("manage.resource.create.core.invalid.coreid");
-            throw new ImportException("Darwin core archive is invalid, extension mapping has no coreId element");
+            throw new ImportException("Darwin Core Archive is invalid, extension mapping has no coreId element");
           }
 
           // ensure the extension contains a coreId term mapping with the correct coreId index
@@ -586,6 +593,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     return resource;
+  }
+
+  /**
+   * Replace the EML file in a resource by the provided file
+   *
+   * @param resource
+   * @param emlFile
+   * @throws ImportException
+   */
+  public void replaceEml(Resource resource, File emlFile) throws ImportException {
+    Eml eml;
+    // copy eml file to data directory (with name eml.xml) and populate Eml instance
+    eml = copyMetadata(resource.getShortname(), emlFile);
+    resource.setEml(eml);
+    resource.setMetadataModified(new Date());
+    save(resource);
   }
 
   /**
@@ -655,6 +678,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("filesource", TextFileSource.class);
     xstream.alias("excelsource", ExcelFileSource.class);
     xstream.alias("sqlsource", SqlSource.class);
+    xstream.alias("urlsource", UrlSource.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
     xstream.alias("versionhistory", VersionHistory.class);
@@ -679,6 +703,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
     xstream.registerConverter(orgConverter);
     xstream.registerConverter(jdbcInfoConverter);
+  }
+
+  @Override
+  public void deleteResourceFromIpt(Resource resource) throws IOException {
+    // remove from data dir
+    FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
+    // remove object
+    resources.remove(resource.getShortname().toLowerCase());
   }
 
   public void delete(Resource resource, boolean remove) throws IOException, DeletionNotAllowedException {
@@ -968,10 +1000,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             LOG.warn("Cleaning up empty resource directory " + resourceDir.getName());
             FileUtils.deleteQuietly(resourceDir);
             counterDeleted++;
-          } else if (resourceDirFiles.length == 1) {
-            LOG.warn("Cleaning up invalid resource directory " + resourceDir.getName() + " with single file: " + resourceDirFiles[0].getName());
-            FileUtils.deleteQuietly(resourceDir);
-            counterDeleted++;
           } else {
             try {
               LOG.debug("Loading resource from directory " + resourceDir.getName());
@@ -986,7 +1014,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       LOG.info("Loaded " + counter + " resources into memory altogether.");
       LOG.info("Cleaned up " + counterDeleted + " resources altogether.");
     } else {
-      LOG.info("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
+      LOG.error("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
     }
     return counter;
   }
@@ -1788,6 +1816,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setEmlVersion(version);
     // update eml pubDate (represents date when the resource was last published)
     resource.getEml().setPubDate(new Date());
+    // set eml dateStamp (represents date when the resource was published for the first time). Do only once
+    if (resource.getEml().getDateStamp() == null) {
+      resource.getEml().setDateStamp(new Date());
+    }
     // update resource citation with auto generated citation (if auto-generation has been turned on)
     if (resource.isCitationAutoGenerated()) {
       URI homepage = cfg.getResourceVersionUri(resource.getShortname(), version); // potential citation identifier
@@ -2113,17 +2145,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
       LOG.info("Archival mode is ON with a limit of "+ cfg.getArchivalLimit()+" elements)");
       LOG.info("Clean archive versions, if needed, for resource: " + resource.getShortname());
-      while (resource.getVersionHistory().size() > cfg.getArchivalLimit()) {
-        VersionHistory oldestVersion = resource.getVersionHistory().get(resource.getVersionHistory().size() -1);
-        try {
-          BigDecimal version = new BigDecimal(oldestVersion.getVersion());
-          LOG.info("Deleting version " + version + " for resource: " + resource.getShortname());
-          removeVersion(resource.getShortname(), version);
-          resource.removeVersionHistory(version);
-        }
-        catch (Exception e) {
-          LOG.error("Cannot delete oldest versions for resource: " + resource.getShortname(), e);
-          return;
+      List<VersionHistory> history = resource.getVersionHistory();
+      if (history.size() > cfg.getArchivalLimit()) {
+        for (int i=cfg.getArchivalLimit(); i<history.size(); i++) {
+          VersionHistory oldVersion = history.get(i);
+          try {
+            BigDecimal version = new BigDecimal(oldVersion.getVersion());
+            LOG.info("Deleting archive version " + version + " for resource: " + resource.getShortname());
+            removeArchiveVersion(resource.getShortname(), version);
+          }
+          catch (Exception e) {
+            LOG.error("Cannot delete old archive versions for resource: " + resource.getShortname(), e);
+            return;
+          }
         }
       }
     }

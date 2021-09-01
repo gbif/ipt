@@ -605,10 +605,12 @@ public class EmlValidatorTest {
     assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
     eml.getCitation().setIdentifier(RandomStringUtils.randomAlphabetic(75));
     assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
+    eml.getCitation().setIdentifier(RandomStringUtils.randomAlphabetic(110));
+    assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
     // invalid identifiers less than 2, or greater than 100
     eml.getCitation().setIdentifier("a");
     assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
-    eml.getCitation().setIdentifier(RandomStringUtils.randomAlphabetic(110));
+    eml.getCitation().setIdentifier(RandomStringUtils.randomAlphabetic(210));
     assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 

@@ -1,0 +1,27 @@
+= GBIF IPT Packaging
+
+This is a CentOS RPM package for installing the IPT.
+
+For usage instructions, please refer to the https://ipt.gbif.org/manual/en/ipt/2.5/installation/#installation-from-linux-packages[installation section of the user manual].
+
+== Building
+
+(This section is for GBIF developers.)
+
+. Edit `SPECS/ipt.spec` with a new version number at the top, and a release comment at the bottom.
+. `make clean && make rpm`
+. *Test this RPM!* Install it in a CentOS VM (or Docker container) and see that it runs.
+. `make deploy`
+
+The RPM is published to https://packages.gbif.org/rpm/
+
+[source]
+----
+[gbif]
+name=GBIF RPM Packages
+baseurl=https://packages.gbif.org/rpm
+enabled=1
+gpgcheck=0
+----
+
+Ideas and some code from https://github.com/istenrot/varnish-modules-rpm-build remain.

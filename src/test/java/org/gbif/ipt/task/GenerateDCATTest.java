@@ -178,6 +178,29 @@ public class GenerateDCATTest {
     assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
   }
 
+  /**
+   * Test that turtle format requiring three double quotes for string literals with CR or LF.
+   */
+  @Test
+  public void testCreateDCATDatasetNewlineInsideParagraph()
+      throws ImportException, ParserConfigurationException, InvalidFilenameException, IOException,
+      AlreadyExistingException, SAXException {
+    // create resource from single source file
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    Resource res = getResource(resourceXML);
+
+    // add another paragraph with '\n' character to description
+    res.getEml().getDescription().add("Second paragraph\nwith line break");
+    assertEquals(2, res.getEml().getDescription().size());
+
+    String dcat = mockGenerateDCAT.createDCATDatasetInformation(res);
+    assertTrue(dcat.contains("a dcat:Dataset"));
+    // ensure line break is properly escaped
+    assertTrue(dcat.contains("dct:description \"\"\"Test \\\"description\\\"\\nSecond paragraph\n" +
+        "with line break\"\"\""));
+    assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
+  }
+
   @Test
   public void testCreateDCATDistribution()
     throws ImportException, ParserConfigurationException, InvalidFilenameException, IOException,

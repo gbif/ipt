@@ -1,0 +1,86 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2021-06-28 09:53+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Title =
+#: en/modules/ROOT/pages/about.adoc:1
+#, no-wrap
+msgid "About Menu"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/about.adoc:4
+msgid ""
+"The default About page gives information about the current IPT installation, "
+"including information about the hosting organization, if that has been "
+"registered. This page is meant to be customized for the individual IPT "
+"instance by editing the file called about.ftl in the directory called "
+"\"config\" within the IPT data directory (see the information under the "
+"\"IPT Settings\" heading in the \"Administration Menu\" section). The about."
+"ftl file is a FreeMarker template that can contain a combination of HTML and "
+"variable references of the form `${host.variable!\"alternate value if null\"}"
+"`. After making changes to the about.ftl file, the About page will have to "
+"be restarted to show the changes. Look at the default about.ftl file for "
+"examples of variables that can be included."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/about.adoc:5
+#, no-wrap
+msgid "ipt2/about/IPTAbout.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/about.adoc:8
+msgid ""
+"Here is the content of the about.ftl file resulting in the page as viewed "
+"above."
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/about.adoc:14
+#, no-wrap
+msgid ""
+"<h1>About this IPT installation</h1>\n"
+"<#if host.name??>\n"
+"<p>This is a default IPT hosted by ${host.name}</p>\n"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/about.adoc:34
+#, no-wrap
+msgid ""
+"<p>You can use the following variables about the hosting organization:</p>\n"
+"<ul>\n"
+"  <li>description = ${host.description!}</li>\n"
+"  <li>name = ${host.name!}</li>\n"
+"  <li>alias = ${host.alias!}</li>\n"
+"  <li>homepageURL = ${host.homepageURL!}</li>\n"
+"  <li>primaryContactType = ${host.primaryContactType!}</li>\n"
+"  <li>primaryContactName = ${host.primaryContactName!}</li>\n"
+"  <li>primaryContactDescription = ${host.primaryContactDescription!}</li>\n"
+"  <li>primaryContactAddress = ${host.primaryContactAddress!}</li>\n"
+"  <li>primaryContactEmail = ${host.primaryContactEmail!}</li>\n"
+"  <li>primaryContactPhone = ${host.primaryContactPhone!}</li>\n"
+"  <li>nodeKey = ${host.nodeKey!}</li>\n"
+"  <li>nodeName = ${host.nodeName!}</li>\n"
+"  <li>nodeContactEmail = ${host.nodeContactEmail!}</li>\n"
+"</ul>\n"
+"<#else>\n"
+"This IPT installation has not been registered yet.\n"
+"</#if>\n"
+msgstr ""

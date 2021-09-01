@@ -27,14 +27,6 @@ public class TextFileSource extends SourceBase implements FileSource {
   private int rows;
   protected Date lastModified;
 
-  private String escape(String x) {
-    if (x == null) {
-      return null;
-    }
-    return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r")
-      .replaceAll("\\f", "\\\\f");
-  }
-
   public Character getFieldQuoteChar() {
     if (fieldsEnclosedBy == null || fieldsEnclosedBy.length() == 0) {
       return null;
@@ -103,7 +95,7 @@ public class TextFileSource extends SourceBase implements FileSource {
         reader.close();
         return columns;
       } else {
-        List<String> columns = new ArrayList<String>();
+        List<String> columns = new ArrayList<>();
         // careful - the reader.header can be null. In this case set number of columns to 0
         int numColumns = (reader.header == null) ? 0 : reader.header.length;
         for (int x = 1; x <= numColumns; x++) {
@@ -116,7 +108,7 @@ public class TextFileSource extends SourceBase implements FileSource {
       LOG.warn("Cant read source " + getName(), e);
     }
 
-    return new ArrayList<String>();
+    return new ArrayList<>();
   }
 
   public void setFieldsEnclosedBy(String fieldsEnclosedBy) {
@@ -174,12 +166,7 @@ public class TextFileSource extends SourceBase implements FileSource {
     return emptyLines;
   }
 
-  private String unescape(String x) {
-    if (x == null) {
-      return null;
-    }
-    return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n'))
-      .replaceAll("\\\\r", String.valueOf('\r')).replaceAll("\\\\f", String.valueOf('\f'));
+  public SourceType getSourceType() {
+    return SourceType.TEXT_FILE;
   }
-
 }

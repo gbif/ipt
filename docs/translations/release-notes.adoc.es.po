@@ -1,0 +1,255 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-08-20 15:30+0000\n"
+"PO-Revision-Date: 2021-08-20 15:56\n"
+"Last-Translator: \n"
+"Language-Team: Spanish, Colombia\n"
+"Language: es_CO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: es-CO\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/release-notes.adoc.pot\n"
+"X-Crowdin-File-ID: 156\n"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:37
+#: en/modules/ROOT/pages/release-notes.adoc:5
+#, no-wrap
+msgid "Upgrade instructions"
+msgstr "Instrucciones de actualización"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:38
+#: en/modules/ROOT/pages/release-notes.adoc:65
+#, no-wrap
+msgid "Post-upgrade instructions"
+msgstr "Instrucciones para después de la actualización"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:39
+#: en/modules/ROOT/pages/release-notes.adoc:73
+#, no-wrap
+msgid "Important changes in this release"
+msgstr "Cambios importantes en esta versión"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/launch.adoc:40
+#: en/modules/ROOT/pages/release-notes.adoc:85
+#, no-wrap
+msgid "When all else fails"
+msgstr "Cuando todo lo demás falla"
+
+#. type: Title =
+#: en/modules/ROOT/pages/release-notes.adoc:1
+#, no-wrap
+msgid "Release Notes"
+msgstr "Notas de la Versión"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:4
+#, no-wrap
+msgid "*IPT Versions: pass:[2.5.*]*\n"
+msgstr "*Versiones IPT: pass:[2.5.*]*\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:8
+msgid "Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general."
+msgstr "Asegúrese de *realizar copia de seguridad del directorio de datos del IPT antes de ejecutar una actualización*. Según los xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Criterios de los Centros de Alojamiento de Datos], se recomienda encarecidamente realizar copias de seguridad programadas para los directorios de datos del IPT en general. "
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:10
+msgid "Once an IPT has been upgraded to 2.3.x or later from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files."
+msgstr "Una vez que el IPT ha sido actualizado a 2.3.x o posterior desde la versión 2.2 o anterior, no será posible volver a una versión anterior debido a cambios en la configuración de los archivos del IPT."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:12
+msgid "Check your system meets the xref:requirements.adoc[installation requirements] for this release."
+msgstr "Compruebe que su sistema reúne los xref:requirements.adoc[requisitos de instalación] para esta versión."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:14
+msgid "The upgrade method depends on the original xref:installation.adoc#installation-method[installation method]."
+msgstr "El método de actualización depende del xref:installation.adoc#installation-method[método de instalación] original."
+
+#. type: Title ===
+#: en/modules/ROOT/pages/release-notes.adoc:15
+#, no-wrap
+msgid "Upgrades using Linux packages"
+msgstr "Actualizaciones utilizando paquetes Linux"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:18
+msgid "Users of Linux packages on Red Hat, CentOS, Debian, Ubuntu etc. may upgrade using the system package manager."
+msgstr "Los usuarios de paquetes Linux en Red Hat, CentOS, Debian, Ubuntu, etc. pueden realizar la actualización utilizando el gestor de paquetes del sistema."
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/release-notes.adoc:25
+#, no-wrap
+msgid "# Red Hat, CentOS etc:\n"
+"yum update ipt\n"
+"# Debian, Ubuntu etc:\n"
+"apt install ipt\n"
+msgstr "# Red Hat, CentOS etc:\n"
+"yum update ipt\n"
+"# Debian, Ubuntu etc:\n"
+"apt install ipt\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:28
+msgid "These commands can be used to test a pre-release version on Red Hat/CentOS:"
+msgstr "Estos comandos se pueden usar para probar una versión anterior en Red Hat/CentOS:"
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/release-notes.adoc:33
+#, no-wrap
+msgid "# Ensure the GBIF repository configuration is up-to-date:\n"
+"yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
+msgstr "# Asegurarse de que la configuración del repositorio GBIF está actualizada:\n"
+"yum-config-manager --add-repo https://packages.gbif.org/gbif.repo\n"
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/release-notes.adoc:36
+#, no-wrap
+msgid "# Install the latest pre-release/testing version:\n"
+"yum install --enablerepo=gbif-testing ipt\n"
+msgstr "# Instalar la última versión testada:\n"
+"yum install --enablerepo=gbif-testing ipt\n"
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/release-notes.adoc:39
+#, no-wrap
+msgid "# Roll back to a previous, stable version:\n"
+"yum downgrade ipt-2.4.2\n"
+msgstr "# Volver a una versión anterior estable:\n"
+"yum downgrade ipt-2.4.2\n"
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/release-notes.adoc:42
+#, no-wrap
+msgid "# Show all available versions, testing and stable:\n"
+"yum --showduplicates list --enablerepo=gbif-testing ipt\n"
+msgstr "# Mostrar todas las versiones disponibles, testadas y estables:\n"
+"yum --showduplicates list --enablerepo=gbif-testing ipt\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:45
+msgid "#TODO:# Debian instructions, once the 2.5.0-RC1 pre-release package is prepared."
+msgstr "#PORHACER:# Las instrucciones para Debian una vez que el paquete anterior 2.5.0-RC1 está preparado."
+
+#. type: Title ===
+#: en/modules/ROOT/pages/release-notes.adoc:46
+#, no-wrap
+msgid "Upgrades using a servlet container"
+msgstr "Actualizaciones utilizando un contenedor de servlet"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:49
+msgid "When upgrading to version 2.5.0-RC1 or later, follow xref:installation.adoc#tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT."
+msgstr "Cuando actualice a la versión 2.5.0-RC1 o posterior, siga el xref:installation.adoc#tomcat[paso 2] de las instrucciones de instalación para establecer una ubicación del directorio de datos. No necesitará volver a configurar el directorio de datos cada vez que actualice el IPT."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:51
+msgid "An upgrade can be performed in 4 steps:"
+msgstr "Una actualización se puede ejecutar en 4 pasos:"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:53
+msgid "Backup the existing data directory and any xref:customization.adoc[custom styling] (images, stylesheets, etc) previously applied to your IPT."
+msgstr "Realice una copia de seguridad del directorio de datos existente y de cualquier xref:customization.adoc[estilo personalizado] (imágenes, hojas de estilo, etc.) antes de actualizar su IPT."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:54
+msgid "Replace the previous .war file with the latest edition, but keep the same name (e.g. `ipt.war`)."
+msgstr "Reemplace el archivo .war anterior con la última edición pero mantenga el mismo nombre (ej.: `ipt.war`)."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:56
+msgid "If you replace the .war file while Tomcat is stopped, be sure to delete the associated expanded directory before restarting Tomcat, so that the updated WAR file will be re-expanded when Tomcat restarts."
+msgstr "Si reemplaza el archivo .war mientras Tomcat está apagado, asegúrese de eliminar el directorio expandido asociado antes de reiniciar Tomcat, para que el archivo WAR actualizado aparezca expandido de nuevo cuando inicie Tomcat."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:58
+msgid "(If the data directory is not configured within Tomcat.) Immediately open the IPT in a web browser, and reuse the existing data directory on the initial IPT setup page"
+msgstr "(Si el directorio de datos no está configurado con Tomcat). Abra inmediatamente el IPT en un buscador web y reutilice el directorio de datos existente en la página de opciones del IPT inicial"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:59
+msgid "To be sure the upgrade worked, try logging in and look for the new version number in the footer. (_Restart Tomcat if the previous version still appears._)"
+msgstr "Para asegurarse de que la actualización funcione, intente iniciar sesión busque el número de la nueva versión en el pie de página. (_Reinicie Tomcat si aún aparece la versión anterior._)"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:60
+msgid "Reapply your custom styling (if applicable)"
+msgstr "Vuelva a aplicar su estilo personalizado (si aplica)"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/release-notes.adoc:61
+#, no-wrap
+msgid "Upgrades using Docker"
+msgstr "Actualizaciones utilizando Docker"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:64
+msgid "See the xref:installation.adoc#installation-using-docker[installation using Docker] instructions.  In general, the `latest` tag will point to the current, stable release."
+msgstr "Vea las instrucciones de xref:installation.adoc#installation-using-docker[instalación utiliando Docker]. En general, la etiqueta `latest` apuntará a la versión actual estable."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:68
+msgid "Following the upgrade, a warning message may appear indicating that some resources failed to load. This is caused when an old resource is missing required metadata after not being republished for a long time. Resource managers can fix this problem by re-publishing the affected resources."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:70
+msgid "New in IPT 2.3.x is the ability to publish sample-based data. Once the upgrade is complete, the IPT administrator must install the Darwin Core Event core. Note the Darwin Core Event core is installed by default in new installations."
+msgstr "Una novedad en el IPT 2.3.x es la capacidad para publicar datos basados en muestras. Una vez que la actualización se ha completado, el administrador del IPT debe instalar el núcleo de Eventos Darwin Core. Tenga en cuenta que el núcleo de Eventos Darwin Core está instalado por defecto en las instalaciones nuevas."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:72
+msgid "Additionally, the IPT administrator should update all installed cores and extensions to the latest versions. This will allow publishers to take advantage of any new terms and vocabularies included in the latest versions."
+msgstr "Adicionalmente, el administrador del IPT debería actualizar todos los ficheros centrales y extensiones a sus últimas versiones. Esto permitirá a los publicadores la ventaja de tener los nuevos términos y vocabularios incluidos en las últimas versiones."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:76
+msgid "The full list of new features is documented on the xref:releases.adoc[releases page].  Please pay particular attention to these points after upgrading:"
+msgstr "La lista completa de características nuevas está documentada en la xref:releases.adoc[página de la versión]. Por favor, preste especial atención a estos puntos después de actualizar: "
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:78
+msgid "IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work."
+msgstr "El IPT 2.5.0 incluye concectores de bases de datos (bibliotecas JDBC) actualizados para MySQL, PostgreSQL, MS SQL Server, Sybase y Oracle. Por favor, compruebe que las configuraciones de su base de datos aún funciona."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:79
+msgid "IPT 2.5.0 now includes a troubleshooting page, accessible only to administrators from within the Administration menu."
+msgstr "El IPT 2.5.0 incluye ahora una página de solución de problemas, accesible solo para administradores desde el menu de Administración."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:80
+msgid "IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions."
+msgstr "El IPT 2.5.0 puede ahora leer una ubicación de directorio de datos desde un contenedor servlet, vea el xref:installation.adoc#tomcat[paso 2] de las instrucciones de instalación."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:81
+msgid "IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)"
+msgstr "El IPT 2.5.0 ya no es compatible con Microsoft Internet Explorer. (El propio Microsoft https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[ya no es compatible con MSIE] para sus servidores online MS365.)"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:82
+msgid "The documentation has moved to this new location; links will be made from the old GitHub Wiki."
+msgstr "La documentación se ha movido a esta nueva ubicación; se aportarán enlaces desde la antigua Wiki de GitHub."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:84
+msgid "If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release]."
+msgstr "Si está actualizando desde una versión anterior a la 2.4, por favor, consulte las notas de la xref:2.4@release-notes.adoc[versión antigua]."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:87
+msgid "See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list]."
+msgstr "Explore las xref:faq.adoc[FAQ], que continúan siendo actualizadas con buenas preguntas, o pregunte en la https://lists.gbif.org/mailman/listinfo/ipt/[lista de mailing del IPT]."
+

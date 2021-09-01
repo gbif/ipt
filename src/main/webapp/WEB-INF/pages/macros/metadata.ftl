@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 $(document).ready(function(){
     var	itemsCount=-1;
     var personnelItemsCount = -1;
@@ -150,6 +150,8 @@ $(document).ready(function(){
         initHelp("#baseItem");
 
         setItemIndex(newItem, ++itemsCount);
+
+        initInfoPopovers(newItem[0]);
     }
 
     function addNewCollectionItem(effects){
@@ -164,6 +166,8 @@ $(document).ready(function(){
         initHelp("#baseItem-collection");
 
         setCollectionItemIndex(newItem, ++collectionItemsCount);
+
+        initInfoPopovers(newItem[0]);
     }
 
     function addNewSpecimenPreservationMethodItem(effects){
@@ -178,6 +182,8 @@ $(document).ready(function(){
         initHelp("#baseItem-specimenPreservationMethod");
 
         setSpecimenPreservationMethodItemIndex(newItem, ++specimenPreservationMethodItemsCount);
+
+        initInfoPopovers(newItem[0]);
     }
 
     function removeItem(event){
@@ -222,7 +228,8 @@ $(document).ready(function(){
 		$("#list-"+$target.attr("id").split("-")[1]).slideDown('slow', function(){
 			$("#taxonsLink-"+$target.attr("id").split("-")[1]).hide();
 			$target.parent().children("img").hide();
-		});		
+			$target.parent().children("span").hide();
+		});
 	}
 	
 	function createTaxons(event) {
@@ -365,8 +372,8 @@ $(document).ready(function(){
 			$("#item-"+index+" [id^='add-button']").attr("id", "add-button-"+index).attr("name", function() {return $(this).attr("id");});
 			$("#add-button-"+index).click(function(event){
 				createTaxons(event);
-			});			
-			if($("#item-"+index+" #subItems").children().size() == 0) {
+			});
+			if($("#item-"+index+" #subItems").children().length === 0) {
 				$("#plus-subItem-"+index).click();
 			};
 		<#break>
