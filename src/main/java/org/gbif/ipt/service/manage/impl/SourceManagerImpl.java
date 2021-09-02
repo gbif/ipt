@@ -392,13 +392,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         src.setFile(file);
         // analyze individual files using the dwca reader
-        Archive arch = ArchiveFactory.openArchive(src.getFile());
+        Archive arch = DwcFiles.fromLocation(file.toPath());
         copyArchiveFileProperties(arch.getCore(), src);
-      } catch (UnknownDelimitersException e) {
-        // this file is invalid
-        LOG.warn(e.getMessage());
-        throw new ImportException(e);
       } catch (IOException e) {
+        // this file is invalid
         LOG.warn(e.getMessage());
         throw new ImportException(e);
       } catch (UnsupportedArchiveException e) {

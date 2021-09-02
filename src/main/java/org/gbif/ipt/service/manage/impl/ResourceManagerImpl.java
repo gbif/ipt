@@ -76,6 +76,7 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.registry.metadata.parse.DatasetParser;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -1918,15 +1919,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (Exception e) {
       LOG.warn("Cant read archive eml metadata", e);
     }
-    // TODO: 02/02/2021 dwca-io does not provide this functionality anymore
     // try to read other metadata formats like dc
-//    try {
-//      eml = convertMetadataToEml(archive.getMetadata());
-//      alog.info("manage.resource.read.basic.metadata");
-//      return eml;
-//    } catch (Exception e) {
-//      LOG.warn("Cant read basic archive metadata: " + e.getMessage());
-//    }
+    try {
+      LOG.debug("try to read other metadata formats");
+      Dataset dataset = DatasetParser.build(archive.getMetadata().getBytes());
+      eml = convertMetadataToEml(dataset);
+      alog.info("manage.resource.read.basic.metadata");
+      return eml;
+    } catch (Exception e) {
+      LOG.warn("Cant read basic archive metadata: " + e.getMessage());
+    }
     alog.warn("manage.resource.read.problem");
     return null;
   }
