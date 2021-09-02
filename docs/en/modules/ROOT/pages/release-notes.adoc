@@ -74,6 +74,7 @@ Additionally, the IPT administrator should update all installed cores and extens
 
 The full list of new features is documented on the xref:releases.adoc[releases page].  Please pay particular attention to these points after upgrading:
 
+* IPT 2.5.1 includes a bugfix to connect to database sources, but it otherwise identical to version 2.5.0.
 * IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work.
 * IPT 2.5.0 now includes a troubleshooting page, with full details accessible only to administrators, accessible from the main menu.
 * IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions.

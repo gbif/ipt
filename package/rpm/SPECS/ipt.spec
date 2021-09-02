@@ -1,5 +1,5 @@
 %define nr_ver 2.5.0
-# Set to -RC1 etc for release candidates, and %nil for releases
+# Set to -RC1 etc for release candidates, and <percent>nil for releases
 %define nr_ver_extra %nil
 # Set to 0.1 etc for release candidates, and 1 etc for releases
 %define release_number 1
@@ -13,13 +13,11 @@ Source0: https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}%{nr_
 Source1: ipt.service
 Source2: ipt.sysconfig
 Source3: ipt-vhost.conf
-Source4: man7/ipt.7.ronn
+Source4: ipt.7
 Summary: GBIF Integrated Publishing Toolkit (IPT)
 BuildArch: noarch
 
 %{?systemd_requires}
-#BuildRequires: systemd
-BuildRequires: nodejs-ronn
 %define _unitdir /usr/lib/systemd/system
 
 Requires: java >= 1:1.8.0
@@ -37,14 +35,11 @@ facilitate sharing biodiversity data as Darwin Core Archives (DWCA).
 
 This package runs a single, standalone instance of the IPT.
 
-Documentation is available on https://www.gbif.org/ipt
+Documentation is available on https://ipt.gbif.org/manual
 
 %prep
 cp %{SOURCE0} ipt.war
 cp %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} .
-
-%build
-ronn --roff --organization Global\ Biodiversity\ Information\ Facility ipt.7.ronn || /usr/lib/node_modules/ronn/bin/ronn.js --roff ipt.7.ronn > ipt.7
 
 %install
 install -D -p -m 644 ipt.war %{buildroot}%{_javadir}/gbif/ipt.war

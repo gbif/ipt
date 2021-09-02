@@ -8,7 +8,7 @@ In the Crowdin IPT project, the file `Glossary` is not part of either the user i
 
 == Translating the User Interface
 
-Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's develoment IPT], where new translations will be applied.
+Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied.
 
 image::ipt2/v22/Crowdin-Join.png[]
 

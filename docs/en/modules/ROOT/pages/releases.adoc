@@ -3,7 +3,7 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<2-5-0-august-2021,2.5.0>>.
+The current, stable release is version <<2-5-1-september-2021,2.5.1>>.
 
 You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
@@ -12,12 +12,27 @@ endif::[]
 ====
 
 // Next release text kept for reuse, as it will be part of the Crowdin translation memory.
-//Version 2.5.1 of the IPT is expected to be released in Month 2021.  In preparation for this, a _release candidate_ version 2.5.1-RC1 is now available.
+//Version 2.5.2 of the IPT is expected to be released in Month 2021.  In preparation for this, a _release candidate_ version 2.5.2-RC1 is now available.
 //CAUTION: This is a *release candidate* made available for testing.  *It is not suitable for production use.*
+
+== *2.5.1* – September 2021
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.1/ipt-2.5.1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:2.5@release-notes.adoc[IPT v2.5.1 Release Notes]
+* xref:2.5@index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/28?closed=1[2 issues].
+* Translated into 7 languages
+
+Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
+
+This version addresses a bug introduced in version 2.5.0, which prevented the IPT from connecting to database sources. Users who connect the IPT to database sources will need to upgrade to 2.5.1. If you do not use database sources then version 2.5.0 is equivalent.
+
+No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+Minor issues and security issues will be addressed in patch releases.
 
 == *2.5.0* – August 2021
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.0/ipt-2.5.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.5.0 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/27?closed=1[81 issues].
@@ -26,10 +41,6 @@ endif::[]
 Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
 This version addresses 81 issues, including the famous "double log in bug", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish.
-
-No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-Minor issues and security issues will be addressed in patch releases.
 
 == *2.4.2* – September 2020
 
