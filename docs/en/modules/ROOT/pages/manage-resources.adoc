@@ -19,12 +19,12 @@ Below the Manage Resource table is a form that can be used to create a new resou
 * <<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,
 * <<Upload a metadata file,metadata file>>.
 
-Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 100MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit.
+Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit.
 
 Begin by entering a new resource shortname as described above, and then click on the button labelled "Create". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the "Resource Overview" heading of the "Manage Resources Menu" section.
 
 === Upload a Darwin Core Archive
-The IPT is able to import valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.
+The IPT is able to import valid Darwin Core Archive files up to 200MB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled "Choose File", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the "Choose File" button.
 
 image::ipt2/manage/IPTManageResourceUploadDwcA.png[]
 
@@ -74,7 +74,7 @@ WARNING: If the IPT detects the number of columns in a mapped data source has ch
 [NOTE#upload-limits]
 .Upload limits
 ====
-The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:
+The IPT has an upload size limit of 200MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 200MB in size into the IPT, the following work-arounds are recommended:
 
 * compress the file with Zip or Gzip
 * load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]

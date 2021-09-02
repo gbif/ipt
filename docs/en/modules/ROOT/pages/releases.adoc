@@ -20,12 +20,12 @@ endif::[]
 * https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.1/ipt-2.5.1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.5.1 Release Notes]
 * xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/28?closed=1[2 issues].
+* Addressed https://github.com/gbif/ipt/milestone/28?closed=1[4 issues].
 * Translated into 7 languages
 
 Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
-This version addresses a bug introduced in version 2.5.0, which prevented the IPT from connecting to database sources. Users who connect the IPT to database sources will need to upgrade to 2.5.1. If you do not use database sources then version 2.5.0 is equivalent.
+This version addresses a bug introduced in version 2.5.0, which prevented the IPT from connecting to database sources. Users who connect the IPT to database sources will need to upgrade to 2.5.1.
 
 No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
 
