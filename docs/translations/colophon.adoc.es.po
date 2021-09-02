@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 13:28\n"
+"POT-Creation-Date: 2021-08-26 08:47+0000\n"
+"PO-Revision-Date: 2021-08-26 09:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,7 +42,7 @@ msgstr "El link:../../../en/[manual de usuario original en inglés] se adapta y 
 #.  English user manual citation
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:18
-msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/{page-component-version}/"
+msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-component-version}/"
 msgstr ""
 
 #. type: Plain text
@@ -54,8 +54,8 @@ msgstr "La traducción de esta versión al español es una contribución del equ
 #.  Endif
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:27
-msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/{page-component-version}/"
-msgstr "Wieczorek J & Braak K ({localyear}) Manual de usuario para el Integrated Publishing Toolkit de GBIF, versión {page-component-version}. (Beltran N & Dean V, trad.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/{page-component-version}/"
+msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:29

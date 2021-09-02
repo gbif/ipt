@@ -71,7 +71,7 @@ Click on the button labelled "Clear" to remove the choice of selected file and r
 
 WARNING: If the IPT detects the number of columns in a mapped data source has changed when overwriting it, the user is warned that they should update its mappings.
 
-[NOTE]
+[NOTE#upload-limits]
 .Upload limits
 ====
 The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:
