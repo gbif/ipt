@@ -51,6 +51,4 @@ documentation and tutorials.
 
 Source code and an issue tracker are is available in [GitHub](https://github.com/gbif/ipt/).
 
-Further information is on the [GBIF IPT site](https://www.gbif.org/ipt).
-
 For assistance, write to the [mailing list](https://lists.gbif.org/mailman/listinfo/ipt).

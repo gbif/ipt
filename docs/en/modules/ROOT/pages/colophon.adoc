@@ -14,7 +14,7 @@ endif::[]
 
 // English user manual citation
 [quote]
-Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/{page-component-version}/
+Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-component-version}/
 
 // If not English
 ifeval::["{language}" != "en"]
@@ -22,7 +22,7 @@ This TRANSLATORS_PUT_YOUR_LANGUAGE_HERE translation of the user manual is contri
 
 // Translated user manual citation
 [quote]
-Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/{page-component-version}/
+Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/
 // Endif
 endif::[]
 

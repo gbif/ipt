@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-30 14:42+0000\n"
-"PO-Revision-Date: 2021-08-17 08:57\n"
+"PO-Revision-Date: 2021-08-28 05:07\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -136,7 +136,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:27
 msgid "Occurrence Data (pending)"
-msgstr ""
+msgstr "物種出現紀錄（準備中）"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:28

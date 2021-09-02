@@ -41,11 +41,11 @@ yum downgrade ipt-2.4.2
 yum --showduplicates list --enablerepo=gbif-testing ipt
 ----
 
-#TODO:# Debian instructions, once the 2.5.0-RC1 pre-release package is prepared.
+// #TODO:# Debian instructions, once the 2.5.0-RC1 pre-release package is prepared.
 
 === Upgrades using a servlet container
 
-TIP: When upgrading to version 2.5.0-RC1 or later, follow xref:installation.adoc#tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT.
+TIP: When upgrading to version 2.5.0 or later, follow xref:installation.adoc#tomcat[step 2] of the installation instructions to set a data directory location.  You will no longer need to reconfigure the data directory each time you upgrade the IPT.
 
 An upgrade can be performed in 4 steps:
 
@@ -74,11 +74,13 @@ Additionally, the IPT administrator should update all installed cores and extens
 
 The full list of new features is documented on the xref:releases.adoc[releases page].  Please pay particular attention to these points after upgrading:
 
+* IPT 2.5.1 includes a bugfix to connect to database sources, but it otherwise identical to version 2.5.0.
 * IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work.
-* IPT 2.5.0 now includes a troubleshooting page, accessible only to administrators from within the Administration menu.
+* IPT 2.5.0 now includes a troubleshooting page, with full details accessible only to administrators, accessible from the main menu.
 * IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions.
 * IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)
-* The documentation has moved to this new location; links will be made from the old GitHub Wiki.
+* The documentation has moved to this new location; links have been made from the old GitHub Wiki.
+* xref:customization.adoc[Customization] (styling etc) using `custom.css` is broken in this release, see this https://github.com/gbif/ipt/issues/1634[issue].
 
 If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release].
 

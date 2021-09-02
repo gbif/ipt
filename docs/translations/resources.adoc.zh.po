@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-17 08:57\n"
+"PO-Revision-Date: 2021-08-26 04:17\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -26,12 +26,12 @@ msgstr "相關資源"
 #: en/modules/ROOT/pages/resources.adoc:3
 #, no-wrap
 msgid "Darwin Core Archive documentation"
-msgstr ""
+msgstr "達爾文核心集檔案文件集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:5
 msgid "Details about the structure of a Darwin Core Archive, abbreviated DwC-A, can be found in the \"Text Guide\" section of the Darwin Core web site: http://rs.tdwg.org/dwc/terms/guides/text/. Further information about the IPT's use of DwC-A can be found on xref:darwin-core.adoc[this] page."
-msgstr ""
+msgstr "達爾文核心集檔案（Darwin Core Archive, 縮寫為 DwC-A）的詳細架構可在達爾文核心集網站的 https://dwc.tdwg.org/text/[Text Guide] 中找到。更多關於 DwC-A 在 IPT 中的操作則請見xref:darwin-core.adoc[這裡]。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:6
@@ -59,18 +59,18 @@ msgstr ""
 #: en/modules/ROOT/pages/resources.adoc:12
 #, no-wrap
 msgid "IPT GitHub site"
-msgstr ""
+msgstr "IPT GitHub 專案網站"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:14
 msgid "The https://github.org/gbif/ipt[IPT GitHub site] is the project repository for all of the open source code, management, and documentation of the IPT."
-msgstr ""
+msgstr "https://github.org/gbif/ipt[IPT GitHub 專案網站]存放 IPT 專案所有的開源程式碼、管理內容及文件。"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:15
 #, no-wrap
 msgid "IPT developer documentation"
-msgstr ""
+msgstr "IPT 開發者文件"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:17
@@ -81,7 +81,7 @@ msgstr ""
 #: en/modules/ROOT/pages/resources.adoc:18
 #, no-wrap
 msgid "IPT issue tracker"
-msgstr ""
+msgstr "IPT 問題回報"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:20
@@ -92,7 +92,7 @@ msgstr ""
 #: en/modules/ROOT/pages/resources.adoc:21
 #, no-wrap
 msgid "IPT mailing list"
-msgstr ""
+msgstr "IPT 郵件論壇"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:23
@@ -108,7 +108,7 @@ msgstr ""
 #: en/modules/ROOT/pages/resources.adoc:26
 #, no-wrap
 msgid "IPT test installation"
-msgstr ""
+msgstr "IPT 測試版裝置"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:27

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:53\n"
+"PO-Revision-Date: 2021-08-28 05:23\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -29,7 +29,7 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:7
 #, no-wrap
 msgid "What is sampling-event data?"
-msgstr ""
+msgstr "什麼是調查活動（sampling-event）資料？"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:33
@@ -43,14 +43,14 @@ msgstr ""
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:9
 #, no-wrap
 msgid "Sampling-event Metadata"
-msgstr ""
+msgstr "調查活動的詮釋資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:41
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:10
 #, no-wrap
 msgid "Sampling-event Data"
-msgstr ""
+msgstr "調查活動資料"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:65

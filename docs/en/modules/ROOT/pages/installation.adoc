@@ -29,7 +29,7 @@ There are several ways to install the IPT.
 
 === RPM (Red Hat, CentOS etc)
 
-To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:
+To install the IPT onto Red Hat, CentOS or similar, first add the GBIF package repository and install the IPT package:
 
 [source,shell]
 ----
@@ -165,3 +165,9 @@ The configuration used by `ipt.gbif.org` is shown here as an example.  It uses A
 ----
 include::partial$apache-configuration-example.conf[]
 ----
+
+=== TLS certificate configuration
+
+For production deployments of the IPT we recommend using a TLS certificate, so information such as logins are secured when accessing the IPT.  The procedure to set this up sometimes depends on your institution's policies, but the free https://letsencrypt.org/[LetsEncrypt] service is a good choice.  They https://certbot.eff.org/instructions[provide instructions] for adding a certificate to Apache, Nginx and many other webservers running on Linux or Windows.
+
+For a new deployment, it is best to set up the webserver with TLS first, then install and set up the IPT.  Adding a certificate to a configured IPT requires changing the public URL.  See the note on xref:administration.adoc#public-url[updating the public URL] in the administration section.
