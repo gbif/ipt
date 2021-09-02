@@ -59,7 +59,7 @@
                 <@s.text name='manage.source.intro'/>
             </p>
 
-            <form class="topForm" action="source.do" method="post">
+            <form class="topForm needs-validation" action="source.do" method="post" novalidate>
                 <div class="row g-3 mx-lg-4 mx-2">
                     <input type="hidden" name="r" value="${resource.shortname}" />
                     <input type="hidden" name="id" value="${id!}" />

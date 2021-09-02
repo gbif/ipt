@@ -52,6 +52,8 @@ public class SourceAction extends ManagerBaseAction {
   // logging
   private static final Logger LOG = LogManager.getLogger(SourceAction.class);
 
+  private static final String SOURCE_URL = "source-url";
+
   private SourceManager sourceManager;
   private JdbcSupport jdbcSupport;
   private DataDir dataDir;
@@ -84,12 +86,7 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public String add() throws IOException {
-    if ("source-sql".equals(sourceType)) {
-      // prepare a new, empty sql source
-      source = new SqlSource();
-      source.setResource(resource);
-      ((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
-    } else if ("source-url".equals(sourceType)) {
+    if (SOURCE_URL.equals(sourceType)) {
       // prepare a new, empty url source
       source = new UrlSource();
       source.setResource(resource);
@@ -118,10 +115,6 @@ public class SourceAction extends ManagerBaseAction {
       }
 
       addUrl(urlWrapped);
-    } else {
-      // prepare a new, empty file source
-      source = new TextFileSource();
-      source.setResource(resource);
     }
 
     boolean replace = false;
@@ -378,6 +371,15 @@ public class SourceAction extends ManagerBaseAction {
         // store original number of columns, in case they change the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
       }
+    } else if (file == null) {
+      // prepare a new, empty sql source
+      source = new SqlSource();
+      source.setResource(resource);
+      ((SqlSource) source).setRdbms(jdbcSupport.get("mysql"));
+    } else {
+      // prepare a new, empty file source
+      source = new TextFileSource();
+      source.setResource(resource);
     }
   }
 
