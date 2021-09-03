@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 15:50\n"
+"PO-Revision-Date: 2021-09-03 16:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -496,29 +496,29 @@ msgstr "Portugal"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:134
 msgid "http://www.gbif.pt/[GBIF Portugal] provides helpdesk support to new publishers in Portugal, and hosting support for datasets on the http://ipt.gbif.pt/ipt/[GBIF Portugal IPT]. Please contact GBIF Portugal <node@gbif.pt> for assistance."
-msgstr ""
+msgstr "http://www.gbif.pt/[GBIF Portugal] proporciona asistencia técnica a los nuevos publicadores en Portugal y soporte de alojamiento para conjuntos de datos en http://ipt.gbif.pt[IPT de GBIF Portugal]. Póngase en contacto con GBIF Portugal <node@gbif.pt> para obtener ayuda."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:135
 #, no-wrap
 msgid "South Africa"
-msgstr ""
+msgstr "Sudáfrica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:138
 msgid "The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://197.189.235.147:8080/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance."
-msgstr ""
+msgstr "El http://www.sanbi.org/[Instituto Nacional de Biodiversidad de Sudáfrica (SANBI)] proporciona soporte técnico a nuevos publicadores en Sudáfrica y soporte de alojamiento para conjuntos de datos en http://197.189.235.147:8080/iptsanbi/[IPT del SANBI]. Póngase en contacto con <f.ramwashe@sanbi.org.za> para obtener ayuda."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:139
 #, no-wrap
 msgid "Spain"
-msgstr ""
+msgstr "España"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:142
 msgid "http://www.gbif.es/[GBIF Spain] provides helpdesk support to new publishers in Spain, and hosting support for datasets on the http://www.gbif.es/ipt/[GBIF Spain IPT]. Please contact <info@gbif.es> for assistance."
-msgstr ""
+msgstr "http://www.gbif.pt/[GBIF España] proporciona asistencia técnica a los nuevos publicadores en España y soporte de alojamiento para conjuntos de datos en http://www.gbif.es/ipt/[IPT de GBIF España]. Póngase en contacto con GBIF España <info@gbif.es> para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:144
