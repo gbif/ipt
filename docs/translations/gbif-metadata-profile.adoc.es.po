@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 21:05\n"
+"PO-Revision-Date: 2021-09-03 21:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -581,7 +581,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:197
 msgid "There are several fields that could represent either a person or an organization. Below is a list of the various fields used to describe a person or organization."
-msgstr ""
+msgstr "Hay varios campos que pueden representar tanto a una persona como a una organización. A continuación se muestra una lista de los diversos campos que se utilizan para describir a una persona u organización."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:225
@@ -606,12 +606,12 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:227
 #, no-wrap
 msgid "KeywordSet (General Keywords)"
-msgstr ""
+msgstr "Conjunto de palabras clave (palabras clave generales)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:230
 msgid "The keywordSet field is a wrapper for the keyword and keywordThesaurus elements, both of which are required together."
-msgstr ""
+msgstr "El campo keywordSet es un contenedor para los elementos palabras clave (keyword ) y palabras clave de los tesauros(keywordThesaurus), los cuales se requieren juntos."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:237
@@ -624,12 +624,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:242
 msgid "Describes the extent of the coverage of the resource in terms of its *spatial* extent, *temporal* extent, and *taxonomic* extent."
-msgstr ""
+msgstr "Describe la extensión de la cobertura del recurso en términos de su extensión * espacial *, extensión * temporal * y extensión * taxonómica *."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:246
 msgid "A container for taxonomic information about a resource. It includes a list of species names (or higher level ranks) from one or more classification systems. Please note the taxonomic classifications should not be nested, just listed one after the other."
-msgstr ""
+msgstr "Contenedor de información taxonómica sobre un recurso. Incluye una lista de nombres de especies (o rangos de nivel superior) de uno o más sistemas de clasificación. Tenga en cuenta que las clasificaciones taxonómicas no deben estar anidadas, solo enumeradas una tras otra."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:259
@@ -645,7 +645,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:264
 msgid "A container for spatial information about a resource; allows a bounding box for the overall coverage (in lat long), and also allows description of arbitrary polygons with exclusions."
-msgstr ""
+msgstr "Un contenedor de información espacial sobre un recurso; permite un cuadro delimitador para la cobertura general (en latitud) y también permite la descripción de polígonos arbitrarios con exclusiones."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:277
@@ -661,7 +661,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:282
 msgid "This container allows coverage to be a single point in time, multiple points in time, or a range of dates."
-msgstr ""
+msgstr "Este contenedor permite que la cobertura sea un solo punto en el tiempo, múltiples puntos en el tiempo o un rango de fechas."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:291
@@ -675,7 +675,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:296
 msgid "This field documents scientific methods used in the collection of the resource. It includes information on items such as tools, instrument calibration and software."
-msgstr ""
+msgstr "Este campo documenta los métodos científicos utilizados en la recopilación del recurso. Incluye información sobre elementos como herramientas, calibración de instrumentos y software."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:309
@@ -691,7 +691,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:314
 msgid "Contain a rights management statement for the resource, or a reference to a service providing such information."
-msgstr ""
+msgstr "Contener una declaración de gestión de derechos para el recurso o una referencia a un servicio que proporciona dicha información."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:321
@@ -705,12 +705,12 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:323
 #, no-wrap
 msgid "Additional Metadata + http://www.tdwg.org/activities/ncd/[Natural Collections Description Data (NCD)] Related"
-msgstr ""
+msgstr "Metadatos adicionales relacionados + http://www.tdwg.org/activities/ncd/[Datos de descripción de colecciones naturales (NCD)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:326
 msgid "The additionalMetadata field is a container for any other relevant metadata that pertains to the resource being described. This field allows EML to be extensible in that any XML-based metadata can be included in this element. The elements provided here in the GMP include those required for conformance with ISO 19139 and a subset of NCD (Natural Collections Descriptions) elements."
-msgstr ""
+msgstr "El campo additionalMetadata es un contenedor para cualquier otro metadato relevante que pertenezca al recurso que se describe. Este campo permite que EML sea extensible ya que cualquier metadato basado en XML puede incluirse en este elemento. Los elementos proporcionados aquí en las GMP incluyen aquellos requeridos para la conformidad con ISO 19139 y un subconjunto de elementos NCD (Descripciones de Colecciones Naturales)."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:359
@@ -737,12 +737,13 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:360
 #, no-wrap
 msgid "an exact number of “JGI-units” in the collection plus a measure of uncertainty (± x);\n"
-msgstr ""
+msgstr "un número exacto de \"unidades JGI\" en la colección más una medida de incertidumbre (± x);\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:363
 #, no-wrap
 msgid "a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted.\n\n"
 "The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitized. This is to avoid having to update the numbers too often. The number of non-public data (not digitized or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.\n"
-msgstr ""
+msgstr "un rango de números (x a x), donde el valor más bajo representa un número exacto, cuando se omite el valor más alto.\n\n"
+"El debate concluyó que la cuantificación debería abarcar todos los especímenes, no solo los que aún no se han digitalizado. Esto es para evitar tener que actualizar los números con demasiada frecuencia. El número de datos no públicos (no digitalizados o no accesibles) se puede calcular a partir de los números de GBIF en lugar de los datos de JGTI.\n"
 
