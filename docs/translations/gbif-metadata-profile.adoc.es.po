@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-26 09:21\n"
+"PO-Revision-Date: 2021-09-03 18:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -81,13 +81,16 @@ msgid "| Version | Description                  | Date of release | Author(s)\n\
 "| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0]     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR\n"
 "| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak\n"
 "| xref:gbif-metadata-profile.adoc[2.1]     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett\n"
-msgstr ""
+msgstr "| Versión | Descripción | Fecha de lanzamiento | Autor (es)\n\n"
+"| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0] | Comprobación de la coherencia en los documentos relevantes, enlaces actualizados a los sitios de producción, texto e imágenes actualizados para reflejar las funcionalidades actuales. | 1 de marzo de 2011 | KB, BK, MR\n"
+"| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0] | Transferido a wiki, ediciones importantes | 19 de junio de 2017 | Kyle Braak\n"
+"| xref: gbif-metadata-profile.adoc [2.1] | Transferido a la documentación de AsciiDoctor | 25 de mayo de 2021 | Matthew Blissett\n"
 
 #.  The date uses the last change, ignoring formatting etc.
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
 msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
-msgstr ""
+msgstr "GBIF (2011). Perfil de metadatos de GBIF - Guía práctica, (contribución de Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhague: Secretaría de GBIF ISBN: 87-92020-24-0, accesible en línea en: https: // ipt .gbif.org / manual / es / ipt / {página-versión} / gbif-metadata-profile"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
@@ -252,7 +255,7 @@ msgstr "figures/ipt_help_dialog.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:65
 msgid "To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2)."
-msgstr ""
+msgstr "Para garantizar que se ingresen los datos adecuados, los campos se validan y se muestran mensajes informativos al usuario para ayudarlo a completar los formularios (Figura 2)."
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:66
