@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 18:50\n"
+"PO-Revision-Date: 2021-09-03 19:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -310,60 +310,60 @@ msgstr "Publicar metadatos usando la plantilla de metadatos GBIF"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:83
 msgid "The GBIF Metadata Template is similar to a manuscript template that makes it easy to author resource metadata. Once data have been entered into the template, a metadata author will have to enter it into the IPT via the metadata editor. The required fields will all be clearly indicated. The IPT metadata editor ensures that all mandatory fields have been filled in and that any fields using controlled vocabularies get entered correctly, e.g. the country field. The IPT also ensures the generated metadata document is valid XML and validates against the GBIF Metadata Profile. Ultimately this two-step process (1. metadata template → 2. IPT metadata editor) can be used to generate a valid resource metadata document."
-msgstr ""
+msgstr "La plantilla de metadatos de GBIF es similar a una plantilla de manuscrito que facilita la creación de metadatos de recursos. Una vez que se hayan ingresado los datos en la plantilla, un autor de metadatos deberá ingresarlos en el IPT a través del editor de metadatos. Todos los campos obligatorios estarán claramente indicados. El editor de metadatos de IPT asegura que se hayan completado todos los campos obligatorios y que cualquier campo que utilice vocabularios controlados se ingrese correctamente, p. Ej. el campo del país. El IPT también garantiza que el documento de metadatos generado sea XML válido y se valida con el perfil de metadatos de GBIF. En última instancia, este proceso de dos pasos (1. plantilla de metadatos → 2. editor de metadatos IPT) se puede utilizar para generar un documento de metadatos de recursos válido."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:85
 msgid "Where there is doubt about what a field means, refer to this guide to look up the description of its corresponding element with an accompanying example."
-msgstr ""
+msgstr "Cuando haya dudas sobre lo que significa un campo, consulte esta guía para buscar la descripción de su elemento correspondiente acompañado de un ejemplo."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:86
 #, no-wrap
 msgid "Publishing metadata manually"
-msgstr ""
+msgstr "Publicar metadatos manualmente"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
 msgid "Below is a simple set of instructions for non-IPT users wishing to generate their own custom EML XML file complying with the latest version of the GBIF Metadata Profile: *1.1*.  Refer to the following list to ensure it is completed properly:"
-msgstr ""
+msgstr "A continuación se muestra un conjunto simple de instrucciones para usuarios que no son IPT y desean generar su propio archivo XML EML personalizado que cumpla con la última versión del perfil de metadatos de GBIF: * 1.1 *. Consulte la siguiente lista para asegurarse de que esté completada correctamente:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:93
 msgid "Use the schema location for version 1.1 of the GBIF Metadata Profile in the `<eml:eml>` root element: `<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\" ...>`."
-msgstr ""
+msgstr "Utilice la ubicación del esquema para la versión 1.1 del perfil de metadatos de GBIF en el elemento raíz `<eml: eml>`: `<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\"...>`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:94
 msgid "Set the `packageId` attribute inside the `<eml:eml>` root element. Remember, the `packageId` should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'` for the 1st version of the document, `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'` for the 2nd version, and so on."
-msgstr ""
+msgstr "Establezca el atributo `packageId` dentro del elemento raíz`<eml: eml>`. Recuerde, el `packageId` debe ser cualquier ID único global fijado para ese documento. Siempre que el documento cambie, se le debe asignar un nuevo packageId. Por ejemplo: `packageId = '619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'` para la primera versión del documento,` packageId ='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'` para la segunda versión, y así sucesivamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:95
 msgid "Fill in all mandatory metadata elements specified by the schema, plus any additional metadata elements desired. When updating an existing EML file using an earlier version of the GBIF Metadata Profile, refer to the section below for a list of what's new in this version."
-msgstr ""
+msgstr "Complete todos los elementos de metadatos obligatorios especificados por el esquema, además de los elementos de metadatos adicionales que desee. Cuando actualice un archivo EML existente utilizando una versión anterior del perfil de metadatos de GBIF, consulte la sección siguiente para obtener una lista de las novedades de esta versión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:96
 msgid "Ensure the EML file is valid XML. For assistance, refer to <<Validation of metadata,this section>>."
-msgstr ""
+msgstr "Asegúrese de que el archivo EML sea XML válido. Para obtener ayuda, consulte << Validación de metadatos, esta sección >>."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:97
 #, no-wrap
 msgid "Validation of metadata"
-msgstr ""
+msgstr "Validación de metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:100
 msgid "It is essential the XML metadata document is valid, both as an XML document and as validating against the GML schema. There are several options for how to do this. The https://www.oxygenxml.com/[Oxygen XML Editor] is an excellent tool with built-in validator you can use to do this. Java programmers could also do this for example by using the https://github.com/gbif/registry/blob/master/registry-metadata/src/main/java/org/gbif/registry/metadata/EmlValidator.java[EmlValidator.java] from the GBIF registry-metadata project."
-msgstr ""
+msgstr "Es fundamental que el documento de metadatos XML sea válido, tanto como documento XML como para su validación con el esquema GML. Hay varias opciones para hacer esto. Por medio de https://www.oxygenxml.com/[Oxygen XML Editor] es una excelente herramienta con un validador incorporado que puede utilizar para hacer esto. Los programadores de Java también podrían hacer esto, por ejemplo, utilizando https://github.com/gbif/registry/blob/master/registry-metadata/src/main/java/org/gbif/registry/metadata/EmlValidator.java[EmlValidator .java] del proyecto de metadatos de registro de GBIF."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:101
 #, no-wrap
 msgid "What changed in version 1.1 of the GMP since 1.0.2?"
-msgstr ""
+msgstr "¿Qué cambió en la versión 1.1 de GMP desde la 1.0.2?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:104
