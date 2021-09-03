@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 15:33\n"
+"PO-Revision-Date: 2021-09-03 15:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -449,49 +449,49 @@ msgstr "http://ipt-inpn.gbif.fr/[IPT de INPN]"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:120
 msgid "http://ipt.madbif.mg[MadBIF IPT]"
-msgstr ""
+msgstr "http://ipt.madbif.mg[IPT de Madagascar MadBIF]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:121
 msgid "http://ipt-nigeria.gbif.fr[GBIF Nigeria IPT]"
-msgstr ""
+msgstr "http://ipt-nigeria.gbif.fr[IPT de GBIF Nigeria]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:122
 msgid "http://ipt-senegal.gbif.fr[Senegal IPT] - _Note Senegal is not a GBIF participant_"
-msgstr ""
+msgstr "http://ipt-senegal.gbif.fr[IPT de Senegal] - _Nota Senegal no es un participante de GBIF_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:123
 msgid "http://ipt-togo.gbif.fr[GBIF Togo IPT]"
-msgstr ""
+msgstr "http://ipt-togo.gbif.fr[IPT de GBIF Togo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:124
 msgid "http://ipt-uganda.gbif.fr[GBIF Uganda IPT]"
-msgstr ""
+msgstr "http://ipt-uganda.gbif.fr[IPT de GBIF Uganda]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:126
 msgid "Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues please write to <dev@gbif.fr> instead."
-msgstr ""
+msgstr "Póngase en contacto con GBIF-Francia <gbif@gbif.fr> para obtener ayuda. Para problemas técnicos, escriba a <dev@gbif.fr>."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:127
 #, no-wrap
 msgid "Norway"
-msgstr ""
+msgstr "Noruega"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:130
 msgid "http://www.gbif.no/[GBIF Norway] provides helpdesk support to new publishers in Norway, and hosting support for datasets on the http://ipt.gbif.no/[GBIF Norway IPT]. Please contact GBIF Norway <helpdesk@gbif.no> for assistance."
-msgstr ""
+msgstr "http://www.gbif.no/[GBIF Noruega] proporciona asistencia técnica a los nuevos publicadores en Noruega y soporte de alojamiento para conjuntos de datos en http://ipt.gbif.no/[IPT de GBIF Noruega]. Póngase en contacto con GBIF Noruega <helpdesk@gbif.no> para obtener ayuda."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:131
 #, no-wrap
 msgid "Portugal"
-msgstr ""
+msgstr "Portugal"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:134
