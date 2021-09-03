@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 16:23\n"
+"PO-Revision-Date: 2021-09-03 16:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -545,23 +545,23 @@ msgstr "Taiwán"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:152
 msgid "The http://www.taibif.tw/[Taiwan Biodiversity Information Facility (TaiBIF)] provides helpdesk support to new publishers in Taiwan, and hosting support for datasets on the http://ipt.taibif.tw/[TaiBIF IPT]. Please contact Melissa Liu <melissaliu0520@gmail.com> for assistance."
-msgstr ""
+msgstr "El http://www.taibif.tw/[El servicio de Información sobre Biodiversidad de Taiwán (TaiBIF)] brinda soporte técnico a los nuevos publicadores en Taiwán y soporte de alojamiento para conjuntos de datos en http://ipt.taibif.tw/[IP de TaiBIF]. Comuníquese con Melissa Liu <melissaliu0520@gmail.com> para obtener ayuda."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:153
 #, no-wrap
 msgid "USA"
-msgstr ""
+msgstr "EUA"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:156
 msgid "The http://ipt.idigbio.org[iDigBio IPT] provides helpdesk support to new data publishers in the US, and data publishing resources for datasets needing data mobilization support. Please contact data@idigbio.org for assistance."
-msgstr ""
+msgstr "El http://ipt.idigbio.org[IPT de iDigBio] proporciona  soporte técnico a los nuevos publicadores de datos en los Estados Unidos y recursos de publicación de datos para conjuntos de datos que necesitan soporte para la movilización de datos. Póngase en contacto con data@idigbio.org para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:158
 msgid "http://vertnet.org/[VertNet] provides helpdesk support to institutions that have vertebrates among one or more of the data sets they want to publish. In other words, if the institution is interested in publishing vertebrate data sets (whether specimens or observations), VertNet will help with publishing all of their data sets. This promotes efficiency when providing and maintaining support to the institution."
-msgstr ""
+msgstr "http://vertnet.org/[VertNet] proporciona servicio de asistencia técnica a las instituciones que tienen vertebrados en uno o más de los conjuntos de datos que desean publicar. En otras palabras, si la institución está interesada en publicar conjuntos de datos de vertebrados (ya sean especímenes u observaciones), VertNet ayudará a publicar todos sus conjuntos de datos. Esto promueve la eficiencia al brindar y mantener el apoyo a la institución."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:160
