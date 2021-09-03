@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 18:34\n"
+"PO-Revision-Date: 2021-09-03 18:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -261,7 +261,7 @@ msgstr "Para garantizar que se ingresen los datos adecuados, los campos se valid
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:66
 #, no-wrap
 msgid "Screenshot of the field validation message displayed when an email field is submitted with an irregular email address."
-msgstr ""
+msgstr "Captura de pantalla del mensaje de validación de campo que se muestra cuando se envía un campo de correo electrónico con una dirección de correo electrónico irregular."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:67
@@ -272,23 +272,23 @@ msgstr "figures/ipt_field_validation.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:70
 msgid "For further reference, a description of each element in the GBIF Metadata Profile can be found below with an accompanying example."
-msgstr ""
+msgstr "Para mayor referencia, a continuación se puede encontrar una descripción de cada elemento en el perfil de metadatos de GBIF acompañado de un ejemplo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:72
 msgid "The IPT publishes the metadata document and ensures that it is validated against the GBIF Metadata Profile so the user does not have to worry about validation."
-msgstr ""
+msgstr "El IPT publica el documento de metadatos y se asegura de que esté validado con el perfil de metadatos de GBIF para que el usuario no tenga que preocuparse por la validación."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:74
 msgid "If at any time the metadata are modified, the user only has to update the document and click the “Publish” button on the Manage Resource page to publish a new version of the document (resource) (Figure 3)."
-msgstr ""
+msgstr "Si en algún momento se modifican los metadatos, el usuario solo tiene que actualizar el documento y hacer clic en el botón “Publicar” en la página Administrar recurso para publicar una nueva versión del documento (recurso) (Figura 3)."
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:75
 #, no-wrap
 msgid "Screenshot of the Published Versions section of the Manage Resource page of the IPT."
-msgstr ""
+msgstr "Captura de pantalla de la sección Versiones Publicadas de la página Administrar recursos del IPT."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:76
@@ -299,13 +299,13 @@ msgstr "figures/ipt_published_versions.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:79
 msgid "At any point, the resource manager can choose to make the resource publicly available on the Internet and subsequently even register it with GBIF making it globally discoverable."
-msgstr ""
+msgstr "En cualquier momento, el administrador de recursos puede optar por hacer que el recurso esté disponible públicamente en Internet y, posteriormente, incluso registrarlo en GBIF para que sea encontrado a nivel mundial."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:80
 #, no-wrap
 msgid "Publishing metadata using the GBIF Metadata Template"
-msgstr ""
+msgstr "Publicar metadatos usando la plantilla de metadatos GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:83
