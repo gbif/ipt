@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 16:54\n"
+"PO-Revision-Date: 2021-09-03 17:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -576,51 +576,51 @@ msgstr "https://www1.usgs.gov/obis-usa/ipt/[Sistema de Información Biogeográfi
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:163
 msgid "https://nas.er.usgs.gov/ipt/[Non-indigenous Aquatic Species (NAS) information resource for the USGS]"
-msgstr ""
+msgstr "https://nas.er.usgs.gov/ipt/[Recurso de información de las Especies acuáticas no endémicas (NAS) para el USGS]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:164
 msgid "https://bison.usgs.gov/ipt[USGS Biodiversity Information Serving Our Nation (BISON) IPT]"
-msgstr ""
+msgstr "https://bison.usgs.gov/ipt[IPT de USGS-Información sobre biodiversidad al servicio de nuestra nación (BISON)]"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:165
 #, no-wrap
 msgid "Freshwater data"
-msgstr ""
+msgstr "Datos dulceacuícolas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:168
 msgid "http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] provides data hosting and helpdesk support to publishers of freshwater data around the globe on the http://data.freshwaterbiodiversity.eu/ipt/[Biofresh IPT], hosted by the Belgium Biodiversity Platform. Biofresh is an EU-funded international project that aims to build a global information platform for scientists and ecosystem managers with access to all available databases describing the distribution, status and trends of global freshwater biodiversity. BioFresh integrates the freshwater biodiversity competencies and expertise of 19 research institutions."
-msgstr ""
+msgstr "http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] proporciona alojamiento de datos y servicio de asistencia técnica a los publicadores de datos de agua dulce de todo el mundo en http://data.freshwaterbiodiversity.eu/ipt/[IPT de Biofresh], alojado por la Plataforma de Biodiversidad de Bélgica. Biofresh, es un proyecto internacional financiado por los EUA que tiene como objetivo construir una plataforma de información mundial para científicos y administradores de ecosistemas con acceso a todas las bases de datos disponibles que describen la distribución, el estado y las tendencias de la biodiversidad mundial de agua dulce. BioFresh integra las capacidades y la experiencia en biodiversidad de agua dulce de 19 instituciones de investigación."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:169
 #, no-wrap
 msgid "Marine data"
-msgstr ""
+msgstr "Datos marinos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:172
 msgid "http://www.iobis.org[OBIS] provides data hosting and helpdesk support to publishers of marine data around the globe. EurOBIS/Flanders Marine Institute (VLIZ) hosts multiple IPT installations discoverable at http://ipt.vliz.be/ on behalf of various OBIS Nodes. Currently, there are more than http://www.iobis.org/about/[20 OBIS Nodes] around the world connecting 500 institutions from 56 countries."
-msgstr ""
+msgstr "http://www.iobis.org[OBIS] proporciona alojamiento de datos y servicio de asistencia técnica a publicadores de datos marinos de todo el mundo. EurOBIS/ Instituto Marino de Flandes (VLIZ) aloja múltiples instalaciones IPT que se pueden encontrar en http://ipt.vliz.be/ en nombre de varios Nodos OBIS. Actualmente, hay más de http://www.iobis.org/about/[20 Nodos OBIS] en todo el mundo que conectan a 500 instituciones de 56 países."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:173
 #, no-wrap
 msgid "Vertebrate data"
-msgstr ""
+msgstr "Datos de vertebrados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:176
 msgid "http://vertnet.org/[VertNet] provides data hosting and helpdesk support to publishers of vertebrate specimen and observation data. Hosted data can be seen on the http://ipt.vertnet.org/[VertNet IPT]. Please contact David Bloom <dbloom@vertnet.org> for assistance."
-msgstr ""
+msgstr "http://vertnet.org/[VertNet]  proporciona alojamiento de datos y servicio de asistencia técnica a publicadores de datos de especímenes y observaciones. Los datos alojados se pueden ver en http://ipt.vertnet.org/[IPT de VertNet]. Póngase en contacto con David Bloom <dbloom@vertnet.org> para obtener ayuda."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:177
 #, no-wrap
 msgid "Certification"
-msgstr ""
+msgstr "Certificación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:179
