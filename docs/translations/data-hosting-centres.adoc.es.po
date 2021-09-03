@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 17:30\n"
+"PO-Revision-Date: 2021-09-03 17:51\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -625,5 +625,5 @@ msgstr "Certificación"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:179
 msgid "By becoming certified, repositories can demonstrate to both their users and their funders that an independent authority has evaluated them and endorsed their trustworthiness. The World Data System (WDS) and the Data Seal of Approval (DSA) have merged their data repository certifications into a set of harmonized common requirements for certification of repositories named the https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR) Requirements]. The Core certification requires a data repository supply evidence that they are sustainable and trustworthy. A repository first conducts an internal self-assessment, which is then reviewed by community peers. More information about the certification process can be found https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[here]."
-msgstr ""
+msgstr "Al obtener el certificado, los repositorios pueden demostrar tanto a sus usuarios como a sus patrocinadores que una autoridad independiente los ha evaluado y respaldado su confiabilidad. El Sistema Mundial de Datos (WDS) y la Junta de Aprobación de Datos (DSA) han fusionado sus certificaciones de repositorios de datos en un conjunto de requisitos comunes estandarizados para la certificación de repositorios denominados https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR)]. La certificación requiere un repositorio de datos que proporcione evidencia de que son sostenibles y confiables. El repositorio primero realiza una autoevaluación interna, que luego es revisada por pares de la comunidad. Puede encontrar más información sobre el proceso de certificación https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[aquí]."
 
