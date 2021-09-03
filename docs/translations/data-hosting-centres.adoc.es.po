@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 16:06\n"
+"PO-Revision-Date: 2021-09-03 16:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -523,24 +523,24 @@ msgstr "http://www.gbif.pt/[GBIF España] proporciona asistencia técnica a los 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:144
 msgid "The http://www.gbif.es/ipt/[GBIF Spain IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000854[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
-msgstr ""
+msgstr "El http://www.gbif.es/ipt/[IPT de GBIF España] se reconoce como un repositorio en https://fairsharing.org/biodbcore-000854[FAIRSharing.org]. Un número cada vez mayor de revistas dirige a los autores a un repositorio apropiado en FAIRSharing.org para garantizar que los datos de las publicaciones científicas se depositen de manera estandarizada."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:145
 #, no-wrap
 msgid "Sweden"
-msgstr ""
+msgstr "Suecia"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:148
 msgid "http://www.gbif.se/[GBIF Sweden] provides helpdesk support to new publishers in Sweden, and hosting support for datasets on the http://www.gbif.se/ipt/[GBIF Sweden IPT]. Please contact Anders Telenius <anders.telenius@nrm.se> for assistance."
-msgstr ""
+msgstr "http://www.gbif.se/[GBIF Suecia] proporciona asistencia técnica a los nuevos publicadores en España y soporte de alojamiento para conjuntos de datos http://www.gbif.se/ipt/[IPT de GBIF Suecia]. Póngase en contacto con Anders Telenius <anders.telenius@nrm.se> para obtener ayuda."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:149
 #, no-wrap
 msgid "Taiwan"
-msgstr ""
+msgstr "Taiwán"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:152
