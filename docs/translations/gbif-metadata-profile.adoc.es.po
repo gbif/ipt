@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-03 19:38\n"
+"PO-Revision-Date: 2021-09-03 20:33\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -433,69 +433,69 @@ msgstr "Antecedentes del perfil de metadatos de GBIF"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:120
 msgid "Metadata, literally “data about data” are an essential component of a data management system, describing such aspects as the “who, what, where, when and how” pertaining to a resource. In the GBIF context, resources are datasets, loosely defined as collections of related data, the granularity of which is determined by the data custodian. Metadata can occur in several levels of completeness. In general, metadata should allow a prospective end user of data to:"
-msgstr ""
+msgstr "Los metadatos, literalmente \"datos sobre datos\", son un componente esencial de un sistema de gestión de datos, que describen aspectos como \"quién, qué, dónde, cuándo y cómo\" pertenecientes a un recurso. En el contexto de GBIF, los recursos son conjuntos de datos, definidos libremente como colecciones de datos relacionados, cuya granularidad está determinada por el custodio de datos. Los metadatos pueden ocurrir en varios niveles de integridad. En general, los metadatos deberían permitir que un posible usuario final de los datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:122
 msgid "Identify/discover its existence,"
-msgstr ""
+msgstr "Identificar / descubrir su existencia,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:123
 msgid "Learn how to access or acquire the data,"
-msgstr ""
+msgstr "Aprenda a acceder o adquirir los datos,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:124
 msgid "Understand its fitness-for-use, and"
-msgstr ""
+msgstr "Comprender su aptitud para el uso y"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:125
 msgid "Learn how to transfer (obtain a copy of) the data."
-msgstr ""
+msgstr "Aprenda a transferir (obtener una copia de) los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:127
 msgid "The GBIF Metadata Profile (GMP) was developed in order to standardize how resources get described at the dataset level in the GBIF http://www.gbif.org[Data Portal]. This profile can be transformed to other common metadata formats such as the http://marinemetadata.org/references/iso19139[ISO 19139 metadata profile]."
-msgstr ""
+msgstr "El perfil de metadatos de GBIF (GMP) se desarrolló para estandarizar cómo se describen los recursos a nivel de conjunto de datos en GBIF http://www.gbif.org [Portal de datos]. Este perfil se puede transformar a otros formatos de metadatos comunes como el http://marinemetadata.org/references/iso19139[ISO 19139 ´perfil de metadatos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:129
 msgid "In the GMP there is a minimum set of mandatory elements required for identification, but it is recommended that as many elements be used as possible to ensure the metadata are as descriptive and complete as possible."
-msgstr ""
+msgstr "En las GMP hay un conjunto mínimo de elementos obligatorios requeridos para la identificación, pero se recomienda que se utilicen tantos elementos como sea posible para garantizar que los metadatos sean lo más descriptivos y completos posible."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:130
 #, no-wrap
 msgid "Metadata Elements"
-msgstr ""
+msgstr "Elementos de los metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:133
 msgid "The GBIF Metadata Profile is primarily based on the {eml-location}/index.html[Ecological Metadata Language (EML)]. The GBIF profile utilizes a subset of EML and extends it to include additional requirements that are not accommodated in the EML specification. The following tables provide short descriptions of the profile elements, and where relevant, links to more complete EML descriptions. The elements are categorized as follows:"
-msgstr ""
+msgstr "El perfil de metadatos de GBIF se basa principalmente en el {eml-location}/index.html [lenguaje de metadatos ecológicos (EML)]. El perfil GBIF utiliza un subconjunto de EML y lo amplía para incluir requisitos adicionales que no se incluyen en la especificación EML. Las siguientes tablas proporcionan descripciones breves de los elementos del perfil y, cuando corresponde, enlaces a descripciones de EML más completas. Los elementos se clasifican de la siguiente manera:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:135
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:146
 #, no-wrap
 msgid "Dataset (Resource)"
-msgstr ""
+msgstr "Conjunto de datos (Recurso)"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:136
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:176
 #, no-wrap
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:137
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:194
 #, no-wrap
 msgid "People and Organizations"
-msgstr ""
+msgstr "Personas y organizaciones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:138
@@ -507,7 +507,7 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:239
 #, no-wrap
 msgid "Coverage"
-msgstr ""
+msgstr "Cobertura"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:143
@@ -521,12 +521,12 @@ msgstr "Métodos"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:311
 #, no-wrap
 msgid "Intellectual Property Rights"
-msgstr ""
+msgstr "Derechos de propiedad intelectual"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:145
 msgid "Additional Metadata + NCD (Natural Collections Descriptions Data) Related"
-msgstr ""
+msgstr "Metadatos adicionales + NCD (datos de descripciones de colecciones naturales) relacionados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:149
