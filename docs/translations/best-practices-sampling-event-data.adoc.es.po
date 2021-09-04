@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:14\n"
+"PO-Revision-Date: 2021-09-04 19:52\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -917,7 +917,7 @@ msgstr "Un Esquema de una parcela Whittaker que contiene 13 sub-parcelas de áre
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:397
 #, no-wrap
 msgid "figures/whittaker_plot.png"
-msgstr ""
+msgstr "figures/whittaker_plot.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:399
