@@ -105,9 +105,9 @@
                         </div>
                     </form>
                     <form action='canceloverwrite.do' method='post'>
-                        <div style="display: none;">
-                            <@s.submit name="canceloverwrite" key="button.cancel" cssClass="btn btn-sm btn-outline-secondary my-1"/>
-                        </div>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <input name="validate" type="hidden" value="false"/>
+                        <@s.submit name="canceloverwrite" key="button.cancel" cssStyle="display: none;" cssClass="btn btn-sm btn-outline-secondary my-1"/>
                     </form>
                 </div>
             </div>

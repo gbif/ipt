@@ -214,6 +214,11 @@
             $('.icon-validate').tooltip({track: true});
         });
 
+        // cancel source overwrite when 'Close' button is clicked
+        $(".close-overwrite-modal").click(function(event) {
+            $("#canceloverwrite").click();
+        });
+
         function showConfirmOverwrite() {
             var question='<p><@s.text name="manage.resource.addSource.confirm"/></p>';
             $('#dialog').html(question);
@@ -249,6 +254,9 @@
             dialog.find('.ui-dialog-title').addClass('modal-title fw-bold').html('<@s.text name="basic.confirm"/>');
             dialog.find('.ui-dialog-content').addClass('modal-body');
             dialog.find('.ui-dialog-buttonpane').addClass('modal-footer');
+
+            // add class to modal 'Close X' button
+            dialog.find('.ui-dialog-titlebar-close').addClass('close-overwrite-modal');
 
             // add bootstrap design to modal buttons
             $('.ui-dialog-buttonset button:first-child').addClass('btn btn-sm btn-outline-gbif-primary mx-2');

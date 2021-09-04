@@ -86,11 +86,35 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public String add() throws IOException {
-    if (SOURCE_URL.equals(sourceType)) {
+    String sessionUrl = (String) session.get(Constants.SESSION_URL);
+
+    if (SOURCE_URL.equals(sourceType) || sessionUrl != null) {
       // prepare a new, empty url source
       source = new UrlSource();
       source.setResource(resource);
+      sourceType = SOURCE_URL;
       URI urlWrapped = URI.create(url);
+
+      boolean replaceUrl = false;
+
+      // check session URL
+      // if present do not check sources with the same name, already overwriting
+      if (sessionUrl != null) {
+        url = sessionUrl;
+        urlWrapped = URI.create(url);
+        replaceUrl = true;
+      }
+
+      // check if source with the same name already exists
+      // if so store url in the session, and return to ask about overwriting
+      if (!replaceUrl) {
+        String urlSourceName = FilenameUtils.getBaseName(url);
+
+        if (resource.getSource(urlSourceName) != null) {
+          urlToOverwrite();
+          return INPUT;
+        }
+      }
 
       // check URL is fine otherwise throw an exception
       try {
@@ -115,13 +139,15 @@ public class SourceAction extends ManagerBaseAction {
       }
 
       addUrl(urlWrapped);
+      // manually remove any previous data in session
+      removeSessionData();
     }
 
     boolean replace = false;
     // Are we going to overwrite any source file?
-    File ftest = (File) session.get(Constants.SESSION_FILE);
-    if (ftest != null) {
-      file = ftest;
+    File sessionFile = (File) session.get(Constants.SESSION_FILE);
+    if (sessionFile != null) {
+      file = sessionFile;
       fileFileName = (String) session.get(Constants.SESSION_FILE_NAME);
       fileContentType = (String) session.get(Constants.SESSION_FILE_CONTENT_TYPE);
       replace = true;
@@ -155,7 +181,7 @@ public class SourceAction extends ManagerBaseAction {
             addDataFile(f, f.getName());
           }
           // manually remove any previous file in session and in temporal directory path
-          removeSessionFile();
+          removeSessionData();
         } catch (IOException e) {
           LOG.error(e);
           addActionError(getText("manage.source.filesystem.error", new String[] {e.getMessage()}));
@@ -184,15 +210,15 @@ public class SourceAction extends ManagerBaseAction {
         }
 
         // manually remove any previous file in session and in temporal directory path
-        removeSessionFile();
+        removeSessionData();
       }
     }
     return SUCCESS;
   }
 
   private void addUrl(URI url) {
-    String filename = FilenameUtils.getBaseName(url.toString());
-    Source existingSource = resource.getSource(filename);
+    String sourceName = FilenameUtils.getBaseName(url.toString());
+    Source existingSource = resource.getSource(sourceName);
     boolean replaced = existingSource != null;
 
     try {
@@ -212,7 +238,7 @@ public class SourceAction extends ManagerBaseAction {
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
       LOG.error("Cannot add URL source " + url, e);
-      addActionError(getText("manage.source.cannot.add", new String[]{filename, e.getMessage()}));
+      addActionError(getText("manage.source.cannot.add", new String[]{sourceName, e.getMessage()}));
     }
   }
 
@@ -248,7 +274,7 @@ public class SourceAction extends ManagerBaseAction {
       addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
     } catch (InvalidFilenameException e) {
       // clean session variables used for confirming file overwrite
-      removeSessionFile();
+      removeSessionData();
       throw e;
     }
   }
@@ -275,7 +301,7 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public String cancelOverwrite() {
-    removeSessionFile();
+    removeSessionData();
     return SUCCESS;
   }
 
@@ -288,6 +314,13 @@ public class SourceAction extends ManagerBaseAction {
     session.put(Constants.SESSION_FILE, fileNew);
     session.put(Constants.SESSION_FILE_NAME, fileFileName);
     session.put(Constants.SESSION_FILE_CONTENT_TYPE, fileContentType);
+  }
+
+  /**
+   * Insert temporal session variable SESSION_URL.
+   */
+  private void urlToOverwrite() {
+    session.put(Constants.SESSION_URL, url);
   }
 
   @Override
@@ -387,7 +420,7 @@ public class SourceAction extends ManagerBaseAction {
    * Remove any previous uploaded file in temporal directory.
    * And clean some session variables used to confirm overwrite action.
    */
-  private void removeSessionFile() {
+  private void removeSessionData() {
     File fileNew = (File) session.get(Constants.SESSION_FILE);
     if (fileNew != null && fileNew.exists()) {
       fileNew.delete();
@@ -395,6 +428,7 @@ public class SourceAction extends ManagerBaseAction {
     session.remove(Constants.SESSION_FILE);
     session.remove(Constants.SESSION_FILE_NAME);
     session.remove(Constants.SESSION_FILE_CONTENT_TYPE);
+    session.remove(Constants.SESSION_URL);
   }
 
   @Override

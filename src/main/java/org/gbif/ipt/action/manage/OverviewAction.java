@@ -541,7 +541,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @return true if a file exist in the user session. False otherwise.
    */
   public boolean getConfirmOverwrite() {
-    return session.get(Constants.SESSION_FILE) != null;
+    return session.get(Constants.SESSION_FILE) != null || session.get(Constants.SESSION_URL) != null;
   }
 
   /**

@@ -11,6 +11,7 @@ public final class Constants {
 
   public static final String SESSION_USER = "curr_user";
   public static final String SESSION_RESOURCE = "curr_resource";
+  public static final String SESSION_URL = "url";
   public static final String SESSION_FILE = "file";
   public static final String SESSION_FILE_NAME = "fileName";
   public static final String SESSION_FILE_CONTENT_TYPE = "contentType";
