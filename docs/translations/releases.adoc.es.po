@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-09-04 19:48+0000\n"
-"PO-Revision-Date: 2021-09-04 19:52\n"
+"POT-Creation-Date: 2021-09-06 08:22+0000\n"
+"PO-Revision-Date: 2021-09-06 09:03\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -70,7 +70,7 @@ msgstr "xref:2.5@index.adoc[Manual del Usuario]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:24
-msgid "Addressed https://github.com/gbif/ipt/milestone/28?closed=1[4 issues]."
+msgid "Addressed https://github.com/gbif/ipt/milestone/28?closed=1[5 issues]."
 msgstr ""
 
 #. type: Plain text
