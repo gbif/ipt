@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:21+0000\n"
-"PO-Revision-Date: 2021-08-26 08:22\n"
+"PO-Revision-Date: 2021-09-06 08:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -128,7 +128,7 @@ msgstr "*Enlaces* - Abre una página diferente a la que contiene el enlace. Los 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:36
 msgid "Example link to the account information page for the logged in user: image:ipt2/controls/Control-LinkExample.png[]"
-msgstr ""
+msgstr "Ejemplo de enlace a la página de información de la cuenta del usuario conectado: image:ipt2/controls/Control-LinkExample.png[]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:38
@@ -151,13 +151,13 @@ msgstr "*Ícono de Documentación* image:ipt2/controls/Control-DocumentationIcon
 #: en/modules/ROOT/pages/overview.adoc:44
 #, no-wrap
 msgid "**Trash icon** image:ipt2/controls/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.\n"
-msgstr ""
+msgstr "*Icono de Papelera* image:ipt2/controls/Control-TrashIcon.png[] - Este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:46
 #, no-wrap
 msgid "**Calendar icon** image:ipt2/controls/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.\n"
-msgstr ""
+msgstr "*Ícono de Calendario* image:ipt2/controls/Control-CalendarIcon.png[] - Este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:48
@@ -167,7 +167,7 @@ msgstr "Ejemplo del calendario asociado a un cuadro de texto llamado \"Fecha Fin
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:50
 msgid "image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]"
-msgstr ""
+msgstr "image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:52
@@ -178,12 +178,12 @@ msgstr "*Tabla ordenable* - Una tabla que permite ordenar las filas según los v
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:55
 msgid "Example table sorted in ascending order by the column labelled \"Name\".  image:ipt2/controls/Control-TableSortedAscending.png[]"
-msgstr ""
+msgstr "Ejemplo de tabla ordenable en orden ascendente según la columna etiquetada \"Nombre\". image:ipt2/controls/Control-TableSortedAscending.png[]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:58
 msgid "Example table sorted in descending order by the column labelled \"Type\".  image:ipt2/controls/Control-TableSortedDescending.png[]"
-msgstr ""
+msgstr "Ejemplo de tabla ordenable en orden descendente según la columna etiquetada \"Tipo\". image:ipt2/controls/Control-TableSortedDescending.png[]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/overview.adoc:59

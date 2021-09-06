@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-20 15:30+0000\n"
-"PO-Revision-Date: 2021-08-20 15:56\n"
+"POT-Creation-Date: 2021-09-04 19:48+0000\n"
+"PO-Revision-Date: 2021-09-04 19:53\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -45,7 +45,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:12
-msgid "Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's develoment IPT], where new translations will be applied."
+msgid "Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied."
 msgstr ""
 
 #. type: Target for macro image

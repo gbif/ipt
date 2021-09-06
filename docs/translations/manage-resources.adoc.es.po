@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-20 15:30+0000\n"
-"PO-Revision-Date: 2021-08-20 15:56\n"
+"POT-Creation-Date: 2021-09-04 19:48+0000\n"
+"PO-Revision-Date: 2021-09-06 08:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -165,7 +165,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
-msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 100MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
+msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
 msgstr ""
 
 #. type: Plain text
@@ -181,8 +181,8 @@ msgstr "Cargar un Archivo Darwin Core"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:28
-msgid "The IPT is able to import valid Darwin Core Archive files up to 100MB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled \"Choose File\", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr ""
+msgid "The IPT is able to import valid Darwin Core Archive files up to 200MB in size. Information about Darwin Core Archives can be found on the https://dwc.tdwg.org/[Darwin Core web site], with further information about the IPT's use of them xref:dwca-guide.adoc[here]. To import a Darwin Core Archive, click on the button labelled \"Choose File\", then navigate to and select the intended archive file. After selecting the file, its name will appear next to the \"Choose File\" button."
+msgstr "El IPT puede importar y exportar archivos válidos del tipo Darwin Core de hasta 200MB. Puede encontrar más información sobre archivos Darwin Core en el http://rs.tdwg.org/dwc/terms/guides/text/[sitio web de Darwin Core], junto con información sobre su uso en xref:dwca-guide.adoc[el IPT]. Para importar un archivo Darwin Core, haga clic en el botón \"Examinar\", a continuación busque y seleccione el archivo. Después de seleccionar el archivo, el nombre aparecerá junto al botón \"Examinar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:29
@@ -345,8 +345,8 @@ msgstr ""
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:78
-msgid "The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:"
-msgstr "El IPT tiene un límite de 100MB para la carga de archivos. Sin embargo no se tienen límites de tamaño para los Archivos Darwin Core que se deseen exportar o publicar a través del IPT. Para la carga en el IPT de conjuntos de datos de un tamaño mayor a los 100MB, se recomiendan las siguientes alternativas:"
+msgid "The IPT has an upload size limit of 200MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 200MB in size into the IPT, the following work-arounds are recommended:"
+msgstr "El IPT tiene un límite de 200MB para la carga de archivos. Sin embargo no se tienen límites de tamaño para los Archivos Darwin Core que se deseen exportar o publicar a través del IPT. Para la carga en el IPT de conjuntos de datos de un tamaño mayor a los 200MB, se recomiendan las siguientes alternativas:"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:80
@@ -622,7 +622,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:150
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceSourceURL.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceSourceURL.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:153
@@ -2225,7 +2225,7 @@ msgstr "Si una columna contiene el identificador del core(por ejemplo, ID del re
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:591
 msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary]."
-msgstr ""
+msgstr "El término Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] es un término obligatorio para la extensión Occurrence. Por esto el IPT valida que cada archivo de datos tenga una columna de basisOfRecord. Adicionalmente, el IPT valida que cada registro de Ocurrence presente el basisOfRecord, ya que los valores coincidan con el {latest-basis-of-record}[Vocabulario del Tipo de Darwin Core]."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:592

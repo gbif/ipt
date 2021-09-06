@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-26 09:21\n"
+"PO-Revision-Date: 2021-09-04 09:37\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -81,13 +81,16 @@ msgid "| Version | Description                  | Date of release | Author(s)\n\
 "| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0]     | Checked consistencies across relevant documents, updated links to production sites, updated text and pictures to reflect current functionalities. | 1 Mar 2011      | KB, BK, MR\n"
 "| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak\n"
 "| xref:gbif-metadata-profile.adoc[2.1]     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett\n"
-msgstr ""
+msgstr "| Versión | Descripción | Fecha de lanzamiento | Autor (es)\n\n"
+"| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0] | Comprobación de la coherencia en los documentos relevantes, enlaces actualizados a los sitios de producción, texto e imágenes actualizados para reflejar las funcionalidades actuales. | 1 de marzo de 2011 | KB, BK, MR\n"
+"| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0] | Transferido a wiki, ediciones importantes | 19 de junio de 2017 | Kyle Braak\n"
+"| xref: gbif-metadata-profile.adoc [2.1] | Transferido a la documentación de AsciiDoctor | 25 de mayo de 2021 | Matthew Blissett\n"
 
 #.  The date uses the last change, ignoring formatting etc.
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
 msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
-msgstr ""
+msgstr "GBIF (2011). Perfil de metadatos de GBIF - Guía práctica, (contribución de Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhague: Secretaría de GBIF ISBN: 87-92020-24-0, accesible en línea en: https: // ipt .gbif.org / manual / es / ipt / {página-versión} / gbif-metadata-profile"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
@@ -252,13 +255,13 @@ msgstr "figures/ipt_help_dialog.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:65
 msgid "To ensure suitable data are entered, the fields are validated and informative messages displayed back to the user to assist them in filling out the forms (Figure 2)."
-msgstr ""
+msgstr "Para garantizar que se ingresen los datos adecuados, los campos se validan y se muestran mensajes informativos al usuario para ayudarlo a completar los formularios (Figura 2)."
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:66
 #, no-wrap
 msgid "Screenshot of the field validation message displayed when an email field is submitted with an irregular email address."
-msgstr ""
+msgstr "Captura de pantalla del mensaje de validación de campo que se muestra cuando se envía un campo de correo electrónico con una dirección de correo electrónico irregular."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:67
@@ -269,23 +272,23 @@ msgstr "figures/ipt_field_validation.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:70
 msgid "For further reference, a description of each element in the GBIF Metadata Profile can be found below with an accompanying example."
-msgstr ""
+msgstr "Para mayor referencia, a continuación se puede encontrar una descripción de cada elemento en el perfil de metadatos de GBIF acompañado de un ejemplo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:72
 msgid "The IPT publishes the metadata document and ensures that it is validated against the GBIF Metadata Profile so the user does not have to worry about validation."
-msgstr ""
+msgstr "El IPT publica el documento de metadatos y se asegura de que esté validado con el perfil de metadatos de GBIF para que el usuario no tenga que preocuparse por la validación."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:74
 msgid "If at any time the metadata are modified, the user only has to update the document and click the “Publish” button on the Manage Resource page to publish a new version of the document (resource) (Figure 3)."
-msgstr ""
+msgstr "Si en algún momento se modifican los metadatos, el usuario solo tiene que actualizar el documento y hacer clic en el botón “Publicar” en la página Administrar recurso para publicar una nueva versión del documento (recurso) (Figura 3)."
 
 #. type: Block title
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:75
 #, no-wrap
 msgid "Screenshot of the Published Versions section of the Manage Resource page of the IPT."
-msgstr ""
+msgstr "Captura de pantalla de la sección Versiones Publicadas de la página Administrar recursos del IPT."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:76
@@ -296,215 +299,215 @@ msgstr "figures/ipt_published_versions.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:79
 msgid "At any point, the resource manager can choose to make the resource publicly available on the Internet and subsequently even register it with GBIF making it globally discoverable."
-msgstr ""
+msgstr "En cualquier momento, el administrador de recursos puede optar por hacer que el recurso esté disponible públicamente en Internet y, posteriormente, incluso registrarlo en GBIF para que sea encontrado a nivel mundial."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:80
 #, no-wrap
 msgid "Publishing metadata using the GBIF Metadata Template"
-msgstr ""
+msgstr "Publicar metadatos usando la plantilla de metadatos GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:83
 msgid "The GBIF Metadata Template is similar to a manuscript template that makes it easy to author resource metadata. Once data have been entered into the template, a metadata author will have to enter it into the IPT via the metadata editor. The required fields will all be clearly indicated. The IPT metadata editor ensures that all mandatory fields have been filled in and that any fields using controlled vocabularies get entered correctly, e.g. the country field. The IPT also ensures the generated metadata document is valid XML and validates against the GBIF Metadata Profile. Ultimately this two-step process (1. metadata template → 2. IPT metadata editor) can be used to generate a valid resource metadata document."
-msgstr ""
+msgstr "La plantilla de metadatos de GBIF es similar a una plantilla de manuscrito que facilita la creación de metadatos de recursos. Una vez que se hayan ingresado los datos en la plantilla, un autor de metadatos deberá ingresarlos en el IPT a través del editor de metadatos. Todos los campos obligatorios estarán claramente indicados. El editor de metadatos de IPT asegura que se hayan completado todos los campos obligatorios y que cualquier campo que utilice vocabularios controlados se ingrese correctamente, p. Ej. el campo del país. El IPT también garantiza que el documento de metadatos generado sea XML válido y se valida con el perfil de metadatos de GBIF. En última instancia, este proceso de dos pasos (1. plantilla de metadatos → 2. editor de metadatos IPT) se puede utilizar para generar un documento de metadatos de recursos válido."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:85
 msgid "Where there is doubt about what a field means, refer to this guide to look up the description of its corresponding element with an accompanying example."
-msgstr ""
+msgstr "Cuando haya dudas sobre lo que significa un campo, consulte esta guía para buscar la descripción de su elemento correspondiente acompañado de un ejemplo."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:86
 #, no-wrap
 msgid "Publishing metadata manually"
-msgstr ""
+msgstr "Publicar metadatos manualmente"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
 msgid "Below is a simple set of instructions for non-IPT users wishing to generate their own custom EML XML file complying with the latest version of the GBIF Metadata Profile: *1.1*.  Refer to the following list to ensure it is completed properly:"
-msgstr ""
+msgstr "A continuación se muestra un conjunto simple de instrucciones para usuarios que no son IPT y desean generar su propio archivo XML EML personalizado que cumpla con la última versión del perfil de metadatos de GBIF: * 1.1 *. Consulte la siguiente lista para asegurarse de que esté completada correctamente:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:93
 msgid "Use the schema location for version 1.1 of the GBIF Metadata Profile in the `<eml:eml>` root element: `<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\" ...>`."
-msgstr ""
+msgstr "Utilice la ubicación del esquema para la versión 1.1 del perfil de metadatos de GBIF en el elemento raíz `<eml: eml>`: `<eml:eml ... xsi:schemaLocation=\"eml://ecoinformatics.org/eml-2.1.1 \\http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd\"...>`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:94
 msgid "Set the `packageId` attribute inside the `<eml:eml>` root element. Remember, the `packageId` should be any globally unique ID fixed for that document. Whenever the document changes, it must be assigned a new packageId. For example: `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'` for the 1st version of the document, `packageId='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'` for the 2nd version, and so on."
-msgstr ""
+msgstr "Establezca el atributo `packageId` dentro del elemento raíz`<eml: eml>`. Recuerde, el `packageId` debe ser cualquier ID único global fijado para ese documento. Siempre que el documento cambie, se le debe asignar un nuevo packageId. Por ejemplo: `packageId = '619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml'` para la primera versión del documento,` packageId ='619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-2.xml'` para la segunda versión, y así sucesivamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:95
 msgid "Fill in all mandatory metadata elements specified by the schema, plus any additional metadata elements desired. When updating an existing EML file using an earlier version of the GBIF Metadata Profile, refer to the section below for a list of what's new in this version."
-msgstr ""
+msgstr "Complete todos los elementos de metadatos obligatorios especificados por el esquema, además de los elementos de metadatos adicionales que desee. Cuando actualice un archivo EML existente utilizando una versión anterior del perfil de metadatos de GBIF, consulte la sección siguiente para obtener una lista de las novedades de esta versión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:96
 msgid "Ensure the EML file is valid XML. For assistance, refer to <<Validation of metadata,this section>>."
-msgstr ""
+msgstr "Asegúrese de que el archivo EML sea XML válido. Para obtener ayuda, consulte << Validación de metadatos, esta sección >>."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:97
 #, no-wrap
 msgid "Validation of metadata"
-msgstr ""
+msgstr "Validación de metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:100
 msgid "It is essential the XML metadata document is valid, both as an XML document and as validating against the GML schema. There are several options for how to do this. The https://www.oxygenxml.com/[Oxygen XML Editor] is an excellent tool with built-in validator you can use to do this. Java programmers could also do this for example by using the https://github.com/gbif/registry/blob/master/registry-metadata/src/main/java/org/gbif/registry/metadata/EmlValidator.java[EmlValidator.java] from the GBIF registry-metadata project."
-msgstr ""
+msgstr "Es fundamental que el documento de metadatos XML sea válido, tanto como documento XML como para su validación con el esquema GML. Hay varias opciones para hacer esto. Por medio de https://www.oxygenxml.com/[Oxygen XML Editor] es una excelente herramienta con un validador incorporado que puede utilizar para hacer esto. Los programadores de Java también podrían hacer esto, por ejemplo, utilizando https://github.com/gbif/registry/blob/master/registry-metadata/src/main/java/org/gbif/registry/metadata/EmlValidator.java[EmlValidator .java] del proyecto de metadatos de registro de GBIF."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:101
 #, no-wrap
 msgid "What changed in version 1.1 of the GMP since 1.0.2?"
-msgstr ""
+msgstr "¿Qué cambió en la versión 1.1 de GMP desde la 1.0.2?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:104
 #, no-wrap
 msgid "*Support for a machine readable license.* Note instructions on how to provide a machine readable license can be found xref:license.adoc[here].\n"
-msgstr ""
+msgstr "*Soporte para una licencia legible por una computadora.* Tenga en cuenta las instrucciones sobre cómo proporcionar una licencia legible por una computadora se pueden encontrar xref:license.adoc[aquí].\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:105
 #, no-wrap
 msgid "Support for multiple contacts, creators, metadataProvider and project personnel\n"
-msgstr ""
+msgstr "Soporte para múltiples contactos, creadores, proveedores de metadatos y personal del proyecto\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:106
 #, no-wrap
 msgid "Support for userIds for any agent (e.g. ORCID)\n"
-msgstr ""
+msgstr "Soporte para userIds para cualquier agente (p. ej. ORCID(Open Researcher and Contributor ID))\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:107
 #, no-wrap
 msgid "Support for providing information about the frequency with which changes are made to the dataset\n"
-msgstr ""
+msgstr "Soporte para proporcionar información sobre la frecuencia con la que se realizan cambios en el conjunto de datos\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:108
 #, no-wrap
 msgid "Support for providing a project identifier (e.g. to associate datasets under a common project)\n"
-msgstr ""
+msgstr "Soporte para proporcionar un identificador de proyecto (por ejemplo, para asociar conjuntos de datos en un proyecto común)\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:109
 #, no-wrap
 msgid "The description can be broken into separate paragraphs versus all lumped into one\n"
-msgstr ""
+msgstr "La descripción se puede dividir en párrafos separados versus todos agrupados en uno\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:110
 #, no-wrap
 msgid "Support for providing information about multiple collections\n"
-msgstr ""
+msgstr "Soporte para proporcionar información sobre múltiples colecciones\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:111
 #, no-wrap
 msgid "Example files"
-msgstr ""
+msgstr "Archivos de ejemplo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:114
 msgid "An example EML complying with v1.1 of the GBIF Metadata Profile can be found https://cloud.gbif.org/griis/eml.do?r=global&v=2.0[here]. Note this file has been generated by the https://cloud.gbif.org/griis/[GRIIS IPT]."
-msgstr ""
+msgstr "Puede encontrar un ejemplo de EML que cumple con v1.1 del perfil de metadatos de GBIF https://cloud.gbif.org/griis/eml.do?r=global&v=2.0[aquí]. Tenga en cuenta que este archivo ha sido generado por https://cloud.gbif.org/griis/[GRIIS IPT]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:115
 #, no-wrap
 msgid "Annex"
-msgstr ""
+msgstr "Anexo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:117
 #, no-wrap
 msgid "Background to the GBIF Metadata Profile"
-msgstr ""
+msgstr "Antecedentes del perfil de metadatos de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:120
 msgid "Metadata, literally “data about data” are an essential component of a data management system, describing such aspects as the “who, what, where, when and how” pertaining to a resource. In the GBIF context, resources are datasets, loosely defined as collections of related data, the granularity of which is determined by the data custodian. Metadata can occur in several levels of completeness. In general, metadata should allow a prospective end user of data to:"
-msgstr ""
+msgstr "Los metadatos, literalmente \"datos sobre datos\", son un componente esencial de un sistema de gestión de datos, que describen aspectos como \"quién, qué, dónde, cuándo y cómo\" pertenecientes a un recurso. En el contexto de GBIF, los recursos son conjuntos de datos, definidos libremente como colecciones de datos relacionados, cuya granularidad está determinada por el custodio de datos. Los metadatos pueden ocurrir en varios niveles de integridad. En general, los metadatos deberían permitir que un posible usuario final de los datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:122
 msgid "Identify/discover its existence,"
-msgstr ""
+msgstr "Identificar / descubrir su existencia,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:123
 msgid "Learn how to access or acquire the data,"
-msgstr ""
+msgstr "Aprenda a acceder o adquirir los datos,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:124
 msgid "Understand its fitness-for-use, and"
-msgstr ""
+msgstr "Comprender su aptitud para el uso y"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:125
 msgid "Learn how to transfer (obtain a copy of) the data."
-msgstr ""
+msgstr "Aprenda a transferir (obtener una copia de) los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:127
 msgid "The GBIF Metadata Profile (GMP) was developed in order to standardize how resources get described at the dataset level in the GBIF http://www.gbif.org[Data Portal]. This profile can be transformed to other common metadata formats such as the http://marinemetadata.org/references/iso19139[ISO 19139 metadata profile]."
-msgstr ""
+msgstr "El perfil de metadatos de GBIF (GMP) se desarrolló para estandarizar cómo se describen los recursos a nivel de conjunto de datos en GBIF http://www.gbif.org [Portal de datos]. Este perfil se puede transformar a otros formatos de metadatos comunes como el http://marinemetadata.org/references/iso19139[ISO 19139 ´perfil de metadatos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:129
 msgid "In the GMP there is a minimum set of mandatory elements required for identification, but it is recommended that as many elements be used as possible to ensure the metadata are as descriptive and complete as possible."
-msgstr ""
+msgstr "En las GMP hay un conjunto mínimo de elementos obligatorios requeridos para la identificación, pero se recomienda que se utilicen tantos elementos como sea posible para garantizar que los metadatos sean lo más descriptivos y completos posible."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:130
 #, no-wrap
 msgid "Metadata Elements"
-msgstr ""
+msgstr "Elementos de los metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:133
 msgid "The GBIF Metadata Profile is primarily based on the {eml-location}/index.html[Ecological Metadata Language (EML)]. The GBIF profile utilizes a subset of EML and extends it to include additional requirements that are not accommodated in the EML specification. The following tables provide short descriptions of the profile elements, and where relevant, links to more complete EML descriptions. The elements are categorized as follows:"
-msgstr ""
+msgstr "El perfil de metadatos de GBIF se basa principalmente en el {eml-location}/index.html [lenguaje de metadatos ecológicos (EML)]. El perfil GBIF utiliza un subconjunto de EML y lo amplía para incluir requisitos adicionales que no se incluyen en la especificación EML. Las siguientes tablas proporcionan descripciones breves de los elementos del perfil y, cuando corresponde, enlaces a descripciones de EML más completas. Los elementos se clasifican de la siguiente manera:"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:135
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:146
 #, no-wrap
 msgid "Dataset (Resource)"
-msgstr ""
+msgstr "Conjunto de datos (Recurso)"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:136
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:176
 #, no-wrap
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:137
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:194
 #, no-wrap
 msgid "People and Organizations"
-msgstr ""
+msgstr "Personas y organizaciones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:138
 msgid "Keyword Set (General Keywords)"
-msgstr ""
+msgstr "Conjunto de palabras clave (palabras clave generales)"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:139
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:239
 #, no-wrap
 msgid "Coverage"
-msgstr ""
+msgstr "Cobertura"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:143
@@ -518,17 +521,17 @@ msgstr "Métodos"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:311
 #, no-wrap
 msgid "Intellectual Property Rights"
-msgstr ""
+msgstr "Derechos de propiedad intelectual"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:145
 msgid "Additional Metadata + NCD (Natural Collections Descriptions Data) Related"
-msgstr ""
+msgstr "Metadatos adicionales + NCD (datos de descripciones de colecciones naturales) relacionados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:149
 msgid "The dataset field has elements relating to a single dataset (resource)."
-msgstr ""
+msgstr "El campo del conjunto de datos tiene elementos relacionados con un único conjunto de datos (recurso)."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:174
@@ -545,12 +548,24 @@ msgid "| Term name | Description\n\n"
 "| {eml-location}/eml-resource.html#additionalInfo[additionalInfo] | Information regarding omissions, instructions or other annotations that resource managers may wish to include with a dataset. Basically, any information that is not characterized by the other resource metadata fields.\n\n"
 "| {eml-location}/eml-resource.html#url[url] | The URL of the resource that is available online.\n\n"
 "| {eml-location}/eml-resource.html#abstract[abstract] | A brief overview of the resource that is being documented.\n"
-msgstr ""
+msgstr "| Nombre del término | Descripción\n\n"
+"| {eml-location}/eml-resource.html#alternateIdentifier[alternateIdentifier] | Es un Identificador único universal (UUID) para el documento EML y no para el conjunto de datos. Este término es opcional. Se puede proporcionar una lista de diferentes identificadores. Por ejemplo, 619a4b95-1a82-4006-be6a-7dbe3c9b33c5.\n\n"
+"| {eml-location}/eml-resource.html#title[title] | Una descripción del recurso que se está documentando que sea lo suficientemente larga para diferenciarlo de otros recursos similares. Se pueden proporcionar varios títulos, particularmente cuando se intenta expresar el título en más de un idioma (use el atributo \"xml:lang\" para indicar el idioma si no es inglés/en).p ej. Datos de densidad de anfibios de estanque primaveral, Isla Vista, 1990-1996.\n\n"
+"| {eml-location}/eml-resource.html#creator[creator] | El creador del recurso es la persona u organización responsable de crear el recurso en sí. Consulte la sección \"Personas y organizaciones\" para obtener más detalles.\n\n"
+"| {eml-location}/eml-resource.html#metadataProvider[metadataProvider] | El proveedor de metadatos es la persona u organización responsable de proporcionar documentación para el recurso. Consulte la sección \"Personas y organizaciones\" para obtener más detalles.\n\n"
+"| {eml-location}/eml-resource.html#associatedParty[AssociatedParty] | Una parte asociada es otra persona u organización que está asociada con el recurso. Estas partes pueden jugar varios roles en la creación o mantenimiento del recurso, y estos roles deben indicarse en el elemento \"rol\". Consulte la sección \"Personas y organizaciones\" para obtener más detalles.\n\n"
+"| {eml-location}/eml-resource.html#contact[contact] | El campo de contacto contiene información de contacto para este conjunto de datos. Esta es la persona o institución a contactar si tiene preguntas sobre el uso o la interpretación de un conjunto de datos. Consulte la sección \"Personas y organizaciones\" para obtener más detalles.\n\n"
+"| {eml-location}/eml-resource.html#pubDate[pubDate] | La fecha en que se publicó el recurso. El formato debe representarse como: CCYY, que representa un año de 4 dígitos, o CCYY-MM-DD, que denota el año, mes y día completos. Tenga en cuenta que el mes y el día son componentes opcionales. Los formatos deben cumplir con la norma ISO 8601. Por ejemplo, 2010-09-20.\n\n"
+"| {eml-location}/eml-resource.html#language[language] | El idioma en el que está escrito el recurso (no el documento de metadatos). Puede ser un nombre de idioma conocido o uno de los códigos de idioma ISO para ser más precisos. La recomendación de GBIF es utilizar el código de idioma ISO (https://api.gbif.org/v1/enumeration/language). Por ejemplo, inglés.\n\n"
+"| {eml-location}/eml-resource.html#additionalInfo[additionalInfo] | Información sobre omisiones, instrucciones u otras anotaciones que los administradores de recursos deseen incluir en un conjunto de datos. Básicamente, cualquier información que no esté caracterizada por los otros campos de metadatos de recursos.\n\n"
+"| {eml-location}/eml-resource.html#url[url] | La URL del recurso que está disponible en línea.\n\n"
+"| {eml-location}/eml-resource.html#abstract[abstract] | Una breve descripción del recurso que se está documentando.\n"
+"{eml-location}\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:179
 msgid "The project field contains information on the project in which this dataset was collected. It includes information such as project personnel, funding, study area, project design and related projects."
-msgstr ""
+msgstr "El campo del proyecto contiene información sobre el proyecto en el que se recopiló este conjunto de datos. Incluye información como personal del proyecto, financiamiento, área de estudio, diseño del proyecto y proyectos relacionados."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:192
@@ -566,7 +581,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:197
 msgid "There are several fields that could represent either a person or an organization. Below is a list of the various fields used to describe a person or organization."
-msgstr ""
+msgstr "Hay varios campos que pueden representar tanto a una persona como a una organización. A continuación se muestra una lista de los diversos campos que se utilizan para describir a una persona u organización."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:225
@@ -591,12 +606,12 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:227
 #, no-wrap
 msgid "KeywordSet (General Keywords)"
-msgstr ""
+msgstr "Conjunto de palabras clave (palabras clave generales)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:230
 msgid "The keywordSet field is a wrapper for the keyword and keywordThesaurus elements, both of which are required together."
-msgstr ""
+msgstr "El campo keywordSet es un contenedor para los elementos palabras clave (keyword ) y palabras clave de los tesauros(keywordThesaurus), los cuales se requieren juntos."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:237
@@ -609,12 +624,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:242
 msgid "Describes the extent of the coverage of the resource in terms of its *spatial* extent, *temporal* extent, and *taxonomic* extent."
-msgstr ""
+msgstr "Describe la extensión de la cobertura del recurso en términos de su extensión * espacial *, extensión * temporal * y extensión * taxonómica *."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:246
 msgid "A container for taxonomic information about a resource. It includes a list of species names (or higher level ranks) from one or more classification systems. Please note the taxonomic classifications should not be nested, just listed one after the other."
-msgstr ""
+msgstr "Contenedor de información taxonómica sobre un recurso. Incluye una lista de nombres de especies (o rangos de nivel superior) de uno o más sistemas de clasificación. Tenga en cuenta que las clasificaciones taxonómicas no deben estar anidadas, solo enumeradas una tras otra."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:259
@@ -630,7 +645,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:264
 msgid "A container for spatial information about a resource; allows a bounding box for the overall coverage (in lat long), and also allows description of arbitrary polygons with exclusions."
-msgstr ""
+msgstr "Un contenedor de información espacial sobre un recurso; permite un cuadro delimitador para la cobertura general (en latitud) y también permite la descripción de polígonos arbitrarios con exclusiones."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:277
@@ -646,7 +661,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:282
 msgid "This container allows coverage to be a single point in time, multiple points in time, or a range of dates."
-msgstr ""
+msgstr "Este contenedor permite que la cobertura sea un solo punto en el tiempo, múltiples puntos en el tiempo o un rango de fechas."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:291
@@ -660,7 +675,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:296
 msgid "This field documents scientific methods used in the collection of the resource. It includes information on items such as tools, instrument calibration and software."
-msgstr ""
+msgstr "Este campo documenta los métodos científicos utilizados en la recopilación del recurso. Incluye información sobre elementos como herramientas, calibración de instrumentos y software."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:309
@@ -676,7 +691,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:314
 msgid "Contain a rights management statement for the resource, or a reference to a service providing such information."
-msgstr ""
+msgstr "Contener una declaración de gestión de derechos para el recurso o una referencia a un servicio que proporciona dicha información."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:321
@@ -690,12 +705,12 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:323
 #, no-wrap
 msgid "Additional Metadata + http://www.tdwg.org/activities/ncd/[Natural Collections Description Data (NCD)] Related"
-msgstr ""
+msgstr "Metadatos adicionales relacionados + http://www.tdwg.org/activities/ncd/[Datos de descripción de colecciones naturales (NCD)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:326
 msgid "The additionalMetadata field is a container for any other relevant metadata that pertains to the resource being described. This field allows EML to be extensible in that any XML-based metadata can be included in this element. The elements provided here in the GMP include those required for conformance with ISO 19139 and a subset of NCD (Natural Collections Descriptions) elements."
-msgstr ""
+msgstr "El campo additionalMetadata es un contenedor para cualquier otro metadato relevante que pertenezca al recurso que se describe. Este campo permite que EML sea extensible ya que cualquier metadato basado en XML puede incluirse en este elemento. Los elementos proporcionados aquí en las GMP incluyen aquellos requeridos para la conformidad con ISO 19139 y un subconjunto de elementos NCD (Descripciones de Colecciones Naturales)."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:359
@@ -722,12 +737,13 @@ msgstr ""
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:360
 #, no-wrap
 msgid "an exact number of “JGI-units” in the collection plus a measure of uncertainty (± x);\n"
-msgstr ""
+msgstr "un número exacto de \"unidades JGI\" en la colección más una medida de incertidumbre (± x);\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:363
 #, no-wrap
 msgid "a range of numbers (x to x), with the lower value representing an exact number, when the higher value is omitted.\n\n"
 "The discussion concluded that the quantification should encompass all specimens, not only those that have not yet been digitized. This is to avoid having to update the numbers too often. The number of non-public data (not digitized or not accessible) can be calculated from the GBIF numbers as opposed to the JGTI-data.\n"
-msgstr ""
+msgstr "un rango de números (x a x), donde el valor más bajo representa un número exacto, cuando se omite el valor más alto.\n\n"
+"El debate concluyó que la cuantificación debería abarcar todos los especímenes, no solo los que aún no se han digitalizado. Esto es para evitar tener que actualizar los números con demasiada frecuencia. El número de datos no públicos (no digitalizados o no accesibles) se puede calcular a partir de los números de GBIF en lugar de los datos de JGTI.\n"
 
