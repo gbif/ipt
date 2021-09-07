@@ -29,7 +29,7 @@ There are several ways to install the IPT.
 
 === RPM (Red Hat, CentOS etc)
 
-To install the IPT onto Red Hat, CentOS or similar, first add the GBIF package repository and install the IPT package:
+To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:
 
 [source,shell]
 ----
