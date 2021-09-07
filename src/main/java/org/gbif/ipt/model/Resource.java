@@ -1150,7 +1150,8 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
 
     // add year the resource was most recently published
-    int publicationYear = getPublicationYear(getEml().getPubDate());
+    Date pubDate = getEml().getPubDate() != null ? getEml().getPubDate() : new Date();
+    int publicationYear = getPublicationYear(pubDate);
     if (publicationYear > 0) {
       sb.append(" (");
       sb.append(publicationYear);
