@@ -78,6 +78,8 @@ import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
+import org.gbif.validator.api.Validation;
+import org.gbif.ws.client.ClientBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -126,13 +128,14 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.logging.log4j.Level;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
 
   // key=shortname in lower case, value=resource
-  private Map<String, Resource> resources = new HashMap<String, Resource>();
+  private Map<String, Resource> resources = new HashMap<>();
   public static final String PERSISTENCE_FILE = "resource.xml";
   private static final int MAX_PROCESS_FAILURES = 3;
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
@@ -142,9 +145,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private RegistryManager registryManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
-  private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<String, Future<Map<String, Integer>>>();
+  private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
-  private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
+  private Map<String, StatusReport> processReports = new HashMap<>();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
@@ -1319,12 +1322,32 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
+  /**
+   * Populate credentials for IPT ws request.
+   *
+   * @param ipt IPT
+   * @return credentials
+   */
+  private UsernamePasswordCredentials iptCredentials(Ipt ipt) {
+    return new UsernamePasswordCredentials(ipt.getKey().toString(), ipt.getWsPassword());
+  }
+
+  public void validate(Resource resource, Ipt ipt)
+    throws PublicationException, InvalidConfigException {
+
+    if (resource.hasMappedData()) {
+      resource.setInValidation(true);
+      generateDwca(resource);
+    }
+  }
+
   public boolean publish(Resource resource, BigDecimal version, BaseAction action)
     throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
+    resource.setInValidation(false);
     // add new version history
     addOrUpdateVersionHistory(resource, version, false, action);
 
@@ -2517,15 +2540,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public void removeVersion(Resource resource, BigDecimal version) {
     // Cannot remove the most recent version, only archived versions
     if ((version != null) && !version.equals(resource.getEmlVersion())) {
-      LOG.debug("Removing version "+version+" for resource: "+resource.getShortname());
+      LOG.debug("Removing version " + version + " for resource: " + resource.getShortname());
       try {
         removeVersion(resource.getShortname(), version);
         resource.removeVersionHistory(version);
         save(resource);
-        LOG.debug("Version "+version+" has been removed for resource: "+resource.getShortname());
+        LOG.debug("Version " + version + " has been removed for resource: " + resource.getShortname());
       }
       catch(IOException e) {
-        LOG.error("Cannot remove version "+version+" for resource: "+resource.getShortname(), e);
+        LOG.error("Cannot remove version " + version + " for resource: " + resource.getShortname(), e);
       }
     }
   }

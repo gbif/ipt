@@ -48,7 +48,8 @@
     <dwca-io.version>1.31</dwca-io.version>
     <freemarker.version>2.3.26-incubating</freemarker.version>
     <gbif-api.version>0.82</gbif-api.version>
-    <gbif-common-ws.version>0.41</gbif-common-ws.version>
+    <gbif-common-ws.version>1.16-SNAPSHOT</gbif-common-ws.version>
+    <gbif-pipelines.version>2.9.9-SNAPSHOT</gbif-pipelines.version>
     <gbif-common.version>0.38</gbif-common.version>
     <gbif-doi.version>2.9</gbif-doi.version>
     <gbif-metadata-profile.version>1.1.2</gbif-metadata-profile.version>
@@ -330,11 +331,28 @@
       <artifactId>gbif-parsers</artifactId>
       <version>${gbif-parsers.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.gbif.pipelines</groupId>
+      <artifactId>validator-ws-client</artifactId>
+      <version>${gbif-pipelines.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.tomcat.embed</groupId>
+          <artifactId>tomcat-embed-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <!-- XSS filtering -->
     <dependency>
       <groupId>org.gbif</groupId>
       <artifactId>gbif-common-ws</artifactId>
       <version>${gbif-common-ws.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.tomcat.embed</groupId>
+          <artifactId>tomcat-embed-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.gbif</groupId>

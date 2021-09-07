@@ -64,6 +64,11 @@
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="error">/WEB-INF/pages/manage/overview.ftl</result>
     </action>
+    <action name="validate" class="org.gbif.ipt.action.manage.OverviewAction" method="validate">
+      <result name="validating">/WEB-INF/pages/manage/locked.ftl</result>
+      <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="error">/WEB-INF/pages/manage/overview.ftl</result>
+    </action>
     <action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
       <interceptor-ref name="ajaxStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>

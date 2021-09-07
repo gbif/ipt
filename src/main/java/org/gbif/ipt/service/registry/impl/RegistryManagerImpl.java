@@ -39,6 +39,7 @@ import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -87,10 +88,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   private Gson gson;
 
-  private ConfigWarnings warnings;
-  private ResourceManager resourceManager;
+  private final ConfigWarnings warnings;
+  private final ResourceManager resourceManager;
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
-  private BaseAction baseAction;
+  private final BaseAction baseAction;
 
   @Inject
   public RegistryManagerImpl(AppConfig cfg, DataDir dataDir, HttpUtil httpUtil, SAXParserFactory saxFactory,
@@ -107,7 +108,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   private List<NameValuePair> buildRegistryParameters(Resource resource) {
-    List<NameValuePair> data = new ArrayList<NameValuePair>();
+    List<NameValuePair> data = new ArrayList<>();
 
     Eml eml = resource.getEml();
 
@@ -567,7 +568,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     String url = getIptResourceUri();
     try {
       resp = http.post(url, null, null, orgCredentials(org),
-        new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
+        new UrlEncodedFormEntity(data, StandardCharsets.UTF_8));
     } catch (URISyntaxException e) {
       throw new RegistryException(Type.BAD_REQUEST, url, "Register resource failed: request URI invalid", e);
     } catch (IOException e) {

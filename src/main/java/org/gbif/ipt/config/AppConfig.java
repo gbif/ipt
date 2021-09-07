@@ -201,6 +201,15 @@ public class AppConfig {
     return getProperty("dev.registrydev.url");
   }
 
+  public String getGbifApiUrl() {
+    if (REGISTRY_TYPE.PRODUCTION == type) {
+      return getProperty("gbif.api.url");
+    }
+    return getProperty("gbif.apidev.url");
+  }
+
+
+
   /**
    * @return the GBIF Data Portal base URL, different depending on the IPT's mode
    */

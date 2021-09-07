@@ -29,6 +29,7 @@ public class DataDir {
   public static final String LOGGING_DIR = "logs";
   public static final String CONFIG_DIR = "config";
   public static final String RESOURCES_DIR = "resources";
+  public static final String VALIDATION_DIR = "validation";
   public static final String TMP_DIR = "tmp";
   public static final String EML_XML_FILENAME = "eml.xml";
   public static final String DWCA_FILENAME = "dwca.zip";
@@ -228,6 +229,19 @@ public class DataDir {
   public File resourceDwcaFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = "dwca-" + version.toPlainString() + ".zip";
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  /**
+   * Retrieves the path to DwC-A file to be validated.
+   *
+   * @param resourceName resource short name
+   * @param version      version
+   *
+   * @return DwC-A file having specific version
+   */
+  public File resourceDwcaValidationFile(@NotNull String resourceName, @NotNull BigDecimal version) {
+    String fn = "dwca-" + version.toPlainString() + ".zip";
+    return dataFile(VALIDATION_DIR + "/" + resourceName + "/" + fn);
   }
 
   /**

@@ -20,26 +20,26 @@ public abstract class ReportingTask {
   protected final DataDir dataDir;
   private final String resourceShortname;
   private final ReportHandler handler;
-  private List<TaskMessage> messages = new ArrayList<TaskMessage>();
-  private final int reportingIntervall;
+  private List<TaskMessage> messages = new ArrayList<>();
+  private final int reportingInterval;
   private StatusReport lastReport;
   protected BufferedWriter publicationLogWriter;
 
   /**
    * Constructor.
    *
-   * @param reportingIntervall interval reporting is carried out in milliseconds
+   * @param reportingInterval interval reporting is carried out in milliseconds
    * @param resourceShortname  shortname of resource
    * @param handler            ReportHandler
    * @param dataDir            DataDir
    *
    * @throws IOException if BufferedWriter to publication log file writer could not be created
    */
-  protected ReportingTask(int reportingIntervall, String resourceShortname, ReportHandler handler, DataDir dataDir)
+  protected ReportingTask(int reportingInterval, String resourceShortname, ReportHandler handler, DataDir dataDir)
     throws IOException {
     this.resourceShortname = resourceShortname;
     this.handler = handler;
-    this.reportingIntervall = reportingIntervall;
+    this.reportingInterval = reportingInterval;
     this.dataDir = dataDir;
     this.publicationLogWriter = getPublicationLogWriter(resourceShortname);
   }
@@ -91,7 +91,7 @@ public abstract class ReportingTask {
    * the last reporting.
    */
   public void reportIfNeeded() {
-    if (lastReport == null || new Date().getTime() - lastReport.getTimestamp() > reportingIntervall) {
+    if (lastReport == null || new Date().getTime() - lastReport.getTimestamp() > reportingInterval) {
       report();
     }
   }

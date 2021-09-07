@@ -1,6 +1,5 @@
 package org.gbif.ipt.mock;
 
-import com.sun.jersey.json.impl.provider.entity.JSONArrayProvider;
 import org.gbif.ipt.config.AppConfig;
 
 import static org.mockito.Mockito.mock;

@@ -1,6 +1,5 @@
 package org.gbif.ipt.config;
 
-import com.sun.jersey.json.impl.provider.entity.JSONArrayProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.LoggerContext;

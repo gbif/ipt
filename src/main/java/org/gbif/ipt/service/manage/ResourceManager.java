@@ -205,6 +205,8 @@ public interface ResourceManager {
    */
   boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action) throws PublicationException;
 
+  void validate(Resource resource, Ipt ipt) throws PublicationException;
+
   /**
    * Registers the resource with the GBIF Registry. Instead of registering a new resource, the resource can instead
    * update an existing registered resource if a UUID corresponding to an existing registered resource (owned by the

@@ -102,6 +102,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private static final Logger LOG = LogManager.getLogger(OverviewAction.class);
 
   private static final String PUBLISHING = "publishing";
+  private static final String VALIDATING = "validating";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
@@ -126,6 +127,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean delete = false;
   private boolean undelete = false;
   private boolean publish = false;
+  private boolean validate = false;
   private String summary;
 
   // preview
@@ -1076,6 +1078,46 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
       autoPublishFrequencies.putAll(filteredFrequencies);
     }
+  }
+
+  public String validateResource() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (validate) {
+      // set resource's change summary as entered in confirm popup (defaults to empty string)
+      resource.setChangeSummary(getSummary());
+
+      try {
+        // publish a new version of the resource
+        resourceManager.validate(resource, this.getRegisteredIpt());
+          addActionMessage(getText("validation.started", new String[] {resource.getShortname()}));
+          // refresh archive report
+          updateReport();
+          return VALIDATING;
+      } catch (PublicationException e) {
+        if (PublicationException.TYPE.LOCKED == e.getType()) {
+          addActionError(getText("manage.overview.resource.being.published",
+                                 new String[] {resource.getTitleAndShortname()}));
+        } else {
+          // alert user publication failed
+          addActionError(getText("validation.failed",
+                                 new String[] {resource.getShortname(), e.getMessage()}));
+          // keep track of how many failures on auto publication have happened
+          //TODO: delete validation
+        }
+      } catch (InvalidConfigException e) {
+        // with this type of error, the version cannot be rolled back - just alert user publication failed
+        String msg =
+          getText("validation.failed", new String[] {resource.getShortname(), e.getMessage()});
+        LOG.error(msg, e);
+        addActionError(msg);
+      }
+    } else {
+      // just return the user to the manage resources page
+      return HOME;
+    }
+    return ERROR;
   }
 
   /**

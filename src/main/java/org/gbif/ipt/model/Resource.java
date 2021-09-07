@@ -117,6 +117,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   private DOI doi;
   private UUID doiOrganisationKey;
 
+  //Is the resource in validation
+  private boolean inValidation;
+
   public void addManager(User manager) {
     if (manager != null) {
       this.managers.add(manager);
@@ -1290,6 +1293,21 @@ public class Resource implements Serializable, Comparable<Resource> {
   public void setSourcesModified(Date sourcesModified) {
     this.modified = sourcesModified;
     this.sourcesModified = sourcesModified;
+  }
+
+  /**
+   * Is this resource for validation.
+   */
+  public boolean isInValidation() {
+    return inValidation;
+  }
+
+  /**
+   *  Set the resource in validation mode.
+   * @param inValidation sets validation flag
+   */
+  public void setInValidation(boolean inValidation) {
+    this.inValidation = inValidation;
   }
 
   /**
