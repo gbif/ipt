@@ -14,12 +14,12 @@ import org.gbif.ipt.utils.ResourceUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
@@ -53,7 +53,7 @@ public class HomeAction extends BaseAction {
   @Override
   public void prepare() {
     super.prepare();
-    resources = Lists.newArrayList();
+    resources = new ArrayList<>();
 
     for (Resource resource : resourceManager.listPublishedPublicVersions()) {
       // reconstruct the last published public version

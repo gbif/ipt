@@ -43,7 +43,6 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -439,7 +438,7 @@ public class ResourceAction extends PortalBaseAction {
     copy.setEml(eml);
 
     // create new VersionHistory
-    List<VersionHistory> histories = Lists.newArrayList();
+    List<VersionHistory> histories = new ArrayList<>();
     histories.addAll(resource.getVersionHistory());
     copy.setVersionHistory(histories);
     VersionHistory history = new VersionHistory(nextVersion, releaseDate, PublicationStatus.PUBLIC);

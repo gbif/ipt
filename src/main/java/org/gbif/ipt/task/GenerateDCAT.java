@@ -19,7 +19,6 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -39,7 +38,6 @@ import javax.validation.constraints.NotNull;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -523,7 +521,7 @@ public class GenerateDCAT {
     //dcat:keyword
     // note: duplicate keywords cannot exist, see issue #1210
     if (!eml.getKeywords().isEmpty()) {
-      List<String> keywords = Lists.newArrayList();
+      List<String> keywords = new ArrayList<>();
       for (KeywordSet keywordSet : eml.getKeywords()) {
         for (String keyword : keywordSet.getKeywords()) {
           if (!Strings.isNullOrEmpty(keyword) && !keywords.contains(keyword)) {

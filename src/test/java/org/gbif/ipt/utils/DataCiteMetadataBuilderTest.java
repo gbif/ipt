@@ -29,12 +29,12 @@ import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.UserId;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -69,7 +69,7 @@ public class DataCiteMetadataBuilderTest {
     resource.setEml(eml);
 
     eml.setTitle("Ants of New York State");
-    List<String> description = Lists.newArrayList();
+    List<String> description = new ArrayList<>();
     description.add("Comprehensive ants collection.");
     description.add("Mostly dried preserved.");
     eml.setDescription(description);
@@ -78,7 +78,7 @@ public class DataCiteMetadataBuilderTest {
     Agent creator1 = new Agent();
     creator1.setLastName("Smith");
     creator1.setFirstName("Jim");
-    List<UserId> userIds = Lists.newArrayList();
+    List<UserId> userIds = new ArrayList<>();
     UserId userId1 = new UserId("http://orcid.org", "0000-0099-6824-9999");
     userIds.add(userId1);
     creator1.setUserIds(userIds);
@@ -86,7 +86,7 @@ public class DataCiteMetadataBuilderTest {
 
     Agent creator2 = new Agent();
     creator2.setLastName("GBIF");
-    List<UserId> userIds2 = Lists.newArrayList();
+    List<UserId> userIds2 = new ArrayList<>();
     creator2.setUserIds(userIds2);
     eml.addCreator(creator2);
 
@@ -94,7 +94,7 @@ public class DataCiteMetadataBuilderTest {
     Agent contributor1 = new Agent();
     contributor1.setLastName("Love");
     contributor1.setFirstName("Brian");
-    List<UserId> contributorUserIds = Lists.newArrayList();
+    List<UserId> contributorUserIds = new ArrayList<>();
     UserId contributorUserId1 = new UserId("http://orcid.org", "0000-0099-6824-1234");
     contributorUserIds.add(contributorUserId1);
     contributor1.setUserIds(contributorUserIds);
@@ -104,7 +104,7 @@ public class DataCiteMetadataBuilderTest {
     Agent contributor2 = new Agent();
     contributor2.setLastName("Wong");
     contributor2.setFirstName("Markus");
-    List<UserId> contributorUserIds2 = Lists.newArrayList();
+    List<UserId> contributorUserIds2 = new ArrayList<>();
     contributor2.setUserIds(contributorUserIds2);
     eml.addMetadataProvider(contributor2);
 
@@ -112,7 +112,7 @@ public class DataCiteMetadataBuilderTest {
     Agent contributor3 = new Agent();
     contributor3.setPosition("Insects Curator");
     contributor3.setRole("curator");
-    List<UserId> contributorUserIds3 = Lists.newArrayList();
+    List<UserId> contributorUserIds3 = new ArrayList<>();
     contributor3.setUserIds(contributorUserIds3);
     eml.addAssociatedParty(contributor3);
 
@@ -158,7 +158,7 @@ public class DataCiteMetadataBuilderTest {
     BibliographicCitationSet bibliographicCitationSet = new BibliographicCitationSet();
     Citation citation1 = new Citation("Citation of first bibliographic citation", "http://doi.org/10.5072/bibcite1");
     Citation citation2 = new Citation("Citation of second bibliographic citation", "http://doi.org/10.5072/bibcite2");
-    List<Citation> citations = Lists.newArrayList();
+    List<Citation> citations = new ArrayList<>();
     citations.add(citation1);
     citations.add(citation2);
     bibliographicCitationSet.setBibliographicCitations(citations);
@@ -410,7 +410,7 @@ public class DataCiteMetadataBuilderTest {
     Agent creator1 = new Agent();
     creator1.setLastName("");
     creator1.setFirstName("");
-    List<Agent> creators = Lists.newArrayList();
+    List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
     DataCiteMetadataBuilder.convertEmlCreators(creators);
   }
@@ -420,7 +420,7 @@ public class DataCiteMetadataBuilderTest {
    */
   @Test(expected = InvalidMetadataException.class)
   public void testConvertEmlCreatorsWithEmptyList() throws InvalidMetadataException {
-    List<Agent> creators = Lists.newArrayList();
+    List<Agent> creators = new ArrayList<>();
     DataCiteMetadataBuilder.convertEmlCreators(creators);
   }
 
@@ -431,7 +431,7 @@ public class DataCiteMetadataBuilderTest {
   public void testConvertEmlCreatorsWithPositionName() throws InvalidMetadataException {
     Agent creator1 = new Agent();
     creator1.setPosition("President");
-    List<Agent> creators = Lists.newArrayList();
+    List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
     DataCiteMetadataBuilder.convertEmlCreators(creators);
   }
@@ -443,7 +443,7 @@ public class DataCiteMetadataBuilderTest {
   public void testConvertEmlCreatorsWithOrganisationName() throws InvalidMetadataException {
     Agent creator1 = new Agent();
     creator1.setOrganisation("NHM London");
-    List<Agent> creators = Lists.newArrayList();
+    List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
     DataCiteMetadata.Creators ls = DataCiteMetadataBuilder.convertEmlCreators(creators);
     DataCiteMetadata.Creators.Creator c = ls.getCreator().get(0);
@@ -478,7 +478,7 @@ public class DataCiteMetadataBuilderTest {
     Agent contributor = new Agent();
     contributor.setLastName("");
     contributor.setFirstName("");
-    List<Agent> contributors = Lists.newArrayList();
+    List<Agent> contributors = new ArrayList<>();
     contributors.add(contributor);
     DataCiteMetadataBuilder.convertEmlContributors(contributors);
   }

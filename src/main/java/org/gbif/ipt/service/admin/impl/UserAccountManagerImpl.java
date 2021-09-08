@@ -152,7 +152,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
         Set<String> resourcesManagedOnlyByUser = new HashSet<String>();
         for (Resource r : resourceManager.list(remUser)) {
-          Set<User> managers = Sets.newHashSet();
+          Set<User> managers = new HashSet<>();
           // add creator to list of managers, but only if creator has manager rights!
           User creator = get(r.getCreator().getEmail());
           if (creator != null && creator.hasManagerRights()) {

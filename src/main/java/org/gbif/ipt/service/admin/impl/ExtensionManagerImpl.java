@@ -37,6 +37,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,9 +46,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -187,7 +186,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
       if (isNewVersion && latestVersion.getUrl() != null) {
         // check if there are any associated resource mappings
-        List<Resource> resourcesToMigrate = Lists.newArrayList();
+        List<Resource> resourcesToMigrate = new ArrayList<>();
         for (Resource r : resourceManager.list()) {
           if (!r.getMappings(rowType).isEmpty()) {
             resourcesToMigrate.add(r);
@@ -256,10 +255,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
              + " to latest extension version");
 
     // populate various set to keep track of how many terms were deprecated, how terms' vocabulary was updated, etc
-    Set<ExtensionProperty> deprecated = Sets.newHashSet();
-    Set<ExtensionProperty> vocabulariesRemoved = Sets.newHashSet();
-    Set<ExtensionProperty> vocabulariesUnchanged = Sets.newHashSet();
-    Set<ExtensionProperty> vocabulariesUpdated = Sets.newHashSet();
+    Set<ExtensionProperty> deprecated = new HashSet<>();
+    Set<ExtensionProperty> vocabulariesRemoved = new HashSet<>();
+    Set<ExtensionProperty> vocabulariesUnchanged = new HashSet<>();
+    Set<ExtensionProperty> vocabulariesUpdated = new HashSet<>();
     for (ExtensionProperty property : current.getProperties()) {
       // newer extension still contain this property?
       if (!newer.hasProperty(property.qualifiedName())) {
@@ -291,7 +290,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     LOG.debug(vocabulariesUpdated.size() + " properties in the newer version of extension use a newer vocabulary");
 
     // set of new terms (terms to add)
-    Set<ExtensionProperty> added = Sets.newHashSet();
+    Set<ExtensionProperty> added = new HashSet<>();
     for (ExtensionProperty property : newer.getProperties()) {
       // older extension contain this property?
       if (!current.hasProperty(property.qualifiedName())) {
@@ -369,7 +368,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    * @return list containing latest versions of core extensions
    */
   private List<Extension> getCoreTypes() {
-    List<Extension> coreTypes = Lists.newArrayList();
+    List<Extension> coreTypes = new ArrayList<>();
     try {
       for (Extension ext : registryManager.getExtensions()) {
         if (ext.getRowType() != null && AppConfig.getCoreRowTypes().contains(ext.getRowType())) {
@@ -538,7 +537,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   @Override
   public List<Extension> listCore() {
-    List<Extension> list = Lists.newArrayList();
+    List<Extension> list = new ArrayList<>();
     for (String rowType : AppConfig.getCoreRowTypes()) {
       Extension e = get(rowType);
       if (e != null) {
@@ -659,7 +658,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       }
       return coreGroups;
     } else {
-      return Lists.newArrayList();
+      return new ArrayList<>();
     }
   }
 }

@@ -68,6 +68,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -1026,8 +1027,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // Does the resource already have a source mapped to core type?
       // The core type can be set from the basic metadata page, and determines which core extensions to show
       String coreRowType = resource.getCoreRowType();
-      potentialCores = Lists.newArrayList();
-      potentialExtensions = Lists.newArrayList();
+      potentialCores = new ArrayList<>();
+      potentialExtensions = new ArrayList<>();
 
       if (!resource.getSources().isEmpty()) {
         if (coreRowType != null) {
@@ -1476,10 +1477,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
 
-    peek = Lists.newArrayList();
-    columns = Lists.newArrayList();
+    peek = new ArrayList<>();
+    columns = new ArrayList<>();
     Exception exception = null;
-    List<TaskMessage> messages = new LinkedList<TaskMessage>();
+    List<TaskMessage> messages = new LinkedList<>();
 
     // find the rowType
     Term rowType = null;

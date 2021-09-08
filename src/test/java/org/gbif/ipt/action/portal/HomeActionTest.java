@@ -18,11 +18,11 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class HomeActionTest {
     p.setRecordsPublished(999999); // different than version 1.34
     p.setOrganisation(organisation);
 
-    List<Resource> publishedPublic = Lists.newArrayList();
+    List<Resource> publishedPublic = new ArrayList<>();
     publishedPublic.add(p);
 
     ResourceManager resourceManager = mock(ResourceManager.class);

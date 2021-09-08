@@ -14,7 +14,6 @@
 package org.gbif.ipt.service.manage.impl;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
@@ -583,7 +582,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   @Override
   public List<String> columns(Source source) {
     if (source == null) {
-      return Lists.newArrayList();
+      return new ArrayList<>();
     }
 
     if (source instanceof SqlSource) {
@@ -779,7 +778,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private List<String[]> peek(RowIterable source, int rows) {
-    List<String[]> preview = Lists.newArrayList();
+    List<String[]> preview = new ArrayList<>();
     if (source != null) {
       try (ClosableReportingIterator<String[]> iter = source.rowIterator()){
         while (rows > 0 && iter.hasNext()) {

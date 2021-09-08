@@ -230,7 +230,7 @@ public class MappingAction extends ManagerBaseAction {
    * source data has no columns
    */
   public List<String> getNonMappedColumns() {
-    List<String> mapped = Lists.newArrayList();
+    List<String> mapped = new ArrayList<>();
 
     // return empty list if source data has no columns
     if (columns.isEmpty()) {

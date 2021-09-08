@@ -28,6 +28,7 @@ import org.gbif.metadata.eml.UserId;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +36,6 @@ import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -459,7 +459,7 @@ public class DataCiteMetadataBuilder {
    */
   private static List<Agent> prepareContributorsFromEmlAgents(List<Agent> contacts, List<Agent> metadataProviders,
     List<Agent> associatedParties) {
-    List<Agent> ls = Lists.newArrayList();
+    List<Agent> ls = new ArrayList<>();
 
     // add type to contacts
     for (Agent contact : contacts) {

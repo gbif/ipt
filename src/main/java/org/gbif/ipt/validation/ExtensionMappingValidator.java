@@ -28,12 +28,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 
 public class ExtensionMappingValidator {
@@ -42,9 +41,9 @@ public class ExtensionMappingValidator {
 
   public static class ValidationStatus {
 
-    private List<Term> missingRequiredFields = Lists.newArrayList();
-    private List<Term> wrongDataTypeFields = Lists.newArrayList();
-    private List<String> multipleTranslationsForSameColumn = Lists.newArrayList();
+    private List<Term> missingRequiredFields = new ArrayList<>();
+    private List<Term> wrongDataTypeFields = new ArrayList<>();
+    private List<String> multipleTranslationsForSameColumn = new ArrayList<>();
     private String idProblem;
     private String[] idProblemParams;
 
@@ -161,7 +160,7 @@ public class ExtensionMappingValidator {
         }
       }
 
-      Set<Integer> translatedColumns = Sets.newHashSet();
+      Set<Integer> translatedColumns = new HashSet<>();
       for (PropertyMapping pm : mapping.getFields()) {
         // non string data type. check
         ExtensionProperty extProperty = mapping.getExtension().getProperty(pm.getTerm());

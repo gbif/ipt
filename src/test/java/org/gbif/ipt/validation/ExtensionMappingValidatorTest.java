@@ -10,13 +10,12 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +31,7 @@ public class ExtensionMappingValidatorTest {
   private ExtensionMapping extensionMapping;
   private Resource resource;
   private ExtensionMappingValidator validator;
-  private List<String[]> peek = Lists.newArrayList();
+  private List<String[]> peek = new ArrayList<>();
 
   @Before
   public void setup() {
@@ -57,7 +56,7 @@ public class ExtensionMappingValidatorTest {
     extensionMapping.setExtension(extension);
 
     // 2 translated fields pointing at same source column
-    Set<PropertyMapping> fields = Sets.newHashSet();
+    Set<PropertyMapping> fields = new HashSet<>();
 
     PropertyMapping mappingCoreid = new PropertyMapping();
     mappingCoreid.setTerm(DwcTerm.occurrenceID);

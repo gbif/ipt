@@ -50,7 +50,6 @@ import javax.xml.parsers.SAXParserFactory;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -403,7 +402,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * 4. if (3) is incomplete return null.
    */
   private Agent getPrimaryContact(Eml eml) {
-    List<Agent> agents = Lists.newArrayList();
+    List<Agent> agents = new ArrayList<>();
     for (Agent contact: eml.getContacts()) {
       contact.setRole("PointOfContact");
       agents.add(contact);

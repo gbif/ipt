@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -105,10 +106,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Set<User> managers = new HashSet<>();
   // mapping configs
   private Set<Source> sources = new HashSet<>();
-  private List<ExtensionMapping> mappings = Lists.newArrayList();
+  private List<ExtensionMapping> mappings = new ArrayList<>();
 
   private String changeSummary;
-  private List<VersionHistory> versionHistory = Lists.newLinkedList();
+  private List<VersionHistory> versionHistory = new LinkedList<>();
 
   private IdentifierStatus identifierStatus = IdentifierStatus.UNRESERVED;
   private DOI doi;
@@ -1026,7 +1027,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   @NotNull
   public List<VersionHistory> getVersionHistory() {
     if (versionHistory == null) {
-      versionHistory = Lists.newLinkedList();
+      versionHistory = new LinkedList<>();
     }
     return versionHistory;
   }
@@ -1131,7 +1132,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     StringBuilder sb = new StringBuilder();
 
     // make list of verified authors (having first and last name)
-    List<String> verifiedAuthorList = Lists.newArrayList();
+    List<String> verifiedAuthorList = new ArrayList<>();
     for (Agent creator : getEml().getCreators()) {
       String authorName = getAuthorName(creator);
       if (authorName != null) {
@@ -1310,7 +1311,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) ||
           identifierStatus.equals(IdentifierStatus.PUBLIC)) {
         // make sure the DOI always appears first
-        List<String> reorderedList = Lists.newArrayList();
+        List<String> reorderedList = new ArrayList<>();
         reorderedList.add(doi.toString());
         // make sure the DOI doesn't appear twice
         for (String id : ids) {

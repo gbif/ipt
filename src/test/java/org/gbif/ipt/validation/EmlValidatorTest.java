@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -170,7 +169,7 @@ public class EmlValidatorTest {
   @Test
   public void testBasicPartDescriptionMissing() {
     // invalid
-    List<String> description = Lists.newArrayList();
+    List<String> description = new ArrayList<>();
     eml.setDescription(description);
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     description.add("shrt");

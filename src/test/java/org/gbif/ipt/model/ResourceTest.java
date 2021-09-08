@@ -16,7 +16,6 @@
 
 package org.gbif.ipt.model;
 
-import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
@@ -32,6 +31,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -447,7 +447,7 @@ public class ResourceTest {
     // create hompepage for next resource version (1.7)
     URI homepage = new URI("http://ipt.gbif.org/resource?r=birds&v=1.7");
     // make resource of type occurrence
-    List<ExtensionMapping> extensionMappings = Lists.newArrayList();
+    List<ExtensionMapping> extensionMappings = new ArrayList<>();
     extensionMappings.add(getOccExtensionMapping());
     resource.setMappings(extensionMappings);
 
@@ -463,7 +463,7 @@ public class ResourceTest {
     creator2.setFirstName("Paul");
     creator2.setLastName("Weir");
 
-    List<Agent> creators = Lists.newArrayList();
+    List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
     creators.add(creator2);
 

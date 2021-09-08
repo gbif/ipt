@@ -29,13 +29,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -255,7 +255,7 @@ public class ExtensionManagerImplTest {
     Resource r = getTestResource(ext);
 
     // populate list of resources, and mock resourceManager.list()
-    List<Resource> resources = Lists.newArrayList();
+    List<Resource> resources = new ArrayList<>();
     resources.add(r);
     when(resourceManager.list()).thenReturn(resources);
 
@@ -329,7 +329,7 @@ public class ExtensionManagerImplTest {
     r.setShortname("ants");
     ExtensionMapping em = new ExtensionMapping();
     em.setExtension(extension);
-    Set<PropertyMapping> propertyMappings = Sets.newHashSet();
+    Set<PropertyMapping> propertyMappings = new HashSet<>();
 
     // index 0 (id term)
     PropertyMapping idMapping = new PropertyMapping();

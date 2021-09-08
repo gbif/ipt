@@ -1,6 +1,5 @@
 package org.gbif.ipt.action.manage;
 
-import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
@@ -38,6 +37,7 @@ import org.junit.runners.Parameterized;
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -321,7 +321,7 @@ public class OverviewActionIT {
     r.setDoi(reserved);
     assertTrue(r.getDoi() != null && r.isPubliclyAvailable());
     // reset action errors, .clear() doesn't work
-    List<String> collection = Lists.newArrayList();
+    List<String> collection = new ArrayList<>();
     action.setActionErrors(collection);
 
     action.setPublish("true");
@@ -343,7 +343,7 @@ public class OverviewActionIT {
     r.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     assertTrue(r.getDoi() != null && r.isPubliclyAvailable());
     // reset action errors, .clear() doesn't work
-    List<String> collection = Lists.newArrayList();
+    List<String> collection = new ArrayList<>();
     action.setActionErrors(collection);
 
     action.setPublish("true");

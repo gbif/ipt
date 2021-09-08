@@ -91,7 +91,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -1637,7 +1636,7 @@ public class ResourceManagerImplTest {
     resource.setOrganisation(organisation);
     assertEquals(organisation.getKey(), resource.getOrganisation().getKey());
     resource.getEml().setTitle("Title for pending version 1.2");
-    List<String> description = Lists.newArrayList();
+    List<String> description = new ArrayList<>();
     description.add("Title description for pending version 1.2");
     resource.getEml().setDescription(description);
 
@@ -1698,7 +1697,7 @@ public class ResourceManagerImplTest {
     resource.setKey(key);
 
     resource.getEml().setTitle("Title for pending version 5.1");
-    List<String> description = Lists.newArrayList();
+    List<String> description = new ArrayList<>();
     description.add("Description for pending version 5.1");
     resource.getEml().setDescription(description);
 

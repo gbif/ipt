@@ -22,13 +22,13 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,7 +97,7 @@ public class ExtensionsActionTest {
   @Test
   public void testUpdateIsLatest() throws MalformedURLException, ParseException {
     // mock returning list of installed extensions, having Occurrence extension that is NOT latest
-    List<Extension> installed = Lists.newArrayList();
+    List<Extension> installed = new ArrayList<>();
     Extension occurrenceCore = new Extension();
     occurrenceCore.setUrl(new URL("http://rs.gbif.org/core/dwc_occurrence.xml"));
     occurrenceCore.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);

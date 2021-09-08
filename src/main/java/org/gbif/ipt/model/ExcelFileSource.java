@@ -2,7 +2,6 @@ package org.gbif.ipt.model;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
@@ -216,7 +215,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
           return Lists.newArrayList(new RowIterator(this, ignoreHeaderLines - 1).next());
 
         } else {
-          List<String> columnList = Lists.newArrayList();
+          List<String> columnList = new ArrayList<>();
           for (int x = 1; x <= columns; x++) {
             columnList.add("Column #" + x);
           }
@@ -229,7 +228,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     }
 
     // no rows, no columns
-    return Lists.newArrayList();
+    return new ArrayList<>();
   }
 
   @Override
@@ -277,7 +276,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     }
 
     //TODO: report empty or irregular rows
-    return Sets.newHashSet();
+    return new HashSet<>();
   }
 
   @Override

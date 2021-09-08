@@ -10,7 +10,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.api.model.common.DOI;
@@ -38,13 +37,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
-import org.gbif.utils.HttpUtil.Response;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -106,7 +104,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     assertEquals(22, extensions.size());
 
     // a total of 1 Extensions with rowType Occurrence are expected
-    List<Extension> occurrenceCoreExtensions = Lists.newArrayList();
+    List<Extension> occurrenceCoreExtensions = new ArrayList<>();
     for (Extension x: extensions) {
       if (x.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
         occurrenceCoreExtensions.add(x);
@@ -132,7 +130,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     assertEquals(52, extensions.size());
 
     // a total of 3 Extensions with rowType Occurrence are expected
-    List<Extension> occurrenceCoreExtensions = Lists.newArrayList();
+    List<Extension> occurrenceCoreExtensions = new ArrayList<>();
     for (Extension x: extensions) {
       if (x.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
         occurrenceCoreExtensions.add(x);
@@ -235,7 +233,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     assertEquals(65, vocabularies.size());
 
     // a total of 2 Vocabularies for QuantityType
-    List<Vocabulary> quantityTypeVocabularies = Lists.newArrayList();
+    List<Vocabulary> quantityTypeVocabularies = new ArrayList<>();
     for (Vocabulary v: vocabularies) {
       if (v.getUriString().contains("quantityType")) {
         quantityTypeVocabularies.add(v);

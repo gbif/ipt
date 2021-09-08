@@ -40,7 +40,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -374,7 +373,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @return list containing latest versions of default vocabularies
    */
   private List<Vocabulary> getLatestDefaults(List<Vocabulary> registered) {
-    List<Vocabulary> defaults = Lists.newArrayList();
+    List<Vocabulary> defaults = new ArrayList<>();
     for (Vocabulary v : registered) {
       if (v.getUriString() != null && DEFAULT_VOCABS.contains(v.getUriString()) && v.isLatest()) {
         defaults.add(v);

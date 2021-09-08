@@ -3,7 +3,6 @@ package org.gbif.ipt.action.portal;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
@@ -19,6 +18,7 @@ import org.gbif.ipt.utils.ResourceUtils;
 import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class InventoryAction extends ActionSupport {
 
   private final AppConfig cfg;
   private final ResourceManager resourceManager;
-  private List<DatasetItem> inventory = Lists.newArrayList();
+  private List<DatasetItem> inventory = new ArrayList<>();
 
   @Inject
   public InventoryAction(AppConfig cfg, ResourceManager resourceManager) {
@@ -195,7 +195,7 @@ public class InventoryAction extends ActionSupport {
    * @param resources list of registered resources
    */
   public void populateInventory(List<Resource> resources) {
-    List<DatasetItem> items = Lists.newArrayList();
+    List<DatasetItem> items = new ArrayList<>();
     for (Resource r : resources) {
       DatasetItem item = new DatasetItem();
 
