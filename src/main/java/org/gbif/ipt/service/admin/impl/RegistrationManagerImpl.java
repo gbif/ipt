@@ -2,7 +2,6 @@ package org.gbif.ipt.service.admin.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
-import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -294,7 +293,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Override
   public List<Organisation> list() {
-    List<Organisation> organisationList = new ArrayList<Organisation>();
+    List<Organisation> organisationList = new ArrayList<>();
     for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD)
       .sortedCopy(registration.getAssociatedOrganisations().values())) {
       if (organisation.isCanHost()) {
@@ -311,11 +310,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Override
   public void load() throws InvalidConfigException {
-    Closer closer = Closer.create();
-    try {
-      Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
-      ObjectInputStream in = closer.register(xstreamV2.createObjectInputStream(registrationReader));
-
+    try (Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
+         ObjectInputStream in = xstreamV2.createObjectInputStream(registrationReader)) {
       registration.getAssociatedOrganisations().clear();
 
       try {
@@ -351,11 +347,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
         "Couldnt read the registration information: " + e.getMessage());
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-      }
     }
 
     // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
@@ -364,11 +355,10 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Override
   public Organisation getFromDisk(String key) {
-    Closer closer = Closer.create();
-    SortedMap<String, Organisation> associatedOrganisations = new TreeMap<String, Organisation>();
-    try {
-      Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
-      ObjectInputStream in = closer.register(xstreamV2.createObjectInputStream(registrationReader));
+    SortedMap<String, Organisation> associatedOrganisations = new TreeMap<>();
+    try (Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
+         ObjectInputStream in = xstreamV2.createObjectInputStream(registrationReader)) {
+
       in.readObject(); // skip over Registration block
       // now parse the associated organisations
       while (true) {
@@ -385,11 +375,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     } catch (IOException e) {
       LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG, "Couldnt read registration info: " + e.getMessage());
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-      }
     }
     // return the organisation requested
     return associatedOrganisations.get(key);
@@ -397,12 +382,10 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Override
   public void encryptRegistration() throws InvalidConfigException {
-    Closer closer = Closer.create();
     File registrationV1 = dataDir.configFile(PERSISTENCE_FILE_V1);
     if (registrationV1.exists()) {
-      try {
-        Reader registrationReader = FileUtils.getUtf8Reader(registrationV1);
-        ObjectInputStream in = closer.register(xstreamV1.createObjectInputStream(registrationReader));
+      try (Reader registrationReader = FileUtils.getUtf8Reader(registrationV1);
+        ObjectInputStream in = xstreamV1.createObjectInputStream(registrationReader)) {
         registration.getAssociatedOrganisations().clear();
 
         try {
@@ -454,11 +437,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
           "Couldnt read the registration information: " + e.getMessage());
       } finally {
-        try {
-          closer.close();
-        } catch (IOException e) {
-        }
-
         // delete former registration configuration (registration.xml)
         org.apache.commons.io.FileUtils.deleteQuietly(registrationV1);
       }

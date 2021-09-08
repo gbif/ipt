@@ -48,7 +48,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -554,7 +553,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     File extensionDir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;
     if (extensionDir.isDirectory()) {
-      List<File> extensionFiles = new ArrayList<File>();
+      List<File> extensionFiles = new ArrayList<>();
       FilenameFilter ff = new SuffixFileFilter(EXTENSION_FILE_SUFFIX, IOCase.INSENSITIVE);
       extensionFiles.addAll(Arrays.asList(extensionDir.listFiles(ff)));
       for (File ef : extensionFiles) {
@@ -598,9 +597,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       throw new IllegalStateException();
     }
 
-    Closer closer = Closer.create();
-    try {
-      InputStream fileIn = closer.register(new FileInputStream(localFile));
+    try (InputStream fileIn = new FileInputStream(localFile)) {
       Extension extension = factory.build(fileIn);
       // normalise rowtype
       extension.setRowType(normalizeRowType(extension.getRowType()));
@@ -615,12 +612,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     } catch (ParserConfigurationException e) {
       LOG.error("Can't create sax parser", e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Can't create sax parser");
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-        LOG.debug("Failed to close input stream on extension file", e);
-      }
     }
   }
 

@@ -42,7 +42,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -406,9 +405,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       throw new IllegalStateException();
     }
 
-    Closer closer = Closer.create();
-    try {
-      InputStream fileIn = closer.register(new FileInputStream(localFile));
+    try (InputStream fileIn = new FileInputStream(localFile)) {
       Vocabulary v = vocabFactory.build(fileIn);
       v.setModified(new Date(localFile.lastModified())); // filesystem date
       LOG.info("Successfully loaded vocabulary: " + v.getUriString());
@@ -424,12 +421,6 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     } catch (ParserConfigurationException e) {
       LOG.error("Can't create sax parser", e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_VOCABULARY, "Can't create sax parser");
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-        LOG.debug("Failed to close input stream on vocabulary file", e);
-      }
     }
   }
 

@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.io.Closer;
 import com.google.gson.annotations.Since;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -451,7 +450,7 @@ public class AppConfig {
         LOG.info("Reading registry lock file to determine if the DataDir is locked to a registry yet.");
         String regTypeAsString = StringUtils.trimToEmpty(FileUtils.readFileToString(lockFile, "UTF-8"));
         this.type = REGISTRY_TYPE.valueOf(regTypeAsString);
-        LOG.info("DataDir is locked to registry type: " + type.toString());
+        LOG.info("DataDir is locked to registry type: " + type);
       } catch (IllegalArgumentException e) {
         LOG.error("Cannot interpret registry lock file contents!", e);
         throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot interpret registry lock file contents!");
@@ -481,7 +480,7 @@ public class AppConfig {
           props.remove(key);
         }
       }
-      props.store(out, "IPT configuration, last saved " + new Date().toString());
+      props.store(out, "IPT configuration, last saved " + new Date());
       out.close();
     } finally {
       if (out != null) {
@@ -515,16 +514,12 @@ public class AppConfig {
   }
 
   private void writeRegistryLockFile(REGISTRY_TYPE registryType) throws IOException {
-    Closer closer = Closer.create();
-    try {
-      // set lock file if not yet existing
-      File lockFile = getRegistryTypeLockFile();
-      Writer lock = closer.register(new FileWriter(lockFile, false));
+    // set lock file if not yet existing
+    File lockFile = getRegistryTypeLockFile();
+    try (Writer lock = new FileWriter(lockFile, false)) {
       lock.write(registryType.name());
       lock.flush();
       LOG.info("Locked DataDir to registry of type " + registryType);
-    } finally {
-      closer.close();
     }
   }
 }

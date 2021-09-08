@@ -3,23 +3,16 @@ package org.gbif.ipt.action.portal;
 import org.gbif.ipt.task.GenerateDCAT;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
-import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Action to create the DCAT feed.
  */
 public class DCATAction extends ActionSupport {
-
-  // logging
-  private static final Logger LOG = LogManager.getLogger(DCATAction.class);
 
   private GenerateDCAT generateDCAT;
 
@@ -38,18 +31,7 @@ public class DCATAction extends ActionSupport {
    */
   @Override
   public String execute() throws Exception {
-    Closer closer = Closer.create();
-    try {
-      dcatInfo = closer.register(new ByteArrayInputStream(generateDCAT.getFeed().getBytes("UTF-8")));
-    } catch (UnsupportedEncodingException e) {
-      LOG.error("Error generating DCAT feed: " + e.getMessage(), e);
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-        LOG.error("Failed to close input stream on DCAT feed", e);
-      }
-    }
+    dcatInfo = new ByteArrayInputStream(generateDCAT.getFeed().getBytes(StandardCharsets.UTF_8));
     return SUCCESS;
   }
 

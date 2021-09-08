@@ -41,7 +41,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.io.Closer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
@@ -141,7 +140,7 @@ public class GenerateDCAT {
     feed.append(createDCATCatalogInformation());
     feed.append("\n");
 
-    Set<String> organisations = new HashSet<String>();
+    Set<String> organisations = new HashSet<>();
 
     //add organisation of Catalog
     String publisherBaselink = settings.get(PUBLISHER_BASELINK_KEY);
@@ -158,7 +157,7 @@ public class GenerateDCAT {
     }
 
     //Datasets and Distributions
-    Set<String> themes = new HashSet<String>();
+    Set<String> themes = new HashSet<>();
     String themeUri = settings.get(THEME_URI_KEY);
     String datasetThemeLabel = settings.get(DATASET_THEME_LABEL_KEY);
     String themeTaxonomyUri = settings.get(THEME_TAXONOMY_URI_KEY);
@@ -236,9 +235,8 @@ public class GenerateDCAT {
    */
   private Map<String, String> loadDCATSettings() {
     Map<String, String> loadedSettings = Maps.newHashMap();
-    Closer closer = Closer.create();
-    try {
-      InputStream configStream = closer.register(streamUtils.classpathStream(DCAT_SETTINGS));
+
+    try (InputStream configStream = streamUtils.classpathStream(DCAT_SETTINGS)) {
       if (configStream == null) {
         LOG.error("Failed to load DCAT settings: " + DCAT_SETTINGS);
       } else {
@@ -254,16 +252,10 @@ public class GenerateDCAT {
               "Invalid properties file: " + DCAT_SETTINGS);
           }
         }
-        LOG.debug("Loaded static DCAT settings: " + loadedSettings.toString());
+        LOG.debug("Loaded static DCAT settings: " + loadedSettings);
       }
     } catch (Exception e) {
       LOG.error("Failed to load DCAT settings from: " + DCAT_SETTINGS, e);
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-        LOG.debug("Failed to close input stream on DCAT settings file: " + DCAT_SETTINGS, e);
-      }
     }
     return loadedSettings;
   }
@@ -272,11 +264,9 @@ public class GenerateDCAT {
    * This method loads the DCAT prefixes from dcat.properties.
    */
   private Map<String, String> loadDCATPrefixes() {
-    HashMap<String, String> prefixes = new HashMap<String, String>();
-    Closer closer = Closer.create();
-    try {
-      InputStreamUtils streamUtils = new InputStreamUtils();
-      InputStream configStream = streamUtils.classpathStream(PREFIXES_PROPERTIES);
+    HashMap<String, String> prefixes = new HashMap<>();
+    InputStreamUtils streamUtils = new InputStreamUtils();
+    try (InputStream configStream = streamUtils.classpathStream(PREFIXES_PROPERTIES);) {
       if (configStream == null) {
         LOG.error("Could not load DCAT prefixes from file: " + PREFIXES_PROPERTIES);
       } else {
@@ -292,16 +282,10 @@ public class GenerateDCAT {
               "Invalid properties file: " + PREFIXES_PROPERTIES);
           }
         }
-        LOG.debug("Loaded DCAT prefixes: " + prefixes.toString());
+        LOG.debug("Loaded DCAT prefixes: " + prefixes);
       }
     } catch (Exception e) {
       e.printStackTrace();
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-        LOG.error("Failed to close input stream on DCAT prefixes file: " + PREFIXES_PROPERTIES);
-      }
     }
     return prefixes;
   }
@@ -348,11 +332,11 @@ public class GenerateDCAT {
   @VisibleForTesting
   protected String createDCATCatalogInformation() {
     StringBuilder catalogBuilder = new StringBuilder();
-    List<String> themeTaxonomies = new ArrayList<String>();
+    List<String> themeTaxonomies = new ArrayList<>();
     Ipt ipt = registrationManager.getIpt();
 
     //Run over resources
-    List<String> uris = new ArrayList<String>();
+    List<String> uris = new ArrayList<>();
     Date firstCreation = new Date();
     boolean firstPublishedDatePresent = false;
     Date lastModification = new Date(0);
