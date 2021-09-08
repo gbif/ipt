@@ -87,11 +87,6 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
       ActionContext context = invocation.getInvocationContext();
       HttpServletRequest request = (HttpServletRequest) context.get(HTTP_REQUEST);
 
-      LOG.debug("requestURL: {}", request.getRequestURL());
-      LOG.debug("requestURI: {}", request.getRequestURI());
-      LOG.debug("request's context path: {}", request.getContextPath());
-      LOG.debug("request's servlet path: {}", request.getServletPath());
-
       String queryString = request.getQueryString();
       String referer = request.getServletPath();
       // check if there is query string, if so append it
