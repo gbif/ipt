@@ -101,6 +101,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -112,7 +113,6 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
@@ -306,7 +306,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
-    Preconditions.checkNotNull(shortname);
+    Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
       throw new AlreadyExistingException();
@@ -471,7 +471,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public Resource create(String shortname, String type, User creator) throws AlreadyExistingException {
-    Preconditions.checkNotNull(shortname);
+    Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
       throw new AlreadyExistingException();
@@ -497,7 +497,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private Resource createFromArchive(String shortname, File dwca, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
-    Preconditions.checkNotNull(shortname);
+    Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
       throw new AlreadyExistingException();
@@ -625,7 +625,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resourceCoreRowType resource's core row type
    */
   private void updateExtensionCoreIdMapping(ExtensionMapping mapping, String resourceCoreRowType) {
-    Preconditions.checkNotNull(mapping.getIdColumn(), "The extension must contain a coreId element");
+    Objects.requireNonNull(mapping.getIdColumn(), "The extension must contain a coreId element");
 
     String coreIdTermQName = AppConfig.coreIdTerm(resourceCoreRowType);
     PropertyMapping coreIdTermPropertyMapping = mapping.getField(coreIdTermQName);
@@ -656,7 +656,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException {
-    Preconditions.checkNotNull(shortname);
+    Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
       throw new AlreadyExistingException();
@@ -1202,9 +1202,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return resource whose version number and files' version numbers have been updated
    */
   protected Resource updateResourceVersion(Resource resource, BigDecimal oldVersion, BigDecimal newVersion) {
-    Preconditions.checkNotNull(resource);
-    Preconditions.checkNotNull(oldVersion);
-    Preconditions.checkNotNull(newVersion);
+    Objects.requireNonNull(resource);
+    Objects.requireNonNull(oldVersion);
+    Objects.requireNonNull(newVersion);
     // proceed if old and new versions are not equal in both value and scale - comparison done using .equals
     if (!oldVersion.equals(newVersion)) {
       try {
@@ -1247,8 +1247,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param version  last published version number
    */
   protected void renameDwcaToIncludeVersion(Resource resource, BigDecimal version) {
-    Preconditions.checkNotNull(resource);
-    Preconditions.checkNotNull(version);
+    Objects.requireNonNull(resource);
+    Objects.requireNonNull(version);
     File unversionedDwca = dataDir.resourceDwcaFile(resource.getShortname());
     File versionedDwca = dataDir.resourceDwcaFile(resource.getShortname(), version);
     // proceed if resource has previously been published, and versioned dwca does not exist
@@ -1471,7 +1471,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   @VisibleForTesting
   protected void doRegisterDoi(Resource resource, @Nullable DOI replaced) {
-    Preconditions.checkNotNull(resource);
+    Objects.requireNonNull(resource);
 
     if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
       DataCiteMetadata dataCiteMetadata = null;
@@ -1528,7 +1528,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   @VisibleForTesting
   protected void doUpdateDoi(Resource resource) {
-    Preconditions.checkNotNull(resource);
+    Objects.requireNonNull(resource);
 
     if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
       DOI doi = resource.getDoi();
@@ -1559,7 +1559,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   @VisibleForTesting
   protected void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion) {
-    Preconditions.checkNotNull(resource);
+    Objects.requireNonNull(resource);
 
     DOI doiToRegister = resource.getDoi();
     DOI doiToReplace = resource.getAssignedDoi();

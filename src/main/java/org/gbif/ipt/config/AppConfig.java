@@ -1,6 +1,5 @@
 package org.gbif.ipt.config;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -226,7 +225,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceArchiveUrl(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_DWCA)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
@@ -237,7 +236,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceEmlUrl(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_EML)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
@@ -248,7 +247,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceLogoUrl(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_LOGO)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
@@ -267,7 +266,7 @@ public class AppConfig {
    */
   @NotNull
   public URI getResourceUri(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build();
@@ -278,7 +277,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceGuid(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_ID, shortname).build().toString();
@@ -289,7 +288,7 @@ public class AppConfig {
    */
   @NotNull
   public URI getResourceVersionUri(@NotNull String shortname, @NotNull BigDecimal version) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname)
@@ -303,7 +302,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceVersionUri(@NotNull String shortname, @NotNull String version) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return getResourceVersionUri(shortname, new BigDecimal(version)).toString();
   }
@@ -496,7 +495,7 @@ public class AppConfig {
   }
 
   protected void setRegistryType(REGISTRY_TYPE newType) throws InvalidConfigException {
-    Preconditions.checkNotNull(newType, "Registry type cannot be null");
+    Objects.requireNonNull(newType, "Registry type cannot be null");
     if (this.type != null) {
       if (this.type == newType) {
         // already contains the same information. Dont do anything

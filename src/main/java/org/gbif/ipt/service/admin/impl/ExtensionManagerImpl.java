@@ -39,11 +39,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -249,8 +249,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   @VisibleForTesting
   protected void migrateResourceToNewExtensionVersion(Resource r, Extension current, Extension newer) {
     // sanity check that the current and newer extensions share same rowType
-    Preconditions.checkState(current.getRowType().equalsIgnoreCase(newer.getRowType()));
-    Preconditions.checkState(!r.getMappings(current.getRowType()).isEmpty());
+    if (!current.getRowType().equalsIgnoreCase(newer.getRowType()) || r.getMappings(current.getRowType()).isEmpty()) {
+      throw new IllegalStateException();
+    }
+
     LOG.info("Migrating " + r.getShortname() + " mappings to extension " + current.getRowType()
              + " to latest extension version");
 
@@ -421,7 +423,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    */
   @Override
   public synchronized Extension install(URL url) throws InvalidConfigException {
-    Preconditions.checkNotNull(url);
+    Objects.requireNonNull(url);
 
     try {
       File tmpFile = download(url);
@@ -446,9 +448,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    * @throws IOException if moving file fails
    */
   private void finishInstall(File tmpFile, Extension extension) throws IOException {
-    Preconditions.checkNotNull(tmpFile);
-    Preconditions.checkNotNull(extension);
-    Preconditions.checkNotNull(extension.getRowType());
+    Objects.requireNonNull(tmpFile);
+    Objects.requireNonNull(extension);
+    Objects.requireNonNull(extension.getRowType());
 
     try {
       File installedFile = getExtensionFile(extension.getRowType());
@@ -470,7 +472,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    * @return temporary file extension was downloaded to, or null if it failed to be downloaded
    */
   private File download(URL url) throws IOException {
-    Preconditions.checkNotNull(url);
+    Objects.requireNonNull(url);
     String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(url.toString(), EXTENSION_FILE_SUFFIX);
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
@@ -591,8 +593,10 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    */
   @VisibleForTesting
   protected Extension loadFromFile(File localFile) throws InvalidConfigException {
-    Preconditions.checkNotNull(localFile);
-    Preconditions.checkState(localFile.exists());
+    Objects.requireNonNull(localFile);
+    if (!localFile.exists()) {
+      throw new IllegalStateException();
+    }
 
     Closer closer = Closer.create();
     try {

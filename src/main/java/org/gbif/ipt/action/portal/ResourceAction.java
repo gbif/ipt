@@ -38,11 +38,11 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -118,7 +118,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   private Eml loadEmlFromFile(String shortname, @NotNull BigDecimal version)
     throws IOException, SAXException, ParserConfigurationException {
-    Preconditions.checkNotNull(version);
+    Objects.requireNonNull(version);
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
     InputStream in = new FileInputStream(emlFile);
@@ -177,7 +177,7 @@ public class ResourceAction extends PortalBaseAction {
    * known
    */
   private PublicationStatus getPublishedVersionsPublicationStatus(Resource resource, BigDecimal version) {
-    Preconditions.checkNotNull(version);
+    Objects.requireNonNull(version);
     List<VersionHistory> history = resource.getVersionHistory();
     if (!history.isEmpty()) {
       for (VersionHistory vh : history) {

@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -34,8 +35,6 @@ import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -130,7 +129,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param history VersionHistory to add
    */
   public void addVersionHistory(VersionHistory history) {
-    Preconditions.checkNotNull(history);
+    Objects.requireNonNull(history);
     boolean exists = false;
     for (VersionHistory vh : getVersionHistory()) {
       if (vh.getVersion().equals(history.getVersion())) {
@@ -773,7 +772,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(shortname);
+    return java.util.Objects.hashCode(shortname);
   }
 
   public boolean hasMappedData() {
@@ -1305,7 +1304,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * If the status of the DOI is unavailable, the resource DOI will be removed from the list.
    */
   public synchronized void updateAlternateIdentifierForDOI() {
-    Preconditions.checkNotNull(eml);
+    Objects.requireNonNull(eml);
 
     if (doi != null) {
       // retrieve a list of the resource's alternate identifiers
@@ -1350,7 +1349,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * If the status of the DOI is unavailable or unreserved, the resource DOI will be unset as the citation identifier.
    */
   public synchronized void updateCitationIdentifierForDOI() {
-    Preconditions.checkNotNull(eml);
+    Objects.requireNonNull(eml);
 
     if (doi != null) {
       // retrieve resource's citation identifier

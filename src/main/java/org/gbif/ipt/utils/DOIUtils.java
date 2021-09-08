@@ -5,10 +5,11 @@ import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 
 import javax.validation.constraints.NotNull;
 
-import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
 
 public class DOIUtils {
 
@@ -30,8 +31,8 @@ public class DOIUtils {
    */
   @NotNull
   public static DOI mintDOI(DOIRegistrationAgency agency, String prefix) {
-    Preconditions.checkNotNull(agency);
-    Preconditions.checkNotNull(prefix);
+    Objects.requireNonNull(agency);
+    Objects.requireNonNull(prefix);
 
     // generate random alphanumeric string 6 characters long, lower case
     String suffix = RandomStringUtils.randomAlphanumeric(6).toLowerCase();

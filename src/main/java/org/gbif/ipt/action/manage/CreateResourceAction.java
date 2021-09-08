@@ -29,9 +29,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nullable;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -117,7 +117,7 @@ public class CreateResourceAction extends POSTAction {
    */
   @VisibleForTesting
   protected void cleanupResourceFolder(String shortname, long startTimeInMs) {
-    Preconditions.checkNotNull(shortname);
+    Objects.requireNonNull(shortname);
 
     Resource resource = resourceManager.get(shortname);
     File directory = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);

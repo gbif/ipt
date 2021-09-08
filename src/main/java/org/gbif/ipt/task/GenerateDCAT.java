@@ -31,12 +31,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -673,8 +673,8 @@ public class GenerateDCAT {
    */
   @VisibleForTesting
   protected String createDCATDistributionInformation(Resource resource) {
-    Preconditions.checkNotNull(resource.getEml());
-    Preconditions.checkNotNull(resource.getEml().parseLicenseUrl());
+    Objects.requireNonNull(resource.getEml());
+    Objects.requireNonNull(resource.getEml().parseLicenseUrl());
 
     StringBuilder distributionBuilder = new StringBuilder();
 
@@ -756,7 +756,10 @@ public class GenerateDCAT {
    */
   private void addObjectsToBuilder(@NotNull StringBuilder builder, @NotNull List<String> objects,
     @NotNull ObjectTypes type) {
-    Preconditions.checkArgument(objects.size() >= 1);
+    if (objects.size() == 0) {
+      throw new IllegalArgumentException();
+    }
+
     for (String s : objects) {
       if (objects.indexOf(s) != 0) {
         builder.append(" , ");

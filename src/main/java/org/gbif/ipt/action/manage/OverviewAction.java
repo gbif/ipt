@@ -35,7 +35,6 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
-import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -76,13 +75,13 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -325,8 +324,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @throws org.gbif.ipt.service.DeletionNotAllowedException if deletion failed
    */
   private void doDeactivateDOI(DOI doi) throws DeletionNotAllowedException {
-    Preconditions.checkNotNull(registrationManager.getDoiService());
-    Preconditions.checkNotNull(doi);
+    Objects.requireNonNull(registrationManager.getDoiService());
+    Objects.requireNonNull(doi);
     try {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
       if (doiData != null && doiData.getStatus() != null) {
@@ -487,10 +486,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @throws org.gbif.ipt.service.UndeletNotAllowedException if undelete failed
    */
   private void doUndeleteDOI(DOI doi, Resource resource, URI target) throws UndeletNotAllowedException {
-    Preconditions.checkNotNull(registrationManager.getDoiService());
-    Preconditions.checkNotNull(doi);
-    Preconditions.checkNotNull(resource);
-    Preconditions.checkNotNull(target);
+    Objects.requireNonNull(registrationManager.getDoiService());
+    Objects.requireNonNull(doi);
+    Objects.requireNonNull(resource);
+    Objects.requireNonNull(target);
     try {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
       if (doiData.getStatus() == DoiStatus.NEW || doiData.getStatus() == DoiStatus.DELETED) {
@@ -867,7 +866,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @throws DoiExistsException if the DOI being reserved already exists so that reserving can be retried with new DOI
    */
   private void doReserveDOI(DOI doi, Resource resource) throws DoiException {
-    Preconditions.checkNotNull(registrationManager.getDoiService());
+    Objects.requireNonNull(registrationManager.getDoiService());
     // reserve a new DOI for this resource using the primary DOI account, and update EML alternateIdentifier list
     DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
     registrationManager.getDoiService().reserve(doi, dataCiteMetadata);
@@ -889,7 +888,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @throws DoiException if the deletion failed
    */
   private void doDeleteReservedDOI(DOI reservedDoi, Resource resource, @Nullable DOI reassignedDoi) throws DoiException {
-    Preconditions.checkNotNull(registrationManager.getDoiService());
+    Objects.requireNonNull(registrationManager.getDoiService());
 
     // safeguard - prevent deleting existing registered DOIs
     DoiData doiData = registrationManager.getDoiService().resolve(reservedDoi);

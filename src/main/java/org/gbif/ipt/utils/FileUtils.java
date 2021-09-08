@@ -15,8 +15,8 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.NumberFormat;
+import java.util.Objects;
 
-import com.google.common.base.Preconditions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -103,8 +103,8 @@ public class FileUtils {
    * @return constructed filename
    */
   public static String getSuffixedFileName(String name, String suffix) {
-    Preconditions.checkNotNull(name);
-    Preconditions.checkNotNull(suffix);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(suffix);
     return name.replaceAll("[/.:]+", "_") + suffix;
   }
 

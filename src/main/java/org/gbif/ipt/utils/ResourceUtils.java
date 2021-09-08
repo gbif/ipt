@@ -9,11 +9,11 @@ import org.gbif.metadata.eml.Eml;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.base.Preconditions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,8 +44,8 @@ public class ResourceUtils {
   public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreType, @Nullable DOI doi,
     @Nullable Organisation organisation, @Nullable VersionHistory versionHistory, @Nullable File versionEmlFile,
     @Nullable UUID key) {
-    Preconditions.checkNotNull(version);
-    Preconditions.checkNotNull(shortname);
+    Objects.requireNonNull(version);
+    Objects.requireNonNull(shortname);
 
     if (organisation == null || versionHistory == null || versionEmlFile == null) {
       throw new IllegalArgumentException(

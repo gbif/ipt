@@ -35,10 +35,10 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -117,13 +117,13 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public Vocabulary get(String identifier) {
-    Preconditions.checkNotNull(identifier);
+    Objects.requireNonNull(identifier);
     return vocabulariesById.get(identifier);
   }
 
   @Override
   public Vocabulary get(URL url) {
-    Preconditions.checkNotNull(url);
+    Objects.requireNonNull(url);
     for (Vocabulary v : list()) {
       if (v.getUriResolvable() != null) {
         try {
@@ -183,7 +183,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public synchronized Vocabulary install(URL url) throws InvalidConfigException {
-    Preconditions.checkNotNull(url);
+    Objects.requireNonNull(url);
 
     try {
       File tmpFile = download(url);
@@ -209,9 +209,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @throws IOException if moving file fails
    */
   private void finishInstall(File tmpFile, Vocabulary vocabulary) throws IOException {
-    Preconditions.checkNotNull(tmpFile);
-    Preconditions.checkNotNull(vocabulary);
-    Preconditions.checkNotNull(vocabulary.getUriString());
+    Objects.requireNonNull(tmpFile);
+    Objects.requireNonNull(vocabulary);
+    Objects.requireNonNull(vocabulary.getUriString());
 
     try {
       File installedFile = getVocabFile(vocabulary.getUriResolvable());
@@ -241,7 +241,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @return temporary file vocabulary was downloaded to, or null if it failed to be downloaded
    */
   private File download(URL url) throws IOException {
-    Preconditions.checkNotNull(url);
+    Objects.requireNonNull(url);
     String filename = url.toString().replaceAll("[/:.]+", "_") + ".xml";
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
@@ -401,8 +401,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @throws InvalidConfigException if vocabulary could not be loaded successfully
    */
   private Vocabulary loadFromFile(File localFile) throws InvalidConfigException {
-    Preconditions.checkNotNull(localFile);
-    Preconditions.checkState(localFile.exists());
+    Objects.requireNonNull(localFile);
+    if (!localFile.exists()) {
+      throw new IllegalStateException();
+    }
 
     Closer closer = Closer.create();
     try {

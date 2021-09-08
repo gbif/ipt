@@ -49,7 +49,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -803,7 +802,10 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   @VisibleForTesting
   protected Type getRegistryExceptionType(int code) {
-    Preconditions.checkArgument(code > 300); // never called on successful codes include OK (200) and CREATED (201)
+    // never called on successful codes include OK (200) and CREATED (201)
+    if (code <= 300) {
+      throw new IllegalArgumentException();
+    }
     Type type;
     switch (code) {
       case 400:
