@@ -4,7 +4,6 @@ import com.opensymphony.xwork2.ActionContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
-import org.gbif.ipt.action.AccountAction;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -31,7 +30,7 @@ import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
 public class RequireManagerInterceptor extends AbstractInterceptor {
 
   // logging
-  private static final Logger LOG = LogManager.getLogger(AccountAction.class);
+  private static final Logger LOG = LogManager.getLogger(RequireManagerInterceptor.class);
 
   private static final long serialVersionUID = -7688584369470756187L;
 
