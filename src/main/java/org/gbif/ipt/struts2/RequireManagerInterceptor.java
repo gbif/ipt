@@ -1,7 +1,10 @@
 package org.gbif.ipt.struts2;
 
 import com.opensymphony.xwork2.ActionContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
+import org.gbif.ipt.action.AccountAction;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -26,6 +29,9 @@ import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
  * If a resource is requested it also checks that the logged in user has permissions to manage that specific resource.
  */
 public class RequireManagerInterceptor extends AbstractInterceptor {
+
+  // logging
+  private static final Logger LOG = LogManager.getLogger(AccountAction.class);
 
   private static final long serialVersionUID = -7688584369470756187L;
 
@@ -78,21 +84,22 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     // user is not logged in, redirect to login page
     // remember referer and redirect there after successful authentication
     if (user == null) {
+      LOG.debug("User is not logged in, redirecting to login page");
       ActionContext context = invocation.getInvocationContext();
       HttpServletRequest request = (HttpServletRequest) context.get(HTTP_REQUEST);
 
-      StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+      StringBuffer requestURL = request.getRequestURL();
       String queryString = request.getQueryString();
 
       String referer;
       // check if there is query string, if so append it
-      if (queryString == null) {
-        referer = requestURL.toString();
-      } else {
-        referer = requestURL.append('?').append(queryString).toString();
+      if (queryString != null) {
+        requestURL.append('?').append(queryString);
       }
+      referer = requestURL.toString();
 
       // put referer into session
+      LOG.debug("Put referer into session: {}", referer);
       session.put(Constants.SESSION_REFERER, referer);
 
       return BaseAction.LOGIN;
