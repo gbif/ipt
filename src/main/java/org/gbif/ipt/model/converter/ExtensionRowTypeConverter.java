@@ -38,6 +38,7 @@ public class ExtensionRowTypeConverter implements Converter {
     this.extManager = extManager;
   }
 
+  @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(Extension.class);
   }
@@ -46,11 +47,13 @@ public class ExtensionRowTypeConverter implements Converter {
     return lastExtensionConverted;
   }
 
+  @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     Extension e = (Extension) value;
     writer.setValue(e.getRowType());
   }
 
+  @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     Extension e = extManager.get(reader.getValue());
     lastExtensionConverted = e;

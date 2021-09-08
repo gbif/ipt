@@ -64,10 +64,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       rows.close();
     }
 
+    @Override
     public boolean hasNext() {
       return rows.hasNext();
     }
 
+    @Override
     public Object next() {
       String[] row = rows.next();
       if (row == null || row.length < column) {
@@ -76,6 +78,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       return row[column];
     }
 
+    @Override
     public void remove() {
       // unsupported
     }
@@ -116,6 +119,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       sourceName = source.getName();
     }
 
+    @Override
     public void close() {
       if (rs != null) {
         try {
@@ -129,10 +133,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     }
 
+    @Override
     public boolean hasNext() {
       return hasNext;
     }
 
+    @Override
     public Object next() {
       String val = null;
       if (hasNext) {
@@ -147,6 +153,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       return val;
     }
 
+    @Override
     public void remove() {
       // unsupported
     }
@@ -176,6 +183,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this.rowError = false;
     }
 
+    @Override
     public void close() {
       if (rs != null) {
         try {
@@ -189,10 +197,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     }
 
+    @Override
     public boolean hasNext() {
       return hasNext;
     }
 
+    @Override
     public String[] next() {
       String[] val = new String[rowSize];
       if (hasNext) {
@@ -243,18 +253,22 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       errorMessage = null;
     }
 
+    @Override
     public void remove() {
       // unsupported
     }
 
+    @Override
     public boolean hasRowError() {
       return rowError;
     }
 
+    @Override
     public String getErrorMessage() {
       return errorMessage;
     }
 
+    @Override
     public Exception getException() {
       return exception;
     }
@@ -334,6 +348,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return src;
   }
 
+  @Override
   public FileSource add(Resource resource, File file, String fileName) throws ImportException,
     InvalidFilenameException {
     LOG.debug("ADDING SOURCE " + fileName + " FROM " + file.getAbsolutePath());
@@ -376,6 +391,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+  @Override
   public UrlSource add(Resource resource, URI url) throws ImportException {
     LOG.debug("ADDING URL SOURCE " + url);
 
@@ -425,6 +441,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+  @Override
   public String analyze(Source source) {
     if (source instanceof SqlSource) {
       return analyze((SqlSource) source);
@@ -563,6 +580,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#columns(org.gbif.ipt.model.SourceBase)
    */
+  @Override
   public List<String> columns(Source source) {
     if (source == null) {
       return Lists.newArrayList();
@@ -640,6 +658,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.MappingConfigManager#delete(org.gbif.ipt.model.SourceBase.TextFileSource)
    */
+  @Override
   public boolean delete(Resource resource, Source source) {
     if (source == null) {
       return false;
@@ -710,6 +729,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#inspectColumn(org.gbif.ipt.model.SourceBase, int, int)
    */
+  @Override
   public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
     Set<String> values = new HashSet<String>();
     try (ClosableIterator<Object> iter = iterSourceColumn(source, column, maxRows)){
@@ -748,6 +768,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#peek(org.gbif.ipt.model.SourceBase)
    */
+  @Override
   public List<String[]> peek(Source source, int rows) {
     if (source instanceof SqlSource) {
       return peek((SqlSource) source, rows);
@@ -827,6 +848,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return preview;
   }
 
+  @Override
   public ClosableReportingIterator<String[]> rowIterator(Source source) throws SourceException {
     if (source == null) {
       return null;

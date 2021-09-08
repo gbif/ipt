@@ -58,6 +58,7 @@ public class PublishingMonitor {
       running = new AtomicBoolean();
     }
 
+    @Override
     public void run() {
       running.set(true);
       while (running.get()) {

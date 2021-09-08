@@ -52,6 +52,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
   /**
    * Compare by group and qualified name as default sorting order.
    */
+  @Override
   public int compareTo(ExtensionProperty prop) {
     if (group != null) {
       int x = this.group.compareTo(prop.group);
@@ -130,6 +131,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
     return required;
   }
 
+  @Override
   public String qualifiedName() {
     return qualname;
   }
@@ -196,6 +198,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
     this.vocabulary = vocabulary;
   }
 
+  @Override
   public String simpleName() {
     return name;
   }

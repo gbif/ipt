@@ -40,6 +40,7 @@ public class LoggingConfigFactory extends ConfigurationFactory {
    * Returns the file suffixes for XML files.
    * @return An array of File extensions.
    */
+  @Override
   public String[] getSupportedTypes() {
     return SUFFIXES;
   }

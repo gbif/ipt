@@ -206,6 +206,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
    */
+  @Override
   public void deregister(Resource resource) throws RegistryException {
     String url = getDeleteResourceUri(resource.getKey().toString());
     try {
@@ -241,6 +242,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
    */
+  @Override
   public List<Extension> getExtensions() throws RegistryException {
     Map<String, List<Extension>> jSONExtensions = gson
       .fromJson(requestHttpGetFromRegistry(getExtensionsURL(true)).content,
@@ -309,6 +311,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
    */
+  @Override
   public List<Organisation> getOrganisations() {
     List<Map<String, String>> organisationsTemp = new ArrayList<Map<String, String>>();
     try {
@@ -356,6 +359,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisation()
    */
+  @Override
   public Organisation getRegisteredOrganisation(String key) {
     Organisation organisation = null;
     if (!Strings.isNullOrEmpty(key)) {
@@ -436,6 +440,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
    */
+  @Override
   public List<Vocabulary> getVocabularies() throws RegistryException {
     Map<String, List<Vocabulary>> jSONVocabularies = gson
       .fromJson(requestHttpGetFromRegistry(getVocabulariesURL(true)).content,
@@ -448,6 +453,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisationsResources
    */
+  @Override
   public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {
     List<Map<String, String>> resourcesTemp;
     String url = getOrganisationsResourcesUri(organisationKey);
@@ -549,6 +555,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return new UsernamePasswordCredentials(org.getKey().toString(), org.getPassword());
   }
 
+  @Override
   public UUID register(Resource resource, Organisation org, Ipt ipt) throws RegistryException {
     LOG.debug("Registering resource...");
 
@@ -614,6 +621,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return uuidKey;
   }
 
+  @Override
   public String registerIPT(Ipt ipt, Organisation org) throws RegistryException {
     LOG.info("Registering IPT instance...");
 
@@ -709,6 +717,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return data;
   }
 
+  @Override
   public void updateIpt(Ipt ipt) throws RegistryException {
     LOG.info("Update IPT registration...");
 
@@ -749,6 +758,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
   }
 
+  @Override
   public void updateResource(Resource resource, String iptKey) throws RegistryException, IllegalArgumentException {
     if (!resource.isRegistered() || resource.getKey() == null) {
       throw new IllegalArgumentException(
@@ -808,6 +818,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return type;
   }
 
+  @Override
   public boolean validateOrganisation(String organisationKey, String password) {
     try {
       Response resp =

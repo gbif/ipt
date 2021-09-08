@@ -58,6 +58,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   private static final Comparator<Organisation> ORG_BY_NAME_ORD = new Comparator<Organisation>() {
 
+    @Override
     public int compare(Organisation left, Organisation right) {
       return StringUtils.compare(left.getName(), right.getName());
     }
@@ -84,6 +85,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     this.client = client;
   }
 
+  @Override
   public Organisation addAssociatedOrganisation(Organisation organisation)
     throws AlreadyExistingException, InvalidConfigException {
     if (organisation != null) {
@@ -108,6 +110,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    *
    * @return organisation with activated DOI agency account if found, null otherwise
    */
+  @Override
   public Organisation findPrimaryDoiAgencyAccount() {
     for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
       if (organisation.isAgencyAccountPrimary()) {
@@ -117,6 +120,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return null;
   }
 
+  @Override
   public DoiService getDoiService() throws InvalidConfigException {
     Organisation organisation = findPrimaryDoiAgencyAccount();
     if (organisation != null) {
@@ -136,6 +140,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return null;
   }
 
+  @Override
   public Organisation addHostingOrganisation(Organisation organisation) {
     if (organisation != null) {
       LOG.debug("Adding hosting organisation " + organisation.getKey() + " - " + organisation.getName());
@@ -144,6 +149,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return organisation;
   }
 
+  @Override
   public void addIptInstance(Ipt ipt) {
     if (ipt != null) {
       if (ipt.getCreated() == null) {
@@ -233,6 +239,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     xstreamV2.registerConverter(passwordConverter);
   }
 
+  @Override
   public Organisation delete(String key) throws DeletionNotAllowedException {
     Organisation org = get(key);
     if (org != null) {
@@ -259,6 +266,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return org;
   }
 
+  @Override
   public Organisation get(String key) {
     if (key == null) {
       return null;
@@ -266,6 +274,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return registration.getAssociatedOrganisations().get(key);
   }
 
+  @Override
   public Organisation get(UUID key) {
     if (key == null) {
       return null;
@@ -273,14 +282,17 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return registration.getAssociatedOrganisations().get(key.toString());
   }
 
+  @Override
   public Organisation getHostingOrganisation() {
     return registration.getHostingOrganisation();
   }
 
+  @Override
   public Ipt getIpt() {
     return registration.getIpt();
   }
 
+  @Override
   public List<Organisation> list() {
     List<Organisation> organisationList = new ArrayList<Organisation>();
     for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD)
@@ -292,10 +304,12 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return organisationList;
   }
 
+  @Override
   public List<Organisation> listAll() {
     return Ordering.from(ORG_BY_NAME_ORD).sortedCopy(registration.getAssociatedOrganisations().values());
   }
 
+  @Override
   public void load() throws InvalidConfigException {
     Closer closer = Closer.create();
     try {
@@ -348,6 +362,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     updateAssociatedOrganisationsMetadata();
   }
 
+  @Override
   public Organisation getFromDisk(String key) {
     Closer closer = Closer.create();
     SortedMap<String, Organisation> associatedOrganisations = new TreeMap<String, Organisation>();
@@ -380,6 +395,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return associatedOrganisations.get(key);
   }
 
+  @Override
   public void encryptRegistration() throws InvalidConfigException {
     Closer closer = Closer.create();
     File registrationV1 = dataDir.configFile(PERSISTENCE_FILE_V1);
@@ -526,6 +542,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
   }
 
+  @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all user organisations associated to this IPT...");
     Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE_V2));

@@ -37,15 +37,18 @@ public class UserEmailConverter implements Converter {
     this.userManager = userManager;
   }
 
+  @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(User.class);
   }
 
+  @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     User u = (User) value;
     writer.setValue(u.getEmail());
   }
 
+  @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     return userManager.get(reader.getValue());
   }

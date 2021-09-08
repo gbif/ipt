@@ -58,6 +58,7 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     return escape(fieldsTerminatedBy);
   }
 
+  @Override
   public int getIgnoreHeaderLines() {
     return ignoreHeaderLines;
   }
@@ -118,6 +119,7 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     this.rows = rows;
   }
 
+  @Override
   public SourceType getSourceType() {
     return SourceType.URL;
   }
@@ -129,6 +131,7 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     return fieldsEnclosedBy.charAt(0);
   }
 
+  @Override
   public ClosableReportingIterator<String[]> rowIterator() {
     try {
       return getReader();

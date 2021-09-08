@@ -65,6 +65,7 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
     return StringUtils.substringBeforeLast(name, ".").replaceAll("[\\s.:/\\\\*?%|><\"]+", "").toLowerCase();
   }
 
+  @Override
   public int compareTo(Source o) {
     if (this == o) {
       return 0;

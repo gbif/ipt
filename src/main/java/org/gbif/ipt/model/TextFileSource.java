@@ -50,10 +50,12 @@ public class TextFileSource extends SourceBase implements FileSource {
     return escape(fieldsTerminatedBy);
   }
 
+  @Override
   public File getFile() {
     return file;
   }
 
+  @Override
   public long getFileSize() {
     return fileSize;
   }
@@ -62,10 +64,12 @@ public class TextFileSource extends SourceBase implements FileSource {
     return FileUtils.formatSize(fileSize, 1);
   }
 
+  @Override
   public int getIgnoreHeaderLines() {
     return ignoreHeaderLines;
   }
 
+  @Override
   public Date getLastModified() {
     return lastModified;
   }
@@ -74,10 +78,12 @@ public class TextFileSource extends SourceBase implements FileSource {
     return CSVReaderFactory.build(file, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
   }
 
+  @Override
   public int getRows() {
     return rows;
   }
 
+  @Override
   public ClosableReportingIterator<String[]> rowIterator() {
     try {
       return getReader();
@@ -87,6 +93,7 @@ public class TextFileSource extends SourceBase implements FileSource {
     return null;
   }
 
+  @Override
   public List<String> columns() {
     try {
       CSVReader reader = getReader();
@@ -127,6 +134,7 @@ public class TextFileSource extends SourceBase implements FileSource {
     this.fieldsTerminatedBy = unescape(fieldsTerminatedBy);
   }
 
+  @Override
   public void setFile(File file) {
     this.file = file;
   }
@@ -139,6 +147,7 @@ public class TextFileSource extends SourceBase implements FileSource {
     this.ignoreHeaderLines = ignoreHeaderLines == null ? 0 : ignoreHeaderLines;
   }
 
+  @Override
   public void setLastModified(Date lastModified) {
     this.lastModified = lastModified;
   }
@@ -147,10 +156,12 @@ public class TextFileSource extends SourceBase implements FileSource {
     this.rows = rows;
   }
 
+  @Override
   public String getPreferredFileSuffix() {
     return SUFFIX;
   }
 
+  @Override
   public Set<Integer> analyze() throws IOException {
     setFileSize(getFile().length());
 
@@ -166,6 +177,7 @@ public class TextFileSource extends SourceBase implements FileSource {
     return emptyLines;
   }
 
+  @Override
   public SourceType getSourceType() {
     return SourceType.TEXT_FILE;
   }

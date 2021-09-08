@@ -269,6 +269,7 @@ public class ExtensionsAction extends POSTAction {
   @VisibleForTesting
   protected List<Extension> getLatestVersions(List<Extension> extensions) {
     Ordering<Extension> byIssuedDate = Ordering.natural().nullsFirst().onResultOf(new Function<Extension, Date>() {
+      @Override
       public Date apply(Extension extension) {
         return extension.getIssued();
       }

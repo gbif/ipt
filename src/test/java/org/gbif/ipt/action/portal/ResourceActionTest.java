@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Maps;
 import freemarker.template.TemplateException;
 import org.junit.Before;
@@ -278,10 +277,8 @@ public class ResourceActionTest {
     action.setRecordsByExtensionForVersion(counts);
 
     // do ordering
-    ImmutableSortedMap<String, Integer> orderedCounts = action.getRecordsByExtensionOrdered();
-    orderedCounts.firstEntry().getValue();
-    assertEquals(100, orderedCounts.firstEntry().getValue().intValue());
-    assertEquals(10, orderedCounts.lastEntry().getValue().intValue());
+    LinkedHashMap<String, Integer> orderedCounts = action.getRecordsByExtensionOrdered();
+    assertEquals("[100, 55, 10]", orderedCounts.values().toString());
   }
 
   @Test

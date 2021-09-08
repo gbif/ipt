@@ -135,15 +135,20 @@ public class SanitizeHtmlFilter implements Filter {
       // now strip all tags to be safe in case our custom regex misses sth
       StringBuilder sb = new StringBuilder();
       HtmlSanitizer.Policy textPolicy = POLICY_BUILDER.build(new HtmlStreamEventReceiver(){
+        @Override
         public void openDocument() {}
+        @Override
         public void closeDocument() {}
+        @Override
         public void openTag(String elementName, List<String> attribs) {
           if ("br".equals(elementName) || "p".equals(elementName)) {
             sb.append('\n');
             sb.append('\n');
           }
         }
+        @Override
         public void closeTag(String elementName) {}
+        @Override
         public void text(String text) {
           sb.append(text);
         }

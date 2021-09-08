@@ -39,6 +39,7 @@ public class InventoryAction extends ActionSupport {
     this.resourceManager = resourceManager;
   }
 
+  @Override
   public String execute() {
     // load all registered resources, and populate inventory
     List<Resource> registered = resourceManager.list(PublicationStatus.REGISTERED);

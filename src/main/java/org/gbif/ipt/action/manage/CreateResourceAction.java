@@ -118,7 +118,6 @@ public class CreateResourceAction extends POSTAction {
   @VisibleForTesting
   protected void cleanupResourceFolder(String shortname, long startTimeInMs) {
     Preconditions.checkNotNull(shortname);
-    Preconditions.checkNotNull(startTimeInMs);
 
     Resource resource = resourceManager.get(shortname);
     File directory = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);

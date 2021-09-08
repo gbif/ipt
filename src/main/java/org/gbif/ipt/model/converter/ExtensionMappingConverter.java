@@ -36,10 +36,12 @@ public class ExtensionMappingConverter implements Converter {
     this.extManager = extManager;
   }
 
+  @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(ExtensionMapping.class);
   }
 
+  @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     ExtensionMapping e = (ExtensionMapping) value;
     // serialise whole object
@@ -48,6 +50,7 @@ public class ExtensionMappingConverter implements Converter {
     writer.endNode();
   }
 
+  @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     ExtensionMapping map = new ExtensionMapping();
     // read whole object, looking up the extension and its properties

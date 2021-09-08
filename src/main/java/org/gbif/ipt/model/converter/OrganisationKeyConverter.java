@@ -30,15 +30,18 @@ public class OrganisationKeyConverter implements Converter {
     this.registrationManager = registrationManager;
   }
 
+  @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(Organisation.class);
   }
 
+  @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     Organisation u = (Organisation) value;
     writer.setValue(u.getKey().toString());
   }
 
+  @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     return registrationManager.get(reader.getValue());
   }

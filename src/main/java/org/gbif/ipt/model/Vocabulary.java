@@ -62,6 +62,7 @@ public class Vocabulary implements Comparable, Serializable {
     concepts.add(concept);
   }
 
+  @Override
   public int compareTo(Object object) {
     Vocabulary myClass = (Vocabulary) object;
     return new CompareToBuilder().append(this.uriString, myClass.uriString).toComparison();

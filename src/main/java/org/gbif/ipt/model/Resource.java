@@ -221,6 +221,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * (non-Javadoc)
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
+  @Override
   public int compareTo(Resource o) {
     return shortname.compareToIgnoreCase(o.shortname);
   }
@@ -628,6 +629,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   public List<Source> getSources() {
     return Ordering.natural().nullsLast().onResultOf(new Function<Source, String>() {
       @Nullable
+      @Override
       public String apply(@Nullable Source src) {
         return (src == null) ? null : src.getName();
       }
@@ -1150,8 +1152,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
 
     // add year the resource was most recently published
-    Date pubDate = getEml().getPubDate() != null ? getEml().getPubDate() : new Date();
-    int publicationYear = getPublicationYear(pubDate);
+    int publicationYear = getPublicationYear(getEml().getPubDate());
     if (publicationYear > 0) {
       sb.append(" (");
       sb.append(publicationYear);

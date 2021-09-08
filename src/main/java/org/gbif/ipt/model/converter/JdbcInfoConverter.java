@@ -37,15 +37,18 @@ public class JdbcInfoConverter implements Converter {
     this.jdbcs = jdbcs;
   }
 
+  @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(JdbcInfo.class);
   }
 
+  @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     JdbcInfo info = (JdbcInfo) value;
     writer.setValue(info.getName());
   }
 
+  @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     return jdbcs.get(reader.getValue());
   }

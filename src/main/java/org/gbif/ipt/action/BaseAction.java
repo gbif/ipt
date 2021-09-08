@@ -298,6 +298,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * is not sufficient to load your entities, you can access the request object directly like we do here and read any
    * other parameter you need to prepare the action for the param phase.
    */
+  @Override
   public void prepare() {
     // see if an id was provided in the request.
     // we dont use the PARAM - PREPARE - PARAM interceptor stack
@@ -306,10 +307,12 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     id = StringUtils.trimToNull(req.getParameter("id"));
   }
 
+  @Override
   public void setServletRequest(HttpServletRequest req) {
     this.req = req;
   }
 
+  @Override
   public void setSession(Map<String, Object> session) {
     this.session = session;
     // always keep sth in the session otherwise the session is not maintained and e.g. the message redirect interceptor

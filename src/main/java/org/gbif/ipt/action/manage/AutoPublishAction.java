@@ -68,6 +68,7 @@ public class AutoPublishAction extends ManagerBaseAction {
     populateMinutes();
   }
 
+  @Override
   public String save() {
     String updateFrequency = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY);
     String updateFrequencyMonth = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_MONTH);

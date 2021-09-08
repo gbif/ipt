@@ -37,10 +37,12 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   private int rows;
   protected Date lastModified;
 
+  @Override
   public File getFile() {
     return file;
   }
 
+  @Override
   public long getFileSize() {
     return fileSize;
   }
@@ -49,6 +51,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return FileUtils.formatSize(fileSize, 1);
   }
 
+  @Override
   public int getIgnoreHeaderLines() {
     return ignoreHeaderLines;
   }
@@ -57,6 +60,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     this.ignoreHeaderLines = ignoreHeaderLines;
   }
 
+  @Override
   public Date getLastModified() {
     return lastModified;
   }
@@ -83,6 +87,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return book.getSheetAt(sheetIdx);
   }
 
+  @Override
   public int getRows() {
     return rows;
   }
@@ -118,14 +123,17 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       }
     }
 
+    @Override
     public void close() {
       // nothing to do
     }
 
+    @Override
     public boolean hasNext() {
       return iter.hasNext();
     }
 
+    @Override
     public String[] next() {
       //TODO: log empty or irregular rows, setting rowError to true and populating errorMessage
       String[] val = new String[rowSize];
@@ -156,23 +164,28 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       errorMessage = null;
     }
 
+    @Override
     public void remove() {
       // unsupported
     }
 
+    @Override
     public boolean hasRowError() {
       return rowError;
     }
 
+    @Override
     public String getErrorMessage() {
       return errorMessage;
     }
 
+    @Override
     public Exception getException() {
       return exception;
     }
   }
 
+  @Override
   public ClosableReportingIterator<String[]> rowIterator() {
     try {
       return new RowIterator(this, ignoreHeaderLines);
@@ -195,6 +208,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return sheets;
   }
 
+  @Override
   public List<String> columns() {
     if (rows > 0) {
       try {
@@ -218,6 +232,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return Lists.newArrayList();
   }
 
+  @Override
   public void setFile(File file) {
     this.file = file;
   }
@@ -230,10 +245,12 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     this.ignoreHeaderLines = ignoreHeaderLines == null ? 0 : ignoreHeaderLines;
   }
 
+  @Override
   public void setLastModified(Date lastModified) {
     this.lastModified = lastModified;
   }
 
+  @Override
   public String getPreferredFileSuffix() {
     return SUFFIX;
   }
@@ -242,6 +259,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     this.rows = rows;
   }
 
+  @Override
   public Set<Integer> analyze() throws IOException {
     setFileSize(getFile().length());
     // find row size
@@ -262,6 +280,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return Sets.newHashSet();
   }
 
+  @Override
   public SourceType getSourceType() {
     return SourceType.EXCEL_FILE;
   }

@@ -175,6 +175,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resources.put(res.getShortname().toLowerCase(), res);
   }
 
+  @Override
   public boolean cancelPublishing(String shortname, BaseAction action) {
     boolean canceled = false;
     // get future
@@ -302,6 +303,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  @Override
   public Resource create(String shortname, String type, File dwca, User creator, BaseAction action)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Preconditions.checkNotNull(shortname);
@@ -461,11 +463,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private static class XmlFilenameFilter implements FilenameFilter {
 
+    @Override
     public boolean accept(File dir, String name) {
       return name != null && name.toLowerCase().endsWith(".xml");
     }
   }
 
+  @Override
   public Resource create(String shortname, String type, User creator) throws AlreadyExistingException {
     Preconditions.checkNotNull(shortname);
     // check if existing already
@@ -602,6 +606,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param emlFile
    * @throws ImportException
    */
+  @Override
   public void replaceEml(Resource resource, File emlFile) throws ImportException {
     Eml eml;
     // copy eml file to data directory (with name eml.xml) and populate Eml instance
@@ -713,6 +718,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resources.remove(resource.getShortname().toLowerCase());
   }
 
+  @Override
   public void delete(Resource resource, boolean remove) throws IOException, DeletionNotAllowedException {
     // deregister resource?
     if (resource.isRegistered()) {
@@ -744,6 +750,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     worker.report();
   }
 
+  @Override
   public Resource get(String shortname) {
     if (shortname == null) {
       return null;
@@ -821,11 +828,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return s;
   }
 
+  @Override
   public boolean isEmlExisting(String shortName) {
     File emlFile = dataDir.resourceEmlFile(shortName);
     return emlFile.exists();
   }
 
+  @Override
   public boolean isLocked(String shortname, BaseAction action) {
     if (processFutures.containsKey(shortname)) {
       Resource resource = get(shortname);
@@ -902,10 +911,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return false;
   }
 
+  @Override
   public boolean isLocked(String shortname) {
     return isLocked(shortname, new BaseAction(textProvider, cfg, registrationManager));
   }
 
+  @Override
   public List<Resource> latest(int startPage, int pageSize) {
     List<Resource> resourceList = new ArrayList<Resource>();
     for (Resource r : resources.values()) {
@@ -918,6 +929,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     Collections.sort(resourceList, new Comparator<Resource>() {
+      @Override
       public int compare(Resource r1, Resource r2) {
         if (r1 == null || r1.getModified() == null) {
           return 1;
@@ -935,10 +947,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resourceList;
   }
 
+  @Override
   public List<Resource> list() {
     return new ArrayList<Resource>(resources.values());
   }
 
+  @Override
   public List<Resource> list(PublicationStatus status) {
     List<Resource> result = new ArrayList<Resource>();
     for (Resource r : resources.values()) {
@@ -949,6 +963,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
+  @Override
   public List<Resource> listPublishedPublicVersions() {
     List<Resource> result = new ArrayList<Resource>();
     for (Resource r : resources.values()) {
@@ -967,6 +982,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
+  @Override
   public List<Resource> list(User user) {
     List<Resource> result = new ArrayList<Resource>();
     // select basedon user rights - for testing return all resources for now
@@ -978,6 +994,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return result;
   }
 
+  @Override
   public int load(File resourcesDir, User creator) {
     resources.clear();
     int counter = 0;
@@ -1319,6 +1336,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
+  @Override
   public boolean publish(Resource resource, BigDecimal version, BaseAction action)
     throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
@@ -1613,6 +1631,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return null;
   }
 
+  @Override
   public void restoreVersion(Resource resource, BigDecimal rollingBack, BaseAction action) {
     // prevent null action from being handled
     if (action == null) {
@@ -1741,6 +1760,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
+  @Override
   public Resource updateAlternateIdentifierForIPTURLToResource(Resource resource) {
     // retrieve a list of the resource's alternate identifiers
     List<String> ids = null;
@@ -1936,6 +1956,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
    * org.gbif.ipt.model.Organisation)
    */
+  @Override
   public void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action)
     throws RegistryException {
     ActionLogger alog = new ActionLogger(this.LOG, action);
@@ -2089,6 +2110,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return ls;
   }
 
+  @Override
   public synchronized void report(String shortname, StatusReport report) {
     processReports.put(shortname, report);
   }
@@ -2162,6 +2184,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  @Override
   public synchronized void save(Resource resource) throws InvalidConfigException {
     File cfgFile = dataDir.resourceFile(resource, PERSISTENCE_FILE);
     Writer writer = null;
@@ -2187,6 +2210,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
    */
+  @Override
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {
     // update EML with latest resource basics (version and GUID)
     syncEmlWithResource(resource);
@@ -2199,6 +2223,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     LOG.debug("Updated EML file for " + resource);
   }
 
+  @Override
   public StatusReport status(String shortname) {
     isLocked(shortname);
     return processReports.get(shortname);
@@ -2227,6 +2252,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     updateKeywordsWithDatasetTypeAndSubtype(resource);
   }
 
+  @Override
   public void updateRegistration(Resource resource, BaseAction action) throws PublicationException {
     if (resource.isRegistered()) {
       // prevent null action from being handled
@@ -2264,6 +2290,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  @Override
   public void visibilityToPrivate(Resource resource, BaseAction action) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
@@ -2280,6 +2307,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  @Override
   public void visibilityToPublic(Resource resource, BaseAction action) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
@@ -2481,18 +2509,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
+  @Override
   public ThreadPoolExecutor getExecutor() {
     return executor;
   }
 
+  @Override
   public Map<String, Future<Map<String, Integer>>> getProcessFutures() {
     return processFutures;
   }
 
+  @Override
   public ListMultimap<String, Date> getProcessFailures() {
     return processFailures;
   }
 
+  @Override
   public boolean hasMaxProcessFailures(Resource resource) {
     if (processFailures.containsKey(resource.getShortname())) {
       List<Date> failures = processFailures.get(resource.getShortname());
@@ -2514,6 +2546,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Remove an archived version in the resource history and from the file system
    */
   @VisibleForTesting
+  @Override
   public void removeVersion(Resource resource, BigDecimal version) {
     // Cannot remove the most recent version, only archived versions
     if ((version != null) && !version.equals(resource.getEmlVersion())) {
