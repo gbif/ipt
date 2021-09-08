@@ -11,10 +11,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwca.io.ArchiveField.DataType;
 
 import java.io.Serializable;
-
-import com.google.common.base.Objects;
-
-import static com.google.common.base.Objects.equal;
+import java.util.Objects;
 
 /**
  * A single property of an extension. Often also known as concept or term.
@@ -75,7 +72,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
       return false;
     }
     ExtensionProperty o = (ExtensionProperty) other;
-    return equal(extension, o.extension) && equal(qualname, o.qualname);
+    return Objects.equals(extension, o.extension) && Objects.equals(qualname, o.qualname);
   }
 
   public String getDescription() {
@@ -120,7 +117,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(extension, qualname);
+    return Objects.hash(extension, qualname);
   }
 
   public boolean hasTerms() {

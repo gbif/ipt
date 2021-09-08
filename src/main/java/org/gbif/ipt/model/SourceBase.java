@@ -10,16 +10,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
-
-import static com.google.common.base.Objects.equal;
 
 /**
  * Shared features for any Source implementation.
@@ -82,12 +79,12 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
       return true;
     }
 
-    if (!SourceBase.class.isInstance(other)) {
+    if (!(other instanceof SourceBase)) {
       return false;
     }
     Source o = (Source) other;
     // return equal(resource, o.resource) && equal(name, o.name);
-    return equal(name, o.getName());
+    return Objects.equals(name, o.getName());
   }
 
   @Override

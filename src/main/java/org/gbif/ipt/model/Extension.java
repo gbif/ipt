@@ -11,16 +11,14 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import static com.google.common.base.Objects.equal;
 
 /**
  * A Darwin Core extension definition.
@@ -61,7 +59,7 @@ public class Extension implements Serializable {
       return false;
     }
     Extension o = (Extension) other;
-    return equal(rowType, o.rowType);
+    return Objects.equals(rowType, o.rowType);
   }
 
   public String getDescription() {

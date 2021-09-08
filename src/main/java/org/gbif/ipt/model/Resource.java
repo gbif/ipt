@@ -44,8 +44,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static com.google.common.base.Objects.equal;
-
 /**
  * The main class to represent an IPT resource.
  * Its enumerated type property defines the kind of resource (Metadata, Checklist, Occurrence)
@@ -104,9 +102,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Date metadataModified;
   private Date mappingsModified;
   private Date sourcesModified;
-  private Set<User> managers = new HashSet<User>();
+  private Set<User> managers = new HashSet<>();
   // mapping configs
-  private Set<Source> sources = new HashSet<Source>();
+  private Set<Source> sources = new HashSet<>();
   private List<ExtensionMapping> mappings = Lists.newArrayList();
 
   private String changeSummary;
@@ -272,7 +270,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (src != null) {
       result = sources.remove(src);
       // also remove existing mappings
-      List<ExtensionMapping> ems = new ArrayList<ExtensionMapping>(mappings);
+      List<ExtensionMapping> ems = new ArrayList<>(mappings);
       for (ExtensionMapping em : ems) {
         if (em.getSource() != null && src.equals(em.getSource())) {
           deleteMapping(em);
@@ -288,7 +286,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean hasMappedSource(Source src) {
     if (src != null) {
-      for (ExtensionMapping em : new ArrayList<ExtensionMapping>(mappings)) {
+      for (ExtensionMapping em : new ArrayList<>(mappings)) {
         if (em.getSource() != null && src.equals(em.getSource())) {
           LOG.debug("Source mapped to " + em.getExtension().getTitle());
           return true;
@@ -307,14 +305,14 @@ public class Resource implements Serializable, Comparable<Resource> {
       return false;
     }
     Resource o = (Resource) other;
-    return equal(shortname, o.shortname);
+    return Objects.equals(shortname, o.shortname);
   }
 
   /**
    * @return all core mappings, excluding extension mappings with core row types
    */
   public List<ExtensionMapping> getCoreMappings() {
-    List<ExtensionMapping> cores = new ArrayList<ExtensionMapping>();
+    List<ExtensionMapping> cores = new ArrayList<>();
     String coreRowType = getCoreRowType();
     for (ExtensionMapping m : mappings) {
       if (m.isCore() && coreRowType != null && coreRowType.equalsIgnoreCase(m.getExtension().getRowType())) {
@@ -581,7 +579,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return the list of mappings for the requested extension rowtype
    */
   public List<ExtensionMapping> getMappings(String rowType) {
-    List<ExtensionMapping> maps = new ArrayList<ExtensionMapping>();
+    List<ExtensionMapping> maps = new ArrayList<>();
     if (rowType != null) {
       for (ExtensionMapping m : mappings) {
         if (rowType.equals(m.getExtension().getRowType())) {
@@ -772,7 +770,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   @Override
   public int hashCode() {
-    return java.util.Objects.hashCode(shortname);
+    return Objects.hashCode(shortname);
   }
 
   public boolean hasMappedData() {

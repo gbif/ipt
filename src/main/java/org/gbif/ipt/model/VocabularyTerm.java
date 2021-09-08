@@ -15,10 +15,7 @@ package org.gbif.ipt.model;
 import org.gbif.ipt.utils.LangUtils;
 
 import java.io.Serializable;
-
-import com.google.common.base.Objects;
-
-import static com.google.common.base.Objects.equal;
+import java.util.Objects;
 
 /**
  * A single literal representation of a vocabulary concept in a given language.
@@ -38,7 +35,7 @@ public class VocabularyTerm implements Serializable {
       return false;
     }
     VocabularyTerm o = (VocabularyTerm) other;
-    return equal(title, o.title) && equal(lang, o.lang);
+    return Objects.equals(title, o.title) && Objects.equals(lang, o.lang);
   }
 
   public String getLang() {
@@ -51,7 +48,7 @@ public class VocabularyTerm implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(title, lang);
+    return Objects.hash(title, lang);
   }
 
   public void setLang(String lang) {

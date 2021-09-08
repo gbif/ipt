@@ -10,7 +10,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.Term;
@@ -43,7 +42,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -265,7 +263,7 @@ public class MappingAction extends ManagerBaseAction {
    * @return list of groups in extension that are redundant (are already included in the core extension)
    */
   public List<String> getRedundantGroups() {
-    List<String> redundantGroups = new ArrayList<String>();
+    List<String> redundantGroups = new ArrayList<>();
     if (resource.getCoreRowType() != null && !resource.getCoreRowType()
       .equalsIgnoreCase(mapping.getExtension().getRowType())) {
       Extension core = extensionManager.get(resource.getCoreRowType());
@@ -375,9 +373,9 @@ public class MappingAction extends ManagerBaseAction {
         mappingCoreid = new PropertyMapping();
         mappingCoreid.setTerm(coreid);
         mappingCoreid.setIndex(mapping.getIdColumn());
-        fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size());
+        fields = new ArrayList<>(mapping.getExtension().getProperties().size());
       } else {
-        fields = new ArrayList<PropertyMapping>(mapping.getExtension().getProperties().size() -1);
+        fields = new ArrayList<>(mapping.getExtension().getProperties().size() -1);
       }
 
       // inspect source
@@ -397,7 +395,7 @@ public class MappingAction extends ManagerBaseAction {
           String group = ep.getGroup();
           if (group != null) {
             if (fieldsByGroup.get(group) == null) {
-              fieldsByGroup.put(group, new ArrayList<PropertyMapping>());
+              fieldsByGroup.put(group, new ArrayList<>());
             }
             fieldsByGroup.get(group).add(pm);
           }
@@ -478,7 +476,7 @@ public class MappingAction extends ManagerBaseAction {
       // save field mappings
       Set<PropertyMapping> mappedFields = new TreeSet<>();
       for (PropertyMapping f : fields) {
-        Integer index = MoreObjects.firstNonNull(f.getIndex(), -9999);
+        int index = f.getIndex() != null ? f.getIndex() : -9999;
         if (index >= 0 || StringUtils.trimToNull(f.getDefaultValue()) != null) {
           mappedFields.add(f);
         }
@@ -489,7 +487,7 @@ public class MappingAction extends ManagerBaseAction {
           resource.getCoreRowType().equalsIgnoreCase(mapping.getExtension().getRowType())) {
         mappingCoreid.setIndex(mapping.getIdColumn());
         mappingCoreid.setDefaultValue(mapping.getIdSuffix());
-        Integer index = MoreObjects.firstNonNull(mappingCoreid.getIndex(), -9999);
+        int index = mappingCoreid.getIndex() != null ? mappingCoreid.getIndex() : -9999;
         if (index >= 0 || StringUtils.trimToNull(mappingCoreid.getDefaultValue()) != null) {
           mappedFields.add(mappingCoreid);
         }

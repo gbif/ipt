@@ -2,13 +2,11 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
-
-import static com.google.common.base.Objects.equal;
 
 public class User implements Serializable, Cloneable {
 
@@ -43,7 +41,7 @@ public class User implements Serializable, Cloneable {
       return false;
     }
     User o = (User) other;
-    return equal(email, o.email);
+    return Objects.equals(email, o.email);
   }
 
   @NotNull

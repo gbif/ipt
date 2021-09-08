@@ -3,10 +3,10 @@ package org.gbif.ipt.model.legacy;
 import org.gbif.ipt.model.AgentBase;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -29,7 +29,7 @@ public class LegacyOrganisation extends AgentBase implements Serializable {
   public boolean equals(Object obj) {
     if (obj instanceof LegacyOrganisation) {
       LegacyOrganisation other = (LegacyOrganisation) obj;
-      return Objects.equal(this.getKey(), other.getKey());
+      return Objects.equals(this.getKey(), other.getKey());
     }
     return false;
   }

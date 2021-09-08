@@ -17,12 +17,10 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.CompareToBuilder;
-
-import static com.google.common.base.Objects.equal;
 
 /**
  * Class represents a Vocabulary.
@@ -77,7 +75,7 @@ public class Vocabulary implements Comparable, Serializable {
       return false;
     }
     Vocabulary o = (Vocabulary) other;
-    return equal(uriString, o.uriString);
+    return Objects.equals(uriString, o.uriString);
   }
 
   public VocabularyConcept findConcept(String term) {

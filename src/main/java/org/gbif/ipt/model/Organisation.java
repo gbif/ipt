@@ -13,9 +13,9 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -46,7 +46,7 @@ public class Organisation extends AgentBase implements Serializable {
   public boolean equals(Object obj) {
     if (obj instanceof Organisation) {
       Organisation other = (Organisation) obj;
-      return Objects.equal(this.getKey(), other.getKey());
+      return Objects.equals(this.getKey(), other.getKey());
     }
     return false;
   }

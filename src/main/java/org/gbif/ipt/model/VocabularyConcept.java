@@ -11,12 +11,10 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import com.google.common.base.Objects;
 import org.apache.commons.lang3.builder.CompareToBuilder;
-
-import static com.google.common.base.Objects.equal;
 
 /**
  * A single, identifiable concept in a vocabulary. For example "DE" is an identifier for the concept of Germany, while
@@ -61,7 +59,7 @@ public class VocabularyConcept implements Comparable, Serializable {
       return false;
     }
     VocabularyConcept o = (VocabularyConcept) other;
-    return equal(vocabulary, o.vocabulary) && equal(identifier, o.identifier) && equal(uri, o.uri);
+    return Objects.equals(vocabulary, o.vocabulary) && Objects.equals(identifier, o.identifier) && Objects.equals(uri, o.uri);
   }
 
   public Set<VocabularyTerm> getAlternativeTerms() {
@@ -122,7 +120,7 @@ public class VocabularyConcept implements Comparable, Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(vocabulary, identifier, uri);
+    return Objects.hash(vocabulary, identifier, uri);
   }
 
   public void setAlternativeTerms(Set<VocabularyTerm> alternativeTerms) {
