@@ -95,8 +95,7 @@ public class LoginAction extends POSTAction {
     String referer = (String) session.get(Constants.SESSION_REFERER);
     LOG.debug("Session's referer: {}", referer);
 
-    if (referer != null && referer.startsWith(cfg.getBaseUrl())
-        && !(referer.endsWith("login.do") || referer.endsWith("login"))) {
+    if (referer != null && !(referer.endsWith("login.do") || referer.endsWith("login"))) {
       redirectUrl = referer;
     }
 
