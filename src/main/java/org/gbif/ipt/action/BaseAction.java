@@ -40,12 +40,13 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public static final String NOT_FOUND = "404";
   public static final String NOT_ALLOWED = "401";
   public static final String NOT_ALLOWED_MANAGER = "401-manager";
+  public static final String LOGIN = "login";
   public static final String HOME = "home";
   public static final String LOCKED = "locked";
   public static final String NOT_AVAILABLE = "410";
 
 
-  protected List<String> warnings = new ArrayList<String>();
+  protected List<String> warnings = new ArrayList<>();
   protected Map<String, Object> session;
   protected HttpServletRequest req;
   // a generic identifier for loading an object BEFORE the param interceptor sets values

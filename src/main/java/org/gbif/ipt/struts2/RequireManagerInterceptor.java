@@ -1,5 +1,6 @@
 package org.gbif.ipt.struts2;
 
+import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.dispatcher.Parameter;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
@@ -13,6 +14,10 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
 
 /**
  * An Interceptor that makes sure a user with manager rights (=admin or manager role) is currently logged in and
@@ -69,7 +74,32 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
   public String intercept(ActionInvocation invocation) throws Exception {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(Constants.SESSION_USER);
-    if (user != null && user.hasManagerRights()) {
+
+    // user is not logged in, redirect to login page
+    // remember referer and redirect there after successful authentication
+    if (user == null) {
+      ActionContext context = invocation.getInvocationContext();
+      HttpServletRequest request = (HttpServletRequest) context.get(HTTP_REQUEST);
+
+      StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+      String queryString = request.getQueryString();
+
+      String referer;
+      // check if there is query string, if so append it
+      if (queryString == null) {
+        referer = requestURL.toString();
+      } else {
+        referer = requestURL.append('?').append(queryString).toString();
+      }
+
+      // put referer into session
+      session.put(Constants.SESSION_REFERER, referer);
+
+      return BaseAction.LOGIN;
+    }
+
+    // user is logged in, check if user has manager rights
+    if (user.hasManagerRights()) {
         // now also check if we have rights for a specific resource requested
         // lets see if we are about to manage a new resource
         String requestedResource = getResourceParam(invocation);
@@ -90,6 +120,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
       }
       return invocation.invoke();
     }
+
     return BaseAction.NOT_ALLOWED_MANAGER;
   }
 }

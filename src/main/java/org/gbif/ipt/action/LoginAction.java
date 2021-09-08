@@ -15,6 +15,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.servlet.http.Cookie;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Action handling login/logout only. Login can happen both from small login box on every page, or dedicated login
@@ -52,8 +53,14 @@ public class LoginAction extends POSTAction {
   public String login() throws IOException {
     // login
     Cookie csrfCookie = getCookie(CsrfLoginInterceptor.CSRFtoken);
+
+    // user already logged in, return
+    if (session.get(Constants.SESSION_USER) != null) {
+      return SUCCESS;
+    }
+
     if (email != null && !StringUtils.isBlank(csrfToken) && csrfCookie != null) {
-      // prevent login CSRF, see https://support.detectify.com/customer/portal/articles/1969819-login-csrf
+      // prevent login CSRF
       // Make sure the token from the login form is the same as in the cookie
         if (csrfToken.equals(csrfCookie.getValue())){
           User authUser = userManager.authenticate(email, password);
@@ -85,13 +92,16 @@ public class LoginAction extends POSTAction {
   private void setRedirectUrl() {
     redirectUrl = "/";
     // if we have a request refer back to the originally requested page
-    if (req != null) {
-      String referer = req.getHeader("Referer");
-      if (referer != null && referer.startsWith(cfg.getBaseUrl()) && !(referer.endsWith("login.do") || referer
-        .endsWith("login"))) {
-        redirectUrl = referer;
-      }
+    String referer = (String) session.get(Constants.SESSION_REFERER);
+
+    if (referer != null && referer.startsWith(cfg.getBaseUrl())
+        && !(referer.endsWith("login.do") || referer.endsWith("login"))) {
+      redirectUrl = referer;
     }
+
+    // remove referer from session
+    session.remove(Constants.SESSION_REFERER);
+
     LOG.info("Redirecting to " + redirectUrl);
   }
 
