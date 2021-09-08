@@ -244,17 +244,11 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   public boolean isAdminRights() {
     User user = getCurrentUser();
-    if (user != null && user.hasAdminRights()) {
-      return true;
-    }
-    return false;
+    return user != null && user.hasAdminRights();
   }
 
   protected boolean isHttpPost() {
-    if (req.getMethod().equalsIgnoreCase("post")) {
-      return true;
-    }
-    return false;
+    return req != null && req.getMethod().equalsIgnoreCase("post");
   }
 
   /**
@@ -268,10 +262,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   public boolean isManagerRights() {
     User user = getCurrentUser();
-    if (user != null && user.hasManagerRights()) {
-      return true;
-    }
-    return false;
+    return user != null && user.hasManagerRights();
   }
 
   /**
@@ -352,8 +343,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    */
   @Nullable
   public Organisation getDefaultOrganisation() {
-    Organisation noOrganisation = registrationManager.get(Constants.DEFAULT_ORG_KEY);
-    return (noOrganisation == null) ? null : noOrganisation;
+    return registrationManager.get(Constants.DEFAULT_ORG_KEY);
   }
 
 }

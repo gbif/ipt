@@ -251,6 +251,10 @@ public class MetadataAction extends ManagerBaseAction {
   @Override
   public void prepare() {
     super.prepare();
+    if (session.get(Constants.SESSION_USER) == null) {
+      return;
+    }
+
     // take the section parameter from the requested url
     section = MetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "metadata-", "."));
 
