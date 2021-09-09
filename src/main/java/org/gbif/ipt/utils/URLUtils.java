@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
@@ -61,7 +61,7 @@ public class URLUtils {
    * Validates if the url contains a Port section "path:port".
    */
   public static boolean hasPort(String url) {
-    return !Strings.isNullOrEmpty(url) && url.split(":").length > 2;
+    return StringUtils.isNotBlank(url) && url.split(":").length > 2;
   }
 
 

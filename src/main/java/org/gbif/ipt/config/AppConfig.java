@@ -1,7 +1,6 @@
 package org.gbif.ipt.config;
 
 import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -143,7 +142,7 @@ public class AppConfig {
   public Double getLatitude() {
     try {
       String val = properties.getProperty(IPT_LATITUDE);
-      if (!Strings.isNullOrEmpty(val)) {
+      if (StringUtils.isNotBlank(val)) {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
@@ -155,7 +154,7 @@ public class AppConfig {
   public Double getLongitude() {
     try {
       String val = properties.getProperty(IPT_LONGITUDE);
-      if (!Strings.isNullOrEmpty(val)) {
+      if (StringUtils.isNotBlank(val)) {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
@@ -332,7 +331,7 @@ public class AppConfig {
   public Integer getArchivalLimit() {
     try {
       String val = properties.getProperty(ARCHIVAL_LIMIT);
-      if (!Strings.isNullOrEmpty(val)) {
+      if (StringUtils.isNotBlank(val)) {
         return Integer.valueOf(val);
       }
     } catch (NumberFormatException e) {

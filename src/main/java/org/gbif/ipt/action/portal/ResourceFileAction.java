@@ -17,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
@@ -85,9 +84,9 @@ public class ResourceFileAction extends PortalBaseAction {
 
     // construct download filename
     StringBuilder sb = new StringBuilder();
-    sb.append("dwca-" + resource.getShortname());
+    sb.append("dwca-").append(resource.getShortname());
     if (version != null) {
-      sb.append("-v" + version.toPlainString());
+      sb.append("-v").append(version.toPlainString());
     }
     sb.append(".zip");
     filename = sb.toString();
@@ -122,9 +121,9 @@ public class ResourceFileAction extends PortalBaseAction {
 
     // construct download filename
     StringBuilder sb = new StringBuilder();
-    sb.append("eml-" + resource.getShortname());
+    sb.append("eml-").append(resource.getShortname());
     if (version != null) {
-      sb.append("-v" + version.toPlainString());
+      sb.append("-v").append(version.toPlainString());
     }
     sb.append(".xml");
     filename = sb.toString();
@@ -219,7 +218,7 @@ public class ResourceFileAction extends PortalBaseAction {
     super.prepare();
     // look for source parameter
     String src = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_SOURCE));
-    if (!Strings.isNullOrEmpty(src)) {
+    if (StringUtils.isNotBlank(src)) {
       source = resource.getSource(src);
     }
   }

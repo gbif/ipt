@@ -1,6 +1,5 @@
 package org.gbif.ipt.action;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -117,8 +116,8 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public String getRequestURL() {
     try {
       return UriBuilder.fromUri(getBaseURL())
-          .path(Strings.nullToEmpty(req.getServletPath()))
-          .path(Strings.nullToEmpty(req.getPathInfo()))
+          .path(StringUtils.trimToEmpty(req.getServletPath()))
+          .path(StringUtils.trimToEmpty(req.getPathInfo()))
           .replaceQuery(req.getQueryString())
           .replaceQueryParam("request_locale")
           .build().toString();
@@ -160,7 +159,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    */
   public String getLocaleLanguage() {
     if (getLocale() != null) {
-      String requestedLocale = Strings.emptyToNull(getLocale().getLanguage());
+      String requestedLocale = StringUtils.trimToNull(getLocale().getLanguage());
       if (requestedLocale != null && !XSSUtil.containsXSS(requestedLocale)) {
         ResourceBundle resourceBundle = textProvider.getTexts(new Locale(requestedLocale));
         return resourceBundle.getLocale().getLanguage();

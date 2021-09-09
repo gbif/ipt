@@ -36,7 +36,6 @@ import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -465,7 +464,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   public String getLastPublishedVersionsChangeSummary() {
     VersionHistory last = getLastPublishedVersion();
     if (last != null) {
-      return Strings.emptyToNull(last.getChangeSummary());
+      return StringUtils.trimToNull(last.getChangeSummary());
     }
     return null;
   }
@@ -817,7 +816,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public void setCoreType(@Nullable String coreType) {
-    this.coreType = Strings.isNullOrEmpty(coreType) ? null : coreType;
+    this.coreType = StringUtils.isBlank(coreType) ? null : coreType;
   }
 
   public void setCreated(Date created) {
@@ -917,7 +916,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param subtype subtype String
    */
   public void setSubtype(String subtype) {
-    this.subtype = (Strings.isNullOrEmpty(subtype)) ? null : subtype.toLowerCase();
+    this.subtype = (StringUtils.isBlank(subtype)) ? null : subtype.toLowerCase();
   }
 
   /**
@@ -1187,7 +1186,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(getDoi().getUrl());
     }
     // otherwise add the citation identifier instead
-    else if (getEml().getCitation() != null && !Strings.isNullOrEmpty(getEml().getCitation().getIdentifier())) {
+    else if (getEml().getCitation() != null && StringUtils.isNotBlank(getEml().getCitation().getIdentifier())) {
       sb.append(getEml().getCitation().getIdentifier());
     }
     // otherwise use its IPT homepage as the identifier

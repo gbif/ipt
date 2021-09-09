@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.manage.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
@@ -114,7 +115,6 @@ import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
@@ -132,7 +132,7 @@ import org.apache.logging.log4j.Level;
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
 
   // key=shortname in lower case, value=resource
-  private Map<String, Resource> resources = new HashMap<String, Resource>();
+  private Map<String, Resource> resources = new HashMap<>();
   public static final String PERSISTENCE_FILE = "resource.xml";
   private static final int MAX_PROCESS_FAILURES = 3;
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
@@ -142,9 +142,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private RegistryManager registryManager;
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
-  private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<String, Future<Map<String, Integer>>>();
+  private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
-  private Map<String, StatusReport> processReports = new HashMap<String, StatusReport>();
+  private Map<String, StatusReport> processReports = new HashMap<>();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
@@ -342,7 +342,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     // set resource type, if it hasn't been set already
-    if (type != null && Strings.isNullOrEmpty(resource.getCoreType())) {
+    if (type != null && StringUtils.isBlank(resource.getCoreType())) {
       resource.setCoreType(type);
     }
 
@@ -518,7 +518,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
 
       // keep track of source files as a dwca might refer to the same source file multiple times
-      Map<String, TextFileSource> sources = new HashMap<String, TextFileSource>();
+      Map<String, TextFileSource> sources = new HashMap<>();
 
       // determine core type for the resource based on the rowType
       Term coreRowType = arch.getCore().getRowType();
@@ -583,15 +583,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       save(resource);
 
       alog.info("manage.resource.create.success",
-        new String[] {Strings.nullToEmpty(resource.getCoreRowType()), String.valueOf(resource.getSources().size()),
+        new String[] {StringUtils.trimToEmpty(resource.getCoreRowType()), String.valueOf(resource.getSources().size()),
           String.valueOf(resource.getMappings().size())});
-    } catch (UnsupportedArchiveException e) {
-      alog.warn(e.getMessage(), e);
-      throw new ImportException(e);
-    } catch (InvalidConfigException e) {
-      alog.warn(e.getMessage(), e);
-      throw new ImportException(e);
-    } catch (IOException e) {
+    } catch (UnsupportedArchiveException | InvalidConfigException | IOException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
     }
@@ -796,7 +790,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       map.setIdColumn(af.getId().getIndex());
     }
 
-    Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
+    Set<PropertyMapping> fields = new TreeSet<>();
     // iterate over each field to make sure its part of the extension we know
     for (ArchiveField f : af.getFields().values()) {
       if (ext.hasProperty(f.getTerm())) {
@@ -853,7 +847,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // store record counts by extension
           resource.setRecordsByExtension(f.get());
           // populate core record count
-          Integer recordCount = resource.getRecordsByExtension().get(Strings.nullToEmpty(resource.getCoreRowType()));
+          Integer recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
           resource.setRecordsPublished(recordCount == null ? 0 : recordCount);
           // finish publication (update registration, persist resource changes)
           publishEnd(resource, action, version);
@@ -918,7 +912,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public List<Resource> latest(int startPage, int pageSize) {
-    List<Resource> resourceList = new ArrayList<Resource>();
+    List<Resource> resourceList = new ArrayList<>();
     for (Resource r : resources.values()) {
       VersionHistory latestVersion = r.getLastPublishedVersion();
       if (latestVersion != null) {
@@ -949,12 +943,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public List<Resource> list() {
-    return new ArrayList<Resource>(resources.values());
+    return new ArrayList<>(resources.values());
   }
 
   @Override
   public List<Resource> list(PublicationStatus status) {
-    List<Resource> result = new ArrayList<Resource>();
+    List<Resource> result = new ArrayList<>();
     for (Resource r : resources.values()) {
       if (r.getStatus() == status) {
         result.add(r);
@@ -965,7 +959,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public List<Resource> listPublishedPublicVersions() {
-    List<Resource> result = new ArrayList<Resource>();
+    List<Resource> result = new ArrayList<>();
     for (Resource r : resources.values()) {
       List<VersionHistory> history = r.getVersionHistory();
       if (!history.isEmpty()) {
@@ -984,7 +978,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public List<Resource> list(User user) {
-    List<Resource> result = new ArrayList<Resource>();
+    List<Resource> result = new ArrayList<>();
     // select basedon user rights - for testing return all resources for now
     for (Resource res : resources.values()) {
       if (RequireManagerInterceptor.isAuthorized(user, res)) {
@@ -1326,6 +1320,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // remember to do comparison regardless of case, since the subtype is stored in lowercase
         if (resource.getSubtype().equalsIgnoreCase(entry.getKey())) {
           usesVocab = true;
+          break;
         }
       }
       // if the subtype doesn't use a standardized term from the vocab, it's reset to null
@@ -1535,10 +1530,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       try {
         DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
         registrationManager.getDoiService().update(doi, dataCiteMetadata);
-      } catch (InvalidMetadataException e) {
-        String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
-        LOG.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       } catch (DoiException e) {
         String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
         LOG.error(errorMsg);
@@ -1592,15 +1583,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         registrationManager.getDoiService().update(doiToReplace, assignedDoiMetadata);
 
       } catch (InvalidMetadataException e) {
-        String errorMsg = "Failed to update " + doiToReplace.toString() + " metadata: " + e.getMessage();
+        String errorMsg = "Failed to update " + doiToReplace + " metadata: " + e.getMessage();
         LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       } catch (DoiException e) {
-        String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
+        String errorMsg = "Failed to update " + doiToReplace + ": " + e.getMessage();
         LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       } catch (IllegalArgumentException e) {
-        String errorMsg = "Failed to update " + doiToReplace.toString() + ": " + e.getMessage();
+        String errorMsg = "Failed to update " + doiToReplace + ": " + e.getMessage();
         LOG.error(errorMsg, e);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       }
@@ -1735,7 +1726,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       List<String> currentIds = eml.getAlternateIdentifiers();
       if (currentIds != null) {
         // make new list of alternative identifiers in lower case so comparison is done in lower case only
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         for (String id : currentIds) {
           ids.add(id.toLowerCase());
         }
@@ -2095,7 +2086,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return set of UUIDs that could qualify as GBIF Registry Dataset UUIDs
    */
   private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
-    Set<UUID> ls = new HashSet<UUID>();
+    Set<UUID> ls = new HashSet<>();
     if (resource.getEml() != null) {
       List<String> ids = resource.getEml().getAlternateIdentifiers();
       for (String id : ids) {
@@ -2333,7 +2324,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return resource's StatusReport's list of TaskMessage or an empty list if no StatusReport exists for resource
    */
   private List<TaskMessage> getTaskMessages(String shortname) {
-    return ((processReports.get(shortname)) == null) ? new ArrayList<TaskMessage>()
+    return ((processReports.get(shortname)) == null) ? new ArrayList<>()
       : processReports.get(shortname).getMessages();
   }
 
@@ -2454,7 +2445,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.setNextPublished(nextPublished);
 
         // log
-        LOG.debug("The next publication date is: " + nextPublished.toString());
+        LOG.debug("The next publication date is: " + nextPublished);
       } catch (Exception e) {
         resource.setNextPublished(null);
         // add error message that explains the consequence of the error to user
@@ -2483,7 +2474,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (keywords != null) {
         // add or update KeywordSet for dataset type
         String type = resource.getCoreType();
-        if (!Strings.isNullOrEmpty(type)) {
+        if (StringUtils.isNotBlank(type)) {
           EmlUtils.addOrUpdateKeywordSet(keywords, type, Constants.THESAURUS_DATASET_TYPE);
           LOG.debug("GBIF Dataset Type Vocabulary added/updated to Resource's list of keywords");
         }
@@ -2495,7 +2486,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // add or update KeywordSet for dataset subtype
         String subtype = resource.getSubtype();
-        if (!Strings.isNullOrEmpty(subtype)) {
+        if (StringUtils.isNotBlank(subtype)) {
           EmlUtils.addOrUpdateKeywordSet(keywords, subtype, Constants.THESAURUS_DATASET_SUBTYPE);
           LOG.debug("GBIF Dataset Subtype Vocabulary added/updated to Resource's list of keywords");
         }
@@ -2528,11 +2519,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public boolean hasMaxProcessFailures(Resource resource) {
     if (processFailures.containsKey(resource.getShortname())) {
       List<Date> failures = processFailures.get(resource.getShortname());
-      LOG.debug("Publication has failed " + String.valueOf(failures.size()) + " time(s) for resource: " + resource
+      LOG.debug("Publication has failed " + failures.size() + " time(s) for resource: " + resource
         .getTitleAndShortname());
-      if (failures.size() >= MAX_PROCESS_FAILURES) {
-        return true;
-      }
+      return failures.size() >= MAX_PROCESS_FAILURES;
     }
     return false;
   }

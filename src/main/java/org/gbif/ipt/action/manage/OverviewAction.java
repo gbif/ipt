@@ -83,7 +83,6 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
@@ -1262,7 +1261,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             if (e.getType() == InvalidConfigException.TYPE.INVALID_RESOURCE_MIGRATION) {
               String msg = getText("manage.resource.migrate.failed");
               // concatenate reason
-              msg = (Strings.isNullOrEmpty(msg)) ? e.getMessage() : msg + ": " + e.getMessage();
+              msg = (StringUtils.isBlank(msg)) ? e.getMessage() : msg + ": " + e.getMessage();
               addActionError(msg);
               LOG.error(msg);
             } else {
@@ -1584,6 +1583,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @return the change summary for new published version, entered by the user in the confirm dialog
    */
   public String getSummary() {
-    return Strings.emptyToNull(summary);
+    return StringUtils.trimToNull(summary);
   }
 }

@@ -36,7 +36,6 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -506,7 +505,7 @@ public class GenerateDCAT {
       StringBuilder description = new StringBuilder();
       Iterator<String> iter = eml.getDescription().iterator();
       while (iter.hasNext()) {
-        String des = Strings.emptyToNull(iter.next());
+        String des = StringUtils.trimToNull(iter.next());
         if (des != null) {
           description.append(des);
         }
@@ -524,7 +523,7 @@ public class GenerateDCAT {
       List<String> keywords = new ArrayList<>();
       for (KeywordSet keywordSet : eml.getKeywords()) {
         for (String keyword : keywordSet.getKeywords()) {
-          if (!Strings.isNullOrEmpty(keyword) && !keywords.contains(keyword)) {
+          if (StringUtils.isNotBlank(keyword) && !keywords.contains(keyword)) {
             keywords.add(keyword);
           }
         }

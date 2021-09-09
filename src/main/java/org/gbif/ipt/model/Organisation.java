@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.annotation.Nullable;
 
-import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -89,7 +88,7 @@ public class Organisation extends AgentBase implements Serializable {
   @Nullable
   public String getPassword() {
     if (password != null) {
-      return Strings.emptyToNull(password.password);
+      return StringUtils.trimToNull(password.password);
     }
     return null;
   }
@@ -116,7 +115,7 @@ public class Organisation extends AgentBase implements Serializable {
   @Nullable
   public String getAgencyAccountPassword() {
     if (agencyAccountPassword != null) {
-      return Strings.emptyToNull(agencyAccountPassword.password);
+      return StringUtils.trimToNull(agencyAccountPassword.password);
     }
     return null;
   }

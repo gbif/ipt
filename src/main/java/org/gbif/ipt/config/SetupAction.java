@@ -1,6 +1,5 @@
 package org.gbif.ipt.config;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +88,7 @@ public class SetupAction extends BaseAction {
 
   @Override
   public String getBaseURL() {
-    if (Strings.isNullOrEmpty(baseURL)) {
+    if (StringUtils.isBlank(baseURL)) {
       // try to detect default values if not yet configured
       if (StringUtils.trimToNull(cfg.getBaseUrl()) == null) {
         Enumeration<String> headerNames = req.getHeaderNames();

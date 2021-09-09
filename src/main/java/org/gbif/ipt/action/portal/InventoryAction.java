@@ -1,11 +1,10 @@
 package org.gbif.ipt.action.portal;
 
-
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.json.annotations.JSON;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
@@ -212,7 +211,7 @@ public class InventoryAction extends ActionSupport {
       );
 
       // populate DatasetItem representing last published version of the registered dataset
-      item.setTitle(Strings.emptyToNull(lastPublished.getTitle()));
+      item.setTitle(StringUtils.trimToNull(lastPublished.getTitle()));
       item.setRecords(lastPublished.getRecordsPublished());
       item.setLastPublished(lastPublished.getLastPublished());
       item.setGbifKey(lastPublished.getKey().toString());
@@ -220,7 +219,7 @@ public class InventoryAction extends ActionSupport {
       item.setEml(cfg.getResourceEmlUrl(shortname));
       item.setDwca(cfg.getResourceArchiveUrl(shortname));
       item.setVersion(version);
-      item.setType(Strings.emptyToNull(r.getCoreType()));
+      item.setType(StringUtils.trimToNull(r.getCoreType()));
       items.add(item);
     }
     setInventory(items);

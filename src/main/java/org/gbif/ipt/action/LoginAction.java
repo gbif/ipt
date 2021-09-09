@@ -1,6 +1,5 @@
 package org.gbif.ipt.action;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +14,6 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.servlet.http.Cookie;
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Action handling login/logout only. Login can happen both from small login box on every page, or dedicated login
@@ -45,7 +43,7 @@ public class LoginAction extends POSTAction {
   public void prepare() {
     super.prepare();
     adminEmail = userManager.getDefaultAdminEmail();
-    if (Strings.isNullOrEmpty(adminEmail)) {
+    if (StringUtils.isBlank(adminEmail)) {
       adminEmail = userManager.list(User.Role.Admin).get(0).getEmail();
     }
   }

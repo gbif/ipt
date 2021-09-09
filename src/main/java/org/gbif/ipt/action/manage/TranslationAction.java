@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 import org.apache.commons.lang3.StringUtils;
@@ -61,7 +60,7 @@ public class TranslationAction extends ManagerBaseAction {
     public Map<String, String> getPersistentMap() {
       Map<String, String> m = new HashMap<String, String>();
       for (Entry<String, String> translatedValueEntry: translatedValues.entrySet()) {
-        if (!Strings.isNullOrEmpty(translatedValueEntry.getValue())) {
+        if (StringUtils.isNotBlank(translatedValueEntry.getValue())) {
          m.put(sourceValues.get(translatedValueEntry.getKey()), translatedValueEntry.getValue().trim());
         }
       }

@@ -49,7 +49,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -360,7 +359,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   @Override
   public Organisation getRegisteredOrganisation(String key) {
     Organisation organisation = null;
-    if (!Strings.isNullOrEmpty(key)) {
+    if (StringUtils.isNotBlank(key)) {
       try {
         organisation =
           gson.fromJson(requestHttpGetFromRegistry(getOrganisationUri(key)).content, new TypeToken<Organisation>() {
@@ -847,7 +846,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
           LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
           InputStream in = new FileInputStream(emlFile);
           Eml eml = EmlFactory.build(in);
-          if (eml.getCitation() != null && !Strings.isNullOrEmpty(eml.getCitation().getIdentifier())) {
+          if (eml.getCitation() != null && StringUtils.isNotBlank(eml.getCitation().getIdentifier())) {
             String identifier = StringUtils.trimToNull(eml.getCitation().getIdentifier());
             if (DOI.isParsable(identifier)) {
               return new DOI(identifier);

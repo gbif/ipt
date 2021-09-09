@@ -2,7 +2,6 @@ package org.gbif.ipt.task;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -530,7 +529,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
                   + reader.getErrorMessage(), reader.getException());
         } else {
           // check id exists
-          if (Strings.isNullOrEmpty(record[ID_COLUMN_INDEX])) {
+          if (StringUtils.isBlank(record[ID_COLUMN_INDEX])) {
             recordsWithNoId++;
           }
           if (isOccurrenceFile(extFile)) {
@@ -733,12 +732,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    */
   private String validateIdentifier(String id, String lastId, AtomicInteger recordsWithNoId, AtomicInteger recordsWithDuplicateId) {
     // check id exists
-    if (Strings.isNullOrEmpty(id)) {
+    if (StringUtils.isBlank(id)) {
       recordsWithNoId.getAndIncrement();
     }
 
     // check id is unique, using case insensitive comparison. E.g. FISHES:1 and fishes:1 are equal
-    if (!Strings.isNullOrEmpty(lastId) && !Strings.isNullOrEmpty(id)) {
+    if (StringUtils.isNotBlank(lastId) && StringUtils.isNotBlank(id)) {
       if (id.equalsIgnoreCase(lastId)) {
         writePublicationLogMessage("Duplicate id found: " + id);
         recordsWithDuplicateId.getAndIncrement();
@@ -762,7 +761,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   private void validateBasisOfRecord(String bor, int line, AtomicInteger recordsWithNoBasisOfRecord,
     AtomicInteger recordsWithNonMatchingBasisOfRecord, AtomicInteger recordsWithAmbiguousBasisOfRecord) {
     // check basisOfRecord exists
-    if (Strings.isNullOrEmpty(bor)) {
+    if (StringUtils.isBlank(bor)) {
       recordsWithNoBasisOfRecord.getAndIncrement();
     } else {
       // check basisOfRecord matches vocabulary (lower case comparison). E.g. specimen matches Specimen are equal
@@ -1201,7 +1200,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
           } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
             record[ID_COLUMN_INDEX] = UUID.randomUUID().toString();
           } else if (mapping.getIdColumn() >= 0) {
-            record[ID_COLUMN_INDEX] = (Strings.isNullOrEmpty(in[mapping.getIdColumn()])) ? idSuffix
+            record[ID_COLUMN_INDEX] = (StringUtils.isBlank(in[mapping.getIdColumn()])) ? idSuffix
               : in[mapping.getIdColumn()] + idSuffix;
           }
 
@@ -1552,12 +1551,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
           fileName = file.getName();
           int suffixEndIndex = fileName.indexOf(TEXT_FILE_EXTENSION);
           String suffix = file.getName().substring(extensionName.length(), suffixEndIndex);
-          int suffixInt = Integer.valueOf(suffix);
+          int suffixInt = Integer.parseInt(suffix);
           if (suffixInt >= max) {
             max = suffixInt;
           }
         } catch (NumberFormatException e) {
-          log.debug("No numerical suffix could be parsed from file name: " + Strings.nullToEmpty(fileName));
+          log.debug("No numerical suffix could be parsed from file name: " + StringUtils.trimToEmpty(fileName));
         }
       }
       return extensionName + String.valueOf(max + 1) + TEXT_FILE_EXTENSION;

@@ -42,7 +42,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -289,7 +288,7 @@ public class MappingAction extends ManagerBaseAction {
    * @return the normalized column name, or null if the incoming name was null or empty
    */
   String normalizeColumnName(String col) {
-    if (!Strings.isNullOrEmpty(col)) {
+    if (StringUtils.isNotBlank(col)) {
       col = NORM_TERM.matcher(col.toLowerCase()).replaceAll("");
       if (col.contains(":")) {
         col = StringUtils.substringAfter(col, ":");

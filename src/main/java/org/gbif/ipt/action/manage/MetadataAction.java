@@ -51,7 +51,6 @@ import java.util.Properties;
 import java.util.TreeMap;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -149,10 +148,10 @@ public class MetadataAction extends ManagerBaseAction {
    */
   public String getLicenseKeySelected() {
     String licenseText = resource.getEml().getIntellectualRights();
-    if (!Strings.isNullOrEmpty(licenseText)) {
+    if (StringUtils.isNotBlank(licenseText)) {
       for (Map.Entry<String, String> entry: licenses.entrySet()) {
         String licenseName = entry.getValue();
-        if (!Strings.isNullOrEmpty(licenseName) && licenseText.contains(licenseName)) {
+        if (StringUtils.isNotBlank(licenseName) && licenseText.contains(licenseName)) {
           return entry.getKey();
         }
       }

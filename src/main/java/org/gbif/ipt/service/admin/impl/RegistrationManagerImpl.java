@@ -1,6 +1,5 @@
 package org.gbif.ipt.service.admin.impl;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -127,7 +126,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       String password = organisation.getAgencyAccountPassword();
       DOIRegistrationAgency agency = organisation.getDoiRegistrationAgency();
 
-      if (!Strings.isNullOrEmpty(username) && !Strings.isNullOrEmpty(password) && agency != null) {
+      if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password) && agency != null) {
         return new RestJsonApiDataCiteService(cfg.getDataCiteUrl(), username, password);
       } else {
         throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
@@ -173,22 +172,22 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       if (key != null) {
         i.setKey(key);
       }
-      i.setDescription(Strings.emptyToNull(ipt.getDescription()));
-      i.setWsPassword(Strings.emptyToNull(ipt.getWsPassword()));
-      i.setName(Strings.emptyToNull(ipt.getName()));
+      i.setDescription(StringUtils.trimToNull(ipt.getDescription()));
+      i.setWsPassword(StringUtils.trimToNull(ipt.getWsPassword()));
+      i.setName(StringUtils.trimToNull(ipt.getName()));
       i.setCreated(ipt.getCreated());
-      i.setLanguage(Strings.emptyToNull(ipt.getLanguage()));
-      i.setLogoUrl(Strings.emptyToNull(ipt.getLogoUrl()));
-      i.setHomepageURL(Strings.emptyToNull(ipt.getHomepageURL()));
-      i.setOrganisationKey(Strings.emptyToNull(ipt.getOrganisationKey().toString()));
-      i.setPrimaryContactType(Strings.emptyToNull(ipt.getPrimaryContactType()));
-      i.setPrimaryContactPhone(Strings.emptyToNull(ipt.getPrimaryContactPhone()));
-      i.setPrimaryContactLastName(Strings.emptyToNull(ipt.getPrimaryContactLastName()));
-      i.setPrimaryContactFirstName(Strings.emptyToNull(ipt.getPrimaryContactFirstName()));
-      i.setPrimaryContactAddress(Strings.emptyToNull(ipt.getPrimaryContactAddress()));
-      i.setPrimaryContactEmail(Strings.emptyToNull(ipt.getPrimaryContactEmail()));
-      i.setPrimaryContactDescription(Strings.emptyToNull(ipt.getPrimaryContactDescription()));
-      i.setPrimaryContactName(Strings.emptyToNull(ipt.getPrimaryContactName()));
+      i.setLanguage(StringUtils.trimToNull(ipt.getLanguage()));
+      i.setLogoUrl(StringUtils.trimToNull(ipt.getLogoUrl()));
+      i.setHomepageURL(StringUtils.trimToNull(ipt.getHomepageURL()));
+      i.setOrganisationKey(StringUtils.trimToNull(ipt.getOrganisationKey().toString()));
+      i.setPrimaryContactType(StringUtils.trimToNull(ipt.getPrimaryContactType()));
+      i.setPrimaryContactPhone(StringUtils.trimToNull(ipt.getPrimaryContactPhone()));
+      i.setPrimaryContactLastName(StringUtils.trimToNull(ipt.getPrimaryContactLastName()));
+      i.setPrimaryContactFirstName(StringUtils.trimToNull(ipt.getPrimaryContactFirstName()));
+      i.setPrimaryContactAddress(StringUtils.trimToNull(ipt.getPrimaryContactAddress()));
+      i.setPrimaryContactEmail(StringUtils.trimToNull(ipt.getPrimaryContactEmail()));
+      i.setPrimaryContactDescription(StringUtils.trimToNull(ipt.getPrimaryContactDescription()));
+      i.setPrimaryContactName(StringUtils.trimToNull(ipt.getPrimaryContactName()));
     }
     return i;
   }
@@ -487,27 +486,27 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       if (o != null) {
 
         String oKey = (o.getKey() == null) ? null : o.getKey().toString();
-        String oName = Strings.emptyToNull(o.getName());
+        String oName = StringUtils.trimToNull(o.getName());
 
         // sanity check - only the key must be exactly the same, and at least the name must not be null
         if (oKey != null && oKey.equalsIgnoreCase(key) && oName != null) {
           // organisation
           organisation.setName(oName);
-          organisation.setDescription(Strings.emptyToNull(o.getDescription()));
-          organisation.setHomepageURL(Strings.emptyToNull(o.getHomepageURL()));
+          organisation.setDescription(StringUtils.trimToNull(o.getDescription()));
+          organisation.setHomepageURL(StringUtils.trimToNull(o.getHomepageURL()));
           // organisation node
-          organisation.setNodeKey(Strings.emptyToNull(o.getNodeKey()));
-          organisation.setNodeName(Strings.emptyToNull(o.getNodeName()));
-          organisation.setNodeContactEmail(Strings.emptyToNull(o.getNodeContactEmail()));
+          organisation.setNodeKey(StringUtils.trimToNull(o.getNodeKey()));
+          organisation.setNodeName(StringUtils.trimToNull(o.getNodeName()));
+          organisation.setNodeContactEmail(StringUtils.trimToNull(o.getNodeContactEmail()));
           // organisation primary contact
-          organisation.setPrimaryContactName(Strings.emptyToNull(o.getPrimaryContactName()));
-          organisation.setPrimaryContactFirstName(Strings.emptyToNull(o.getPrimaryContactFirstName()));
-          organisation.setPrimaryContactLastName(Strings.emptyToNull(o.getPrimaryContactLastName()));
-          organisation.setPrimaryContactAddress(Strings.emptyToNull(o.getPrimaryContactAddress()));
-          organisation.setPrimaryContactDescription(Strings.emptyToNull(o.getPrimaryContactDescription()));
-          organisation.setPrimaryContactEmail(Strings.emptyToNull(o.getPrimaryContactEmail()));
-          organisation.setPrimaryContactPhone(Strings.emptyToNull(o.getPrimaryContactPhone()));
-          organisation.setPrimaryContactType(Strings.emptyToNull(o.getPrimaryContactType()));
+          organisation.setPrimaryContactName(StringUtils.trimToNull(o.getPrimaryContactName()));
+          organisation.setPrimaryContactFirstName(StringUtils.trimToNull(o.getPrimaryContactFirstName()));
+          organisation.setPrimaryContactLastName(StringUtils.trimToNull(o.getPrimaryContactLastName()));
+          organisation.setPrimaryContactAddress(StringUtils.trimToNull(o.getPrimaryContactAddress()));
+          organisation.setPrimaryContactDescription(StringUtils.trimToNull(o.getPrimaryContactDescription()));
+          organisation.setPrimaryContactEmail(StringUtils.trimToNull(o.getPrimaryContactEmail()));
+          organisation.setPrimaryContactPhone(StringUtils.trimToNull(o.getPrimaryContactPhone()));
+          organisation.setPrimaryContactType(StringUtils.trimToNull(o.getPrimaryContactType()));
           LOG.debug("Organisation (" + key + ") updated with latest metadata from Registry");
         } else {
           LOG.debug("Update of organisation failed: organisation retrieved from Registry was missing name");

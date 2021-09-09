@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -63,7 +62,7 @@ public class PortalBaseAction extends BaseAction {
     }
     // look for version parameter
     String v = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_VERSION));
-    if (!Strings.isNullOrEmpty(v)) {
+    if (StringUtils.isNotBlank(v)) {
       try {
         setVersion(new BigDecimal(v));
       } catch (NumberFormatException e) {

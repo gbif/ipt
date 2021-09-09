@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Anchor;
@@ -101,7 +100,7 @@ public class Eml2Rtf {
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       for (String para : eml.getDescription()) {
-        if (!Strings.isNullOrEmpty(para)) {
+        if (StringUtils.isNotBlank(para)) {
           p.add(para.replace("\r\n", "\n"));
           p.add(Chunk.NEWLINE);
         }
@@ -157,17 +156,17 @@ public class Eml2Rtf {
     // Creating set of authors with different names. (first names + last names).
     HashSet<Agent> tempAgents = new LinkedHashSet<>();
     for (Agent creator: eml.getCreators()) {
-      if (!Strings.isNullOrEmpty(creator.getLastName())) {
+      if (StringUtils.isNotBlank(creator.getLastName())) {
         tempAgents.add(creator);
       }
     }
     for (Agent metadataProvider: eml.getMetadataProviders()) {
-      if (!Strings.isNullOrEmpty(metadataProvider.getLastName())) {
+      if (StringUtils.isNotBlank(metadataProvider.getLastName())) {
         tempAgents.add(metadataProvider);
       }
     }
     for (Agent party: eml.getAssociatedParties()) {
-      if (!Strings.isNullOrEmpty(party.getLastName())) {
+      if (StringUtils.isNotBlank(party.getLastName())) {
         tempAgents.add(party);
       }
     }
@@ -283,11 +282,11 @@ public class Eml2Rtf {
     p.setFont(font);
     boolean isFirst = true;
     for (Agent creator: eml.getCreators()) {
-      if (!Strings.isNullOrEmpty(creator.getFirstName())) {
+      if (StringUtils.isNotBlank(creator.getFirstName())) {
         p.add(creator.getFirstName() + " ");
       }
       p.add(creator.getLastName());
-      if (!Strings.isNullOrEmpty(creator.getEmail())) {
+      if (StringUtils.isNotBlank(creator.getEmail())) {
         p.add(" (" + creator.getEmail() + ")");
       }
       isFirst = false;
@@ -305,11 +304,11 @@ public class Eml2Rtf {
         if (!isFirst) {
           p.add(", ");
         }
-        if (!Strings.isNullOrEmpty(metadataProvider.getFirstName())) {
+        if (StringUtils.isNotBlank(metadataProvider.getFirstName())) {
           p.add(metadataProvider.getFirstName() + " ");
         }
         p.add(metadataProvider.getLastName());
-        if (!Strings.isNullOrEmpty(metadataProvider.getEmail())) {
+        if (StringUtils.isNotBlank(metadataProvider.getEmail())) {
           p.add(" (" + metadataProvider.getEmail() + ")");
         }
         isFirst = false;
@@ -434,7 +433,7 @@ public class Eml2Rtf {
   private void addLicense(Paragraph p, Eml eml) throws DocumentException {
     String licenseTitle = eml.parseLicenseTitle();
     String licenseUrl = eml.parseLicenseUrl();
-    if (!Strings.isNullOrEmpty(licenseTitle) && !Strings.isNullOrEmpty(licenseUrl)) {
+    if (StringUtils.isNotBlank(licenseTitle) && StringUtils.isNotBlank(licenseUrl)) {
       p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
       Anchor licenseLink = new Anchor(eml.parseLicenseTitle(), fontLink);
       licenseLink.setReference(eml.parseLicenseUrl());
@@ -801,7 +800,7 @@ public class Eml2Rtf {
         Iterator<Agent> iter = eml.getProject().getPersonnel().iterator();
         while (iter.hasNext()) {
           Agent personnel = iter.next();
-          if (!Strings.isNullOrEmpty(personnel.getFirstName())) {
+          if (StringUtils.isNotBlank(personnel.getFirstName())) {
             p.add(personnel.getFirstName() + " " + personnel.getLastName());
           }
           if (iter.hasNext()) {

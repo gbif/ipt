@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import com.google.common.base.Strings;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -46,16 +45,16 @@ public class EmlUtils {
    * @param thesaurus thesaurus name
    */
   public static void addOrUpdateKeywordSet(List<KeywordSet> keywords, String keyword, String thesaurus) {
-    if (!Strings.isNullOrEmpty(keyword) && !Strings.isNullOrEmpty(thesaurus)) {
+    if (StringUtils.isNotBlank(keyword) && StringUtils.isNotBlank(thesaurus)) {
       // capitalize incoming keyword, i.e., Occurrence, Specimen
       String capped = StringUtils.capitalize(keyword.toLowerCase());
       boolean found = false;
       for (KeywordSet ks : keywords) {
         String keywordThesaurus = ks.getKeywordThesaurus();
-        if (!Strings.isNullOrEmpty(keywordThesaurus) && keywordThesaurus.equalsIgnoreCase(thesaurus)) {
+        if (StringUtils.isNotBlank(keywordThesaurus) && keywordThesaurus.equalsIgnoreCase(thesaurus)) {
           String keywordString = ks.getKeywordsString();
           // update keywordString, only if empty
-          if (Strings.isNullOrEmpty(keywordString)) {
+          if (StringUtils.isBlank(keywordString)) {
             ks.setKeywordsString(capped);
           }
           found = true;
@@ -80,10 +79,10 @@ public class EmlUtils {
    * @param thesaurus thesaurus name
    */
   public static void removeKeywordSet(List<KeywordSet> keywords, String thesaurus) {
-    if (!Strings.isNullOrEmpty(thesaurus)) {
+    if (StringUtils.isNotBlank(thesaurus)) {
       for (Iterator<KeywordSet> iterator = keywords.iterator(); iterator.hasNext();) {
         String keywordThesaurus = iterator.next().getKeywordThesaurus();
-        if (!Strings.isNullOrEmpty(keywordThesaurus) && keywordThesaurus.equalsIgnoreCase(thesaurus)) {
+        if (StringUtils.isNotBlank(keywordThesaurus) && keywordThesaurus.equalsIgnoreCase(thesaurus)) {
           iterator.remove();
         }
       }
