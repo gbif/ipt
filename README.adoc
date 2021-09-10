@@ -1,4 +1,5 @@
 https://builds.gbif.org/job/ipt/lastBuild/console[image:https://builds.gbif.org/job/ipt/badge/icon[Build status]]
+https://crowdin.com/project/gbif-ipt[image:https://badges.crowdin.net/gbif-ipt/localized.svg[Crowdin]]
 
 = GBIF Integrated Publishing Toolkit (IPT)
 
