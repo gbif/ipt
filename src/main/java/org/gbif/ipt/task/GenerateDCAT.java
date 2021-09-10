@@ -35,7 +35,6 @@ import java.util.Properties;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -103,7 +102,7 @@ public class GenerateDCAT {
     // determine caching time, from settings
     long cacheTime;
     try {
-     cacheTime = Long.valueOf(settings.get(CACHING_TIME_KEY));
+     cacheTime = Long.parseLong(settings.get(CACHING_TIME_KEY));
     } catch (NumberFormatException e) {
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
         "Invalid caching time in properties file: " + DCAT_SETTINGS);
@@ -292,7 +291,6 @@ public class GenerateDCAT {
    *
    * @return String representation of Prefixes
    */
-  @VisibleForTesting
   protected String createPrefixesInformation() {
     StringBuilder prefixBuilder = new StringBuilder();
     for (String pre : prefixes.keySet()) {
@@ -326,7 +324,6 @@ public class GenerateDCAT {
    *
    * @return String DCAT Catalog
    */
-  @VisibleForTesting
   protected String createDCATCatalogInformation() {
     StringBuilder catalogBuilder = new StringBuilder();
     List<String> themeTaxonomies = new ArrayList<>();
@@ -482,7 +479,6 @@ public class GenerateDCAT {
    *
    * @return String DCAT Dataset for one resource
    */
-  @VisibleForTesting
   protected String createDCATDatasetInformation(Resource resource) {
     StringBuilder datasetBuilder = new StringBuilder();
     Eml eml = resource.getEml();
@@ -652,7 +648,6 @@ public class GenerateDCAT {
    *
    * @return String DCAT Distribution for one resource
    */
-  @VisibleForTesting
   protected String createDCATDistributionInformation(Resource resource) {
     Objects.requireNonNull(resource.getEml());
     Objects.requireNonNull(resource.getEml().parseLicenseUrl());

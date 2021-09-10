@@ -82,7 +82,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
@@ -330,20 +329,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
       if (doiData != null && doiData.getStatus() != null) {
         if (doiData.getStatus().equals(DoiStatus.RESERVED)) {
-          LOG.info("Deleting reserved DOI: " + doi.toString() + "...");
+          LOG.info("Deleting reserved DOI: " + doi + "...");
           registrationManager.getDoiService().delete(doi);
           String msg = getText("manage.overview.publishing.doi.delete.success", new String[] {doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
-          LOG.info("Deactivating registered DOI: " + doi.toString() + "...");
+          LOG.info("Deactivating registered DOI: " + doi + "...");
           registrationManager.getDoiService().delete(doi);
           String msg = getText("manage.overview.publishing.doi.deactivate.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } else {
           LOG.error(
-            "Not appropriate to delete DOI: " + doi.toString() + ". DOI status=" + doiData.getStatus().toString());
+            "Not appropriate to delete DOI: " + doi + ". DOI status=" + doiData.getStatus().toString());
         }
       } else {
         throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.delete.failed.notResolved", new String[] {doi.toString()}));
@@ -493,7 +492,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     try {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
       if (doiData.getStatus() == DoiStatus.NEW || doiData.getStatus() == DoiStatus.DELETED) {
-        LOG.info("Undeleting deleted DOI: " + doi.toString() + "...");
+        LOG.info("Undeleting deleted DOI: " + doi + "...");
         DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
         registrationManager.getDoiService().register(doi, target, dataCiteMetadata);
         String msg = getText("manage.overview.publishing.doi.undelete.success", new String[]{doi.toString()});
@@ -762,14 +761,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         .isAlreadyAssignedDoi()) || (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource
         .isAlreadyAssignedDoi())) {
         DOI doi = DOIUtils.mintDOI(doiAccount.getDoiRegistrationAgency(), doiAccount.getDoiPrefix());
-        LOG.info("Reserving " + doi.toString() + " for " + resource.getTitleAndShortname());
+        LOG.info("Reserving " + doi + " for " + resource.getTitleAndShortname());
         try {
           doReserveDOI(doi, resource);
           String msg = getText("manage.overview.publishing.doi.reserve.success", new String[] {doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } catch (DoiExistsException e) {
-          LOG.error("Failed to reserve " + doi.toString() + " because it exists already. Trying again...", e);
+          LOG.error("Failed to reserve " + doi + " because it exists already. Trying again...", e);
           reserveDoi();
         } catch (InvalidMetadataException e) {
           String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.metadata", new String[] {doi.toString(), e.getMessage()});
@@ -790,10 +789,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             DoiData doiData = registrationManager.getDoiService().resolve(existingDoi);
             // verify the existing DOI is either reserved or registered already
             if (doiData != null && doiData.getStatus().equals(DoiStatus.RESERVED)) {
-              LOG.info("Assigning " + existingDoi.toString() + " (existing reserved DOI) to " + resource.getTitleAndShortname());
+              LOG.info("Assigning " + existingDoi + " (existing reserved DOI) to " + resource.getTitleAndShortname());
               doReuseDOI(existingDoi, resource);
             } else if (doiData != null && doiData.getStatus().equals(DoiStatus.REGISTERED)) {
-              LOG.info("Assigning " + existingDoi.toString() + " (existing registered DOI) to " + resource.getTitleAndShortname());
+              LOG.info("Assigning " + existingDoi + " (existing registered DOI) to " + resource.getTitleAndShortname());
 
               // the DOI is registered and should resolve to this resource's public homepage, so verify the homepage is publicly accessible
               LOG.debug("Resource " + resource.getShortname() + " has status=" + resource.getStatus());
@@ -804,7 +803,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               } else {
                 // the DOI is registered and its target URI should be equal to the public resource homepage URI
                 URI target = doiData.getTarget();
-                LOG.debug(existingDoi.toString() + " has target URI=" + target);
+                LOG.debug(existingDoi + " has target URI=" + target);
                 URI homepage = cfg.getResourceUri(resource.getShortname());
                 if (target != null && target.equals(homepage)) {
                   LOG.debug("Verified target URI of existing registered DOI is equal to public resource homepage URI");
@@ -919,14 +918,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     saveResource();
   }
 
-
-
   /**
    * Return the existing DOI assigned to this resource. An existing DOI is set as the citation identifier.
    *
    * @return the existing DOI assigned to this resource, or null if none was found.
    */
-  @VisibleForTesting
   public DOI findExistingDoi(Resource resource) {
     if (resource != null && resource.getEml() != null) {
       Citation citation = resource.getEml().getCitation();
@@ -960,7 +956,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         if (reservedDoi != null && resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
           DOI assignedDoi = resource.getAssignedDoi();
           if (assignedDoi != null) {
-            LOG.info("Deleting reserved " + reservedDoi.toString() + " and reassigning " + assignedDoi.toString());
+            LOG.info("Deleting reserved " + reservedDoi + " and reassigning " + assignedDoi);
             try {
               // delete reserved DOI, reassign previous DOI to resource, and update EML alternateIdentifier list
               doDeleteReservedDOI(reservedDoi, resource, assignedDoi);
@@ -973,7 +969,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               addActionError(errorMsg);
             }
           } else {
-            LOG.info("Deleting reserved " + reservedDoi.toString());
+            LOG.info("Deleting reserved " + reservedDoi);
             try {
               // delete reserved DOI, and update EML alternateIdentifier list
               doDeleteReservedDOI(reservedDoi, resource, null);
@@ -1068,7 +1064,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       sourcesModifiedSinceLastPublication = setSourcesModifiedSinceLastPublication(resource);
 
       // auto publish frequencies
-      autoPublishFrequencies = new LinkedHashMap<String, String>();
+      autoPublishFrequencies = new LinkedHashMap<>();
 
       Map<String, String> filteredFrequencies =
               vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
@@ -1242,7 +1238,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       } else {
         // plain managers are not allowed to register a resource
         if (getCurrentUser().hasRegistrationRights()) {
-          Organisation org = null;
+          Organisation org;
           try {
             org = resource.getOrganisation();
 
@@ -1411,7 +1407,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * @param resource resource
    */
-  @VisibleForTesting
   protected void logProcessFailures(Resource resource) {
     StringBuilder sb = new StringBuilder();
     sb.append("Resource [");
@@ -1419,7 +1414,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     sb.append("] has ");
     if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
       List<Date> failures = resourceManager.getProcessFailures().get(resource.getShortname());
-      sb.append(String.valueOf(failures.size()));
+      sb.append(failures.size());
       sb.append(" failed publications on: ");
       Iterator<Date> iter = failures.iterator();
       while (iter.hasNext()) {

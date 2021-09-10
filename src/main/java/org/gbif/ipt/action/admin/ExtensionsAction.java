@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
@@ -181,7 +180,6 @@ public class ExtensionsAction extends POSTAction {
    * Works by iterating through list of installed extensions. Updates each one, indicating if it is the latest version
    * or not. Plus, updates boolean "upToDate", set to false if there is at least one extension that is not up-to-date.
    */
-  @VisibleForTesting
   protected void updateIsLatest(List<Extension> extensions) {
     if (!extensions.isEmpty()) {
       try {
@@ -197,11 +195,11 @@ public class ExtensionsAction extends POSTAction {
               if (issuedOne == null && issuedTwo != null) {
                 setUpToDate(false);
                 extension.setLatest(false);
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " has no issued date. A newer version issued " + issuedTwo.toString() + " exists.");
+                LOG.debug("Installed extension with rowType " + extension.getRowType() + " has no issued date. A newer version issued " + issuedTwo + " exists.");
               } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
                 setUpToDate(false);
                 extension.setLatest(false);
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " was issued " + issuedOne.toString() + ". A newer version issued " + issuedTwo.toString() + " exists.");
+                LOG.debug("Installed extension with rowType " + extension.getRowType() + " was issued " + issuedOne + ". A newer version issued " + issuedTwo + " exists.");
               } else {
                 LOG.debug("Installed extension with rowType " + extension.getRowType() + " is the latest version");
               }
@@ -253,7 +251,7 @@ public class ExtensionsAction extends POSTAction {
     } finally {
       // initialize list as empty list if the list could not be populated
       if (getLatestExtensionVersions() == null) {
-        setLatestExtensionVersions(new ArrayList<Extension>());
+        setLatestExtensionVersions(new ArrayList<>());
       }
     }
   }
@@ -266,7 +264,6 @@ public class ExtensionsAction extends POSTAction {
    *
    * @return filtered list of extensions
    */
-  @VisibleForTesting
   protected List<Extension> getLatestVersions(List<Extension> extensions) {
     Ordering<Extension> byIssuedDate = Ordering.natural().nullsFirst().onResultOf(new Function<Extension, Date>() {
       @Override
@@ -277,7 +274,7 @@ public class ExtensionsAction extends POSTAction {
     // sort extensions by issued date, starting with latest issued
     List<Extension> sorted = byIssuedDate.immutableSortedCopy(extensions).reverse();
     // populate list of latest extension versions
-    Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
+    Map<String, Extension> extensionsByRowtype = new HashMap<>();
     if (!sorted.isEmpty()) {
       for (Extension extension : sorted) {
         String rowType = extension.getRowType();
@@ -286,7 +283,7 @@ public class ExtensionsAction extends POSTAction {
         }
       }
     }
-    return new ArrayList<Extension>(extensionsByRowtype.values());
+    return new ArrayList<>(extensionsByRowtype.values());
   }
 
   @Override

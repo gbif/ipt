@@ -44,7 +44,6 @@ import java.util.Objects;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -244,7 +243,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    * @param current extension
    * @param newer   newer version of extension to migrate mappings to
    */
-  @VisibleForTesting
   protected void migrateResourceToNewExtensionVersion(Resource r, Extension current, Extension newer) {
     // sanity check that the current and newer extensions share same rowType
     if (!current.getRowType().equalsIgnoreCase(newer.getRowType()) || r.getMappings(current.getRowType()).isEmpty()) {
@@ -475,11 +473,11 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
-      LOG.info("Successfully downloaded extension: " + url.toString());
+      LOG.info("Successfully downloaded extension: " + url);
       return tmpFile;
     } else {
       String msg =
-        "Failed to download extension: " + url.toString() + ". Response=" + String.valueOf(statusLine.getStatusCode());
+        "Failed to download extension: " + url + ". Response=" + statusLine.getStatusCode();
       LOG.error(msg);
       throw new IOException(msg);
     }
@@ -500,7 +498,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   @Override
   public List<Extension> list() {
-    return new ArrayList<Extension>(extensionsByRowtype.values());
+    return new ArrayList<>(extensionsByRowtype.values());
   }
 
   @Override
@@ -589,7 +587,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    *
    * @throws InvalidConfigException if extension could not be loaded successfully
    */
-  @VisibleForTesting
   protected Extension loadFromFile(File localFile) throws InvalidConfigException {
     Objects.requireNonNull(localFile);
     if (!localFile.exists()) {
@@ -628,7 +625,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    *                            should be listed
    */
   private List<Extension> search(String keyword, boolean includeEmptySubject, boolean searchForCores) {
-    List<Extension> list = new ArrayList<Extension>();
+    List<Extension> list = new ArrayList<>();
     keyword = StringUtils.trimToNull(keyword);
     if (keyword != null) {
       keyword = keyword.toLowerCase();
@@ -653,9 +650,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       // retain groups already included in core extension...
       coreGroups.retainAll(groups);
       // exclude Record-Level since this cannot ever be a redundant class
-      if (coreGroups.contains(RECORD_LEVEL_CLASS)) {
-        coreGroups.remove(RECORD_LEVEL_CLASS);
-      }
+      coreGroups.remove(RECORD_LEVEL_CLASS);
       return coreGroups;
     } else {
       return new ArrayList<>();

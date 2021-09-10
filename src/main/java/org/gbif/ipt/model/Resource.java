@@ -34,7 +34,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -132,6 +131,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     for (VersionHistory vh : getVersionHistory()) {
       if (vh.getVersion().equals(history.getVersion())) {
         exists = true;
+        break;
       }
     }
     if (!exists) {
@@ -426,9 +426,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (last != null) {
       DOI doi = last.getDoi();
       IdentifierStatus status = last.getStatus();
-      if (doi != null && status == IdentifierStatus.PUBLIC) {
-        return true;
-      }
+      return doi != null && status == IdentifierStatus.PUBLIC;
     }
     return false;
   }
@@ -1204,7 +1202,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @return author name
    */
-  @VisibleForTesting
   protected String getAuthorName(Agent creator) {
     StringBuilder sb = new StringBuilder();
     String lastName = StringUtils.trimToNull(creator.getLastName());
@@ -1234,7 +1231,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @return publication year
    */
-  @VisibleForTesting
   protected int getPublicationYear(Date publicationDate) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(publicationDate);

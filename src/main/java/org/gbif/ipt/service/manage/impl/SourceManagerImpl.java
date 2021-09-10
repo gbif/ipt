@@ -13,7 +13,6 @@
 
 package org.gbif.ipt.service.manage.impl;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
@@ -311,7 +310,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    *
    * @return <tt> if accepted, <tt>false</tt> otherwise
    */
-  @VisibleForTesting
   protected boolean acceptableFileName(String fileName) {
     boolean matches = acceptedPattern.matcher(fileName).matches();
     if (!matches) {

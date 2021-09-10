@@ -113,7 +113,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
@@ -289,7 +288,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param file file enclosed in a resource directory
    */
-  @VisibleForTesting
   protected void deleteDirectoryContainingSingleFile(File file) {
     File parent = file.getParentFile();
     File[] files = parent.listFiles();
@@ -1051,7 +1049,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @return loaded Resource
    */
-  @VisibleForTesting
   protected Resource loadFromDir(File resourceDir, @Nullable User creator) {
     return loadFromDir(resourceDir, creator, new ActionLogger(LOG, new BaseAction(textProvider, cfg, registrationManager)));
   }
@@ -1464,7 +1461,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param resource resource whose DOI will be registered
    */
-  @VisibleForTesting
   protected void doRegisterDoi(Resource resource, @Nullable DOI replaced) {
     Objects.requireNonNull(resource);
 
@@ -1521,7 +1517,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param resource resource whose DOI will be updated
    */
-  @VisibleForTesting
   protected void doUpdateDoi(Resource resource) {
     Objects.requireNonNull(resource);
 
@@ -1548,7 +1543,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param version new version
    * @param replacedVersion previous version being replaced
    */
-  @VisibleForTesting
   protected void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion) {
     Objects.requireNonNull(resource);
 
@@ -2049,7 +2043,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @return list of names of resources that have matched candidate UUID
    */
-  @VisibleForTesting
   protected List<String> detectDuplicateUsesOfUUID(UUID candidate, String shortname) {
     ListMultimap<UUID, String> duplicateUses = ArrayListMultimap.create();
     for (Resource other : resources.values()) {
@@ -2152,7 +2145,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  @VisibleForTesting
   public synchronized void cleanArchiveVersions(Resource resource) {
     if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
       LOG.info("Archival mode is ON with a limit of "+ cfg.getArchivalLimit()+" elements)");
@@ -2526,7 +2518,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return false;
   }
 
-  @VisibleForTesting
   public GenerateDwcaFactory getDwcaFactory() {
     return dwcaFactory;
   }
@@ -2534,7 +2525,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Remove an archived version in the resource history and from the file system
    */
-  @VisibleForTesting
   @Override
   public void removeVersion(Resource resource, BigDecimal version) {
     // Cannot remove the most recent version, only archived versions
@@ -2558,7 +2548,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param version of archive to remove
    */
-  @VisibleForTesting
   public void removeArchiveVersion(String shortname, BigDecimal version) {
     File dwcaFile = dataDir.resourceDwcaFile(shortname, version);
     if (dwcaFile != null && dwcaFile.exists()) {

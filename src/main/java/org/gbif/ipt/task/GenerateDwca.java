@@ -1,6 +1,5 @@
 package org.gbif.ipt.task;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -1309,7 +1308,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    *
    * @return the tab delimited String, {@code null} if provided array only contained null values
    */
-  @VisibleForTesting
   protected String tabRow(String[] columns) {
     Objects.requireNonNull(columns);
     boolean empty = true;

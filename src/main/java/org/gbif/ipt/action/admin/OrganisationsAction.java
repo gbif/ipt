@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
@@ -42,7 +41,7 @@ public class OrganisationsAction extends POSTAction {
   @SessionScoped
   public static class RegisteredOrganisations {
 
-    private List<Organisation> organisations = new ArrayList<Organisation>();
+    private List<Organisation> organisations = new ArrayList<>();
     private final RegistryManager registryManager;
 
     @Inject
@@ -58,7 +57,7 @@ public class OrganisationsAction extends POSTAction {
      * Invalidates the session scoped cache of organisations.
      */
     public void clearCache() {
-      organisations = new ArrayList<Organisation>();
+      organisations = new ArrayList<>();
     }
 
     public void load() throws RuntimeException {
@@ -149,9 +148,7 @@ public class OrganisationsAction extends POSTAction {
   public List<Organisation> getOrganisations() {
     List<Organisation> allOrganisations = orgSession.organisations;
     for (Organisation linkedOrganisation : getLinkedOrganisations()) {
-      if (allOrganisations.contains(linkedOrganisation)) {
-        allOrganisations.remove(linkedOrganisation);
-      }
+      allOrganisations.remove(linkedOrganisation);
     }
     return allOrganisations;
   }
@@ -187,12 +184,7 @@ public class OrganisationsAction extends POSTAction {
     linkedOrganisations = registrationManager.listAll();
 
     // remove default organisation named "no organisation" from list of editable organisations
-    for (Iterator<Organisation> iter = linkedOrganisations.listIterator(); iter.hasNext(); ) {
-      Organisation entry = iter.next();
-      if (entry.getKey().equals(Constants.DEFAULT_ORG_KEY)) {
-        iter.remove();
-      }
-    }
+    linkedOrganisations.removeIf(entry -> entry.getKey().equals(Constants.DEFAULT_ORG_KEY));
 
     if (id == null) {
       //  if no id was submitted we wanted to create a new organisation
@@ -299,7 +291,6 @@ public class OrganisationsAction extends POSTAction {
    *
    * @return true if DOIs assigned using another account are found in the IPT, false otherwise
    */
-  @VisibleForTesting
   protected boolean isAnotherAccountInUseAlready(Organisation organisation) {
     // iterate through all resources, including deleted ones since they can be undeleted
     for (Resource resource : resourceManager.list()) {

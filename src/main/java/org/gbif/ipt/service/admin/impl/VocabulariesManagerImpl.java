@@ -38,7 +38,6 @@ import java.util.Map;
 import java.util.Objects;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -143,7 +142,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     if (v != null) {
       List<VocabularyConcept> concepts;
       if (sortAlphabetically) {
-        concepts = new ArrayList<VocabularyConcept>(v.getConcepts());
+        concepts = new ArrayList<>(v.getConcepts());
         final String s = lang;
         Collections.sort(concepts, new Comparator<VocabularyConcept>() {
 
@@ -244,11 +243,11 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
-      LOG.info("Successfully downloaded vocabulary: " + url.toString());
+      LOG.info("Successfully downloaded vocabulary: " + url);
       return tmpFile;
     } else {
       String msg =
-        "Failed to download vocabulary: " + url.toString() + ". Response=" + String.valueOf(statusLine.getStatusCode());
+        "Failed to download vocabulary: " + url + ". Response=" + statusLine.getStatusCode();
       LOG.error(msg);
       throw new IOException(msg);
     }
@@ -426,7 +425,6 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   /**
    * Iterate through list of installed vocabularies. Update each one, indicating if it is the latest version or not.
    */
-  @VisibleForTesting
   protected void updateIsLatest(List<Vocabulary> vocabularies, List<Vocabulary> registered) {
     if (!vocabularies.isEmpty() && !registered.isEmpty()) {
       for (Vocabulary vocabulary : vocabularies) {

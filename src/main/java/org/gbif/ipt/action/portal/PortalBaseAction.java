@@ -11,7 +11,6 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.math.BigDecimal;
 import javax.annotation.Nullable;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -66,7 +65,7 @@ public class PortalBaseAction extends BaseAction {
       try {
         setVersion(new BigDecimal(v));
       } catch (NumberFormatException e) {
-        LOG.error("Parameter version (v) was not a valid number: " + String.valueOf(v));
+        LOG.error("Parameter version (v) was not a valid number: " + v);
       }
     }
   }
@@ -104,7 +103,6 @@ public class PortalBaseAction extends BaseAction {
    *
    * @param resource resource
    */
-  @VisibleForTesting
   public void setResource(Resource resource) {
     this.resource = resource;
   }

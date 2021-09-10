@@ -47,7 +47,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -798,7 +797,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    *
    * @return RegistryException type based on response code
    */
-  @VisibleForTesting
   protected Type getRegistryExceptionType(int code) {
     // never called on successful codes include OK (200) and CREATED (201)
     if (code <= 300) {
@@ -835,7 +833,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   /**
    * @return DOI citation identifier of last published version or null if no DOI citation identifier was assigned
    */
-  @VisibleForTesting
   protected DOI getLastPublishedVersionExistingDoi(Resource resource) {
     VersionHistory lastPublishedVersion = resource.getLastPublishedVersion();
     if (lastPublishedVersion != null) {

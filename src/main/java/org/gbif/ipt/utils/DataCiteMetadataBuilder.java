@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -190,7 +189,7 @@ public class DataCiteMetadataBuilder {
     DataCiteMetadata.Sizes sizes = FACTORY.createDataCiteMetadataSizes();
     // # of records published
     if (resource.hasPublishedData()) {
-      sizes.getSize().add(String.valueOf(resource.getRecordsPublished()) + " " + RECORDS_NAME);
+      sizes.getSize().add(resource.getRecordsPublished() + " " + RECORDS_NAME);
     }
     return sizes;
   }
@@ -354,7 +353,6 @@ public class DataCiteMetadataBuilder {
    *
    * @throws InvalidMetadataException if mandatory publisher cannot be retrieved
    */
-  @VisibleForTesting
   protected static String getPublisher(Resource resource) throws InvalidMetadataException {
     if (resource.getOrganisation() != null && StringUtils.isNotBlank(resource.getOrganisation().getName())
         && !resource.getOrganisation().getKey().equals(Constants.DEFAULT_ORG_KEY)) {
@@ -374,7 +372,6 @@ public class DataCiteMetadataBuilder {
    *
    * @throws InvalidMetadataException if mandatory publication year cannot be retrieved
    */
-  @VisibleForTesting
   protected static String getPublicationYear(Eml eml) throws InvalidMetadataException {
     if (eml.getDateStamp() != null) {
       Calendar cal = Calendar.getInstance();
@@ -395,7 +392,6 @@ public class DataCiteMetadataBuilder {
    *
    * @throws org.gbif.doi.service.InvalidMetadataException if mandatory number of creators cannot be created/returned
    */
-  @VisibleForTesting
   protected static DataCiteMetadata.Creators convertEmlCreators(List<Agent> agents) throws InvalidMetadataException {
     DataCiteMetadata.Creators creators = FACTORY.createDataCiteMetadataCreators();
     if (!agents.isEmpty()) {
@@ -434,7 +430,7 @@ public class DataCiteMetadataBuilder {
         else {
           throw new InvalidMetadataException(
             "DataCite schema (v4) requires creator have a name! Creator can be an organisation or person. Check creator/agent: "
-            + agent.toString());
+            + agent);
         }
         // add to list
         creators.getCreator().add(creator);
@@ -487,7 +483,6 @@ public class DataCiteMetadataBuilder {
    *
    * @throws org.gbif.doi.service.InvalidMetadataException if name or type cannot be set
    */
-  @VisibleForTesting
   protected static DataCiteMetadata.Contributors convertEmlContributors(List<Agent> agents)
     throws InvalidMetadataException {
     DataCiteMetadata.Contributors contributors = FACTORY.createDataCiteMetadataContributors();
@@ -537,14 +532,14 @@ public class DataCiteMetadataBuilder {
       // otherwise if no name, organisation name, or position name found, throw exception
       else {
         throw new InvalidMetadataException(
-          "DataCite schema (v4) requires contributor have a name! Check contributor/agent: " + agent.toString());
+          "DataCite schema (v4) requires contributor have a name! Check contributor/agent: " + agent);
       }
 
       // contributorType is mandatory, if not found throw exception
       String role = agent.getRole();
       if (StringUtils.isBlank(role)) {
         throw new InvalidMetadataException(
-          "DataCite schema (v4) requires contributor have a type! Check contributor/agent: " + agent.toString());
+          "DataCite schema (v4) requires contributor have a type! Check contributor/agent: " + agent);
       }
 
       // contributor type, defaulting to RELATED_PERSON if no suitable match exists
@@ -707,7 +702,6 @@ public class DataCiteMetadataBuilder {
    *
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
    */
-  @VisibleForTesting
   protected static NameIdentifier convertEmlUserIdIntoCreatorNameIdentifier(
     UserId userId) {
     if (StringUtils.isNotBlank(userId.getIdentifier()) && StringUtils.isNotBlank(userId.getDirectory())) {
@@ -739,7 +733,6 @@ public class DataCiteMetadataBuilder {
    *
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
    */
-  @VisibleForTesting
   protected static NameIdentifier convertEmlUserIdIntoContributorNameIdentifier(
     UserId userId) {
     if (StringUtils.isNotBlank(userId.getIdentifier()) && StringUtils.isNotBlank(userId.getDirectory())) {

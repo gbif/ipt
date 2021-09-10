@@ -1,7 +1,5 @@
 package org.gbif.ipt.action.manage;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -115,7 +113,6 @@ public class CreateResourceAction extends POSTAction {
    * @param shortname shortname of resource to delete
    * @param startTimeInMs date when resource creation started in milliseconds
    */
-  @VisibleForTesting
   protected void cleanupResourceFolder(String shortname, long startTimeInMs) {
     Objects.requireNonNull(shortname);
 
@@ -215,7 +212,7 @@ public class CreateResourceAction extends POSTAction {
    * @return map of resource types
    */
   public Map<String, String> getTypes() {
-    types = new LinkedHashMap<String, String>();
+    types = new LinkedHashMap<>();
     types.put("", getText("manage.resource.create.coreType.selection"));
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
@@ -232,7 +229,6 @@ public class CreateResourceAction extends POSTAction {
   /**
    * @return DataDir
    */
-  @VisibleForTesting
   public DataDir getDataDir() {
     return dataDir;
   }

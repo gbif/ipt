@@ -40,7 +40,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -288,10 +287,9 @@ public class SourceAction extends ManagerBaseAction {
    *
    * @return true if alert was sent, false otherwise
    */
-  @VisibleForTesting
   protected boolean alertColumnNumberChange(boolean sourceIsMapped, int number, int originalNumber) {
     if (sourceIsMapped) {
-      if (Integer.compare(originalNumber, number) != 0) {
+      if (originalNumber != number) {
         addActionWarning(getText("manage.source.numColumns.changed",
           new String[] {source.getName(), String.valueOf(originalNumber), String.valueOf(number)}));
       return true;

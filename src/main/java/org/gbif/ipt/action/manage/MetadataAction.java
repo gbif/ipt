@@ -50,7 +50,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -197,7 +196,7 @@ public class MetadataAction extends ManagerBaseAction {
         return getEmptySubtypeMap();
       }
     }
-    return new LinkedHashMap<String, String>();
+    return new LinkedHashMap<>();
   }
 
   public String getMetadataLanguageIso3() {
@@ -261,13 +260,13 @@ public class MetadataAction extends ManagerBaseAction {
       case BASIC_SECTION:
 
         // Dataset core type list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
-        types = new LinkedHashMap<String, String>();
+        types = new LinkedHashMap<>();
         types.put("", getText("resource.coreType.selection"));
         types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
         types = MapUtils.getMapWithLowercaseKeys(types);
 
         // Dataset Subtypes list, derived from XML vocabulary, and displayed in drop-down on Basic Metadata page
-        datasetSubtypes = new LinkedHashMap<String, String>();
+        datasetSubtypes = new LinkedHashMap<>();
         datasetSubtypes.put("", getText("resource.subtype.selection"));
         datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
         datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
@@ -276,7 +275,7 @@ public class MetadataAction extends ManagerBaseAction {
         groupDatasetSubtypes();
 
         // update frequencies list, derived from XML vocabulary, and displayed in drop-down on basic metadata page
-        frequencies = new LinkedHashMap<String, String>();
+        frequencies = new LinkedHashMap<>();
         frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
 
 
@@ -338,7 +337,7 @@ public class MetadataAction extends ManagerBaseAction {
 
       case TAXANOMIC_COVERAGE_SECTION:
         // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
-        ranks = new LinkedHashMap<String, String>();
+        ranks = new LinkedHashMap<>();
         ranks.put("", getText("eml.rank.selection"));
         ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
         if (isHttpPost()) {
@@ -392,7 +391,7 @@ public class MetadataAction extends ManagerBaseAction {
 
       case COLLECTIONS_SECTION:
         // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
-        preservationMethods = new LinkedHashMap<String, String>();
+        preservationMethods = new LinkedHashMap<>();
         preservationMethods.put("", getText("eml.preservation.methods.selection"));
         preservationMethods.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
 
@@ -503,7 +502,7 @@ public class MetadataAction extends ManagerBaseAction {
    */
   public Map<String, String> getOccurrenceSubtypesMap() {
     // exclude subtypes known to relate to Checklist type
-    Map<String, String> datasetSubtypesCopy = new LinkedHashMap<String, String>(datasetSubtypes);
+    Map<String, String> datasetSubtypesCopy = new LinkedHashMap<>(datasetSubtypes);
     for (String key : checklistSubtypeKeys) {
       if (datasetSubtypesCopy.containsKey(key)) {
         datasetSubtypesCopy.remove(key);
@@ -521,7 +520,7 @@ public class MetadataAction extends ManagerBaseAction {
    */
   public Map<String, String> getChecklistSubtypesMap() {
     // exclude subtypes known to relate to Checklist type
-    Map<String, String> datasetSubtypesCopy = new LinkedHashMap<String, String>(datasetSubtypes);
+    Map<String, String> datasetSubtypesCopy = new LinkedHashMap<>(datasetSubtypes);
     for (String key : occurrenceSubtypeKeys) {
       if (datasetSubtypesCopy.containsKey(key)) {
         datasetSubtypesCopy.remove(key);
@@ -537,7 +536,7 @@ public class MetadataAction extends ManagerBaseAction {
    * @return a Map representing an empty set of dataset subtypes.
    */
   public Map<String, String> getEmptySubtypeMap() {
-    Map<String, String> subtypeMap = new LinkedHashMap<String, String>();
+    Map<String, String> subtypeMap = new LinkedHashMap<>();
     subtypeMap.put("", getText("resource.subtype.none"));
     return subtypeMap;
   }
@@ -552,13 +551,13 @@ public class MetadataAction extends ManagerBaseAction {
    * grouped.
    */
   void groupDatasetSubtypes() {
-    List<String> occurrenceKeys = new LinkedList<String>();
+    List<String> occurrenceKeys = new LinkedList<>();
     for (DatasetSubtype type : DatasetSubtype.OCCURRENCE_DATASET_SUBTYPES) {
       occurrenceKeys.add(type.name().replaceAll("_", "").toLowerCase());
     }
     occurrenceSubtypeKeys = Collections.unmodifiableList(occurrenceKeys);
 
-    List<String> checklistKeys = new LinkedList<String>();
+    List<String> checklistKeys = new LinkedList<>();
     for (DatasetSubtype type : DatasetSubtype.CHECKLIST_DATASET_SUBTYPES) {
       checklistKeys.add(type.name().replaceAll("_", "").toLowerCase());
     }
@@ -668,9 +667,9 @@ public class MetadataAction extends ManagerBaseAction {
   @Singleton
   public static synchronized void loadLicenseMaps(String firstOption) throws InvalidConfigException {
     if (licenses == null || licenseTexts == null) {
-      licenses = new TreeMap<String, String>();
+      licenses = new TreeMap<>();
       licenses.put("", (firstOption == null) ? "-" : firstOption);
-      licenseTexts = new TreeMap<String, String>();
+      licenseTexts = new TreeMap<>();
 
       Properties properties = licenseProperties();
       for (Map.Entry<Object, Object> entry : properties.entrySet()) {
@@ -710,7 +709,7 @@ public class MetadataAction extends ManagerBaseAction {
   @Singleton
   public static synchronized void loadDirectories(String firstOption) throws InvalidConfigException {
     if (userIdDirectories == null) {
-      userIdDirectories = new TreeMap<String, String>();
+      userIdDirectories = new TreeMap<>();
       userIdDirectories.put("", (firstOption == null) ? "-" : firstOption);
 
       Properties properties = directoriesProperties();
@@ -741,12 +740,12 @@ public class MetadataAction extends ManagerBaseAction {
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
 
     // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    countries = new LinkedHashMap<String, String>();
+    countries = new LinkedHashMap<>();
     countries.put("", getText("eml.country.selection"));
     countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
 
     // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    roles = new LinkedHashMap<String, String>();
+    roles = new LinkedHashMap<>();
     roles.put("", getText("eml.agent.role.selection"));
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
 
@@ -841,7 +840,6 @@ public class MetadataAction extends ManagerBaseAction {
    *
    * @return true if a DOI has been reserved or registered for the resource, or false otherwise
    */
-  @VisibleForTesting
   public boolean hasDoiReservedOrAssigned(Resource resource) {
     return (resource.getDoi() != null && resource.getIdentifierStatus() != IdentifierStatus.UNRESERVED);
   }
@@ -889,7 +887,6 @@ public class MetadataAction extends ManagerBaseAction {
    * Remove all newline characters from string. Used to sanitize string for javascript, otherwise an
    * "Unexpected Token ILLEGAL" error may occur.
    */
-  @VisibleForTesting
   protected String removeNewlineCharacters(String s) {
     if (s != null) {
       s = s.replaceAll("\\r\\n|\\r|\\n", " ");
