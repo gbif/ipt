@@ -1,7 +1,6 @@
 package org.gbif.ipt.action.portal;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +18,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -70,7 +70,7 @@ public class InventoryAction extends ActionSupport {
     private String eml;
     private String dwca;
     private BigDecimal version;
-    private Map<String, Integer> recordsByExtension = Maps.newHashMap();
+    private Map<String, Integer> recordsByExtension = new HashMap<>();
 
     /**
      * @return the dataset title

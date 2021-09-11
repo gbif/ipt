@@ -29,9 +29,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,6 @@ import java.util.Objects;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -59,7 +58,7 @@ import static org.gbif.utils.HttpUtil.success;
 public class VocabulariesManagerImpl extends BaseManager implements VocabulariesManager {
 
   // local lookup
-  private Map<String, Vocabulary> vocabulariesById = Maps.newHashMap();
+  private Map<String, Vocabulary> vocabulariesById = new HashMap<>();
   public static final String CONFIG_FOLDER = ".vocabularies";
   public static final String VOCAB_FILE_SUFFIX = ".vocab";
   private VocabularyFactory vocabFactory;
@@ -137,21 +136,14 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public Map<String, String> getI18nVocab(String identifier, String lang, boolean sortAlphabetically) {
-    Map<String, String> map = new LinkedHashMap<String, String>();
+    Map<String, String> map = new LinkedHashMap<>();
     Vocabulary v = get(identifier);
     if (v != null) {
       List<VocabularyConcept> concepts;
       if (sortAlphabetically) {
         concepts = new ArrayList<>(v.getConcepts());
         final String s = lang;
-        Collections.sort(concepts, new Comparator<VocabularyConcept>() {
-
-          @Override
-          public int compare(VocabularyConcept o1, VocabularyConcept o2) {
-            return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle())
-              .compareTo((o2.getPreferredTerm(s) == null ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
-          }
-        });
+        concepts.sort(Comparator.comparing(o -> (o.getPreferredTerm(s) == null ? o.getIdentifier() : o.getPreferredTerm(s).getTitle())));
       } else {
         concepts = v.getConcepts();
       }
@@ -255,7 +247,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public List<Vocabulary> list() {
-    return new ArrayList<Vocabulary>(vocabulariesById.values());
+    return new ArrayList<>(vocabulariesById.values());
   }
 
   @Override
@@ -266,9 +258,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // now iterate over all vocab files and load them
       File dir = dataDir.configFile(CONFIG_FOLDER);
       if (dir.isDirectory()) {
-        List<File> files = new ArrayList<File>();
         FilenameFilter ff = new SuffixFileFilter(VOCAB_FILE_SUFFIX, IOCase.INSENSITIVE);
-        files.addAll(Arrays.asList(dir.listFiles(ff)));
+        List<File> files = new ArrayList<>(Arrays.asList(dir.listFiles(ff)));
         for (File vf : files) {
           try {
             Vocabulary v = loadFromFile(vf);
@@ -303,7 +294,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @return map containing all registered vocabularies
    */
   private Map<String, Vocabulary> getFileNameToVocabularyMap() {
-    Map<String, Vocabulary> map = Maps.newHashMap();
+    Map<String, Vocabulary> map = new HashMap<>();
     try {
       for (Vocabulary v : registryManager.getVocabularies()) {
         if (v.getUriString() != null && v.getUriResolvable() != null) {

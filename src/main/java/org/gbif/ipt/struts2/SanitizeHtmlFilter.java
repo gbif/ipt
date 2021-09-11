@@ -1,6 +1,5 @@
 package org.gbif.ipt.struts2;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +9,12 @@ import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.HtmlSanitizer;
 import org.owasp.html.HtmlStreamEventReceiver;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
@@ -71,7 +75,7 @@ public class SanitizeHtmlFilter implements Filter {
 
   public static class XssRequestWrapper extends HttpServletRequestWrapper {
 
-    private Map<String, String[]> sanitized = Maps.newHashMap();
+    private Map<String, String[]> sanitized;
 
     /**
      * Constructor that will parse and sanitize all input parameters.

@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.google.common.collect.Maps;
 import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
@@ -270,7 +269,7 @@ public class ResourceActionTest {
 
   @Test
   public void testGetRecordsByExtensionOrdered() {
-    Map<String, Integer> counts = Maps.newLinkedHashMap();
+    Map<String, Integer> counts = new LinkedHashMap<>();
     counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
     counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
     counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);
@@ -283,7 +282,7 @@ public class ResourceActionTest {
 
   @Test
   public void testGetMaxRecordsInExtension() {
-    Map<String, Integer> counts = Maps.newLinkedHashMap();
+    Map<String, Integer> counts = new LinkedHashMap<>();
     counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
     counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
     counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);

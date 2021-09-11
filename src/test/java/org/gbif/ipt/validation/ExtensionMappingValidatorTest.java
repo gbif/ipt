@@ -10,12 +10,12 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Maps;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,7 +84,7 @@ public class ExtensionMappingValidatorTest {
     assertEquals(0, status.getMultipleTranslationsForSameColumn().size());
 
     // field translation
-    Map<String, String> translation = Maps.newHashMap();
+    Map<String, String> translation = new HashMap<>();
     translation.put("id1", "translated-id1");
 
     Set<PropertyMapping> fields = extensionMapping.getFields();

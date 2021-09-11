@@ -1,13 +1,18 @@
 package org.gbif.ipt.model;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.gbif.ipt.utils.FileUtils;
@@ -16,7 +21,14 @@ import org.gbif.utils.file.ClosableReportingIterator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Uses apache POI to parse excel spreadsheets.
@@ -200,7 +212,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   public Map<Integer, String> sheets() throws IOException {
     Workbook book = openBook();
     int cnt = book.getNumberOfSheets();
-    Map<Integer, String> sheets = Maps.newHashMap();
+    Map<Integer, String> sheets = new HashMap<>();
     for (int x = 0; x < cnt; x++) {
       sheets.put(x, book.getSheetName(x));
     }

@@ -51,7 +51,6 @@ import java.util.Properties;
 import java.util.TreeMap;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
@@ -860,7 +859,7 @@ public class MetadataAction extends ManagerBaseAction {
    */
   private void loadOrganisations() {
     List<Organisation> associatedOrganisations = registrationManager.list();
-    organisations = Maps.newLinkedHashMap();
+    organisations = new LinkedHashMap<>();
     if (!associatedOrganisations.isEmpty()) {
 
       // add placeholder if there is more than the default organisation "No organisation"

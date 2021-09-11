@@ -34,6 +34,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,7 +44,6 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -72,7 +72,7 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, String> frequencies;
   private Map<String, String> types;
   private int recordsPublishedForVersion;
-  private Map<String, Integer> recordsByExtensionForVersion = Maps.newHashMap();
+  private Map<String, Integer> recordsByExtensionForVersion = new HashMap<>();
   private String coreType;
   private String dwcaSizeForVersion;
   private String emlSizeForVersion;
@@ -312,7 +312,7 @@ public class ResourceAction extends PortalBaseAction {
 
     // ensure record counts by extension always exists, defaulting to empty map
     if (recordsByExtensionForVersion == null) {
-      Map<String, Integer> m = Maps.newHashMap();
+      Map<String, Integer> m = new HashMap<>();
       setRecordsByExtensionForVersion(m);
     }
 

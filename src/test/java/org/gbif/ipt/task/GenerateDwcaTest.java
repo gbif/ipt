@@ -63,6 +63,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -70,7 +71,6 @@ import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -111,7 +111,7 @@ public class GenerateDwcaTest {
   @BeforeClass
   public static void init() {
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
-    Map<String, String> basisOfRecords = Maps.newHashMap();
+    Map<String, String> basisOfRecords = new HashMap<>();
     basisOfRecords.put("preservedspecimen", "Preserved Specimen");
     basisOfRecords.put("fossilspecimen", "Fossil Specimen");
     basisOfRecords.put("livingspecimen", "Living Specimen");

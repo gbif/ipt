@@ -36,7 +36,6 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
@@ -230,7 +229,7 @@ public class GenerateDCAT {
    * This method loads the DCAT settings from dcatsettings.properties.
    */
   private Map<String, String> loadDCATSettings() {
-    Map<String, String> loadedSettings = Maps.newHashMap();
+    Map<String, String> loadedSettings = new HashMap<>();
 
     try (InputStream configStream = streamUtils.classpathStream(DCAT_SETTINGS)) {
       if (configStream == null) {

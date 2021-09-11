@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -37,7 +38,6 @@ import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -89,7 +89,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   // core record count
   private int recordsPublished = 0;
   // record counts by extension: Map<rowType, count>
-  private Map<String, Integer> recordsByExtension = Maps.newHashMap();
+  private Map<String, Integer> recordsByExtension = new HashMap<>();
   // registry data - only exists when status=REGISTERED
   private UUID key;
   private Organisation organisation;

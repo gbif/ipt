@@ -37,6 +37,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,6 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -70,7 +70,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private final static String OCCURRENCE_KEYWORD = "dwc:occurrence";
   private final static String EVENT_KEYWORD = "dwc:event";
   private final static String RECORD_LEVEL_CLASS = "Record-level";
-  private final Map<String, Extension> extensionsByRowtype = Maps.newHashMap();
+  private final Map<String, Extension> extensionsByRowtype = new HashMap<>();
   private final ExtensionFactory factory;
   private final HttpUtil downloader;
   private final ResourceManager resourceManager;

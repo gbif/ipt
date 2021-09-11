@@ -6,11 +6,10 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
-
-import com.google.common.collect.Maps;
 
 /**
  * Class representing all the essential information about a historical version of a resource.
@@ -26,7 +25,7 @@ public class VersionHistory {
   private String changeSummary;
   private int recordsPublished;
   // record counts by extension: Map<rowType, count>
-  private Map<String, Integer> recordsByExtension = Maps.newHashMap();
+  private Map<String, Integer> recordsByExtension = new HashMap<>();
 
   public VersionHistory(BigDecimal version, Date released, PublicationStatus publicationStatus) {
     this.version = version.toPlainString();

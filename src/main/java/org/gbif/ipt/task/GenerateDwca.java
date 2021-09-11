@@ -2,7 +2,6 @@ package org.gbif.ipt.task;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import org.apache.commons.io.FileUtils;
@@ -69,7 +68,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
   private final Resource resource;
   // record counts by extension <rowType, count>
-  private Map<String, Integer> recordsByExtension = Maps.newHashMap();
+  private Map<String, Integer> recordsByExtension = new HashMap<>();
   private Archive archive;
   private File dwcaFolder;
   // status reporting

@@ -1,10 +1,7 @@
 package org.gbif.ipt.config;
 
 import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.gson.annotations.Since;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -18,10 +15,24 @@ import org.gbif.ipt.utils.InputStreamUtils;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
 
 @Singleton
 public class AppConfig {
@@ -57,17 +68,25 @@ public class AppConfig {
 
   // to support compatibility with historical data directories, we default to the original hard coded
   // types that were scattered across the code.
-  private static final List<String> DEFAULT_CORE_ROW_TYPES =
-    ImmutableList.of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_ROWTYPE_TAXON, Constants.DWC_ROWTYPE_EVENT);
+  private static final List<String> DEFAULT_CORE_ROW_TYPES;
 
   // mapping of the id to the term that is the row ID
-  private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS = Maps.newHashMap((ImmutableMap
-    .of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID,
-      Constants.DWC_ROWTYPE_TAXON, Constants.DWC_TAXON_ID,
-      Constants.DWC_ROWTYPE_EVENT, Constants.DWC_EVENT_ID)));
+  private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS;
 
-  private static List<String> coreRowTypes = DEFAULT_CORE_ROW_TYPES;
-  private static Map<String, String> coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
+  private static List<String> coreRowTypes;
+  private static Map<String, String> coreRowTypeIdTerms;
+
+  static {
+    DEFAULT_CORE_ROW_TYPES = Arrays.asList(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_ROWTYPE_TAXON, Constants.DWC_ROWTYPE_EVENT);
+
+    DEFAULT_CORE_ROW_TYPES_ID_TERMS = new HashMap<>();
+    DEFAULT_CORE_ROW_TYPES_ID_TERMS.put(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID);
+    DEFAULT_CORE_ROW_TYPES_ID_TERMS.put(Constants.DWC_ROWTYPE_TAXON, Constants.DWC_TAXON_ID);
+    DEFAULT_CORE_ROW_TYPES_ID_TERMS.put(Constants.DWC_ROWTYPE_EVENT, Constants.DWC_EVENT_ID);
+
+    coreRowTypes = DEFAULT_CORE_ROW_TYPES;
+    coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
+  }
 
   private AppConfig() {
   }
@@ -422,7 +441,7 @@ public class AppConfig {
         coreRowTypes = Lists.newArrayList(DEFAULT_CORE_ROW_TYPES);
         coreRowTypes.addAll(configCores);
 
-        coreRowTypeIdTerms = Maps.newHashMap(DEFAULT_CORE_ROW_TYPES_ID_TERMS);
+        coreRowTypeIdTerms = new HashMap<>(DEFAULT_CORE_ROW_TYPES_ID_TERMS);
         for (int i = 0; i < configCores.size(); i++) {
           coreRowTypeIdTerms.put(configCores.get(i), configIDs.get(i));
         }
