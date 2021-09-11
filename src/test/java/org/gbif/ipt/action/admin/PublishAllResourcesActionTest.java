@@ -26,10 +26,11 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -105,7 +106,9 @@ public class PublishAllResourcesActionTest {
     PropertyMapping pm = new PropertyMapping();
     pm.setTerm(DwcTerm.occurrenceID);
     pm.setIndex(1);
-    em.setFields(Sets.newHashSet(pm));
+    Set<PropertyMapping> fields = new HashSet<>();
+    fields.add(pm);
+    em.setFields(fields);
     Extension extension = new Extension();
     extension.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);
     em.setExtension(extension);

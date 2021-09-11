@@ -24,7 +24,6 @@ import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -33,7 +32,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -46,7 +44,7 @@ import com.thoughtworks.xstream.XStream;
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
 
   public static final String PERSISTENCE_FILE = "users.xml";
-  private Map<String, User> users = new LinkedHashMap<String, User>();
+  private Map<String, User> users = new LinkedHashMap<>();
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
@@ -142,7 +140,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           }
         }
 
-        Set<String> resourcesCreatedByUser = new HashSet<String>();
+        Set<String> resourcesCreatedByUser = new HashSet<>();
         for (Resource r : resourceManager.list()) {
           User creator = get(r.getCreator().getEmail());
           if (creator != null && creator.equals(remUser)) {
@@ -150,7 +148,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           }
         }
 
-        Set<String> resourcesManagedOnlyByUser = new HashSet<String>();
+        Set<String> resourcesManagedOnlyByUser = new HashSet<>();
         for (Resource r : resourceManager.list(remUser)) {
           Set<User> managers = new HashSet<>();
           // add creator to list of managers, but only if creator has manager rights!
@@ -232,20 +230,14 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
   @Override
   public List<User> list() {
-    ArrayList<User> userList = new ArrayList<User>(users.values());
-    Collections.sort(userList, new Comparator<User>() {
-
-      @Override
-      public int compare(User o1, User o2) {
-        return (o1.getFirstname() + " " + o1.getLastname()).compareTo(o2.getFirstname() + " " + o2.getLastname());
-      }
-    });
+    ArrayList<User> userList = new ArrayList<>(users.values());
+    userList.sort(Comparator.comparing(o -> (o.getFirstname() + " " + o.getLastname())));
     return userList;
   }
 
   @Override
   public List<User> list(Role role) {
-    List<User> matchingUsers = new ArrayList<User>();
+    List<User> matchingUsers = new ArrayList<>();
     for (User u : users.values()) {
       if (u.getRole() == role) {
         matchingUsers.add(u);

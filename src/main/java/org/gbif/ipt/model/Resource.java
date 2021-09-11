@@ -37,8 +37,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -542,7 +540,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * mapping), and ending with the extension that was mapped last. Elements in the list are unique.
    */
   public List<Extension> getMappedExtensions() {
-    LinkedHashSet<Extension> extensions = Sets.newLinkedHashSet();
+    LinkedHashSet<Extension> extensions = new LinkedHashSet<>();
     for (ExtensionMapping em : mappings) {
       if (em.getExtension() != null && em.getSource() != null) {
         extensions.add(em.getExtension());
@@ -550,7 +548,7 @@ public class Resource implements Serializable, Comparable<Resource> {
         LOG.error("ExtensionMapping referencing NULL Extension or Source for resource: " + getShortname());
       }
     }
-    return Lists.newArrayList(extensions);
+    return new ArrayList<>(extensions);
   }
 
   public ExtensionMapping getMapping(String rowType, Integer index) {

@@ -71,6 +71,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -82,8 +83,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -276,7 +275,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               ? IdentifierStatus.UNRESERVED : IdentifierStatus.UNAVAILABLE);
 
           // delete previously assigned DOIs also
-          Set<String> deleted = Sets.newHashSet(doi.toString());
+          Set<String> deleted = new HashSet<>();
+          deleted.add(doi.toString());
+
           if (!resource.getVersionHistory().isEmpty()) {
             for (VersionHistory history: resource.getVersionHistory()) {
               DOI formerDoi = history.getDoi();
@@ -418,7 +419,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           resource.updateCitationIdentifierForDOI();
 
           // undelete previously assigned DOIs also, which were all deleted/deactivated
-          Set<String> undeleted = Sets.newHashSet(doi.toString());
+          Set<String> undeleted = new HashSet<>();
+          undeleted.add(doi.toString());
           if (!resource.getVersionHistory().isEmpty()) {
             for (VersionHistory history : resource.getVersionHistory()) {
               DOI formerDoi = history.getDoi();
@@ -1493,7 +1495,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           Archive archive = new Archive();
           worker.setArchive(archive);
           // create the data file inside the temp directory
-          worker.addDataFile(Lists.newArrayList(mapping), PEEK_ROWS);
+          List<ExtensionMapping> mappings = new ArrayList<>();
+          mappings.add(mapping);
+          worker.addDataFile(mappings, PEEK_ROWS);
           // preview the data file, by writing header and rows
           File[] files = tmpDir.listFiles();
           if (files != null && files.length > 0) {

@@ -41,6 +41,7 @@ import org.gbif.metadata.eml.TemporalCoverageType;
 import org.gbif.metadata.eml.UserId;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -50,7 +51,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
@@ -779,7 +779,9 @@ public class MetadataAction extends ManagerBaseAction {
         firstContact = new Agent();
       }
       if (firstContact.getUserIds().isEmpty()) {
-        firstContact.setUserIds(Lists.newArrayList(new UserId()));
+        List<UserId> userIds = new ArrayList<>();
+        userIds.add(new UserId());
+        firstContact.setUserIds(userIds);
       }
       setPrimaryContact(firstContact);
 

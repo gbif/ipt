@@ -93,6 +93,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -110,10 +111,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
@@ -223,8 +224,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       if (metadata.getDescription() != null) {
         // split description into paragraphs
-        for (String para : Splitter.onPattern("\r?\n").trimResults().omitEmptyStrings()
-          .split(metadata.getDescription())) {
+        List<String> paragraphs = Arrays.stream(metadata.getDescription().split("\r?\n"))
+            .filter(StringUtils::isNotBlank)
+            .map(String::trim)
+            .collect(Collectors.toList());
+        for (String para : paragraphs) {
           eml.addDescriptionPara(para);
         }
       }

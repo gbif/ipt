@@ -1,7 +1,5 @@
 package org.gbif.ipt.config;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 import com.google.gson.annotations.Since;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -25,6 +23,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
@@ -33,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 @Singleton
 public class AppConfig {
@@ -434,11 +434,17 @@ public class AppConfig {
     String ids = properties.getProperty(CORE_ROW_ID_TERMS);
     if (cores != null && ids != null) {
       LOG.info("Using custom core mapping");
-      List<String> configCores = Lists.newArrayList(Splitter.on('|').trimResults().omitEmptyStrings().split(cores));
-      List<String> configIDs = Lists.newArrayList(Splitter.on('|').trimResults().omitEmptyStrings().split(ids));
+      List<String> configCores = Arrays.stream(cores.split("\\|"))
+          .filter(StringUtils::isNotBlank)
+          .map(String::trim)
+          .collect(Collectors.toList());
+      List<String> configIDs = Arrays.stream(ids.split("\\|"))
+          .filter(StringUtils::isNotBlank)
+          .map(String::trim)
+          .collect(Collectors.toList());
 
       if (configCores.size() == configIDs.size()) {
-        coreRowTypes = Lists.newArrayList(DEFAULT_CORE_ROW_TYPES);
+        coreRowTypes = new ArrayList<>(DEFAULT_CORE_ROW_TYPES);
         coreRowTypes.addAll(configCores);
 
         coreRowTypeIdTerms = new HashMap<>(DEFAULT_CORE_ROW_TYPES_ID_TERMS);

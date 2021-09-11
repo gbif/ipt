@@ -1,6 +1,5 @@
 package org.gbif.ipt.model;
 
-import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
@@ -22,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -224,7 +224,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     if (rows > 0) {
       try {
         if (ignoreHeaderLines > 0) {
-          return Lists.newArrayList(new RowIterator(this, ignoreHeaderLines - 1).next());
+          return new ArrayList<>(Arrays.asList(new RowIterator(this, ignoreHeaderLines - 1).next()));
 
         } else {
           List<String> columnList = new ArrayList<>();

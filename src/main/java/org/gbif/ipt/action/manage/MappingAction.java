@@ -44,7 +44,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -254,7 +253,7 @@ public class MappingAction extends ManagerBaseAction {
     }
 
     // return list all source columns excluding those mapped
-    List<String> nonMapped = Lists.newArrayList(columns);
+    List<String> nonMapped = new ArrayList<>(columns);
     nonMapped.removeAll(mapped);
     return nonMapped;
   }
