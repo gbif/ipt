@@ -17,13 +17,13 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -265,14 +265,11 @@ public class ExtensionsAction extends POSTAction {
    * @return filtered list of extensions
    */
   protected List<Extension> getLatestVersions(List<Extension> extensions) {
-    Ordering<Extension> byIssuedDate = Ordering.natural().nullsFirst().onResultOf(new Function<Extension, Date>() {
-      @Override
-      public Date apply(Extension extension) {
-        return extension.getIssued();
-      }
-    });
     // sort extensions by issued date, starting with latest issued
-    List<Extension> sorted = byIssuedDate.immutableSortedCopy(extensions).reverse();
+    List<Extension> sorted = extensions.stream()
+        .sorted(Comparator.comparing(Extension::getIssued, Comparator.nullsLast(Comparator.reverseOrder())))
+        .collect(Collectors.toList());
+
     // populate list of latest extension versions
     Map<String, Extension> extensionsByRowtype = new HashMap<>();
     if (!sorted.isEmpty()) {
@@ -283,6 +280,7 @@ public class ExtensionsAction extends POSTAction {
         }
       }
     }
+
     return new ArrayList<>(extensionsByRowtype.values());
   }
 

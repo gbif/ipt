@@ -1,6 +1,5 @@
 package org.gbif.ipt.service.admin.impl;
 
-import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -48,19 +47,14 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
 
   private static final Logger LOG = LogManager.getLogger(RegistrationManagerImpl.class);
 
-  private static final Comparator<Organisation> ORG_BY_NAME_ORD = new Comparator<Organisation>() {
-
-    @Override
-    public int compare(Organisation left, Organisation right) {
-      return StringUtils.compare(left.getName(), right.getName());
-    }
-  };
+  private static final Comparator<Organisation> ORG_BY_NAME_ORD = (left, right) -> StringUtils.compare(left.getName(), right.getName());
 
   public static final String PERSISTENCE_FILE_V1 = "registration.xml";
   public static final String PERSISTENCE_FILE_V2 = "registration2.xml";
@@ -292,19 +286,17 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Override
   public List<Organisation> list() {
-    List<Organisation> organisationList = new ArrayList<>();
-    for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD)
-      .sortedCopy(registration.getAssociatedOrganisations().values())) {
-      if (organisation.isCanHost()) {
-        organisationList.add(organisation);
-      }
-    }
-    return organisationList;
+    return registration.getAssociatedOrganisations().values().stream()
+        .filter(Organisation::isCanHost)
+        .sorted(ORG_BY_NAME_ORD)
+        .collect(Collectors.toList());
   }
 
   @Override
   public List<Organisation> listAll() {
-    return Ordering.from(ORG_BY_NAME_ORD).sortedCopy(registration.getAssociatedOrganisations().values());
+    return registration.getAssociatedOrganisations().values().stream()
+        .sorted(ORG_BY_NAME_ORD)
+        .collect(Collectors.toList());
   }
 
   @Override

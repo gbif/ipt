@@ -10,10 +10,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.service.manage.impl;
 
-import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -25,8 +23,19 @@ import org.gbif.dwca.io.ArchiveFile;
 import org.gbif.dwca.io.UnsupportedArchiveException;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.*;
-import org.gbif.ipt.service.*;
+import org.gbif.ipt.model.ExcelFileSource;
+import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.RowIterable;
+import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SqlSource;
+import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
+import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -40,10 +49,20 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class SourceManagerImpl extends BaseManager implements SourceManager {
 
@@ -466,7 +485,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       logWriter.write(
           "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
       if (!emptyLines.isEmpty()) {
-        for (Integer i : Ordering.natural().sortedCopy(emptyLines)) {
+        for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
           logWriter.write("Line: " + i + " [EMPTY LINE]\n");
         }
       } else {
@@ -553,7 +572,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       logWriter.write(
         "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
       if (!emptyLines.isEmpty()) {
-        for (Integer i : Ordering.natural().sortedCopy(emptyLines)) {
+        for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
           logWriter.write("Line: " + i + " [EMPTY LINE]\n");
         }
       } else {
@@ -595,7 +614,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private List<String> columns(SqlSource source) {
-    List<String> columns = new ArrayList<String>();
+    List<String> columns = new ArrayList<>();
     Connection con = null;
     Statement stmt = null;
     ResultSet rs = null;
@@ -728,7 +747,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    */
   @Override
   public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
-    Set<String> values = new HashSet<String>();
+    Set<String> values = new HashSet<>();
     try (ClosableIterator<Object> iter = iterSourceColumn(source, column, maxRows)){
       // get distinct values
       while (iter.hasNext() && (maxValues < 1 || values.size() < maxValues)) {
@@ -792,7 +811,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private List<String[]> peek(SqlSource source, int rows) {
-    List<String[]> preview = new ArrayList<String[]>();
+    List<String[]> preview = new ArrayList<>();
     Connection con = null;
     Statement stmt = null;
     ResultSet rs = null;

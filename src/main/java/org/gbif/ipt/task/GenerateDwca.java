@@ -3,7 +3,6 @@ package org.gbif.ipt.task;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import org.apache.commons.io.FileUtils;
@@ -15,11 +14,20 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
-import org.gbif.dwca.io.*;
+import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.ArchiveFactory;
+import org.gbif.dwca.io.ArchiveField;
+import org.gbif.dwca.io.ArchiveFile;
+import org.gbif.dwca.io.MetaDescriptorWriter;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.*;
+import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.RecordFilter;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.MapUtils;
@@ -30,9 +38,24 @@ import org.gbif.utils.file.csv.CSVReaderFactory;
 import org.gbif.utils.text.LineComparator;
 
 import javax.annotation.Nullable;
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -76,13 +99,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     DwcTerm.typeStatus, DwcTerm.identifiedBy, DwcTerm.identificationReferences, DwcTerm.higherClassification,
     DwcTerm.measurementDeterminedBy);
 
-  private static final Comparator<String> IGNORE_CASE_COMPARATOR = Ordering.from(new Comparator<String>() {
-
-    @Override
-    public int compare(String o1, String o2) {
-      return o1.compareToIgnoreCase(o2);
-    }
-  }).nullsFirst();
+  private static final Comparator<String> IGNORE_CASE_COMPARATOR = Comparator.nullsFirst(String::compareToIgnoreCase);
 
   @Inject
   public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
@@ -157,13 +174,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
     // open new file writer for single data file
     File dataFile = new File(dwcaFolder, fn);
-    Writer writer = org.gbif.utils.file.FileUtils.startNewUtf8File(dataFile);
     // add source file location
-    af.addLocation(dataFile.getName());
 
     // ready to go though each mapping and dump the data
-    addMessage(Level.INFO, "Start writing data file for " + currExtension);
-    try {
+    try (Writer writer = org.gbif.utils.file.FileUtils.startNewUtf8File(dataFile)) {
+      af.addLocation(dataFile.getName());
+      addMessage(Level.INFO, "Start writing data file for " + currExtension);
       boolean headerWritten = false;
       for (ExtensionMapping m : mappings) {
         // prepare index ordered list of all output columns apart from id column
@@ -191,8 +207,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       // set last error report!
       setState(e);
       throw new GeneratorException("Error writing header line to data file", e);
-    } finally {
-      writer.close();
     }
 
     // add archive file to archive
@@ -386,8 +400,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     GBIF_FILE_UTILS
       .sort(unsorted, sorted, CHARACTER_ENCODING, column, columnDelimiter, enclosedBy, newlineDelimiter,
         headerLines, lineComparator, true);
-    log.debug("Finished sorting file " + unsorted.getAbsolutePath() + " in " + String
-      .valueOf((System.currentTimeMillis() - time) / 1000) + " secs, check: " + sorted.getAbsoluteFile().toString());
+    log.debug("Finished sorting file " + unsorted.getAbsolutePath() + " in "
+        + (System.currentTimeMillis() - time) / 1000 + " secs, check: " + sorted.getAbsoluteFile());
 
     return sorted;
   }
@@ -400,10 +414,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * -validate occurrenceId in extensions having occurrence rowType (if mapped)
    *
    * @param extensions Set of Archive extension data files (not core data files)
-   *
-   * @throws InterruptedException
-   * @throws GeneratorException
-   * @throws IOException
    */
   private void validateExtensionDataFiles(Set<ArchiveFile> extensions)
     throws InterruptedException, GeneratorException, IOException {
@@ -417,7 +427,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    */
   private void loadBasisOfRecordMapFromVocabulary() {
     if (basisOfRecords == null) {
-      basisOfRecords = new HashMap<String, String>();
+      basisOfRecords = new HashMap<>();
       basisOfRecords
         .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false));
       basisOfRecords = MapUtils.getMapWithLowercaseKeys(basisOfRecords);
@@ -565,7 +575,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
     // some final reporting..
     if (recordsWithNoId > 0) {
-      addMessage(Level.ERROR, String.valueOf(recordsWithNoId)
+      addMessage(Level.ERROR, recordsWithNoId
                               + " line(s) in extension missing an ID " + id.simpleName() + ", which is required when linking the extension record and core record together");
       throw new GeneratorException(
         "Can't validate DwC-A for resource " + resource.getShortname() + ". Each line in extension must have an ID " + id.simpleName() + ", which is required in order to link the extension to the core ");
@@ -765,7 +775,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     } else {
       // check basisOfRecord matches vocabulary (lower case comparison). E.g. specimen matches Specimen are equal
       if (!basisOfRecords.containsKey(bor.toLowerCase())) {
-        writePublicationLogMessage("Line #" + String.valueOf(line) + " has basisOfRecord [" + bor
+        writePublicationLogMessage("Line #" + line + " has basisOfRecord [" + bor
                                    + "] that does not match the Darwin Core Type Vocabulary");
         recordsWithNonMatchingBasisOfRecord.getAndIncrement();
       }
@@ -815,14 +825,14 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     throws GeneratorException {
     // add empty BoR user message
     if (recordsWithNoBasisOfRecord.get() > 0) {
-      addMessage(Level.ERROR, String.valueOf(recordsWithNoBasisOfRecord) + " line(s) are missing a basisOfRecord");
+      addMessage(Level.ERROR, recordsWithNoBasisOfRecord + " line(s) are missing a basisOfRecord");
     } else {
       writePublicationLogMessage("No lines are missing a basisOfRecord");
     }
 
     // add non matching BoR user message
     if (recordsWithNonMatchingBasisOfRecord.get() > 0) {
-      addMessage(Level.ERROR, String.valueOf(recordsWithNonMatchingBasisOfRecord)
+      addMessage(Level.ERROR, recordsWithNonMatchingBasisOfRecord
                               + " line(s) have basisOfRecord that does not match the Darwin Core Type Vocabulary "
                               + "(please note comparisons are case insensitive)");
     } else {
@@ -831,7 +841,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
     // add ambiguous BoR user message
     if (recordsWithAmbiguousBasisOfRecord.get() > 0) {
-      addMessage(Level.WARN, String.valueOf(recordsWithAmbiguousBasisOfRecord)
+      addMessage(Level.WARN, recordsWithAmbiguousBasisOfRecord
                              + " line(s) use ambiguous basisOfRecord 'occurrence'. It is advised that occurrence be "
                              + "reserved for cases when the basisOfRecord is unknown. Otherwise, a more specific "
                              + "basisOfRecord should be chosen.");
@@ -869,14 +879,14 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     String term) throws GeneratorException {
     // add empty ids user message
     if (recordsWithNoId.get() > 0) {
-      addMessage(Level.ERROR, String.valueOf(recordsWithNoId) + " line(s) missing " + term);
+      addMessage(Level.ERROR, recordsWithNoId + " line(s) missing " + term);
     } else {
       writePublicationLogMessage("No lines are missing " + term);
     }
 
     // add duplicate ids user message
     if (recordsWithDuplicateId.get() > 0) {
-      addMessage(Level.ERROR, String.valueOf(recordsWithDuplicateId) + " line(s) having a duplicate " + term
+      addMessage(Level.ERROR, recordsWithDuplicateId + " line(s) having a duplicate " + term
                               + " (please note comparisons are case insensitive)");
     } else {
       writePublicationLogMessage("No lines have duplicate " + term);
@@ -921,7 +931,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       setState(STATE.STARTED);
 
       // initial reporting
-      addMessage(Level.INFO, "Archive generation started for version #" + String.valueOf(resource.getEmlVersion()));
+      addMessage(Level.INFO, "Archive generation started for version #" + resource.getEmlVersion());
 
       // create a temp dir to copy all dwca files to
       dwcaFolder = dataDir.tmpDir();
@@ -943,7 +953,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       bundleArchive();
 
       // reporting
-      addMessage(Level.INFO, "Archive version #" + String.valueOf(resource.getEmlVersion()) + " generated successfully!");
+      addMessage(Level.INFO, "Archive version #" + resource.getEmlVersion() + " generated successfully!");
 
       // set final state
       setState(STATE.COMPLETED);
@@ -1033,9 +1043,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       report();
       try {
         addDataFile(resource.getMappings(ext.getRowType()), null);
-      } catch (IOException e) {
-        throw new GeneratorException("Problem occurred while writing data file", e);
-      } catch (IllegalArgumentException e) {
+      } catch (IOException | IllegalArgumentException e) {
         throw new GeneratorException("Problem occurred while writing data file", e);
       }
     }
@@ -1248,28 +1256,28 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
     // add lines incomplete message
     if (recordsWithError > 0) {
-      addMessage(Level.WARN, String.valueOf(recordsWithError) + " record(s) skipped due to errors" + mp);
+      addMessage(Level.WARN, recordsWithError + " record(s) skipped due to errors" + mp);
     } else {
       writePublicationLogMessage("No lines were skipped due to errors" + mp);
     }
 
     // add empty lines message
     if (emptyLines > 0) {
-      addMessage(Level.WARN, String.valueOf(emptyLines) + " empty line(s) skipped" + mp);
+      addMessage(Level.WARN, emptyLines + " empty line(s) skipped" + mp);
     } else {
       writePublicationLogMessage("No lines were skipped due to errors" + mp);
     }
 
     // add wrong lines user message
     if (linesWithWrongColumnNumber > 0) {
-      addMessage(Level.WARN, String.valueOf(linesWithWrongColumnNumber) + " line(s) with fewer columns than mapped" + mp);
+      addMessage(Level.WARN, linesWithWrongColumnNumber + " line(s) with fewer columns than mapped" + mp);
     } else {
       writePublicationLogMessage("No lines with fewer columns than mapped" + mp);
     }
 
     // add filter message
     if (recordsFiltered > 0) {
-      addMessage(Level.INFO, String.valueOf(recordsFiltered)
+      addMessage(Level.INFO, recordsFiltered
         + " line(s) did not match the filter criteria and got skipped " + mp);
     } else {
       writePublicationLogMessage("All lines match the filter criteria" + mp);
@@ -1396,7 +1404,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     // write exception as nicely formatted string
     StringWriter sw = new StringWriter();
     e.printStackTrace(new PrintWriter(sw));
-    sb.append(sw.toString());
+    sb.append(sw);
 
     // write to publication log file
     writePublicationLogMessage(sb.toString());
@@ -1414,7 +1422,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    */
   private Set<Term> addFieldsToArchive(List<ExtensionMapping> mappings, ArchiveFile af) throws GeneratorException{
 
-    Set<Term> mappedConceptTerms = new HashSet<Term>();
+    Set<Term> mappedConceptTerms = new HashSet<>();
     for (ExtensionMapping m : mappings) {
       // multi-value field delimiter, part of each source data configuration
       String delimitedBy = StringUtils.trimToNull(m.getSource().getMultiValueFieldsDelimitedBy());
@@ -1499,12 +1507,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    */
   private List<ExtensionProperty>
     getOrderedMappedExtensionProperties(Extension ext, Set<Term> mappedConceptTerms) {
-    List<ExtensionProperty> propertyList = new ArrayList<ExtensionProperty>();
     // start with all Extension's ExtensionProperty, in natural order
-    propertyList.addAll(ext.getProperties());
+    List<ExtensionProperty> propertyList = new ArrayList<>(ext.getProperties());
 
     // matching (below) should be done on the qualified Normalised Name
-    Set<String> names = new HashSet<String>();
+    Set<String> names = new HashSet<>();
     for (Term conceptTerm : mappedConceptTerms) {
       names.add(conceptTerm.qualifiedName());
     }
@@ -1557,7 +1564,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
           log.debug("No numerical suffix could be parsed from file name: " + StringUtils.trimToEmpty(fileName));
         }
       }
-      return extensionName + String.valueOf(max + 1) + TEXT_FILE_EXTENSION;
+      return extensionName + (max + 1) + TEXT_FILE_EXTENSION;
     }
     return extensionName + TEXT_FILE_EXTENSION;
   }

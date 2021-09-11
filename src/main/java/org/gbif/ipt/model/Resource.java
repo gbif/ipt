@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,13 +32,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -622,13 +622,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public List<Source> getSources() {
-    return Ordering.natural().nullsLast().onResultOf(new Function<Source, String>() {
-      @Nullable
-      @Override
-      public String apply(@Nullable Source src) {
-        return (src == null) ? null : src.getName();
-      }
-    }).sortedCopy(sources);
+    return sources.stream()
+        .sorted(Comparator.nullsLast((first, last) -> StringUtils.compare(first.getName(), last.getName(), false)))
+        .collect(Collectors.toList());
   }
 
   @NotNull
