@@ -1,6 +1,5 @@
 package org.gbif.ipt.task;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -45,6 +44,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,6 +58,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class GenerateDwca extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -1595,7 +1596,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @return true if each string in array is empty, false otherwise
    */
   private boolean isEmptyLine(String[] line) {
-    String joined = Joiner.on("").useForNull("").join(line);
+    String joined = Arrays.stream(line)
+        .filter(Objects::nonNull)
+        .collect(Collectors.joining(""));
     return StringUtils.isBlank(joined);
   }
 }

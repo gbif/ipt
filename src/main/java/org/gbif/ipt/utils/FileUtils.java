@@ -12,8 +12,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.util.Objects;
 
@@ -27,7 +27,7 @@ public class FileUtils {
   private static final Logger LOG = LogManager.getLogger(FileUtils.class);
 
   private static final int BUFFER_SIZE = 8192;
-
+  private static final int TEMP_DIR_ATTEMPTS = 10000;
 
   private FileUtils() {
     // private constructor.
@@ -67,12 +67,8 @@ public class FileUtils {
   }
 
   public static Reader getUtf8Reader(File file) throws FileNotFoundException {
-    Reader reader = null;
-    try {
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), UTF8));
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
-    }
+    Reader reader;
+    reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
     return reader;
   }
 
@@ -90,7 +86,7 @@ public class FileUtils {
         throw e;
       }
     }
-    return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), UTF8));
+    return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), StandardCharsets.UTF_8));
   }
 
   /**
@@ -108,4 +104,42 @@ public class FileUtils {
     return name.replaceAll("[/.:]+", "_") + suffix;
   }
 
+  /**
+   * Atomically creates a new directory somewhere beneath the system's temporary directory (as
+   * defined by the {@code java.io.tmpdir} system property), and returns its name.
+   *
+   * <p>Use this method instead of {@link File#createTempFile(String, String)} when you wish to
+   * create a directory, not a regular file. A common pitfall is to call {@code createTempFile},
+   * delete the file and create a directory in its place, but this leads a race condition which can
+   * be exploited to create security vulnerabilities, especially when executable files are to be
+   * written into the directory.
+   *
+   * <p>This method assumes that the temporary volume is writable, has free inodes and free blocks,
+   * and that it will not be called thousands of times per second.
+   *
+   * Copied from guava.
+   *
+   * @return the newly-created directory
+   * @throws IllegalStateException if the directory could not be created
+   */
+  public static File createTempDir() {
+    File baseDir = new File(System.getProperty("java.io.tmpdir"));
+    String baseName = System.currentTimeMillis() + "-";
+
+    for (int counter = 0; counter < TEMP_DIR_ATTEMPTS; counter++) {
+      File tempDir = new File(baseDir, baseName + counter);
+      if (tempDir.mkdir()) {
+        return tempDir;
+      }
+    }
+    throw new IllegalStateException(
+        "Failed to create directory within "
+            + TEMP_DIR_ATTEMPTS
+            + " attempts (tried "
+            + baseName
+            + "0 to "
+            + baseName
+            + (TEMP_DIR_ATTEMPTS - 1)
+            + ')');
+  }
 }

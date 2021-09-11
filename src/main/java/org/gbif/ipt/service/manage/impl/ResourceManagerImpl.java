@@ -118,7 +118,6 @@ import javax.validation.constraints.NotNull;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
-import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Document;
@@ -1000,12 +999,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       for (File resourceDir : files) {
         if (resourceDir.isDirectory()) {
           // list of files and folders in resource directory, excluding .DS_Store
-          File[] resourceDirFiles = resourceDir.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-              return !name.equalsIgnoreCase(".DS_Store");
-            }
-          });
+          File[] resourceDirFiles = resourceDir.listFiles((dir, name) -> !name.equalsIgnoreCase(".DS_Store"));
 
           if (resourceDirFiles == null) {
             LOG.error("Resource directory " + resourceDir.getName() + " could not be read. Please verify its content");
@@ -1207,21 +1201,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         File oldEml = dataDir.resourceEmlFile(resource.getShortname(), oldVersion);
         File newEml = dataDir.resourceEmlFile(resource.getShortname(), newVersion);
         if (oldEml.exists() && !newEml.exists()) {
-          Files.move(oldEml, newEml);
+          FileUtils.moveFile(oldEml, newEml);
         }
 
         // rename e.g. zvv-18.rtf to zvv-18.0.rtf
         File oldRtf = dataDir.resourceRtfFile(resource.getShortname(), oldVersion);
         File newRtf = dataDir.resourceRtfFile(resource.getShortname(), newVersion);
         if (oldRtf.exists() && !newRtf.exists()) {
-          Files.move(oldRtf, newRtf);
+          FileUtils.moveFile(oldRtf, newRtf);
         }
 
         // rename e.g. dwca-18.zip to dwca-18.0.zip
         File oldDwca = dataDir.resourceDwcaFile(resource.getShortname(), oldVersion);
         File newDwca = dataDir.resourceDwcaFile(resource.getShortname(), newVersion);
         if (oldDwca.exists() && !newDwca.exists()) {
-          Files.move(oldDwca, newDwca);
+          FileUtils.moveFile(oldDwca, newDwca);
         }
 
         // if all renames were successful (didn't throw an exception), set new version
@@ -1249,7 +1243,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // proceed if resource has previously been published, and versioned dwca does not exist
     if (unversionedDwca.exists() && !versionedDwca.exists()) {
       try {
-        Files.move(unversionedDwca, versionedDwca);
+        FileUtils.moveFile(unversionedDwca, versionedDwca);
         LOG.debug("Renamed dwca.zip to " + versionedDwca.getName());
       } catch (IOException e) {
         LOG.error("Failed to rename dwca.zip file name with version number for " + resource.getShortname(), e);

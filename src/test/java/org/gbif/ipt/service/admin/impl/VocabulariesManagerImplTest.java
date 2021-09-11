@@ -23,7 +23,6 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -32,6 +31,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -45,10 +45,15 @@ import static org.mockito.Mockito.when;
 
 public class VocabulariesManagerImplTest {
 
-  private static final File TMP_DIR = Files.createTempDir();
+  private static File TMP_DIR;
   private VocabulariesManager manager;
   private DataDir dataDir;
   private AppConfig appConfig;
+
+  @BeforeClass
+  public static void beforeClassSetup() {
+    TMP_DIR = org.gbif.ipt.utils.FileUtils.createTempDir();
+  }
 
   @Before
   public void setup() throws ParserConfigurationException, SAXException, IOException, URISyntaxException {

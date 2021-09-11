@@ -36,7 +36,6 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -98,7 +97,7 @@ public class ExtensionManagerImplTest {
       new RegistryManagerImpl(appConfig, mockDataDir, mockHttpUtil, saxf, warnings, mockSimpleTextProvider,
         mockRegistrationManager, resourceManager);
 
-    File myTmpDir = Files.createTempDir();
+    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
     assertTrue(myTmpDir.isDirectory());
 
     // copy occurrence core extension file to temporary directory
@@ -207,9 +206,8 @@ public class ExtensionManagerImplTest {
    * Test when IPT is configured with extra core type not matching a registered extension.
    */
   @Test(expected = InvalidConfigException.class)
-  public void testInstallCoreTypesBadCoreConfiguration() throws IOException, ParserConfigurationException,
-    SAXException {
-    File tmpDir = Files.createTempDir();
+  public void testInstallCoreTypesBadCoreConfiguration() throws Exception {
+    File tmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();;
     File dataDirLocation = new File(tmpDir, "datadir.location");
     File testDataDir = FileUtils.getClasspathFile("dataDir");
     org.apache.commons.io.FileUtils.copyDirectoryToDirectory(testDataDir, tmpDir); // copy testDataDir to tmp location
@@ -270,7 +268,7 @@ public class ExtensionManagerImplTest {
     assertNotNull(migrated.getExtension().getIssued());
     // test for example index 3 (rights term should have been replaced by dc:license)
     PropertyMapping licenseMapping = migrated.getField(DcTerm.license.qualifiedName());
-    assertTrue(licenseMapping.getIndex().compareTo(3) == 0);
+    assertEquals(0, licenseMapping.getIndex().compareTo(3));
   }
 
   @Test
@@ -279,7 +277,7 @@ public class ExtensionManagerImplTest {
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
         mock(ResourceManager.class), mock(HttpUtil.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(RegistryManager.class));
-    File myTmpDir = Files.createTempDir();
+    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
 
     // load current (installed) version of Occurrence extension
     File occCore = FileUtils.getClasspathFile("extensions/dwc_occurrence.xml");
@@ -305,15 +303,15 @@ public class ExtensionManagerImplTest {
 
     // index 0 (id term should have stayed the same)
     PropertyMapping verifiedIdMapping = migrated.getField(DwcTerm.occurrenceID.qualifiedName());
-    assertTrue(verifiedIdMapping.getIndex().compareTo(0) == 0);
+    assertEquals(0, verifiedIdMapping.getIndex().compareTo(0));
 
     // index 1 (individualID term should have been replaced by dwc:organismID)
     PropertyMapping organismIdMapping = migrated.getField(DwcTerm.organismID.qualifiedName());
-    assertTrue(organismIdMapping.getIndex().compareTo(1) == 0);
+    assertEquals(0, organismIdMapping.getIndex().compareTo(1));
 
     // index 3 (rights term should have been replaced by dc:license)
     PropertyMapping licenseMapping = migrated.getField(DcTerm.license.qualifiedName());
-    assertTrue(licenseMapping.getIndex().compareTo(3) == 0);
+    assertEquals(0, licenseMapping.getIndex().compareTo(3));
 
     // index 2 (formerly dc:source) and index 4 (formerly dwc:occurrenceDetails) could both be migrated to dc:references
     // only one property mapping to dc:references can exist though
@@ -383,7 +381,7 @@ public class ExtensionManagerImplTest {
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
         mock(ResourceManager.class), mock(HttpUtil.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(RegistryManager.class));
-    File myTmpDir = Files.createTempDir();
+    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
 
     // load Occurrence extension
     File occ = FileUtils.getClasspathFile("extensions/dwc_occurrence.xml");

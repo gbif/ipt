@@ -38,7 +38,7 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,14 +47,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.base.Joiner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -103,7 +101,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   private List<NameValuePair> buildRegistryParameters(Resource resource) {
-    List<NameValuePair> data = new ArrayList<NameValuePair>();
+    List<NameValuePair> data = new ArrayList<>();
 
     Eml eml = resource.getEml();
 
@@ -111,20 +109,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     DOI doi = resource.getAssignedDoi();
     if (doi != null) {
       data.add(new BasicNameValuePair("doi", doi.toString()));
-      LOG.debug("Including registry param doi=" + doi.toString());
+      LOG.debug("Including registry param doi=" + doi);
     }
     // otherwise try using the DOI citation identifier of the last published public version, see issue #1276
     else {
       DOI existingDoi = getLastPublishedVersionExistingDoi(resource);
       if (existingDoi != null) {
         data.add(new BasicNameValuePair("doi", existingDoi.toString()));
-        LOG.debug("Including registry param doi=" + existingDoi.toString());
+        LOG.debug("Including registry param doi=" + existingDoi);
       }
     }
 
     data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
       : StringUtils.trimToEmpty(resource.getShortname())));
-    data.add(new BasicNameValuePair("description", Joiner.on(SystemUtils.LINE_SEPARATOR).join(eml.getDescription())));
+
+    data.add(new BasicNameValuePair("description", String.join(System.lineSeparator(), eml.getDescription())));
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(eml.getDistributionUrl())));
     data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(eml.getLogoUrl())));
 
@@ -244,7 +243,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       .fromJson(requestHttpGetFromRegistry(getExtensionsURL(true)).content,
         new TypeToken<Map<String, List<Extension>>>() {
         }.getType());
-    return (jSONExtensions.get("extensions") == null) ? new ArrayList<Extension>() : jSONExtensions.get("extensions");
+    return (jSONExtensions.get("extensions") == null) ? new ArrayList<>() : jSONExtensions.get("extensions");
   }
 
   /**
@@ -309,7 +308,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   @Override
   public List<Organisation> getOrganisations() {
-    List<Map<String, String>> organisationsTemp = new ArrayList<Map<String, String>>();
+    List<Map<String, String>> organisationsTemp = new ArrayList<>();
     try {
       organisationsTemp = gson
         .fromJson(requestHttpGetFromRegistry(getOrganisationsURL(true)).content,
@@ -328,7 +327,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       LOG.error(msg);
     }
     // populate Organisation list
-    List<Organisation> organisations = new ArrayList<Organisation>();
+    List<Organisation> organisations = new ArrayList<>();
     int invalid = 0;
     for (Map<String, String> org : organisationsTemp) {
       if (org.isEmpty() || StringUtils.isBlank(org.get("key")) || StringUtils.isBlank(org.get("name"))) {
@@ -442,7 +441,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       .fromJson(requestHttpGetFromRegistry(getVocabulariesURL(true)).content,
       new TypeToken<Map<String, List<Vocabulary>>>() {
       }.getType());
-    return (jSONVocabularies.get("thesauri") == null) ? new ArrayList<Vocabulary>() : jSONVocabularies.get("thesauri");
+    return (jSONVocabularies.get("thesauri") == null) ? new ArrayList<>() : jSONVocabularies.get("thesauri");
   }
 
   /*
@@ -464,7 +463,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw e;
     }
     // populate Resources list
-    List<Resource> resources = new ArrayList<Resource>();
+    List<Resource> resources = new ArrayList<>();
     int invalid = 0;
     for (Map<String, String> res : resourcesTemp) {
       if (res.isEmpty() || StringUtils.isBlank(res.get("key")) || StringUtils.isBlank(res.get("name"))) {
@@ -570,7 +569,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     String url = getIptResourceUri();
     try {
       resp = http.post(url, null, null, orgCredentials(org),
-        new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
+        new UrlEncodedFormEntity(data, StandardCharsets.UTF_8));
     } catch (URISyntaxException e) {
       throw new RegistryException(Type.BAD_REQUEST, url, "Register resource failed: request URI invalid", e);
     } catch (IOException e) {
@@ -631,7 +630,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     String url = getIptUri();
     try {
       resp = http
-        .post(url, null, null, orgCredentials(org), new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
+        .post(url, null, null, orgCredentials(org), new UrlEncodedFormEntity(data, StandardCharsets.UTF_8));
     } catch (URISyntaxException e) {
       throw new RegistryException(Type.BAD_REQUEST, url, "Register IPT failed: request URI invalid", e);
     } catch (IOException e) {
@@ -669,7 +668,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from IPT registration has invalid key");
     }
 
-    LOG.info("A new ipt has been registered with GBIF. [Key=" + uuidKey.toString() + "]");
+    LOG.info("A new ipt has been registered with GBIF. [Key=" + uuidKey + "]");
     ipt.setKey(uuidKey.toString());
     return key;
   }
@@ -692,7 +691,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @return list of name value pairs, or an empty list if the IPT or organisation key were null
    */
   private List<NameValuePair> buildIPTParameters(Ipt ipt, String organisationKey) {
-    List<NameValuePair> data = new ArrayList<NameValuePair>();
+    List<NameValuePair> data = new ArrayList<>();
     if (ipt != null && organisationKey != null) {
       // main
       data.add(new BasicNameValuePair("organisationKey", StringUtils.trimToEmpty(organisationKey)));
@@ -725,7 +724,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     String url = getIptUpdateUri(ipt.getKey().toString());
     try {
       resp = http.post(url, null, null, iptCredentials(ipt),
-        new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
+        new UrlEncodedFormEntity(data, StandardCharsets.UTF_8));
     } catch (URISyntaxException e) {
       throw new RegistryException(Type.BAD_REQUEST, url, "Update IPT registration failed: request URI invalid", e);
     } catch (IOException e) {
@@ -771,7 +770,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     String url = getIptUpdateResourceUri(resource.getKey().toString());
     try {
       resp = http.post(url, null, null,
-        orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data, Charset.forName("UTF-8")));
+        orgCredentials(resource.getOrganisation()), new UrlEncodedFormEntity(data, StandardCharsets.UTF_8));
     } catch (URISyntaxException e) {
       throw new RegistryException(Type.BAD_REQUEST, url, "Update resource registration failed: request URI invalid", e);
     } catch (IOException e) {

@@ -23,6 +23,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwca.io.Archive;
 import org.gbif.dwca.io.ArchiveFile;
+import org.gbif.ipt.utils.FileUtils;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 import org.gbif.ipt.config.AppConfig;
@@ -83,7 +84,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.io.Files;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -298,12 +298,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           resourceManager.delete(resource, true);
         }
         return HOME;
-      } catch (IOException e) {
-        String msg = getText("manage.resource.delete.failed");
-        LOG.error(msg, e);
-        addActionError(msg);
-        addActionExceptionWarning(e);
-      } catch (DeletionNotAllowedException e) {
+      } catch (IOException | DeletionNotAllowedException e) {
         String msg = getText("manage.resource.delete.failed");
         LOG.error(msg, e);
         addActionError(msg);
@@ -328,7 +323,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     Objects.requireNonNull(doi);
     try {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
-      if (doiData != null && doiData.getStatus() != null) {
+      if (doiData.getStatus() != null) {
         if (doiData.getStatus().equals(DoiStatus.RESERVED)) {
           LOG.info("Deleting reserved DOI: " + doi + "...");
           registrationManager.getDoiService().delete(doi);
@@ -454,12 +449,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           addActionMessage(
             getText("manage.overview.resource.undeleted", new String[] {resource.getTitleAndShortname()}));
           return SUCCESS;
-        } catch (UndeletNotAllowedException e) {
-          String msg = getText("manage.resource.undelete.failed");
-          LOG.error(msg, e);
-          addActionError(msg);
-          addActionExceptionWarning(e);
-        } catch (IllegalArgumentException e) {
+        } catch (UndeletNotAllowedException | IllegalArgumentException e) {
           String msg = getText("manage.resource.undelete.failed");
           LOG.error(msg, e);
           addActionError(msg);
@@ -660,11 +650,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   public boolean hasValidPublishingOrganisation(Resource resource) {
     if (resource.getOrganisation() == null) {
       return false;
-    } else if (resource.getOrganisation().getKey().equals(Constants.DEFAULT_ORG_KEY)) {
-      return false;
-    } else {
-      return true;
-    }
+    } else return !resource.getOrganisation().getKey().equals(Constants.DEFAULT_ORG_KEY);
   }
 
   public boolean isMissingMetadata() {
@@ -790,10 +776,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           try {
             DoiData doiData = registrationManager.getDoiService().resolve(existingDoi);
             // verify the existing DOI is either reserved or registered already
-            if (doiData != null && doiData.getStatus().equals(DoiStatus.RESERVED)) {
+            if (doiData.getStatus().equals(DoiStatus.RESERVED)) {
               LOG.info("Assigning " + existingDoi + " (existing reserved DOI) to " + resource.getTitleAndShortname());
               doReuseDOI(existingDoi, resource);
-            } else if (doiData != null && doiData.getStatus().equals(DoiStatus.REGISTERED)) {
+            } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
               LOG.info("Assigning " + existingDoi + " (existing registered DOI) to " + resource.getTitleAndShortname());
 
               // the DOI is registered and should resolve to this resource's public homepage, so verify the homepage is publicly accessible
@@ -893,7 +879,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
     // safeguard - prevent deleting existing registered DOIs
     DoiData doiData = registrationManager.getDoiService().resolve(reservedDoi);
-    if (doiData != null && doiData.getStatus() != null && !doiData.getStatus().equals(DoiStatus.REGISTERED)) {
+    if (doiData.getStatus() != null && !doiData.getStatus().equals(DoiStatus.REGISTERED)) {
       LOG.debug("Deleting reserved DOI=" + reservedDoi.toString());
       // delete reserved DOI for this resource
       registrationManager.getDoiService().delete(reservedDoi);
@@ -1131,7 +1117,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         // prevent publishing if DOI does not resolve/exist, or if DOI agency account cannot resolve this DOI
         try {
           DoiData doiData = registrationManager.getDoiService().resolve(resource.getDoi());
-          if (doiData != null && doiData.getStatus() != null) {
+          if (doiData.getStatus() != null) {
             if (doiData.getStatus().compareTo(DoiStatus.RESERVED) == 0 || doiData.getStatus().compareTo(DoiStatus.REGISTERED) == 0) {
               LOG.info("Pre-publication check: successfully resolved " + resource.getDoi().toString());
             } else {
@@ -1280,11 +1266,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             LOG.error(msg);
           }
         } else {
-          StringBuilder sb = new StringBuilder();
-          sb.append(getText("manage.resource.status.registration.forbidden"));
-          sb.append(" ");
-          sb.append(getText("manage.resource.role.change"));
-          addActionError(sb.toString());
+          String sb = getText("manage.resource.status.registration.forbidden") +
+              " " +
+              getText("manage.resource.role.change");
+          addActionError(sb);
         }
       }
     } else {
@@ -1490,7 +1475,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         try {
           GenerateDwca worker = dwcaFactory.create(resource, this);
           worker.report();
-          File tmpDir = Files.createTempDir();
+          File tmpDir = FileUtils.createTempDir();
           worker.setDwcaFolder(tmpDir);
           Archive archive = new Archive();
           worker.setArchive(archive);
