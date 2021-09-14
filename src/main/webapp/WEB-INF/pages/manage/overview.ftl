@@ -297,6 +297,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 <#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
+<#include "/WEB-INF/pages/macros/manage/validate.ftl"/>
 <#assign metadataType = "metadata"/>
 
     <main class="container">
@@ -630,6 +631,7 @@
 
                 <div class="col-lg-3 border-lg-right">
                     <div class="mx-md-4 mx-2">
+                        <@validate resource/>
                         <@publish resource/>
                     </div>
                 </div>

@@ -64,14 +64,19 @@
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="error">/WEB-INF/pages/manage/overview.ftl</result>
     </action>
-    <action name="validate" class="org.gbif.ipt.action.manage.OverviewAction" method="validate">
-      <result name="validating">/WEB-INF/pages/manage/locked.ftl</result>
-      <result>/WEB-INF/pages/manage/overview.ftl</result>
-      <result name="error">/WEB-INF/pages/manage/overview.ftl</result>
+    <action name="validations" class="org.gbif.ipt.action.manage.ValidationAction">
+      <result name="input">/WEB-INF/pages/manage/validations.ftl</result>
+    </action>
+    <action name="validating" class="org.gbif.ipt.action.manage.ValidationAction">
+      <result name="input">/WEB-INF/pages/manage/validations.ftl</result>
     </action>
     <action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
       <interceptor-ref name="ajaxStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="error">/WEB-INF/pages/manage/locked.ftl</result>
+    </action>
+    <action name="validateResource" class="org.gbif.ipt.action.manage.OverviewAction" method="validateResource">
+      <result name="validations">/WEB-INF/pages/manage/validations.ftl</result>
       <result name="error">/WEB-INF/pages/manage/locked.ftl</result>
     </action>
     <action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">

@@ -44,12 +44,12 @@
     <commons-io.version>2.5</commons-io.version>
     <commons-lang3.version>3.6</commons-lang3.version>
     <commons-validator.version>1.6</commons-validator.version>
-    <dwc-api.version>1.17</dwc-api.version>
+    <dwc-api.version>1.34</dwc-api.version>
     <dwca-io.version>1.31</dwca-io.version>
     <freemarker.version>2.3.26-incubating</freemarker.version>
-    <gbif-api.version>0.82</gbif-api.version>
+    <gbif-api.version>0.155-SNAPSHOT</gbif-api.version>
     <gbif-common-ws.version>1.16-SNAPSHOT</gbif-common-ws.version>
-    <gbif-pipelines.version>2.9.9-SNAPSHOT</gbif-pipelines.version>
+    <gbif-pipelines.version>2.10.0-SNAPSHOT</gbif-pipelines.version>
     <gbif-common.version>0.38</gbif-common.version>
     <gbif-doi.version>2.9</gbif-doi.version>
     <gbif-metadata-profile.version>1.1.2</gbif-metadata-profile.version>
@@ -344,6 +344,10 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-tomcat</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <!-- XSS filtering -->
@@ -359,6 +363,10 @@
         <exclusion>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
