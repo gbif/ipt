@@ -8,6 +8,11 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.gbif.api.model.common.DOI;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveField;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.MetaDescriptorWriter;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
@@ -368,7 +373,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
     try {
       // retrieve newly generated archive - decompressed
-      Archive arch = ArchiveFactory.openArchive(dwcaFolder);
+      Archive arch = DwcFiles.fromLocation(dwcaFolder.toPath());
       // populate basisOfRecord lookup HashMap
       loadBasisOfRecordMapFromVocabulary();
       // perform validation on core file (includes core ID and basisOfRecord validation)

@@ -9,14 +9,14 @@ import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
 import org.gbif.doi.service.InvalidMetadataException;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveField;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.UnsupportedArchiveException;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.ArchiveField;
-import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.dwca.io.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -79,6 +79,7 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.registry.metadata.parse.DatasetParser;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -503,7 +504,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Resource resource;
     try {
       // try to read dwca
-      Archive arch = ArchiveFactory.openArchive(dwca);
+      Archive arch = DwcFiles.fromLocation(dwca.toPath());
 
       if (arch.getCore() == null) {
         alog.error("manage.resource.create.core.invalid");
@@ -1913,7 +1914,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // try to read other metadata formats like dc
     try {
-      eml = convertMetadataToEml(archive.getMetadata());
+      LOG.debug("try to read other metadata formats");
+      Dataset dataset = DatasetParser.build(archive.getMetadata().getBytes());
+      eml = convertMetadataToEml(dataset);
       alog.info("manage.resource.read.basic.metadata");
       return eml;
     } catch (Exception e) {

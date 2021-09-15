@@ -264,11 +264,11 @@
                 <@popoverTextInfo fieldPopoverInfo />
 
                 <strong class="<#if p.required>text-gbif-danger</#if>" >
-                    <#if !p.namespace?starts_with("http://purl.org/dc/")>
+                    <#if !p.namespace()?starts_with("http://purl.org/dc/")>
                         ${p.name}
-                    <#elseif p.namespace?starts_with("http://purl.org/dc/terms")>
+                    <#elseif p.namespace()?starts_with("http://purl.org/dc/terms")>
                         dcterms:${p.name}
-                    <#elseif p.namespace?starts_with("http://purl.org/dc/elements/1.1")>
+                    <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>
                         dc:${p.name}
                     </#if>
                 </strong>

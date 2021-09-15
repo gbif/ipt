@@ -17,9 +17,12 @@
 package org.gbif.ipt.task;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
+import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -195,7 +198,7 @@ public class GenerateDwcaTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
@@ -207,22 +210,23 @@ public class GenerateDwcaTest {
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st record
-    String[] row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("1", row[2]);
-    assertEquals("puma concolor", row[3]);
-    assertEquals("occurrence", row[4]);
+    Record record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("1", record.column(2));
+    assertEquals("puma concolor", record.column(3));
+    assertEquals("occurrence", record.column(4));
     // 2nd record
-    row = reader.next();
-    assertEquals("2", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("2", row[2]);
-    assertEquals("pumm:concolor", row[3]);
-    assertEquals("occurrence", row[4]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("2", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("2", record.column(2));
+    assertEquals("pumm:concolor", record.column(3));
+    assertEquals("occurrence", record.column(4));
+    iterator.close();
 
     // since basisOfRecord was occurrence, and this is ambiguous, there should be a warning message!
     boolean foundWarningAboutAmbiguousBOR = false;
@@ -279,7 +283,7 @@ public class GenerateDwcaTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(5, archive.getCore().getFieldsSorted().size());
@@ -292,25 +296,26 @@ public class GenerateDwcaTest {
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(4).getTerm().simpleName());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st record
-    String[] row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("doi:10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
-    assertEquals("occurrence", row[2]);
-    assertEquals("1", row[3]);
-    assertEquals("puma concolor", row[4]);
-    assertEquals("occurrence", row[5]);
+    Record record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("doi:10.5072/gc8gqc", record.column(1)); // confirm resource DOI used for datasetID
+    assertEquals("occurrence", record.column(2));
+    assertEquals("1", record.column(3));
+    assertEquals("puma concolor", record.column(4));
+    assertEquals("occurrence", record.column(5));
 
     // 2nd record
-    row = reader.next();
-    assertEquals("2", row[0]);
-    assertEquals("doi:10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
-    assertEquals("occurrence", row[2]);
-    assertEquals("2", row[3]);
-    assertEquals("pumm:concolor", row[4]);
-    assertEquals("occurrence", row[5]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("2", record.column(0));
+    assertEquals("doi:10.5072/gc8gqc", record.column(1)); // confirm resource DOI used for datasetID
+    assertEquals("occurrence", record.column(2));
+    assertEquals("2", record.column(3));
+    assertEquals("pumm:concolor", record.column(4));
+    assertEquals("occurrence", record.column(5));
+    iterator.close();
   }
 
   @Test
@@ -342,7 +347,7 @@ public class GenerateDwcaTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
@@ -354,23 +359,24 @@ public class GenerateDwcaTest {
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st record
-    String[] row = reader.next();
+    Record record = iterator.next();
     // no id was mapped, so the first column (ID column, index 0) is empty
-    assertEquals("", row[0]);
-    assertEquals("HumanObservation", row[1]);
-    assertEquals("1", row[2]);
-    assertEquals("puma concolor", row[3]);
-    assertEquals("Animalia", row[4]);
+    assertNull(record.column(0));
+    assertEquals("HumanObservation", record.column(1));
+    assertEquals("1", record.column(2));
+    assertEquals("puma concolor", record.column(3));
+    assertEquals("Animalia", record.column(4));
     // 2nd record
-    row = reader.next();
-    assertEquals("", row[0]);
-    assertEquals("HumanObservation", row[1]);
-    assertEquals("2", row[2]);
-    assertEquals("Panthera onca", row[3]);
-    assertEquals("Animalia", row[4]);
-    reader.close();
+    record = iterator.next();
+    assertNull(record.column(0));
+    assertEquals("HumanObservation", record.column(1));
+    assertEquals("2", record.column(2));
+    assertEquals("Panthera onca", record.column(3));
+    assertEquals("Animalia", record.column(4));
+    iterator.close();
   }
 
   /**
@@ -640,7 +646,7 @@ public class GenerateDwcaTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
@@ -651,14 +657,15 @@ public class GenerateDwcaTest {
     assertEquals("associatedMedia", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st record
-    String[] row = reader.next();
-    assertEquals("http://dummyimage.com/1|http://dummyimage.com/2", row[3]);
+    Record record = iterator.next();
+    assertEquals("http://dummyimage.com/1|http://dummyimage.com/2", record.column(3));
     // 2nd record
-    row = reader.next();
-    assertEquals("http://dummyimage.com/3|http://dummyimage.com/4", row[3]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("http://dummyimage.com/3|http://dummyimage.com/4", record.column(3));
+    iterator.close();
   }
 
   /**
