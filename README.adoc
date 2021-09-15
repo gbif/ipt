@@ -1,4 +1,5 @@
 https://builds.gbif.org/job/ipt/lastBuild/console[image:https://builds.gbif.org/job/ipt/badge/icon[Build status]]
+https://crowdin.com/project/gbif-ipt[image:https://badges.crowdin.net/gbif-ipt/localized.svg[Crowdin]]
 
 = GBIF Integrated Publishing Toolkit (IPT)
 
@@ -23,4 +24,4 @@ In this repository you can find the IPT source code, https://ipt.gbif.org/manual
 
 A large number of dedicated volunteers contribute to the success of this software. With your help, the IPT has become a successful tool in use all around the world.
 
-https://crowdin.com/[Crowdin] is kindly supporting this open source project by giving GBIF a free access to its localization management platform. Crowdin makes it possible to manage a large number of concurrent translations.
+https://crowdin.com/[Crowdin] is kindly supporting this https://crowdin.com/project/gbif-ipt[open source project] by giving GBIF a free access to its localization management platform. Crowdin makes it possible to manage a large number of concurrent translations.
