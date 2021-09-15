@@ -1,5 +1,7 @@
 package org.gbif.ipt.service.manage.impl;
 
+import org.apache.commons.collections4.ListValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
@@ -95,8 +97,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -115,9 +115,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.ListMultimap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Document;
@@ -142,7 +139,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private ThreadPoolExecutor executor;
   private GenerateDwcaFactory dwcaFactory;
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
-  private ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
+  private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
   private Map<String, StatusReport> processReports = new HashMap<>();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
@@ -596,10 +593,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   /**
    * Replace the EML file in a resource by the provided file
-   *
-   * @param resource
-   * @param emlFile
-   * @throws ImportException
    */
   @Override
   public void replaceEml(Resource resource, File emlFile) throws ImportException {
@@ -923,20 +916,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
       }
     }
-    Collections.sort(resourceList, new Comparator<Resource>() {
-      @Override
-      public int compare(Resource r1, Resource r2) {
-        if (r1 == null || r1.getModified() == null) {
-          return 1;
-        }
-        if (r2 == null || r2.getModified() == null) {
-          return -1;
-        }
-        if (r1.getModified().before(r2.getModified())) {
-          return 1;
-        } else {
-          return -1;
-        }
+    resourceList.sort((r1, r2) -> {
+      if (r1 == null || r1.getModified() == null) {
+        return 1;
+      }
+      if (r2 == null || r2.getModified() == null) {
+        return -1;
+      }
+      if (r1.getModified().before(r2.getModified())) {
+        return 1;
+      } else {
+        return -1;
       }
     });
     return resourceList;
@@ -1933,7 +1923,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return null;
   }
 
-
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
@@ -1962,7 +1951,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       else if (candidateResourceUUIDs.size() == 1) {
 
         // there cannot be any public res with the same alternate identifier UUID, or registered res with the same UUID
-        UUID candidate = Iterables.getOnlyElement(candidateResourceUUIDs);
+        UUID candidate = candidateResourceUUIDs.iterator().next();
         List<String> duplicateUses = detectDuplicateUsesOfUUID(candidate, resource.getShortname());
         if (duplicateUses.isEmpty()) {
           if (organisation.getKey() != null && organisation.getName() != null) {
@@ -2042,7 +2031,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return list of names of resources that have matched candidate UUID
    */
   protected List<String> detectDuplicateUsesOfUUID(UUID candidate, String shortname) {
-    ListMultimap<UUID, String> duplicateUses = ArrayListMultimap.create();
+    ListValuedMap<UUID, String> duplicateUses = new ArrayListValuedHashMap<>();
     for (Resource other : resources.values()) {
       // only resources having a different shortname should be matched against
       if (!other.getShortname().equalsIgnoreCase(shortname)) {
@@ -2501,7 +2490,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
-  public ListMultimap<String, Date> getProcessFailures() {
+  public ListValuedMap<String, Date> getProcessFailures() {
     return processFailures;
   }
 
@@ -2509,6 +2498,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public boolean hasMaxProcessFailures(Resource resource) {
     if (processFailures.containsKey(resource.getShortname())) {
       List<Date> failures = processFailures.get(resource.getShortname());
+
       LOG.debug("Publication has failed " + failures.size() + " time(s) for resource: " + resource
         .getTitleAndShortname());
       return failures.size() >= MAX_PROCESS_FAILURES;

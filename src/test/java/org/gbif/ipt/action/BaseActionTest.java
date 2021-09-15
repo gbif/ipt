@@ -1,19 +1,19 @@
 package org.gbif.ipt.action;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Locale;
-
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.LocaleProvider;
+import com.opensymphony.xwork2.LocaleProviderFactory;
+import com.opensymphony.xwork2.inject.Container;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.junit.Test;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.LocaleProvider;
-import com.opensymphony.xwork2.LocaleProviderFactory;
-import com.opensymphony.xwork2.inject.Container;
+import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BaseActionTest {
 

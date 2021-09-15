@@ -10,9 +10,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.service.manage.impl;
 
+import org.apache.commons.collections4.ListValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.gbif.api.model.common.DOI;
 import org.gbif.dwca.io.Archive;
 import org.gbif.dwca.io.ArchiveFactory;
@@ -89,8 +90,6 @@ import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
@@ -955,7 +954,7 @@ public class ResourceManagerImplTest {
     resource.setSubtype("unknown");
     resource = manager.standardizeSubtype(resource);
     // assert the subtype has been set to null, since it doesn't correspond to a known vocab term
-    assertEquals(null, resource.getSubtype());
+    assertNull(resource.getSubtype());
 
     resource.setSubtype(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER);
     resource = manager.standardizeSubtype(resource);
@@ -985,7 +984,7 @@ public class ResourceManagerImplTest {
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
 
     // update the alt. id - it should not have been set, since the resource is Private
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
+    assertEquals(0, resource.getEml().getAlternateIdentifiers().size());
 
     // change resource to PUBLIC
     resource.setStatus(PublicationStatus.PUBLIC);
@@ -1019,7 +1018,7 @@ public class ResourceManagerImplTest {
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
 
     // update the alt. id - it should disapear since the resource is Private now
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
+    assertEquals(0, resource.getEml().getAlternateIdentifiers().size());
   }
 
   @Test
@@ -1043,14 +1042,14 @@ public class ResourceManagerImplTest {
     // update alt. id
     manager.updateAlternateIdentifierForRegistry(resource);
     // update the alt. id - it should not have been set, since the resource isn't registered yet
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
+    assertEquals(0, resource.getEml().getAlternateIdentifiers().size());
 
     // change resource to PUBLIC
     resource.setStatus(PublicationStatus.PUBLIC);
     // update alt. id
     manager.updateAlternateIdentifierForRegistry(resource);
     // update the alt. id - it should not have been set, since the resource isn't registered yet
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
+    assertEquals(0, resource.getEml().getAlternateIdentifiers().size());
 
     // change resource to Registered and give it a Registry UUID
     UUID key = UUID.randomUUID();
@@ -1065,7 +1064,7 @@ public class ResourceManagerImplTest {
     // try to update alt. id again
     manager.updateAlternateIdentifierForRegistry(resource);
     // there should still only be 1
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 1);
+    assertEquals(1, resource.getEml().getAlternateIdentifiers().size());
   }
 
   @Test
@@ -1424,7 +1423,7 @@ public class ResourceManagerImplTest {
   public void testHasMaxProcessFailures() throws ParserConfigurationException, SAXException, IOException {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
-    ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
+    ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
     processFailures.put("res1", new Date());
     processFailures.put("res1", new Date());
     processFailures.put("res2", new Date());

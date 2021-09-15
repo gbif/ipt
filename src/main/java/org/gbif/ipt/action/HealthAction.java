@@ -1,6 +1,8 @@
 package org.gbif.ipt.action;
 
-import com.google.gson.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;

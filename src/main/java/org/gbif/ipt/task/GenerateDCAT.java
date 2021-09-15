@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,7 +36,6 @@ import java.util.Properties;
 import java.util.Set;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
@@ -71,8 +71,8 @@ public class GenerateDCAT {
   private static final String CATALOG_RIGHTS_KEY = "catalogRights";
   private static final String CACHING_TIME_KEY = "cachingTime";
 
-  private Map<String, String> settings;
-  private Map<String, String> prefixes;
+  private final Map<String, String> settings;
+  private final Map<String, String> prefixes;
 
   // String used to cache the feed
   private String feed = "";
@@ -88,8 +88,8 @@ public class GenerateDCAT {
     this.cfg = cfg;
     this.registrationManager = registrationManager;
     this.resourceManager = resourceManager;
-    settings = ImmutableMap.copyOf(loadDCATSettings());
-    prefixes = ImmutableMap.copyOf(loadDCATPrefixes());
+    settings = Collections.unmodifiableMap(loadDCATSettings());
+    prefixes = Collections.unmodifiableMap(loadDCATPrefixes());
   }
 
   /**

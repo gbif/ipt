@@ -9,7 +9,11 @@ import org.gbif.utils.file.csv.CSVReaderFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A delimited text file based source such as CSV or tab files.

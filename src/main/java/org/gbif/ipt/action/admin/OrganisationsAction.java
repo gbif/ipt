@@ -18,10 +18,9 @@ import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 import org.apache.logging.log4j.LogManager;
@@ -85,7 +84,7 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
 
-  private static final List<String> DOI_REGISTRATION_AGENCIES = ImmutableList.of(DOIRegistrationAgency.DATACITE.name());
+  private static final List<String> DOI_REGISTRATION_AGENCIES = Collections.singletonList(DOIRegistrationAgency.DATACITE.name());
 
   @Inject
   public OrganisationsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,

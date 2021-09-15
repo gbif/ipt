@@ -3,9 +3,10 @@ package org.gbif.ipt.config;
 import org.gbif.dwc.terms.DwcTerm;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
-
-import com.google.common.collect.ImmutableSet;
 
 public final class Constants {
 
@@ -64,10 +65,17 @@ public final class Constants {
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");
 
   // Set of GBIF supported licenses
-  public static final ImmutableSet<String> GBIF_SUPPORTED_LICENSES = ImmutableSet
-    .of("http://creativecommons.org/publicdomain/zero/1.0/legalcode",
-      "http://creativecommons.org/licenses/by/4.0/legalcode", "http://creativecommons.org/licenses/by-nc/4.0/legalcode",
-      "http://www.opendatacommons.org/licenses/by/1.0/", "http://www.opendatacommons.org/licenses/pddl/1.0/");
+  public static final Set<String> GBIF_SUPPORTED_LICENSES;
+
+  static {
+    Set<String> licencesInternal = new HashSet<>();
+    licencesInternal.add("http://creativecommons.org/publicdomain/zero/1.0/legalcode");
+    licencesInternal.add("http://creativecommons.org/licenses/by/4.0/legalcode");
+    licencesInternal.add("http://creativecommons.org/licenses/by-nc/4.0/legalcode");
+    licencesInternal.add("http://www.opendatacommons.org/licenses/by/1.0/");
+    licencesInternal.add("http://www.opendatacommons.org/licenses/pddl/1.0/");
+    GBIF_SUPPORTED_LICENSES = Collections.unmodifiableSet(licencesInternal);
+  }
 
   private Constants() {
     throw new UnsupportedOperationException("Can't initialize class");

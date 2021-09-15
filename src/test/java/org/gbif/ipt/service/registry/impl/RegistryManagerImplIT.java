@@ -4,7 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.ConfigWarnings;
-import org.gbif.ipt.model.*;
+import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -28,7 +32,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

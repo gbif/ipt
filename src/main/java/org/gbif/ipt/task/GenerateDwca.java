@@ -1,6 +1,5 @@
 package org.gbif.ipt.task;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import org.apache.commons.io.FileUtils;
@@ -45,6 +44,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -92,14 +92,32 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   public static final String TEXT_FILE_EXTENSION = ".txt";
   public static final String WILDCARD_CHARACTER = "*";
 
-  public static final Set<DwcTerm> DWC_MULTI_VALUE_TERMS = ImmutableSet.of(DwcTerm.recordedBy, DwcTerm.preparations,
-    DwcTerm.associatedMedia, DwcTerm.associatedReferences, DwcTerm.associatedSequences, DwcTerm.associatedTaxa,
-    DwcTerm.otherCatalogNumbers, DwcTerm.associatedOccurrences, DwcTerm.associatedOrganisms,
-    DwcTerm.previousIdentifications, DwcTerm.higherGeography, DwcTerm.georeferencedBy, DwcTerm.georeferenceSources,
-    DwcTerm.typeStatus, DwcTerm.identifiedBy, DwcTerm.identificationReferences, DwcTerm.higherClassification,
-    DwcTerm.measurementDeterminedBy);
+  public static final Set<DwcTerm> DWC_MULTI_VALUE_TERMS;
 
   private static final Comparator<String> IGNORE_CASE_COMPARATOR = Comparator.nullsFirst(String::compareToIgnoreCase);
+
+  static {
+    Set<DwcTerm> dwcTermsInternal = new HashSet<>();
+    dwcTermsInternal.add(DwcTerm.recordedBy);
+    dwcTermsInternal.add(DwcTerm.preparations);
+    dwcTermsInternal.add(DwcTerm.associatedMedia);
+    dwcTermsInternal.add(DwcTerm.associatedReferences);
+    dwcTermsInternal.add(DwcTerm.associatedSequences);
+    dwcTermsInternal.add(DwcTerm.associatedTaxa);
+    dwcTermsInternal.add(DwcTerm.otherCatalogNumbers);
+    dwcTermsInternal.add(DwcTerm.associatedOccurrences);
+    dwcTermsInternal.add(DwcTerm.associatedOrganisms);
+    dwcTermsInternal.add(DwcTerm.previousIdentifications);
+    dwcTermsInternal.add(DwcTerm.higherGeography);
+    dwcTermsInternal.add(DwcTerm.georeferencedBy);
+    dwcTermsInternal.add(DwcTerm.georeferenceSources);
+    dwcTermsInternal.add(DwcTerm.typeStatus);
+    dwcTermsInternal.add(DwcTerm.identifiedBy);
+    dwcTermsInternal.add(DwcTerm.identificationReferences);
+    dwcTermsInternal.add(DwcTerm.higherClassification);
+    dwcTermsInternal.add(DwcTerm.measurementDeterminedBy);
+    DWC_MULTI_VALUE_TERMS = Collections.unmodifiableSet(dwcTermsInternal);
+  }
 
   @Inject
   public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,

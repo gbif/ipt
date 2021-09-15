@@ -38,7 +38,6 @@ import java.util.Map;
 import java.util.Objects;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -66,8 +65,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private final RegistryManager registryManager;
 
   // these vocabularies are always updated on startup of the IPT
-  private static final List<String> DEFAULT_VOCABS = ImmutableList
-    .of(Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_DATASET_TYPE,
+  private static final List<String> DEFAULT_VOCABS = Arrays.asList(
+      Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_DATASET_TYPE,
       Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_ROLES, Constants.VOCAB_URI_PRESERVATION_METHOD,
       Constants.VOCAB_URI_DATASET_SUBTYPES, Constants.VOCAB_URI_UPDATE_FREQUENCIES);
 

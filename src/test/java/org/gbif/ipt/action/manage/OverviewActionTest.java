@@ -1,8 +1,8 @@
 package org.gbif.ipt.action.manage;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
 import freemarker.template.TemplateException;
+import org.apache.commons.collections4.ListValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
@@ -59,7 +59,7 @@ public class OverviewActionTest {
     throws IOException, ParserConfigurationException, SAXException, AlreadyExistingException, ImportException {
 
     ResourceManager mockResourceManager = mock(ResourceManager.class);
-    ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
+    ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
     processFailures.put("res1", new Date());
     processFailures.put("res1", new Date());
     when(mockResourceManager.getProcessFailures()).thenReturn(processFailures);

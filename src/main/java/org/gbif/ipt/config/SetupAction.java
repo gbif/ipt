@@ -1,6 +1,5 @@
 package org.gbif.ipt.config;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
@@ -17,7 +16,11 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.*;
+import org.gbif.ipt.service.admin.ConfigManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
@@ -27,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -63,7 +67,7 @@ public class SetupAction extends BaseAction {
 
   private static final String MODE_DEVELOPMENT = "Test";
   private static final String MODE_PRODUCTION = "Production";
-  private static final List<String> MODES = ImmutableList.of(MODE_DEVELOPMENT, MODE_PRODUCTION);
+  private static final List<String> MODES = Arrays.asList(MODE_DEVELOPMENT, MODE_PRODUCTION);
 
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,

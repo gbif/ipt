@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.manage;
 
+import org.apache.commons.collections4.ListValuedMap;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
@@ -25,7 +26,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ListMultimap;
 import com.google.inject.ImplementedBy;
 
 /**
@@ -332,7 +332,7 @@ public interface ResourceManager {
    *
    * @return map of resource name (key) to List of Date when publishing job failed
    */
-  ListMultimap<String, Date> getProcessFailures();
+  ListValuedMap<String, Date> getProcessFailures();
 
   /**
    * Check if the maximum number of publish event failures has occurred for a resource.

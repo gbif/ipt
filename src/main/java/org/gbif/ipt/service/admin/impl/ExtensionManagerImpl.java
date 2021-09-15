@@ -36,6 +36,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,7 +46,6 @@ import java.util.Objects;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
@@ -80,7 +80,16 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
   private final BaseAction baseAction;
   // map of deprecated terms and their replacedBy terms
-  private static Map<String, Term> TERMS_REPLACED_BY_ANOTHER_TERM;
+  private static final Map<String, Term> TERMS_REPLACED_BY_ANOTHER_TERM;
+
+  static {
+    Map<String, Term> termsReplacedByAnotherTermInternal = new HashMap<>();
+    termsReplacedByAnotherTermInternal.put("http://purl.org/dc/terms/source", DcTerm.references);
+    termsReplacedByAnotherTermInternal.put("http://purl.org/dc/terms/rights", DcTerm.license);
+    termsReplacedByAnotherTermInternal.put("http://rs.tdwg.org/dwc/terms/individualID", DwcTerm.organismID);
+    termsReplacedByAnotherTermInternal.put("http://rs.tdwg.org/dwc/terms/occurrenceDetails", DcTerm.references);
+    TERMS_REPLACED_BY_ANOTHER_TERM = Collections.unmodifiableMap(termsReplacedByAnotherTermInternal);
+  }
 
   @Inject
   public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, ResourceManager resourceManager,
@@ -93,12 +102,6 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     this.warnings = warnings;
     this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
     this.registryManager = registryManager;
-
-    TERMS_REPLACED_BY_ANOTHER_TERM =
-      new ImmutableMap.Builder<String, Term>().put("http://purl.org/dc/terms/source", DcTerm.references)
-        .put("http://purl.org/dc/terms/rights", DcTerm.license)
-        .put("http://rs.tdwg.org/dwc/terms/individualID", DwcTerm.organismID)
-        .put("http://rs.tdwg.org/dwc/terms/occurrenceDetails", DcTerm.references).build();
   }
 
   public static String normalizeRowType(String rowType) {

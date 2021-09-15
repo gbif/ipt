@@ -1,6 +1,5 @@
 package org.gbif.ipt.action.portal;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -163,7 +163,7 @@ public class InventoryAction extends ActionSupport {
      */
     public void setRecordsByExtension(Map<String, Integer> recordsByExtension) {
       if (recordsByExtension != null) {
-        this.recordsByExtension = ImmutableMap.copyOf(recordsByExtension);
+        this.recordsByExtension = Collections.unmodifiableMap(recordsByExtension);
       }
     }
 
