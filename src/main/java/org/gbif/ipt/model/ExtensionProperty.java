@@ -9,7 +9,6 @@ package org.gbif.ipt.model;
 
 import org.gbif.dwc.ArchiveField.DataType;
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwca.io.ArchiveField.DataType;
 
 import java.io.Serializable;
 import java.net.URI;

@@ -1144,7 +1144,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
         logProcessFailures(resource);
         LOG.info("Clearing publish event failures for resource: " + resource.getTitleAndShortname());
-        resourceManager.getProcessFailures().removeAll(resource.getShortname());
+        resourceManager.getProcessFailures().remove(resource.getShortname());
       }
 
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
