@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:16\n"
+"PO-Revision-Date: 2021-09-08 18:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -107,7 +107,7 @@ msgstr "Preguntas frecuentes"
 #: en/modules/ROOT/pages/occurrence-data.adoc:1
 #, no-wrap
 msgid "Occurrence Data"
-msgstr ""
+msgstr "Datos de registros biológicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:5
