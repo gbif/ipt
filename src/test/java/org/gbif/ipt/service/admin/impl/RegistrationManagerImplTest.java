@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.admin.impl;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
@@ -30,6 +31,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -69,7 +71,8 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     HttpClient mockHttpClient;
-    ExtendedResponse mockResponse;
+    HttpResponse mockResponse;
+    ExtendedResponse extResponse;
 
     // mock instance of ResourceManager: returns list of Resource that has one associated to Academy of Natural Sciences
     ResourceManager mockResourceManager = mock(ResourceManager.class);
@@ -107,12 +110,13 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
 
     // mock returning list of registered Organisation with local test resource
     mockHttpClient = mock(HttpClient.class);
-    mockResponse = mock(ExtendedResponse.class);
-    mockResponse.setContent(
+    mockResponse = mock(HttpResponse.class);
+    extResponse = new ExtendedResponse(mockResponse);
+    extResponse.setContent(
       IOUtils.toString(
-          RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisation.json"),
+          Objects.requireNonNull(RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisation.json")),
           StandardCharsets.UTF_8));
-    when(mockHttpClient.get(anyString())).thenReturn(mockResponse);
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =

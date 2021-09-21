@@ -373,7 +373,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     try {
       for (Extension ext : registryManager.getExtensions()) {
         if (ext.getRowType() != null && AppConfig.getCoreRowTypes().contains(ext.getRowType())) {
-          if (ext.isLatest()) { // must be latest version
+          if (ext.isLatest()) { // must be the latest version
             coreTypes.add(ext);
           }
         }

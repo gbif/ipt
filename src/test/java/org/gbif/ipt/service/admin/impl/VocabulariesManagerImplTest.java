@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.admin.impl;
 
+import org.apache.http.HttpResponse;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -70,12 +72,13 @@ public class VocabulariesManagerImplTest {
     // construct mock RegistryManager:
     // mock getVocabularies() response from Registry with local test resource (list of vocabularies from thesauri_sandbox.json)
     HttpClient mockHttpClient = mock(HttpClient.class);
-    ExtendedResponse mockResponse = mock(ExtendedResponse.class);
-    mockResponse.setContent(
+    HttpResponse mockResponse = mock(HttpResponse.class);
+    ExtendedResponse extResponse = new ExtendedResponse(mockResponse);
+    extResponse.setContent(
       IOUtils.toString(
-          ExtensionManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json"),
+          Objects.requireNonNull(ExtensionManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json")),
           StandardCharsets.UTF_8));
-    when(mockHttpClient.get(anyString())).thenReturn(mockResponse);
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =

@@ -1,5 +1,6 @@
 package org.gbif.ipt.action.admin;
 
+import org.apache.http.HttpResponse;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -27,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -45,6 +47,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("HttpUrlsUsage")
 public class ExtensionsActionTest {
 
   ExtensionsAction action;
@@ -53,14 +56,15 @@ public class ExtensionsActionTest {
   @Before
   public void setup() throws IOException, ParserConfigurationException, SAXException, URISyntaxException {
     HttpClient mockHttpClient = mock(HttpClient.class);
-    ExtendedResponse mockResponse = mock(ExtendedResponse.class);
+    HttpResponse mockResponse = mock(HttpResponse.class);
+    ExtendedResponse extResponse = new ExtendedResponse(mockResponse);
 
     // mock response from Registry listing all registered extensions
-    mockResponse.setContent(
+    extResponse.setContent(
       IOUtils.toString(
-          RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"),
+          Objects.requireNonNull(RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json")),
           StandardCharsets.UTF_8));
-    when(mockHttpClient.get(anyString())).thenReturn(mockResponse);
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager registryManager =
@@ -78,7 +82,7 @@ public class ExtensionsActionTest {
   }
 
   @Test
-  public void testGetLatestVersions() throws Exception {
+  public void testGetLatestVersions() {
     // start with 52 extensions
     assertEquals(52, extensions.size());
     // start with 3 extensions with Occurrence rowType
@@ -91,7 +95,7 @@ public class ExtensionsActionTest {
     assertEquals(44, filtered.size());
     // end with 1 extension with Occurrence rowType
     assertEquals(1, countOccurrenceExtensions(filtered));
-    // make sure that Occurrence extension is the right one..
+    // make sure that Occurrence extension is the right one
     Extension latestOccurrence = getFirstOccurrenceExtension(filtered);
     assertNotNull(latestOccurrence);
     assertTrue(latestOccurrence.isLatest());
@@ -124,7 +128,7 @@ public class ExtensionsActionTest {
     installed.add(occurrenceCore);
 
     action.updateIsLatest(installed);
-    assertTrue(installed.get(0).isLatest()); // Now indicates it is latest version!
+    assertTrue(installed.get(0).isLatest()); // Now indicates it is the latest version!
   }
 
   /**

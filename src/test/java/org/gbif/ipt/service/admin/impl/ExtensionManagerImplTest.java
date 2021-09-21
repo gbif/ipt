@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.admin.impl;
 
+import org.apache.http.HttpResponse;
 import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
@@ -34,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -45,7 +47,6 @@ import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -60,6 +61,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("HttpUrlsUsage")
 public class ExtensionManagerImplTest {
 
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
@@ -89,12 +91,14 @@ public class ExtensionManagerImplTest {
     // construct mock RegistryManager:
     // mock getExtensions() response from Registry with local test resource (list of extensions from extensions.json)
     HttpClient mockHttpUtil = mock(HttpClient.class);
-    ExtendedResponse mockResponse = mock(ExtendedResponse.class);
-    mockResponse.setContent(IOUtils
+    HttpResponse mockResponse = mock(HttpResponse.class);
+    ExtendedResponse extResponse = new ExtendedResponse(mockResponse);
+
+    extResponse.setContent(IOUtils
       .toString(
-          ExtensionManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"),
+          Objects.requireNonNull(ExtensionManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json")),
           StandardCharsets.UTF_8));
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    when(mockHttpUtil.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
@@ -211,7 +215,7 @@ public class ExtensionManagerImplTest {
    */
   @Test(expected = InvalidConfigException.class)
   public void testInstallCoreTypesBadCoreConfiguration() throws Exception {
-    File tmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();;
+    File tmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
     File dataDirLocation = new File(tmpDir, "datadir.location");
     File testDataDir = FileUtils.getClasspathFile("dataDir");
     org.apache.commons.io.FileUtils.copyDirectoryToDirectory(testDataDir, tmpDir); // copy testDataDir to tmp location

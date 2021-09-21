@@ -457,9 +457,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (JsonSyntaxException e) {
       // throw new RegistryException if a non-parsable response was encountered
       throw new RegistryException(Type.BAD_RESPONSE, url, "Unexpected, non-parsable response format encountered.");
-    } catch (RegistryException e) {
-      // just rethrow if a RegistryException was encountered
-      throw e;
     }
     // populate Resources list
     List<Resource> resources = new ArrayList<>();
@@ -516,7 +513,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (UnknownHostException e) {
       try {
         // if server cannot connect to Google - probably the Internet connection is not active.
-        http.get("http://www.google.com");
+        http.get("https://www.google.com");
       } catch (Exception e1) {
         throw new RegistryException(Type.NO_INTERNET, url, e1);
       }

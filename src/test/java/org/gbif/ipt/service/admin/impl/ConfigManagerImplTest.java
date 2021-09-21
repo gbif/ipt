@@ -117,16 +117,16 @@ public class ConfigManagerImplTest {
       configManager.setBaseUrl(baseURL2);
       // the validation should never get here.
       fail();
-    } catch (InvalidConfigException e) {
+    } catch (InvalidConfigException ignored) {
     }
 
     // try to save an existent baseURL without an IPT installed.
     try {
-      URL baseURL2 = new URL("http://www.gbif.org");
+      URL baseURL2 = new URL("https://www.gbif.org");
       configManager.setBaseUrl(baseURL2);
       // the validation should never get here.
       fail();
-    } catch (InvalidConfigException e) {
+    } catch (InvalidConfigException ignored) {
     }
 
     // TODO figure out how to test a proxy
@@ -163,14 +163,12 @@ public class ConfigManagerImplTest {
     // configManager.setProxy(newProxy);
     // assertEquals(newProxy, appConfig.getProperty(AppConfig.PROXY));
 
-
     // Saving null proxy
-    String newProxy = null;
-    configManager.setProxy(newProxy);
+    configManager.setProxy(null);
     assertEquals("", appConfig.getProperty(AppConfig.PROXY));
 
     // Saving an empty proxy String
-    newProxy = "";
+    String newProxy = "";
     configManager.setProxy(newProxy);
     assertEquals(newProxy, appConfig.getProperty(AppConfig.PROXY));
   }
@@ -182,7 +180,7 @@ public class ConfigManagerImplTest {
     ConfigManagerImpl configManager = getConfigManager();
 
     // Base URL invalid, since host name has underscore "_", which violoates RFC 1123 and RFC 952
-    URL testURL = new URL("http://testipt1_vh.gbif.org:8080/ipt");
+    URL testURL = new URL("https://testipt1_vh.gbif.org:8080/ipt");
     assertFalse(configManager.validateBaseURL(testURL));
   }
 
