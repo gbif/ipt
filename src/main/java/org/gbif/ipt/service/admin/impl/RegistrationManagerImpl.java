@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.doi.service.DoiService;
@@ -39,7 +38,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -63,18 +61,15 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   private final XStream xstreamV2 = new XStream();
   private ResourceManager resourceManager;
   private RegistryManager registryManager;
-  private DefaultHttpClient client;
-
 
   @Inject
   public RegistrationManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    RegistryManager registryManager, PasswordConverter passwordConverter, DefaultHttpClient client) {
+    RegistryManager registryManager, PasswordConverter passwordConverter) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     defineXstreamMappingV1();
     defineXstreamMappingV2(passwordConverter);
     this.registryManager = registryManager;
-    this.client = client;
   }
 
   @Override

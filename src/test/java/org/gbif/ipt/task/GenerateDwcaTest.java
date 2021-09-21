@@ -13,7 +13,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.task;
 
 import org.gbif.api.model.common.DOI;
@@ -22,8 +21,8 @@ import org.gbif.dwc.ArchiveFile;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.ClosableIterator;
-import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -96,7 +95,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GenerateDwcaTest {
-  private static final Logger LOG = LogManager.getLogger(GenerateDwcaTest.class);
+
   private static final String RESOURCE_SHORTNAME = "res1";
   private static final String VERSIONED_ARCHIVE_FILENAME = "dwca-3.0.zip";
 
@@ -232,10 +231,9 @@ public class GenerateDwcaTest {
     boolean foundWarningAboutAmbiguousBOR = false;
     // since there was an empty line at bottom of file, there should be a warning message!
     boolean foundWarningAboutEmptyLine = false;
-    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
-      TaskMessage msg = iter.next();
+    for (TaskMessage msg : generateDwca.report().getMessages()) {
       if (msg.getMessage().startsWith("2 line(s) use ambiguous basisOfRecord")) {
-         foundWarningAboutAmbiguousBOR = true;
+        foundWarningAboutAmbiguousBOR = true;
       } else if (msg.getMessage().startsWith("1 empty line(s) skipped")) {
         foundWarningAboutEmptyLine = true;
       }
@@ -463,7 +461,7 @@ public class GenerateDwcaTest {
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
@@ -685,10 +683,10 @@ public class GenerateDwcaTest {
 
     // check for warning message
     boolean foundWarning = false;
-    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
-      TaskMessage msg = iter.next();
+    for (TaskMessage msg : generateDwca.report().getMessages()) {
       if (msg.getMessage().equals("The sampling event resource has no associated occurrences.")) {
         foundWarning = true;
+        break;
       }
     }
     assertTrue(foundWarning);

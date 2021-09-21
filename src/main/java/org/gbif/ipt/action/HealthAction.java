@@ -13,7 +13,8 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 
 public class HealthAction extends BaseAction {
 
@@ -21,7 +22,7 @@ public class HealthAction extends BaseAction {
   private static final Logger LOG = LogManager.getLogger(HealthAction.class);
 
   private DataDir dataDir;
-  private HttpUtil http;
+  private final HttpClient http;
 
   public Status status;
 
@@ -61,11 +62,11 @@ public class HealthAction extends BaseAction {
   public String iptMode = "";
 
   @Inject
-  public HealthAction(SimpleTextProvider textProvider, AppConfig cfg, HttpUtil httpUtil, RegistrationManager registrationManager,
+  public HealthAction(SimpleTextProvider textProvider, AppConfig cfg, HttpClient client, RegistrationManager registrationManager,
                       DataDir dataDir) {
     super(textProvider, cfg, registrationManager);
     this.dataDir = dataDir;
-    this.http = httpUtil;
+    this.http = client;
   }
 
   @Override
@@ -75,7 +76,7 @@ public class HealthAction extends BaseAction {
     // Network
     try {
       networkRegistryURL = cfg.getRegistryUrl();
-      HttpUtil.Response resp = http.get(networkRegistryURL);
+      ExtendedResponse resp = http.get(networkRegistryURL);
       if ((resp != null) && (resp.getStatusCode() == 200)) {
         networkRegistry = true;
       }
@@ -85,7 +86,7 @@ public class HealthAction extends BaseAction {
     }
 
     try {
-      HttpUtil.Response resp = http.get(networkRepositoryURL);
+      ExtendedResponse resp = http.get(networkRepositoryURL);
       if ((resp != null) && (resp.getStatusCode() == 200)) {
         networkRepository = true;
       }
@@ -96,9 +97,9 @@ public class HealthAction extends BaseAction {
 
     try {
       networkPublicAccessURL = cfg.getBaseUrl();
-      HttpUtil.Response resp = http.get(networkCheckPublicAccessURL + networkPublicAccessURL);
+      ExtendedResponse resp = http.get(networkCheckPublicAccessURL + networkPublicAccessURL);
       if ((resp != null) && (resp.getStatusCode() == 200)) {
-        JsonObject jsonObject = new JsonParser().parse(resp.content).getAsJsonObject();
+        JsonObject jsonObject = new JsonParser().parse(resp.getContent()).getAsJsonObject();
         JsonElement success = jsonObject.get("success");
         if ((success != null) && success.getAsBoolean()) {
           networkPublicAccess = true;

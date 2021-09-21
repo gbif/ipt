@@ -4,7 +4,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.gbif.dwc.ArchiveFile;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.record.Record;
@@ -45,6 +44,7 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
@@ -244,7 +244,7 @@ public class GenerateDwcaIT {
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);

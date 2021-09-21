@@ -22,13 +22,15 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -79,17 +81,19 @@ public class ExtensionManagerImplTest {
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
 
     // construct ExtensionFactory using injected parameters
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
 
     // construct mock RegistryManager:
     // mock getExtensions() response from Registry with local test resource (list of extensions from extensions.json)
-    HttpUtil mockHttpUtil = mock(HttpUtil.class);
-    HttpUtil.Response mockResponse = mock(HttpUtil.Response.class);
-    mockResponse.content = IOUtils
-      .toString(ExtensionManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"), "UTF-8");
+    HttpClient mockHttpUtil = mock(HttpClient.class);
+    ExtendedResponse mockResponse = mock(ExtendedResponse.class);
+    mockResponse.setContent(IOUtils
+      .toString(
+          ExtensionManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"),
+          StandardCharsets.UTF_8));
     when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
 
     // create instance of RegistryManager
@@ -275,7 +279,7 @@ public class ExtensionManagerImplTest {
   public void testMigrateResourceToNewExtensionVersion() throws IOException {
     ExtensionManagerImpl manager =
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
-        mock(ResourceManager.class), mock(HttpUtil.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
+        mock(ResourceManager.class), mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(RegistryManager.class));
     File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
 
@@ -379,7 +383,7 @@ public class ExtensionManagerImplTest {
   public void testGetRedundantGroups() throws IOException {
     ExtensionManagerImpl manager =
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
-        mock(ResourceManager.class), mock(HttpUtil.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
+        mock(ResourceManager.class), mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(RegistryManager.class));
     File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
 

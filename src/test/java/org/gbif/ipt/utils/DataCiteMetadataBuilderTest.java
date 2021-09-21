@@ -331,7 +331,7 @@ public class DataCiteMetadataBuilderTest {
     assertEquals("eng", dataCiteMetadata.getDescriptions().getDescription().get(0).getLang());
 
     // GeoLocation
-    assertEquals("Box{westBoundLongitude=-115.46875, eastBoundLongitude=-112.6535, southBoundLatitude=51.8533, northBoundLatitude=51.973587}",
+    assertEquals("Box[westBoundLongitude=-115.46875, eastBoundLongitude=-112.6535, southBoundLatitude=51.8533, northBoundLatitude=51.973587]",
         dataCiteMetadata.getGeoLocations().getGeoLocation().get(0).getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox().get(1).toString());
     assertEquals("NE Calgary Region",
       dataCiteMetadata.getGeoLocations().getGeoLocation().get(0).getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox().get(0));

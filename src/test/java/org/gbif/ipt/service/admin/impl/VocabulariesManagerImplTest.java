@@ -13,13 +13,15 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -67,15 +69,17 @@ public class VocabulariesManagerImplTest {
 
     // construct mock RegistryManager:
     // mock getVocabularies() response from Registry with local test resource (list of vocabularies from thesauri_sandbox.json)
-    HttpUtil mockHttpUtil = mock(HttpUtil.class);
-    HttpUtil.Response mockResponse = mock(HttpUtil.Response.class);
-    mockResponse.content =
-      IOUtils.toString(ExtensionManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json"), "UTF-8");
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    HttpClient mockHttpClient = mock(HttpClient.class);
+    ExtendedResponse mockResponse = mock(ExtendedResponse.class);
+    mockResponse.setContent(
+      IOUtils.toString(
+          ExtensionManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json"),
+          StandardCharsets.UTF_8));
+    when(mockHttpClient.get(anyString())).thenReturn(mockResponse);
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
-      new RegistryManagerImpl(appConfig, dataDir, mockHttpUtil, saxf, warnings, mock(SimpleTextProvider.class),
+      new RegistryManagerImpl(appConfig, dataDir, mockHttpClient, saxf, warnings, mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(ResourceManager.class));
 
     assertTrue(TMP_DIR.isDirectory());
@@ -155,10 +159,10 @@ public class VocabulariesManagerImplTest {
     // were downloaded already. Furthermore, mock download() response with StatusLine with 200 OK response code
     StatusLine sl = mock(StatusLine.class);
     when(sl.getStatusCode()).thenReturn(HttpStatus.SC_OK);
-    when(mockHttpUtil.download(any(URL.class), any(File.class))).thenReturn(sl);
+    when(mockHttpClient.download(any(URL.class), any(File.class))).thenReturn(sl);
 
     manager =
-      new VocabulariesManagerImpl(appConfig, dataDir, vocabularyFactory, mockHttpUtil, mockRegistryManager, warnings,
+      new VocabulariesManagerImpl(appConfig, dataDir, vocabularyFactory, mockHttpClient, mockRegistryManager, warnings,
         mock(SimpleTextProvider.class), mock(RegistrationManager.class));
   }
 
@@ -226,6 +230,7 @@ public class VocabulariesManagerImplTest {
     assertEquals("http://rs.gbif.org/vocabulary/gbif/rank.xml", v.getUriResolvable().toString());
   }
 
+  // TODO: 20/09/2021 empty test
   @Test
   public void testUpdateIfChanged() {
 

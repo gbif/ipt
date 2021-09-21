@@ -5,6 +5,7 @@ import org.gbif.dwc.ArchiveFile;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -59,7 +60,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -340,7 +340,7 @@ public class GenerateDwcaEventTest {
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);

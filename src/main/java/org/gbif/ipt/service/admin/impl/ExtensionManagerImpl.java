@@ -26,7 +26,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.HttpClient;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,7 +72,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   private final static String RECORD_LEVEL_CLASS = "Record-level";
   private final Map<String, Extension> extensionsByRowtype = new HashMap<>();
   private final ExtensionFactory factory;
-  private final HttpUtil downloader;
+  private final HttpClient downloader;
   private final ResourceManager resourceManager;
   private final ConfigWarnings warnings;
   private final RegistryManager registryManager;
@@ -93,12 +93,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
   @Inject
   public ExtensionManagerImpl(AppConfig cfg, DataDir dataDir, ExtensionFactory factory, ResourceManager resourceManager,
-    HttpUtil httpUtil, ConfigWarnings warnings, SimpleTextProvider textProvider,
-    RegistrationManager registrationManager, RegistryManager registryManager) {
+                              HttpClient client, ConfigWarnings warnings, SimpleTextProvider textProvider,
+                              RegistrationManager registrationManager, RegistryManager registryManager) {
     super(cfg, dataDir);
     this.factory = factory;
     this.resourceManager = resourceManager;
-    this.downloader = httpUtil;
+    this.downloader = client;
     this.warnings = warnings;
     this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
     this.registryManager = registryManager;

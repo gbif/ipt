@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.admin.impl;
 
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
@@ -18,12 +19,15 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -60,12 +64,12 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // mock instances
     AppConfig mockAppConfig = mock(AppConfig.class);
     mockDataDir = mock(DataDir.class);
-    client = HttpUtil.newMultithreadedClient(1000, 1, 1);
+    CloseableHttpClient client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     SAXParserFactory mockSAXParserFactory = mock(SAXParserFactory.class);
     ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
-    HttpUtil mockHttpUtil;
-    HttpUtil.Response mockResponse;
+    HttpClient mockHttpClient;
+    ExtendedResponse mockResponse;
 
     // mock instance of ResourceManager: returns list of Resource that has one associated to Academy of Natural Sciences
     ResourceManager mockResourceManager = mock(ResourceManager.class);
@@ -88,7 +92,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     r2.setDoi(new DOI("doi:10.1594/PANGAEA.726855"));
 
     // mock list() to return list with the mocked Resource - notable its organisation name is the old version
-    List<Resource> resourcesList = new ArrayList<Resource>();
+    List<Resource> resourcesList = new ArrayList<>();
     resourcesList.add(r1);
     resourcesList.add(r2);
     when(mockResourceManager.list()).thenReturn(resourcesList);
@@ -102,15 +106,17 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     when(mockDataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V2)).thenReturn(registrationXML2);
 
     // mock returning list of registered Organisation with local test resource
-    mockHttpUtil = mock(HttpUtil.class);
-    mockResponse = mock(HttpUtil.Response.class);
-    mockResponse.content =
-      IOUtils.toString(RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisation.json"), "UTF-8");
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    mockHttpClient = mock(HttpClient.class);
+    mockResponse = mock(ExtendedResponse.class);
+    mockResponse.setContent(
+      IOUtils.toString(
+          RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisation.json"),
+          StandardCharsets.UTF_8));
+    when(mockHttpClient.get(anyString())).thenReturn(mockResponse);
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mock(RegistrationManager.class), mock(ResourceManager.class));
 
     // make sure the list of organisations is fully populated
@@ -119,7 +125,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // create instance of manager
     registrationManager =
       new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockResourceManager, mockRegistryManager,
-        mock(PasswordConverter.class), client);
+        mock(PasswordConverter.class));
 
     // load associatedOrganisations, hostingOrganisation, etc
     registrationManager.load();

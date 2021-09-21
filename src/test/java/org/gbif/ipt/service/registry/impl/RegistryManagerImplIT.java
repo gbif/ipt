@@ -19,7 +19,6 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.Eml;
-import org.gbif.utils.HttpUtil;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -65,7 +64,7 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
 
     // manager that issues real http requests
     manager =
-      new RegistryManagerImpl(cfg, dataDir, new HttpUtil(buildHttpClient()), buildSaxFactory(), mockConfigWarnings,
+      new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory(), mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, resourceManager);
   }
 

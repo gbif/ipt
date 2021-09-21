@@ -22,13 +22,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.digester.Digester;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 import org.xml.sax.SAXException;
 
 /**
@@ -50,7 +48,7 @@ public class ExtensionFactory {
   private final HttpClient client;
 
   @Inject
-  public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory, DefaultHttpClient client) {
+  public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory, org.gbif.utils.HttpClient client) {
     this.thesaurusRule = thesaurusRule;
     this.saxf = factory;
     this.client = client;
@@ -64,7 +62,7 @@ public class ExtensionFactory {
    * @return The collection of Extensions
    */
   public Collection<Extension> build(Collection<String> urls) {
-    List<Extension> extensions = new LinkedList<Extension>();
+    List<Extension> extensions = new LinkedList<>();
 
     for (String urlAsString : urls) {
       try {
@@ -171,25 +169,19 @@ public class ExtensionFactory {
    * @return The extension
    */
   public Extension build(String url) throws IOException, SAXException {
-
-    HttpGet get = new HttpGet(url);
-
     // execute
     try {
-      HttpResponse response = client.execute(get);
-      HttpEntity entity = response.getEntity();
+      ExtendedResponse response = client.get(url);
+      HttpEntity entity = response.getResponse().getEntity();
       if (entity != null) {
         // copy stream to local file
-        InputStream is = entity.getContent();
-        try {
+        try (InputStream is = entity.getContent()) {
           Extension e = build(is);
           LOG.info("Successfully parsed extension: " + e.getTitle());
           return e;
 
         } catch (SAXException e) {
           LOG.error("Unable to parse XML for extension: " + e.getMessage(), e);
-        } finally {
-          is.close();
         }
         // close http connection
         EntityUtils.consume(entity);

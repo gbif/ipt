@@ -25,6 +25,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.gbif.utils.HttpClient;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -36,10 +37,10 @@ import static org.mockito.Mockito.when;
 
 public class ExtensionFactoryTest {
 
-  public static ExtensionFactory getFactory() throws ParserConfigurationException, SAXException, MalformedURLException {
+  public static ExtensionFactory getFactory() throws Exception {
     IPTModule mod = new IPTModule();
     SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
-    DefaultHttpClient client = new DefaultHttpClient();
+    HttpClient client = new HttpClient();
 
     VocabulariesManager vocabulariesManager = mock(VocabulariesManager.class);
     Vocabulary v = new Vocabulary();

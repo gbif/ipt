@@ -16,7 +16,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.HttpClient;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,7 +61,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   public static final String CONFIG_FOLDER = ".vocabularies";
   public static final String VOCAB_FILE_SUFFIX = ".vocab";
   private VocabularyFactory vocabFactory;
-  private HttpUtil downloader;
+  private final HttpClient downloader;
   private final RegistryManager registryManager;
 
   // these vocabularies are always updated on startup of the IPT
@@ -76,12 +76,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private BaseAction baseAction;
 
   @Inject
-  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory, HttpUtil httpUtil,
-    RegistryManager registryManager, ConfigWarnings warnings, SimpleTextProvider textProvider,
-    RegistrationManager registrationManager) {
+  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory,
+                                 HttpClient client, RegistryManager registryManager, ConfigWarnings warnings,
+                                 SimpleTextProvider textProvider, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.vocabFactory = vocabFactory;
-    this.downloader = httpUtil;
+    this.downloader = client;
     this.registryManager = registryManager;
     this.warnings = warnings;
     baseAction = new BaseAction(textProvider, cfg, registrationManager);

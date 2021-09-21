@@ -13,12 +13,14 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImplTest;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,17 +52,19 @@ public class ExtensionsActionTest {
 
   @Before
   public void setup() throws IOException, ParserConfigurationException, SAXException, URISyntaxException {
-    HttpUtil mockHttpUtil = mock(HttpUtil.class);
-    HttpUtil.Response mockResponse = mock(HttpUtil.Response.class);
+    HttpClient mockHttpClient = mock(HttpClient.class);
+    ExtendedResponse mockResponse = mock(ExtendedResponse.class);
 
     // mock response from Registry listing all registered extensions
-    mockResponse.content =
-      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"), "UTF-8");
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    mockResponse.setContent(
+      IOUtils.toString(
+          RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"),
+          StandardCharsets.UTF_8));
+    when(mockHttpClient.get(anyString())).thenReturn(mockResponse);
 
     // create instance of RegistryManager
     RegistryManager registryManager =
-      new RegistryManagerImpl(mock(AppConfig.class), mock(DataDir.class), mockHttpUtil, mock(SAXParserFactory.class),
+      new RegistryManagerImpl(mock(AppConfig.class), mock(DataDir.class), mockHttpClient, mock(SAXParserFactory.class),
         mock(ConfigWarnings.class), mock(SimpleTextProvider.class), mock(RegistrationManager.class), mock(
         ResourceManager.class));
 

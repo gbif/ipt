@@ -69,6 +69,7 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
@@ -95,7 +96,6 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -200,7 +200,7 @@ public class ResourceManagerImplTest {
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
@@ -976,7 +976,7 @@ public class ResourceManagerImplTest {
     resource.setShortname("bees");
     Eml eml = new Eml();
     eml.setTitle("Bees of Kansas");
-    eml.setAlternateIdentifiers(new LinkedList<String>());
+    eml.setAlternateIdentifiers(new LinkedList<>());
     resource.setEml(eml);
     resource.setStatus(PublicationStatus.PRIVATE);
 
@@ -1035,7 +1035,7 @@ public class ResourceManagerImplTest {
     resource.setShortname("bees");
     Eml eml = new Eml();
     eml.setTitle("Bees of Kansas");
-    eml.setAlternateIdentifiers(new LinkedList<String>());
+    eml.setAlternateIdentifiers(new LinkedList<>());
     resource.setEml(eml);
     resource.setStatus(PublicationStatus.PRIVATE);
 
@@ -1080,7 +1080,7 @@ public class ResourceManagerImplTest {
     resource.setStatus(PublicationStatus.PUBLIC);
 
     // mock returning list of resources that are associated to the Academy of Natural Sciences organization
-    List<Resource> organisationsResources = new ArrayList<Resource>();
+    List<Resource> organisationsResources = new ArrayList<>();
     Resource r1 = new Resource();
     r1.setKey(UUID.fromString(registeredDigirResourceUUID));
     r1.setTitle("Herpetology");
@@ -1129,7 +1129,7 @@ public class ResourceManagerImplTest {
     resource.setStatus(PublicationStatus.PUBLIC);
 
     // mock returning list of resources that are associated to the Academy of Natural Sciences organization
-    List<Resource> organisationsResources = new ArrayList<Resource>();
+    List<Resource> organisationsResources = new ArrayList<>();
     Resource r1 = new Resource();
     // resource has different UUID than the one in the alternate identifiers list - interpreted as failed migration
     r1.setKey(UUID.fromString(UUID.randomUUID().toString()));
@@ -1787,8 +1787,7 @@ public class ResourceManagerImplTest {
    */
   @Test
   public void testLoadPre2Point2Resource()
-    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
-    AlreadyExistingException {
+    throws ParserConfigurationException, SAXException, IOException {
     // create new resource from configuration file (resource.xml) that does not have version history
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_v1_1.xml");
     when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);

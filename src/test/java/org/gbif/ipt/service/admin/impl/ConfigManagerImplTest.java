@@ -10,7 +10,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -22,7 +21,6 @@ import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistrationManager;
 import org.gbif.ipt.mock.MockResourceManager;
 import org.gbif.ipt.mock.MockUserAccountManager;
-import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -30,7 +28,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.utils.InputStreamUtils;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
 
 import java.net.MalformedURLException;
@@ -38,7 +36,6 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -53,7 +50,7 @@ import static org.mockito.Mockito.mock;
  */
 public class ConfigManagerImplTest {
 
-  private DefaultHttpClient client;
+  private HttpClient client;
   private AppConfig appConfig;
 
   /**
@@ -61,7 +58,6 @@ public class ConfigManagerImplTest {
    */
   private ConfigManagerImpl getConfigManager() throws ParserConfigurationException, SAXException {
     DataDir mockedDataDir = MockDataDir.buildMock();
-    InputStreamUtils streamUtils = new InputStreamUtils();
     ResourceManager mockedResourceManager = MockResourceManager.buildMock();
     ExtensionManager mockedExtensionManager = mock(ExtensionManager.class);
     VocabulariesManager mockedVocabularies = mock(VocabulariesManager.class);
@@ -70,10 +66,10 @@ public class ConfigManagerImplTest {
     ConfigWarnings warnings = new ConfigWarnings();
     PublishingMonitor mockPublishingMonitor = mock(PublishingMonitor.class);
 
-    client = HttpUtil.newMultithreadedClient(1000, 1, 1);
+    client = new HttpClient(HttpUtil.newMultithreadedClient(1000, 1, 1));
     appConfig = new AppConfig(mockedDataDir);
 
-    return new ConfigManagerImpl(mockedDataDir, appConfig, streamUtils, mockedUserManager, mockedResourceManager,
+    return new ConfigManagerImpl(mockedDataDir, appConfig, mockedUserManager, mockedResourceManager,
         mockedExtensionManager, mockedVocabularies, mockedRegistrationManager, warnings, client, mockPublishingMonitor);
   }
 
@@ -81,6 +77,7 @@ public class ConfigManagerImplTest {
    * Test that the method setProxy of the ConfigManager throws an InvalidConfigException if the proxy given by the user
    * don't exists or the client can't connect with it.
    */
+  // TODO: 20/09/2021 find a way to extract params or something
   @Test(expected = InvalidConfigException.class)
   public void testBadProxy() throws ParserConfigurationException, SAXException {
     // Creating configManager
@@ -89,12 +86,12 @@ public class ConfigManagerImplTest {
     // Saving a bad proxy
     String newProxy = "proxy.example:8080";
     configManager.setProxy(newProxy);
-    assertEquals(newProxy, client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY).toString());
+    assertEquals(newProxy, client.getClient().getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY).toString());
 
     // Saving a bad proxy
     newProxy = "http://proxy.example:8080";
     configManager.setProxy(newProxy);
-    assertEquals(newProxy, client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY).toString());
+    assertEquals(newProxy, client.getClient().getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY).toString());
   }
 
   /**

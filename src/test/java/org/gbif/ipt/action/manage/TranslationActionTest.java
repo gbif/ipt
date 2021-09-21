@@ -24,7 +24,6 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,11 +35,9 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -56,7 +53,7 @@ public class TranslationActionTest {
   TranslationAction action;
 
   @Before
-  public void setup() throws IOException, ParserConfigurationException, SAXException {
+  public void setup() throws Exception {
     // mock needed managers
     SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
     LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
@@ -69,14 +66,14 @@ public class TranslationActionTest {
     Container container = mock(Container.class);
 
     // mock getting list of values back for BasisOfRecord field/column in source
-    Set<String> values = new LinkedHashSet<String>();
+    Set<String> values = new LinkedHashSet<>();
     values.add("spe");
     values.add("obs");
     values.add("fos");
     when(mockSourceManager.inspectColumn(any(SourceBase.class), anyInt(), anyInt(), anyInt())).thenReturn(values);
 
     // mock getI18nVocab - only called in prepare()
-    Map<String, String> mockVocab = new HashMap<String, String>();
+    Map<String, String> mockVocab = new HashMap<>();
     mockVocab.put("NomenclaturalChecklist", "Nomenclatural Checklist");
     mockVocab.put("MachineObservation", "Machine Observation");
     when(mockVocabManager.getI18nVocab(anyString(), anyString(), anyBoolean())).thenReturn(mockVocab);
@@ -101,17 +98,17 @@ public class TranslationActionTest {
     mapping.setExtension(e);
 
     // create map of source value
-    TreeMap<String, String> sourceValues = new TreeMap<String, String>();
+    TreeMap<String, String> sourceValues = new TreeMap<>();
     sourceValues.put("k1", "spe");
     sourceValues.put("k2", "obs");
 
     // create map of translation values
-    TreeMap<String, String> translatedValues = new TreeMap<String, String>();
+    TreeMap<String, String> translatedValues = new TreeMap<>();
     translatedValues.put("k1", "Preserved Specimen");
     translatedValues.put("k2", "observation");
 
     // create map of translations that get persisted
-    Map<String, String> persistedTranslations = new HashMap<String, String>();
+    Map<String, String> persistedTranslations = new HashMap<>();
     persistedTranslations.put("spe", "Preserved Specimen");
     persistedTranslations.put("obs", "observation");
 
@@ -124,12 +121,12 @@ public class TranslationActionTest {
     // add translations to field
     field.setTranslation(persistedTranslations);
     // add set of PropertyMapping, including field, to ExtensionMapping
-    Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
+    Set<PropertyMapping> fields = new TreeSet<>();
     fields.add(field);
     mapping.setFields(fields);
 
     // add ExtensionMapping to resource, with mapping ID 0
-    List<ExtensionMapping> mappings = new LinkedList<ExtensionMapping>();
+    List<ExtensionMapping> mappings = new LinkedList<>();
     mappings.add(mapping);
     resource.setMappings(mappings);
 
@@ -155,7 +152,7 @@ public class TranslationActionTest {
     concept.setUri("http://rs.tdwg.org/dwc/dwctype/PreservedSpecimen");
 
     // preferred titles
-    Set<VocabularyTerm> preferredTerms = new HashSet<VocabularyTerm>();
+    Set<VocabularyTerm> preferredTerms = new HashSet<>();
     VocabularyTerm term = new VocabularyTerm();
     term.setLang("en");
     term.setTitle("Preserved Specimen");
@@ -164,7 +161,7 @@ public class TranslationActionTest {
     concept.setPreferredTerms(preferredTerms);
 
     // alternative titles
-    Set<VocabularyTerm> alternateTerms = new HashSet<VocabularyTerm>();
+    Set<VocabularyTerm> alternateTerms = new HashSet<>();
     term = new VocabularyTerm();
     term.setLang("en");
     term.setTitle("Conserved Specimen");
@@ -173,7 +170,7 @@ public class TranslationActionTest {
     concept.setAlternativeTerms(alternateTerms);
 
     Vocabulary vocab = new Vocabulary();
-    List<VocabularyConcept> concepts = new ArrayList<VocabularyConcept>();
+    List<VocabularyConcept> concepts = new ArrayList<>();
     concepts.add(concept);
 
     vocab.setConcepts(concepts);
@@ -243,14 +240,14 @@ public class TranslationActionTest {
   @Test
   public void testSaveTranslations() {
     // create new set of 5 translations
-    TreeMap<String, String> sourceValues = new TreeMap<String, String>();
+    TreeMap<String, String> sourceValues = new TreeMap<>();
     sourceValues.put("k1", "spe");
     sourceValues.put("k2", "obs");
     sourceValues.put("k3", "liv");
     sourceValues.put("k4", "mac");
     sourceValues.put("k5", "zoo");
 
-    TreeMap<String, String> translatedValues = new TreeMap<String, String>();
+    TreeMap<String, String> translatedValues = new TreeMap<>();
     translatedValues.put("k1", "specimen");
     translatedValues.put("k2", "observation");
     translatedValues.put("k3", "livingSpecimen");
@@ -269,7 +266,7 @@ public class TranslationActionTest {
   @Test
   public void testAutoMap() {
     // create new map of source values that haven't been mapped yet
-    TreeMap<String, String> sourceValues = new TreeMap<String, String>();
+    TreeMap<String, String> sourceValues = new TreeMap<>();
     // will match vocab on concept
     sourceValues.put("k1", "PreservedSpecimen");
     // will match vocab on preferred title
@@ -280,7 +277,7 @@ public class TranslationActionTest {
     sourceValues.put("k4", "Unknown");
 
     // create an empty map of translted values
-    TreeMap<String, String> translatedValues = new TreeMap<String, String>();
+    TreeMap<String, String> translatedValues = new TreeMap<>();
 
     action.getTrans().setTmap(Constants.DWC_ROWTYPE_TAXON, DwcTerm.basisOfRecord, sourceValues, translatedValues);
 

@@ -1,5 +1,6 @@
 package org.gbif.ipt.config;
 
+import com.google.inject.name.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -16,9 +17,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.URLUtils;
-import org.gbif.utils.HttpUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,11 +30,10 @@ import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 
 /**
  * A skeleton implementation for the time being.
@@ -43,15 +41,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 @Singleton
 public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
-  private final InputStreamUtils streamUtils;
   private final UserAccountManager userManager;
   private final ResourceManager resourceManager;
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;
   private final RegistrationManager registrationManager;
   private final ConfigWarnings warnings;
-  private final DefaultHttpClient client;
-  private final HttpUtil http;
+  private final HttpClient client;
   private final PublishingMonitor publishingMonitor;
   private static final String PATH_TO_CSS = "/styles/main.css";
 
@@ -59,13 +55,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private static final String DEPRECATED_VOCAB_PERSISTENCE_FILE = "vocabularies.xml";
 
   @Inject
-  public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
-    UserAccountManager userManager,
-    ResourceManager resourceManager, ExtensionManager extensionManager, VocabulariesManager vocabManager,
-    RegistrationManager registrationManager, ConfigWarnings warnings, DefaultHttpClient client, PublishingMonitor
+  public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, UserAccountManager userManager,
+                           ResourceManager resourceManager, ExtensionManager extensionManager,
+                           VocabulariesManager vocabManager, RegistrationManager registrationManager,
+                           ConfigWarnings warnings, @Named("ConfigurationClient") HttpClient client, PublishingMonitor
     publishingMonitor) {
     super(cfg, dataDir);
-    this.streamUtils = streamUtils;
     this.userManager = userManager;
     this.resourceManager = resourceManager;
     this.extensionManager = extensionManager;
@@ -73,7 +68,6 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     this.registrationManager = registrationManager;
     this.warnings = warnings;
     this.client = client;
-    this.http = new HttpUtil(client);
     this.publishingMonitor = publishingMonitor;
     if (dataDir.isConfigured()) {
       LOG.info("IPT DataDir configured - loading its configuration");
@@ -93,20 +87,22 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * the current proxy.
    *
    * @param hostTemp the actual proxy.
-   * @param proxy    an URL with the format http://proxy.my-institution.com:8080.
+   * @param proxy    a URL with the format http://proxy.my-institution.com:8080.
    * @throws InvalidConfigException If it can not connect to the proxy host or if the port number is no integer or if
    *                                the proxy URL is not with the valid format http://proxy.my-institution.com:8080
    */
+  @SuppressWarnings("UnusedReturnValue")
   private boolean changeProxy(HttpHost hostTemp, String proxy) {
     try {
       HttpHost host = URLUtils.getHost(proxy);
-      client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
+      client.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
 
       String testUrl = cfg.getRegistryUrl();
       boolean proxyWorks;
       try {
-        LOG.info("Testing new proxy by fetching "+testUrl+" with 4 second timeout");
-        HttpResponse response = http.executeGetWithTimeout(new HttpGet(testUrl), DEFAULT_TO);
+        // TODO: 21/09/2021 uses default timeout which is 30 sec
+        LOG.info("Testing new proxy by fetching " + testUrl + " with 4 second timeout");
+        ExtendedResponse response = client.get(testUrl);
 
         LOG.info("Proxy response is "+ response.getStatusLine());
         proxyWorks = (HttpServletResponse.SC_OK == response.getStatusLine().getStatusCode());
@@ -119,22 +115,22 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         LOG.info("Proxy tested and working.");
       } else {
         if (hostTemp != null) {
-          LOG.info("Proxy could not be validated (tried to retrieve " + testUrl + "), reverting to previous proxy setting on HTTP client: " + hostTemp.toString());
-          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+          LOG.info("Proxy could not be validated (tried to retrieve " + testUrl + "), reverting to previous proxy setting on HTTP client: " + hostTemp);
+          client.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
         }
         throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
       }
 
     } catch (NumberFormatException e) {
       if (hostTemp != null) {
-        LOG.info("NumberFormatException encountered, reverting to previous proxy setting on HTTP client: " + hostTemp.toString());
-        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+        LOG.info("NumberFormatException encountered, reverting to previous proxy setting on HTTP client: " + hostTemp);
+        client.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
       }
       throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
     } catch (MalformedURLException e) {
       if (hostTemp != null) {
-        LOG.info("MalformedURLException encountered, reverting to previous proxy setting on HTTP client: " + hostTemp.toString());
-        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+        LOG.info("MalformedURLException encountered, reverting to previous proxy setting on HTTP client: " + hostTemp);
+        client.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
       }
       throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
     }
@@ -306,7 +302,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       // validate if localhost URL is configured only in developer mode.
       // use cfg registryType vs cfg devMode since it takes into account devMode from pom and production from setupPage
       if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT) {
-        HttpHost hostTemp = (HttpHost) client.getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
+        HttpHost hostTemp = (HttpHost) client.getClient().getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
         if (hostTemp != null) {
           // if local URL is configured, the IPT should do the validation without a proxy.
           setProxy(null);
@@ -410,7 +406,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * the config page), it validates if this proxy is the same as current proxy, if this is true, nothing changes, if
    * not, it removes the current proxy and save the new proxy.
    *
-   * @param proxy an URL with the format http://proxy.my-institution.com:8080.
+   * @param proxy a URL with the format http://proxy.my-institution.com:8080.
    */
   @Override
   public void setProxy(String proxy) throws InvalidConfigException {
@@ -431,7 +427,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       // remove proxy from http client
       // Suddenly the client didn't have proxy host.
       LOG.info("No proxy entered, so removing proxy setting on http client");
-      client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
+      client.getClient().getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
     } else {
       // Changing proxy host
       if (hostTemp == null) {
@@ -440,14 +436,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       } else {
         // After Setup
         // Validating if the current proxy is the same proxy given by the user
-        if (hostTemp.toString().equals(proxy)) {
-          changeProxy(hostTemp, proxy);
-        } else {
+        if (!hostTemp.toString().equals(proxy)) {
           // remove proxy from http client
           LOG.info("A change of proxy detected so starting by removing proxy setting on http client");
-          client.getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
-          changeProxy(hostTemp, proxy);
+          client.getClient().getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
         }
+        changeProxy(hostTemp, proxy);
       }
     }
     // store in properties file
@@ -471,16 +465,17 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       return false;
     }
     try {
-      String testURL = baseURL.toString() + PATH_TO_CSS;
+      String testURL = baseURL + PATH_TO_CSS;
+      // TODO: 21/09/2021 uses default timeout which is 30 sec
       LOG.info("Validating BaseURL with get request (having 4 second timeout) to: " + testURL);
-      HttpResponse response = http.executeGetWithTimeout(new HttpGet(testURL), DEFAULT_TO);
+      ExtendedResponse response = client.get(testURL);
       return HttpServletResponse.SC_OK == response.getStatusLine().getStatusCode();
     } catch (ClientProtocolException e) {
-      LOG.info("Protocol error connecting to new base URL [" + baseURL.toString() + "]", e);
+      LOG.info("Protocol error connecting to new base URL [" + baseURL + "]", e);
     } catch (IOException e) {
-      LOG.info("IO error connecting to new base URL [" + baseURL.toString() + "]", e);
+      LOG.info("IO error connecting to new base URL [" + baseURL + "]", e);
     } catch (Exception e) {
-      LOG.info("Unknown error connecting to new base URL [" + baseURL.toString() + "]", e);
+      LOG.info("Unknown error connecting to new base URL [" + baseURL + "]", e);
     }
     return false;
   }

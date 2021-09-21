@@ -3,7 +3,7 @@ package org.gbif.ipt.config;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.action.BaseAction;
@@ -24,6 +24,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
 
 import java.io.File;
@@ -49,6 +50,7 @@ public class SetupAction extends BaseAction {
   private final DataDir dataDir;
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabulariesManager;
+  private final HttpClient client;
 
   private final UserValidator userValidation = new UserValidator();
 
@@ -63,7 +65,6 @@ public class SetupAction extends BaseAction {
   // can't pass a literal boolean to ftl, using int instead...
   protected Integer ignoreUserValidation = 0;
   private boolean setup2 = false;
-  private final HttpUtil httpUtil;
 
   private static final String MODE_DEVELOPMENT = "Test";
   private static final String MODE_PRODUCTION = "Production";
@@ -71,14 +72,14 @@ public class SetupAction extends BaseAction {
 
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
-    ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
-    ExtensionManager extensionManager, DefaultHttpClient client, VocabulariesManager vocabulariesManager) {
+                     ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
+                     ExtensionManager extensionManager, HttpClient client, VocabulariesManager vocabulariesManager) {
     super(textProvider, cfg, regManager);
     this.configManager = configManager;
     this.userManager = userManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
-    this.httpUtil = new HttpUtil(client);
+    this.client = client;
     this.vocabulariesManager = vocabulariesManager;
   }
 
@@ -417,7 +418,7 @@ public class SetupAction extends BaseAction {
         } else {
           try {
             HttpHost host = URLUtils.getHost(proxy);
-            if (!httpUtil.verifyHost(host)) {
+            if (!client.verifyHost(host)) {
               addFieldError("proxy", getText("admin.config.error.connectionRefused") + " " + proxy);
             }
           } catch (MalformedURLException e) {
