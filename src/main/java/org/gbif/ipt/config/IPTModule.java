@@ -6,12 +6,10 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.name.Names;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.model.factory.ExtensionFactory;
@@ -43,6 +41,7 @@ import java.util.Properties;
 public class IPTModule extends AbstractModule {
 
   private static final Logger LOG = LogManager.getLogger(IPTModule.class);
+
   private static final String DATA_DIR_ENV_VAR = "IPT_DATA_DIR";
   // 30 second timeout; too long and users will refresh and not notice errors.
   protected static final int CONNECTION_TIMEOUT_MSEC = 30_000;
@@ -60,8 +59,6 @@ public class IPTModule extends AbstractModule {
 
     // prototypes
     bind(ThesaurusHandlingRule.class).in(Scopes.NO_SCOPE);
-
-    bind(HttpClient.class).annotatedWith(Names.named("ConfigurationClient")).to(HttpClient.class);
 
     // assisted inject factories
     install(

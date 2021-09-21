@@ -1,6 +1,5 @@
 package org.gbif.ipt.config;
 
-import com.google.inject.name.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -58,7 +57,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, UserAccountManager userManager,
                            ResourceManager resourceManager, ExtensionManager extensionManager,
                            VocabulariesManager vocabManager, RegistrationManager registrationManager,
-                           ConfigWarnings warnings, @Named("ConfigurationClient") HttpClient client, PublishingMonitor
+                           ConfigWarnings warnings, HttpClient client, PublishingMonitor
     publishingMonitor) {
     super(cfg, dataDir);
     this.userManager = userManager;
