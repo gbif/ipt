@@ -4,7 +4,7 @@ import com.google.inject.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.messaging.Response;
-import org.gbif.ws.util.XSSUtil;
+import org.gbif.ipt.utils.XSSUtil;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.HtmlSanitizer;
 import org.owasp.html.HtmlStreamEventReceiver;

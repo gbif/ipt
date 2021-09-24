@@ -329,10 +329,7 @@ public class AppConfig {
   }
 
   public boolean hasLocation() {
-    if (getLongitude() != null && getLatitude() != null) {
-      return true;
-    }
-    return false;
+    return getLongitude() != null && getLatitude() != null;
   }
 
   /**
@@ -435,12 +432,12 @@ public class AppConfig {
     if (cores != null && ids != null) {
       LOG.info("Using custom core mapping");
       List<String> configCores = Arrays.stream(cores.split("\\|"))
-          .filter(StringUtils::isNotBlank)
-          .map(String::trim)
+          .map(org.gbif.utils.text.StringUtils::trim)
+          .filter(StringUtils::isNotEmpty)
           .collect(Collectors.toList());
       List<String> configIDs = Arrays.stream(ids.split("\\|"))
-          .filter(StringUtils::isNotBlank)
-          .map(String::trim)
+          .map(org.gbif.utils.text.StringUtils::trim)
+          .filter(StringUtils::isNotEmpty)
           .collect(Collectors.toList());
 
       if (configCores.size() == configIDs.size()) {

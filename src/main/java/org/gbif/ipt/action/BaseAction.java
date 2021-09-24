@@ -17,7 +17,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ws.util.XSSUtil;
+import org.gbif.ipt.utils.XSSUtil;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.Cookie;
