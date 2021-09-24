@@ -117,22 +117,22 @@ import static org.mockito.Mockito.when;
 public class ResourceManagerImplTest {
 
   // Mock classes
-  private AppConfig mockAppConfig = MockAppConfig.buildMock();
-  private UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
-  private UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
-  private RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
-  private OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
-  private JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
-  private SourceManager mockSourceManager = mock(SourceManager.class);
-  private RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
-  private GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-  private PasswordConverter mockPasswordConverter = mock(PasswordConverter.class);
-  private Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
-  private VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
-  private SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
+  private final AppConfig mockAppConfig = MockAppConfig.buildMock();
+  private final UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
+  private final UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
+  private final RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+  private final OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
+  private final JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
+  private final SourceManager mockSourceManager = mock(SourceManager.class);
+  private final RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
+  private final GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
+  private final PasswordConverter mockPasswordConverter = mock(PasswordConverter.class);
+  private final Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
+  private final VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
+  private final SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
 
-  private DataDir mockedDataDir = MockDataDir.buildMock();
-  private BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
+  private final DataDir mockedDataDir = MockDataDir.buildMock();
+  private final BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
 
   private User creator;
   private Resource resource;
@@ -177,9 +177,8 @@ public class ResourceManagerImplTest {
   }
 
   public ResourceManagerImpl getResourceManagerImpl() throws IOException, SAXException, ParserConfigurationException {
-
     // mock creation of datasetSubtypes Map, with 2 occurrence subtypes, and 6 checklist subtypes
-    Map<String, String> datasetSubtypes = new LinkedHashMap<String, String>();
+    Map<String, String> datasetSubtypes = new LinkedHashMap<>();
     datasetSubtypes.put("", "Select a subtype");
     datasetSubtypes.put("taxonomicAuthority", "Taxonomic Authority");
     datasetSubtypes.put("nomenclatorAuthority", "Nomenclator Authority");
@@ -943,6 +942,7 @@ public class ResourceManagerImplTest {
 
     resource = manager.inferCoreType(resource);
     // assert the coreType has now been correctly inferred
+    assertNotNull(resource.getCoreType());
     assertEquals(Resource.CoreRowType.CHECKLIST.toString().toLowerCase(), resource.getCoreType().toLowerCase());
   }
 
@@ -1217,9 +1217,7 @@ public class ResourceManagerImplTest {
    * test open archive of zipped file, with DwC-A located inside parent folder.
    */
   @Test
-  public void testOpenArchiveInsideParentFolder() throws ParserConfigurationException, SAXException, IOException {
-    // create instance of manager
-    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+  public void testOpenArchiveInsideParentFolder() throws IOException {
     // decompress archive
     File dwcaDir = FileUtils.createTempDir();
     // DwC-A located inside parent folder
@@ -1236,9 +1234,7 @@ public class ResourceManagerImplTest {
    * test failure, opening archive of zipped file, with invalid DwC-A located inside parent folder.
    */
   @Test(expected = UnsupportedArchiveException.class)
-  public void testOpenArchiveInsideParentFolderFails() throws ParserConfigurationException, SAXException, IOException {
-    // create instance of manager
-    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+  public void testOpenArchiveInsideParentFolderFails() throws IOException {
     // decompress archive
     File dwcaDir = FileUtils.createTempDir();
     // DwC-A located inside parent folder, with invalid meta.xml
@@ -1453,7 +1449,8 @@ public class ResourceManagerImplTest {
     // make pre-publication assertions
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
 
-    //to trigger PublicationException, indicate publication already in progress (add Future to processFutures)
+    // to trigger PublicationException, indicate publication already in progress (add Future to processFutures)
+    // noinspection unchecked
     resourceManager.getProcessFutures().put(resource.getShortname(), mock(Future.class));
 
     // publish, catching expected Exception
@@ -1594,7 +1591,6 @@ public class ResourceManagerImplTest {
   public DataDir getMockedDataDir() {
     return mockedDataDir;
   }
-
 
   /**
    * Ensure previous published version can be reconstructed properly.
@@ -1985,9 +1981,9 @@ public class ResourceManagerImplTest {
     // private and published
     version2.setReleased(new Date());
     assertEquals(manager.latest(1, 25).size(), 0);
-
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   @Test
   public void testLoad() throws ParserConfigurationException, SAXException, IOException {
     ResourceManagerImpl manager = getResourceManagerImpl();
@@ -2009,7 +2005,9 @@ public class ResourceManagerImplTest {
     assertTrue(res1.exists());
     assertTrue(eml.exists());
     assertTrue(cfg.exists());
-    assertEquals(2, res1.listFiles().length);
+    File[] files = res1.listFiles();
+    assertNotNull(files);
+    assertEquals(2, files.length);
 
     // possibly invalid resource, but we no longer delete such
     File res2 = new File (resourceDirectory, "res2");
@@ -2018,7 +2016,9 @@ public class ResourceManagerImplTest {
     eml2.createNewFile();
     assertTrue(res2.exists());
     assertTrue(eml2.exists());
-    assertEquals(1, res2.listFiles().length);
+    files = res2.listFiles();
+    assertNotNull(files);
+    assertEquals(1, files.length);
 
     // possibly invalid resource, but we no longer delete such
     File res3 = new File (resourceDirectory, "res3");
@@ -2027,12 +2027,16 @@ public class ResourceManagerImplTest {
     cfg3.createNewFile();
     assertTrue(res3.exists());
     assertTrue(cfg3.exists());
-    assertEquals(1, res3.listFiles().length);
+    files = res3.listFiles();
+    assertNotNull(files);
+    assertEquals(1, files.length);
 
     // empty resource directory
     File res4 = new File (resourceDirectory, "res4");
     res4.mkdir();
-    assertEquals(0, res4.listFiles().length);
+    files = res4.listFiles();
+    assertNotNull(files);
+    assertEquals(0, files.length);
 
     // valid resource
     File res5 = new File (resourceDirectory, "res5");
@@ -2044,14 +2048,22 @@ public class ResourceManagerImplTest {
     assertTrue(res5.exists());
     assertTrue(cfg5.exists());
     assertTrue(eml5.exists());
-    assertEquals(2, res5.listFiles().length);
+    files = res5.listFiles();
+    assertNotNull(files);
+    assertEquals(2, files.length);
 
-    assertEquals(5, resourceDirectory.listFiles().length);
+    files = resourceDirectory.listFiles();
+    assertNotNull(files);
+    assertEquals(5, files.length);
 
     // load resource, ensure empty directories are cleaned up
     manager.load(resourceDirectory, creator);
-    assertEquals(4, resourceDirectory.listFiles().length);
-    Set<String> mySet = new HashSet<String>(Arrays.asList(resourceDirectory.list()));
+    files = resourceDirectory.listFiles();
+    assertNotNull(files);
+    assertEquals(4, files.length);
+    String[] fileNames = resourceDirectory.list();
+    assertNotNull(fileNames);
+    Set<String> mySet = new HashSet<>(Arrays.asList(fileNames));
     assertTrue("res1", mySet.contains("res1"));
     assertTrue("res5", mySet.contains("res5"));
   }

@@ -1,5 +1,6 @@
 package org.gbif.ipt.service.manage.impl;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.StringUtils;
@@ -222,8 +223,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (metadata.getDescription() != null) {
         // split description into paragraphs
         List<String> paragraphs = Arrays.stream(metadata.getDescription().split("\r?\n"))
-            .filter(StringUtils::isNotBlank)
-            .map(String::trim)
+            .map(org.gbif.utils.text.StringUtils::trim)
+            .filter(StringUtils::isNotEmpty)
             .collect(Collectors.toList());
         for (String para : paragraphs) {
           eml.addDescriptionPara(para);
@@ -271,8 +272,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       LOG.error("Unable to copy EML File", e1);
     }
     Eml eml;
-    try {
-      InputStream in = new FileInputStream(emlFile2);
+    try (InputStream in = new FileInputStream(emlFile2)) {
       eml = EmlFactory.build(in);
     } catch (FileNotFoundException e) {
       eml = new Eml();
@@ -331,7 +331,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // create resource:
     // if decompression failed, create resource from single eml file
-    if (decompressed == null) {
+    if (CollectionUtils.isEmpty(decompressed)) {
       resource = createFromEml(shortname, dwca, creator, alog);
     }
     // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
