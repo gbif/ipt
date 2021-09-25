@@ -179,7 +179,7 @@ public class ConfigManagerImplTest {
     // Creating configManager
     ConfigManagerImpl configManager = getConfigManager();
 
-    // Base URL invalid, since host name has underscore "_", which violoates RFC 1123 and RFC 952
+    // Base URL invalid, since host name has an underscore "_", which violates RFC 1123 and RFC 952
     URL testURL = new URL("https://testipt1_vh.gbif.org:8080/ipt");
     assertFalse(configManager.validateBaseURL(testURL));
   }

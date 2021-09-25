@@ -319,14 +319,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       decompressed = CompressionUtil.decompressFile(dwcaDir, dwca, true);
     } catch (UnsupportedCompressionType e) {
       LOG.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
+    } catch (Exception e) {
+      LOG.debug("Decompression failed: " + e.getMessage(), e);
+    }
+
+    if (CollectionUtils.isEmpty(decompressed)) {
       // try again as single gzip file
       try {
         decompressed = CompressionUtil.ungzipFile(dwcaDir, dwca, false);
       } catch (Exception e2) {
-        LOG.debug("2nd attempt to decompress file failed: " + e.getMessage(), e);
+        LOG.debug("2nd attempt to decompress file failed: " + e2.getMessage(), e2);
       }
-    } catch (Exception e) {
-      LOG.debug("Decompression failed: " + e.getMessage(), e);
     }
 
     // create resource:
