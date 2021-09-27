@@ -814,7 +814,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   public boolean validateOrganisation(String organisationKey, String password) {
     try {
       ExtendedResponse resp =
-          http.get(getLoginURL(organisationKey), null, new UsernamePasswordCredentials(organisationKey, password));
+          http.get(getLoginURL(organisationKey), new UsernamePasswordCredentials(organisationKey, password));
       return HttpUtil.success(resp);
     } catch (Exception e) {
       LOG.warn(

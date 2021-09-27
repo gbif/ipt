@@ -372,7 +372,7 @@ public class AppConfig {
    * Load application configuration from application properties file (application.properties) and from
    * user configuration file (ipt.properties), which includes populating core configuration.
    */
-  protected void loadConfig() throws InvalidConfigException {
+  public void loadConfig() throws InvalidConfigException {
     InputStreamUtils streamUtils = new InputStreamUtils();
     InputStream configStream = streamUtils.classpathStream(CLASSPATH_PROPFILE);
     // load default configuration from application.properties
@@ -484,7 +484,8 @@ public class AppConfig {
     }
   }
 
-  protected void saveConfig() throws IOException {
+  // public to be accessible by ConfigManager
+  public void saveConfig() throws IOException {
     // save property config file
     OutputStream out = null;
     try {

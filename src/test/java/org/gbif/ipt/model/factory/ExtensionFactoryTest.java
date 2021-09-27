@@ -26,6 +26,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.gbif.utils.HttpClient;
+import org.gbif.utils.HttpUtil;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -40,7 +41,7 @@ public class ExtensionFactoryTest {
   public static ExtensionFactory getFactory() throws Exception {
     IPTModule mod = new IPTModule();
     SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
-    HttpClient client = new HttpClient();
+    HttpClient client = HttpUtil.newDefaultMultithreadedClient();
 
     VocabulariesManager vocabulariesManager = mock(VocabulariesManager.class);
     Vocabulary v = new Vocabulary();

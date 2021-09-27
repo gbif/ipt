@@ -477,4 +477,8 @@ public class DataDir {
       return DirStatus.NOT_EXIST;
     }
   }
+
+  public File getDataDir() {
+    return dataDir;
+  }
 }

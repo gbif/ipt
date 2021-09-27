@@ -159,12 +159,12 @@ public class IPTModule extends AbstractModule {
         System.getProperty("os.name", "?")
         );
 
-    return new HttpClient(HttpUtil.newMultithreadedClient(
+    return HttpUtil.newMultithreadedClient(
         CONNECTION_TIMEOUT_MSEC,
         MAX_CONNECTIONS,
         MAX_PER_ROUTE,
         userAgent,
-        new PreemptiveAuthenticationInterceptor()));
+        new PreemptiveAuthenticationInterceptor());
   }
 
   @Provides

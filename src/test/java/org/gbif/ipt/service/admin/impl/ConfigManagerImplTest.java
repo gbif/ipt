@@ -13,7 +13,6 @@
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.ConfigManagerImpl;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.PublishingMonitor;
@@ -31,17 +30,13 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
@@ -56,7 +51,7 @@ public class ConfigManagerImplTest {
   /**
    * @return a new ConfigManager instance.
    */
-  private ConfigManagerImpl getConfigManager() throws ParserConfigurationException, SAXException {
+  private ConfigManagerImpl getConfigManager() {
     DataDir mockedDataDir = MockDataDir.buildMock();
     ResourceManager mockedResourceManager = MockResourceManager.buildMock();
     ExtensionManager mockedExtensionManager = mock(ExtensionManager.class);
@@ -66,7 +61,7 @@ public class ConfigManagerImplTest {
     ConfigWarnings warnings = new ConfigWarnings();
     PublishingMonitor mockPublishingMonitor = mock(PublishingMonitor.class);
 
-    client = new HttpClient(HttpUtil.newMultithreadedClient(1000, 1, 1));
+    client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     appConfig = new AppConfig(mockedDataDir);
 
     return new ConfigManagerImpl(mockedDataDir, appConfig, mockedUserManager, mockedResourceManager,
@@ -75,34 +70,29 @@ public class ConfigManagerImplTest {
 
   /**
    * Test that the method setProxy of the ConfigManager throws an InvalidConfigException if the proxy given by the user
-   * don't exists or the client can't connect with it.
+   * doesn't exist or the client can't connect with it.
    */
-  // TODO: 20/09/2021 find a way to extract params or something
-  @Test(expected = InvalidConfigException.class)
-  public void testBadProxy() throws ParserConfigurationException, SAXException {
+  @Test
+  public void testSetProxyThrowsInvalidConfigExceptionWhenProxyIsWrong() {
     // Creating configManager
     ConfigManager configManager = getConfigManager();
 
     // Saving a bad proxy
     String newProxy = "proxy.example:8080";
-    configManager.setProxy(newProxy);
-    assertEquals(newProxy, client.getClient().getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY).toString());
-
-    // Saving a bad proxy
-    newProxy = "http://proxy.example:8080";
-    configManager.setProxy(newProxy);
-    assertEquals(newProxy, client.getClient().getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY).toString());
+    try {
+      configManager.setProxy(newProxy);
+      fail("Proxy is wrong, so InvalidConfigException is expected");
+    } catch (InvalidConfigException e) {
+      assertNull(appConfig.getProperty(AppConfig.PROXY));
+    }
   }
 
   /**
    * Test that the method setBaseUrl of the ConfigManager throws an InvalidConfigException if the baseURL given by the
    * user doesn't exist or the client can't connect with it.
-   *
-   * @throws MalformedURLException if the baseURL is malformed.
    */
-  @Ignore
   @Test
-  public void testSetBaseURL() throws ParserConfigurationException, SAXException, MalformedURLException {
+  public void testSetBaseURL() throws Exception {
     // Create configManager.
     ConfigManager configManager = getConfigManager();
 
@@ -116,7 +106,7 @@ public class ConfigManagerImplTest {
       URL baseURL2 = new URL("http://192.0.2.0/ipt");
       configManager.setBaseUrl(baseURL2);
       // the validation should never get here.
-      fail();
+      fail("Base URL is wrong (non-existent), so InvalidConfigException is expected");
     } catch (InvalidConfigException ignored) {
     }
 
@@ -125,7 +115,7 @@ public class ConfigManagerImplTest {
       URL baseURL2 = new URL("https://www.gbif.org");
       configManager.setBaseUrl(baseURL2);
       // the validation should never get here.
-      fail();
+      fail("Base URL is wrong (no IPT installed there), so InvalidConfigException is expected");
     } catch (InvalidConfigException ignored) {
     }
 
@@ -141,13 +131,12 @@ public class ConfigManagerImplTest {
     // assertEquals(baseURL.toString(), appConfig.getProperty(AppConfig.BASEURL));
   }
 
-
   /**
    * Test that the method setProxy of the ConfigManager saves the proxy in the application properties if the client can
    * connect with it.
    */
   @Test
-  public void testSetProxy() throws ParserConfigurationException, SAXException {
+  public void testSetProxy() {
     // Creating configManager
     ConfigManager configManager = getConfigManager();
 
@@ -174,14 +163,12 @@ public class ConfigManagerImplTest {
   }
 
   @Test
-  public void testValidateBaseURLBadHostName()
-    throws ParserConfigurationException, SAXException, MalformedURLException {
+  public void testValidateBaseURLBadHostName() throws Exception {
     // Creating configManager
     ConfigManagerImpl configManager = getConfigManager();
 
     // Base URL invalid, since host name has an underscore "_", which violates RFC 1123 and RFC 952
     URL testURL = new URL("https://testipt1_vh.gbif.org:8080/ipt");
-    assertFalse(configManager.validateBaseURL(testURL));
+    assertFalse(configManager.isValidBaseUrl(testURL, null));
   }
-
 }

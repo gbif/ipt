@@ -1,8 +1,15 @@
-package org.gbif.ipt.config;
+package org.gbif.ipt.service.admin.impl;
 
+import org.apache.http.client.config.RequestConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.LoggerContext;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.ConfigWarnings;
+import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.config.LoggingConfigFactory;
+import org.gbif.ipt.config.LoggingConfiguration;
+import org.gbif.ipt.config.PublishingMonitor;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.BaseManager;
@@ -13,8 +20,6 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
-import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.URLUtils;
 
@@ -30,7 +35,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.conn.params.ConnRoutePNames;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 
@@ -85,23 +89,26 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * host. If there is a connection with this host, it changes the current proxy host with this host. If not it keeps
    * the current proxy.
    *
-   * @param hostTemp the actual proxy.
+   * @param currentProxyHost the actual proxy.
    * @param proxy    a URL with the format http://proxy.my-institution.com:8080.
    * @throws InvalidConfigException If it can not connect to the proxy host or if the port number is no integer or if
    *                                the proxy URL is not with the valid format http://proxy.my-institution.com:8080
    */
   @SuppressWarnings("UnusedReturnValue")
-  private boolean changeProxy(HttpHost hostTemp, String proxy) {
+  private boolean changeProxy(HttpHost currentProxyHost, String proxy) {
     try {
-      HttpHost host = URLUtils.getHost(proxy);
-      client.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
-
+      HttpHost proxyHost = URLUtils.getHost(proxy);
       String testUrl = cfg.getRegistryUrl();
       boolean proxyWorks;
       try {
-        // TODO: 21/09/2021 uses default timeout which is 30 sec
         LOG.info("Testing new proxy by fetching " + testUrl + " with 4 second timeout");
-        ExtendedResponse response = client.get(testUrl);
+        RequestConfig rs = RequestConfig.custom()
+            .setProxy(proxyHost)
+            .setConnectTimeout(DEFAULT_TO)
+            .setSocketTimeout(DEFAULT_TO)
+            .build();
+
+        ExtendedResponse response = client.get(testUrl, rs);
 
         LOG.info("Proxy response is "+ response.getStatusLine());
         proxyWorks = (HttpServletResponse.SC_OK == response.getStatusLine().getStatusCode());
@@ -113,23 +120,20 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       if (proxyWorks) {
         LOG.info("Proxy tested and working.");
       } else {
-        if (hostTemp != null) {
-          LOG.info("Proxy could not be validated (tried to retrieve " + testUrl + "), reverting to previous proxy setting on HTTP client: " + hostTemp);
-          client.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+        if (currentProxyHost != null) {
+          LOG.info("Proxy could not be validated (tried to retrieve " + testUrl + "), reverting to previous proxy setting on HTTP client: " + currentProxyHost);
         }
         throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
       }
 
     } catch (NumberFormatException e) {
-      if (hostTemp != null) {
-        LOG.info("NumberFormatException encountered, reverting to previous proxy setting on HTTP client: " + hostTemp);
-        client.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+      if (currentProxyHost != null) {
+        LOG.info("NumberFormatException encountered, reverting to previous proxy setting on HTTP client: " + currentProxyHost);
       }
       throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
     } catch (MalformedURLException e) {
-      if (hostTemp != null) {
-        LOG.info("MalformedURLException encountered, reverting to previous proxy setting on HTTP client: " + hostTemp);
-        client.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, hostTemp);
+      if (currentProxyHost != null) {
+        LOG.info("MalformedURLException encountered, reverting to previous proxy setting on HTTP client: " + currentProxyHost);
       }
       throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
     }
@@ -148,7 +152,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public boolean isBaseURLValid() {
     try {
       URL baseURL = new URL(cfg.getProperty(AppConfig.BASEURL));
-      return validateBaseURL(baseURL);
+      String proxyUrl = cfg.getProperty(AppConfig.PROXY);
+      HttpHost proxyHost = StringUtils.trimToNull(proxyUrl) != null ? URLUtils.getHost(proxyUrl) : null;
+      return isValidBaseUrl(baseURL, proxyHost);
     } catch (MalformedURLException e) {
       LOG.error("MalformedURLException encountered while validating baseURL");
     }
@@ -161,7 +167,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    */
   @Override
   public void loadDataDirConfig() throws InvalidConfigException {
-    LOG.info("Reading DATA DIRECTORY: " + dataDir.dataDir.getAbsolutePath());
+    LOG.info("Reading DATA DIRECTORY: " + dataDir.getDataDir().getAbsolutePath());
 
     LOG.info("Loading IPT config ...");
     cfg.loadConfig();
@@ -295,22 +301,28 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   @Override
   public void setBaseUrl(URL baseURL) throws InvalidConfigException {
     boolean validate = true;
+
+    String proxyUrl = cfg.getProperty(AppConfig.PROXY);
+    HttpHost proxyHost;
+
+    try {
+      proxyHost = StringUtils.trimToNull(proxyUrl) != null ? URLUtils.getHost(proxyUrl) : null;
+    } catch (MalformedURLException e) {
+      throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "Wrong Proxy configuration");
+    }
+
     if (URLUtils.isLocalhost(baseURL)) {
       LOG.info("Localhost used in base URL");
 
       // validate if localhost URL is configured only in developer mode.
       // use cfg registryType vs cfg devMode since it takes into account devMode from pom and production from setupPage
       if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.DEVELOPMENT) {
-        HttpHost hostTemp = (HttpHost) client.getClient().getParams().getParameter(ConnRoutePNames.DEFAULT_PROXY);
-        if (hostTemp != null) {
+        if (proxyHost != null) {
           // if local URL is configured, the IPT should do the validation without a proxy.
-          setProxy(null);
           validate = false;
-          if (!validateBaseURL(baseURL)) {
-            setProxy(hostTemp.toString());
+          if (!isValidBaseUrl(baseURL, proxyHost)) {
             throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
           }
-          setProxy(hostTemp.toString());
         }
       } else {
         // we want to allow baseURL equal the machine name in production mode, but not localhost
@@ -322,7 +334,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       }
     }
 
-    if (validate && !validateBaseURL(baseURL)) {
+    if (validate && !isValidBaseUrl(baseURL, proxyHost)) {
       throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL, "No IPT found at new base URL");
     }
 
@@ -409,42 +421,31 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    */
   @Override
   public void setProxy(String proxy) throws InvalidConfigException {
-    proxy = StringUtils.trimToNull(proxy);
+    String newProxyValue = StringUtils.trimToNull(proxy);
     // save the current proxy
-    HttpHost hostTemp = null;
-    if (StringUtils.trimToNull(cfg.getProperty(AppConfig.PROXY)) != null) {
+    HttpHost currentProxy = null;
+    String proxyProperty = cfg.getProperty(AppConfig.PROXY);
+    if (StringUtils.trimToNull(proxyProperty) != null) {
       try {
-        URL urlTemp = new URL(cfg.getProperty(AppConfig.PROXY));
-        hostTemp = new HttpHost(urlTemp.getHost(), urlTemp.getPort());
+        URL currentProxyUrl = new URL(proxyProperty);
+        currentProxy = new HttpHost(currentProxyUrl.getHost(), currentProxyUrl.getPort());
       } catch (MalformedURLException e) {
-        // This exception should not be shown, the urlTemp was validated before being saved.
+        // This exception should not be shown, the currentProxyUrl was validated before being saved.
         LOG.info("the proxy URL is invalid", e);
       }
     }
 
-    if (proxy == null) {
-      // remove proxy from http client
-      // Suddenly the client didn't have proxy host.
+    if (newProxyValue == null) {
+      // new proxy value is null, so proxy property is supposed to be removed
       LOG.info("No proxy entered, so removing proxy setting on http client");
-      client.getClient().getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
     } else {
-      // Changing proxy host
-      if (hostTemp == null) {
-        // First time, before Setup
-        changeProxy(null, proxy);
-      } else {
-        // After Setup
-        // Validating if the current proxy is the same proxy given by the user
-        if (!hostTemp.toString().equals(proxy)) {
-          // remove proxy from http client
-          LOG.info("A change of proxy detected so starting by removing proxy setting on http client");
-          client.getClient().getParams().removeParameter(ConnRoutePNames.DEFAULT_PROXY);
-        }
-        changeProxy(hostTemp, proxy);
-      }
+      // new proxy property is provided
+      // first case: before setup (current proxy is null)
+      // second case: after setup (current proxy is not null)
+      changeProxy(currentProxy, newProxyValue);
     }
     // store in properties file
-    cfg.setProperty(AppConfig.PROXY, proxy);
+    cfg.setProperty(AppConfig.PROXY, newProxyValue);
   }
 
   @Override
@@ -456,18 +457,28 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * It validates if the there is a connection with the baseURL, it executes a request using the baseURL.
    *
    * @param baseURL a URL to validate.
+   * @param proxy a proxy host
    *
    * @return true if the response to the request has a status code equal to 200.
    */
-  public boolean validateBaseURL(URL baseURL) {
+  public boolean isValidBaseUrl(URL baseURL, HttpHost proxy) {
     if (baseURL == null) {
       return false;
     }
     try {
       String testURL = baseURL + PATH_TO_CSS;
-      // TODO: 21/09/2021 uses default timeout which is 30 sec
       LOG.info("Validating BaseURL with get request (having 4 second timeout) to: " + testURL);
-      ExtendedResponse response = client.get(testURL);
+
+      RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
+          .setConnectTimeout(DEFAULT_TO)
+          .setSocketTimeout(DEFAULT_TO);
+
+      if (proxy != null) {
+        requestConfigBuilder.setProxy(proxy);
+      }
+
+      ExtendedResponse response = client.get(testURL, requestConfigBuilder.build());
+
       return HttpServletResponse.SC_OK == response.getStatusLine().getStatusCode();
     } catch (ClientProtocolException e) {
       LOG.info("Protocol error connecting to new base URL [" + baseURL + "]", e);

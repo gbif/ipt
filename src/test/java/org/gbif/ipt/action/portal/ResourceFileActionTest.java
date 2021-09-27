@@ -17,7 +17,7 @@ public class ResourceFileActionTest {
   @Test
   @Ignore
   public void testDwca() throws Exception {
-    HttpClient client = new HttpClient(HttpUtil.newMultithreadedClient(1000, 1, 1));
+    HttpClient client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     File down = new File("/Users/markus/Desktop/dwca.zip");
     URL url = new URL("http://localhost:7001/ipt/archive.do?r=condiget");
     boolean status = client.downloadIfChanged(url, down);

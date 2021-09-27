@@ -66,7 +66,6 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // mock instances
     AppConfig mockAppConfig = mock(AppConfig.class);
     mockDataDir = mock(DataDir.class);
-    CloseableHttpClient client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     SAXParserFactory mockSAXParserFactory = mock(SAXParserFactory.class);
     ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);

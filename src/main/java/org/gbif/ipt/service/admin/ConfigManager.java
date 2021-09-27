@@ -1,6 +1,6 @@
 package org.gbif.ipt.service.admin;
 
-import org.gbif.ipt.config.ConfigManagerImpl;
+import org.gbif.ipt.service.admin.impl.ConfigManagerImpl;
 import org.gbif.ipt.service.InvalidConfigException;
 
 import java.io.File;
