@@ -38,9 +38,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 
-/**
- * A skeleton implementation for the time being.
- */
 @Singleton
 public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
@@ -101,6 +98,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       String testUrl = cfg.getRegistryUrl();
       boolean proxyWorks;
       try {
+        // prepare custom configuration with proxy and timeouts
         LOG.info("Testing new proxy by fetching " + testUrl + " with 4 second timeout");
         RequestConfig rs = RequestConfig.custom()
             .setProxy(proxyHost)
@@ -119,25 +117,26 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
       if (proxyWorks) {
         LOG.info("Proxy tested and working.");
+        client.setProxy(proxyHost);
       } else {
-        if (currentProxyHost != null) {
-          LOG.info("Proxy could not be validated (tried to retrieve " + testUrl + "), reverting to previous proxy setting on HTTP client: " + currentProxyHost);
-        }
-        throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.connectionRefused");
+        throwConfigException(
+            "Proxy could not be validated (tried to retrieve " + testUrl + ")",
+            currentProxyHost,
+            "admin.config.error.connectionRefused");
       }
-
     } catch (NumberFormatException e) {
-      if (currentProxyHost != null) {
-        LOG.info("NumberFormatException encountered, reverting to previous proxy setting on HTTP client: " + currentProxyHost);
-      }
-      throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidPort");
+      throwConfigException(e.getClass().getSimpleName() + " encountered", currentProxyHost, "admin.config.error.invalidPort");
     } catch (MalformedURLException e) {
-      if (currentProxyHost != null) {
-        LOG.info("MalformedURLException encountered, reverting to previous proxy setting on HTTP client: " + currentProxyHost);
-      }
-      throw new InvalidConfigException(TYPE.INVALID_PROXY, "admin.config.error.invalidProxyURL");
+      throwConfigException(e.getClass().getSimpleName() + " encountered", currentProxyHost, "admin.config.error.invalidProxyURL");
     }
     return true;
+  }
+
+  private void throwConfigException(String logMessage, HttpHost currentProxyHost, String message) {
+    if (currentProxyHost != null) {
+      LOG.info(logMessage + " , reverting to previous proxy setting on HTTP client: " + currentProxyHost);
+    }
+    throw new InvalidConfigException(TYPE.INVALID_PROXY, message);
   }
 
   /**
@@ -422,28 +421,31 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   @Override
   public void setProxy(String proxy) throws InvalidConfigException {
     String newProxyValue = StringUtils.trimToNull(proxy);
-    // save the current proxy
-    HttpHost currentProxy = null;
-    String proxyProperty = cfg.getProperty(AppConfig.PROXY);
-    if (StringUtils.trimToNull(proxyProperty) != null) {
-      try {
-        URL currentProxyUrl = new URL(proxyProperty);
-        currentProxy = new HttpHost(currentProxyUrl.getHost(), currentProxyUrl.getPort());
-      } catch (MalformedURLException e) {
-        // This exception should not be shown, the currentProxyUrl was validated before being saved.
-        LOG.info("the proxy URL is invalid", e);
-      }
-    }
 
     if (newProxyValue == null) {
       // new proxy value is null, so proxy property is supposed to be removed
       LOG.info("No proxy entered, so removing proxy setting on http client");
+      client.removeProxy();
     } else {
+      // save the current proxy
+      HttpHost currentProxy = null;
+      String proxyProperty = cfg.getProperty(AppConfig.PROXY);
+      if (StringUtils.trimToNull(proxyProperty) != null) {
+        try {
+          URL currentProxyUrl = new URL(proxyProperty);
+          currentProxy = new HttpHost(currentProxyUrl.getHost(), currentProxyUrl.getPort());
+        } catch (MalformedURLException e) {
+          // This exception should not be shown, the currentProxyUrl was validated before being saved.
+          LOG.info("the proxy URL is invalid", e);
+        }
+      }
+
       // new proxy property is provided
       // first case: before setup (current proxy is null)
       // second case: after setup (current proxy is not null)
       changeProxy(currentProxy, newProxyValue);
     }
+
     // store in properties file
     cfg.setProperty(AppConfig.PROXY, newProxyValue);
   }
