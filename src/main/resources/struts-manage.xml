@@ -140,7 +140,7 @@
     </action>
     <action name="history" class="org.gbif.ipt.action.manage.VersionHistoryAction">
       <result name="input">/WEB-INF/pages/manage/version_history.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}&amp;v=${version}</result>
+      <result name="success" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}&amp;v=${versionString}</result>
       <result name="back" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}</result>
     </action>
     <action name="detail" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">

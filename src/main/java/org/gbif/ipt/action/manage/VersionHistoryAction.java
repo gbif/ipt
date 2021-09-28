@@ -96,6 +96,15 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
+   * Return the version number requested. Null version is equal to the latest published version.
+   *
+   * @return the version number requested
+   */
+  public String getVersionString() {
+    return version.toString();
+  }
+
+  /**
    * @return the change summary (for resource version) as it was entered by the user in the form
    */
   public String getSummary() {
