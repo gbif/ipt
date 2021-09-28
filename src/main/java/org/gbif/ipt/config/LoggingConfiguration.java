@@ -5,7 +5,9 @@ import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.RollingFileAppender;
+import org.apache.logging.log4j.core.appender.rolling.CompositeTriggeringPolicy;
 import org.apache.logging.log4j.core.appender.rolling.DefaultRolloverStrategy;
+import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
 import org.apache.logging.log4j.core.appender.rolling.SizeBasedTriggeringPolicy;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.layout.PatternLayout;
@@ -27,13 +29,17 @@ public class LoggingConfiguration extends XmlConfiguration {
 
     final Layout layout = PatternLayout.newBuilder().withPattern("%-5p %d{dd-MMM-yyyy HH:mm:ss} [%c] - %m%n").build();
 
+    final CompositeTriggeringPolicy policy = CompositeTriggeringPolicy.createPolicy(
+      OnStartupTriggeringPolicy.createPolicy(1),
+      SizeBasedTriggeringPolicy.createPolicy("10MB")
+    );
+
     final Appender debugAppender = RollingFileAppender.newBuilder()
         .setName("LOGFILE")
         .setLayout(layout)
         .withFileName(logDirectory+"debug.log")
         .withFilePattern(logDirectory+"debug.log.%i")
-        .withPolicy(SizeBasedTriggeringPolicy.createPolicy("10MB"))
-        .withAppend(false)
+        .withPolicy(policy)
         .withStrategy(DefaultRolloverStrategy.newBuilder().build())
         .build();
     debugAppender.start();
@@ -45,8 +51,7 @@ public class LoggingConfiguration extends XmlConfiguration {
         .setLayout(layout)
         .withFileName(logDirectory+"admin.log")
         .withFilePattern(logDirectory+"admin.log.%i")
-        .withPolicy(SizeBasedTriggeringPolicy.createPolicy("2MB"))
-        .withAppend(false)
+        .withPolicy(policy)
         .withStrategy(DefaultRolloverStrategy.newBuilder().build())
         .build();
     adminAppender.start();
