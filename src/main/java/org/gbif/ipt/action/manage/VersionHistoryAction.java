@@ -101,7 +101,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
    * @return the version number requested
    */
   public String getVersionString() {
-    return version.toString();
+    return version.toPlainString();
   }
 
   /**
