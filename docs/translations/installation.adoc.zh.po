@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-09-04 19:48+0000\n"
-"PO-Revision-Date: 2021-09-04 19:52\n"
+"POT-Creation-Date: 2021-09-07 09:17+0000\n"
+"PO-Revision-Date: 2021-09-07 09:42\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -101,7 +101,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:33
-msgid "To install the IPT onto Red Hat, CentOS or similar, first add the GBIF package repository and install the IPT package:"
+msgid "To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:"
 msgstr ""
 
 #. type: delimited block -
