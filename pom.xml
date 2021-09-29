@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.gbif</groupId>
     <artifactId>motherpom</artifactId>
-    <version>37</version>
+    <version>54</version>
   </parent>
 
   <artifactId>ipt</artifactId>
@@ -36,8 +36,6 @@
 
     <!-- The datadir for tests that use a guice injected DataDir object -->
     <test.datadir>/tmp/test-datadir</test.datadir>
-
-    <jdkLevel>1.8</jdkLevel>
 
     <!-- GBIF dependencies -->
     <dwc-api.version>1.34</dwc-api.version>
@@ -87,6 +85,10 @@
     <mysql-connector-java.version>8.0.25</mysql-connector-java.version>
     <ojdbc.version>21.1.0.0</ojdbc.version>
     <postgresql.version>42.2.20</postgresql.version>
+
+    <!-- Plugins -->
+    <buildnumber-maven-plugin.version>1.2</buildnumber-maven-plugin.version>
+    <native2ascii-maven-plugin.version>2.0.1</native2ascii-maven-plugin.version>
   </properties>
 
   <developers>
@@ -95,8 +97,12 @@
       <email>trobertson@gbif.org</email>
     </developer>
     <developer>
-      <name>Markus Döring</name>
-      <email>mdoering@gbif.org</email>
+      <name>Matt Blissett</name>
+      <email>mblissett@gbif.org</email>
+    </developer>
+    <developer>
+      <name>Mikhail Podolskiy</name>
+      <email>mpodolskiy@gbif.org</email>
     </developer>
   </developers>
 
@@ -146,6 +152,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
+        <version>${maven-release-plugin.version}</version>
         <configuration>
           <useReleaseProfile>false</useReleaseProfile>
           <arguments>-Pgbif-release,release</arguments>
@@ -189,7 +196,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.2</version>
+        <version>${buildnumber-maven-plugin.version}</version>
         <executions>
           <execution>
             <phase>validate</phase>
@@ -209,7 +216,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>native2ascii-maven-plugin</artifactId>
-        <version>2.0.1</version>
+        <version>${native2ascii-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>utf8-to-latin1</id>
@@ -232,6 +239,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
+        <version>${maven-eclipse-plugin.version}</version>
         <configuration>
           <downloadSources>true</downloadSources>
           <additionalBuildcommands>
@@ -245,10 +253,12 @@
           </additionalConfig>
         </configuration>
       </plugin>
+
       <!-- commented out only to perform release: runs integration tests (*IT) during verify -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven-failsafe-plugin.version}</version>
       </plugin>
     </plugins>
 
@@ -275,6 +285,7 @@
         <filtering>false</filtering>
       </resource>
     </resources>
+
     <testResources>
       <!-- with filtering copying big test files becomes VERY slow -->
       <testResource>

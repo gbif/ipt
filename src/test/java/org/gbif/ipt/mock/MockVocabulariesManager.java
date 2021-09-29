@@ -33,6 +33,7 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
    * Get one of the installed vocabularies by its unique identifier, populate its list of VocabularyConcept, and
    * return it.
    */
+  @Override
   public Vocabulary get(String uri) {
     Vocabulary v = new Vocabulary();
     Map<String, String> vocabMap = getI18nVocab(uri, Locale.getDefault().getDisplayLanguage(), false);
@@ -65,6 +66,7 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
   /**
    * Mock minimal copies of rank, country, language, and preservation method vocabularies being installed.
    */
+  @Override
   public Map<String, String> getI18nVocab(String uri, String lang, boolean sort) {
     Map<String, String> vocabMap = new LinkedHashMap<String, String>();
     if (uri.equals(Constants.VOCAB_URI_RANKS)) {
@@ -115,10 +117,12 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
     return vocabMap;
   }
 
+  @Override
   public List<Vocabulary> list() {
     return new ArrayList<Vocabulary>();
   }
 
+  @Override
   public int load() {
     return 0;
   }

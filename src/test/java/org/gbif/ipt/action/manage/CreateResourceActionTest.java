@@ -18,15 +18,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,11 +50,7 @@ public class CreateResourceActionTest {
     when(mockResourceManager.get(SHORTNAME)).thenReturn(res);
 
     // mock resource manager that deletes resource directory "bugs"
-    Mockito.doAnswer(new Answer() {
-      public Object answer(InvocationOnMock invocation) {
-        return org.apache.commons.io.FileUtils.deleteQuietly(new File(RESOURCES_DIRECTORY, SHORTNAME));
-      }
-    })
+    doAnswer(invocation -> org.apache.commons.io.FileUtils.deleteQuietly(new File(RESOURCES_DIRECTORY, SHORTNAME)))
       .when(mockResourceManager).delete(res, true);
 
     // mock action

@@ -40,6 +40,7 @@ public class MockDataDir {
     // resource.xml is going to be located in temp directory: tmpDir/shortName/resource.xml
     when(dataDir.resourceFile(any(Resource.class), anyString())).thenAnswer(new Answer<File>() {
 
+      @Override
       public File answer(InvocationOnMock invocation) throws Throwable {
         // create a file in OS temp directory named as shortName-resource.xml
         Resource resource = (Resource) invocation.getArguments()[0];
@@ -68,6 +69,7 @@ public class MockDataDir {
     // retrieve existing resource.xml file located inside tmpDir/shortName
     when(dataDir.resourceFile(anyString(), anyString())).thenAnswer(new Answer<File>() {
 
+      @Override
       public File answer(InvocationOnMock invocation) throws Throwable {
         String shortname = (String) invocation.getArguments()[0];
         String xmlName = (String) invocation.getArguments()[1];
