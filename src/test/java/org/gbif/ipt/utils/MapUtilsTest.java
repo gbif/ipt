@@ -5,19 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MapUtilsTest {
 
   private Map<String, String> map;
 
-  @Before
+  @BeforeEach
   public void setup() {
-    map = new HashMap<String, String>();
+    map = new HashMap<>();
     map.put("OCCURRENCE", "OCCURRENCE");
     map.put("CHECKLIST", "CHECKLIST");
   }
@@ -31,7 +31,7 @@ public class MapUtilsTest {
 
   @Test
   public void testRemoveNonMatchingKeys() {
-    List<String> ls = new ArrayList<String>();
+    List<String> ls = new ArrayList<>();
     ls.add("occurrence");
     // only 1 key, only 1 match, so only 1 entry should be left over
     map = MapUtils.removeNonMatchingKeys(map, ls);

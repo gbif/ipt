@@ -4,19 +4,19 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ResourceUtilsTest {
 
   /**
    * @see org.gbif.ipt.service.manage.impl.ResourceManagerImplTest#testReconstructVersion()
    */
-  @Ignore("See ResourceManagerImplTest#testReconstructVersion()")
+  @Disabled("See ResourceManagerImplTest#testReconstructVersion()")
   public void testReconstructVersion() throws Exception {
   }
 

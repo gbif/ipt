@@ -35,11 +35,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DataCiteMetadataBuilderTest {
 
@@ -340,45 +341,45 @@ public class DataCiteMetadataBuilderTest {
   /**
    * Publisher name is an empty string.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testGetPublisherWithEmptyName() throws InvalidMetadataException {
+  @Test
+  public void testGetPublisherWithEmptyName() {
     Resource resource = new Resource();
     Organisation organisation = new Organisation();
     organisation.setName("");
     resource.setOrganisation(organisation);
-    DataCiteMetadataBuilder.getPublisher(resource);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.getPublisher(resource));
   }
 
   /**
    * Publisher does not exist.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testGetPublisherNotExisting() throws InvalidMetadataException {
+  @Test
+  public void testGetPublisherNotExisting() {
     Resource resource = new Resource();
-    DataCiteMetadataBuilder.getPublisher(resource);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.getPublisher(resource));
   }
 
   /**
    * Publisher does not exist, because default organisation "No organisation" has been assigned to resource.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testGetPublisherDefaultAssigned() throws InvalidMetadataException {
+  @Test
+  public void testGetPublisherDefaultAssigned() {
     Resource resource = new Resource();
     Organisation o = new Organisation();
     o.setKey(Constants.DEFAULT_ORG_KEY.toString());
     o.setName("No organisation");
     resource.setOrganisation(o);
-    DataCiteMetadataBuilder.getPublisher(resource);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.getPublisher(resource));
   }
 
   /**
    * Title is an empty string.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlTitlesWithEmptyTitle() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlTitlesWithEmptyTitle() {
     Eml eml = new Eml();
     eml.setTitle("");
-    DataCiteMetadataBuilder.convertEmlTitles(eml);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlTitles(eml));
   }
 
 
@@ -386,7 +387,7 @@ public class DataCiteMetadataBuilderTest {
    * Scheme not recognized - only ORCID and ResearcherId are supported.
    */
   @Test
-  public void testConvertEmlUserIdWithUnrecognizedScheme() throws InvalidMetadataException {
+  public void testConvertEmlUserIdWithUnrecognizedScheme() {
     UserId userId1 = new UserId("http://unrecognized.org", "0000-0099-6824-9999");
     NameIdentifier id = DataCiteMetadataBuilder.convertEmlUserIdIntoCreatorNameIdentifier(userId1);
     assertNull(id);
@@ -397,7 +398,7 @@ public class DataCiteMetadataBuilderTest {
    * required to output a NameIdentifier.
    */
   @Test
-  public void testConvertEmlUserIdWithMissingSchemeURI() throws InvalidMetadataException {
+  public void testConvertEmlUserIdWithMissingSchemeURI() {
     UserId userId1 = new UserId("", "0000-0099-6824-9999");
     assertNull(DataCiteMetadataBuilder.convertEmlUserIdIntoCreatorNameIdentifier(userId1));
   }
@@ -405,35 +406,35 @@ public class DataCiteMetadataBuilderTest {
   /**
    * First agent in list had an empty name.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlCreatorsWithEmptyName() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlCreatorsWithEmptyName() {
     Agent creator1 = new Agent();
     creator1.setLastName("");
     creator1.setFirstName("");
     List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
-    DataCiteMetadataBuilder.convertEmlCreators(creators);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlCreators(creators));
   }
 
   /**
    * Agents list was empty.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlCreatorsWithEmptyList() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlCreatorsWithEmptyList() {
     List<Agent> creators = new ArrayList<>();
-    DataCiteMetadataBuilder.convertEmlCreators(creators);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlCreators(creators));
   }
 
   /**
    * First agent in list only had position name.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlCreatorsWithPositionName() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlCreatorsWithPositionName() {
     Agent creator1 = new Agent();
     creator1.setPosition("President");
     List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
-    DataCiteMetadataBuilder.convertEmlCreators(creators);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlCreators(creators));
   }
 
   /**
@@ -454,7 +455,7 @@ public class DataCiteMetadataBuilderTest {
    * Scheme not recognized - only ORCID and ResearcherId are supported.
    */
   @Test
-  public void testConvertEmlContributorUserIdWithUnrecognizedScheme() throws InvalidMetadataException {
+  public void testConvertEmlContributorUserIdWithUnrecognizedScheme() {
     UserId userId1 = new UserId("http://unrecognized.org", "0000-0099-6824-9999");
     NameIdentifier id = DataCiteMetadataBuilder.convertEmlUserIdIntoContributorNameIdentifier(userId1);
     assertNull(id);
@@ -465,7 +466,7 @@ public class DataCiteMetadataBuilderTest {
    * required to output a NameIdentifier.
    */
   @Test
-  public void testConvertEmlContributorUserIdWithMissingSchemeURI() throws InvalidMetadataException {
+  public void testConvertEmlContributorUserIdWithMissingSchemeURI() {
     UserId userId1 = new UserId("", "0000-0099-6824-9999");
     assertNull(DataCiteMetadataBuilder.convertEmlUserIdIntoContributorNameIdentifier(userId1));
   }
@@ -473,13 +474,13 @@ public class DataCiteMetadataBuilderTest {
   /**
    * First agent in list had an empty name, no organisation, and no position.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlContributorWithEmptyName() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlContributorWithEmptyName() {
     Agent contributor = new Agent();
     contributor.setLastName("");
     contributor.setFirstName("");
     List<Agent> contributors = new ArrayList<>();
     contributors.add(contributor);
-    DataCiteMetadataBuilder.convertEmlContributors(contributors);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlContributors(contributors));
   }
 }

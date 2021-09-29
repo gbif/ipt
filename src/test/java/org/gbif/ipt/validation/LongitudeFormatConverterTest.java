@@ -10,75 +10,65 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.validation;
 
 import org.gbif.ipt.struts2.converter.LongitudeFormatConverter;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 import com.opensymphony.xwork2.conversion.TypeConversionException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for convertFromString method in LongitudeFormatConverter class.
- *
- * @author julieth
  */
-@RunWith(value = Parameterized.class)
 public class LongitudeFormatConverterTest {
 
-  // Variables used in convertFromStringTest method
-  private Double expectedDouble;
-  private String[] firstTestValue;
-
-
-  public LongitudeFormatConverterTest(Double expectedDouble, String[] firstTestValue) {
-    this.expectedDouble = expectedDouble;
-    this.firstTestValue = firstTestValue;
-  }
-
-  @Parameters
-  public static Collection<Object[]> getTestParameters() {
+  public static Stream<Arguments> getTestParameters() {
     // Set of objects, each object contains: A expected value (double) and a value to test (String values[]).
     // (expectedDouble, firstTestvalue).
-    Collection<Object[]> list = new ArrayList<Object[]>();
-    list.add(new Object[] {-180.0, new String[] {"-180"}});
-    list.add(new Object[] {180.0, new String[] {"180"}});
-    list.add(new Object[] {-0.0, new String[] {"-0"}});
-    list.add(new Object[] {0.0, new String[] {"0"}});
-    list.add(new Object[] {0.7, new String[] {",7"}});
-    list.add(new Object[] {-1.1, new String[] {"-1.1"}});
-    list.add(new Object[] {-1.1, new String[] {"-1,1"}});
-    list.add(new Object[] {null, new String[] {""}});
-    return list;
+    return Stream.of(
+        Arguments.of(-180.0, new String[] {"-180"}),
+        Arguments.of(180.0, new String[] {"180"}),
+        Arguments.of(-0.0, new String[] {"-0"}),
+        Arguments.of(0.0, new String[] {"0"}),
+        Arguments.of(0.7, new String[] {",7"}),
+        Arguments.of(-1.1, new String[] {"-1.1"}),
+        Arguments.of(-1.1, new String[] {"-1,1"}),
+        Arguments.of(null, new String[] {""})
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("getTestParameters")
+  public void convertFromStringTest(Double expectedDouble, String[] firstTestValue) {
+    LongitudeFormatConverter longitudeFormat = new LongitudeFormatConverter();
+    assertEquals(expectedDouble, longitudeFormat.convertFromString(new HashMap<>(), firstTestValue, null));
   }
 
   @Test
-  public void convertFromStringTest() {
-    LongitudeFormatConverter longitudeFormat = new LongitudeFormatConverter();
-    assertEquals(expectedDouble, longitudeFormat.convertFromString(new HashMap(), firstTestValue, null));
-  }
-
-  @Test(expected = TypeConversionException.class)
   public void convertFromStringTestTypeConversionException() {
     LongitudeFormatConverter longitudeFormat = new LongitudeFormatConverter();
     // Fails if the value exceeds the minimum longitude
-    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {"-180.01"}, null));
+    assertThrows(TypeConversionException.class,
+        () -> longitudeFormat.convertFromString(new HashMap<>(), new String[] {"-180.01"}, null));
     // Fails if the value exceeds the maximum longitude
-    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {"180.01"}, null));
+    assertThrows(TypeConversionException.class,
+        () -> longitudeFormat.convertFromString(new HashMap<>(), new String[] {"180.01"}, null));
     // Fails if the value is a String
-    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {"abc"}, null));
-    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {"@#$%"}, null));
-    assertNull(longitudeFormat.convertFromString(new HashMap(), new String[] {" "}, null));
+    assertThrows(TypeConversionException.class,
+        () -> longitudeFormat.convertFromString(new HashMap<>(), new String[] {"abc"}, null));
+    assertThrows(TypeConversionException.class,
+        () -> longitudeFormat.convertFromString(new HashMap<>(), new String[] {"@#$%"}, null));
+    assertThrows(TypeConversionException.class,
+        () -> longitudeFormat.convertFromString(new HashMap<>(), new String[] {" "}, null));
   }
-
 }

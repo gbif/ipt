@@ -49,9 +49,9 @@ import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 import org.gbif.utils.file.properties.PropertiesUtil;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import javax.validation.constraints.NotNull;
@@ -66,11 +66,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -113,7 +113,7 @@ public class GenerateDwcaIT {
     }
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void init() throws IOException {
     // load database account username and password from the properties file
     Properties p = PropertiesUtil.loadProperties("testdb.properties");
@@ -136,7 +136,7 @@ public class GenerateDwcaIT {
       .thenReturn(basisOfRecords);
   }
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     resourceDir = FileUtils.createTempDir();
 

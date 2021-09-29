@@ -29,8 +29,8 @@ import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -40,12 +40,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -54,7 +53,7 @@ public class OverviewActionTest {
   private OverviewAction action;
   private File emlFile;
 
-  @Before
+  @BeforeEach
   public void setup()
     throws IOException, ParserConfigurationException, SAXException, AlreadyExistingException, ImportException {
 
@@ -68,7 +67,7 @@ public class OverviewActionTest {
     emlFile = File.createTempFile("eml-1.0", ".xml");
     AppConfig mockCfg = mock(AppConfig.class);
     DataDir mockDataDir = mock(DataDir.class);
-    when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlFile);
+    when(mockDataDir.resourceEmlFile(any(), any(BigDecimal.class))).thenReturn(emlFile);
     when(mockCfg.getDataDir()).thenReturn(mockDataDir);
 
     // mock action

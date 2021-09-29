@@ -28,10 +28,10 @@ import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.file.properties.PropertiesUtil;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -40,11 +40,11 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +52,7 @@ import static org.mockito.Mockito.when;
  * Other ITs for OverviewAction that can't run as parameterized tests for example or that
  * need a special DOI account.
  */
-@Ignore
+@Disabled
 public class OverviewActionOtherIT {
 
   private static final Logger LOG = LogManager.getLogger(OverviewActionIT.class);
@@ -62,7 +62,7 @@ public class OverviewActionOtherIT {
   private Resource r;
   private OverviewAction action;
 
-  @BeforeClass
+  @BeforeAll
   public static void setup() throws IOException {
     // load DataCite account username and password from the properties file
     Properties p = PropertiesUtil.loadProperties("datacite.properties");
@@ -80,7 +80,7 @@ public class OverviewActionOtherIT {
   /**
    * Generate a new test resource for each test.
    */
-  @Before
+  @BeforeEach
   public void before() {
     r = new Resource();
     Eml eml = new Eml();

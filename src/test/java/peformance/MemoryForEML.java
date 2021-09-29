@@ -15,14 +15,11 @@ import org.xml.sax.SAXException;
 
 public class MemoryForEML {
 
-  /**
-   * @param args
-   */
   public static void main(String[] args) {
 
     try {
       URL sample = new URL("http://rs.gbif.org/schema/eml/sample.xml");
-      Map<Integer, Eml> cache = new HashMap<Integer, Eml>();
+      Map<Integer, Eml> cache = new HashMap<>();
       long time = System.currentTimeMillis();
       for (int i = 0; i < 1000; i++) {
         cache.put(i, EmlFactory.build(sample.openStream()));
@@ -61,15 +58,7 @@ public class MemoryForEML {
 
       long mem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
       System.out.println(mem / (1024));
-
-
-    } catch (MalformedURLException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (SAXException e) {
-      e.printStackTrace();
-    } catch (ParserConfigurationException e) {
+    } catch (IOException | SAXException | ParserConfigurationException e) {
       e.printStackTrace();
     }
   }

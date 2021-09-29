@@ -1,6 +1,5 @@
 package org.gbif.ipt.action.admin;
 
-import org.apache.http.HttpResponse;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -34,16 +33,17 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.apache.http.HttpResponse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +53,7 @@ public class ExtensionsActionTest {
   ExtensionsAction action;
   List<Extension> extensions;
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException, ParserConfigurationException, SAXException, URISyntaxException {
     HttpClient mockHttpClient = mock(HttpClient.class);
     HttpResponse mockResponse = mock(HttpResponse.class);

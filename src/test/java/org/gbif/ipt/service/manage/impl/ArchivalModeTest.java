@@ -33,8 +33,8 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.utils.file.FileUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,10 +42,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -55,7 +55,7 @@ public class ArchivalModeTest {
 
   private DataDir mockDataDir = mock(DataDir.class);
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     File tmpDataDir = FileUtils.createTempDir();
     when(mockDataDir.resourceEmlFile(anyString(), anyObject())).thenReturn(tmpDataDir);

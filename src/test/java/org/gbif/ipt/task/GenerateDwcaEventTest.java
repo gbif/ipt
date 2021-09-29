@@ -60,14 +60,15 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -87,7 +88,7 @@ public class GenerateDwcaEventTest {
   private ReportHandler mockHandler;
   private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
     Map<String, String> basisOfRecords = new HashMap<>();
@@ -220,7 +221,7 @@ public class GenerateDwcaEventTest {
    * A generated DwC-a with event core and occurrence extension missing a core recordID value is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreMissingID() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -230,14 +231,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension with recordID unmapped is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreIDUnmapped() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -247,14 +248,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension having a duplicate core recordID value is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreDuplicateID() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -264,14 +265,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension missing a extension recordID value is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateExtensionMissingID() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -281,14 +282,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension missing a basisOfRecord value is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateExtensionMissingBOR() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -298,14 +299,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension with basisOfRecord unmapped is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateExtensionBORUnmapped() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -315,7 +316,7 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**

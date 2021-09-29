@@ -96,21 +96,22 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -146,7 +147,7 @@ public class ResourceManagerImplTest {
   private static final String DATASET_SUBTYPE_SPECIMEN_IDENTIFIER = "specimen";
   private static final String RESOURCE_SHORTNAME = "res2";
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     // create user.
     creator = new User();
@@ -420,16 +421,15 @@ public class ResourceManagerImplTest {
    * test resource creation from single DwC-A zipped file, having no rowType. The rowType is determined by the
    * identifier term (e.g. rowType dwc:Occurrence corresponds to existence of term occurrenceID).
    */
-  @Test(expected = ImportException.class)
-  public void testCreateFromSingleZippedFileWithNoRowType()
-    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
-    AlreadyExistingException {
+  @Test
+  public void testCreateFromSingleZippedFileWithNoRowType() throws Exception {
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
     // retrieve sample DwC-A file
     File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.zip");
     // create a new resource.
-    resourceManager.create(RESOURCE_SHORTNAME, null, dwca, creator, baseAction);
+    assertThrows(ImportException.class,
+        () -> resourceManager.create(RESOURCE_SHORTNAME, null, dwca, creator, baseAction));
   }
 
   /**
@@ -582,10 +582,8 @@ public class ResourceManagerImplTest {
   /**
    * test resource creation from zipped file, but resource.xml references non-existent extension.
    */
-  @Test(expected = ImportException.class)
-  public void testCreateFromZippedFileNonexistentExtension()
-    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
-    InvalidFilenameException {
+  @Test
+  public void testCreateFromZippedFileNonexistentExtension() throws Exception {
     // retrieve sample zipped resource folder
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_nonexistent_ext.xml");
     // mock finding resource.xml file
@@ -598,17 +596,16 @@ public class ResourceManagerImplTest {
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
 
     // create a new resource.
-    resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
+    assertThrows(ImportException.class,
+        () -> resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction));
   }
 
   /**
    * Test resource creation from zipped sampling-event DwC-A where occurrence extension uses a RowType/Extension
    * that hasn't been installed yet.
    */
-  @Test(expected = ImportException.class)
-  public void testExtensionRowTypeNotInstalled()
-    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
-    AlreadyExistingException {
+  @Test
+  public void testExtensionRowTypeNotInstalled() throws Exception {
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -636,18 +633,16 @@ public class ResourceManagerImplTest {
       .thenReturn(fileSourceOccurrence);
 
     // create a new resource.
-    resourceManager.create("res-extension", null, dwca, creator, baseAction);
+    assertThrows(ImportException.class,
+        () -> resourceManager.create("res-extension", null, dwca, creator, baseAction));
   }
 
   /**
    * Test resource creation from zipped sampling-event DwC-A where event core is missing the id element.
    * The test ensures that an ImportException gets thrown, as the id element is mandatory with extensions.
    */
-  @Test(expected = ImportException.class)
-  public void testMissingIdElementInCoreMapping()
-    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
-    AlreadyExistingException {
-
+  @Test
+  public void testMissingIdElementInCoreMapping() throws Exception {
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
 
@@ -674,7 +669,8 @@ public class ResourceManagerImplTest {
       .thenReturn(fileSourceOccurrence);
 
     // create a new resource.
-    resourceManager.create("res-extension", null, dwca, creator, baseAction);
+    assertThrows(ImportException.class,
+        () -> resourceManager.create("res-extension", null, dwca, creator, baseAction));
   }
 
   /**
@@ -770,10 +766,8 @@ public class ResourceManagerImplTest {
   /**
    * test resource creation from file, but filename presumed to contain an illegal non-alphanumeric character
    */
-  @Test(expected = InvalidFilenameException.class)
-  public void testCreateFromZippedFileWithInvalidFilename()
-    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
-    InvalidFilenameException {
+  @Test
+  public void testCreateFromZippedFileWithInvalidFilename() throws Exception {
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
     // mock SourceManager trying to add file with illegal character in filename
@@ -782,7 +776,8 @@ public class ResourceManagerImplTest {
     // retrieve sample gzip DwC-A file
     File dwca = FileUtils.getClasspathFile("resources/occurrence2.txt.zip");
     // create a new resource, triggering exception
-    resourceManager.create("res-single-gz", null, dwca, creator, baseAction);
+    assertThrows(InvalidFilenameException.class,
+        () -> resourceManager.create("res-single-gz", null, dwca, creator, baseAction));
   }
 
   /**
@@ -835,11 +830,10 @@ public class ResourceManagerImplTest {
     assertTrue(mockedDataDir.resourceFile("math", ResourceManagerImpl.PERSISTENCE_FILE).exists());
   }
 
-  // TODO: 2019-06-17 it's weird, fails only all the test were launched
   /**
    * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
    */
-  @Ignore("floating behaviour")
+  @Disabled("floating behaviour, only fails when all the test launched")
   @Test
   public void testLoadFromDir()
     throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
@@ -1098,7 +1092,7 @@ public class ResourceManagerImplTest {
     assertEquals(organisation, registered.getOrganisation());
   }
 
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testRegisterMigratedResourceTooManyUUID() throws IOException, SAXException, ParserConfigurationException {
     ResourceManager manager = getResourceManagerImpl();
 
@@ -1115,10 +1109,10 @@ public class ResourceManagerImplTest {
     // indicate resource is ready to be published, by setting its status to Public
     resource.setStatus(PublicationStatus.PUBLIC);
 
-    manager.register(resource, organisation, ipt, baseAction);
+    assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
 
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testRegisterMigratedResourceWithBadUUID() throws IOException, SAXException, ParserConfigurationException {
     ResourceManager manager = getResourceManagerImpl();
 
@@ -1138,10 +1132,10 @@ public class ResourceManagerImplTest {
 
     when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
 
-    manager.register(resource, organisation, ipt, baseAction);
+    assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
 
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testRegisterMigratedResourceWithDuplicateUUIDCase1()
     throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
     ResourceManagerImpl manager = getResourceManagerImpl();
@@ -1160,10 +1154,10 @@ public class ResourceManagerImplTest {
     manager.get("res1").setStatus(PublicationStatus.PUBLIC);
 
     // should throw InvalidConfigException
-    manager.register(resource, organisation, ipt, baseAction);
+    assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
 
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testRegisterMigratedResourceWithDuplicateUUIDCase2()
     throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
     ResourceManagerImpl manager = getResourceManagerImpl();
@@ -1182,7 +1176,7 @@ public class ResourceManagerImplTest {
     manager.get("res1").setStatus(PublicationStatus.REGISTERED);
 
     // should throw InvalidConfigException
-    manager.register(resource, organisation, ipt, baseAction);
+    assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
 
   @Test
@@ -1233,7 +1227,7 @@ public class ResourceManagerImplTest {
   /**
    * test failure, opening archive of zipped file, with invalid DwC-A located inside parent folder.
    */
-  @Test(expected = UnsupportedArchiveException.class)
+  @Test
   public void testOpenArchiveInsideParentFolderFails() throws IOException {
     // decompress archive
     File dwcaDir = FileUtils.createTempDir();
@@ -1242,7 +1236,7 @@ public class ResourceManagerImplTest {
     // decompress the incoming file
     CompressionUtil.decompressFile(dwcaDir, dwca, true);
     // open DwC-A located inside parent folder, which throws UnsupportedArchiveException wrapping SaxParseException
-    DwcFiles.fromLocation(dwcaDir.toPath());
+    assertThrows(UnsupportedArchiveException.class, () -> DwcFiles.fromLocation(dwcaDir.toPath()));
   }
 
   @Test
@@ -1289,7 +1283,7 @@ public class ResourceManagerImplTest {
    * Publishes non-registered metadata-only resource that has been assigned a DOI. When trying to publish a new
    * minor version an exception is thrown because the DataCite metadata is invalid (missing publisher).
    */
-  @Test(expected = PublicationException.class)
+  @Test
   public void testPublishResourceWithDOIAssignedButInvalidDOIMetadata()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1327,7 +1321,8 @@ public class ResourceManagerImplTest {
     assertEquals(new BigDecimal("3.1"), resource.getNextVersion());
 
     // publish, will try to update DOI, triggering exception
-    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+    assertThrows(PublicationException.class,
+        () -> resourceManager.publish(resource, resource.getNextVersion(), baseAction));
   }
 
   /**
@@ -1337,7 +1332,7 @@ public class ResourceManagerImplTest {
    * When trying to publish a new major version an exception is thrown because the DataCite metadata is invalid
    * (missing publisher).
    */
-  @Test(expected = PublicationException.class)
+  @Test
   public void testPublishPublicResourceWithDOIReservedButInvalidDOIMetadata()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1368,7 +1363,8 @@ public class ResourceManagerImplTest {
     assertEquals(new BigDecimal("4.0"), resource.getNextVersion());
 
     // publish, will try to register DOI, triggering exception
-    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+    assertThrows(PublicationException.class,
+        () -> resourceManager.publish(resource, resource.getNextVersion(), baseAction));
   }
 
   /**
@@ -1378,7 +1374,7 @@ public class ResourceManagerImplTest {
    * When trying to publish a new major version an exception is thrown because the DataCite metadata is invalid
    * (missing publisher).
    */
-  @Test(expected = PublicationException.class)
+  @Test
   public void testPublishPublicResourceWithDOIAssignedAndReservedButInvalidDOIMetadata()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1412,7 +1408,8 @@ public class ResourceManagerImplTest {
     assertEquals(new BigDecimal("4.0"), resource.getNextVersion());
 
     // publish, will try to replace DOI with new reserved DOI, triggering exception
-    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+    assertThrows(PublicationException.class,
+        () -> resourceManager.publish(resource, resource.getNextVersion(), baseAction));
   }
 
   @Test
@@ -1435,7 +1432,7 @@ public class ResourceManagerImplTest {
     assertTrue(resourceManager.hasMaxProcessFailures(resource));
   }
 
-  @Test(expected = PublicationException.class)
+  @Test
   public void testPublishNonRegisteredMetadataOnlyResourceFailure()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1454,7 +1451,8 @@ public class ResourceManagerImplTest {
     resourceManager.getProcessFutures().put(resource.getShortname(), mock(Future.class));
 
     // publish, catching expected Exception
-    resourceManager.publish(resource, BigDecimal.valueOf(4.0), baseAction);
+    assertThrows(PublicationException.class,
+        () -> resourceManager.publish(resource, BigDecimal.valueOf(4.0), baseAction));
   }
 
   /**
@@ -2064,7 +2062,7 @@ public class ResourceManagerImplTest {
     String[] fileNames = resourceDirectory.list();
     assertNotNull(fileNames);
     Set<String> mySet = new HashSet<>(Arrays.asList(fileNames));
-    assertTrue("res1", mySet.contains("res1"));
-    assertTrue("res5", mySet.contains("res5"));
+    assertTrue(mySet.contains("res1"), "res1");
+    assertTrue(mySet.contains("res5"), "res5");
   }
 }

@@ -3,10 +3,10 @@ package org.gbif.ipt.utils;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DOIUtilsTest {
 

@@ -21,15 +21,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +38,7 @@ public class MappingActionTest {
   private MappingAction action;
   private static final String RESOURCE_SHORT_NAME = "myResource";
 
-  @Before
+  @BeforeEach
   public void setup() {
     // Mock HttpServletRequest
     HttpServletRequest req = mock(HttpServletRequest.class);
@@ -131,7 +131,7 @@ public class MappingActionTest {
     assertEquals("scientificname", action.normalizeColumnName(col3));
   }
 
-  @Ignore("the mapping and the resource's mapping are not the same object and so the remove(mapping) is always false")
+  @Disabled("the mapping and the resource's mapping are not the same object and so the remove(mapping) is always false")
   public void testDelete() {
     // prepare id, mid parameters
     action.prepare();

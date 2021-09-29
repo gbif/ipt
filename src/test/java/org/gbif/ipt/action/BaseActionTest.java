@@ -7,11 +7,11 @@ import com.opensymphony.xwork2.inject.Container;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

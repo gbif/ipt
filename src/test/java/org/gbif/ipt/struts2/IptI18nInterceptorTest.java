@@ -1,15 +1,14 @@
 package org.gbif.ipt.struts2;
 
-
 import java.util.Locale;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class IptI18nInterceptorTest {
+
   @Test
   public void testGetLocaleFromParam() {
     IptI18nInterceptor interceptor = new IptI18nInterceptor();

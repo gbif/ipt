@@ -12,14 +12,14 @@ import com.google.inject.Singleton;
 import org.apache.commons.digester.Digester;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Ignore("These rely on external IPTs")
+@Disabled("These rely on external IPTs")
 public class ReadRSSTest {
 
   // logging

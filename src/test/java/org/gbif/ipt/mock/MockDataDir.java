@@ -9,15 +9,13 @@ import java.io.File;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * This class simulates a DataDir object and must only be used for Unit Tests purposes.
- *
- * @author hftobon
  */
 public class MockDataDir {
 

@@ -47,17 +47,18 @@ import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -70,7 +71,7 @@ public class ExtensionManagerImplTest {
   private ResourceManager resourceManager;
   private AppConfig appConfig;
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     resourceManager = mock(ResourceManager.class);
     DataDir mockDataDir = mock(DataDir.class);
@@ -213,7 +214,7 @@ public class ExtensionManagerImplTest {
   /**
    * Test when IPT is configured with extra core type not matching a registered extension.
    */
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testInstallCoreTypesBadCoreConfiguration() throws Exception {
     File tmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
     File dataDirLocation = new File(tmpDir, "datadir.location");
@@ -226,7 +227,7 @@ public class ExtensionManagerImplTest {
     builtDataDir.setDataDir(dataDir);
     appConfig = new AppConfig(builtDataDir);
     // trigger exception
-    extensionManager.installCoreTypes();
+    assertThrows(InvalidConfigException.class, () -> extensionManager.installCoreTypes());
   }
 
   /**

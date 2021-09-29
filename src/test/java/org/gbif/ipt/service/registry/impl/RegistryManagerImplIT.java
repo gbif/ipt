@@ -19,9 +19,9 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.Eml;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,17 +31,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * Integration tests hitting sandbox registry (legacy) web services.
  */
-@Ignore("These require live UAT webservice and should therefore only run when manually triggered")
+@Disabled("These require live UAT webservice and should therefore only run when manually triggered")
 public class RegistryManagerImplIT extends IptMockBaseTest {
 
   // logging
@@ -55,7 +55,7 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
   private RegistryManager manager;
   private ResourceManager resourceManager;
 
-  @Before
+  @BeforeEach
   public void setup() throws SAXException, ParserConfigurationException {
     ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);

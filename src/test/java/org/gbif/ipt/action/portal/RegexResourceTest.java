@@ -15,15 +15,13 @@ package org.gbif.ipt.action.portal;
 
 import java.util.regex.Pattern;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit test for the regex in the resource page.
- *
- * @author julieth
  */
 
 public class RegexResourceTest {

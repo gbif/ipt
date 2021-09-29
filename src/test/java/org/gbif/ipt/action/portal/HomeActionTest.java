@@ -23,14 +23,14 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +44,7 @@ public class HomeActionTest {
   private static final int RECORDS_PUBLISHED = 1000;
   private static Organisation organisation = new Organisation();
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     Container container = mock(Container.class);
@@ -97,7 +97,7 @@ public class HomeActionTest {
    * home resource table. Instead, the title of the last public published version should show instead.
    */
   @Test
-  @Ignore("floating behaviour")
+  @Disabled("floating behaviour")
   public void testPrepare() {
     action.prepare();
     assertEquals(1, action.getResources().size());

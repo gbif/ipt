@@ -6,8 +6,8 @@ import org.gbif.utils.HttpUtil;
 import java.io.File;
 import java.net.URL;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class ResourceFileActionTest {
 
@@ -15,7 +15,7 @@ public class ResourceFileActionTest {
    * Manual test to tryout the conditional get archive download
    */
   @Test
-  @Ignore
+  @Disabled
   public void testDwca() throws Exception {
     HttpClient client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     File down = new File("/Users/markus/Desktop/dwca.zip");

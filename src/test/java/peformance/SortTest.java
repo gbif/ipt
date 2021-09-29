@@ -14,7 +14,6 @@ import java.io.OutputStreamWriter;
 import java.util.Comparator;
 import java.util.UUID;
 
-
 /**
  * This is just a utility class to test performance of sorting files of IDs.
  */

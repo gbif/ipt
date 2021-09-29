@@ -29,10 +29,9 @@ import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
 import org.gbif.utils.file.properties.PropertiesUtil;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -43,38 +42,29 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * WARNING!
- * This requires live DataCite service.
+ * WARNING! This requires live DataCite service.
  */
-@RunWith(Parameterized.class)
 public class OverviewActionIT {
 
   private static final Logger LOG = LogManager.getLogger(OverviewActionIT.class);
   private static final UUID ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5");
 
   private Resource r;
-  private OverviewAction action;
-  private DOIRegistrationAgency type;
 
-  public OverviewActionIT(OverviewAction action, DOIRegistrationAgency type) {
-    this.action = action;
-    this.type = type;
-  }
-
-  @Parameterized.Parameters
-  public static Object[][] data() throws Exception {
+  public static Stream<Arguments> data() throws Exception {
     // common mock AppConfig
     AppConfig mockAppConfig = mock(AppConfig.class);
     DataDir mockDataDir = mock(DataDir.class);
@@ -136,16 +126,13 @@ public class OverviewActionIT {
             mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
             mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class));
 
-    return new Object[][]{
-        {actionDataCite, DOIRegistrationAgency.DATACITE}
-    };
+    return Stream.of(Arguments.of(actionDataCite, DOIRegistrationAgency.DATACITE));
   }
 
   /**
    * Generate a new test resource for each test.
    */
-  @Before
-  public void before() {
+  public void before(OverviewAction action, DOIRegistrationAgency type) {
     r = new Resource();
     Eml eml = new Eml();
     r.setEml(eml);
@@ -193,8 +180,10 @@ public class OverviewActionIT {
   /**
    * Reserve DOI for resource that has never been assigned a DOI.
    */
-  @Test
-  public void testReserveDoi() throws Exception {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testReserveDoi(OverviewAction action, DOIRegistrationAgency type) throws Exception {
+    before(action, type);
     LOG.info("Testing " + type + "...");
     action.setReserveDoi("true");
     action.reserveDoi();
@@ -210,8 +199,10 @@ public class OverviewActionIT {
   /**
    * Test reserving existing DOI, making sure the DOI is preserved (user wants to reuse existing DOI).
    */
-  @Test
-  public void testReuseAndReserveExistingDoi() throws Exception {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testReuseAndReserveExistingDoi(OverviewAction action, DOIRegistrationAgency type) throws Exception {
+    before(action, type);
     LOG.info("Testing " + type + "...");
     action.setReserveDoi("true");
     action.reserveDoi();
@@ -247,10 +238,13 @@ public class OverviewActionIT {
   /**
    * Test deleting reserved DOI, when the resource was never assigned a DOI before.
    */
-  @Test
-  public void testDeleteReservedDoi() throws Exception {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testDeleteReservedDoi(OverviewAction action, DOIRegistrationAgency type) throws Exception {
+    before(action, type);
     LOG.info("Testing " + type + "...");
     action.setDeleteDoi("true");
+    action.setReserveDoi("true");
     action.reserveDoi();
     assertNotNull(r.getDoi());
     assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
@@ -274,10 +268,13 @@ public class OverviewActionIT {
   /**
    * Test deleting reserved DOI, when the resource was previously assigned a DOI.
    */
-  @Test
-  public void testDeleteReservedDoiWhenPreviousDoiExists() throws Exception {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testDeleteReservedDoiWhenPreviousDoiExists(OverviewAction action, DOIRegistrationAgency type) throws Exception {
+    before(action, type);
     LOG.info("Testing " + type + "...");
     action.setDeleteDoi("true");
+    action.setReserveDoi("true");
 
     // mock resource being assigned DOI
     DOI assignedDoi = new DOI("10.5072/bclona1");
@@ -304,7 +301,7 @@ public class OverviewActionIT {
     assertEquals(1, r.getEml().getAlternateIdentifiers().size()); // alternate ids updated
     assertEquals(reserved.toString(), r.getEml().getAlternateIdentifiers().get(0));
     assertEquals(reserved.getUrl().toString(), r.getEml().getCitation().getIdentifier()); // new DOI set as citation id
-    LOG.info("DOI was reserved successfully, DOI=" + reserved.toString());
+    LOG.info("DOI was reserved successfully, DOI=" + reserved);
 
     action.deleteDoi();
     // make sure the reserved DOI was deleted, and previous DOI reassigned
@@ -333,8 +330,10 @@ public class OverviewActionIT {
   /**
    * Ensure publishing fails (is prevented from starting) if DOI reserved cannot be resolved.
    */
-  @Test
-  public void testPublishFailsBecauseDOICannotBeResolved() throws Exception {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testPublishFailsBecauseDOICannotBeResolved(OverviewAction action, DOIRegistrationAgency type) throws Exception {
+    before(action, type);
     LOG.info("Testing " + type + "...");
     // mock resource having DOI reserved that doesn't exist!
     DOI assignedDoi = DOIUtils.mintDOI(type, Constants.TEST_DOI_PREFIX);
@@ -358,8 +357,10 @@ public class OverviewActionIT {
    * </br>
    * Then test undeleting the same resource, and ensure that all registered DOIs are reactivated.
    */
-  @Test
-  public void testDeleteAndUndeleteResourceAssignedMultipleDOIs() throws Exception {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testDeleteAndUndeleteResourceAssignedMultipleDOIs(OverviewAction action, DOIRegistrationAgency type) throws Exception {
+    before(action, type);
     LOG.info("Testing " + type + "...");
     action.setReserveDoi("true");
 
@@ -419,7 +420,7 @@ public class OverviewActionIT {
     assertEquals(3, r.getVersionHistory().size());
 
     // ensure resource has reserved DOI
-    assertTrue(r.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION));
+    assertEquals(r.getIdentifierStatus(), IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
     assertTrue(r.isAlreadyAssignedDoi());
     assertTrue(r.isPubliclyAvailable());
     assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
@@ -452,7 +453,7 @@ public class OverviewActionIT {
     if (type.equals(DOIRegistrationAgency.DATACITE)) {
       assertEquals("success", action.undelete());
       assertEquals(PublicationStatus.PUBLIC, r.getStatus());
-      assertTrue(r.getIdentifierStatus().equals(IdentifierStatus.PUBLIC));
+      assertEquals(r.getIdentifierStatus(), IdentifierStatus.PUBLIC);
       assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
       assertEquals(2, r.getEml().getAlternateIdentifiers().size());
       // DOI of last published version should be used as citation identifier

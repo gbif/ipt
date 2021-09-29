@@ -31,8 +31,8 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.rtf.RtfWriter2;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 public class Eml2RtfTest {
@@ -40,7 +40,7 @@ public class Eml2RtfTest {
   private VocabulariesManager mockedVocabManager;
   private Eml2Rtf eml2Rtf;
 
-  @Before
+  @BeforeEach
   public void setUp() throws ParserConfigurationException, SAXException {
     eml2Rtf = new Eml2Rtf();
     mockedVocabManager = new MockVocabulariesManager();

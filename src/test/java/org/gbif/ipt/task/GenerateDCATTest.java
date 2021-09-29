@@ -66,14 +66,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -87,7 +87,7 @@ public class GenerateDCATTest {
   private DataDir mockDataDir = MockDataDir.buildMock();
   private static RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
     when(mockAppConfig.getResourceArchiveUrl(RESOURCE_SHORTNAME)).thenReturn("distributionURL");
     when(mockAppConfig.getResourceUrl(RESOURCE_SHORTNAME)).thenReturn("resourceURL");

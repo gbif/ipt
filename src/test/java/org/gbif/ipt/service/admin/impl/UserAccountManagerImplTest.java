@@ -10,7 +10,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ***************************************************************************/
-
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -34,22 +33,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * @author hftobon
- */
 public class UserAccountManagerImplTest {
 
   private PasswordConverter mockedPasswordConverter = mock(PasswordConverter.class);
@@ -57,13 +53,13 @@ public class UserAccountManagerImplTest {
   private static File userFile;
   private User admin, manager, publisher, user;
 
-  @BeforeClass
+  @BeforeAll
   public static void initialiseOnce() {
     userFile =
       new File(System.getProperty("java.io.tmpdir") + File.separatorChar + UserAccountManagerImpl.PERSISTENCE_FILE);
   }
 
-  @After
+  @AfterEach
   public void deleteFile() {
     if (userFile.exists()) {
       userFile.delete();
@@ -79,7 +75,7 @@ public class UserAccountManagerImplTest {
     return new UserAccountManagerImpl(mockedCfg, mockedDataDir, mockedResourceManager, mockedPasswordConverter);
   }
 
-  @Before
+  @BeforeEach
   public void initialise() {
 
     // Admin user

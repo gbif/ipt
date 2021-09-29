@@ -14,7 +14,7 @@
 
   <name>IPT</name>
   <description>The GBIF Integrated Publishing Toolkit</description>
-  <url>https://github.com/gbif/${project.artifactId}</url>
+  <url>https://github.com/gbif/ipt</url>
 
   <!--
    Default settings used mainly for development.
@@ -67,9 +67,9 @@
     <jetty-maven-plugin.version>9.4.7.v20170914</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>5.8.0</junit.version>
     <log4j.version>2.13.3</log4j.version>
-    <mockito-all.version>1.10.19</mockito-all.version>
+    <mockito.version>3.12.4</mockito.version>
     <owasp-java-html-sanitizer.version>20170515.1</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.26</slf4j.version>
@@ -595,15 +595,21 @@
 
     <!-- testing -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <version>${mockito-all.version}</version>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
 

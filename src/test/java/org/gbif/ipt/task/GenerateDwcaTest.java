@@ -66,7 +66,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
@@ -77,20 +76,18 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -110,7 +107,7 @@ public class GenerateDwcaTest {
   private File tmpDataDir;
   private File resourceDir;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
     Map<String, String> basisOfRecords = new HashMap<>();
@@ -127,7 +124,7 @@ public class GenerateDwcaTest {
       .thenReturn(basisOfRecords);
   }
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     // create resource, version 3.0
     resource = new Resource();
@@ -162,11 +159,11 @@ public class GenerateDwcaTest {
   /**
    * A resource with no core is expected to throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testResourceWithNoCore() throws Exception {
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mock(SourceManager.class), mockAppConfig,
       mock(VocabulariesManager.class));
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   @Test
@@ -381,7 +378,7 @@ public class GenerateDwcaTest {
    * A generated DwC-a with occurrenceID mapped, but missing one or more occurrenceID values, is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testValidateCoreFromSingleSourceFileMissingIds() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
@@ -391,14 +388,14 @@ public class GenerateDwcaTest {
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mock(VocabulariesManager.class));
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with occurrenceID mapped, but having non unique occurrenceID values, is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testValidateCoreFromSingleSourceFileNonUniqueIds() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
@@ -408,14 +405,14 @@ public class GenerateDwcaTest {
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mock(VocabulariesManager.class));
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with occurrenceID mapped, but with occurrenceID values that are non unique when compared with
    * case insensitivity, is expected to throw a GeneratorException. E.g. FISHES:1 and fishes:1 are considered equal.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testValidateCoreFromSingleSourceFileNonUniqueIdsCase() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
@@ -426,7 +423,7 @@ public class GenerateDwcaTest {
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mock(VocabulariesManager.class));
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
@@ -569,7 +566,7 @@ public class GenerateDwcaTest {
   /**
    * Confirm occurrence core with rows missing basisOfRecord throws GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreFromSingleSourceFileMissingBasisOfRecord() throws Exception {
     // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_doi_dataset_id.xml");
@@ -578,14 +575,14 @@ public class GenerateDwcaTest {
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * Confirm occurrence core with rows with basisOfRecord not matching Darwin Core Type Vocabulary throws
    * GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreFromSingleSourceFileNonMatchingBasisOfRecord() throws Exception {
     // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_doi_dataset_id.xml");
@@ -594,13 +591,13 @@ public class GenerateDwcaTest {
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * Confirm occurrence core missing required basisOfRecord mapping throws GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreFromSingleSourceFileMissingBasisOfRecordMapping() throws Exception {
     // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_no_bor_mapped.xml");
@@ -609,7 +606,7 @@ public class GenerateDwcaTest {
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**

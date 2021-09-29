@@ -38,14 +38,15 @@ import javax.xml.parsers.SAXParserFactory;
 
 import com.thoughtworks.xstream.converters.ConversionException;
 import org.apache.commons.io.IOUtils;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -61,7 +62,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   private RegistrationManager registrationManager;
   private DataDir mockDataDir;
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock instances
     AppConfig mockAppConfig = mock(AppConfig.class);
@@ -166,14 +167,14 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
    * (registration2.xml) but on converting a LegacyOrganization, the method fails because the LegacyOrganization is
    * missing its mandatory key.
    */
-  @Test(expected = ConversionException.class)
-  @Ignore("floating behaviour")
+  @Test
+  @Disabled("floating behaviour")
   public void testEncryptRegistrationFailsOnOrganisationMissingKey() {
     // mock returning registration.xml file, with organization missing name which is NotNull field
     File registrationXML = FileUtils.getClasspathFile("config/registration_invalid.xml");
     when(mockDataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V1)).thenReturn(registrationXML);
 
-    registrationManager.encryptRegistration();
+    assertThrows(ConversionException.class, () -> registrationManager.encryptRegistration());
   }
 
   /**
@@ -193,12 +194,12 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
    * Try adding an organisation whose DOI agency account is set to primary, when an existing organisation
    * DOI agency account has been selected as primary. Only one agency account can be activated at once.
    */
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testAddAssociatedOrganisationPrimaryAgencyAccountAlreadyExists() throws AlreadyExistingException {
     Organisation org = new Organisation();
     org.setName("Oregon University");
     org.setKey(UUID.randomUUID().toString());
     org.setAgencyAccountPrimary(true);
-    registrationManager.addAssociatedOrganisation(org);
+    assertThrows(InvalidConfigException.class, () -> registrationManager.addAssociatedOrganisation(org));
   }
 }

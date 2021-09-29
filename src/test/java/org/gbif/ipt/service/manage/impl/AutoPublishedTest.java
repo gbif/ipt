@@ -32,15 +32,15 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 public class AutoPublishedTest {
@@ -52,7 +52,7 @@ public class AutoPublishedTest {
 
   private ResourceManagerImpl resourceManager;
 
-  @Before
+  @BeforeEach
   public void setup() {
     resourceManager = getResourceManagerImpl();
   }

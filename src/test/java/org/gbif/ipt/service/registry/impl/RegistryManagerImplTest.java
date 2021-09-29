@@ -50,15 +50,15 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -77,7 +77,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   private HttpClient mockHttpClient;
   private ExtendedResponse extResponse;
 
-  @Before
+  @BeforeEach
   public void setup() throws SAXException, ParserConfigurationException {
     mockHttpClient = mock(HttpClient.class);
     extResponse = new ExtendedResponse(mock(HttpResponse.class));

@@ -9,9 +9,6 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * @author htobon
- */
 public class MockRegistryManager {
 
   private static RegistryManager registryManager = mock(RegistryManager.class);

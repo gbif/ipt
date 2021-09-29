@@ -34,16 +34,16 @@ import com.google.inject.struts2.Struts2GuicePluginModule;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -54,12 +54,12 @@ public class VocabulariesManagerImplTest {
   private DataDir dataDir;
   private AppConfig appConfig;
 
-  @BeforeClass
+  @BeforeAll
   public static void beforeClassSetup() {
     TMP_DIR = org.gbif.ipt.utils.FileUtils.createTempDir();
   }
 
-  @Before
+  @BeforeEach
   public void setup() throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
     dataDir = mock(DataDir.class);
     appConfig = new AppConfig(dataDir);
