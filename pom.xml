@@ -238,25 +238,6 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>${maven-eclipse-plugin.version}</version>
-        <configuration>
-          <downloadSources>true</downloadSources>
-          <additionalBuildcommands>
-            <buildcommand>com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder</buildcommand>
-          </additionalBuildcommands>
-          <additionalConfig>
-            <file>
-              <name>.checkstyle</name>
-              <url>http://rs.gbif.org/conventions/java-style-config.xml</url>
-            </file>
-          </additionalConfig>
-        </configuration>
-      </plugin>
-
-      <!-- commented out only to perform release: runs integration tests (*IT) during verify -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>${maven-failsafe-plugin.version}</version>
       </plugin>
