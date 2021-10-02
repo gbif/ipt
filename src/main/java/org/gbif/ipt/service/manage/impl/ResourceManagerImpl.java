@@ -1,9 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.manage.impl;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.ListValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
-import org.apache.commons.lang3.StringUtils;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
@@ -114,8 +125,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
+
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Level;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -123,8 +142,6 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.Level;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -2463,7 +2480,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           EmlUtils.addOrUpdateKeywordSet(keywords, type, Constants.THESAURUS_DATASET_TYPE);
           LOG.debug("GBIF Dataset Type Vocabulary added/updated to Resource's list of keywords");
         }
-        // its absence means that it must removed (if it exists)
+        // its absence means that it must be removed (if it exists)
         else {
           EmlUtils.removeKeywordSet(keywords, Constants.THESAURUS_DATASET_TYPE);
           LOG.debug("GBIF Dataset Type Vocabulary removed from Resource's list of keywords");
