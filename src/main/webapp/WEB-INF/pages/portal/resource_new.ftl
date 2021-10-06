@@ -936,7 +936,8 @@
         titleQuestion : "<@s.text name="basic.confirm"/>",
         question : "<@s.text name='portal.resource.confirm.delete.version'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
         yesAnswer : "<@s.text name='basic.yes'/>",
-        cancelAnswer : "<@s.text name='basic.no'/>"
+        cancelAnswer : "<@s.text name='basic.no'/>",
+        buttonType: "danger"
     });
 
     $(function() {

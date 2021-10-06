@@ -74,6 +74,11 @@
                     // add content to window
                     dialogWindow.html(content);
 
+                    // hide yes button if checkbox present
+                    if (theOptions.checkboxText !== undefined) {
+                        $("yes-button").hide();
+                    }
+
                     $("#yes-button").on("click", function () {
                         if (thisHref != null) {
                             window.location = thisHref;
