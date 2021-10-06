@@ -6,7 +6,6 @@
 
         $('.confirmPublishAll').jConfirmAction({
             titleQuestion : "<@s.text name="basic.confirm"/>",
-            question : "<@s.text name="basic.confirm"/>",
             yesAnswer : "<@s.text name='basic.yes'/>",
             cancelAnswer : "<@s.text name='basic.no'/>",
             buttonType: "primary"
