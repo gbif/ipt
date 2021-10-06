@@ -119,7 +119,8 @@
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary"});
         $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
-        $('.confirmDeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+        $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+        $('.confirmDeletionFromIptOnly').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptOnly.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
         $('.confirmUndeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
 
         $('.confirmReserveDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
@@ -365,13 +366,13 @@
                                         <li>
                                             <form action="resource-delete.do" method='post'>
                                                 <input name="r" type="hidden" value="${resource.shortname}" />
-                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIptAndGbif"/>
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletionFromIptAndGbif w-100" name="delete" key="button.delete.fromIptAndGbif"/>
                                             </form>
                                         </li>
                                         <li>
                                             <form action="resource-deleteFromIpt.do" method='post'>
                                                 <input name="r" type="hidden" value="${resource.shortname}" />
-                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIpt"/>
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletionFromIptOnly w-100" name="delete" key="button.delete.fromIpt"/>
                                             </form>
                                         </li>
                                     </ul>
@@ -387,13 +388,13 @@
                                     <li>
                                         <form action="resource-delete.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletionFromIptAndGbif w-100" name="delete" key="button.delete.fromIptAndGbif"/>
                                         </form>
                                     </li>
                                     <li>
                                         <form action="resource-deleteFromIpt.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIpt"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletionFromIptOnly w-100" name="delete" key="button.delete.fromIpt"/>
                                         </form>
                                     </li>
                                 </ul>
