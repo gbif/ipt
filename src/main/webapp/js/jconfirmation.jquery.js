@@ -3,14 +3,16 @@
     jQuery.fn.jConfirmAction = function (options) {
 
         // Some jConfirmAction options (limited to customize language) :
+        // titleQuestion: a text for modal title
         // question : a text for your question.
         // yesAnswer : a text for Yes answer.
         // cancelAnswer : a text for Cancel/No answer.
         // checkboxText: a text for the checkbox needed to confirm for Yes answer (optional)
         // summary: a textarea to enter a summary for the submit
+        // buttonType: a button type (color)
         var theOptions = jQuery.extend({
             titleQuestion: "Are you sure?",
-            question: "Are you sure?",
+            question: undefined,
             yesAnswer: "Yes",
             cancelAnswer: "Cancel",
             checkboxText: undefined,
@@ -45,18 +47,22 @@
                     // body
                     content += '<div class="modal-body">';
 
-                    // checkbox if present otherwise question
+                    // checkbox if present
                     if (theOptions.checkboxText !== undefined) {
-                        content += '<div class="form-check mb-2">\n' +
-                            '<input id="checkbox-confirm" class="form-check-input" type="checkbox" >\n' +
-                            '<label class="form-check-label" for="checkbox-confirm">\n' +
-                            theOptions.checkboxText +
-                            '</label>\n' +
-                            '</div>' + theOptions.question;
-                    } else {
+                        content += '<div class="form-check mb-2">';
+                        content += '<input id="checkbox-confirm" class="form-check-input" type="checkbox" >';
+                        content += '<label class="form-check-label" for="checkbox-confirm">';
+                        content += theOptions.checkboxText;
+                        content += '</label>';
+                        content += '</div>';
+                    }
+
+                    // question if present
+                    if (theOptions.question !== undefined) {
                         content += '<p>' + theOptions.question + '</p>';
                     }
-                    // append summary if present
+
+                    // summary if present
                     if (theOptions.summary !== undefined) {
                         content += '<div class="mt-3"><textarea id="dialogSummary" rows="5" class="dialog-summary form-control" placeholder="' + theOptions.summary + '"></textarea></div>';
                     }
