@@ -650,6 +650,10 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     margin: 30px 0 -10px;
 }
 
+.modal-confirm .btn {
+    min-width: 120px;
+}
+
 .modal-confirm .icon-box {
     width: 80px;
     height: 80px;
