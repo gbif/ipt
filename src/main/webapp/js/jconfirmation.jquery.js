@@ -80,12 +80,15 @@
                     // add content to window
                     dialogWindow.html(content);
 
+                    var yesButton = $("#yes-button");
+                    var cancelButton = $("#cancel-button");
+
                     // hide yes button if checkbox present
                     if (theOptions.checkboxText !== undefined) {
-                        $("yes-button").hide();
+                        yesButton.hide();
                     }
 
-                    $("#yes-button").on("click", function () {
+                    yesButton.on("click", function () {
                         if (thisHref != null) {
                             window.location = thisHref;
                         } else {
@@ -96,16 +99,16 @@
                         }
                     });
 
-                    $("#cancel-button").on("click", function() {
+                    cancelButton.on("click", function() {
                         submitBtn.removeAttr("jconfirmed");
                     });
 
                     // show yes button if checkbox is selected
                     $('#checkbox-confirm').on("click", function () {
                         if ($('#checkbox-confirm').prop('checked')) {
-                            $('#yes-button').show();
+                            yesButton.show();
                         } else {
-                            $('#yes-button').hide();
+                            yesButton.hide();
                         }
                     });
 
