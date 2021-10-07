@@ -289,7 +289,7 @@
 
                     <div class="input-group">
                         <label class="input-group-text" for="fVal${fieldsIndex}">
-                            <a href="vocabulary.do?id=${p.vocabulary.uriString}" target="_blank">
+                            <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">
                                 <i class="bi bi-book"></i>
                             </a>
                         </label>

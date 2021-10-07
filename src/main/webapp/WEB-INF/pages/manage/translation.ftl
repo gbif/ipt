@@ -72,7 +72,7 @@
                 </p>
                 <p class="mx-md-4 mx-2">
                     <em>${property.vocabulary.title!property.vocabulary.uriString}</em>:
-                    <a href="vocabulary.do?id=${property.vocabulary.uriString}" target="_blank">
+                    <a href="vocabulary.do?id=${property.vocabulary.uriString}" class="no-text-decoration" target="_blank">
                         <i class="bi bi-book"></i>
                     </a>
                     &quot;${property.vocabulary.description!}&quot;

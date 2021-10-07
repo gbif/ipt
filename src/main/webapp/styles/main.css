@@ -148,6 +148,12 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin
     color: #2c79a1 !important;
     text-decoration: underline !important;
 }
+
+a.leaflet-control-zoom-in:focus, a.leaflet-control-zoom-in:hover,
+a.leaflet-control-zoom-out:focus, a.leaflet-control-zoom-out:hover,
+a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
+    text-decoration: none !important;
+}
 /* Links color with exception for some classes END */
 
 
