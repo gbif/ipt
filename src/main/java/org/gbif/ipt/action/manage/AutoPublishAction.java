@@ -41,7 +41,7 @@ public class AutoPublishAction extends ManagerBaseAction {
   // logging
   private static final Logger LOG = LogManager.getLogger(AutoPublishAction.class);
 
-  private static String OFF_FREQUENCY = "off";
+  private static final String OFF_FREQUENCY = "off";
 
   private final VocabulariesManager vocabManager;
 
@@ -152,7 +152,7 @@ public class AutoPublishAction extends ManagerBaseAction {
    * locale, defaulting to English.
    */
   private void populateFrequencies() {
-    frequencies = new LinkedHashMap<String, String>();
+    frequencies = new LinkedHashMap<>();
     frequencies.put(OFF_FREQUENCY, getText("manage.autopublish.off"));
 
     // update frequencies list, that qualify for auto-publishing
@@ -163,42 +163,42 @@ public class AutoPublishAction extends ManagerBaseAction {
   }
 
   private void populateMonths() {
-    months = new LinkedHashMap<String, String>();
+    months = new LinkedHashMap<>();
     for (MonthEnum month : MonthEnum.values()) {
       months.put(month.getIdentifier(), getText("manage.autopublish." + month.getIdentifier()));
     }
   }
 
   private void populateBiMonths() {
-    biMonths = new LinkedHashMap<String, String>();
+    biMonths = new LinkedHashMap<>();
     for (BiMonthEnum biMonth : BiMonthEnum.values()) {
       biMonths.put(biMonth.getIdentifier(), getText("manage.autopublish." + biMonth.getIdentifier()));
     }
   }
 
   private void populateDays() {
-    days = new LinkedHashMap<Integer, String>();
+    days = new LinkedHashMap<>();
     for (int i = 1; i <= 31; i++) {
       days.put(i, ((i < 10) ? "0" : "") + i);
     }
   }
 
   private void populateDaysOfWeek() {
-    daysOfWeek = new LinkedHashMap<String, String>();
+    daysOfWeek = new LinkedHashMap<>();
     for (DayEnum dayOfWeek : DayEnum.values()) {
       daysOfWeek.put(dayOfWeek.getIdentifier(), getText("manage.autopublish." + dayOfWeek.getIdentifier()));
     }
   }
 
   private void populateHours() {
-    hours = new LinkedHashMap<Integer, String>();
+    hours = new LinkedHashMap<>();
     for (int i = 0; i <= 23; i++) {
       hours.put(i, ((i < 10) ? "0" : "") + i);
     }
   }
 
   private void populateMinutes() {
-    minutes = new LinkedHashMap<Integer, String>();
+    minutes = new LinkedHashMap<>();
     for (int i = 0; i <= 59; i++) {
       minutes.put(i, ((i < 10) ? "0" : "") + i);
     }

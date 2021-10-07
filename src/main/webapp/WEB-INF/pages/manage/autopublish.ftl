@@ -172,25 +172,24 @@
 
                 <div id="frequencyDetails" class="mt-2">
                     <div id="frequencyDetailsEvery">
-                        <div id="helpWeekly" class="mx-md-4 mx-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.weekly"/> Every
+                        <div id="helpWeekly" class="mx-md-4 mx-2 mb-2">
+                            <@popoverPropertyInfo "manage.autopublish.help.weekly"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpMonthly" class="mx-md-4 mx-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.monthly"/> Every
+                        <div id="helpMonthly" class="mx-md-4 mx-2 mb-2">
+                            <@popoverPropertyInfo "manage.autopublish.help.monthly"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpBiAnnually" class="mx-md-4 mx-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.biannually"/> Every
+                        <div id="helpBiAnnually" class="mx-md-4 mx-2 mb-2">
+                            <@popoverPropertyInfo "manage.autopublish.help.biannually"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpAnnually" class="mx-md-4 mx-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.annually"/> Every
+                        <div id="helpAnnually" class="mx-md-4 mx-2 mb-2">
+                            <@popoverPropertyInfo "manage.autopublish.help.annually"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
                         <div class="row mx-md-3 mx-1">
                             <div id="updateFrequencyDayOfWeekWrapper" class="col-md-2 px-1">
-                                <label for="updateFrequencyDayOfWeek" class="form-label">day</label>
                                 <select id="updateFrequencyDayOfWeek" class="form-select" name="updateFrequencyDayOfWeek" size="1">
                                     <#list daysOfWeek?keys as val>
                                         <option value="${val}" <#if (updateFrequencyDayOfWeek!"")==val> selected="selected"</#if>>
@@ -202,7 +201,6 @@
 
                             <div id="updateFrequencyDayWrapper" class="col-md-3 col-lg-2 px-1">
                                 <#-- Day: 1, 2, 3, ...-->
-                                <label for="updateFrequencyDay" class="form-label">day</label>
                                 <select id="updateFrequencyDay" class="form-select" name="updateFrequencyDay" size="1">
                                     <#list days?keys as val>
                                         <option value="${val}" <#if (updateFrequencyDay!"")?string==val?string> selected="selected"</#if>>
@@ -214,7 +212,6 @@
 
                             <div id="updateFrequencyMonthWrapper" class="col-md-3 col-lg-2 px-1">
                                 <#-- Day: January, February, ... -->
-                                <label for="updateFrequencyMonth" class="form-label">month</label>
                                 <select id="updateFrequencyMonth" class="form-select" name="updateFrequencyMonth" size="1">
                                     <#list months?keys as val>
                                         <option value="${val}" <#if (updateFrequencyMonth!"")==val> selected="selected"</#if>>
@@ -226,7 +223,6 @@
 
                             <div id="updateFrequencyBiMonthWrapper" class="col-md-3 col-lg-2 px-1">
                                 <#-- BiMonth: January/July, February/August, ... -->
-                                <label for="updateFrequencyBiMonth" class="form-label">month/month</label>
                                 <select id="updateFrequencyBiMonth" class="form-select" name="updateFrequencyBiMonth" size="1">
                                     <#list biMonths?keys as val>
                                         <option value="${val}" <#if (updateFrequencyBiMonth!"")==val> selected="selected"</#if>>
@@ -239,12 +235,11 @@
                     </div>
 
                     <div id="frequencyDetailsAt" class="mt-2">
-                        <div class="mx-md-4 mx-2">
-                            <@popoverPropertyInfo "manage.autopublish.help.hour"/> At:
+                        <div class="mx-md-4 mx-2 mb-2">
+                            <@popoverPropertyInfo "manage.autopublish.help.hour"/> <@s.text name="manage.autopublish.at"/>
                         </div>
                         <div class="row mx-md-3 mx-1">
                             <div class="col-6 col-sm-6 col-md-3 col-lg-2 px-1">
-                                <label for="updateFrequencyHour" class="form-label">hours</label>
                                 <select id="updateFrequencyHour" class="form-select" name="updateFrequencyHour" size="1">
                                     <#list hours?keys as val>
                                         <option value="${val}" <#if (updateFrequencyHour!"")?string==val?string> selected="selected"</#if>>
@@ -254,7 +249,6 @@
                                 </select>
                             </div>
                             <div class="col-6 col-sm-6 col-md-3 col-lg-2 px-1">
-                                <label for="updateFrequencyMinute" class="form-label">minutes</label>
                                 <select id="updateFrequencyMinute" class="form-select" name="updateFrequencyMinute" size="1">
                                     <#list minutes?keys as val>
                                         <option value="${val}" <#if (updateFrequencyMinute!"")?string==val?string> selected="selected"</#if>>
