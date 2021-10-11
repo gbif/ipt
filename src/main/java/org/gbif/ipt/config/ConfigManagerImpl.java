@@ -1,6 +1,5 @@
 package org.gbif.ipt.config;
 
-import com.sun.jersey.json.impl.provider.entity.JSONArrayProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -145,10 +144,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   /**
    * Returns the local host name.
    */
+  @Override
   public String getHostName() {
     return URLUtils.getHostName();
   }
 
+  @Override
   public boolean isBaseURLValid() {
     try {
       URL baseURL = new URL(cfg.getProperty(AppConfig.BASEURL));
@@ -163,6 +164,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   /**
    * Update configuration singleton from config file in data dir.
    */
+  @Override
   public void loadDataDirConfig() throws InvalidConfigException {
     LOG.info("Reading DATA DIRECTORY: " + dataDir.dataDir.getAbsolutePath());
 
@@ -280,6 +282,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     LOG.info("IPT Data Directory: {}", dataDir.dataFile(".").getAbsolutePath());
   }
 
+  @Override
   public void saveConfig() throws InvalidConfigException {
     try {
       cfg.saveConfig();
@@ -289,10 +292,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
   }
 
+  @Override
   public void setAnalyticsKey(String key) throws InvalidConfigException {
     cfg.setProperty(AppConfig.ANALYTICS_KEY, StringUtils.trimToEmpty(key));
   }
 
+  @Override
   public void setBaseUrl(URL baseURL) throws InvalidConfigException {
     boolean validate = true;
     if (URLUtils.isLocalhost(baseURL)) {
@@ -331,16 +336,19 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     cfg.setProperty(AppConfig.BASEURL, baseURL.toString());
   }
 
+  @Override
   public void setConfigProperty(String key, String value) {
     cfg.setProperty(key, value);
   }
 
+  @Override
   public boolean setDataDir(File dataDir) throws InvalidConfigException {
     boolean created = this.dataDir.setDataDir(dataDir);
     loadDataDirConfig();
     return created;
   }
 
+  @Override
   public void setDebugMode(boolean debug) throws InvalidConfigException {
     cfg.setProperty(AppConfig.DEBUG, Boolean.toString(debug));
     reloadLogger();
@@ -352,6 +360,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    *
    * @param archivalMode true to turn on, false to turn off
    */
+  @Override
   public void setArchivalMode(boolean archivalMode) throws InvalidConfigException {
     if (!archivalMode && registrationManager.findPrimaryDoiAgencyAccount() != null) {
       throw new InvalidConfigException(TYPE.DOI_REGISTRATION_ALREADY_ACTIVATED,
@@ -373,10 +382,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
   }
 
+  @Override
   public void setGbifAnalytics(boolean useGbifAnalytics) throws InvalidConfigException {
     cfg.setProperty(AppConfig.ANALYTICS_GBIF, Boolean.toString(useGbifAnalytics));
   }
 
+  @Override
   public void setIptLocation(Double lat, Double lon) throws InvalidConfigException {
     if (lat == null || lon == null) {
       cfg.setProperty(AppConfig.IPT_LATITUDE, "");
@@ -401,6 +412,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    *
    * @param proxy an URL with the format http://proxy.my-institution.com:8080.
    */
+  @Override
   public void setProxy(String proxy) throws InvalidConfigException {
     proxy = StringUtils.trimToNull(proxy);
     // save the current proxy
@@ -442,7 +454,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     cfg.setProperty(AppConfig.PROXY, proxy);
   }
 
-
+  @Override
   public boolean setupComplete() {
     return dataDir.isConfigured() && cfg.getRegistryType() != null && !userManager.list(Role.Admin).isEmpty();
   }
@@ -473,6 +485,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     return false;
   }
 
+  @Override
   public void setAdminEmail(String adminEmail) {
     cfg.setProperty(AppConfig.ADMIN_EMAIL, adminEmail);
   }

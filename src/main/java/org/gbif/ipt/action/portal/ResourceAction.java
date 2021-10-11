@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -41,12 +42,9 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -781,10 +779,14 @@ public class ResourceAction extends PortalBaseAction {
    * @return map of record counts by extension for published version (specified from version parameter), sorted by
    * count then by extension name for uniqueness (as two extensions can have the same count)
    */
-  public ImmutableSortedMap<String, Integer> getRecordsByExtensionOrdered() {
-    return ImmutableSortedMap.copyOf(recordsByExtensionForVersion,
-      Ordering.natural().reverse().onResultOf(Functions.forMap(recordsByExtensionForVersion))
-        .compound(Ordering.<String> natural()));
+  public LinkedHashMap<String, Integer> getRecordsByExtensionOrdered() {
+    LinkedHashMap<String, Integer> result = new LinkedHashMap<>();
+    recordsByExtensionForVersion
+        .entrySet().stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
+        .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
+
+    return result;
   }
 
   /**

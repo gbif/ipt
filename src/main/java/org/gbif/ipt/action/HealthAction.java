@@ -148,6 +148,7 @@ public class HealthAction extends BaseAction {
     iptMode = ((cfg != null) && (cfg.getRegistryType() != null)) ? cfg.getRegistryType().name() : "";
   }
 
+  @Override
   public String execute() {
     status = new Status();
     status.setNetworkRegistryURL(this.networkRegistryURL);

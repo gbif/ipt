@@ -85,6 +85,7 @@ public class SqlSource extends SourceBase {
     this.username = username;
   }
 
+  @Override
   public SourceType getSourceType() {
     return SourceType.SQL;
   }

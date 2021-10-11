@@ -41,10 +41,12 @@ public class PasswordConverter implements Converter {
     this.encrypter = cipher;
   }
 
+  @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(Password.class);
   }
 
+  @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     Password pass = (Password) value;
     try {
@@ -56,6 +58,7 @@ public class PasswordConverter implements Converter {
     }
   }
 
+  @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     Password pass = new Password();
     String val = reader.getValue();

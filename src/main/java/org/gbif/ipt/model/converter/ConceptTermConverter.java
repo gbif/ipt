@@ -41,15 +41,18 @@ public class ConceptTermConverter implements Converter {
     this.extConverter = extConverter;
   }
 
+  @Override
   public boolean canConvert(Class clazz) {
     return Term.class.isAssignableFrom(clazz);
   }
 
+  @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     Term t = (Term) value;
     writer.setValue(t.qualifiedName());
   }
 
+  @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     // this is tricky. Relies on xstream implementation to convert the matching extension BEFORE we reach here
     // But just cant get the hierarchical reader to tell me the current extension name

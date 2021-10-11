@@ -81,6 +81,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   private static final Comparator<String> IGNORE_CASE_COMPARATOR = Ordering.from(new Comparator<String>() {
 
+    @Override
     public int compare(String o1, String o2) {
       return o1.compareToIgnoreCase(o2);
     }
@@ -916,6 +917,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @return number of records published in core file
    * @throws GeneratorException if DwC-A generation fails for any reason
    */
+  @Override
   public Map<String, Integer> call() throws Exception {
     try {
       checkForInterruption();

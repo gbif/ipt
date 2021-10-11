@@ -1384,6 +1384,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * @param delete form variable
    */
+  @Override
   public void setDelete(String delete) {
     this.delete = StringUtils.trimToNull(delete) != null;
   }

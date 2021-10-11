@@ -114,6 +114,7 @@
 <#assign download_dwca_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
 <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
+<#assign isPreviewPage = action.isPreview() />
 
 <style>
     <#-- For HTML headers inside description -->
@@ -144,7 +145,7 @@
         <input style="display:none" class="expand" type="button" id="menu-toggle2" name="expand-sidebar" value=""/>
 
         <#-- display watermark for preview pages -->
-        <#if action.isPreview()?string == "true">
+        <#if isPreviewPage>
             <div id="watermark">
                 <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.emlVersion.toPlainString()}</@s.param></@s.text>
             </div>

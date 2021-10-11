@@ -149,6 +149,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         final String s = lang;
         Collections.sort(concepts, new Comparator<VocabularyConcept>() {
 
+          @Override
           public int compare(VocabularyConcept o1, VocabularyConcept o2) {
             return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle())
               .compareTo((o2.getPreferredTerm(s) == null ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));

@@ -651,6 +651,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return list;
   }
 
+  @Override
   public List<String> getRedundantGroups(Extension extension, Extension core) {
     List<String> groups = extension.getGroups();
     List<String> coreGroups = core.getGroups();

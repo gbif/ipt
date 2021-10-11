@@ -85,6 +85,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return user;
   }
 
+  @Override
   public User authenticate(String email, String password) {
     if (allowSimplifiedAdminLogin && email != null && email.equalsIgnoreCase("admin")) {
       // lookup the admins email address#
@@ -97,6 +98,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return null;
   }
 
+  @Override
   public void create(User user) throws AlreadyExistingException, IOException {
     if (user != null) {
       if (get(user.getEmail()) != null) {
@@ -119,6 +121,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     xstream.registerConverter(passwordConverter);
   }
 
+  @Override
   public User delete(String email) throws DeletionNotAllowedException, IOException {
     if (email != null) {
       User remUser = get(email);
@@ -195,6 +198,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
    *
    * @return User if found, null otherwise
    */
+  @Override
   public User get(String email) {
     if (email != null && users.containsKey(email.toLowerCase())) {
       return users.get(email.toLowerCase());
@@ -216,18 +220,22 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return false;
   }
 
+  @Override
   public String getDefaultAdminEmail() {
     return cfg.getAdminEmail();
   }
 
+  @Override
   public User getSetupUser() {
     return setupUser;
   }
 
+  @Override
   public List<User> list() {
     ArrayList<User> userList = new ArrayList<User>(users.values());
     Collections.sort(userList, new Comparator<User>() {
 
+      @Override
       public int compare(User o1, User o2) {
         return (o1.getFirstname() + " " + o1.getLastname()).compareTo(o2.getFirstname() + " " + o2.getLastname());
       }
@@ -235,6 +243,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return userList;
   }
 
+  @Override
   public List<User> list(Role role) {
     List<User> matchingUsers = new ArrayList<User>();
     for (User u : users.values()) {
@@ -245,6 +254,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return matchingUsers;
   }
 
+  @Override
   public void load() throws InvalidConfigException {
     Reader userReader;
     ObjectInputStream in = null;
@@ -279,6 +289,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     }
   }
 
+  @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all " + users.size() + " user accounts...");
     Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
@@ -293,11 +304,13 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
    * (non-Javadoc)
    * @see org.gbif.ipt.service.admin.UserAccountManager#save(org.gbif.ipt.model.User)
    */
+  @Override
   public void save(User user) throws IOException {
     addUser(user);
     save();
   }
 
+  @Override
   public void setSetupUser(User setupUser) {
     this.setupUser = setupUser;
   }

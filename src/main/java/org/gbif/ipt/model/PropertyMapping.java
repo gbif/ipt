@@ -67,6 +67,7 @@ public class PropertyMapping extends ArchiveField implements Serializable, Compa
    *
    * @return 0 if names are equal, -1 if argument is lexicographically less, 1 if argument is lexicographically greater
    */
+  @Override
   public int compareTo(PropertyMapping propertyMapping) {
     return this.getTerm().qualifiedName().compareTo(propertyMapping.getTerm().qualifiedName());
   }
