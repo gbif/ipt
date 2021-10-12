@@ -19,10 +19,12 @@
 				</h5>
 
 				<div class="card-body my-lg-3 mt-0 mb-3">
-					<div class="row gx-0 text-center admin-col-listing admin-col-listing-hover">
+					<div class="row gx-0 text-center admin-col-listing">
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/config.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
-								<i class="bi bi-gear-fill admin-icon"></i>
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-gear-fill admin-icon"></i>
+								</div>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.editConfig"/>
 								</h5>
@@ -30,7 +32,9 @@
 						</div>
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/bulk-publication.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
-								<i class="bi bi-stack admin-icon"></i>
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-stack admin-icon"></i>
+								</div>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.bulkPublication"/>
 								</h5>
@@ -38,7 +42,9 @@
 						</div>
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/users.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
-								<i class="bi bi-people-fill admin-icon"></i>
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-people-fill admin-icon"></i>
+								</div>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.manageUsers"/>
 								</h5>
@@ -46,7 +52,9 @@
 						</div>
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/registration.do" title="" class="admin-col-listing-item border-bottom">
-								<i class="bi bi-cloud-arrow-up-fill admin-icon"></i>
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-cloud-arrow-up-fill admin-icon"></i>
+								</div>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.editRegistration"/>
 								</h5>
@@ -70,7 +78,9 @@
 								</div>
 							<#else>
 								<a href="${baseURL}/admin/organisations.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
-									<i class="bi bi-building admin-icon"></i>
+									<div class="admin-icon-wrapper">
+										<i class="bi bi-building admin-icon"></i>
+									</div>
 									<h5 class="admin-card-title">
 										<@s.text name="admin.home.editOrganisations"/>
 									</h5>
@@ -79,7 +89,9 @@
 						</div>
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/extensions.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
-								<i class="bi bi-collection-fill admin-icon"></i>
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-collection-fill admin-icon"></i>
+								</div>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.manageExtensions"/>
 								</h5>
@@ -87,7 +99,9 @@
 						</div>
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/logs.do" title="" class="admin-col-listing-item border-xl-right">
-								<i class="bi bi-journal-text admin-icon"></i>
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-journal-text admin-icon"></i>
+								</div>
 								<h5 class="admin-card-title">
 									<@s.text name="admin.home.manageLogs"/>
 								</h5>

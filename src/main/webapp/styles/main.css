@@ -70,20 +70,13 @@ header, .dropdown-menu {
     }
 }
 
-.admin-col-listing.admin-col-listing-hover .admin-col-listing-item:hover {
-    z-index: 2;
-    color: #fff;
-    text-decoration: none;
-    background-color: #61a861;
+.admin-icon-wrapper {
+    transition: transform .5s;
+    transition-timing-function: ease-out;
 }
 
-.admin-col-listing-item-disabled:hover {
-    color: #4e565f !important;
-    background-color: #fff !important;
-}
-
-.admin-col-listing.admin-col-listing-hover .admin-col-listing-item:hover .admin-icon {
-    color: #fff;
+.admin-icon-wrapper:hover {
+    transform: scale(1.75);
 }
 
 .admin-col-listing .admin-col-listing-item .admin-icon {
