@@ -83,12 +83,5 @@
     <meta name="foaf:seeAlso" content="${baseURL}/dcat"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script>
-        $(document).ready(function(){
-            [#-- see global.js for function defs --]
-            initForm();
-            initMenu();
-        });
-    </script>
 
     [#assign currentMenu = "home"]
