@@ -12,8 +12,6 @@
     </script>
     <script>
         $(document).ready(function(){
-            initHelp();
-
             $('#organisation\\.key').change(function() {
 
                 var orgName = $('#organisation\\.key :selected').text();

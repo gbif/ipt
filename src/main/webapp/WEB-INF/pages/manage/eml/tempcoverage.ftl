@@ -14,7 +14,7 @@
         // a function called when adding new temporal coverages
         // an element is cloned and the IDs reset etc etc
         $(document).ready(function () {
-            initHelp();
+            initCalendar();
             calculateCount();
 
             function calculateCount() {
@@ -105,21 +105,21 @@
                     popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
                     popovers[1].setAttribute("data-bs-content", popovers[1].getAttribute('data-bs-content').replace('inputName-endDate', "inputName-eml.temporalCoverages[" + index + "].endDate"))
 
-                    initHelp("#date-" + index);
+                    initCalendar("#date-" + index);
                 }
                 if (typeSubForm === FORMATION_PERIOD) {
                     $("#" + idNewForm + " [id^='formation-']").attr("id", "formation-" + index);
                     $("#" + idNewForm + " [id$='formationPeriod']").attr("id", "eml.temporalCoverages[" + index + "].formationPeriod").attr("name", function () {
                         return $(this).attr("id");
                     });
-                    initHelp("#formation-" + index);
+                    initCalendar("#formation-" + index);
                 }
                 if (typeSubForm === LIVING_TIME_PERIOD) {
                     $("#" + idNewForm + " [id^='living-']").attr("id", "living-" + index);
                     $("#" + idNewForm + " [id$='livingTimePeriod']").attr("id", "eml.temporalCoverages[" + index + "].livingTimePeriod").attr("name", function () {
                         return $(this).attr("id");
                     });
-                    initHelp("#living-" + index);
+                    initCalendar("#living-" + index);
                 }
                 if (typeSubForm === SINGLE_DATE) {
                     $("#" + idNewForm + " [id^='single-']").attr("id", "single-" + index);
@@ -131,7 +131,7 @@
                     var popovers = $("#" + idNewForm + " a.popover-link");
                     popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
 
-                    initHelp("#single-" + index);
+                    initCalendar("#single-" + index);
                 }
 
                 initInfoPopovers($("#" + idNewForm)[0]);

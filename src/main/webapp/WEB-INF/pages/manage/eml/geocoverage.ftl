@@ -13,8 +13,6 @@
 
     <script>
         $(document).ready(function() {
-            initHelp();
-
             var newBboxBase = "eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.";
             var maxLatId = newBboxBase + "max\\.latitude";
             var minLatId = newBboxBase + "min\\.latitude";

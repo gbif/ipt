@@ -7,8 +7,6 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
-            initHelp();
-
             $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
 
             $('select#organisation\\.key').select2({placeholder: '<@s.text name="admin.organisation.name.select"/>', width:"100%", allowClear: true, theme: 'bootstrap4'});

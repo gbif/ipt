@@ -4,11 +4,6 @@
     <#assign auxTopNavbar=true />
     <#assign auxTopNavbarPage = "metadata" />
     <#assign currentMenu="manage"/>
-    <script>
-        $(document).ready(function(){
-            initHelp();
-        });
-    </script>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>

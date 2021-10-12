@@ -7,8 +7,6 @@
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script>
         $(document).ready(function () {
-            initHelp();
-
             $("#buttonUpload").click(function () {
                 return ajaxFileUpload();
             });

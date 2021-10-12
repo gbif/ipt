@@ -6,7 +6,6 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
-            initHelp();
             // Ensure core type cannot be changed once set (e.g., after core mapping is done)
             var resourceType="${resource.coreType!}";
             if(resourceType != "") {

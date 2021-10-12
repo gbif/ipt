@@ -131,8 +131,6 @@
                 newItem.slideDown('slow');
             }
 
-            initHelp("#baseItem-contact");
-
             setContactItemIndex(newItem, ++contactItems);
 
             initInfoPopovers(newItem[0]);
@@ -146,8 +144,6 @@
             if(effects) {
                 newItem.slideDown('slow');
             }
-
-            initHelp("#baseItem-creator");
 
             setCreatorItemIndex(newItem, ++creatorItems);
 
@@ -163,8 +159,6 @@
                 newItem.slideDown('slow');
             }
 
-            initHelp("#baseItem-metadataProvider");
-
             setMetadataProviderItemIndex(newItem, ++metadataProviderItems);
 
             initInfoPopovers(newItem[0]);
@@ -179,8 +173,6 @@
                 newItem.slideDown('slow');
             }
 
-            initHelp("#baseItem-associatedParty");
-
             setAssociatedPartyItemIndex(newItem, ++associatedPartyItemsCount);
 
             initInfoPopovers(newItem[0]);
@@ -194,8 +186,6 @@
             if(effects) {
                 newItem.slideDown('slow');
             }
-
-            initHelp("#baseItem-personnel");
 
             setPersonnelItemIndex(newItem, ++personnelItemsCount);
 

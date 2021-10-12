@@ -80,7 +80,6 @@
                 });
             }
 
-            initHelp();
             mirrorCoreIdElementMapping();
             showHideIdSuffix();
             showHideFilter();

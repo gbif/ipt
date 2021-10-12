@@ -2,8 +2,6 @@
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script>
     $(document).ready(function(){
-        initHelp();
-
         $('.confirmPublishAll').jConfirmAction({
             titleQuestion : "<@s.text name="basic.confirm"/>",
             yesAnswer : "<@s.text name='basic.yes'/>",

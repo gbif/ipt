@@ -9,8 +9,6 @@
 
     <script>
         $(document).ready(function() {
-            initHelp();
-
             // on select of publishing frequency set parameters for publishing frequency
             $('#updateFrequency').change(function () {
                 var str = "";

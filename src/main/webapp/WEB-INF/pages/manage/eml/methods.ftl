@@ -5,7 +5,6 @@
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <script>
         $(document).ready(function(){
-            initHelp();
             $("#removeLink-0").hide();
             if("${eml.methodSteps?size}" == 0){
                 $("#plus").click();

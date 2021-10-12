@@ -4,7 +4,6 @@
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script>
     $(document).ready(function(){
-        initHelp();
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
         $("#peekBtn").click(function(e) {
             e.preventDefault();

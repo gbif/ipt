@@ -6,7 +6,6 @@
 
     <script>
         $(document).ready(function(){
-            initHelp();
             $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
             $("table input").focus(function() {
                 $(this).parent().parent().addClass("highlight");

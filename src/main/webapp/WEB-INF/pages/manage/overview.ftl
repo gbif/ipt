@@ -110,7 +110,6 @@
 
 <script>
     $(document).ready(function(){
-        initHelp();
         <#if confirmOverwrite>
         showConfirmOverwrite();
         </#if>

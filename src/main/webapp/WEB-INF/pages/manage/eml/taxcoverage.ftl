@@ -4,8 +4,6 @@
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <script>
         $(document).ready(function(){
-            initHelp();
-
             $('#plus').click(function () {
                 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
                 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

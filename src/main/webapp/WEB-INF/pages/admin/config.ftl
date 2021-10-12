@@ -5,11 +5,7 @@
 <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
 <script src="${baseURL}/js/leaflet/leaflet.js"></script>
 <script src="${baseURL}/js/leaflet/tile.stamen.js"></script>
-<script>
-    $(document).ready(function(){
-        initHelp();
-    });
-</script>
+
 <#if latitude?? && longitude??>
     <script>
         $(document).ready(function(){

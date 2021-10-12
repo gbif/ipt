@@ -34,12 +34,7 @@ function initForm() {
     });
 }
 
-/**
- * This method initialises the "help utility" of the forms
- * @param {String} context - is used to add events only to a specific context.
- *    -remember to add the (#) symbol in the parameter-. (this parameter can be omitted).
- */
-function initHelp(context) {
+function initCalendar(context) {
     if (context === undefined) context = "";
 
     $(context + " .calendarInfo").each(function (i) {
@@ -48,17 +43,6 @@ function initHelp(context) {
             autoclose: true,
             orientation: "bottom"
         });
-    });
-
-    $("div.info:visible").hide();
-    $(context + " div.info").click(function (e) {
-        $(this).hide("fast");
-    });
-    $(document).keyup(function (e) {
-        // pressing the escape key
-        if (e.keyCode === 27) {
-            $("div.info:visible").hide("fast");
-        }
     });
 }
 

@@ -147,8 +147,6 @@ $(document).ready(function(){
             newItem.slideDown('slow');
         }
 
-        initHelp("#baseItem");
-
         setItemIndex(newItem, ++itemsCount);
 
         initInfoPopovers(newItem[0]);
@@ -163,8 +161,6 @@ $(document).ready(function(){
             newItem.slideDown('slow');
         }
 
-        initHelp("#baseItem-collection");
-
         setCollectionItemIndex(newItem, ++collectionItemsCount);
 
         initInfoPopovers(newItem[0]);
@@ -178,8 +174,6 @@ $(document).ready(function(){
         if(effects) {
             newItem.slideDown('slow');
         }
-
-        initHelp("#baseItem-specimenPreservationMethod");
 
         setSpecimenPreservationMethodItemIndex(newItem, ++specimenPreservationMethodItemsCount);
 
