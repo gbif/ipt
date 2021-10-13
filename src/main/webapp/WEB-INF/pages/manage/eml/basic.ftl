@@ -50,7 +50,6 @@
             $("#resource\\.coreType").change(function(){
                 var optionType=$("#resource\\.coreType").val();
                 $("#resource\\.subtype").attr('selectedIndex', '0');
-                $("#resource\\.subtype").css("width", "85%");
                 switch(optionType)
                 {
                     case 'occurrence':
