@@ -15,16 +15,12 @@
  */
 package org.gbif.ipt.utils;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapUtils {
+public final class MapUtils {
 
-  /**
-   * Empty constructor.
-   */
   private MapUtils() {
   }
 
@@ -40,7 +36,7 @@ public class MapUtils {
    * @return modified map
    */
   public static Map<String, String> getMapWithLowercaseKeys(Map<String, String> m) {
-    Map<String, String> copy = new LinkedHashMap<String, String>();
+    Map<String, String> copy = new LinkedHashMap<>();
     for (Map.Entry<String, String> entry : m.entrySet()) {
       copy.put(entry.getKey().toLowerCase(), entry.getValue());
     }
@@ -56,13 +52,7 @@ public class MapUtils {
    * @return modified map
    */
   public static Map<String, String> removeNonMatchingKeys(Map<String, String> m, List<String> ls) {
-    Iterator<Map.Entry<String, String>> iter = m.entrySet().iterator();
-    while (iter.hasNext()) {
-      Map.Entry<String, String> entry = iter.next();
-      if (!ls.contains(entry.getKey().toLowerCase())) {
-        iter.remove();
-      }
-    }
+    m.entrySet().removeIf(entry -> !ls.contains(entry.getKey().toLowerCase()));
     return m;
   }
 }
