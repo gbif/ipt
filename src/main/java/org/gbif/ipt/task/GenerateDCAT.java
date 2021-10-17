@@ -297,7 +297,7 @@ public class GenerateDCAT {
         LOG.debug("Loaded DCAT prefixes: " + prefixes);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Exception while loading DCAT prefixes", e);
     }
     return prefixes;
   }

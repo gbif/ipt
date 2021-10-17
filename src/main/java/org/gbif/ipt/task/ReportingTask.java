@@ -35,7 +35,7 @@ public abstract class ReportingTask {
   protected final DataDir dataDir;
   private final String resourceShortname;
   private final ReportHandler handler;
-  private List<TaskMessage> messages = new ArrayList<TaskMessage>();
+  private List<TaskMessage> messages = new ArrayList<>();
   private final int reportingIntervall;
   private StatusReport lastReport;
   protected BufferedWriter publicationLogWriter;

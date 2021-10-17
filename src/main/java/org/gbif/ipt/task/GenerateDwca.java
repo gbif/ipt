@@ -1282,7 +1282,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
         try {
           iter.close();
         } catch (Exception e) {
-          e.printStackTrace();
+          log.error("Error while closing iterator", e);
         }
       }
     }
