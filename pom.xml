@@ -78,7 +78,7 @@
     <validation-api.version>2.0.0.Final</validation-api.version>
     <!-- NB XStream does not use semantic versioning.  Take care when upgrading, as we need to
          ensure the IPT can still load existing resource.xml and other configuration files -->
-    <xstream.version>1.4.12</xstream.version>
+    <xstream.version>1.4.18</xstream.version>
 
     <!-- JDBC drivers -->
     <jtds.version>1.3.1</jtds.version>
@@ -563,7 +563,6 @@
 
     <!--
       XStream for resource config data persistence (could be replaced by JAXB in the future)
-      Version frozen at 1.4.8 - do not upgrade! See issue #1297
     -->
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
