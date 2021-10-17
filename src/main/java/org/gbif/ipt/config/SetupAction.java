@@ -200,8 +200,8 @@ public class SetupAction extends BaseAction {
       }
     }
 
-    if ((dataDir.dataDir != null && (!dataDir.dataDir.exists() || dataDir.isConfiguredButEmpty())) ||
-      isHttpPost() && dataDirPath != null) {
+    if ((dataDir.dataDir != null && (!dataDir.dataDir.exists() || dataDir.isConfiguredButEmpty()))
+        || (isHttpPost() && dataDirPath != null)) {
 
       LOG.info("Set up data directory {}", dataDir.dataDir);
 

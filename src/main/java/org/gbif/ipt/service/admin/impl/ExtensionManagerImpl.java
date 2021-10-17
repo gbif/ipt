@@ -653,8 +653,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         if ((searchForCores && !e.isCore()) || (!searchForCores && e.isCore())) {
           continue;
         }
-        if (includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null || StringUtils
-          .containsIgnoreCase(e.getSubject(), keyword)) {
+        if ((includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null)
+            || StringUtils.containsIgnoreCase(e.getSubject(), keyword)) {
           list.add(e);
         }
       }
