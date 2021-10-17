@@ -229,7 +229,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
     LOG.info("Loading resource configurations ...");
     // default creator used to populate missing resource creator when loading resources
-    User defaultCreator = (userManager.list(Role.Admin).isEmpty()) ? null : userManager.list(Role.Admin).get(0);
+    User defaultCreator = userManager.list(Role.Admin).isEmpty() ? null : userManager.list(Role.Admin).get(0);
     File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
     checkResourcesDirAtStartup(resourcesDir);
     resourceManager.load(resourcesDir, defaultCreator);

@@ -924,7 +924,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param subtype subtype String
    */
   public void setSubtype(String subtype) {
-    this.subtype = (StringUtils.isBlank(subtype)) ? null : subtype.toLowerCase();
+    this.subtype = StringUtils.isBlank(subtype) ? null : subtype.toLowerCase();
   }
 
   /**

@@ -134,7 +134,7 @@ public class OrganisationSupport {
         }
         // running IPT in production, the test DOI prefix cannot be used
         else if (cfg.getRegistryType() == AppConfig.REGISTRY_TYPE.PRODUCTION
-            && (Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix))) {
+            && Constants.TEST_DOI_PREFIX.equalsIgnoreCase(prefix)) {
           valid = false;
           action.addFieldError("organisation.doiPrefix",
             action.getText("validation.organisation.doiPrefix.invalid.productionMode"));

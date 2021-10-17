@@ -1243,7 +1243,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
           } else if (mapping.getIdColumn().equals(ExtensionMapping.IDGEN_UUID)) {
             record[ID_COLUMN_INDEX] = UUID.randomUUID().toString();
           } else if (mapping.getIdColumn() >= 0) {
-            record[ID_COLUMN_INDEX] = (StringUtils.isBlank(in[mapping.getIdColumn()])) ? idSuffix
+            record[ID_COLUMN_INDEX] = StringUtils.isBlank(in[mapping.getIdColumn()]) ? idSuffix
               : in[mapping.getIdColumn()] + idSuffix;
           }
 

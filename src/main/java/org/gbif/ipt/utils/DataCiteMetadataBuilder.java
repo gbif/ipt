@@ -728,7 +728,7 @@ public class DataCiteMetadataBuilder {
         nid.setValue(userId.getIdentifier());
         nid.setSchemeURI(userId.getDirectory());
         nid.setNameIdentifierScheme(
-          (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase())) ? ORCID_NAME_IDENTIFIER_SCHEME
+          directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ? ORCID_NAME_IDENTIFIER_SCHEME
             : RESEARCHERID_NAME_IDENTIFIER_SCHEME);
         return nid;
       } else {
@@ -759,7 +759,7 @@ public class DataCiteMetadataBuilder {
         nid.setValue(userId.getIdentifier());
         nid.setSchemeURI(userId.getDirectory());
         nid.setNameIdentifierScheme(
-          (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase())) ? ORCID_NAME_IDENTIFIER_SCHEME
+          directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ? ORCID_NAME_IDENTIFIER_SCHEME
             : RESEARCHERID_NAME_IDENTIFIER_SCHEME);
         return nid;
       } else {

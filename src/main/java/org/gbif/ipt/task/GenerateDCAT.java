@@ -638,7 +638,7 @@ public class GenerateDCAT {
     if (languageLink != null) {
       addPredicateToBuilder(datasetBuilder, "dct:language");
       ParseResult<Language> result = LANGUAGE_PARSER.parse(eml.getMetadataLanguage());
-      String ln = (result.isSuccessful()) ? languageLink + result.getPayload().getIso2LetterCode().toLowerCase()
+      String ln = result.isSuccessful() ? languageLink + result.getPayload().getIso2LetterCode().toLowerCase()
         : languageLink + "en";
       addObjectToBuilder(datasetBuilder, ln, ObjectTypes.RESOURCE);
     }

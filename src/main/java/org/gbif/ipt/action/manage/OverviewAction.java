@@ -276,7 +276,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           // next try to deactivate as many DOIs assigned to the resource as possible (and delete DOI if reserved)
           doDeactivateDOI(doi);
           resource.setIdentifierStatus(
-            (resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION))
+            resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION)
               ? IdentifierStatus.UNRESERVED : IdentifierStatus.UNAVAILABLE);
 
           // delete previously assigned DOIs also
@@ -1250,7 +1250,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             if (e.getType() == InvalidConfigException.TYPE.INVALID_RESOURCE_MIGRATION) {
               String msg = getText("manage.resource.migrate.failed");
               // concatenate reason
-              msg = (StringUtils.isBlank(msg)) ? e.getMessage() : msg + ": " + e.getMessage();
+              msg = StringUtils.isBlank(msg) ? e.getMessage() : msg + ": " + e.getMessage();
               addActionError(msg);
               LOG.error(msg);
             } else {

@@ -585,7 +585,7 @@ public class MetadataAction extends ManagerBaseAction {
    * @return "true" or "false" - does the resource have a core mapping yet?
    */
   public String getResourceHasCore() {
-    return (resource.hasCore()) ? "true" : "false";
+    return resource.hasCore() ? "true" : "false";
   }
 
   /**
@@ -681,7 +681,7 @@ public class MetadataAction extends ManagerBaseAction {
           String keyMinusPrefix = StringUtils.trimToNull(key.replace(LICENSE_NAME_PROPERTY_PREFIX, ""));
           if (keyMinusPrefix != null) {
             String licenseText =
-              StringUtils.trimToNull((properties.getProperty(LICENSE_TEXT_PROPERTY_PREFIX + keyMinusPrefix)));
+              StringUtils.trimToNull(properties.getProperty(LICENSE_TEXT_PROPERTY_PREFIX + keyMinusPrefix));
             if (licenseText != null) {
               licenses.put(keyMinusPrefix, value);
               licenseTexts.put(keyMinusPrefix, licenseText);

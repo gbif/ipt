@@ -356,7 +356,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // if decompression succeeded, create resource depending on whether file was 'IPT Resource Folder' or a 'DwC-A'
     else {
-      resource = (isIPTResourceFolder(dwcaDir)) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
+      resource = isIPTResourceFolder(dwcaDir) ? createFromIPTResourceFolder(shortname, dwcaDir, creator, alog)
         : createFromArchive(shortname, dwcaDir, creator, alog);
     }
 
@@ -2326,7 +2326,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return resource's StatusReport's list of TaskMessage or an empty list if no StatusReport exists for resource
    */
   private List<TaskMessage> getTaskMessages(String shortname) {
-    return ((processReports.get(shortname)) == null) ? new ArrayList<>()
+    return processReports.get(shortname) == null ? new ArrayList<>()
       : processReports.get(shortname).getMessages();
   }
 
