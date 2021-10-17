@@ -970,6 +970,9 @@ public class Resource implements Serializable, Comparable<Resource> {
         this.updateFrequencyHour = hour;
         this.updateFrequencyMinute = minute;
         break;
+      // ignore others
+      default:
+        break;
     }
   }
 

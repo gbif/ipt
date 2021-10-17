@@ -2365,7 +2365,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // Using the old auto publish configuration
         if (resource.isDeprecatedAutoPublishingConfiguration()) {
           // use predefined period for previous IPT version
-          int days = resource.getUpdateFrequency().getPeriodInDays();
+          int days = frequency.getPeriodInDays();
           cal.add(Calendar.DATE, days);
           nextPublished = cal.getTime();
         }
@@ -2428,6 +2428,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                 cal.add(Calendar.DAY_OF_YEAR, 1);
                 nextPublished = cal.getTime();
               }
+              break;
+            default:
+              // Do not process others
               break;
           }
         }

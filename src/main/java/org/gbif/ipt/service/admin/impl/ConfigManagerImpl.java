@@ -276,6 +276,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
                 LOG.error("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
                 warnings.addStartupError("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
                 break;
+              default:
+                // READ_WRITE is fine
+                break;
             }
           }
         }
