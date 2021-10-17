@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -63,7 +62,6 @@ import com.google.inject.Singleton;
 public class MetadataAction extends ManagerBaseAction {
 
   private static final Logger LOG = LogManager.getLogger(MetadataAction.class);
-
 
   private final ResourceValidator validatorRes = new ResourceValidator();
   private final EmlValidator emlValidator;
@@ -553,13 +551,13 @@ public class MetadataAction extends ManagerBaseAction {
    * grouped.
    */
   void groupDatasetSubtypes() {
-    List<String> occurrenceKeys = new LinkedList<>();
+    List<String> occurrenceKeys = new ArrayList<>();
     for (DatasetSubtype type : DatasetSubtype.OCCURRENCE_DATASET_SUBTYPES) {
       occurrenceKeys.add(type.name().replaceAll("_", "").toLowerCase());
     }
     occurrenceSubtypeKeys = Collections.unmodifiableList(occurrenceKeys);
 
-    List<String> checklistKeys = new LinkedList<>();
+    List<String> checklistKeys = new ArrayList<>();
     for (DatasetSubtype type : DatasetSubtype.CHECKLIST_DATASET_SUBTYPES) {
       checklistKeys.add(type.name().replaceAll("_", "").toLowerCase());
     }

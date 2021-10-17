@@ -22,8 +22,8 @@ import org.gbif.utils.HttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -72,7 +72,7 @@ public class ExtensionFactory {
    * @return The collection of Extensions
    */
   public Collection<Extension> build(Collection<String> urls) {
-    List<Extension> extensions = new LinkedList<>();
+    List<Extension> extensions = new ArrayList<>();
 
     for (String urlAsString : urls) {
       try {

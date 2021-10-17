@@ -22,8 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,12 +47,12 @@ public class Vocabulary implements Comparable, Serializable {
   private boolean isLatest;
   private Date issued;
   private URL link; // to further documentation
-  private List<VocabularyConcept> concepts = new LinkedList<VocabularyConcept>();
+  private List<VocabularyConcept> concepts = new ArrayList<>();
   private Date modified = new Date();
 
   public void addConcept(VocabularyConcept concept) {
     if (concepts == null) {
-      concepts = new LinkedList<VocabularyConcept>();
+      concepts = new ArrayList<>();
     }
     concept.setVocabulary(this);
 

@@ -42,7 +42,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -121,7 +120,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private List<ExtensionMapping> mappings = new ArrayList<>();
 
   private String changeSummary;
-  private List<VersionHistory> versionHistory = new LinkedList<>();
+  private List<VersionHistory> versionHistory = new ArrayList<>();
 
   private IdentifierStatus identifierStatus = IdentifierStatus.UNRESERVED;
   private DOI doi;
@@ -1034,7 +1033,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   @NotNull
   public List<VersionHistory> getVersionHistory() {
     if (versionHistory == null) {
-      versionHistory = new LinkedList<>();
+      versionHistory = new ArrayList<>();
     }
     return versionHistory;
   }
