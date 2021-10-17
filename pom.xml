@@ -51,7 +51,7 @@
     <!-- Third party dependencies -->
     <apache-poi.version>3.17</apache-poi.version>
     <commons-digester.version>2.1</commons-digester.version>
-    <commons-io.version>2.5</commons-io.version>
+    <commons-io.version>2.7</commons-io.version>
     <commons-lang3.version>3.6</commons-lang3.version>
     <commons-collections4.version>4.4</commons-collections4.version>
     <commons-validator.version>1.6</commons-validator.version>
