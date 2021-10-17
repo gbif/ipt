@@ -49,7 +49,7 @@ public class RegistrationAction extends POSTAction {
   @SessionScoped
   public static class RegisteredOrganisations {
 
-    private List<Organisation> organisations = new ArrayList<Organisation>();
+    private List<Organisation> organisations = new ArrayList<>();
     private final RegistryManager registryManager;
 
     @Inject
@@ -85,7 +85,7 @@ public class RegistrationAction extends POSTAction {
 
   private boolean validatedBaseURL = false;
 
-  private List<Organisation> organisations = new ArrayList<Organisation>();
+  private List<Organisation> organisations = new ArrayList<>();
   private Organisation organisation;
   private Ipt ipt;
   private RegisteredOrganisations orgSession;

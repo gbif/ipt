@@ -28,7 +28,7 @@ import java.util.List;
 public class OrganizedTaxonomicKeywords {
 
   private String rank;
-  private List<String> displayNames = new ArrayList<String>();
+  private List<String> displayNames = new ArrayList<>();
 
   public String getRank() {
     return rank;

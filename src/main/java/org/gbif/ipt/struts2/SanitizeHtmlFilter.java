@@ -129,7 +129,7 @@ public class SanitizeHtmlFilter implements Filter {
     }
 
     private Map<String, String[]> sanitizeParamMap(Map<String, String[]> raw) {
-      Map<String, String[]> res = new HashMap<String, String[]>();
+      Map<String, String[]> res = new HashMap<>();
 
       if (raw != null) {
         for (String key : raw.keySet()) {

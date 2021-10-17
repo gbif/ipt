@@ -165,7 +165,7 @@ public class Extension implements Serializable {
    * @return set of vocabularies used by this extension
    */
   public Set<Vocabulary> listVocabularies() {
-    Set<Vocabulary> vocabs = new HashSet<Vocabulary>();
+    Set<Vocabulary> vocabs = new HashSet<>();
     for (ExtensionProperty prop : getProperties()) {
       if (prop.getVocabulary() != null) {
         vocabs.add(prop.getVocabulary());

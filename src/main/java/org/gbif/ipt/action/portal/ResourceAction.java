@@ -345,11 +345,11 @@ public class ResourceAction extends PortalBaseAction {
       organizedCoverages = constructOrganizedTaxonomicCoverages(eml.getTaxonomicCoverages());
     }
     // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    roles = new LinkedHashMap<String, String>();
+    roles = new LinkedHashMap<>();
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
 
     // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
-    preservationMethods = new LinkedHashMap<String, String>();
+    preservationMethods = new LinkedHashMap<>();
     preservationMethods
       .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
 
@@ -357,19 +357,19 @@ public class ResourceAction extends PortalBaseAction {
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
 
     // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    countries = new LinkedHashMap<String, String>();
+    countries = new LinkedHashMap<>();
     countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
 
     // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
-    ranks = new LinkedHashMap<String, String>();
+    ranks = new LinkedHashMap<>();
     ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
 
     // update frequencies list, derived from XML vocabulary, and displayed on Basic Metadata Page
-    frequencies = new LinkedHashMap<String, String>();
+    frequencies = new LinkedHashMap<>();
     frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
 
     // Dataset core type list, derived from XML vocabulary
-    types = new LinkedHashMap<String, String>();
+    types = new LinkedHashMap<>();
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
     coreType = (resource.getCoreType() != null && types.containsKey(resource.getCoreType().toLowerCase())) ? types
@@ -571,7 +571,7 @@ public class ResourceAction extends PortalBaseAction {
    * @param coverages list of resource's TaxonomicCoverage
    */
   List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
-    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<OrganizedTaxonomicCoverage>();
+    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<>();
     for (TaxonomicCoverage coverage : coverages) {
       OrganizedTaxonomicCoverage organizedCoverage = new OrganizedTaxonomicCoverage();
       organizedCoverage.setDescription(coverage.getDescription());
@@ -592,12 +592,12 @@ public class ResourceAction extends PortalBaseAction {
    * @return list of OrganizedTaxonomicKeywords (one for each rank + unknown rank), or an empty list if none were added
    */
   private List<OrganizedTaxonomicKeywords> setOrganizedTaxonomicKeywords(List<TaxonKeyword> keywords) {
-    List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<OrganizedTaxonomicKeywords>();
+    List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<>();
 
     // also we want a unique set of names corresponding to empty rank
-    Set<String> uniqueNamesForEmptyRank = new HashSet<String>();
+    Set<String> uniqueNamesForEmptyRank = new HashSet<>();
 
-    ranks = new LinkedHashMap<String, String>();
+    ranks = new LinkedHashMap<>();
     ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
 
     for (String rank : ranks.keySet()) {

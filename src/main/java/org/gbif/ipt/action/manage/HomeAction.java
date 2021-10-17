@@ -35,7 +35,7 @@ import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
 
-  private List<Resource> resources = new ArrayList<Resource>();
+  private List<Resource> resources = new ArrayList<>();
 
   private final ResourceManager resourceManager;
   private final VocabulariesManager vocabManager;
@@ -56,12 +56,12 @@ public class HomeAction extends BaseAction {
     resources = resourceManager.list(getCurrentUser());
 
     // Dataset core type list, derived from XML vocabulary
-    types = new LinkedHashMap<String, String>();
+    types = new LinkedHashMap<>();
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
 
     // Dataset Subtypes list, derived from XML vocabulary
-    datasetSubtypes = new LinkedHashMap<String, String>();
+    datasetSubtypes = new LinkedHashMap<>();
     datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
     datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
 

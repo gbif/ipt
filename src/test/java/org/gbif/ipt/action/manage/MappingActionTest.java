@@ -82,7 +82,7 @@ public class MappingActionTest {
     // create a new Extension, that represents the Darwin Core Occurrence Core
     Extension occurrenceCore = new Extension();
     occurrenceCore.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);
-    List<ExtensionProperty> extensionProperties = new ArrayList<ExtensionProperty>();
+    List<ExtensionProperty> extensionProperties = new ArrayList<>();
     ExtensionProperty extensionProperty = new ExtensionProperty();
     extensionProperty.setQualname(DwcTerm.occurrenceID.qualifiedName());
     extensionProperties.add(extensionProperty);
@@ -107,7 +107,7 @@ public class MappingActionTest {
     when(mockResourceManager.get(anyString())).thenReturn(resource);
 
     // fields: small subset of 2 fields from identification history extension
-    List<PropertyMapping> fields = new ArrayList<PropertyMapping>();
+    List<PropertyMapping> fields = new ArrayList<>();
     PropertyMapping identificationId = new PropertyMapping();
     identificationId.setTerm(DwcTerm.identificationID);
     identificationId.setIndex(0);

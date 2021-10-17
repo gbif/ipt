@@ -107,7 +107,7 @@ public class ExtensionMappingValidator {
     }
 
     // prepare set of strings to test
-    Set<String> testData = new HashSet<String>();
+    Set<String> testData = new HashSet<>();
     testData.add(pm.getDefaultValue());
     if (pm.getIndex() != null) {
       for (String[] row : peek) {
@@ -197,7 +197,7 @@ public class ExtensionMappingValidator {
         }
         // if its core make sure all other mappings to the same extensions dont use linenumber with the same suffix or
         if (ext.isCore()) {
-          Set<ExtensionMapping> maps = new HashSet<ExtensionMapping>(resource.getMappings(ext.getRowType()));
+          Set<ExtensionMapping> maps = new HashSet<>(resource.getMappings(ext.getRowType()));
           maps.remove(mapping);
           if (!maps.isEmpty()) {
             // we more mappings to the same extension, compare their id policy

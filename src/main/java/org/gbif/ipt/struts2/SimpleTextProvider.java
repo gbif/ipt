@@ -37,7 +37,7 @@ public class SimpleTextProvider {
 
   private static final Logger LOG = LogManager.getLogger(SimpleTextProvider.class);
   private static final String DEFAULT_BUNDLE = "ApplicationResources";
-  private final Set<String> baseBundleNames = new HashSet<String>();
+  private final Set<String> baseBundleNames = new HashSet<>();
 
   public SimpleTextProvider() {
     baseBundleNames.add(DEFAULT_BUNDLE);

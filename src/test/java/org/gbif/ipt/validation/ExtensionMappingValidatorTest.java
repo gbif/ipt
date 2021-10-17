@@ -60,7 +60,7 @@ public class ExtensionMappingValidatorTest {
     // create a new Extension, that represents the Darwin Core Occurrence Core
     Extension extension = new Extension();
     extension.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);
-    List<ExtensionProperty> extensionProperties = new ArrayList<ExtensionProperty>();
+    List<ExtensionProperty> extensionProperties = new ArrayList<>();
     ExtensionProperty extensionProperty = new ExtensionProperty();
     extensionProperty.setQualname(DwcTerm.occurrenceID.qualifiedName());
     extensionProperties.add(extensionProperty);

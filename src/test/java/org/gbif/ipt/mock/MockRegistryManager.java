@@ -39,7 +39,7 @@ public class MockRegistryManager {
    * @return A simulated vocabulary list.
    */
   private static List<Vocabulary> getVocabularies() {
-    List<Vocabulary> vocabs = new ArrayList<Vocabulary>();
+    List<Vocabulary> vocabs = new ArrayList<>();
 
     return vocabs;
   }

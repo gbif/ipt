@@ -50,7 +50,7 @@ public class MetadataActionTest {
       mock(ResourceManager.class), mock(VocabulariesManager.class), mock(ConfigWarnings.class));
 
     // mock creation of datasetSubtypes Map, with 2 occurrence subtypes, and 6 checklist subtypes
-    datasetSubtypes = new LinkedHashMap<String, String>();
+    datasetSubtypes = new LinkedHashMap<>();
     datasetSubtypes.put("", "Select a subtype");
     datasetSubtypes.put("taxonomicAuthority", "Taxonomic Authority");
     datasetSubtypes.put("nomenclatorAuthority", "Nomenclator Authority");

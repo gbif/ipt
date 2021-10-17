@@ -51,7 +51,7 @@ public class RecordFilter implements Serializable {
   }
 
   public Map<FilterTime, String> getFilterTimes() {
-    Map<FilterTime, String> filterTimes = new HashMap<FilterTime, String>();
+    Map<FilterTime, String> filterTimes = new HashMap<>();
     filterTimes.put(FilterTime.BeforeTranslation, "manage.mapping.filter.beforeTranslation");
     filterTimes.put(FilterTime.AfterTranslation, "manage.mapping.filter.afterTranslation");
     return filterTimes;

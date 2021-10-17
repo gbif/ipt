@@ -77,7 +77,7 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
         // ensure a 'unique' list of startup warnings gets displayed using i18n keys if possible
 
         // keep track of unique set of ActionWarnings
-        Set<String> existing = new HashSet<String>();
+        Set<String> existing = new HashSet<>();
         for (String warning : ba.getActionWarnings()) {
           // find out if the ActionWarning has been added to the list of action warnings yet
           if (!existing.contains(StringUtils.trimToEmpty(warning))) {

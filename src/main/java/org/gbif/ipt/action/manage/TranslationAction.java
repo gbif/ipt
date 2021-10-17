@@ -61,7 +61,7 @@ public class TranslationAction extends ManagerBaseAction {
      * Return a map populated with all source value to translated value pairs.
      */
     public Map<String, String> getPersistentMap() {
-      Map<String, String> m = new HashMap<String, String>();
+      Map<String, String> m = new HashMap<>();
       for (Entry<String, String> translatedValueEntry: translatedValues.entrySet()) {
         if (StringUtils.isNotBlank(translatedValueEntry.getValue())) {
          m.put(sourceValues.get(translatedValueEntry.getKey()), translatedValueEntry.getValue().trim());
@@ -118,7 +118,7 @@ public class TranslationAction extends ManagerBaseAction {
   private PropertyMapping field;
   private ExtensionProperty property;
   private ExtensionMapping mapping;
-  private Map<String, String> vocabTerms = new HashMap<String, String>();
+  private Map<String, String> vocabTerms = new HashMap<>();
   private Integer mid;
   private String id;
 

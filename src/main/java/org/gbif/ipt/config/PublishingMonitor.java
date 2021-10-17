@@ -81,7 +81,7 @@ public class PublishingMonitor {
         try {
           // monitor resources that are currently being published or have finished
           Map<String, Future<Map<String, Integer>>> processFutures = resourceManager.getProcessFutures();
-          Set<String> shortNames = new HashSet<String>();
+          Set<String> shortNames = new HashSet<>();
           if (!processFutures.isEmpty()) {
             // copy futures into new set, to avoid concurrent modification exception
             shortNames.addAll(processFutures.keySet());

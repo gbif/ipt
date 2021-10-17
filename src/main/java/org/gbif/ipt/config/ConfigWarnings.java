@@ -27,7 +27,7 @@ import com.google.inject.Singleton;
 public class ConfigWarnings {
 
   private static final Logger LOG = LogManager.getLogger(ConfigWarnings.class);
-  private final List<String> startupErrors = new ArrayList<String>();
+  private final List<String> startupErrors = new ArrayList<>();
 
   public void addStartupError(Exception e) {
     if (e.getMessage() != null) {

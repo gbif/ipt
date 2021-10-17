@@ -199,12 +199,12 @@ public class UserAccountManagerImplTest {
     }
 
     // Case #3. Ensure the last manager of a resource cannot be deleted
-    List<Resource> resources = new ArrayList<Resource>();
+    List<Resource> resources = new ArrayList<>();
 
     Resource res1 = new Resource();
     res1.setShortname("res1");
     res1.setCreator(manager);
-    Set<User> managers1 = new HashSet<User>();
+    Set<User> managers1 = new HashSet<>();
     managers1.add(manager);
     res1.setManagers(managers1);
     resources.add(res1);

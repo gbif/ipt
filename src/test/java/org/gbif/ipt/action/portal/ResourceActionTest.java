@@ -89,7 +89,7 @@ public class ResourceActionTest {
     Container container = mock(Container.class);
 
     // mock: vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
-    Map<String, String> ranks = new LinkedHashMap<String, String>();
+    Map<String, String> ranks = new LinkedHashMap<>();
     ranks.put("kingdom", "http://rs.gbif.org/vocabulary/gbif/rank/kingdom");
     ranks.put("Class", "http://rs.gbif.org/vocabulary/gbif/rank/class");
     when(mockVocabManager.getI18nVocab(anyString(), anyString(), anyBoolean())).thenReturn(ranks);
@@ -131,13 +131,13 @@ public class ResourceActionTest {
     TaxonKeyword keyword3 = new TaxonKeyword();
     keyword3.setCommonName("Sedges");
 
-    List<TaxonKeyword> keywordList = new ArrayList<TaxonKeyword>();
+    List<TaxonKeyword> keywordList = new ArrayList<>();
     keywordList.add(keyword1);
     keywordList.add(keyword2);
     keywordList.add(keyword3);
     coverage1.setTaxonKeywords(keywordList);
 
-    List<TaxonomicCoverage> coverages = new ArrayList<TaxonomicCoverage>();
+    List<TaxonomicCoverage> coverages = new ArrayList<>();
     coverages.add(coverage1);
     resource.getEml().setTaxonomicCoverages(coverages);
 
@@ -249,7 +249,7 @@ public class ResourceActionTest {
   @Test
   public void testDetailForLoggedInManager() {
     // simulate manager being logged in
-    Map<String, Object> session = new HashMap<String, Object>();
+    Map<String, Object> session = new HashMap<>();
     session.put(Constants.SESSION_USER, MANAGER);
     action.setSession(session);
 
