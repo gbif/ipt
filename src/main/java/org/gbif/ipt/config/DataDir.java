@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 import javax.validation.constraints.NotNull;
@@ -230,7 +231,7 @@ public class DataDir {
 
   private void persistLocation() throws IOException {
     // persist location in WEB-INF
-    FileUtils.writeStringToFile(dataDirSettingFile, dataDir.getAbsolutePath());
+    FileUtils.writeStringToFile(dataDirSettingFile, dataDir.getAbsolutePath(), StandardCharsets.UTF_8);
     LOG.info("IPT DataDir location file in /WEB-INF changed to " + dataDir.getAbsolutePath());
   }
 

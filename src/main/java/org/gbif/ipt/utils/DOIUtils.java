@@ -22,13 +22,20 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class DOIUtils {
 
   protected static final Logger LOG = LogManager.getLogger(DOIUtils.class);
+
+  private static final int DOI_SUFFIX_LENGTH = 6;
+  private static final String DOI_ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  private static final RandomStringGenerator DOI_SUFFIX_GENERATOR =
+      new RandomStringGenerator.Builder()
+          .selectFrom(DOI_ALLOWED_CHARS.toCharArray())
+          .build();
 
   /*
    * Empty constructor.
@@ -50,7 +57,7 @@ public class DOIUtils {
     Objects.requireNonNull(prefix);
 
     // generate random alphanumeric string 6 characters long, lower case
-    String suffix = RandomStringUtils.randomAlphanumeric(6).toLowerCase();
+    String suffix = DOI_SUFFIX_GENERATOR.generate(DOI_SUFFIX_LENGTH).toLowerCase();
 
     return new DOI(prefix, suffix);
   }

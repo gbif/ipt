@@ -30,8 +30,8 @@ import org.gbif.ipt.validation.UserValidator;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,6 +47,11 @@ public class UserAccountsAction extends POSTAction {
 
   private static final long serialVersionUID = 8892204508303815998L;
   private static final int PASSWORD_LENGTH = 8;
+  private static final String PASSWORD_ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  private static final RandomStringGenerator PASSWORD_GENERATOR =
+      new RandomStringGenerator.Builder()
+          .selectFrom(PASSWORD_ALLOWED_CHARS.toCharArray())
+          .build();
 
   private final UserAccountManager userManager;
   private final UserValidator validator = new UserValidator();
@@ -156,8 +161,7 @@ public class UserAccountsAction extends POSTAction {
         userManager.create(user);
         addActionMessage(getText("admin.user.added"));
       } else if (resetPassword) {
-        String newPassword =
-          RandomStringUtils.random(PASSWORD_LENGTH, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+        String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
         user.setPassword(newPassword);
         userManager.save(user);
         addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));
