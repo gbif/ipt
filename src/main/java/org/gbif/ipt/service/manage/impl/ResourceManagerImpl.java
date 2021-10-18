@@ -1705,9 +1705,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         report.getMessages().add(new TaskMessage(Level.INFO, msg));
       }
     } else {
-      // TODO: i18n
-      String msg =
-        "Failed to roll back version #" + rollingBack.toPlainString() + ". Could not find version to restore";
+      String msg = action
+          .getText("restore.resource.failed.version.notFound", new String[] {rollingBack.toPlainString()});
       LOG.error(msg);
       action.addActionError(msg);
     }

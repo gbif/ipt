@@ -149,8 +149,8 @@ public class RegistryException extends RuntimeException {
       } else if (e.type == Type.IO_ERROR) {
         msg = action.getText("admin.registration.error.io");
       } else if (e.type == Type.BAD_REQUEST) {
-        // this may occur when Registry WS rejects request, e.g. invalid email address (POR-1975) TODO i18n
-        msg = "A bad request was issued. Please contact the GBIF Helpdesk (helpdesk@gbif.org) for help";
+        // this may occur when Registry WS rejects request, e.g. invalid email address (POR-1975)
+        msg = action.getText("admin.registration.error.badRequest");
       } else if (e.type == Type.UNKNOWN) {
         msg = action.getText("admin.registration.error.unknown");
       }
