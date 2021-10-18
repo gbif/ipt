@@ -471,7 +471,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private String analyze(UrlSource src) {
-    BufferedWriter logWriter = null;
     File logFile = dataDir.sourceLogFile(src.getResource().getShortname(), src.getName());
     try {
       FileUtils.deleteQuietly(logFile);
@@ -483,24 +482,21 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         return e.getMessage();
       }
 
-      logWriter = new BufferedWriter(new FileWriter(logFile));
-      logWriter.write(
-          "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
-      if (!emptyLines.isEmpty()) {
-        for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
-          logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+      try (BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile))) {
+        logWriter.write(
+            "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
+        if (!emptyLines.isEmpty()) {
+          for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
+            logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+          }
+        } else {
+          logWriter.write("No rows were skipped in this source");
         }
-      } else {
-        logWriter.write("No rows were skipped in this source");
-      }
 
-      logWriter.flush();
+        logWriter.flush();
+      }
     } catch (IOException e) {
       LOG.warn("Can't write source log file " + logFile.getAbsolutePath(), e);
-    } finally {
-      if (logWriter != null) {
-        IOUtils.closeQuietly(logWriter);
-      }
     }
 
     return null;
@@ -558,7 +554,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private String analyze(FileSource src) {
-    BufferedWriter logWriter = null;
     File logFile = dataDir.sourceLogFile(src.getResource().getShortname(), src.getName());
     try {
       FileUtils.deleteQuietly(logFile);
@@ -570,25 +565,21 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         return e.getMessage();
       }
 
-      logWriter = new BufferedWriter(new FileWriter(logFile));
-      logWriter.write(
-        "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
-      if (!emptyLines.isEmpty()) {
-        for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
-          logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+      try (BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile))) {
+        logWriter.write(
+            "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
+        if (!emptyLines.isEmpty()) {
+          for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
+            logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+          }
+        } else {
+          logWriter.write("No rows were skipped in this source");
         }
-      } else {
-        logWriter.write("No rows were skipped in this source");
+
+        logWriter.flush();
       }
-
-      logWriter.flush();
-
     } catch (IOException e) {
       LOG.warn("Can't write source log file " + logFile.getAbsolutePath(), e);
-    } finally {
-      if (logWriter != null) {
-        IOUtils.closeQuietly(logWriter);
-      }
     }
 
     return null;
