@@ -60,7 +60,7 @@ public class DateFormatConverter extends StrutsTypeConverter {
       Date d = (Date) o;
       SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
       if (new SimpleDateFormat("SSS").format(d).equals("001")) {
-        return format.format(d).split("-")[0];
+        return format.format(d).split("-", -1)[0];
       }
       return format.format(d);
     }

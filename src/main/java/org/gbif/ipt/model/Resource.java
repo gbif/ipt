@@ -1223,7 +1223,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(lastName);
       sb.append(" ");
       // add first initial of each first name, capitalized
-      String[] names = firstNames.split("\\s+");
+      String[] names = firstNames.split("\\s+", -1);
       for (int i = 0; i < names.length; i++) {
         sb.append(StringUtils.upperCase(String.valueOf(names[i].charAt(0))));
         if (i < names.length - 1) {
