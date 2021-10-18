@@ -49,6 +49,11 @@ public class LegacyOrganisation extends AgentBase implements Serializable {
     return false;
   }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.getKey());
+  }
+
   /**
    * @return the alias
    */
