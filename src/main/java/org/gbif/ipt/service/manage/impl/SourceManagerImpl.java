@@ -41,10 +41,10 @@ import org.gbif.utils.file.csv.UnknownDelimitersException;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
@@ -64,7 +64,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
@@ -482,7 +481,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         return e.getMessage();
       }
 
-      try (BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile))) {
+      try (BufferedWriter logWriter = Files.newBufferedWriter(logFile.toPath(), StandardCharsets.UTF_8)) {
         logWriter.write(
             "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
         if (!emptyLines.isEmpty()) {
@@ -565,7 +564,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         return e.getMessage();
       }
 
-      try (BufferedWriter logWriter = new BufferedWriter(new FileWriter(logFile))) {
+      try (BufferedWriter logWriter = Files.newBufferedWriter(logFile.toPath(), StandardCharsets.UTF_8)) {
         logWriter.write(
             "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
         if (!emptyLines.isEmpty()) {

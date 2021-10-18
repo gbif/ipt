@@ -444,7 +444,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   protected InputStream getStream(String source) {
-    return new ByteArrayInputStream(source.getBytes());
+    return new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8));
   }
 
   /*

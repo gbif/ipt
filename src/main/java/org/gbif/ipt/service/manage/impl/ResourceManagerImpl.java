@@ -107,6 +107,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1935,7 +1936,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // try to read other metadata formats like dc
     try {
       LOG.debug("try to read other metadata formats");
-      Dataset dataset = DatasetParser.build(archive.getMetadata().getBytes());
+      Dataset dataset = DatasetParser.build(archive.getMetadata().getBytes(StandardCharsets.UTF_8));
       eml = convertMetadataToEml(dataset);
       alog.info("manage.resource.read.basic.metadata");
       return eml;

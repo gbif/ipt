@@ -19,8 +19,9 @@ import org.gbif.ipt.config.DataDir;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,7 +124,7 @@ public abstract class ReportingTask {
    */
   private BufferedWriter getPublicationLogWriter(String resourceShortname) throws IOException {
     File logFile = dataDir.resourcePublicationLogFile(resourceShortname);
-    return new BufferedWriter(new FileWriter(logFile));
+    return Files.newBufferedWriter(logFile.toPath(), StandardCharsets.UTF_8);
   }
 
   /**

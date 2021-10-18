@@ -22,13 +22,14 @@ import org.gbif.ipt.utils.InputStreamUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -556,7 +557,7 @@ public class AppConfig {
   private void writeRegistryLockFile(REGISTRY_TYPE registryType) throws IOException {
     // set lock file if not yet existing
     File lockFile = getRegistryTypeLockFile();
-    try (Writer lock = new FileWriter(lockFile, false)) {
+    try (Writer lock = Files.newBufferedWriter(lockFile.toPath(), StandardCharsets.UTF_8)) {
       lock.write(registryType.name());
       lock.flush();
       LOG.info("Locked DataDir to registry of type " + registryType);
