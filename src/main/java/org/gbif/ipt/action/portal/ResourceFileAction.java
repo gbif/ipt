@@ -45,7 +45,6 @@ public class ResourceFileAction extends PortalBaseAction {
   private static final Logger LOG = LogManager.getLogger(ResourceFileAction.class);
 
   private final DataDir dataDir;
-  protected ResourceManager resourceManager;
   protected Source source;
   private InputStream inputStream;
   protected File data;
@@ -265,9 +264,9 @@ public class ResourceFileAction extends PortalBaseAction {
 
     // construct download filename
     StringBuilder sb = new StringBuilder();
-    sb.append("rtf-" + resource.getShortname());
+    sb.append("rtf-").append(resource.getShortname());
     if (version != null) {
-      sb.append("-v" + version.toPlainString());
+      sb.append("-v").append(version.toPlainString());
     }
     sb.append(".rtf");
     filename = sb.toString();
@@ -288,10 +287,7 @@ public class ResourceFileAction extends PortalBaseAction {
       mimeType = "application/octet-stream";
 
       // construct download filename
-      StringBuilder sb = new StringBuilder();
-      sb.append(id);
-      sb.append(frSrc.getPreferredFileSuffix());
-      filename = sb.toString();
+      filename = id + frSrc.getPreferredFileSuffix();
       return execute();
     }
     else {

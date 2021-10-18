@@ -64,18 +64,18 @@ public class ExtensionsAction extends POSTAction {
   private Boolean synchronise = false;
   private Date lastSynchronised;
   private List<Extension> newExtensions;
-  private ConfigWarnings warnings;
+  private ConfigWarnings configWarnings;
   private boolean upToDate = true;
 
   @Inject
   public ExtensionsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ExtensionManager extensionManager, VocabulariesManager vocabManager, RegistryManager registryManager,
-    ConfigWarnings warnings) {
+    ConfigWarnings configWarnings) {
     super(textProvider, cfg, registrationManager);
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
     this.registryManager = registryManager;
-    this.warnings = warnings;
+    this.configWarnings = configWarnings;
   }
 
   @Override
@@ -232,12 +232,12 @@ public class ExtensionsAction extends POSTAction {
       } catch (RegistryException e) {
         // add startup error message about Registry error
         String msg = RegistryException.logRegistryException(e, this);
-        warnings.addStartupError(msg);
+        configWarnings.addStartupError(msg);
         LOG.error(msg);
 
         // add startup error message that explains the consequence of the Registry error
         msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
-        warnings.addStartupError(msg);
+        configWarnings.addStartupError(msg);
         LOG.error(msg);
       }
     }
@@ -257,12 +257,12 @@ public class ExtensionsAction extends POSTAction {
     } catch (RegistryException e) {
       // add startup error message that explains why the Registry error occurred
       String msg = RegistryException.logRegistryException(e, this);
-      warnings.addStartupError(msg);
+      configWarnings.addStartupError(msg);
       LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
       msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
-      warnings.addStartupError(msg);
+      configWarnings.addStartupError(msg);
       LOG.error(msg);
     } finally {
       // initialize list as empty list if the list could not be populated

@@ -120,7 +120,6 @@ public class TranslationAction extends ManagerBaseAction {
   private ExtensionMapping mapping;
   private Map<String, String> vocabTerms = new HashMap<>();
   private Integer mid;
-  private String id;
 
   @Inject
   public TranslationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -297,11 +296,6 @@ public class TranslationAction extends ManagerBaseAction {
 
   public PropertyMapping getField() {
     return field;
-  }
-
-  @Override
-  public String getId() {
-    return id;
   }
 
   public Integer getMid() {

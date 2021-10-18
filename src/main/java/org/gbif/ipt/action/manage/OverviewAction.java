@@ -124,7 +124,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean unpublish = false;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
-  private boolean delete = false;
   private boolean undelete = false;
   private boolean publish = false;
   private String summary;
@@ -194,8 +193,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       // Struts finishes before callable has a finish to update status report, therefore,
       // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
-      StatusReport tmpReport = new StatusReport(true, GenerateDwca.CANCELLED_STATE_MSG, report.getMessages());
-      report = tmpReport;
+      report = new StatusReport(true, GenerateDwca.CANCELLED_STATE_MSG, report.getMessages());
       return execute();
     }
     addActionError(getText("manage.overview.failed.stop.publishing"));
@@ -1363,16 +1361,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public void setDeleteDoi(String deleteDoi) {
     this.deleteDoi = StringUtils.trimToNull(deleteDoi) != null;
-  }
-
-  /**
-   * To hold the state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param delete form variable
-   */
-  @Override
-  public void setDelete(String delete) {
-    this.delete = StringUtils.trimToNull(delete) != null;
   }
 
   /**

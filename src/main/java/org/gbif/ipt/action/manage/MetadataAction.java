@@ -91,7 +91,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
-  private ConfigWarnings warnings;
+  private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
   private static Map<String, String> licenses;
@@ -100,11 +100,11 @@ public class MetadataAction extends ManagerBaseAction {
 
   @Inject
   public MetadataAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, VocabulariesManager vocabManager, ConfigWarnings warnings) {
+    ResourceManager resourceManager, VocabulariesManager vocabManager, ConfigWarnings configWarnings) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
-    this.warnings = warnings;
+    this.configWarnings = configWarnings;
   }
 
   /**
@@ -143,7 +143,7 @@ public class MetadataAction extends ManagerBaseAction {
    *
    * Determine which license is specified in the intellectual rights. If the intellectual rights contains the name of
    * a license the IPT supports (e.g. CC-BY 4.0), the key corresponding to that license (e.g. ccby) is returned. This
-   * is used to pre-select the license drop down when the basic metadata page loads.
+   * is used to pre-select the license dropdown when the basic metadata page loads.
    */
   public String getLicenseKeySelected() {
     String licenseText = resource.getEml().getIntellectualRights();
@@ -291,14 +291,14 @@ public class MetadataAction extends ManagerBaseAction {
         try {
           loadLicenseMaps(getText("eml.intellectualRights.nolicenses"));
         } catch (InvalidConfigException e) {
-          warnings.addStartupError(e.getMessage(), e);
+          configWarnings.addStartupError(e.getMessage(), e);
         }
 
         // load directories map
         try {
           loadDirectories(getText("eml.contact.noDirectory"));
         } catch (InvalidConfigException e) {
-          warnings.addStartupError(e.getMessage(), e);
+          configWarnings.addStartupError(e.getMessage(), e);
         }
 
         // load organisations map
@@ -504,9 +504,7 @@ public class MetadataAction extends ManagerBaseAction {
     // exclude subtypes known to relate to Checklist type
     Map<String, String> datasetSubtypesCopy = new LinkedHashMap<>(datasetSubtypes);
     for (String key : checklistSubtypeKeys) {
-      if (datasetSubtypesCopy.containsKey(key)) {
-        datasetSubtypesCopy.remove(key);
-      }
+      datasetSubtypesCopy.remove(key);
     }
     return datasetSubtypesCopy;
   }
@@ -522,9 +520,7 @@ public class MetadataAction extends ManagerBaseAction {
     // exclude subtypes known to relate to Checklist type
     Map<String, String> datasetSubtypesCopy = new LinkedHashMap<>(datasetSubtypes);
     for (String key : occurrenceSubtypeKeys) {
-      if (datasetSubtypesCopy.containsKey(key)) {
-        datasetSubtypesCopy.remove(key);
-      }
+      datasetSubtypesCopy.remove(key);
     }
     return datasetSubtypesCopy;
   }
