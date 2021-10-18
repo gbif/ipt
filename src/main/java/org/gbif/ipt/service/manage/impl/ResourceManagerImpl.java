@@ -1178,6 +1178,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @return converted version number, or null if no conversion happened
    */
+  @SuppressWarnings("BigDecimalEquals")
   protected BigDecimal convertVersion(Resource resource) {
     if (resource.getEmlVersion() != null) {
       BigDecimal version = resource.getEmlVersion();
@@ -1202,6 +1203,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @return resource whose version number and files' version numbers have been updated
    */
+  @SuppressWarnings("BigDecimalEquals")
   protected Resource updateResourceVersion(Resource resource, BigDecimal oldVersion, BigDecimal newVersion) {
     Objects.requireNonNull(resource);
     Objects.requireNonNull(oldVersion);
@@ -2539,6 +2541,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   /**
    * Remove an archived version in the resource history and from the file system
    */
+  @SuppressWarnings("BigDecimalEquals")
   @Override
   public void removeVersion(Resource resource, BigDecimal version) {
     // Cannot remove the most recent version, only archived versions
