@@ -198,7 +198,7 @@ public class HealthAction extends BaseAction {
     return status;
   }
 
-  public class Status {
+  public static class Status {
     private String networkRegistryURL;
     private boolean networkRegistry;
     private String networkRepositoryURL;

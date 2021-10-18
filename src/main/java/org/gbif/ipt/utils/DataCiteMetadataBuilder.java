@@ -75,7 +75,7 @@ public class DataCiteMetadataBuilder {
 
   private static final Logger LOG = LogManager.getLogger(DataCiteMetadataBuilder.class);
   private static final ObjectFactory FACTORY = new ObjectFactory();
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
   public static DataCiteMetadata createDataCiteMetadata(DOI doi, Resource resource) throws InvalidMetadataException {
 
@@ -578,8 +578,7 @@ public class DataCiteMetadataBuilder {
         type = ContributorType.DATA_COLLECTOR;
       } else if (role.equalsIgnoreCase("principalInvestigator")) {
         type = ContributorType.PROJECT_LEADER;
-      } else if (role.equalsIgnoreCase("processor") || role.equalsIgnoreCase("publisher") || role
-        .equalsIgnoreCase("programmer")) {
+      } else if (role.equalsIgnoreCase("processor") || role.equalsIgnoreCase("programmer")) {
         type = ContributorType.PRODUCER;
       } else {
         type = ContributorType.RELATED_PERSON;
@@ -672,14 +671,14 @@ public class DataCiteMetadataBuilder {
     // created date
     if (created != null) {
       DataCiteMetadata.Dates.Date createdDate = FACTORY.createDataCiteMetadataDatesDate();
-      createdDate.setValue(DATE_FORMAT.format(created));
+      createdDate.setValue(dateFormat.format(created));
       createdDate.setDateType(DateType.CREATED);
       dates.getDate().add(createdDate);
     }
 
     // updated date = now
     DataCiteMetadata.Dates.Date updatedDate = FACTORY.createDataCiteMetadataDatesDate();
-    updatedDate.setValue(DATE_FORMAT.format(new Date()));
+    updatedDate.setValue(dateFormat.format(new Date()));
     updatedDate.setDateType(DateType.UPDATED);
     dates.getDate().add(updatedDate);
 
@@ -687,14 +686,14 @@ public class DataCiteMetadataBuilder {
     for (TemporalCoverage coverage : coverages) {
       if (coverage.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
         DataCiteMetadata.Dates.Date singleDate = FACTORY.createDataCiteMetadataDatesDate();
-        singleDate.setValue(DATE_FORMAT.format(coverage.getStartDate()));
+        singleDate.setValue(dateFormat.format(coverage.getStartDate()));
         singleDate.setDateType(DateType.VALID);
         dates.getDate().add(singleDate);
       } else if (coverage.getType().equals(TemporalCoverageType.DATE_RANGE)) {
         // construct range using RKMS-ISO8601 standard e.g. 2004-03-02/2005-06-02
         DataCiteMetadata.Dates.Date range = FACTORY.createDataCiteMetadataDatesDate();
-        String start = DATE_FORMAT.format(coverage.getStartDate());
-        String end = DATE_FORMAT.format(coverage.getEndDate());
+        String start = dateFormat.format(coverage.getStartDate());
+        String end = dateFormat.format(coverage.getEndDate());
         range.setValue(start + "/" + end);
         range.setDateType(DateType.VALID);
         dates.getDate().add(range);
@@ -704,8 +703,7 @@ public class DataCiteMetadataBuilder {
   }
 
   private String convertDateToYearMonthDay(Date date) {
-
-    return DATE_FORMAT.format(date);
+    return dateFormat.format(date);
   }
 
   /**

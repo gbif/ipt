@@ -27,7 +27,7 @@ public class Registration implements Serializable {
   private static final long serialVersionUID = 989864521100L;
 
   // private List<Organisation> associatedOrganisations;
-  private SortedMap<String, Organisation> associatedOrganisations = new TreeMap<String, Organisation>();
+  private SortedMap<String, Organisation> associatedOrganisations = new TreeMap<>();
   private Organisation hostingOrganisation;
   private Ipt ipt;
 

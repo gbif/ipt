@@ -27,7 +27,7 @@ public class LegacyRegistration implements Serializable {
 
   private static final long serialVersionUID = 899864527700L;
 
-  private SortedMap<String, LegacyOrganisation> associatedOrganisations = new TreeMap<String, LegacyOrganisation>();
+  private SortedMap<String, LegacyOrganisation> associatedOrganisations = new TreeMap<>();
   private LegacyOrganisation hostingOrganisation;
   private LegacyIpt ipt;
 

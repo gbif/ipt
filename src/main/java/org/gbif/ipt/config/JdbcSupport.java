@@ -36,7 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class JdbcSupport {
 
-  public class JdbcInfo {
+  public static class JdbcInfo {
 
     protected final String name;
     protected final String title;
@@ -155,20 +155,20 @@ public class JdbcSupport {
 
   public static final String CLASSPATH_PROPFILE = "jdbc.properties";
 
-  private final Map<String, JdbcInfo> driver = new TreeMap<String, JdbcInfo>();
+  private final Map<String, JdbcInfo> driver = new TreeMap<>();
 
   public JdbcInfo get(String name) {
     return driver.get(name.toLowerCase());
   }
 
   public List<String> list() {
-    List<String> driverNames = new ArrayList(driver.keySet());
+    List<String> driverNames = new ArrayList<>(driver.keySet());
     Collections.sort(driverNames);
     return driverNames;
   }
 
   public Map<String, String> optionMap() {
-    Map<String, String> map = new TreeMap<String, String>();
+    Map<String, String> map = new TreeMap<>();
     for (JdbcInfo j : options()) {
       map.put(j.getName(), j.getTitle());
     }
@@ -185,7 +185,7 @@ public class JdbcSupport {
   protected int setProperties(Properties props) {
     driver.clear();
     // get distinct list of driver names
-    Set<String> names = new HashSet<String>();
+    Set<String> names = new HashSet<>();
     for (Enumeration propertyNames = props.propertyNames(); propertyNames.hasMoreElements(); ) {
       String name = StringUtils.substringBefore((String) propertyNames.nextElement(), ".");
       names.add(name);

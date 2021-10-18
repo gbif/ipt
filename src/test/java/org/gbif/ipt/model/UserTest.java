@@ -40,7 +40,7 @@ public class UserTest {
     assertEquals(u1, u2);
     assertFalse(u1.equals(u3));
 
-    Set<User> users = new HashSet<User>();
+    Set<User> users = new HashSet<>();
     users.add(u1);
     assertEquals(1, users.size());
     users.add(u2);

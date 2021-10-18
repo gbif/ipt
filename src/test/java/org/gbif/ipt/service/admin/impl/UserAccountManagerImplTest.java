@@ -225,7 +225,7 @@ public class UserAccountManagerImplTest {
     // Case #5. Ensure the creator of resources cannot be deleted
     userManager.create(manager);
     assertEquals(3, userManager.list().size());
-    managers1 = new HashSet<User>();
+    managers1 = new HashSet<>();
     managers1.add(manager);
     res1.setManagers(managers1);
     when(mockedResourceManager.list()).thenReturn(resources);

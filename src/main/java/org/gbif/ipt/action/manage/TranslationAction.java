@@ -170,9 +170,9 @@ public class TranslationAction extends ManagerBaseAction {
     // proceed with deletion
     if (field != null) {
       // 1. ensure the translation map on the PropertyMapping (field) is empty
-      field.setTranslation(new TreeMap<String, String>());
+      field.setTranslation(new TreeMap<>());
       // 2. ensure the static sessionScoped translation for this rowType and ConceptTerm is empty
-      trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<String, String>(), new TreeMap<String, String>());
+      trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<>(), new TreeMap<>());
       // 3. save the resource
       saveResource();
       // 4. add msg to appear in UI indicating the translation for this PropertyMapping has been deleted
@@ -245,7 +245,7 @@ public class TranslationAction extends ManagerBaseAction {
         mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE), mid);
       }
       // reinitialize translation, including maps
-      trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<String, String>(), new TreeMap<String, String>());
+      trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<>(), new TreeMap<>());
       // reload new values
       int i = 1;
       for (String val : sourceManager.inspectColumn(mapping.getSource(), field.getIndex(), 1000, 10000)) {

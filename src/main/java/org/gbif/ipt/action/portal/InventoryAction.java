@@ -78,7 +78,7 @@ public class InventoryAction extends ActionSupport {
   /**
    * Class representing dataset item returned in inventory response serialized into JSON.
    */
-  public class DatasetItem {
+  public static class DatasetItem {
 
     private String title;
     private String type;

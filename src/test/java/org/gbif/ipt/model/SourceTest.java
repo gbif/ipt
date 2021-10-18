@@ -44,7 +44,7 @@ public class SourceTest {
     assertTrue(SourceBase.class.isInstance(src3));
     assertFalse(TextFileSource.class.isInstance(src2));
 
-    Set<Source> sources = new HashSet<Source>();
+    Set<Source> sources = new HashSet<>();
     sources.add(src1);
     sources.add(src2);
     sources.add(src3);
@@ -77,7 +77,7 @@ public class SourceTest {
     assertTrue(SourceBase.class.isInstance(src3));
     assertFalse(TextFileSource.class.isInstance(src2));
 
-    sources = new HashSet<Source>();
+    sources = new HashSet<>();
     sources.add(src1);
     sources.add(src2);
     sources.add(src3);

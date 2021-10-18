@@ -43,7 +43,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
@@ -86,7 +85,6 @@ public class IPTModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @Inject
   public DataDir provideDataDir(ServletContext ctx) {
     DataDir dd;
 
@@ -134,7 +132,6 @@ public class IPTModule extends AbstractModule {
    */
   @Provides
   @Singleton
-  @Inject
   public Configuration provideFreemarker(DataDir datadir) {
     Configuration fm = new Configuration(Configuration.VERSION_2_3_25);
     // load templates from classpath by prefixing /templates
@@ -155,7 +152,6 @@ public class IPTModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @Inject
   public HttpClient provideHttpClient() {
     // new threadsafe, multithreaded http client with support for HTTP and HTTPS.
     String version = "unknown";
@@ -208,7 +204,6 @@ public class IPTModule extends AbstractModule {
   }
 
   @Provides
-  @Inject
   @Singleton
   public SAXParserFactory provideNsAwareSaxParserFactory() {
     SAXParserFactory saxf = null;
@@ -223,7 +218,6 @@ public class IPTModule extends AbstractModule {
   }
 
   @Provides
-  @Inject
   @Singleton
   public PBEEncrypt providePasswordEncryption() {
     final byte[] salt = {0x00, 0x05, 0x02, 0x05, 0x04, 0x25, 0x06, 0x17};

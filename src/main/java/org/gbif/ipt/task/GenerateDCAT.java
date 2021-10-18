@@ -74,7 +74,7 @@ public class GenerateDCAT {
   private static final String DCAT_SETTINGS = "org/gbif/metadata/eml/dcatsettings.properties";
   private static final String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";
   private static final LanguageParser LANGUAGE_PARSER = LanguageParser.getInstance();
-  private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
+  private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
   private static final InputStreamUtils streamUtils = new InputStreamUtils();
 
   // DCAT settings keys
@@ -824,7 +824,7 @@ public class GenerateDCAT {
    * @return ISO8601 string representation for a date
    */
   private String parseToIsoDate(@NotNull Date dateStamp) {
-    return DATE_FORMAT.format(dateStamp);
+    return dateFormat.format(dateStamp);
   }
 
   /**
