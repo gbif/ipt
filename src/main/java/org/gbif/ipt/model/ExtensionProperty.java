@@ -51,8 +51,8 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
    * Construct a new property with a single qualified name. Parses out the name and sets the namespace to end with a
    * slash or #
    */
-  public ExtensionProperty(String qualName) {
-    setQualname(qualName);
+  public ExtensionProperty(String qualname) {
+    setQualname(qualname);
   }
 
   /**

@@ -629,8 +629,8 @@ public class Eml2Rtf {
    * @throws DocumentException if problem occurs during add
    */
   private void addMethods(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getMethodSteps()) && !eml.getMethodSteps().isEmpty() || exists(eml.getStudyExtent()) || exists(
-      eml.getStudyExtent()) || exists(eml.getStudyExtent())) {
+    if ((exists(eml.getMethodSteps()) && !eml.getMethodSteps().isEmpty())
+        || exists(eml.getStudyExtent()) || exists(eml.getStudyExtent()) || exists(eml.getStudyExtent())) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
