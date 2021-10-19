@@ -133,7 +133,7 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   public Configuration provideFreemarker(DataDir datadir) {
-    Configuration fm = new Configuration(Configuration.VERSION_2_3_25);
+    Configuration fm = new Configuration(Configuration.VERSION_2_3_31);
     // load templates from classpath by prefixing /templates
     List<TemplateLoader> tLoader = new ArrayList<>();
     tLoader.add(new ClassTemplateLoader(AppConfig.class, "/templates"));
