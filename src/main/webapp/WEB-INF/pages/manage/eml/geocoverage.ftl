@@ -19,10 +19,10 @@
             var maxLngId = newBboxBase + "max\\.longitude";
             var minLngId = newBboxBase + "min\\.longitude";
 
-            var minLngValLimit = -180;
-            var maxLngValLimit = 180;
-            var minLatValLimit = -90;
-            var maxLatValLimit = 90;
+            const MIN_LNG_VAL_LIMIT = -180;
+            const MAX_LNG_VAL_LIMIT = 180;
+            const MIN_LAT_VAL_LIMIT = -90;
+            const MAX_LAT_VAL_LIMIT = 90;
 
             var map = new L.map('map').setView([0, 0], 10).setMaxBounds(L.latLngBounds(L.latLng(-90, -360), L.latLng(90, 360)));
 
@@ -32,10 +32,10 @@
             });
 
             // populate coordinate fields, using min max values as defaults if none exist
-            var minLngVal = isNaN(parseFloat($("#"+minLngId).val())) ? minLngValLimit : parseFloat($("#"+minLngId).val());
-            var maxLngVal = isNaN(parseFloat($("#"+maxLngId).val())) ? maxLngValLimit : parseFloat($("#"+maxLngId).val());
-            var minLatVal = isNaN(parseFloat($("#"+minLatId).val())) ? minLatValLimit : parseFloat($("#"+minLatId).val());
-            var maxLatVal = isNaN(parseFloat($("#"+maxLatId).val())) ? maxLatValLimit : parseFloat($("#"+maxLatId).val());
+            var minLngVal = isNaN(parseFloat($("#" + minLngId).val())) ? MIN_LNG_VAL_LIMIT : parseFloat($("#" + minLngId).val());
+            var maxLngVal = isNaN(parseFloat($("#" + maxLngId).val())) ? MAX_LNG_VAL_LIMIT : parseFloat($("#" + maxLngId).val());
+            var minLatVal = isNaN(parseFloat($("#" + minLatId).val())) ? MIN_LAT_VAL_LIMIT : parseFloat($("#" + minLatId).val());
+            var maxLatVal = isNaN(parseFloat($("#" + maxLatId).val())) ? MAX_LAT_VAL_LIMIT : parseFloat($("#" + maxLatId).val());
 
             // make the location filter: a draggable/resizable rectangle
             var locationFilter = new L.LocationFilter({
@@ -46,12 +46,12 @@
             }).addTo(map);
 
             // checks if global coverage is set. If on, coordinate input fields are hidden and the map disabled
-            if (maxLatVal == maxLatValLimit && minLatVal == minLatValLimit && maxLngVal == maxLngValLimit && minLngVal == minLngValLimit) {
+            if (maxLatVal === MAX_LAT_VAL_LIMIT && minLatVal === MIN_LAT_VAL_LIMIT && maxLngVal === MAX_LNG_VAL_LIMIT && minLngVal === MIN_LNG_VAL_LIMIT) {
                 $('input[name=globalCoverage]').attr('checked', true);
-                $("#"+minLngId).attr("value", minLngValLimit);
-                $("#"+maxLngId).attr("value", maxLngValLimit);
-                $("#"+minLatId).attr("value", minLatValLimit);
-                $("#"+maxLatId).attr("value", maxLatValLimit);
+                $("#" + minLngId).val(MIN_LNG_VAL_LIMIT);
+                $("#" + maxLngId).val(MAX_LNG_VAL_LIMIT);
+                $("#" + minLatId).val(MIN_LAT_VAL_LIMIT);
+                $("#" + maxLatId).val(MAX_LAT_VAL_LIMIT);
                 $("#coordinates").slideUp('slow');
                 locationFilter.disable();
                 map.fitWorld();
@@ -60,10 +60,10 @@
             /** This function updates the map each time the global coverage checkbox is checked or unchecked  */
             $(":checkbox").click(function() {
                 if($("#globalCoverage").is(":checked")) {
-                    $("#"+minLngId).attr("value", minLngValLimit);
-                    $("#"+maxLngId).attr("value", maxLngValLimit);
-                    $("#"+minLatId).attr("value", minLatValLimit);
-                    $("#"+maxLatId).attr("value", maxLatValLimit);
+                    $("#" + minLngId).val(MIN_LNG_VAL_LIMIT);
+                    $("#" + maxLngId).val(MAX_LNG_VAL_LIMIT);
+                    $("#" + minLatId).val(MIN_LAT_VAL_LIMIT);
+                    $("#" + maxLatId).val(MAX_LAT_VAL_LIMIT);
                     $("#coordinates").slideUp('slow');
                     locationFilter.disable();
                     map.fitWorld();
@@ -72,10 +72,10 @@
                     var maxLngVal = parseFloat(${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!180?c});
                     var minLatVal = parseFloat(${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!\-90?c});
                     var maxLatVal = parseFloat(${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!90?c});
-                    $("#"+minLngId).attr("value", minLngVal);
-                    $("#"+maxLngId).attr("value", maxLngVal);
-                    $("#"+minLatId).attr("value", minLatVal);
-                    $("#"+maxLatId).attr("value", maxLatVal);
+                    $("#" + minLngId).val(minLngVal);
+                    $("#" + maxLngId).val(maxLngVal);
+                    $("#" + minLatId).val(minLatVal);
+                    $("#" + maxLatId).val(maxLatVal);
                     $("#coordinates").slideDown('slow');
                     locationFilter.enable();
                     locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLongitudeAdjust(maxLngVal, minLngVal))));
@@ -84,10 +84,14 @@
 
             /** This function updates the coordinate input fields to mirror bounding box coordinates, after each map change event  */
             locationFilter.on("change", function (e) {
-                $("#"+minLatId).attr("value", clamp(locationFilter.getBounds()._southWest.lat, minLatValLimit, maxLatValLimit));
-                $("#"+minLngId).attr("value", datelineAdjust(locationFilter.getBounds()._southWest.lng));
-                $("#"+maxLatId).attr("value", clamp(locationFilter.getBounds()._northEast.lat, minLatValLimit, maxLatValLimit));
-                $("#"+maxLngId).attr("value", datelineAdjust(locationFilter.getBounds()._northEast.lng));
+                var minLatVal = clamp(locationFilter.getBounds()._southWest.lat, MIN_LAT_VAL_LIMIT, MAX_LAT_VAL_LIMIT)
+                var minLngVal = datelineAdjust(locationFilter.getBounds()._southWest.lng)
+                var maxLatVal = clamp(locationFilter.getBounds()._northEast.lat, MIN_LAT_VAL_LIMIT, MAX_LAT_VAL_LIMIT)
+                var maxLngVal = datelineAdjust(locationFilter.getBounds()._northEast.lng)
+                $("#" + minLatId).val(minLatVal);
+                $("#" + minLngId).val(minLngVal);
+                $("#" + maxLatId).val(maxLatVal);
+                $("#" + maxLngId).val(maxLngVal);
             });
 
             // lock map on disable
@@ -97,12 +101,13 @@
 
             /**
              * Adjusts longitude with respect to dateLine.
+             * Do not apply to 180.
              *
              * @param {number} lng The longitude value to adjust.
              * @returns {number} The adjusted longitude value.
              */
             function datelineAdjust(lng) {
-                return ((lng+180)%360)-180;
+                return lng === 180 ? lng : ((lng + 180) % 360) - 180;
             }
 
             /**
@@ -135,22 +140,35 @@
 
             /** This function adjusts the map each time the user enters a  */
             $("#bbox input").keyup(function() {
-                var minLngVal = parseFloat($("#"+minLngId).val());
-                var maxLngVal = parseFloat($("#"+maxLngId).val());
-                var minLatVal = parseFloat($("#"+minLatId).val());
-                var maxLatVal = parseFloat($("#"+maxLatId).val());
+                var minLngStr = $("#" + minLngId).val();
+                var maxLngStr = $("#" + maxLngId).val();
+                var minLatStr = $("#" + minLatId).val();
+                var maxLatStr = $("#" + maxLatId).val();
 
-                if(isNaN(minLngVal)) {
-                    minLngVal=minLngValLimit;
+                // ignore these values
+                if (minLngStr.endsWith(".") || minLngStr === "-" || minLngStr === ""
+                    || maxLngStr.endsWith(".") || maxLngStr === "-" || maxLngStr === ""
+                    || minLatStr.endsWith(".") || minLatStr === "-" || minLatStr === ""
+                    || maxLatStr.endsWith(".") || maxLatStr === "-" || maxLatStr === "") {
+                    return
                 }
-                if(isNaN(maxLngVal)) {
-                    maxLngVal=maxLngValLimit;
+
+                var minLngVal = parseFloat(minLngStr);
+                var maxLngVal = parseFloat(maxLngStr);
+                var minLatVal = parseFloat(minLatStr);
+                var maxLatVal = parseFloat(maxLatStr);
+
+                if (isNaN(minLngVal)) {
+                    minLngVal = MIN_LNG_VAL_LIMIT;
                 }
-                if(isNaN(minLatVal)) {
-                    minLatVal = minLatValLimit;
+                if (isNaN(maxLngVal)) {
+                    maxLngVal = MAX_LNG_VAL_LIMIT;
                 }
-                if(isNaN(maxLatVal)) {
-                    maxLatVal = maxLatValLimit;
+                if (isNaN(minLatVal)) {
+                    minLatVal = MIN_LAT_VAL_LIMIT;
+                }
+                if (isNaN(maxLatVal)) {
+                    maxLatVal = MAX_LAT_VAL_LIMIT;
                 }
                 locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLongitudeAdjust(maxLngVal, minLngVal))))
             });
