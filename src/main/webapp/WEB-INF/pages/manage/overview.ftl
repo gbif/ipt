@@ -214,53 +214,50 @@
             $('.icon-validate').tooltip({track: true});
         });
 
-        // cancel source overwrite when 'Close' button is clicked
-        $(".close-overwrite-modal").click(function(event) {
-            $("#canceloverwrite").click();
-        });
-
         function showConfirmOverwrite() {
-            var question='<p><@s.text name="manage.resource.addSource.confirm"/></p>';
-            $('#dialog').html(question);
-            $("#dialog").dialog({
-                'modal'     : true,
-                'title'		: '<@s.text name="basic.confirm"/>',
-                'buttons'   : {
-                    '<@s.text name="basic.yes"/>': function(){
-                        $(this).dialog("close");
-                        $("#add").click();
-                    },
-                    '<@s.text name="basic.no"/>' : function(){
-                        $(this).dialog("close");
-                        $("#canceloverwrite").click();
-                    }
-                },
-                // modal window fixed positioning to prevent page elements from changing position
-                create: function (event, ui) {
-                    $(event.target).parent().css('position', 'fixed');
-                },
-                resizeStop: function (event, ui) {
-                    var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
-                        (Math.floor(ui.position.top) - $(window).scrollTop())];
-                    $(event.target).parent().css('position', 'fixed');
-                    $(dlg).dialog('option', 'position', position);
-                }
+            var dialogWindow = $("#dialog");
+            var titleQuestion = '<@s.text name="basic.confirm"/>';
+            var question = '<@s.text name="manage.resource.addSource.confirm"/>';
+            var yesButtonText = '<@s.text name="basic.yes"/>';
+            var cancelButtonText = '<@s.text name="basic.no"/>';
+
+            // prepare html content for modal window
+            var content = '<div class="modal-dialog modal-confirm modal-dialog-centered">';
+            content += '<div class="modal-content">';
+
+            // header
+            content += '<div class="modal-header flex-column">';
+            content += '<div class="icon-box"><i class="confirm-danger-icon">!</i></div>'
+            content += '<h5 class="modal-title w-100" id="staticBackdropLabel">' + titleQuestion + '</h5>';
+            content += '<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>'
+            content += '</div>';
+
+            // body
+            content += '<div class="modal-body">';
+            content += '<p>' + question + '</p>';
+            content += '</div>'
+
+            // footer
+            content += '<div class="modal-footer justify-content-center">'
+            content += '<button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + cancelButtonText + '</button>';
+            content += '<button id="yes-button" type="button" class="btn btn-outline-gbif-primary">' + yesButtonText + '</button>';
+            content += '</div>';
+
+            content += '</div>';
+            content += '</div>';
+
+            // add content to window
+            dialogWindow.html(content);
+
+            $("#yes-button").on("click", function () {
+                $("#add").click()
             });
 
-            // add bootstrap design to modal's title, content and footer
-            var dialog = $('.ui-dialog');
-            dialog.addClass('modal-content');
-            dialog.find('.ui-dialog-titlebar').addClass('modal-header').find('.ui-dialog-titlebar-close').addClass('btn-close');
-            dialog.find('.ui-dialog-title').addClass('modal-title fw-bold').html('<@s.text name="basic.confirm"/>');
-            dialog.find('.ui-dialog-content').addClass('modal-body');
-            dialog.find('.ui-dialog-buttonpane').addClass('modal-footer');
+            $("#cancel-button").on("click", function () {
+                $("#canceloverwrite").click();
+            });
 
-            // add class to modal 'Close X' button
-            dialog.find('.ui-dialog-titlebar-close').addClass('close-overwrite-modal');
-
-            // add bootstrap design to modal buttons
-            $('.ui-dialog-buttonset button:first-child').addClass('btn btn-sm btn-outline-gbif-primary mx-2');
-            $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-sm btn-outline-secondary');
+            dialogWindow.modal('show');
         }
 
         // load a preview of the mapping in the modal window
@@ -403,7 +400,7 @@
                 </div>
             </div>
 
-            <div id="dialog" class="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="display: none"></div>
+            <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
         </div>
 
         <!-- when resource is of type metadata-only, there is no need to show source data and mapping sections -->
