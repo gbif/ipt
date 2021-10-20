@@ -308,7 +308,7 @@
                 <small class="text-truncate"><@sourceSample field.index fieldsIndex/></small>
                 <div id="fTIdx${fieldsIndex}" class="sample mappingText">
                     <small class="mx-3"><@s.text name='manage.mapping.translation' />:</small>
-                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
+                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}" class="text-smaller">
                         <#if (((field.translation?size)!0)>0)>
                             ${(field.translation?size)!0} terms
                         <#else>
