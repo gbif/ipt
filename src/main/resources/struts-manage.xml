@@ -70,8 +70,9 @@
       <result name="error">/WEB-INF/pages/manage/locked.ftl</result>
     </action>
     <action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
-      <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <allowed-methods>addManager,delete,deleteFromIpt,deleteDoi,deleteManager,makePrivate,makePublic,registerResource,reserveDoi,undelete</allowed-methods>
     </action>
 
