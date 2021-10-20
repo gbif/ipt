@@ -735,3 +735,21 @@ button.close {
     opacity: .75;
 }
 /* Modal windows END */
+
+
+/* Anchors START */
+.anchor {
+    display: block;
+    visibility: hidden;
+}
+
+.anchor-resource-page {
+    height: 45px;
+    margin-top: -59px;
+}
+
+.anchor-mapping-page {
+    height: 96px;
+    margin-top: -110px;
+}
+/* Anchors END */

@@ -120,16 +120,16 @@
                             <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="fieldIndexDropdown">
                                 [#if (groups?size>0)]
                                     [#list groups as g]
-                                        <li [#if redundants?seq_contains(g)] class="redundant" [/#if] ><a class="sidebar-anchor dropdown-item menu-link" href="#group_${g}">${g}</a></li>
+                                        <li [#if redundants?seq_contains(g)] class="redundant" [/#if] ><a class="dropdown-item menu-link" href="#anchor-${g}">${g}</a></li>
                                     [/#list]
                                 [/#if]
 
                                 [#if (nonMapped?size>0)]
-                                    <li><a class="sidebar-anchor dropdown-item menu-link" href="#nonmapped">[@s.text name='manage.mapping.no.mapped.title'/]</a></li>
+                                    <li><a class="dropdown-item menu-link" href="#anchor-nonmapped">[@s.text name='manage.mapping.no.mapped.title'/]</a></li>
                                 [/#if]
 
                                 [#if (redundants?size>0)]
-                                    <li><a class="sidebar-anchor dropdown-item menu-link" href="#redundant">[@s.text name='manage.mapping.redundant'/]</a></li>
+                                    <li><a class="dropdown-item menu-link" href="#anchor-redundant">[@s.text name='manage.mapping.redundant'/]</a></li>
                                 [/#if]
                             </ul>
                         </li>
@@ -171,7 +171,7 @@
                             <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="sectionDropdown">
                                 [#list ["basic", "geocoverage", "taxcoverage","tempcoverage", "keywords", "parties", "project", "methods", "citations", "collections", "physical", "additional"] as it]
                                     <li>
-                                        <a class="sidebar-anchor dropdown-item menu-link" href="metadata-${it}.do?r=${resource.shortname!r!}">
+                                        <a class="dropdown-item menu-link" href="metadata-${it}.do?r=${resource.shortname!r!}">
                                             [@s.text name="submenu.${it}"/]
                                         </a>
                                     </li>

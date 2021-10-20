@@ -173,11 +173,6 @@
                 activateDeactivateStaticInput($(this));
             });
 
-            $(".sidebar-anchor").click(function(e) {
-                $("a").removeClass("sidebar-nav-selected");
-                $(this).addClass("sidebar-nav-selected");
-            });
-
             //Hack needed for Internet Explorer X.*x
             $('.add').each(function() {
                 $(this).click(function() {
@@ -456,6 +451,7 @@
             <#list fieldsByGroup?keys as g>
                 <#assign groupsFields = fieldsByGroup.get(g)/>
                 <#if (groupsFields?size>0)>
+                    <span class="anchor anchor-mapping-page" id="anchor-${g}"></span>
                     <div class="my-3 p-3 bg-body rounded shadow-sm <#if redundants?seq_contains(g)>redundant</#if>">
                         <div id="group_${g}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
                             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">${g}</h5>
@@ -492,6 +488,7 @@
         </#if>
 
         <#if (nonMapped?size>0)>
+            <span class="anchor anchor-mapping-page" id="anchor-nomapped"></span>
             <div class="my-3 p-3 bg-body rounded shadow-sm">
                 <h5 id="nonmapped" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name="manage.mapping.no.mapped.title"/>
@@ -507,6 +504,7 @@
         </#if>
 
         <#if (action.getRedundantGroups()?size>0)>
+            <span class="anchor anchor-mapping-page" id="anchor-redundant"></span>
             <div class="my-3 p-3 bg-body rounded shadow-sm">
                 <h5 id="redundant" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name="manage.mapping.redundant.classes.title"/>

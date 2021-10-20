@@ -105,9 +105,9 @@
     </#if>
 </#macro>
 
-<#assign anchor_versions>#versions</#assign>
-<#assign anchor_rights>#rights</#assign>
-<#assign anchor_citation>#citation</#assign>
+<#assign anchor_versions>#anchor-versions</#assign>
+<#assign anchor_rights>#anchor-rights</#assign>
+<#assign anchor_citation>#anchor-citation</#assign>
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
 <#assign updateFrequencyTitle><@s.text name='eml.updateFrequency'/></#assign>
 <#assign publishedOnText><@s.text name='manage.overview.published.released'/></#assign>
@@ -387,6 +387,7 @@
 
         <!-- versions section -->
         <#if resource.versionHistory??>
+            <span class="anchor anchor-resource-page" id="anchor-versions"></span>
             <div id ="versions" class="my-3 p-3 bg-body rounded shadow-sm">
                 <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='portal.resource.versions'/>
@@ -406,6 +407,7 @@
 
         <!-- citation section -->
         <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
+            <span class="anchor anchor-resource-page" id="anchor-citation"></span>
             <div id="citation" class="my-3 p-3 bg-body rounded shadow-sm">
                 <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='portal.resource.cite.howTo'/>
@@ -427,6 +429,7 @@
 
         <!-- rights section -->
         <#if eml.intellectualRights?has_content>
+            <span class="anchor anchor-resource-page" id="anchor-rights"></span>
             <div id="rights" class="my-3 p-3 bg-body rounded shadow-sm">
                 <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name='eml.intellectualRights.simple'/>
@@ -906,26 +909,6 @@
 
 <!-- Menu Toggle Script -->
 <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-        $("#sidebar-wrapper").toggleClass("toggled");
-        $("#menu-toggle").hide();
-        $("#menu-toggle2").show();
-    });
-    $("#menu-toggle2").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-        $("#sidebar-wrapper").toggleClass("toggled");
-        $("#menu-toggle").show();
-        $("#menu-toggle2").hide();
-    });
-
-    $(".sidebar-anchor").click(function(e) {
-        $("a").removeClass("sidebar-nav-selected");
-        $(this).addClass("sidebar-nav-selected");
-    });
-
     // hide and make contact addresses toggable
     $(".contactName").next().hide();
     $(".contactName").click(function(e){
