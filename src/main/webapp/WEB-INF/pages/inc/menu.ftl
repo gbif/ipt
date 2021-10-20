@@ -96,7 +96,7 @@
                         </ul>
                     [#else]
                         <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center px-1">
-                            <button class="btn btn-sm btn-light m-xl-auto navbar-button" type="submit" name="login-submit">
+                            <button class="btn btn-sm btn-light m-xl-auto navbar-button text-capitalize" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>
                         </form>
