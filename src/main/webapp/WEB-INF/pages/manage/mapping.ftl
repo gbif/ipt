@@ -488,7 +488,7 @@
         </#if>
 
         <#if (nonMapped?size>0)>
-            <span class="anchor anchor-mapping-page" id="anchor-nomapped"></span>
+            <span class="anchor anchor-mapping-page" id="anchor-nonmapped"></span>
             <div class="my-3 p-3 bg-body rounded shadow-sm">
                 <h5 id="nonmapped" class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
                     <@s.text name="manage.mapping.no.mapped.title"/>
