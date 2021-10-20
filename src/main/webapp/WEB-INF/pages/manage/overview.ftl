@@ -168,7 +168,6 @@
 
         $("#sourceType").change(function (e) {
             var sourceType = this.options[e.target.selectedIndex].value;
-            console.log(sourceType)
 
             if (sourceType === 'source-file') {
                 $("#url").hide();
@@ -207,7 +206,10 @@
         $("#clear").click(function(event) {
             event.preventDefault();
             $("#file").prop("value", "");
-            $("#add").hide();
+            $("#url").prop("value", "");
+            if ($("#file").is(":visible")) {
+                $("#add").hide();
+            }
         });
 
         $(function() {
