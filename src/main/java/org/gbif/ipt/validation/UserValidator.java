@@ -21,6 +21,10 @@ import org.gbif.ipt.model.User;
 public class UserValidator extends BaseValidator {
 
   public boolean validate(BaseAction action, User user) {
+    return validate(action, user, true);
+  }
+
+  public boolean validate(BaseAction action, User user, boolean validatePassword) {
     boolean valid = true;
     if (user != null) {
       if (exists(user.getEmail())) {
@@ -40,10 +44,20 @@ public class UserValidator extends BaseValidator {
         valid = false;
         action.addFieldError("user.lastname", action.getText("validation.lastname.required"));
       }
-      if (!exists(user.getPassword(), 4)) {
+      if (validatePassword && !exists(user.getPassword(), 4)) {
         valid = false;
         action.addFieldError("user.password", action.getText("validation.password.required"));
       }
+
+    }
+    return valid;
+  }
+
+  public boolean validatePassword(BaseAction action, String password) {
+    boolean valid = true;
+    if (!exists(password, 4)) {
+      valid = false;
+      action.addFieldError("user.password", action.getText("validation.password.required"));
     }
     return valid;
   }

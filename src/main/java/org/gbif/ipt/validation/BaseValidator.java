@@ -52,6 +52,7 @@ public abstract class BaseValidator {
    *
    * @return true if string
    */
+  @SuppressWarnings("SameParameterValue")
   protected boolean existsInRange(String x, int minLength, int maxLength) {
     x = StringUtils.trimToNull(x);
     return x != null && x.length() >= minLength && x.length() <= maxLength;

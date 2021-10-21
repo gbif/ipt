@@ -159,6 +159,12 @@
       <result name="success" type="redirect">${baseURL}/home.do</result>
     </action>
 
+    <action name="change-password" class="org.gbif.ipt.action.AccountAction" method="changePassword">
+      <result name="input">/WEB-INF/pages/account.ftl</result>
+      <result name="cancel" type="redirect">${baseURL}/home.do</result>
+      <result name="success" type="redirect">${baseURL}/home.do</result>
+    </action>
+
     <action name="about" class="org.gbif.ipt.action.AboutAction">
       <result>/WEB-INF/pages/about.ftl</result>
     </action>

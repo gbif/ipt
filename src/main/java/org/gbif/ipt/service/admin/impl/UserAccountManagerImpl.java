@@ -54,7 +54,6 @@ import com.thoughtworks.xstream.XStream;
 /**
  * Reads user accounts from a simple XStream managed xml file.
  */
-
 @Singleton
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
 
@@ -263,11 +262,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
   @Override
   public void load() throws InvalidConfigException {
-    Reader userReader;
-    ObjectInputStream in = null;
-    try {
-      userReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE));
-      in = xstream.createObjectInputStream(userReader);
+    try (ObjectInputStream in = xstream.createObjectInputStream(
+        FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE)))) {
       users.clear();
       while (true) {
         try {
@@ -286,25 +282,18 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     } catch (IOException e) {
       LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());
-    } finally {
-      if (in != null) {
-        try {
-          in.close();
-        } catch (IOException e) {
-        }
-      }
     }
   }
 
   @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all " + users.size() + " user accounts...");
-    Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
-    ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users");
-    for (Entry<String, User> entry : users.entrySet()) {
-      out.writeObject(entry.getValue());
+    try (Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
+         ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users")) {
+      for (Entry<String, User> entry : users.entrySet()) {
+        out.writeObject(entry.getValue());
+      }
     }
-    out.close();
   }
 
   /*
