@@ -43,11 +43,17 @@ public class AccountAction extends POSTAction {
   private final UserAccountManager userManager;
   private final UserValidator validator = new UserValidator();
 
+  // main form
   private String email;
+  private User user;
+
+  // password change form
   private String newPassword;
   private String password2;
   private String currentPassword;
-  private User user;
+
+  // current user
+  private User currentUser;
 
   @Inject
   public AccountAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -68,18 +74,23 @@ public class AccountAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
-    if (getCurrentUser() != null) {
-      // modify existing user in session
-      user = getCurrentUser();
+    try {
+      if (getCurrentUser() != null) {
+        currentUser = getCurrentUser();
+        user = (User) currentUser.clone();
+        email = user.getEmail();
+      }
+    } catch (CloneNotSupportedException e) {
+      LOG.error("Failed to clone current user: " + e.getMessage(), e);
     }
   }
 
-  // TODO: 21/10/2021 do not save if email or password changed!
   @Override
   public String save() {
     try {
-      LOG.debug(user);
       if (validator.validate(this, user)) {
+        currentUser.setLastname(user.getLastname());
+        currentUser.setFirstname(user.getFirstname());
         addActionMessage(getText("admin.user.account.updated"));
         LOG.debug("The user account has been updated");
         userManager.save();
@@ -90,11 +101,12 @@ public class AccountAction extends POSTAction {
       LOG.error("The user account change could not be made: " + e.getMessage(), e);
       addActionError(e.getMessage());
     }
+
     return INPUT;
   }
 
   public String changePassword() {
-    if (user != null) {
+    if (currentUser != null) {
       String trimmedCurrentPassword = StringUtils.trimToNull(currentPassword);
       String trimmedNewPassword = StringUtils.trimToNull(newPassword);
       String trimmedNewPasswordConfirmation = StringUtils.trimToNull(password2);
@@ -111,7 +123,7 @@ public class AccountAction extends POSTAction {
         LOG.error("The new password confirmation entered is empty");
       }
       // confirm current password is correct
-      else if (!user.getPassword().equals(trimmedCurrentPassword)) {
+      else if (!currentUser.getPassword().equals(trimmedCurrentPassword)) {
         addFieldError("currentPassword", getText("validation.password.wrong"));
         LOG.error("The password does not match");
       }
@@ -122,13 +134,14 @@ public class AccountAction extends POSTAction {
         password2 = null;
         // otherwise, set password even if it's too short - it gets validated during save
       } else if (validator.validatePassword(this, newPassword)) {
-        user.setPassword(newPassword);
+        currentUser.setPassword(newPassword);
         // erase data
         newPassword = null;
         currentPassword = null;
         password2 = null;
         addActionMessage(getText("admin.user.account.passwordChanged"));
         LOG.error("The password has been reset");
+        return SUCCESS;
       }
     }
 
@@ -141,6 +154,14 @@ public class AccountAction extends POSTAction {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public String getPassword2() {
@@ -165,13 +186,5 @@ public class AccountAction extends POSTAction {
 
   public void setCurrentPassword(String currentPassword) {
     this.currentPassword = currentPassword;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
   }
 }

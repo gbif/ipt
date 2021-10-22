@@ -24,7 +24,7 @@
 
     <div class="my-3 p-3 bg-body rounded shadow-sm">
         <form class="needs-validation" action="account.do" method="post" novalidate>
-            <input type="hidden" name="id" value="${user.email!}" required>
+            <input type="hidden" name="id" value="${email!}" required>
 
             <div class="row g-3 mx-md-4 mx-2 mt-0 mb-2">
                 <div class="col-sm-6">
@@ -55,7 +55,7 @@
 
     <div class="my-3 p-3 bg-body rounded shadow-sm">
         <form class="needs-validation" action="change-password.do" method="post" novalidate>
-            <input type="hidden" name="id" value="${user.email!}" required>
+            <input type="hidden" name="id" value="${email!}" required>
 
             <div class="row g-3 mx-md-4 mx-2 mt-0 mb-2">
                 <div class="col-sm-6">
