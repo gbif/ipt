@@ -161,13 +161,13 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <#if resource.coreRowType??>
-        <div class="text-center text-uppercase fw-bold fs-smaller-2">
-            <span>${resource.coreRowType}</span>
-        </div>
-    </#if>
-
     <div class="container my-3 p-3">
+        <#if resource.coreType??>
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <span>${resource.coreType}</span>
+            </div>
+        </#if>
+
         <div class="text-center">
             <h1 property="dc:title" class="rtitle pb-2 mb-2 pt-2 text-gbif-header fs-2 fw-normal">
                 ${eml.title!resource.shortname}
@@ -246,12 +246,12 @@
 
 <div class="container-fluid border-bottom">
     <div class="container">
-        <div class="my-4 p-3 bg-body rounded shadow-sm">
+        <div class="my-4 p-3 pt-4 bg-body rounded shadow-sm">
             <div class="mx-md-4 mx-2">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-8 text-smaller">
+                    <div class="col-lg-8 text-smaller">
                         <#if (eml.description?size>0)>
-                            <div property="dc:abstract" class="mt-3 overflow-x-auto">
+                            <div property="dc:abstract" class="overflow-x-auto">
                                 <#list eml.description as para>
                                     <#if para?has_content>
                                         <p>
@@ -266,7 +266,7 @@
                             </div>
                         </#if>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 text-smaller">
+                    <div class="col-lg-4 text-smaller">
                         <#if eml.logoUrl?has_content>
                             <div class="logoImg">
                                 <img src="${eml.logoUrl}"/>

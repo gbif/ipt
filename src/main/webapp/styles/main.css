@@ -767,7 +767,7 @@ button.close {
 
 
 /* Resource view page START */
-@media (max-width: 992px) {
+@media (max-width: 768px) {
     .bd-main {
         grid-template-areas:
                 "toc content";
@@ -776,7 +776,7 @@ button.close {
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 900px) {
     .bd-toc {
         position: -webkit-sticky;
         position: sticky;
@@ -785,6 +785,12 @@ button.close {
         z-index: 2;
         height: calc(100vh - 7rem);
         overflow-y: auto;
+    }
+}
+
+@media (max-width: 900px) {
+    .bd-toc {
+        display: none;
     }
 }
 
