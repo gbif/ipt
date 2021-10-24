@@ -161,9 +161,11 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <div class="text-center text-uppercase fw-bold fs-smaller-2">
-        <span>${resource.coreRowType}</span>
-    </div>
+    <#if resource.coreRowType??>
+        <div class="text-center text-uppercase fw-bold fs-smaller-2">
+            <span>${resource.coreRowType}</span>
+        </div>
+    </#if>
 
     <div class="container my-3 p-3">
         <div class="text-center">
@@ -271,24 +273,23 @@
                             </div>
                         </#if>
                         <dl class="inline">
-                            <#if resource.lastPublished??>
+                            <#if eml.pubDate??>
                                 <div>
-                                    <dt>Publication date</dt>
-                                    <dd>${eml.pubDate}</dd>
+                                    <dt><@s.text name='portal.resource.publicationDate'/></dt>
+                                    <dd>${eml.pubDate?date?string.long}</dd>
                                 </div>
                             </#if>
 
                             <#if eml.dateStamp??>
                                 <div>
-                                    <dt>Metadata last modified</dt>
-                                    <dd>${eml.dateStamp}</dd>
+                                    <dt><@s.text name='portal.resource.metadataLastModified'/></dt>
+                                    <dd>${eml.dateStamp?date?string.long}</dd>
                                 </div>
                             </#if>
 
                             <#if resource.organisation??>
                                 <div>
-                                    <dt>Hosted by</dt>
-                                    ${resource.organisation.name}
+                                    <dt><@s.text name='portal.resource.hostedBy'/></dt>
                                     <dd>${resource.organisation.name}</dd>
                                 </div>
                             </#if>
