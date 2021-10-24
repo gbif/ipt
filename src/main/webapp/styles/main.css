@@ -182,6 +182,10 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: #4E565F !important;
 }
 
+.text-gbif-header-2 {
+    color: #58687b !important;
+}
+
 .bg-gbif-primary {
   background-color: #61a861 !important;
 }
@@ -633,6 +637,13 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     font-size: 0.875rem !important;
 }
 
+.fs-smaller {
+    font-size: 0.875rem !important;
+}
+
+.fs-smaller-2 {
+    font-size: 0.75rem !important;
+}
 
 /* Modal windows START */
 .modal-confirm .modal-content {
@@ -753,3 +764,98 @@ button.close {
     margin-top: -110px;
 }
 /* Anchors END */
+
+
+/* Resource view page START */
+@media (max-width: 992px) {
+    .bd-main {
+        grid-template-areas:
+                "toc content";
+        grid-template-columns: 1fr 4fr;
+        grid-template-rows: 1fr auto;
+    }
+}
+
+@media (min-width: 992px) {
+    .bd-toc {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 5rem;
+        right: 0;
+        z-index: 2;
+        height: calc(100vh - 7rem);
+        overflow-y: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .bd-layout {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-areas: "sidebar main";
+    }
+
+    .bd-main {
+        display: grid;
+        gap: inherit;
+        grid-template-areas:
+                    "toc content";
+        grid-template-rows: auto auto 1fr;
+    }
+}
+
+.bd-main {
+    grid-area: main;
+}
+
+.bd-toc {
+    grid-area: toc;
+}
+
+.bd-content {
+    grid-area: content;
+    min-width: 1px;
+}
+
+.bd-toc nav ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.bd-toc nav a {
+    font-size: 0.875rem;
+    color: #4e565f !important;
+    padding: 10px;
+    margin-left: -10px;
+    display: block;
+    line-height: 1rem;
+    border-left: 2px solid #e2e7ea;
+}
+
+.bd-toc nav a:hover {
+    text-decoration: none !important;
+    color: #4e565f !important;
+}
+
+.bd-toc nav a.active {
+    border-left: 2px solid #09c;
+}
+
+#additional {
+    height: 100vh;
+    min-height: 200px;
+}
+
+.anchor-home-resource-page {
+    height: 45px;
+    margin-top: -59px;
+}
+
+.logoImg>img {
+    max-height: 64px;
+}
+
+dt, dd {
+    display: inline;
+}
+/* Resource view page START */
