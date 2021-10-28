@@ -584,24 +584,6 @@ ul.horizontal_graph .value_label {
 }
 
 
-/* Mapping page custom colors */
-#filter {
-    color: #0080FF;
-}
-
-#coreID {
-    color: #008959;
-}
-
-div.requiredMapping {
-    background-color: #E6F5EB;
-}
-
-div.mappingFiler {
-    background-color: #F0FAFF;
-}
-
-
 /* Pointer at info\warning icons */
 i {
     cursor: pointer;
@@ -633,6 +615,7 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     overflow-x: hidden !important;
 }
 
+/* Deprecated, replace with fs-smaller */
 .text-smaller {
     font-size: 0.875rem !important;
 }
@@ -643,6 +626,10 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 .fs-smaller-2 {
     font-size: 0.75rem !important;
+}
+
+.fw-400 {
+    font-weight: 400;
 }
 
 /* Modal windows START */
@@ -754,6 +741,11 @@ button.close {
     visibility: hidden;
 }
 
+.anchor-base {
+    height: 45px;
+    margin-top: -59px;
+}
+
 .anchor-resource-page {
     height: 45px;
     margin-top: -59px;
@@ -828,13 +820,18 @@ button.close {
     list-style: none;
 }
 
-.bd-toc nav a {
+.bd-toc nav a.sidebar-link, .bd-toc nav a.sidebar-navigation-link {
     font-size: 0.875rem;
     color: #4e565f !important;
+    text-decoration: none !important;
     padding: 10px;
     margin-left: -10px;
     display: block;
     line-height: 1rem;
+    cursor: pointer;
+}
+
+.bd-toc nav a.sidebar-navigation-link {
     border-left: 2px solid #e2e7ea;
 }
 

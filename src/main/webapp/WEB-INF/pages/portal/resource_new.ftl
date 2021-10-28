@@ -311,54 +311,54 @@
             <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">
                     <ul>
-                        <li><a href="#anchor-description" class="sidebar-link"><@s.text name='portal.resource.description'/></a></li>
+                        <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
                         <#if resource.lastPublished??>
                             <#if metadataOnly != true>
-                                <li><a href="#anchor-dataRecords" class="sidebar-link"><@s.text name='portal.resource.dataRecords'/></a></li>
+                                <li><a href="#anchor-dataRecords" class="sidebar-navigation-link"><@s.text name='portal.resource.dataRecords'/></a></li>
                             </#if>
-                            <li><a href="#anchor-downloads" class="sidebar-link"><@s.text name='portal.resource.downloads'/></a></li>
+                            <li><a href="#anchor-downloads" class="sidebar-navigation-link"><@s.text name='portal.resource.downloads'/></a></li>
                             <#if resource.versionHistory??>
-                                <li><a href="#anchor-versions" class="sidebar-link"><@s.text name='portal.resource.versions'/></a></li>
+                                <li><a href="#anchor-versions" class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a></li>
                             </#if>
                             <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
-                                <li><a href="#anchor-citation" class="sidebar-link"><@s.text name='portal.resource.cite.howTo'/></a></li>
+                                <li><a href="#anchor-citation" class="sidebar-navigation-link"><@s.text name='portal.resource.cite.howTo'/></a></li>
                             </#if>
                             <#if eml.intellectualRights?has_content>
-                                <li><a href="#anchor-rights" class="sidebar-link"><@s.text name='eml.intellectualRights.simple'/></a></li>
+                                <li><a href="#anchor-rights" class="sidebar-navigation-link"><@s.text name='eml.intellectualRights.simple'/></a></li>
                             </#if>
-                            <li><a href="#anchor-gbif" class="sidebar-link"><@s.text name='portal.resource.organisation.key'/></a></li>
+                            <li><a href="#anchor-gbif" class="sidebar-navigation-link"><@s.text name='portal.resource.organisation.key'/></a></li>
                             <#if eml.subject?has_content>
-                                <li><a href="#anchor-keywords" class="sidebar-link"><@s.text name='portal.resource.summary.keywords'/></a></li>
+                                <li><a href="#anchor-keywords" class="sidebar-navigation-link"><@s.text name='portal.resource.summary.keywords'/></a></li>
                             </#if>
                             <#if (eml.physicalData?size > 0 )>
-                                <li><a href="#anchor-external" class="sidebar-link"><@s.text name='manage.metadata.physical.alternativeTitle'/></a></li>
+                                <li><a href="#anchor-external" class="sidebar-navigation-link"><@s.text name='manage.metadata.physical.alternativeTitle'/></a></li>
                             </#if>
                             <#if (eml.contacts?size>0) || (eml.creators?size>0) || (eml.metadataProviders?size>0) || (eml.associatedParties?size>0)>
-                                <li><a href="#anchor-contacts" class="sidebar-link"><@s.text name='portal.resource.contacts'/></a></li>
+                                <li><a href="#anchor-contacts" class="sidebar-navigation-link"><@s.text name='portal.resource.contacts'/></a></li>
                             </#if>
                             <#if eml.geospatialCoverages[0]??>
-                                <li><a href="#anchor-geospatial" class="sidebar-link"><@s.text name='portal.resource.summary.geocoverage'/></a></li>
+                                <li><a href="#anchor-geospatial" class="sidebar-navigation-link"><@s.text name='portal.resource.summary.geocoverage'/></a></li>
                             </#if>
                             <#if ((organizedCoverages?size > 0))>
-                                <li><a href="#anchor-taxanomic" class="sidebar-link"><@s.text name='manage.metadata.taxcoverage.title'/></a></li>
+                                <li><a href="#anchor-taxanomic" class="sidebar-navigation-link"><@s.text name='manage.metadata.taxcoverage.title'/></a></li>
                             </#if>
                             <#if ((eml.temporalCoverages?size > 0))>
-                                <li><a href="#anchor-temporal" class="sidebar-link"><@s.text name='manage.metadata.tempcoverage.title'/></a></li>
+                                <li><a href="#anchor-temporal" class="sidebar-navigation-link"><@s.text name='manage.metadata.tempcoverage.title'/></a></li>
                             </#if>
                             <#if eml.project?? && eml.project.title?has_content>
-                                <li><a href="#anchor-project" class="sidebar-link"><@s.text name='manage.metadata.project.title'/></a></li>
+                                <li><a href="#anchor-project" class="sidebar-navigation-link"><@s.text name='manage.metadata.project.title'/></a></li>
                             </#if>
                             <#if eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content) >
-                                <li><a href="#anchor-methods" class="sidebar-link"><@s.text name='manage.metadata.methods.title'/></a></li>
+                                <li><a href="#anchor-methods" class="sidebar-navigation-link"><@s.text name='manage.metadata.methods.title'/></a></li>
                             </#if>
                             <#if eml.collections?? && (eml.collections?size > 0) && eml.collections[0].collectionName?has_content >
-                                <li><a href="#anchor-collection" class="sidebar-link"><@s.text name='manage.metadata.collections.title'/></a></li>
+                                <li><a href="#anchor-collection" class="sidebar-navigation-link"><@s.text name='manage.metadata.collections.title'/></a></li>
                             </#if>
                             <#if eml.bibliographicCitationSet?? && (eml.bibliographicCitationSet.bibliographicCitations?has_content)>
-                                <li><a href="#anchor-reference" class="sidebar-link"><@s.text name='manage.metadata.citations.bibliography'/></a></li>
+                                <li><a href="#anchor-reference" class="sidebar-navigation-link"><@s.text name='manage.metadata.citations.bibliography'/></a></li>
                             </#if>
                         </#if>
-                        <li><a href="#anchor-additional" class="sidebar-link">Additional Metadata</a></li>
+                        <li><a href="#anchor-additional" class="sidebar-navigation-link">Additional Metadata</a></li>
                     </ul>
                 </nav>
             </div>
@@ -501,7 +501,7 @@
                     <!-- versions section -->
                     <#if resource.versionHistory??>
                         <span class="anchor anchor-resource-page" id="anchor-versions"></span>
-                        <div id ="versions" class="my-3 p-3 bg-body rounded shadow-sm">
+                        <div id ="versions" class="mt-5 section">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2">
                                 <@s.text name='portal.resource.versions'/>
                             </h4>
