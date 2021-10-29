@@ -198,6 +198,26 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
   background-color: #4E565F !important;
 }
 
+/* Custom alerts colors START */
+.alert-success {
+    color: #1e4620;
+    background-color: #edf7ed;
+    border-color: #edf7ed;
+}
+
+.alert-warning {
+    color: #663c00;
+    background-color: #fff4e5;
+    border-color: #fff4e5;
+}
+
+.alert-danger {
+    color: #5f2120;
+    background-color: #fdeded;
+    border-color: #fdeded;
+}
+/* Custom alerts colors END */
+
 
 /* GBIF gray colored outline button START */
 .btn-outline-secondary {
