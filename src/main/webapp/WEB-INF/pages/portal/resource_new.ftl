@@ -244,8 +244,10 @@
                         <#if (eml.description?size>0)>
                             <div property="dc:abstract" class="overflow-x-auto">
                                 <#list eml.description as para>
-                                    <#if (resourceDescriptionLength>maxDescriptionLength) || (eml.description?size>1)>
+                                    <#if (resourceDescriptionLength>maxDescriptionLength)>
                                         ${resourceDescription?substring(0, maxDescriptionLength)}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
+                                    <#elseif (eml.description?size>1)>
+                                        ${resourceDescription}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
                                     <#else>
                                         ${resourceDescription}
                                     </#if>
@@ -302,7 +304,7 @@
                             <div>
                                 <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
                                     <a href="#anchor-citation" class="doi" dir="ltr">
-                                        <span class="gb-icon-quote"></span>
+                                        <span class="gb-icon gb-icon-quote"></span>
                                         <span dir="auto"><@s.text name='portal.resource.cite.howTo'/></span>
                                     </a>
                                 </#if>
