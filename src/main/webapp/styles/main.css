@@ -882,3 +882,75 @@ dt, dd {
     display: inline;
 }
 /* Resource view page START */
+
+/* DOI link START */
+.doi {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.doi, .smaller {
+    font-size: 12px;
+}
+
+.doi span:first-of-type {
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+    background: #09c;
+    padding: 0 4px;
+    border-radius: 5px 0 0 5px;
+    color: #fff;
+    border-right-width: 0;
+    border-color: #09c;
+}
+
+.doi span {
+    border: 1px solid #dbe3e7;
+}
+
+.doi span:last-of-type {
+    background: #fff;
+    padding: 0 7px;
+    border-radius: 0 5px 5px 0;
+    border-left-width: 0;
+}
+.doi span:last-of-type, a.doi:hover {
+    color: #333;
+    text-decoration: none !important;
+}
+
+a.doi:hover span:first-of-type {
+    background: #004d66;
+    border-color: #004d66;
+}
+/* DOI link END */
+
+/* GBIF icons (see portal16) START */
+@font-face {
+    font-family: 'gbificons';
+    src:url('./fonts/gbificons.eot?v=1594215369');
+    src:url('./fonts/gbificons.eot?v=1594215369#iefix') format('embedded-opentype'),
+    url('./fonts/gbificons.ttf?v=1594215369') format('truetype'),
+    url('./fonts/gbificons.woff?v=1594215369') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.gb-icon:before {
+    font-family: 'gbificons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.gb-icon-quote:before {
+    content: "\EA41";
+}
+/* GBIF icons END */
