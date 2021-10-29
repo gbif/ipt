@@ -479,10 +479,11 @@ td.left_padding {
 
 #watermark {
     position: fixed;
-    opacity: 0.15;
+    opacity: 0.5;
     z-index: 1000;
-    color: #666;
-    font-size: 650%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: #61a861;
 }
 
 
