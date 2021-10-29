@@ -228,7 +228,7 @@
 </div>
 
 <#if (eml.description?size>0)>
-    <#assign resourceDescription = eml.description?get(0)>
+    <#assign resourceDescription = eml.description[0]>
 <#else>
     <#assign resourceDescription><@s.text name='portal.resource.no.description'/></#assign>
 </#if>
