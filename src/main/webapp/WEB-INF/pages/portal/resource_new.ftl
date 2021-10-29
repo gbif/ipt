@@ -243,15 +243,13 @@
                     <div class="col-lg-8 text-smaller">
                         <#if (eml.description?size>0)>
                             <div property="dc:abstract" class="overflow-x-auto">
-                                <#list eml.description as para>
-                                    <#if (resourceDescriptionLength>maxDescriptionLength)>
-                                        ${resourceDescription?substring(0, maxDescriptionLength)}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
-                                    <#elseif (eml.description?size>1)>
-                                        ${resourceDescription}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
-                                    <#else>
-                                        ${resourceDescription}
-                                    </#if>
-                                </#list>
+                                <#if (resourceDescriptionLength>maxDescriptionLength)>
+                                    ${resourceDescription?substring(0, maxDescriptionLength)}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
+                                <#elseif (eml.description?size>1)>
+                                    ${resourceDescription}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
+                                <#else>
+                                    ${resourceDescription}
+                                </#if>
                             </div>
                         <#else>
                             <div class="mt-3">
