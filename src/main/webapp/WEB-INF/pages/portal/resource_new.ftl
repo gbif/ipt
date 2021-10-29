@@ -301,9 +301,9 @@
 
                             <div>
                                 <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
-                                    <a href="#citation" class="doi" dir="ltr">
+                                    <a href="#anchor-citation" class="doi" dir="ltr">
                                         <span class="gb-icon-quote"></span>
-                                        <span dir="auto" >How to cite</span>
+                                        <span dir="auto"><@s.text name='portal.resource.cite.howTo'/></span>
                                     </a>
                                 </#if>
 
