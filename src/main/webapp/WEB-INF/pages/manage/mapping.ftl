@@ -543,7 +543,7 @@
                             </#if>
                         </#list>
                     <#else>
-                        <div class="my-3 p-3 bg-body rounded shadow-sm">
+                        <div class="mt-5">
                             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 <@s.text name="manage.mapping.fields"/>
                             </h4>
