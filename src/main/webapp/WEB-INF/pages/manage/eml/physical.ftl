@@ -15,7 +15,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
                 <@s.text name='manage.metadata.physical.title'/>:
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>

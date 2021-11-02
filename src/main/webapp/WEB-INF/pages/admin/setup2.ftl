@@ -9,7 +9,7 @@
 
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 mt-2 text-gbif-header text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 mt-2 text-gbif-header fw-400 text-center">
                 [@s.text name="admin.config.setup2.title"/]
             </h5>
 
@@ -18,7 +18,7 @@
             <input type="hidden" name="setup2" value="true" />
             <input type="hidden" name="ignoreUserValidation" value="${ignoreUserValidation}" />
 
-            <h5 class="text-gbif-header mx-md-4 mx-2">
+            <h5 class="text-gbif-header mx-md-4 mx-2 fw-400">
                 [@s.text name="admin.config.setup2.administrator"/]
             </h5>
             <p class="mx-md-4 mx-2">
@@ -48,7 +48,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="text-gbif-header pb-2 mt-2 border-bottom mx-md-4 mx-2">
+            <h5 class="text-gbif-header pb-2 mt-2 border-bottom mx-md-4 mx-2 fw-400">
                 [@s.text name="admin.config.setup2.mode.title"/]
             </h5>
 
@@ -70,7 +70,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom">
+            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom fw-400">
                 [@s.text name="admin.config.setup2.publicURL.title"/]
             </h5>
 
@@ -87,7 +87,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom">
+            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom fw-400">
                 [@s.text name="admin.config.setup2.forwardProxyURL.title"/]
             </h5>
 

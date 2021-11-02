@@ -1,6 +1,6 @@
 <#setting url_escaping_charset="UTF-8">
 
-<h5 class="text-gbif-header">
+<h5 class="text-gbif-header fw-400">
     <@s.text name='manage.report.title'/>
 </h5>
 
@@ -65,7 +65,7 @@
     </div>
 
 <#else>
-    <h5 class="text-gbif-header">
+    <h5 class="text-gbif-header fw-400">
         <@s.text name='manage.report.finished'/>
     </h5>
     <p>

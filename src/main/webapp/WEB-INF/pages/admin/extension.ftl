@@ -7,7 +7,7 @@
     <div class="my-3 p-3 bg-body rounded shadow-sm">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
             <@s.text name="admin.extension.title"/> ${extension.title}
         </h5>
 
@@ -93,7 +93,7 @@
     </div>
 
     <div class="my-3 p-3 bg-body rounded shadow-sm">
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
             <@s.text name="admin.extension.properties"/>
         </h5>
 
