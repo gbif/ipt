@@ -185,7 +185,7 @@
                     <span>
                         <#-- the existence of parameter version means the version is not equal to the latest published version -->
                         <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString()>
-                            <em class="text-gbif-danger"><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
+                            <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
                         <#else>
                             <@s.text name='portal.resource.latest.version'/>
                         </#if>
