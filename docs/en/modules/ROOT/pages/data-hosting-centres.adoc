@@ -17,6 +17,7 @@ A DHC must meet the following set of strict requirements in order to be recommen
 * Their IPT is online near 100% of the time
 * They can properly administer their IPT:
 ** Keeping it up-to-date with latest version
+** Keeping the operating system and servlet container (if used) up-to-date
 ** Ensuring the IPT data directory is regularly backed-up
 ** Managing user accounts
 ** Managing IPT cores and extensions
@@ -26,7 +27,7 @@ A DHC must meet the following set of strict requirements in order to be recommen
 ** They know about biodiversity data standards in general
 ** They know how to publish data papers
 
-If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org.
+If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org[helpdesk@gbif.org].
 
 == Data Hosting Centres by Theme
 

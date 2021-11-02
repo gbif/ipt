@@ -8,7 +8,7 @@ WARNING: Be sure to *backup the IPT data directory before performing an upgrade*
 
 CAUTION: Once an IPT has been upgraded to 2.3.x or later from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
-Check your system meets the xref:requirements.adoc[installation requirements] for this release.
+Check your system meets the xref:requirements.adoc[installation requirements] for this release.  Ensure your operating system and any other installed software (such as Java, Tomcat and Apache HTTPD) is up-to-date with any security patches.
 
 The upgrade method depends on the original xref:installation.adoc#installation-method[installation method].
 
