@@ -237,13 +237,13 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 
 /* GBIF green colored outline button START */
 .btn-outline-gbif-primary {
-    color: #61a861 !important;
-    border-color: #61a861 !important;
+    color: #61a861;
+    border-color: rgba(97, 168, 97, 0.5);
 }
 .btn-outline-gbif-primary:hover {
-    color: #fff !important;
-    background-color: #61a861 !important;
-    border-color: #61a861 !important;
+    color: #61a861;
+    background-color: rgba(97, 168, 97, 0.04);
+    border-color: #61a861;
 }
 .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
     box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25); !important;
@@ -266,11 +266,11 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 /* GBIF red colored outline button START */
 .btn-outline-gbif-danger {
     color: #e36370;
-    border-color: #e36370;
+    border-color: rgba(227, 99, 112, 0.5);
 }
 .btn-outline-gbif-danger:hover {
-    color: #fff;
-    background-color: #e36370;
+    color: #e36370;
+    background-color: rgba(227, 99, 112, 0.04);
     border-color: #e36370;
 }
 .btn-check:focus + .btn-outline-gbif-danger, .btn-outline-gbif-danger:focus {
@@ -296,17 +296,25 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: #212529;
 }
 
+.form-select:hover {
+    border-color: rgba(33, 37, 41, 0.5);
+}
+
+.form-control:hover {
+    border-color: rgba(33, 37, 41, 0.5);
+}
+
 .form-control:focus {
     background-color: #fff;
     border-color: #92c392;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
+    box-shadow: none;
 }
 
 .form-select:focus {
     border-color: #92c392;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
+    box-shadow: none;
 }
 
 .form-check-input:not(.is-invalid):focus {
