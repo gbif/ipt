@@ -820,6 +820,7 @@ button.close {
         grid-template-areas:
                     "toc content";
         grid-template-rows: auto auto 1fr;
+        grid-template-columns: 1fr auto;
     }
 
     .bd-main-right {

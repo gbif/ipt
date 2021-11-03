@@ -3,69 +3,91 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.keywords.title'/></title>
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-    <#assign auxTopNavbar=true />
-    <#assign auxTopNavbarPage = "metadata" />
+    <#assign currentMetadataPage = "keywords"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
-
-<main class="container">
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
-
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-            <@s.text name='manage.metadata.keywords.title'/>:
-            <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-        </h5>
-
-        <p class="mx-md-4 mx-2 mb-0">
-            <@s.text name='manage.metadata.keywords.intro'/>
-        </p>
-
-
-        <div id="items">
-            <#list eml.keywords as item>
-                <div id="item-${item_index}" class="item row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1">
-                    <div class="newline"></div>
-                    <div class="d-flex justify-content-end">
-                        <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
-                    </div>
-                    <@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
-                    <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
-                    <#-- TODO: remove check for "null" after fixing problem in gbif-metadata-profile -->
-                    <#assign keywordList = item.keywordsString />
-                    <#if keywordList?has_content && keywordList?lower_case == "null">
-                        <@text value="" name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
-                    <#else>
-                        <@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true minlength=2 />
-                    </#if>
-                </div>
-            </#list>
-        </div>
-
-        <div class="addNew col-12 mx-md-4 mx-2 mt-1">
-            <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.keywords.item'/></a>
-        </div>
-
-        <div class="buttons col-12 mx-md-4 mx-2 mt-3">
-            <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
-            <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
-        </div>
-
-        <!-- internal parameter -->
-        <input name="r" type="hidden" value="${resource.shortname}" />
-
-
-        <div id="baseItem" class="item row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1" style="display:none;">
-            <div class="d-flex justify-content-end mt-0">
-                <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
+    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+        <div class="container-fluid bg-body border-bottom">
+            <div class="container pt-2">
+                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
             </div>
-            <@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true/>
-            <@text name="keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
+
+            <div class="container p-3">
+
+                <div class="text-center">
+                    <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                        <@s.text name='manage.metadata.keywords.title'/>
+                    </h5>
+                </div>
+
+                <div class="text-center fs-smaller">
+                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                </div>
+            </div>
         </div>
-    </div>
-</main>
+
+        <div class="container-fluid bg-body">
+            <div class="container bd-layout">
+
+                <main class="bd-main bd-main-right">
+                    <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                        <#include "eml_sidebar.ftl"/>
+                    </div>
+
+                    <div class="bd-content ps-lg-4">
+                        <div class="my-3 p-3">
+
+                            <p class="mb-0">
+                                <@s.text name='manage.metadata.keywords.intro'/>
+                            </p>
+
+
+                            <div id="items">
+                                <#list eml.keywords as item>
+                                    <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
+                                        <div class="newline"></div>
+                                        <div class="d-flex justify-content-end">
+                                            <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
+                                        </div>
+                                        <@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
+                                        <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
+                                        <#-- TODO: remove check for "null" after fixing problem in gbif-metadata-profile -->
+                                        <#assign keywordList = item.keywordsString />
+                                        <#if keywordList?has_content && keywordList?lower_case == "null">
+                                            <@text value="" name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
+                                        <#else>
+                                            <@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true minlength=2 />
+                                        </#if>
+                                    </div>
+                                </#list>
+                            </div>
+
+                            <div class="addNew col-12 mt-1">
+                                <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.keywords.item'/></a>
+                            </div>
+
+                            <div class="buttons col-12 mt-3">
+                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
+                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
+                            </div>
+
+                            <!-- internal parameter -->
+                            <input name="r" type="hidden" value="${resource.shortname}" />
+
+
+                            <div id="baseItem" class="item row g-3 border-bottom pb-3 mt-1" style="display:none;">
+                                <div class="d-flex justify-content-end mt-0">
+                                    <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
+                                </div>
+                                <@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true/>
+                                <@text name="keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
