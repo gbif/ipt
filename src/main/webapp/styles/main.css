@@ -811,7 +811,7 @@ button.close {
     .bd-layout {
         display: grid;
         gap: 1.5rem;
-        grid-template-areas: "sidebar main";
+        grid-template-areas: "main";
     }
 
     .bd-main {
@@ -820,6 +820,11 @@ button.close {
         grid-template-areas:
                     "toc content";
         grid-template-rows: auto auto 1fr;
+    }
+
+    .bd-main-right {
+        grid-template-areas:
+                    "content toc";
     }
 }
 
