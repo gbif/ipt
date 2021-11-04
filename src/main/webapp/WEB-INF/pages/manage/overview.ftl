@@ -171,6 +171,7 @@
 
             if (sourceType === 'source-file') {
                 $("#url").hide();
+                $("#sourceName").hide();
                 $("#url").prop("value", "");
                 $("#file").show();
                 $("#clear").show();
@@ -178,6 +179,7 @@
                 $("#add").hide();
             } else if (sourceType === 'source-url') {
                 $("#url").show();
+                $("#sourceName").show();
                 $("#file").hide();
                 $("#file").prop("value", "");
                 $("#clear").show();
@@ -185,6 +187,7 @@
                 $("#add").show();
             } else {
                 $("#file").hide();
+                $("#sourceName").hide();
                 $("#file").prop("value", "");
                 $("#url").hide();
                 $("#url").prop("value", "");

@@ -96,7 +96,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <@s.file name="file" cssClass="form-control form-control-sm my-1" cssStyle="display: none;" key="manage.resource.create.file"/>
-                                <input type="url" id="url" name="url" class="form-control form-control-sm my-1" style="display: none">
+                                <input type="text" id="sourceName" name="sourceName" class="form-control form-control-sm my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
+                                <input type="url" id="url" name="url" class="form-control form-control-sm my-1" placeholder="URL" style="display: none">
                             </div>
                             <div class="col-12">
                                 <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.connect"/>

@@ -66,6 +66,7 @@ public class SourceAction extends ManagerBaseAction {
   private String problem;
   // URL
   private String url;
+  private String sourceName;
   // file upload
   private File file;
   private String fileContentType;
@@ -90,8 +91,14 @@ public class SourceAction extends ManagerBaseAction {
 
   public String add() throws IOException {
     String sessionUrl = (String) session.get(Constants.SESSION_URL);
+    String sessionSourceName = (String) session.get(Constants.SESSION_SOURCE_NAME);
 
     if (SOURCE_URL.equals(sourceType) || sessionUrl != null) {
+      if (SOURCE_URL.equals(sourceType) && StringUtils.isEmpty(url)) {
+        addActionError(getText("manage.source.url.empty"));
+        return ERROR;
+      }
+
       // prepare a new, empty url source
       source = new UrlSource();
       source.setResource(resource);
@@ -104,16 +111,15 @@ public class SourceAction extends ManagerBaseAction {
       // if present do not check sources with the same name, already overwriting
       if (sessionUrl != null) {
         url = sessionUrl;
+        sourceName = sessionSourceName;
         urlWrapped = URI.create(url);
         replaceUrl = true;
       }
 
       // check if source with the same name already exists
-      // if so store url in the session, and return to ask about overwriting
+      // if so store url and name in the session, and return to ask about overwriting
       if (!replaceUrl) {
-        String urlSourceName = FilenameUtils.getBaseName(url);
-
-        if (resource.getSource(urlSourceName) != null) {
+        if (resource.getSource(sourceName) != null) {
           urlToOverwrite();
           return INPUT;
         }
@@ -223,12 +229,11 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   private void addUrl(URI url) {
-    String sourceName = FilenameUtils.getBaseName(url.toString());
     Source existingSource = resource.getSource(sourceName);
     boolean replaced = existingSource != null;
 
     try {
-      source = sourceManager.add(resource, url);
+      source = sourceManager.add(resource, url, sourceName);
       resource.setSourcesModified(new Date());
       saveResource();
       id = source.getName();
@@ -322,10 +327,11 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   /**
-   * Insert temporal session variable SESSION_URL.
+   * Insert temporal session variables SESSION_URL and SESSION_SOURCE_NAME.
    */
   private void urlToOverwrite() {
     session.put(Constants.SESSION_URL, url);
+    session.put(Constants.SESSION_SOURCE_NAME, sourceName);
   }
 
   @Override
@@ -434,6 +440,7 @@ public class SourceAction extends ManagerBaseAction {
     session.remove(Constants.SESSION_FILE_NAME);
     session.remove(Constants.SESSION_FILE_CONTENT_TYPE);
     session.remove(Constants.SESSION_URL);
+    session.remove(Constants.SESSION_SOURCE_NAME);
   }
 
   @Override
@@ -498,6 +505,10 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  public void setSourceName(String sourceName) {
+    this.sourceName = sourceName;
   }
 
   public void setSourceType(String sourceType) {

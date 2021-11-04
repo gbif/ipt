@@ -60,14 +60,15 @@ public interface SourceManager {
    * Adds one text file as a URL source to a resource configuration.
    * The file will be analyzed to detect the character encoding and delimiters.
    *
-   * @param resource   resource
-   * @param url        the text source file (URL) to be added to this resource
+   * @param resource    resource
+   * @param url         the text source file (URL) to be added to this resource
+   * @param sourceName  name of the source
    *
    * @return URL source that has been added
    *
    * @throws ImportException if the file can't be copied or read
    */
-  UrlSource add(Resource resource, URI url) throws ImportException;
+  UrlSource add(Resource resource, URI url, @Nullable String sourceName) throws ImportException;
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will

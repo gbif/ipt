@@ -412,50 +412,53 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   @Override
-  public UrlSource add(Resource resource, URI url) throws ImportException {
+  public UrlSource add(Resource resource, URI url, String sourceName) throws ImportException {
     LOG.debug("ADDING URL SOURCE " + url);
 
     UrlSource src;
     String filename = FilenameUtils.getName(url.toString());
-    String name = FilenameUtils.getBaseName(url.toString());
     LOG.debug("File name: {}", filename);
 
-    if (name != null) {
-      src = new UrlSource();
-      File file = new File(dataDir.tmpDir(), filename);
-
-      try (InputStream in = url.toURL().openStream()) {
-        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        src.setFile(file);
-        // analyze individual files using the dwca reader
-        Archive arch = DwcFiles.fromLocation(file.toPath());
-        copyArchiveFileProperties(arch.getCore(), src);
-      } catch (IOException e) {
-        // this file is invalid
-        LOG.warn(e.getMessage());
-        throw new ImportException(e);
-      } catch (UnsupportedArchiveException e) {
-        // fine, can't read it with dwca library, but might still be a valid file for manual setup
-        LOG.warn(e.getMessage());
-      }
-
-      src.setName(name);
-      src.setUrl(url);
-      src.setResource(resource);
-
-      try {
-        src.setLastModified(new Date());
-
-        resource.addSource(src, true);
-      } catch (AlreadyExistingException e) {
-        throw new ImportException(e);
-      }
-
-      analyze(src);
-      return src;
+    String finalSourceName;
+    if (StringUtils.isEmpty(sourceName)) {
+      finalSourceName = FilenameUtils.getBaseName(url.toString());
+      LOG.debug("No source name provided, extract from URL: {}", finalSourceName);
     } else {
-      throw new ImportException("Failed to get URL source's name");
+      finalSourceName = sourceName;
     }
+
+    src = new UrlSource();
+    File file = new File(dataDir.tmpDir(), filename);
+
+    try (InputStream in = url.toURL().openStream()) {
+      Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      src.setFile(file);
+      // analyze individual files using the dwca reader
+      Archive arch = DwcFiles.fromLocation(file.toPath());
+      copyArchiveFileProperties(arch.getCore(), src);
+    } catch (IOException e) {
+      // this file is invalid
+      LOG.warn(e.getMessage());
+      throw new ImportException(e);
+    } catch (UnsupportedArchiveException e) {
+      // fine, can't read it with dwca library, but might still be a valid file for manual setup
+      LOG.warn(e.getMessage());
+    }
+
+    src.setName(finalSourceName);
+    src.setUrl(url);
+    src.setResource(resource);
+
+    try {
+      src.setLastModified(new Date());
+
+      resource.addSource(src, true);
+    } catch (AlreadyExistingException e) {
+      throw new ImportException(e);
+    }
+
+    analyze(src);
+    return src;
   }
 
   @Override
