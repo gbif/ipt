@@ -528,12 +528,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   * Validate whether or not to show a confirmation message to overwrite the file(s) recently uploaded.
+   * Validate whether to show a confirmation message to overwrite the file(s) recently uploaded.
    *
    * @return true if a file or a URL exist in the user session. False otherwise.
    */
   public boolean getConfirmOverwrite() {
     return session.get(Constants.SESSION_FILE) != null || session.get(Constants.SESSION_URL) != null;
+  }
+
+  /**
+   * Get a message to display in a modal window.
+   */
+  public String getOverwriteMessage() {
+    return (String) session.get(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE);
   }
 
   /**

@@ -116,11 +116,24 @@ public class SourceAction extends ManagerBaseAction {
         replaceUrl = true;
       }
 
+      // check if source with the same URL exists
       // check if source with the same name already exists
       // if so store url and name in the session, and return to ask about overwriting
       if (!replaceUrl) {
-        if (resource.getSource(sourceName) != null) {
-          urlToOverwrite();
+        for (Source resourceSource : resource.getSources()) {
+          if (resourceSource instanceof UrlSource) {
+            UrlSource resourceUrlSource = (UrlSource) resourceSource;
+            if (resourceUrlSource.getUrl().toString().equals(url)) {
+              urlToOverwrite(getText("manage.resource.addSource.sameUrl.confirm"));
+              return INPUT;
+            }
+          }
+        }
+
+        // source name is optional and may be empty
+        if ((StringUtils.isEmpty(sourceName) && resource.getSource(FilenameUtils.getBaseName(url)) != null) ||
+                resource.getSource(sourceName) != null) {
+          urlToOverwrite(getText("manage.resource.addSource.sameName.confirm"));
           return INPUT;
         }
       }
@@ -327,11 +340,12 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   /**
-   * Insert temporal session variables SESSION_URL and SESSION_SOURCE_NAME.
+   * Insert temporal session variables related to URL sources.
    */
-  private void urlToOverwrite() {
+  private void urlToOverwrite(String message) {
     session.put(Constants.SESSION_URL, url);
     session.put(Constants.SESSION_SOURCE_NAME, sourceName);
+    session.put(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE, message);
   }
 
   @Override
@@ -441,6 +455,7 @@ public class SourceAction extends ManagerBaseAction {
     session.remove(Constants.SESSION_FILE_CONTENT_TYPE);
     session.remove(Constants.SESSION_URL);
     session.remove(Constants.SESSION_SOURCE_NAME);
+    session.remove(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE);
   }
 
   @Override
