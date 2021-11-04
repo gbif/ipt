@@ -83,7 +83,7 @@ public class LoginAction extends POSTAction {
   }
 
   private void setRedirectUrl() {
-    redirectUrl = "/";
+    redirectUrl = getBase() + "/";
     // if we have a request refer back to the originally requested page
     if (req != null) {
       String referer = req.getHeader("Referer");
