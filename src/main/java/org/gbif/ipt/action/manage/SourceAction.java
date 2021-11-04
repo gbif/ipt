@@ -127,17 +127,20 @@ public class SourceAction extends ManagerBaseAction {
         // check not found
         if (responseCode == 404) {
           addActionError(getText("manage.source.url.notFound", new String[] {url}));
+          removeSessionData();
           return ERROR;
         }
 
         // check text file (or no extension)
         String extension = FilenameUtils.getExtension(url);
         if (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension)) {
-          addActionError(getText("manage.source.url.invalid", new String[] {url}));
+          addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension}));
+          removeSessionData();
           return ERROR;
         }
       } catch (IOException e) {
         addActionError(getText("manage.source.url.invalid", new String[] {url}));
+        removeSessionData();
         return ERROR;
       }
 
