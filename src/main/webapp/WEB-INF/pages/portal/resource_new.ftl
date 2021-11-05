@@ -266,36 +266,46 @@
                         <dl class="inline">
                             <#if eml.distributionUrl?has_content>
                                 <div>
-                                    <dt><@s.text name='eml.distributionUrl.short'/></dt>
+                                    <dt><@s.text name='eml.distributionUrl.short'/>:</dt>
                                     <dd><a href="${eml.distributionUrl}"><@s.text name='basic.link'/></a></dd>
                                 </div>
                             </#if>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div>
-                                    <dt><@s.text name='portal.resource.gbif.page.short'/></dt>
+                                    <dt>GBIF UUID:</dt>
                                     <dd><a href="${cfg.portalUrl}/dataset/${resource.key}">${resource.key}</a></dd>
                                 </div>
                             </#if>
 
                             <#if eml.pubDate??>
                                 <div>
-                                    <dt><@s.text name='portal.resource.publicationDate'/></dt>
+                                    <dt><@s.text name='portal.resource.publicationDate'/>:</dt>
                                     <dd>${eml.pubDate?date?string.long}</dd>
-                                </div>
-                            </#if>
-
-                            <#if eml.dateStamp??>
-                                <div>
-                                    <dt><@s.text name='portal.resource.metadataLastModified'/></dt>
-                                    <dd>${eml.dateStamp?date?string.long}</dd>
                                 </div>
                             </#if>
 
                             <#if resource.organisation??>
                                 <div>
-                                    <dt><@s.text name='portal.resource.hostedBy'/></dt>
-                                    <dd>${resource.organisation.name}</dd>
+                                    <dt><@s.text name='portal.resource.hostedBy'/>:</dt>
+                                    <dd>
+                                        <a href="${cfg.portalUrl}/publisher/${resource.organisation.key}" target="_blank">${resource.organisation.name!"Organisation"}</a>
+                                    </dd>
+                                </div>
+                            </#if>
+
+                            <#if eml.intellectualRights?has_content>
+                                <div>
+                                    <dt><@s.text name='portal.resource.license'/>:</dt>
+                                    <dd>
+                                        <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                            <a href="http://creativecommons.org/licenses/by-nc/4.0/legalcode" target="_blank">CC-BY-NC 4.0</a>
+                                        <#elseif eml.intellectualRights.contains("CC-BY")>
+                                            <a href="http://creativecommons.org/licenses/by/4.0/legalcode" target="_blank">CC-BY 4.0</a>
+                                        <#elseif eml.intellectualRights.contains("CC0")>
+                                            <a href="http://creativecommons.org/publicdomain/zero/1.0/legalcode" target="_blank">CC0 1.0</a>
+                                        </#if>
+                                    </dd>
                                 </div>
                             </#if>
 
@@ -305,6 +315,11 @@
                                         <span class="gb-icon gb-icon-quote"></span>
                                         <span dir="auto"><@s.text name='portal.resource.cite.howTo'/></span>
                                     </a>
+                                </#if>
+
+                                <#assign doi>${action.findDoiAssignedToPublishedVersion()!}</#assign>
+                                <#if doi?has_content>
+                                    <#assign doiUrl>${action.findDoiAssignedToPublishedVersion().getUrl()!}</#assign>
                                 </#if>
 
                                 <#if doi?has_content && doiUrl?has_content>
