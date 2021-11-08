@@ -635,6 +635,12 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 }
 
 
+/* Alerts close buttons */
+.btn-close:focus {
+    box-shadow: none;
+}
+
+
 /* Utilities */
 .overflow-x-auto {
     overflow-x: auto !important;
