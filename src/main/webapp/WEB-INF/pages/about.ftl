@@ -6,6 +6,7 @@
 <style>
     h1 {
         font-size: 20px !important;
+        font-weight: 400 !important;
         text-align: center !important;
         padding-top: .5rem !important;
         padding-bottom: .5rem !important;
