@@ -165,7 +165,6 @@
             });
 
             $("#filterName").change(function() {
-                console.log("filter name changed!")
                 showHideFilterName();
             });
 
@@ -192,8 +191,6 @@
 
                     var sectionsContainer = $("#sections");
 
-                    console.log("section top position", sectionId, section.position().top)
-                    console.log("scroll position", scrollPosition)
                     if (sectionsContainer.position().top - 100 > scrollPosition) {
                         var removeActiveFromThisLink = $('.bd-toc nav a.active');
                         removeActiveFromThisLink.removeClass('active');
@@ -356,11 +353,14 @@
     <div class="container p-3">
 
         <div class="text-center">
-            <h1 property="dc:title" class="rtitle pb-2 mb-2 pt-2 text-gbif-header fs-4 fw-normal">
+            <h5 property="dc:title" class="rtitle pt-2 text-gbif-header fs-4 fw-400 text-center">
                 <@popoverPropertyInfo "manage.mapping.intro"/>
-                <@s.text name='manage.mapping.title'/>:
+                <@s.text name='manage.mapping.title'/>
+            </h5>
+
+            <div class="text-center fs-smaller">
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-            </h1>
+            </div>
 
             <#if action.isCoreMapping()>
                 <#assign extensionType><@s.text name='extension.core'/></#assign>
@@ -368,7 +368,7 @@
                 <#assign extensionType><@s.text name='extension'/></#assign>
             </#if>
 
-            <p>
+            <p class="mt-3">
                 <@s.text name='manage.mapping.intro1'><@s.param><a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></@s.param><@s.param>${extensionType?lower_case}:</@s.param><@linkOrNameParam mapping.extension/></@s.text>
             </p>
         </div>

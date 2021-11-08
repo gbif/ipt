@@ -803,7 +803,7 @@ button.close {
     }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
     .bd-toc {
         position: -webkit-sticky;
         position: sticky;
@@ -815,7 +815,7 @@ button.close {
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
     .bd-toc {
         display: none;
     }
