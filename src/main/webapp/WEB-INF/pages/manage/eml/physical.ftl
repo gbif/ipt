@@ -2,6 +2,14 @@
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.physical.title'/></title>
+    <script>
+        $(document).ready(function () {
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
+        });
+    </script>
 
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#assign currentMetadataPage = "physical"/>
@@ -29,6 +37,8 @@
             </div>
         </div>
 
+        <#include "metadata_section_select.ftl"/>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
@@ -38,7 +48,7 @@
                     </div>
 
                     <div class="bd-content ps-lg-4">
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.physical.intro'/>
                             </p>
@@ -48,7 +58,7 @@
                             </div>
                         </div>
 
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
 
                             <div class="listBlock">
                                 <@textinline name="eml.physicalData.other" help="i18n"/>
@@ -57,7 +67,7 @@
                                     <#list eml.physicalData as item>
                                         <div id="item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-1 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
+                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
                                             </div>
                                             <div class="col-lg-6">
                                                 <@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" requiredField=true />
@@ -93,7 +103,7 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="mt-1 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
+                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
                                 </div>
                                 <div class="col-lg-6">
                                     <@input name="name" i18nkey="eml.physicalData.name" requiredField=true />

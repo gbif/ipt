@@ -171,6 +171,11 @@
                 }
                 locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLongitudeAdjust(maxLngVal, minLngVal))))
             });
+
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
         });
     </script>
 
@@ -197,6 +202,8 @@
         </div>
     </div>
 
+    <#include "metadata_section_select.ftl"/>
+
     <div class="container-fluid bg-body">
         <div class="container bd-layout">
 
@@ -206,44 +213,46 @@
                 </div>
 
                 <div class="bd-content ps-lg-4">
-                    <p><@s.text name='manage.metadata.geocoverage.intro'/></p>
+                    <div class="my-md-3 p-3">
+                        <p><@s.text name='manage.metadata.geocoverage.intro'/></p>
 
-                    <div id="map"></div>
+                        <div id="map"></div>
 
-                    <div id="bbox" class="row g-3">
-                        <div class="col-12">
-                            <@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
+                        <div id="bbox" class="row g-3">
+                            <div class="col-12">
+                                <@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
+                            </div>
+                            <div id="coordinates" class="row g-3 mt-0">
+                                <div class="col-md-6">
+                                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
+                                </div>
+                                <div class="col-md-6">
+                                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude" requiredField=true />
+                                </div>
+                                <div class="col-md-6">
+                                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude" requiredField=true />
+                                </div>
+                                <div class="col-md-6">
+                                    <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
+                                </div>
+                            </div>
                         </div>
-                        <div id="coordinates" class="row g-3 mt-0">
-                            <div class="col-md-6">
-                                <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-12">
+                                <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true minlength=2 />
                             </div>
-                            <div class="col-md-6">
-                                <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.longitude" requiredField=true />
-                            </div>
-                            <div class="col-md-6">
-                                <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.latitude" requiredField=true />
-                            </div>
-                            <div class="col-md-6">
-                                <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
+
+                            <div class="col-12">
+                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
+                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
                             </div>
                         </div>
+
+
+                        <!-- internal parameter -->
+                        <input name="r" type="hidden" value="${resource.shortname}" />
                     </div>
-
-                    <div class="row g-3 mt-2">
-                        <div class="col-12">
-                            <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true minlength=2 />
-                        </div>
-
-                        <div class="col-12">
-                            <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
-                            <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
-                        </div>
-                    </div>
-
-
-                    <!-- internal parameter -->
-                    <input name="r" type="hidden" value="${resource.shortname}" />
                 </div>
             </main>
         </div>

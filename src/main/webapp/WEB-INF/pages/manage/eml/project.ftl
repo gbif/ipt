@@ -1,6 +1,14 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.project.title'/></title>
+    <script>
+        $(document).ready(function () {
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
+        });
+    </script>
     <#assign currentMetadataPage = "project"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -27,6 +35,8 @@
             </div>
         </div>
 
+        <#include "metadata_section_select.ftl"/>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
@@ -36,7 +46,7 @@
                     </div>
 
                     <div class="bd-content ps-lg-4">
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.project.intro'/>
                             </p>
@@ -57,7 +67,7 @@
 
                         </div>
 
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
                             <!-- List of personnel -->
                             <div class="listBlock">
                                 <@textinline name="eml.project.personnel" help="i18n" requiredField=true/>
@@ -67,10 +77,10 @@
                                         <div id="personnel-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-3 d-flex justify-content-between">
                                                 <div>
-                                                    <a id="personnel-copyDetails-${item_index}" href="">[ ${copyLink?lower_case?cap_first} ]</a>
+                                                    <a id="personnel-copyDetails-${item_index}" href="">${copyLink?lower_case?cap_first}</a>
                                                 </div>
                                                 <div>
-                                                    <a id="personnel-removeLink-${item_index}" class="removePersonnelLink" href="">[ ${removeLink?lower_case?cap_first} ]</a>
+                                                    <a id="personnel-removeLink-${item_index}" class="removePersonnelLink" href="">${removeLink?lower_case?cap_first}</a>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
@@ -113,10 +123,10 @@
                             <div id="baseItem-personnel" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="columnLinks mt-3 d-flex justify-content-between">
                                     <div>
-                                        <a id="personnel-copyDetails" href="">[ ${copyLink}  ]</a>
+                                        <a id="personnel-copyDetails" href="">${copyLink}</a>
                                     </div>
                                     <div>
-                                        <a id="personnel-removeLink" class="removePersonnelLink" href="">[ ${removeLink?lower_case?cap_first} ]</a>
+                                        <a id="personnel-removeLink" class="removePersonnelLink" href="">${removeLink?lower_case?cap_first}</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

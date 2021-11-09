@@ -13,6 +13,11 @@
                     trigger: 'focus'
                 })
             });
+
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
         });
     </script>
     <title><@s.text name='manage.metadata.taxcoverage.title'/></title>
@@ -42,6 +47,8 @@
             </div>
         </div>
 
+        <#include "metadata_section_select.ftl"/>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
@@ -52,7 +59,7 @@
 
                     <div class="bd-content ps-lg-4">
 
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
 
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.taxcoverage.intro'/>
@@ -145,7 +152,7 @@
                             <div id="baseItem" class="item clearfix" style="display:none">
                                 <div class="d-flex justify-content-end mt-2">
                                     <a id="removeLink" class="removeLink" href="">
-                                        [ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]
+                                        <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/>
                                     </a>
                                 </div>
 

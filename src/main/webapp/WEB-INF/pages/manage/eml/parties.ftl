@@ -2,6 +2,14 @@
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.parties.title'/></title>
+    <script>
+        $(document).ready(function () {
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
+        });
+    </script>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 
     <#assign currentMetadataPage = "parties"/>
@@ -29,6 +37,8 @@
             </div>
         </div>
 
+        <#include "metadata_section_select.ftl"/>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
@@ -38,7 +48,7 @@
                     </div>
 
                     <div class="bd-content ps-lg-4">
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.parties.intro'/>
                             </p>
@@ -53,10 +63,10 @@
                                     <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                         <div class="columnLinks mt-3 d-flex justify-content-between">
                                             <div>
-                                                <a id="associatedParty-copyDetails-${item_index}" href="">[ ${copyLink?lower_case?cap_first} ]</a>
+                                                <a id="associatedParty-copyDetails-${item_index}" href="">${copyLink?lower_case?cap_first}</a>
                                             </div>
                                             <div>
-                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink" href="">[ ${removeLink?lower_case?cap_first} ]</a>
+                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink" href="">${removeLink?lower_case?cap_first}</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -132,10 +142,10 @@
                             <div id="baseItem-associatedParty" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="columnLinks mt-3 d-flex justify-content-between">
                                     <div>
-                                        <a id="associatedParty-copyDetails" href="">[ ${copyLink}  ]</a>
+                                        <a id="associatedParty-copyDetails" href="">${copyLink}</a>
                                     </div>
                                     <div>
-                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink" href="">[ ${removeLink?lower_case?cap_first} ]</a>
+                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink" href="">${removeLink?lower_case?cap_first}</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

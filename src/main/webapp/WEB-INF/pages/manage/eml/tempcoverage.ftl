@@ -196,6 +196,11 @@
 
                 $('#' + inputName).val(inputValue)
             });
+
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
         });
     </script>
 
@@ -226,6 +231,8 @@
             </div>
         </div>
 
+        <#include "metadata_section_select.ftl"/>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
@@ -235,7 +242,7 @@
                     </div>
 
                     <div class="bd-content ps-lg-4">
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
 
                             <p class="mb-0 mb-1">
                                 <@s.text name='manage.metadata.tempcoverage.intro'/>
@@ -247,7 +254,7 @@
                                 <#list eml.temporalCoverages as temporalCoverage>
                                     <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
+                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
                                         </div>
 
                                         <div class="col-lg-6">
@@ -309,7 +316,7 @@
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
                             <div id="temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
                                 <div class="d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/> ]</a>
+                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
                                 </div>
                                 <div class="col-lg-6">
                                     <@select i18nkey="eml.temporalCoverages.type"  name="tempTypes" options=tempTypes />

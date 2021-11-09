@@ -9,6 +9,11 @@
             if("${eml.methodSteps?size}" == 0){
                 $("#plus").click();
             }
+
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
         });
     </script>
     <#assign currentMetadataPage = "methods"/>
@@ -36,6 +41,8 @@
             </div>
         </div>
 
+        <#include "metadata_section_select.ftl"/>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
@@ -45,7 +52,7 @@
                     </div>
 
                     <div class="bd-content ps-lg-4">
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.methods.intro'/>
                             </p>
@@ -71,7 +78,7 @@
                                     <#list eml.methodSteps as item>
                                         <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-3 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
+                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/></a>
                                             </div>
                                             <div class="col-lg-12">
                                                 <@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n" requiredField=true/>
@@ -95,7 +102,7 @@
 
                             <div id="baseItem" class="item row g-3 border-bottom pb-3 mt-1" style="display:none">
                                 <div class="d-flex justify-content-end mt-1">
-                                    <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/> ]</a>
+                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/></a>
                                 </div>
                                 <div class="col-lg-12">
                                     <@text name="" i18nkey="eml.methodSteps" help="i18n" requiredField=true />

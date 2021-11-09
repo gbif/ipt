@@ -54,6 +54,11 @@
                 return false;
             }
 
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
+
         });
     </script>
     <#assign currentMetadataPage = "additional"/>
@@ -81,6 +86,8 @@
             </div>
         </div>
 
+        <#include "metadata_section_select.ftl"/>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
@@ -90,7 +97,7 @@
                     </div>
 
                     <div class="bd-content ps-lg-4">
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.additional.intro'/>
                             </p>
@@ -130,7 +137,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-3 pb-3 mt-1">
+                            <div class="row g-3 mt-1">
                                 <!-- Purpose -->
                                 <div>
                                     <@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
@@ -149,7 +156,7 @@
 
                         </div>
 
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
                             <!-- Alternative identifiers -->
                             <div class="listBlock">
                                 <@textinline name="manage.metadata.alternateIdentifiers.title" help="i18n"/>
@@ -157,7 +164,7 @@
                                     <#list eml.alternateIdentifiers as item>
                                         <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-1 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
+                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                             </div>
                                             <@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
                                         </div>
@@ -165,7 +172,7 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-1">
-                                    <a id="plus" href="">[ <@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
+                                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                 </div>
 
                                 <div id='buttons' class="buttons col-12 mt-3">
@@ -181,7 +188,7 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="mt-1 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
+                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                 </div>
                                 <@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
                             </div>

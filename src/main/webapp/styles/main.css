@@ -793,7 +793,7 @@ button.close {
 /* Anchors END */
 
 
-/* Resource view page START */
+/* Sidebars and related (resource view, mapping, metadata) START */
 @media (max-width: 768px) {
     .bd-main {
         grid-template-areas:
@@ -840,6 +840,11 @@ button.close {
         grid-template-areas:
                     "content toc";
         grid-template-columns: 1fr auto;
+    }
+
+
+    #metadata-selector-container {
+        display: none;
     }
 }
 
@@ -902,7 +907,8 @@ button.close {
 dt, dd {
     display: inline;
 }
-/* Resource view page START */
+/* Sidebars and related (resource view, mapping, metadata) END */
+
 
 /* DOI link START */
 .doi {

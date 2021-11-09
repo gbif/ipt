@@ -2,6 +2,14 @@
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.keywords.title'/></title>
+    <script>
+        $(document).ready(function () {
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
+        });
+    </script>
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#assign currentMetadataPage = "keywords"/>
     <#assign currentMenu="manage"/>
@@ -27,6 +35,8 @@
             </div>
         </div>
 
+        <#include "metadata_section_select.ftl"/>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout">
 
@@ -36,7 +46,7 @@
                     </div>
 
                     <div class="bd-content ps-lg-4">
-                        <div class="my-3 p-3">
+                        <div class="my-md-3 p-3">
 
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.keywords.intro'/>
@@ -48,7 +58,7 @@
                                     <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                         <div class="newline"></div>
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
+                                            <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></a>
                                         </div>
                                         <@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
                                         <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
@@ -78,7 +88,7 @@
 
                             <div id="baseItem" class="item row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="d-flex justify-content-end mt-0">
-                                    <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/> ]</a>
+                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></a>
                                 </div>
                                 <@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true/>
                                 <@text name="keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
