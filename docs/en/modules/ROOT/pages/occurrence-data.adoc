@@ -26,18 +26,18 @@ Populate it and upload it to the IPT. Try to augment it with as many http://rs.t
 
 === Required DwC fields
 
-* http://rs.tdwg.org/dwc/terms/#occurrenceID[occurrenceID]
-* http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]
-* http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]
-* http://rs.tdwg.org/dwc/terms/#eventDate[eventDate]
+* https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]
+* https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]
+* https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]
+* https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]
 
 === Recommended DwC fields
 
-* http://rs.tdwg.org/dwc/terms/#taxonRank[taxonRank] - to substantiate scientificName
-* http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] - and other higher taxonomy if possible
-* http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs.tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/dwc/terms/#geodeticDatum[geodeticDatum] - to provide a specific point location
-* http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]
-* http://rs.tdwg.org/dwc/terms/#individualCount[individualCount] / http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] & http://rs.tdwg.org/dwc/terms/#organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence
+* https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - to substantiate scientificName
+* https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible
+* https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location
+* https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]
+* https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence
 
 === Exemplar datasets
 
@@ -47,13 +47,13 @@ Populate it and upload it to the IPT. Try to augment it with as many http://rs.t
 
 ==== Q. How do I indicate a species was absent?
 
-*A.* Set http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml["absent"]. In addition, http://rs.tdwg.org/dwc/terms/#individualCount[individualCount] and http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] should be equal to 0.
+*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml["absent"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.
 
 ==== Q. How can I generalize sensitive species occurrence data?
 
 *A.* How you generalize sensitive species data (e.g. restrict the resolution of the data) depends on the species' category of sensitivity. Where there is low risk of perverse outcomes, unrestricted publication of sensitive species data remains appropriate. Note it is the responsibility of the publisher to protect sensitive species occurrence data. For guidance, please refer to this https://www.gbif.org/resource/80512[best-practice guide]. You could refer to this http://science.sciencemag.org/content/356/6340/800[recent essay in Science], which presents a simplified assessment scheme that can be used to help assess the risks from publishing sensitive species data.
 
-When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term http://rs.tdwg.org/dwc/terms/#informationWithheld[informationWithheld].
+When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld].
 
 As indicated in the http://www.gbif.org/resource/80512[best-practice guide], you should also publish a checklist of the sensitive species being generalized. For each species you should explain:
 
