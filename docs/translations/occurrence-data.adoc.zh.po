@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-10 10:32+0000\n"
-"PO-Revision-Date: 2021-11-10 10:33\n"
+"POT-Creation-Date: 2021-11-10 10:42+0000\n"
+"PO-Revision-Date: 2021-11-10 11:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -65,6 +65,12 @@ msgstr ""
 msgid "Required DwC fields"
 msgstr "必填的達爾文核心集欄位"
 
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:28
+#: en/modules/ROOT/pages/occurrence-data.adoc:32
+msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
+msgstr ""
+
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:30
 #: en/modules/ROOT/pages/occurrence-data.adoc:34
@@ -72,6 +78,12 @@ msgstr "必填的達爾文核心集欄位"
 #, no-wrap
 msgid "Recommended DwC fields"
 msgstr "建議填寫的達爾文核心集欄位"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:33
+#: en/modules/ROOT/pages/occurrence-data.adoc:38
+msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
+msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:36
@@ -145,12 +157,8 @@ msgid "https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/occurrence-data.adoc:32
-msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:33
+#: en/modules/ROOT/pages/sampling-event-data.adoc:34
 msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 msgstr ""
 
@@ -160,17 +168,14 @@ msgid "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - to substantiate sc
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/occurrence-data.adoc:38
-msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
+#: en/modules/ROOT/pages/sampling-event-data.adoc:43
 msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
+#: en/modules/ROOT/pages/sampling-event-data.adoc:45
 msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
 msgstr ""
 
