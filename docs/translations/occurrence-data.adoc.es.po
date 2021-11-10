@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-11-10 14:18\n"
+"PO-Revision-Date: 2021-11-10 15:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -199,7 +199,7 @@ msgstr ""
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
 #, no-wrap
 msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
-msgstr ""
+msgstr "*A.* Colocar https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. Además, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] y https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] deben ser iguales a 0.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:52
@@ -216,7 +216,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:57
 msgid "When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
-msgstr ""
+msgstr "Al generalizar datos, debe intentar no reducir el valor de los datos para el análisis y hacer que los usuarios sepan cómo y por qué se modificó el registro original utilizando el término Darwin Core https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:59
