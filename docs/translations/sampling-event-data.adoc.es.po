@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-11-10 14:18\n"
+"PO-Revision-Date: 2021-11-10 15:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -157,42 +157,42 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:33
 msgid "https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - also required for associated occurrence data (to link them together)"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - también es necesario para los datos de sucesos asociados (para vincularlos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:35
 msgid "https://dwc.tdwg.org/terms/#dwc:samplingProtocol[samplingProtocol]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:samplingProtocol[samplingProtocol]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:39
 msgid "hhttps://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]"
-msgstr ""
+msgstr "hhttps://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:40
 msgid "https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - in situations where the event is part of an event series"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - en situaciones en las que el evento es parte de una serie de eventos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:41
 msgid "https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - para proporcionar evidencia del rigor del evento de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:42
 msgid "https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - en situaciones en las que la parcela / transecta muestreada tiene un identificador único"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:44
 msgid "https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - to provide a specific shape location"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - para proporcionar una ubicación de forma específica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:46
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - only for associated occurrence data to record presence/absence data."
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - sólo para datos de sucesos asociados para registrar datos de presencia / ausencia."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:50
@@ -229,7 +229,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:60
 #, no-wrap
 msgid "*A.* All sampling events at the same location must share the same https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
-msgstr ""
+msgstr "*A.* Todos los eventos de muestreo en el mismo lugar deben compartir el mismo https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/sampling-event-data.adoc:61
@@ -268,7 +268,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:74
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:76
@@ -278,12 +278,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:78
 msgid "hhttps://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
-msgstr ""
+msgstr "hhttps://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:79
 msgid "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair. \"e.g. 0 individuals\""
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] par. \"e.j. 0 individuos\""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:81
