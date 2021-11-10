@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-11-10 11:50\n"
+"PO-Revision-Date: 2021-11-10 14:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -69,7 +69,7 @@ msgstr "Campos DwC requeridos"
 #: en/modules/ROOT/pages/checklist-data.adoc:28
 #: en/modules/ROOT/pages/occurrence-data.adoc:32
 msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:30
@@ -83,7 +83,7 @@ msgstr "Campos DwC recomendados"
 #: en/modules/ROOT/pages/checklist-data.adoc:33
 #: en/modules/ROOT/pages/occurrence-data.adoc:38
 msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] - y otros niveles taxonómicos mayores si es posible"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:36
@@ -149,40 +149,40 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:30
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID[occurrenceID]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:31
 msgid "https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:33
 #: en/modules/ROOT/pages/sampling-event-data.adoc:34
 msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:37
 msgid "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - to substantiate scientificName"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - para comprobar scientificName"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
 msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs.tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/dwc/terms/#geodeticDatum[geodeticDatum] - para proporcionar una localización por puntos específica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
 #: en/modules/ROOT/pages/sampling-event-data.adoc:45
 msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:41
 msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - para registrar la cantidad de individuos de una especie"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:45
