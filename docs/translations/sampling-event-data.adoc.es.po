@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-11-10 11:50\n"
+"PO-Revision-Date: 2021-11-10 14:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -77,19 +77,19 @@ msgstr "Preguntas frecuentes"
 #: en/modules/ROOT/pages/occurrence-data.adoc:33
 #: en/modules/ROOT/pages/sampling-event-data.adoc:34
 msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
-msgstr ""
+msgstr "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
 msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs.tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/dwc/terms/#geodeticDatum[geodeticDatum] - para proporcionar una localización por puntos específica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
 #: en/modules/ROOT/pages/sampling-event-data.adoc:45
 msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
-msgstr ""
+msgstr "http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]"
 
 #. type: Title =
 #: en/modules/ROOT/pages/sampling-event-data.adoc:1
