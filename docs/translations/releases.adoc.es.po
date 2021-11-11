@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-11 13:29\n"
+"PO-Revision-Date: 2021-11-11 14:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -315,7 +315,7 @@ msgstr "https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[Manual de Usuario
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:115
 msgid "Addressed https://github.com/gbif/ipt/milestone/14?closed=1[14 issues]: 12 Defects, 2 Won’t fix"
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/14?closed=1[14 incidencias]: 12 Defectos, 2 No se arreglarán"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:116
@@ -335,7 +335,7 @@ msgstr "*2.3.1* - Septiembre de 2015"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:122
 msgid "Addressed https://github.com/gbif/ipt/milestone/1?closed=1[3 issues]: 3 Defects"
-msgstr ""
+msgstr "Abordada https://github.com/gbif/ipt/milestone/1?closed=1[3 incidencias]: 3 Defectos"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:124
@@ -369,7 +369,7 @@ msgstr "https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[Manual de Usuario
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:136
 msgid "Addressed https://github.com/gbif/ipt/milestone/19?closed=1[5 issues]: 3 Defects, 1 Enhancement, 1 Other"
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/19?closed=1[5 incidencias]: 3 Defectos, 1 Mejora y 1 de Otro tipo"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:138
