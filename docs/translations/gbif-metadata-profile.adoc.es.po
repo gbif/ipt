@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-13 17:50\n"
+"PO-Revision-Date: 2021-10-01 12:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -637,7 +637,8 @@ msgstr "El campo keywordSet es un contenedor para los elementos palabras clave (
 msgid "| Term         | Definition\n\n"
 "| {eml-location}/eml-resource.html#keyword[keyword] | A keyword or key phrase that concisely describes the resource or is related to the resource. Each keyword field should contain one and only one keyword (i.e., keywords should not be separated by commas or other delimiters). E.g., biodiversity.\n\n"
 "| {eml-location}/eml-resource.html#keywordThesaurus[keywordThesaurus]| The name of the official keyword thesaurus from which keyword was derived. If an official thesaurus name does not exist, please keep a placeholder value such as “N/A” instead of removing this element as it is required together with the keyword element to constitute a keywordSet. E.g., IRIS keyword thesaurus.\n"
-msgstr ""
+msgstr "| {eml-location}/eml-resource.html#keyword[palabra clave] | Una palabra clave o frase clave que describe de manera concisa el recurso o está relacionada con el recurso. Cada campo de palabra clave debe contener una y solo una palabra clave (es decir, las palabras clave no deben estar separadas por comas u otros caracteres delimitadores). Por ejemplo, biodiversidad.\n\n"
+"| {eml-location}/eml-resource.html#keywordThesaurus[Tesauro de palabras clave]| El nombre del tesauro oficial de palabras clave del que se derivó la palabra clave. Si no existe un nombre de tesauro oficial, mantenga un valor de marcador de posición como \"N/A\" en lugar de eliminar este elemento, ya que se requiere junto con el elemento de palabra clave para constituir un conjunto de palabras clave. Por ejemplo, tesauro de palabras clave de IRIS.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:242

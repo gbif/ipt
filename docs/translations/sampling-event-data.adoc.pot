@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-24 11:55+0000\n"
+"POT-Creation-Date: 2021-11-10 10:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,23 +76,23 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:33
 #: en/modules/ROOT/pages/sampling-event-data.adoc:34
-msgid "http://rs.tdwg.org/dwc/terms/#eventDate[eventDate]"
+msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs."
-"tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/"
-"dwc/terms/#geodeticDatum[geodeticDatum] - to provide a specific point "
-"location"
+"https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://"
+"dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc."
+"tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific "
+"point location"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
 #: en/modules/ROOT/pages/sampling-event-data.adoc:45
-msgid "http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]"
+msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
 msgstr ""
 
 #. type: Title =
@@ -212,56 +212,56 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:33
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#eventID[eventID] - also required for "
+"https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - also required for "
 "associated occurrence data (to link them together)"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:35
-msgid "http://rs.tdwg.org/dwc/terms/#samplingProtocol[samplingProtocol]"
+msgid "https://dwc.tdwg.org/terms/#dwc:samplingProtocol[samplingProtocol]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:39
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#sampleSizeValue[sampleSizeValue] & http://rs."
-"tdwg.org/dwc/terms/#sampleSizeUnit[sampleSizeUnit]"
+"hhttps://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://"
+"dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:40
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#parentEventID[parentEventID] - in situations "
+"https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - in situations "
 "where the event is part of an event series"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:41
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#samplingEffort[samplingEffort] - to provide "
+"https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - to provide "
 "evidence of rigour of sampling event"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:42
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#locationID[locationID] - in situations where "
+"https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - in situations where "
 "the plot/transect being sampled has a unique identifier"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:44
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#footprintWKT[footprintWKT] & http://rs.tdwg."
-"org/dwc/terms/#footprintSRS[footprintSRS] - to provide a specific shape "
+"https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc."
+"tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - to provide a specific shape "
 "location"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:46
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus] - only for "
-"associated occurrence data to record presence/absence data."
+"https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - only "
+"for associated occurrence data to record presence/absence data."
 msgstr ""
 
 #. type: Plain text
@@ -312,7 +312,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:60
 #, no-wrap
-msgid "*A.* All sampling events at the same location must share the same http://rs.tdwg.org/dwc/terms/#locationID[locationID].\n"
+msgid "*A.* All sampling events at the same location must share the same https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
 msgstr ""
 
 #. type: Title ====
@@ -355,7 +355,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:74
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus]=link:"
+"https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:"
 "{latest-occurrence-status}.xml[\"absent\"]"
 msgstr ""
 
@@ -366,15 +366,15 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:78
-msgid "http://rs.tdwg.org/dwc/terms/#individualCount[individualCount]=\"0\""
+msgid "hhttps://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:79
 msgid ""
-"http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] & http://rs."
-"tdwg.org/dwc/terms/#organismQuantityType[organismQuantityType] pair. \"e.g. "
-"0 individuals\""
+"https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://"
+"dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair. \"e."
+"g. 0 individuals\""
 msgstr ""
 
 #. type: Plain text

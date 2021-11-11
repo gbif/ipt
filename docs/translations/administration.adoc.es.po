@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2021-09-02 14:18\n"
+"PO-Revision-Date: 2021-10-04 01:22\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:1
 #, no-wrap
 msgid "Administration Menu"
-msgstr "Menú de Administración"
+msgstr "Menú Administración"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:4
@@ -66,7 +66,7 @@ msgstr "[[url-pública]] *URL pública*: esta es la URL que apunta a la raíz de
 #: en/modules/ROOT/pages/administration.adoc:18
 #, no-wrap
 msgid "Manually updating the Public URL"
-msgstr ""
+msgstr "Actualización manual de la URL pública"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:21
