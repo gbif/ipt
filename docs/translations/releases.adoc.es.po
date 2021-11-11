@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-11 10:52\n"
+"PO-Revision-Date: 2021-11-11 13:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -296,7 +296,7 @@ msgstr "En https://gbif.blogspot.com/2017/01/ipt-v233-your-repository-for.html[e
 #: en/modules/ROOT/pages/releases.adoc:110
 #, no-wrap
 msgid "*2.3.2* – October 2015"
-msgstr ""
+msgstr "*2.3.2* - Octubre de 2015"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:113
@@ -330,7 +330,7 @@ msgstr "Traducida en 6 idiomas"
 #: en/modules/ROOT/pages/releases.adoc:117
 #, no-wrap
 msgid "*2.3.1* – September 2015"
-msgstr ""
+msgstr "*2.3.1* - Septiembre de 2015"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:122
@@ -352,7 +352,7 @@ msgstr "Abordadas https://github.com/gbif/ipt/milestone/20?closed=1[38 incidenci
 #: en/modules/ROOT/pages/releases.adoc:131
 #, no-wrap
 msgid "*2.2.1* – April 2015"
-msgstr ""
+msgstr "*2.2.1* - Abril de 2015"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:134
