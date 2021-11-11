@@ -15,6 +15,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
@@ -225,6 +226,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * Define XStream used to parse former registration (registration.xml).
    */
   private void defineXstreamMappingV1() {
+    xstreamV1.addPermission(AnyTypePermission.ANY);
     xstreamV1.omitField(LegacyRegistration.class, "associatedOrganisations");
     xstreamV1.alias("organisation", LegacyOrganisation.class);
     xstreamV1.alias("registry", LegacyRegistration.class);
@@ -236,6 +238,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * @param passwordConverter PasswordConverter
    */
   private void defineXstreamMappingV2(PasswordConverter passwordConverter) {
+    xstreamV2.addPermission(AnyTypePermission.ANY);
     xstreamV2.omitField(Registration.class, "associatedOrganisations");
     xstreamV2.alias("organisation", Organisation.class);
     xstreamV2.alias("registry", Registration.class);

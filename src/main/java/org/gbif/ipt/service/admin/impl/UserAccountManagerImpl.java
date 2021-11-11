@@ -15,6 +15,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
@@ -122,6 +123,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   }
 
   private void defineXstreamMapping(PasswordConverter passwordConverter) {
+    xstream.addPermission(AnyTypePermission.ANY);
     xstream.alias("user", User.class);
     xstream.useAttributeFor(User.class, "email");
     xstream.useAttributeFor(User.class, "password");

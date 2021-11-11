@@ -15,6 +15,7 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
@@ -688,6 +689,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
     ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
     JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
+    xstream.addPermission(AnyTypePermission.ANY);
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
     xstream.alias("filesource", TextFileSource.class);
