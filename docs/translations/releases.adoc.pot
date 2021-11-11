@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-09-07 09:17+0000\n"
+"POT-Creation-Date: 2021-11-11 09:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -359,16 +359,20 @@ msgstr ""
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:110
 #, no-wrap
-msgid "*2.3* – September 2015"
+msgid "*2.3.2* – October 2015"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:113
+#: en/modules/ROOT/pages/releases.adoc:120
+#: en/modules/ROOT/pages/releases.adoc:127
 msgid "xref:2.4@ipt-release-notes-2_3.adoc[IPT v2.3 Release Notes]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:114
+#: en/modules/ROOT/pages/releases.adoc:121
+#: en/modules/ROOT/pages/releases.adoc:128
 msgid ""
 "https://github.com/gbif/ipt/wiki/IPTUserManualv23.wiki[User Manual] https://"
 "github.com/gbif/ipt/wiki/IPT2ManualNotes_ES.wiki[(es)]"
@@ -377,39 +381,83 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:115
 msgid ""
-"Addressed https://github.com/gbif/ipt/milestone/20?closed=1[38 issues]: 15 "
-"Defects, 15 Enhancements, 4 Won’t fix, and 4 that were considered as Tasks"
+"Addressed https://github.com/gbif/ipt/milestone/14?closed=1[14 issues]: 12 "
+"Defects, 2 Won’t fix"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:116
-#: en/modules/ROOT/pages/releases.adoc:124
+#: en/modules/ROOT/pages/releases.adoc:123
+#: en/modules/ROOT/pages/releases.adoc:130
+#: en/modules/ROOT/pages/releases.adoc:137
+#: en/modules/ROOT/pages/releases.adoc:145
 msgid "Translated into 6 languages"
 msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:117
 #, no-wrap
-msgid "*2.2* – March 2015"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:120
-msgid "xref:2.4@ipt-release-notes-2_2.adoc[IPT v2.2 Release Notes]"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:121
-msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[User Manual]"
+msgid "*2.3.1* – September 2015"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:122
+msgid ""
+"Addressed https://github.com/gbif/ipt/milestone/1?closed=1[3 issues]: 3 "
+"Defects"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/releases.adoc:124
+#, no-wrap
+msgid "*2.3* – September 2015"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:129
+msgid ""
+"Addressed https://github.com/gbif/ipt/milestone/20?closed=1[38 issues]: 15 "
+"Defects, 15 Enhancements, 4 Won’t fix, and 4 that were considered as Tasks"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/releases.adoc:131
+#, no-wrap
+msgid "*2.2.1* – April 2015"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:134
+#: en/modules/ROOT/pages/releases.adoc:141
+msgid "xref:2.4@ipt-release-notes-2_2.adoc[IPT v2.2 Release Notes]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:135
+#: en/modules/ROOT/pages/releases.adoc:142
+msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv22.wiki[User Manual]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:136
+msgid ""
+"Addressed https://github.com/gbif/ipt/milestone/19?closed=1[5 issues]: 3 "
+"Defects, 1 Enhancement, 1 Other"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/releases.adoc:138
+#, no-wrap
+msgid "*2.2* – March 2015"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/releases.adoc:143
 msgid "https://gbif.blogspot.com/2015/03/ipt-v22.html[Release Announcement]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:123
+#: en/modules/ROOT/pages/releases.adoc:144
 msgid ""
 "Addressed https://github.com/gbif/ipt/milestone/18?closed=1[74 issues]: 20 "
 "Defects, 26 Enhancements, 16 Won’t fix, 6 Duplicates, 2 Other, 1 Task, and 3 "
@@ -417,28 +465,28 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:125
+#: en/modules/ROOT/pages/releases.adoc:146
 #, no-wrap
 msgid "*2.1* – April 2014"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:128
+#: en/modules/ROOT/pages/releases.adoc:149
 msgid "xref:2.4@ipt-release-notes-2_1.adoc[IPT v2.1 Release Notes]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:129
+#: en/modules/ROOT/pages/releases.adoc:150
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv21.wiki[User Manual]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:130
+#: en/modules/ROOT/pages/releases.adoc:151
 msgid "https://gbif.blogspot.com/2014/04/ipt-v21.html[Release Announcement]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:131
+#: en/modules/ROOT/pages/releases.adoc:152
 msgid ""
 "Addressed https://github.com/gbif/ipt/milestone/16?closed=1[85 issues]: 38 "
 "Defects, 11 Enhancements, 18 Won’t fix, 6 Duplicates, 1 Other, and 11 that "
@@ -446,35 +494,35 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:132
+#: en/modules/ROOT/pages/releases.adoc:153
 msgid "Translated into 6 languages (Japanese translation added)"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:133
+#: en/modules/ROOT/pages/releases.adoc:154
 #, no-wrap
 msgid "*2.0.5* – May 2013"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:136
+#: en/modules/ROOT/pages/releases.adoc:157
 msgid "xref:2.4@ipt-release-notes-2_0_5.adoc[IPT v2.0.5 Release Notes]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:137
+#: en/modules/ROOT/pages/releases.adoc:158
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv205.wiki[User Manual]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:138
+#: en/modules/ROOT/pages/releases.adoc:159
 msgid ""
 "https://gbif.blogspot.com/2013/05/ipt-v205-released-melhor-versao-ate-o."
 "html[Release Announcement]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:139
+#: en/modules/ROOT/pages/releases.adoc:160
 msgid ""
 "Addressed https://github.com/gbif/ipt/milestone/14?closed=1[45 issues]: 15 "
 "Defects, 17 Enhancements, 2 Patches, 7 Won’t fix, 3 Duplicates, and 1 that "
@@ -482,35 +530,35 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:140
+#: en/modules/ROOT/pages/releases.adoc:161
 msgid "Translated into 5 languages (Portuguese translation added)"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:141
+#: en/modules/ROOT/pages/releases.adoc:162
 #, no-wrap
 msgid "*2.0.4* – October 2012"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:144
+#: en/modules/ROOT/pages/releases.adoc:165
 msgid "xref:2.4@ipt-release-notes-2_0_4.adoc[IPT v2.0.4 Release Notes]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:145
+#: en/modules/ROOT/pages/releases.adoc:166
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv204.wiki[User Manual]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:146
+#: en/modules/ROOT/pages/releases.adoc:167
 msgid ""
 "https://gbif.blogspot.com/2012/10/ipt-v204-released.html[Release "
 "Announcement]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:147
+#: en/modules/ROOT/pages/releases.adoc:168
 msgid ""
 "Addressed https://github.com/gbif/ipt/milestone/13?closed=1[108 issues]: 38 "
 "Defects, 35 Enhancements, 7 Other, 5 Patches, 18 Won't fix, 4 Duplicates, "
@@ -518,71 +566,71 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:148
+#: en/modules/ROOT/pages/releases.adoc:169
 msgid "Translated into 4 languages (Traditional Chinese translation added)"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:149
+#: en/modules/ROOT/pages/releases.adoc:170
 #, no-wrap
 msgid "*2.0.3* – November 2011"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:152
+#: en/modules/ROOT/pages/releases.adoc:173
 msgid "xref:2.4@ipt-release-notes-2_0_3.adoc[IPT v2.0.3 Release Notes]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:153
+#: en/modules/ROOT/pages/releases.adoc:174
 msgid "https://github.com/gbif/ipt/wiki/IPTUserManualv203.wiki[User Manual]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:154
+#: en/modules/ROOT/pages/releases.adoc:175
 msgid ""
 "https://gbif.blogspot.com/2011/11/important-quality-boost-for-gbif-data."
 "html[Release Announcement]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:155
+#: en/modules/ROOT/pages/releases.adoc:176
 msgid ""
 "Addressed https://github.com/gbif/ipt/milestone/12?closed=1[85 issues]: 43 "
 "defects, 31 enhancements, 3 Patches, 7 Won’t fix, and 1 Duplicate"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:156
+#: en/modules/ROOT/pages/releases.adoc:177
 msgid "Translated into 3 languages (French and Spanish translations added)"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:157
+#: en/modules/ROOT/pages/releases.adoc:178
 #, no-wrap
 msgid "*2.0.2* – June 2011"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:160
+#: en/modules/ROOT/pages/releases.adoc:181
 msgid ""
 "https://lists.gbif.org/pipermail/ipt/2011-June/000352.html[Release "
 "Announcement]"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/releases.adoc:161
+#: en/modules/ROOT/pages/releases.adoc:182
 #, no-wrap
 msgid "*2.0.1* – February 2011"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:164
+#: en/modules/ROOT/pages/releases.adoc:185
 msgid "First IPT version 2 release"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/releases.adoc:164
+#: en/modules/ROOT/pages/releases.adoc:185
 msgid ""
 "https://lists.gbif.org/pipermail/ipt/2011-February/000309.html[Release "
 "Announcement]"
