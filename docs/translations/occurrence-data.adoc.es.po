@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-11-11 16:44\n"
+"PO-Revision-Date: 2021-11-11 17:47\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -69,7 +69,7 @@ msgstr "Campos DwC requeridos"
 #: en/modules/ROOT/pages/checklist-data.adoc:28
 #: en/modules/ROOT/pages/occurrence-data.adoc:32
 msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
-msgstr "https://dwc.tdwg.org/terms/#dwc:scientificName[nombreCientífico]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:30
@@ -83,7 +83,7 @@ msgstr "Campos DwC recomendados"
 #: en/modules/ROOT/pages/checklist-data.adoc:33
 #: en/modules/ROOT/pages/occurrence-data.adoc:38
 msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
-msgstr "http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] - y otros niveles taxonómicos mayores si es posible"
+msgstr "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - y otra taxonomía superior si es posible"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:36
@@ -149,7 +149,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:30
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]"
-msgstr "http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID[occurrenceID]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:31
@@ -165,24 +165,24 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:37
 msgid "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - to substantiate scientificName"
-msgstr "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - para comprobar scientificName"
+msgstr "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - para justificar el nombre científico (scientificName)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
 msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
-msgstr "http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs.tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/dwc/terms/#geodeticDatum[geodeticDatum] - para proporcionar una localización por puntos específica"
+msgstr "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - para proporcionar la ubicación de un punto específico"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
 #: en/modules/ROOT/pages/sampling-event-data.adoc:45
 msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
-msgstr "http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:41
 msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence"
-msgstr "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - para registrar la cantidad de individuos de una especie"
+msgstr "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - para registrar la cantidad de registros biológicos de una especie"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:45
@@ -199,7 +199,7 @@ msgstr ""
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
 #, no-wrap
 msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
-msgstr "*A.* Colocar https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. Además, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] y https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] deben ser iguales a 0.\n"
+msgstr "*A.* Establecer https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. Además, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] y https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] deben ser iguales a 0.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:52
@@ -216,7 +216,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:57
 msgid "When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
-msgstr "Al generalizar datos, debe intentar no reducir el valor de los datos para el análisis y hacer que los usuarios sepan cómo y por qué se modificó el registro original utilizando el término Darwin Core https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
+msgstr "Al generalizar datos, debe intentar no reducir el valor de los datos para el análisis y hacer que los usuarios sepan cómo y por qué se modificó el registro original utilizando el elemento Darwin Core https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:59
