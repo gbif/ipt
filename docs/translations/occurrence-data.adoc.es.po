@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-11-10 15:18\n"
+"PO-Revision-Date: 2021-11-11 16:44\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -69,7 +69,7 @@ msgstr "Campos DwC requeridos"
 #: en/modules/ROOT/pages/checklist-data.adoc:28
 #: en/modules/ROOT/pages/occurrence-data.adoc:32
 msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
-msgstr "http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:scientificName[nombreCientífico]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:30
