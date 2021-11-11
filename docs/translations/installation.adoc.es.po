@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-11 10:52\n"
+"PO-Revision-Date: 2021-11-11 14:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -189,7 +189,7 @@ msgstr "Tomcat"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:73
 msgid "The IPT has been tested and works well with recent releases of Tomcat 7, 8 or 9. The Apache Tomcat documentation can be found on http://tomcat.apache.org/."
-msgstr ""
+msgstr "El IPT ha sido probado y funciona bien con versiones recientes de Tomcat 7, 8 o 9. La documentación de Apache Tomcat se puede encontrar en http://tomcat.apache.org/."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:75
@@ -270,12 +270,12 @@ msgstr "Se pueden instalar varios IPT en el mismo servidor con una pequeña vari
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:122
 msgid "Different IPT versions may be installed side-by-side, though we always recommend always using the latest version."
-msgstr ""
+msgstr "Se pueden instalar diferentes versiones de IPT una al lado de la otra, aunque siempre recomendamos usar siempre la última versión."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:124
 msgid "_Ensure each IPT is configured to use its own data directory!_"
-msgstr ""
+msgstr "_¡Asegúrese de que cada IPT esté configurado para usar su propio directorio de datos! _"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/installation.adoc:126
