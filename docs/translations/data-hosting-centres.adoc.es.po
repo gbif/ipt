@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-11 10:52\n"
+"PO-Revision-Date: 2021-11-11 14:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -86,7 +86,7 @@ msgstr "Manteniéndolo actualizado con la última versión"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:21
 msgid "Keeping the operating system and servlet container (if used) up-to-date"
-msgstr ""
+msgstr "Mantener actualizado el sistema operativo y el contenedor de servlets (si se usa)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:22
@@ -131,7 +131,7 @@ msgstr "Saben cómo publicar artículos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:31
 msgid "If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org[helpdesk@gbif.org]."
-msgstr ""
+msgstr "Si cree que su DHC cumple con estos estándares y le gustaría ofrecer sus servicios a los editores de su país, envíe un correo electrónico a mailto: helpdesk@gbif.org [helpdesk@gbif.org]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:32
