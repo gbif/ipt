@@ -47,26 +47,26 @@ public class StaticResourcesTest {
    */
   @Test
   public void checkStaticResourcesEncodingTest() throws Exception {
-    String[] ignoreExtensions = new String[] {
-      ".eot", ".otf", ".ttf", ".woff", ".woff2", // Fonts
-      ".gif", ".png", ".svg", // Images
-      ".ftl" // Not served as static resources by Tomcat
+    String[] ignoreExtensions = new String[]{
+        ".eot", ".otf", ".ttf", ".woff", ".woff2", // Fonts
+        ".gif", ".png", ".svg", // Images
+        ".ftl" // Not served as static resources by Tomcat
     };
 
     Files.walk(Paths.get("src/main/webapp"))
-     .filter(p -> p.toFile().isFile()
-       && Arrays.stream(ignoreExtensions).noneMatch(x -> p.getFileName().toString().endsWith(x)))
-     .forEach(
-       p -> {
-         try {
-           if (!isAsciiOrHasBOM(p)) {
-             fail("File "+p+" is not ASCII, and does not have a byte order mark.");
-           }
-         } catch (IOException e) {
-           fail("Exception when checking encoding of file " + p + ".");
-         }
-       }
-     );
+        .filter(p -> p.toFile().isFile()
+            && Arrays.stream(ignoreExtensions).noneMatch(x -> p.getFileName().toString().endsWith(x)))
+        .forEach(
+            p -> {
+              try {
+                if (!isAsciiOrHasBOM(p)) {
+                  fail("File " + p + " is not ASCII, and does not have a byte order mark.");
+                }
+              } catch (IOException e) {
+                fail("Exception when checking encoding of file " + p + ".");
+              }
+            }
+        );
   }
 
   private boolean isAsciiOrHasBOM(Path p) throws IOException {
@@ -75,7 +75,7 @@ public class StaticResourcesTest {
     try (InputStream is = new FileInputStream(p.toFile())) {
       is.read(bom);
 
-      if (bom[0] == (0xEF-256) && bom[1] == (0xBB-256) && bom[2] == (0xBF-256)) {
+      if (bom[0] == (0xEF - 256) && bom[1] == (0xBB - 256) && bom[2] == (0xBF - 256)) {
         return true;
       }
 

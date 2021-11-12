@@ -1,4 +1,4 @@
-(function ($) {
+﻿(function ($) {
 
     jQuery.fn.jConfirmAction = function (options) {
 
