@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-11 14:25\n"
+"PO-Revision-Date: 2021-11-12 15:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -270,12 +270,12 @@ msgstr "Se pueden instalar varios IPT en el mismo servidor con una pequeña vari
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:122
 msgid "Different IPT versions may be installed side-by-side, though we always recommend always using the latest version."
-msgstr "Se pueden instalar diferentes versiones de IPT una al lado de la otra, aunque siempre recomendamos usar siempre la última versión."
+msgstr "Se pueden instalar diferentes versiones de IPT, aunque siempre recomendamos usar siempre la última versión."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:124
 msgid "_Ensure each IPT is configured to use its own data directory!_"
-msgstr "_¡Asegúrese de que cada IPT esté configurado para usar su propio directorio de datos! _"
+msgstr "_¡Asegúrese que cada IPT está configurado para usar su propio directorio de datos!_"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/installation.adoc:126
