@@ -140,7 +140,7 @@
                             <div class="row mt-3">
                                 <div class="col-12">
                                     <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                                    <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel"/>
+                                    <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
                                 </div>
                             </div>
 
