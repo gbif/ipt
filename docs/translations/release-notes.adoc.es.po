@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-11 14:25\n"
+"PO-Revision-Date: 2021-11-12 15:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -69,7 +69,7 @@ msgstr "Una vez que el IPT ha sido actualizado a 2.3.x o posterior desde la vers
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:12
 msgid "Check your system meets the xref:requirements.adoc[installation requirements] for this release.  Ensure your operating system and any other installed software (such as Java, Tomcat and Apache HTTPD) is up-to-date with any security patches."
-msgstr "Verifique que su sistema cumpla con los xref:requirements.adoc[requisitos de instalación] para esta versión. Asegúrese de que su sistema operativo y cualquier otro software instalado (como Java, Tomcat y Apache HTTPD) estén actualizados con los parches de seguridad."
+msgstr "Verifique que su sistema cumple con los xref:requirements.adoc[requisitos de instalación] para esta versión. Asegúrese que su sistema operativo y cualquier otro software instalado (como Java, Tomcat y Apache HTTPD) están actualizados con los parches de seguridad."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:14
