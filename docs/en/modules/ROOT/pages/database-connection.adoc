@@ -41,6 +41,12 @@ There are 4 properties that you need to add for each driver. All 4 have to start
 * `url`: A template to build the url for connecting. There are 2 variables that can be used in the url string which will be replaced by the actual settings configured: `\{host}` and `\{database}`
 * `limitType`: How to limit the amount of data returned. Possible values are `LIMIT`, `TOP`, `ROWNUM`. This is driver specific.
 
+In the PostgreSQL example above you can modify url arguments found here: https://jdbc.postgresql.org/documentation/head/connect.html to enable for example SSL and version compatibility like the following:
+
+----
+pgsql.url=jdbc:postgresql://{host}/{database}?sslmode=require
+----
+
 In the SQLite example above the driver connects to a file, so no `\{host}` is used in the url template. Please add the following to the jdbc.properties to add the SQLite driver:
 
 ----
