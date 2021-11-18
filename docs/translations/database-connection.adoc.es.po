@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-18 10:52+0000\n"
-"PO-Revision-Date: 2021-11-18 15:30\n"
+"PO-Revision-Date: 2021-11-18 16:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -72,12 +72,12 @@ msgstr "Añadir nuevos controladores JDBC"
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:18
 msgid "If you run the IPT within a servelet container (like Tomcat), you can add your own JDBC drivers to the IPT. This allows you to support a different database, or to change the connection settings for one of the existing database types."
-msgstr ""
+msgstr "Si ejecuta el IPT dentro de un contenedor web (como Tomcat), puede agregar al IPT sus propios controladores JDBC. Esto le permite soportar bases de datos diferentes o cambiar la configuración de conexión a alguno de los tipos de bases de datos existentes."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:20
 msgid "The following steps assume you have a working IPT installed with an \"exploded\" WAR, i.e. you have a folder `ipt` (or however you named your instance) in your application server's webapps folder. The IPT needs to be stopped before you start adding a driver."
-msgstr ""
+msgstr "Los pasos siguientes asumen que tiene un IPT en funcionamiento instalado con un WAR, es decir, tiene una carpeta `ipt` (o como haya nombrado su instancia) en la carpeta de aplicaciones web de su servidor de aplicaciones. El IPT debe detenerse antes de comenzar a agregar un controlador."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/database-connection.adoc:21
