@@ -114,7 +114,7 @@
                                     <#list eml.bibliographicCitationSet.bibliographicCitations as item>
                                         <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-1 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href="">[ ${removeLink?lower_case?cap_first} ]</a>
+                                                <a id="removeLink-${item_index}" class="removeLink" href="">${removeLink?lower_case?cap_first}</a>
                                             </div>
                                             <@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].citation" help="i18n" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation" size=40 requiredField=true />
                                             <@input name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].identifier" help="i18n" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />

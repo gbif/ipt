@@ -71,7 +71,7 @@
                                 <#list eml.taxonomicCoverages as item>
                                     <div id='item-${item_index}' class="item border-bottom">
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/> ]</a>
+                                            <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></a>
                                         </div>
 
                                         <@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
