@@ -223,6 +223,10 @@
                                 <@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
                             </div>
                             <div id="coordinates" class="row g-3 mt-0">
+                                <p class="mb-0">
+                                    <strong><@s.text name='manage.metadata.geocoverage.warning'/></strong>
+                                </p>
+
                                 <div class="col-md-6">
                                     <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
                                 </div>
