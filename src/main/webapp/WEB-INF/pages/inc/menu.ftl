@@ -6,8 +6,8 @@
 <header>
     <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-green-gradient fixed-top py-1 [#if !auxTopNavbar]shadow-sm[/#if]">
         <div class="container">
-            <a href="${baseURL}/" rel="home" title="GBIF Logo" class="navbar-brand" >
-                <img src="${baseURL}/images/gbif-logo-L.svg" alt="GBIF IPT" class="gbif-logo"/>
+            <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
+                <img src="${baseURL}/images/gbif-logo-L.svg" alt="IPT" class="gbif-logo"/>
                 [#if !cfg.devMode() && cfg.getRegistryType()?has_content && cfg.getRegistryType()=='PRODUCTION']
                 [#else]
                     <img class="testmode" alt="[@s.text name="menu.testMode"/]" src="${baseURL}/images/testmode.png" style="width: 100px;"/>
