@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"POT-Creation-Date: 2021-11-22 09:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -154,11 +154,11 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:51
 #, no-wrap
 msgid ""
-"$ systemctl edit syslog.service\n"
+"$ sudo systemctl edit tomcat9.service\n"
 "[Service]\n"
 "ReadWritePaths=/path/to/directory/\n"
-"$ systemctl daemon-reload\n"
-"$ systemctl restart tomcat8\n"
+"$ sudo systemctl daemon-reload\n"
+"$ sudo systemctl restart tomcat9\n"
 msgstr ""
 
 #. type: Plain text
