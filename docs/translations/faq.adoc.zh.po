@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:53\n"
+"POT-Creation-Date: 2021-11-22 09:27+0000\n"
+"PO-Revision-Date: 2021-11-22 09:35\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -128,11 +128,11 @@ msgstr ""
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:51
 #, no-wrap
-msgid "$ systemctl edit syslog.service\n"
+msgid "$ sudo systemctl edit tomcat9.service\n"
 "[Service]\n"
 "ReadWritePaths=/path/to/directory/\n"
-"$ systemctl daemon-reload\n"
-"$ systemctl restart tomcat8\n"
+"$ sudo systemctl daemon-reload\n"
+"$ sudo systemctl restart tomcat9\n"
 msgstr ""
 
 #. type: Plain text
