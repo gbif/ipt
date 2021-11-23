@@ -695,7 +695,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="visibility">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
                 <#assign visibilityTitleInfo>
                     <@s.text name='manage.overview.visibility.description'/>
                     <br><br>
@@ -848,7 +848,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="managers">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
                 <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                 <@s.text name="manage.overview.resource.managers"/>
             </h5>
