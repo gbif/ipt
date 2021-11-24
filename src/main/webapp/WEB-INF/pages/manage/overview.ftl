@@ -866,10 +866,9 @@
                                     <table class="table table-sm table-borderless text-smaller">
                                         <#list resource.networks as n>
                                             <tr>
-                                                <th><@s.text name="manage.overview.networks.network"/></th>
-                                                <td>
-                                                    ${n}&nbsp;
-                                                </td>
+                                                <th>
+                                                    <a href="${cfg.portalUrl}/network/${n}" target="_blank">${getNetworkName(n)!"Network"}</a>&nbsp;
+                                                </th>
                                                 <td class="d-flex justify-content-end">
                                                     <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n}">
                                                         <@s.text name='button.delete'/>

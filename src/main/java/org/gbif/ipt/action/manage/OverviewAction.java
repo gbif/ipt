@@ -690,6 +690,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return potentialNetworks;
   }
 
+  public String getNetworkName(UUID networkKey) {
+    return allNetworks.stream()
+        .filter(n -> Objects.equals(n.getKey(), networkKey))
+        .map(Network::getTitle)
+        .findFirst()
+        .orElse("Network");
+  }
+
   public StatusReport getReport() {
     return report;
   }
