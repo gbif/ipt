@@ -867,7 +867,7 @@
                                         <#list resource.networks as n>
                                             <tr>
                                                 <th>
-                                                    <a href="${cfg.portalUrl}/network/${n}" target="_blank">${getNetworkName(n)!"Network"}</a>&nbsp;
+                                                    <a href="${cfg.portalUrl}/network/${n}" target="_blank">${(networkName(n))!"Network"}</a>&nbsp;
                                                 </th>
                                                 <td class="d-flex justify-content-end">
                                                     <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n}">
