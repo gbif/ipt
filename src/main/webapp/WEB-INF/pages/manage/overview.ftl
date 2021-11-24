@@ -641,7 +641,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="autopublish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
                 <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                 <@s.text name="manage.overview.autopublish.title"/>
             </h5>
