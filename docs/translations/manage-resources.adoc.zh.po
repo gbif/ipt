@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-09-04 19:48+0000\n"
-"PO-Revision-Date: 2021-09-04 19:53\n"
+"POT-Creation-Date: 2021-11-24 17:11+0000\n"
+"PO-Revision-Date: 2021-11-24 18:21\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2455,7 +2455,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:663
-msgid "To migrate an *existing registered resource* to your *IPT resource*, simply follow these instructions:"
+msgid "To migrate an *existing registered resource* to your *IPT resource*, follow these instructions:"
 msgstr ""
 
 #. type: Plain text
@@ -2465,7 +2465,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:666
-msgid "Determine the owning organization of the *existing registered resource*, and ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the section \"Add Organization\"."
+msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
 msgstr ""
 
 #. type: Plain text
@@ -2480,7 +2480,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:669
-msgid "Ensure GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
+msgid "Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
 msgstr ""
 
 #. type: Plain text
@@ -2490,7 +2490,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:673
-msgid "Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g \"5d637678-cb64-4863-a12b-78b4e1a56628\"."
+msgid "Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-cb64-4863-a12b-78b4e1a56628`."
 msgstr ""
 
 #. type: Plain text
@@ -2509,70 +2509,81 @@ msgid "On the resource overview page, click the register button. Similar to any 
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:677
+#: en/modules/ROOT/pages/manage-resources.adoc:678
+msgid "You will receive a confirmation message like this, showing the existing dataset in GBIF has been updated."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/manage-resources.adoc:679
+#, no-wrap
+msgid "ipt2/manage/IPTManageResourcePublishOverwrite.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:682
 #, no-wrap
 msgid "*Send an email to helpdesk@gbif.org alerting them about the update*. In your email please enclose:\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:678
+#: en/modules/ROOT/pages/manage-resources.adoc:683
 #, no-wrap
 msgid "the name and URL (or GBIF Registry UUID) of your IPT\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:679
+#: en/modules/ROOT/pages/manage-resources.adoc:684
 #, no-wrap
 msgid "the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:680
+#: en/modules/ROOT/pages/manage-resources.adoc:685
 #, no-wrap
-msgid "(if applicable) whether the DiGIR/BioCASe/TAPIR technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry\n"
+msgid "(if applicable) whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:681
+#: en/modules/ROOT/pages/manage-resources.adoc:686
 #, no-wrap
 msgid "Resource Managers"
 msgstr "資源管理者"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:683
+#: en/modules/ROOT/pages/manage-resources.adoc:688
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagers.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:686
+#: en/modules/ROOT/pages/manage-resources.adoc:691
 msgid "Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the button labelled \"Add\". Any manager associated with a resource and having the role \"Manager with registration rights\" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The right-hand column of this area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the button labelled \"Delete\" to the right of the email address in the manager listing."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:687
+#: en/modules/ROOT/pages/manage-resources.adoc:692
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagerAdded.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:689
+#: en/modules/ROOT/pages/manage-resources.adoc:694
 #, no-wrap
 msgid "Delete a Resource"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:692
+#: en/modules/ROOT/pages/manage-resources.adoc:697
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will remove the resource from the IPT and all of the related documents from the file system.  *It will also delete the resource from GBIF.org!*"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:694
+#: en/modules/ROOT/pages/manage-resources.adoc:699
 msgid "Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the \"resources\" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the \"Integrate an existing resource configuration folder\" section under the \"Create a New Resource\" heading in the \"Manage Resources Menu\" section."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:695
+#: en/modules/ROOT/pages/manage-resources.adoc:700
 msgid "There is currently no simple way to remove a resource from the IPT but keep it in GBIF.org (to intentionally \"orphan\" the dataset).  A workaround, requiring access to the server, is to move/delete the resource directory (as above) and restart the IPT.  Issue: https://github.com/gbif/ipt/issues/1461"
 msgstr ""
 
