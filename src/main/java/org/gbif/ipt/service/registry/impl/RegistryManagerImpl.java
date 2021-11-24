@@ -418,6 +418,13 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   /**
    * Returns the Networks url
    */
+  private String getResourceListNetworksURL(String resourceKey) {
+    return cfg.getRegistryUrl() + "/registry/dataset/" + resourceKey + "/networks";
+  }
+
+  /**
+   * Returns the Networks url
+   */
   private String getAddOrRemoveNetworkURL(String resourceKey, String networkKey) {
     return cfg.getRegistryUrl() + "/registry/resource/" + resourceKey + "/network/" + networkKey;
   }
@@ -520,6 +527,32 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   @Override
+  public List<Network> getResourceNetworks(Resource resource) throws RegistryException {
+    List<Network> networks = new ArrayList<>();
+    if (resource != null && resource.getKey() != null) {
+      try {
+        networks = gson
+            .fromJson(requestHttpGetFromRegistry(getResourceListNetworksURL(resource.getKey().toString())).getContent(),
+                new TypeToken<List<Network>>() {
+                }.getType());
+      } catch (RegistryException e) {
+        // log as specific error message as possible about why the Registry error occurred
+        String msg = RegistryException.logRegistryException(e, baseAction);
+        // add startup error message about Registry error
+        warnings.addStartupError(msg);
+        LOG.error(msg);
+
+        // add startup error message that explains the consequence of the Registry error
+        msg = baseAction.getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()});
+        warnings.addStartupError(msg);
+        LOG.error(msg);
+      }
+    }
+
+    return networks;
+  }
+
+  @Override
   public List<Network> getNetworks() throws RegistryException {
     // TODO: 24/11/2021 paging response!
     PagingResponse<Network> networks = new PagingResponse<>();
@@ -554,7 +587,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
           LOG.info("The resource {} has been added to network {}.", resource.getKey().toString(), networkKey);
         } else {
           LOG.error("Response received=" + resp.getStatusCode() + ": " + resp.getContent());
-          throw new RegistryException(Type.BAD_RESPONSE, url, "Empty registry response");
+          throw new RegistryException(Type.BAD_REQUEST, url, resp.getContent());
         }
       } else {
         throw new RegistryException(Type.NOT_AUTHORISED, null, "Credentials should be specified");
@@ -578,7 +611,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
           LOG.info("The resource {} has been removed from network {}.", resource.getKey().toString(), networkKey);
         } else {
           LOG.error("Response received=" + resp.getStatusCode() + ": " + resp.getContent());
-          throw new RegistryException(Type.BAD_RESPONSE, url, "Empty registry response");
+          throw new RegistryException(Type.BAD_REQUEST, url, resp.getContent());
         }
       } else {
         throw new RegistryException(Type.NOT_AUTHORISED, null, "Credentials should be specified");

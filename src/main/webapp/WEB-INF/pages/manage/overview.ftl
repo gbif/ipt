@@ -866,11 +866,11 @@
                                     <table class="table table-sm table-borderless text-smaller">
                                         <#list resourceNetworks as n>
                                             <tr>
+                                                <th class="col-4">
+                                                    ${n.title!""}
+                                                </th>
                                                 <td>
                                                     <a href="${cfg.portalUrl}/network/${n.key}" target="_blank">${n.key}</a>&nbsp;
-                                                </td>
-                                                <td class="col-4">
-                                                    ${n.title!""}
                                                 </td>
                                                 <td class="d-flex justify-content-end">
                                                     <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key}">

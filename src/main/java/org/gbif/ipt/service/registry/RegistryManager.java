@@ -153,6 +153,15 @@ public interface RegistryManager {
   List<Resource> getOrganisationsResources(String key) throws RegistryException;
 
   /**
+   * Retrieves a list of Networks for the resource from the Registry.
+   *
+   * @param resource resource whose networks to be retrieved
+   * @return list of resource's networks
+   * @throws RegistryException if the list could not be retrieved for any reason
+   */
+  List<Network> getResourceNetworks(Resource resource) throws RegistryException;
+
+  /**
    * Retrieves a list of Networks from the Registry.
    *
    * @return list of Networks, or an empty list if none were retrieved from valid response

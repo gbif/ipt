@@ -168,11 +168,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
     try {
       UUID networkKey = UUID.fromString(id);
-      resource.addNetwork(networkKey);
 
       registryManager.addResourceToNetwork(resource, networkKey.toString());
-      addActionMessage(getText("manage.overview.networks.add.success", new String[] {networkKey.toString()}));
       saveResource();
+      addActionMessage(getText("manage.overview.networks.add.success", new String[] {networkKey.toString()}));
 
       potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), networkKey));
     } catch (IllegalArgumentException e) {
@@ -540,11 +539,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     try {
       UUID networkKey = UUID.fromString(id);
-      resource.getNetworks().remove(networkKey);
-      registryManager.removeResourceFromNetwork(resource, networkKey.toString());
 
-      addActionMessage(getText("manage.overview.networks.delete.success", new String[] {networkKey.toString()}));
+      registryManager.removeResourceFromNetwork(resource, networkKey.toString());
       saveResource();
+      addActionMessage(getText("manage.overview.networks.delete.success", new String[] {networkKey.toString()}));
 
       Optional<Network> potentialNetwork =
           allNetworks.stream().filter(n -> Objects.equals(n.getKey(), networkKey)).findFirst();
@@ -692,13 +690,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   public List<Network> getResourceNetworks() {
-    if (allNetworks != null && resource.getNetworks() != null) {
-      return allNetworks.stream()
-          .filter(n -> resource.getNetworks().contains(n.getKey()))
-          .collect(Collectors.toList());
-    } else {
-      return new ArrayList<>();
-    }
+    return registryManager.getResourceNetworks(resource);
   }
 
   public StatusReport getReport() {
@@ -1070,8 +1062,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // get potential new networks
       allNetworks = registryManager.getNetworks();
       potentialNetworks = new ArrayList<>(allNetworks);
-      for (UUID networkKey : resource.getNetworks()) {
-        potentialNetworks.removeIf(n -> networkKey.equals(n.getKey()));
+      for (Network net : getResourceNetworks()) {
+        potentialNetworks.removeIf(n -> Objects.equals(net.getKey(), n.getKey()));
       }
 
       // get potential new managers
