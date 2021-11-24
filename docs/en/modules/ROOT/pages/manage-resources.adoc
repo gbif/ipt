@@ -659,24 +659,29 @@ There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or DwC-
 
 The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry.
 
-To migrate an *existing registered resource* to your *IPT resource*, simply follow these instructions:
+To migrate an *existing registered resource* to your *IPT resource*, follow these instructions:
 
 . Ensure that the *IPT resource's* visibility is public and NOT registered.
-. Determine the owning organization of the *existing registered resource*, and ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the section "Add Organization".
+. Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section.
 . Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page.
 . Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively.
-. Ensure GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*.
+. Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*.
 +
 WARNING: if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed.
 
-. Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g "5d637678-cb64-4863-a12b-78b4e1a56628".
+. Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-cb64-4863-a12b-78b4e1a56628`.
 . Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page.
 . Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first.
 . On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed.
++
+You will receive a confirmation message like this, showing the existing dataset in GBIF has been updated.
++
+image::ipt2/manage/IPTManageResourcePublishOverwrite.png[]
+
 . *Send an email to helpdesk@gbif.org alerting them about the update*. In your email please enclose:
 .. the name and URL (or GBIF Registry UUID) of your IPT
 .. the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)
-.. (if applicable) whether the DiGIR/BioCASe/TAPIR technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry
+.. (if applicable) whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry
 
 === Resource Managers
 
