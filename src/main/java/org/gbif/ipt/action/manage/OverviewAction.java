@@ -86,6 +86,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -690,12 +691,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return potentialNetworks;
   }
 
-  public String networkName(UUID networkKey) {
-    return allNetworks.stream()
-        .filter(n -> Objects.equals(n.getKey(), networkKey))
-        .map(Network::getTitle)
-        .findFirst()
-        .orElse("Network");
+  public List<Network> getResourceNetworks() {
+    if (allNetworks != null && resource.getNetworks() != null) {
+      return allNetworks.stream()
+          .filter(n -> resource.getNetworks().contains(n.getKey()))
+          .collect(Collectors.toList());
+    } else {
+      return new ArrayList<>();
+    }
   }
 
   public StatusReport getReport() {

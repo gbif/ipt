@@ -861,16 +861,19 @@
                                 <@s.text name="manage.overview.networks.intro"/>
                             </p>
 
-                            <#if (resource.networks?size>0)>
+                            <#if (resourceNetworks?size>0)>
                                 <div class="details table-responsive">
                                     <table class="table table-sm table-borderless text-smaller">
-                                        <#list resource.networks as n>
+                                        <#list resourceNetworks as n>
                                             <tr>
-                                                <th>
-                                                    <a href="${cfg.portalUrl}/network/${n}" target="_blank">${(networkName(n))!"Network"}</a>&nbsp;
-                                                </th>
+                                                <td>
+                                                    <a href="${cfg.portalUrl}/network/${n.key}" target="_blank">${n.key}</a>&nbsp;
+                                                </td>
+                                                <td class="col-4">
+                                                    ${n.title!""}
+                                                </td>
                                                 <td class="d-flex justify-content-end">
-                                                    <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n}">
+                                                    <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key}">
                                                         <@s.text name='button.delete'/>
                                                     </a>
                                                 </td>
