@@ -18,6 +18,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.common.DoiData;
 import org.gbif.api.model.common.DoiStatus;
+import org.gbif.api.model.registry.Network;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
@@ -47,6 +48,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
@@ -81,6 +83,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -107,6 +110,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
   private List<User> potentialManagers;
+  private List<Network> allNetworks;
+  private List<Network> potentialNetworks;
   private List<Extension> potentialCores;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
@@ -136,11 +141,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private static final int PEEK_ROWS = 100;
 
   private final VocabulariesManager vocabManager;
+  private final RegistryManager registryManager;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    GenerateDwcaFactory dwcaFactory, VocabulariesManager vocabManager) {
+    GenerateDwcaFactory dwcaFactory, VocabulariesManager vocabManager, RegistryManager registryManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
@@ -148,6 +154,30 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.dwcaFactory = dwcaFactory;
     this.doiAccount = registrationManager.findPrimaryDoiAgencyAccount();
     this.vocabManager = vocabManager;
+    this.registryManager = registryManager;
+  }
+
+  /**
+   * Triggered by add network button on manage resource page.
+   */
+  public String addNetwork() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+
+    try {
+      UUID networkKey = UUID.fromString(id);
+      resource.addNetwork(networkKey);
+
+      registryManager.addResourceToNetwork(resource, networkKey.toString());
+      addActionMessage(getText("manage.overview.networks.add.success", new String[] {networkKey.toString()}));
+      saveResource();
+
+      potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), networkKey));
+    } catch (IllegalArgumentException e) {
+      addActionError(getText("manage.overview.networks.add.failed"));
+    }
+    return execute();
   }
 
   /**
@@ -501,6 +531,31 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
+   * Triggered by delete network link on manage resource page.
+   */
+  public String deleteNetwork() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    try {
+      UUID networkKey = UUID.fromString(id);
+      resource.getNetworks().remove(networkKey);
+      registryManager.removeResourceFromNetwork(resource, networkKey.toString());
+
+      addActionMessage(getText("manage.overview.networks.delete.success", new String[] {networkKey.toString()}));
+      saveResource();
+
+      Optional<Network> potentialNetwork =
+          allNetworks.stream().filter(n -> Objects.equals(n.getKey(), networkKey)).findFirst();
+      potentialNetwork.ifPresent(potentialNetworks::add);
+    } catch (IllegalArgumentException e) {
+      addActionError(getText("manage.overview.networks.delete.failed"));
+    }
+
+    return execute();
+  }
+
+  /**
    * Triggered by delete manager link on manage resource page.
    */
   public String deleteManager() throws Exception {
@@ -629,6 +684,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public List<User> getPotentialManagers() {
     return potentialManagers;
+  }
+
+  public List<Network> getPotentialNetworks() {
+    return potentialNetworks;
   }
 
   public StatusReport getReport() {
@@ -996,6 +1055,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource != null) {
       // refresh archive report
       updateReport();
+
+      // get potential new networks
+      allNetworks = registryManager.getNetworks();
+      potentialNetworks = new ArrayList<>(allNetworks);
+      for (UUID networkKey : resource.getNetworks()) {
+        potentialNetworks.removeIf(n -> networkKey.equals(n.getKey()));
+      }
+
       // get potential new managers
       potentialManagers = userManager.list(Role.Publisher);
       potentialManagers.addAll(userManager.list(Role.Manager));

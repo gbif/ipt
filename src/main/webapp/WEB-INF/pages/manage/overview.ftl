@@ -847,6 +847,64 @@
             </div>
         </div>
 
+        <#if resource.key?has_content>
+            <div class="my-3 p-3 bg-body rounded shadow-sm" id="networks">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
+                    <@popoverPropertyInfo "manage.overview.networks.description"/>
+                    <@s.text name="manage.overview.networks.title"/>
+                </h5>
+
+                <div class="row">
+                    <div class="col-lg-9 order-lg-last">
+                        <div class="mx-md-4 mx-2">
+                            <p>
+                                <@s.text name="manage.overview.networks.intro"/>
+                            </p>
+
+                            <#if (resource.networks?size>0)>
+                                <div class="details table-responsive">
+                                    <table class="table table-sm table-borderless text-smaller">
+                                        <#list resource.networks as n>
+                                            <tr>
+                                                <th><@s.text name="manage.overview.networks.network"/></th>
+                                                <td>
+                                                    ${n}&nbsp;
+                                                </td>
+                                                <td class="d-flex justify-content-end">
+                                                    <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n}">
+                                                        <@s.text name='button.delete'/>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </#list>
+                                    </table>
+                                </div>
+                            <#else>
+                                <@s.text name="manage.overview.networks.no.data"/>
+                            </#if>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 border-lg-right">
+                        <#if (potentialNetworks?size>0)>
+                            <div class="mx-md-4 mx-2">
+                                <form action='resource-addNetwork.do' method='post'>
+                                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                                    <select name="id" class="form-select form-select-sm my-1" id="network" size="1">
+                                        <option value=""></option>
+                                        <#list potentialNetworks?sort_by("title") as n>
+                                            <option value="${n.key}">${n.title}</option>
+                                        </#list>
+                                    </select>
+                                    <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
+                                </form>
+                            </div>
+                        </#if>
+                    </div>
+                </div>
+            </div>
+        </#if>
+
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="managers">
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
                 <@popoverPropertyInfo "manage.overview.resource.managers.description"/>

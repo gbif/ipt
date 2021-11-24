@@ -16,6 +16,8 @@
 package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.api.model.common.paging.PagingResponse;
+import org.gbif.api.model.registry.Network;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -239,7 +241,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       LOG.error(msg, e);
       throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
     }
-
   }
 
   /**
@@ -408,6 +409,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /**
+   * Returns the Networks url
+   */
+  private String getListNetworksURL() {
+    return cfg.getRegistryUrl() + "/registry/network/";
+  }
+
+  /**
+   * Returns the Networks url
+   */
+  private String getAddOrRemoveNetworkURL(String resourceKey, String networkKey) {
+    return cfg.getRegistryUrl() + "/registry/resource/" + resourceKey + "/network/" + networkKey;
+  }
+
+  /**
    * Returns the primary contact agent depending on the following rules:
    * 1. Resource Contact.
    * 2. If (1) is incomplete (missing email or last name) use Resource Creator.
@@ -502,6 +517,79 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       }
     }
     return resources;
+  }
+
+  @Override
+  public List<Network> getNetworks() throws RegistryException {
+    // TODO: 24/11/2021 paging response!
+    PagingResponse<Network> networks = new PagingResponse<>();
+    try {
+      networks = gson
+          .fromJson(requestHttpGetFromRegistry(getListNetworksURL()).getContent(),
+              new TypeToken<PagingResponse<Network>>() {
+              }.getType());
+    } catch (RegistryException e) {
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e, baseAction);
+      // add startup error message about Registry error
+      warnings.addStartupError(msg);
+      LOG.error(msg);
+
+      // add startup error message that explains the consequence of the Registry error
+      msg = baseAction.getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      warnings.addStartupError(msg);
+      LOG.error(msg);
+    }
+
+    return networks.getResults();
+  }
+
+  @Override
+  public void addResourceToNetwork(Resource resource, String networkKey) throws RegistryException {
+    String url = getAddOrRemoveNetworkURL(resource.getKey().toString(), networkKey);
+    try {
+      if (resource.getOrganisation() != null) {
+        ExtendedResponse resp = http.post(url, null, orgCredentials(resource.getOrganisation()));
+        if (HttpUtil.success(resp)) {
+          LOG.info("The resource {} has been added to network {}.", resource.getKey().toString(), networkKey);
+        } else {
+          LOG.error("Response received=" + resp.getStatusCode() + ": " + resp.getContent());
+          throw new RegistryException(Type.BAD_RESPONSE, url, "Empty registry response");
+        }
+      } else {
+        throw new RegistryException(Type.NOT_AUTHORISED, null, "Credentials should be specified");
+      }
+    } catch (IOException e) {
+      throw new RegistryException(Type.IO_ERROR, url, e);
+    } catch (Exception e) {
+      String msg = "Bad registry response: " + e.getMessage();
+      LOG.error(msg, e);
+      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+    }
+  }
+
+  @Override
+  public void removeResourceFromNetwork(Resource resource, String networkKey) throws RegistryException {
+    String url = getAddOrRemoveNetworkURL(resource.getKey().toString(), networkKey);
+    try {
+      if (resource.getOrganisation() != null) {
+        ExtendedResponse resp = http.delete(url, orgCredentials(resource.getOrganisation()));
+        if (HttpUtil.success(resp)) {
+          LOG.info("The resource {} has been removed from network {}.", resource.getKey().toString(), networkKey);
+        } else {
+          LOG.error("Response received=" + resp.getStatusCode() + ": " + resp.getContent());
+          throw new RegistryException(Type.BAD_RESPONSE, url, "Empty registry response");
+        }
+      } else {
+        throw new RegistryException(Type.NOT_AUTHORISED, null, "Credentials should be specified");
+      }
+    } catch (IOException e) {
+      throw new RegistryException(Type.IO_ERROR, url, e);
+    } catch (Exception e) {
+      String msg = "Bad registry response: " + e.getMessage();
+      LOG.error(msg, e);
+      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+    }
   }
 
   /**

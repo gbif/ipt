@@ -15,6 +15,7 @@
  */
 package org.gbif.ipt.service.registry;
 
+import org.gbif.api.model.registry.Network;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
@@ -150,4 +151,31 @@ public interface RegistryManager {
    * @throws RegistryException if the list could not be retrieved for any reason
    */
   List<Resource> getOrganisationsResources(String key) throws RegistryException;
+
+  /**
+   * Retrieves a list of Networks from the Registry.
+   *
+   * @return list of Networks, or an empty list if none were retrieved from valid response
+   *
+   * @throws RegistryException if the list of Networks couldn't be populated
+   */
+  List<Network> getNetworks() throws RegistryException;
+
+  /**
+   * Adds resource to the network in the Registry.
+   *
+   * @param resource resource to be added to the network
+   * @param networkKey network key
+   * @throws RegistryException if the resource couldn't be added to the network
+   */
+  void addResourceToNetwork(Resource resource, String networkKey) throws RegistryException;
+
+  /**
+   * Removes resource from the network in the Registry.
+   *
+   * @param resource resource to be removed from the network
+   * @param networkKey network key
+   * @throws RegistryException if the resource couldn't be removed from the network
+   */
+  void removeResourceFromNetwork(Resource resource, String networkKey) throws RegistryException;
 }

@@ -115,6 +115,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Date mappingsModified;
   private Date sourcesModified;
   private Set<User> managers = new HashSet<>();
+  private Set<UUID> networks = new HashSet<>();
   // mapping configs
   private Set<Source> sources = new HashSet<>();
   private List<ExtensionMapping> mappings = new ArrayList<>();
@@ -129,6 +130,15 @@ public class Resource implements Serializable, Comparable<Resource> {
   public void addManager(User manager) {
     if (manager != null) {
       this.managers.add(manager);
+    }
+  }
+
+  public void addNetwork(UUID key) {
+    if (key != null) {
+      if (networks == null) {
+        networks = new HashSet<>();
+      }
+      this.networks.add(key);
     }
   }
 
@@ -549,6 +559,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     return managers;
   }
 
+  public Set<UUID> getNetworks() {
+    return networks != null ? networks : new HashSet<>();
+  }
 
   /**
    * @return a list of extensions that have been mapped to, starting with the extension that was mapped first (core
@@ -874,6 +887,10 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setManagers(Set<User> managers) {
     this.managers = managers;
+  }
+
+  public void setNetworks(Set<UUID> networks) {
+    this.networks = networks;
   }
 
   public void setMappings(List<ExtensionMapping> extensions) {

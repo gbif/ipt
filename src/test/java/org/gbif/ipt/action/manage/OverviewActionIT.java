@@ -34,6 +34,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
@@ -140,7 +141,7 @@ public class OverviewActionIT {
     OverviewAction actionDataCite =
         new OverviewAction(mock(SimpleTextProvider.class), mockAppConfig, mockRegistrationManagerDataCite,
             mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-            mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class));
+            mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class), mock(RegistryManager.class));
 
     return Stream.of(Arguments.of(actionDataCite, DOIRegistrationAgency.DATACITE));
   }
