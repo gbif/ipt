@@ -133,13 +133,13 @@
 }
 
 /* Links color with exception for some classes */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi) {
     color: #1D86C8 !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi):hover {
     color: #1D86C8 !important;
     text-decoration: underline !important;
 }
