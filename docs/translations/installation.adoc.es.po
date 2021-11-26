@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-12 15:02\n"
+"POT-Creation-Date: 2021-11-26 21:32+0000\n"
+"PO-Revision-Date: 2021-11-26 22:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -139,7 +139,7 @@ msgstr "La instalación exitosa de los paquetes IPT hará que el IPT sea accesib
 #: en/modules/ROOT/pages/installation.adoc:53
 #: en/modules/ROOT/pages/installation.adoc:59
 #: en/modules/ROOT/pages/installation.adoc:111
-#: en/modules/ROOT/pages/installation.adoc:137
+#: en/modules/ROOT/pages/installation.adoc:139
 msgid "Then continue to <<Opening the IPT to the Internet>>."
 msgstr "Luego continúe con <<Abrir el IPT a internet>>."
 
@@ -208,9 +208,8 @@ msgstr "Este paso es opcional, pero se recomienda para mejorar la seguridad y si
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:82
-#, no-wrap
-msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`.\n"
-msgstr "Localice el directorio de configuración de Tomcat (normalmente `/etc/tomcat` o` /etc/tomcat9` en Linux, `C: \\ Archivos de programa\\Apache Software Foundation\\Tomcat XY\\conf` en Windows) y cree un archivo`Catalina/localhost/ipt.xml` (descrito en https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Documentación de Tomcat \"Definición de un contexto\"]). Por ejemplo, en una instalación típica de CentOS Linux, el archivo sería `/etc/tomcat/conf/Catalina/localhost/ipt.xml`.\n"
+msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]). For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:84
@@ -227,30 +226,30 @@ msgstr "<Context>\n"
 "  <Parameter name=\"IPT_DATA_DIR\" value=\"/srv/ipt\"/>\n"
 "</Context>\n"
 
+#. type: Plain text
+#: en/modules/ROOT/pages/installation.adoc:93
+msgid "Ensure the Tomcat server either has permission to create this directory, or create it and then grant read and write permission. See xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[this FAQ entry] if you have errors about write permissions on the data directory."
+msgstr ""
+
 #. type: delimited block =
-#: en/modules/ROOT/pages/installation.adoc:95
+#: en/modules/ROOT/pages/installation.adoc:97
 msgid "If this step is not done, the IPT will prompt for a data directory when it is first run.  The location will be stored in a file called `datadir.location` the IPT's base installation directory, e.g. `/var/lib/tomcat/webapps/ipt/WEB-INF/datadir.location`."
 msgstr "Si no se realiza este paso, el IPT solicitará un directorio de datos cuando se ejecute por primera vez. La ubicación se almacenará en un archivo llamado `datadir.location` el directorio de instalación base del IPT, p. Ej. `/var/lib/tomcat/webapps/ipt/WEB-INF/datadir.location`."
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/installation.adoc:97
+#: en/modules/ROOT/pages/installation.adoc:99
 msgid "If the data directory location needs to be changed, remove/edit this file and restart Tomcat."
 msgstr "Si es necesario cambiar la ubicación del directorio de datos, elimine/edite este archivo y reinicie Tomcat."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:101
+#: en/modules/ROOT/pages/installation.adoc:103
 msgid "Deploy the IPT"
 msgstr "Despliegue de IPT"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:104
-msgid "Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt"
-msgstr "Descargue la última versión WAR de IPT desde xref:releases.adoc[página de versiones] y cámbiele el nombre a `ipt.war` (o similar, que coincida con` ipt.xml` del paso 2 si se usa). Copie el archivo `ipt.war` en la carpeta de aplicaciones web de Tomcat y luego inicie Tomcat si aún no se está ejecutando. A continuación, puede invocar el IPT en un navegador web que se ejecute en el mismo servidor utilizando la siguiente URL: http://localhost:8080/ipt"
-
-#. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:106
-msgid "If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help."
-msgstr "Si la instalación no se inicia, consulte el archivo de registro `catalina.out` y consulte xref:faq.adoc[FAQ] para obtener ayuda."
+msgid "Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:109
@@ -259,37 +258,42 @@ msgstr "La instalación exitosa de IPT dentro de un contenedor de servlet hará 
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:113
+msgid "If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help."
+msgstr "Si la instalación no se inicia, consulte el archivo de registro `catalina.out` y consulte xref:faq.adoc[FAQ] para obtener ayuda."
+
+#. type: Plain text
+#: en/modules/ROOT/pages/installation.adoc:115
 msgid "The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed."
 msgstr "El siguiente video también explica cómo instalar IPT usando Tomcat, asumiendo que Tomcat ya se ha instalado."
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/installation.adoc:120
+#: en/modules/ROOT/pages/installation.adoc:122
 msgid "Multiple IPTs can be installed on the same server with a small variation to this process.  Rather than (or in addition to) using `ipt.xml` and `ipt.war`, use different names and change the files accordingly: on https://cloud.gbif.org/[cloud.gbif.org] we have `africa.xml` and `africa.war`, `bid.xml` and `bid.war` etc."
 msgstr "Se pueden instalar varios IPT en el mismo servidor con una pequeña variación de este proceso. En lugar de (o además de) usar `ipt.xml` e` ipt.war`, use nombres diferentes y cambie los archivos en consecuencia: en https://cloud.gbif.org/[cloud.gbif.org] tenemos `africa.xml` y` africa.war`, `bid.xml` y` bid.war`, etc."
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/installation.adoc:122
+#: en/modules/ROOT/pages/installation.adoc:124
 msgid "Different IPT versions may be installed side-by-side, though we always recommend always using the latest version."
 msgstr "Se pueden instalar diferentes versiones de IPT, aunque siempre recomendamos usar siempre la última versión."
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/installation.adoc:124
+#: en/modules/ROOT/pages/installation.adoc:126
 msgid "_Ensure each IPT is configured to use its own data directory!_"
 msgstr "_¡Asegúrese que cada IPT está configurado para usar su propio directorio de datos!_"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/installation.adoc:126
+#: en/modules/ROOT/pages/installation.adoc:128
 #, no-wrap
 msgid "Jetty"
 msgstr "Jetty"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:129
+#: en/modules/ROOT/pages/installation.adoc:131
 msgid "_As a very rough guide, on CentOS, to run a single instance of the IPT:_"
 msgstr "_Como una guía muy aproximada, en CentOS, para ejecutar una única instancia del IPT: _"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:134
+#: en/modules/ROOT/pages/installation.adoc:136
 #, no-wrap
 msgid "yum install jetty-runner\n"
 "java -jar /usr/share/java/jetty/jetty-runner.jar --port 8080 ipt.war\n"
@@ -297,92 +301,103 @@ msgstr "yum install jetty-runner\n"
 "java -jar /usr/share/java/jetty/jetty-runner.jar --port 8080 ipt.war\n"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/installation.adoc:138
+#: en/modules/ROOT/pages/installation.adoc:140
 #, no-wrap
 msgid "Installation using Docker"
 msgstr "Instalación usando Docker"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:141
+#: en/modules/ROOT/pages/installation.adoc:143
 msgid "GBIF maintain a Docker image, published to the https://hub.docker.com/r/gbif/ipt/[Docker Hub].  The image builds upon the Docker community Tomcat 8.5 / OpenJDK 8 / Debian stable image.  Tomcat is exposed on port 8080 and the IPT runs as the ROOT application."
 msgstr "GBIF mantiene una imagen de Docker, publicada en https://hub.docker.com/r/gbif/ipt/[Docker Hub]. La imagen se basa en la imagen estable Tomcat 8.5/OpenJDK 8/Debian de la comunidad Docker. Tomcat está publicado en el puerto 8080 y el IPT se ejecuta como la aplicación principal."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:143
+#: en/modules/ROOT/pages/installation.adoc:145
 msgid "To run a new Docker container, startup Tomcat and expose the Tomcat port run like this:"
 msgstr "Para ejecutar un nuevo contenedor de Docker, inicie Tomcat y exponga el puerto de Tomcat ejecutado así:"
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:147
+#: en/modules/ROOT/pages/installation.adoc:149
 #, no-wrap
 msgid "docker run --detach --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt\n"
 msgstr "docker run --detach --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:150
+#: en/modules/ROOT/pages/installation.adoc:152
 msgid "You can then access the setup screen of the IPT on port 8080."
 msgstr "Luego puede acceder a la pantalla de configuración del IPT en el puerto 8080."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:152
+#: en/modules/ROOT/pages/installation.adoc:154
 msgid "If you need to override the data directory, this can be done with `-e IPT_DATA_DIR=/path/within/container`."
 msgstr "Si necesita reemplazar el directorio de datos, esto se puede hacer con `-e IPT_DATA_DIR = /ruta/a/contenedor`."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:154
+#: en/modules/ROOT/pages/installation.adoc:156
 msgid "If you need to find the IP address of your \"default\" Docker machine use `docker-machine ip default`."
 msgstr "Si necesita encontrar la dirección IP \"predeterminada\" de su máquina Docker , use `docker-machine ip default`."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:156
+#: en/modules/ROOT/pages/installation.adoc:158
 msgid "Run a specific version from https://hub.docker.com/r/gbif/ipt/tags[those available] by using `gbif/ipt:version` rather than `gbif/ipt`."
 msgstr "Ejecute una versión específica desde https://hub.docker.com/r/gbif/ipt/tags[las disponibles] usando `gbif/ipt:version` en lugar de`gbif/ipt`."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/installation.adoc:157
+#: en/modules/ROOT/pages/installation.adoc:159
 #, no-wrap
 msgid "Opening the IPT to the Internet"
 msgstr "Abrir el IPT a internet"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:160
+#: en/modules/ROOT/pages/installation.adoc:162
 msgid "You will probably need to work with your system or network administrator for the IPT to be available on the Internet."
 msgstr "Probablemente necesitará trabajar con su sistema o administrador de red para que el IPT esté disponible en Internet."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:162
+#: en/modules/ROOT/pages/installation.adoc:164
 msgid "You will need a DNS name for the server (\"`ipt.example.org`\") and the firewall to allow access."
 msgstr "Necesitará un nombre DNS para el servidor (\"` ipt.example.org` \") y permitir el acceso en el firewall."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:164
+#: en/modules/ROOT/pages/installation.adoc:166
 msgid "Many people use Apache HTTPD as a reverse proxy, often to provide HTTPS access or to allow sharing other websites on the same server."
 msgstr "Mucha gente usa Apache HTTPD como proxy inverso, a menudo para proporcionar acceso HTTPS o para permitir compartir otros sitios web en el mismo servidor."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:166
+#: en/modules/ROOT/pages/installation.adoc:168
 msgid "The configuration used by `ipt.gbif.org` is shown here as an example.  It uses Apache HTTPD, with the `mod_proxy` module installed. The paths https://ipt.gbif.org/media/[`/media`] and https://ipt.gbif.org/icons/[`/icons`] are excluded from being passed to the IPT, to allow hosting static image files (such as occurrence images) on the same server.  Requests to http://ipt.gbif.org/ are redirected to the secure https://ipt.gbif.org/."
 msgstr "La configuración utilizada por `ipt.gbif.org` se muestra aquí como ejemplo. Utiliza Apache HTTPD, con el módulo `mod_proxy` instalado. Las rutas https://ipt.gbif.org/media/[`/media`] y https://ipt.gbif.org/icons/[`/icons`] están excluidas del paso al IPT, para permitir alojar archivos de imágenes estáticas (como imágenes de los registros de colecta u observación) en el mismo servidor. Las solicitudes a http://ipt.gbif.org/ se redirigen al sitio seguro https://ipt.gbif.org/."
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/installation.adoc:171
+#: en/modules/ROOT/pages/installation.adoc:173
 #, no-wrap
 msgid "include::partial$apache-configuration-example.conf[]\n"
 msgstr "include::partial$apache-configuration-example.conf[]\n"
 
+#. type: Plain text
+#: en/modules/ROOT/pages/installation.adoc:176
+msgid "Nginx can also be used as a reverse proxy. An example configuration is below."
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/installation.adoc:181
+#, no-wrap
+msgid "include::partial$nginx-configuration-example.conf[]\n"
+msgstr ""
+
 #. type: Title ===
-#: en/modules/ROOT/pages/installation.adoc:173
+#: en/modules/ROOT/pages/installation.adoc:183
 #, no-wrap
 msgid "TLS certificate configuration"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:176
+#: en/modules/ROOT/pages/installation.adoc:186
 msgid "For production deployments of the IPT we recommend using a TLS certificate, so information such as logins are secured when accessing the IPT.  The procedure to set this up sometimes depends on your institution's policies, but the free https://letsencrypt.org/[LetsEncrypt] service is a good choice.  They https://certbot.eff.org/instructions[provide instructions] for adding a certificate to Apache, Nginx and many other webservers running on Linux or Windows."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/installation.adoc:177
+#: en/modules/ROOT/pages/installation.adoc:187
 msgid "For a new deployment, it is best to set up the webserver with TLS first, then install and set up the IPT.  Adding a certificate to a configured IPT requires changing the public URL.  See the note on xref:administration.adoc#public-url[updating the public URL] in the administration section."
 msgstr ""
 
