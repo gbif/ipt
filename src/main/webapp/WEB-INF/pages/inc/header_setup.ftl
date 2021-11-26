@@ -24,7 +24,7 @@
 
 <header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-gbif-green-gradient py-1 shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-gbif-main-navbar py-1 shadow-sm">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="IPT" class="gbif-logo"/>

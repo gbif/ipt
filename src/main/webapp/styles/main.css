@@ -39,12 +39,13 @@ header, .dropdown-menu {
     background-color: #61a861 !important;
 }
 
-.bg-gbif-green-gradient {
-    background: linear-gradient(#78b578, #71b171) !important;
+.bg-gbif-main-navbar {
+    background: linear-gradient(#78b578, #71b171);
 }
 
 .navbar-button {
     color: #61a861 !important;
+    background: white;
 }
 
 .navbar-button:hover {
@@ -171,31 +172,31 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 
 /* Custom colors */
 .text-gbif-primary {
-    color: #61a861 !important;
+    color: #61a861;
 }
 
 .text-gbif-danger {
-    color: #e36370 !important;
+    color: #e36370;
 }
 
 .text-gbif-header {
-    color: #4E565F !important;
+    color: #4E565F;
 }
 
 .text-gbif-header-2 {
-    color: #58687b !important;
+    color: #58687b;
 }
 
 .bg-gbif-primary {
-  background-color: #61a861 !important;
+  background-color: #61a861;
 }
 
 .bg-gbif-danger {
-  background-color: #e36370 !important;
+  background-color: #e36370;
 }
 
 .bg-gbif-header {
-  background-color: #4E565F !important;
+  background-color: #4E565F;
 }
 
 /* Custom alerts colors START */

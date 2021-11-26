@@ -4,7 +4,7 @@
 <body class="bg-light d-flex flex-column h-100">
 
 <header>
-    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-green-gradient fixed-top py-1 [#if !auxTopNavbar]shadow-sm[/#if]">
+    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-1 [#if !auxTopNavbar]shadow-sm[/#if]">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="IPT" class="gbif-logo"/>
@@ -41,7 +41,9 @@
                     <!-- Health -->
                     <div class="navbar-nav">
                       <a href="${baseURL}/health.do" class="nav-link" title="[@s.text name="portal.health.title"/]">
-                          <img src="${baseURL}/images/gbif-heartbeat.svg" alt="Status">
+                          <svg class="gbif-heartbeat-icon" height="24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-356 246.5 90 77.6"  xml:space="preserve">
+                              <path d="M-277.2,286.2h-22.9l-5,11l-10.1-43.8l-10.9,32.8h-18.6c-1.8,0-3.2,1.4-3.2,3.2c0,1.8,1.4,3.2,3.2,3.2h23.3l5.2-15.5l9.2,40l11.1-24.5h18.7c1.8,0,3.2-1.4,3.2-3.2C-274,287.7-275.4,286.2-277.2,286.2z"/>
+                          </svg>
                       </a>
                     </div>
 
@@ -54,7 +56,7 @@
                     [#if (Session.curr_user)??]
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown d-xl-flex align-content-xl-center">
-                                <a class="btn btn-sm btn-light menu-link m-xl-auto navbar-button" id="accountDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn btn-sm menu-link m-xl-auto navbar-button" id="accountDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ${Session.curr_user.email}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="accountDropdownLink">
@@ -73,7 +75,7 @@
                         </ul>
                     [#else]
                         <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center px-1">
-                            <button class="btn btn-sm btn-light m-xl-auto navbar-button text-capitalize" type="submit" name="login-submit">
+                            <button class="btn btn-sm m-xl-auto navbar-button text-capitalize" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>
                         </form>
