@@ -78,7 +78,7 @@ The IPT has been tested and works well with recent releases of Tomcat 7, 8 or 9.
 --
 TIP: This step is optional, but is recommended to improve security and simplify the upgrade procedure.
 
-Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`.
+Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]). For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.
 
 Define the `IPT_DATA_DIR` parameter within the file — copy and paste the text here, since the case of the letters is important:
 
@@ -88,6 +88,8 @@ Define the `IPT_DATA_DIR` parameter within the file — copy and paste the text 
   <Parameter name="IPT_DATA_DIR" value="/srv/ipt"/>
 </Context>
 ----
+
+Ensure the Tomcat server either has permission to create this directory, or create it and then grant read and write permission. See xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[this FAQ entry] if you have errors about write permissions on the data directory.
 
 [NOTE]
 ====
@@ -100,14 +102,14 @@ If the data directory location needs to be changed, remove/edit this file and re
 . Deploy the IPT
 +
 --
-Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
-
-If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
+Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running.
 --
 
 Successful deployment of the IPT within a servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's name and port, followed by /ipt (e.g., http://server.example.org:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
 
 Then continue to <<Opening the IPT to the Internet>>.
+
+If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
 
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
@@ -168,6 +170,14 @@ The configuration used by `ipt.gbif.org` is shown here as an example.  It uses A
 [source,apache]
 ----
 include::partial$apache-configuration-example.conf[]
+----
+
+Nginx can also be used as a reverse proxy. An example configuration is below.
+
+// The Nginx configuration example is in a separate file so the translation system can ignore it.
+[source,nginx]
+----
+include::partial$nginx-configuration-example.conf[]
 ----
 
 === TLS certificate configuration
