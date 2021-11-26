@@ -143,3 +143,8 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin
     color: #1D86C8 !important;
     text-decoration: underline !important;
 }
+
+/* Data records color */
+ul.horizontal_graph .grey_bar {
+    background-color: rgba(29, 134, 200, 0.5);
+}

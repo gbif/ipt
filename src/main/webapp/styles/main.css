@@ -540,7 +540,7 @@ img.latestVersionHidden {
 }
 
 
-/* Data records chars styling START*/
+/* Data records chars styling START */
 ul.no_bullets li {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     padding-left: 0;
@@ -577,7 +577,7 @@ ul.horizontal_graph .value_label {
     margin: 0 0 0 10px;
     padding: 0;
 }
-/* Data records chars styling START*/
+/* Data records chars styling END */
 
 
 /* Metadata map size */
