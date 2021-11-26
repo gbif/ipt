@@ -40,13 +40,12 @@ To ensure only this user has write permission, enter the following command:
 $ chmod -R 755 directory/
 ----
 
-On systems with security sandboxing, you may need to grant permissions to the directory.  For example, on Debian you need to add a SystemD override:
+On systems with security sandboxing, you may need to grant permissions to the directory.  For example, on Debian and Ubuntu you need to add a SystemD override:
 
 ----
 $ sudo systemctl edit tomcat9.service
 [Service]
 ReadWritePaths=/path/to/directory/
-$ sudo systemctl daemon-reload
 $ sudo systemctl restart tomcat9
 ----
 
