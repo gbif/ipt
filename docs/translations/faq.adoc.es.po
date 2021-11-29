@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-26 21:32+0000\n"
-"PO-Revision-Date: 2021-11-26 22:28\n"
+"PO-Revision-Date: 2021-11-29 15:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -123,7 +123,7 @@ msgstr "$ chmod -R 755 directory/\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:44
 msgid "On systems with security sandboxing, you may need to grant permissions to the directory.  For example, on Debian and Ubuntu you need to add a SystemD override:"
-msgstr ""
+msgstr "En los sistemas con seguridad sandboxing, es posible que tenga que conceder permisos al directorio.  Por ejemplo, en Debian y Ubuntu es necesario añadir una anulación de SystemD:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:50
@@ -132,7 +132,10 @@ msgid "$ sudo systemctl edit tomcat9.service\n"
 "[Service]\n"
 "ReadWritePaths=/path/to/directory/\n"
 "$ sudo systemctl restart tomcat9\n"
-msgstr ""
+msgstr "$ sudo systemctl edit tomcat9.service\n"
+"[Service]\n"
+"ReadWritePaths=/path/to/directory/\n"
+"$ sudo systemctl restart tomcat9\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:53
