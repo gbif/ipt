@@ -398,7 +398,7 @@
                                 <li><a href="#anchor-reference" class="sidebar-navigation-link"><@s.text name='manage.metadata.citations.bibliography'/></a></li>
                             </#if>
                         </#if>
-                        <li><a href="#anchor-additional" class="sidebar-navigation-link">Additional Metadata</a></li>
+                        <li><a href="#anchor-additional" class="sidebar-navigation-link"><@s.text name='manage.metadata.additional.title'/></a></li>
                     </ul>
                 </nav>
             </div>
