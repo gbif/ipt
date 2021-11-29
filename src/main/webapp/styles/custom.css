@@ -42,6 +42,10 @@
     border: 1px solid #1D86C8 !important;
 }
 
+.dropdown-item:active {
+    background-color: #1D86C8 !important;
+}
+
 /* Nav icons */
 .gbif-translate-icon, .gbif-heartbeat-icon {
     fill: #4a4a4a;
@@ -147,4 +151,34 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin
 /* Data records color */
 ul.horizontal_graph .grey_bar {
     background-color: rgba(29, 134, 200, 0.5);
+}
+
+/* Watermark color */
+#watermark {
+    color: #1D86C8;
+}
+
+/* Datepicker color */
+.datepicker table tr td span.active, .datepicker table tr td span.active.disabled, .datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active:hover {
+    background-image: linear-gradient(to bottom, #1D86C8, #1D86C8) !important;
+}
+
+.datepicker table tr td.active, .datepicker table tr td.active.disabled, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active:hover {
+    background-image: linear-gradient(to bottom, #1D86C8, #1D86C8) !important;
+}
+
+/* Select2 color */
+.select2-container--bootstrap4 .select2-results__option--highlighted, .select2-container--bootstrap4 .select2-results__option--highlighted.select2-results__option[aria-selected="true"] {
+    background-color: #1D86C8 !important;
+}
+
+.select2-container--bootstrap4.select2-container--focus .select2-selection {
+    border-color: #1D86C8 !important;
+    -webkit-box-shadow: 0 0 0 0.25rem rgba(29, 134, 200, 0.25) !important;
+    box-shadow: 0 0 0 0.25rem rgba(29, 134, 200, 0.25) !important;
+}
+
+/* Autocomplete component color */
+.ui-menu-item:hover {
+    background-color: #1D86C8;
 }
