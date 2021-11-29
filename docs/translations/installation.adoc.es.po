@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-26 21:32+0000\n"
-"PO-Revision-Date: 2021-11-29 15:23\n"
+"PO-Revision-Date: 2021-11-29 16:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -229,7 +229,7 @@ msgstr "<Context>\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:93
 msgid "Ensure the Tomcat server either has permission to create this directory, or create it and then grant read and write permission. See xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[this FAQ entry] if you have errors about write permissions on the data directory."
-msgstr ""
+msgstr "Asegúrese de que el servidor Tomcat tiene permiso para crear este directorio, o bien créelo y luego concédale permiso de lectura y escritura. Consulte xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[esta entrada de las Preguntas Frecuentes] si tiene errores sobre los permisos de escritura en el directorio de datos."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:97
@@ -249,7 +249,7 @@ msgstr "Despliegue de IPT"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:106
 msgid "Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running."
-msgstr ""
+msgstr "Descargue la última versión WAR del IPT desde la página xref:releases.adoc[releases] y renómbrela como `ipt.war` (o similar, que coincida con `ipt.xml` del paso 2 si se utiliza). Copie el archivo `ipt.war` a la carpeta webapps del Tomcat y, a continuación, inicie el Tomcat si aún no se está ejecutando."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:109
@@ -377,13 +377,13 @@ msgstr "include::partial$apache-configuration-example.conf[]\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:176
 msgid "Nginx can also be used as a reverse proxy. An example configuration is below."
-msgstr ""
+msgstr "Nginx también puede utilizarse como proxy inverso. A continuación se muestra un ejemplo de configuración."
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:181
 #, no-wrap
 msgid "include::partial$nginx-configuration-example.conf[]\n"
-msgstr ""
+msgstr "include::partial$nginx-configuration-example.conf[]\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/installation.adoc:183
