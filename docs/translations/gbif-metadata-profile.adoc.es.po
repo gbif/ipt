@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-11-29 18:25\n"
+"PO-Revision-Date: 2021-11-29 20:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -736,7 +736,9 @@ msgstr "Contener una declaración de gestión de derechos para el recurso o una 
 msgid "| Term           | Definition\n\n"
 "| {eml-location}/eml-dataset.html#purpose[purpose] | A description of the purpose of this dataset.\n\n"
 "| {eml-location}/eml-resource.html#intellectualRights[intellectualRights] | A rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might include requirements for use, requirements for attribution, or other requirements the owner would like to impose. E.g., © 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
-msgstr ""
+msgstr "| Término     | Definición\n\n"
+"| {eml-location}/eml-dataset.html#purpose[purpose] | Una descripción del propósito de este conjunto de datos.\n\n"
+"| {eml-location}/eml-resource.html#intellectualRights[intelectualRights] | Una declaración de derechos para el recurso o una referencia a un servicio que proporciona dicha información. La información sobre derechos abarca los derechos de propiedad intelectual (IPR), los derechos de autor y varios derechos de propiedad. En el caso de un conjunto de datos, los derechos pueden incluir requisitos de uso, requisitos de atribución u otros requisitos que el propietario quisiera imponer. Por ejemplo, © 2001 Regents de la Universidad de California en Santa Bárbara. Gratis para uso de todas las personas siempre que se reconozca a los propietarios en cualquier uso o publicación.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:323
