@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-26 21:32+0000\n"
-"PO-Revision-Date: 2021-11-26 22:28\n"
+"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"PO-Revision-Date: 2021-11-30 13:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -36,7 +36,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:8
-msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location."
+msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[FAQ entry] if you have problems."
 msgstr ""
 
 #. type: delimited block =
@@ -206,7 +206,8 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:82
-msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]). For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process."
+#, no-wrap
+msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.\n"
 msgstr ""
 
 #. type: Plain text
