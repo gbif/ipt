@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-26 21:32+0000\n"
-"PO-Revision-Date: 2021-11-26 22:28\n"
+"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"PO-Revision-Date: 2021-11-30 13:23\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -106,7 +106,7 @@ msgstr ""
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:35
 #, no-wrap
-msgid "$ chown -R tomcatuser:tomcatgroup directory/\n"
+msgid "$ chown -R tomcatuser:tomcatgroup directory\n"
 msgstr ""
 
 #. type: Plain text
@@ -117,7 +117,7 @@ msgstr ""
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:41
 #, no-wrap
-msgid "$ chmod -R 755 directory/\n"
+msgid "$ chmod -R 755 directory\n"
 msgstr ""
 
 #. type: Plain text
