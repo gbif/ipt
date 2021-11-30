@@ -31,13 +31,13 @@ $ ps waux | grep tomcat
 If the user is "tomcatuser", and this user belongs to group "tomcatgroup" then change the ownership of the IPT data directory (and its child folders and files) by entering the following command:
 
 ----
-$ chown -R tomcatuser:tomcatgroup directory/
+$ chown -R tomcatuser:tomcatgroup directory
 ----
 
 To ensure only this user has write permission, enter the following command:
 
 ----
-$ chmod -R 755 directory/
+$ chmod -R 755 directory
 ----
 
 On systems with security sandboxing, you may need to grant permissions to the directory.  For example, on Debian and Ubuntu you need to add a SystemD override:

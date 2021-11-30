@@ -4,7 +4,7 @@
 
 The IPT stores configuration, resources, users and logs in its data directory.  This can be set during installation, or the first time the IPT is run.
 
-A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\ipt-data` is appropriate.  The IPT must have write permission to the chosen location.
+A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[FAQ entry] if you have problems.
 
 [CAUTION]
 ====
@@ -78,7 +78,7 @@ The IPT has been tested and works well with recent releases of Tomcat 7, 8 or 9.
 --
 TIP: This step is optional, but is recommended to improve security and simplify the upgrade procedure.
 
-Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]). For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.
+Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.
 
 Define the `IPT_DATA_DIR` parameter within the file — copy and paste the text here, since the case of the letters is important:
 
