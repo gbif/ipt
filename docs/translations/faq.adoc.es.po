@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-11-30 13:23\n"
+"PO-Revision-Date: 2021-11-30 14:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -107,7 +107,7 @@ msgstr "Si el usuario es un \"tomcatuser\" y este usuario pertenece al grupo \"t
 #: en/modules/ROOT/pages/faq.adoc:35
 #, no-wrap
 msgid "$ chown -R tomcatuser:tomcatgroup directory\n"
-msgstr ""
+msgstr "$ chown -R tomcatuser:tomcatgroup directory\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:38
@@ -118,7 +118,7 @@ msgstr "Para asegurarse de que solo este usuario tenga permiso de escritura, ing
 #: en/modules/ROOT/pages/faq.adoc:41
 #, no-wrap
 msgid "$ chmod -R 755 directory\n"
-msgstr ""
+msgstr "$ chmod -R 755 directory\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:44
