@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-11-29 21:56\n"
+"PO-Revision-Date: 2021-11-30 19:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -200,7 +200,7 @@ msgstr "Partes Asociadas"
 #: en/modules/ROOT/pages/manage-resources.adoc:400
 #, no-wrap
 msgid "Project Data"
-msgstr "Datos del Proyecto"
+msgstr "Datos del proyecto"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
