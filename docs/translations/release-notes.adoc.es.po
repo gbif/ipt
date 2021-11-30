@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-12 15:02\n"
+"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"PO-Revision-Date: 2021-11-30 13:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -39,7 +39,7 @@ msgstr "Cambios importantes en esta versión"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
-#: en/modules/ROOT/pages/release-notes.adoc:87
+#: en/modules/ROOT/pages/release-notes.adoc:88
 #, no-wrap
 msgid "When all else fails"
 msgstr "Cuando todo lo demás falla"
@@ -216,46 +216,51 @@ msgstr "La lista completa de características nuevas está documentada en la xre
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:78
-msgid "IPT 2.5.1 includes a bugfix to connect to database sources, but it otherwise identical to version 2.5.0."
+msgid "IPT 2.5.2 includes a bugfix for metadata editing. Use this version rather than 2.5.0 or 2.5.1."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:79
+msgid "IPT 2.5.1 includes a bugfix to connect to database sources, but it otherwise identical to version 2.5.0."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:80
 msgid "IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work."
 msgstr "El IPT 2.5.0 incluye concectores de bases de datos (bibliotecas JDBC) actualizados para MySQL, PostgreSQL, MS SQL Server, Sybase y Oracle. Por favor, compruebe que las configuraciones de su base de datos aún funciona."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:80
+#: en/modules/ROOT/pages/release-notes.adoc:81
 msgid "IPT 2.5.0 now includes a troubleshooting page, with full details accessible only to administrators, accessible from the main menu."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:81
+#: en/modules/ROOT/pages/release-notes.adoc:82
 msgid "IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions."
 msgstr "El IPT 2.5.0 puede ahora leer una ubicación de directorio de datos desde un contenedor servlet, vea el xref:installation.adoc#tomcat[paso 2] de las instrucciones de instalación."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:82
+#: en/modules/ROOT/pages/release-notes.adoc:83
 msgid "IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)"
 msgstr "El IPT 2.5.0 ya no es compatible con Microsoft Internet Explorer. (El propio Microsoft https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[ya no es compatible con MSIE] para sus servidores online MS365.)"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:83
+#: en/modules/ROOT/pages/release-notes.adoc:84
 msgid "The documentation has moved to this new location; links have been made from the old GitHub Wiki."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:84
+#: en/modules/ROOT/pages/release-notes.adoc:85
 msgid "xref:customization.adoc[Customization] (styling etc) using `custom.css` is broken in this release, see this https://github.com/gbif/ipt/issues/1634[issue]."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:86
+#: en/modules/ROOT/pages/release-notes.adoc:87
 msgid "If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release]."
 msgstr "Si está actualizando desde una versión anterior a la 2.4, por favor, consulte las notas de la xref:2.4@release-notes.adoc[versión antigua]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:89
+#: en/modules/ROOT/pages/release-notes.adoc:90
 msgid "See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list]."
 msgstr "Explore las xref:faq.adoc[FAQ], que continúan siendo actualizadas con buenas preguntas, o pregunte en la https://lists.gbif.org/mailman/listinfo/ipt/[lista de mailing del IPT]."
 
