@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-11-30 13:22\n"
+"PO-Revision-Date: 2021-11-30 14:41\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -210,7 +210,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:78
 msgid "IPT 2.5.2 includes a bugfix for metadata editing. Use this version rather than 2.5.0 or 2.5.1."
-msgstr ""
+msgstr "IPT 2.5.2 版包含詮釋資料編輯的臭蟲修正。請避免使用 2.5.0 或 2.5.1 版。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:79
