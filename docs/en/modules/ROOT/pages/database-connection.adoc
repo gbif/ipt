@@ -14,7 +14,7 @@ The IPT can use database connections to import data from tables or views. Curren
 
 == Adding new JDBC drivers
 
-If you run the IPT within a servelet container (like Tomcat), you can add your own JDBC drivers to the IPT. This allows you to support a different database, or to change the connection settings for one of the existing database types.
+If you run the IPT within a servlet container (like Tomcat), you can add your own JDBC drivers to the IPT. This allows you to support a different database, or to change the connection settings for one of the existing database types.
 
 The following steps assume you have a working IPT installed with an "exploded" WAR, i.e. you have a folder `ipt` (or however you named your instance) in your application server's webapps folder. The IPT needs to be stopped before you start adding a driver.
 
