@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-11 10:51\n"
+"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"PO-Revision-Date: 2021-11-30 13:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -511,7 +511,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:139
-msgid "The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://197.189.235.147:8080/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance."
+msgid "The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://ipt.sanbi.org.za/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance."
 msgstr ""
 
 #. type: Title ==
