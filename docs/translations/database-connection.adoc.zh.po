@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-18 10:52+0000\n"
-"PO-Revision-Date: 2021-11-18 11:03\n"
+"PO-Revision-Date: 2021-11-30 02:57\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -61,7 +61,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:14
 msgid "Sybase"
-msgstr ""
+msgstr "Sybase"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/database-connection.adoc:15
@@ -72,12 +72,12 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:18
 msgid "If you run the IPT within a servelet container (like Tomcat), you can add your own JDBC drivers to the IPT. This allows you to support a different database, or to change the connection settings for one of the existing database types."
-msgstr ""
+msgstr "若您的 IPT 安裝在如 Tomcat 的 servlet 容器中，您可將 JDBC 驅動程式加到 IPT 中。這樣您可支援不同的資料庫，或者變更既有資料庫類型的連線設定。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:20
 msgid "The following steps assume you have a working IPT installed with an \"exploded\" WAR, i.e. you have a folder `ipt` (or however you named your instance) in your application server's webapps folder. The IPT needs to be stopped before you start adding a driver."
-msgstr ""
+msgstr "下列步驟假設您透過 exploded 方式部署 IPT，亦即在應用程式伺服器的 webapps 資料夾中有一個 ipt （或您的任何命名）資料夾。此 IPT 必須先停止以便加入驅動程式。 "
 
 #. type: Title ===
 #: en/modules/ROOT/pages/database-connection.adoc:21
@@ -93,7 +93,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:26
 msgid "You need to copy this JAR into the classpath of your webapp. The simplest is to copy it to the `ipt/WEB-INF/lib` directory."
-msgstr ""
+msgstr "您得將此 JAR 檔案複製到 webapp 的 classpath 中。最簡單的方式是複製到 ipt/WEB-INF/lib 目錄下。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/database-connection.adoc:27
@@ -129,7 +129,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:43
 msgid "`driver`: The driver Java class to be used when connecting"
-msgstr ""
+msgstr "`driver`: 連線時使用的 Java 驅動程式類別。"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:44
