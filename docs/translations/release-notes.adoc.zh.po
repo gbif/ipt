@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-09-04 19:48+0000\n"
-"PO-Revision-Date: 2021-09-04 19:53\n"
+"POT-Creation-Date: 2021-11-11 09:29+0000\n"
+"PO-Revision-Date: 2021-11-11 10:52\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -68,7 +68,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:12
-msgid "Check your system meets the xref:requirements.adoc[installation requirements] for this release."
+msgid "Check your system meets the xref:requirements.adoc[installation requirements] for this release.  Ensure your operating system and any other installed software (such as Java, Tomcat and Apache HTTPD) is up-to-date with any security patches."
 msgstr ""
 
 #. type: Plain text

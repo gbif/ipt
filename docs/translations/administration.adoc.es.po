@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2021-10-04 01:22\n"
+"PO-Revision-Date: 2021-11-26 02:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -76,7 +76,7 @@ msgstr "Cuando la configuración del IPT es guardada, el IPT prueba la disponibi
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:23
 msgid "shut down the IPT."
-msgstr ""
+msgstr "apague el IPT"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:24

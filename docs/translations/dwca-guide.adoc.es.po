@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 13:29+0000\n"
-"PO-Revision-Date: 2021-08-20 14:36\n"
+"POT-Creation-Date: 2021-11-26 21:32+0000\n"
+"PO-Revision-Date: 2021-11-26 22:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -52,8 +52,8 @@ msgstr "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:184
-#: en/modules/ROOT/pages/faq.adoc:194
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:183
+#: en/modules/ROOT/pages/faq.adoc:193
 msgid "{blank}"
 msgstr "{blank}"
 

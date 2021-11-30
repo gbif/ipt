@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:24\n"
+"POT-Creation-Date: 2021-11-30 09:31+0000\n"
+"PO-Revision-Date: 2021-11-30 12:26\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -60,8 +60,8 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:14
-msgid "Sybase databases"
-msgstr ""
+msgid "Sybase"
+msgstr "Sybase"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/database-connection.adoc:15
@@ -71,38 +71,43 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:18
-msgid "You can add your own JDBC drivers to the IPT if needed. For example if you prefer to use the Microsoft JDBC driver for SQL Server or want to add one for SQLite. The following steps assume you have a working IPT installed with an \"exploded\" WAR, i.e. you have a folder `ipt` (or however you named your instance) in your application server's webapps folder. The IPT needs to be stopped before you start adding a driver:"
-msgstr ""
+msgid "If you run the IPT within a servlet container (like Tomcat), you can add your own JDBC drivers to the IPT. This allows you to support a different database, or to change the connection settings for one of the existing database types."
+msgstr "若您的 IPT 安裝在如 Tomcat 的 servlet 容器中，您可將 JDBC 驅動程式加到 IPT 中。這樣您可支援不同的資料庫，或者變更既有資料庫類型的連線設定。"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/database-connection.adoc:20
+msgid "The following steps assume you have a working IPT installed with an \"exploded\" WAR, i.e. you have a folder `ipt` (or however you named your instance) in your application server's webapps folder. The IPT needs to be stopped before you start adding a driver."
+msgstr "下列步驟假設您透過 exploded 方式部署 IPT，亦即在應用程式伺服器的 webapps 資料夾中有一個 ipt （或您的任何命名）資料夾。此 IPT 必須先停止以便加入驅動程式。 "
 
 #. type: Title ===
-#: en/modules/ROOT/pages/database-connection.adoc:19
+#: en/modules/ROOT/pages/database-connection.adoc:21
 #, no-wrap
 msgid "Add JDBC driver JAR to classpath"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:22
+#: en/modules/ROOT/pages/database-connection.adoc:24
 msgid "First get hold of the JAR file of the driver you want to add, for example download the SQLite jar here: https://bitbucket.org/xerial/sqlite-jdbc/downloads"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:24
-msgid "You need to copy this jar into the classpath of your webapp. The simplest is to copy it to the `ipt/WEB-INF/lib` directory."
-msgstr ""
+#: en/modules/ROOT/pages/database-connection.adoc:26
+msgid "You need to copy this JAR into the classpath of your webapp. The simplest is to copy it to the `ipt/WEB-INF/lib` directory."
+msgstr "您得將此 JAR 檔案複製到 webapp 的 classpath 中。最簡單的方式是複製到 ipt/WEB-INF/lib 目錄下。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/database-connection.adoc:25
+#: en/modules/ROOT/pages/database-connection.adoc:27
 #, no-wrap
 msgid "Modify jdbc.properties"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:28
+#: en/modules/ROOT/pages/database-connection.adoc:30
 msgid "In order for the IPT to understand which drivers are available and how to construct the JDBC URL for it, we maintain a simple properties file with all the information. Open `ipt/WEB-INF/classes/jdbc.properties` and inspect the existing entries, for example for PostgreSQL:"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/database-connection.adoc:35
+#: en/modules/ROOT/pages/database-connection.adoc:37
 #, no-wrap
 msgid "# PostgreSQL driver\n"
 "pgsql.title=PostgreSQL\n"
@@ -112,37 +117,48 @@ msgid "# PostgreSQL driver\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:38
+#: en/modules/ROOT/pages/database-connection.adoc:40
 msgid "There are 4 properties that you need to add for each driver. All 4 have to start with the same prefix that you can freely choose without any further meaning:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:40
+#: en/modules/ROOT/pages/database-connection.adoc:42
 msgid "`title`: The title to be displayed in the IPT for this driver"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:41
-msgid "`driver`: The driver java class to be used when connecting"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:42
-msgid "`url`: A template to build the url for connecting. There are 2 variables that can be used in the url string which will be replaced by the actual settings configured: `\\{host}` and `\\{database}`"
-msgstr ""
-
-#. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:43
+msgid "`driver`: The driver Java class to be used when connecting"
+msgstr "`driver`: 連線時使用的 Java 驅動程式類別。"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/database-connection.adoc:44
+msgid "`url`: A template to build the URL for connecting. There are 2 variables that can be used in the URL string which will be replaced by the actual settings configured: `\\{host}` and `\\{database}`"
+msgstr "`url`: 建立建線 URL 的範本。URL 字串中有兩個從設定中取得的變數：`\\{host}` 和 `\\{database}`。 "
+
+#. type: Plain text
+#: en/modules/ROOT/pages/database-connection.adoc:45
 msgid "`limitType`: How to limit the amount of data returned. Possible values are `LIMIT`, `TOP`, `ROWNUM`. This is driver specific."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:45
-msgid "In the SQLite example above the driver connects to a file, so no `\\{host}` is used in the url template. Please add the following to the jdbc.properties to add the SQLite driver:"
-msgstr ""
+#: en/modules/ROOT/pages/database-connection.adoc:47
+msgid "In the PostgreSQL example above, and with reference to the https://jdbc.postgresql.org/documentation/head/connect.html[PostgreSQL driver documentation], the following change would enable an encrypted connection:"
+msgstr "在上面 PostgreSQL 的範例中，參考https://jdbc.postgresql.org/documentation/head/connect.html[PostgreSQL 驅動程式文件]，下面的變更將產生加密的連線："
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/database-connection.adoc:55
+#: en/modules/ROOT/pages/database-connection.adoc:50
+#, no-wrap
+msgid "pgsql.url=jdbc:postgresql://{host}/{database}?sslmode=require\n"
+msgstr "pgsql.url=jdbc:postgresql://{host}/{database}?sslmode=require\n"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/database-connection.adoc:53
+msgid "The following example is for an SQLite driver.  This connects to a file, so no `\\{host}` is used in the URL template:"
+msgstr "下列範例為 SQLite 驅動程式。這將連結至一檔案，故 URL 範本中不需 `\\{host}`。"
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/database-connection.adoc:63
 #, no-wrap
 msgid "# SQLite driver\n"
 "# uses files only, so {host} is ignored\n"
@@ -155,7 +171,7 @@ msgid "# SQLite driver\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/database-connection.adoc:57
+#: en/modules/ROOT/pages/database-connection.adoc:65
 msgid "Now you can restart the IPT and use the new driver for mapping SQLite data sources."
 msgstr ""
 
