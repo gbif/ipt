@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-11-30 13:23\n"
+"PO-Revision-Date: 2021-11-30 14:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -37,7 +37,7 @@ msgstr "El IPT almacena la configuración, los recursos, los usuarios y las bit�
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:8
 msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[FAQ entry] if you have problems."
-msgstr ""
+msgstr "Una ubicación típica en Linux es `/var/lib/ipt` (instalado desde los paquetes) o `/srv/ipt` (ejecutado en Tomcat).  En Windows, `C:\\ipt-data` es apropiado.  El IPT debe tener permiso de escritura en la ubicación elegida, consulte la xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[entrada FAQ] si tiene problemas."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:12
@@ -210,7 +210,7 @@ msgstr "Este paso es opcional, pero se recomienda para mejorar la seguridad y si
 #: en/modules/ROOT/pages/installation.adoc:82
 #, no-wrap
 msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.\n"
-msgstr ""
+msgstr "Localice el directorio de configuración de Tomcat (normalmente `/etc/tomcat` o `/etc/tomcat9` en Linux, `C:\\gram FilesApache Software Foundation\\Tomcat X.Y\\conf` en Windows) y cree un archivo `Catalina/localhost/ipt.xml` (descrito en la https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[documentación de Tomcat \"Definiendo un contexto\"]).   Por ejemplo, en una instalación típica de CentOS Linux, el archivo sería `/etc/tomcat/Catalina/localhost/ipt.xml`. El archivo debe ser legible por el proceso de Tomcat.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:84
