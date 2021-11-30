@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-11-30 16:09\n"
+"PO-Revision-Date: 2021-11-30 17:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -59,7 +59,7 @@ msgstr "Si tiene un directorio de datos de un IPT que ejecutado anteriormente de
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:14
 msgid "If you receive an error stating the location is not writable, see xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[the FAQ item on this]."
-msgstr ""
+msgstr "Si recibe un error que indica que la ubicación no tiene permisos de escritura, consulte el xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[elemento de preguntas frecuentes sobre este tema]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:16
@@ -76,12 +76,12 @@ msgstr "ipt2/setup/IPTSetup1.png"
 #: en/modules/ROOT/pages/initial-setup.adoc:19
 #, no-wrap
 msgid "Administrator user and URLs"
-msgstr ""
+msgstr "Usuario administrador y URLs"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:21
 msgid "If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:"
-msgstr ""
+msgstr "Si el paso inicial de asignación del directorio de datos ha sido exitoso, el IPT presentará una segunda página de configuración (ver la imagen más abajo) en la que se debe ingresar la información sobre el administrador predeterminado del IPT, junto con la información sobre el modo en que debe ejecutarse el IPT y cómo se accederá al IPT desde Internet. A continuación se explican los campos que se encuentran en la segunda página de configuración:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:23
@@ -152,7 +152,7 @@ msgstr "*Modo del IPT*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:49
 msgid "Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (which can be requested from DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible."
-msgstr ""
+msgstr "Elija entre el modo de Prueba y el modo de Producción. El modo de prueba es para evaluar el IPT o ejecutarlo en un escenario de entrenamiento, los registros irán a un registro de prueba y los recursos nunca serán indexados. Todos los DOIs asignados para los recursos en modo de prueba deben utilizar un prefijo de prueba (que se puede solicitar a DataCite), lo que significa que son temporales. El modo de producción, por otro lado, es para la publicación formal de recursos, los recursos se registran en el Registro de GBIF y serán indexados. Los DOIs asignados para los recursos no pueden ser borrados y requieren que los recursos permanezcan accesibles al público."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:52
