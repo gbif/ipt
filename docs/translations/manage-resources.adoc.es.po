@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-12-01 17:12\n"
+"PO-Revision-Date: 2021-12-01 23:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -611,12 +611,12 @@ msgstr "El IPT puede importar archivos de texto sin comprimir (CSV, tabulador y 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:147
 msgid "Click on the button labelled \"Clear\" to remove the choice of URL and return to the previous state before any data source was selected. Or, click on the button labelled \"Add\" to open the Source Data URL detail page."
-msgstr ""
+msgstr "Haga clic en el botón \"Limpiar\" para eliminar el archivo seleccionado y volver al estado anterior a la selección del archivo fuente. Alternativamente, haga clic en el botón \"Agregar\" para abrir la página de detalles de la URL del \"archivo de fuente de datos\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:149
 msgid "This page shows the name of the resource along with a summary of the URL characteristics (readability, number of columns detected, URL location, the number of rows detected, and the date the URL was last loaded into the IPT). The Source Data URL detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr ""
+msgstr "Esta página muestra el nombre del recurso junto con un resumen de las características de la URL (legibilidad, número de columnas detectadas, ubicación de la URL, el número de filas detectadas y la fecha en que la URL se cargó por última vez en el IPT). La página de detalles de la URL del \"archivo de fuente de datos\" permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y previsualizar el archivo."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:150
@@ -627,7 +627,7 @@ msgstr "ipt2/manage/IPTManageResourceSourceURL.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:153
 msgid "From this point, the process is very similar to using a file as a data source.  See the <<File as data source>> section for an explanation of the page."
-msgstr ""
+msgstr "A partir de este punto, el proceso es muy similar al de utilizar un archivo como fuente de datos. Consulte la sección <<Archivo como fuente de datos>> para consultar una explicación de la página."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:154
@@ -1006,7 +1006,7 @@ msgstr "Metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:263
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labelled \"Edit\" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page."
-msgstr ""
+msgstr "Esta área de la página de la vista general del recurso permite al usuario editar los metadatos del recurso. Haciendo clic en el botón \"Editar\" del panel de la izquierda se pueden editar los metadatos. El panel de la derecha muestra cuándo se modificaron los metadatos por última vez. Cada recurso requiere un conjunto mínimo de metadatos descriptivos para i) ser publicado en la red de GBIF, ii) ser registrado en DataCite (en otras palabras, tener asignado un DOI). Si falta alguno de los metadatos requeridos, la página de vista general del recurso se abrirá con un mensaje de advertencia en el área de metadatos de la página."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:264
@@ -1033,7 +1033,7 @@ msgstr "A continuación se encuentra una lista de las páginas de metadatos y su
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:274
 msgid "All metadata fields on this page are required. Please note for each contact you must supply at least a last name, a position or an organization."
-msgstr ""
+msgstr "Todos los campos de metadatos de esta página son obligatorios. Tenga en cuenta que para cada contacto debe proporcionar al menos un apellido, un cargo o una organización."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:275
