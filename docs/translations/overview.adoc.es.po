@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:21+0000\n"
-"PO-Revision-Date: 2021-12-01 00:24\n"
+"PO-Revision-Date: 2021-12-01 01:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,7 +42,7 @@ msgstr "La mayoría de los controles de la interfaz del usuario tienen los modos
 #: en/modules/ROOT/pages/overview.adoc:9
 #, no-wrap
 msgid "*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the ☰ button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role, and the currently active screen is highlighted.\n"
-msgstr ""
+msgstr "*Menús*, en el IPT aparece una barra de menús en casi todas las páginas. (En las pantallas pequeñas, aparece debajo del botón ☰).  El menú está poblado de elementos de menú que guían a los usuarios a los temas fundamentales. Los elementos del menú aparecen en función de lo que el usuario actual está autorizado a ver según su rol y la pantalla actualmente activa aparece resaltada.\n"
 
 #. type: Block title
 #: en/modules/ROOT/pages/overview.adoc:10
@@ -89,7 +89,7 @@ msgstr "*Cuadros de texto* - Permiten establecer un valor como visto, como verda
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:22
 msgid "Example text box and label for an email address:"
-msgstr ""
+msgstr "Ejemplo de caja de texto y etiqueta para una dirección de correo electrónico:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:23
@@ -319,7 +319,7 @@ msgstr "https://github.com/gbif/ipt/issues/[*Reportar un error*] - Este enlace a
 #: en/modules/ROOT/pages/overview.adoc:96
 #, no-wrap
 msgid "https://github.com/gbif/ipt/issues/new[*Request new feature*] - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.\n"
-msgstr ""
+msgstr "https://github.com/gbif/ipt/issues/new[*Solicitar una nueva función*]: Este enlace abre un formulario específico en el seguidor de problemas del IPT que se puede llenar para solicitar una capacidad que el IPT no tiene actualmente.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:96
