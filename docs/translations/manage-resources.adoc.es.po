@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-11-30 19:38\n"
+"PO-Revision-Date: 2021-12-01 00:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -101,7 +101,7 @@ msgstr "Menú Gestión de Recursos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:4
 msgid "This menu is visible to users with an Admin or Manager role."
-msgstr ""
+msgstr "Este menú es visible para los usuarios que tienen el rol de Administrador o Editor."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:6
