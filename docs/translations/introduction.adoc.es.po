@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 12:53+0000\n"
-"PO-Revision-Date: 2021-08-20 19:00\n"
+"PO-Revision-Date: 2021-12-01 00:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,7 +42,7 @@ msgstr "*Administradores*: encargados de instalar y configurar el IPT. Pueden re
 #: en/modules/ROOT/pages/introduction.adoc:9
 #, no-wrap
 msgid "*Resource Managers*: they are able to create, edit, remove and manage resources (data sets and metadata). Depending on the settings they may or may not have registration rights to publish resources through the GBIF Network. Resource managers should refer to the different xref:how-to-publish.adoc[tutorials] depending on the type of data that they need to deal with (xref:resource-metadata.adoc[metadata], xref:occurrence-data.adoc[occurrences], special data types through extensions, etc.). The xref:manage-resources.adoc[Manage Resources Menu] section will also be very helpful for resource managers.\n"
-msgstr ""
+msgstr "*Administradores de recursos*: tienen la posibilidad de crear, editar, eliminar y manejar los recursos (conjuntos de datos y metadatos). Dependiendo de los ajustes, estos usuarios pueden tener o no, derechos de registro para publicar recursos a través de la red de GBIF. Los administradores de recursos deberán consultar los diferentes xref:how-to-publish.adoc[tutoriales], dependiendo del tipo de datos que deban administrar (xref:resource-metadata.adoc[metadatos], xref:occurrence-data.adoc[registros biológicos],  tipos especiales de datos a través de extensiones, etc.). La sección xref:manage-resources.adoc[Menú Gestión de Recursos]  también será muy útil para los administradores de recursos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:9
