@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-12-01 15:05\n"
+"PO-Revision-Date: 2021-12-01 16:00\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -306,7 +306,7 @@ msgstr "Conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:64
 msgid "This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:"
-msgstr ""
+msgstr "Esta área de la página \"Vista General del Recurso\" permite al usuario importar datos primarios al IPT a partir de archivos, bases de datos o URL. Si un recurso no tiene fuente de datos, es considerado un recurso de metadatos con información acerca de un conjunto de datos o una colección, pero sin ningún tipo de datos primarios. Es posible conectar un recurso a más de una fuente de datos, si estas están relacionadas entre sí. Encontrará más información sobre la relación entre múltiples fuentes de datos en la sección http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Guía de Implementación (Implementation Guide)] de la \"Guía de Texto\" de Darwin Core. A continuación se encuentran las explicaciones de la etapa preliminar para seleccionar la fuente de datos, ya sea de archivos de texto, de fuentes de bases de datos o de un archivo de texto disponible en una URL:"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:65
@@ -317,7 +317,7 @@ msgstr "Archivo como fuente de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:67
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click on the button labelled \"Browse…\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, archivos separados por tabuladores y archivos que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip. También se admiten archivos de Excel. Haga clic en el botón \"Examinar...\" para navegar y seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, su nombre aparecerá a la derecha del botón \"Examinar...\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:68
@@ -335,13 +335,13 @@ msgstr "Haga clic en el botón \"Limpiar\" para eliminar el archivo seleccionado
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:73
 msgid "If the IPT detects the number of columns in a mapped data source has changed when overwriting it, the user is warned that they should update its mappings."
-msgstr ""
+msgstr "Si el IPT detecta que el número de columnas de una fuente de datos mapeada ha cambiado al sobrescribirla, se advierte al usuario que debe actualizar sus mapeos."
 
 #. type: Block title
 #: en/modules/ROOT/pages/manage-resources.adoc:75
 #, no-wrap
 msgid "Upload limits"
-msgstr ""
+msgstr "Límites de carga"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:78
@@ -351,22 +351,22 @@ msgstr "El IPT tiene un límite de 200MB para la carga de archivos. Sin embargo 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:80
 msgid "compress the file with Zip or Gzip"
-msgstr ""
+msgstr "Comprimir el archivo (con zip o gzip)"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:81
 msgid "load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]"
-msgstr ""
+msgstr "Cargar los datos a una de las xref:database-connection.adoc[bases de datos soportadas por el IPT]"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:82
 msgid "retrieve the file from a URL"
-msgstr ""
+msgstr "recuperar el archivo desde una URL"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:83
 msgid "split the file up (when the dataset is published the IPT will concatenate the files in the order they are mapped)"
-msgstr ""
+msgstr "dividir el archivo (cuando se publique el conjunto de datos, el IPT concatenará los archivos en el orden en que sean mapeados)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:86
@@ -432,13 +432,13 @@ msgstr "*Reporte de la Fuente* - Este enlace descarga el archivo que contiene el
 #: en/modules/ROOT/pages/manage-resources.adoc:98
 #, no-wrap
 msgid "*Analyse* - click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.\n"
-msgstr ""
+msgstr "*Analizar* - Haga clic en este botón para generar un resumen de datos basado en la configuración del archivo en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura y, si es así, el número de columnas que hay en los resultados de la sentencia SQL.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Preview* image:ipt2/manage/preview.png[width=32,height=31] - click on this button to see an interpretation of the data within the file.\n"
-msgstr ""
+msgstr "*Vista Previa* image:ipt2/manage/preview.png[width=32,height=31] - Haga clic en este botón para ver una interpretación de los datos contenidos en el archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
@@ -508,7 +508,7 @@ msgstr "Base de Datos como fuente de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:117
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, choose \"Database\" from the list of source data types in the left-hand column of the Source Data area of the Resource Overview page, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr ""
+msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones de bases de datos compatibles. Para configurar una base de datos como fuente de datos, haga clic en el botón \"Conectar a BD\" en la columna de la izquierda del área \"Fuente de Datos\" de la página \"Vista General del Recurso\". Esto abrirá una página detallada de Fuente de Base de Datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
@@ -518,7 +518,7 @@ msgstr "La página detallada de Fuente de Base de Datos muestra el nombre del re
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:121
 msgid "If the IPT detects the number of columns in a mapped data source has changed when editing it, the user is warned that they should update its mappings."
-msgstr ""
+msgstr "Si el IPT detecta que el número de columnas de una fuente de datos mapeada ha cambiado al editarla, se advierte al usuario que debe actualizar sus mapeos."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:122
@@ -601,12 +601,12 @@ msgstr "Después de establecer los parámetros de la fuente de datos de manera q
 #: en/modules/ROOT/pages/manage-resources.adoc:141
 #, no-wrap
 msgid "URL as data source"
-msgstr ""
+msgstr "URL como fuente de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:143
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Select \"URL\" from the source data type dropdown list under \"Source Data\", then type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto sin comprimir (CSV, tabulador y archivos con cualquier otro delimitador) directamente desde una URL. Seleccione \"URL\" en la lista desplegable de fuente de datos en \"Fuente de Datos\" y, a continuación, escriba o copie y pegue la URL completa (incluyendo `http://` o `https://`) en el cuadro siguiente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:147
