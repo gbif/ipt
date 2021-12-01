@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-12-01 16:00\n"
+"PO-Revision-Date: 2021-12-01 17:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -141,7 +141,7 @@ msgstr "*Autor* - El usuario del IPT que creó el recurso.\n"
 #: en/modules/ROOT/pages/manage-resources.adoc:15
 #, no-wrap
 msgid "Create a New Resource"
-msgstr "Creación de un nuevo recurso"
+msgstr "Crear un nuevo recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:17
