@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-11-30 17:18\n"
+"PO-Revision-Date: 2021-12-01 00:24\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -162,17 +162,17 @@ msgstr "URL pública"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:54
 msgid "The public, Internet-accessible URL that points to the root of this IPT installation. The URL is detected automatically if possible.  On production systems it needs to be accessible via the Internet in order for the IPT to function fully.  Configuring the IPT Public URL to use localhost, for example, will not allow the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow resources to be publicly accessible."
-msgstr ""
+msgstr "La URL pública, accesible a través de Internet, que apunta a la raíz de esta instalación de IPT. La URL se detecta automáticamente si es posible. En los sistemas de producción tiene que ser accesible a través de Internet para que el IPT funcione correctamente.  Configurar la URL pública del IPT para usar localhost, por ejemplo, no permitirá que el IPT se registre en GBIF, no permitirá que el IPT se asocie con una organización y no permitirá que los recursos sean accesibles públicamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:56
 msgid "Institutional proxy URL (optional)"
-msgstr ""
+msgstr "URL del proxy institucional (opcional)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:58
 msgid "If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `\\http://proxy.example.org:8080`."
-msgstr ""
+msgstr "Si el servidor en el que está instalado el IPT no tiene acceso HTTP / HTTPS directo a Internet, sino que debe enrutar las solicitudes HTTP / HTTPS salientes a través de un servidor proxy institucional, ingrese la dirección del host y el número de puerto aquí. Por ejemplo, `http://proxy.example.org:8080`."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/initial-setup.adoc:59
@@ -199,5 +199,5 @@ msgstr "Haga clic en el botón \"Continuar\" para abrir la página de Administra
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:69
 msgid "Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the following sections of this user manual."
-msgstr ""
+msgstr "Una vez se hayan completado los pasos de esta \"Guía de Instalación\", el IPT estará listo para agregar recursos (conjuntos de datos y metadatos). Es recomendable revisar los tutoriales para entender cómo se llevan a cabo las tareas comunes del IPT. Para una explicación detallada de cualquier otro aspecto del IPT,  onsulte las siguientes secciones de este manual del usuario."
 
