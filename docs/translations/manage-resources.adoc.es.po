@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-12-01 00:24\n"
+"PO-Revision-Date: 2021-12-01 15:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:272
 #, no-wrap
 msgid "Basic Metadata"
-msgstr "Metadatos Básicos"
+msgstr "Metadatos básicos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
@@ -30,7 +30,7 @@ msgstr "Metadatos Básicos"
 #: en/modules/ROOT/pages/manage-resources.adoc:315
 #, no-wrap
 msgid "Geographic Coverage"
-msgstr "Cobertura Geográfica"
+msgstr "Cobertura geográfica"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
@@ -39,7 +39,7 @@ msgstr "Cobertura Geográfica"
 #: en/modules/ROOT/pages/manage-resources.adoc:326
 #, no-wrap
 msgid "Taxonomic Coverage"
-msgstr "Cobertura Taxonómica"
+msgstr "Cobertura taxonómica"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
@@ -48,14 +48,14 @@ msgstr "Cobertura Taxonómica"
 #: en/modules/ROOT/pages/manage-resources.adoc:350
 #, no-wrap
 msgid "Temporal Coverage"
-msgstr "Cobertura Temporal"
+msgstr "Cobertura temporal"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
 #: en/modules/ROOT/pages/manage-resources.adoc:389
 #, no-wrap
 msgid "Associated Parties"
-msgstr "Partes Asociadas"
+msgstr "Partes asociadas"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
@@ -69,7 +69,7 @@ msgstr "Datos del proyecto"
 #: en/modules/ROOT/pages/manage-resources.adoc:419
 #, no-wrap
 msgid "Sampling Methods"
-msgstr "Métodos de Muestreo"
+msgstr "Métodos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
@@ -83,14 +83,14 @@ msgstr "Referencias"
 #: en/modules/ROOT/pages/manage-resources.adoc:460
 #, no-wrap
 msgid "Collection Data"
-msgstr "Datos de la Colección"
+msgstr "Datos de la colección"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
 #: en/modules/ROOT/pages/manage-resources.adoc:511
 #, no-wrap
 msgid "Additional Metadata"
-msgstr "Metadatos Adicionales"
+msgstr "Metadatos adicionales"
 
 #. type: Title =
 #: en/modules/ROOT/pages/manage-resources.adoc:1
@@ -118,7 +118,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:9
 #, no-wrap
 msgid "Manage Resources Table"
-msgstr "Tabla Gestión de Recursos"
+msgstr "Tabla gestión de recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:11
@@ -141,43 +141,43 @@ msgstr "*Autor* - El usuario del IPT que creó el recurso.\n"
 #: en/modules/ROOT/pages/manage-resources.adoc:15
 #, no-wrap
 msgid "Create a New Resource"
-msgstr "Creación de un Nuevo Recurso"
+msgstr "Creación de un nuevo recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:17
 msgid "Below the Manage Resource table is a form that can be used to create a new resource. First, a unique \"shortname\" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., \"firstresource\" or \"first_resource\", but not \"first resource\" or \"première ressource!\"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived:"
-msgstr ""
+msgstr "Debajo de la tabla de Gestión de Recursos hay un formulario que puede utilizarse para crear un nuevo recurso. En primer lugar, debe proporcionarse un \"nombre corto\" único para el recurso. Este nombre corto se utilizará para identificar de forma exclusiva el recurso dentro de la instancia IPT y se utilizará dentro de la URL para acceder al recurso a través de Internet. El nombre corto debe tener al menos tres caracteres, puede contener caracteres alfanuméricos (A-Z, a-z y 0-9), pero no debe contener espacios en blanco, signos de puntuación que no sean guiones o guiones bajos, ni caracteres acentuados (por ejemplo, \"primerrecurso\" o \"primer_recurso\", pero no \"primer recurso\" o \"première ressource!\"). En segundo lugar, se puede proporcionar un tipo de recurso (opcional). Tenga en cuenta que cuando se cargue un archivo (ver más adelante) el tipo se determinará automáticamente y sobrescribirá esta selección. En tercer lugar, se puede cargar un archivo (opcional). Las siguientes secciones describen los 3 tipos diferentes de archivos de los que se puede derivar un nuevo recurso:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:19
 msgid "<<Upload a Darwin Core Archive,Darwin Core Archive>>,"
-msgstr ""
+msgstr "<<Cargar un Archivo Darwin Core,Archivo Darwin Core>>,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:20
 msgid "<<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,"
-msgstr ""
+msgstr "<<Cargar una carpeta comprimida con un recurso IPT configurado, carpeta comprimida (.zip) con un recurso IPT configurado>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:21
 msgid "<<Upload a metadata file,metadata file>>."
-msgstr ""
+msgstr "<<Cargar un archivo de metadatos,archivo de metadatos>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
-msgstr ""
+msgstr "Por supuesto, siempre se puede simplemente _crear un recurso completamente nuevo_ sin cargar un archivo que contenga un recurso. Con esta opción, la configuración del recurso tendrá que crearse en su totalidad a través de los formularios del IPT, incluyendo cargar archivos de datos fuente (o la conexión a una base de datos o a URLs) y el mapeo de los campos de los mismos a términos en la extensión o extensiones adecuadas. *Tenga en cuenta que el IPT tiene un límite de carga de archivos de 200MB*, sin embargo, no hay *límite en el tamaño del Archivo Darwin Core que el IPT puede exportar/publicar*. Consulte la sección <<límites de carga, nota sobre los límites de carga de archivos>> para saber cómo evitar el límite de carga de archivos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
 msgid "Begin by entering a new resource shortname as described above, and then click on the button labelled \"Create\". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section."
-msgstr "Para hacerlo, hay que comenzar ingresando un nombre corto para el nuevo recurso, como se describió anteriormente, y luego hacer clic en el botón \"Crear\". Se abrirá inmediatamente la página de Vista General del Recurso. Proceda a completar las diferentes secciones de la página gestión del recurso teniendo en cuenta las descripciones bajo el encabezado \"\"Vista General del Recurso\" de la sección \"Menú Gestión de Recursos\"."
+msgstr "Para hacerlo, hay que comenzar ingresando un nombre corto para el nuevo recurso, como se describió anteriormente, y luego hacer clic en el botón \"Crear\". Se abrirá inmediatamente la página de Vista General del Recurso. Proceda a completar las diferentes secciones de la página gestión del recurso teniendo en cuenta las descripciones bajo el encabezado \"Vista General del Recurso\" de la sección \"Menú Gestión de Recursos\"."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:26
 #, no-wrap
 msgid "Upload a Darwin Core Archive"
-msgstr "Cargar un Archivo Darwin Core"
+msgstr "Cargar un archivo Darwin Core"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:28
@@ -256,7 +256,7 @@ msgstr "Cargar un archivo de metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:49
 msgid "The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile and how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the xref:gbif-metadata-profile.adoc[GBIF Metadata Profile – How To Guide]. To import a metadata file, select the resource type \"metadata-only\", then click on the button labelled \"Choose File\", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr ""
+msgstr "El IPT puede importar y exportar archivos válidos de metadatos de conjuntos de datos que se ajusten al Perfil de Metadatos de GBIF. La información acerca del Perfil de Metadatos EML de GBIF y cómo crear un documento de metadatos que se ajuste al Perfil de Metadatos de GBIF Darwin Core puede ser encontrada en el xref:gbif-metadata-profile.adoc[Perfil de metadatos de GBIF - Guía práctica]. Para importar un archivo de metadatos, seleccione el tipo de recurso \"solamente metadatos\" y haga clic en el botón \"Examinar\", busque y seleccione el archivo de metadatos deseado. Después de seleccionar el archivo, el nombre aparecerá junto al botón de \"Examinar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:50
