@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-12-01 00:24\n"
+"PO-Revision-Date: 2021-12-01 22:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -54,7 +54,7 @@ msgstr "no seleccione un directorio de datos que sea vulnerable a cambios o elim
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:12
 msgid "If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup. Clicking on \"Save\" in this case will bypass the page titled IPT setup II and present the IPT Administration page."
-msgstr "Si tiene un directorio de datos de un IPT que ejecutado anteriormente de la misma versión y quiere usar esa configuración (incluyendo los usuarios y los recursos), puede ingresar la ruta absoluta de ese directorio de datos en este primer paso de la configuración del IPT. Al hacer clic en \"Guardar\" en este caso, se omitirá la página titulada Instalación del IPT parte II y se presentará la página de Administración del IPT."
+msgstr "Si tiene un directorio de datos de un IPT que estaba ejecutando anteriormente de la misma versión y quiere usar esa configuración (incluyendo los usuarios y los recursos), puede ingresar la ruta absoluta de ese directorio de datos en este primer paso de la configuración del IPT. Al hacer clic en \"Guardar\" en este caso, se omitirá la página titulada \"Instalación del IPT parte II\" y se presentará la página de Administración del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:14
