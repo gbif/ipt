@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-12-02 00:16\n"
+"PO-Revision-Date: 2021-12-02 20:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -256,7 +256,7 @@ msgstr "Cargar un archivo de metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:49
 msgid "The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile and how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the xref:gbif-metadata-profile.adoc[GBIF Metadata Profile – How To Guide]. To import a metadata file, select the resource type \"metadata-only\", then click on the button labelled \"Choose File\", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr "El IPT puede importar y exportar archivos válidos de metadatos de conjuntos de datos que se ajusten al Perfil de Metadatos de GBIF. La información acerca del Perfil de Metadatos EML de GBIF y cómo crear un documento de metadatos que se ajuste al Perfil de Metadatos de GBIF Darwin Core puede ser encontrada en el xref:gbif-metadata-profile.adoc[Perfil de metadatos de GBIF - Guía práctica]. Para importar un archivo de metadatos, seleccione el tipo de recurso \"solamente metadatos\" y haga clic en el botón \"Examinar\", busque y seleccione el archivo de metadatos deseado. Después de seleccionar el archivo, el nombre aparecerá junto al botón de \"Examinar\"."
+msgstr "El IPT puede importar y exportar archivos válidos de metadatos de conjuntos de datos que se ajusten al Perfil de Metadatos de GBIF. La información acerca del Perfil de Metadatos EML de GBIF y cómo crear un documento de metadatos que se ajuste al Perfil de Metadatos de GBIF Darwin Core puede ser encontrada en el xref:gbif-metadata-profile.adoc[Perfil de Metadatos de GBIF - Guía Práctica]. Para importar un archivo de metadatos, seleccione el tipo de recurso \"solamente metadatos\" y haga clic en el botón \"Examinar\", busque y seleccione el archivo de metadatos deseado. Después de seleccionar el archivo, el nombre aparecerá junto al botón de \"Examinar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:50
@@ -432,13 +432,13 @@ msgstr "*Reporte de la Fuente* - Este enlace descarga el archivo que contiene el
 #: en/modules/ROOT/pages/manage-resources.adoc:98
 #, no-wrap
 msgid "*Analyse* - click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.\n"
-msgstr "*Analizar* - Haga clic en este botón para generar un resumen de datos basado en la configuración del archivo en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura y, si es así, el número de columnas que hay en los resultados de la sentencia SQL.\n"
+msgstr "*Analizar* - haga clic en este botón para generar un resumen de datos basado en la configuración del archivo en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura y, si es así, el número de columnas que contiene.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Preview* image:ipt2/manage/preview.png[width=32,height=31] - click on this button to see an interpretation of the data within the file.\n"
-msgstr "*Vista Previa* image:ipt2/manage/preview.png[width=32,height=31] - Haga clic en este botón para ver una interpretación de los datos contenidos en el archivo.\n"
+msgstr "*Vista Previa* image:ipt2/manage/preview.png[width=32,height=31] - haga clic en este botón para ver una interpretación de los datos contenidos en el archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
@@ -606,7 +606,7 @@ msgstr "URL como fuente de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:143
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Select \"URL\" from the source data type dropdown list under \"Source Data\", then type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr "El IPT puede importar archivos de texto sin comprimir (CSV, tabulador y archivos con cualquier otro delimitador) directamente desde una URL. Seleccione \"URL\" en la lista desplegable de fuente de datos en \"Fuente de Datos\" y, a continuación, escriba o copie y pegue la URL completa (incluyendo `http://` o `https://`) en el cuadro siguiente."
+msgstr "El IPT puede importar archivos de texto sin comprimir (CSV, tabulador y archivos con cualquier otro delimitador) directamente desde una URL. Seleccione \"URL\" en la lista desplegable de tipo de fuente de datos en \"Fuente de Datos\" y, a continuación, escriba o copie y pegue la URL completa (incluyendo `http://` o `https://`) en el cuadro siguiente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:147
@@ -1006,7 +1006,7 @@ msgstr "Metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:263
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labelled \"Edit\" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page."
-msgstr "Esta área de la página de la vista general del recurso permite al usuario editar los metadatos del recurso. Haciendo clic en el botón \"Editar\" del panel de la izquierda se pueden editar los metadatos. El panel de la derecha muestra cuándo se modificaron los metadatos por última vez. Cada recurso requiere un conjunto mínimo de metadatos descriptivos para i) ser publicado en la red de GBIF, ii) ser registrado en DataCite (en otras palabras, tener asignado un DOI). Si falta alguno de los metadatos requeridos, la página de vista general del recurso se abrirá con un mensaje de advertencia en el área de metadatos de la página."
+msgstr "Esta área de la página \"Vista general del recurso\" permite al usuario editar los metadatos del recurso. Haciendo clic en el botón \"Editar\" del panel de la izquierda, se pueden editar los metadatos. El panel de la derecha muestra cuándo se modificaron los metadatos por última vez. Cada recurso requiere un conjunto mínimo de metadatos descriptivos para i) ser publicado en la red de GBIF, ii) ser registrado en DataCite (en otras palabras, tener asignado un DOI). Si falta alguno de los metadatos requeridos, la página de vista general del recurso se abrirá con un mensaje de advertencia en el área de metadatos de la página."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:264
@@ -1649,7 +1649,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:439
 msgid "Free-text citations get overwritten on the GBIF.org dataset page - learn more in the https://www.gbif.org/faq?q=citation[GBIF FAQ]."
-msgstr "las citas de texto libre son sobrescritas en la página del conjunto de datos en GBIF.org. Obtenga más información la página de https://www.gbif.org/faq?q=citation[preguntas frecuentes de GBIF]."
+msgstr "las citas de texto libre son sobrescritas en la página del conjunto de datos en GBIF.org. Obtenga más información en la página de https://www.gbif.org/faq?q=citation[preguntas frecuentes de GBIF]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:441
@@ -1783,7 +1783,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:476
 #, no-wrap
 msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
-msgstr "*Métodos de preservación de especímenes* - la lista de métodos de preservación de especímenes cubiertos por el recurso, indicando el proceso o la técnica utilizada para prevenir el deterioro físico de las colecciones muertas. Los valores a elegir se basan en el {latest-preservation-method}[Método de Preservación de los Especímenes de GBIF]. Recuerde que puede incluir una lista de preparaciones y métodos de preservación para un espécimen en el elemento \"Preparaciones\" del mapeo de datos DwC (http://rs.tdwg.org/dwc/terms/preparations). Por favor, no seleccione ningún tratamiento para colecciones vivas. Esto puede referirse a la(s) unidad(es) de conservación de la colección.\n"
+msgstr "*Métodos de preservación de especímenes* - la lista de métodos de preservación de especímenes cubiertos por el recurso, indicando el proceso o la técnica utilizada para prevenir el deterioro físico de las colecciones (no vivas). Los valores a elegir se basan en el {latest-preservation-method}[Método de Preservación de los Especímenes de GBIF]. Recuerde que puede incluir una lista de preparaciones y métodos de preservación para un espécimen en el elemento \"Preparaciones\" del mapeo de datos DwC (http://rs.tdwg.org/dwc/terms/preparations). Por favor, no seleccione ningún tratamiento para colecciones vivas. Esto puede referirse a la(s) unidad(es) de conservación de la colección.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:477
