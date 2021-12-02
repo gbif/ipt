@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-12-01 23:14\n"
+"PO-Revision-Date: 2021-12-02 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1237,7 +1237,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:322
 #, no-wrap
 msgid "*Coverage Map* - if connected to the Internet, a map of the earth will appear on the geographic coverage page. This map shows a box with control points (markers) on all corners. The corners correspond with the values in the Latitude and Longitude text boxes, explained below. Drag the entire box, or drag individual markers to a new location to reset the geographic bounds of the box. The corresponding latitude and longitude values will change to match the box on the map. The map features hill shading, natural vegetation colours, advanced labelling, etc. The map has buttons to zoom in (+) and zoom out (-) and can be dragged in any direction to change the area of the earth being shown.\n"
-msgstr ""
+msgstr "*Mapa de cobertura* - si está conectado a Internet, aparecerá un mapa de la Tierra en la página de cobertura geográfica. Este mapa muestra una caja con puntos de control (marcadores) en todas las esquinas. Las esquinas coinciden con los valores de los cuadros de texto de latitud y longitud que se explican a continuación. Arrastre todo el cuadro o arrastre los marcadores individuales a una nueva ubicación para restablecer los límites geográficos del cuadro. Los valores de latitud y longitud correspondientes cambiarán para coincidir con el recuadro en el mapa. El mapa cuenta con sombreado de montañas, colores naturales de la vegetación, etiquetado avanzado, etc. El mapa dispone de botones para acercarse (+) y alejarse (-) y puede arrastrarse en cualquier dirección para cambiar la zona de la tierra que se muestra.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:323
@@ -1249,13 +1249,13 @@ msgstr "*Establecer cobertura global* - Haciendo clic en este cuadro, la cobertu
 #: en/modules/ROOT/pages/manage-resources.adoc:324
 #, no-wrap
 msgid "*South/West & North/East* - these four text boxes correspond to the SW and NE corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude (South/North) and -180 to +180 longitude (West/East), with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. Manipulating the bounding box markers on the map will set these values, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labelled \"Save\".\n"
-msgstr ""
+msgstr "*Sur/Oeste y Norte/Este* - estas cuatro casillas de texto corresponden a las esquinas SO y NE del recuadro que delimita el área cubierta por el recurso. Los valores a introducir en estas casillas de texto son grados decimales (p. ej. 45.2345), con los valores límite estándar de -90 a +90 de latitud (Sur/Norte) y -180 a +180 de longitud (Oeste/Este), con latitud positiva en el hemisferio norte y longitud positiva al este del meridiano de Greenwich hasta la línea internacional de cambio de fecha. Si se manipulan los marcadores de los recuadros delimitadores en el mapa se establecerán nuevos valores, pero los valores válidos pueden introducirse directamente en estos cuadros de texto si se desea. El mapa se actualizará cuando se guarde la información de la página haciendo clic en el botón \"Guardar\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:325
 #, no-wrap
 msgid "*Description* - a textual description of the geographic coverage. This information can be provided in place of, or to augment the information in the other fields on the page.\n"
-msgstr ""
+msgstr "*Descripción* - una descripción textual de la cobertura geográfica. Esta información puede proporcionarse en lugar de o para aumentar la información en los otros campos de la página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:329
@@ -1649,13 +1649,13 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:439
 msgid "Free-text citations get overwritten on the GBIF.org dataset page - learn more in the https://www.gbif.org/faq?q=citation[GBIF FAQ]."
-msgstr ""
+msgstr "las citas de texto libre son sobrescritas en la página del conjunto de datos en GBIF.org. Obtenga más información la página de https://www.gbif.org/faq?q=citation[preguntas frecuentes de GBIF]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:441
 #, no-wrap
 msgid "*Resource Citation* - the single citation for use when citing the dataset.\n"
-msgstr ""
+msgstr "*Referencia del recurso* - la referencia única que se utilizará al citar el conjunto de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:442
@@ -1783,7 +1783,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:476
 #, no-wrap
 msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
-msgstr ""
+msgstr "*Métodos de preservación de especímenes* - la lista de métodos de preservación de especímenes cubiertos por el recurso, indicando el proceso o la técnica utilizada para prevenir el deterioro físico de las colecciones muertas. Los valores a elegir se basan en el {latest-preservation-method}[Método de Preservación de los Especímenes de GBIF]. Recuerde que puede incluir una lista de preparaciones y métodos de preservación para un espécimen en el elemento \"Preparaciones\" del mapeo de datos DwC (http://rs.tdwg.org/dwc/terms/preparations). Por favor, no seleccione ningún tratamiento para colecciones vivas. Esto puede referirse a la(s) unidad(es) de conservación de la colección.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:477
@@ -2210,12 +2210,12 @@ msgstr "Validación de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:586
 msgid "The IPT writes data files inside the DwC-A as tab delimited files void of line breaking characters (*note: line breaking characters found in the original data are replaced with an empty string*)."
-msgstr ""
+msgstr "El IPT escribe los archivos de datos dentro del DwC-A como archivos delimitados por tabulaciones y sin caracteres de salto de línea (*nota: los caracteres de salto de línea que se encuentran en los datos originales se sustituyen por una cadena vacía*)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:588
 msgid "After writing, the IPT also validates their content in the following ways:"
-msgstr ""
+msgstr "Luego de escribir los datos, el IPT también valida su contenido de las siguientes maneras:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:590
@@ -2471,12 +2471,12 @@ msgstr "Determine la organización propietaria del *recurso registrado existente
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:667
 msgid "Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page."
-msgstr ""
+msgstr "Seleccione la organización propietaria en la lista desplegable de la página de metadatos básicos. No olvide guardar la página de \"metadatos básicos\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:668
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
-msgstr ""
+msgstr "Vaya a la página de GBIF del conjunto de datos del *recurso registrado existente*. Dependiendo de si está ejecutando el IPT en modo de prueba o de producción, visitaría  https://www.gbif-uat.org/dataset o https://www.gbif.org/dataset respectivamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:669
@@ -2486,7 +2486,7 @@ msgstr "Asegúrese que la página del conjunto de datos de GBIF, muestre la *org
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:671
 msgid "if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed."
-msgstr ""
+msgstr "si muestra una *organización propietaria* diferente, el Registro de GBIF debe ser actualizado antes de que pueda proceder con los pasos restantes. Envíe un correo electrónico a helpdesk@gbif.org alertando de la actualización necesaria."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:673
@@ -2506,7 +2506,7 @@ msgstr "Asegúrese de que ningún recurso publicado o registrado en este IPT inc
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:676
 msgid "On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed."
-msgstr ""
+msgstr "En la página de resumen de recursos, haga clic en el botón de \"Registro\". De forma similar a cualquier otro registro, tendrá que confirmar que ha leído y entendido el acuerdo de intercambio de datos de GBIF antes de que se ejecute el registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:678
@@ -2575,7 +2575,7 @@ msgstr "Eliminar un Recurso"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:697
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will remove the resource from the IPT and all of the related documents from the file system.  *It will also delete the resource from GBIF.org!*"
-msgstr ""
+msgstr "Al hacer clic en el botón \"Eliminar\" en la página de vista general del recurso se eliminará el recurso del IPT y todos los documentos relacionados del sistema de archivos.  *¡También eliminará el recurso de GBIF.org!."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:699
@@ -2585,5 +2585,5 @@ msgstr "Si desea conservar la información del recurso, y eliminar el recurso de
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
 msgid "There is currently no simple way to remove a resource from the IPT but keep it in GBIF.org (to intentionally \"orphan\" the dataset).  A workaround, requiring access to the server, is to move/delete the resource directory (as above) and restart the IPT.  Issue: https://github.com/gbif/ipt/issues/1461"
-msgstr ""
+msgstr "Actualmente no hay una forma sencilla de eliminar un recurso del IPT pero mantenerlo en GBIF.org (para dejar intencionadamente \"huérfano\" el conjunto de datos). Una solución, que requiere acceso al servidor, es mover/borrar el directorio de recursos (como se indica arriba) y reiniciar el IPT. Problema: https://github.com/gbif/ipt/issues/1461"
 
