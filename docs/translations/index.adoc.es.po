@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-11-30 16:09\n"
+"PO-Revision-Date: 2021-12-02 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -136,7 +136,7 @@ msgstr "Desarrolladores"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:44
 msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide.adoc[here]."
-msgstr "El desarrollo principal del IPT está dirigido por GBIF, pero la codificación es un esfuerzo de la comunidad y todos son bienvenidos a unirse. Empiece por navegar los https://github.com/gbif/ipt/issues[Temas Pendientes] para encontrar algo en lo que le gustaría empezar a trabajar. Tenga en cuenta que las contribuciones son bienvenidas en forma de https://help.github.com/articles/creating-a-pull-request/[pull request] utilizando una rama o bifurcación del repositorio. Las instrucciones completas dirigidas para desarrolladores se pueden encontrar xref:developer-guide.adoc[aquí]."
+msgstr "El desarrollo principal del IPT está dirigido por GBIF, pero la codificación es un esfuerzo de la comunidad y todos son bienvenidos a unirse. Empiece por navegar los https://github.com/gbif/ipt/issues[Issues Abiertos] para encontrar algo en lo que le gustaría empezar a trabajar. Tenga en cuenta que las contribuciones son bienvenidas en forma de https://help.github.com/articles/creating-a-pull-request/[pull request] utilizando una rama o bifurcación del repositorio. Las instrucciones completas dirigidas para desarrolladores se pueden encontrar xref:developer-guide.adoc[aquí]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:45
