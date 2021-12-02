@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-07-12 02:01\n"
+"PO-Revision-Date: 2021-12-02 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -48,12 +48,12 @@ msgstr "A pesar de que puede ser utilizado simplemente como una herramienta para
 #: en/modules/ROOT/pages/requirements.adoc:9
 #, no-wrap
 msgid "TLS"
-msgstr ""
+msgstr "TLS"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:11
 msgid "Although not required by the IPT, GBIF recommends to run the IPT over secure HTTPS (TLS, which replaced SSL) if possible."
-msgstr ""
+msgstr "Aunque no es requerido por el IPT, GBIF recomienda ejecutar el IPT sobre un HTTPS seguro (TLS, que reemplazó a SSL) si es posible."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:12
@@ -86,16 +86,16 @@ msgstr "Versión de Java"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:21
 msgid "The current version of the IPT is tested to run on Java 8 or 9. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported."
-msgstr ""
+msgstr "La versión actual de la IPT está probada para funcionar con Java 8 o 9. Por favor, consulte la https://adoptopenjdk.net/support.html#roadmap[Hoja de ruta de la versión de OpenJDK], la https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Hoja de ruta de la versión de Oracle Java] o la documentación de su distribución de Linux para obtener una visión general de cuánto tiempo será soportada su versión de Java."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:22
 #, no-wrap
 msgid "Technical support"
-msgstr ""
+msgstr "Soporte técnico"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:23
 msgid "Running an IPT is a commitment.  Data should be backed up regularly, and security updates (for the operating system or the IPT) must be applied soon after they become available."
-msgstr ""
+msgstr "Ejecutar un IPT es un compromiso. Hay que hacer copias de seguridad de los datos regularmente y las actualizaciones de seguridad (para el sistema operativo o el IPT) deben aplicarse poco después de que estén disponibles."
 
