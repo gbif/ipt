@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-11-30 17:18\n"
+"PO-Revision-Date: 2021-12-02 00:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,12 +36,12 @@ msgstr "La versión estable actual es la <<2-5-2-november-2021,2.5.2>>."
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
 msgid "You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen."
-msgstr ""
+msgstr "Está leyendo el manual de la versión {page-version}. Puede leer otras versiones del manual utilizando los selectores situados en la parte superior derecha o inferior izquierda de la pantalla."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
 msgid "Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE."
-msgstr ""
+msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles en español."
 
 #.  Next release text kept for reuse, as it will be part of the Crowdin translation memory.
 #. Version 2.5.2 of the IPT is expected to be released in Month 2021.  In preparation for this, a _release candidate_ version 2.5.2-RC1 is now available.
@@ -93,7 +93,7 @@ msgstr "Traducida en 7 idiomas"
 #: en/modules/ROOT/pages/releases.adoc:42
 #: en/modules/ROOT/pages/releases.adoc:53
 msgid "Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide]."
-msgstr ""
+msgstr "Los usuarios actuales deben actualizarse a esta versión siguiendo las instrucciones de xref:2.5@release-notes.adoc[Notas de la versión].  Los nuevos usuarios deben seguir la xref:getting-started.adoc[Guía de introducción]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
@@ -103,7 +103,7 @@ msgstr "Esta versión aborda los errores introducidos en las versiones 2.5 anter
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:31
 msgid "No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub]."
-msgstr ""
+msgstr "No se ha estipulado una fecha de lanzamiento para la próxima versión. El progreso en el trabajo realizado sobre las incidencias para el próximo lanzamiento puede consultarse https://github.com/gbif/ipt/milestones [en GitHub]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:33
@@ -114,28 +114,28 @@ msgstr "Los problemas menores y los asuntos de seguridad se abordarán en parche
 #: en/modules/ROOT/pages/releases.adoc:34
 #, no-wrap
 msgid "*2.5.1* – September 2021"
-msgstr ""
+msgstr "*2.5.1* – Septiembre de 2021"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:37
 msgid "xref:2.5@release-notes.adoc[IPT v2.5.1 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la Versión IPT v2.5.1]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:39
 msgid "Addressed https://github.com/gbif/ipt/milestone/28?closed=1[4 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/27?closed=1[4 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:44
 msgid "This version addresses a bug introduced in version 2.5.0, which prevented the IPT from connecting to database sources. Users who connect the IPT to database sources will need to upgrade to 2.5.1."
-msgstr ""
+msgstr "Esta versión soluciona un error introducido en la versión 2.5.0, que impedía al IPT conectarse a fuentes de bases de datos. Los usuarios que conecten el IPT a fuentes de bases de datos tendrán que actualizarse a la versión 2.5.1."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:45
 #, no-wrap
 msgid "*2.5.0* – August 2021"
-msgstr ""
+msgstr "*2.5.0* – Agosto de 2021"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:48
@@ -145,12 +145,12 @@ msgstr "xref:2.5@release-notes.adoc[Notas de la Versión IPT v2.5.0]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:50
 msgid "Addressed https://github.com/gbif/ipt/milestone/27?closed=1[81 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/27?closed=1[81 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:55
 msgid "This version addresses 81 issues, including the famous \"double log in bug\", and brings in a fresher-looking user interface.  This user manual has also been refreshed, enabling a complete translation into Spanish."
-msgstr ""
+msgstr "Esta versión aborda 81 incidencias incluyendo el famoso \"error de doble inicio de sesión\" y trae una interfaz de usuario de aspecto más fresco. El manual de usuario también se ha renovado, permitiendo una traducción completa al español."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:56
@@ -539,26 +539,26 @@ msgstr "Traducida en 3 idiomas (añadidas traducciones a francés y español)"
 #: en/modules/ROOT/pages/releases.adoc:189
 #, no-wrap
 msgid "*2.0.2* – June 2011"
-msgstr ""
+msgstr "*2.0.2* – Junio de 2011"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:192
 msgid "https://lists.gbif.org/pipermail/ipt/2011-June/000352.html[Release Announcement]"
-msgstr ""
+msgstr "https://lists.gbif.org/pipermail/ipt/2011-June/000352.html[Anuncio del lanzamiento]"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/releases.adoc:193
 #, no-wrap
 msgid "*2.0.1* – February 2011"
-msgstr ""
+msgstr "*2.0.1* – Febrero de 2011"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:196
 msgid "First IPT version 2 release"
-msgstr ""
+msgstr "Primer lanzamiento del IPT versión 2"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:196
 msgid "https://lists.gbif.org/pipermail/ipt/2011-February/000309.html[Release Announcement]"
-msgstr ""
+msgstr "https://lists.gbif.org/pipermail/ipt/2011-February/000309.html[Anuncio del lanzamiento]"
 
