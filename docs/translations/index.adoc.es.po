@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-21 22:42\n"
+"PO-Revision-Date: 2021-12-02 18:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -39,7 +39,7 @@ msgstr "Cómo publicar datos sobre biodiversidad a través de GBIF.org usando el
 #: en/modules/ROOT/pages/index.adoc:1
 #, no-wrap
 msgid "GBIF Integrated Publishing Toolkit (IPT) User Manual"
-msgstr ""
+msgstr "Manual del Usuario del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:4
@@ -69,7 +69,7 @@ msgstr "Metadatos de conjuntos de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:11
 msgid "An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.  More information about the GBIF IPT can be found at the https://www.gbif.org/ipt[IPT website]."
-msgstr ""
+msgstr "Una instancia del IPT, así como los datos y metadatos registrados a través del mismo, están conectados al Registro de GBIF, indexados para su consulta a través de la red y el portal de GBIF y disponibles para uso público. El IPT también puede configurarse con una cuenta de DataCite para asignar DOIs a los conjuntos de datos, transformándolo en un repositorio de datos. Puede encontrar más información sobre el IPT de GBIF en la https://www.gbif.org/ipt[página web del IPT]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:16
@@ -136,7 +136,7 @@ msgstr "Desarrolladores"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:44
 msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Start by browsing the https://github.com/gbif/ipt/issues[Open Issues] to find something that you'd like to start working on. Kindly note that contributions are welcome in the form of a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the repository. Full instructions aimed at developers can be found xref:developer-guide.adoc[here]."
-msgstr ""
+msgstr "El desarrollo principal del IPT está dirigido por GBIF, pero la codificación es un esfuerzo de la comunidad y todos son bienvenidos a unirse. Empiece por navegar los https://github.com/gbif/ipt/issues[Issues Abiertos] para encontrar algo en lo que le gustaría empezar a trabajar. Tenga en cuenta que las contribuciones son bienvenidas en forma de https://help.github.com/articles/creating-a-pull-request/[pull request] utilizando una rama o bifurcación del repositorio. Las instrucciones completas dirigidas para desarrolladores se pueden encontrar xref:developer-guide.adoc[aquí]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/index.adoc:45

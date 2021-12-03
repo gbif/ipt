@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-27 00:35\n"
+"PO-Revision-Date: 2021-12-02 03:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/doi-workflow.adoc:1
 #, no-wrap
 msgid "DOI Workflows"
-msgstr "DOI Flujos de proceso"
+msgstr "Flujos de trabajo DOI"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:4
@@ -63,47 +63,47 @@ msgstr "Hasta que el DOI reservado se registre, aún se puede eliminar. A contin
 #: en/modules/ROOT/pages/doi-workflow.adoc:17
 #, no-wrap
 msgid "ipt2/v22/AssignNewDOI.png"
-msgstr ""
+msgstr "ipt2/v22/AssignNewDOI.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/doi-workflow.adoc:19
 #, no-wrap
 msgid "Letting the IPT manage an existing DOI for a Dataset"
-msgstr ""
+msgstr "Dejar que el IPT gestione un DOI existente para un conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:22
 msgid "If a dataset has already been assigned a DOI, publishers have the option of letting the IPT manage the existing DOI for them. This facilitates updating the DOI metadata, since the IPT automatically updates the DOI metadata every time the dataset is (re)published."
-msgstr ""
+msgstr "Si un conjunto de datos ya tiene un DOI asignado, los editores tienen la opción de dejar que el IPT gestione el DOI existente por ellos. Esto facilita la actualización de los metadatos del DOI, ya que el IPT actualiza automáticamente los metadatos del DOI cada vez que se (re)publica el conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:24
 msgid "_For this to work with existing 'registered' DOIs, you must ensure that the DOI's target URI matches the dataset's homepage URI, and that the dataset is publicly accessible (since an existing DOI must resolve to a publicly accessible page)._"
-msgstr ""
+msgstr "_Para que esto funcione con los DOIs \"registrados\" existentes, debe asegurarse de que el URI de destino del DOI coincida con el URI de la página de inicio del conjunto de datos, y que el conjunto de datos sea de acceso público (ya que un DOI existente debe hacer referencia a una página de acceso público)._"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:26
 msgid "To assign an existing DOI to a dataset, publishers must set the DOI as the citation identifier (in resource metadata). After the mandatory metadata has been entered, the publisher may reserve a DOI. Since the existing DOI has been entered, however, the IPT reuses that instead of minting a new DOI. Of course the IPT's DOI-assigning account must have the rights to manage this DOI, otherwise an error message will appear."
-msgstr ""
+msgstr "Para asignar un DOI existente a un conjunto de datos, los editores deben establecer el DOI como identificador de la cita (en los metadatos del recurso). Una vez introducidos los metadatos obligatorios, el editor puede reservar un DOI. Sin embargo, dado que se ha introducido el DOI existente, el IPT lo reutiliza en lugar de asignar un nuevo DOI. Por supuesto, la cuenta del IPT que asigna el DOI debe tener los derechos para gestionar este DOI, de lo contrario aparecerá un mensaje de error."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:28
 msgid "_If the existing DOI was only reserved, it will be deleted if you try to delete it. If the existing DOI was registered, it will not be deleted if you try to delete it._"
-msgstr ""
+msgstr "_Si el DOI existente sólo estaba reservado, se borrará si intenta eliminarlo. Si el DOI existente estaba registrado, no se borrará si intenta eliminarlo._"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:30
 msgid "The DOI will get updated the next time the resource is published, provided the resource is publicly available. This results in a major version change."
-msgstr ""
+msgstr "El DOI se actualizará la próxima vez que se publique el recurso, siempre que esté disponible públicamente. Esto supone un cambio de versión importante."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:32
 msgid "A graphical representation of this workflow is below:"
-msgstr ""
+msgstr "A continuación se muestra una representación gráfica de este flujo de trabajo:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/doi-workflow.adoc:33
 #, no-wrap
 msgid "ipt2/v22/AssignExistingDOI.png"
-msgstr ""
+msgstr "ipt2/v22/AssignExistingDOI.png"
 

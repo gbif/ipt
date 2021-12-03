@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-11-24 22:34\n"
+"PO-Revision-Date: 2021-12-02 20:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:272
 #, no-wrap
 msgid "Basic Metadata"
-msgstr "Metadatos Básicos"
+msgstr "Metadatos básicos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:48
@@ -30,7 +30,7 @@ msgstr "Metadatos Básicos"
 #: en/modules/ROOT/pages/manage-resources.adoc:315
 #, no-wrap
 msgid "Geographic Coverage"
-msgstr "Cobertura Geográfica"
+msgstr "Cobertura geográfica"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:49
@@ -39,7 +39,7 @@ msgstr "Cobertura Geográfica"
 #: en/modules/ROOT/pages/manage-resources.adoc:326
 #, no-wrap
 msgid "Taxonomic Coverage"
-msgstr "Cobertura Taxonómica"
+msgstr "Cobertura taxonómica"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:50
@@ -48,28 +48,28 @@ msgstr "Cobertura Taxonómica"
 #: en/modules/ROOT/pages/manage-resources.adoc:350
 #, no-wrap
 msgid "Temporal Coverage"
-msgstr "Cobertura Temporal"
+msgstr "Cobertura temporal"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:52
 #: en/modules/ROOT/pages/manage-resources.adoc:389
 #, no-wrap
 msgid "Associated Parties"
-msgstr "Partes Asociadas"
+msgstr "Partes asociadas"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:53
 #: en/modules/ROOT/pages/manage-resources.adoc:400
 #, no-wrap
 msgid "Project Data"
-msgstr "Datos del Proyecto"
+msgstr "Datos del proyecto"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:54
 #: en/modules/ROOT/pages/manage-resources.adoc:419
 #, no-wrap
 msgid "Sampling Methods"
-msgstr "Métodos de Muestreo"
+msgstr "Métodos de muestreo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:55
@@ -83,14 +83,14 @@ msgstr "Referencias"
 #: en/modules/ROOT/pages/manage-resources.adoc:460
 #, no-wrap
 msgid "Collection Data"
-msgstr "Datos de la Colección"
+msgstr "Datos de la colección"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:58
 #: en/modules/ROOT/pages/manage-resources.adoc:511
 #, no-wrap
 msgid "Additional Metadata"
-msgstr "Metadatos Adicionales"
+msgstr "Metadatos adicionales"
 
 #. type: Title =
 #: en/modules/ROOT/pages/manage-resources.adoc:1
@@ -101,7 +101,7 @@ msgstr "Menú Gestión de Recursos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:4
 msgid "This menu is visible to users with an Admin or Manager role."
-msgstr ""
+msgstr "Este menú es visible para los usuarios que tienen el rol de Administrador o Editor."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:6
@@ -118,7 +118,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:9
 #, no-wrap
 msgid "Manage Resources Table"
-msgstr "Tabla Gestión de Recursos"
+msgstr "Tabla gestión de recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:11
@@ -141,43 +141,43 @@ msgstr "*Autor* - El usuario del IPT que creó el recurso.\n"
 #: en/modules/ROOT/pages/manage-resources.adoc:15
 #, no-wrap
 msgid "Create a New Resource"
-msgstr "Creación de un Nuevo Recurso"
+msgstr "Crear un nuevo recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:17
 msgid "Below the Manage Resource table is a form that can be used to create a new resource. First, a unique \"shortname\" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., \"firstresource\" or \"first_resource\", but not \"first resource\" or \"première ressource!\"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived:"
-msgstr ""
+msgstr "Debajo de la tabla de Gestión de Recursos hay un formulario que puede utilizarse para crear un nuevo recurso. En primer lugar, debe proporcionarse un \"nombre corto\" único para el recurso. Este nombre corto se utilizará para identificar de forma exclusiva el recurso dentro de la instancia IPT y se utilizará dentro de la URL para acceder al recurso a través de Internet. El nombre corto debe tener al menos tres caracteres, puede contener caracteres alfanuméricos (A-Z, a-z y 0-9), pero no debe contener espacios en blanco, signos de puntuación que no sean guiones o guiones bajos, ni caracteres acentuados (por ejemplo, \"primerrecurso\" o \"primer_recurso\", pero no \"primer recurso\" o \"première ressource!\"). En segundo lugar, se puede proporcionar un tipo de recurso (opcional). Tenga en cuenta que cuando se cargue un archivo (ver más adelante) el tipo se determinará automáticamente y sobrescribirá esta selección. En tercer lugar, se puede cargar un archivo (opcional). Las siguientes secciones describen los 3 tipos diferentes de archivos de los que se puede derivar un nuevo recurso:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:19
 msgid "<<Upload a Darwin Core Archive,Darwin Core Archive>>,"
-msgstr ""
+msgstr "<<Cargar un Archivo Darwin Core,Archivo Darwin Core>>,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:20
 msgid "<<Upload a zipped IPT resource configuration folder,zipped (.zip) IPT resource configuration folder>>,"
-msgstr ""
+msgstr "<<Cargar una carpeta comprimida con un recurso IPT configurado, carpeta comprimida (.zip) con un recurso IPT configurado>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:21
 msgid "<<Upload a metadata file,metadata file>>."
-msgstr ""
+msgstr "<<Cargar un archivo de metadatos,archivo de metadatos>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
-msgstr ""
+msgstr "Por supuesto, siempre se puede simplemente _crear un recurso completamente nuevo_ sin cargar un archivo que contenga un recurso. Con esta opción, la configuración del recurso tendrá que crearse en su totalidad a través de los formularios del IPT, incluyendo cargar archivos de datos fuente (o la conexión a una base de datos o a URLs) y el mapeo de los campos de los mismos a términos en la extensión o extensiones adecuadas. *Tenga en cuenta que el IPT tiene un límite de carga de archivos de 200MB*, sin embargo, no hay *límite en el tamaño del Archivo Darwin Core que el IPT puede exportar/publicar*. Consulte la sección <<límites de carga, nota sobre los límites de carga de archivos>> para saber cómo evitar el límite de carga de archivos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
 msgid "Begin by entering a new resource shortname as described above, and then click on the button labelled \"Create\". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section."
-msgstr "Para hacerlo, hay que comenzar ingresando un nombre corto para el nuevo recurso, como se describió anteriormente, y luego hacer clic en el botón \"Crear\". Se abrirá inmediatamente la página de Vista General del Recurso. Proceda a completar las diferentes secciones de la página gestión del recurso teniendo en cuenta las descripciones bajo el encabezado \"\"Vista General del Recurso\" de la sección \"Menú Gestión de Recursos\"."
+msgstr "Para hacerlo, hay que comenzar ingresando un nombre corto para el nuevo recurso, como se describió anteriormente, y luego hacer clic en el botón \"Crear\". Se abrirá inmediatamente la página de Vista General del Recurso. Proceda a completar las diferentes secciones de la página gestión del recurso teniendo en cuenta las descripciones bajo el encabezado \"Vista General del Recurso\" de la sección \"Menú Gestión de Recursos\"."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:26
 #, no-wrap
 msgid "Upload a Darwin Core Archive"
-msgstr "Cargar un Archivo Darwin Core"
+msgstr "Cargar un archivo Darwin Core"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:28
@@ -256,7 +256,7 @@ msgstr "Cargar un archivo de metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:49
 msgid "The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile and how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the xref:gbif-metadata-profile.adoc[GBIF Metadata Profile – How To Guide]. To import a metadata file, select the resource type \"metadata-only\", then click on the button labelled \"Choose File\", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr ""
+msgstr "El IPT puede importar y exportar archivos válidos de metadatos de conjuntos de datos que se ajusten al Perfil de Metadatos de GBIF. La información acerca del Perfil de Metadatos EML de GBIF y cómo crear un documento de metadatos que se ajuste al Perfil de Metadatos de GBIF Darwin Core puede ser encontrada en el xref:gbif-metadata-profile.adoc[Perfil de Metadatos de GBIF - Guía Práctica]. Para importar un archivo de metadatos, seleccione el tipo de recurso \"solamente metadatos\" y haga clic en el botón \"Examinar\", busque y seleccione el archivo de metadatos deseado. Después de seleccionar el archivo, el nombre aparecerá junto al botón de \"Examinar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:50
@@ -306,7 +306,7 @@ msgstr "Conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:64
 msgid "This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:"
-msgstr ""
+msgstr "Esta área de la página \"Vista General del Recurso\" permite al usuario importar datos primarios al IPT a partir de archivos, bases de datos o URL. Si un recurso no tiene fuente de datos, es considerado un recurso de metadatos con información acerca de un conjunto de datos o una colección, pero sin ningún tipo de datos primarios. Es posible conectar un recurso a más de una fuente de datos, si estas están relacionadas entre sí. Encontrará más información sobre la relación entre múltiples fuentes de datos en la sección http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Guía de Implementación (Implementation Guide)] de la \"Guía de Texto\" de Darwin Core. A continuación se encuentran las explicaciones de la etapa preliminar para seleccionar la fuente de datos, ya sea de archivos de texto, de fuentes de bases de datos o de un archivo de texto disponible en una URL:"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:65
@@ -317,7 +317,7 @@ msgstr "Archivo como fuente de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:67
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click on the button labelled \"Browse…\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, archivos separados por tabuladores y archivos que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip. También se admiten archivos de Excel. Haga clic en el botón \"Examinar...\" para navegar y seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, su nombre aparecerá a la derecha del botón \"Examinar...\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:68
@@ -335,13 +335,13 @@ msgstr "Haga clic en el botón \"Limpiar\" para eliminar el archivo seleccionado
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:73
 msgid "If the IPT detects the number of columns in a mapped data source has changed when overwriting it, the user is warned that they should update its mappings."
-msgstr ""
+msgstr "Si el IPT detecta que el número de columnas de una fuente de datos mapeada ha cambiado al sobrescribirla, se advierte al usuario que debe actualizar sus mapeos."
 
 #. type: Block title
 #: en/modules/ROOT/pages/manage-resources.adoc:75
 #, no-wrap
 msgid "Upload limits"
-msgstr ""
+msgstr "Límites de carga"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:78
@@ -351,22 +351,22 @@ msgstr "El IPT tiene un límite de 200MB para la carga de archivos. Sin embargo 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:80
 msgid "compress the file with Zip or Gzip"
-msgstr ""
+msgstr "Comprimir el archivo (con zip o gzip)"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:81
 msgid "load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]"
-msgstr ""
+msgstr "Cargar los datos a una de las xref:database-connection.adoc[bases de datos soportadas por el IPT]"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:82
 msgid "retrieve the file from a URL"
-msgstr ""
+msgstr "recuperar el archivo desde una URL"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:83
 msgid "split the file up (when the dataset is published the IPT will concatenate the files in the order they are mapped)"
-msgstr ""
+msgstr "dividir el archivo (cuando se publique el conjunto de datos, el IPT concatenará los archivos en el orden en que sean mapeados)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:86
@@ -432,13 +432,13 @@ msgstr "*Reporte de la Fuente* - Este enlace descarga el archivo que contiene el
 #: en/modules/ROOT/pages/manage-resources.adoc:98
 #, no-wrap
 msgid "*Analyse* - click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.\n"
-msgstr ""
+msgstr "*Analizar* - haga clic en este botón para generar un resumen de datos basado en la configuración del archivo en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura y, si es así, el número de columnas que contiene.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Preview* image:ipt2/manage/preview.png[width=32,height=31] - click on this button to see an interpretation of the data within the file.\n"
-msgstr ""
+msgstr "*Vista Previa* image:ipt2/manage/preview.png[width=32,height=31] - haga clic en este botón para ver una interpretación de los datos contenidos en el archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
@@ -508,7 +508,7 @@ msgstr "Base de Datos como fuente de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:117
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, choose \"Database\" from the list of source data types in the left-hand column of the Source Data area of the Resource Overview page, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr ""
+msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones de bases de datos compatibles. Para configurar una base de datos como fuente de datos, haga clic en el botón \"Conectar a BD\" en la columna de la izquierda del área \"Fuente de Datos\" de la página \"Vista General del Recurso\". Esto abrirá una página detallada de Fuente de Base de Datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
@@ -518,7 +518,7 @@ msgstr "La página detallada de Fuente de Base de Datos muestra el nombre del re
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:121
 msgid "If the IPT detects the number of columns in a mapped data source has changed when editing it, the user is warned that they should update its mappings."
-msgstr ""
+msgstr "Si el IPT detecta que el número de columnas de una fuente de datos mapeada ha cambiado al editarla, se advierte al usuario que debe actualizar sus mapeos."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:122
@@ -601,22 +601,22 @@ msgstr "Después de establecer los parámetros de la fuente de datos de manera q
 #: en/modules/ROOT/pages/manage-resources.adoc:141
 #, no-wrap
 msgid "URL as data source"
-msgstr ""
+msgstr "URL como fuente de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:143
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Select \"URL\" from the source data type dropdown list under \"Source Data\", then type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto sin comprimir (CSV, tabulador y archivos con cualquier otro delimitador) directamente desde una URL. Seleccione \"URL\" en la lista desplegable de tipo de fuente de datos en \"Fuente de Datos\" y, a continuación, escriba o copie y pegue la URL completa (incluyendo `http://` o `https://`) en el cuadro siguiente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:147
 msgid "Click on the button labelled \"Clear\" to remove the choice of URL and return to the previous state before any data source was selected. Or, click on the button labelled \"Add\" to open the Source Data URL detail page."
-msgstr ""
+msgstr "Haga clic en el botón \"Limpiar\" para eliminar el archivo seleccionado y volver al estado anterior a la selección del archivo fuente. Alternativamente, haga clic en el botón \"Agregar\" para abrir la página de detalles de la URL del \"archivo de fuente de datos\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:149
 msgid "This page shows the name of the resource along with a summary of the URL characteristics (readability, number of columns detected, URL location, the number of rows detected, and the date the URL was last loaded into the IPT). The Source Data URL detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr ""
+msgstr "Esta página muestra el nombre del recurso junto con un resumen de las características de la URL (legibilidad, número de columnas detectadas, ubicación de la URL, el número de filas detectadas y la fecha en que la URL se cargó por última vez en el IPT). La página de detalles de la URL del \"archivo de fuente de datos\" permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y previsualizar el archivo."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:150
@@ -627,7 +627,7 @@ msgstr "ipt2/manage/IPTManageResourceSourceURL.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:153
 msgid "From this point, the process is very similar to using a file as a data source.  See the <<File as data source>> section for an explanation of the page."
-msgstr ""
+msgstr "A partir de este punto, el proceso es muy similar al de utilizar un archivo como fuente de datos. Consulte la sección <<Archivo como fuente de datos>> para consultar una explicación de la página."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:154
@@ -1006,7 +1006,7 @@ msgstr "Metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:263
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labelled \"Edit\" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page."
-msgstr ""
+msgstr "Esta área de la página \"Vista general del recurso\" permite al usuario editar los metadatos del recurso. Haciendo clic en el botón \"Editar\" del panel de la izquierda, se pueden editar los metadatos. El panel de la derecha muestra cuándo se modificaron los metadatos por última vez. Cada recurso requiere un conjunto mínimo de metadatos descriptivos para i) ser publicado en la red de GBIF, ii) ser registrado en DataCite (en otras palabras, tener asignado un DOI). Si falta alguno de los metadatos requeridos, la página de vista general del recurso se abrirá con un mensaje de advertencia en el área de metadatos de la página."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:264
@@ -1033,7 +1033,7 @@ msgstr "A continuación se encuentra una lista de las páginas de metadatos y su
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:274
 msgid "All metadata fields on this page are required. Please note for each contact you must supply at least a last name, a position or an organization."
-msgstr ""
+msgstr "Todos los campos de metadatos de esta página son obligatorios. Tenga en cuenta que para cada contacto debe proporcionar al menos un apellido, un cargo o una organización."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:275
@@ -1237,7 +1237,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:322
 #, no-wrap
 msgid "*Coverage Map* - if connected to the Internet, a map of the earth will appear on the geographic coverage page. This map shows a box with control points (markers) on all corners. The corners correspond with the values in the Latitude and Longitude text boxes, explained below. Drag the entire box, or drag individual markers to a new location to reset the geographic bounds of the box. The corresponding latitude and longitude values will change to match the box on the map. The map features hill shading, natural vegetation colours, advanced labelling, etc. The map has buttons to zoom in (+) and zoom out (-) and can be dragged in any direction to change the area of the earth being shown.\n"
-msgstr ""
+msgstr "*Mapa de cobertura* - si está conectado a Internet, aparecerá un mapa de la Tierra en la página de cobertura geográfica. Este mapa muestra una caja con puntos de control (marcadores) en todas las esquinas. Las esquinas coinciden con los valores de los cuadros de texto de latitud y longitud que se explican a continuación. Arrastre todo el cuadro o arrastre los marcadores individuales a una nueva ubicación para restablecer los límites geográficos del cuadro. Los valores de latitud y longitud correspondientes cambiarán para coincidir con el recuadro en el mapa. El mapa cuenta con sombreado de montañas, colores naturales de la vegetación, etiquetado avanzado, etc. El mapa dispone de botones para acercarse (+) y alejarse (-) y puede arrastrarse en cualquier dirección para cambiar la zona de la tierra que se muestra.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:323
@@ -1249,13 +1249,13 @@ msgstr "*Establecer cobertura global* - Haciendo clic en este cuadro, la cobertu
 #: en/modules/ROOT/pages/manage-resources.adoc:324
 #, no-wrap
 msgid "*South/West & North/East* - these four text boxes correspond to the SW and NE corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude (South/North) and -180 to +180 longitude (West/East), with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. Manipulating the bounding box markers on the map will set these values, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labelled \"Save\".\n"
-msgstr ""
+msgstr "*Sur/Oeste y Norte/Este* - estas cuatro casillas de texto corresponden a las esquinas SO y NE del recuadro que delimita el área cubierta por el recurso. Los valores a introducir en estas casillas de texto son grados decimales (p. ej. 45.2345), con los valores límite estándar de -90 a +90 de latitud (Sur/Norte) y -180 a +180 de longitud (Oeste/Este), con latitud positiva en el hemisferio norte y longitud positiva al este del meridiano de Greenwich hasta la línea internacional de cambio de fecha. Si se manipulan los marcadores de los recuadros delimitadores en el mapa se establecerán nuevos valores, pero los valores válidos pueden introducirse directamente en estos cuadros de texto si se desea. El mapa se actualizará cuando se guarde la información de la página haciendo clic en el botón \"Guardar\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:325
 #, no-wrap
 msgid "*Description* - a textual description of the geographic coverage. This information can be provided in place of, or to augment the information in the other fields on the page.\n"
-msgstr ""
+msgstr "*Descripción* - una descripción textual de la cobertura geográfica. Esta información puede proporcionarse en lugar de o para aumentar la información en los otros campos de la página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:329
@@ -1649,13 +1649,13 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:439
 msgid "Free-text citations get overwritten on the GBIF.org dataset page - learn more in the https://www.gbif.org/faq?q=citation[GBIF FAQ]."
-msgstr ""
+msgstr "las citas de texto libre son sobrescritas en la página del conjunto de datos en GBIF.org. Obtenga más información en la página de https://www.gbif.org/faq?q=citation[preguntas frecuentes de GBIF]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:441
 #, no-wrap
 msgid "*Resource Citation* - the single citation for use when citing the dataset.\n"
-msgstr ""
+msgstr "*Referencia del recurso* - la referencia única que se utilizará al citar el conjunto de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:442
@@ -1783,7 +1783,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:476
 #, no-wrap
 msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
-msgstr ""
+msgstr "*Métodos de preservación de especímenes* - la lista de métodos de preservación de especímenes cubiertos por el recurso, indicando el proceso o la técnica utilizada para prevenir el deterioro físico de las colecciones (no vivas). Los valores a elegir se basan en el {latest-preservation-method}[Método de Preservación de los Especímenes de GBIF]. Recuerde que puede incluir una lista de preparaciones y métodos de preservación para un espécimen en el elemento \"Preparaciones\" del mapeo de datos DwC (http://rs.tdwg.org/dwc/terms/preparations). Por favor, no seleccione ningún tratamiento para colecciones vivas. Esto puede referirse a la(s) unidad(es) de conservación de la colección.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:477
@@ -2210,12 +2210,12 @@ msgstr "Validación de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:586
 msgid "The IPT writes data files inside the DwC-A as tab delimited files void of line breaking characters (*note: line breaking characters found in the original data are replaced with an empty string*)."
-msgstr ""
+msgstr "El IPT escribe los archivos de datos dentro del DwC-A como archivos delimitados por tabulaciones y sin caracteres de salto de línea (*nota: los caracteres de salto de línea que se encuentran en los datos originales se sustituyen por una cadena vacía*)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:588
 msgid "After writing, the IPT also validates their content in the following ways:"
-msgstr ""
+msgstr "Luego de escribir los datos, el IPT también valida su contenido de las siguientes maneras:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:590
@@ -2471,12 +2471,12 @@ msgstr "Determine la organización propietaria del *recurso registrado existente
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:667
 msgid "Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page."
-msgstr ""
+msgstr "Seleccione la organización propietaria en la lista desplegable de la página de metadatos básicos. No olvide guardar la página de \"metadatos básicos\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:668
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
-msgstr ""
+msgstr "Vaya a la página de GBIF del conjunto de datos del *recurso registrado existente*. Dependiendo de si está ejecutando el IPT en modo de prueba o de producción, visitaría  https://www.gbif-uat.org/dataset o https://www.gbif.org/dataset respectivamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:669
@@ -2486,7 +2486,7 @@ msgstr "Asegúrese que la página del conjunto de datos de GBIF, muestre la *org
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:671
 msgid "if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed."
-msgstr ""
+msgstr "si muestra una *organización propietaria* diferente, el Registro de GBIF debe ser actualizado antes de que pueda proceder con los pasos restantes. Envíe un correo electrónico a helpdesk@gbif.org alertando de la actualización necesaria."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:673
@@ -2506,7 +2506,7 @@ msgstr "Asegúrese de que ningún recurso publicado o registrado en este IPT inc
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:676
 msgid "On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed."
-msgstr ""
+msgstr "En la página de resumen de recursos, haga clic en el botón de \"Registro\". De forma similar a cualquier otro registro, tendrá que confirmar que ha leído y entendido el acuerdo de intercambio de datos de GBIF antes de que se ejecute el registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:678
@@ -2575,7 +2575,7 @@ msgstr "Eliminar un Recurso"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:697
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will remove the resource from the IPT and all of the related documents from the file system.  *It will also delete the resource from GBIF.org!*"
-msgstr ""
+msgstr "Al hacer clic en el botón \"Eliminar\" en la página de vista general del recurso se eliminará el recurso del IPT y todos los documentos relacionados del sistema de archivos.  *¡También eliminará el recurso de GBIF.org!."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:699
@@ -2585,5 +2585,5 @@ msgstr "Si desea conservar la información del recurso, y eliminar el recurso de
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
 msgid "There is currently no simple way to remove a resource from the IPT but keep it in GBIF.org (to intentionally \"orphan\" the dataset).  A workaround, requiring access to the server, is to move/delete the resource directory (as above) and restart the IPT.  Issue: https://github.com/gbif/ipt/issues/1461"
-msgstr ""
+msgstr "Actualmente no hay una forma sencilla de eliminar un recurso del IPT pero mantenerlo en GBIF.org (para dejar intencionadamente \"huérfano\" el conjunto de datos). Una solución, que requiere acceso al servidor, es mover/borrar el directorio de recursos (como se indica arriba) y reiniciar el IPT. Problema: https://github.com/gbif/ipt/issues/1461"
 

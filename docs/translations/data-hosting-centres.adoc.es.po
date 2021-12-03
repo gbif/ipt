@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-11 09:29+0000\n"
-"PO-Revision-Date: 2021-11-12 15:02\n"
+"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"PO-Revision-Date: 2021-12-03 14:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -131,7 +131,7 @@ msgstr "Saben cómo publicar artículos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:31
 msgid "If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org[helpdesk@gbif.org]."
-msgstr "Si cree que su DHC cumple con estos estándares y le gustaría ofrecer sus servicios a los publicadores de su país, envíe un correo electrónico a mailto: helpdesk@gbif.org[helpdesk@gbif.org]."
+msgstr "Si cree que su DHC cumple con estos estándares y le gustaría ofrecer sus servicios a los publicadores de su país, envíe un correo electrónico a mailto:helpdesk@gbif.org[helpdesk@gbif.org]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:32
@@ -511,8 +511,8 @@ msgstr "Sudáfrica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:139
-msgid "The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://197.189.235.147:8080/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance."
-msgstr "El http://www.sanbi.org/[Instituto Nacional de Biodiversidad de Sudáfrica (SANBI)] proporciona soporte técnico a nuevos publicadores en Sudáfrica y soporte de alojamiento para conjuntos de datos en http://197.189.235.147:8080/iptsanbi/[IPT del SANBI]. Póngase en contacto con <f.ramwashe@sanbi.org.za> para obtener ayuda."
+msgid "The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://ipt.sanbi.org.za/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance."
+msgstr "El http://www.sanbi.org/[Instituto Nacional de Biodiversidad de Sudáfrica (SANBI)] ofrece soporte técnico a los nuevos publicadores en Sudáfrica y soporte de alojamiento para los conjuntos de datos en el http://ipt.sanbi.org.za/iptsanbi/[IPT del SANBI]. Para obtener ayuda por favor póngase en contacto con <f.ramwashe@sanbi.org.za>."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:140

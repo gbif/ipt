@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:47+0000\n"
-"PO-Revision-Date: 2021-11-26 02:35\n"
+"PO-Revision-Date: 2021-12-02 17:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -55,7 +55,7 @@ msgstr "La traducción de esta versión al español es una contribución del equ
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:27
 msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
-msgstr ""
+msgstr "Wieczorek J & Braak K ({localyear}) Manual del usuario del kit de herramientas de publicación integrado de GBIF, versión {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:29

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2021-11-26 02:35\n"
+"PO-Revision-Date: 2021-12-03 14:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -285,7 +285,7 @@ msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que ten
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:74
 msgid "A user cannot be deleted if it is the creator or one or more resources. To restrict the user's access to their resources, downgrade their role to type User. Refer to the <<Modify an existing user>> section for information about how to change a user's role."
-msgstr "No se puede eliminar un usuario si es el creador o uno o más recursos. Para restringir el acceso del usuario a sus recursos, baje su rol al tipo Usuario. Consulte la sección <<Modificar un usuario existente>> para obtener información sobre cómo cambiar el rol de un usuario."
+msgstr "No se puede eliminar un usuario si es el creador o uno o más recursos. Para restringir el acceso del usuario a sus recursos, baje su rol al tipo Usuario. Consulte la sección <<Modificar un Usuario Existente>> para obtener información sobre cómo cambiar el rol de un usuario."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:75
@@ -296,7 +296,7 @@ msgstr "Configurar Opciones para el Registro GBIF"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
 msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
-msgstr "Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección \"Menú Administración\") o publicarlo (véase la sección xref:manage-resources.adoc#versiones-publicadas[Versiones Publicadas]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página <<Editar Registro GBIF>>."
+msgstr "Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección \"Menú Administración\") o publicarlo (véase la sección xref:manage-resources.adoc#versiones-publicadas[Versiones Publicadas]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página <<Editar el Registro GBIF>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:79
@@ -318,7 +318,7 @@ msgstr "*No hay conexión a Internet* - Para un funcionamiento apropiado, el IPT
 #: en/modules/ROOT/pages/administration.adoc:84
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
-msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref:initial-setup.adoc[Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Configurar opciones de IPT>>).\n"
+msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref:initial-setup.adoc[Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Opciones de configuración el IPT>>).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:85
@@ -452,7 +452,7 @@ msgstr "La página no está disponible hasta que el IPT haya sido registrado exi
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:116
 msgid "An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessary have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance."
-msgstr "Un IPT capaz de asignar DOIs a los recursos, para esto debe tener las organizaciones configuradas con una cuenta en DataCite. Para que la organización sea configurada con las cuentas de DataCite, no es necesario que la organización esté en capacidad de publicar recursos (estar asociada a algún recurso). Solo puede utilizarse una cuenta de DataCite a la vez para realizar el registro de los DOIs, y el modo de archivo del IPT debe estar encendido (por favor consulte la sección <<Configuración de las opciones del IPT>> para más información acerca del modo de archivo). La lista de organizaciones muestra cuales han sido configuradas con una cuenta en DataCite, y cuál ha sido seleccionada para el registro de los DOIs para todos los recursos correspondientes en este IPT."
+msgstr "Un IPT capaz de asignar DOIs a los recursos, para esto debe tener las organizaciones configuradas con una cuenta en DataCite. Para que la organización sea configurada con las cuentas de DataCite, no es necesario que la organización esté en capacidad de publicar recursos (estar asociada a algún recurso). Solo puede utilizarse una cuenta de DataCite a la vez para realizar el registro de los DOIs, y el modo de archivo del IPT debe estar encendido (por favor consulte la sección <<Opciones de configuración el IPT>> para más información acerca del modo de archivo). La lista de organizaciones muestra cuales han sido configuradas con una cuenta en DataCite, y cuál ha sido seleccionada para el registro de los DOIs para todos los recursos correspondientes en este IPT."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:117

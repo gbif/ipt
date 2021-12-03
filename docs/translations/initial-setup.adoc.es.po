@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-18 16:15\n"
+"PO-Revision-Date: 2021-12-02 20:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -39,7 +39,7 @@ msgstr "Directorio de Datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:6
 msgid "This step is only shown if the data directory was not already configured during installation."
-msgstr ""
+msgstr "Este paso sólo se muestra si el directorio de datos no ha sido configurado durante la instalación."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:8
@@ -54,12 +54,12 @@ msgstr "no seleccione un directorio de datos que sea vulnerable a cambios o elim
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:12
 msgid "If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory in this first step of the IPT setup. Clicking on \"Save\" in this case will bypass the page titled IPT setup II and present the IPT Administration page."
-msgstr ""
+msgstr "Si tiene un directorio de datos de un IPT que estaba ejecutando anteriormente de la misma versión y quiere usar esa configuración (incluyendo los usuarios y los recursos), puede ingresar la ruta absoluta de ese directorio de datos en este primer paso de la configuración del IPT. Al hacer clic en \"Guardar\" en este caso, se omitirá la página titulada \"Instalación del IPT II\" y se presentará la página de Administración del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:14
 msgid "If you receive an error stating the location is not writable, see xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[the FAQ item on this]."
-msgstr ""
+msgstr "Si recibe un error que indica que la ubicación no tiene permisos de escritura, consulte el xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[elemento de preguntas frecuentes sobre este tema]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:16
@@ -76,12 +76,12 @@ msgstr "ipt2/setup/IPTSetup1.png"
 #: en/modules/ROOT/pages/initial-setup.adoc:19
 #, no-wrap
 msgid "Administrator user and URLs"
-msgstr ""
+msgstr "Usuario administrador y URLs"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:21
 msgid "If the initial data directory assignment step was successful, the IPT will present a second setup page (see screen image, below) on which the information about the default administrator of the IPT must be entered, along with the information about what mode the IPT should run in, and how the IPT will be accessed from the Internet. Following are explanations of the fields encountered on the second setup page:"
-msgstr ""
+msgstr "Si el paso inicial de asignación del directorio de datos ha sido exitoso, el IPT presentará una segunda página de configuración (ver la imagen más abajo) en la que se debe ingresar la información sobre el administrador predeterminado del IPT, junto con la información sobre el modo en que debe ejecutarse el IPT y cómo se accederá al IPT desde Internet. A continuación se explican los campos que se encuentran en la segunda página de configuración:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:23
@@ -152,7 +152,7 @@ msgstr "*Modo del IPT*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:49
 msgid "Choose between Test mode and Production mode. Test mode is for evaluating the IPT or running it in a training scenario, and registrations will go into a test registry and resources will never be indexed. All DOIs minted for resources in test mode should use a test prefix (which can be requested from DataCite), meaning they are temporary. Production mode, on the other hand, is for publishing resources formally, and resources are registered into the GBIF Registry and will be indexed. DOIs minted for resources cannot be deleted, and require resources to remain publicly accessible."
-msgstr ""
+msgstr "Elija entre el modo de Prueba y el modo de Producción. El modo de prueba es para evaluar el IPT o ejecutarlo en un escenario de entrenamiento, los registros irán a un registro de prueba y los recursos nunca serán indexados. Todos los DOIs asignados para los recursos en modo de prueba deben utilizar un prefijo de prueba (que se puede solicitar a DataCite) que indica que son temporales. El modo de producción, por otro lado, es para la publicación formal de recursos, los recursos se registran en el Registro de GBIF y serán indexados. Los DOIs asignados para los recursos no pueden ser borrados y requieren que los recursos permanezcan accesibles al público."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:52
@@ -162,17 +162,17 @@ msgstr "URL pública"
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:54
 msgid "The public, Internet-accessible URL that points to the root of this IPT installation. The URL is detected automatically if possible.  On production systems it needs to be accessible via the Internet in order for the IPT to function fully.  Configuring the IPT Public URL to use localhost, for example, will not allow the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization, and will not allow resources to be publicly accessible."
-msgstr ""
+msgstr "La URL pública, accesible a través de Internet, que apunta a la raíz de esta instalación de IPT. La URL se detecta automáticamente si es posible. En los sistemas de producción tiene que ser accesible a través de Internet para que el IPT funcione correctamente.  Configurar la URL pública del IPT para usar localhost, por ejemplo, no permitirá que el IPT se registre en GBIF, no permitirá que el IPT se asocie con una organización y no permitirá que los recursos sean accesibles públicamente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:56
 msgid "Institutional proxy URL (optional)"
-msgstr ""
+msgstr "URL del proxy institucional (opcional)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:58
 msgid "If the server on which the IPT is installed does not have direct HTTP/HTTPS access to the Internet, but instead must route outbound HTTP/HTTPS requests through an institutional proxy server, enter the host address and port number here.  For example, `\\http://proxy.example.org:8080`."
-msgstr ""
+msgstr "Si el servidor en el que está instalado el IPT no tiene acceso HTTP / HTTPS directo a Internet, sino que debe enrutar las solicitudes HTTP / HTTPS salientes a través de un servidor proxy institucional, ingrese la dirección del host y el número de puerto aquí. Por ejemplo, `http://proxy.example.org:8080`."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/initial-setup.adoc:59
@@ -199,5 +199,5 @@ msgstr "Haga clic en el botón \"Continuar\" para abrir la página de Administra
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:69
 msgid "Once you have completed the steps in this Getting Started Guide, your IPT is ready to add resources (data sets and metadata). You may want to complete one or more of the tutorials to understand how common IPT tasks are accomplished. For detailed explanations of any further aspects of the IPT, consult the following sections of this user manual."
-msgstr ""
+msgstr "Una vez se hayan completado los pasos de esta \"Guía de Instalación\", el IPT estará listo para agregar recursos (conjuntos de datos y metadatos). Es recomendable revisar los tutoriales para entender cómo se llevan a cabo las tareas comunes del IPT. Para una explicación detallada de cualquier otro aspecto del IPT,  consulte las siguientes secciones de este manual del usuario."
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-26 11:31\n"
+"PO-Revision-Date: 2021-11-30 19:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -40,7 +40,7 @@ msgstr "Introducción"
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:6
 msgid "In accordance with the http://www.gbif.org/terms/licences[GBIF licensing policy], a dataset should be made available for use under CC0, CC-BY, or CC-BY-NC. GBIF's recommended best practice is to use the most recent version, which 4.0 for CC-BY and CC-BY-NC. This is in line with Creative Commons' recommendation that:"
-msgstr "De acuerdo con la http://www.gbif.org/terms/licences[GBIF licensing policy], un conjunto de datos debe estar disponible para su uso bajo CC0, CC-BY o CC-BY-NC. La mejor opción, recomendada por GBIF, es utilizar la versión más reciente, la 4.0 para CC-BY y CC-BY-NC. Esto va acorde con la recomendación de Creative Commons de que:"
+msgstr "De acuerdo con la http://www.gbif.org/terms/licences[política de licencias de GBIF], un conjunto de datos debe estar disponible para su uso bajo CC0, CC-BY o CC-BY-NC. La mejor opción, recomendada por GBIF, es utilizar la versión más reciente, la 4.0 para CC-BY y CC-BY-NC. Esto va acorde con la recomendación de Creative Commons de que:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:9
@@ -150,7 +150,7 @@ msgid "<intellectualRights>\n"
 "   <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction</para>\n"
 "</intellectualRights>\n"
 msgstr "<intellectualRights>\n"
-"   <para> En la medida de lo posible por ley, el editor ha renunciado a todos los derechos sobre estos datos y los ha dedicado al  <ulink url=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\"><citetitle> Dominio público (CC0 1.0) </citetitle></ulink>. Los usuarios pueden copiar, modificar, distribuir y utilizar el trabajo, incluso con fines comerciales, sin restricción </para>\n"
+"   <para>En la medida de lo posible según la ley, el editor ha renunciado a todos los derechos sobre estos datos y los ha dedicado al <ulink url=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\"><citetitle>Dominio público (CC0 1.0)</citetitle></ulink>. Los usuarios pueden copiar, modificar, distribuir y utilizar el trabajo, incluso con fines comerciales, sin restricción</para>\n"
 "</intellectualRights>\n"
 
 #. type: Title ====
@@ -182,6 +182,6 @@ msgid "<intellectualRights>\n"
 "  <para>This work is licensed under a <ulink url=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>\n"
 "</intellectualRights>\n"
 msgstr "<intellectualRights>\n"
-"  <para>Este contenido se encuentra bajo una <ulink url=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\"><citetitle> Licencia de Atribución No Comercial de Creative Commons (CC-BY-NC) 4.0 </citetitle></ulink>.</para>\n"
+"  <para>Este contenido se encuentra bajo una <ulink url=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\"><citetitle>Licencia de Atribución No Comercial de Creative Commons (CC-BY-NC) 4.0</citetitle></ulink>.</para>\n"
 "</intellectualRights>\n"
 

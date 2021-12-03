@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-04 19:48+0000\n"
-"PO-Revision-Date: 2021-09-04 19:52\n"
+"PO-Revision-Date: 2021-12-02 03:17\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -46,7 +46,7 @@ msgstr "Traduciendo la interfaz de usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:12
 msgid "Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied."
-msgstr ""
+msgstr "Las traducciones para la interfaz de usuario están contenidas en el archivo `ApplicationResources_en.properties`.  Puede pedir a mailto:helpdesk@gbif.org[el centro de ayuda] una cuenta en https://ipt.gbif-uat.org/[el desarrollo del IPT de GBIF], donde se aplicarán las nuevas traducciones."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/translations.adoc:13
@@ -119,7 +119,7 @@ msgstr "Hay que prestar especial atención a que las referencias cruzadas (enlac
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:34
 msgid "New translations added using Crowdin should appear in the https://ipt.gbif-uat.org/manual/[UAT version of this manual] around 15-60 minutes later."
-msgstr ""
+msgstr "Las nuevas traducciones añadidas mediante Crowdin deberían aparecer en https://ipt.gbif-uat.org/manual/[versión UAT de este manual] unos 15-60 minutos después."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/translations.adoc:35
@@ -181,7 +181,7 @@ msgstr "Referencias cruzadas de diferentes páginas"
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:62
 msgid "The simplest links to different pages are to the top of the linked page.  These have the form `\\xref:filename.adoc[display text]`.  Only the display text should be translated, the file name does not change:"
-msgstr ""
+msgstr "Los enlaces más sencillos a las diferentes páginas se encuentran en la parte superior de la página enlazada. Tienen la forma `\\xref:filename.adoc[texto a mostrar]`. Sólo debe traducirse el texto a mostrar, el nombre del archivo no cambia:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:66
@@ -198,17 +198,17 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:71
 msgid "More complicated are links to a specific section within another page.  These must use the link target, which is generated automatically on each heading: spaces in the heading text are replaced with hyphens (`-`) and the result is converted to lower case.  In a web browser, they are shown in the URL bar following a `#`, in the \"Contents\" menu, or with the \"§\" symbol next to a heading."
-msgstr ""
+msgstr "Los enlaces a una sección específica dentro de otra página son más complicados. Estos deben utilizar el enlace objetivo, que se genera automáticamente en cada encabezado: los espacios en el texto del encabezado se sustituyen por guiones (`-`) y el resultado se convierte a minúsculas. En un navegador web, se muestran en la barra de URL tras un `#`, en el menú \"Contenido\" o con el símbolo \"§\" junto a un encabezado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:73
 msgid "The crossreference is then written as `\\xref:filename.adoc#link-target[display text]`, for example `\\xref:manage-resources.adoc#resource-managers[read about resource managers]` shows as xref:manage-resources.adoc#resource-managers[read about resource managers]."
-msgstr ""
+msgstr "La referencia cruzada se escribe entonces como \\xref:filename.adoc#link-target[texto a mostrar]`, por ejemplo `\\xref:manage-resources.adoc#resource-managers[leer sobre gestores de recursos]` se muestra como xref:manage-resources.adoc#resource-managers[leer sobre gestores de recursos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:75
 msgid "An English heading `Source Data` has the link target `source-data`.  The Spanish translation of the heading, `Conjunto de datos`, has the target `conjunto-de-datos`."
-msgstr ""
+msgstr "Un encabezado en inglés, `Source Data`, tiene como enlace objetivo `source-data`.  La traducción al español del encabezado, `Conjunto de datos`, tiene como enlace objetivo `conjunto-de-datos`."
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:79
@@ -226,22 +226,22 @@ msgstr ""
 #: en/modules/ROOT/pages/translations.adoc:83
 #, no-wrap
 msgid "Images and downloads"
-msgstr ""
+msgstr "Imágenes y descargas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:86
 msgid "Some screenshot images can be translated, and others (without any English text) can be the same across all languages.  The default is for the same image to be used in all languages.  A different image must be uploaded in https://github.com/gbif/ipt[GitHub].  Create an image with the same filename and path, except with `en` changed to the target language."
-msgstr ""
+msgstr "Algunas imágenes de capturas de pantalla pueden traducirse y otras (sin texto en inglés) pueden ser las mismas en todos los idiomas. Por defecto, se utiliza la misma imagen en todos los idiomas. Se debe subir una imagen diferente en https://github.com/gbif/ipt[GitHub].  Cree una imagen con el mismo nombre de archivo y la misma ruta, excepto con `en` cambiado al idioma de destino."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:88
 msgid "For example, the default (English) image shown on the xref:home.adoc[home menu page] is stored in GitHub at https://github.com/gbif/ipt/blob/master/docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png`], and its Spanish translation is at https://github.com/gbif/ipt/blob/master/docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png`]."
-msgstr ""
+msgstr "Por ejemplo, la imagen por defecto (Inglés) que se muestra en xref:home.adoc[página de menú de inicio] se guarda en GitHub en https://github.com/gbif/ipt/blob/master/docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/en/modules/ROOT/assets/images/ipt2/home/IPTHome.png`] y su traducción a español se encuentra en https://github.com/gbif/ipt/blob/master/docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png[`docs/es/modules/ROOT/assets/images/ipt2/home/IPTHome.png`]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:90
 msgid "The syntax to include this image in the manual, `image::ipt2/home/IPTHome.png[]`, does not require translation."
-msgstr ""
+msgstr "La sintaxis para incluir esta imagen en el manual, `image::ipt2/home/IPTHome.png[]`, no requiere traducción."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/translations.adoc:91
@@ -262,5 +262,5 @@ msgstr "Chino tradicional (iniciado)"
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:96
 msgid "If you want to translate the user manual into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English."
-msgstr ""
+msgstr "Si desea traducir el manual de usuario a otro idioma, envíe un correo electrónico a helpdesk@gbif.org. No es necesario traducir todo el manual: las secciones no traducidas se mostrarán en inglés."
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:21+0000\n"
-"PO-Revision-Date: 2021-09-06 08:17\n"
+"PO-Revision-Date: 2021-12-01 23:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,7 +25,7 @@ msgstr "Vista General"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:4
 msgid "The following sections explain in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the xref:getting-started.adoc[Getting Started Guide]. The details of this guide are presented in four sections corresponding to the four \"menus\" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in."
-msgstr ""
+msgstr "En las siguientes secciones se explican detalladamente las capacidades de una instancia de IPT que se ha instalado, ejecutado por primera vez y comprobado su funcionamiento tal y como se explica en la xref:getting-started.adoc[Comenzando – Instalación y Configuración Inicial]. Los detalles de esta guía se presentan en cuatro secciones que corresponden a los cuatro \"menús\" disponibles en la interfaz de usuario del IPT. Algunas pestañas sólo son visibles cuando un usuario con los derechos adecuados para verlos ha iniciado sesión."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/overview.adoc:5
@@ -42,7 +42,7 @@ msgstr "La mayoría de los controles de la interfaz del usuario tienen los modos
 #: en/modules/ROOT/pages/overview.adoc:9
 #, no-wrap
 msgid "*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the ☰ button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role, and the currently active screen is highlighted.\n"
-msgstr ""
+msgstr "*Menús*, en el IPT aparece una barra de menús en casi todas las páginas. (En las pantallas pequeñas, aparece debajo del botón ☰).  El menú está poblado de elementos de menú que guían a los usuarios a los temas fundamentales. Los elementos del menú aparecen en función de lo que el usuario actual está autorizado a ver según su rol y la pantalla actualmente activa aparece resaltada.\n"
 
 #. type: Block title
 #: en/modules/ROOT/pages/overview.adoc:10
@@ -89,7 +89,7 @@ msgstr "*Cuadros de texto* - Permiten establecer un valor como visto, como verda
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:22
 msgid "Example text box and label for an email address:"
-msgstr ""
+msgstr "Ejemplo de caja de texto y etiqueta para una dirección de correo electrónico:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:23
@@ -319,7 +319,7 @@ msgstr "https://github.com/gbif/ipt/issues/[*Reportar un error*] - Este enlace a
 #: en/modules/ROOT/pages/overview.adoc:96
 #, no-wrap
 msgid "https://github.com/gbif/ipt/issues/new[*Request new feature*] - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.\n"
-msgstr ""
+msgstr "https://github.com/gbif/ipt/issues/new[*Solicitar una nueva función*]: Este enlace abre un formulario específico en el seguidor de problemas del IPT que se puede llenar para solicitar una capacidad que el IPT no tiene actualmente.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:96

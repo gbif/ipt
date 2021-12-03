@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-26 21:32+0000\n"
-"PO-Revision-Date: 2021-11-29 18:25\n"
+"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"PO-Revision-Date: 2021-12-03 14:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,8 +36,8 @@ msgstr "El IPT almacena la configuración, los recursos, los usuarios y las bit�
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:8
-msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location."
-msgstr "La ubicación típica en Linux es `/var/lib/ipt` (instalado desde los paquetes) o`/srv/ipt` (ejecutando en Tomcat). En Windows, `C:\\ipt-data` es apropiado. El IPT debe tener permiso de escritura en la ubicación elegida."
+msgid "A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[FAQ entry] if you have problems."
+msgstr "Una ubicación típica en Linux es `/var/lib/ipt` (instalado desde los paquetes) o `/srv/ipt` (ejecutado en Tomcat).  En Windows, `C:\\ipt-data` es apropiado.  El IPT debe tener permiso de escritura en la ubicación elegida, consulte esta xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[entrada de Preguntas Frecuentes] si tiene problemas."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:12
@@ -74,18 +74,18 @@ msgstr "Hay varias formas de instalar el IPT."
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:25
 msgid "Users of *Red Hat*, *CentOS*, *Debian*, *Ubuntu* or similar may install directly from <<Installation from Linux packages,Linux packages>>.  This is the simplest method for the typical installation of a single IPT on a single server, and is also the easiest method to keep updated."
-msgstr "Los usuarios de * Red Hat *, * CentOS *, * Debian *, * Ubuntu * o similar pueden instalar directamente desde <<Instalación desde paquetes Linux, paquetes Linux >>. Este es el método más simple para la instalación típica de un solo IPT en un solo servidor, y también es el método más fácil de mantener actualizado."
+msgstr "Los usuarios de *Red Hat*, *CentOS*, *Debian*, *Ubuntu* o similar pueden instalar directamente desde <<Instalación desde paquetes Linux,paquetes Linux>>. Este es el método más simple para la instalación típica de un solo IPT en un solo servidor, y también es el método más fácil de mantener actualizado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:26
 msgid "Other *Linux* users, all *MS Windows* users, and those who wish to run multiple IPTs on the same server should instead look at the section on <<Installation within a servlet container>>."
-msgstr "Otros usuarios de * Linux *, todos los usuarios de * MS Windows * y aquellos que deseen ejecutar múltiples IPT en el mismo servidor deberían consultar la sección sobre << Instalación dentro de un contenedor de servlets >>."
+msgstr "Otros usuarios de *Linux*, todos los usuarios de *MS Windows* y aquellos que deseen ejecutar múltiples IPT en el mismo servidor deberían consultar la sección sobre <<Instalación dentro de un contenedor de servlets>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:27
 #, no-wrap
 msgid "*Docker* images are also available, see <<Installation using Docker>>.\n"
-msgstr "* Docker * Las imágenes también están disponibles, puede consultarse en<<Installation using Docker>>\n"
+msgstr "*Docker* Las imágenes también están disponibles, puede consultarse en <<Instalación usando Docker>>\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:28
@@ -102,7 +102,7 @@ msgstr "RPM (Red Hat, CentOS etc)"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:33
 msgid "To install the IPT onto Red Hat 7, CentOS 7 or similar, first add the GBIF package repository and install the IPT package:"
-msgstr ""
+msgstr "Para instalar IPT en Red Hat 7, CentOS 7 o similar, primero agregue el repositorio de paquetes GBIF e instale el paquete IPT:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:38
@@ -128,7 +128,7 @@ msgstr "systemctl enable ipt\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:49
 msgid "The IPT starts up on port 8080 (unless this was changed above).  Initial logs are visible with `journalctl -u ipt`, but are then logged in the data directory.  Make sure to *back up the IPT data directory*, which is `/var/lib/ipt` by default."
-msgstr "El IPT se inicia en el puerto 8080 (a menos que se haya cambiado anteriormente). Los registros iniciales son visibles con `journalctl -u ipt`, pero luego se registran en el directorio de datos. Asegúrese de * hacer una copia de seguridad del directorio de datos IPT *, que es `/var/lib/ipt` por defecto."
+msgstr "El IPT se inicia en el puerto 8080 (a menos que se haya cambiado anteriormente). Los registros iniciales son visibles con `journalctl -u ipt`, pero luego se registran en el directorio de datos. Asegúrese de *hacer una copia de seguridad del directorio de datos IPT*, que es `/var/lib/ipt` por defecto."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:51
@@ -152,7 +152,7 @@ msgstr "APT (Debian, Ubuntu etc)"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:57
 msgid "Please refer to https://github.com/gbif/ipt/pull/1470[\"Debian packaging\"] on GitHub.  This is a contribution from GBIF Spain, and not yet supported by the IPT developers."
-msgstr "Por favor consulte https://github.com/gbif/ipt/pull/1470[\"Debian packaging \"] en GitHub. Esta es una contribución de GBIF España, y aún no está soportada por los desarrolladores de IPT."
+msgstr "Por favor consulte https://github.com/gbif/ipt/pull/1470[\"Debian packaging\"] en GitHub. Esta es una contribución de GBIF España, y aún no está soportada por los desarrolladores de IPT."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:60
@@ -208,8 +208,9 @@ msgstr "Este paso es opcional, pero se recomienda para mejorar la seguridad y si
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:82
-msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]). For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process."
-msgstr "Localice el directorio de configuración del Tomcat (normalmente `/etc/tomcat` o `/etc/tomcat9` en Linux, `C:\\gram FilesApache Software Foundation\\Tomcat X.Y\\conf` en Windows), y cree un archivo `Catalina/localhost/ipt.xml` (descrito en la https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[documentación del Tomcat \"Definiendo un contexto\"]). Por ejemplo, en una instalación típica de CentOS Linux, el archivo sería `/etc/tomcat/conf/Catalina/localhost/ipt.xml`. El archivo debe ser legible por el proceso del Tomcat."
+#, no-wrap
+msgid "Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\\Program Files\\Apache Software Foundation\\Tomcat X.Y\\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation \"Defining a context\"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.\n"
+msgstr "Localice el directorio de configuración del Tomcat (normalmente `/etc/tomcat` o `/etc/tomcat9` en Linux, `C:\\gram FilesApache Software Foundation\\Tomcat X.Y\\conf` en Windows) y cree un archivo `Catalina/localhost/ipt.xml` (descrito en la https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[documentación del Tomcat \"Definiendo un contexto\"]).   Por ejemplo, en una instalación típica de CentOS Linux, el archivo sería `/etc/tomcat/Catalina/localhost/ipt.xml`. El archivo debe ser legible por el proceso del Tomcat.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:84
@@ -269,7 +270,7 @@ msgstr "El siguiente video también explica cómo instalar IPT usando Tomcat, as
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:122
 msgid "Multiple IPTs can be installed on the same server with a small variation to this process.  Rather than (or in addition to) using `ipt.xml` and `ipt.war`, use different names and change the files accordingly: on https://cloud.gbif.org/[cloud.gbif.org] we have `africa.xml` and `africa.war`, `bid.xml` and `bid.war` etc."
-msgstr "Se pueden instalar varios IPT en el mismo servidor con una pequeña variación de este proceso. En lugar de (o además de) usar `ipt.xml` e` ipt.war`, use nombres diferentes y cambie los archivos en consecuencia: en https://cloud.gbif.org/[cloud.gbif.org] tenemos `africa.xml` y` africa.war`, `bid.xml` y` bid.war`, etc."
+msgstr "Se pueden instalar varios IPT en el mismo servidor con una pequeña variación de este proceso. En lugar de (o además de) usar `ipt.xml` e `ipt.war`, use nombres diferentes y cambie los archivos en consecuencia: en https://cloud.gbif.org/[cloud.gbif.org] tenemos `africa.xml` y `africa.war`, `bid.xml` y `bid.war`, etc."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:124
@@ -290,7 +291,7 @@ msgstr "Jetty"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:131
 msgid "_As a very rough guide, on CentOS, to run a single instance of the IPT:_"
-msgstr "_Como una guía muy aproximada, en CentOS, para ejecutar una única instancia del IPT: _"
+msgstr "_Como una guía muy aproximada, en CentOS, para ejecutar una única instancia del IPT:_"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/installation.adoc:136
@@ -340,7 +341,7 @@ msgstr "Si necesita encontrar la dirección IP \"predeterminada\" de su máquina
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:158
 msgid "Run a specific version from https://hub.docker.com/r/gbif/ipt/tags[those available] by using `gbif/ipt:version` rather than `gbif/ipt`."
-msgstr "Ejecute una versión específica desde https://hub.docker.com/r/gbif/ipt/tags[las disponibles] usando `gbif/ipt:version` en lugar de`gbif/ipt`."
+msgstr "Ejecute una versión específica desde https://hub.docker.com/r/gbif/ipt/tags[las disponibles] usando `gbif/ipt:version` en lugar de `gbif/ipt`."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:159
@@ -356,7 +357,7 @@ msgstr "Probablemente necesitará trabajar con su sistema o administrador de red
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:164
 msgid "You will need a DNS name for the server (\"`ipt.example.org`\") and the firewall to allow access."
-msgstr "Necesitará un nombre DNS para el servidor (\"` ipt.example.org` \") y permitir el acceso en el firewall."
+msgstr "Necesitará un nombre DNS para el servidor (\"`ipt.example.org`\") y permitir el acceso en el firewall."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:166
@@ -389,15 +390,15 @@ msgstr ""
 #: en/modules/ROOT/pages/installation.adoc:183
 #, no-wrap
 msgid "TLS certificate configuration"
-msgstr ""
+msgstr "Configuración del certificado TLS"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:186
 msgid "For production deployments of the IPT we recommend using a TLS certificate, so information such as logins are secured when accessing the IPT.  The procedure to set this up sometimes depends on your institution's policies, but the free https://letsencrypt.org/[LetsEncrypt] service is a good choice.  They https://certbot.eff.org/instructions[provide instructions] for adding a certificate to Apache, Nginx and many other webservers running on Linux or Windows."
-msgstr ""
+msgstr "Para los despliegues en producción del IPT recomendamos utilizar un certificado TLS para que la información, como los inicios de sesión, esté protegida al acceder al IPT.  El procedimiento para configurarlo a veces depende  de las políticas de su institución, pero el servicio gratuito https://letsencrypt.org/[LetsEncrypt] es una buena opción.  Se https://certbot.eff.org/instructions[ofrecen instrucciones] para añadir un certificado a Apache, Nginx y muchos otros servidores web que funcionan en Linux o Windows."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:187
 msgid "For a new deployment, it is best to set up the webserver with TLS first, then install and set up the IPT.  Adding a certificate to a configured IPT requires changing the public URL.  See the note on xref:administration.adoc#public-url[updating the public URL] in the administration section."
-msgstr ""
+msgstr "Para una nuevo despliegue, es mejor configurar primero el servidor web con TLS y luego instalar y configurar el IPT.  Añadir un certificado a un IPT configurado requiere cambiar la URL pública.  Consulte la nota sobre la xref:administration.adoc#public-url[actualización de la URL pública] en la sección de administración."
 
