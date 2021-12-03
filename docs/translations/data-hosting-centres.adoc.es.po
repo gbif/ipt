@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-11-30 14:41\n"
+"PO-Revision-Date: 2021-12-03 14:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -131,7 +131,7 @@ msgstr "Saben cómo publicar artículos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:31
 msgid "If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org[helpdesk@gbif.org]."
-msgstr "Si cree que su DHC cumple con estos estándares y le gustaría ofrecer sus servicios a los publicadores de su país, envíe un correo electrónico a mailto: helpdesk@gbif.org[helpdesk@gbif.org]."
+msgstr "Si cree que su DHC cumple con estos estándares y le gustaría ofrecer sus servicios a los publicadores de su país, envíe un correo electrónico a mailto:helpdesk@gbif.org[helpdesk@gbif.org]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:32
