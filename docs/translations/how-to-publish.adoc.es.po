@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-12-03 13:15\n"
+"PO-Revision-Date: 2021-12-03 14:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -171,7 +171,7 @@ msgstr "Sugerencia: consulte otras secciones de este manual para obtener orienta
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:47
 msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}.xml[Event Core]."
-msgstr "Mapear los datos (por ejemplo, xref:checklist-data.adoc[Datos de listado taxonómico] se asigna al {latest-dwc-taxon}.xml[Taxon Core], xref:ocurrence-data.adoc[Occurrence Data] se asigna al {latest-dwc-occurrence}.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] se asigna al {latest-dwc-event}.xml [Event Core]."
+msgstr "Mapear los datos (por ejemplo, xref:checklist-data.adoc[Datos de listado taxonómico] se asigna al {latest-dwc-taxon}.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] se asigna al {latest-dwc-occurrence}.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] se asigna al {latest-dwc-event}.xml[Event Core]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:48
