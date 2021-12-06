@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 15:16+0000\n"
-"PO-Revision-Date: 2021-08-19 12:39\n"
+"PO-Revision-Date: 2021-12-06 20:49\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/getting-started.adoc:1
 #, no-wrap
 msgid "Getting Started – Installation and Initial Setup"
-msgstr "Comenzando – Instalación y Configuración Inicial"
+msgstr "Primeros pasos: instalación y configuración inicial"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/getting-started.adoc:4
