@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-06 18:39+0000\n"
-"PO-Revision-Date: 2021-12-06 20:12\n"
+"PO-Revision-Date: 2021-12-06 22:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -93,7 +93,7 @@ msgstr "Traducida en 7 idiomas"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:27
 msgid "Existing users may upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide]."
-msgstr "Los usuarios actuales pueden actualiza a esta versión siguiendo las instrucciones de xref:2.5@release-notes.adoc[Notas de la versión]. Los nuevos usuarios deben seguir la xref:getting-started.adoc[Guía de introducción]."
+msgstr "Los usuarios actuales pueden actualizar a esta versión siguiendo las instrucciones de xref:2.5@release-notes.adoc[Notas de la versión]. Los nuevos usuarios deben seguir la xref:getting-started.adoc[Guía de introducción]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
