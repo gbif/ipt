@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-12-03 14:14\n"
+"PO-Revision-Date: 2021-12-06 20:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -50,7 +50,7 @@ msgstr "GBIF admite la publicación, el descubrimiento y el uso de cuatro clases
 #: en/modules/ROOT/pages/how-to-publish.adoc:6
 #: en/modules/ROOT/pages/how-to-publish.adoc:38
 msgid "xref:resource-metadata.adoc[Resource metadata]"
-msgstr ""
+msgstr "xref:resource-metadata.adoc[Metadatos del recurso]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:7
@@ -62,13 +62,13 @@ msgstr "xref:checklist-data.adoc[Datos de listado taxonómico]"
 #: en/modules/ROOT/pages/how-to-publish.adoc:8
 #: en/modules/ROOT/pages/how-to-publish.adoc:40
 msgid "xref:occurrence-data.adoc[Occurrence Data]"
-msgstr ""
+msgstr "xref:occurrence-data.adoc[Datos de registros biológicos]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:9
 #: en/modules/ROOT/pages/how-to-publish.adoc:41
 msgid "xref:sampling-event-data.adoc[Sampling Event Data]"
-msgstr ""
+msgstr "xref:sampling-event-data.adoc[Datos de eventos de muestreo]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:11
