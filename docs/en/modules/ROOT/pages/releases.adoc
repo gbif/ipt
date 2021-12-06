@@ -3,7 +3,7 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<2-5-2-november-2021,2.5.2>>.
+The current, stable release is version <<2-5-3-december-2021,2.5.3>>.
 
 You are reading the manual for version {page-version}.  You can read other versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
@@ -14,6 +14,22 @@ endif::[]
 // Next release text kept for reuse, as it will be part of the Crowdin translation memory.
 //Version 2.5.2 of the IPT is expected to be released in Month 2021.  In preparation for this, a _release candidate_ version 2.5.2-RC1 is now available.
 //CAUTION: This is a *release candidate* made available for testing.  *It is not suitable for production use.*
+
+== *2.5.3* – December 2021
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.3/ipt-2.5.3.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:2.5@release-notes.adoc[IPT v2.5.3 Release Notes]
+* xref:2.5@index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/30?closed=1[2 issues].
+* Translated into 7 languages
+
+Existing users may upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
+
+This version contains an update to the Spanish translation of the user interface, and a minor bugfix for the vocabularies page in the administration section. There are no other changes since version 2.5.2, and no need to upgrade if you do not wish to do so. Thanks to the work of the translators, the translation of this user manual into Spanish has been completed.
+
+No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+Minor issues and security issues will be addressed in patch releases.
 
 == *2.5.2* – November 2021
 
@@ -26,10 +42,6 @@ endif::[]
 Existing users should upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
 This version addresses bug introduced in earlier 2.5 versions, principally around metadata editing and citations. Other improvements for deployment and server administration are included, as well as user interface updates and new versions of library dependencies.
-
-No release date has been set for the next release.  Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-Minor issues and security issues will be addressed in patch releases.
 
 == *2.5.1* – September 2021
 
