@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:47+0000\n"
-"PO-Revision-Date: 2021-12-02 17:01\n"
+"PO-Revision-Date: 2021-12-06 19:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -48,7 +48,7 @@ msgstr "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolk
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:22
 msgid "This TRANSLATORS_PUT_YOUR_LANGUAGE_HERE translation of the user manual is contributed by TRANSLATORS_CREDIT_YOURSELVES.  The recommended citation for this translation into YOUR_LANGUAGE_HERE is as follows:"
-msgstr "La traducción de esta versión al español es una contribución del equipo Coordinador del Sistema de Información sobre la Biodiversidad de Colombia (http://www.sibcolombia.net/[SIB Colombia]), en especial de Néstor Beltrán y Valerie Dean. La citación recomendada para esta traducción al español es la siguiente:"
+msgstr "La traducción de esta versión al español es una contribución del equipo Coordinador del Sistema de Información sobre la Biodiversidad de Colombia (http://www.biodiversidad.co/[SIB Colombia]), en especial de María Alejandra Meneses, Dairo Escobar, Ricardo Ortiz, Sara Gaviria, Camila Plata, Néstor Beltrán y Valerie Dean. La citación recomendada para esta traducción al español es la siguiente:"
 
 #.  Translated user manual citation
 #.  Endif
