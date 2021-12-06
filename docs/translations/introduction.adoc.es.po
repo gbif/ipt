@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-07-09 12:53+0000\n"
-"PO-Revision-Date: 2021-12-03 14:14\n"
+"PO-Revision-Date: 2021-12-06 20:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,12 +25,12 @@ msgstr "¿Cómo usar este manual?"
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:4
 msgid "This manual has three main components: an introduction with background information, a number of step-by-step tutorials and a complete reference guide including a \"getting started\" section and sections describing in detail the different elements of the tool."
-msgstr "Este manual consta de tres componentes principales: una introducción con información de contexto, una serie de tutoriales y una completa guía de referencia, incluyendo la sección \"Guía de Instalación\" y unas secciones que describen detalladamente los diferentes elementos de la herramienta."
+msgstr "Este manual tiene tres componentes principales: una introducción con información de contexto, una serie de tutoriales paso a paso, y una completa guía de referencia que incluye la sección de \"Comenzando: instalación y configuración\" y otras secciones que describen en detalle los diferentes elementos de la herramienta."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:6
 msgid "All users are encouraged to review this introductory part and then refer to the different specific sections depending on their role(s) regarding the IPT installation. The IPT (and this manual) differentiates three type of users:"
-msgstr "Se invita a todos los usuarios a revisar esta sección introductoria y a que posteriormente, dependiendo del papel que cumplan en la instalación del IPT, se dirijan a las secciones específicas. El IPT (y este manual) distingue tres tipos de usuarios:"
+msgstr "Se recomienda a todos los usuarios a que revisen esta sección introductoria y, posteriormente, dependiendo del papel que cumplan en la instalación de la IPT, se dirijan a las secciones específicas. La IPT (y este manual) distingue tres tipos de usuarios:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/introduction.adoc:8
