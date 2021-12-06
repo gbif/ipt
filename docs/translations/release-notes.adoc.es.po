@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-01 23:14\n"
+"PO-Revision-Date: 2021-12-06 19:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -257,7 +257,7 @@ msgstr "La xref:customization.adoc[personalización] (estilo, etc.) usando `cust
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:87
 msgid "If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release]."
-msgstr "Si está actualizando desde una versión anterior a la 2.4, por favor, consulte las notas de la xref:2.4@release-notes.adoc[versión antigua]."
+msgstr "Si está actualizando desde una versión anterior a la 2.4, por favor, consulte las notas de la link:../../../en/ipt/2.4/release-notes[versión antigua]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:90
