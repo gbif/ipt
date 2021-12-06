@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-06 18:39+0000\n"
-"PO-Revision-Date: 2021-12-06 19:05\n"
+"PO-Revision-Date: 2021-12-06 19:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -60,7 +60,7 @@ msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.3/ipt-2
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:22
 msgid "xref:2.5@release-notes.adoc[IPT v2.5.3 Release Notes]"
-msgstr "xref:2.5@release-notes.adoc[IPT v2.5.3 Notas de liberación"
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.3]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
@@ -93,12 +93,12 @@ msgstr "Traducida en 7 idiomas"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:27
 msgid "Existing users may upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide]."
-msgstr ""
+msgstr "Los usuarios actuales pueden actualiza a esta versión siguiendo las instrucciones de xref:2.5@release-notes.adoc[Notas de la versión].  Los nuevos usuarios deben seguir la xref:getting-started.adoc[Guía de inicio]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
 msgid "This version contains an update to the Spanish translation of the user interface, and a minor bugfix for the vocabularies page in the administration section. There are no other changes since version 2.5.2, and no need to upgrade if you do not wish to do so. Thanks to the work of the translators, the translation of this user manual into Spanish has been completed."
-msgstr ""
+msgstr "Esta versión contiene una actualización de la traducción al español de la interfaz de usuario y una pequeña corrección de errores para la página de vocabularios en la sección de administración. No hay otros cambios desde la versión 2.5.2 y no es necesario actualizar si no desea hacerlo. Gracias al trabajo de los traductores, se ha completado la traducción de este manual de usuario al español."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:31
@@ -332,7 +332,7 @@ msgstr "*2.3.3* - Diciembre de 2016"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:126
 msgid "xref:2.4@release-notes.adoc[IPT v2.3.3 Release Notes]"
-msgstr "xref:2.4@release-notes.adoc[Notas de la Versión IPT v2.3.3]"
+msgstr "link:../../../en/ipt/2.4/release-notes[Notas de la versión IPT v2.3.3]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:128
