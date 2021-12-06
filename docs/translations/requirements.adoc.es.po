@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-12-06 21:14\n"
+"PO-Revision-Date: 2021-12-06 21:47\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -75,7 +75,7 @@ msgstr "Espacio en disco"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:17
 msgid "The space required by the IPT application is around 100MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space."
-msgstr "El espacio requerido por la aplicación del IPT es menor a 100 MB. El contenido del directorio de datos del IPT después de la instalación, requiere menos de 1 MB de almacenamiento en disco, generados por el IPT. No obstante, el contenido del directorio de datos crecerá a medida que se creen recursos, y requerirá un espacio equivalente al tamaño de los archivos o tablas que contienen los conjuntos de datos importados. Una estimación razonable para el tamaño de un conjunto de datos relativamente nutrido, es de un kilobyte por registro. El uso normal del IPT anexa información a los archivos de registro, que crecerán con el tiempo, pero que generalmente requieren un mínimo espacio en disco."
+msgstr "El espacio requerido por la aplicación IPT es de unos 100MB. El contenido del directorio de datos de la IPT después de la instalación requiere menos de 1MB de almacenamiento en disco que pueda ser escrito por la IPT. Sin embargo, el contenido del directorio de datos crecerá a medida que se creen recursos y requerirá un espacio equivalente al tamaño de los archivos o tablas importados que contienen los conjuntos de datos. Una estimación razonable del tamaño de un conjunto de datos de registros biológicos relativamente rico es de un kilobyte por registro. El uso normal de la IPT anexa información a los archivos de registro, que crecerán con el tiempo, pero que generalmente requieren un espacio mínimo en el disco."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:18
@@ -97,5 +97,5 @@ msgstr "Soporte técnico"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:23
 msgid "Running an IPT is a commitment.  Data should be backed up regularly, and security updates (for the operating system or the IPT) must be applied soon after they become available."
-msgstr "Ejecutar un IPT es un compromiso. Hay que hacer copias de seguridad de los datos regularmente y las actualizaciones de seguridad (para el sistema operativo o el IPT) deben aplicarse poco después de que estén disponibles."
+msgstr "Ejecutar una IPT es un compromiso. Hay que hacer copias de seguridad de los datos regularmente y las actualizaciones de seguridad (para el sistema operativo o la IPT) deben aplicarse poco después de que estén disponibles."
 
