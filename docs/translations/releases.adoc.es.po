@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-06 18:39+0000\n"
-"PO-Revision-Date: 2021-12-06 19:36\n"
+"PO-Revision-Date: 2021-12-06 20:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -73,7 +73,7 @@ msgstr "xref:2.5@index.adoc[Manual del Usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:24
 msgid "Addressed https://github.com/gbif/ipt/milestone/30?closed=1[2 issues]."
-msgstr "Se corrigieron https://github.com/gbif/ipt/milestone/30?closed=1[2 problemas]."
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/30?closed=1[2 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:25
@@ -93,12 +93,12 @@ msgstr "Traducida en 7 idiomas"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:27
 msgid "Existing users may upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide]."
-msgstr "Los usuarios actuales pueden actualiza a esta versión siguiendo las instrucciones de xref:2.5@release-notes.adoc[Notas de la versión].  Los nuevos usuarios deben seguir la xref:getting-started.adoc[Guía de inicio]."
+msgstr "Los usuarios actuales pueden actualiza a esta versión siguiendo las instrucciones de xref:2.5@release-notes.adoc[Notas de la versión]. Los nuevos usuarios deben seguir la xref:getting-started.adoc[Guía de introducción]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
 msgid "This version contains an update to the Spanish translation of the user interface, and a minor bugfix for the vocabularies page in the administration section. There are no other changes since version 2.5.2, and no need to upgrade if you do not wish to do so. Thanks to the work of the translators, the translation of this user manual into Spanish has been completed."
-msgstr "Esta versión contiene una actualización de la traducción al español de la interfaz de usuario y una pequeña corrección de errores para la página de vocabularios en la sección de administración. No hay otros cambios desde la versión 2.5.2 y no es necesario actualizar si no desea hacerlo. Gracias al trabajo de los traductores, se ha completado la traducción de este manual de usuario al español."
+msgstr "Esta versión contiene una actualización de la traducción al español de la interfaz de usuario y una pequeña corrección de errores para la página de vocabularios en la sección de administración. No hay otros cambios desde la versión 2.5.2 y no es necesario hacer la actualización si no desea hacerlo. Gracias al trabajo de los traductores, se ha completado la traducción de este manual del usuario al español."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:31
