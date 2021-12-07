@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-07 14:39\n"
+"PO-Revision-Date: 2021-12-07 15:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -45,28 +45,28 @@ msgstr "Un centro de alojamiento de datos (DHC por sus siglas en ingles ) puede 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:8
 msgid "Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language."
-msgstr "El uso de un DHC es muy recomendable pues le ahorrará tiempo y dinero a la hora de configurar su propia instancia de IPT, además, podrá recibir apoyo del servicio de ayuda en su propio idioma."
+msgstr "El uso de un DHC es muy recomendable pues le ahorrará tiempo y dinero a la hora de configurar su propia instancia de IPT, además, podrá recibir apoyo del centro de ayuda en su propio idioma."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:10
 msgid "Please use this page to discover a trusted DHC by country or by theme that is right for you. If no appropriate DHC exists, or the DHC doesn't reply promptly to your enquiry, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] for assistance."
-msgstr "Utilice esta página para encontrar un DHC de confianza por país o por tema que sea adecuado para usted. Si no existe un DHC adecuado o el DHC no responde rápidamente su consulta, comuníquese con mailto:helpdesk@gbif.org[GBIF Helpdesk] para obtener ayuda."
+msgstr "Por favor, use esta página para descubrir un DHC de confianza, ya sea por país o por tema, que sea adecuado para usted. Si no existe un DHC adecuado o el DHC no responde rápidamente a su consulta, póngase en contacto con el mailto:helpdesk@gbif.org[centro de ayuda de GBIF] para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:12
 msgid "Please note that to qualify as a trusted DHC, the centre must meet a strict set of criteria. Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset is backed up."
-msgstr "Tenga en cuenta que para calificar como un DHC de confianza, el centro debe cumplir con un estricto conjunto de criterios. De esta manera, puede confiar en que el DHC mantendrá su IPT en línea cerca del 100% del tiempo, y se asegurarán de que se haga una copia de seguridad de su conjunto de datos."
+msgstr "Tenga en cuenta que para ser considerado un DHC de confianza, el centro debe cumplir una serie de criterios estrictos. De esta manera, puede confiar en que el DHC mantendrá su IPT en línea cerca del 100% del tiempo y se asegurará de que su conjunto de datos esté respaldado."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:13
 #, no-wrap
 msgid "Data Hosting Centre Criteria"
-msgstr "Criterios del centro de alojamiento de datos"
+msgstr "Criterios de los centros de alojamiento de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:16
 msgid "A DHC must meet the following set of strict requirements in order to be recommended to publishers:"
-msgstr "Un DHC debe cumplir con el siguiente conjunto de requisitos estrictos para ser recomendado a los publicadores:"
+msgstr "Un DHC debe cumplir la siguiente serie de requisitos estrictos para ser recomendado a los publicadores:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:18
@@ -91,7 +91,7 @@ msgstr "Mantener actualizados el sistema operativo y el contenedor de servlets (
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:22
 msgid "Ensuring the IPT data directory is regularly backed-up"
-msgstr "Asegurando que el directorio de datos del IPT se respalde de manera regular"
+msgstr "Asegurando la realización de copias de seguridad periódicas del directorio de datos del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:23
@@ -101,7 +101,7 @@ msgstr "Administrando las cuentas de usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:24
 msgid "Managing IPT cores and extensions"
-msgstr "Administrando las extensiones y estándares"
+msgstr "Administrando los núcleos y extensiones de IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:25
@@ -111,7 +111,7 @@ msgstr "Tienen un historial comprobado de alojamiento de datos para publicadores
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:26
 msgid "They can provide prompt and knowledgeable helpdesk support:"
-msgstr "Pueden proporcionar asistencia técnica rápida y con conocimientos:"
+msgstr "Pueden proporcionar asistencia técnica rápida y bien informada:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:27
@@ -126,7 +126,7 @@ msgstr "Conocen los estándares de datos de biodiversidad en general"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:29
 msgid "They know how to publish data papers"
-msgstr "Saben cómo publicar artículos"
+msgstr "Saben cómo publicar artículos de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:31
@@ -228,7 +228,7 @@ msgstr "<<EUA>>"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:55
 msgid "⭐ Designates a country with an IPT serving as a repository, able to assign DOIs to datasets underlying scientific publications in journals such as https://www.nature.com/sdata/[Scientific Data]."
-msgstr "⭐Designa a un país con un IPT que actúa como repositorio, capaz de asignar DOI a conjuntos de datos de publicaciones científicas en revistas como https://www.nature.com/sdata/[Datos científicos]."
+msgstr "⭐Designa a un país con un IPT que actúa como repositorio, capaz de asignar DOI a los conjuntos de datos de publicaciones científicas en revistas como https://www.nature.com/sdata/[Datos científicos]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:56
