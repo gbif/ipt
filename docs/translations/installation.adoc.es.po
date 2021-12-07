@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-03 14:14\n"
+"PO-Revision-Date: 2021-12-07 16:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -27,12 +27,12 @@ msgstr "Instalación"
 #: en/modules/ROOT/pages/installation.adoc:3
 #, no-wrap
 msgid "Data directory"
-msgstr "Directorio de Datos"
+msgstr "Directorio de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:6
 msgid "The IPT stores configuration, resources, users and logs in its data directory.  This can be set during installation, or the first time the IPT is run."
-msgstr "El IPT almacena la configuración, los recursos, los usuarios y las bitácoras en su directorio de datos. Esto se puede configurar durante la instalación o la primera vez que se ejecuta el IPT."
+msgstr "El IPT almacena la configuración, los recursos, los usuarios y la actividad del sistema en su directorio de datos. El directorio se puede configurar durante la instalación o la primera vez que se ejecuta la IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:8
