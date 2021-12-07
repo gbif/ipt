@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-07 16:36\n"
+"PO-Revision-Date: 2021-12-07 17:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -53,12 +53,12 @@ msgstr "*Se debe realizar una copia de seguridad del directorio de datos con reg
 #. type: delimited block =
 #: en/modules/ROOT/pages/installation.adoc:16
 msgid "Loss of the contents of the data directory will result in the loss of resource, user, and other configuration information and customizations to the IPT installation."
-msgstr "La pérdida del contenido del directorio de datos dará como resultado la pérdida de recursos, usuarios y otra información de configuración y personalizaciones para la instalación de IPT."
+msgstr "La pérdida del contenido del directorio de datos provocará la pérdida de información sobre recursos, usuarios y otras configuraciones y personalizaciones de la instalación de IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:19
 msgid "If you have a data directory from a previously running IPT of the same version and want to use that previous configuration (including users and resources), you can enter the absolute path of that data directory below, or during the first step of the IPT setup."
-msgstr "Si tiene un directorio de datos de un IPT que se estaba ejecutando anteriormente de la misma versión y desea usar esa configuración anterior (incluidos los usuarios y los recursos), puede ingresar la ruta absoluta de ese directorio de datos a continuación, o durante el primer paso de la configuración del IPT ."
+msgstr "Si tiene un directorio de datos de una IPT de la misma versión que se estaba ejecutando anteriormente y quiere usar esa configuración (incluyendo los usuarios y los recursos), puede ingresar la ruta absoluta de ese directorio de datos a continuación o durante el primer paso de la configuración de la ITP. "
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:20
@@ -69,7 +69,7 @@ msgstr "Método de instalación"
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:23
 msgid "There are several ways to install the IPT."
-msgstr "Hay varias formas de instalar el IPT."
+msgstr "Hay varias formas de instalar la IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:25
