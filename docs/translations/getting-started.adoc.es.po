@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 15:16+0000\n"
-"PO-Revision-Date: 2021-12-06 21:14\n"
+"PO-Revision-Date: 2021-12-07 14:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,7 +25,7 @@ msgstr "Primeros pasos: instalación y configuración inicial"
 #. type: Plain text
 #: en/modules/ROOT/pages/getting-started.adoc:4
 msgid "This Getting Started Guide is meant for those wishing to install and run an IPT instance for the first time. If you would like to see a functional installation of the IPT in action, you may use the public test instance of the latest general release version at https://ipt.gbif.org/ (contact helpdesk@gbif.org for an account). If you do so, refer to xref:overview.adoc[] for details on how to use the screens you will see."
-msgstr "Esta \"Guía de inicio\" está destinada a quienes deseen instalar y ejecutar una instancia de IPT por primera vez. Si desea ver una instalación funcional de la IPT en acción, puede utilizar la instancia de prueba pública de la última versión general en https://ipt.gbif.org/ (comuníquese con helpdesk@gbif.org para obtener una cuenta). Si lo hace, consulte xref:overview.adoc[] para obtener detalles sobre cómo usar las pantallas que verá."
+msgstr "Esta \"Guía de primeros pasos\" está destinada a quienes deseen instalar y ejecutar una instancia de IPT por primera vez. Si desea ver una instalación funcional de la IPT en acción, puede utilizar la instancia de prueba pública de la última versión general en https://ipt.gbif.org/ (comuníquese con helpdesk@gbif.org para obtener una cuenta). Si lo hace, consulte xref:overview.adoc[] para obtener detalles sobre cómo usar las pantallas que verá."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/getting-started.adoc:6
