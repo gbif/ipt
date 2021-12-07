@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-03 14:14\n"
+"PO-Revision-Date: 2021-12-07 14:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -40,12 +40,12 @@ msgstr "Centros de alojamiento de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:6
 msgid "A data hosting centre (DHC) can provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through https://www.gbif.org[GBIF.org]."
-msgstr "Un centro de alojamiento de datos (DHC) le proporciona una cuenta en su IPT, lo que le permite administrar sus propios conjuntos de datos y publicarlos a través de https://www.gbif.org[GBIF.org]."
+msgstr "Un centro de alojamiento de datos (DHC por sus siglas en ingles ) puede proporcionarle una cuenta en su IPT, permitiéndole gestionar sus propios conjuntos de datos y publicarlos a través de https://www.gbif.org[GBIF.org]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:8
 msgid "Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language."
-msgstr "Se recomienda ampliamente el uso de un DHC debido a que le ahorrará tiempo y dinero al configurar su propia instancia de IPT y podrá recibir servicio de asistencia técnica en su idioma."
+msgstr "El uso de un DHC es muy recomendable pues le ahorrará tiempo y dinero a la hora de configurar su propia instancia de IPT, además, podrá recibir apoyo del servicio de ayuda en su propio idioma."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:10
