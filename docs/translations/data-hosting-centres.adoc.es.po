@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-07 15:45\n"
+"PO-Revision-Date: 2021-12-07 22:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -249,17 +249,17 @@ msgstr "http://www.naturalsciences.be[Royal Belgian Institute of Natural Science
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:62
 msgid "http://www.ulg.be[University of Liège]"
-msgstr "http://www.ulg.be[Universidad de Lieja]"
+msgstr "http://www.ulg.be[Universidad de Liège]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:63
 msgid "http://www.plantentuinmeise.be[Botanical Garden Meise]"
-msgstr "http://www.plantentuinmeise.be[Jardín Botánico Meise]"
+msgstr "http://www.plantentuinmeise.be[Jardín botánico de Meise]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:64
 msgid "http://biodiversite.wallonie.be[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)]"
-msgstr "http://biodiversite.wallonie.be[Servicio Público de Valonia - Departamento de Estudios Naturales y Agrícolas (SPW - DEMNA)]"
+msgstr "http://biodiversite.wallonie.be[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:65
@@ -269,17 +269,17 @@ msgstr "http://www.portail.umons.ac.be[Universidad de Mons-Hainaut]"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:66
 msgid "http://www.ulb.ac.be/[Université Libre de Bruxelles ]"
-msgstr "http://www.ulb.ac.be/[Universidad Libre de Bruselas ]"
+msgstr "http://www.ulb.ac.be/[Universidad Libre de Bruxelles]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:67
 msgid "http://www.africamuseum.be[Royal Museum for Central Africa, Belgium]"
-msgstr "http://www.africamuseum.be[Museo Real de África central, Bélgica]"
+msgstr "http://www.africamuseum.be[Royal Museum for Central Africa, Belgium]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:68
 msgid "http://www.ugent.be[Ghent University]"
-msgstr "http://www.ugent.be[Universidad de Gante]"
+msgstr "http://www.ugent.be[Universidad de Ghent]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:69
@@ -289,12 +289,12 @@ msgstr "https://www.natagriwal.be/[Natagriwal]"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:70
 msgid "https://www.itg.be/[Institute of Tropical Medicine Antwerp]"
-msgstr "https://www.itg.be/[Instituto de Medicina Tropical de Amberes]"
+msgstr "https://www.itg.be/[Institute of Tropical Medicine Antwerp]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:72
 msgid "The Belgian Biodiversity Platform also hosts an IPT for each of these countries/institutions:"
-msgstr "La Plataforma de Biodiversidad de Bélgica también alberga un IPT para cada uno de estos países/instituciones:"
+msgstr "La Belgian Biodiversity Platform también alberga un IPT para cada uno de estos países/instituciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:74
@@ -314,7 +314,7 @@ msgstr "http://data.freshwaterbiodiversity.eu/ipt/[IPT Biofresh]"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:78
 msgid "The Research Institute for Nature and Forest (INBO) also provides http://data.inbo.be/ipt[IPT] hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organizations:"
-msgstr "El Instituto de Investigación para la Naturaleza y los Bosques (INBO) también proporciona soporte de alojamiento para conjuntos de datos que se originan en la región flamenca http://data.inbo.be/ipt[IPT] . El INBO está compartiendo su instancia de IPT con estas organizaciones:"
+msgstr "El Instituto de Investigación para la Naturaleza y los Bosques (INBO) también proporciona soporte de alojamiento http://data.inbo.be/ipt[IPT] para conjuntos de datos que se originan en la región flamenca. El INBO comparte su instancia de IPT con estas organizaciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:80
