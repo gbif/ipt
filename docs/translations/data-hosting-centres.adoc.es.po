@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-08 00:14\n"
+"PO-Revision-Date: 2021-12-08 19:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -597,7 +597,7 @@ msgstr "Datos dulceacuícolas"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:169
 msgid "http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] provides data hosting and helpdesk support to publishers of freshwater data around the globe on the http://data.freshwaterbiodiversity.eu/ipt/[Biofresh IPT], hosted by the Belgium Biodiversity Platform. Biofresh is an EU-funded international project that aims to build a global information platform for scientists and ecosystem managers with access to all available databases describing the distribution, status and trends of global freshwater biodiversity. BioFresh integrates the freshwater biodiversity competencies and expertise of 19 research institutions."
-msgstr "http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] proporciona alojamiento de datos y servicio de asistencia técnica a los publicadores de datos de agua dulce de todo el mundo en http://data.freshwaterbiodiversity.eu/ipt/[IPT de Biofresh], alojado por la Plataforma de Biodiversidad de Bélgica. Biofresh, es un proyecto internacional financiado por los EUA que tiene como objetivo construir una plataforma de información mundial para científicos y administradores de ecosistemas con acceso a todas las bases de datos disponibles que describen la distribución, el estado y las tendencias de la biodiversidad mundial de agua dulce. BioFresh integra las capacidades y la experiencia en biodiversidad de agua dulce de 19 instituciones de investigación."
+msgstr "http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] proporciona alojamiento de datos y soporte técnico a los publicadores de datos de agua dulce de todo el mundo en http://data.freshwaterbiodiversity.eu/ipt/[IPT Biofresh], alojado por la Belgium Biodiversity Platform. Biofresh, es un proyecto internacional financiado por la Unión Europea que tiene como objetivo construir una plataforma de información global para científicos y administradores de ecosistemas con acceso a todas las bases de datos disponibles que describen la distribución, el estado y las tendencias de la biodiversidad mundial de agua dulce. BioFresh integra las capacidades y la experiencia en biodiversidad de agua dulce de 19 instituciones de investigación."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:170
