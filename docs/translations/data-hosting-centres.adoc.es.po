@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-07 23:44\n"
+"PO-Revision-Date: 2021-12-08 00:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -566,27 +566,27 @@ msgstr "El http://ipt.idigbio.org[IPT iDigBio] ofrece soporte técnico a los nue
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:159
 msgid "http://vertnet.org/[VertNet] provides helpdesk support to institutions that have vertebrates among one or more of the data sets they want to publish. In other words, if the institution is interested in publishing vertebrate data sets (whether specimens or observations), VertNet will help with publishing all of their data sets. This promotes efficiency when providing and maintaining support to the institution."
-msgstr "http://vertnet.org/[VertNet] proporciona servicio de asistencia técnica a las instituciones que tienen vertebrados en uno o más de los conjuntos de datos que desean publicar. En otras palabras, si la institución está interesada en publicar conjuntos de datos de vertebrados (ya sean especímenes u observaciones), VertNet ayudará a publicar todos sus conjuntos de datos. Esto promueve la eficiencia al brindar y mantener el apoyo a la institución."
+msgstr "http://vertnet.org/[VertNet] ofrece soporte técnico a las instituciones que tienen vertebrados en uno o más de los conjuntos de datos que desean publicar. En otras palabras, si la institución está interesada en publicar conjuntos de datos de vertebrados (ya sean especímenes u observaciones), VertNet ayudará a publicar todos sus conjuntos de datos. Esto promueve la eficiencia al brindar y mantener el apoyo a la institución."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:161
 msgid "The http://www.usgs.gov/[United States Geological Survey (USGS)] provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the https://bison.usgs.gov/ipt[USGS BISON IPT]. Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organizations/resources:"
-msgstr "El http://www.usgs.gov/[Investigación geológica de los Estados Unidos (USGS)] brinda asistencia técnica a los nuevos publicadores en los Estados Unidos asociados o afiliados con el USGS o el gobierno federal de los EE. UU., y soporte de alojamiento para conjuntos de datos en https://bison.usgs.gov/ipt[IPT de USGS BISON]. Comuníquese con <bison@usgs.gov> para obtener ayuda. También tenga en cuenta que el USGS aloja IPT para las siguientes organizaciones/recursos: "
+msgstr "El http://www.usgs.gov/[United States Geological Survey (USGS)] ofrece soporte técnico a los nuevos publicadores en los Estados Unidos asociados o afiliados con el USGS o el gobierno federal de los EE.UU. y brinda soporte de alojamiento para conjuntos de datos en https://bison.usgs.gov/ipt[IPT USGS BISON]. Para obtener ayuda comuníquese con <bison@usgs.gov>. También tenga en cuenta que el USGS aloja IPT para las siguientes organizaciones/recursos: "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:163
 msgid "https://www1.usgs.gov/obis-usa/ipt/[Ocean Biogeographic Information System USA - OBIS-USA]"
-msgstr "https://www1.usgs.gov/obis-usa/ipt/[Sistema de Información Biogeográfica de los Océanos de EU OBIS-USA]"
+msgstr "https://www1.usgs.gov/obis-usa/ipt/[Ocean Biogeographic Information System USA - OBIS-USA]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:164
 msgid "https://nas.er.usgs.gov/ipt/[Non-indigenous Aquatic Species (NAS) information resource for the USGS]"
-msgstr "https://nas.er.usgs.gov/ipt/[Recurso de información de las Especies acuáticas no endémicas (NAS) para el USGS]"
+msgstr "https://nas.er.usgs.gov/ipt/[Recurso de información Non-indigenous Aquatic Species (NAS) para el USGS]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:165
 msgid "https://bison.usgs.gov/ipt[USGS Biodiversity Information Serving Our Nation (BISON) IPT]"
-msgstr "https://bison.usgs.gov/ipt[IPT de USGS-Información sobre biodiversidad al servicio de nuestra nación (BISON)]"
+msgstr "https://bison.usgs.gov/ipt[IPT USGS Biodiversity Information Serving Our Nation (BISON)]"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:166
