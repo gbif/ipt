@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-08 19:28\n"
+"PO-Revision-Date: 2021-12-08 19:58\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -608,7 +608,7 @@ msgstr "Datos marinos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:173
 msgid "http://www.iobis.org[OBIS] provides data hosting and helpdesk support to publishers of marine data around the globe. EurOBIS/Flanders Marine Institute (VLIZ) hosts multiple IPT installations discoverable at http://ipt.vliz.be/ on behalf of various OBIS Nodes. Currently, there are more than http://www.iobis.org/about/[20 OBIS Nodes] around the world connecting 500 institutions from 56 countries."
-msgstr "http://www.iobis.org[OBIS] proporciona alojamiento de datos y servicio de asistencia técnica a publicadores de datos marinos de todo el mundo. EurOBIS/ Instituto Marino de Flandes (VLIZ) aloja múltiples instalaciones IPT que se pueden encontrar en http://ipt.vliz.be/ en nombre de varios Nodos OBIS. Actualmente, hay más de http://www.iobis.org/about/[20 Nodos OBIS] en todo el mundo que conectan a 500 instituciones de 56 países."
+msgstr "http://www.iobis.org[OBIS] proporciona alojamiento de datos y soporte técnico a publicadores de datos marinos de todo el mundo. EurOBIS/Flanders Marine Institute (VLIZ) aloja múltiples instalaciones IPT que se pueden encontrar en http://ipt.vliz.be/ en nombre de varios Nodos OBIS. Actualmente, hay más de http://www.iobis.org/about/[20 Nodos OBIS] en todo el mundo que conectan a 500 instituciones de 56 países."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:174
@@ -619,7 +619,7 @@ msgstr "Datos de vertebrados"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:177
 msgid "http://vertnet.org/[VertNet] provides data hosting and helpdesk support to publishers of vertebrate specimen and observation data. Hosted data can be seen on the http://ipt.vertnet.org/[VertNet IPT]. Please contact David Bloom <dbloom@vertnet.org> for assistance."
-msgstr "http://vertnet.org/[VertNet]  proporciona alojamiento de datos y servicio de asistencia técnica a publicadores de datos de especímenes y observaciones. Los datos alojados se pueden ver en http://ipt.vertnet.org/[IPT de VertNet]. Póngase en contacto con David Bloom <dbloom@vertnet.org> para obtener ayuda."
+msgstr "http://vertnet.org/[VertNet] proporciona alojamiento de datos y soporte técnico a publicadores de datos de especímenes y observaciones de vertebrados. Los datos alojados se pueden ver en http://ipt.vertnet.org/[IPT VertNet]. Póngase en contacto con David Bloom <dbloom@vertnet.org> para obtener ayuda."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:178
@@ -630,5 +630,5 @@ msgstr "Certificación"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:180
 msgid "By becoming certified, repositories can demonstrate to both their users and their funders that an independent authority has evaluated them and endorsed their trustworthiness. The World Data System (WDS) and the Data Seal of Approval (DSA) have merged their data repository certifications into a set of harmonized common requirements for certification of repositories named the https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR) Requirements]. The Core certification requires a data repository supply evidence that they are sustainable and trustworthy. A repository first conducts an internal self-assessment, which is then reviewed by community peers. More information about the certification process can be found https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[here]."
-msgstr "Al obtener el certificado, los repositorios pueden demostrar tanto a sus usuarios como a sus patrocinadores que una autoridad independiente los ha evaluado y respaldado su confiabilidad. El Sistema Mundial de Datos (WDS) y la Junta de Aprobación de Datos (DSA) han fusionado sus certificaciones de repositorios de datos en un conjunto de requisitos comunes estandarizados para la certificación de repositorios denominados https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR)]. La certificación requiere un repositorio de datos que proporcione evidencia de que son sostenibles y confiables. El repositorio primero realiza una autoevaluación interna, que luego es revisada por pares de la comunidad. Puede encontrar más información sobre el proceso de certificación https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[aquí]."
+msgstr "Al obtener la certificación, los repositorios pueden demostrar tanto a sus usuarios como a sus financiadores que una autoridad independiente los ha evaluado y respaldado su confiabilidad. El World Data System (WDS) y el Data Seal of Approval (DSA) han fusionado sus certificaciones de repositorios de datos en un conjunto de requisitos comunes estandarizados para la certificación de repositorios denominados https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR) Requirements]. La certificación Core requiere que un repositorio de datos proporcione pruebas de que es sostenible y confiable. El repositorio primero realiza una autoevaluación interna, que luego es revisada por pares de la comunidad. Puede encontrar más información sobre el proceso de certificación https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[aquí]."
 
