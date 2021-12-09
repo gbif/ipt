@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"POT-Creation-Date: 2021-12-09 11:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -264,11 +264,11 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:59
 msgid ""
-"The https://www.biodiversity.be[Belgium Biodiversity Platform] provides "
+"The https://www.biodiversity.be[Belgian Biodiversity Platform] provides "
 "helpdesk support to publishers in Belgium and hosting support for datasets "
 "on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André "
 "Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian "
-"Biodiversity platform shares their IPT with the following organizations:"
+"Biodiversity Platform shares their IPT with the following organizations:"
 msgstr ""
 
 #. type: Plain text
