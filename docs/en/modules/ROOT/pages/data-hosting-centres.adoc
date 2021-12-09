@@ -55,7 +55,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 == Belgium
 
-The https://www.biodiversity.be[Belgium Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organizations:
+The https://www.biodiversity.be[Belgian Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity Platform shares their IPT with the following organizations:
 
 * http://www.naturalsciences.be[Royal Belgian Institute of Natural Sciences]
 * http://www.ulg.be[University of Liège]
