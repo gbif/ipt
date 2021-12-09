@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-08 19:58\n"
+"POT-Creation-Date: 2021-12-09 11:45+0000\n"
+"PO-Revision-Date: 2021-12-09 12:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -238,8 +238,8 @@ msgstr "Bélgica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:59
-msgid "The https://www.biodiversity.be[Belgium Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organizations:"
-msgstr "La https://www.biodiversity.be[Belgian Biodiversity Platform] proporciona asistencia técnica a los publicadores en Bélgica y soporte de alojamiento para conjuntos de datos en https://ipt.biodiversity.be/[Belgian BIF IPT]. Póngase en contacto con André Heughebaert <a.heughebaert@biodiversity.be> para obtener ayuda. La Belgian Biodiversity Platform comparte su IPT con las siguientes organizaciones:"
+msgid "The https://www.biodiversity.be[Belgian Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity Platform shares their IPT with the following organizations:"
+msgstr "La https://www.biodiversity.be[Belgian Biodiversity Platform] ofrece soporte técnico a los publicadores en Bélgica y soporte de alojamiento para conjuntos de datos en https://ipt.biodiversity.be/[Belgian BIF IPT]. Póngase en contacto con André Heughebaert <a.heughebaert@biodiversity.be> para obtener ayuda. La Belgian Biodiversity Platform comparte su IPT con las siguientes organizaciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:61
