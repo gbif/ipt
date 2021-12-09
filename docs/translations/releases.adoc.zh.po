@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-06 18:39+0000\n"
-"PO-Revision-Date: 2021-12-06 19:05\n"
+"PO-Revision-Date: 2021-12-09 01:41\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -31,7 +31,7 @@ msgstr ""
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<2-5-3-december-2021,2.5.3>>."
-msgstr ""
+msgstr "目前的穩定版本為 <<2-5-3-december-2021,2.5.3>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
