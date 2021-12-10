@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-10 16:45+0000\n"
-"PO-Revision-Date: 2021-12-10 16:56\n"
+"PO-Revision-Date: 2021-12-10 19:47\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -101,7 +101,7 @@ msgstr "Los usuarios actuales pueden actualizar a esta versión siguiendo las in
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
 msgid "This version contains fixes to critical security issues with the Struts and https://nvd.nist.gov/vuln/detail/CVE-2021-44228[Log4J] libraries. All users are highly encouraged to upgrade to this version as soon as possible."
-msgstr ""
+msgstr "Esta versión contiene correcciones a problemas de seguridad críticos con las bibliotecas Struts y https://nvd.nist.gov/vuln/detail/CVE-2021-44228[Log4J]. Se recomienda a todos los usuarios que actualicen a esta versión lo antes posible."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:31
