@@ -71,6 +71,8 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 %systemd_postun_with_restart ipt.service
 
 %changelog
+* Fri Dec 10 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.4-1
+- Publish IPT 2.5.4 release.
 * Mon Dec 06 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.3-1
 - Publish IPT 2.5.3 release.
 * Mon Nov 20 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.2-1
