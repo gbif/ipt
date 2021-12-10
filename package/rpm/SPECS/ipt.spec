@@ -1,4 +1,4 @@
-%define nr_ver 2.5.3
+%define nr_ver 2.5.4
 # Set to -RC1 etc for release candidates, and <percent>nil for releases
 %define nr_ver_extra %nil
 # Set to 0.1 etc for release candidates, and 1 etc for releases
