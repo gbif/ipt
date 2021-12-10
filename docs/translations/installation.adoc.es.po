@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 12:44+0000\n"
-"PO-Revision-Date: 2021-12-10 21:15\n"
+"PO-Revision-Date: 2021-12-10 21:44\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -331,7 +331,7 @@ msgstr "Luego puede acceder a la pantalla de configuración del IPT en el puerto
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:154
 msgid "If you need to override the data directory, this can be done with `-e IPT_DATA_DIR=/path/within/container`."
-msgstr "Si necesita reemplazar el directorio de datos, esto se puede hacer con `-e IPT_DATA_DIR = /ruta/a/contenedor`."
+msgstr "Si necesita reemplazar el directorio de datos, lo puede hacer con `-e IPT_DATA_DIR = /ruta/a/contenedor`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:156
@@ -341,7 +341,7 @@ msgstr "Si necesita encontrar la dirección IP \"predeterminada\" de su máquina
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:158
 msgid "Run a specific version from https://hub.docker.com/r/gbif/ipt/tags[those available] by using `gbif/ipt:version` rather than `gbif/ipt`."
-msgstr "Ejecute una versión específica desde https://hub.docker.com/r/gbif/ipt/tags[las disponibles] usando `gbif/ipt:version` en lugar de `gbif/ipt`."
+msgstr "Ejecute una versión específica de https://hub.docker.com/r/gbif/ipt/tags[las disponibles] usando `gbif/ipt:version` en lugar de `gbif/ipt`."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/installation.adoc:159
@@ -357,7 +357,7 @@ msgstr "Probablemente necesitará trabajar con su sistema o administrador de red
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:164
 msgid "You will need a DNS name for the server (\"`ipt.example.org`\") and the firewall to allow access."
-msgstr "Necesitará un nombre DNS para el servidor (\"`ipt.example.org`\") y permitir el acceso en el firewall."
+msgstr "Necesitará un nombre DNS para que el servidor (\"`ipt.example.org`\") y el firewall permitan el acceso."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:166
