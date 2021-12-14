@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-26 21:32+0000\n"
-"PO-Revision-Date: 2021-11-26 22:28\n"
+"POT-Creation-Date: 2021-12-14 12:55+0000\n"
+"PO-Revision-Date: 2021-12-14 13:22\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -384,18 +384,18 @@ msgstr "*Supuesto: Sus datos ya están almacenados como un fichero de texto CSV/
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:113
-msgid "The https://www.gbif.org/ipt[Integrated Publishing Toolkit (IPT)] is GBIF’s flagship tool for publishing DwC-As."
-msgstr "La https://www.gbif.org/ipt[Herramienta de Publicación Integrada (IPT)] es la herramienta insignia de GBIF para la publicación de DwC-As."
+msgid "The xref:index.adoc[Integrated Publishing Toolkit (IPT)] is GBIF’s flagship tool for publishing DwC-As."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:115
-#: en/modules/ROOT/pages/index.adoc:36
+#: en/modules/ROOT/pages/index.adoc:38
 msgid "The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server."
 msgstr "La forma más sencilla de empezar a utilizar el IPT es solicitar una cuenta gratuita en un xref:data-hosting-centres.adoc[centro de almacenamiento de datos de confianza] permitiéndole gestionar sus propias bases de datos y publicarlas a través de GBIF.org sin la molestia de configurar y mantener el IPT en su propio servidor."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:117
-#: en/modules/ROOT/pages/index.adoc:38
+#: en/modules/ROOT/pages/index.adoc:40
 msgid "Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point."
 msgstr "De lo contrario, si quiere configurar su propia instancia del IPT, la xref:getting-started.adoc[Guía de Introducción] es su punto de inicio. "
 
