@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2021-12-14 13:22\n"
+"PO-Revision-Date: 2021-12-14 14:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -44,7 +44,7 @@ msgstr "Manual del Usuario del IPT"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:4
 msgid "_For information on the latest release, including downloads, see the xref:releases.adoc[Releases] page._"
-msgstr ""
+msgstr "_Para obtener información sobre la última versión, incluyendo las descargas, consulte la página de xref:releases.adoc[versiones]._"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:6
