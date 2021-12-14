@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.network.repository.access"/></td>
-                  <td class="text-end ${networkRegistry?string("text-gbif-primary", "text-gbif-danger")}">
+                  <td class="text-end ${networkRepository?string("text-gbif-primary", "text-gbif-danger")}">
                     <#if networkRepository>
                       <@s.text name="portal.health.operational"/>
                     <#else>
