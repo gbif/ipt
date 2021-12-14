@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-12-02 20:06\n"
+"PO-Revision-Date: 2021-12-10 22:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -34,7 +34,7 @@ msgstr "Configuración inicial del IPT"
 #: en/modules/ROOT/pages/installation.adoc:3
 #, no-wrap
 msgid "Data directory"
-msgstr "Directorio de Datos"
+msgstr "Directorio de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/initial-setup.adoc:6

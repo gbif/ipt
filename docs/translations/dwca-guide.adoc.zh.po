@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-26 21:32+0000\n"
-"PO-Revision-Date: 2021-11-26 22:27\n"
+"POT-Creation-Date: 2021-12-14 12:55+0000\n"
+"PO-Revision-Date: 2021-12-14 13:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -379,18 +379,18 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:113
-msgid "The https://www.gbif.org/ipt[Integrated Publishing Toolkit (IPT)] is GBIF’s flagship tool for publishing DwC-As."
+msgid "The xref:index.adoc[Integrated Publishing Toolkit (IPT)] is GBIF’s flagship tool for publishing DwC-As."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:115
-#: en/modules/ROOT/pages/index.adoc:36
+#: en/modules/ROOT/pages/index.adoc:38
 msgid "The simplest way to begin using the IPT is to request a free account on a xref:data-hosting-centres.adoc[trusted data hosting centre] allowing you to manage your own datasets and publish them through GBIF.org without the hassle of setting up and maintaining the IPT on your own server."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:117
-#: en/modules/ROOT/pages/index.adoc:38
+#: en/modules/ROOT/pages/index.adoc:40
 msgid "Otherwise if want to setup your own instance of the IPT the xref:getting-started.adoc[Getting Started Guide] is your entry point."
 msgstr ""
 

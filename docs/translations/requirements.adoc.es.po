@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-12-02 00:16\n"
+"PO-Revision-Date: 2021-12-07 22:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -26,23 +26,23 @@ msgstr "Requerimientos"
 #: en/modules/ROOT/pages/requirements.adoc:3
 #, no-wrap
 msgid "Internet Connectivity"
-msgstr "Conexión a Internet"
+msgstr "Conexión a internet"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:5
 msgid "The IPT is designed under the assumption that the server on which it is run has consistent Internet connectivity. Though many functions of the IPT work even when offline, some aspects of the IPT (GBIF registration, extension installation, controlled vocabularies, and external databases for source data), require communication with external Internet resources. From the perspective of IPT administration and management, the speed of the Internet connection affects only such communications. Access to the IPT web application and its services from beyond a local intranet also requires consistent connectivity, and slow connectivity may have an adverse affect on these aspects, especially when transferring large data sets."
-msgstr "El IPT está diseñado bajo el supuesto que el servidor desde el cual se ejecuta, cuenta con una conexión constante a Internet. Aunque muchas de las funciones del IPT trabajan incluso cuando no hay conexión, algunos aspectos del IPT (registro en GBIF, instalación de una extensión, vocabularios controlados, y bases de datos externas para datos de origen), requieren comunicación con recursos externos de Internet. Desde la perspectiva de la administración del IPT, la velocidad de la conexión a Internet sólo afecta a este tipo de comunicaciones. El acceso a la aplicación web del IPT y sus servicios por fuera de una intranet local, también requiere conectividad constante, y una conexión lenta puede tener efectos adversos sobre estos aspectos, sobre todo cuando se transfieran conjuntos de datos de gran tamaño."
+msgstr "El IPT está diseñado bajo el supuesto de que el servidor desde el cual se ejecuta cuenta con una conexión constante a internet. Aunque muchas de las funciones del IPT continuan funcionando aún cuando no hay conexión, algunos de sus elementos (el registro en GBIF, la instalación de extensiones, vocabularios controlados y bases de datos externas como fuentes de datos), requieren comunicación con recursos externos de internet. Desde el punto de vista de la administración del IPT, la velocidad de la conexión a internet afecta sólo a este tipo de comunicaciones. El acceso a la aplicación web del IPT y a sus servicios desde fuera de una intranet local también requiere conexión constante, y una conexión lenta puede tener efectos adversos sobre estos elementos, especialmente cuando se transfieren grandes conjuntos de datos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:6
 #, no-wrap
 msgid "Stable URL"
-msgstr "URL fija"
+msgstr "URL estable"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:8
 msgid "Though it can be used simply as a tool to generate http://rs.tdwg.org/dwc/terms/guides/text/[Darwin Core Archives], the IPT is meant to be a discoverable and accessible Internet-based application and service. To support this functionality, the server on which the IPT is installed must be able to support access to the application and services through a stable URL."
-msgstr "A pesar de que puede ser utilizado simplemente como una herramienta para generar http://rs.tdwg.org/dwc/terms/guides/text/[archivos Darwin Core], el IPT fue diseñado para ser una aplicación y un servicio web de descubrimiento y acceso. Para apoyar esta funcionalidad, el servidor en el que está instalado el IPT debe facilitar el acceso a las aplicaciones y servicios a través de una URL estable."
+msgstr "Aunque puede utilizarse simplemente como una herramienta para generar http://rs.tdwg.org/dwc/terms/guides/text/[archivos Darwin Core], el IPT fue diseñado para ser una aplicación y un servicio basados en internet fáciles de encontrar y accesibles. Para mantener esta funcionalidad, el servidor en el que se instala el IPT debe ser capaz de soportar el acceso a la aplicación y los servicios a través de una URL estable."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:9
@@ -64,7 +64,7 @@ msgstr "Memoria"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:14
 msgid "The server hosting the IPT installation must make at least 256 MB RAM memory available to the application."
-msgstr "El servidor que aloja la instalación del IPT debe tener como mínimo, 256 MB de memoria RAM disponibles para la aplicación."
+msgstr "El servidor que aloja la instalación del IPT debe tener como mínimo 256 MB de memoria RAM disponibles para la aplicación."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:15
@@ -75,7 +75,7 @@ msgstr "Espacio en disco"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:17
 msgid "The space required by the IPT application is around 100MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space."
-msgstr "El espacio requerido por la aplicación del IPT es menor a 100 MB. El contenido del directorio de datos del IPT después de la instalación, requiere menos de 1 MB de almacenamiento en disco, generados por el IPT. No obstante, el contenido del directorio de datos crecerá a medida que se creen recursos, y requerirá un espacio equivalente al tamaño de los archivos o tablas que contienen los conjuntos de datos importados. Una estimación razonable para el tamaño de un conjunto de datos relativamente nutrido, es de un kilobyte por registro. El uso normal del IPT anexa información a los archivos de registro, que crecerán con el tiempo, pero que generalmente requieren un mínimo espacio en disco."
+msgstr "El espacio requerido por la aplicación del IPT es de unos 100MB. El contenido del directorio de datos del IPT después de la instalación requiere menos de 1MB de almacenamiento en disco con permiso de escritura para el IPT. Sin embargo, el contenido del directorio de datos crecerá a medida que se creen recursos y requerirá un espacio equivalente al tamaño de los archivos o tablas importados que contienen los conjuntos de datos. Una estimación razonable del tamaño de un conjunto de datos de registros biológicos relativamente rico es de un kilobyte por registro. El uso normal del IPT anexa información a los archivos de registro que crecerán con el tiempo, pero que generalmente requieren un espacio mínimo en el disco."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:18
@@ -86,7 +86,7 @@ msgstr "Versión de Java"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:21
 msgid "The current version of the IPT is tested to run on Java 8 or 9. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported."
-msgstr "La versión actual de la IPT está probada para funcionar con Java 8 o 9. Por favor, consulte la https://adoptopenjdk.net/support.html#roadmap[Hoja de ruta de la versión de OpenJDK], la https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Hoja de ruta de la versión de Oracle Java] o la documentación de su distribución de Linux para obtener una visión general de cuánto tiempo será soportada su versión de Java."
+msgstr "La versión actual del IPT está probada para funcionar con Java 8 o 9. Por favor, consulte la https://adoptopenjdk.net/support.html#roadmap[Hoja de ruta de la versión de OpenJDK], la https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Hoja de ruta de la versión de Oracle Java] o la documentación de su distribución de Linux para obtener una visión general de cuánto tiempo será soportada su versión de Java."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:22
@@ -97,5 +97,5 @@ msgstr "Soporte técnico"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:23
 msgid "Running an IPT is a commitment.  Data should be backed up regularly, and security updates (for the operating system or the IPT) must be applied soon after they become available."
-msgstr "Ejecutar un IPT es un compromiso. Hay que hacer copias de seguridad de los datos regularmente y las actualizaciones de seguridad (para el sistema operativo o el IPT) deben aplicarse poco después de que estén disponibles."
+msgstr "Ejecutar un IPT es un compromiso. Hay que hacer copias de seguridad de los datos regularmente y las actualizaciones de seguridad (para el sistema operativo o la IPT) deben aplicarse poco después de que estén disponibles."
 
