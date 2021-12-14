@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-12-06 20:12\n"
+"POT-Creation-Date: 2021-12-14 12:55+0000\n"
+"PO-Revision-Date: 2021-12-14 13:22\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -18,7 +18,6 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/core.adoc:13
-#: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
@@ -87,7 +86,7 @@ msgstr "Para darse una introducción a cómo se puede utilizar el IPT para publi
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17
-#: en/modules/ROOT/pages/index.adoc:28
+#: en/modules/ROOT/pages/index.adoc:30
 #, no-wrap
 msgid "How to publish biodiversity data through GBIF.org using the IPT"
 msgstr "Cómo publicar datos sobre biodiversidad a través de GBIF.org usando el IPT"
