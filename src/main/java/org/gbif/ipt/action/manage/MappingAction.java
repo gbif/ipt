@@ -55,15 +55,13 @@ import com.google.inject.Inject;
 
 /**
  * A rather complex action that deals with a single mapping configuration.
- * The prepare method does a lot of work.
- * For initial GET requests linked from the overview the prepare() method decides on the result name, i.e. which
+ * The {@link MappingAction#prepare} method does a lot of work.
+ * For initial GET requests linked from the overview the {@link MappingAction#prepare} method decides on the result name, i.e. which
  * template to call.
- * We dont use any regular validation here but only raise warnings to the user.
- * So the save method is always executed for POST requests, but not for GETs.
- * Please dont add any action errors as this will trigger the validation interceptor and causes problems, use
- * addActionWarning() instead.
- *
- * @author markus
+ * We don't use any regular validation here but only raise warnings to the user.
+ * So the {@link MappingAction#save} method is always executed for POST requests, but not for GETs.
+ * Please don't add any action errors as this will trigger the validation interceptor and causes problems, use
+ * {@link MappingAction#addActionWarning} instead.
  */
 public class MappingAction extends ManagerBaseAction {
 
@@ -130,7 +128,7 @@ public class MappingAction extends ManagerBaseAction {
   }
 
   /**
-   * This method automaps a source's columns. First it tries to automap the mappingCoreId column, and then it tries
+   * This method auto-maps a source's columns. First it tries to automap the mappingCoreId column, and then it tries
    * to automap the source's remaining fields against the core/extension.
    *
    * @return the number of terms that have been automapped
@@ -285,7 +283,7 @@ public class MappingAction extends ManagerBaseAction {
 
   /**
    * Normalizes an incoming column name so that it can later be compared against a ConceptTerm's simpleName.
-   * This method converts the incoming string to lower case, and will take the substring up to, but no including the
+   * This method converts the incoming string to lower case, and will take the substring up to, but not including the
    * first ":".
    *
    * @param col column name
@@ -397,13 +395,11 @@ public class MappingAction extends ManagerBaseAction {
           // also store PropertyMapping by group/class
           String group = ep.getGroup();
           if (group != null) {
-            if (fieldsByGroup.get(group) == null) {
-              fieldsByGroup.put(group, new ArrayList<>());
-            }
+            fieldsByGroup.computeIfAbsent(group, k -> new ArrayList<>());
             fieldsByGroup.get(group).add(pm);
           }
 
-          // for easy retrieval of PropertyMapping index by qualifiedName..
+          // for easy retrieval of PropertyMapping index by qualifiedName...
           fieldsTermIndices.put(ep.getQualname(), fields.lastIndexOf(pm));
 
           // populate vocabulary terms
@@ -414,7 +410,7 @@ public class MappingAction extends ManagerBaseAction {
         }
       }
 
-      // finally do automapping if no fields are found
+      // finally, do automapping if no fields are found
       if (mapping.getFields().isEmpty()) {
         int automapped = automap();
         if (automapped > 0) {
