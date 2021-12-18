@@ -2,7 +2,7 @@
 
 This is a CentOS RPM package for installing the IPT.
 
-For usage instructions, please refer to the https://ipt.gbif.org/manual/en/ipt/2.5/installation/#installation-from-linux-packages[installation section of the user manual].
+For usage instructions, please refer to the https://ipt.gbif.org/manual/en/ipt/2.5/installation#installation-from-linux-packages[installation section of the user manual].
 
 == Building
 

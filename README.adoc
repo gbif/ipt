@@ -14,7 +14,7 @@ In this repository you can find the IPT source code, https://ipt.gbif.org/manual
 == Resources
 
 * https://ipt.gbif.org/manual/[IPT User Manual]
-* Information on the https://ipt.gbif.org/manual/en/ipt/2.5/releases/[latest release]
+* Information on the https://ipt.gbif.org/manual/en/ipt/2.5/releases[latest release]
 * The https://ipt.gbif.org[Demo IPT] is available online, https://ipt.gbif.org/manual/en/ipt/2.5/getting-started[further information about this]
 * You may request a free account on an IPT from a https://ipt.gbif.org/manual/en/ipt/2.5/data-hosting-centres[trusted data hosting centre]
 * How to contribute https://ipt.gbif.org/manual/en/ipt/2.5/translations[translations] with https://crowdin.com/project/gbif-ipt[Crowdin]
