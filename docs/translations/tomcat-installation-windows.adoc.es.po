@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-12-20 16:28\n"
+"PO-Revision-Date: 2021-12-20 20:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -104,7 +104,7 @@ msgstr "screenshots/Capturetomcat1.JPG"
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:25
 #, no-wrap
 msgid "3. Run Tomcat"
-msgstr "Ejecutar Tomcat"
+msgstr "3. Ejecutar Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:29
@@ -163,7 +163,7 @@ msgstr "screenshots/Capturetomcat2.JPG"
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:48
 msgid "With the admin credentials you entered during the setup wizard, you can access http://localhost:8080/manager/html where you can upload the ipt.war file to install IPT."
-msgstr "Con las credenciales de administrador que ingresó durante el asistente de configuración, puede acceder a http://localhost:8080/manager/html donde puede cargar el archivo ipt.war para instalar IPT."
+msgstr "Con las credenciales de administrador que ingresó durante el asistente de configuración, puede acceder a http://localhost:8080/manager/html donde puede cargar el archivo ipt.war para instalar el IPT."
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:49
@@ -181,20 +181,20 @@ msgstr "screenshots/Capturetomcat4.JPG"
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:51
 #, no-wrap
 msgid "5. Shut down Tomcat"
-msgstr "5. Apagando Tomcat"
+msgstr "5. Apagar Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:54
 msgid "Close the terminal windows will shut down Tomcat."
-msgstr "Cerrar la ventana de la terminal cerrará Tomcat."
+msgstr "Al cerrar la ventana de la terminal se cerrará Tomcat."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:56
 msgid "Or, if you brought up Tomcat by using tomcat8w, stop Tomcat by clicking the stop button."
-msgstr "O, si abrió Tomcat usando tomcat8w, puede detener Tomcat haciendo clic en el botón de detener."
+msgstr "O, si abrió Tomcat usando tomcat8w, puede detener Tomcat haciendo clic en el botón de parada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:57
 msgid "Or, in Task Manager > Services tab, stop Tomcat by \"right click\" and selecting \"stop\"."
-msgstr "O, en el Administrador de tareas> pestaña Servicios, detenga Tomcat haciendo \"clic derecho\" sobre el servicio  y seleccione \"detener\"."
+msgstr "O, en el Administrador de tareas> pestaña Servicios, detenga Tomcat al hacer \"clic derecho\"  y seleccionando \"stop\"."
 
