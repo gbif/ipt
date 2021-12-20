@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:47+0000\n"
-"PO-Revision-Date: 2021-12-06 19:05\n"
+"PO-Revision-Date: 2021-12-20 13:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -48,7 +48,7 @@ msgstr "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolk
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:22
 msgid "This TRANSLATORS_PUT_YOUR_LANGUAGE_HERE translation of the user manual is contributed by TRANSLATORS_CREDIT_YOURSELVES.  The recommended citation for this translation into YOUR_LANGUAGE_HERE is as follows:"
-msgstr "La traducción de esta versión al español es una contribución del equipo Coordinador del Sistema de Información sobre la Biodiversidad de Colombia (http://www.biodiversidad.co/[SIB Colombia]), en especial de María Alejandra Meneses, Dairo Escobar, Ricardo Ortiz, Sara Gaviria, Camila Plata, Néstor Beltrán y Valerie Dean. La citación recomendada para esta traducción al español es la siguiente:"
+msgstr "La traducción de esta versión al español es una contribución de María Alejandra Meneses Giorgi, Dairo Escobar, Ricardo Ortiz, Sara Gaviria, Camila Plata, Néstor Beltrán, Daniel Amariles y Valerie Dean del equipo Coordinador del Sistema de Información sobre la Biodiversidad de Colombia (http://www.biodiversidad.co/[SIB Colombia]), Angela Devia del Instituto de Investigación de Recursos Biológicos Alexander Von Humboldt (http://www.humboldt.org.co/es/[IAVH]) ,Anabela Plos de GBIF Argentina, Emanuel Robles y Patricia Ramos de La Comisión Nacional para el Conocimiento y Uso de la Biodiversidad (https://www.gob.mx/conabio[CONABIO]), Carmen Lujano y Miguel Vega de GBIF España y el voluntario de GBIF Victor Chocho. La citación recomendada para esta traducción al español es la siguiente:"
 
 #.  Translated user manual citation
 #.  Endif
