@@ -1,4 +1,4 @@
-%define nr_ver 2.5.4
+%define nr_ver 2.5.5
 # Set to -RC1 etc for release candidates, and <percent>nil for releases
 %define nr_ver_extra %nil
 # Set to 0.1 etc for release candidates, and 1 etc for releases
@@ -71,6 +71,8 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 %systemd_postun_with_restart ipt.service
 
 %changelog
+* Mon Dec 20 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.5-1
+- Publish IPT 2.5.5 release.
 * Fri Dec 10 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.4-1
 - Publish IPT 2.5.4 release.
 * Mon Dec 06 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.3-1
