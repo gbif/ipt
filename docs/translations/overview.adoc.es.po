@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:21+0000\n"
-"PO-Revision-Date: 2021-12-01 23:14\n"
+"PO-Revision-Date: 2021-12-20 21:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,12 +20,12 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:1
 #, no-wrap
 msgid "Overview"
-msgstr "Vista General"
+msgstr "Vista general"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:4
 msgid "The following sections explain in detail the capabilities of an IPT instance that has been installed, run for the first time, and tested to be functional as explained in the xref:getting-started.adoc[Getting Started Guide]. The details of this guide are presented in four sections corresponding to the four \"menus\" available in the IPT user interface. Some tabs are only visible when a user having the appropriate rights to see them is logged in."
-msgstr "En las siguientes secciones se explican detalladamente las capacidades de una instancia de IPT que se ha instalado, ejecutado por primera vez y comprobado su funcionamiento tal y como se explica en la xref:getting-started.adoc[Comenzando – Instalación y Configuración Inicial]. Los detalles de esta guía se presentan en cuatro secciones que corresponden a los cuatro \"menús\" disponibles en la interfaz de usuario del IPT. Algunas pestañas sólo son visibles cuando un usuario con los derechos adecuados para verlos ha iniciado sesión."
+msgstr "En las siguientes secciones se explican detalladamente las capacidades de una instancia de IPT que se ha instalado, ejecutado por primera vez y comprobado su funcionamiento tal y como se explica en la xref:getting-started.adoc[Primeros pasos:instalación y configuración inicial]. Los detalles de esta guía se presentan en cuatro secciones que corresponden a los cuatro \"menús\" disponibles en la interfaz de usuario del IPT. Algunas pestañas sólo son visibles cuando un usuario con los derechos adecuados para verlos ha iniciado sesión."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/overview.adoc:5
@@ -36,7 +36,7 @@ msgstr "Controles de la interfaz del usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:7
 msgid "Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control (a text, check, or select box, for example). In the latter case the changes will be saved, if possible, when the form on which they appear is saved, which is generally accomplished on a given page by clicking on a button labelled \"Save\". Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information icon."
-msgstr "La mayoría de los controles de la interfaz del usuario tienen los modos “habilitado” e “inhabilitado”. Si el control está habilitado, realizará una acción cuando se haga clic (un botón, por ejemplo), o permitirá que se realicen cambios a los valores que se vinculen al control (un texto o recuadro de selección o chequeo, por ejemplo). En este último caso, los cambios se guardarán, si es posible, cuando la forma en que aparecen sea guardada, lo que generalmente se realiza en una determinada página haciendo clic en el botón \"Guardar\". Los controles inhabilitados muestran el valor de la información asociada, pero no permiten que la información sea guardada bajo las condiciones vigentes en el momento en que aparecen. El objetivo de la mayoría de los controles de interfaz de usuario, se indica mediante una etiqueta asociada que aparece sobre y/o a la izquierda del control. En algunas ocasiones, información adicional también está disponible mediante un ícono de información asociada."
+msgstr "La mayoría de los controles de la interfaz del usuario tienen los modos “habilitado” e “inhabilitado”. Si el control está habilitado, realizará una acción cuando se haga clic en él (un botón, por ejemplo) o permitirá que se realicen cambios en el valor vinculado al control (una caja de texto, de verificación o de selección, por ejemplo). En este último caso, los cambios se guardarán, si es posible, cuando se guarde el formulario en el que aparecen, lo que generalmente se realiza en una determinada página haciendo clic en el botón \"Guardar\". Los controles inhabilitados muestran el valor de la información asociada, pero no permiten que la información sea guardada bajo las condiciones vigentes en el momento en que aparecen. El objetivo de la mayoría de los controles de la interfaz de usuario se indica mediante una etiqueta asociada que aparece sobre y/o a la izquierda del control. A veces también se puede acceder a información complementaria desde un icono de información asociada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:9
