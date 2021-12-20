@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-08-26 09:21\n"
+"PO-Revision-Date: 2021-12-20 15:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -43,7 +43,7 @@ msgstr "Por favor asegúrese de cumplir las siguientes condiciones (software y v
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:9
 msgid "The client version of Windows 8.1 Pro. This tutorial is written based on the 64-bit version of Windows 8.1 Professional."
-msgstr "La versión de cliente de Windows Pro 8.1. Este tutorial está escrito en base a la versión de 64 bits de Windows Professional 8.1"
+msgstr "La versión de cliente de Windows Pro 8.1. Este tutorial está escrito con base en la versión de 64 bits de Windows Professional 8.1"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:10
