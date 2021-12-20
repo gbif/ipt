@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 13:14+0000\n"
-"PO-Revision-Date: 2021-12-20 15:56\n"
+"PO-Revision-Date: 2021-12-20 16:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -53,7 +53,7 @@ msgstr "Las últimas actualizaciones de seguridad."
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:11
 msgid "Java 8 Framework installed. This tutorial is written based on version jre1.8.0_60 (Java Version 8 Update 60). Please refer to http://java.com/en/download/ to install JRE. This page usually will detect your operating system and gives hints to the correct version to download. Assuming Java is installed in C:\\Program Files (x86)\\Java\\jre8. (Note from tester on Windows 8.1, I tried to install Java in the C:\\Program Files directory and it would not work. I had to put it in the (x86) folder)."
-msgstr "Instalación de Java 8 Framework. Este tutorial está escrito en base a la versión jre1.8.0_60 (Java Version 8 Update 60). Consulte http://java.com/en/download/ para instalar JRE. Esta página generalmente detectará su sistema operativo y le dará pistas sobre la versión correcta para descargar. Suponiendo que Java esté instalado en C:\\Archivos de programa (x86)\\Java\\jre8. (Nota del editor: En Windows 8.1, intenté instalar Java en el directorio C:\\Archivos de programa y no funcionó. Tuve que ponerlo en la carpeta (x86))."
+msgstr "Instalación de Java 8 Framework. Este tutorial está escrito con base en la versión jre1.8.0_60 (Java Version 8 Update 60). Consulte http://java.com/en/download/ para instalar JRE. Esta página generalmente detectará su sistema operativo y lo guiará a la versión correcta para descargar. Suponiendo que Java esté instalado en C:\\Archivos de programa (x86)\\Java\\jre8. (Nota del editor: En Windows 8.1, intenté instalar Java en el directorio C:\\Archivos de programa y no funcionó. Tuve que instalarlo en la carpeta (x86))."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:12
@@ -75,7 +75,7 @@ msgstr "1. Descargue Tomcat 8.x"
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:18
 msgid "Download the latest stable Tomcat 8 Binary Distribution Core (32-bit/64-bit Windows Service Installer) release from https://tomcat.apache.org/download-80.cgi. This should put a file of the form apache-tomcat-8.x.x.exe (or apache-tomcat-8.x.x.tar if you download with Safari) into your Downloads folder."
-msgstr "Descargue la versión más reciente y estable de la distribución binaria de Tomcat 8 del núcleo (32-bit/64-bit Servicio Instalador de Windows) desde https://tomcat.apache.org/download-80.cgi. Esto debería descargar un archivo con el formato apache-tomcat-8.x.x.exe (o apache-tomcat-8.x.x.tar si lo descarga con Safari) en su carpeta de Descargas."
+msgstr "Descargue la versión estable más reciente de Tomcat 8 Binary Distribution Core (32-bit/64-bit servicio Windows Installer) desde https://tomcat.apache.org/download-80.cgi. Esto debería descargar un archivo con el formato apache-tomcat-8.x.x.exe (o apache-tomcat-8.x.x.tar si lo descarga con Safari) en su carpeta de \"descargas\"."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:19
@@ -86,7 +86,7 @@ msgstr "2. Instalación de Tomcat 8.x"
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:22
 msgid "Double click the executable to start installation wizard. *Do* fill information to specify *the connector port*, *Tomcat administrator login credentials* without changing the Roles. If you forget to provide the credential information, you'll have to edit the `conf/tomcat-users.xml` file from the Tomcat configuration directory, then restart Tomcat to flush the privileges. (Note that when testing this scenario, the default suggested *connector port* settings worked)."
-msgstr "Haga doble clic en el ejecutable para iniciar el asistente de instalación. * Llene * la información necesaria para especificar * el puerto del conector *, * las credenciales de inicio de sesión del administrador de Tomcat * sin cambiar los roles. Si olvida proporcionar la información de la credencial, tendrá que editar el archivo `conf/tomcat-users.xml` del directorio de configuración de Tomcat, luego debe reiniciar Tomcat para  actualizar los permisos. (Tenga en cuenta que al probar este escenario, la configuración predeterminada del * puerto del conector * sugerida funcionó)."
+msgstr "Haga doble clic en el ejecutable para iniciar el asistente de instalación. *Llene* la información necesaria para especificar *el puerto del conector*, *las credenciales de inicio de sesión del administrador de Tomcat* sin cambiar los roles. Si olvida proporcionar la información de la credencial, tendrá que editar el archivo `conf/tomcat-users.xml` del directorio de configuración de Tomcat, luego debe reiniciar Tomcat para  actualizar los permisos. (Tenga en cuenta que al probar este escenario, la configuración predeterminada del *puerto del conector* sugerida funcionó correctamente)."
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:23
@@ -125,12 +125,12 @@ msgstr "INFO: Server startup in xxxx ms\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:37
 msgid "That means the Tomcat is ready."
-msgstr "Eso significa que el Tomcat ha iniciado."
+msgstr "Significa que el Tomcat ha iniciado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:39
 msgid "You can also run the *tomcat8w* application by right-clicking it and choose \"run as administrator\". A service setting pane will be brought up, and you can decide you'd like to run Tomcat for once or make it start up automatically every time you boot Windows 8."
-msgstr "También puede ejecutar la aplicación * tomcat8w * haciendo clic con el botón derecho y eligiendo \"ejecutar como administrador\". Aparecerá un panel de configuración del servicio y puede decidir que desea ejecutar Tomcat por una vez o hacer que se inicie automáticamente cada vez que inicie Windows 8."
+msgstr "Hacer clic con el botón derecho y elegir \"ejecutar como administrador\" permite ejecutar la aplicación *tomcat8w*. Aparecerá un panel de configuración del servicio y puede decidir sí desea ejecutar Tomcat por una vez o hacer que se inicie automáticamente cada vez que inicie Windows 8."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/tomcat-installation-windows.adoc:41
