@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:21+0000\n"
-"PO-Revision-Date: 2021-12-20 22:07\n"
+"PO-Revision-Date: 2021-12-20 22:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -117,13 +117,13 @@ msgstr "*Cuadros de selección*: permiten visualizar o seleccionar un valor de u
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:32
 msgid "Example select box and label for the user role, with Admin selected: image:ipt2/controls/Control-SelectBoxExample.png[width=522]"
-msgstr "Ejemplo de cuadro de selección y de etiqueta para el rol del usuario, con la opción Administrador seleccionada: image:ipt2/controls/Control-SelectBoxExample.png[width=522]"
+msgstr "Ejemplo de cuadro de selección y de etiqueta para el rol del usuario, con la opción \"Administrador\" seleccionada: image:ipt2/controls/Control-SelectBoxExample.png[width=522]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:34
 #, no-wrap
 msgid "**Links** - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).\n"
-msgstr "*Enlaces* - Abre una página diferente a la que contiene el enlace. Los enlaces pueden abrir la nueva página en la misma ventana del navegador (o pestaña) o en una ventana separada (o pestaña).\n"
+msgstr "*Enlaces*: abre una página distinta de aquella en la que se encuentra el enlace. Los enlaces pueden abrir la nueva página en la misma ventana (o pestaña) del navegador o en otra ventana (o pestaña).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:36
@@ -134,35 +134,35 @@ msgstr "Ejemplo de enlace a la página de información de la cuenta del usuario 
 #: en/modules/ROOT/pages/overview.adoc:38
 #, no-wrap
 msgid "**Information icon** - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.\n"
-msgstr "*Ícono de Información* - Muestra un mensaje que explica la intención del control junto al que aparece. Haga clic en el ícono situado junto a cualquier elemento para ver un mensaje de ayuda acerca de ese control. Haga clic de nuevo para que el mensaje desaparezca. Algunos mensajes de información incluyen un enlace, que de ser seleccionado, ingresará el valor apropiado para la selección\n"
+msgstr "*Ícono de información*: muestra un mensaje que explica la intención del control junto al que aparece. Haga clic en el icono junto a cualquier campo para ver un mensaje de ayuda sobre ese control. Vuelva a hacer clic en él para que el mensaje desaparezca. Algunos mensajes de información incluyen un enlace que, si se selecciona, ingresará el control con el valor apropiado para la selección.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:40
 msgid "Example information icon for character encoding after the UTF-8 link was selected: image:ipt2/controls/Information-CharacterEncoding.png[width=464]"
-msgstr "Ejemplo de ícono de información para la codificación de caracteres, después de seleccionar el enlace de UTF-8: image:ipt2/controls/Information-CharacterEncoding.png[width=464]"
+msgstr "Ejemplo de ícono de información para la codificación de caracteres después de seleccionar el enlace de UTF-8: image:ipt2/controls/Information-CharacterEncoding.png[width=464]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:42
 #, no-wrap
 msgid "**Documentation icon** image:ipt2/controls/Control-DocumentationIcon.png[width=22] - this icon indicates that there is a detailed information page about the subject with which the icon is associated. Click on the icon to open the page in a new browser window.\n"
-msgstr "*Ícono de Documentación* image:ipt2/controls/Control-DocumentationIcon.png[width=22] - Este ícono indica que hay una página de información detallada acerca del tema asociado con ese ícono. Haga clic en el ícono para abrir la página en una nueva ventana del navegador.\n"
+msgstr "*Ícono de documentación* image:ipt2/controls/Control-DocumentationIcon.png[width=22]: este ícono indica que hay una página de información detallada sobre el tema al que está asociado el icono. Haga clic en el icono para abrir la página en una nueva ventana del navegador.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:44
 #, no-wrap
 msgid "**Trash icon** image:ipt2/controls/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.\n"
-msgstr "*Icono de Papelera* image:ipt2/controls/Control-TrashIcon.png[] - Este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.\n"
+msgstr "*Icono de papelera* image:ipt2/controls/Control-TrashIcon.png[]: este ícono se asocia con otros controles en la página. Al hacer clic en el ícono se eliminarán los datos asociados.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:46
 #, no-wrap
 msgid "**Calendar icon** image:ipt2/controls/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.\n"
-msgstr "*Ícono de Calendario* image:ipt2/controls/Control-CalendarIcon.png[] - Este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.\n"
+msgstr "*Ícono de calendario* image:ipt2/controls/Control-CalendarIcon.png[]: este ícono se asocia con un elemento de texto destinado a contener una fecha. Al hacer clic en el ícono, se abrirá un pequeño calendario con controles que permiten al usuario desplazarse hacia adelante y hacia atrás a partir del mes y año seleccionado. Seleccione los cuadros para elegir otro mes, año y día de la semana según el calendario estándar de la Nueva Era. La selección de un día concreto transformará la fecha al formato correcto en el cuadro de texto asociado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:48
 msgid "Example calendar associated with an text box labelled \"End Date\" in which 31 Dec 2010 is the current date but not yet selected:"
-msgstr "Ejemplo del calendario asociado a un cuadro de texto llamado \"Fecha Final\" en el que 19 de julio 2013 es la fecha actual, pero aún no ha sido seleccionada:"
+msgstr "Ejemplo del calendario asociado a un cuadro de texto llamado \"Fecha final\" en el que el 19 de julio 2013 es la fecha actual, pero aún no ha sido seleccionada:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:50
@@ -173,7 +173,7 @@ msgstr "image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]"
 #: en/modules/ROOT/pages/overview.adoc:52
 #, no-wrap
 msgid "**Sortable Table** - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the table in the opposite direction.\n"
-msgstr "*Tabla ordenable* - Una tabla que permite ordenar las filas según los valores de una columna seleccionada en orden ascendente o descendente. Los encabezados de las columnas son las etiquetas de las columnas que aparecen como enlaces. Haga clic en un encabezado de columna para ordenar la tabla con los valores de esa columna. Haga clic nuevamente en el encabezado de la misma columna para ordenar la tabla en la dirección opuesta.\n"
+msgstr "*Tabla ordenable*: una tabla que permite ordenar las filas según los valores de una columna seleccionada en orden ascendente o descendente. Los encabezados de las columnas son las etiquetas de las columnas que aparecen como enlaces. Haga clic en un encabezado de columna para ordenar la tabla con los valores de esa columna. Haga clic nuevamente en el encabezado de la misma columna para ordenar la tabla en la dirección opuesta.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:55
@@ -194,7 +194,7 @@ msgstr "Carga de archivos"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:62
 msgid "Files can be uploaded in the IPT during two actions: when xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files]."
-msgstr "La carga de archivos al IPT se puede hacer por medio de dos acciones: xref:manage-resources.adoc#_creando_un_nuevo_recurso[creando un nuevo recurso], o cuando se xref:manage-resources.adoc#conjuntos-de-datos[agregan nuevos archivos de conjuntos de datos]."
+msgstr "La carga de archivos al IPT se puede hacer por medio de dos acciones: xref:manage-resources.adoc#crear-un-nuevo-recurso[creando un nuevo recurso] o cuando se xref:manage-resources.adoc#conjunto-de-datos[agregan nuevos archivos de conjuntos de datos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:64
@@ -215,7 +215,7 @@ msgstr "Controles que aparecen en todas las páginas"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:69
 msgid "This section describes several features that are accessible in the header and footer of most of the pages of the IPT."
-msgstr "Esta sección describe diversas características que son accesibles en el encabezado y el pie de página de la mayoría de las páginas del IPT."
+msgstr "En esta sección se describen varias opciones accesibles en la cabecera y el pie de página de la mayoría de las páginas del IPT."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/overview.adoc:70
