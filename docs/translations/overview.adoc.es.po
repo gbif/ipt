@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:21+0000\n"
-"PO-Revision-Date: 2021-12-20 21:35\n"
+"PO-Revision-Date: 2021-12-20 22:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,13 +42,13 @@ msgstr "La mayoría de los controles de la interfaz del usuario tienen los modos
 #: en/modules/ROOT/pages/overview.adoc:9
 #, no-wrap
 msgid "*Menus* - in the IPT, a menu bar appears on nearly every page. (On small screens, it is shown under the ☰ button).  The menu is populated with menu items that guide users to fundamental topics. Menu items appear based on the what the current user is authorized to see based on their role, and the currently active screen is highlighted.\n"
-msgstr "*Menús*, en el IPT aparece una barra de menús en casi todas las páginas. (En las pantallas pequeñas, aparece debajo del botón ☰).  El menú está poblado de elementos de menú que guían a los usuarios a los temas fundamentales. Los elementos del menú aparecen en función de lo que el usuario actual está autorizado a ver según su rol y la pantalla actualmente activa aparece resaltada.\n"
+msgstr "*Menús*: en el IPT aparece una barra de menús en casi todas las páginas. (En las pantallas pequeñas, aparece debajo del botón ☰).  El menú contiene elementos de menú que guían a los usuarios a los temas fundamentales. Los elementos del menú aparecen en función de lo que el usuario actual está autorizado a ver según su rol y la pantalla activa actualmente aparece resaltada.\n"
 
 #. type: Block title
 #: en/modules/ROOT/pages/overview.adoc:10
 #, no-wrap
 msgid "Menu bar before login or after a user having no special role logs in, with the Home menu active:"
-msgstr "Barra de menú antes de iniciar sesión o después de que un usuario sin una función especial inicia sesión, con el \"Menú Inicio\" activo:"
+msgstr "Barra de menú antes de iniciar sesión o después de que un usuario sin una función especial inicia sesión, con el \"Menú inicio\" activo:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:11
@@ -60,7 +60,7 @@ msgstr "ipt2/controls/IPTMenuBarHomeAbout.png"
 #: en/modules/ROOT/pages/overview.adoc:13
 #, no-wrap
 msgid "Menu after a user having a Manager role logs in, with the Manage Resources menu active:"
-msgstr "Menú después de que inicie sesión, un usuario con función de Administrador con o sin derechos para registrar recursos, con el \"Menú Gestión de Recursos\" activo:"
+msgstr "Menú después de que un usuario que tiene un rol de Administrador inicie sesión, con el menú de \"Gestión de recursos\" activo:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:14
@@ -72,7 +72,7 @@ msgstr "ipt2/controls/IPTMenuBarHomeManageAbout.png"
 #: en/modules/ROOT/pages/overview.adoc:16
 #, no-wrap
 msgid "Menu after a user having the Admin role logs in, with the Administration menu active:"
-msgstr "Menú después de que inicie sesión, un usuario con función de Administrador, con el \"Menú Administración\" activo:"
+msgstr "Menú después de que un usuario que tiene un rol de Gerente inicie sesión, con el menú \"Gestión de recursos\" activo:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:17
@@ -84,7 +84,7 @@ msgstr "ipt2/controls/IPTMenuBarHomeManageAdminAbout.png"
 #: en/modules/ROOT/pages/overview.adoc:20
 #, no-wrap
 msgid "**Text boxes** - allow textual information to be viewed or entered.\n"
-msgstr "*Cuadros de texto* - Permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).\n"
+msgstr "*Cuadros de texto*: permiten ver o introducir información textual.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:22
@@ -101,18 +101,18 @@ msgstr "ipt2/controls/Control-TextBoxExample.png"
 #: en/modules/ROOT/pages/overview.adoc:26
 #, no-wrap
 msgid "**Check boxes** - allow a value to viewed or set to true (when checked) or false (when unchecked).\n"
-msgstr "*Cuadros de verificación* - Permiten establecer un valor como visto, como verdadero (cuando es marcada) o falso (cuando no ha sido marcada).\n"
+msgstr "*Cuadros de verificación*: permiten establecer un valor como visto, verdadero (cuando es marcado) o falso (cuando no ha sido marcado).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:28
 msgid "Example check box and label to indicate that the IPT can publish resources: image:ipt2/controls/Control-CheckboxExample.png[width=233]"
-msgstr "Ejemplo de cuadros de verificación y de etiqueta para indicar que el IPT puede publicar los recursos: image:ipt2/controls/Control-CheckboxExample.png[width=233]"
+msgstr "Ejemplo de cuadro de verificación y de etiqueta para indicar que el IPT puede publicar los recursos: image:ipt2/controls/Control-CheckboxExample.png[width=233]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:30
 #, no-wrap
 msgid "**Select boxes** - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with \"Select\" (e.g., \"Select a country, territory, or island\"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.\n"
-msgstr "*Cuadros de selección* - Permiten visualizar o seleccionar un valor de una lista de valores predefinidos. Un cuadro de selección puede contener un texto explicativo acerca de la escogencia de un valor seleccionable. En este caso, la selección iniciará con la palabra \"Seleccione\" (por ejemplo, \"Seleccione un país, territorio o isla\"). Haga clic en el cuadro de selección para desplegar la lista de posibles valores. Haga clic en una de las opciones para fijar ese valor.\n"
+msgstr "*Cuadros de selección*: permiten visualizar o seleccionar un valor de una lista de valores predefinidos. Un cuadro de selección puede contener un texto explicativo sobre la selección en lugar de un valor seleccionable. En este caso, la selección iniciará con la palabra \"Seleccione\" (por ejemplo, \"Seleccione un país, territorio o isla\"). Haga clic en el cuadro de selección para desplegar la lista de posibles valores. Haga clic en una de las opciones para fijar ese valor.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:32
