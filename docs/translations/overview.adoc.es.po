@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:21+0000\n"
-"PO-Revision-Date: 2021-12-20 23:21\n"
+"PO-Revision-Date: 2021-12-20 23:58\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -319,11 +319,11 @@ msgstr "https://github.com/gbif/ipt/issues/[*Reportar un error*]: este enlace ab
 #: en/modules/ROOT/pages/overview.adoc:96
 #, no-wrap
 msgid "https://github.com/gbif/ipt/issues/new[*Request new feature*] - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.\n"
-msgstr "https://github.com/gbif/ipt/issues/new[*Solicitar una nueva función*]: Este enlace abre un formulario específico en el seguidor de problemas del IPT que se puede llenar para solicitar una capacidad que el IPT no tiene actualmente.\n"
+msgstr "https://github.com/gbif/ipt/issues/new[*Solicitar una nueva función*]: este enlace abre un formulario específico en el seguimiento de problemas del IPT que se puede llenar para solicitar una función que el IPT no tiene actualmente.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:96
 #, no-wrap
 msgid "**Copyright** - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the \"About the IPT\" section of this user manual.\n"
-msgstr "*Derechos de Autor* - GBIF posee los derechos de autor del software del IPT. Un enlace a la página principal de GBIF está disponible. Los detalles de los derechos de autor y las licencias se podrán ver en la sección \"Acerca del IPT\" de este manual de usuario.\n"
+msgstr "*Derechos de Autor*: GBIF posee los derechos de autor del software del IPT. Un enlace a la página principal de GBIF está disponible. Los detalles de los derechos de autor y las licencias se podrán ver en la sección \"Acerca del IPT\" de este manual de usuario.\n"
 
