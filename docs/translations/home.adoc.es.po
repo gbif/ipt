@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-12-21 01:19\n"
+"PO-Revision-Date: 2021-12-21 01:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -197,11 +197,11 @@ msgstr "**Resumen de cambios**: resumen de los cambios realizados desde la últi
 #: en/modules/ROOT/pages/home.adoc:47
 #, no-wrap
 msgid "**DOI handle** - the DOI handle assigned to the published version. **Note**: If the DOI is different from the DOI of the last published version, this indicates that a scientifically significant change has been done to the resource.\n"
-msgstr "**Handle del DOI** - El handle DOI asignado a la versión publicada **Nota**: si el DOI obtenido es diferente al DOI de la última versión publicada, indica que se han realizado cambios científicamente significativos al recurso.\n"
+msgstr "**Handle del DOI**: el handle DOI asignado a la versión publicada **Nota**: si el DOI es diferente del DOI de la última versión publicada, indica que se ha realizado un cambio científicamente significativo en el recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:47
 #, no-wrap
 msgid "**Last modified by** - the IPT user that last modified the published version.\n"
-msgstr "**Última modificación por** - Usuario del IPT que modificó por última vez la versión publicada.\n"
+msgstr "**Última modificación por**: usuario del IPT que modificó por última vez la versión publicada.\n"
 
