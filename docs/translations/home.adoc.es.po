@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-08-20 14:15\n"
+"PO-Revision-Date: 2021-12-21 00:44\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -60,43 +60,43 @@ msgstr "*Nombre* - El título del recurso tal como figura en el Título de la en
 #: en/modules/ROOT/pages/home.adoc:13
 #, no-wrap
 msgid "**Organization** - the organization under which the resource has been registered, if any. If the resource is not registered, the value in the Organization column will be \"Not registered\". Review the information under the \"Organizations\" heading in the \"Administration Menu\" section for more information about registering organizations and registering a resource under an organization.\n"
-msgstr "*Organización* - La organización bajo la cual el recurso ha sido registrado. Si el recurso no está registrado, el valor en la columna de Organización será \"No registrado\". Revise la información en el encabezado “Organizaciones”, en la sección de \"Menú Administración\" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.\n"
+msgstr "**Organización**: la organización bajo la que se ha registrado el recurso. Si el recurso no está registrado, el valor en la columna de Organización será \"No registrado\". Revise la información en el encabezado “Organizaciones” de la sección de \"Menú administración\" para obtener más información acerca del registro de las organizaciones y del registro de un recurso en una organización.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:14
 #, no-wrap
 msgid "**Type** - the type of the resource as given in the Type drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata\n"
-msgstr "*Tipo* - El tipo de recurso como figura en la lista desplegable de Tipo en la página xref:manage-resources.adoc#metadatos-basicos[Metadatos Básicos] de los metadatos del recurso.\n"
+msgstr "**Tipo**: el tipo de recurso como figura en la lista desplegable \"Tipo\" en la página xref:manage-resources.adoc#metadatos-basicos[Metadatos básicos] de los metadatos del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:15
 #, no-wrap
 msgid "**Subtype** - the subtype of the resource as given in the Subtype drop down on the xref:manage-resources.adoc#basic-metadata[Basic Metadata] page of the resource metadata\n"
-msgstr "*Subtype* - El subtipo del recurso como figura en la lista desplegable de Subtipo en la página xref:manage-resources.adoc#metadatos-basicos[Metadatos Básicos] de los metadatos del recurso.\n"
+msgstr "**Subtipo**: el subtipo del recurso como figura en la lista desplegable \"Subtipo\" en la página xref:manage-resources.adoc#metadatos-basicos[Metadatos básicos] de los metadatos del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:16
 #, no-wrap
 msgid "**Records** - the number of rows of data in the core data file of the last published Darwin Core Archive for the resource. For resources having data in one or more extension files, the number links to the Data Records page on the resource homepage showing a breakdown of record counts by extension.\n"
-msgstr "** Registros **: el número de filas de datos en el archivo de datos centrales del último archivo de Darwin Core publicado para el recurso. Para los recursos que tienen datos en uno o más archivos de extensión, el número se vincula a la página Registros de datos en la página de inicio del recurso que muestra un desglose de los recuentos de registros por extensión.\n"
+msgstr "**Registros**: el número de filas de datos en el archivo núcleo de datos del último archivo Darwin Core publicado para el recurso. Para los recursos que tienen datos en uno o más archivos de extensión, el número se vincula a la página \"Registros de datos\" en la página de inicio del recurso que muestra un desglose de los recuentos de registros por extensión.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:17
 #, no-wrap
 msgid "**Last modified** - either the date the resource was created or the date on which the data or metadata were last modified, whichever is more recent.\n"
-msgstr "*Última modificación* - Ya sea la fecha en la que fue creado el recurso o la fecha en la que los datos o los metadatos fueron modificados, aquella que sea más reciente.\n"
+msgstr "**Última modificación**: la fecha de creación del recurso o la fecha de última modificación de los datos o metadatos, la que sea más reciente.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:18
 #, no-wrap
 msgid "**Last publication** - the date the resource was last published.\n"
-msgstr "*Última publicación* - La fecha en la que el recurso fue publicado por última vez.\n"
+msgstr "**Última publicación**: la fecha en la que el recurso fue publicado por última vez.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:19
 #, no-wrap
 msgid "**Next publication** - the date the resource will be published next.\n"
-msgstr "*Próxima publicación* - La fecha en la que el recurso será publicado próximamente.\n"
+msgstr "**Próxima publicación**: la fecha de la próxima publicación del recurso.\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:20
