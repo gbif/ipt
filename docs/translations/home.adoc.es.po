@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:53+0000\n"
-"PO-Revision-Date: 2021-12-21 00:44\n"
+"PO-Revision-Date: 2021-12-21 01:19\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -107,7 +107,7 @@ msgstr "Canal RSS"
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:22
 msgid "The IPT supports syndication via RSS for those who wish to monitor when new resource versions get published, and how resources change over time. In fact each time a new resource version is broadcast, it will include a summary of what changed since the last version (assuming the publisher entered a change summary, otherwise it defaults to the resource description). The RSS feed is accessible by clicking on the link provided below the list of public hosted resources. The RSS feed can be read in any standard RSS client."
-msgstr "El IPT apoya la agremiación a través de RSS para aquellos que desean monitorear los cambios en la configuración de los recursos. La fuente RSS está disponible haciendo clic en el enlace que aparece debajo de la lista de recursos públicos alojados. Puede ser leída en cualquier cliente estándar de RSS."
+msgstr "El IPT apoya la agremiación a través de RSS para aquellos que desean monitorear cuándo se publican nuevas versiones de recursos y cómo cambian los recursos con el tiempo. De hecho, cada vez que se publique una nueva versión del recurso, se incluirá un resumen de lo que ha cambiado desde la última versión (suponiendo que el editor haya ingresado un resumen de los cambios, de lo contrario, por defecto se mostrará la descripción del recurso). La fuente RSS está disponible haciendo clic en el enlace que aparece debajo de la lista de recursos públicos alojados. Puede ser leída en cualquier cliente estándar de RSS."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:23
@@ -118,28 +118,28 @@ msgstr "Inventario de recursos registrados"
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:25
 msgid "The IPT provides a simple JSON inventory of all registered resources. This feature isn't shown on the user interface. To view simply append `/inventory/dataset` to the IPT public URL, e.g. https://ipt.gbif.org/inventory/dataset. GBIF uses this inventory to monitor whether it is properly indexing resources by comparing the target and indexed record counts."
-msgstr "El IPT provee un inventario JSON de todos los recursos registrados. Esta característica no se muestra en la interfaz de usuario. Para verla, simplemente adjunte `/inventory/dataset` a la URL básica del IPT e.g. https://ipt.gbif.org/inventory/dataset. GBIF utiliza este inventario para el monitoreo de la correcta indexación de los recursos a través de la comparación entre las cuentas de los objetivos y los registros indexados."
+msgstr "El IPT provee un sencillo inventario JSON de todos los recursos registrados. Esta característica no se muestra en la interfaz de usuario. Para verla simplemente añada `/inventory/dataset` a la URL básica del IPT, por ejemplo https://ipt.gbif.org/inventory/dataset. GBIF utiliza este inventario para monitorear si está indexando correctamente los recursos, comparando los recuentos de registros objetivo e indexados."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/home.adoc:26
 #, no-wrap
 msgid "Resource homepage"
-msgstr "Página principal del Recurso"
+msgstr "Página principal del recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:28
 msgid "The resource homepage is aimed at external users of a resource. The homepage lists all the metadata about a selected version of a resource, provides links to download the version's data/metadata, and displays the resource's version history."
-msgstr "La Página principal del Recurso está dirigida a los usuarios externos de un recurso. En esta, se muestra una lista de todos los metadatos de la versión seleccionada del recurso, provee los enlaces de descarga de los datos/metadatos de las versiones y exhibe el historial de versiones del recurso."
+msgstr "La página de inicio del recurso está dirigida a los usuarios externos de un recurso. La página de inicio enumera todos los metadatos de la versión seleccionada de un recurso, proporciona enlaces para descargar los datos/metadatos de la versión y muestra el historial de versiones del recurso."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:30
 msgid "To view the resource homepage, user can click on the name link in the list of resources on the Home page. Another way to get to the resource's homepage is using its DOI: when a resource is assigned a DOI via the IPT, it always resolves to its homepage."
-msgstr "Para ver la página principal de un recurso, el usuario puede hacer clic en el enlace del nombre en la lista de recursos de la página de inicio. Otra forma de acceder a la página principal de un recurso es utilizando el DOI: cuando un número DOI es asignado a un recurso a través del IPT, éste siempre remite al usuario a la página principal del recurso que representa."
+msgstr "Para ver la página de inicio del recurso, el usuario puede hacer clic en el enlace del nombre en la lista de recursos de la página de inicio. Otra forma de acceder a la página de inicio del recurso es utilizando su DOI: cuando se asigna un DOI a un recurso a través del IPT, siempre se remite a su página de inicio."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:32
 msgid "Please note only a user having the Admin role or one of the Manager roles can edit a resource's metadata. To learn more, please refer to the information under the \"Edit an existing resource\" heading in the \"Manage Resources Menu\" section."
-msgstr "Por favor recuerde que sólo usuarios con el rol de Administrador u otros tipos de roles administrativos (con y sin derecho de registro) pueden editar los metadatos de un recurso. Para conocer más, refiérase a la información en la sección \"Editar un recurso existente\" en el \"Menú Gestión de Recursos\"."
+msgstr "Por favor recuerde que sólo usuarios con el rol de Administrador u otros tipos de roles administrativos pueden editar los metadatos de un recurso. Para conocer más, consulte a la información en la sección \"Editar un recurso existente\" en el \"Menú gestión de recursos\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/home.adoc:33
@@ -151,7 +151,7 @@ msgstr "ipt2/home/IPTHomeMetadataOverview.png"
 #: en/modules/ROOT/pages/home.adoc:35
 #, no-wrap
 msgid "Version history"
-msgstr "Página de historial de versiones"
+msgstr "Historial de versiones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:37
@@ -173,25 +173,25 @@ msgstr "A continuación se encuentran las explicaciones de las columnas de la ta
 #: en/modules/ROOT/pages/home.adoc:43
 #, no-wrap
 msgid "**Version** - the published version's version number, which uses the major_version.minor_version format. The version of the resource homepage currently being viewed is clearly indicated. To open a specific version's homepage, click on the version number. **Note**: A major version change compared to the last published version indicates that a scientifically significant change has taken place.\n"
-msgstr "**Versión** - El número de la versión publicada, el cual usa el formato major_version.minor_version. La versión del recurso que se está viendo actualmente se indica con una flecha. Para abrir la página de inicio de una versión específica, haga clic en el número de la versión. **Nota**: un cambio considerable en comparación con la última versión publicada indica que ha ocurrido un cambio científicamente significativo.\n"
+msgstr "**Versión**: el número de la versión publicada, que utiliza el formato versión_principal.versión_secundaria. Se señala claramente la versión de la página de inicio del recurso que se está viendo en ese momento. Para abrir la página de inicio de una versión específica, haga clic en el número de versión. **Nota**: un cambio de versión mayor en comparación con la última versión publicada indica que se ha producido un cambio científicamente significativo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:44
 #, no-wrap
 msgid "**Published on** - the date the published version was released.\n"
-msgstr "**Publicado en** - La fecha de publicación de la versión.\n"
+msgstr "**Publicado en**: la fecha de publicación de la versión.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:45
 #, no-wrap
 msgid "**Records** - the number of records the published version contains.\n"
-msgstr "**Registros** - El número de registros que contiene la versión publicada.\n"
+msgstr "**Registros**: el número de registros que contiene la versión publicada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:46
 #, no-wrap
 msgid "**Change summary** - a summary of what has changed since the last published version.\n"
-msgstr "**Resumen de cambios** - Resumen de los cambios realizados desde la última versión publicada.\n"
+msgstr "**Resumen de cambios**: resumen de los cambios realizados desde la última versión publicada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/home.adoc:47
