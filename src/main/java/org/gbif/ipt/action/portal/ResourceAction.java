@@ -145,7 +145,7 @@ public class ResourceAction extends PortalBaseAction {
    * Return the latest published public (or registered) version, or null if the last published version was private or
    * deleted.
    * </br>
-   * Important, VersionHistory goes from latest published (first index) to earliest published (last index).
+   * Important, VersionHistory goes from the latest published (first index) to the earliest published (last index).
    *
    * @param resource resource
    *
@@ -170,7 +170,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * Return the latest published version regardless of its visibility (e.g. public or private).
    * </br>
-   * Important, VersionHistory goes from latest published (first index) to earliest published (last index).
+   * Important, VersionHistory goes from the latest published (first index) to the earliest published (last index).
    *
    * @param resource resource
    *
@@ -210,7 +210,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the DOI for version requested, or null if no DOI was assigned or the resource's VersionHistory list is
-   * null or empty. Important, VersionHistory goes from latest published (first index) to earliest published (last
+   * null or empty. Important, VersionHistory goes from the latest published (first index) to the earliest published (last
    * index).
    *
    * @return DOI for published version, or null if no DOI was assigned or VersionHistory list was null or empty
@@ -372,8 +372,9 @@ public class ResourceAction extends PortalBaseAction {
     types = new LinkedHashMap<>();
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
-    coreType = (resource.getCoreType() != null && types.containsKey(resource.getCoreType().toLowerCase())) ? types
-      .get(resource.getCoreType().toLowerCase()) : Resource.CoreRowType.OTHER.toString();
+    coreType = (resource.getCoreType() != null && types.containsKey(resource.getCoreType().toLowerCase()))
+        ? types.get(resource.getCoreType().toLowerCase())
+        : types.get(Resource.CoreRowType.OTHER.toString().toLowerCase());
   }
 
   /**
@@ -397,12 +398,7 @@ public class ResourceAction extends PortalBaseAction {
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
-    } catch (SAXException e) {
-      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), shortname});
-      LOG.error(msg);
-      addActionError(msg);
-      return ERROR;
-    } catch (ParserConfigurationException e) {
+    } catch (SAXException | ParserConfigurationException e) {
       String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
@@ -455,8 +451,7 @@ public class ResourceAction extends PortalBaseAction {
     copy.setEml(eml);
 
     // create new VersionHistory
-    List<VersionHistory> histories = new ArrayList<>();
-    histories.addAll(resource.getVersionHistory());
+    List<VersionHistory> histories = new ArrayList<>(resource.getVersionHistory());
     copy.setVersionHistory(histories);
     VersionHistory history = new VersionHistory(nextVersion, releaseDate, PublicationStatus.PUBLIC);
 
@@ -486,7 +481,7 @@ public class ResourceAction extends PortalBaseAction {
    * Admin users and resource managers can see all published versions of a resource.
    * </br>
    * Non authorized users can only see published versions that were publicly available at the time of publishing, or
-   * that are registered (needed for resource published prior to IPT v2.2.
+   * that are registered (needed for resource published prior to IPT v2.2).
    * </br>
    * Please note that changing a resource's visibility from private to public does not change the visibility of the
    * last published version.
@@ -512,7 +507,7 @@ public class ResourceAction extends PortalBaseAction {
           addActionWarning(getText("portal.resource.warning.notPublic", new String[] {status.toLowerCase()}));
         }
       }
-      // otherwise only published public versions can be shown
+      // otherwise, only published public versions can be shown
       else {
         // if no specific version was requested, find the latest published public version
         if (version == null) {
@@ -547,12 +542,7 @@ public class ResourceAction extends PortalBaseAction {
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
-    } catch (SAXException e) {
-      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
-      LOG.error(msg);
-      addActionError(msg);
-      return ERROR;
-    } catch (ParserConfigurationException e) {
+    } catch (SAXException | ParserConfigurationException e) {
       String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
       LOG.error(msg);
       addActionError(msg);
@@ -583,7 +573,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * For each unique rank, this method constructs a new OrganizedTaxonomicKeywords that contains a list of display
-   * names coming from a resource's TaxonomicCoverage's TaxonKeywords corresponding to that rank. The display nane
+   * names coming from a resource's TaxonomicCoverage's TaxonKeywords corresponding to that rank. The display name
    * consists of "scientific name (common name)". Another OrganizedTaxonomicKeywords is also created for the unknown
    * rank, that is a TaxonomicKeyword not having a rank.
    *
@@ -594,7 +584,7 @@ public class ResourceAction extends PortalBaseAction {
   private List<OrganizedTaxonomicKeywords> setOrganizedTaxonomicKeywords(List<TaxonKeyword> keywords) {
     List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<>();
 
-    // also we want a unique set of names corresponding to empty rank
+    // also, we want a unique set of names corresponding to empty rank
     Set<String> uniqueNamesForEmptyRank = new HashSet<>();
 
     ranks = new LinkedHashMap<>();
@@ -624,7 +614,7 @@ public class ResourceAction extends PortalBaseAction {
       // create special OrganizedTaxonomicKeywords for empty rank
       OrganizedTaxonomicKeywords emptyRankKeywords = new OrganizedTaxonomicKeywords();
       emptyRankKeywords.setRank("Unranked");
-      emptyRankKeywords.setDisplayNames(new ArrayList<String>(uniqueNamesForEmptyRank));
+      emptyRankKeywords.setDisplayNames(new ArrayList<>(uniqueNamesForEmptyRank));
       organizedTaxonomicKeywordsList.add(emptyRankKeywords);
     }
     // return list
@@ -785,7 +775,7 @@ public class ResourceAction extends PortalBaseAction {
     if (!recordsByExtensionForVersion.isEmpty()) {
       for (String rowType : recordsByExtensionForVersion.keySet()) {
         int extensionCount = recordsByExtensionForVersion.get(rowType);
-        count = (extensionCount > count) ? extensionCount : count;
+        count = Math.max(extensionCount, count);
       }
     }
     return count;

@@ -169,11 +169,9 @@
     </#if>
 
     <div class="container my-3 p-3">
-        <#if resource.coreType??>
-            <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <span>${resource.coreType}</span>
-            </div>
-        </#if>
+        <div class="text-center text-uppercase fw-bold fs-smaller-2">
+            <span>${coreType}</span>
+        </div>
 
         <div class="text-center">
             <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
