@@ -66,7 +66,7 @@ public class CsrfLoginInterceptor extends AbstractInterceptor {
       String token = sb.toString();
       // add token to cookie
       csrfCookie.setValue(token);
-      csrfCookie.setMaxAge(cfg.CSRF_TOKEN_EXPIRATION);
+      csrfCookie.setMaxAge(AppConfig.CSRF_TOKEN_EXPIRATION);
       csrfCookie.setHttpOnly(true);
 
       try {
