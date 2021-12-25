@@ -64,6 +64,7 @@ public class SourceAction extends ManagerBaseAction {
   private Source source;
   private String rdbms;
   private String problem;
+  private String sqlSourcePassword;
   // URL
   private String url;
   private String sourceName;
@@ -396,6 +397,10 @@ public class SourceAction extends ManagerBaseAction {
     return rdbms;
   }
 
+  public String getSqlSourcePassword() {
+    return sqlSourcePassword;
+  }
+
   public Source getSource() {
     return source;
   }
@@ -544,8 +549,16 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setRdbms(String jdbc) {
     this.rdbms = jdbc;
-    if (source != null && !source.isFileSource()) {
+    if (source != null && source instanceof SqlSource) {
       ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
+    }
+  }
+
+  public void setSqlSourcePassword(String sqlSourcePassword) {
+    if (source != null && source instanceof SqlSource) {
+      ((SqlSource) source).setPassword(sqlSourcePassword);
+      // source should be re-analyzed after password update
+      this.analyze = true;
     }
   }
 

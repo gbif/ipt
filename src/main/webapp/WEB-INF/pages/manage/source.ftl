@@ -174,7 +174,7 @@
                                 <@input name="sqlSource.username" />
                             </div>
                             <div class="col-lg-6">
-                                <@input name="sqlSource.password" type="password" />
+                                <@input name="sqlSourcePassword" i18nkey="sqlSource.password" type="password" />
                             </div>
                             <div class="col-12">
                                 <@text name="sqlSource.sql" help="i18n"/>
