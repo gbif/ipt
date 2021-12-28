@@ -570,7 +570,7 @@
                                 </#if>
                                 <@s.text name='portal.resource.cite.help'/>:
                             </p>
-                            <p property="dc:bibliographicCitation" class="howtocite mt-3 p-3 border overflow-x-auto">
+                            <p property="dc:bibliographicCitation" class="howtocite mt-3 p-3 overflow-x-auto">
                                 <@textWithFormattedLink eml.citation.citation/>
                             </p>
                         </div>

@@ -978,3 +978,10 @@ a.doi:hover span:first-of-type {
     content: "\EA41";
 }
 /* GBIF icons END */
+
+
+/* Citation border */
+#intellectualRightsDiv, .howtocite {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
