@@ -18,12 +18,15 @@ package org.gbif.ipt.action;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.utils.PBEEncrypt;
+import org.gbif.ipt.utils.RegistryPasswordEncoder;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.CsrfLoginInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 
@@ -43,6 +46,8 @@ public class LoginAction extends POSTAction {
   private static final Logger LOG = LogManager.getLogger(AccountAction.class);
 
   private final UserAccountManager userManager;
+  private final PBEEncrypt encrypter;
+  private final RegistryPasswordEncoder passwordEncoder;
 
   private String redirectUrl;
   private String email;
@@ -52,9 +57,11 @@ public class LoginAction extends POSTAction {
 
   @Inject
   public LoginAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    UserAccountManager userManager) {
+                     UserAccountManager userManager, PBEEncrypt encrypter, RegistryPasswordEncoder passwordEncoder) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
+    this.encrypter = encrypter;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -73,6 +80,34 @@ public class LoginAction extends POSTAction {
     // user already logged in, return
     if (session.get(Constants.SESSION_USER) != null) {
       return SUCCESS;
+    }
+
+    List<User> allUsers = userManager.list();
+
+    // first we have to check if there are users with old-fashioned passwords
+    boolean isOldPasswordsPresent = allUsers.stream()
+        .map(User::getPassword)
+        .anyMatch(pass -> !StringUtils.startsWith(pass, "$S$"));
+
+    // if so - start password updating process
+    if (isOldPasswordsPresent) {
+      for (User user : allUsers) {
+        String pass = user.getPassword();
+        if (pass != null) {
+          String decrypted;
+          try {
+            decrypted = encrypter.decrypt(pass);
+
+            // password is here! let's hash it then
+            String encoded = passwordEncoder.encode(decrypted);
+            user.setPassword(encoded);
+          } catch (PBEEncrypt.EncryptionException e) {
+            LOG.error("Cannot decrypt password", e);
+          }
+        }
+      }
+
+      userManager.save();
     }
 
     if (email != null && !StringUtils.isBlank(csrfToken) && csrfCookie != null) {

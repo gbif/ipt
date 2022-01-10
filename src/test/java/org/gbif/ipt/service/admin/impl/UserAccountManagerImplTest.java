@@ -24,6 +24,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.utils.RegistryPasswordEncoder;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -52,6 +53,7 @@ import static org.mockito.Mockito.when;
 public class UserAccountManagerImplTest {
 
   private PasswordConverter mockedPasswordConverter = mock(PasswordConverter.class);
+  private RegistryPasswordEncoder mockedPasswordEncoder = mock(RegistryPasswordEncoder.class);
   private ResourceManager mockedResourceManager = MockResourceManager.buildMock();
   private static File userFile;
   private User admin, manager, publisher, user;
@@ -75,7 +77,8 @@ public class UserAccountManagerImplTest {
   private UserAccountManager getUserAccountManager() {
     AppConfig mockedCfg = MockAppConfig.buildMock();
     DataDir mockedDataDir = MockDataDir.buildMock();
-    return new UserAccountManagerImpl(mockedCfg, mockedDataDir, mockedResourceManager, mockedPasswordConverter);
+    return new UserAccountManagerImpl(mockedCfg, mockedDataDir, mockedResourceManager, mockedPasswordConverter,
+        mockedPasswordEncoder);
   }
 
   @BeforeEach

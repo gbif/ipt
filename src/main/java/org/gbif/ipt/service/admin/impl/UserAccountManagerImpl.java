@@ -21,6 +21,7 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.utils.RegistryPasswordEncoder;
 import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
@@ -37,7 +38,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,19 +59,21 @@ import com.thoughtworks.xstream.XStream;
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
 
   public static final String PERSISTENCE_FILE = "users.xml";
-  private Map<String, User> users = new LinkedHashMap<>();
+  private final Map<String, User> users = new LinkedHashMap<>();
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
-  private ResourceManager resourceManager;
+  private final ResourceManager resourceManager;
+  private final RegistryPasswordEncoder passwordEncoder;
 
   private User setupUser;
 
   @Inject
   public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    PasswordConverter passwordConverter) {
+    PasswordConverter passwordConverter, RegistryPasswordEncoder passwordEncoder) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
+    this.passwordEncoder = passwordEncoder;
     defineXstreamMapping(passwordConverter);
   }
 
@@ -105,7 +107,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       email = onlyAdminEmail;
     }
     User agent = get(email);
-    if (agent != null && agent.getPassword() != null && agent.getPassword().equals(password)) {
+    if (agent != null && agent.getPassword() != null && passwordEncoder.matches(password, agent.getPassword())) {
       return agent;
     }
     return null;
