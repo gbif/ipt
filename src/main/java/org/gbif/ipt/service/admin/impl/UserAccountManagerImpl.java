@@ -15,13 +15,11 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
-import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
-import org.gbif.ipt.utils.RegistryPasswordEncoder;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -49,7 +47,10 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import com.thoughtworks.xstream.XStream;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 /**
  * Reads user accounts from a simple XStream managed xml file.
@@ -63,16 +64,13 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
   private final ResourceManager resourceManager;
-  private final RegistryPasswordEncoder passwordEncoder;
 
   private User setupUser;
 
   @Inject
-  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-                                RegistryPasswordEncoder passwordEncoder) {
+  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
-    this.passwordEncoder = passwordEncoder;
     defineXstreamMapping();
   }
 
@@ -106,7 +104,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       email = onlyAdminEmail;
     }
     User agent = get(email);
-    if (agent != null && agent.getPassword() != null && passwordEncoder.matches(password, agent.getPassword())) {
+    if (agent != null && agent.getPassword() != null
+        && BCrypt.verifyer().verify(password.toCharArray(), agent.getPassword()).verified) {
       return agent;
     }
     return null;

@@ -19,7 +19,6 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.utils.PBEEncrypt;
-import org.gbif.ipt.utils.RegistryPasswordEncoder;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.CsrfLoginInterceptor;
@@ -36,6 +35,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 /**
  * Action handling login/logout only. Login can happen both from small login box on every page, or dedicated login
  * page that provides the IPT administrator contact in case of problems or to create a new account.
@@ -47,7 +48,6 @@ public class LoginAction extends POSTAction {
 
   private final UserAccountManager userManager;
   private final PBEEncrypt encrypter;
-  private final RegistryPasswordEncoder passwordEncoder;
 
   private String redirectUrl;
   private String email;
@@ -57,11 +57,10 @@ public class LoginAction extends POSTAction {
 
   @Inject
   public LoginAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                     UserAccountManager userManager, PBEEncrypt encrypter, RegistryPasswordEncoder passwordEncoder) {
+                     UserAccountManager userManager, PBEEncrypt encrypter) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
     this.encrypter = encrypter;
-    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -87,7 +86,7 @@ public class LoginAction extends POSTAction {
     // first we have to check if there are users with old-fashioned passwords
     boolean isOldPasswordsPresent = allUsers.stream()
         .map(User::getPassword)
-        .anyMatch(pass -> !StringUtils.startsWith(pass, "$S$"));
+        .anyMatch(pass -> !StringUtils.startsWith(pass, "$2a$"));
 
     // if so - update all passwords
     if (isOldPasswordsPresent) {
@@ -97,10 +96,8 @@ public class LoginAction extends POSTAction {
           String decrypted;
           try {
             decrypted = encrypter.decrypt(pass);
-
-            // password is here! let's hash it then
-            String encoded = passwordEncoder.encode(decrypted);
-            user.setPassword(encoded);
+            String hash = BCrypt.withDefaults().hashToString(12, decrypted.toCharArray());
+            user.setPassword(hash);
           } catch (PBEEncrypt.EncryptionException e) {
             LOG.error("Cannot decrypt password", e);
           }
