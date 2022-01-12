@@ -22,7 +22,6 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.utils.RegistryPasswordEncoder;
-import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -70,11 +69,11 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
   @Inject
   public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    PasswordConverter passwordConverter, RegistryPasswordEncoder passwordEncoder) {
+                                RegistryPasswordEncoder passwordEncoder) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     this.passwordEncoder = passwordEncoder;
-    defineXstreamMapping(passwordConverter);
+    defineXstreamMapping();
   }
 
   private User addUser(User user) {
@@ -124,7 +123,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     }
   }
 
-  private void defineXstreamMapping(PasswordConverter passwordConverter) {
+  private void defineXstreamMapping() {
     xstream.addPermission(AnyTypePermission.ANY);
     xstream.alias("user", User.class);
     xstream.useAttributeFor(User.class, "email");
@@ -133,8 +132,6 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     xstream.useAttributeFor(User.class, "lastname");
     xstream.useAttributeFor(User.class, "role");
     xstream.useAttributeFor(User.class, "lastLogin");
-    // encrypt passwords
-    xstream.registerConverter(passwordConverter);
   }
 
   @Override

@@ -16,7 +16,13 @@
 package org.gbif.ipt.model.converter;
 
 import org.gbif.ipt.model.Password;
+import org.gbif.ipt.utils.PBEEncrypt;
+import org.gbif.ipt.utils.PBEEncrypt.EncryptionException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -27,6 +33,15 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 @Singleton
 public class PasswordConverter implements Converter {
 
+  private static final Logger LOG = LogManager.getLogger(PasswordConverter.class);
+
+  private final PBEEncrypt encrypter;
+
+  @Inject
+  public PasswordConverter(PBEEncrypt cipher) {
+    this.encrypter = cipher;
+  }
+
   @Override
   public boolean canConvert(Class clazz) {
     return clazz.equals(Password.class);
@@ -35,15 +50,24 @@ public class PasswordConverter implements Converter {
   @Override
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     Password pass = (Password) value;
-    if (pass.password != null) {
-      writer.setValue(pass.password);
+    try {
+      if (pass.password != null) {
+        writer.setValue(encrypter.encrypt(pass.password));
+      }
+    } catch (EncryptionException e) {
+      LOG.error("Cannot encrypt password", e);
     }
   }
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     Password pass = new Password();
-    pass.password = reader.getValue();
+    String val = reader.getValue();
+    try {
+      pass.password = val == null ? null : encrypter.decrypt(val);
+    } catch (EncryptionException e) {
+      LOG.error("Cannot decrypt password", e);
+    }
     return pass;
   }
 }

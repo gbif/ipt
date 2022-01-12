@@ -89,7 +89,7 @@ public class LoginAction extends POSTAction {
         .map(User::getPassword)
         .anyMatch(pass -> !StringUtils.startsWith(pass, "$S$"));
 
-    // if so - start password updating process
+    // if so - update all passwords
     if (isOldPasswordsPresent) {
       for (User user : allUsers) {
         String pass = user.getPassword();
