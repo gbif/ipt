@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-13 16:56+0000\n"
-"PO-Revision-Date: 2022-01-13 17:27\n"
+"PO-Revision-Date: 2022-01-13 17:56\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -128,29 +128,29 @@ msgstr "$ chmod -R 755 directory\n"
 #. type: delimited block =
 #: en/modules/ROOT/pages/faq.adoc:49
 msgid "Some Linux systems use sandboxing to provide additional security.  Setting the file ownership and permissions is _not sufficient_ on these systems.  See the <<sandboxing,following question>>."
-msgstr ""
+msgstr "Algunos sistemas Linux utilizan sandboxing para proporcionar seguridad adicional.  Establecer la propiedad y los permisos de los archivos _no es suficiente_ en estos sistemas.  Ver la <<sandboxing, siguiente pregunta>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:52
 msgid "Note that if you are running your IPT on a Windows operating system, you will need to check that your folder didn't revert to read-only permissions."
-msgstr ""
+msgstr "Tenga en cuenta que si está ejecutando su IPT en un sistema operativo Windows, deberá comprobar que su carpeta no haya vuelto a los permisos de solo lectura."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:54
 #, no-wrap
 msgid "My file permissions are correct, but I still see errors about read/write permissions."
-msgstr ""
+msgstr "Mis permisos de archivo son correctos, pero sigo viendo errores sobre los permisos de lectura/escritura."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:57
 msgid "Some Linux systems have additional protections, called security sandboxing.  In this case, you usually need to grant additional permissions for Tomcat to access the data directory.  For example, on Debian and Ubuntu you need to add a SystemD override:"
-msgstr ""
+msgstr "Algunos sistemas Linux tienen protecciones adicionales, denominadas sandboxing de seguridad.  En este caso, normalmente hay que conceder permisos adicionales para que Tomcat pueda acceder al directorio de datos.  Por ejemplo, en Debian y Ubuntu es necesario añadir una anulación de SystemD:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:60
 #, no-wrap
 msgid "$ sudo systemctl edit tomcat9.service\n"
-msgstr ""
+msgstr "$ sudo systemctl edit tomcat9.service\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:64
@@ -158,13 +158,15 @@ msgstr ""
 msgid "# Put this into the file that opens (it will usually be blank), then save it:\n"
 "[Service]\n"
 "ReadWritePaths=/path/to/data/directory/\n"
-msgstr ""
+msgstr "# Escriba esto en el archivo que se abre (normalmente estará en blanco), y luego guárdelo:\n"
+"[Service]\n"
+"ReadWritePaths=/path/to/data/directory/\n"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:66
 #, no-wrap
 msgid "$ sudo systemctl restart tomcat9\n"
-msgstr ""
+msgstr "$ sudo systemctl restart tomcat9\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:68
