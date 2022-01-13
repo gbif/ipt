@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-13 16:56+0000\n"
-"PO-Revision-Date: 2022-01-13 17:01\n"
+"PO-Revision-Date: 2022-01-13 17:27\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -90,7 +90,7 @@ msgstr "Obtengo el siguiente error: \"The data directory '/directory' is not wri
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:27
 msgid "This also applies to similar errors for creating files, like `RollingFileManager … unable to create manager for … debug.log`."
-msgstr ""
+msgstr "Esto también aplica a errores similares para crear archivos, como `RollingFileManager … unable to create manager for … debug.log`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:29
