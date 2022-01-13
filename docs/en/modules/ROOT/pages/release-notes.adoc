@@ -81,7 +81,6 @@ The full list of new features is documented on the xref:releases.adoc[releases p
 * IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions.
 * IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)
 * The documentation has moved to this new location; links have been made from the old GitHub Wiki.
-* xref:customization.adoc[Customization] (styling etc) using `custom.css` is broken in this release, see this https://github.com/gbif/ipt/issues/1634[issue].
 
 If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release].
 
