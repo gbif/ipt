@@ -50,6 +50,7 @@
 
     <!-- Third party dependencies -->
     <apache-poi.version>3.17</apache-poi.version>
+    <bcrypt.version>0.9.0</bcrypt.version>
     <commons-digester.version>2.1</commons-digester.version>
     <commons-io.version>2.8.0</commons-io.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
@@ -645,6 +646,13 @@
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
       <version>${jaxb-runtime.version}</version>
+    </dependency>
+
+    <!-- Password hashing -->
+    <dependency>
+      <groupId>at.favre.lib</groupId>
+      <artifactId>bcrypt</artifactId>
+      <version>${bcrypt.version}</version>
     </dependency>
 
     <!-- Test dependencies -->

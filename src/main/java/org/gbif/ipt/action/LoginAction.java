@@ -18,6 +18,7 @@ package org.gbif.ipt.action;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.utils.PBEEncrypt;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.CsrfLoginInterceptor;
@@ -43,6 +44,7 @@ public class LoginAction extends POSTAction {
   private static final Logger LOG = LogManager.getLogger(AccountAction.class);
 
   private final UserAccountManager userManager;
+  private final PBEEncrypt encrypter;
 
   private String redirectUrl;
   private String email;
@@ -52,9 +54,10 @@ public class LoginAction extends POSTAction {
 
   @Inject
   public LoginAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    UserAccountManager userManager) {
+                     UserAccountManager userManager, PBEEncrypt encrypter) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
+    this.encrypter = encrypter;
   }
 
   @Override

@@ -34,6 +34,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 public class PasswordConverter implements Converter {
 
   private static final Logger LOG = LogManager.getLogger(PasswordConverter.class);
+
   private final PBEEncrypt encrypter;
 
   @Inject
@@ -54,7 +55,7 @@ public class PasswordConverter implements Converter {
         writer.setValue(encrypter.encrypt(pass.password));
       }
     } catch (EncryptionException e) {
-      LOG.error("Cannot encrypt sql source password", e);
+      LOG.error("Cannot encrypt password", e);
     }
   }
 
@@ -65,7 +66,7 @@ public class PasswordConverter implements Converter {
     try {
       pass.password = val == null ? null : encrypter.decrypt(val);
     } catch (EncryptionException e) {
-      LOG.error("Cannot decrypt sql source password", e);
+      LOG.error("Cannot decrypt password", e);
     }
     return pass;
   }
