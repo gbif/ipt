@@ -25,7 +25,6 @@ import org.gbif.ipt.struts2.CsrfLoginInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.Cookie;
 
@@ -34,8 +33,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
-
-import at.favre.lib.crypto.bcrypt.BCrypt;
 
 /**
  * Action handling login/logout only. Login can happen both from small login box on every page, or dedicated login
@@ -79,32 +76,6 @@ public class LoginAction extends POSTAction {
     // user already logged in, return
     if (session.get(Constants.SESSION_USER) != null) {
       return SUCCESS;
-    }
-
-    List<User> allUsers = userManager.list();
-
-    // first we have to check if there are users with old-fashioned passwords
-    boolean isOldPasswordsPresent = allUsers.stream()
-        .map(User::getPassword)
-        .anyMatch(pass -> !StringUtils.startsWith(pass, "$2a$"));
-
-    // if so - update all passwords
-    if (isOldPasswordsPresent) {
-      for (User user : allUsers) {
-        String pass = user.getPassword();
-        if (pass != null) {
-          String decrypted;
-          try {
-            decrypted = encrypter.decrypt(pass);
-            String hash = BCrypt.withDefaults().hashToString(12, decrypted.toCharArray());
-            user.setPassword(hash);
-          } catch (PBEEncrypt.EncryptionException e) {
-            LOG.error("Cannot decrypt password", e);
-          }
-        }
-      }
-
-      userManager.save();
     }
 
     if (email != null && !StringUtils.isBlank(csrfToken) && csrfCookie != null) {

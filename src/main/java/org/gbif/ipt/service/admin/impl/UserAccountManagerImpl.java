@@ -29,6 +29,7 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.PBEEncrypt;
 
 import java.io.EOFException;
 import java.io.FileNotFoundException;
@@ -44,6 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -64,13 +67,15 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
   private final ResourceManager resourceManager;
+  private final PBEEncrypt encrypter;
 
   private User setupUser;
 
   @Inject
-  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager) {
+  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager, PBEEncrypt encrypter) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
+    this.encrypter = encrypter;
     defineXstreamMapping();
   }
 
@@ -117,6 +122,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       if (get(user.getEmail()) != null) {
         throw new AlreadyExistingException();
       }
+      // hash password before creation
+      user.setPassword(BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray()));
       addUser(user);
       save();
     }
@@ -276,6 +283,33 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           LOG.error(e.getMessage(), e);
         }
       }
+
+      // first we have to check if there are users with old-fashioned passwords
+      boolean isOldPasswordsPresent = users.values()
+          .stream()
+          .map(User::getPassword)
+          .anyMatch(pass -> !StringUtils.startsWith(pass, "$2a$"));
+
+      // if so - update all passwords
+      if (isOldPasswordsPresent) {
+        LOG.info("There are old-fashioned encrypted passwords, start hashing them");
+        for (User user : users.values()) {
+          String pass = user.getPassword();
+          if (pass != null) {
+            String decrypted;
+            try {
+              decrypted = encrypter.decrypt(pass);
+              String hash = BCrypt.withDefaults().hashToString(12, decrypted.toCharArray());
+              user.setPassword(hash);
+            } catch (PBEEncrypt.EncryptionException e) {
+              LOG.error("Cannot decrypt password for the user [{}]", user.getEmail(), e);
+            }
+          }
+        }
+
+        save();
+      }
+
     } catch (FileNotFoundException e) {
       LOG.warn("User accounts not existing, " + PERSISTENCE_FILE
         + " file missing  (This is normal when first setting up a new datadir)");
