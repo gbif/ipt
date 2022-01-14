@@ -14,7 +14,7 @@
             <@s.text name="login.title"/>
         </h5>
 
-        <p class="mx-md-4 mx-2">
+        <p class="mx-md-4 mx-2 text-center">
             <@s.text name="login.intro">
                 <@s.param>${adminEmail}</@s.param>
             </@s.text>
@@ -33,7 +33,7 @@
                 </div>
 
                 <#if email?has_content>
-                    <p>
+                    <p class="text-center">
                         <@s.text name="login.forgottenpassword"><@s.param>${adminEmail}</@s.param></@s.text>
                     </p>
                 </#if>
