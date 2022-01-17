@@ -328,7 +328,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<Map<String, String>> organisationsTemp = new ArrayList<>();
     try {
       organisationsTemp = gson
-        .fromJson(requestHttpGetFromRegistry(getOrganisationsURL(true)).getContent(),
+        .fromJson(requestHttpGetFromRegistry(getOrganisationsURL()).getContent(),
           new TypeToken<List<Map<String, String>>>() {
           }.getType());
     } catch (RegistryException e) {
@@ -404,22 +404,22 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   /**
    * Returns the Organisations url
    */
-  private String getOrganisationsURL(boolean json) {
-    return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/organisation", json ? ".json" : "/");
+  private String getOrganisationsURL() {
+    return cfg.getRegistryUrl() + "/registry/organisation.json";
   }
 
   /**
    * Returns the Networks url
    */
   private String getListNetworksURL() {
-    return cfg.getRegistryUrl() + "/registry/network/";
+    return cfg.getRegistryUrl() + "/registry/network.json";
   }
 
   /**
    * Returns the Networks url
    */
   private String getResourceListNetworksURL(String resourceKey) {
-    return cfg.getRegistryUrl() + "/registry/dataset/" + resourceKey + "/networks";
+    return cfg.getRegistryUrl() + "/registry/resource/" + resourceKey + "/networks";
   }
 
   /**
