@@ -16,7 +16,6 @@
 package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.api.model.common.DOI;
-import org.gbif.api.model.common.paging.PagingResponse;
 import org.gbif.api.model.registry.Network;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.action.BaseAction;
@@ -554,12 +553,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   @Override
   public List<Network> getNetworks() throws RegistryException {
-    // TODO: 24/11/2021 paging response!
-    PagingResponse<Network> networks = new PagingResponse<>();
+    List<Network> networks = new ArrayList<>();
     try {
       networks = gson
           .fromJson(requestHttpGetFromRegistry(getListNetworksURL()).getContent(),
-              new TypeToken<PagingResponse<Network>>() {
+              new TypeToken<List<Network>>() {
               }.getType());
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
@@ -574,7 +572,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       LOG.error(msg);
     }
 
-    return networks.getResults();
+    return networks;
   }
 
   @Override
