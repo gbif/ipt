@@ -523,7 +523,7 @@
                                 </#if>
                                 <tr>
                                     <th><@s.text name='portal.resource.metadata.verbose'/></th>
-                                    <td><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
+                                    <td><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download><@s.text name='portal.resource.download'/></a>
                                         <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
                                     </td>
                                 </tr>

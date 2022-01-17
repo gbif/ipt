@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"POT-Creation-Date: 2022-01-13 16:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
-#: en/modules/ROOT/pages/release-notes.adoc:88
+#: en/modules/ROOT/pages/release-notes.adoc:87
 #, no-wrap
 msgid "When all else fails"
 msgstr ""
@@ -315,22 +315,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:85
-msgid ""
-"xref:customization.adoc[Customization] (styling etc) using `custom.css` is "
-"broken in this release, see this https://github.com/gbif/ipt/"
-"issues/1634[issue]."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:87
+#: en/modules/ROOT/pages/release-notes.adoc:86
 msgid ""
 "If you are upgrading from a version before 2.4, please also refer to the "
 "notes from the xref:2.4@release-notes.adoc[older release]."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:90
+#: en/modules/ROOT/pages/release-notes.adoc:89
 msgid ""
 "See the xref:faq.adoc[FAQ], which continues to be updated with good "
 "questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT "

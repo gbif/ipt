@@ -223,7 +223,7 @@
             var dialogWindow = $("#dialog");
             var titleQuestion = '<@s.text name="basic.confirm"/>';
 
-            var question = <#if overwriteMessage?has_content>'${overwriteMessage}'<#else>'<@s.text name="manage.resource.addSource.sameName.confirm"/>'</#if>
+            var question = <#if overwriteMessage?has_content>"${overwriteMessage}"<#else>"<@s.text name="manage.resource.addSource.sameName.confirm"/>"</#if>
 
             var yesButtonText = '<@s.text name="basic.yes"/>';
             var cancelButtonText = '<@s.text name="basic.no"/>';
