@@ -170,7 +170,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     try {
       registryManager.addResourceToNetwork(resource, id);
       saveResource();
-      addActionMessage(getText("manage.overview.networks.add.success", new String[] {id}));
+      Optional<KeyNamePair> keyNameNetwork = allNetworks.stream().filter(n -> n.getKey().equals(id)).findFirst();
+      if (keyNameNetwork.isPresent()) {
+        addActionMessage(getText("manage.overview.networks.add.success", new String[]{keyNameNetwork.get().getName()}));
+      } else {
+        addActionMessage(getText("manage.overview.networks.add.success", new String[]{id}));
+      }
 
       potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), id));
     } catch (IllegalArgumentException e) {
