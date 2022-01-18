@@ -24,6 +24,7 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
@@ -552,12 +553,12 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   @Override
-  public List<Network> getNetworks() throws RegistryException {
-    List<Network> networks = new ArrayList<>();
+  public List<KeyNamePair> getNetworksBrief() throws RegistryException {
+    List<KeyNamePair> networks = new ArrayList<>();
     try {
       networks = gson
           .fromJson(requestHttpGetFromRegistry(getListNetworksURL()).getContent(),
-              new TypeToken<List<Network>>() {
+              new TypeToken<List<KeyNamePair>>() {
               }.getType());
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred

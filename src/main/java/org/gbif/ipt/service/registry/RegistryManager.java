@@ -18,6 +18,7 @@ package org.gbif.ipt.service.registry;
 import org.gbif.api.model.registry.Network;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
@@ -162,13 +163,13 @@ public interface RegistryManager {
   List<Network> getResourceNetworks(Resource resource) throws RegistryException;
 
   /**
-   * Retrieves a list of Networks from the Registry.
+   * Retrieves a list of Networks (key and name only) from the Registry.
    *
    * @return list of Networks, or an empty list if none were retrieved from valid response
    *
    * @throws RegistryException if the list of Networks couldn't be populated
    */
-  List<Network> getNetworks() throws RegistryException;
+  List<KeyNamePair> getNetworksBrief() throws RegistryException;
 
   /**
    * Adds resource to the network in the Registry.

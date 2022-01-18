@@ -894,8 +894,8 @@
                                     <input name="r" type="hidden" value="${resource.shortname}"/>
                                     <select name="id" class="form-select form-select-sm my-1" id="network" size="1">
                                         <option value=""></option>
-                                        <#list potentialNetworks?sort_by("title") as n>
-                                            <option value="${n.key}">${n.title}</option>
+                                        <#list potentialNetworks?sort_by("name") as n>
+                                            <option value="${n.key}">${n.name}</option>
                                         </#list>
                                     </select>
                                     <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>

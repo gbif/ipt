@@ -31,6 +31,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -111,8 +112,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
   private List<User> potentialManagers;
-  private List<Network> allNetworks;
-  private List<Network> potentialNetworks;
+  private List<KeyNamePair> allNetworks;
+  private List<KeyNamePair> potentialNetworks;
   private List<Extension> potentialCores;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
@@ -167,13 +168,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
 
     try {
-      UUID networkKey = UUID.fromString(id);
-
-      registryManager.addResourceToNetwork(resource, networkKey.toString());
+      registryManager.addResourceToNetwork(resource, id);
       saveResource();
-      addActionMessage(getText("manage.overview.networks.add.success", new String[] {networkKey.toString()}));
+      addActionMessage(getText("manage.overview.networks.add.success", new String[] {id}));
 
-      potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), networkKey));
+      potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), id));
     } catch (IllegalArgumentException e) {
       addActionError(getText("manage.overview.networks.add.failed"));
     }
@@ -538,14 +537,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     try {
-      UUID networkKey = UUID.fromString(id);
-
-      registryManager.removeResourceFromNetwork(resource, networkKey.toString());
+      registryManager.removeResourceFromNetwork(resource, id);
       saveResource();
-      addActionMessage(getText("manage.overview.networks.delete.success", new String[] {networkKey.toString()}));
+      addActionMessage(getText("manage.overview.networks.delete.success", new String[] {id}));
 
-      Optional<Network> potentialNetwork =
-          allNetworks.stream().filter(n -> Objects.equals(n.getKey(), networkKey)).findFirst();
+      Optional<KeyNamePair> potentialNetwork =
+          allNetworks.stream().filter(n -> Objects.equals(n.getKey(), id)).findFirst();
       potentialNetwork.ifPresent(potentialNetworks::add);
     } catch (IllegalArgumentException e) {
       addActionError(getText("manage.overview.networks.delete.failed"));
@@ -685,7 +682,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return potentialManagers;
   }
 
-  public List<Network> getPotentialNetworks() {
+  public List<KeyNamePair> getPotentialNetworks() {
     return potentialNetworks;
   }
 
@@ -1060,10 +1057,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       updateReport();
 
       // get potential new networks
-      allNetworks = registryManager.getNetworks();
+      allNetworks = registryManager.getNetworksBrief();
       potentialNetworks = new ArrayList<>(allNetworks);
       for (Network net : getResourceNetworks()) {
-        potentialNetworks.removeIf(n -> Objects.equals(net.getKey(), n.getKey()));
+        potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
       }
 
       // get potential new managers
