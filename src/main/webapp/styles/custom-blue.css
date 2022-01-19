@@ -168,8 +168,7 @@ ul.horizontal_graph .grey_bar {
 
 .select2-container--bootstrap4.select2-container--focus .select2-selection {
     border-color: #1D86C8 !important;
-    -webkit-box-shadow: 0 0 0 0.25rem rgba(29, 134, 200, 0.25) !important;
-    box-shadow: 0 0 0 0.25rem rgba(29, 134, 200, 0.25) !important;
+    box-shadow: none !important;
 }
 
 /* Autocomplete component color */
