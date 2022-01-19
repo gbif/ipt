@@ -388,6 +388,25 @@ td.left_padding {
 /* Custom colors for tables pagination items END */
 
 
+/* Custom styles for cross in search inputs START*/
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50em;
+    background: url(../images/icons/times-circle.svg) no-repeat 50% 50%;
+    background-size: contain;
+    opacity: 0;
+    pointer-events: none;
+}
+
+input[type="search"]:focus::-webkit-search-cancel-button {
+    opacity: .3;
+    pointer-events: all;
+}
+/* Custom styles for cross in search inputs END*/
+
+
 /* Overlay div for modal views START */
 #modalbox {
     display: none;
@@ -447,6 +466,23 @@ td.left_padding {
 
 .select2-container--bootstrap4 .select2-selection:hover {
     border-color: rgba(33, 37, 41, 0.5);
+}
+
+.select2-container--bootstrap4 .select2-selection__clear {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50em;
+    background: url(../images/icons/times-circle.svg) no-repeat 50% 50%;
+    background-size: contain;
+    opacity: 0.3;
+    pointer-events: all;
+    color: transparent !important;
+    background-color: white !important;
+}
+
+.select2-container--bootstrap4 .select2-selection__clear:hover {
+    background-color: white !important;
 }
 /* Style select2 component END */
 
