@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:21+0000\n"
-"PO-Revision-Date: 2021-12-20 23:58\n"
+"PO-Revision-Date: 2022-01-20 15:59\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,7 +36,7 @@ msgstr "Controles de la interfaz del usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:7
 msgid "Most user interface controls have both enabled and disabled modes. If the control is enabled, it will either commit an action when clicked (a button, for example), or it will allow changes to be made to the value bound to the control (a text, check, or select box, for example). In the latter case the changes will be saved, if possible, when the form on which they appear is saved, which is generally accomplished on a given page by clicking on a button labelled \"Save\". Disabled controls show the value of the associated information, but do not allow that information to be saved under the conditions in effect at the time they appear. The purpose for most user interface controls is indicated by an associated label that appears above and/or to the left of the control. Sometimes supplemental information is also accessible from an associated information icon."
-msgstr "La mayoría de los controles de la interfaz del usuario tienen los modos “habilitado” e “inhabilitado”. Si el control está habilitado, realizará una acción cuando se haga clic en él (un botón, por ejemplo) o permitirá que se realicen cambios en el valor vinculado al control (una caja de texto, de verificación o de selección, por ejemplo). En este último caso, los cambios se guardarán, si es posible, cuando se guarde el formulario en el que aparecen, lo que generalmente se realiza en una determinada página haciendo clic en el botón \"Guardar\". Los controles inhabilitados muestran el valor de la información asociada, pero no permiten que la información sea guardada bajo las condiciones vigentes en el momento en que aparecen. El objetivo de la mayoría de los controles de la interfaz de usuario se indica mediante una etiqueta asociada que aparece sobre y/o a la izquierda del control. A veces también se puede acceder a información complementaria desde un icono de información asociada."
+msgstr "La mayoría de los controles de la interfaz de usuario tienen modos habilitados y deshabilitados. Si el control está habilitado, realizará una acción cuando se haga clic en él (un botón, por ejemplo), o permitirá que se realicen cambios en el valor vinculado al control (una caja de texto, de verificación o de selección, por ejemplo). En este último caso, los cambios se guardarán, si es posible, cuando se guarde el formulario en el que aparecen, lo que generalmente se hace en una página determinada haciendo clic en un botón llamado \"Guardar\". Los controles deshabilitados muestran el valor de la información asociada, pero no permiten guardar esa información en las condiciones actuales en el momento en que aparecen. La finalidad de la mayoría de los controles de la interfaz de usuario se indica mediante una etiqueta asociada que aparece arriba y/o a la izquierda del control. A veces también se puede acceder a información complementaria desde un icono de información asociado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:9
@@ -48,7 +48,7 @@ msgstr "*Menús*: en el IPT aparece una barra de menús en casi todas las págin
 #: en/modules/ROOT/pages/overview.adoc:10
 #, no-wrap
 msgid "Menu bar before login or after a user having no special role logs in, with the Home menu active:"
-msgstr "Barra de menú antes de iniciar sesión o después de que un usuario sin una función especial inicia sesión, con el \"Menú inicio\" activo:"
+msgstr "Barra de menú antes de iniciar sesión o después de que un usuario sin un rol en especial inicia sesión, con el \"Menú inicio\" activo:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:11
@@ -72,7 +72,7 @@ msgstr "ipt2/controls/IPTMenuBarHomeManageAbout.png"
 #: en/modules/ROOT/pages/overview.adoc:16
 #, no-wrap
 msgid "Menu after a user having the Admin role logs in, with the Administration menu active:"
-msgstr "Menú después de que un usuario que tiene un rol de Gerente inicie sesión, con el menú \"Gestión de recursos\" activo:"
+msgstr "Menú después de que un usuario que tiene un rol de Administrador inicie sesión, con el menú \"Gestión de recursos\" activo:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/overview.adoc:17
@@ -101,18 +101,18 @@ msgstr "ipt2/controls/Control-TextBoxExample.png"
 #: en/modules/ROOT/pages/overview.adoc:26
 #, no-wrap
 msgid "**Check boxes** - allow a value to viewed or set to true (when checked) or false (when unchecked).\n"
-msgstr "*Cuadros de verificación*: permiten establecer un valor como visto, verdadero (cuando es marcado) o falso (cuando no ha sido marcado).\n"
+msgstr "*Cuadros de verificación*: permiten ver un valor o establecerlo como verdadero (cuando está marcado) o falso (cuando no está marcado).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:28
 msgid "Example check box and label to indicate that the IPT can publish resources: image:ipt2/controls/Control-CheckboxExample.png[width=233]"
-msgstr "Ejemplo de cuadro de verificación y de etiqueta para indicar que el IPT puede publicar los recursos: image:ipt2/controls/Control-CheckboxExample.png[width=233]"
+msgstr "Ejemplo de cuadro de verificación y de etiqueta para indicar sí el IPT puede publicar los recursos: image:ipt2/controls/Control-CheckboxExample.png[width=233]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:30
 #, no-wrap
 msgid "**Select boxes** - allows a value to be viewed or selected from a list of predefined values. A select box may contain explanatory text about the selection in place of a selectable value. In this case the selection will begin with \"Select\" (e.g., \"Select a country, territory, or island\"). Click on the select box to open it and see the list of possible values. Click on one of the choices to set that value.\n"
-msgstr "*Cuadros de selección*: permiten visualizar o seleccionar un valor de una lista de valores predefinidos. Un cuadro de selección puede contener un texto explicativo sobre la selección en lugar de un valor seleccionable. En este caso, la selección iniciará con la palabra \"Seleccione\" (por ejemplo, \"Seleccione un país, territorio o isla\"). Haga clic en el cuadro de selección para desplegar la lista de posibles valores. Haga clic en una de las opciones para fijar ese valor.\n"
+msgstr "*Cuadros de selección*: permiten visualizar o seleccionar un valor de una lista de valores predefinidos. Un cuadro de selección puede contener un texto explicativo sobre la selección en lugar de un valor seleccionable. En este caso, la selección iniciará con la palabra \"Seleccione\" (p. ej., \"Seleccione un país, territorio o isla\"). Haga clic en el cuadro de selección para desplegar la lista de posibles valores. Haga clic en una de las opciones para fijar ese valor.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:32
@@ -173,7 +173,7 @@ msgstr "image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]"
 #: en/modules/ROOT/pages/overview.adoc:52
 #, no-wrap
 msgid "**Sortable Table** - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the table in the opposite direction.\n"
-msgstr "*Tabla ordenable*: una tabla que permite ordenar las filas según los valores de una columna seleccionada en orden ascendente o descendente. Los encabezados de las columnas son las etiquetas de las columnas que aparecen como enlaces. Haga clic en un encabezado de columna para ordenar la tabla con los valores de esa columna. Haga clic nuevamente en el encabezado de la misma columna para ordenar la tabla en la dirección opuesta.\n"
+msgstr "*Tabla ordenable*: una tabla que permite ordenar las filas según los valores de una columna seleccionada en orden ascendente o descendente. Los encabezados de las columnas aparecen como enlaces y son las etiquetas de las mismas. Al hacer clic en un encabezado de columna se ordena la tabla con los valores de esa columna. Al hacer clic nuevamente en el encabezado de la misma columna se ordena la tabla en la dirección opuesta.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:55
@@ -194,7 +194,7 @@ msgstr "Carga de archivos"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:62
 msgid "Files can be uploaded in the IPT during two actions: when xref:manage-resources.adoc#create-a-new-resource[creating a new resource], or when xref:manage-resources.adoc#source-data[adding new source data files]."
-msgstr "La carga de archivos al IPT se puede hacer por medio de dos acciones: xref:manage-resources.adoc#crear-un-nuevo-recurso[creando un nuevo recurso] o cuando se xref:manage-resources.adoc#conjunto-de-datos[agregan nuevos archivos de conjuntos de datos]."
+msgstr "Se pueden subir archivos al IPT por medio de dos acciones: xref:manage-resources.adoc#crear-un-nuevo-recurso[creando un nuevo recurso] o cuando se xref:manage-resources.adoc#conjunto-de-datos[agregan nuevos archivos de conjuntos de datos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:64
@@ -215,7 +215,7 @@ msgstr "Controles que aparecen en todas las páginas"
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:69
 msgid "This section describes several features that are accessible in the header and footer of most of the pages of the IPT."
-msgstr "En esta sección se describen varias opciones accesibles en la cabecera y el pie de página de la mayoría de las páginas del IPT."
+msgstr "En esta sección se describen varias opciones accesibles en el encabezado y el pie de página de la mayoría de las páginas del IPT."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/overview.adoc:70
