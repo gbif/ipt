@@ -3,20 +3,23 @@ https://crowdin.com/project/gbif-ipt[image:https://badges.crowdin.net/gbif-ipt/l
 
 = GBIF Integrated Publishing Toolkit (IPT)
 
-The Integrated Publishing Toolkit (IPT) is a free, open source software tool used to publish and share biodiversity datasets through the https://www.gbif.org/[GBIF network]. The IPT can also be configured with a DataCite account in order to assign DOIs to datasets, thus transforming it into a data repository.
+The Integrated Publishing Toolkit (IPT) is a free, open source software tool provided by the Global Biodiversity Information Facility (GBIF) and used to publish and share biodiversity datasets through the https://www.gbif.org/[GBIF network]. The IPT can also be configured with a DataCite account in order to assign DOIs to datasets, thus transforming it into a data repository.
 
-In this repository you can find the IPT source code, https://ipt.gbif.org/manual/[IPT User Manual] source code, and the https://github.com/gbif/ipt/issues[IPT issue tracker].
+[TIP]
+====
+*Most users should refer to the https://ipt.gbif.org/manual/[user manual] for further information, including https://ipt.gbif.org/manual/en/ipt/2.5/releases[downloads], https://ipt.gbif.org/manual/en/ipt/2.5/getting-started[installation instructions] and details of the https://ipt.gbif.org/manual/en/ipt/2.5/releases[latest release].*
 
-****
-*Most users should refer to the https://ipt.gbif.org/manual/[user manual] for further information.*
-****
+If you have a GitHub account, you may select "Watch" → "Custom" → "Releases" above to receive
+a notification from GitHub when there is a new IPT release. These notifications are also sent to the https://lists.gbif.org/mailman/listinfo/ipt/[mailing list].
+====
+
+In this repository you can find the source code for the IPT software and its https://ipt.gbif.org/manual/[user manual], as well as the https://github.com/gbif/ipt/issues[issue tracker].
 
 == Resources
 
 * https://ipt.gbif.org/manual/[IPT User Manual]
 * Information on the https://ipt.gbif.org/manual/en/ipt/2.5/releases[latest release]
 * The https://ipt.gbif.org[Demo IPT] is available online, https://ipt.gbif.org/manual/en/ipt/2.5/getting-started[further information about this]
-* You may request a free account on an IPT from a https://ipt.gbif.org/manual/en/ipt/2.5/data-hosting-centres[trusted data hosting centre]
 * How to contribute https://ipt.gbif.org/manual/en/ipt/2.5/translations[translations] with https://crowdin.com/project/gbif-ipt[Crowdin]
 * https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] — please subscribe for notifications of future releases.
 
