@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-20 23:10\n"
+"PO-Revision-Date: 2022-01-20 23:36\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -278,13 +278,13 @@ msgstr "Editar un recurso existente"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:56
 msgid "The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section for details on how to edit various aspects of the resource."
-msgstr "La tabla de recursos existentes muestra sólo aquellos recursos que pueden ser editados por el usuario actual. Para editar un recurso, haga clic en el nombre del recurso en la \"Tabla Gestión de Recursos\". El enlace abrirá la página \"Vista General del Recurso\" del recurso seleccionado. Consulte las descripciones en el encabezado \"Vista General del Recurso\", de la sección \"Menú Gestión de Recursos\" para conocer los detalles acerca de cómo editar diversos aspectos del recurso."
+msgstr "La tabla de recursos existentes muestra sólo aquellos recursos que pueden ser editados por el usuario actual. Para editar un recurso, haga clic en el nombre del recurso en la \"Tabla de Gestión de recursos\". El enlace abrirá la página \"Vista general del recurso\" del recurso seleccionado. Consulte las descripciones en el encabezado \"Vista general del recurso\", de la sección \"Gestión de recursos\" para conocer los detalles acerca de cómo editar diversos aspectos del recurso."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:57
 #, no-wrap
 msgid "Resource Overview"
-msgstr "Vista General del Recurso"
+msgstr "Vista general del recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:59
