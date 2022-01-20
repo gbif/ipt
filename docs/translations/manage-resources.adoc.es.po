@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-20 21:18\n"
+"PO-Revision-Date: 2022-01-20 21:45\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -205,7 +205,7 @@ msgstr "ipt2/manage/IPTManageResourceUploadDwCASuccess.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:35
 #, no-wrap
 msgid "Upload a zipped IPT resource configuration folder"
-msgstr "Cargar una carpeta comprimida con un recurso IPT configurado"
+msgstr "Cargar una carpeta comprimida de configuración de recursos IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:37
@@ -220,17 +220,17 @@ msgstr "Para hacerlo, solamente siga estas instrucciones:"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:41
 msgid "Locate the resource configuration folder corresponding to the resource you want to copy. The resource configuration folders are stored inside the `$data-directory/resources` folder, and named using the resource short name. For example, if the resource had short name \"ants\", it would be found at `$data-directory/resources/ants`."
-msgstr "Localice la carpeta comprimida del recurso que desea copiar. Las carpetas de los recursos configurados están guardadas dentro de la carpeta `$directorio-datos/recursos`, y nombrado con el nombre corto del recurso. Por ejemplo, si el recurso tiene el nombre corto \"ants\", este puede ser encontrado en `$directorio-datos/recursos/ants`."
+msgstr "correspondiente al recurso que desea copiar. Las carpetas de configuración de recursos se almacenan dentro de la carpeta `$directorio-datos/recursos`y se nombran utilizando el nombre corto del recurso. Por ejemplo, si el recurso tiene el nombre corto \"ants\", se encontrará en `$directorio-datos/recursos/ants`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:42
 msgid "Zip (compress) the resource configuration folder: `ants/` → `ants.zip`"
-msgstr "Comprima la carpeta del recurso configurado: `ants/` → `ants.zip`"
+msgstr "Comprima la carpeta de configuración del recurso: `ants/` → `ants.zip`"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:43
 msgid "On the \"Create a New Resource\" section on the \"Manage Resource Menu\" page:"
-msgstr "En la sección \"Creación de un Nuevo Recurso\" de la página \"Menú Gestión de Recursos\":"
+msgstr "En la sección \"Crear un nuevo recurso\" de la página \"Gestión de recursos\":"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:44
@@ -240,12 +240,12 @@ msgstr "Ingrese un nombre corto para el nuevo recurso. Puede mantener el nombre 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:45
 msgid "Click on the button labelled \"Choose File\", then navigate to and select the intended zipped resource configuration folder."
-msgstr "Haga clic en el botón \"Examinar\", busque y seleccione la carpeta comprimida del recurso IPT configurado."
+msgstr "Haga clic en el botón \"Examinar\", busque y seleccione la carpeta comprimida de configuración del recurso."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:46
 msgid "After selecting the file, its name will appear next to the \"Choose File\" button. Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the resource metadata, source data, and mappings all copied from the zipped resource into the new resource."
-msgstr "Después de seleccionar el archivo, la ruta donde se encuentra aparecerá al lado del botón \"Examinar\". Ahora haga clic en el botón \"Crear\". Si se presenta un problema importando el archivo seleccionado, aparecerá un mensaje de error. Si la importación es exitosa, aparecerá una página de Vista General del Recurso con el metadato, la fuente de datos y el mapeo del recurso, que fueron copiados del recurso comprimido al nuevo recurso."
+msgstr "Después de seleccionar el archivo, la ruta donde se encuentra aparecerá al lado del botón \"Examinar\". Ahora haga clic en el botón \"Crear\".  Si hay algún problema al importar el archivo seleccionado, un mensaje de error alertará al usuario. Si la importación es exitosa, aparecerá una página de \"Vista general del recurso\" con los metadatos, la fuente de datos y el mapeo del recurso, que fueron copiados del recurso comprimido al nuevo recurso."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:47
@@ -256,7 +256,7 @@ msgstr "Cargar un archivo de metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:49
 msgid "The IPT is able to import and export valid dataset metadata files that conform to the GBIF Metadata Profile. Information about the GBIF EML Metadata Profile and how to author a metadata document conforming to the GBIF Metadata Profile Darwin Core can be found in the xref:gbif-metadata-profile.adoc[GBIF Metadata Profile – How To Guide]. To import a metadata file, select the resource type \"metadata-only\", then click on the button labelled \"Choose File\", navigate to and select the intended metadata file. After selecting the file, its name will appear next to the \"Choose File\" button."
-msgstr "El IPT puede importar y exportar archivos válidos de metadatos de conjuntos de datos que se ajusten al Perfil de Metadatos de GBIF. La información acerca del Perfil de Metadatos EML de GBIF y cómo crear un documento de metadatos que se ajuste al Perfil de Metadatos de GBIF Darwin Core puede ser encontrada en el xref:gbif-metadata-profile.adoc[Perfil de Metadatos de GBIF - Guía Práctica]. Para importar un archivo de metadatos, seleccione el tipo de recurso \"solamente metadatos\" y haga clic en el botón \"Examinar\", busque y seleccione el archivo de metadatos deseado. Después de seleccionar el archivo, el nombre aparecerá junto al botón de \"Examinar\"."
+msgstr "El IPT puede importar y exportar archivos válidos de metadatos de conjuntos de datos que se ajusten al \"Perfil de metadatos de GBIF\". La información acerca del Perfil de metadatos EML de GBIF y cómo crear un documento de metadatos que se ajuste al Perfil de metadatos de GBIF Darwin Core puede ser encontrada en el xref:gbif-metadata-profile.adoc[Perfil de metadatos de GBIF: Guía práctica]. Para importar un archivo de metadatos, seleccione el tipo de recurso \"solamente metadatos\" y haga clic en el botón \"Examinar\", busque y seleccione el archivo de metadatos deseado. Después de seleccionar el archivo, el nombre aparecerá junto al botón de \"Examinar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:50
