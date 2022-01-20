@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2021-12-21 01:50\n"
+"PO-Revision-Date: 2022-01-20 19:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -123,7 +123,7 @@ msgstr "Tabla gestión de recursos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:11
 msgid "When the Manage Resources page is first opened, it shows a table of existing resources that the current user has permission to change, including those created by this user and those that this user has been invited to manage by others. Refer to the information under the xref:home.adoc#public-resource-table[Public Resources Table] section for detailed explanations of the Name, Organization, Type, Subtype, Records, Last Modified, Last publication, and Next publication columns. In addition, the Manage Resources Table includes the following column of basic information about the resources:"
-msgstr "Cuando la página \"Gestión de Recursos\" se abre por primera vez, muestra una tabla de los recursos existentes que el usuario actual tiene permiso para modificar, incluidos los creados por este usuario y aquellos que este usuario pueda administrar por invitación de otros usuarios. Consulte la información en la sección xref:home.adoc#table-de-recursos-publicos[Tabla de recursos Públicos] para obtener una explicación detallada acerca de las columnas Nombre, Organización, Tipo, Subtipo, Registros, Última modificación, Última publicación y Próxima publicación. Además, la \"Tabla Gestión de Recursos\" incluye las siguientes columnas de información básica sobre los recursos:"
+msgstr "Cuando se abre por primera vez la página \"Gestión de recursos\", se muestra una tabla de los recursos existentes que el usuario actual tiene permiso para modificar, incluidos los creados por este usuario y los que ha sido invitado a gestionar por otros.  Consulte la información en la sección xref:home.adoc#table-de-recursos-publicos[Tabla de recursos públicos] para obtener una explicación detallada acerca de las columnas Nombre, Organización, Tipo, Subtipo, Registros, Última modificación, Última publicación y Próxima publicación. Además, la \"Tabla de gestión de recursos\" incluye las siguientes columnas de información básica sobre los recursos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:13
@@ -135,7 +135,7 @@ msgstr "*Visibilidad* - una categoría que indica quién tiene acceso a ver el r
 #: en/modules/ROOT/pages/manage-resources.adoc:14
 #, no-wrap
 msgid "*Author* - the IPT user who created the resource.\n"
-msgstr "*Autor* - El usuario del IPT que creó el recurso.\n"
+msgstr "*Autor*: El usuario del IPT que creó el recurso.\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:15
