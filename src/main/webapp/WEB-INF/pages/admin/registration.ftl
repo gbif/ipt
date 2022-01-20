@@ -29,30 +29,39 @@
                 emailContent += '<@s.text name="emails.request.organisation.association7"/>';
 
                 $('#organisation\\.alias').val(orgName);
-                var url = '${registryURL}organisation/' + $('#organisation\\.key :selected').val() + ".json";
-                $.getJSON(url,function(data){
 
-                    $('#organisation\\.primaryContactType').val(data.primaryContactType);
-                    $('#organisation\\.primaryContactName').val(data.primaryContactName);
-                    $('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
-                    $('#organisation\\.nodeKey').val(data.nodeKey);
-                    $('#organisation\\.nodeName').val(data.nodeName);
+                var organisationKey = $('#organisation\\.key :selected').val();
 
-                    //Create a contact link to prefill an email to request a password from an Organisation
-                    var contactLink = '<a href=\"mailto:';
-                    contactLink += data.primaryContactEmail;
-                    contactLink += '?subject=';
-                    contactLink += '<@s.text name="emails.request.ipt.registration.subject"><@s.param>';
-                    contactLink += orgName;
-                    contactLink += '</@s.param></@s.text>';
-                    contactLink += '&body=';
-                    contactLink += emailContent;
-                    contactLink += '\">';
-                    contactLink += '<@s.text name="emails.request.ipt.registration.footer"/>';
-                    contactLink += '</a> ';
-                    contactLink += orgName;
-                    $('#requestDetails').html(contactLink);
-                });
+                if(organisationKey) {
+                    var url = '${registryURL}organisation/' + organisationKey + ".json";
+
+                    $.getJSON(url,function(data){
+                        $('#organisation\\.primaryContactType').val(data.primaryContactType);
+                        $('#organisation\\.primaryContactName').val(data.primaryContactName);
+                        $('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
+                        $('#organisation\\.nodeKey').val(data.nodeKey);
+                        $('#organisation\\.nodeName').val(data.nodeName);
+
+                        //Create a contact link to prefill an email to request a password from an Organisation
+                        var contactLink = '<div class="mt-2"><a href=\"mailto:';
+                        contactLink += data.primaryContactEmail;
+                        contactLink += '?subject=';
+                        contactLink += '<@s.text name="emails.request.ipt.registration.subject"><@s.param>';
+                        contactLink += orgName;
+                        contactLink += '</@s.param></@s.text>';
+                        contactLink += '&body=';
+                        contactLink += emailContent;
+                        contactLink += '\">';
+                        contactLink += '<@s.text name="emails.request.ipt.registration.footer"/>';
+                        contactLink += '</a> ';
+                        contactLink += orgName;
+                        contactLink += "</div>";
+                        $('#requestDetails').html(contactLink);
+                    });
+                } else {
+                    // remove link
+                    $("#requestDetails").empty();
+                }
             });
 
             <#if validatedBaseURL>
@@ -186,7 +195,7 @@
                                     <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.registration.intro2"/>
                                 </#assign>
                                 <label for="organisation.key" class="form-label">
-                                    <@s.text name="admin.organisation.key"/>
+                                    <@s.text name="admin.organisation.key"/> &#42;
                                 </label>
                                 <a tabindex="0" role="button"
                                    class="popover-link"
@@ -199,13 +208,12 @@
                                 <@s.select cssClass="form-select" id="organisation.key" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" size="15" disabled="false"/>
                                 <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                             </div>
+                            <div id="requestDetails" class="mt-0"></div>
                         </div>
 
                         <div class="col-lg-6">
                             <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" help="i18n" maxlength=15 size=18 requiredField=true />
                         </div>
-
-                        <div id="requestDetails"></div>
 
                         <div class="col-lg-6">
                             <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text" />

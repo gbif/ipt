@@ -33,8 +33,9 @@ import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -100,11 +101,16 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
 
-  private static final List<String> DOI_REGISTRATION_AGENCIES = Collections.singletonList(DOIRegistrationAgency.DATACITE.name());
+  private static final Map<String, DOIRegistrationAgency> DOI_REGISTRATION_AGENCIES = new HashMap<>();
+
+  static {
+    DOI_REGISTRATION_AGENCIES.put(DOIRegistrationAgency.DATACITE.name(), DOIRegistrationAgency.DATACITE);
+  }
 
   @Inject
   public OrganisationsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    OrganisationSupport organisationValidation, RegisteredOrganisations orgSession, ResourceManager resourceManager) {
+                             OrganisationSupport organisationValidation, RegisteredOrganisations orgSession,
+                             ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.organisationValidation = organisationValidation;
     this.orgSession = orgSession;
@@ -114,7 +120,7 @@ public class OrganisationsAction extends POSTAction {
   /**
    * @return a list of DOI registration agencies that the IPT supports
    */
-  public List<String> getDoiRegistrationAgencies() {
+  public Map<String, DOIRegistrationAgency> getDoiRegistrationAgencies() {
     return DOI_REGISTRATION_AGENCIES;
   }
 
@@ -237,7 +243,7 @@ public class OrganisationsAction extends POSTAction {
       addActionError(e.getMessage());
       return INPUT;
     } catch (AlreadyExistingException e) {
-      addActionError(getText("admin.organisation.exists", new String[] {id}));
+      addActionError(getText("admin.organisation.exists", new String[]{id}));
       return INPUT;
     }
   }
@@ -273,7 +279,7 @@ public class OrganisationsAction extends POSTAction {
           if (!organisation.getKey().equals(org.getKey()) && org.isAgencyAccountPrimary()) {
             validated = false;
             addFieldError("organisation.agencyAccountPrimary",
-              getText("admin.organisation.doiAccount.activated.exists"));
+                getText("admin.organisation.doiAccount.activated.exists"));
             break;
           }
         }
@@ -301,7 +307,7 @@ public class OrganisationsAction extends POSTAction {
   /**
    * Make sure all DOIs in this IPT correspond to the account being saved. Otherwise, the user could switch the
    * account type from EZID to DataCite, and render all DataCite DOIs unable to be updated.
-   *
+   * <p>
    * (Support for EZID was removed in version 2.4.0.)
    *
    * @return true if DOIs assigned using another account are found in the IPT, false otherwise
@@ -317,7 +323,7 @@ public class OrganisationsAction extends POSTAction {
         if (organisation.getDoiRegistrationAgency() != null && fromDisk.getDoiRegistrationAgency() != null) {
           if (!organisation.getDoiRegistrationAgency().equals(fromDisk.getDoiRegistrationAgency())) {
             String msg = getText("admin.organisation.doiAccount.differentTypeInUse",
-              new String[] {fromDisk.getDoiRegistrationAgency().toString().toLowerCase(), doi.toString()});
+                new String[]{fromDisk.getDoiRegistrationAgency().toString().toLowerCase(), doi.toString()});
             LOG.error(msg);
             addActionError(msg);
             return true;
