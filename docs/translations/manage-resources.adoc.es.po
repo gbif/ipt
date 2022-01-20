@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-20 19:43\n"
+"PO-Revision-Date: 2022-01-20 21:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -146,7 +146,7 @@ msgstr "Crear un nuevo recurso"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:17
 msgid "Below the Manage Resource table is a form that can be used to create a new resource. First, a unique \"shortname\" must be provided for the resource. This short name will be used to uniquely identify the resource within the IPT instance, and will be used within the URL to access the resource via the Internet. The shortname must be at least three characters in length, may contain alphanumeric characters (A-Z, a-z and 0-9), but must not contain white space, punctuation other than hyphens or underscores, or accented characters (e.g., \"firstresource\" or \"first_resource\", but not \"first resource\" or \"première ressource!\"). Second, an optional resource type can be provided. Please note that when an optional archived resource is loaded (see below) the type will be determined automatically and overwrite this selection. Third, an optional archived resource can be uploaded. The following sections describe the 3 different types of archived resources from which a new resource can be derived:"
-msgstr "Debajo de la tabla de Gestión de Recursos hay un formulario que puede utilizarse para crear un nuevo recurso. En primer lugar, debe proporcionarse un \"nombre corto\" único para el recurso. Este nombre corto se utilizará para identificar de forma exclusiva el recurso dentro de la instancia IPT y se utilizará dentro de la URL para acceder al recurso a través de Internet. El nombre corto debe tener al menos tres caracteres, puede contener caracteres alfanuméricos (A-Z, a-z y 0-9), pero no debe contener espacios en blanco, signos de puntuación que no sean guiones o guiones bajos, ni caracteres acentuados (por ejemplo, \"primerrecurso\" o \"primer_recurso\", pero no \"primer recurso\" o \"première ressource!\"). En segundo lugar, se puede proporcionar un tipo de recurso (opcional). Tenga en cuenta que cuando se cargue un archivo (ver más adelante) el tipo se determinará automáticamente y sobrescribirá esta selección. En tercer lugar, se puede cargar un archivo (opcional). Las siguientes secciones describen los 3 tipos diferentes de archivos de los que se puede derivar un nuevo recurso:"
+msgstr "Debajo de la tabla de \"Gestión de recursos\" hay un formulario que puede utilizarse para crear un nuevo recurso. En primer lugar, debe proporcionarse un \"nombre corto\" único para el recurso. Este nombre corto se utilizará para identificar de forma exclusiva el recurso dentro de la instancia IPT y se utilizará dentro de la URL para acceder al recurso a través de Internet. El nombre corto debe tener al menos tres caracteres, puede contener caracteres alfanuméricos (A-Z, a-z y 0-9), pero no debe contener espacios en blanco, signos de puntuación que no sean guiones o guiones bajos, ni caracteres acentuados (p. ej., \"primerrecurso\" o \"primer_recurso\", pero no \"primer recurso\" o \"première ressource!\"). En segundo lugar, se puede proporcionar un tipo de recurso (opcional). Tenga en cuenta que cuando se cargue un archivo (ver más adelante) el tipo se determinará automáticamente y sobrescribirá esta selección. En tercer lugar, se puede cargar un archivo (opcional). Las siguientes secciones describen los 3 tipos diferentes de archivos de los que se puede derivar un nuevo recurso:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:19
@@ -166,18 +166,18 @@ msgstr "<<Cargar un archivo de metadatos,archivo de metadatos>>"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:23
 msgid "Of course, you can always just _create an entirely new resource_ without loading an existing archived resource. With this option the resource configuration will have to be created in its entirety through the IPT forms, including uploading source data files (or connecting to a database or URLs) and mapping the fields therein to terms in the appropriate extension or extensions. *Please note the IPT has a 200MB file upload limit*, however, there is *no limit to the size of Darwin Core Archive the IPT can export/publish*. Refer to the <<upload-limits,note about file upload limits>> to find out how to work around the file upload limit."
-msgstr "Por supuesto, siempre se puede simplemente _crear un recurso completamente nuevo_ sin cargar un archivo que contenga un recurso. Con esta opción, la configuración del recurso tendrá que crearse en su totalidad a través de los formularios del IPT, incluyendo cargar archivos de datos fuente (o la conexión a una base de datos o a URLs) y el mapeo de los campos de los mismos a términos en la extensión o extensiones adecuadas. *Tenga en cuenta que el IPT tiene un límite de carga de archivos de 200MB*, sin embargo, no hay *límite en el tamaño del Archivo Darwin Core que el IPT puede exportar/publicar*. Consulte la sección <<límites de carga, nota sobre los límites de carga de archivos>> para saber cómo evitar el límite de carga de archivos."
+msgstr "Por supuesto, siempre se puede simplemente _crear un recurso completamente nuevo_ sin cargar un archivo que contenga un recurso. Con esta opción, la configuración del recurso tendrá que crearse en su totalidad a través de los formularios del IPT, incluyendo cargar archivos de datos fuente (o la conexión a una base de datos o a URLs) y el mapeo de los campos de los mismos a términos en la extensión o extensiones adecuadas. *Tenga en cuenta que el IPT tiene un límite de carga de archivos de 200MB*, sin embargo, no hay *límite en el tamaño del Archivo Darwin Core que el IPT puede exportar/publicar*. Consulte la sección <<Límites de carga, nota sobre los límites de carga de archivos>> para saber cómo evitar el límite de carga de archivos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:25
 msgid "Begin by entering a new resource shortname as described above, and then click on the button labelled \"Create\". This will open the Resource Overview page. Proceed by completing the various sections of the manage resource page based on the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section."
-msgstr "Para hacerlo, hay que comenzar ingresando un nombre corto para el nuevo recurso, como se describió anteriormente, y luego hacer clic en el botón \"Crear\". Se abrirá inmediatamente la página de Vista General del Recurso. Proceda a completar las diferentes secciones de la página gestión del recurso teniendo en cuenta las descripciones bajo el encabezado \"Vista General del Recurso\" de la sección \"Menú Gestión de Recursos\"."
+msgstr "Para hacerlo, hay que comenzar ingresando un nombre corto para el nuevo recurso, como se describió anteriormente, y luego hacer clic en el botón \"Crear\". Se abrirá inmediatamente la página de \"Vista general del recurso\". Proceda a completar las diferentes secciones de la página gestión del recurso teniendo en cuenta las descripciones bajo el encabezado \"Vista general del recurso\" de la sección de \"Gestión del recurso\""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:26
 #, no-wrap
 msgid "Upload a Darwin Core Archive"
-msgstr "Cargar un archivo Darwin Core"
+msgstr "Cargar un Archivo Darwin Core"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:28
@@ -193,7 +193,7 @@ msgstr "ipt2/manage/IPTManageResourceUploadDwcA.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:32
 msgid "Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with an informational message at the top describing the results of the import process."
-msgstr "Haga clic en el botón \"Crear\". Si surge algún problema al importar el archivo seleccionado, un mensaje de error notificará al usuario. Si la importación es exitosa, una página \"Vista General del Recurso\" aparecerá con un mensaje informativo en la parte superior, que describe los resultados del proceso de importación."
+msgstr "Haga clic en el botón \"Crear\". Si hay algún problema al importar el archivo seleccionado, un mensaje de error alertará al usuario. Si la importación es exitosa, una página de \"Vista general del recurso\" aparecerá con un mensaje informativo en la parte superior que describe los resultados del proceso de importación."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:33
