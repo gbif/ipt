@@ -30,15 +30,20 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
+/**
+ * Encrypts and decrypts secrets (passwords, tokens).
+ * <br>
+ * Note this is not appropriate for user passwords, which should be hashed instead.
+ */
 @Singleton
-public class PasswordConverter implements Converter {
+public class PasswordEncrypter implements Converter {
 
-  private static final Logger LOG = LogManager.getLogger(PasswordConverter.class);
+  private static final Logger LOG = LogManager.getLogger(PasswordEncrypter.class);
 
   private final PBEEncrypt encrypter;
 
   @Inject
-  public PasswordConverter(PBEEncrypt cipher) {
+  public PasswordEncrypter(PBEEncrypt cipher) {
     this.encrypter = cipher;
   }
 

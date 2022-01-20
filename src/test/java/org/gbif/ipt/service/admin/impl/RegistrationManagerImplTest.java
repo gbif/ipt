@@ -21,7 +21,7 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -144,7 +144,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // create instance of manager
     registrationManager =
       new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockResourceManager, mockRegistryManager,
-        mock(PasswordConverter.class));
+        mock(PasswordEncrypter.class));
 
     // load associatedOrganisations, hostingOrganisation, etc
     registrationManager.load();

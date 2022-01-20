@@ -24,7 +24,7 @@ import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
-import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -79,7 +79,7 @@ public class ArchivalModeTest {
       mock(RegistryManager.class),
       mock(ConceptTermConverter.class),
       mock(GenerateDwcaFactory.class),
-      mock(PasswordConverter.class),
+      mock(PasswordEncrypter.class),
       mock(Eml2Rtf.class),
       mock(VocabulariesManager.class),
       mock(SimpleTextProvider.class),

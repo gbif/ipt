@@ -34,7 +34,7 @@ import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
-import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -112,7 +112,7 @@ public class ResourceManagerImplIT {
     SourceManager mockSourceManager = mock(SourceManager.class);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
     GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-    PasswordConverter mockPasswordConverter = mock(PasswordConverter.class);
+    PasswordEncrypter mockPasswordEncrypter = mock(PasswordEncrypter.class);
     Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
@@ -155,7 +155,7 @@ public class ResourceManagerImplIT {
     ResourceManagerImpl managerDataCite = new ResourceManagerImpl(mockAppConfig, MOCK_DATA_DIR, mockEmailConverter,
         new OrganisationKeyConverter(mockRegistrationManagerDataCite), mockExtensionRowTypeConverter, mockJdbcConverter,
         mockSourceManager, mockExtensionManager, mockRegistryManager, mockConceptTermConverter, mockDwcaFactory,
-        mockPasswordConverter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider,
+        mockPasswordEncrypter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider,
         mockRegistrationManagerDataCite);
 
     return Stream.of(

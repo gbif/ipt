@@ -37,7 +37,7 @@ import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
-import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
@@ -363,7 +363,7 @@ public class GenerateDwcaEventTest {
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
     JdbcSupport support = injector.getInstance(JdbcSupport.class);
-    PasswordConverter passwordConverter = injector.getInstance(PasswordConverter.class);
+    PasswordEncrypter passwordEncrypter = injector.getInstance(PasswordEncrypter.class);
     JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
 
     ExtensionManager extensionManager = mock(ExtensionManager.class);
@@ -413,7 +413,7 @@ public class GenerateDwcaEventTest {
     ResourceManagerImpl resourceManager =
       new ResourceManagerImpl(mockAppConfig, mockDataDir, mockEmailConverter, mockOrganisationKeyConverter,
         extensionRowTypeConverter, jdbcConverter, mockSourceManager, extensionManager, mockRegistryManager,
-        conceptTermConverter, mockDwcaFactory, passwordConverter, mockEml2Rtf, mockVocabulariesManager,
+        conceptTermConverter, mockDwcaFactory, passwordEncrypter, mockEml2Rtf, mockVocabulariesManager,
         mockSimpleTextProvider, mockRegistrationManager);
 
     // create user
