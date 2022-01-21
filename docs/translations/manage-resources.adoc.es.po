@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-21 02:34\n"
+"PO-Revision-Date: 2022-01-21 03:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -508,12 +508,12 @@ msgstr "Base de datos como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:117
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, choose \"Database\" from the list of source data types in the left-hand column of the Source Data area of the Resource Overview page, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones de bases de datos compatibles. Para configurar una base de datos como fuente de datos, haga clic en el botón \"Conectar a BD\" en la columna de la izquierda del área \"Fuente de Datos\" de la página \"Vista General del Recurso\". Esto abrirá una página detallada de Fuente de Base de Datos."
+msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones de bases de datos compatibles.  Para configurar una base de datos como fuente de datos, elija \"Base de datos\" en la lista de tipos de conjuntos de datos en la columna izquierda del área de \"Conjuntos de datos\" en la página de \"Vista general del recurso\", luego haga clic en el botón \"Conectar\". Esto abrirá una página detallada de Conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
 msgid "The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyse and preview the data."
-msgstr "La página detallada de Fuente de Base de Datos muestra el nombre del recurso, junto con un resumen de las características de la base de datos (opción de lectura, número de columnas detectadas) y permite al usuario ver y editar los parámetros que describen cómo acceder a los datos de la base de datos, y utilizar estas opciones para analizar y obtener una vista previa de los datos."
+msgstr "La página detallada de \"Conjunto de datos\" muestra el nombre del recurso, junto con un resumen de las características de la base de datos (legibilidad, número de columnas detectadas)  y permite al usuario ver y editar los parámetros que describen cómo acceder a los datos de la base de datos, y utilizar estos ajustes para analizar y previsualizar los datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:121
@@ -530,93 +530,93 @@ msgstr "ipt2/manage/IPTManageResourceSourceDatabase.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:125
 #, no-wrap
 msgid "*Source Name* - the name of the data source. Unlike a file data source, this can be edited and given any name by the user.\n"
-msgstr "*Nombre de la Fuente* - El nombre de la fuente de datos. A diferencia de una fuente de datos de archivo, esto puede ser editado y dado cualquier nombre por el usuario.\n"
+msgstr "*Nombre del archivo del conjunto de datos*: el nombre de la base de datos. A diferencia de una fuente de datos de tipo archivo, ésta puede ser editada y recibir cualquier nombre dado por el usuario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:126
 #, no-wrap
 msgid "*Readable* - this icon indicates whether data are accessible using the connection information provided on this page.\n"
-msgstr "*Se puede leer* - Este ícono indica si los datos están disponibles usando la información de conexión proporcionada en esta página.\n"
+msgstr "*Se puede leer*: este ícono indica si los datos están disponibles usando la información de conexión proporcionada en esta página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:128
 #, no-wrap
 msgid "*Analyse* - click on this button to generate a data summary based on the database connection settings on this page. The analysis will indicate whether the database is readable, and if so, how many columns there are in the results of the SQL Statement.\n"
-msgstr "*Analizar* - Haga clic en este botón para generar un resumen de los datos basado en la configuración de la conexión de la base de datos, en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura, y si es así, el número de columnas que hay en los resultados de la sentencia SQL.\n"
+msgstr "*Analizar*: haga clic en este botón para generar un resumen de datos basado en la configuración de la conexión a la base de datos en esta página. El análisis indicará si la base de datos es legible y, en caso afirmativo, cuántas columnas hay en los resultados de la sentencia SQL.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:129
 #, no-wrap
 msgid "*Preview* image:ipt2/manage/preview.png[width=32,height=31] - click on this button to see an interpretation of the data based on the database connection settings on this page.\n"
-msgstr "*Vista Previa* image:ipt2/manage/preview.png[width=32,height=31] - haga clic en este botón para ver una interpretación de los datos basada en los ajustes de conexión de base de datos en esta página.\n"
+msgstr "*Vista previa* image:ipt2/manage/preview.png[width=32,height=31]: haga clic en este botón para ver una interpretación de los datos basada en la configuración de la conexión a la base de datos en esta página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:130
 #, no-wrap
 msgid "*Database System* - the relational database management system to which the IPT must connect to retrieve the data.\n"
-msgstr "*Sistema de la Base de Datos* - El sistema de administración de base de datos relacional al que el IPT debe conectarse para recuperar los datos.\n"
+msgstr "*Sistema de la base de datos*: el sistema de administración de bases de datos relacionales al que debe conectarse el IPT para recuperar los datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:131
 #, no-wrap
 msgid "*Host* - The database server address, optionally including the non-default port number (e.g., `localhost` or `mysql.example.org:1336`). For ODBC connections, this is not needed.\n"
-msgstr "*Host* - La dirección del servidor de la base de datos, que opcionalmente incluye el número de puerto no predeterminado (por ejemplo, `localhost` o `mysql.example.org:1336`). Para las conexiones ODBC, esto no es necesario.\n"
+msgstr "*Host*: la dirección del servidor de la base de datos, que opcionalmente incluye el número de puerto no predeterminado (p. ej., `localhost` o `mysql.example.org:1336`). Para las conexiones ODBC, esto no es necesario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:132
 #, no-wrap
 msgid "*Database* - The name of the database in the database management system, or the DSN for an ODBC connection.\n"
-msgstr "*Base de Datos* - El nombre de la base de datos en el sistema de administración de base de datos, o el DSN para una conexión ODBC.\n"
+msgstr "*Base de datos*: el nombre de la base de datos en el sistema de administración de base de datos o el DSN para una conexión ODBC.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:133
 #, no-wrap
 msgid "*Database User* - the name of the database user to use when connecting to the database.\n"
-msgstr "*Usuario de la base de datos* - El nombre del usuario de la base de datos utilizado cuando este se conecta a la base de datos.\n"
+msgstr "*Usuario de la base de datos*: el nombre del usuario de la base de datos que se utilizará cuando se conecte a la base de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:134
 #, no-wrap
 msgid "*Database Password* - the password for the database user to connect to the database.\n"
-msgstr "*Contraseña de la Base de datos* - La contraseña utilizada por el usuario para conectarse a la base de datos.\n"
+msgstr "*Contraseña de la base de datos*: la contraseña utilizada por el usuario para conectarse a la base de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:135
 #, no-wrap
 msgid "*SQL Statement* - The Structured Query Language statement used to read data from the source database. The statement will be sent as-is to the configured database, so you can use any native feature of the database such as functions, group by statements, limits, or unions, if supported. Example: `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`. While testing a large data source it is a good idea to include the appropriate language in the SELECT statement to limit the number of rows returned by the query - for example, in MySQL, `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10`. When the statement has been fully tested with the Darwin Core Mappings (see the following section), change the SQL Statement to return the full intended data set.\n"
-msgstr "*Sentencia SQL* - La sentencia de Lenguaje de Consulta Estructurado utilizada para leer los datos de la fuente de base de datos. La sentencia se enviará como está, a la base de datos configurada, por lo cual usted puede utilizar cualquier característica local de la base de datos como funciones, agrupación de documentos, límites, o uniones, si están admitidos. Ejemplo: `SELECT * FROM especimenes JOIN taxones ON taxones_fk = taxones.id`. Al momento de probar una fuente de datos de gran tamaño es buena idea incluir el lenguaje apropiado en la sentencia SELECT para limitar el número de filas arrojadas por la consulta - por ejemplo, en MySQL, `SELECT * FROM especimenes JOIN taxones ON taxones_fk = taxones.id LIMIT 10`. Cuando la sentencia ha sido totalmente probada con el enlace de Darwin Core (consulte la siguiente sección), cambie la sentencia SQL para arrojar el conjunto completo de datos previsto.\n"
+msgstr "*Sentencia SQL*: la sentencia de lenguaje de consulta estructurado (Structured Query Language) utilizada para leer los datos de la fuente de base de datos. La sentencia se enviará como está, a la base de datos configurada, por lo cual usted puede utilizar cualquier característica local de la base de datos como funciones, agrupación de documentos, límites, o uniones, si son compatibles. Ejemplo: `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id`. Al momento de probar una fuente de datos de gran tamaño es buena idea incluir el lenguaje apropiado en la sentencia SELECT para limitar el número de filas arrojadas por la consulta, por ejemplo, en MySQL, `SELECT * FROM specimen JOIN taxon ON taxon_fk = taxon.id LIMIT 10`. Cuando la sentencia ha sido totalmente probada con el enlace de Darwin Core (consulte la siguiente sección), cambie la sentencia SQL para que retorne todo el conjunto de datos previsto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:136
 #, no-wrap
 msgid "*Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., Latin1, UTF-8 ).\n"
-msgstr "*Character Encoding* - El sistema que determina definiciones en términos de byte de los caracteres en los datos (por ejemplo, Latin1, UTF-8).\n"
+msgstr "*Codificación de caracteres*: el sistema que determina las definiciones en bytes de los caracteres de los datos (p. ej., Latin1, UTF-8 ).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:140
 msgid "After the parameters for the data source have been set so that the data are accessed correctly, click on the button labelled \"Save\" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labelled \"Edit\" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page."
-msgstr "Después de establecer los parámetros de la fuente de datos de manera que haya un acceso adecuado a los datos, haga clic en el botón \"Guardar\" para conservar esta configuración. Si el proceso de guardado se realiza correctamente, aparecerá la página \"Vista General del Recurso\", con información resumida acerca de los datos, en la columna de la derecha del área \"Fuente de Datos\". Un botón \"Editar\" también aparecerá con la información resumida de la fuente de datos, permitiendo al usuario volver a abrir la página detallada Fuente de Base de Datos."
+msgstr "Después de establecer los parámetros del conjunto de datos de manera que haya un acceso adecuado a los datos, haga clic en el botón \"Guardar\" para almacenar esta configuración. Si el proceso de almacenamiento se realiza correctamente, aparecerá la página \"Vista general del recurso\", con información resumida acerca de los datos, en la columna de la derecha del área \"Conjunto de datos\". el botón \"Editar\" también aparecerá con la información resumida del conjunto de datos, permitiendo al usuario volver a abrir la página detallada del Conjunto de datos."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:141
 #, no-wrap
 msgid "URL as data source"
-msgstr "URL como fuente de datos"
+msgstr "URL como conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:143
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) directly from a URL. Select \"URL\" from the source data type dropdown list under \"Source Data\", then type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr "El IPT puede importar archivos de texto sin comprimir (CSV, tabulador y archivos con cualquier otro delimitador) directamente desde una URL. Seleccione \"URL\" en la lista desplegable de tipo de fuente de datos en \"Fuente de Datos\" y, a continuación, escriba o copie y pegue la URL completa (incluyendo `http://` o `https://`) en el cuadro siguiente."
+msgstr "El IPT puede importar archivos de texto sin comprimir (CSV, tabulador y archivos con cualquier otro delimitador) directamente desde una URL. Seleccione \"URL\" en la lista desplegable de tipo de conjunto de datos en \"Conjunto de datos\" y, a continuación, escriba o copie y pegue la URL completa (incluyendo `http://` o `https://`) en el cuadro inferior."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:147
 msgid "Click on the button labelled \"Clear\" to remove the choice of URL and return to the previous state before any data source was selected. Or, click on the button labelled \"Add\" to open the Source Data URL detail page."
-msgstr "Haga clic en el botón \"Limpiar\" para eliminar el archivo seleccionado y volver al estado anterior a la selección del archivo fuente. Alternativamente, haga clic en el botón \"Agregar\" para abrir la página de detalles de la URL del \"archivo de fuente de datos\"."
+msgstr "Haga clic en el botón \"Limpiar\" para eliminar el archivo seleccionado y volver al estado anterior a la selección del archivo de conjunto de datos. Alternativamente, haga clic en el botón \"Agregar\" para abrir la página de detalles de la URL del Conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:149
 msgid "This page shows the name of the resource along with a summary of the URL characteristics (readability, number of columns detected, URL location, the number of rows detected, and the date the URL was last loaded into the IPT). The Source Data URL detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr "Esta página muestra el nombre del recurso junto con un resumen de las características de la URL (legibilidad, número de columnas detectadas, ubicación de la URL, el número de filas detectadas y la fecha en que la URL se cargó por última vez en el IPT). La página de detalles de la URL del \"archivo de fuente de datos\" permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y previsualizar el archivo."
+msgstr "Esta página muestra el nombre del recurso junto con un resumen de las características de la URL (legibilidad, número de columnas detectadas, ubicación de la URL, el número de filas detectadas y la fecha en que la URL se cargó por última vez en el IPT). La página de detalles de la URL del \"Conjunto de datos\" permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, así como utilizar estos ajustes para analizar y previsualizar el archivo."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:150
