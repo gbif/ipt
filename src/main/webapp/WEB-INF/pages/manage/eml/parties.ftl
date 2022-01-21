@@ -10,6 +10,11 @@
             });
         });
     </script>
+    <style>
+        .popover {
+            max-width: 50%;
+        }
+    </style>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 
     <#assign currentMetadataPage = "parties"/>
