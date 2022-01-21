@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-21 00:04\n"
+"PO-Revision-Date: 2022-01-21 00:33\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -371,7 +371,7 @@ msgstr "dividir el archivo (cuando se publique el conjunto de datos, el IPT conc
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:86
 msgid "This page shows the name of the resource along with a summary of the file characteristics (readability, number of columns detected, absolute path to the file, the file size, the number of rows detected, and the date the file was last loaded into the IPT). The Source Data File detail page allows the user to view and edit the parameters that describe the content of the selected file, and to use these settings to analyse and preview the file."
-msgstr "Esta página mostrará el nombre del recurso, junto con un resumen de las características del archivo (opción de lectura, número de columnas detectadas, ruta absoluta de acceso al archivo, tamaño del archivo, tamaño de filas, y fecha en la que el archivo se cargó en el IPT). El archivo de fuente de datos de la página de detalles permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y obtener una vista previa del archivo."
+msgstr "Esta página mostrará el nombre del recurso, junto con un resumen de las características del archivo (legibilidad, número de columnas detectadas, ruta absoluta de acceso al archivo, tamaño del archivo, número de filas detectadas y fecha en la que el archivo se cargó en el IPT). La página de detalles del archivo del conjunto de datos permite al usuario ver y editar los parámetros que describen el contenido del archivo seleccionado, y utilizar estos ajustes para analizar y obtener una vista previa el archivo."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:87
@@ -383,74 +383,74 @@ msgstr "ipt2/manage/IPTManageResourceSourceDataFormat.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:90
 #, no-wrap
 msgid "*Source Name* - the name of the file selected, without the file extension.\n"
-msgstr "*Nombre de la Fuente* - El nombre del archivo seleccionado, sin la extensión de archivo.\n"
+msgstr "*Nombre del archivo del conjunto de datos*: El nombre del archivo seleccionado, sin la extensión del archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:91
 #, no-wrap
 msgid "*Readable* - this icon indicates whether data are accessible using the file format information provided on this page.\n"
-msgstr "*Se puede leer* - Este ícono indica si los datos están disponibles utilizando la información de formato del archivo provisto en esta página.\n"
+msgstr "*Se puede leer*: este icono indica si los datos son accesibles utilizando la información sobre el formato de los archivos que se proporciona en esta página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:92
 #, no-wrap
 msgid "*File* - the full path to the location of the file to use as the data source.\n"
-msgstr "*Archivo* - La ruta completa a la ubicación del archivo que desea utilizar como fuente de datos.\n"
+msgstr "*Archivo*: la ruta completa a la ubicación del archivo que desea utilizar como conjunto de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:93
 #: en/modules/ROOT/pages/manage-resources.adoc:127
 #, no-wrap
 msgid "*Columns* - the number of columns in the dataset as configured using the parameters on this page.\n"
-msgstr "*Columnas* - El número de columnas en el conjunto de datos como se ha configurado usando los parámetros en esta página.\n"
+msgstr "*Columnas*: el número de columnas en el conjunto de datos como se ha configurado usando los parámetros en esta página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:94
 #, no-wrap
 msgid "*Rows* - the number of rows found in the data file. (Note: This number helps check if all records are identified.)\n"
-msgstr "*Filas* - El número de filas que se encuentran en el archivo de datos. (Nota: este número ayuda a comprobar si todos los registros fueron identificados.)\n"
+msgstr "*Filas*: el número de filas que se encuentran en el archivo de datos. (Nota: este número ayuda a comprobar si todos los registros fueron identificados.)\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:95
 #, no-wrap
 msgid "*Size* - the file size.\n"
-msgstr "*Tamaño* - El tamaño del archivo.\n"
+msgstr "*Tamaño*: el tamaño del archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:96
 #, no-wrap
 msgid "*Modified* - the date stamp of the file indicating when it was last saved.\n"
-msgstr "*Modificado* - El sello de la fecha que indica el momento en el que el archivo se guardó por última vez.\n"
+msgstr "*Modificado*: el sello de fecha del archivo que indica cuándo se guardó por última vez.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:97
 #, no-wrap
 msgid "*Source log* - this link downloads the file containing the log produced when processing the file using the information contained on this page. Any problems encountered while processing the file, such as missing data and unexpected formatting will be in this log file.\n"
-msgstr "*Reporte de la Fuente* - Este enlace descarga el archivo que contiene el registro generado, al procesar el archivo utilizando la información contenida en esta página. Cualquier problema que surja durante el procesamiento del archivo, tal como datos faltantes y formateo inesperado, estarán en este archivo de registro.\n"
+msgstr "*Reporte del conjunto de datos*: este enlace descarga el archivo que contiene el registro producido al procesar el archivo utilizando la información contenida en esta página. Cualquier problema que surja al procesar el archivo, como la falta de datos o un formato inesperado, aparecerá en este archivo de registro.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:98
 #, no-wrap
 msgid "*Analyse* - click on this button to generate a data summary based on the file settings on this page. The analysis will indicate whether the file is readable, and if so, how many columns it contains.\n"
-msgstr "*Analizar* - haga clic en este botón para generar un resumen de datos basado en la configuración del archivo en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura y, si es así, el número de columnas que contiene.\n"
+msgstr "*Analizar*: haga clic en este botón para generar un resumen de datos basado en la configuración del archivo en esta página. El análisis indicará si la base de datos tiene posibilidad de lectura y, si es así, el número de columnas que contiene.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Preview* image:ipt2/manage/preview.png[width=32,height=31] - click on this button to see an interpretation of the data within the file.\n"
-msgstr "*Vista Previa* image:ipt2/manage/preview.png[width=32,height=31] - haga clic en este botón para ver una interpretación de los datos contenidos en el archivo.\n"
+msgstr "*Vista Previa* image:ipt2/manage/preview.png[width=32,height=31]: haga clic en este botón para ver una interpretación de los datos contenidos en el archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
 #, no-wrap
 msgid "*Number of Header Rows* - 0 if the file does not contain a row of column names, 1 if the file does contain a header row.\n"
-msgstr "*Número de Filas de Encabezado* - 0 si el archivo no contiene una fila con los nombres de columna, 1 si el archivo contiene una fila de encabezado.\n"
+msgstr "*Número de filas del encabezado*: 0 si el archivo no contiene una fila con los nombres de columna, 1 si el archivo contiene una fila de encabezado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:101
 #, no-wrap
 msgid "*Field Delimiter* - the character or characters that signify a break between columns of data.\n"
-msgstr "*Delimitador de Campo* - El o los caracteres que indican una ruptura entre columnas de datos.\n"
+msgstr "*Delimitador de texto*: el o los caracteres que indican una ruptura entre columnas de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:102
