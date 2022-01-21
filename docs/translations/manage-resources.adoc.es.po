@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-20 23:36\n"
+"PO-Revision-Date: 2022-01-21 00:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -289,7 +289,7 @@ msgstr "Vista general del recurso"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:59
 msgid "This page allows users having managerial permission to make changes to various aspects of a resource's configuration. The name of the resource is given at the top of the page under the menu bar. If the resource has not been given a title, the resource shortname will appear at the top of the page and will act as a title instead. Below the resource name is a table showing categories of the resource configuration on the left with corresponding sections to the right. Information icons throughout the table can help guide managers in using each category. Each of these categories is configured separately as explained in detail in the following sections."
-msgstr "Esta página permite a los usuarios con permiso de administración, realizar cambios en varios aspectos de la configuración de un recurso. El nombre del recurso se encuentra en la parte superior de la página, debajo de la barra de menú. Si no se ha asignado un nombre al recurso, el nombre corto del mismo estará en la parte superior de la página y funcionará a manera de título. A continuación del nombre del recurso, en el costado izquierdo, hay una tabla que muestra las categorías de la configuración del recurso con información resumida a la derecha. Cada una de estas categorías está configurada separadamente, como se explica en detalle en las secciones siguientes."
+msgstr "Esta página permite a los usuarios con permiso de administración realizar cambios en varios aspectos de la configuración de un recurso. El nombre del recurso se encuentra en la parte superior de la página, debajo de la barra de menú. Si no se ha asignado un nombre al recurso, el nombre corto estará en la parte superior de la página y funcionará a manera de título. Debajo del nombre del recurso hay una tabla que muestra las categorías de la configuración del recurso a la izquierda, con las secciones correspondientes a la derecha. Los iconos de información a lo largo de la tabla pueden ayudar a guiar a los administradores en el uso de cada categoría. Cada una de estas categorías se configura por separado como se explica en detalle en las siguientes secciones."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:60
@@ -306,7 +306,7 @@ msgstr "Conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:64
 msgid "This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:"
-msgstr "Esta área de la página \"Vista General del Recurso\" permite al usuario importar datos primarios al IPT a partir de archivos, bases de datos o URL. Si un recurso no tiene fuente de datos, es considerado un recurso de metadatos con información acerca de un conjunto de datos o una colección, pero sin ningún tipo de datos primarios. Es posible conectar un recurso a más de una fuente de datos, si estas están relacionadas entre sí. Encontrará más información sobre la relación entre múltiples fuentes de datos en la sección http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Guía de Implementación (Implementation Guide)] de la \"Guía de Texto\" de Darwin Core. A continuación se encuentran las explicaciones de la etapa preliminar para seleccionar la fuente de datos, ya sea de archivos de texto, de fuentes de bases de datos o de un archivo de texto disponible en una URL:"
+msgstr "Esta área de la página \"Vista general del recurso\" permite al usuario importar datos primarios al IPT a partir de archivos, bases de datos o URL. Si un recurso no pertenece un conjunto de datos, es considerado un recurso de metadatos con información acerca de un conjunto de datos o una colección, pero sin ningún tipo de datos primarios. Es posible conectar un recurso a más de un conjunto de datos, si los conjuntos están relacionados entre sí. Encontrará más información sobre la relación entre múltiples conjuntos de datos en la sección http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Guía de implementación (Implementation Guide)] de la \"Guía de texto\" de Darwin Core. A continuación se encuentran las explicaciones de la etapa preliminar para seleccionar el conjunto de datos, ya sea de archivos de texto, de fuentes de bases de datos o de un archivo de texto disponible en una URL:"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:65
@@ -317,7 +317,7 @@ msgstr "Archivo como fuente de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:67
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click on the button labelled \"Browse…\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, archivos separados por tabuladores y archivos que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip. También se admiten archivos de Excel. Haga clic en el botón \"Examinar...\" para navegar y seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, su nombre aparecerá a la derecha del botón \"Examinar...\"."
+msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, archivos separados por tabuladores y archivos que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip. También se admiten archivos de Excel. Haga clic en el botón \"Examinar...\" para navegar y seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, el nombre aparecerá a la derecha del botón \"Examinar...\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:68
@@ -330,7 +330,7 @@ msgstr "ipt2/manage/IPTManageResourceSourceSummary.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:71
 msgid "Click on the button labelled \"Clear\" to remove the choice of selected file and return to the previous state before any data source was selected. Or, click on the button labelled \"Add\" to open the Source Data File detail page (if there is the risk of overwriting a file with the same name, a dialog opens that asks the user to confirm they actually want to overwrite it)."
-msgstr "Haga clic en el botón \"Limpiar\" para eliminar el archivo seleccionado y volver al estado anterior a la selección del archivo fuente. Haga clic en el botón \"Agregar\" para abrir la página detallada \"Archivo de Fuente de Datos\" (si existe el riesgo de sobrescribir un archivo con el mismo nombre, se abre un diálogo que pide al usuario confirmar que realmente desea sobrescribir)."
+msgstr "Haga clic en el botón \"Limpiar\" para eliminar el archivo seleccionado y volver al estado anterior a la selección del archivo de conjunto de datos. Haga clic en el botón \"Agregar\" para abrir la página detallada \"Archivo de conjunto de datos\" (si existe el riesgo de sobrescribir un archivo con el mismo nombre, se abre un diálogo que pide al usuario confirmar sí realmente desea sobrescribir)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:73
@@ -346,17 +346,17 @@ msgstr "Límites de carga"
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:78
 msgid "The IPT has an upload size limit of 200MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 200MB in size into the IPT, the following work-arounds are recommended:"
-msgstr "El IPT tiene un límite de 200MB para la carga de archivos. Sin embargo no se tienen límites de tamaño para los Archivos Darwin Core que se deseen exportar o publicar a través del IPT. Para la carga en el IPT de conjuntos de datos de un tamaño mayor a los 200MB, se recomiendan las siguientes alternativas:"
+msgstr "El IPT tiene un límite de 200MB para la carga de archivos. Sin embargo, no hay límite para el tamaño de los Archivos Darwin Core que el IPT puede exportar/publicar. Para cargar conjuntos de datos de más de 200 MB en el IPT, se recomiendan las siguientes soluciones:"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:80
 msgid "compress the file with Zip or Gzip"
-msgstr "Comprimir el archivo (con zip o gzip)"
+msgstr "comprimir el archivo (con zip o gzip)"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:81
 msgid "load the data into one of the many xref:database-connection.adoc[databases supported by the IPT]"
-msgstr "Cargar los datos a una de las xref:database-connection.adoc[bases de datos soportadas por el IPT]"
+msgstr "cargar los datos a una de las xref:database-connection.adoc[bases de datos soportadas por el IPT]"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/manage-resources.adoc:82
