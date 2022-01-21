@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-21 00:33\n"
+"PO-Revision-Date: 2022-01-21 02:34\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -456,54 +456,54 @@ msgstr "*Delimitador de texto*: el o los caracteres que indican una ruptura entr
 #: en/modules/ROOT/pages/manage-resources.adoc:102
 #, no-wrap
 msgid "*Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., `'` or `\"`). Please note this will not properly enclose columns whose content includes newline characters (\\n) or carriage returns (`\\r`).\n"
-msgstr "*Citas de Campos* - Sólo un carácter (o ninguno) utilizado para delimitar el contenido de una columna en los datos (por ejemplo, `'` o `\"`). Por favor note que esto no abarcará con precisión las columnas con contenidos que incluyan caracteres de nueva línea (`\\n`) o saltos de línea (`\\r`).\n"
+msgstr "*Citas de campos* : solo un carácter (o ninguno) utilizado para delimitar el contenido de una columna en los datos (p. ej., `'` o `\"`). Por favor note que esto no abarcará con precisión llas columnas cuyo contenido incluya caracteres de línea nueva (\\n) o saltos de línea (`\\r`).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:103
 #: en/modules/ROOT/pages/manage-resources.adoc:138
 #, no-wrap
 msgid "*Multi-value Delimiter* - a single character that delimits the values in a multi-value field (e.g., `|` or `;`).\n"
-msgstr "*Delimitador Multivalor* - Sólo un carácter utilizado para delimitar el contenido de un campo multivalor (e.g. `|` o `;`).\n"
+msgstr "*Delimitador multivalor*: un solo carácter utilizado para delimitar el contenido de un campo multivalor (p. ej., `|` o `;`).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:104
 #, no-wrap
 msgid "*Character Encoding* - the system that defines byte-wise definitions of the characters in the data (e.g., ISO 8859-5 refers to the Cyrillic alphabet).\n"
-msgstr "*Codificación de caracteres* - El sistema que determina definiciones en términos de byte, de los caracteres en los datos (por ejemplo, la norma ISO 8859-5 se refiere al alfabeto cirílico).\n"
+msgstr "*Codificación de caracteres*: el sistema que determina las definiciones en bytes de los caracteres de los datos  (p. ej., la norma ISO 8859-5 se refiere al alfabeto cirílico).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:105
 #: en/modules/ROOT/pages/manage-resources.adoc:137
 #, no-wrap
 msgid "*Date Format* - a code describing the format of fields having a date data type (e.g., `YYYY-MM-DD` for four-digit year, two-digit month, and two-digit day separated by dashes).\n"
-msgstr "*Formato de Fechas* - Un código que describe el formato de los elementos que tienen un tipo de datos de fecha (por ejemplo, `AAAA-MM-DD` para año de cuatro dígitos, mes de dos dígitos, y día de dos dígitos, separados por guiones).\n"
+msgstr "*Formato de fechas*: un código que describe el formato de los elementos que tienen un tipo de datos de fecha (p. ej., `AAAA-MM-DD` para año de cuatro dígitos, mes de dos dígitos y día de dos dígitos, separados por guiones).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:106
 #, no-wrap
 msgid "*Selected Worksheet* - (Excel files only) this drop down lists the names of all worksheets in the Excel file/workbook. Only 1 worksheet can be used as the data source, defaulting to the first worksheet.\n"
-msgstr "*Hoja de cálculo seleccionada* - (sólo archivos Excel) en esta lista de selección se mostrarán los nombres de todas las hojas de cálculo del archivo/libro de trabajo de Excel. Sólo puede utilizarse una hoja de cálculo como fuente de datos, por defecto será la primera hoja de cálculo del archivo.\n"
+msgstr "*Hoja de cálculo seleccionada*: (sólo archivos Excel) en esta lista de selección se mostrarán los nombres de todas las hojas de cálculo del archivo/libro de trabajo de Excel. Sólo puede utilizarse una hoja de cálculo como fuente de datos, por defecto será la primera hoja de cálculo del archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:108
 msgid "After the parameters for the data source have been set so that the file is interpreted correctly, click on the button labelled \"Save\" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the file in the right-hand column of the Source Data area. A button labelled \"Edit\" will also appear with the source data file summary information in the right-hand column, allowing the user to reopen the Source Data File detail page."
-msgstr "Después de ajustar los parámetros de la fuente de datos para que el archivo se interprete correctamente, haga clic en el botón \"Guardar\" para almacenar esta configuración. Si el almacenamiento se realiza correctamente, aparecerá la página \"Vista General del Recurso\", con información resumida acerca del archivo en la columna de la derecha del área \"Fuente de Datos\". El botón \"Editar\" también aparecerá con el resumen de la información del archivo de la fuente de datos en la columna de la derecha, permitiendo al usuario volver a abrir la página detallada \"Archivo de Fuente de Datos\"."
+msgstr "Después de ajustar los parámetros de la fuente de datos para que el archivo se interprete correctamente, haga clic en el botón \"Guardar\" para almacenar esta configuración. Si el almacenamiento se realiza correctamente, aparecerá la página \"Vista general del recurso\", con información resumida acerca del archivo en la columna de la derecha del área \"Conjunto de daros\". El botón \"Editar\" también aparecerá con el resumen de la información del archivo del conjunto de datos en la columna de la derecha, permitiendo al usuario volver a abrir la página detallada de \"Archivo de conjunto de datos\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:112
 msgid "Should the user want to delete this source, they can reopen the Source Data File detail page and press the \"Delete source file\" button. Be aware though, that any mappings associated to this file will also be deleted."
-msgstr "En caso de que el usuario desee eliminar esta fuente, puede volver a abrir la página detallada \"Archivo de Fuente de Datos\" y hacer clic en el botón \"Eliminar el archivo fuente\". Tenga en cuenta sin embargo, que el enlace asociado a este archivo también será eliminado."
+msgstr "En caso de que el usuario desee eliminar este conjunto, puede volver a abrir la página detallada de \"Archivo de fuente de datos\" y hacer clic en el botón \"Eliminar el conjunto de datos\". Tenga en cuenta, sin embargo, que cualquier mapeo asociado a este archivo también será eliminado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:114
 msgid "If the source data are contained in multiple text files, the process described in this section can be repeated for each of the files to import. A zipped folder with multiple text files can also be imported to add multiple source files in one go."
-msgstr "Si la fuente de datos se encuentra en varios archivos de texto, el proceso descrito en esta sección se puede repetir para cada uno de los archivos que desea importar. Un archivo comprimido con varios archivos de texto también puede ser importado para añadir varios archivos fuente en un mismo intento."
+msgstr "Si el conjunto de datos se encuentra en varios archivos de texto, el proceso descrito en esta sección se puede repetir para cada uno de los archivos que desea importar. Un archivo comprimido con varios archivos de texto también puede ser importado para añadir todos los conjuntos de datos de una sola vez."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:115
 #, no-wrap
 msgid "Database as data source"
-msgstr "Base de Datos como fuente de datos"
+msgstr "Base de datos como conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:117
