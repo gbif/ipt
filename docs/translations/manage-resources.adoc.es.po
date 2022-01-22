@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 11:53\n"
+"PO-Revision-Date: 2022-01-22 15:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -312,12 +312,12 @@ msgstr "Esta área de la página \"Vista general del recurso\" permite al usuari
 #: en/modules/ROOT/pages/manage-resources.adoc:65
 #, no-wrap
 msgid "File as data source"
-msgstr "Archivo como fuente de datos"
+msgstr "Archivo como conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:67
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click on the button labelled \"Browse…\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, archivos separados por tabuladores y archivos que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip. También se admiten archivos de Excel. Haga clic en el botón \"Examinar...\" para navegar y seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, el nombre aparecerá a la derecha del botón \"Examinar...\"."
+msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, archivos separados por tabuladores y archivos que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip. También se admiten archivos de Excel. Haga clic en el botón \"Choose File...\" para navegar y seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, el nombre aparecerá a la derecha del botón \"Choose File...\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:68
@@ -438,7 +438,7 @@ msgstr "*Analizar*: haga clic en este botón para generar un resumen de datos ba
 #: en/modules/ROOT/pages/manage-resources.adoc:99
 #, no-wrap
 msgid "*Preview* image:ipt2/manage/preview.png[width=32,height=31] - click on this button to see an interpretation of the data within the file.\n"
-msgstr "*Vista Previa* image:ipt2/manage/preview.png[width=32,height=31]: haga clic en este botón para ver una interpretación de los datos contenidos en el archivo.\n"
+msgstr "*Vista previa* image:ipt2/manage/preview.png[width=32,height=31]: haga clic en este botón para ver una interpretación de los datos contenidos en el archivo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:100
