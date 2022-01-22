@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 19:51\n"
+"PO-Revision-Date: 2022-01-22 20:21\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1638,7 +1638,7 @@ msgstr "*Eliminar paso metodológico*: haga clic en este enlace para eliminar el
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:435
 msgid "This metadata page contains information about how to cite the resource as well as a bibliography of citations related to the data set, such as publications that were used in or resulted from the production of the data. Each Citation, whether for the resource or in the bibliography, consists of an optional unique Citation Identifier allowing the citation to be found among digital sources and a traditional textual citation. Before any Citation data are entered, the page will show a text box for the Citation Identifier for the resource, a text box for the Resource Citation, a heading labelled \"Bibliographic Citations\", and a link labelled \"Add new bibliographic citation\"."
-msgstr "Esta página de metadatos contiene información acerca de cómo citar el recurso, así como la bibliografía relacionada al conjunto de datos como publicaciones que fueron usadas en, o resultaron de la producción de los datos. Cada Referencia, ya sea para el recurso o para la bibliografía, consta de un Identificador de la Referencia único y opcional, y de una citación textual tradicional. El Identificador de la Referencia permite que la cita pueda ser encontrada en fuentes digitales. Antes que sea ingresado algún dato de las \"Referencias\", la página mostrará campos de texto para el Identificador de la Referencia del recurso, para la Referencia del Recurso, un encabezado denominado “Bibliografía” y un enlace llamado “Añadir nueva referencia”."
+msgstr "Esta página de metadatos contiene información sobre cómo citar el recurso, así como una bibliografía de citas relacionadas con el conjunto de datos, como las publicaciones que se utilizaron o resultaron de la producción de los datos. Cada Referencia, ya sea para el recurso o para la bibliografía, consta de un identificador de la referencia único (opcional) y de una citación textual tradicional. El identificador de la referencia permite que la cita pueda ser encontrada en fuentes digitales. Antes que sea ingresado algún dato de las \"Referencias\", la página mostrará campos de texto para el identificador de la referencia del recurso, para la referencia del recurso, un encabezado denominado “Bibliografía” y un enlace llamado “Añadir referencia bibliográfica”."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:436
@@ -1655,13 +1655,13 @@ msgstr "las citas de texto libre son sobrescritas en la página del conjunto de 
 #: en/modules/ROOT/pages/manage-resources.adoc:441
 #, no-wrap
 msgid "*Resource Citation* - the single citation for use when citing the dataset.\n"
-msgstr "*Referencia del recurso* - la referencia única que se utilizará al citar el conjunto de datos.\n"
+msgstr "*Referencia del recurso*: la referencia única que se utilizará al citar el conjunto de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:442
 #, no-wrap
 msgid "Example citation with institutional creator:\n"
-msgstr "Ejemplo de la referencia con el creador institucional:\n"
+msgstr "Ejemplo de una referencia con un autor institucional:\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:444
@@ -1671,7 +1671,7 @@ msgstr "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Ver
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:446
 msgid "Example citation with 9 creators:"
-msgstr "Ejemplo de la referencia con 9 creadores:"
+msgstr "Ejemplo de una referencia con 9 autores:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:448
