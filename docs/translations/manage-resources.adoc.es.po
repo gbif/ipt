@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 18:28\n"
+"PO-Revision-Date: 2022-01-22 19:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1349,7 +1349,7 @@ msgstr "*Añadir cobertura taxonómica*: al hacer clic sobre este enlace, se agr
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:353
 msgid "This metadata page contains information about one of more dates, date ranges, or named periods of time covered by the resource, each of which is called a temporal coverage. Coverages may refer to the times during which the collection or data set was assembled (Single Date, Date Range, and Formation Period), or to times during which the subjects of the data set or collection were alive (Living Time Period). Before the first temporal coverage for the resource is created, the page shows only a link labelled \"Add new temporal coverage\". Clicking on this link will show the default temporal coverage type \"Single Date\" in a select box, a text box labelled \"Start Date\", a calendar icon, and two links. Below is a screen image showing the default Temporal Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state."
-msgstr "Esta página de metadatos contiene información acerca de una o más fechas, rangos de fechas o nombres de periodos de tiempo cubiertos por el recurso, donde cada uno es llamado una cobertura temporal. Las coberturas pueden referirse a tiempos durante el cual la colección o conjunto de datos fue ensamblado (Fecha Única, Rango de Fechas y Periodo de Formación) o a tiempos durante los cuales estaban vivas las entidades biológicas del conjunto de datos o colección (Época de existencia). Antes que sea creada alguna cobertura temporal para el recurso, la página mostrará únicamente un enlace marcado como “Añadir nuevo(a) cobertura temporal”. Haciendo clic sobre este enlace se mostrará, en el cuadro de selección, el tipo de cobertura temporal predeterminado “Fecha”, un cuadro de texto marcado como “Fecha única”, un ícono de calendario y dos enlaces. A continuación se muestra una imagen de la página \"Cobertura Temporal\" antes de ingresar algún dato, seguida por explicaciones para los campos vistos en la página en este estado."
+msgstr "Esta página de metadatos contiene información acerca de una o más fechas, rangos de fechas o nombres de periodos de tiempo cubiertos por el recurso, donde cada uno es llamado una cobertura temporal. Las coberturas pueden referirse a tiempos durante el cual la colección o conjunto de datos fue recopilado (Fecha única, Rango de fechas y Periodo de formación) o a tiempos durante los cuales estaban vivas las entidades biológicas del conjunto de datos o colección (Época de existencia). Antes que sea creada alguna cobertura temporal para el recurso, la página mostrará únicamente un enlace marcado como “Añadir cobertura temporal”. Haciendo clic sobre este enlace se mostrará por defecto, en el cuadro de selección, el tipo de cobertura temporal “Fecha única”, un cuadro de texto marcado como “Fecha inicial”, un ícono de calendario y dos enlaces. A continuación se muestra una imagen de la página \"Cobertura temporal\" antes de ingresar algún dato, seguida por explicaciones para los campos vistos en la página en este estado."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:354
