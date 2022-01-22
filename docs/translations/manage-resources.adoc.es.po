@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 19:18\n"
+"PO-Revision-Date: 2022-01-22 19:51\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1361,31 +1361,31 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:357
 #, no-wrap
 msgid "*Add new temporal coverage* - click on this link to initiate a form for an additional temporal coverage.\n"
-msgstr "*Añadir nuevo(a) cobertura temporal* - Haciendo clic sobre este enlace, se adiciona una nueva cobertura temporal.\n"
+msgstr "*Añadir cobertura temporal*: al hacer clic sobre este enlace se adiciona una nueva cobertura temporal.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:358
 #, no-wrap
 msgid "*Remove this temporal coverage* - click on this link to remove the temporal coverage that follows immediately below the link.\n"
-msgstr "*Eliminar cobertura temporal* - Haciendo clic sobre este enlace, se elimina la cobertura temporal que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar cobertura temporal*: al hacer clic sobre este enlace se elimina la cobertura temporal que está inmediatamente debajo del enlace.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:359
 #, no-wrap
 msgid "*Temporal Coverage Type* - select one of the options in this select box to set the type of temporal coverage, which can consist of a single date, a date range, a formation period, or a living time period. Selecting a type will reveal controls appropriate to the choice as explained below.\n"
-msgstr "*Tipo de Cobertura Temporal* - Elija una de las opciones en el cuadro de selección para establecer el tipo de cobertura temporal, el cual puede consistir de una fecha simple, un rango de fechas, un periodo de formación, o un periodo de vida. Seleccionado un tipo, se revelarán los campos apropiados para la elección como se explica a continuación.\n"
+msgstr "*Tipo de cobertura temporal*: elija una de las opciones en el cuadro de selección para establecer el tipo de cobertura temporal, el cual puede consistir de una fecha única, un rango de fechas, un periodo de formación o un periodo de existencia. Seleccionado un tipo, se revelarán los campos apropiados para la elección como se explica a continuación.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:360
 #, no-wrap
 msgid "*Single Date* - this is the default temporal coverage type showing when a temporal coverage is first created. This type is meant to represent a coverage spanning one day. Selecting this type reveals a text box for a Start Date, with a calendar icon to the right with which a date can be selected.\n"
-msgstr "*Fecha* - Cuando una cobertura temporal es creada por primera vez, este es el tipo de cobertura temporal que se muestra predeterminadamente. Este tipo está destinado para representar una cobertura que abarca un día. Seleccionando este tipo, se revela un cuadro de texto para una Fecha única con un ícono de calendario a la derecha en el cual se puede seleccionar una fecha determinada.\n"
+msgstr "*Fecha única*: este es el tipo de cobertura temporal por defecto que se muestra cuando se crea una cobertura temporal por primera vez. Este tipo está pensado para representar una cobertura que abarca un día. Al seleccionar este tipo aparece un cuadro de texto para una \"Fecha inicial\", con un icono de calendario a la derecha con el que se puede seleccionar una fecha.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:361
 #, no-wrap
 msgid "*Start Date* - this text box is meant to contain a single date in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.\n"
-msgstr "*Fecha Única* - Este cuadro de texto está destinado para una sola fecha en uno de los formatos de fecha soportados. Para seleccionar una fecha, haga clic en el ícono de calendario y elija una fecha, o ingrese la fecha manualmente. Para saber que formatos de fechas son soportados, abra el ícono de información. Ejemplo: 2012-12-31 para el 31 de Diciembre de 2012 en el calendario de la nueva era.\n"
+msgstr "*Fecha inicial*: este cuadro de texto está destinado a contener una sola fecha en uno de los formatos de fecha admitidos. Para seleccionar una fecha, haga clic en el icono del calendario y elija una fecha, o introduzca la fecha manualmente. Para saber qué formatos de fecha son compatibles, abra el icono de información. Ejemplo: 2010-12-31 para el 31 de diciembre de 2010 en el calendario de la Nueva Era.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:362
@@ -1397,19 +1397,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:365
 #, no-wrap
 msgid "*Date Range* - this temporal coverage is meant to describe the time period within which the objects in the collection were collected. Selecting this temporal coverage type reveals a text box for a Start Date and a text box for an End Date, each with a calendar icon to the right with which a date can be selected.\n"
-msgstr "*Rango de Fechas* - Esta cobertura temporal sirve para describir el período de tiempo en el que se colectaron los datos o ejemplares de la colección. Seleccionando este tipo de cobertura temporal, se revela un cuadro de texto para una Fecha Inicial y otro para un Fecha Final, cada uno con un ícono de calendario a la derecha, en el cual puede ser seleccionada la fecha deseada.\n"
+msgstr "*Rango de fechas*: esta cobertura temporal sirve para describir el período de tiempo en el que se colectaron los datos o ejemplares de la colección. Seleccionando este tipo de cobertura temporal, se revela un cuadro de texto para una \"Fecha inicial\" y otro para un \"Fecha final\", cada uno con un ícono de calendario a la derecha, en el cual puede ser seleccionada la fecha deseada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:366
 #, no-wrap
 msgid "*Start Date* - this text box is meant to contain the date the coverage began, in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.\n"
-msgstr "*Fecha Inicial* - Este cuadro de texto está destinado para la fecha en que comenzó la cobertura, en uno de los formatos de fecha soportados. Para seleccionar una fecha, haga clic sobre el ícono del calendario y elija una fecha o ingrésela manualmente. Para saber que formatos de fechas son soportados, abra el ícono de información. Ejemplo: 2012-12-31 para el 31 de Diciembre de 2012 en el calendario de la nueva era.\n"
+msgstr "*Fecha inicial*: este cuadro de texto está destinado para la fecha en que comenzó la cobertura, en uno de los formatos de fecha soportados. Para seleccionar una fecha, haga clic sobre el ícono del calendario y elija una fecha o ingrésela manualmente. Para saber que formatos de fechas son soportados, abra el ícono de información. Ejemplo: 2012-12-31 para el 31 de Diciembre de 2012 en el calendario de la nueva era.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:367
 #, no-wrap
 msgid "*End Date* - this text box is meant to contain the date the coverage ended, in one of the supported date formats. To select a date, click on the calendar icon and choose a date, or enter the date manually. To find out what date formats are supported, open the information icon. Example: 2010-12-31 for 31 December 2010 in the New Era calendar.\n"
-msgstr "*Fecha Final* - Este cuadro de texto está destinado para la fecha en que finalizó la cobertura, en uno de los formatos de fecha soportados. Para seleccionar una fecha, haga clic sobre el ícono del calendario y elija una fecha o ingrésela manualmente. Para saber que formatos de fechas son soportados, abra el ícono de información. Ejemplo: 2012-12-31 para el 31 de Diciembre de 2012 en el calendario de la nueva era.\n"
+msgstr "*Fecha Final*: este cuadro de texto está destinado para la fecha en que finalizó la cobertura, en uno de los formatos de fecha soportados. Para seleccionar una fecha, haga clic sobre el ícono del calendario y elija una fecha o ingrésela manualmente. Para saber que formatos de fechas son soportados, abra el ícono de información. Ejemplo: 2012-12-31 para el 31 de Diciembre de 2012 en el calendario de la nueva era.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:368
@@ -1421,7 +1421,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:371
 #, no-wrap
 msgid "*Formation Period* - this temporal coverage type is meant to accommodate a named or other time period during which a collection or data set was assembled. Examples: \"Victorian\", \"1922-1932\", \"c. 1750\".\n"
-msgstr "*Periodo de Formación* - Este tipo de cobertura temporal está destinado para alojar un periodo de tiempo determinado u otro durante el cual una colección o conjunto de datos fue creado. Ejemplos: “Victoriano”, “1922-1932”, “c. 1750”.\n"
+msgstr "*Periodo de formación*: este tipo de cobertura temporal está destinada para alojar un periodo de tiempo determinado u otro durante el cual una colección o conjunto de datos fue creado. Ejemplos: “Victoriano”, “1922-1932”, “c. 1750”.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:372
@@ -1433,7 +1433,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:375
 #, no-wrap
 msgid "*Living Time Period* - this temporal coverage type is meant to accommodate a named or other time period during which the biological entities in the collection or data set were alive, including palaeontological time periods. Examples: \"1900-1950\", \"Ming Dynasty\", \"Pleistocene\".\n"
-msgstr "*Época de existencia* - Este tipo de cobertura temporal está destinado para alojar un periodo de tiempo determinado u otro durante el cual se encontraban vivas las entidades biológicas de la colección o conjunto de datos, incluyendo periodos de tiempo paleontológicos. Ejemplos: “1900-1950”. “Dinastía Ming”, “Pleistoceno”.\n"
+msgstr "*Época de existencia*: este tipo de cobertura temporal está destinado para alojar un periodo de tiempo nombrado o de otro tipo durante el cual las entidades biológicas de la colección o conjunto de datos estaban vivas, incluyendo periodos de tiempo paleontológicos. Ejemplos: “1900-1950”. “Dinastía Ming”, “Pleistoceno”.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:376
@@ -1462,30 +1462,30 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:385
 #, no-wrap
 msgid "*Remove this keyword set* - click on this link to remove the keyword set that follows immediately below the link.\n"
-msgstr "*Eliminar conjunto de palabras clave* - haciendo clic sobre este enlace, se elimina el conjunto de palabras clave que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar palabras clave*: al hacer clic sobre este enlace se elimina el conjunto de palabras clave que está inmediatamente debajo del enlace.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:386
 #, no-wrap
 msgid "*Thesaurus/Vocabulary* - enter the name of a thesaurus or controlled vocabulary from which the keywords in the set are derived. If the keywords are not governed by a thesaurus/vocabulary, enter \"n/a\" indicating that it is not applicable in this text box. Example: IRIS keyword thesaurus.\n"
-msgstr "*Tesauro/Vocabulario* - Se ingresa el nombre de un tesauro o vocabulario controlado, desde el cual se derivó el conjunto de palabras clave. Si las palabras clave no están regidas por un tesauro o vocabulario, se ingresa “n/a”, que indica, no aplica. Ejemplo: Tesauro IRIS.\n"
+msgstr "*Tesauro/Vocabulario*: se ingresa el nombre de un tesauro o vocabulario controlado, desde el cual se derivó el conjunto de palabras clave. Si las palabras clave no están regidas por un tesauro o vocabulario, se ingresa “n/a”, que indica no aplica. Ejemplo: Tesauro IRIS.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:387
 #, no-wrap
 msgid "*Keyword List* - enter a list of keywords, separated by commas that describe or are related to the resource.\n"
-msgstr "*Lista de Palabras Clave* - Se ingresa una lista de palabras clave separadas por comas, que describen o están relacionadas al recurso.\n"
+msgstr "*Lista de palabras clave*: se ingresa una lista de palabras clave separadas por comas, que describen o están relacionadas al recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:388
 #, no-wrap
 msgid "*Add new keyword set* - click on this link to initiate a form for an additional keyword set.\n"
-msgstr "*Añadir nuevo(a) conjunto de palabras clave* - Haciendo clic sobre este enlace, se adiciona un nuevo conjunto de palabras clave.\n"
+msgstr "*Añadir palabras clave*: haciendo clic sobre este enlace, se adiciona un nuevo conjunto de palabras clave.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:392
 msgid "This metadata pages contains information about one or more people or organizations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the <<Basic Metadata>> page. Explanations for the remainder of the controls are given below."
-msgstr "Esta página de metadatos contiene información acerca de una o más personas u organizaciones asociadas con el recurso, además de las ya incluidas en la página \"Metadatos Básicos\". Muchos de los campos en esta página son comunes con aquellos para el Contacto del Recurso en la página de <<Metadatos Básicos>>. Las explicaciones para el resto de los campos son dadas a continuación."
+msgstr "Esta página de metadatos contiene información acerca de una o más personas u organizaciones asociadas con el recurso, además de las ya incluidas en la página \"Metadatos básicos\". Muchos de los campos en esta página son comunes con aquellos para el \"Contacto del recurso\" en la página de <<Metadatos básicos>>. Las explicaciones para los campos diferentes se dan a continuación:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:393
@@ -1497,30 +1497,30 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:396
 #, no-wrap
 msgid "*Copy details from resource contact* - if this person or organization is the same as the first Resource Contact on the Basic Metadata page, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.\n"
-msgstr "*Copiar datos del contacto* - Si esta persona u organización es la misma del Contacto del Recurso en la página \"Metadatos Básicos\", entonces haciendo clic sobre este enlace pueden ser copiados en los campos equivalentes, todos los detalles para la parte asociada.\n"
+msgstr "*Copiar datos del contacto del recurso*  si esta persona u organización es la misma del \"Contacto del recurso\" en la página \"Metadatos básicos\", entonces haciendo clic sobre este enlace pueden ser copiados, en los campos equivalentes, todos los detalles para la parte asociada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:397
 #, no-wrap
 msgid "*Remove this associated party* - click on this link to remove the associated party that follows immediately below the link.\n"
-msgstr "*Eliminar parte asociada* - Haciendo clic sobre este enlace, se elimina la parte asociada que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar parte asociada*: haciendo clic sobre este enlace, se elimina la parte asociada que está inmediatamente debajo del enlace.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:398
 #, no-wrap
 msgid "*Role* - this select box contains a list of possible roles that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.\n"
-msgstr "*Rol* - Este cuadro de texto contiene una lista de posibles roles que la parte asociada pueda tener en relación al recurso. Haciendo clic sobre el ícono de información que está a la izquierda, se pueden ver las descripciones de los posibles roles. En el cuadro de selección, elija el rol más apropiado para la parte asociada.\n"
+msgstr "*Rol*: este cuadro de texto contiene una lista de posibles roles que la parte asociada pueda tener en relación al recurso. Haciendo clic sobre el ícono de información que está a la izquierda, se pueden ver las descripciones de los posibles roles. En el cuadro de selección, elija el rol más apropiado para la parte asociada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:399
 #, no-wrap
 msgid "*Add new associated party* - click on this link to initiate a form for an additional associated party.\n"
-msgstr "*Añadir nuevo(a) parte asociada* - Haciendo clic sobre este enlace, se adiciona una nueva parte asociada.\n"
+msgstr "*Añadir parte asociada*: al hacer clic sobre este enlace se adiciona una nueva parte asociada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:403
 msgid "This metadata page contains information about a project under which the data in the resource were produced."
-msgstr "Esta página de metadatos contiene información acerca de un proyecto bajo el cual fueron producidos los datos del recurso. Esto es apropiado únicamente si los datos fueron producidos bajo un solo proyecto."
+msgstr "Esta página de metadatos contiene información sobre el proyecto en el que se produjeron los datos del recurso."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:404
@@ -1532,61 +1532,61 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:407
 #, no-wrap
 msgid "*Title* - the title of the project.\n"
-msgstr "*Título* - el título del proyecto.\n"
+msgstr "*Título*: el título del proyecto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:408
 #, no-wrap
 msgid "*Identifier* - a unique identifier for the research project. This can be used to link multiple dataset/EML document instances that are associated in some way with the same project, e.g. a monitoring series. The nature of the association can be described in the project description.\n"
-msgstr "*Identificador* - Un identificador único para el proyecto de investigación. Este puede usarse para unir múltiples instancias de conjuntos de datos/EML que están asociados de alguna manera al mismo proyecto, por ejemplo una serie de monitoreo. La naturaleza de la asociación puede ser descrita en la descripción del proyecto.\n"
+msgstr "*Identificador*: un identificador único para el proyecto de investigación. Este puede usarse para unir múltiples instancias de conjuntos de datos/EML que están asociados de alguna manera al mismo proyecto, por ejemplo una serie de monitoreo. La naturaleza de la asociación puede ser descrita en la descripción del proyecto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:409
 #, no-wrap
 msgid "*Description* - an abstract about the research project.\n"
-msgstr "*Descripción* - Resumen sobre el proyecto de investigación.\n"
+msgstr "*Descripción*: resumen sobre el proyecto de investigación.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:410
 #, no-wrap
 msgid "*Funding* - information about project funding and its sources (grant titles and numbers, contract numbers, names and addresses, active period, etc.). Other funding-related information may also be included.\n"
-msgstr "*Fuentes de financiación* - Información acerca de la(s) fuente(s) de financiación del proyecto y sus detalles (títulos y números de las becas, números de contrato, nombres y direcciones, periodo activo, etc..\n"
+msgstr "*Fuentes de financiación*: información acerca de la(s) fuente(s) de financiación del proyecto y sus detalles (títulos y números de las becas, números de contrato, nombres y direcciones, periodo activo, etc.). También se puede incluir otra información relacionada con la financiación. \n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:411
 #, no-wrap
 msgid "*Study Area Description* - a description of the physical area where the project occurred (physical location, habitat, temporal coverage, etc.).\n"
-msgstr "*Descripción del Área de Estudio* - Una descripción del área física donde ocurrió el proyecto (ubicación física, hábitat, cobertura temporal, etc..\n"
+msgstr "*Descripción del área de estudio*: una descripción del área física donde ocurrió el proyecto (ubicación física, hábitat, cobertura temporal, etc.).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:412
 #, no-wrap
 msgid "*Design Description* - a description of the design and objectives of the project. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work.\n"
-msgstr "*Descripción del Diseño* - Una descripción general del diseño de la investigación. Puede incluir un informe detallado de objetivos, motivaciones, teoría, hipótesis, estrategia, diseño estadístico y trabajo en campo.\n"
+msgstr "*Descripción del diseño*: una descripción general del diseño de la investigación. Puede incluir un informe detallado de objetivos, motivaciones, teoría, hipótesis, estrategia, diseño estadístico y trabajo en campo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:413
 #, no-wrap
 msgid "*Project Personnel* - the list of people involved in the project.\n"
-msgstr "*Personas Asociadas al Proyecto* - Esta lista representa a las personas involucradas en el proyecto.\n"
+msgstr "*Personas asociadas al proyecto*: esta lista representa a las personas involucradas en el proyecto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:414
 #, no-wrap
 msgid "*Personnel First Name* - the first name of the person associated with the project.\n"
-msgstr "*Nombre* - El nombre de la persona asociada al proyecto.\n"
+msgstr "*Nombre*: el nombre de la persona asociada al proyecto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:415
 #, no-wrap
 msgid "*Personnel Last Name* - the last name of the person associated with the project.\n"
-msgstr "*Apellido* - El apellido de la persona asociada al proyecto.\n"
+msgstr "*Apellido*: el apellido de la persona asociada al proyecto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:418
 #, no-wrap
 msgid "*Personnel Role* - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.\n"
-msgstr "*Rol* - El rol de la persona asociada al proyecto. Haga clic en el ícono de información al lado izquierdo de la caja de selección para ver las descripciones de los posibles roles. Elija el rol más apropiado para la persona que nombró en la parte superior.\n"
+msgstr "*Rol*: el rol de la persona asociada al proyecto. Haga clic en el ícono de información al lado izquierdo de la caja de selección para ver las descripciones de los posibles roles. Elija el rol más apropiado para la persona que nombró en la parte superior.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:422
@@ -1603,37 +1603,37 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:426
 #, no-wrap
 msgid "*Study Extent* - a description of the physical and temporal conditions under which the sampling occurred. The geographic study extent is usually a surrogate (representative area of) for the larger area documented in the \"Study Area Description\" field of the Project metadata page.\n"
-msgstr "*Área de Estudio* - Una descripción de las condiciones físicas y temporales bajo las cuales ocurrió el muestreo. El área geográfica de estudio generalmente sustituye el área documentada en “Descripción del área de estudio” de la sección “Datos del Proyecto”.\n"
+msgstr "*Área de estudio*: una descripción de las condiciones físicas y temporales bajo las cuales ocurrió el muestreo. El área geográfica de estudio generalmente sustituye el área documentada en “Descripción del área de estudio” de la sección “Datos del proyecto”.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:427
 #, no-wrap
 msgid "*Sampling Description* - a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.\n"
-msgstr "*Descripción del Muestreo* - Descripción de los protocolos de muestreo usados para originar los datos del recurso. La descripción puede ser similar a los procedimientos de muestreo encontrados en la sección de métodos de un artículo científico.\n"
+msgstr "*Descripción del muestreo* : descripción de los protocolos de muestreo usados para recolectar los datos del recurso. La descripción puede ser similar a los procedimientos de muestreo encontrados en la sección de métodos de un artículo científico.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:428
 #, no-wrap
 msgid "*Quality Control* - a description of actions taken to either control or assess the quality of data resulting from the associated method step(s).\n"
-msgstr "*Control de Calidad* - Una descripción de las acciones tomadas para controlar o evaluar la calidad de los datos que resultan de la sección \"Metodología paso a paso\".\n"
+msgstr "*Control de calidad*: una descripción de las acciones tomadas para controlar o evaluar la calidad de los datos resultantes de la metodología paso a paso asociada. \n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:429
 #, no-wrap
 msgid "*Step Description* - A method step is one in a series of repeated sets of elements that document a series of methods and procedures used in the study, and the processing steps leading to the production of the data files. These include text descriptions of the procedures, relevant literature, software, instrumentation, source data and any quality control measures taken. Each method should be described in enough detail to allow other researchers to interpret and repeat, if required, the study.\n"
-msgstr "*Metodología paso a paso* - Este campo describe los elementos que documentan la serie de métodos y procedimientos utilizados en el estudio, y los pasos que condujeron a la producción de los datos del archivo. Estos incluyen descripciones textuales de los procedimientos, la literatura relevante, software, instrumentación, conjuntos de datos y las medidas de control de calidad adoptadas. Cada método debe ser descrito suficiente detalle para, si es necesario, permitir a otros investigadores interpretar y replicar el estudio.\n"
+msgstr "*Metodología paso a paso*: este campo describe los elementos que documentan la serie de métodos y procedimientos utilizados en el estudio y los pasos que condujeron a la producción de los datos del archivo. Estos incluyen descripciones textuales de los procedimientos, literatura relevante, software, instrumentación, conjuntos de datos y las medidas de control de calidad adoptadas. Cada método debe ser descrito en suficiente detalle para, si es necesario, permitir a otros investigadores interpretar y replicar el estudio.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:430
 #, no-wrap
 msgid "*Add new method step* -  click on this link to add a text box labelled \"Step Description\" to the page (see above). One may add as many method steps as desired.\n"
-msgstr "*Añadir nuevo(a) paso metodológico* - Haciendo clic sobre este enlace, se adiciona a la página un cuadro de texto llamado “Descripción de la metodología paso a paso”. Un paso metodológico es uno de una serie de pasos llevados a cabo para el muestreo. Se pueden adicionar tantos pasos metodológicos como se desee.\n"
+msgstr "*Añadir paso metodológico*: haciendo clic sobre este enlace, se agrega a la página un cuadro de texto llamado “Descripción de la metodología paso a paso”. Un paso metodológico es uno de una serie de pasos llevados a cabo para el muestreo. Se pueden adicionar tantos pasos metodológicos como se desee.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:431
 #, no-wrap
 msgid "*Remove this method step* - click on this link to remove the method step text box that follows immediately below the link.\n"
-msgstr "*Eliminar paso metodológico* - Haciendo clic sobre este enlace, se elimina el paso metodológico (cuadro de texto Descripción de la Metodología Paso a Paso) que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar paso metodológico*: haga clic en este enlace para eliminar el cuadro de texto del paso del método que está inmediatamente debajo del enlace.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:435
