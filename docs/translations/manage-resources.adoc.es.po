@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 17:58\n"
+"PO-Revision-Date: 2022-01-22 18:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1237,30 +1237,30 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:322
 #, no-wrap
 msgid "*Coverage Map* - if connected to the Internet, a map of the earth will appear on the geographic coverage page. This map shows a box with control points (markers) on all corners. The corners correspond with the values in the Latitude and Longitude text boxes, explained below. Drag the entire box, or drag individual markers to a new location to reset the geographic bounds of the box. The corresponding latitude and longitude values will change to match the box on the map. The map features hill shading, natural vegetation colours, advanced labelling, etc. The map has buttons to zoom in (+) and zoom out (-) and can be dragged in any direction to change the area of the earth being shown.\n"
-msgstr "*Mapa de cobertura* - si está conectado a Internet, aparecerá un mapa de la Tierra en la página de cobertura geográfica. Este mapa muestra una caja con puntos de control (marcadores) en todas las esquinas. Las esquinas coinciden con los valores de los cuadros de texto de latitud y longitud que se explican a continuación. Arrastre todo el cuadro o arrastre los marcadores individuales a una nueva ubicación para restablecer los límites geográficos del cuadro. Los valores de latitud y longitud correspondientes cambiarán para coincidir con el recuadro en el mapa. El mapa cuenta con sombreado de montañas, colores naturales de la vegetación, etiquetado avanzado, etc. El mapa dispone de botones para acercarse (+) y alejarse (-) y puede arrastrarse en cualquier dirección para cambiar la zona de la tierra que se muestra.\n"
+msgstr "*Mapa de cobertura*: si está conectado a Internet, aparecerá un mapa de la Tierra en la página de cobertura geográfica. Este mapa muestra una caja con puntos de control (marcadores) en todas las esquinas. Las esquinas coinciden con los valores de los cuadros de texto de latitud y longitud que se explican a continuación. Arrastre todo el cuadro o arrastre los marcadores individuales a una nueva ubicación para restablecer los límites geográficos del cuadro. Los valores de latitud y longitud correspondientes cambiarán para coincidir con el recuadro en el mapa. El mapa cuenta con sombreado de montañas, colores naturales de la vegetación, etiquetado avanzado, etc. El mapa dispone de botones para acercarse (+) y alejarse (-) y puede arrastrarse en cualquier dirección para cambiar la zona de la tierra que se muestra.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:323
 #, no-wrap
 msgid "*Set global coverage?* - click on this check box to change the geographic coverage to cover the entire earth.\n"
-msgstr "*Establecer cobertura global* - Haciendo clic en este cuadro, la cobertura geográfica cambia a una cobertura entera de la Tierra.\n"
+msgstr "*Establecer cobertura global*: al hacer clic en este cuadro, la cobertura geográfica cambia a una cobertura completa de la Tierra.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:324
 #, no-wrap
 msgid "*South/West & North/East* - these four text boxes correspond to the SW and NE corners of the box bounding the area covered by the resource. The values to enter in these text boxes are decimal degrees (e.g. 45.2345), with the standard limiting values of -90 to +90 latitude (South/North) and -180 to +180 longitude (West/East), with positive latitude in the northern hemisphere and positive longitude east of the Greenwich Meridian to the International Dateline. Manipulating the bounding box markers on the map will set these values, but valid values can all be entered in these text boxes directly if desired. The map will update when the information on the page is saved by clicking on the button labelled \"Save\".\n"
-msgstr "*Sur/Oeste y Norte/Este* - estas cuatro casillas de texto corresponden a las esquinas SO y NE del recuadro que delimita el área cubierta por el recurso. Los valores a introducir en estas casillas de texto son grados decimales (p. ej. 45.2345), con los valores límite estándar de -90 a +90 de latitud (Sur/Norte) y -180 a +180 de longitud (Oeste/Este), con latitud positiva en el hemisferio norte y longitud positiva al este del meridiano de Greenwich hasta la línea internacional de cambio de fecha. Si se manipulan los marcadores de los recuadros delimitadores en el mapa se establecerán nuevos valores, pero los valores válidos pueden introducirse directamente en estos cuadros de texto si se desea. El mapa se actualizará cuando se guarde la información de la página haciendo clic en el botón \"Guardar\".\n"
+msgstr "*Sur/Oeste y Norte/Este*: estas cuatro casillas de texto corresponden a las esquinas SO y NE del recuadro que delimita el área cubierta por el recurso. Los valores a introducir en estas casillas de texto son grados decimales (p. ej., 45.2345), con los valores límite estándar de -90 a +90 de latitud (Sur/Norte) y -180 a +180 de longitud (Oeste/Este), con latitud positiva en el hemisferio norte y longitud positiva al este del meridiano de Greenwich hasta la línea internacional de cambio de fecha. Si se manipulan los marcadores de los recuadros delimitadores en el mapa se establecerán nuevos valores, pero los valores válidos pueden introducirse directamente en estos cuadros de texto si se desea. El mapa se actualizará cuando se guarde la información de la página haciendo clic en el botón \"Guardar\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:325
 #, no-wrap
 msgid "*Description* - a textual description of the geographic coverage. This information can be provided in place of, or to augment the information in the other fields on the page.\n"
-msgstr "*Descripción* - una descripción textual de la cobertura geográfica. Esta información puede proporcionarse en lugar de o para aumentar la información en los otros campos de la página.\n"
+msgstr "*Descripción*: una descripción textual de la cobertura geográfica. Esta información puede proporcionarse en lugar de o para aumentar la información en los otros campos de la página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:329
 msgid "This metadata page allows the user to enter information about one of more groups of taxa covered by the resource, each of which is called a taxonomic coverage. Each coverage consists of a description and list of taxa, where each taxon consists of a taxon name (either scientific or common) and a taxon rank. Before any taxonomic coverages are created, the page shows only a link labelled \"Add new taxonomic coverage\". Clicking on this link will show a text box for the description and several links. Below is a screen image showing the Taxonomic Coverage page before any data have been entered, followed by explanations of the controls seen on the page in this state."
-msgstr "Esta página de metadatos permite al usuario ingresar información acerca de uno o más grupos de taxa cubiertos por el recurso, donde cada uno es llamado como una cobertura taxonómica. Cada cobertura consiste en una descripción y lista de taxa, donde cada taxón consta de un nombre del taxón (nombre científico o común) y una categoría taxonómica. Antes de que sea creada alguna cobertura taxonómica, la página mostrará un enlace denominado “Añadir nuevo(a) cobertura taxonómica”. Haciendo clic sobre este enlace, se mostrará un cuadro de texto para la descripción y varios enlaces. A continuación se muestra una imagen de la página \"Cobertura Taxonómica\" antes de ingresar algún dato, seguida por explicaciones para los campos vistos en la página en este estado."
+msgstr "Esta página de metadatos permite al usuario introducir información sobre uno o más grupos de taxa cubiertos por el recurso, cada uno de los cuales se denomina como una cobertura taxonómica. Cada cobertura consiste en una descripción y una lista de taxa, donde cada taxa consiste en un nombre de taxón (ya sea científico o común) y un rango del taxón. Antes de que se creen coberturas taxonómicas, la página sólo muestra un enlace llamado \"Añadir cobertura taxonómica\". Al hacer clic en este enlace aparecerá un cuadro de texto para la descripción y varios enlaces. A continuación se muestra una imagen de la página \"Cobertura taxonómica\" antes de ingresar algún dato, seguida por explicaciones para los campos vistos en la página en este estado."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:330
@@ -1272,19 +1272,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:333
 #, no-wrap
 msgid "*Remove this taxonomic coverage* - click on this link to remove the taxonomic coverage that follows immediately below the link, including the description, the list, and all single taxon entries.\n"
-msgstr "*Eliminar cobertura taxonómica* - Haciendo clic en este enlace, se elimina la cobertura taxonómica que está inmediatamente debajo del enlace, incluyendo la descripción, la lista y todos los taxones ingresados.\n"
+msgstr "*Eliminar cobertura taxonómica: al hacer clic en este enlace se elimina la cobertura taxonómica que está inmediatamente debajo del enlace, incluyendo la descripción, la lista y todos los taxa ingresados.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:334
 #, no-wrap
 msgid "*Description* - a textual description of a range of taxa represented in the resource. Each taxonomic coverage has its own description. This information can be provided in place of, or to augment the information in the other fields on the page.\n"
-msgstr "*Descripción* - Una descripción textual de una categoría taxonómica de los taxones representados por el recurso. Cada cobertura taxonómica tiene su propia descripción. Esta información puede ser proveída en lugar de, o para argumentar la información contenida en los otros campos de la página.\n"
+msgstr "*Descripción*: una descripción textual de una categoría taxonómica de los taxa representados por el recurso. Cada cobertura taxonómica tiene su propia descripción. Esta información puede ser proveída en lugar de o para argumentar la información contenida en los otros campos de la página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:335
 #, no-wrap
 msgid "*Add several taxa* - this link adds a text box labelled \"Taxon List\" to the page.\n"
-msgstr "*Añadir varios taxa* - Este enlace adiciona un cuadro de texto a la página, llamado “Lista de taxa”.\n"
+msgstr "*Añadir varios taxa*: este enlace adiciona un cuadro de texto a la página llamado “Lista de taxa”.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:336
@@ -1296,19 +1296,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:339
 #, no-wrap
 msgid "*Taxon List* - this text box allows the user to enter a list of taxa with each taxon on a separate line by using the ENTER key within the text box. The taxa entered in this list are treated as scientific names.\n"
-msgstr "*Lista de taxa* - este cuadro de texto permite a los usuarios ingresar una lista de taxa con un taxón por línea, usando la tecla ENTER dentro del cuadro de texto. Los taxones ingresados en esta lista son tratados como nombres científicos.\n"
+msgstr "*Lista de taxa* : este cuadro de texto permite a los usuarios ingresar una lista de taxa con un taxón por línea, usando la tecla ENTER dentro del cuadro de texto. Los taxa ingresados en esta lista son tratados como nombres científicos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:340
 #, no-wrap
 msgid "*Add* - this button processes the values entered in the Taxon List text box and creates scientific names for each of them within the taxonomic coverage.\n"
-msgstr "*Agregar* - Este botón procesa los valores ingresados en el cuadro de texto “Lista taxonómica” y crea nombres científicos para cada uno de ellos dentro de la cobertura taxonómica.\n"
+msgstr "*Agregar* : este botón procesa los valores ingresados en el cuadro de texto “Lista taxonómica” y crea nombres científicos para cada uno de ellos dentro de la cobertura taxonómica.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:341
 #, no-wrap
 msgid "*Add new taxon* - this link adds controls to enter a single taxon to the taxonomic coverage - text boxes for Scientific Name and Common Name, a select box for Rank and a trash icon. The taxon can contain any combination of scientific and common name with an optional rank.\n"
-msgstr "*Añadir nuevo(a) taxón* - Este enlace adiciona campos para ingresar un solo taxón a la cobertura geográfica - cuadros de texto para el Nombre Científico y Nombre Común, un cuadro de selección para la Categoría Taxonómica y un ícono de papelera. El taxón puede contener alguna combinación de nombre científico y común con una categoría taxonómica opcional.\n"
+msgstr "*Añadir taxón*: este enlace agrega campos para ingresar un solo taxón a la cobertura geográfica, cuadros de texto para el Nombre Científico y Nombre Común, un cuadro de selección para la Categoría Taxonómica y un ícono de papelera. El taxón puede contener alguna combinación de nombre científico y común con una categoría taxonómica opcional.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:342
@@ -1320,31 +1320,31 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:345
 #, no-wrap
 msgid "*Scientific Name* - this text box is meant to contain the scientific name for the taxon.\n"
-msgstr "*Nombre Científico* - Este cuadro de texto está destinado para el nombre científico del taxón.\n"
+msgstr "*Nombre científico*: este cuadro de texto está destinado para el nombre científico del taxón.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:346
 #, no-wrap
 msgid "*Common Name* - this text box is meant to contain the scientific name for the taxon.\n"
-msgstr "*Nombre Común* - Este cuadro de texto está destinado para el nombre común del taxón.\n"
+msgstr "*Nombre común* : este cuadro de texto está destinado para el nombre común del taxón.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:347
 #, no-wrap
 msgid "*Rank* - this text box is meant to contain the taxonomic rank of the taxon.\n"
-msgstr "*Categoría* - Este cuadro de texto está destinado para la categoría taxonómica del taxón.\n"
+msgstr "*Categoría*: este cuadro de texto está destinado para la categoría taxonómica del taxón.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:348
 #, no-wrap
 msgid "*Trash Icon* image:ipt2/controls/Control-TrashIcon.png[] - clicking on this icon will remove the taxon (scientific name, common name, and rank) to the left of the icon from the taxonomic coverage.\n"
-msgstr "*Ícono de Papelera* image:ipt2/controls/Control-TrashIcon.png[] - Al hacer clic en el ícono se eliminarán los datos asociados al taxón (nombre científico, nombre común, y categoría) que se encuentran a la izquierda de ícono de la cobertura taxonómica.\n"
+msgstr "*Ícono de papelera* image:ipt2/controls/Control-TrashIcon.png[] (Actualmente botón \"Eliminar\"): al hacer clic en el ícono se eliminarán los datos asociados al taxón (nombre científico, nombre común y categoría)  a la izquierda del icono de la cobertura taxonómica.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:349
 #, no-wrap
 msgid "*Add new taxonomic coverage* - click on this link to initiate a form for a new taxonomic coverage with a text box labelled \"Description\" and links to \"Add several taxa\" and \"Add new taxon\" as described above.\n"
-msgstr "*Añadir nuevo(a) cobertura taxonómica* - Haciendo clic sobre este enlace, se inicia una nueva cobertura taxonómica como se describió anteriormente, con un cuadro de texto marcado como “Descripción” y enlaces a “Añada varios taxones” y “Añadir nuevo(a) taxón”.\n"
+msgstr "*Añadir cobertura taxonómica*: al hacer clic sobre este enlace, se agrega una nueva cobertura taxonómica como se describió anteriormente, con un cuadro de texto marcado como “Descripción” y enlaces a “Añadir varios taxa” y “Añadir taxón”.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:353
