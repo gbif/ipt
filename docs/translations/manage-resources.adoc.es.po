@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 15:59\n"
+"PO-Revision-Date: 2022-01-22 16:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -729,25 +729,25 @@ msgstr "La barra lateral al lado izquierdo de la página contiene los enlaces pa
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:188
 msgid "To the right of the sidebar are rows of information divided into two columns of information; the first column (left-hand side) lists the names of fields in the extension; the second column (right-hand side) contains a set of controls (select boxes, text boxes) to set the value the extension field is supposed to contain. If a field name has been chosen in the source data field select box, text labelled \"Source Sample\" and a button labelled \"Translate\" will appear below it. Descriptions of the controls that may appear in the right-hand column of the data mapping table are given below:"
-msgstr "La columna de la derecha contiene íconos de información y controles (cuadros de selección, cuadros de texto) para establecer el valor que debería tener el elemento de la extensión. En los cuadros de selección y de texto puede haber un texto de explicación acerca del elemento de la extensión. Adicionalmente, si el nombre de un elemento ha sido elegido en el cuadro de selección de elemento de fuente de datos, aparecerá un texto etiquetado como \"Ejemplo de Fuente\" y un botón \"Traducir\". Las descripciones de los controles que pueden aparecer en la columna al costado derecho de la tabla de mapeo de los datos, estará por debajo de la imagen de la pantalla."
+msgstr "A la derecha de la barra lateral hay filas de información divididas en dos columnas: la primera columna (lado izquierdo) contiene los nombres de los campos de la extensión, la segunda columna (lado derecho) contiene un conjunto de controles (cuadros de selección, cuadros de texto) para establecer el valor que debe contener el campo de la extensión. Si se ha elegido un nombre de campo en el cuadro de selección del campo de conjuntos de datos, aparecerá debajo un texto etiquetado como \"Muestra de los datos\" y un botón etiquetado como \"Traducir\". A continuación se describen los controles que pueden aparecer en la columna derecha de la tabla de asignación de datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:190
 #, no-wrap
 msgid "*Data source field select box* - The left-hand select box is either blank or contains the name of a field from the data source. The IPT fills as many selections as it can from extension field names that match a data source field name. All of the remaining source field select boxes are left blank, signifying that the extension field has not been mapped to a source data field. If a field name is selected, the resource will use the value from that field in the source data as the value for the extension field in the Darwin Core Archive created by the IPT when the resource is published.\n"
-msgstr "*Cuadro de selección del elemento de la fuente de los datos* - el cuadro de selección de la izquierda está en blanco o contiene el nombre de un campo del origen de datos. El IPT diligencia tantas selecciones como sea posible a partir de los nombres de elementos de la extensión que coincidan con el nombre del elemento de la fuente de los datos. Todos los cuadros restantes de selección del elemento fuente, se dejarán en blanco, lo que significa que el elemento de la extensión no se ha mapeado a un elemento de la fuente de los datos. Si un nombre de elemento es seleccionado cuando se publique el recurso, el recurso utilizará el valor de ese elemento en la fuente de datos como el valor para el elemento de la extensión en el Archivo Darwin Core creado por el IPT.\n"
+msgstr "*Cuadro de selección del elemento del conjunto de datos*: el cuadro de selección de la izquierda está en blanco o contiene el nombre de un campo del conjunto de datos. El IPT diligencia tantas selecciones como sea posible a partir de los nombres de elementos de la extensión que coincidan con el nombre del elemento del conjunto de datos. Todos los cuadros de selección de campos fuente restantes se dejan en blanco, lo que significa que el campo de extensión no se ha asignado a un campo del conjunto de datos. Si se selecciona un nombre de campo, el recurso utilizará el valor de ese campo en el conjunto de datos como valor para el campo de extensión en el Archivo Darwin Core creado por el IPT cuando se publique el recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:191
 #, no-wrap
 msgid "*Data source field select box* - ID field - This field can be matched to a source data field, or it can be set to \"No ID\" signifying that the field will not be mapped to a source data field. The ID field is required in order to link records from the two sources together. The ID can be auto-generated from the \"Line Number\" or \"UUID Generator\", but this feature is exclusively available when mapping a source to the Taxon Core Type's taxonID field.\n"
-msgstr "*Cuadro de selección del elemento de la fuente de los datos* - ID del elemento - este elemento puede ser asignado a un campo en la fuente de datos, o puede seleccionarse el valor \"Sin ID\" lo cual significa que el elemento no será mapeado a un campo en la fuente de datos. El ID es requerido para relacionar registros provenientes de dos fuentes. El ID puede ser generado automáticamente a partir del \"Número de línea\" o del \"Generador UUID\", esta característica es exclusiva del ID del Taxón cuando se realiza un mapeo de una fuente de datos al Taxón Core.\n"
+msgstr "*Cuadro de selección del campo del conjunto de datos*: ID del campo. Este campo puede ser asignado a un campo en el conjunto de datos, o puede seleccionarse \"Sin ID\" lo cual significa que el elemento no será mapeado a un campo en el conjunto de datos. El ID es requerido para vincular los registros de las dos fuentes. El ID puede ser generado automáticamente a partir del \"Número de línea\" o del \"Generador UUID\", pero esta característica es exclusiva del ID del Taxón cuando se realiza un mapeo de una fuente de datos al Taxon Core.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:192
 #, no-wrap
 msgid "*Constant value text box* - To set the published value of any non-identifier extension field to a single value for every record in the data source, enter the desired constant for the extension field in the text box to the right of the source field select box. To activate the text box, make sure that no value is selected in the source field select box. Example:\n"
-msgstr "*Cuadro de texto de Valor Constante* - para establecer el valor publicado de cualquier elemento no identificador de la extensión como valor único para cada registro de la fuente de los datos, asegúrese de que ningún valor sea seleccionado en el cuadro de selección del elemento fuente, e ingrese el valor constante deseado para el elemento de la extensión en el cuadro de texto a la derecha del cuadro de selección del elemento fuente. Ejemplo:\n"
+msgstr "*Cuadro de texto de valor constante*: para establecer el valor publicado de cualquier campo de extensión sin identificador en un único valor para cada registro del conjunto de datos, introduzca la constante deseada para el campo de extensión en el cuadro de texto situado a la derecha del cuadro de selección del campo del conjunto de datos. Para activar el cuadro de texto, asegúrese de que no hay ningún valor seleccionado en el cuadro de selección del campo del conjunto de datos. Ejemplo:\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:193
@@ -759,7 +759,7 @@ msgstr "ipt2/manage/IPTManageResourceMappingConstant.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:196
 #, no-wrap
 msgid "*Constant controlled value select box* - If the right-hand column for the extension field contains a second select box instead of a text box, this means that the field is governed by a controlled vocabulary. In this case, choose a value from the vocabulary list to use as a constant value in place of typing a constant into a text box.\n"
-msgstr "*Cuadro de selección de Valor constante controlado* - si la columna de la derecha para el elemento de la extensión contiene un segundo cuadro de selección en lugar de un cuadro de texto, esto significa que el elemento se rige por un vocabulario controlado. En este caso, escoja un valor de la lista de vocabulario para utilizar como un valor constante en lugar de simplemente introducir una constante en un cuadro de texto.\n"
+msgstr "*Cuadro de selección de valor constante controlado*: si la columna de la derecha del campo de extensión contiene un segundo cuadro de selección en lugar de un cuadro de texto, significa que el elemento se rige por un vocabulario controlado. En este caso, escoja un valor de la lista de vocabulario para utilizar como un valor constante en lugar de simplemente introducir una constante en un cuadro de texto.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:197
@@ -771,7 +771,7 @@ msgstr "ipt2/manage/IPTManageResourceMappingSelectConstant.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:200
 #, no-wrap
 msgid "*Use resource DOI* - (Special constant controlled value) It is possible to set the default value for datasetID equal to the resource DOI. This option only applies to extensions having the Darwin Core term http://rs.tdwg.org/dwc/terms/#datasetID[datasetID], such as the Occurrence extension. To activate the checkbox, make sure that no source data field has been selected and no constant value has been entered.\n"
-msgstr "*Usar el DOI del recurso* - (Special constant controlled value) Es posible fijar el valor predeterminado del ID del conjunto de datos para que este sea igual al DOI del recurso. Esta opción solo aplica para extensiones que contengas el termino Darwin Core term http://rs.tdwg.org/dwc/terms/#datasetID[datasetID], como la extensión Occurrence. Para activar el cuadro de selección, asegúrese que no haya seleccionado ningún campo del conjunto de datos y que ningún valor constante haya sido ingresado.\n"
+msgstr "*Usar el DOI del recurso* : (valor constante controlado especial) Es posible fijar el valor predeterminado del ID del conjunto de datos para que este sea igual al DOI del recurso. Esta opción solo aplica para extensiones que contengan el termino Darwin Core http://rs.tdwg.org/dwc/terms/#datasetID[datasetID], como la extensión Occurrence. Para activar la casilla, asegúrese de que no se ha seleccionado ningún campo del conjunto de datos, ni se ha introducido ningún valor constante.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:201
@@ -783,13 +783,13 @@ msgstr "ipt2/manage/IPTManageResourceMappingSourceDatasetID.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:204
 #, no-wrap
 msgid "*Vocabulary detail button* - Extension fields that are governed by a controlled vocabulary will have an icon beside the controlled value select box. Click on this icon to open a <<Vocabulary detail page>> in a new browser tab on which is a list of accepted values for the extension field with explanations and alternative synonyms in various languages.\n"
-msgstr "*Botón Detalle del Vocabulario* - los elementos de extensión que se rigen por un vocabulario controlado, tendrán un ícono entre el ícono de información y el cuadro de selección del elemento fuente. Haga clic en este ícono para abrir una página de <<Detalle de Vocabulario>> en una nueva ventana del navegador (o pestaña) en la que se encuentra una lista de los valores aceptados para el elemento de extensión con explicaciones y sinónimos alternativos en varios idiomas.\n"
+msgstr "*Botón de detalle del vocabulario*: los campos de extensión que se rigen por un vocabulario controlado tendrán un icono junto a la casilla de selección de valores controlados. Haga clic en este ícono para abrir una <<Página de detalle del vocabulario>> en una nueva pestaña del navegador, en la que encontrará una lista de valores aceptados para el campo de extensión con explicaciones y sinónimos en varios idiomas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:205
 #, no-wrap
 msgid "*Source Sample* - This area shows actual values from the first five records of the selected field of the source data, separated by spaces and the character `|`. This helps the user understand if the contents of the source data field are appropriate for the extension field to which it has been mapped.\n"
-msgstr "*Muestra de los datos* - esta área muestra los valores reales de los primeros registros del elemento seleccionado de la fuente de datos, separados por espacios y el carácter `|`. Esto ayuda al usuario a comprender si el contenido del elemento de la fuente de datos es apropiado para el elemento de extensión al que ha sido mapeado.\n"
+msgstr "*Muestra de los datos*: esta área muestra los valores reales de los primeros registros del elemento seleccionado de la fuente de datos, separados por espacios y el carácter `|`. Esto ayuda al usuario a comprender si el contenido del elemento de la fuente de datos es apropiado para el elemento de extensión al que ha sido mapeado.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:206
