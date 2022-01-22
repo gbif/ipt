@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 15:29\n"
+"PO-Revision-Date: 2022-01-22 15:59\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -456,7 +456,7 @@ msgstr "*Delimitador de texto*: el o los caracteres que indican una ruptura entr
 #: en/modules/ROOT/pages/manage-resources.adoc:102
 #, no-wrap
 msgid "*Field Quotes* - a single character (or none) that is used to enclose the contents of a column in the data (e.g., `'` or `\"`). Please note this will not properly enclose columns whose content includes newline characters (\\n) or carriage returns (`\\r`).\n"
-msgstr "*Citas de campos* : solo un carácter (o ninguno) utilizado para delimitar el contenido de una columna en los datos (p. ej., `'` o `\"`). Por favor note que esto no abarcará con precisión llas columnas cuyo contenido incluya caracteres de línea nueva (\\n) o saltos de línea (`\\r`).\n"
+msgstr "*Delimitadot de texto*: un solo carácter (o ninguno) que se utiliza para delimitar el contenido de una columna en los datos (por ejemplo, `'` o `\"`). Tenga en cuenta que esto no delimitará correctamente las columnas cuyo contenido incluya una nueva línea de caracteres (\\n) o saltos de línea (`\\r`).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:103
@@ -476,7 +476,7 @@ msgstr "*Codificación de caracteres*: el sistema que determina las definiciones
 #: en/modules/ROOT/pages/manage-resources.adoc:137
 #, no-wrap
 msgid "*Date Format* - a code describing the format of fields having a date data type (e.g., `YYYY-MM-DD` for four-digit year, two-digit month, and two-digit day separated by dashes).\n"
-msgstr "*Formato de fechas*: un código que describe el formato de los elementos que tienen un tipo de datos de fecha (p. ej., `AAAA-MM-DD` para año de cuatro dígitos, mes de dos dígitos y día de dos dígitos, separados por guiones).\n"
+msgstr "*Formato de fecha*: un código que describe el formato de los elementos que tienen un tipo de datos de fecha (p. ej., `AAAA-MM-DD` para año de cuatro dígitos, mes de dos dígitos y día de dos dígitos, separados por guiones).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:106
@@ -508,7 +508,7 @@ msgstr "Base de datos como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:117
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, choose \"Database\" from the list of source data types in the left-hand column of the Source Data area of the Resource Overview page, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos de tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones de bases de datos compatibles.  Para configurar una base de datos como fuente de datos, elija \"Base de datos\" en la lista de tipos de conjuntos de datos en la columna izquierda del área de \"Conjuntos de datos\" en la página de \"Vista general del recurso\", luego haga clic en el botón \"Conectar\". Esto abrirá una página detallada de Conjunto de datos."
+msgstr "El IPT puede utilizar conexiones de bases de datos para importar datos desde tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones de bases de datos compatibles.  Para configurar una base de datos como fuente de datos, elija \"Base de datos\" en la lista de tipos de conjuntos de datos en la columna izquierda del área de \"Conjuntos de datos\" en la página de \"Vista general del recurso\", luego haga clic en el botón \"Conectar\". Esto abrirá una página detallada de Conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
@@ -560,7 +560,7 @@ msgstr "*Sistema de la base de datos*: el sistema de administración de bases de
 #: en/modules/ROOT/pages/manage-resources.adoc:131
 #, no-wrap
 msgid "*Host* - The database server address, optionally including the non-default port number (e.g., `localhost` or `mysql.example.org:1336`). For ODBC connections, this is not needed.\n"
-msgstr "*Host*: la dirección del servidor de la base de datos, que opcionalmente incluye el número de puerto no predeterminado (p. ej., `localhost` o `mysql.example.org:1336`). Para las conexiones ODBC, esto no es necesario.\n"
+msgstr "*Alojador*: la dirección del servidor de la base de datos, que opcionalmente incluye el número de puerto no predeterminado (p. ej., `localhost` o `mysql.example.org:1336`). Para las conexiones ODBC, esto no es necesario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:132
@@ -638,12 +638,12 @@ msgstr "Mapeo Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:156
 msgid "This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed."
-msgstr "Esta área de la página \"Vista general del recurso\", permite al usuario mapear los elementos de los datos de entrada a los elementos de las extensiones instaladas e identificar los elementos que aún no han sido mapeados. Esta opción no estará disponible hasta que se haya añadido correctamente al menos una fuente de datos y se haya instalado al menos una extensión."
+msgstr "Esta área de la página \"Vista general del recurso\", permite al usuario mapear los elementos de los datos de entrada a los elementos de las extensiones instaladas e identificar los elementos que aún no han sido mapeados. Esta opción no estará disponible hasta que se haya añadido correctamente al menos un conjunto de datos y se haya instalado al menos una extensión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:158
 msgid "Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the \"Configure Core Types and Extensions\" heading in the \"Administration Menu\" section for an explanation of how to install extensions."
-msgstr "Una vez que se hayan cumplido estas condiciones, la columna de la izquierda del área de Mapeo Darwin Core contendrá un cuadro de selección con una lista de estándares y extensiones que se han instalado. Seleccione un estándar y realice el enlace antes de seleccionar una extensión para mapear. Seleccione la extensión adecuada que contenga los elementos que coincidan con aquellos a mapear en el conjunto de datos. Si el estándar o la extensión adecuada no aparecen en el cuadro de selección, tendrán que ser instalados primero. Consulte la información del encabezado \"Configuración estándares y extensiones\" en la sección \"Menú administración\" para obtener una explicación sobre cómo instalar extensiones."
+msgstr "Una vez que se hayan cumplido estas condiciones, la columna de la izquierda del área de Mapeo Darwin Core contendrá un cuadro de selección con una lista de cores y extensiones que se han instalado. Seleccione un core y realice el enlace antes de seleccionar una extensión para mapear. Seleccione la extensión adecuada que contenga los elementos que coincidan con aquellos a mapear en el conjunto de datos. Si el core o la extensión adecuada no aparecen en el cuadro de selección tendrán que ser instalados primero. Consulte la información del encabezado \"Configuración de cores y extensiones\" en la sección \"Menú administración\" para obtener una explicación sobre cómo instalar extensiones."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:159
@@ -654,7 +654,7 @@ msgstr "ipt2/manage/IPTManageResourceDwCMapping.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:162
 msgid "After the desired core type or extension is selected, click on the button labelled \"Add\" to open the <<Data Source selection page>>."
-msgstr "Una vez seleccionado el estándar o la extensión deseada, haga clic en el botón \"Agregar\" para abrir la <<Página de selección del conjunto de datos>>."
+msgstr "Una vez seleccionado el core o la extensión deseada, haga clic en el botón \"Agregar\" para abrir la <<Página de selección del conjunto de datos>>."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:163
@@ -670,12 +670,12 @@ msgstr "Esta página ofrece una explicación del tipo de datos que la extensión
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:167
 msgid "A resource must only use 1 core type: choose \"Darwin Core Checklist\" when the basis of the resource is taxon names, or choose \"Darwin Core Occurrence\" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions."
-msgstr "Un recurso debe usar solamente un tipo de estándar: Elija \"Listados de especies Darwin Core\" cuando la base del recurso sean nombres de taxones o elija \"Registro biológico Darwin Core\" cuando la base del recurso sean observaciones en campo o especímenes en una colección. Sólo cuando se haya mapeado el estándar deseado, será posible mapear otras extensiones."
+msgstr "Un recurso debe usar solamente un tipo de estándar: elija \"Darwin Core Taxon\" cuando la base del recurso sean nombres de taxones o elija \"Darwin Core Occurrence\" cuando la base del recurso sean observaciones en campo o especímenes en una colección. Sólo cuando se haya mapeado el core deseado, será posible mapear otras extensiones."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:169
 msgid "It is possible to map another core type as an extension as long as it is different from the core type mapped."
-msgstr "Es posible mapear otro tipo de estándar como una extensión, siempre y cuando éste sea diferente del tipo de estándar mapeado inicialmente."
+msgstr "Es posible mapear otro tipo de core como una extensión, siempre y cuando éste sea diferente del tipo de core mapeado inicialmente."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:170
@@ -686,7 +686,7 @@ msgstr "ipt2/manage/IPTManageResourceSourceSelect.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:173
 msgid "Select the data source to map, and then click on the button labelled \"Save\". This will open the Data Mapping detail page (skip to the <<Data Mapping detail page>> below for help doing the actual mapping)."
-msgstr "Seleccione el conjunto de datos a mapear y luego haga clic en el botón \"Guardar\". Esto abrirá la Página inicial de Mapeo del Conjunto de Datos (ver <<Página de vista general del Mapeo del Conjunto de Datos>> abajo para ayuda acerca del mapeo)."
+msgstr "Seleccione el conjunto de datos a mapear y luego haga clic en el botón \"Guardar\". Esto abrirá la página de vista general del \"Mapeo del conjunto de datos\" (vaya a  <<Página de vista general del mapeo del conjunto de datos>> abajo para obener ayuda acerca del mapeo)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:175
@@ -703,7 +703,7 @@ msgstr "ipt2/manage/IPTManageResourceDwCMapping2.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:178
 #, no-wrap
 msgid "Data Mapping detail page"
-msgstr "Página de vista general del Mapeo del Conjunto de Datos"
+msgstr "Página de vista general del mapeo del conjunto de catos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:180
@@ -719,12 +719,12 @@ msgstr "ipt2/manage/IPTManageResourceSourceMapping.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:184
 msgid "The Data Mapping page allows a user to specify exactly how the data accessible through this IPT resource are to be configured based on the selected extension. At the top of the page is description of what extension the source data is being mapped to. The name of the source data is a link back to the edit source data page. The name of the extension is a link to a description of the extension."
-msgstr "La página Mapeo de Datos permite al usuario especificar exactamente cómo se configuran los datos disponibles a través de este recurso IPT, con base en la extensión seleccionada. El nombre del conjunto de datos es un enlace a la página de edición del conjunto de datos. Por otra parte el nombre de la extensión es un enlace a la descripción de la extensión."
+msgstr "La página \"Mapeo del conjunto de datos\" permite al usuario especificar exactamente cómo deben configurarse los datos disponibles a través de este recurso IPT en función de la extensión seleccionada. En la parte superior de la página se describe a qué extensión se están mapeando los datos del conjunto de datos. El nombre del conjunto de datos funciona como un enlace a la página de edición del conjunto de datos. El nombre de la extensión funciona como un enlace a la descripción de la extensión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:186
 msgid "A sidebar on the left-hand side of the page has links to jump to specific sets of related fields (classes/groups) in the extension plus filters to show and hide fields on the page."
-msgstr "La barra lateral al lado izquierdo de la página contiene los enlaces para acceder a sets específicos de campos relacionados (clases/grupos) en la extensión. Además cuenta con filtros para mostrar u ocultar campos."
+msgstr "La barra lateral al lado izquierdo de la página contiene los enlaces para acceder a conjuntos específicos de campos relacionados (clases/grupos) en la extensión. Además cuenta con filtros para mostrar u ocultar campos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:188
