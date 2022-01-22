@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 11:20\n"
+"PO-Revision-Date: 2022-01-22 11:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -638,12 +638,12 @@ msgstr "Mapeo Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:156
 msgid "This area of the Resource Overview page allows a user to map the fields in the incoming data to fields in installed extensions and to see which fields from the sources have not been mapped. This option is not available until at least one data source has been successfully added and at least one extension has been installed."
-msgstr "Esta área de la página \"Vista General del Recurso\", permite al usuario mapear los elementos de los datos de entrada con los elementos de las extensiones instaladas, e identificar los elementos que aún no han sido mapeados. Esta opción no estará disponible hasta que por lo menos, una fuente de datos haya sido agregada con éxito y por lo menos una extensión haya sido instalada."
+msgstr "Esta área de la página \"Vista general del recurso\", permite al usuario mapear los elementos de los datos de entrada a los elementos de las extensiones instaladas e identificar los elementos que aún no han sido mapeados. Esta opción no estará disponible hasta que se haya añadido correctamente al menos una fuente de datos y se haya instalado al menos una extensión."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:158
 msgid "Once these conditions have been met, the left-hand column of the Darwin Core Mappings area will contain a select box with a list of Core Types and Extensions that have been installed. Select a Core Type and map that before selecting an extension to map. Select the appropriate extension that has fields matching the ones to map in the data source. If the appropriate core type or extension does not appear in the select box, it will have to be installed first. Refer to the information under the \"Configure Core Types and Extensions\" heading in the \"Administration Menu\" section for an explanation of how to install extensions."
-msgstr "Una vez cumplidas estas condiciones, la columna de la izquierda del área de Mapeo Darwin Core contendrá un cuadro de selección con una lista de Estándares y Extensiones que hayan sido instaladas. Seleccione un Estándar y realice el enlace antes de seleccionar una extensión para mapear. Seleccione la extensión adecuada que contenga los elementos que coincidan con aquellos a mapear en la fuente de los datos. Si el estándar o la extensión adecuada no aparecen en el cuadro de selección, tendrá que ser instalado antes de proceder. Consulte la información del encabezado \"Configuración de Estándares y Extensiones\" en la sección \"Menú Administración\" para obtener una explicación de cómo instalar las extensiones."
+msgstr "Una vez que se hayan cumplido estas condiciones, la columna de la izquierda del área de Mapeo Darwin Core contendrá un cuadro de selección con una lista de estándares y extensiones que se han instalado. Seleccione un estándar y realice el enlace antes de seleccionar una extensión para mapear. Seleccione la extensión adecuada que contenga los elementos que coincidan con aquellos a mapear en el conjunto de datos. Si el estándar o la extensión adecuada no aparecen en el cuadro de selección, tendrán que ser instalados primero. Consulte la información del encabezado \"Configuración estándares y extensiones\" en la sección \"Menú administración\" para obtener una explicación sobre cómo instalar extensiones."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:159
@@ -654,28 +654,28 @@ msgstr "ipt2/manage/IPTManageResourceDwCMapping.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:162
 msgid "After the desired core type or extension is selected, click on the button labelled \"Add\" to open the <<Data Source selection page>>."
-msgstr "Después de que el estándar o la extensión deseada haya sido seleccionada, haga clic en el botón \"Agregar\" para abrir la <<Página de selección del Conjunto de Datos>>."
+msgstr "Una vez seleccionado el estándar o la extensión deseada, haga clic en el botón \"Agregar\" para abrir la <<Página de selección del conjunto de datos>>."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:163
 #, no-wrap
 msgid "Data Source selection page"
-msgstr "Página de selección del Conjunto de Datos"
+msgstr "Página de selección del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:165
 msgid "This page gives an explanation of the type of data the extension is meant to support, and shows a select box containing a list of all of the configured data sources."
-msgstr "Esta página ofrece una explicación del tipo de datos que la extensión soporta, y muestra un cuadro de selección que contiene una lista de todas las fuentes de datos configuradas."
+msgstr "Esta página ofrece una explicación del tipo de datos que la extensión puede soportar, y muestra un cuadro de selección que contiene una lista de todas las fuentes de datos configuradas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:167
 msgid "A resource must only use 1 core type: choose \"Darwin Core Checklist\" when the basis of the resource is taxon names, or choose \"Darwin Core Occurrence\" when the basis of the resource is occurrences in nature (observations) or in a collection (specimens). Only after the desired core type has been mapped, will it be possible to map other extensions."
-msgstr "Un recurso debe usar solamente un tipo de core: Elija \"Lista de Chequeo Darwin Core\" cuando la base del recurso sean nombres de taxones o elija \"Darwin Core Ocurrence\" cuando la base del recurso sean observaciones en campo o especímenes en una colección. Sólo cuando el core deseado haya sido mapeado, será posible mapear otras extensiones."
+msgstr "Un recurso debe usar solamente un tipo de estándar: Elija \"Listados de especies Darwin Core\" cuando la base del recurso sean nombres de taxones o elija \"Registro biológico Darwin Core\" cuando la base del recurso sean observaciones en campo o especímenes en una colección. Sólo cuando se haya mapeado el estándar deseado, será posible mapear otras extensiones."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:169
 msgid "It is possible to map another core type as an extension as long as it is different from the core type mapped."
-msgstr "Es posible mapear otro tipo de core como una extensión, siempre y cuando éste sea diferente al tipo del core mapeado inicialmente."
+msgstr "Es posible mapear otro tipo de estándar como una extensión, siempre y cuando éste sea diferente del tipo de estándar mapeado inicialmente."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:170
