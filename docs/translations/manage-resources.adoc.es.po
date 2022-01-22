@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-21 03:12\n"
+"PO-Revision-Date: 2022-01-22 11:20\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -267,7 +267,7 @@ msgstr "ipt2/manage/IPTManageResourceUploadEml.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:53
 msgid "Click on the button labelled \"Create\". If there is a problem importing the selected file, an error message will alert the user. If the import is successful, a Resource Overview page will appear with the metadata having been populated. The source data and mapping sections will remain hidden since this is a metadata-only resource. Should you decide to add primary dataset at a later time, just change the resource type in the <<Basic Metadata>> page of the metadata."
-msgstr "Haga clic sobre el botón \"Crear\". Si existe un problema importando el archivo seleccionado, un mensaje de error alertará al usuario. Si la importación es exitosa, la página vista General del Recurso aparecerá con los metadatos que habían sido documentados. Las secciones de fuente de datos y mapeo permanecerán ocultas debido a que es un recurso de solo metadatos. Si usted más adelante decide agregar un conjunto de datos primarios, sólo cambie el tipo de recurso en la página de \"Metadatos\" en la sección de los <<Metadatos básicos>>."
+msgstr "Haga clic sobre el botón \"Crear\". Si existe un problema importando el archivo seleccionado, un mensaje de error alertará al usuario. Si la importación es exitosa, la página \"Vista general del recurso\" aparecerá con los metadatos que habían sido documentados. Las secciones de fuente de datos y mapeo permanecerán ocultas debido a que es un recurso de solo metadatos. Si usted más adelante decide agregar un conjunto de datos primarios, sólo cambie el tipo de recurso en la página de \"Metadatos\" en la sección de los <<Metadatos básicos>>."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:54
@@ -278,7 +278,7 @@ msgstr "Editar un recurso existente"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:56
 msgid "The table of existing resources shows only those resources that can be edited by the current user. To edit a resource, click on the name of the resource in the table of resources. The link will open the Resource Overview page for the selected resource. Refer to the descriptions under the \"Resource Overview\" heading of the \"Manage Resources Menu\" section for details on how to edit various aspects of the resource."
-msgstr "La tabla de recursos existentes muestra sólo aquellos recursos que pueden ser editados por el usuario actual. Para editar un recurso, haga clic en el nombre del recurso en la \"Tabla de Gestión de recursos\". El enlace abrirá la página \"Vista general del recurso\" del recurso seleccionado. Consulte las descripciones en el encabezado \"Vista general del recurso\", de la sección \"Gestión de recursos\" para conocer los detalles acerca de cómo editar diversos aspectos del recurso."
+msgstr "La tabla de recursos existentes muestra sólo aquellos recursos que pueden ser editados por el usuario actual. Para editar un recurso, haga clic en el nombre del recurso en la \"Tabla de Gestión de recursos\". El enlace abrirá la página \"Vista general del recurso\" del recurso seleccionado. Consulte las descripciones en el encabezado \"Vista General del recurso\", de la sección \"Gestión de recursos\" para conocer los detalles acerca de cómo editar diversos aspectos del recurso."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/manage-resources.adoc:57
