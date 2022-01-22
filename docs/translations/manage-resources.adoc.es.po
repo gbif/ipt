@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 17:30\n"
+"PO-Revision-Date: 2022-01-22 17:58\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1045,61 +1045,61 @@ msgstr "ipt2/manage/IPTManageResourceMetadataBasicMetadata.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:278
 #, no-wrap
 msgid "*Title* - the Title for the resource. This title will appear as the Name of the resource throughout the IPT. The title will also appear in the GBIF Registry.\n"
-msgstr "*Title* - El título del recurso. Este título aparecerá como el Nombre del recurso en todo el IPT. El título también aparecerá en el Registro GBIF.\n"
+msgstr "*Título*: el título del recurso. Este título aparecerá como el Nombre del recurso en todo el IPT. El título también aparecerá en el Registro GBIF.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:279
 #, no-wrap
 msgid "*Publishing Organization* - the organization responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource's rights holder and publishing organization when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. If the desired organization does not appear in the list it may be added by the IPT Administrator (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section). Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.\n"
-msgstr "*Organización Publicadora* - La organización responsable de la publicación (producción, liberación, mantenimiento) este recurso. Se utilizará como organización publicadora del recurso cuando se haga el registro en GBIF y al someter los metadatos durante el registro de los DOI. También se utilizará para generar la referencia del recurso (si la generación automática está activada), así que considere la importancia de este rol. Por favor tenga en cuenta que su selección no puede ser cambiada después de que el recurso haya sido registrado en GBIF o que le haya sido asignado un DOI.\n"
+msgstr "*Organización publicadora*: la organización responsable de la publicación (producción, liberación, mantenimiento) de este recurso. Se utilizará como titular de los derechos del recurso y como organización publicadora cuando se registre este recurso en GBIF y cuando se envíen los metadatos durante el registro del DOI.También se utilizará para generar la referencia del recurso (si la generación automática está activada), así que considere la importancia de este rol. Si la organización deseada no aparece en la lista, puede ser añadida por el administrador del IPT (vea la información en el apartado \"Configurar organizaciones\" de la sección \"Menú administración\"). Por favor, tenga en cuenta que su selección no puede ser cambiada después de que el recurso haya sido registrado en GBIF o se le haya asignado un DOI.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:280
 #, no-wrap
 msgid "*Update Frequency* - the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.\n"
-msgstr "*Frecuencia de actualización* - La frecuencia con la que se realizan cambios en el recurso luego de que el recurso inicial ha sido publicado. Para su comodidad, este valor se asignará por defecto para el intervalo de la autopublicación (si se ha activado la autopublicación), sin embargo, este puede ser modificado posteriormente. Por favor tenga en cuenta que una descripción de la frecuencia de mantenimiento del recurso también se pueden documentar en la sección de Metadatos Adicionales.\n"
+msgstr "*Frecuencia de actualización*: la frecuencia con la que se realizan cambios en el recurso luego de que el recurso inicial ha sido publicado. Para su comodidad, este valor se asignará por defecto para el intervalo de la publicación automática (si se ha activado la publicación automátrica), sin embargo, este puede ser modificado posteriormente. Tenga en cuenta que también puede introducirse una descripción de la frecuencia de mantenimiento del recurso en la página \"Metadatos adicionales\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:281
 #, no-wrap
 msgid "*Type* - the type of resource. The value of this field depends on the core mapping of the resource and is no longer editable if the Darwin Core mapping has already been made. If a desired type is not found in the list, the field \"other\" can be selected. Review the information under the \"Configure Core Types and Extensions\" heading of the \"Administration Menu\" section.\n"
-msgstr "*Tipo* - El tipo del recurso. El valor de este campo depende del mapeo del recurso y no es posible editarlo si el mapeo Darwin Core ya se ha hecho. Si el tipo de recurso deseado no se encuentra en la lista, puede elegir el campo \"otro\". Puede ver más información en el título “Configurar Estándares y Extensiones\" de la sección \"Menú Administración\".\n"
+msgstr "*Tipo* : el tipo del recurso. El valor de este campo depende del mapeo del recurso y no es posible editarlo si el mapeo Darwin Core ya se ha hecho. Si el tipo de recurso deseado no se encuentra en la lista, puede elegir el campo \"otro\". Puede ver más información en el encabezado “Configurar cores y extensiones\" de la sección \"Menú administración\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:282
 #, no-wrap
 msgid "*Subtype* - the subtype of the resource. The options for this field depend on the Type field. If a desired subtype is not found in the list, the field can be left with the default selection.\n"
-msgstr "*Subtipo* - El subtipo del recurso. Las opciones de este elemento dependen del elemento Tipo. Si el subtipo deseado no se encuentra en la lista, puede dejar el campo con la selección por defecto.\n"
+msgstr "*Subtipo*: el subtipo del recurso. Las opciones de este elemento dependen del campo Tipo. Si el subtipo deseado no se encuentra en la lista, puede dejar el campo con la selección por defecto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:283
 #, no-wrap
 msgid "*Metadata Language* - the language in which the metadata are written.\n"
-msgstr "*Idioma de los Metadatos* - El idioma en que está escrito el documento de los metadatos.\n"
+msgstr "*Idioma de los metadatos*: el idioma en que está escrito el documento de los metadatos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:284
 #, no-wrap
 msgid "*Resource Language* - the language in which the data for the resource are written.\n"
-msgstr "*Idioma de los Datos* - El idioma principal de los datos. (No el documento de los metadatos).\n"
+msgstr "*Idioma de los datos*: el idioma en el que están escritos los datos del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:285
 #, no-wrap
 msgid "*Data License* - the licence that you apply to the resource. The license provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three (default) machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more about GBIF's policy http://www.gbif.org/terms/licences[here]. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org. To find out how to apply a license at the record-level, refer to the xref:applying-license.adoc[How To Apply a License To a Dataset] section. To find out how to change the IPT's default set of licenses, refer to the xref:applying-license.adoc[Applying a License to a Dataset] page in the IPT wiki.\n"
-msgstr "*Licencia de los datos* - La licencia que se aplica a un conjunto de datos proporciona una forma estandarizada de definir el uso apropiado de su trabajo. GBIF invita a los publicadores a adoptar la licencia menos restrictiva posible entre tres opciones de lectura mecánica (CC0 1.0, CC-BY 4.0 o CC-BY-NC 4.0), para fomentar de la manera más amplia posible el uso y aplicación de los datos. Infórmese https://www.gbif.org/es/terms/licences[aquí]. Si no es posible que usted elija una de las tres opciones y su conjunto de datos contiene registros biológicos, no podrá registrar su conjunto de datos en GBIF o hacerlo globalmente visible a través de GBIF.org. Si considera que no puede seleccionar alguna de las tres opciones, póngase en contacto con el Secretariado de GBIF en participation@gbif.org. Para más información acerca de cómo aplicar una licencia a nivel de registro consulte xref:applying-license.adoc[How To Apply a License To a Dataset] en la página del wiki del IPT. Para cambiar el set de licencias que aparecen por predeterminadas consulte xref:applying-license.adoc[How To Add a New License] en la página del wiki del IPT.\n"
+msgstr "*Licencia de los datos*: la licencia que se aplica al recurso. La licencia proporciona una forma estandarizada de definir los usos apropiados de su trabajo. GBIF invita a los publicadores a adoptar la licencia menos restrictiva posible de entre tres opciones de lectura mecánica (CC0 1.0, CC-BY 4.0 o CC-BY-NC 4.0), para fomentar de la manera más amplia posible el uso y aplicación de los datos. Aprenda más sobre la política de GBIF https://www.gbif.org/es/terms/licences[aquí]. Si no es posible que usted elija una de las tres opciones y su conjunto de datos contiene registros biológicos, no podrá registrar su conjunto de datos en GBIF o hacerlo globalmente visible a través de GBIF.org. Si se siente incapaz de seleccionar una de las tres opciones, por favor contacte a la Secretaría de GBIF en participation@gbif.org. Para saber cómo aplicar una licencia a nivel de registro, consulte la sección xref:applying-license.adoc[Cómo aplicar una licencia a un conjunto de datos]. Para saber cómo cambiar el conjunto de licencias por defecto del IPT, consulte la página xref:applying-license.adoc[Cómo aplicar una licencia a un conjunto de datos] en el wiki del IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:286
 #, no-wrap
 msgid "*Description* - a brief overview of the resource broken into paragraphs. This should provide enough information to help potential users of the data to understand if it may be of interest.\n"
-msgstr "*Descripción* - Una breve descripción del recurso que está siendo documentado, separado en párrafos. Debe proveer suficiente información para ayudar a los potenciales usuarios de los datos a entender si estos pueden ser de su interés.\n"
+msgstr "*Descripción*: una breve descripción del recurso que está siendo documentado, separado en párrafos. Debe proveer suficiente información para ayudar a los potenciales usuarios de los datos a entender si estos pueden ser de su interés.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:287
 #, no-wrap
 msgid "*Resource Contacts* - the list of people and organizations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed.\n"
-msgstr "*Contactos del Recurso* - La lista de contactos representa a las personas y organizaciones que custodian o deben ser contactadas para obtener más información sobre el recurso, de la misma manera son aquellos que deberían resolver los posibles problemas con el recurso o sus datos.\n"
+msgstr "*Contactos del recurso*: la lista de personas y organizaciones con las que hay que ponerse en contacto para obtener más información sobre el recurso, que lo custodian o a las que hay que dirigir los posibles problemas con el recurso o sus datos.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:289
@@ -1111,105 +1111,105 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:292
 #, no-wrap
 msgid "*Add new resource contact* - click on this link to initiate a form for an additional resource contact.\n"
-msgstr "*Añadir nuevo(a) contacto del recurso* - Hacer clic en este enlace abre un nuevo formato para ingresar un contacto del recurso adicional.\n"
+msgstr "*Añadir contacto del recurso*: al hacer clic en este enlace se abre un nuevo formato para ingresar un contacto del recurso adicional.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:293
 #, no-wrap
 msgid "*Remove this resource contact* - click on this link to remove the resource contact that follows immediately below the link.\n"
-msgstr "*Eliminar este contacto del recurso* -Hacer clic en este enlace hará que se elimine el formato de contacto que se encuentra inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar contacto del recurso*: al hacer clic en este enlace se eliminará el formato de contacto que se encuentra inmediatamente debajo del enlace.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:294
 #, no-wrap
 msgid "*First Name* - the first or given name of the resource contact.\n"
-msgstr "*Nombre* - El nombre del contacto del recurso.\n"
+msgstr "*Nombre*: el nombre del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:295
 #, no-wrap
 msgid "*Last Name* (required if Position and Organization are empty, required if the first name is not empty) - the last or surname of the resource contact.\n"
-msgstr "*Apellido* (obligatorio si se dejan vacíos la Posición y la Organización, obligatorio si es suministrado el Nombre) - El apellido del contacto del recurso.\n"
+msgstr "*Apellido* (obligatorio si se dejan vacíos la Posición y la Organización, obligatorio si se suministra el Nombre): el apellido del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:296
 #, no-wrap
 msgid "*Position* (required if Last Name and Organization are empty) - the relevant title or position held by the resource contact.\n"
-msgstr "*Posición* (obligatorio si se dejan vacíos el Apellido y la Organización) - El título relevante o cargo que tiene el contacto del recurso.\n"
+msgstr "*Posición* (obligatorio si se dejan vacíos el Apellido y la Organización): el título relevante o cargo que tiene el contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:297
 #, no-wrap
 msgid "*Organization* (required if Last Name and Position are empty) - the organization or institution with which the resource contact is associated. Though the organization may be one of those registered in the GBIF Registry, this is not required. Thus, the organization must be entered in the text box rather than selected from a list of registered organizations.\n"
-msgstr "*Organización* (obligatorio si se dejan vacíos el Apellido y la Posición) - La organización o institución con la cual está asociado el contacto del recurso. Si la organización o institución es una de las registradas en el Registro GBIF, esta no será obligatoria. De lo contrario, la organización debe ser ingresada en el campo de texto en vez de seleccionarla de una lista de organizaciones registradas.\n"
+msgstr "*Organización* (obligatorio si se dejan vacíos el Apellido y la Posición): la organización o institución a la cual está vinculado el contacto del recurso. Si la organización o institución es una de las registradas en el Registro GBIF, esta no será obligatoria. De lo contrario, la organización debe ser ingresada en el campo de texto en vez de seleccionarla de una lista de organizaciones registradas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:298
 #, no-wrap
 msgid "*Address* - the physical street or building address of the resource contact.\n"
-msgstr "*Dirección* - Dirección física del contacto del recurso.\n"
+msgstr "*Dirección*: dirección física del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:299
 #, no-wrap
 msgid "*City* - the city, town, municipality or similar physical location of the resource contact's address.\n"
-msgstr "*Ciudad* - la ciudad, municipio o localidad física similar de la dirección del contacto del recurso.\n"
+msgstr "*Ciudad*: la ciudad, municipio o localidad física similar de la dirección del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:300
 #, no-wrap
 msgid "*State/Province* - the state, province, or similar geographic region of the resource contact's address.\n"
-msgstr "*Estado/Provincia* - el departamento, estado, provincia o región geográfica similar de la dirección del contacto del recurso.\n"
+msgstr "*Estado/Provincia*: el departamento, estado, provincia o región geográfica similar de la dirección del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:301
 #, no-wrap
 msgid "*Country* - the name of the country or other first level administrative region of the resource contact's address.\n"
-msgstr "*País* - El nombre del país o región administrativa de primer nivel de la dirección del contacto del recurso.\n"
+msgstr "*País*:  el nombre del país o región administrativa de primer nivel de la dirección del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:302
 #, no-wrap
 msgid "*Postal Code* - the postal code (e.g., zip code) of the resource contact's address.\n"
-msgstr "*Código Postal* - El código postal (e.g., código zip) de la dirección del contacto del recurso.\n"
+msgstr "*Código postal*: el código postal (p. ej., código zip) de la dirección del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:303
 #, no-wrap
 msgid "*Phone* - the preferred full international telephone number at which to reach the resource contact.\n"
-msgstr "*Teléfono* - El número de teléfono internacional preferido del contacto del recurso.\n"
+msgstr "*Teléfono* : el número de teléfono internacional preferido del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:304
 #, no-wrap
 msgid "*Email* - the preferred email address at which to reach the resource contact.\n"
-msgstr "*Correo Electrónico* - La dirección de correo electrónica preferida del contacto del recurso.\n"
+msgstr "*Correo electrónico*: la dirección de correo electrónica preferida del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:305
 #, no-wrap
 msgid "*Home Page* - the URL to a worldwide web page for the resource contact.\n"
-msgstr "*Página Web* - La URL a una página web del contacto del recurso.\n"
+msgstr "*Página web*: la URL a una página web del contacto del recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:306
 #: en/modules/ROOT/pages/manage-resources.adoc:416
 #, no-wrap
 msgid "*Personnel Directory* - the URL of the personnel directory system to which the personnel identifier belongs. There are four default directories to choose from: ORCID, ResearchID, LinkedIn, and Google Scholar. If you'd like to change the IPT's default set of directories, refer to the xref:user-id.adoc[Add a New User ID Directory] page in the IPT wiki.\n"
-msgstr "*Perfil en línea* - La URL del perfil en línea al que pertenece el identificador personal. Hay cuatro directorios predeterminados para escoger: ORCID, ResearchID, LinkedIn, y Google Scholar. Si desea cambiar los directorios predeterminados del IPT consulte xref:user-id.adoc[How To Add a New User ID Directory] en la página del wiki del IPT.\n"
+msgstr "*Perfil en línea*: la URL del perfil en línea al que pertenece el identificador personal. Hay cuatro directorios predeterminados para escoger: ORCID, ResearchID, LinkedIn y Google Scholar. Si desea cambiar los directorios predeterminados del IPT consulte xref:user-id.adoc[Añadir un nuevo directorio de ID de usuario] en la página del wiki del IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:307
 #: en/modules/ROOT/pages/manage-resources.adoc:417
 #, no-wrap
 msgid "*Personnel Identifier* - a 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.\n"
-msgstr "*Identificador Personal* - Un ID ORCID de 16 dígitos (por ejemplo 0000-0002-1825-0097) u otro identificador que enlaza esta persona con el repositorio del perfil en línea especificado.\n"
+msgstr "*Identificador Personal*: un ID ORCID de 16 dígitos (por ejemplo 0000-0002-1825-0097) u otro identificador que enlaza esta persona con el repositorio del perfil en línea especificado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:310
 #, no-wrap
 msgid "*Resource Creators* - the people and organizations who created the resource, in priority order. The list will be used to auto-generate the resource citation (if auto-generation is turned on). If this person or organization is the same as the first resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labelled \"copy details from resource contact\". The resource creator has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contacts, above.\n"
-msgstr "*Creadores del Recurso* - La lista de creadores representa a las personas y organizaciones que han creado el recurso, en orden de prioridad. La lista será utilizada para generar la referencia del recurso (si la generación automática está activada). Si la persona o la organización es la misma del contacto del recurso, todos los detalles anteriores pueden ser copiados a los campos equivalentes en la sección creadores del recurso haciendo clic en el enlace \"Copiar los datos del contacto del recurso\". El formato de creadores del recurso tiene los mismos campos obligatorios que el contacto del recurso. Consulte las explicaciones de los campos que se encuentran en la parte superior en los detalles del Contacto del recurso.\n"
+msgstr "*Creadores del recurso*: la lista de creadores representa a las personas y organizaciones que han creado el recurso, en orden de prioridad. La lista será utilizada para generar la referencia del recurso (si la generación automática está activada). Si la persona o la organización es la misma del contacto del recurso, todos los detalles anteriores pueden ser copiados a los campos equivalentes en la sección creadores del recurso haciendo clic en el enlace \"Copiar los datos del contacto del recurso\". El formato de creadores del recurso tiene los mismos campos obligatorios que el contacto del recurso. Consulte las explicaciones de los campos en Contactos del recurso, más arriba.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:312
@@ -1220,12 +1220,12 @@ msgstr "la personasn u organizaciones responsables de la creación del recurso, 
 #: en/modules/ROOT/pages/manage-resources.adoc:314
 #, no-wrap
 msgid "*Metadata Providers* - the people and organizations responsible for producing the resource metadata. If this person or organization is the same as the first resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labelled \"copy details from resource contact\". The metadata provider has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contacts, above.\n"
-msgstr "*Proveedor de los Metadatos* - El proveedor de los metadatos es la persona u organización responsable de producir los metadatos del recurso. Si la persona u organización es la misma del contacto del recurso, todos los detalles de este último pueden ser copiados en los campos equivalentes para el proveedor de los metadatos, haciendo clic sobre el enlace llamado “copiar datos del contacto”. El proveedor de los metadatos tiene los mismos campos y requerimientos del contacto del recurso. Consulte las explicaciones de los campos que se encuentran en la parte superior en los detalles del Contacto del recurso.\n"
+msgstr "*Proveedor de los Metadatos* : el proveedor de los metadatos es la persona u organización responsable de producir los metadatos del recurso. Si la persona u organización es la misma del contacto del recurso, todos los detalles de este último pueden ser copiados en los campos equivalentes para el proveedor de los metadatos, haciendo clic sobre el enlace “copiar los datos del contacto del recurso”. El proveedor de los metadatos tiene los mismos campos y requerimientos del contacto del recurso. Consulte las explicaciones de los campos en Contactos del recurso, más arriba.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:318
 msgid "This metadata page contains information about the geographic area covered by the resource. The page contains a map and associated controls that allow the user to set the geographic coverage. Below is a screen image showing the contents of the Geographic Coverage page, followed by explanations of the controls."
-msgstr "Esta página de metadatos contiene información acerca del área geográfica cubierta por el recurso. La página contiene un mapa y campos asociados que permiten al usuario establecer la cobertura geográfica. A continuación se muestra una imagen del contenido de la página \"Cobertura Geográfica\", seguida por una explicación de los campos."
+msgstr "Esta página de metadatos contiene información acerca del área geográfica cubierta por el recurso. La página contiene un mapa y campos asociados que permiten al usuario establecer la cobertura geográfica. A continuación se muestra una imagen del contenido de la página \"Cobertura geográfica\", seguida por una explicación de los campos."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:319
