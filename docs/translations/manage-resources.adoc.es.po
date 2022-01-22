@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 16:58\n"
+"PO-Revision-Date: 2022-01-22 17:30\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -937,7 +937,7 @@ msgstr "Página de traducción del valor"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:245
 msgid "When this page opens for the first time it shows a message at the top giving the number of distinct values of the selected field in the source data, up to 1000 values. The page shows the name and description of the extension field for which translations are being made. If the field is governed by a controlled vocabulary, information about that vocabulary and an icon to open a Vocabulary Detail page (see Vocabulary Detail button explanation, above) will appear under the field description. Below the field description is a table showing the distinct values of the field found in the source data under the column heading \"Source Value\" with text boxes under the column heading \"Translated Value\". Enter the value to which the Source Value should be translated in the text box. The icon to the left of the translated value text box indicates if the value provided exists in the vocabulary for this term."
-msgstr "Cuando está página se abre por primera vez, se muestra un mensaje en la parte superior que indica el número de valores de los elementos seleccionados en la fuente de datos, hasta 1000 valores. La página muestra el nombre y la descripción de la extensión de campo para el que se están realizando traducciones. Si el elemento se rige por un vocabulario controlado, aparecerá en la descripción del elemento, información sobre dicho vocabulario y un ícono para abrir una página de Detalle del Vocabulario (vea la explicación del botón Detalle del Vocabulario, arriba). Debajo de la descripción del elemento hay una tabla que muestra los distintos valores del elemento que se encuentra en la fuente de datos con el encabezado \"Fuente del Valor\" con cuadros de texto con el encabezado \"Valor Traducido\". Ingrese el valor al que debe ser traducido la Fuente del Valor en el cuadro de texto. El ícono en la izquierda del valor traducido del cuadro de texto indica si un valor suministrado existe en el vocabulario para este término."
+msgstr "Cuando esta página se abre por primera vez, muestra un mensaje en la parte superior que indica el número de valores distintos del elemento seleccionado en el conjunto de datos, hasta 1000 valores. La página muestra el nombre y la descripción del elemento de extensión para el que se están realizando las traducciones. Si el elemento se rige por un vocabulario controlado, aparecerá en la descripción del elemento información sobre dicho vocabulario y un ícono para abrir una página de detalle del vocabulario (vea la explicación del botón de \"Detalle del vocabulario\" arriba). Debajo de la descripción del elemento hay una tabla que muestra los distintos valores del elemento que se encuentra en la fuente de datos con el encabezado \"Valor del conjunto de datos\" con cuadros de texto con el encabezado \"Valor traducido\". Introduzca en el cuadro de texto el valor al que debe traducirse el valor del conjunto de datos. El ícono a la izquierda del cuadro de texto del valor traducido indica si el valor proporcionado existe en el vocabulario para este término."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:246
@@ -948,48 +948,48 @@ msgstr "ipt2/manage/IPTManageResourceSourceTranslation.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:249
 msgid "Bounding the table above and below by the following set of buttons:"
-msgstr "Vinculando la tabla de arriba y abajo con el siguiente conjunto de botones:"
+msgstr "Vinculando la tabla de arriba y de abajo usando el siguiente conjunto de botones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:251
 #, no-wrap
 msgid "*Save* - click on this button to save all of the changes that have been made on this page and return to the Data Mapping page.\n"
-msgstr "*Guardar* - Haga clic en este botón para guardar todos los cambios que se han hecho en esta página y volver a la página Mapeo de Datos.\n"
+msgstr "*Guardar*: haga clic en este botón para guardar todos los cambios que se han hecho en esta página y volver a la página \"Mapeo del conjunto de datos\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:252
 #, no-wrap
 msgid "*Delete* - click on this button to remove all translations for this field and return to the Data Mapping page.\n"
-msgstr "*Eliminar* - Haga clic en este botón para eliminar todas las traducciones de este elemento y volver a la página Mapeo de Datos.\n"
+msgstr "*Eliminar*: haga clic en este botón para eliminar todas las traducciones de este elemento y volver a la página de \"Mapeo del conjunto de datos\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:253
 #, no-wrap
 msgid "*Reload* - click on this button to search the source data again for distinct values. Existing translations are retained, and any new distinct values from the source data appear on the list without a translation.\n"
-msgstr "*Recargar* - Haga clic en este botón para buscar nuevamente la fuente de datos por valores distintos. Las traducciones existentes se conservan y los nuevos valores de la fuente de datos aparecen en la lista sin traducción.\n"
+msgstr "*Recargar*: haga clic en este botón para volver a buscar valores distintos en el conjunto de datos. Las traducciones existentes se conservan y los nuevos valores del conjunto de datos aparecen en la lista sin traducción.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:254
 #, no-wrap
 msgid "*Automap* - this button appears only if the field is governed by a controlled vocabulary. Click on this button to fill the Translated Values automatically with standard values based on known synonyms. Values in the source data for which there are no known synonyms will remain blank.\n"
-msgstr "*Autoasignar* - Este botón aparece sólo si el elemento se rige por un vocabulario controlado. Haga clic en este botón para diligenciar los Valores Traducidos automáticamente con los valores estándar, basados en sinónimos conocidos. Los valores de la fuente de datos para los cuales no existen sinónimos conocidos, permanecerán en blanco.\n"
+msgstr "*Mapeo automático*: este botón aparece sólo si el elemento se rige por un vocabulario controlado. Haga clic en este botón para completar los valores traducidos automáticamente con valores estándar basados en sinónimos conocidos. Los valores en el conjunto de datos para los que no hay sinónimos conocidos permanecerán en blanco.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:255
 #, no-wrap
 msgid "*Cancel* - click on this button to close the Value Translation page without saving any of the changes that have been made.\n"
-msgstr "*Cancelar* - Haga clic en este botón para cerrar la página Traducción del Valor sin guardar ninguno de los cambios que se han realizado.\n"
+msgstr "*Cancelar*: haga clic en este botón para cerrar la página \"Traducción del valor\" sin guardar ninguno de los cambios realizados.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:256
 #, no-wrap
 msgid "Vocabulary detail page"
-msgstr "Página de Conceptos del Vocabulario"
+msgstr "Página de detalle del vocabulario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:258
 msgid "This page shows a list of concepts within the vocabulary. In the context of mapping data, it shows a list of accepted values that can be used for the extension field. Each concept may contain a description, its preferred synonyms (in various languages), plus any alternative synonyms (in various languages)."
-msgstr "Esta página muestra una lista de los conceptos que se encuentran dentro del vocabulario. En el contexto del mapeo de los datos, muestra una lista de valores aceptados que pueden ser utilizados para los campos de la extensión. Cada concepto contiene una descripción, elementos Preferidos (en varios idiomas), además de elementos alternativos (en varios idiomas)."
+msgstr "Esta página muestra una lista de los conceptos que se encuentran dentro del vocabulario. En el contexto del mapeo de los datos, muestra una lista de valores aceptados que pueden ser utilizados para los campos de la extensión. Cada concepto contiene una descripción, elementos preferidos (en varios idiomas), además de elementos alternativos (en varios idiomas)."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:259
@@ -1006,7 +1006,7 @@ msgstr "Metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:263
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. By clicking on the button labelled \"Edit\" in the panel to the left the metadata can be edited. The panel to the right shows when the metadata was last modified. Every resource requires a minimal set of descriptive metadata in order to i) be published in the GBIF network, ii) be registered with DataCite (in other words, be assigned a DOI). If any of the required metadata is missing, the Resource Overview page will open with a warning message in the Metadata area of the page."
-msgstr "Esta área de la página \"Vista general del recurso\" permite al usuario editar los metadatos del recurso. Haciendo clic en el botón \"Editar\" del panel de la izquierda, se pueden editar los metadatos. El panel de la derecha muestra cuándo se modificaron los metadatos por última vez. Cada recurso requiere un conjunto mínimo de metadatos descriptivos para i) ser publicado en la red de GBIF, ii) ser registrado en DataCite (en otras palabras, tener asignado un DOI). Si falta alguno de los metadatos requeridos, la página de vista general del recurso se abrirá con un mensaje de advertencia en el área de metadatos de la página."
+msgstr "Esta área de la página \"Vista General del recurso\" permite al usuario editar los metadatos del recurso. Haciendo clic en el botón \"Editar\" del panel de la izquierda, se pueden editar los metadatos. El panel de la derecha muestra cuándo se modificaron los metadatos por última vez. Cada recurso requiere un conjunto mínimo de metadatos descriptivos para i) ser publicado en la red de GBIF y ii) ser registrado en DataCite (en otras palabras, tener asignado un DOI). Si falta alguno de los metadatos requeridos, la página de vista general del recurso se abrirá con un mensaje de advertencia en el área de metadatos de la página."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:264
@@ -1017,7 +1017,7 @@ msgstr "ipt2/manage/IPTManageResourceMetadataMissing.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:267
 msgid "Clicking on the \"Edit\" button opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled \"Save\" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled \"Cancel\" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the right of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic."
-msgstr "Haciendo clic en el botón “Editar”, se abre la página <<Metadatos Básicos>>, la primera de una serie de páginas de metadatos. Cada página aparecerá en secuencia cuando se hace clic en el botón “Guardar”, una vez haya finalizado el ingreso de los datos en cualquiera de las páginas de metadatos. Guardando los metadatos al final de las páginas de metadatos, regresará nuevamente a la página <<Metadatos Básicos>>. En cualquiera de las páginas de metadatos, al hacer clic sobre el botón “Cancelar”, no se tendrá en cuenta los cambios hechos en aquella página y retornará a la página \"Vista General del Recurso\". Para una referencia y navegación fácil, a la derecha de cada página de metadatos hay una columna con la lista de enlaces a todas las páginas de metadatos. Haciendo clic en los enlaces indicados, se puede abrir cualquiera de las páginas de metadatos."
+msgstr "Haciendo clic en el botón “Editar”, se abre la página <<Metadatos básicos>>, la primera de una serie de páginas de metadatos. Cada página aparecerá en secuencia cuando se hace clic en el botón “Guardar” luego de haber finalizado el ingreso de los datos en cualquiera de las páginas de metadatos. Al guardar los metadatos en la última de las páginas de metadatos se volverá a la página <<Metadatos básicos>>. Al hacer clic en el botón \"Cancelar\" en cualquier página de metadatos, no se tendrán en cuenta los cambios realizados en esa página y se volverá a la página de \"Vista general del recurso\".  En una columna a la derecha de cada página de metadatos hay una lista de enlaces a todas las páginas de metadatos para facilitar la referencia y la navegación. Haga clic en cualquiera de los enlaces para abrir la página de metadatos de ese tema."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:268
