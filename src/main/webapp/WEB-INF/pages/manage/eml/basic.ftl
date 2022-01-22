@@ -209,7 +209,15 @@
 
                                 <div id="intellectualRightsDiv" class="mt-3 p-3">
                                     <@licenseLogoClass eml.intellectualRights!/>
-                                    <#noescape>${eml.intellectualRights!}</#noescape>
+                                    <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                        <#noescape><@s.text name='eml.intellectualRights.licence.ccbync'/></#noescape>
+                                    <#elseif eml.intellectualRights.contains("CC-BY")>
+                                        <#noescape><@s.text name='eml.intellectualRights.licence.ccby'/></#noescape>
+                                    <#elseif eml.intellectualRights.contains("CC0")>
+                                        <#noescape><@s.text name='eml.intellectualRights.licence.cczero'/></#noescape>
+                                    <#else>
+                                        <#noescape>${eml.intellectualRights!}</#noescape>
+                                    </#if>
                                 </div>
                                 <!-- internal parameter -->
                                 <input id="eml.intellectualRights" name="eml.intellectualRights" type="hidden" value="${eml.intellectualRights!}" />

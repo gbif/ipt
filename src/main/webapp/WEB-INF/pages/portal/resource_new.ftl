@@ -590,7 +590,15 @@
                                 <#if resource.organisation?? && action.getDefaultOrganisation()?? && resource.organisation.key.toString() != action.getDefaultOrganisation().key.toString()>
                                     <@s.text name='portal.resource.rights.organisation'><@s.param>${resource.organisation.name}</@s.param></@s.text>
                                 </#if>
-                                <#noescape>${eml.intellectualRights!}</#noescape>
+                                <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                    <#noescape><@s.text name='eml.intellectualRights.licence.ccbync'/></#noescape>
+                                <#elseif eml.intellectualRights.contains("CC-BY")>
+                                    <#noescape><@s.text name='eml.intellectualRights.licence.ccby'/></#noescape>
+                                <#elseif eml.intellectualRights.contains("CC0")>
+                                    <#noescape><@s.text name='eml.intellectualRights.licence.cczero'/></#noescape>
+                                <#else>
+                                    <#noescape>${eml.intellectualRights!}</#noescape>
+                                </#if>
                             </p>
                         </div>
                     </#if>
