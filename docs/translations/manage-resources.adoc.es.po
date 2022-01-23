@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-23 22:06\n"
+"PO-Revision-Date: 2022-01-23 22:37\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2496,17 +2496,17 @@ msgstr "Copie el UUID del Registry de GBIF desde la URL de la página del conjun
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:674
 msgid "Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page."
-msgstr "Adicione este UUID a las lista de los identificadores alternativos del *recurso IPT* en la página de Metadatos Adicionales. No olvide guardar la página de Metadatos Adicionales."
+msgstr "Agregue este UUID a la lista de identificadores alternativos del *recurso IPT* en la página de \"Metadatos adicionales\", no olvide guardar esta página."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:675
 msgid "Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first."
-msgstr "Asegúrese de que ningún recurso publicado o registrado en este IPT incluya este UUID en su lista de identificadores alternativos. En los casos en donde se intente remplazar un recurso registrado que ya existe en el IPT, el otro recurso tendrá que ser eliminado primero."
+msgstr "Asegúrese de que ningún otro recurso público o registrado en su IPT incluya este UUID en su lista de identificadores alternativos. En los casos en los que intente reemplazar un recurso registrado que ya existe en su IPT, el otro recurso tiene que ser eliminado primero."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:676
 msgid "On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed."
-msgstr "En la página de resumen de recursos, haga clic en el botón de \"Registro\". De forma similar a cualquier otro registro, tendrá que confirmar que ha leído y entendido el acuerdo de intercambio de datos de GBIF antes de que se ejecute el registro."
+msgstr "En la página de resumen de recursos, haga clic en el botón de \"Registrar\". De forma similar a cualquier otro registro, tendrá que confirmar que ha leído y entendido el acuerdo de intercambio de datos de GBIF antes de que se ejecute el registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:678
@@ -2535,7 +2535,7 @@ msgstr "El nombre y URL (o UUID del Registro GBIF) de su IPT\n"
 #: en/modules/ROOT/pages/manage-resources.adoc:684
 #, no-wrap
 msgid "the name and GBIF Registry UUID of your updated Resource (see line Resource Key on resource overview page, for example: Resource Key d990532f-6783-4871-b2d3-cae3d0cb872b)\n"
-msgstr "El nombre y UUID del Registro GBIF de su Recurso actualizado (véase la línea Clave del Recurso en la página vista general del recurso, por ejemplo: Clave del recurso: d990532f-6783-4871-b2d3-cae3d0cb872b)\n"
+msgstr "El nombre y UUID del Registro GBIF de su Recurso actualizado (ver la línea \"Clave del recurso\" en la página \"Vista general del recurso\", por ejemplo: Clave del recurso: d990532f-6783-4871-b2d3-cae3d0cb872b)\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:685
@@ -2570,20 +2570,20 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:694
 #, no-wrap
 msgid "Delete a Resource"
-msgstr "Eliminar un Recurso"
+msgstr "Eliminar un recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:697
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will remove the resource from the IPT and all of the related documents from the file system.  *It will also delete the resource from GBIF.org!*"
-msgstr "Al hacer clic en el botón \"Eliminar\" en la página de vista general del recurso se eliminará el recurso del IPT y todos los documentos relacionados del sistema de archivos.  *¡También eliminará el recurso de GBIF.org!."
+msgstr "Al hacer clic en el botón \"Eliminar\" en la página de vista general del recurso se eliminará el recurso del IPT y todos los documentos relacionados del sistema de archivos.  *¡También eliminará el recurso de GBIF.org!*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:699
 msgid "Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the \"resources\" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the \"Integrate an existing resource configuration folder\" section under the \"Create a New Resource\" heading in the \"Manage Resources Menu\" section."
-msgstr "Si desea conservar la información del recurso, y eliminar el recurso del IPT, haga una copia de la carpeta del recurso en un lugar seguro fuera de la estructura del directorio IPT. El nombre de la carpeta para el recurso es el mismo que el nombre corto del recurso, y se puede encontrar en la carpeta denominada \"Recursos\" en el directorio de datos del IPT. Un recurso guardado de esta manera se puede volver a integrar en el IPT o en una instancia distinta del IPT, siguiendo el procedimiento descrito en la sección \"Carpeta de configuración de la integración de un recurso existente\" bajo el encabezado \"Crear un nuevo recurso\" en la sección “Menú Gestión de Recursos\"."
+msgstr "Si desea conservar la información del recurso, y eliminar el recurso del IPT, haga una copia de la carpeta del recurso en un lugar seguro fuera de la estructura del directorio IPT. El nombre de la carpeta para el recurso es el mismo que el nombre corto del recurso, y se puede encontrar en la carpeta denominada \"Recursos\" en el directorio de datos del IPT. Un recurso guardado de esta manera se puede volver a integrar en el IPT o en una instancia distinta del IPT, siguiendo el procedimiento descrito en la sección \"Integrar una carpeta de configuración de recursos existente\" bajo el encabezado \"Crear un nuevo recurso\" en la sección “Menú gestión de recursos\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
 msgid "There is currently no simple way to remove a resource from the IPT but keep it in GBIF.org (to intentionally \"orphan\" the dataset).  A workaround, requiring access to the server, is to move/delete the resource directory (as above) and restart the IPT.  Issue: https://github.com/gbif/ipt/issues/1461"
-msgstr "Actualmente no hay una forma sencilla de eliminar un recurso del IPT pero mantenerlo en GBIF.org (para dejar intencionadamente \"huérfano\" el conjunto de datos). Una solución, que requiere acceso al servidor, es mover/borrar el directorio de recursos (como se indica arriba) y reiniciar el IPT. Problema: https://github.com/gbif/ipt/issues/1461"
+msgstr "Actualmente no hay una forma sencilla de eliminar un recurso del IPT y mantenerlo en GBIF.org (para dejar intencionadamente \"huérfano\" el conjunto de datos). Una solución, que requiere acceso al servidor, es mover/borrar el directorio de recursos (como se indica arriba) y reiniciar el IPT. Problema: https://github.com/gbif/ipt/issues/1461"
 
