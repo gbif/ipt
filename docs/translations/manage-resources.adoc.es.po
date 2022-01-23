@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-23 15:59\n"
+"PO-Revision-Date: 2022-01-23 16:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1729,7 +1729,7 @@ msgstr "*Eliminar referencia bibliográfica*: al hacer clic sobre este enlace, s
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:463
 msgid "This metadata page contains information about the physical natural history collection associated with the resource (if any) as well as lists of types objects in the collection, called Curatorial Units, and summary information about them. Before any Collection data are entered, the page will show a header for each section (Collections, Specimen preservation methods, Curatorial Units) and a link labelled \"Add new curatorial unit\"."
-msgstr "Esta página de metadatos contiene información acerca de la historia natural física de colección asociada al recurso (si la hay), así como la lista de tipos de unidades en la colección, llamadas Unidades Curatoriales y una información resumida acerca de estos. Antes que sea ingresado algún dato de la Colección, la página mostrará campos de texto y de selección para cuatro aspectos de la colección (Nombre de la Colección, Identificador de la Colección, Identificador de la Colección Parental y Método de Preservación de los Especímenes), un encabezado para la sección de las Unidades Curatoriales y un enlace llamado “Añadir nueva unidad curatorial”."
+msgstr "Esta página de metadatos contiene información sobre la colección física de historia natural asociada al recurso (si la hay), así como listas de los tipos de objetos de la colección, denominados \"Unidades curatoriales\", e información resumida sobre ellas. Antes de introducir los datos de la colección, la página mostrará un encabezado para cada sección (Colecciones, Métodos de preservación de los ejemplares, Unidades curatoriales) y un enlace \"Añadir unidad curatorial\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:464
@@ -1741,37 +1741,37 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:467
 #, no-wrap
 msgid "*Collections* - the list of collections that this resource is based on.\n"
-msgstr "*Colecciones* - La lista de colecciones representa las colecciones en las que se basa este recurso.\n"
+msgstr "*Colecciones*: la lista de colecciones en las que se basa este recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:468
 #, no-wrap
 msgid "*Add new citation* -  click on this link to add the text boxes required for an additional collection in the Collections section.\n"
-msgstr "*Añadir nueva colección* - haciendo clic sobre este enlace, se adicionan los cuadros de texto requeridos para agregar una colección adicional a la sección de Colecciones.\n"
+msgstr "*Añadir colección*: al hacer clic sobre este enlace se adicionan los cuadros de texto requeridos para agregar una colección a la sección de Colecciones.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:469
 #, no-wrap
 msgid "*Collection Name* - the full standard name by which the collection is known or cited in the local language.\n"
-msgstr "*Nombre de la Colección* - Nombre oficial de la Colección en el idioma local.\n"
+msgstr "*Nombre de la colección*: Nombre oficial de la Colección en el idioma local.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:470
 #, no-wrap
 msgid "*Collection Identifier* - The URI (LSID or URL) of the collection. In RDF, used as URI of the collection resource.\n"
-msgstr "*Identificador de la Colección* - El URI (LSID o URL) de la colección. En RDF, utilizado como URI del recurso de la colección.\n"
+msgstr "*Identificador de la colección*: El URI (LSID o URL) de la colección. En RDF, se utiliza como URI del recurso de la colección.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:471
 #, no-wrap
 msgid "*Parent Collection Identifier* - Identifier for the parent collection for this sub-collection. Enables a hierarchy of collections and sub collections to be built. Please enter \"Not applicable\" if this collection does not have a parent collection.\n"
-msgstr "*Identificador de la Colección Parental* - Identificador para la colección parental de esta subcolección. Permite la construcción de la jerarquía de colecciones y subcolecciones. Por favor ingrese el valor \"No aplica\", si esta colección no tiene una colección parental.\n"
+msgstr "*Identificador de la colección parental*: Identificador de la colección parental para esta subcolección. Permite construir una jerarquía de colecciones y subcolecciones. Introduzca \"No aplica\" si esta colección no tiene una colección parental.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:472
 #, no-wrap
 msgid "*Remove this collection* - click on this link to remove the collection that follows immediately below the link.\n"
-msgstr "*Eliminar esta(e) colección* - Haciendo clic sobre este enlace, se eliminará la colección que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar colección*:al hacer clic sobre este enlace se eliminará la colección que está inmediatamente debajo del enlace.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:473
@@ -1783,19 +1783,19 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:476
 #, no-wrap
 msgid "*Specimen Preservation Methods* - the list of specimen preservation methods covered by the resource, indicating the process or technique used to prevent physical deterioration of non-living collections. The values to choose from are based on the {latest-preservation-method}[GBIF Specimen Preservation Method vocabulary]. Remember you can include a list of preparations and preservation methods for a specimen in your data mapping DwC term preparations (http://rs.tdwg.org/dwc/terms/preparations). Please don't select anything for treatments for living collections. This can relate to the curatorial unit(s) in the collection.\n"
-msgstr "*Métodos de preservación de especímenes* - la lista de métodos de preservación de especímenes cubiertos por el recurso, indicando el proceso o la técnica utilizada para prevenir el deterioro físico de las colecciones (no vivas). Los valores a elegir se basan en el {latest-preservation-method}[Método de Preservación de los Especímenes de GBIF]. Recuerde que puede incluir una lista de preparaciones y métodos de preservación para un espécimen en el elemento \"Preparaciones\" del mapeo de datos DwC (http://rs.tdwg.org/dwc/terms/preparations). Por favor, no seleccione ningún tratamiento para colecciones vivas. Esto puede referirse a la(s) unidad(es) de conservación de la colección.\n"
+msgstr "*Métodos de preservación de especímenes*: la lista de métodos de preservación de especímenes cubiertos por el recurso, indicando el proceso o la técnica utilizada para prevenir el deterioro físico de las colecciones (no vivas). Los valores a elegir se basan en el {latest-preservation-method}[Método de preservación de los especímenes de GBIF]. Recuerde que puede incluir una lista de preparaciones y métodos de preservación para un espécimen en el elemento \"Preparaciones\" del mapeo de datos DwC (http://rs.tdwg.org/dwc/terms/preparations). Por favor, no seleccione ningún tratamiento para colecciones vivas. Esto puede referirse a la(s) unidad(es) de conservación de la colección.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:477
 #, no-wrap
 msgid "*Add new preservation method* -  click on this link to add the text boxes required for an additional preservation method in the Specimen Preservation Methods section.\n"
-msgstr "*Añadir nuevo(a) método de preservación* - Haciendo clic sobre este enlace, se adicionan los cuadros de texto requeridos para agregar una colección adicional a la sección de Métodos de preservación de los ejemplares.\n"
+msgstr "*Añadir método de preservación*: haga clic en este enlace para añadir los cuadros de texto necesarios para agregar un método de preservación adicional en la sección Métodos de preservación de especímenes.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:478
 #, no-wrap
 msgid "*Remove this preservation method* - click on this link to remove the preservation method that follows immediately below the link.\n"
-msgstr "*Eliminar este método de preservación* - Haciendo clic sobre este enlace, se elimina la referencia que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar método de preservación*: al hacer clic sobre este enlace se elimina el método que está inmediatamente debajo del enlace.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:479
@@ -1807,67 +1807,67 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:482
 #, no-wrap
 msgid "*Curatorial Units* - the counts of curatorial units covered by the resource. The count can be entered as a range or as a value with an uncertainty. Examples of units include skins, sheets, pins, boxes, and jars. Overall, this section summarizes the physical contents of the collection by type.\n"
-msgstr "*Unidades curatoriales* - Esta sección contiene una lista de cero a más unidades curatoriales, donde cada una consiste de un tipo de unidad (espécimen, lote, caja, frasco, etc. y un conteo especificado por uno o dos Tipos de Métodos posibles. En general, esta sección resume por tipo los contenidos físicos de la colección.\n"
+msgstr "*Unidades curatoriales*: el recuento de las unidades curatoriales cubiertas por el recurso. El recuento puede introducirse como un rango o como un valor con una incertidumbre. Algunos ejemplos de unidades son las pieles, las láminas, los alfileres, las cajas y los frascos. En general, esta sección resume el contenido físico de la colección por tipo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:483
 #, no-wrap
 msgid "*Add new curatorial unit* -  click on this link to add the select text boxes required for an additional curatorial unit in the Curatorial Units section. When a new curatorial unit is added, the default Method Type selection is \"Count Range\".\n"
-msgstr "*Añadir nueva unidad curatorial* - Haciendo clic sobre este enlace, se adicionan en la sección de Unidades Curatoriales los cuadros de texto requeridos para una unidad curatorial adicional. Cuando una nueva unidad curatorial es adicionada, el Tipo de Método seleccionado predeterminadamente es “Rango de Conteo”.\n"
+msgstr "*Añadir nueva unidad curatorial*: haga clic en este enlace para añadir los cuadros de texto de selección necesarios para agregar una unidad curatorial en la sección Unidades curatoriales. Cuando se añade una nueva unidad curatorial, la selección del tipo de método por defecto es \"Rango de conteo\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:484
 #, no-wrap
 msgid "*Method Type* - this select box allows the user to choose from among two methods to specify the number of objects of a given type, either a count range, or a count with uncertainty. After making the selection, appropriate text boxes will appear allowing that counting method to the represented.\n"
-msgstr "*Tipo de Método* - Este cuadro de selección permite al usuario seleccionar entre dos métodos para especificar el número de unidades de un tipo dado, ya sea un rango de conteo o un conteo con incertidumbre. Después de hacer la selección, aparecerán cuadros de texto apropiados permitiendo documentar el método de conteo.\n"
+msgstr "*Tipo de método*: este cuadro de selección permite al usuario elegir entre dos métodos para especificar el número de unidades de un tipo determinado, ya sea un rango de conteo o un conteo con incertidumbre. Después de hacer la selección, aparecerán los cuadros de texto apropiados que permiten documentar el método de conteo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:485
 #, no-wrap
 msgid "*Count Range* - this method type allows the user to set the lower and upper bounds on the number of objects of a particular unit type. See screen image above.\n"
-msgstr "*Rango de Conteo* - Este tipo de método permite al usuario establecer los límites inferior y superior para un número de unidades de un tipo de unidad en particular. Véase la imagen anterior.\n"
+msgstr "*Rango de conteo*: este tipo de método permite al usuario establecer los límites inferior y superior para un número de unidades de un tipo de unidad en particular. Vea la imagen anterior.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:486
 #, no-wrap
 msgid "*Between* - enter the lower bound of the number of objects in this text box.\n"
-msgstr "*Entre* - En este cuadro de texto se ingresa el límite inferior del número de unidades.\n"
+msgstr "*Entre*: en este cuadro de texto se ingresa el límite inferior del número de unidades.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:487
 #, no-wrap
 msgid "*and* - enter the upper bound of the number of objects in this text box.\n"
-msgstr "*y* - En este cuadro de texto se ingresa el límite superior del número de unidades.\n"
+msgstr "*y*: en este cuadro de texto se ingresa el límite superior del número de unidades.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:488
 #, no-wrap
 msgid "*Count with uncertainty* - this method allows the user to set a number of objects of a particular unit type with an uncertainty above or below that number.\n"
-msgstr "*Conteo con incertidumbre* - Este método permite al usuario establecer un número de unidades de un tipo de unidad en particular, con una incertidumbre por encima o debajo de aquel número.\n"
+msgstr "*Conteo con incertidumbre*: este método permite al usuario establecer un número de unidades de un tipo de unidad en particular, con una incertidumbre por encima o por debajo de aquel número.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:489
 #, no-wrap
 msgid "*Count* - enter the mean likely number of object in this text box.\n"
-msgstr "*Conteo* - En este cuadro de texto se ingresa el número de unidades promedio aproximado.\n"
+msgstr "*Conteo*: en este cuadro de texto se ingresa el número de unidades promedio aproximado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:490
 #, no-wrap
 msgid "*+/-* - enter the number of objects more or less than the number in the count text box for the range of possible counts of the particular unit type\n"
-msgstr "*+/-* - Se ingresa el número de unidades en incertidumbre respecto al número ingresado en el campo de conteo, para crear un rango de posibles conteos del tipo de unidad en particular.\n"
+msgstr "*+/-*: se ingresa el número de unidades en incertidumbre respecto al número ingresado en el campo de conteo, para crear un rango de posibles conteos del tipo de unidad en particular.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:491
 #, no-wrap
 msgid "*Unit Type* - the single type of object (specimen, lot, tray, box, jar, etc.) represented by the method type and count.\n"
-msgstr "*Tipo de unidad* - Un solo tipo de unidad (espécimen, lote, placa, caja, frasco, etc. representado por el tipo de método y conteo.\n"
+msgstr "*Tipo de unidad*: un solo tipo de unidad (espécimen, lote, placa, caja, frasco, etc.) representado por el tipo de método y de conteo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:492
 #, no-wrap
 msgid "*Remove this curatorial unit* - click on this link to remove the curatorial unit that follows immediately below the link.\n"
-msgstr "*Eliminar unidad curatorial* - Haciendo clic sobre este enlace, se elimina la unidad curatorial que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar unidad curatorial*: al hacer clic sobre este enlace se elimina la unidad curatorial que está inmediatamente debajo del enlace.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:493
@@ -1879,12 +1879,12 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:495
 #, no-wrap
 msgid "External Links"
-msgstr "Enlaces Externos"
+msgstr "Enlaces externos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:498
 msgid "This metadata page contains links to the home page for the resource as well as links to the resource in alternate forms (database files, spreadsheets, linked data, etc.) and the information about them. Before any external links are entered, the page will show a text box for the Resource Homepage and a link labelled \"Add new external link\"."
-msgstr "Esta página de metadatos contiene enlaces a la página web del recurso, así como enlaces alternos al recurso (archivos de bases de datos, hojas de cálculo, datos relacionados, etc. y la información acerca de ellos. Antes que sea ingresado algún enlace externo, la página mostrará un campo de texto para la URL del Recurso y un enlace llamado “Añadir nuevo(a) enlaces externos”."
+msgstr "Esta página de metadatos contiene enlaces a la página web del recurso, así como enlaces alternos al recurso (archivos de bases de datos, hojas de cálculo, datos relacionados, etc.) y la información acerca de ellos. Antes que sea ingresado algún enlace externo, la página mostrará un campo de texto para la URL del Recurso y un enlace llamado “Añadir enlace externo”."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:499
@@ -1896,60 +1896,60 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:502
 #, no-wrap
 msgid "*Resource Homepage* - enter the full current URL of the web page containing information about the resource or its data set.\n"
-msgstr "*URL del Recurso* - Se ingresa la URL completa y actualizada de la página web que contiene información acerca del recurso o conjunto de datos.\n"
+msgstr "*URL del Recurso*: ingrese la URL actual completa de la página web que contiene información sobre el recurso o su conjunto de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:503
 #, no-wrap
 msgid "*Other Data Formats* - links to your resource data in other formats (e.g., database dumps, spreadsheets, nexus, linked data, etc.).\n"
-msgstr "*Otros formatos de datos* - Enlaces al recurso en otros formatos (e.g., bases de datos, hojas de cálculo, archivos nexus, datos enlazados, etc..) \n"
+msgstr "*Otros formatos de datos*: enlaces al recurso en otros formatos (p. ej., bases de datos, hojas de cálculo, archivos nexus, datos enlazados, etc.). \n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:504
 #, no-wrap
 msgid "*Add new external link* -  click on the link having this text to add the text boxes required for an additional external link.\n"
-msgstr "*Añadir nuevo enlace externo* - Haciendo clic sobre este enlace, se adicionan cuadros de texto requeridos para un enlace externo adicional.\n"
+msgstr "*Añadir enlace externo*: al hacer clic sobre este enlace se adicionan los cuadros de texto requeridos para agregar un enlace externo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:505
 #, no-wrap
 msgid "*Name* - the name of the file or data set.\n"
-msgstr "*Nombre* - el nombre del archivo o conjunto de datos.\n"
+msgstr "*Nombre*: el nombre del archivo o conjunto de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:506
 #, no-wrap
 msgid "*Character Set* - the name or code for the character encoding (e.g., ASCII, UTF-8).\n"
-msgstr "*Conjunto de caracteres* - El nombre o código para la codificación de caracteres (e.g., ASCII, UTF-8).\n"
+msgstr "*Conjunto de caracteres*: el nombre o código de la codificación de caracteres (p. ej., ASCII, UTF-8).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:507
 #, no-wrap
 msgid "*Download URL* - the URL from which the file for the document or data set can be downloaded in the mentioned format.\n"
-msgstr "*URL de Descarga del Archivo* - URL desde el cual puede ser descargado el archivo en el formato mencionado.\n"
+msgstr "*URL del archivo*: URL desde la cual se puede descargar el archivo en el formato mencionado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:508
 #, no-wrap
 msgid "*Data Format* - the name or code of the document or file format (e.g., CSV, TXT, XLS, Microsoft Excel, MySQL).\n"
-msgstr "*Formato del Archivo* - El nombre o código del formato del documento o archivo (e.g., CSV, TXT, XLS, Microsoft Word, MySQL).\n"
+msgstr "*Formato del archivo*: el nombre o código del formato del documento o archivo (p.ej., CSV, TXT, XLS, Microsoft Word, MySQL).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:509
 #, no-wrap
 msgid "*Data Format Version* - the version of the document or file format given in the Data Format text box (e.g., 2003, 5.2).\n"
-msgstr "*Versión del Formato del Archivo* - La versión del formato del documento o archivo de datos en el campo Formato de Datos (e.g., 2003, 5.2).\n"
+msgstr "*Versión del formato del archivo*: la versión del documento o el formato de archivo indicado en el cuadro de texto de Formato del archivo (p. ej., 2003, 5.2).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:510
 #, no-wrap
 msgid "*Remove this external link* - click on the link having this label to remove the external link that follows immediately below.\n"
-msgstr "*Eliminar este enlace externos* - Haciendo clic sobre este enlace, se elimina el enlace externo que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar enlace externo*: al hacer clic sobre este enlace se elimina el enlace externo que está inmediatamente debajo del enlace.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:514
 msgid "This metadata page contains information about other aspects of the resource not captured on one of the other metadata pages, including alternative identifiers for the resource. Before any alternative identifiers are entered, the page will show text boxes for the purpose, maintenance description, additional metadata, a header for the Alternative Identifiers area, and a link labelled \"Add new alternative identifier\"."
-msgstr "Esta página de metadatos contiene información acerca de otros aspectos del recurso que no fueron capturados con las otras páginas de metadatos, incluyendo identificadores alternativos para este. Antes que sea ingresado algún identificador alternativo, la página mostrará campos de texto para los metadatos adicionales, un encabezado para el área de identificadores alternativos y un enlace llamado “Añadir nuevo Identificador Alternativo”."
+msgstr "Esta página de metadatos contiene información acerca de otros aspectos del recurso que no fueron capturados en las otras páginas de metadatos, incluyendo identificadores alternativos para el recurso. Antes de ingresar algún identificador alternativo, la página mostrará campos de texto para los metadatos adicionales, un encabezado para el área de identificadores alternativos y un enlace llamado “Añadir identificador alternativo”."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:515
@@ -1961,61 +1961,61 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:518
 #, no-wrap
 msgid "*Date Created* - the date on which the first version of the resource was published. It will be used to formulate the publication year in the auto-generated resource citation. This value is set automatically when publishing and cannot be edited.\n"
-msgstr "*Fecha de creación* - La fecha en la cual la primera versión del recurso fue publicada o disponible al público. Se utilizará como el año de publicación en la referencia del recurso. Este valor se genera automáticamente cuando se realiza la publicación y no puede ser editado.\n"
+msgstr "*Fecha de la primera publicación*: la fecha en la cual la primera versión del recurso fue publicada. Se utilizará como el año de publicación en la referencia generada automáticamente del recurso. Este valor se genera automáticamente cuando se realiza la publicación y no puede ser editado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:519
 #, no-wrap
 msgid "*Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Published Versions>> section).\n"
-msgstr "*Última fecha de publicación* - La fecha en la que el recurso fue publicado por última vez. Este elemento se actualiza de manera automática cada vez que el recurso es actualizado. (Ver la sección <<Versión del Archivo DwC>>).\n"
+msgstr "*Última fecha de publicación*: la fecha en la que el recurso fue publicado por última vez. Este elemento se actualiza de manera automática cada vez que el recurso es actualizado (Ver la sección <<Versión del Archivo DwC>>).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:520
 #, no-wrap
 msgid "*Resource logo URL* - a logo representing the resource. The logo URL can be used to upload the resource. It may also be uploaded from an image file selected from your disk.\n"
-msgstr "*URL del logo del recurso* - Un logo que represente al recurso. La URL del logo puede ser usada para cargar el recurso. Si no se posee una URL para el logo del recurso, se puede subir un archivo de imagen desde el disco duro.\n"
+msgstr "*URL del logo del recurso* : un logo que represente al recurso. La URL del logo puede ser usada para cargar el recurso. Si no se posee una URL para el logo del recurso, se puede subir un archivo de imagen desde el disco duro.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:521
 #, no-wrap
 msgid "*Purpose* - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.\n"
-msgstr "*Propósito* - Resumen de los propósitos por los cuales se consolidó el conjunto de datos. Incluye los objetivos de la creación del conjunto de datos y el alcance esperado del mismo.\n"
+msgstr "*Propósito*: Un resumen de las finalidades para las que se ha desarrollado el conjunto de datos. Incluye los objetivos de la creación del conjunto de datos y su alcance esperado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:522
 #, no-wrap
 msgid "*Maintenance Description* - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.\n"
-msgstr "*Descripción de mantenimiento* - Una descripción de la frecuencia de mantenimiento de este recurso. Esta descripción complementa la frecuencia de actualización seleccionada en la sección de Metadatos Básicos.\n"
+msgstr "*Descripción de mantenimiento*: una descripción de la frecuencia de mantenimiento de este recurso. Esta descripción complementa la frecuencia de actualización seleccionada en la sección \"Metadatos básicos\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:523
 #, no-wrap
 msgid "*Additional Information* - any information that is not characterized by the other resource metadata fields, e.g. history of the project, publications that have used the current data, information on related data published elsewhere, etc.\n"
-msgstr "*Información adicional* - Cualquier información que no esté descrita en los demás campos de los metadatos, p. ej.: historia del proyecto, publicaciones que han usado estos datos, información sobre datos relacionados publicados en otro lugar, etc. Información adicional - Cualquier información que no esté descrita en los demás campos de los metadatos, p. ej.: historia del proyecto, publicaciones que han usado estos datos, información sobre datos relacionados publicados en otro lugar, etc.\n"
+msgstr "*Información adicional*: cualquier información que no esté descrita en los demás campos de los metadatos, p. ej., historia del proyecto, publicaciones que han usado estos datos, información sobre datos relacionados publicados en otro lugar, etc.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:524
 #, no-wrap
 msgid "*Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. When a resource is assigned a new DOI (using the IPT), the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.\n"
-msgstr "*Identificador Alternativo* - Esta sección contiene una lista de identificadores alternos o adicionales para el recurso. Cuando el recurso es publicado, la URL del IPT del recurso es adicionada a la lista de identificadores. Cuando un recurso es registrado en el Registro GBIF, el registro único del recurso también es adicionado a la lista de identificadores. Si el recurso representa un recurso existente ya registrado en el Registro GBIF, el UUID del recurso ya registrado puede ser adicionado a la lista de identificadores. Esto permitirá al recurso del IPT actualizar el recurso existente durante el registro, en vez de registrar un recurso completamente nuevo. Para más información sobre cómo migrar un recurso, véase la sección <<Migración de un Recurso>>.\n"
+msgstr "*Identificador alternativo*: esta sección contiene una lista de identificadores alternativos o adicionales para el recurso. Cuando el recurso es publicado, la URL del IPT del recurso es adicionada a la lista de identificadores. Cuando un recurso es registrado en el Registro GBIF, el registro único del recurso también es adicionado a la lista de identificadores. Si el recurso representa un recurso existente ya registrado en el Registro GBIF, el UUID del recurso registrado puede ser agregado a la lista de identificadores. Esto permitirá al recurso del IPT actualizar el recurso existente durante el registro, en vez de registrar un recurso completamente nuevo. Para más información sobre cómo migrar un recurso, ver la sección <<Migración de un recurso>>.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:525
 #, no-wrap
 msgid "*Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.\n"
-msgstr "*Añadir nuevo identificador alternativo* - Haciendo clic sobre este enlace, se adicionan en la sección los cuadros de texto requeridos para agregar un identificador alternativo\n"
+msgstr "*Añadir identificador alternativo*: al hacer clic sobre este enlace se adicionan en la sección los cuadros de texto requeridos para agregar un identificador alternativo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:526
 #, no-wrap
 msgid "*Alternative Identifier* - the text for the alternative identifier for the resource (e.g., a URL, UUID, or any other unique key value).\n"
-msgstr "*Identificador Alternativo* - El texto para el identificador alterno del recurso (e.g., una URL, UUID o cualquier otro valor clave único).\n"
+msgstr "*Identificador alternativo*: el texto para el identificador alternativo del recurso (p. ej., una URL, UUID o cualquier otro valor clave único).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:527
 #, no-wrap
 msgid "*Remove this alternative identifier* - click on this link to remove the alternative identifier that follows immediately below.\n"
-msgstr "*Eliminar este identificador alternativo* - Haciendo clic sobre este enlace, se eliminará el identificador alternativo inmediatamente abajo.\n"
+msgstr "*Eliminar identificador alternativo*: al hacer clic sobre este enlace se eliminará el identificador alternativo inmediatamente debajo del enlace.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:528
@@ -2026,7 +2026,7 @@ msgstr "Versiones publicadas"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:530
 msgid "This area of the Resource Overview page allows a user to publish a version of the resource."
-msgstr "Esta área de la página \"Vista General del Recurso\", permite a un usuario publicar una nueva versión del recurso."
+msgstr "Esta área de la página \"Vista general del recurso\" permite al usuario publicar una nueva versión del recurso."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:531
@@ -2037,7 +2037,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:534
 msgid "The *left-hand* section controls how resource versions are published. The publish button can be used to publish new versions on demand, or auto-publishing can be enabled to publish new versions on a schedule. For explanations of the options in this section, refer to the information below."
-msgstr "La *sección a la izquierda* controla la forma como las versiones del recurso son publicadas. El botón Publicar puede ser usado para publicar nuevas versiones voluntariamente, mientras que la autopublicación permite publicar nuevas versiones en una fecha programada. Para más explicaciones acerca de esta sección, consulte la información a continuación."
+msgstr "La sección de *la izquierda* controla la forma cómo se publican las versiones del recurso. El botón \"Publicar\" puede ser usado para publicar nuevas versiones voluntariamente, mientras que la autopublicación permite publicar nuevas versiones en una fecha programada. Para más explicaciones acerca de esta sección, consulte la información a continuación."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:535
@@ -2049,7 +2049,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:538
 #, no-wrap
 msgid "*Publish on demand*: - simply click on the button labelled \"Publish\" to trigger publishing a new version. The button labelled \"Publish\" will be enabled if\n"
-msgstr "*Publicación por demanda*: - Haciendo clic en el botón \"Publicar\" se desencadenará la publicación de una nueva versión. El botón publicar estará activado si\n"
+msgstr "*Publicación a demanda*: al hacer clic en el botón \"Publicar\" se desencadenará la publicación de una nueva versión. El botón publicar estará activado sí\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:541
