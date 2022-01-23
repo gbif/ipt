@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-23 17:52\n"
+"PO-Revision-Date: 2022-01-23 22:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2471,7 +2471,7 @@ msgstr "Determine la organización propietaria del *recurso registrado existente
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:667
 msgid "Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page."
-msgstr "Seleccione la organización propietaria en la lista desplegable de la página de metadatos básicos. No olvide guardar la página de \"metadatos básicos\"."
+msgstr "Seleccione la organización propietaria en la lista desplegable de la página de metadatos básicos. No olvide guardar la página de \"Metadatos básicos\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:668
