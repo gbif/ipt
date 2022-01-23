@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-22 20:21\n"
+"PO-Revision-Date: 2022-01-23 15:59\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1682,13 +1682,13 @@ msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Belisl
 #: en/modules/ROOT/pages/manage-resources.adoc:450
 #, no-wrap
 msgid "*Auto-generation - Turn On/Off* - turn on to let the IPT auto-generate the resource citation for you. The citation format used in auto-generation is based on DataCite's preferred citation format, and satisfies the Joint Declaration of Data Citation Principles. This format includes a version number, which is especially important for datasets that are continuously updated. You can read more about the citation format in the xref:citation.adoc[Dataset Citation Format] page in the IPT wiki.\n"
-msgstr "*Generación automática Desactivada - Activar* - Active la generación automática para que el IPT autogenere la referencia por usted. El formato de la referencia utilizado en la generación automática se basa en el formato recomendado: referencia de DataCite y satisface la \"Joint Declaration of Data Citation Principle\". Este formato incluye un número de versión, que es importante especialmente para los conjuntos de datos que se actualizan continuamente. Puede encontrar más información acerca del formato de referencias en la página del wiki del IPT del formato de referencia xref:citation.adoc[IPT Citation Format].\n"
+msgstr "*Generación automática Desactivada - Activar*: active la generación automática para que el IPT genere la referencia por usted. El formato de citación utilizado en la generación automática se basa en el formato de citación preferido por DataCite, y satisface la \"Joint Declaration of Data Citation Principle\". Este formato incluye un número de versión, que es especialmente importante para los conjuntos de datos que se actualizan continuamente. Puede leer más sobre el formato de citación en la página xref:citation.adoc[Formato de referencias de conjuntos de datos] en el wiki del IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:451
 #, no-wrap
 msgid "*Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online dataset. It is recommended the identifier be included in the citation. If the resource has been assigned a DOI (using the IPT), the IPT sets the DOI as the citation identifier and it can no longer be edited.\n"
-msgstr "*Identificador de la Referencia del Recurso* - Un DOI, URI u otro identificador persistente que se resuelva en el conjunto de datos en línea. Se recomienda incluir el identificador en la citación. Tenga en cuenta que si el recurso tiene un DOI asignado (utilizando el IPT), el IPT establece el DOI como el identificador de la cita y no puede ser editado.\n"
+msgstr "*Identificador de la referencia del recurso*: un DOI, URI u otro identificador persistente que dirija al conjunto de datos en línea. Se recomienda incluir el identificador en la citación. Tenga en cuenta que si el recurso tiene un DOI asignado (utilizando el IPT), el IPT establece el DOI como el identificador de la cita y no puede ser editado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:452
@@ -1700,19 +1700,19 @@ msgstr "*Referencias Bibliográficas* - referencias de otros recursos relacionad
 #: en/modules/ROOT/pages/manage-resources.adoc:453
 #, no-wrap
 msgid "*Add new bibliographic citation* -  click on this link to add the text boxes required for an additional citation in the bibliography.\n"
-msgstr "*Añadir nueva referencia bibliográfica* - Haciendo clic sobre este enlace, se adicionan cuadros de texto requeridos para una cita adicional en la bibliografía.\n"
+msgstr "*Añadir referencia bibliográfica*: al hacer clic sobre este enlace se añaden los cuadros de texto necesarios para agregar una cita a la bibliografía.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:454
 #, no-wrap
 msgid "*Bibliographic Citation* - the citation of an external resource related to or used in the creation of this resource.\n"
-msgstr "*Referencias Bibliográficas* - Referencias de otros recursos relacionados con lo que se utilizaron en la creación de este recurso.\n"
+msgstr "*Referencias bibliográficas*:  referencia de un recurso externo relacionado o utilizado en la creación de este recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:455
 #, no-wrap
 msgid "*Bibliographic Citation Identifier* - a DOI, URI, or other persistent identifier that resolves to the online external resource. It should be used in the citation, usually at the end.\n"
-msgstr "*Identificador de la Referencia Bibliográfica* - Un DOI, URI u otro identificador persistente que se resuelva en el recurso externo en línea. Se debe utilizar en la citación, generalmente al final.\n"
+msgstr "*Identificador de la referencia bibliográfica*: un DOI, URI u otro identificador persistente que dirija al recurso externo en línea. Debe utilizarse en la cita, generalmente al final.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:456
@@ -1724,7 +1724,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:459
 #, no-wrap
 msgid "*Remove this bibliographic citation* - click on this link to remove the citation that follows immediately below the link.\n"
-msgstr "*Eliminar esta referencia bibliográfica* - Haciendo clic sobre este enlace, se elimina la referencia que está inmediatamente debajo del enlace.\n"
+msgstr "*Eliminar referencia bibliográfica*: al hacer clic sobre este enlace, se elimina la referencia que está inmediatamente debajo del enlace.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:463
