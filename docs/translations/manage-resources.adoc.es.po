@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-23 17:26\n"
+"PO-Revision-Date: 2022-01-23 17:52\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2348,7 +2348,7 @@ msgstr "El área de Visibilidad de la página de Gestión de Recursos permite a 
 #: en/modules/ROOT/pages/manage-resources.adoc:621
 #, no-wrap
 msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured. Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible. When the resource is ready for public visibility, click on the button labelled \"Public\". A message will appear at the top of the page saying that the status has been changed to \"Public\".\n"
-msgstr "&Privado* - Un recurso privado es visible sólo para aquellos que lo crearon, o aquellos a quienes se concede permiso para administrarlo en el IPT, o por un usuario que tiene el rol Administrador. El objetivo es mantener el recurso como privado hasta que haya sido completamente y correctamente configurado. Tenga en cuenta que un DOI puede ser reservado para un recurso privado, pero ese DOI no podrá ser registrado sino hasta que el recurso tenga visibilidad Pública. Cuando el recurso esté listo para ser público, haga clic en el botón \"Publicar\". Aparecerá un mensaje en la parte superior de la página diciendo que el estado ha cambiado a \"Público\".\n"
+msgstr "*Privado*: un recurso privado solo es visible para aquellos que lo han creado, para aquellos a los que se les ha concedido permiso para gestionarlo dentro del IPT o para aquellos que tengan el rol de administrador. El objetivo principal es evitar que el recurso sea visible para el público hasta que se haya configurado completamente y de forma adecuada. Tenga en cuenta que se puede reservar un DOI para un recurso privado, pero ese DOI no se puede registrar hasta que el recurso sea visible públicamente. Cuando el recurso esté listo para su visibilidad pública, haga clic en el botón \"Público\". Aparecerá un mensaje en la parte superior de la página indicando que el estado ha sido cambiado a \"Público\".\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:622
@@ -2360,7 +2360,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:625
 #, no-wrap
 msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). If the resource has a reserved DOI, that DOI will be registered the next time the resource is published. The resource is ultimately accessible via the Internet to anyone who knows its homepage URL or DOI. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry. Be aware the visibility of a resource assigned a DOI cannot be changed to private.\n"
-msgstr "*Público* - Un recurso público es visible para cualquier persona que utilice la instancia del IPT, donde se instala el recurso (en la \"Tabla de Recursos Públicos\" en la página de Inicio del IPT). Si el recurso tiene un DOI reservado, ese DOI será registrado la próxima vez que el recurso sea publicado. El recurso también está disponible a través de Internet para cualquier persona que conozca la URL de la página principal o el DOI. Sin embargo, el recurso puede ser detectado una vez haya sido inscrito en el Registro GBIF. Tenga en cuenta que la visibilidad de un recurso al cual ya se le ha asignado un DOI, no puede ser cambiada a privada.\n"
+msgstr "*Público*: un recurso público es visible para cualquier persona que utilice la instancia de IPT en la que está instalado el recurso (en la tabla de recursos públicos de la página de inicio de IPT). Si el recurso tiene un DOI reservado, ese DOI se registrará la próxima vez que se publique el recurso. En última instancia, el recurso es accesible a través de Internet para cualquiera que conozca la URL de su página de inicio o su DOI. Sin embargo, el recurso no es descubrible globalmente a través de la página web de GBIF hasta que se haya registrado en el Registro de GBIF. Tenga en cuenta que la visibilidad de un recurso al que se le ha asignado un DOI no puede cambiarse a privada.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:627
@@ -2371,7 +2371,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:630
 msgid "Two buttons appear in the left-hand section of the visibility area. Clicking on the button labelled \"Private\" will remove the resource entirely from public visibility and return it to the private state. The button labelled \"Register\" will only be enabled if"
-msgstr "En la parte izquierda del área de la sección de visibilidad encontrará dos botones. Al hacer clic en el botón \"privado\" se retirará por completo el recurso de la visibilidad pública y lo devolverá al estado privado. El botón \"Registro\" se activará si:"
+msgstr "En la parte izquierda del área de visibilidad aparecen dos botones. Al hacer clic en el botón \"Privado\", el recurso dejará de ser público y volverá a ser privado. El botón \"Registro\" sólo se activará si"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:632
@@ -2381,7 +2381,7 @@ msgstr "los metadatos necesarios para el recurso están completos,"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:633
 msgid "the resource has been published (see the explanation of the <<Published Versions>> area of the Resource Overview page, below), and"
-msgstr "el recurso ha sido publicado (ver explicación en la sección <<Versiones Publicadas>> de la página \"Vista General del Recurso\", más adelante, y"
+msgstr "el recurso ha sido publicado (ver explicación en la sección <<Versiones publicadas>> de la página \"Vista general del recurso\", más adelante) y"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:634
@@ -2402,12 +2402,12 @@ msgstr "Por último, haga clic en el botón \"Registro\" para registrar el recur
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:640
 msgid "If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
-msgstr "Si desea que este recurso se actualice un recurso preexistente en DiGIR, BioCASe, o TAPIR, por favor consulte la sección <<Migración de un Recurso>> abajo."
+msgstr "Si desea que este recurso actualice un recurso DiGIR, BioCASe o TAPIR ya registrado, consulte la sección <<Migrar un recurso>> a continuación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:642
 msgid "Clicking on this button will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled \"Yes\" to appear at the bottom of the dialog box. Click on \"Yes\" to register the resource, or click on \"No\" to defer the decision and close the dialog box."
-msgstr "Al hacer clic en este botón, se abrirá un cuadro de diálogo con el que se confirma que usted ha leído y entendido el acuerdo de intercambio de datos de GBIF, al cual se da un enlace. Haga clic en el cuadro de verificación para indicar que está de acuerdo con estos términos. Si lo hace, un botón \"Sí\" aparecerá en la parte inferior del cuadro de diálogo. Haga clic en \"Sí\" para registrar el recurso, o en \"No\" para aplazar la decisión y cerrar el cuadro de diálogo.."
+msgstr "Al hacer clic en este botón, se abrirá un cuadro de diálogo con el que se confirma que usted ha leído y entendido el acuerdo de intercambio de datos de GBIF, al cual se da un enlace. Haga clic en el cuadro de verificación para indicar que está de acuerdo con estos términos. Si lo hace, un botón \"Sí\" aparecerá en la parte inferior del cuadro de diálogo. Haga clic en \"Sí\" para registrar el recurso o en \"No\" para aplazar la decisión y cerrar el cuadro de diálogo."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:643
@@ -2424,7 +2424,7 @@ msgstr "Si el intento de registro es exitoso, aparecerá un mensaje en la parte 
 #: en/modules/ROOT/pages/manage-resources.adoc:649
 #, no-wrap
 msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the right-hand column when registration is complete.\n"
-msgstr "*Registrado* - Un recurso que ha sido registrado en la red de GBIF, se puede detectar a través de ese sistema y los datos de los recursos pueden ser indexados y se puede acceder a estos desde el portal de GBIF. Un resumen de la información registrada en GBIF aparecerá en la columna de la derecha cuando el registro se haya completado.\n"
+msgstr "*Registrado*: un recurso que ha sido registrado en la red de GBIF puede ser descubierto a través de la página web de GBIF y los datos del recurso pueden ser indexados y accedidos desde el portal de GBIF. Tenga en cuenta que puede tardar hasta una hora para que los datos sean indexados por GBIF después del registro. Un resumen de la información registrada en GBIF aparecerá en la columna de la derecha cuando el registro esté completo.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:651
@@ -2435,23 +2435,23 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:654
 msgid "If the resource has already been registered, every time the \"Publish\" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the \"Delete a Resource\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section."
-msgstr "Si el recurso ya ha sido registrado, cada vez que se haga clic en el botón \"Publicar\", enviará nueva información sobre el recurso al Registro GBIF, para que el registro sea actualizado. La visibilidad de un recurso registrado no puede ser cambiada a privada. Si un recurso debe ser eliminado del Registro GBIF, siga el procedimiento descrito en la sección \"Eliminar un Recurso\" del encabezado \"Vista General del Recurso\" de la sección \"Menú Gestión de Recursos\"."
+msgstr "Si el recurso ya ha sido registrado, cada vez que se pulsa el botón \"Publicar\", también se actualiza su información en el Registro de GBIF. La visibilidad de un recurso registrado no puede cambiarse a privada. Si un recurso debe ser eliminado del Registro de GBIF, siga el procedimiento descrito en la sección \"Eliminar un recurso\" bajo el título \"Vista general del recurso\" en la sección \"Menú de gestión de recursos\"."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:656
 #, no-wrap
 msgid "Migrate a Resource"
-msgstr "Migración de un Recurso"
+msgstr "Migrar un recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:659
 msgid "There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or DwC-A resources to an IPT. This allows the existing resource to preserve its GBIF Registry UUID."
-msgstr "Ahora hay una manera de migrar recursos registrados en DiGIR, BioCASe y TAPIR a un IPT. Esto permite que los recursos mantengan su UUID del Registro GBIF."
+msgstr "Ahora hay una manera de migrar los recursos existentes registrados DiGIR, BioCASe, TAPIR, o DwC-A a un IPT. Esto permite que el recurso existente conserve su UUID del Registro de GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:661
 msgid "The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry."
-msgstr "La forma en que funciona, es que el recurso IPT es configurado para actualizar el recurso DiGIR, BioCASEeo TAPIR registrado que corresponde en el Registro GBIF."
+msgstr "La forma en que esto funciona, es que el recurso IPT está configurado para actualizar el recurso registrado existente al que corresponde en el Registro de GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:663
