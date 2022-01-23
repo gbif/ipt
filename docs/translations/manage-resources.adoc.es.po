@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-24 17:11+0000\n"
-"PO-Revision-Date: 2022-01-23 16:39\n"
+"PO-Revision-Date: 2022-01-23 17:26\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2087,7 +2087,7 @@ msgstr "El editor del recurso debe ingresar un resumen de los cambios que se le 
 #: en/modules/ROOT/pages/manage-resources.adoc:553
 #, no-wrap
 msgid "*Auto-publishing*: - to turn on automated publishing, select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and then press the publish button. When automated publishing is on, the publishing interval and next published date are clearly displayed in the published versions section. To change the publishing interval, select a different publishing interval and press publish. To turn off automated publishing, select \"Turn off\" and then press publish. In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.\n"
-msgstr "*Autopublicación*: - Para activar la autopublicación, seleccione una de las 5 frecuencias de publicación y presione el botón Publicar y activar la autopublicación. Para cambiar la frecuencia de autopublicación, seleccione una frecuencia de publicación diferente y presione el botón Publicar y cambiar la frecuencia de autopublicación. Para desactivar la autopublicación, seleccione \"Desactivar\" y presione el botón Publicar y desactivar la autopublicación. En caso de falla, la publicación se reintentará automáticamente hasta 3 veces. Esto protege el proceso contra loops de publicación infinitos. Los recursos configurados para su publicación automática que no logren finalizar el proceso exitosamente, tendrán la fecha de publicación pasada, y serán resaltados en las tablas de recursos publicados y de gestión de recursos.\n"
+msgstr "*Publicación automática*: para activar la publicación automática, seleccione uno de los 5 intervalos de publicación (anual, semestral, mensual, semanal o diario) y, a continuación, pulse el botón de publicación. Cuando la publicación automática está activada, el intervalo de publicación y la próxima fecha de publicación se muestran claramente en la sección de versiones publicadas. Para cambiar el intervalo de publicación, seleccione un intervalo de publicación diferente y pulse publicar. Para desactivar la publicación automática, seleccione \"Desactivar\" y pulse publicar. En caso de fallo, la publicación se reintentará automáticamente hasta 3 veces más. De esta forma se evitan los bucles infinitos de publicación. Los recursos configurados para publicarse automáticamente, pero que no hayan finalizado con éxito, tendrán una fecha de próxima publicación en el pasado, y serán resaltados en las tablas de recursos públicos y de gestión.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:556
@@ -2098,7 +2098,7 @@ msgstr "La *sección a la derecha* contiene la tabla que compara la versión act
 #: en/modules/ROOT/pages/manage-resources.adoc:557
 #, no-wrap
 msgid "This demonstrates a major version change since the pending version has been reserved a new DOI:"
-msgstr "Muestra los cambios mayores en la versión ya que a la versión pendiente se le ha reservado un nuevo DOI:"
+msgstr "Muestra un cambio de versión importante ya que a la versión pendiente se le ha reservado un nuevo DOI:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:558
@@ -2110,7 +2110,7 @@ msgstr ""
 #: en/modules/ROOT/pages/manage-resources.adoc:560
 #, no-wrap
 msgid "This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:"
-msgstr "Muestra los cambios menores en la versión, ya que a la versión pendiente se le ha asignado el mismo DOI de la versión actual:"
+msgstr "Muestra un cambio de versión menor ya que el DOI asignado a las versiones actuales y pendientes es el mismo:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:561
@@ -2134,7 +2134,7 @@ msgstr "*Visibilidad*: - la visibilidad de la versión actual/pendiente. Para po
 #: en/modules/ROOT/pages/manage-resources.adoc:567
 #, no-wrap
 msgid "*DOI*: - to DOI of the current/pending version. The DOI of the current version can never be changed, however, the DOI of the pending version can be reserved or deleted. For explanations of how DOIs are reserved, deleted, registered, deactivated, reactivated please see the DOI section below.\n"
-msgstr "*DOI*: - El DOI de la versión pendiente. El DOI de la versión actual nunca podrá ser cambiado, sin embargo, el DOI de la versión pendiente puede ser reservado o eliminado. Para más información acerca de cómo reservar, eliminar, registrar, desactivar y reactivar los DOIs, por favor remítase a la sección a continuación.\n"
+msgstr "*DOI*: el DOI de la versión actual/pendiente. El DOI de la versión actual no puede cambiarse nunca, sin embargo, el DOI de la versión pendiente puede reservarse o eliminarse. Para explicar cómo se reservan, se eliminan, se registran, se desactivan y se reactivan los DOI, consulte la sección de DOI más abajo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:568
@@ -2146,7 +2146,7 @@ msgstr "*Licencia de los Datos*: - la licencia asignada al recurso. Para registr
 #: en/modules/ROOT/pages/manage-resources.adoc:569
 #, no-wrap
 msgid "*Published on*: - to date the current version was published on / the date the pending version will be published on.\n"
-msgstr "*Publicado en*: - La fecha en la cual la versión actual fue publicada / la fecha en la que la versión pendiente va a ser publicada.\n"
+msgstr "*Publicado en*: la fecha en la cual la versión actual fue publicada / la fecha en la que la versión pendiente será publicada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:570
@@ -2158,23 +2158,23 @@ msgstr "*Log de publicación*: - haga clic en el botón de descarga para recuper
 #: en/modules/ROOT/pages/manage-resources.adoc:571
 #, no-wrap
 msgid "*Publication report*: - the publication summary of the current version - not applicable to the pending version.\n"
-msgstr "*Reporte de publicación*: - Resumen de la publicación de la versión reciente - no aplica para versiones pendientes.\n"
+msgstr "*Reporte de publicación*: el resumen de la publicación de la versión actual, no aplica a la versión pendiente.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:572
 #, no-wrap
 msgid "Publishing steps"
-msgstr "Pasos para Publicar"
+msgstr "Pasos para publicar"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:575
 msgid "The publish action consists of the steps described below. Publication is all or nothing meaning that each step must terminate successfully in order for a new version to be published. If any step fails, or if the publish action is cancelled, the version is rolled back to the last published version."
-msgstr "La acción de publicar consiste de los pasos descritos enseguida. La publicación es un proceso de todo o nada, lo que significa que cada paso debe ser finalizado exitosamente para que la nueva versión sea publicada. Si alguno de los pasos falla, o si se cancela la acción publicar, la versión se revierte a la última versión publicada."
+msgstr "La acción de publicar consiste de los pasos descritos enseguida. La publicación es un proceso de todo o nada, lo que significa que cada paso debe ser finalizado exitosamente para que la nueva versión sea publicada. Si alguno de los pasos falla, o si se cancela la acción de publicación, la versión se revierte a la última versión publicada."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:577
 msgid "The current metadata are written to the file eml.xml. An incremental version named eml-n.xml (where n is the incremental version number reflecting the publication version) is always saved."
-msgstr "Los metadatos actuales se escriben en un archivo eml.xml. Una versión posterior llamada eml-n.xml siempre es guardada (donde n es el número de la versión, reflejando la versión de la publicación)."
+msgstr "Los metadatos actuales se escriben en un archivo eml.xml. Una versión posterior llamada eml-n.xml siempre se guarda (donde n es el número de la versión, reflejando la versión de la publicación)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:578
@@ -2184,22 +2184,22 @@ msgstr "Un documento de publicación de datos en Formato de Texto Enriquecido (R
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:579
 msgid "The current primary resource data as configured through mapping are written to the Darwin Core Archive file named dwca.zip. The data files in the Darwin Core Archive are then validated (see \"Data Validation\" section below)."
-msgstr "Los datos de recursos primarios actuales como fueron configurados a través del mapeo se escriben en el archivo Darwin Core Archive llamado dwca.zip. Los archivos de datos contenidos en el Archivo Darwin Core son luego validados (vea la sección \"validación de datos\" abajo)."
+msgstr "Los datos de recursos primarios actuales como fueron configurados a través del mapeo se escriben en el archivo Darwin Core Archive llamado dwca.zip. Los archivos de datos contenidos en el Archivo Darwin Core luego son validados (vea la sección \"Validación de datos\" más abajo)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:580
 msgid "If the IPT's Archival Mode is turned on (see xref:administration.adoc#configure-ipt-settings[Configure IPT settings] section), an incremental version of the Darwin Core Archive file named dwca-n.zip is also saved."
-msgstr "Si el Modo Archivo del IPT está activado (ver la sección xref:administration.adoc#configuracion-de-las-opciones-del-ipt[Configuración de las opciones del IPT]), una versión posterior del archivo Darwin Core Archive se guardará, llamada dwca-n.zip."
+msgstr "Si el \"Modo archivo\" del IPT está activado (ver la sección xref:administration.adoc#configuracion-de-las-opciones-del-ipt[Configuración de las opciones del IPT]), una versión posterior del Archivo Darwin Core se guardará y se llamará dwca-n.zip."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:581
 msgid "The information about the resource is updated in the GBIF Registry if the resource is registered."
-msgstr "La información acerca del recurso se actualiza en el Registro GBIF, si el recurso se ha registrado."
+msgstr "La información sobre el recurso se actualiza en el Registro de GBIF si el recurso está registrado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:582
 msgid "The DOI metadata about the resource is updated and propagated to DOI resolvers if the resource is assigned a DOI using the IPT."
-msgstr "El DOI de metadatos sobre el recurso se actualiza y se propaga al DOI de los solucionadores si se le asigna un DOI al recurso usando el IPT."
+msgstr "Los metadatos del DOI sobre el recurso se actualizan y se propagan a los resolutores de DOI si al recurso se le asigna un DOI mediante el IPT."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:583
@@ -2220,18 +2220,18 @@ msgstr "Luego de escribir los datos, el IPT también valida su contenido de las 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:590
 msgid "If a column representing the core record identifier (e.g. occurrenceID is the core record identifier of the Occurrence core) is found in the core data file, the IPT will validate that for each record, the core record identifier is present, and unique."
-msgstr "Si una columna contiene el identificador del core(por ejemplo, ID del registro biológico es el identificador del core Occurrence) el IPT validará para cada registro si el ID está presente y si es único."
+msgstr "Si una columna que representa el identificador del core (p. ej., occurrenceID es el identificador del core Occurrence) se encuentra en el archivo de datos del core, el IPT validará que para cada registro, el identificador del core está presente y es único."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:591
 msgid "The Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] is a required term in the Occurrence extension. Therefore the IPT validates that each Occurrence data file has a basisOfRecord column. In addition, the IPT validates that for each Occurrence record the basisOfRecord is present, and its value matches the {latest-basis-of-record}[Darwin Core Type vocabulary]."
-msgstr "El término Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] es un término obligatorio para la extensión Occurrence. Por esto el IPT valida que cada archivo de datos tenga una columna de basisOfRecord. Adicionalmente, el IPT valida que cada registro de Ocurrence presente el basisOfRecord, ya que los valores coincidan con el {latest-basis-of-record}[Vocabulario del Tipo de Darwin Core]."
+msgstr "El término Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord] es un término obligatorio para la extensión Occurrence. Por esto el IPT valida que cada archivo de datos tenga una columna de basisOfRecord. Adicionalmente, el IPT valida que cada registro de Ocurrence esté presente en el basisOfRecord y que su valor coincidan con el {latest-basis-of-record}[Vocabulario del Tipo de Darwin Core]."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:592
 #, no-wrap
 msgid "Assigning DOIs to Resources"
-msgstr "Asignar DOIs a los Recursos"
+msgstr "Asignar DOIs a los recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:595
@@ -2242,43 +2242,43 @@ msgstr "La mejor práctica es asignar un nuevo DOI al recurso cada vez que se pr
 #: en/modules/ROOT/pages/manage-resources.adoc:597
 #, no-wrap
 msgid "*Reserve*: - a DOI can be reserved for a resource. This operation varies a little depending on whether the resource has already been assigned a DOI or not.\n"
-msgstr "*Reservar*: - Un DOI puede ser reservado para un recurso. Esta operación varía un poco dependiendo de si al recurso ya le ha sido asignado un DOI o no.\n"
+msgstr "*Reservar*: un DOI puede ser reservado para un recurso. Esta operación varía un poco dependiendo de si al recurso ya se le ha sido asignado un DOI o no.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:598
 #, no-wrap
 msgid "*Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the \"Reserve\" button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the \"Reserve\" button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr "*Recurso sin un DOI asignado*: - Un DOI puede ser reservado para un recurso luego de que los metadatos obligatorios hayan sido ingresados. Para reservar un DOI, presione el botón \"Reservar\" en la sección de Versiones Publicadas. Para reutilizar un DOI existente, ingréselo al campo de Identificador del Recurso en los metadatos del recurso, y luego presione el botón \"Reservar\" en la sección de Versiones Publicadas. Si un recurso está disponible públicamente y con un DOI reservado, la siguiente publicación resultará en una versión mayor i del DOI será registrado. De lo contrario si un recurso es privado y tiene un DOI reservado, la siguiente publicación resultará en una versión menor del recurso y el DOI NO será registrado. Tenga en cuenta que hasta que un DOI no sea registrado este puede ser eliminado.\n"
+msgstr "*Recurso sin un DOI asignado*: se puede reservar un DOI para un recurso después de haber ingresado los metadatos obligatorios. Para reservar un DOI, pulse el botón \"Reservar\" en la sección \"Versiones publicadas\". Para reutilizar un DOI existente, introdúzcalo en el campo del identificador de la cita en los metadatos del recurso y, a continuación, pulse el botón \"Reservar\" en la sección \"Versiones publicadas\". Si un recurso está disponible públicamente y se ha reservado un DOI, la siguiente publicación dará lugar a una nueva versión principal y el DOI se registrará. De lo contrario, si un recurso es privado y se ha reservado un DOI, la siguiente publicación dará lugar a una nueva versión menor del recurso y el DOI NO se registrará. Tenga en cuenta que hasta que no se registre un DOI, éste puede ser eliminado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:599
 #, no-wrap
 msgid "*Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the \"Reserve new\" button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.\n"
-msgstr "*Recurso con un DOI asignado*: - Otro DOI puede ser reservado para un recurso público al cual ya le ha sido asignado un DOI. Para reservar otro DOI, haga clic en el botón \"Reservar nuevo\" en la sección de Versiones Publicadas. EL DOI será registrado la próxima vez que el recurso sea publicado, y conducirá a la página principal de la nueva versión publicada. El DOI anterior continuará direccionando a la versión previa, sin embargo se mostrará una advertencia indicando que existe una nueva versión del DOI que lo reemplaza. Tenga en cuenta que hasta que un DOI no sea registrado este puede ser eliminado.\n"
+msgstr "*Recurso con un DOI asignado*: se puede reservar otro DOI para un recurso publicado al que ya se le ha asignado un DOI. Para reservar otro DOI, pulse el botón \"Reservar nuevo\" en la sección \"Versiones publicadas\". El DOI se registrará la próxima vez que se publique el recurso y conducirá a la página principal de la nueva versión publicada. El DOI anterior seguirá conduciendo a la versión anterior, pero mostrará una advertencia de que la nueva la sustituye. Tenga en cuenta que hasta que no se registre un DOI, éste puede ser eliminado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:600
 #, no-wrap
 msgid "*Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the \"Delete\" button in the Published Versions section.\n"
-msgstr "*Eliminar*: - Un DOI que ha sido reservado para un recurso puede ser eliminado ya que éste nunca fue resuelto públicamente. Para eliminar un DOI, haga clic en el botón \"eliminar\" en la sección Versiones Publicadas.\n"
+msgstr "*Eliminar*: un DOI reservado para el recurso puede ser eliminado ya que nunca fue públicamente resoluble. Para eliminar un DOI, pulse el botón \"Eliminar\" en la sección \"Versiones publicadas\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:601
 #, no-wrap
 msgid "*Register*: - if a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered.\n"
-msgstr "*Registrar*: - Si un recurso está disponible públicamente y tiene reservado un DOI, la próxima publicación resultará en una versión mayor nueva y el DOI será registrado.\n"
+msgstr "*Registrar*: si un recurso está disponible públicamente y se ha reservado un DOI, la siguiente publicación dará lugar a una nueva versión principal y se registrará el DOI.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:602
 #, no-wrap
 msgid "*Deactivate*: - a DOI that has been registered cannot be deleted, and must continue to resolve. The only way to deactivate a DOI is by deleting the resource itself. Deleting the resource will ensure the data can no longer be downloaded, and the DOI will resolve to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
-msgstr "*Desactivar*: - Un DOI que ha sido registrado no puede ser eliminado, y debe seguir direccionando. La única manera de desactivar un DOI es eliminando el recurso. Eliminar el recurso garantiza que los datos ya no puedan ser descargados y el DOI va a direccionar a una página donde se explica que el recurso ha sido retirado. Tenga en cuenta que la actualización de un DOI puede tardar cerca de 24 horas en ser conocida globalmente.\n"
+msgstr "*Desactivar*: un DOI que ha sido registrado no puede ser eliminado y debe seguir direccionando. La única manera de desactivar un DOI es borrando el recurso. Al eliminar el recurso se asegurará que los datos ya no puedan ser descargados y el DOI se dirigirá en una página que explica que el recurso ha sido retirado. Tenga en cuenta que pueden pasar hasta 24 horas hasta que se conozca globalmente la actualización de un DOI.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:603
 #, no-wrap
 msgid "*Reactivate*: - a DOI that has been deactivated resolves to a resource that has been deleted. To reactivate the DOI, the resource must be undeleted. Undeleting a resource makes the data available for download again, and the DOI will resolve to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
-msgstr "*Reactivar*: - Un DOI que ha sido desactivado direcciona a un recurso que ha sido eliminado. Para reactivar el DOI, el recurso debe ser restaurado. Restaurar un recurso hace que los datos sean disponibles para su descarga nuevamente, y el DOI va a direccionar a la última versión publicada de éste recurso. Tenga en cuenta que la actualización de un DOI puede tardar cerca de 24 horas en ser conocida globalmente.\n"
+msgstr "*Reactivar*: un DOI que ha sido desactivado direcciona a un recurso que ha sido eliminado. Para reactivar el DOI, el recurso debe ser anulado. Si se deshace la eliminación de un recurso, los datos vuelven a estar disponibles para su descarga y el DOI direccionará a la última versión publicada de este recurso. Tenga en cuenta que pueden pasar hasta 24 horas hasta que se conozca globalmente una actualización del DOI.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/manage-resources.adoc:604
@@ -2289,13 +2289,13 @@ msgstr "Página de Estado de la Publicación"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:607
 msgid "A page entitled Publishing Status will show status messages highlighting the success or failure of each publishing step. Publication of a new version is an all or nothing event, meaning that all steps must finish successfully otherwise the version is rolled back."
-msgstr "La página denominada Estado de la Publicación mostrará mensajes de estado, destacando el éxito o falla de la publicación de cada uno de los documentos, así como los resultados detallados del proceso de publicación. La publicación de una nueva versión es un evento de todo o nada, lo que significa que todos los documentos deben ser publicados con éxito de lo contrario la versión se revierte."
+msgstr "La página titulada \"Estado de la publicación\" mostrará mensajes de estado que indican el éxito o el fracaso de cada paso de la publicación. La publicación de una nueva versión es un evento de \"todo o nada\", lo que significa que todos los pasos deben terminar con éxito, de lo contrario la versión será revertida."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:609
 #, no-wrap
 msgid "*Resource overview* - This link leads to the Manage Resource page for the resource just published.\n"
-msgstr "*Vista General del Recurso* - Este enlace dirige a la \"Página de Visualización de Metadatos\" para el recurso que acaba de ser publicado.\n"
+msgstr "*Vista General del recurso*: Este enlace lleva a la página de \"Gestión del recurso\" del recurso que se acaba de publicar.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:610
@@ -2307,25 +2307,25 @@ msgstr "*Log de publicación* - Este enlace inicia la descarga de un archivo lla
 #: en/modules/ROOT/pages/manage-resources.adoc:611
 #, no-wrap
 msgid "how many records couldn't be read and were not written to the DwC-A\n"
-msgstr "Cuantos registros no pudieron ser leídos y por lo tanto no incluidos en el DwC-A.\n"
+msgstr "cuántos registros no se pudieron leer y, por tanto, no se escribieron en el DwC-A\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:612
 #, no-wrap
 msgid "how many records were missing an identifier, or how many had duplicate identifiers (in the case that the core record identifier field was mapped)\n"
-msgstr "Cuantos registro no tienen ID, o cuantos lo tienen duplicado (en el caso de que el identificador haya sido mapeado)\n"
+msgstr "cuántos registros no tenían identificador o cuántos tenían identificadores duplicados (en el caso de que el campo del identificador del registro principal estuviera mapeado)\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:613
 #, no-wrap
 msgid "how many records contained fewer columns than the number that was mapped\n"
-msgstr "Cuantos registros contienen menos columnas de las que fueron mapeadas\n"
+msgstr "cuántos registros contenían menos columnas que las que fueron mapeadas\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:614
 #, no-wrap
 msgid "*Log message* - The Publishing Status page shows a summary of the information that was sent to the filed named publication.log, which is stored in the directory for the resource within the IPT's data directory and which is accessible through the link to the \"Publication Log\" immediately above the log message summary.\n"
-msgstr "*Log message* - La Página de Estado de la Publicación presenta un resumen de la información que fue enviada al archivo publication.log, que se almacena en el directorio para el recurso dentro del directorio de datos del IPT y que estará disponible a través del enlace a la página \"Reporte de publicación\" que se encuentra sobre el mensaje de resumen de registro.\n"
+msgstr "*Mensajes del sistema*: la página de \"Estado de la publicación\" muestra un resumen de la información que se envió al archivo denominado publication.log, que se almacena en el directorio del recurso dentro del directorio de datos del IPT y al que se puede acceder a través del enlace al \"Reporte de publicación\" que se encuentra sobre el \"Mensaje del sistema\".\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:615
