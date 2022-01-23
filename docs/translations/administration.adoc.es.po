@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2022-01-23 23:09\n"
+"PO-Revision-Date: 2022-01-23 23:41\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -95,7 +95,7 @@ msgstr "reinicie el IPT en el contenedor del servlet."
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:27
 msgid "update the metadata for the IPT as described in the next section of this user manual entitled \"Publish all resources\"."
-msgstr "actualice los metadatos para el IPT como se describe en la siguiente sección titulada “Publicar Todos los Recursos”."
+msgstr "actualice los metadatos para el IPT como se describe en la siguiente sección titulada “Publicar todos los recursos”."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:31
@@ -125,30 +125,30 @@ msgstr "*Modo Corrección de Errores* - Marque este cuadro si desea iniciar el I
 #: en/modules/ROOT/pages/administration.adoc:35
 #, no-wrap
 msgid "*Archival Mode* - Check this box if you want your IPT to archive all published versions for all resources. It will enable you to track a resource's version history. If unchecked, older versions will be overwritten with the latest. Beware not to run out of disk space.\n"
-msgstr "*Modo Archivo* - Marque esta casilla si desea que su IPT guarde todas las versiones publicadas para todos los recursos. Esto le permitirá realizar un seguimiento del historial de versiones de un recurso. Si no se marca, las versiones anteriores serán reemplazadas por la última. Tenga cuidado de no quedarse sin espacio en disco.\n"
+msgstr "*Modo archivo*: marque esta casilla si desea que su IPT guarde todas las versiones publicadas para todos los recursos. Esto le permitirá realizar un seguimiento del historial de versiones de un recurso. Si no se marca, las versiones anteriores serán reemplazadas por la última. Tenga cuidado de no quedarse sin espacio en disco.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:36
 #, no-wrap
 msgid "*IPT Server Location* - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.\n"
-msgstr "*Ubicación del Servidor IPT* - Esta área de la página permite al administrador establecer las coordenadas geográficas (latitud y longitud) de la ubicación de servidor en el cual se instaló el IPT. El establecimiento de estas coordenadas permite al GBIF georreferenciar la ubicación de este, con las otras instalaciones del IPT registradas alrededor del mundo.\n"
+msgstr "*Ubicación del servidor IPT*: esta área de la página permite al administrador establecer las coordenadas geográficas (latitud y longitud) de la ubicación del servidor en el que está instalado el IPT. Establecer estas coordenadas permite a GBIF mapear la ubicación de esta y otras instalaciones IPT registradas alrededor del mundo.\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:37
 #, no-wrap
 msgid "Publish all resources"
-msgstr "Publicar Todos los Recursos"
+msgstr "Publicar todos los recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:39
 msgid "This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPT and registered resources' metadata in the Registry. Click on this button if multiple resources have been updated and you want to publish a new release for all of them instead of publishing them individually."
-msgstr "Esta opción es una acción administrativa al igual que el botón Publicar, solo que publica TODOS los recursos. Por lo tanto, para cada recurso, crea un nuevo DwC-A, EML y RTF y transmite la actualización al Registro y vía RSS. Además, también actualiza el IPT y los metadatos de los recursos registrados en el Registro. Haga clic en este botón si se han actualizado varios recursos y desea publicar una nueva versión para todos ellos en lugar de publicarlos individualmente."
+msgstr "Esta opción es una acción administrativa al igual que el botón \"Publicar\", solo que publica TODOS los recursos. Por lo tanto, para cada recurso, crea un nuevo DwC-A, EML y RTF, y transmite la actualización al Registro y vía RSS. Además, también actualiza el IPT y los metadatos de los recursos registrados en el Registro. Haga clic en este botón si se han actualizado varios recursos y desea publicar una nueva versión para todos ellos en lugar de publicarlos individualmente."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:40
 #, no-wrap
 msgid "Configure User accounts"
-msgstr "Configurar Cuentas de Usuario"
+msgstr "Configurar cuentas de usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:42
@@ -165,7 +165,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:45
 #, no-wrap
 msgid "Create a new user"
-msgstr "Crear un Nuevo Usuario"
+msgstr "Crear un nuevo usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:47
