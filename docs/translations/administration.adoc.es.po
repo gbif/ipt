@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2022-01-24 00:09\n"
+"PO-Revision-Date: 2022-01-24 18:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -295,17 +295,17 @@ msgstr "Configurar las opciones de registro de GBIF"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
 msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
-msgstr "Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección \"Menú Administración\") o publicarlo (véase la sección xref:manage-resources.adoc#versiones-publicadas[Versiones Publicadas]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página <<Editar el Registro GBIF>>."
+msgstr "Esta página permite al usuario registrar la instancia del IPT en el Registro de GBIF si aún no se ha hecho. El IPT debe ser registrado antes de que cualquiera de los recursos del IPT pueda ser asociado con una organización (ver la información en el encabezado \"Configurar organizaciones\" en la sección \"Menú administración\") o publicado (ver la sección xref:manage-resources.adoc#published-versions[Versiones publicadas]). La información sobre un IPT registrado y sus recursos públicos se pueden buscar a través de los servicios del Registro, y los datos de los recursos públicos publicados en el IPT pueden ser indexados para su búsqueda a través del portal de GBIF. Si el IPT ya ha sido registrado, la información registrada para el IPT puede ser editada abriendo la página <<Editar el Registro GBIF>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:79
 msgid "The first step to register with GBIF is to test that the IPT has a valid URL that can be reached by the GBIF services. To run this test, click on the button labelled \"Validate\"."
-msgstr "El primer paso para registrar un recurso ante GBIF, es probar que el IPT tenga una URL valida que pueda ser localizada por los servicios del GBIF. Para correr esta prueba, haga clic sobre el botón llamado “Validar”."
+msgstr "El primer paso para registrar un recurso en GBIF es probar que el IPT tenga una URL valida que pueda ser localizada por los servicios del GBIF. Para correr esta prueba, haga clic sobre el botón “Validar”."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:81
 msgid "If the validation test is unsuccessful, an error message will suggest the nature of the problem with the communication between the GBIF Registry and the IPT. Causes for an error include:"
-msgstr "Si la prueba de validación no es exitosa, un mensaje de error sugerirá la naturaleza del problema con la comunicación entre el Registro GBIF y el IPT. Las causas de un error incluyen:"
+msgstr "Si la prueba de validación no tiene éxito, un mensaje de error sugerirá la naturaleza del problema con la comunicación entre el Registro GBIF y el IPT. Las causas de un error incluyen:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:83
