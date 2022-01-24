@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2022-01-23 23:41\n"
+"PO-Revision-Date: 2022-01-24 00:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -170,7 +170,7 @@ msgstr "Crear un nuevo usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:47
 msgid "A new user can be created by clicking on the button labelled \"Create\" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labelled \"Save\"."
-msgstr "Un usuario nuevo puede ser creado haciendo clic en el botón “Crear” que está debajo de la lista de usuarios actuales. Se abrirá una página en la cual puede ser ingresada la información del usuario y luego el usuario nuevo puede ser creado haciendo clic en el botón “Guardar”."
+msgstr "Se puede crear un nuevo usuario haciendo clic en el botón \"Crear\" ubicado debajo de la lista de usuarios existentes. Se abrirá una página en la que se puede introducir la información sobre el usuario, tras lo cual se puede crear el nuevo usuario pulsando el botón \"Guardar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:48
@@ -182,25 +182,25 @@ msgstr "ipt2/administration/IPTAdminUserCreateUser.png"
 #: en/modules/ROOT/pages/administration.adoc:51
 #, no-wrap
 msgid "*Email* - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.\n"
-msgstr "*Correo electrónico* - La dirección de correo electrónico del usuario, es usada como un identificador para ingresar al IPT y no puede ser cambiada.\n"
+msgstr "*Correo electrónico*: la dirección de correo electrónico del usuario, es usada como un identificador para ingresar al IPT y no puede ser cambiada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:52
 #, no-wrap
 msgid "*Note*: If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.\n"
-msgstr "*Nota*: Si el usuario requiere un cambio de correo electrónico, el procedimiento recomendado es crear una nueva cuenta de usuario con la nueva dirección de correo electrónico, y luego eliminar la cuenta de usuario que tiene el correo electrónico antiguo.\n"
+msgstr "*Nota*: si el usuario requiere un cambio de correo electrónico, el procedimiento recomendado es crear una nueva cuenta de usuario con la nueva dirección de correo electrónico y luego eliminar la cuenta de usuario que tiene el correo electrónico antiguo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:53
 #, no-wrap
 msgid "*First name* - The first name of the user.\n"
-msgstr "*Nombre* - El nombre del usuario.\n"
+msgstr "*Nombre*: el nombre del usuario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:54
 #, no-wrap
 msgid "*Last name* - The last name of the user.\n"
-msgstr "*Apellido* - El apellido del usuario.\n"
+msgstr "*Apellido*: el apellido del usuario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:55
@@ -212,7 +212,7 @@ msgstr "*Rol* - El rol que tendrá el usuario dentro del IPT. Usuarios con el ro
 #: en/modules/ROOT/pages/administration.adoc:56
 #, no-wrap
 msgid "*Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.\n"
-msgstr "*Contraseña* - la contraseña del usuario debe contener al menos 4 caracteres y debe ser segura y evitar la pérdida, puesto que desde la aplicación del IPT, esta contraseña no es recuperable.\n"
+msgstr "*Contraseña*: la contraseña del usuario debe contener al menos 4 caracteres y debe ser segura y evitar la pérdida, puesto que desde la aplicación del IPT esta contraseña no es recuperable.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:57
@@ -224,18 +224,18 @@ msgstr "*Nota*: Si la contraseña de un usuario se pierde, puede ser restablecid
 #: en/modules/ROOT/pages/administration.adoc:58
 #, no-wrap
 msgid "*Verify password* - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.\n"
-msgstr "*Verificar Contraseña* - Una copia exacta de la contraseña que fue ingresada anteriormente, para confirmar que esta fue ingresada como se pretende.\n"
+msgstr "*Verificar contraseña*: una copia exacta de la contraseña que fue ingresada anteriormente para confirmar que se ha introducido como se pretendía.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:59
 #, no-wrap
 msgid "Modify an existing user"
-msgstr "Modificar un Usuario Existente"
+msgstr "Modificar un usuario existente"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:61
 msgid "Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labelled \"Save\". Details of the information to be entered on this page can be found in the explanations in the \"Create a new user\" section, above."
-msgstr "La información acerca de los usuarios puede ser cambiada en la página de los detalles del usuario después de seleccionar, de la lista de usuarios existentes, el nombre del usuario que se desea modificar. La página de detalles del usuario muestra toda la información acerca del usuario. Pueden ser cambiados el nombre, apellido y rol del usuario, ingresando nuevos valores y haciendo clic en el botón “Guardar”. Los detalles de la información ingresada en esta página, puede ser encontrada en las explicaciones de la sección anterior “Crear un Nuevo Usuario”."
+msgstr "La información de los usuarios puede modificarse en la página de detalles del usuario después de seleccionar el nombre del usuario que desea modificar de la lista de usuarios existentes. La página de detalles del usuario muestra toda la información sobre ese usuario. El nombre, el apellido y la función del usuario pueden modificarse introduciendo los nuevos valores y haciendo clic en el botón \"Guardar\". Los detalles de la información que debe introducirse en esta página se encuentran en las explicaciones de la sección \"Crear un nuevo usuario\", más arriba."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:62
@@ -247,24 +247,24 @@ msgstr "ipt2/administration/IPTAdminUserEditUser.png"
 #: en/modules/ROOT/pages/administration.adoc:65
 #, no-wrap
 msgid "*Reset password* - If a user forgets a password, clicking on the button labelled \"Reset Password\" can generate a new one, after which a new password is given in an information message at the top of the page.\n"
-msgstr "*Restablecer Contraseña* - Si un usuario olvida la contraseña, se puede generar una nueva haciendo clic en el botón “Restablecer Contraseña”. Después de esto, una nueva contraseña es generada en un mensaje de información en la parte superior de la página.\n"
+msgstr "*Restablecer contraseña*: si un usuario olvida su contraseña, al hacer clic en el botón \"Restablecer contraseña\" se puede generar una nueva, tras lo cual se da una nueva contraseña en un mensaje informativo en la parte superior de la página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:66
 #, no-wrap
 msgid "*Note*: The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one.\n"
-msgstr "*Nota*: El IPT no informa del cambio al usuario afectado, por lo tanto es responsabilidad del Administrador que restablece la contraseña, informar al usuario la nueva contraseña.\n"
+msgstr "*Nota*: el IPT no informa del cambio al usuario afectado, por lo tanto es responsabilidad del Administrador que restablece la contraseña, informar al usuario la contraseña nueva.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:67
 #, no-wrap
 msgid "Delete a user"
-msgstr "Eliminar un Usuario"
+msgstr "Eliminar un usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:69
 msgid "Users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the bottom of the user detail page, click on the button labelled \"Delete\" to remove this user account. There are several conditions under which a user cannot be deleted:"
-msgstr "Las cuentas de los usuarios que dejan de ser necesarias, pueden ser eliminadas usando la página detalles del usuario, disponible cuando se selecciona de la lista el nombre del usuario que se desea eliminar. Al final de la página detalles del usuario, hacer clic en el botón “Eliminar” para remover esta cuenta de usuario. Existen varias condiciones bajo las cuales un usuario no puede ser eliminado."
+msgstr "Las cuentas de usuario que ya no son necesarias pueden eliminarse a través de la página de detalles del usuario a la que se accede seleccionando el nombre del usuario que se desea eliminar de la lista de usuarios existentes. En la parte inferior de la página de detalles del usuario, haga clic en el botón \"Borrar\" para eliminar esta cuenta de usuario. Hay varias condiciones en las que un usuario no puede ser eliminado:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:71
@@ -274,7 +274,7 @@ msgstr "Un administrador no puede eliminar su propia cuenta mientras está conec
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:72
 msgid "The IPT installation must always have at least one user having the Admin role, so the last remaining Admin can not be deleted. To remove that user, first create a new user having the Admin role and log in with that new user to delete the other Admin account."
-msgstr "Igualmente, la instalación del IPT siempre debe tener al menos un usuario con el rol Administrador, de tal forma que el último Administrador no pueda ser eliminado. Para eliminar aquel usuario, primero se debe crear un nuevo usuario con el rol Administrador, e ingresar con este nuevo usuario para eliminar la otra cuenta de Administrador."
+msgstr "Igualmente, la instalación del IPT siempre debe tener al menos un usuario con el rol Administrador, de tal forma que el último Administrador no podrá ser eliminado. Para eliminar aquel usuario, primero se debe crear un nuevo usuario con el rol Administrador e ingresar con este nuevo usuario para eliminar la otra cuenta de Administrador."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:73
@@ -284,13 +284,13 @@ msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que ten
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:74
 msgid "A user cannot be deleted if it is the creator or one or more resources. To restrict the user's access to their resources, downgrade their role to type User. Refer to the <<Modify an existing user>> section for information about how to change a user's role."
-msgstr "No se puede eliminar un usuario si es el creador o uno o más recursos. Para restringir el acceso del usuario a sus recursos, baje su rol al tipo Usuario. Consulte la sección <<Modificar un Usuario Existente>> para obtener información sobre cómo cambiar el rol de un usuario."
+msgstr "No se puede eliminar un usuario si es el creador o uno o más recursos. Para restringir el acceso del usuario a sus recursos baje su rol al tipo Usuario. Consulte la sección <<Modificar un usuario existente>> para obtener información sobre cómo cambiar el rol de un usuario."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:75
 #, no-wrap
 msgid "Configure GBIF registration options"
-msgstr "Configurar Opciones para el Registro GBIF"
+msgstr "Configurar las opciones de registro de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
