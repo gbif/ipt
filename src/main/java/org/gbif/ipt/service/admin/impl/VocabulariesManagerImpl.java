@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.action.BaseAction;
@@ -16,7 +31,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.HttpClient;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,27 +44,24 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.io.Closer;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.http.StatusLine;
 import org.xml.sax.SAXException;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import static org.gbif.utils.HttpUtil.success;
 
@@ -62,16 +74,16 @@ import static org.gbif.utils.HttpUtil.success;
 public class VocabulariesManagerImpl extends BaseManager implements VocabulariesManager {
 
   // local lookup
-  private Map<String, Vocabulary> vocabulariesById = Maps.newHashMap();
+  private Map<String, Vocabulary> vocabulariesById = new HashMap<>();
   public static final String CONFIG_FOLDER = ".vocabularies";
   public static final String VOCAB_FILE_SUFFIX = ".vocab";
   private VocabularyFactory vocabFactory;
-  private HttpUtil downloader;
+  private final HttpClient downloader;
   private final RegistryManager registryManager;
 
   // these vocabularies are always updated on startup of the IPT
-  private static final List<String> DEFAULT_VOCABS = ImmutableList
-    .of(Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_DATASET_TYPE,
+  private static final List<String> DEFAULT_VOCABS = Arrays.asList(
+      Constants.VOCAB_URI_LANGUAGE, Constants.VOCAB_URI_COUNTRY, Constants.VOCAB_URI_DATASET_TYPE,
       Constants.VOCAB_URI_RANKS, Constants.VOCAB_URI_ROLES, Constants.VOCAB_URI_PRESERVATION_METHOD,
       Constants.VOCAB_URI_DATASET_SUBTYPES, Constants.VOCAB_URI_UPDATE_FREQUENCIES);
 
@@ -81,12 +93,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private BaseAction baseAction;
 
   @Inject
-  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory, HttpUtil httpUtil,
-    RegistryManager registryManager, ConfigWarnings warnings, SimpleTextProvider textProvider,
-    RegistrationManager registrationManager) {
+  public VocabulariesManagerImpl(AppConfig cfg, DataDir dataDir, VocabularyFactory vocabFactory,
+                                 HttpClient client, RegistryManager registryManager, ConfigWarnings warnings,
+                                 SimpleTextProvider textProvider, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.vocabFactory = vocabFactory;
-    this.downloader = httpUtil;
+    this.downloader = client;
     this.registryManager = registryManager;
     this.warnings = warnings;
     baseAction = new BaseAction(textProvider, cfg, registrationManager);
@@ -117,13 +129,13 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public Vocabulary get(String identifier) {
-    Preconditions.checkNotNull(identifier);
+    Objects.requireNonNull(identifier);
     return vocabulariesById.get(identifier);
   }
 
   @Override
   public Vocabulary get(URL url) {
-    Preconditions.checkNotNull(url);
+    Objects.requireNonNull(url);
     for (Vocabulary v : list()) {
       if (v.getUriResolvable() != null) {
         try {
@@ -140,20 +152,14 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public Map<String, String> getI18nVocab(String identifier, String lang, boolean sortAlphabetically) {
-    Map<String, String> map = new LinkedHashMap<String, String>();
+    Map<String, String> map = new LinkedHashMap<>();
     Vocabulary v = get(identifier);
     if (v != null) {
       List<VocabularyConcept> concepts;
       if (sortAlphabetically) {
-        concepts = new ArrayList<VocabularyConcept>(v.getConcepts());
+        concepts = new ArrayList<>(v.getConcepts());
         final String s = lang;
-        Collections.sort(concepts, new Comparator<VocabularyConcept>() {
-
-          public int compare(VocabularyConcept o1, VocabularyConcept o2) {
-            return (o1.getPreferredTerm(s) == null ? o1.getIdentifier() : o1.getPreferredTerm(s).getTitle())
-              .compareTo((o2.getPreferredTerm(s) == null ? o2.getIdentifier() : o2.getPreferredTerm(s).getTitle()));
-          }
-        });
+        concepts.sort(Comparator.comparing(o -> (o.getPreferredTerm(s) == null ? o.getIdentifier() : o.getPreferredTerm(s).getTitle())));
       } else {
         concepts = v.getConcepts();
       }
@@ -182,7 +188,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public synchronized Vocabulary install(URL url) throws InvalidConfigException {
-    Preconditions.checkNotNull(url);
+    Objects.requireNonNull(url);
 
     try {
       File tmpFile = download(url);
@@ -208,9 +214,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @throws IOException if moving file fails
    */
   private void finishInstall(File tmpFile, Vocabulary vocabulary) throws IOException {
-    Preconditions.checkNotNull(tmpFile);
-    Preconditions.checkNotNull(vocabulary);
-    Preconditions.checkNotNull(vocabulary.getUriString());
+    Objects.requireNonNull(tmpFile);
+    Objects.requireNonNull(vocabulary);
+    Objects.requireNonNull(vocabulary.getUriString());
 
     try {
       File installedFile = getVocabFile(vocabulary.getUriResolvable());
@@ -240,16 +246,16 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @return temporary file vocabulary was downloaded to, or null if it failed to be downloaded
    */
   private File download(URL url) throws IOException {
-    Preconditions.checkNotNull(url);
+    Objects.requireNonNull(url);
     String filename = url.toString().replaceAll("[/:.]+", "_") + ".xml";
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
-      LOG.info("Successfully downloaded vocabulary: " + url.toString());
+      LOG.info("Successfully downloaded vocabulary: " + url);
       return tmpFile;
     } else {
       String msg =
-        "Failed to download vocabulary: " + url.toString() + ". Response=" + String.valueOf(statusLine.getStatusCode());
+        "Failed to download vocabulary: " + url + ". Response=" + statusLine.getStatusCode();
       LOG.error(msg);
       throw new IOException(msg);
     }
@@ -257,7 +263,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 
   @Override
   public List<Vocabulary> list() {
-    return new ArrayList<Vocabulary>(vocabulariesById.values());
+    return new ArrayList<>(vocabulariesById.values());
   }
 
   @Override
@@ -268,9 +274,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // now iterate over all vocab files and load them
       File dir = dataDir.configFile(CONFIG_FOLDER);
       if (dir.isDirectory()) {
-        List<File> files = new ArrayList<File>();
         FilenameFilter ff = new SuffixFileFilter(VOCAB_FILE_SUFFIX, IOCase.INSENSITIVE);
-        files.addAll(Arrays.asList(dir.listFiles(ff)));
+        List<File> files = new ArrayList<>(Arrays.asList(dir.listFiles(ff)));
         for (File vf : files) {
           try {
             Vocabulary v = loadFromFile(vf);
@@ -305,7 +310,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @return map containing all registered vocabularies
    */
   private Map<String, Vocabulary> getFileNameToVocabularyMap() {
-    Map<String, Vocabulary> map = Maps.newHashMap();
+    Map<String, Vocabulary> map = new HashMap<>();
     try {
       for (Vocabulary v : registryManager.getVocabularies()) {
         if (v.getUriString() != null && v.getUriResolvable() != null) {
@@ -374,7 +379,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @return list containing latest versions of default vocabularies
    */
   private List<Vocabulary> getLatestDefaults(List<Vocabulary> registered) {
-    List<Vocabulary> defaults = Lists.newArrayList();
+    List<Vocabulary> defaults = new ArrayList<>();
     for (Vocabulary v : registered) {
       if (v.getUriString() != null && DEFAULT_VOCABS.contains(v.getUriString()) && v.isLatest()) {
         defaults.add(v);
@@ -400,12 +405,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @throws InvalidConfigException if vocabulary could not be loaded successfully
    */
   private Vocabulary loadFromFile(File localFile) throws InvalidConfigException {
-    Preconditions.checkNotNull(localFile);
-    Preconditions.checkState(localFile.exists());
+    Objects.requireNonNull(localFile);
+    if (!localFile.exists()) {
+      throw new IllegalStateException();
+    }
 
-    Closer closer = Closer.create();
-    try {
-      InputStream fileIn = closer.register(new FileInputStream(localFile));
+    try (InputStream fileIn = new FileInputStream(localFile)) {
       Vocabulary v = vocabFactory.build(fileIn);
       v.setModified(new Date(localFile.lastModified())); // filesystem date
       LOG.info("Successfully loaded vocabulary: " + v.getUriString());
@@ -421,19 +426,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     } catch (ParserConfigurationException e) {
       LOG.error("Can't create sax parser", e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_VOCABULARY, "Can't create sax parser");
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-        LOG.debug("Failed to close input stream on vocabulary file", e);
-      }
     }
   }
 
   /**
    * Iterate through list of installed vocabularies. Update each one, indicating if it is the latest version or not.
    */
-  @VisibleForTesting
   protected void updateIsLatest(List<Vocabulary> vocabularies, List<Vocabulary> registered) {
     if (!vocabularies.isEmpty() && !registered.isEmpty()) {
       for (Vocabulary vocabulary : vocabularies) {
@@ -500,10 +498,12 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // match vocabulary by identifier and issued date
       Vocabulary matched = null;
       for (Vocabulary v : registryManager.getVocabularies()) {
-        if (v.getUriString() != null && v.getUriString().equalsIgnoreCase(identifier)
-            && installed.getIssued() != null && v.getIssued() != null && installed.getIssued().compareTo(v.getIssued()) == 0) {
-          matched = v;
-          break;
+        if (v.getUriString() != null && v.getUriString().equalsIgnoreCase(identifier)) {
+          if (installed.getIssued() == null
+              || (installed.getIssued() != null && v.getIssued() != null && installed.getIssued().compareTo(v.getIssued()) < 0)) {
+            matched = v;
+            break;
+          }
         }
       }
       // verify the version was updated

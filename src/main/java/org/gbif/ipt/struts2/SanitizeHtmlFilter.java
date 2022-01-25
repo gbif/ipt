@@ -1,23 +1,45 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.struts2;
 
-import com.google.common.collect.Maps;
-import com.google.inject.Singleton;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.messaging.Response;
-import org.gbif.ws.util.XSSUtil;
-import org.owasp.html.HtmlPolicyBuilder;
-import org.owasp.html.HtmlSanitizer;
-import org.owasp.html.HtmlStreamEventReceiver;
+import org.gbif.ipt.utils.XSSUtil;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.HtmlSanitizer;
+import org.owasp.html.HtmlStreamEventReceiver;
+
+import com.google.inject.Singleton;
 
 /**
  * Filter that wraps a request and checks every parameter for potential xss attacks.
@@ -71,7 +93,7 @@ public class SanitizeHtmlFilter implements Filter {
 
   public static class XssRequestWrapper extends HttpServletRequestWrapper {
 
-    private Map<String, String[]> sanitized = Maps.newHashMap();
+    private Map<String, String[]> sanitized;
 
     /**
      * Constructor that will parse and sanitize all input parameters.
@@ -107,7 +129,7 @@ public class SanitizeHtmlFilter implements Filter {
     }
 
     private Map<String, String[]> sanitizeParamMap(Map<String, String[]> raw) {
-      Map<String, String[]> res = new HashMap<String, String[]>();
+      Map<String, String[]> res = new HashMap<>();
 
       if (raw != null) {
         for (String key : raw.keySet()) {
@@ -135,15 +157,20 @@ public class SanitizeHtmlFilter implements Filter {
       // now strip all tags to be safe in case our custom regex misses sth
       StringBuilder sb = new StringBuilder();
       HtmlSanitizer.Policy textPolicy = POLICY_BUILDER.build(new HtmlStreamEventReceiver(){
+        @Override
         public void openDocument() {}
+        @Override
         public void closeDocument() {}
+        @Override
         public void openTag(String elementName, List<String> attribs) {
           if ("br".equals(elementName) || "p".equals(elementName)) {
             sb.append('\n');
             sb.append('\n');
           }
         }
+        @Override
         public void closeTag(String elementName) {}
+        @Override
         public void text(String text) {
           sb.append(text);
         }

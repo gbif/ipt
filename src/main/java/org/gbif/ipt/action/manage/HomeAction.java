@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.BaseAction;
@@ -20,7 +35,7 @@ import com.google.inject.Inject;
 
 public class HomeAction extends BaseAction {
 
-  private List<Resource> resources = new ArrayList<Resource>();
+  private List<Resource> resources = new ArrayList<>();
 
   private final ResourceManager resourceManager;
   private final VocabulariesManager vocabManager;
@@ -41,12 +56,12 @@ public class HomeAction extends BaseAction {
     resources = resourceManager.list(getCurrentUser());
 
     // Dataset core type list, derived from XML vocabulary
-    types = new LinkedHashMap<String, String>();
+    types = new LinkedHashMap<>();
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
 
     // Dataset Subtypes list, derived from XML vocabulary
-    datasetSubtypes = new LinkedHashMap<String, String>();
+    datasetSubtypes = new LinkedHashMap<>();
     datasetSubtypes.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, getLocaleLanguage(), false));
     datasetSubtypes = MapUtils.getMapWithLowercaseKeys(datasetSubtypes);
 

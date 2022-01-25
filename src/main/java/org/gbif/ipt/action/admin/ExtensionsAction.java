@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
@@ -17,18 +32,18 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Function;
-import com.google.common.collect.Ordering;
-import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
 
 /**
  * The Action responsible for all user input relating to extension management.
@@ -49,18 +64,18 @@ public class ExtensionsAction extends POSTAction {
   private Boolean synchronise = false;
   private Date lastSynchronised;
   private List<Extension> newExtensions;
-  private ConfigWarnings warnings;
+  private ConfigWarnings configWarnings;
   private boolean upToDate = true;
 
   @Inject
   public ExtensionsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ExtensionManager extensionManager, VocabulariesManager vocabManager, RegistryManager registryManager,
-    ConfigWarnings warnings) {
+    ConfigWarnings configWarnings) {
     super(textProvider, cfg, registrationManager);
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
     this.registryManager = registryManager;
-    this.warnings = warnings;
+    this.configWarnings = configWarnings;
   }
 
   @Override
@@ -181,7 +196,6 @@ public class ExtensionsAction extends POSTAction {
    * Works by iterating through list of installed extensions. Updates each one, indicating if it is the latest version
    * or not. Plus, updates boolean "upToDate", set to false if there is at least one extension that is not up-to-date.
    */
-  @VisibleForTesting
   protected void updateIsLatest(List<Extension> extensions) {
     if (!extensions.isEmpty()) {
       try {
@@ -197,11 +211,11 @@ public class ExtensionsAction extends POSTAction {
               if (issuedOne == null && issuedTwo != null) {
                 setUpToDate(false);
                 extension.setLatest(false);
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " has no issued date. A newer version issued " + issuedTwo.toString() + " exists.");
+                LOG.debug("Installed extension with rowType " + extension.getRowType() + " has no issued date. A newer version issued " + issuedTwo + " exists.");
               } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
                 setUpToDate(false);
                 extension.setLatest(false);
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " was issued " + issuedOne.toString() + ". A newer version issued " + issuedTwo.toString() + " exists.");
+                LOG.debug("Installed extension with rowType " + extension.getRowType() + " was issued " + issuedOne + ". A newer version issued " + issuedTwo + " exists.");
               } else {
                 LOG.debug("Installed extension with rowType " + extension.getRowType() + " is the latest version");
               }
@@ -218,12 +232,12 @@ public class ExtensionsAction extends POSTAction {
       } catch (RegistryException e) {
         // add startup error message about Registry error
         String msg = RegistryException.logRegistryException(e, this);
-        warnings.addStartupError(msg);
+        configWarnings.addStartupError(msg);
         LOG.error(msg);
 
         // add startup error message that explains the consequence of the Registry error
         msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
-        warnings.addStartupError(msg);
+        configWarnings.addStartupError(msg);
         LOG.error(msg);
       }
     }
@@ -243,17 +257,17 @@ public class ExtensionsAction extends POSTAction {
     } catch (RegistryException e) {
       // add startup error message that explains why the Registry error occurred
       String msg = RegistryException.logRegistryException(e, this);
-      warnings.addStartupError(msg);
+      configWarnings.addStartupError(msg);
       LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
       msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
-      warnings.addStartupError(msg);
+      configWarnings.addStartupError(msg);
       LOG.error(msg);
     } finally {
       // initialize list as empty list if the list could not be populated
       if (getLatestExtensionVersions() == null) {
-        setLatestExtensionVersions(new ArrayList<Extension>());
+        setLatestExtensionVersions(new ArrayList<>());
       }
     }
   }
@@ -266,17 +280,14 @@ public class ExtensionsAction extends POSTAction {
    *
    * @return filtered list of extensions
    */
-  @VisibleForTesting
   protected List<Extension> getLatestVersions(List<Extension> extensions) {
-    Ordering<Extension> byIssuedDate = Ordering.natural().nullsFirst().onResultOf(new Function<Extension, Date>() {
-      public Date apply(Extension extension) {
-        return extension.getIssued();
-      }
-    });
     // sort extensions by issued date, starting with latest issued
-    List<Extension> sorted = byIssuedDate.immutableSortedCopy(extensions).reverse();
+    List<Extension> sorted = extensions.stream()
+        .sorted(Comparator.comparing(Extension::getIssued, Comparator.nullsLast(Comparator.reverseOrder())))
+        .collect(Collectors.toList());
+
     // populate list of latest extension versions
-    Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
+    Map<String, Extension> extensionsByRowtype = new HashMap<>();
     if (!sorted.isEmpty()) {
       for (Extension extension : sorted) {
         String rowType = extension.getRowType();
@@ -285,7 +296,8 @@ public class ExtensionsAction extends POSTAction {
         }
       }
     }
-    return new ArrayList<Extension>(extensionsByRowtype.values());
+
+    return new ArrayList<>(extensionsByRowtype.values());
   }
 
   @Override

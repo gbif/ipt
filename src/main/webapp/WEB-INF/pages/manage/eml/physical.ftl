@@ -3,100 +3,128 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.physical.title'/></title>
     <script>
-        $(document).ready(function(){
-            initHelp();
+        $(document).ready(function () {
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
         });
     </script>
+
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-    <#assign auxTopNavbar=true />
-    <#assign auxTopNavbarPage = "metadata" />
+    <#assign currentMetadataPage = "physical"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <main class="container">
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+        <div class="container-fluid bg-body border-bottom">
+            <div class="container pt-2">
+                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+            </div>
 
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+            <div class="container p-3">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
-                <@s.text name='manage.metadata.physical.title'/>:
-                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-            </h5>
+                <div class="text-center">
+                    <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                        <@s.text name='manage.metadata.physical.title'/>
+                    </h5>
+                </div>
 
-            <p class="mx-md-4 mx-2 mb-0">
-                <@s.text name='manage.metadata.physical.intro'/>
-            </p>
-
-            <div class="mx-md-4 mx-2 mt-2">
-                <@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" type="url" />
+                <div class="text-center fs-smaller">
+                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                </div>
             </div>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <#include "metadata_section_select.ftl"/>
 
-            <div class="listBlock">
-                <@textinline name="eml.physicalData.other" help="i18n"/>
+        <div class="container-fluid bg-body">
+            <div class="container bd-layout">
 
-                <div id="items">
-                    <#list eml.physicalData as item>
-                        <div id="item-${item_index}" class="item clearfix row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1">
-                            <div class="mt-1 d-flex justify-content-end">
-                                <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
-                            </div>
-                            <div class="col-lg-6">
-                                <@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" requiredField=true />
-                            </div>
-                            <div class="col-lg-6">
-                                <@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
-                            </div>
-                            <div class="fullcolumn">
-                                <@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true type="url" />
-                            </div>
-                            <div class="col-lg-6">
-                                <@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
-                            </div>
-                            <div class="col-lg-6">
-                                <@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
+                <main class="bd-main bd-main-right">
+                    <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                        <#include "eml_sidebar.ftl"/>
+                    </div>
+
+                    <div class="bd-content ps-lg-4">
+                        <div class="my-md-3 p-3">
+                            <p class="mb-0">
+                                <@s.text name='manage.metadata.physical.intro'/>
+                            </p>
+
+                            <div class="mt-2">
+                                <@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" type="url" />
                             </div>
                         </div>
-                    </#list>
-                </div>
 
-                <div class="addNew col-12 mx-md-4 mx-2 mt-1">
-                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a>
-                </div>
+                        <div class="my-md-3 p-3">
+
+                            <div class="listBlock">
+                                <@textinline name="eml.physicalData.other" help="i18n"/>
+
+                                <div id="items">
+                                    <#list eml.physicalData as item>
+                                        <div id="item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                            <div class="mt-1 d-flex justify-content-end">
+                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" requiredField=true />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
+                                            </div>
+                                            <div class="fullcolumn">
+                                                <@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true type="url" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </div>
+
+                                <div class="addNew col-12 mt-1">
+                                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                </div>
+                            </div>
+
+                            <div class="buttons col-12 mt-3">
+                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
+                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back" />
+                            </div>
+
+                            <!-- internal parameter -->
+                            <input name="r" type="hidden" value="${resource.shortname}" />
+
+                            <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
+                                <div class="mt-1 d-flex justify-content-end">
+                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                </div>
+                                <div class="col-lg-6">
+                                    <@input name="name" i18nkey="eml.physicalData.name" requiredField=true />
+                                </div>
+                                <div class="col-lg-6">
+                                    <@input name="charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
+                                </div>
+                                <@input name="distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true />
+                                <div class="col-lg-6">
+                                    <@input name="format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
+                                </div>
+                                <div class="col-lg-6">
+                                    <@input name="formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </main>
             </div>
-
-            <div class="buttons col-12 mx-md-4 mx-2 mt-3">
-                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
-                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" />
-            </div>
-
-            <!-- internal parameter -->
-            <input name="r" type="hidden" value="${resource.shortname}" />
-
-            <div id="baseItem" class="item clearfix row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1" style="display:none;">
-                <div class="mt-1 d-flex justify-content-end">
-                    <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/> ]</a>
-                </div>
-                <div class="col-lg-6">
-                    <@input name="name" i18nkey="eml.physicalData.name" requiredField=true />
-                </div>
-                <div class="col-lg-6">
-                    <@input name="charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
-                </div>
-                <@input name="distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true />
-                <div class="col-lg-6">
-                    <@input name="format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
-                </div>
-                <div class="col-lg-6">
-                    <@input name="formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
-                </div>
-            </div>
-
         </div>
-    </main>
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

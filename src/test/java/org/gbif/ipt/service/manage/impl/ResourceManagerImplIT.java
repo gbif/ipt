@@ -1,7 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.manage.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.common.DoiData;
 import org.gbif.api.model.common.DoiStatus;
@@ -41,12 +54,7 @@ import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
 import org.gbif.utils.file.properties.PropertiesUtil;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import javax.ws.rs.core.UriBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -58,41 +66,34 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
+import javax.ws.rs.core.UriBuilder;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(Parameterized.class)
 public class ResourceManagerImplIT {
 
   private static final Logger LOG = LogManager.getLogger(ResourceManagerImplIT.class);
   private static DataDir MOCK_DATA_DIR = mock(DataDir.class);
   private static File TMP_EML_FILE;
 
-  private Resource r;
-  private ResourceManagerImpl manager;
-  private DOIRegistrationAgency type;
-  private DOI doi;
-  private RegistrationManager registrationManager;
+  private Resource resource;
 
-  public ResourceManagerImplIT(
-      ResourceManagerImpl action,
-      DOIRegistrationAgency type,
-      DOI doi,
-      RegistrationManager registrationManager) {
-    this.manager = action;
-    this.type = type;
-    this.doi = doi;
-    this.registrationManager = registrationManager;
-  }
-
-  @Parameterized.Parameters
-  public static Object[][] data() throws IOException {
+  public static Stream<Arguments> data() throws IOException {
     // Mock classes
     AppConfig mockAppConfig = mock(AppConfig.class);
 
@@ -157,24 +158,24 @@ public class ResourceManagerImplIT {
         mockPasswordConverter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider,
         mockRegistrationManagerDataCite);
 
-    return new Object[][]{
-        {managerDataCite, DOIRegistrationAgency.DATACITE, DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite}
-    };
+    return Stream.of(
+        Arguments.of(managerDataCite, DOIRegistrationAgency.DATACITE, DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite)
+    );
   }
 
   /**
    * Generate a brand new (unpublished) test resource for each test.
    */
-  @Before
+  @BeforeEach
   public void before() {
-    r = new Resource();
+    resource = new Resource();
     Eml eml = new Eml();
-    r.setEml(eml);
+    resource.setEml(eml);
 
     // mandatory elements
-    r.setCoreType("Occurrence");
-    r.setTitle("Ants");
-    r.setShortname("ants");
+    resource.setCoreType("Occurrence");
+    resource.setTitle("Ants");
+    resource.setShortname("ants");
     eml.setTitle("Ants");
 
     // publication date
@@ -193,11 +194,11 @@ public class ResourceManagerImplIT {
     Organisation o = new Organisation();
     o.setName("GBIF");
     o.setKey(UUID.randomUUID().toString());
-    r.setOrganisation(o);
+    resource.setOrganisation(o);
 
-    r.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
-    r.setStatus(PublicationStatus.PUBLIC);
-    assertNull(r.getLastPublished());
+    resource.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
+    resource.setStatus(PublicationStatus.PUBLIC);
+    assertNull(resource.getLastPublished());
   }
 
   /**
@@ -209,18 +210,22 @@ public class ResourceManagerImplIT {
    * replaced DOI should still be registered, but its metadata should reflect the fact it has been replaced by the new
    * version, and its target URI should point to that version of the resource.
    */
-  @Test
-  public void testRegisterDoiWorkflow() throws Exception {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testRegisterDoiWorkflow(ResourceManagerImpl manager,
+                                      DOIRegistrationAgency type,
+                                      DOI doi,
+                                      RegistrationManager registrationManager) throws Exception {
     LOG.info("Testing " + type + "...");
     String expectedDataciteUrl = URI.create("http://www.gbif-uat.org:7001/ipt?r=ants").toString();
 
     // reserve DOI to begin with
     assertNotNull(doi);
-    assertEquals(PublicationStatus.PUBLIC, r.getStatus());
-    r.setDoi(doi);
-    r.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-    assertEquals(Constants.INITIAL_RESOURCE_VERSION.toPlainString(), r.getEmlVersion().toPlainString());
-    DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, r);
+    assertEquals(PublicationStatus.PUBLIC, resource.getStatus());
+    resource.setDoi(doi);
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    assertEquals(Constants.INITIAL_RESOURCE_VERSION.toPlainString(), resource.getEmlVersion().toPlainString());
+    DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
     registrationManager.getDoiService().reserve(doi, dataCiteMetadata);
 
     // check DOI is reserved, and its target is null
@@ -232,8 +237,8 @@ public class ResourceManagerImplIT {
     }
 
     // register DOI
-    manager.doRegisterDoi(r, null);
-    assertEquals(IdentifierStatus.PUBLIC, r.getIdentifierStatus());
+    manager.doRegisterDoi(resource, null);
+    assertEquals(IdentifierStatus.PUBLIC, resource.getIdentifierStatus());
     LOG.info("DOI was registered successfully, DOI=" + doi.getDoiName());
 
     // check DOI was registered, and its target is correct
@@ -247,24 +252,24 @@ public class ResourceManagerImplIT {
     }
 
     // mock version 1.0 having been published by setting last published, and adding new VersionHistory
-    r.setLastPublished(new Date());
+    resource.setLastPublished(new Date());
     User user = new User();
     user.setEmail("jsmith@gbif.org");
     VersionHistory history = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PUBLIC);
     history.setModifiedBy(user);
     history.setStatus(IdentifierStatus.PUBLIC);
     history.setDoi(doi);
-    r.addVersionHistory(history);
+    resource.addVersionHistory(history);
 
     // persist eml file for version 1.0
-    EmlWriter.writeEmlFile(TMP_EML_FILE, r.getEml());
+    EmlWriter.writeEmlFile(TMP_EML_FILE, resource.getEml());
 
     // update DOI for next published version
-    BigDecimal nextVersion = r.getNextVersion();
-    r.setEmlVersion(nextVersion);
-    assertEquals("1.1", r.getEmlVersion().toPlainString());
-    assertEquals("1.0", r.getReplacedEmlVersion().toPlainString());
-    manager.doUpdateDoi(r);
+    BigDecimal nextVersion = resource.getNextVersion();
+    resource.setEmlVersion(nextVersion);
+    assertEquals("1.1", resource.getEmlVersion().toPlainString());
+    assertEquals("1.0", resource.getReplacedEmlVersion().toPlainString());
+    manager.doUpdateDoi(resource);
     LOG.info("DOI was updated successfully, DOI=" + doi.getDoiName());
 
     // check DOI remains registered, and its target is the same
@@ -278,18 +283,18 @@ public class ResourceManagerImplIT {
     }
 
     // mock version 1.1 having been published by setting last published, and adding new VersionHistory
-    r.setLastPublished(new Date());
+    resource.setLastPublished(new Date());
     VersionHistory history2 = new VersionHistory(new BigDecimal("1.1"), new Date(), PublicationStatus.PUBLIC);
     history.setModifiedBy(user);
     history2.setDoi(doi);
     history2.setStatus(IdentifierStatus.PUBLIC);
-    r.addVersionHistory(history2);
+    resource.addVersionHistory(history2);
 
     // reserve another new DOI
     DOI newDoi = DOIUtils.mintDOI(type, registrationManager.findPrimaryDoiAgencyAccount().getDoiPrefix());
-    r.setDoi(newDoi);
-    r.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
-    dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(newDoi, r);
+    resource.setDoi(newDoi);
+    resource.setIdentifierStatus(IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(newDoi, resource);
     registrationManager.getDoiService().reserve(newDoi, dataCiteMetadata);
 
     // check DOI is reserved, and its target is null
@@ -301,13 +306,13 @@ public class ResourceManagerImplIT {
     }
 
     // replace DOI with new DOI, and publish version 2.0
-    assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
-    nextVersion = r.getNextVersion(); // new major version
-    r.setEmlVersion(nextVersion);
-    assertEquals("2.0", r.getEmlVersion().toPlainString());
-    assertNotNull(r.getAssignedDoi());
-    assertEquals("1.1", r.getReplacedEmlVersion().toPlainString());
-    manager.doReplaceDoi(r, r.getEmlVersion(), r.getReplacedEmlVersion());
+    assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());
+    nextVersion = resource.getNextVersion(); // new major version
+    resource.setEmlVersion(nextVersion);
+    assertEquals("2.0", resource.getEmlVersion().toPlainString());
+    assertNotNull(resource.getAssignedDoi());
+    assertEquals("1.1", resource.getReplacedEmlVersion().toPlainString());
+    manager.doReplaceDoi(resource, resource.getEmlVersion(), resource.getReplacedEmlVersion());
 
     // check new DOI is registered now, and its target is equal to resource URI
     doiData = registrationManager.getDoiService().resolve(newDoi);

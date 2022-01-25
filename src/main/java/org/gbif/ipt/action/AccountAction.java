@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
@@ -9,13 +24,14 @@ import org.gbif.ipt.validation.UserValidator;
 
 import java.io.IOException;
 
-import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.inject.Inject;
+
 /**
- * Action handling account updates, such as changing user name and password.
+ * Action handling account updates, such as changing username and password.
  */
 public class AccountAction extends POSTAction {
 
@@ -27,9 +43,17 @@ public class AccountAction extends POSTAction {
   private final UserAccountManager userManager;
   private final UserValidator validator = new UserValidator();
 
+  // main form
   private String email;
-  private String password2;
   private User user;
+
+  // password change form
+  private String newPassword;
+  private String password2;
+  private String currentPassword;
+
+  // current user
+  private User currentUser;
 
   @Inject
   public AccountAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -50,9 +74,14 @@ public class AccountAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
-    if (getCurrentUser() != null) {
-      // modify existing user in session
-      user = getCurrentUser();
+    try {
+      if (getCurrentUser() != null) {
+        currentUser = getCurrentUser();
+        user = (User) currentUser.clone();
+        email = user.getEmail();
+      }
+    } catch (CloneNotSupportedException e) {
+      LOG.error("Failed to clone current user: " + e.getMessage(), e);
     }
   }
 
@@ -60,6 +89,8 @@ public class AccountAction extends POSTAction {
   public String save() {
     try {
       if (validator.validate(this, user)) {
+        currentUser.setLastname(user.getLastname());
+        currentUser.setFirstname(user.getFirstname());
         addActionMessage(getText("admin.user.account.updated"));
         LOG.debug("The user account has been updated");
         userManager.save();
@@ -70,32 +101,51 @@ public class AccountAction extends POSTAction {
       LOG.error("The user account change could not be made: " + e.getMessage(), e);
       addActionError(e.getMessage());
     }
+
     return INPUT;
   }
 
-  @Override
-  public void validateHttpPostOnly() {
-    if (user != null) {
-      String trimmedPassword = StringUtils.trimToNull(user.getPassword());
-      String trimmedPassword2 = StringUtils.trimToNull(password2);
+  public String changePassword() {
+    if (currentUser != null) {
+      String trimmedCurrentPassword = StringUtils.trimToNull(currentPassword);
+      String trimmedNewPassword = StringUtils.trimToNull(newPassword);
+      String trimmedNewPasswordConfirmation = StringUtils.trimToNull(password2);
 
+      // all passwords must not be nulls
+      if (trimmedCurrentPassword == null) {
+        addFieldError("currentPassword", getText("validation.password.reentered"));
+        LOG.error("The current password entered is empty");
+      } else if (trimmedNewPassword == null) {
+        addFieldError("newPassword", getText("validation.password.reentered"));
+        LOG.error("The new password entered is empty");
+      } else if (trimmedNewPasswordConfirmation == null) {
+        addFieldError("password2", getText("validation.password.reentered"));
+        LOG.error("The new password confirmation entered is empty");
+      }
+      // confirm current password is correct
+      else if (!currentUser.getPassword().equals(trimmedCurrentPassword)) {
+        addFieldError("currentPassword", getText("validation.password.wrong"));
+        LOG.error("The password does not match");
+      }
       // passwords don't match?
-      if (trimmedPassword != null && !trimmedPassword.equals(trimmedPassword2)) {
+      else if (!trimmedNewPassword.equals(trimmedNewPasswordConfirmation)) {
         addFieldError("password2", getText("validation.password2.wrong"));
         LOG.error("The passwords entered do not match");
         password2 = null;
-      }
-      // password empty?
-      else if (trimmedPassword == null) {
-        addFieldError("user.password", getText("validation.password.reentered"));
-        LOG.error("The primary password entered is empty");
-      }
-      // otherwise set password even if it's too short - it gets validated during save
-      else {
-        user.setPassword(trimmedPassword);
+        // otherwise, set password even if it's too short - it gets validated during save
+      } else if (validator.validatePassword(this, newPassword)) {
+        currentUser.setPassword(newPassword);
+        // erase data
+        newPassword = null;
+        currentPassword = null;
+        password2 = null;
+        addActionMessage(getText("admin.user.account.passwordChanged"));
         LOG.error("The password has been reset");
+        return SUCCESS;
       }
     }
+
+    return INPUT;
   }
 
   public String getEmail() {
@@ -106,6 +156,14 @@ public class AccountAction extends POSTAction {
     this.email = email;
   }
 
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
   public String getPassword2() {
     return password2;
   }
@@ -114,11 +172,19 @@ public class AccountAction extends POSTAction {
     this.password2 = password2;
   }
 
-  public User getUser() {
-    return user;
+  public String getNewPassword() {
+    return newPassword;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setNewPassword(String newPassword) {
+    this.newPassword = newPassword;
+  }
+
+  public String getCurrentPassword() {
+    return currentPassword;
+  }
+
+  public void setCurrentPassword(String currentPassword) {
+    this.currentPassword = currentPassword;
   }
 }

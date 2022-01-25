@@ -1,16 +1,18 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.model.SqlSource;
@@ -34,7 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class JdbcSupport {
 
-  public class JdbcInfo {
+  public static class JdbcInfo {
 
     protected final String name;
     protected final String title;
@@ -153,20 +155,20 @@ public class JdbcSupport {
 
   public static final String CLASSPATH_PROPFILE = "jdbc.properties";
 
-  private final Map<String, JdbcInfo> driver = new TreeMap<String, JdbcInfo>();
+  private final Map<String, JdbcInfo> driver = new TreeMap<>();
 
   public JdbcInfo get(String name) {
     return driver.get(name.toLowerCase());
   }
 
   public List<String> list() {
-    List<String> driverNames = new ArrayList(driver.keySet());
+    List<String> driverNames = new ArrayList<>(driver.keySet());
     Collections.sort(driverNames);
     return driverNames;
   }
 
   public Map<String, String> optionMap() {
-    Map<String, String> map = new TreeMap<String, String>();
+    Map<String, String> map = new TreeMap<>();
     for (JdbcInfo j : options()) {
       map.put(j.getName(), j.getTitle());
     }
@@ -183,7 +185,7 @@ public class JdbcSupport {
   protected int setProperties(Properties props) {
     driver.clear();
     // get distinct list of driver names
-    Set<String> names = new HashSet<String>();
+    Set<String> names = new HashSet<>();
     for (Enumeration propertyNames = props.propertyNames(); propertyNames.hasMoreElements(); ) {
       String name = StringUtils.substringBefore((String) propertyNames.nextElement(), ".");
       names.add(name);

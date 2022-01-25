@@ -32,7 +32,7 @@ Example select box and label for the user role, with Admin selected: image:ipt2/
 
 **Links** - opens a page other than the one on which the link occurs. Links may open the new page in the same browser window (or tab) or in a separate window (or tab).
 
-Example link to the account information page for the logged in user: image:ipt2/Control-LinkExample.png[]
+Example link to the account information page for the logged in user: image:ipt2/controls/Control-LinkExample.png[]
 
 **Information icon** - shows a message explaining the intention of the control next to which it appears. Click on the icon next to any field to see a help message about that control. Click on it again to make the message disappear. Some information messages include a link, which, if selected, will populate the control with the appropriate value for the selection.
 
@@ -40,21 +40,21 @@ Example information icon for character encoding after the UTF-8 link was selecte
 
 **Documentation icon** image:ipt2/controls/Control-DocumentationIcon.png[width=22] - this icon indicates that there is a detailed information page about the subject with which the icon is associated. Click on the icon to open the page in a new browser window.
 
-**Trash icon** image:ipt2/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.
+**Trash icon** image:ipt2/controls/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.
 
-**Calendar icon** image:ipt2/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.
+**Calendar icon** image:ipt2/controls/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.
 
 Example calendar associated with an text box labelled "End Date" in which 31 Dec 2010 is the current date but not yet selected:
 
-image:ipt2/Control-TextBoxWithCalendarOpen.png[]
+image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]
 
 **Sortable Table** - a table that allows the rows to be sorted by the values of a selected column in ascending or descending order. The column headers are the labels for the columns, which appear as links. Click on a column header to sort the table using the values in that column. Click again on the same column header to sort the table in the opposite direction.
 
 Example table sorted in ascending order by the column labelled "Name".
-image:ipt2/Control-TableSortedAscending.png[]
+image:ipt2/controls/Control-TableSortedAscending.png[]
 
 Example table sorted in descending order by the column labelled "Type".
-image:ipt2/Control-TableSortedDescending.png[]
+image:ipt2/controls/Control-TableSortedDescending.png[]
 
 === File upload
 
@@ -63,12 +63,6 @@ Files can be uploaded in the IPT during two actions: when xref:manage-resources.
 image:ipt2/controls/Control-UploadCreateResource.png[width=238]
 
 image:ipt2/controls/Control-UploadSourceData.png[width=230]
-
-The IPT has an upload size limit of 100MB. There is no limit to the size of Darwin Core Archive the IPT can export/publish though. For loading datasets larger than 100MB in size into the IPT, the following work-arounds are recommended:
-
-* compressing the file (with zip or gzip)
-* loading the data into one of the many xref:database-connection.adoc[databases supported by the IPT]
-* splitting the file up (when the dataset is published the IPT will concatenate the files in the order they are mapped)
 
 == Controls that appear on all pages
 This section describes several features that are accessible in the header and footer of most of the pages of the IPT.

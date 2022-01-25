@@ -1,20 +1,26 @@
 /*
- * Copyright 2009 GBIF. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.gbif.ipt.model;
 
+import org.gbif.dwc.ArchiveField.DataType;
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwca.io.ArchiveField.DataType;
 
 import java.io.Serializable;
-
-import com.google.common.base.Objects;
-
-import static com.google.common.base.Objects.equal;
+import java.net.URI;
+import java.util.Objects;
 
 /**
  * A single property of an extension. Often also known as concept or term.
@@ -45,13 +51,14 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
    * Construct a new property with a single qualified name. Parses out the name and sets the namespace to end with a
    * slash or #
    */
-  public ExtensionProperty(String qualName) {
-    setQualname(qualName);
+  public ExtensionProperty(String qualname) {
+    setQualname(qualname);
   }
 
   /**
    * Compare by group and qualified name as default sorting order.
    */
+  @Override
   public int compareTo(ExtensionProperty prop) {
     if (group != null) {
       int x = this.group.compareTo(prop.group);
@@ -74,7 +81,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
       return false;
     }
     ExtensionProperty o = (ExtensionProperty) other;
-    return equal(extension, o.extension) && equal(qualname, o.qualname);
+    return Objects.equals(extension, o.extension) && Objects.equals(qualname, o.qualname);
   }
 
   public String getDescription() {
@@ -119,7 +126,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(extension, qualname);
+    return Objects.hash(extension, qualname);
   }
 
   public boolean hasTerms() {
@@ -130,6 +137,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
     return required;
   }
 
+  @Override
   public String qualifiedName() {
     return qualname;
   }
@@ -196,6 +204,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
     this.vocabulary = vocabulary;
   }
 
+  @Override
   public String simpleName() {
     return name;
   }
@@ -205,4 +214,18 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
     return qualname;
   }
 
+  @Override
+  public String prefix() {
+    return "";
+  }
+
+  @Override
+  public URI namespace() {
+    return URI.create(namespace);
+  }
+
+  @Override
+  public boolean isClass() {
+    return false;
+  }
 }

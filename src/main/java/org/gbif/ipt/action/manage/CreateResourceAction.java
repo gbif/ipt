@@ -1,6 +1,19 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.manage;
-
-import com.google.common.annotations.VisibleForTesting;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
@@ -29,13 +42,15 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import javax.annotation.Nullable;
 
-import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
 
 public class CreateResourceAction extends POSTAction {
 
@@ -115,10 +130,8 @@ public class CreateResourceAction extends POSTAction {
    * @param shortname shortname of resource to delete
    * @param startTimeInMs date when resource creation started in milliseconds
    */
-  @VisibleForTesting
   protected void cleanupResourceFolder(String shortname, long startTimeInMs) {
-    Preconditions.checkNotNull(shortname);
-    Preconditions.checkNotNull(startTimeInMs);
+    Objects.requireNonNull(shortname);
 
     Resource resource = resourceManager.get(shortname);
     File directory = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
@@ -165,26 +178,17 @@ public class CreateResourceAction extends POSTAction {
     File tmpFile = dataDir.tmpFile(shortname, fileFileName);
     LOG.debug("Uploading dwc archive file for new resource " + shortname + " to " + tmpFile.getAbsolutePath());
     // retrieve the file data
-    InputStream input = null;
-    OutputStream output = null;
-    try {
-      input = new FileInputStream(file);
-      // write the file to the file specified
-      output = new FileOutputStream(tmpFile);
+    // write the file to the file specified
+    try (InputStream input = new FileInputStream(file);
+         OutputStream output = new FileOutputStream(tmpFile)) {
       IOUtils.copy(input, output);
       output.flush();
       LOG.debug("Uploaded file " + fileFileName + " with content-type " + fileContentType);
     } catch (IOException e) {
       LOG.error(e);
       throw new ImportException("Failed to upload file to tmp file", e);
-    } finally {
-      if (output != null) {
-        IOUtils.closeQuietly(output);
-      }
-      if (input != null) {
-        IOUtils.closeQuietly(input);
-      }
     }
+
     return tmpFile;
   }
 
@@ -216,7 +220,7 @@ public class CreateResourceAction extends POSTAction {
    * @return map of resource types
    */
   public Map<String, String> getTypes() {
-    types = new LinkedHashMap<String, String>();
+    types = new LinkedHashMap<>();
     types.put("", getText("manage.resource.create.coreType.selection"));
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
@@ -233,7 +237,6 @@ public class CreateResourceAction extends POSTAction {
   /**
    * @return DataDir
    */
-  @VisibleForTesting
   public DataDir getDataDir() {
     return dataDir;
   }

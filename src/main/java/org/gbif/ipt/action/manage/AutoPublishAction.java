@@ -1,20 +1,20 @@
-/***************************************************************************
- * Copyright 2020 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.manage;
 
-import com.google.inject.Inject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.BiMonthEnum;
@@ -31,12 +31,17 @@ import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
+
 public class AutoPublishAction extends ManagerBaseAction {
 
   // logging
   private static final Logger LOG = LogManager.getLogger(AutoPublishAction.class);
 
-  private static String OFF_FREQUENCY = "off";
+  private static final String OFF_FREQUENCY = "off";
 
   private final VocabulariesManager vocabManager;
 
@@ -68,6 +73,7 @@ public class AutoPublishAction extends ManagerBaseAction {
     populateMinutes();
   }
 
+  @Override
   public String save() {
     String updateFrequency = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY);
     String updateFrequencyMonth = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_MONTH);
@@ -146,7 +152,7 @@ public class AutoPublishAction extends ManagerBaseAction {
    * locale, defaulting to English.
    */
   private void populateFrequencies() {
-    frequencies = new LinkedHashMap<String, String>();
+    frequencies = new LinkedHashMap<>();
     frequencies.put(OFF_FREQUENCY, getText("manage.autopublish.off"));
 
     // update frequencies list, that qualify for auto-publishing
@@ -157,42 +163,42 @@ public class AutoPublishAction extends ManagerBaseAction {
   }
 
   private void populateMonths() {
-    months = new LinkedHashMap<String, String>();
+    months = new LinkedHashMap<>();
     for (MonthEnum month : MonthEnum.values()) {
       months.put(month.getIdentifier(), getText("manage.autopublish." + month.getIdentifier()));
     }
   }
 
   private void populateBiMonths() {
-    biMonths = new LinkedHashMap<String, String>();
+    biMonths = new LinkedHashMap<>();
     for (BiMonthEnum biMonth : BiMonthEnum.values()) {
       biMonths.put(biMonth.getIdentifier(), getText("manage.autopublish." + biMonth.getIdentifier()));
     }
   }
 
   private void populateDays() {
-    days = new LinkedHashMap<Integer, String>();
+    days = new LinkedHashMap<>();
     for (int i = 1; i <= 31; i++) {
       days.put(i, ((i < 10) ? "0" : "") + i);
     }
   }
 
   private void populateDaysOfWeek() {
-    daysOfWeek = new LinkedHashMap<String, String>();
+    daysOfWeek = new LinkedHashMap<>();
     for (DayEnum dayOfWeek : DayEnum.values()) {
       daysOfWeek.put(dayOfWeek.getIdentifier(), getText("manage.autopublish." + dayOfWeek.getIdentifier()));
     }
   }
 
   private void populateHours() {
-    hours = new LinkedHashMap<Integer, String>();
+    hours = new LinkedHashMap<>();
     for (int i = 0; i <= 23; i++) {
       hours.put(i, ((i < 10) ? "0" : "") + i);
     }
   }
 
   private void populateMinutes() {
-    minutes = new LinkedHashMap<Integer, String>();
+    minutes = new LinkedHashMap<>();
     for (int i = 0; i <= 59; i++) {
       minutes.put(i, ((i < 10) ? "0" : "") + i);
     }

@@ -1,17 +1,37 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action;
 
-import com.google.gson.*;
-import com.google.inject.Inject;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.annotations.JSON;
-import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.inject.Inject;
 
 public class HealthAction extends BaseAction {
 
@@ -19,7 +39,7 @@ public class HealthAction extends BaseAction {
   private static final Logger LOG = LogManager.getLogger(HealthAction.class);
 
   private DataDir dataDir;
-  private HttpUtil http;
+  private final HttpClient http;
 
   public Status status;
 
@@ -59,11 +79,11 @@ public class HealthAction extends BaseAction {
   public String iptMode = "";
 
   @Inject
-  public HealthAction(SimpleTextProvider textProvider, AppConfig cfg, HttpUtil httpUtil, RegistrationManager registrationManager,
+  public HealthAction(SimpleTextProvider textProvider, AppConfig cfg, HttpClient client, RegistrationManager registrationManager,
                       DataDir dataDir) {
     super(textProvider, cfg, registrationManager);
     this.dataDir = dataDir;
-    this.http = httpUtil;
+    this.http = client;
   }
 
   @Override
@@ -73,7 +93,7 @@ public class HealthAction extends BaseAction {
     // Network
     try {
       networkRegistryURL = cfg.getRegistryUrl();
-      HttpUtil.Response resp = http.get(networkRegistryURL);
+      ExtendedResponse resp = http.get(networkRegistryURL);
       if ((resp != null) && (resp.getStatusCode() == 200)) {
         networkRegistry = true;
       }
@@ -83,7 +103,7 @@ public class HealthAction extends BaseAction {
     }
 
     try {
-      HttpUtil.Response resp = http.get(networkRepositoryURL);
+      ExtendedResponse resp = http.get(networkRepositoryURL);
       if ((resp != null) && (resp.getStatusCode() == 200)) {
         networkRepository = true;
       }
@@ -94,9 +114,9 @@ public class HealthAction extends BaseAction {
 
     try {
       networkPublicAccessURL = cfg.getBaseUrl();
-      HttpUtil.Response resp = http.get(networkCheckPublicAccessURL + networkPublicAccessURL);
+      ExtendedResponse resp = http.get(networkCheckPublicAccessURL + networkPublicAccessURL);
       if ((resp != null) && (resp.getStatusCode() == 200)) {
-        JsonObject jsonObject = new JsonParser().parse(resp.content).getAsJsonObject();
+        JsonObject jsonObject = new JsonParser().parse(resp.getContent()).getAsJsonObject();
         JsonElement success = jsonObject.get("success");
         if ((success != null) && success.getAsBoolean()) {
           networkPublicAccess = true;
@@ -148,6 +168,7 @@ public class HealthAction extends BaseAction {
     iptMode = ((cfg != null) && (cfg.getRegistryType() != null)) ? cfg.getRegistryType().name() : "";
   }
 
+  @Override
   public String execute() {
     status = new Status();
     status.setNetworkRegistryURL(this.networkRegistryURL);
@@ -177,7 +198,7 @@ public class HealthAction extends BaseAction {
     return status;
   }
 
-  public class Status {
+  public static class Status {
     private String networkRegistryURL;
     private boolean networkRegistry;
     private String networkRepositoryURL;

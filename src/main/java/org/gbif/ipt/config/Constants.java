@@ -1,18 +1,38 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.config;
 
 import org.gbif.dwc.terms.DwcTerm;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
-
-import com.google.common.collect.ImmutableSet;
 
 public final class Constants {
 
   public static final String SESSION_USER = "curr_user";
   public static final String SESSION_RESOURCE = "curr_resource";
+  public static final String SESSION_URL = "url";
+  public static final String SESSION_SOURCE_NAME = "sourceName";
+  public static final String SESSION_SOURCE_OVERWRITE_MESSAGE = "sourceOverwriteMessage";
   public static final String SESSION_FILE = "file";
   public static final String SESSION_FILE_NAME = "fileName";
+  public static final String SESSION_REFERER = "referer";
   public static final String SESSION_FILE_CONTENT_TYPE = "contentType";
   public static final String SESSION_FILE_NUMBER_COLUMNS = "numberColumns";
   public static final String REQ_PATH_RESOURCE = "resource";
@@ -62,10 +82,17 @@ public final class Constants {
   public static final BigDecimal INITIAL_RESOURCE_VERSION = new BigDecimal("1.0");
 
   // Set of GBIF supported licenses
-  public static final ImmutableSet<String> GBIF_SUPPORTED_LICENSES = ImmutableSet
-    .of("http://creativecommons.org/publicdomain/zero/1.0/legalcode",
-      "http://creativecommons.org/licenses/by/4.0/legalcode", "http://creativecommons.org/licenses/by-nc/4.0/legalcode",
-      "http://www.opendatacommons.org/licenses/by/1.0/", "http://www.opendatacommons.org/licenses/pddl/1.0/");
+  public static final Set<String> GBIF_SUPPORTED_LICENSES;
+
+  static {
+    Set<String> licencesInternal = new HashSet<>();
+    licencesInternal.add("http://creativecommons.org/publicdomain/zero/1.0/legalcode");
+    licencesInternal.add("http://creativecommons.org/licenses/by/4.0/legalcode");
+    licencesInternal.add("http://creativecommons.org/licenses/by-nc/4.0/legalcode");
+    licencesInternal.add("http://www.opendatacommons.org/licenses/by/1.0/");
+    licencesInternal.add("http://www.opendatacommons.org/licenses/pddl/1.0/");
+    GBIF_SUPPORTED_LICENSES = Collections.unmodifiableSet(licencesInternal);
+  }
 
   private Constants() {
     throw new UnsupportedOperationException("Can't initialize class");

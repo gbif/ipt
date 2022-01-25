@@ -147,8 +147,6 @@ $(document).ready(function(){
             newItem.slideDown('slow');
         }
 
-        initHelp("#baseItem");
-
         setItemIndex(newItem, ++itemsCount);
 
         initInfoPopovers(newItem[0]);
@@ -163,8 +161,6 @@ $(document).ready(function(){
             newItem.slideDown('slow');
         }
 
-        initHelp("#baseItem-collection");
-
         setCollectionItemIndex(newItem, ++collectionItemsCount);
 
         initInfoPopovers(newItem[0]);
@@ -178,8 +174,6 @@ $(document).ready(function(){
         if(effects) {
             newItem.slideDown('slow');
         }
-
-        initHelp("#baseItem-specimenPreservationMethod");
 
         setSpecimenPreservationMethodItemIndex(newItem, ++specimenPreservationMethodItemsCount);
 
@@ -373,7 +367,7 @@ $(document).ready(function(){
 			$("#add-button-"+index).click(function(event){
 				createTaxons(event);
 			});
-			if($("#item-"+index+" #subItems").children().size() == 0) {
+			if($("#item-"+index+" #subItems").children().length === 0) {
 				$("#plus-subItem-"+index).click();
 			};
 		<#break>

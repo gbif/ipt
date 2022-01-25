@@ -1,19 +1,22 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat Licensed
- * under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the
- * License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
- * applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
- ***************************************************************************/
-
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.task;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
@@ -45,9 +48,12 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.lowagie.text.Anchor;
@@ -61,10 +67,6 @@ import com.lowagie.text.List;
 import com.lowagie.text.ListItem;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-
-import static com.google.common.base.Objects.equal;
 
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its EML.
@@ -104,7 +106,7 @@ public class Eml2Rtf {
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
       for (String para : eml.getDescription()) {
-        if (!Strings.isNullOrEmpty(para)) {
+        if (StringUtils.isNotBlank(para)) {
           p.add(para.replace("\r\n", "\n"));
           p.add(Chunk.NEWLINE);
         }
@@ -158,25 +160,25 @@ public class Eml2Rtf {
    */
   private void addAuthors(Document doc, Eml eml) throws DocumentException {
     // Creating set of authors with different names. (first names + last names).
-    HashSet<Agent> tempAgents = new LinkedHashSet<Agent>();
+    HashSet<Agent> tempAgents = new LinkedHashSet<>();
     for (Agent creator: eml.getCreators()) {
-      if (!Strings.isNullOrEmpty(creator.getLastName())) {
+      if (StringUtils.isNotBlank(creator.getLastName())) {
         tempAgents.add(creator);
       }
     }
     for (Agent metadataProvider: eml.getMetadataProviders()) {
-      if (!Strings.isNullOrEmpty(metadataProvider.getLastName())) {
+      if (StringUtils.isNotBlank(metadataProvider.getLastName())) {
         tempAgents.add(metadataProvider);
       }
     }
     for (Agent party: eml.getAssociatedParties()) {
-      if (!Strings.isNullOrEmpty(party.getLastName())) {
+      if (StringUtils.isNotBlank(party.getLastName())) {
         tempAgents.add(party);
       }
     }
 
     // comparing and removing those repeated agents with same name and same address.
-    Collection<Integer> toRemove = new ArrayList<Integer>();
+    Collection<Integer> toRemove = new ArrayList<>();
     int counter = 0;
     for (Iterator<Agent> i = tempAgents.iterator(); i.hasNext(); counter++) {
       if (toRemove.contains(counter)) {
@@ -190,9 +192,9 @@ public class Eml2Rtf {
         for (Iterator<Agent> j = tempAgents.iterator(); j.hasNext(); countTemp++) {
           Agent agentB = j.next();
           if (flag) {
-            if (equal(agentA.getLastName(), agentB.getLastName())
-              && equal(agentA.getFirstName(), agentB.getFirstName())
-              && equal(agentA.getAddress(), agentB.getAddress())) {
+            if (Objects.equals(agentA.getLastName(), agentB.getLastName())
+              && Objects.equals(agentA.getFirstName(), agentB.getFirstName())
+              && Objects.equals(agentA.getAddress(), agentB.getAddress())) {
               toRemove.add(countTemp);
             }
           } else if (agentA.equals(agentB)) {
@@ -208,7 +210,7 @@ public class Eml2Rtf {
     Paragraph p = new Paragraph();
     p.setFont(font);
     p.setAlignment(Element.ALIGN_CENTER);
-    java.util.List<Agent> affiliations = new ArrayList<Agent>();
+    java.util.List<Agent> affiliations = new ArrayList<>();
     int superScriptCounter = 1;
     for (int c = 0; c < agentsArray.length; c++) {
       if (exists(agentsArray[c].getLastName())) {
@@ -225,7 +227,7 @@ public class Eml2Rtf {
         boolean isRepeated = false;
         // look into the affiliations array to find any previous repeated agent info.
         for (int index = 0; index < affiliations.size(); index++) {
-          if (equal(agentsArray[c].getAddress(), affiliations.get(index).getAddress()) && equal(
+          if (Objects.equals(agentsArray[c].getAddress(), affiliations.get(index).getAddress()) && Objects.equals(
             agentsArray[c].getOrganisation(), affiliations.get(index).getOrganisation())) {
             p.add(createSuperScript(String.valueOf(index + 1)));
             isRepeated = true;
@@ -286,11 +288,11 @@ public class Eml2Rtf {
     p.setFont(font);
     boolean isFirst = true;
     for (Agent creator: eml.getCreators()) {
-      if (!Strings.isNullOrEmpty(creator.getFirstName())) {
+      if (StringUtils.isNotBlank(creator.getFirstName())) {
         p.add(creator.getFirstName() + " ");
       }
       p.add(creator.getLastName());
-      if (!Strings.isNullOrEmpty(creator.getEmail())) {
+      if (StringUtils.isNotBlank(creator.getEmail())) {
         p.add(" (" + creator.getEmail() + ")");
       }
       isFirst = false;
@@ -298,7 +300,7 @@ public class Eml2Rtf {
     for (Agent metadataProvider: eml.getMetadataProviders()) {
       boolean sameAsCreator = false;
       for (Agent creator: eml.getCreators()) {
-        if (equal(metadataProvider.getAddress(), creator.getAddress()) && equal(
+        if (Objects.equals(metadataProvider.getAddress(), creator.getAddress()) && Objects.equals(
           metadataProvider.getEmail(), creator.getEmail())) {
           sameAsCreator = true;
           break;
@@ -308,11 +310,11 @@ public class Eml2Rtf {
         if (!isFirst) {
           p.add(", ");
         }
-        if (!Strings.isNullOrEmpty(metadataProvider.getFirstName())) {
+        if (StringUtils.isNotBlank(metadataProvider.getFirstName())) {
           p.add(metadataProvider.getFirstName() + " ");
         }
         p.add(metadataProvider.getLastName());
-        if (!Strings.isNullOrEmpty(metadataProvider.getEmail())) {
+        if (StringUtils.isNotBlank(metadataProvider.getEmail())) {
           p.add(" (" + metadataProvider.getEmail() + ")");
         }
         isFirst = false;
@@ -437,7 +439,7 @@ public class Eml2Rtf {
   private void addLicense(Paragraph p, Eml eml) throws DocumentException {
     String licenseTitle = eml.parseLicenseTitle();
     String licenseUrl = eml.parseLicenseUrl();
-    if (!Strings.isNullOrEmpty(licenseTitle) && !Strings.isNullOrEmpty(licenseUrl)) {
+    if (StringUtils.isNotBlank(licenseTitle) && StringUtils.isNotBlank(licenseUrl)) {
       p.add(new Phrase(getText("rtf.license") + ": ", fontTitle));
       Anchor licenseLink = new Anchor(eml.parseLicenseTitle(), fontLink);
       licenseLink.setReference(eml.parseLicenseUrl());
@@ -627,8 +629,8 @@ public class Eml2Rtf {
    * @throws DocumentException if problem occurs during add
    */
   private void addMethods(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getMethodSteps()) && !eml.getMethodSteps().isEmpty() || exists(eml.getStudyExtent()) || exists(
-      eml.getStudyExtent()) || exists(eml.getStudyExtent())) {
+    if ((exists(eml.getMethodSteps()) && !eml.getMethodSteps().isEmpty())
+        || exists(eml.getStudyExtent()) || exists(eml.getStudyExtent()) || exists(eml.getStudyExtent())) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
@@ -804,7 +806,7 @@ public class Eml2Rtf {
         Iterator<Agent> iter = eml.getProject().getPersonnel().iterator();
         while (iter.hasNext()) {
           Agent personnel = iter.next();
-          if (!Strings.isNullOrEmpty(personnel.getFirstName())) {
+          if (StringUtils.isNotBlank(personnel.getFirstName())) {
             p.add(personnel.getFirstName() + " " + personnel.getLastName());
           }
           if (iter.hasNext()) {

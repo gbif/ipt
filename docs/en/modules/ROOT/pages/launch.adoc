@@ -29,8 +29,8 @@ Many players are involved in the process, not least the GBIF Communications team
 ** Where applicable, test the IPT in both production and test mode.
 ** Where applicable, perform cross-browser testing.
 . Update the xref:index.adoc[User Manual].
-** Add/update user manual content - see issues labelled as `UserManual`.
-** After applying all changes in English, request Spanish translators (e.g. SIB Colombia) to apply all changes to the Spanish user manual also (process not yet clear for the Antora system).
+** Add/update user manual content – see issues labelled as `UserManual`.
+** After applying all changes in English, send a message using Crowdin to request translators translate the user manual, though note this does not block the software release.
 . Update Release Notes
 ** The Release Notes should contain all the information needed to properly upgrade their IPT to the latest version. Typically it contains the following sections:
 *** Upgrade instructions
@@ -50,11 +50,12 @@ Many players are involved in the process, not least the GBIF Communications team
 *** https://cloud.gbif.org/griis[GRIIS IPT] — customized (see below for help).
 *** https://cloud.gbif.org/[Regional IPTs] — vanilla IPTs on cloud.gbif.org.
 *** https://giasip.gbif.org[GIASIP IPT] — vanilla. Note this runs in test mode but is treated like it's in production.
-*** http://eubon-ipt.gbif.org/[TEST EU BON IPT] — vanilla. Note this runs in test mode but is treated like it's in production as it's embedded in EU BON's portal.
 ** Update Test/Sandbox instances:
 *** https://ipt.gbif.org/[Demo IPT] — vanilla. Note It is always a good idea to cleanup old resources to save disk space.
-*** https://ipt.gbif-uat.org/[UAT IPT] — vanilla
-*** https://ipt.gbif-dev.org/[Development IPT] — vanilla
+*** https://ipt.gbif-uat.org/[UAT IPT] — vanilla.
+*** https://ipt.gbif-dev.org/[Development IPT] — vanilla.
+*** https://training-ipt-a.gbif.org/[Training IPT A], https://training-ipt-b.gbif.org/[B] and https://training-ipt-c.gbif.org/[C] — customized.  This update can be delayed if required by the Participation team.
+*** http://eubon-ipt.gbif-uat.org/[Test EU BON IPT] — vanilla. Seems no longer to be used.
 ** Simple customizations for the above IPTs are done by
 +
 --
@@ -70,15 +71,9 @@ NOTE: before an upgrade, the custom logo image(s) and CSS need to be backed-up/p
 ** Publicize in some detail, select improvements that users will value. For example, here is an example blog post for http://gbif.blogspot.com/2015/03/ipt-v22.html[IPT v2.2].
 ** Be sure to acknowledge volunteer translators and coders that contributed to the release.
 ** Review the blog post with the help of the GBIF Communications team before publishing.
-. Update xref:releases.adoc[release history]
+. Update xref:releases.adoc[release history].
 ** Add section for new version including a link to the .war download, release notes, user manual, how many issues were addressed broken down by type, blog post and a short summary of what changed.
-. Update xref:index.adoc#roadmap[Roadmap]
-** Keep this in sync with the https://github.com/gbif/ipt/blob/master/README.md[GitHub IPT Read-me] and https://www.gbif.org/ipt[GBIF.org IPT page], which also show the Roadmap and get updated in subsequent steps below.
-. Update https://github.com/gbif/ipt/blob/master/README.md[GitHub IPT Read-me]
-** Advertise the new version, highlighting what changes will be interesting and valuable to users linking to blog post when applicable.
-. Update https://www.gbif.org/ipt[GBIF.org IPT page]
-** Mirror relevant changes made to IPT Read-me in step above
-** Update IPT uptake statistics, e.g. number of installations and number of countries having installations displayed at bottom of map.
+** Add/update a plan for the next release, or use the generic statement.
 . Announce to https://lists.gbif.org/mailman/listinfo/ipt[IPT mailing list]
 ** Keep the message short so that people actually read it, linking to the blog post when applicable that has more detailed information about the release. Here are a couple example announcements for https://lists.gbif.org/pipermail/ipt/2015-March/000591.html[2.2 major release], https://lists.gbif.org/pipermail/ipt/2017-January/000666.html[2.3.3 minor release] and https://lists.gbif.org/pipermail/ipt/2017-March/000671.html[2.3.4 security patch release]
 ** Highlight GBIF's vigilance in keeping the IPT secure, while reminding people of the importance of updating their instance with this latest version.

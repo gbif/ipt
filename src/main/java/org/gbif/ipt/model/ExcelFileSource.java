@@ -1,23 +1,50 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.model;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * Uses apache POI to parse excel spreadsheets.
@@ -37,18 +64,12 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   private int rows;
   protected Date lastModified;
 
-  private String escape(String x) {
-    if (x == null) {
-      return null;
-    }
-    return x.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r")
-      .replaceAll("\\f", "\\\\f");
-  }
-
+  @Override
   public File getFile() {
     return file;
   }
 
+  @Override
   public long getFileSize() {
     return fileSize;
   }
@@ -57,6 +78,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return FileUtils.formatSize(fileSize, 1);
   }
 
+  @Override
   public int getIgnoreHeaderLines() {
     return ignoreHeaderLines;
   }
@@ -65,6 +87,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     this.ignoreHeaderLines = ignoreHeaderLines;
   }
 
+  @Override
   public Date getLastModified() {
     return lastModified;
   }
@@ -83,7 +106,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       FileInputStream fis = new FileInputStream(file);
       return WorkbookFactory.create(fis);
     } catch (InvalidFormatException e) {
-      throw new IOException("Cannot open invalid excel speadsheet", e);
+      throw new IOException("Cannot open invalid excel spreadsheet", e);
     }
   }
 
@@ -91,6 +114,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return book.getSheetAt(sheetIdx);
   }
 
+  @Override
   public int getRows() {
     return rows;
   }
@@ -126,14 +150,17 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       }
     }
 
+    @Override
     public void close() {
       // nothing to do
     }
 
+    @Override
     public boolean hasNext() {
       return iter.hasNext();
     }
 
+    @Override
     public String[] next() {
       //TODO: log empty or irregular rows, setting rowError to true and populating errorMessage
       String[] val = new String[rowSize];
@@ -164,23 +191,28 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       errorMessage = null;
     }
 
+    @Override
     public void remove() {
       // unsupported
     }
 
+    @Override
     public boolean hasRowError() {
       return rowError;
     }
 
+    @Override
     public String getErrorMessage() {
       return errorMessage;
     }
 
+    @Override
     public Exception getException() {
       return exception;
     }
   }
 
+  @Override
   public ClosableReportingIterator<String[]> rowIterator() {
     try {
       return new RowIterator(this, ignoreHeaderLines);
@@ -196,21 +228,22 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   public Map<Integer, String> sheets() throws IOException {
     Workbook book = openBook();
     int cnt = book.getNumberOfSheets();
-    Map<Integer, String> sheets = Maps.newHashMap();
+    Map<Integer, String> sheets = new HashMap<>();
     for (int x = 0; x < cnt; x++) {
       sheets.put(x, book.getSheetName(x));
     }
     return sheets;
   }
 
+  @Override
   public List<String> columns() {
     if (rows > 0) {
       try {
         if (ignoreHeaderLines > 0) {
-          return Lists.newArrayList(new RowIterator(this, ignoreHeaderLines - 1).next());
+          return new ArrayList<>(Arrays.asList(new RowIterator(this, ignoreHeaderLines - 1).next()));
 
         } else {
-          List<String> columnList = Lists.newArrayList();
+          List<String> columnList = new ArrayList<>();
           for (int x = 1; x <= columns; x++) {
             columnList.add("Column #" + x);
           }
@@ -223,9 +256,10 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     }
 
     // no rows, no columns
-    return Lists.newArrayList();
+    return new ArrayList<>();
   }
 
+  @Override
   public void setFile(File file) {
     this.file = file;
   }
@@ -238,10 +272,12 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     this.ignoreHeaderLines = ignoreHeaderLines == null ? 0 : ignoreHeaderLines;
   }
 
+  @Override
   public void setLastModified(Date lastModified) {
     this.lastModified = lastModified;
   }
 
+  @Override
   public String getPreferredFileSuffix() {
     return SUFFIX;
   }
@@ -250,6 +286,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     this.rows = rows;
   }
 
+  @Override
   public Set<Integer> analyze() throws IOException {
     setFileSize(getFile().length());
     // find row size
@@ -267,15 +304,11 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     }
 
     //TODO: report empty or irregular rows
-    return Sets.newHashSet();
+    return new HashSet<>();
   }
 
-  private String unescape(String x) {
-    if (x == null) {
-      return null;
-    }
-    return x.replaceAll("\\\\t", String.valueOf('\t')).replaceAll("\\\\n", String.valueOf('\n'))
-      .replaceAll("\\\\r", String.valueOf('\r')).replaceAll("\\\\f", String.valueOf('\f'));
+  @Override
+  public SourceType getSourceType() {
+    return SourceType.EXCEL_FILE;
   }
-
 }

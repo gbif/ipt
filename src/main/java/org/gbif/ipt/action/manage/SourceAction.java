@@ -1,16 +1,18 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
@@ -21,6 +23,7 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceBase;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
@@ -33,21 +36,26 @@ import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
 
 public class SourceAction extends ManagerBaseAction {
 
   // logging
   private static final Logger LOG = LogManager.getLogger(SourceAction.class);
+
+  private static final String SOURCE_URL = "source-url";
 
   private SourceManager sourceManager;
   private JdbcSupport jdbcSupport;
@@ -56,6 +64,10 @@ public class SourceAction extends ManagerBaseAction {
   private Source source;
   private String rdbms;
   private String problem;
+  private String sqlSourcePassword;
+  // URL
+  private String url;
+  private String sourceName;
   // file upload
   private File file;
   private String fileContentType;
@@ -67,6 +79,8 @@ public class SourceAction extends ManagerBaseAction {
   private int peekRows = 10;
   private int analyzeRows = 1000;
 
+  private String sourceType;
+
   @Inject
   public SourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, SourceManager sourceManager, JdbcSupport jdbcSupport, DataDir dataDir) {
@@ -77,11 +91,89 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public String add() throws IOException {
+    String sessionUrl = (String) session.get(Constants.SESSION_URL);
+    String sessionSourceName = (String) session.get(Constants.SESSION_SOURCE_NAME);
+
+    if (SOURCE_URL.equals(sourceType) || sessionUrl != null) {
+      if (SOURCE_URL.equals(sourceType) && StringUtils.isEmpty(url)) {
+        addActionError(getText("manage.source.url.empty"));
+        return ERROR;
+      }
+
+      // prepare a new, empty url source
+      source = new UrlSource();
+      source.setResource(resource);
+      sourceType = SOURCE_URL;
+      URI urlWrapped = URI.create(url);
+
+      boolean replaceUrl = false;
+
+      // check session URL
+      // if present do not check sources with the same name, already overwriting
+      if (sessionUrl != null) {
+        url = sessionUrl;
+        sourceName = sessionSourceName;
+        urlWrapped = URI.create(url);
+        replaceUrl = true;
+      }
+
+      // check if source with the same URL exists
+      // check if source with the same name already exists
+      // if so store url and name in the session, and return to ask about overwriting
+      if (!replaceUrl) {
+        for (Source resourceSource : resource.getSources()) {
+          if (resourceSource instanceof UrlSource) {
+            UrlSource resourceUrlSource = (UrlSource) resourceSource;
+            if (resourceUrlSource.getUrl().toString().equals(url)) {
+              urlToOverwrite(getText("manage.resource.addSource.sameUrl.confirm"));
+              return INPUT;
+            }
+          }
+        }
+
+        // source name is optional and may be empty
+        if ((StringUtils.isEmpty(sourceName) && resource.getSource(FilenameUtils.getBaseName(url)) != null) ||
+                resource.getSource(sourceName) != null) {
+          urlToOverwrite(getText("manage.resource.addSource.sameName.confirm"));
+          return INPUT;
+        }
+      }
+
+      // check URL is fine otherwise throw an exception
+      try {
+        HttpURLConnection connection = (HttpURLConnection) urlWrapped.toURL().openConnection();
+        int responseCode = connection.getResponseCode();
+
+        // check not found
+        if (responseCode == 404) {
+          addActionError(getText("manage.source.url.notFound", new String[] {url}));
+          removeSessionData();
+          return ERROR;
+        }
+
+        // check text file (or no extension)
+        String extension = FilenameUtils.getExtension(url);
+        if (!extension.isEmpty() && !"txt".equals(extension) && !"tsv".equals(extension) && !"csv".equals(extension)) {
+          addActionError(getText("manage.source.url.invalidExtension", new String[] {url, extension}));
+          removeSessionData();
+          return ERROR;
+        }
+      } catch (IOException e) {
+        addActionError(getText("manage.source.url.invalid", new String[] {url}));
+        removeSessionData();
+        return ERROR;
+      }
+
+      addUrl(urlWrapped);
+      // manually remove any previous data in session
+      removeSessionData();
+    }
+
     boolean replace = false;
     // Are we going to overwrite any source file?
-    File ftest = (File) session.get(Constants.SESSION_FILE);
-    if (ftest != null) {
-      file = ftest;
+    File sessionFile = (File) session.get(Constants.SESSION_FILE);
+    if (sessionFile != null) {
+      file = sessionFile;
       fileFileName = (String) session.get(Constants.SESSION_FILE_NAME);
       fileContentType = (String) session.get(Constants.SESSION_FILE_CONTENT_TYPE);
       replace = true;
@@ -115,7 +207,7 @@ public class SourceAction extends ManagerBaseAction {
             addDataFile(f, f.getName());
           }
           // manually remove any previous file in session and in temporal directory path
-          removeSessionFile();
+          removeSessionData();
         } catch (IOException e) {
           LOG.error(e);
           addActionError(getText("manage.source.filesystem.error", new String[] {e.getMessage()}));
@@ -136,7 +228,7 @@ public class SourceAction extends ManagerBaseAction {
           return INPUT;
         }
         try {
-          // treat as is - hopefully a simple text or excel file
+          // treat as is - hopefully a simple text or Excel file
           addDataFile(file, fileFileName);
         } catch (InvalidFilenameException e) {
           addActionError(getText("manage.source.invalidFileName"));
@@ -144,10 +236,35 @@ public class SourceAction extends ManagerBaseAction {
         }
 
         // manually remove any previous file in session and in temporal directory path
-        removeSessionFile();
+        removeSessionData();
       }
     }
     return SUCCESS;
+  }
+
+  private void addUrl(URI url) {
+    Source existingSource = resource.getSource(sourceName);
+    boolean replaced = existingSource != null;
+
+    try {
+      source = sourceManager.add(resource, url, sourceName);
+      resource.setSourcesModified(new Date());
+      saveResource();
+      id = source.getName();
+
+      if (replaced) {
+        addActionMessage(getText("manage.source.replaced.existing", new String[] {source.getName()}));
+        // alert user if the number of columns changed
+        alertColumnNumberChange(resource.hasMappedSource(existingSource), source.getColumns(),
+            existingSource.getColumns());
+      } else {
+        addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
+      }
+    } catch (ImportException e) {
+      // even though we have problems with this source we'll keep it for manual corrections
+      LOG.error("Cannot add URL source " + url, e);
+      addActionError(getText("manage.source.cannot.add", new String[]{sourceName, e.getMessage()}));
+    }
   }
 
   /**
@@ -182,7 +299,7 @@ public class SourceAction extends ManagerBaseAction {
       addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
     } catch (InvalidFilenameException e) {
       // clean session variables used for confirming file overwrite
-      removeSessionFile();
+      removeSessionData();
       throw e;
     }
   }
@@ -196,10 +313,9 @@ public class SourceAction extends ManagerBaseAction {
    *
    * @return true if alert was sent, false otherwise
    */
-  @VisibleForTesting
   protected boolean alertColumnNumberChange(boolean sourceIsMapped, int number, int originalNumber) {
     if (sourceIsMapped) {
-      if (Integer.compare(originalNumber, number) != 0) {
+      if (originalNumber != number) {
         addActionWarning(getText("manage.source.numColumns.changed",
           new String[] {source.getName(), String.valueOf(originalNumber), String.valueOf(number)}));
       return true;
@@ -209,8 +325,8 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   public String cancelOverwrite() {
-    removeSessionFile();
-    return INPUT;
+    removeSessionData();
+    return SUCCESS;
   }
 
   /**
@@ -222,6 +338,15 @@ public class SourceAction extends ManagerBaseAction {
     session.put(Constants.SESSION_FILE, fileNew);
     session.put(Constants.SESSION_FILE_NAME, fileFileName);
     session.put(Constants.SESSION_FILE_CONTENT_TYPE, fileContentType);
+  }
+
+  /**
+   * Insert temporal session variables related to URL sources.
+   */
+  private void urlToOverwrite(String message) {
+    session.put(Constants.SESSION_URL, url);
+    session.put(Constants.SESSION_SOURCE_NAME, sourceName);
+    session.put(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE, message);
   }
 
   @Override
@@ -272,6 +397,10 @@ public class SourceAction extends ManagerBaseAction {
     return rdbms;
   }
 
+  public String getSqlSourcePassword() {
+    return sqlSourcePassword;
+  }
+
   public Source getSource() {
     return source;
   }
@@ -295,9 +424,7 @@ public class SourceAction extends ManagerBaseAction {
   @Override
   public void prepare() {
     super.prepare();
-    if (session.containsKey(Constants.SESSION_FILE_NUMBER_COLUMNS)) {
-      session.remove(Constants.SESSION_FILE_NUMBER_COLUMNS);
-    }
+    session.remove(Constants.SESSION_FILE_NUMBER_COLUMNS);
     if (id != null) {
       source = resource.getSource(id);
       if (source == null) {
@@ -323,7 +450,7 @@ public class SourceAction extends ManagerBaseAction {
    * Remove any previous uploaded file in temporal directory.
    * And clean some session variables used to confirm overwrite action.
    */
-  private void removeSessionFile() {
+  private void removeSessionData() {
     File fileNew = (File) session.get(Constants.SESSION_FILE);
     if (fileNew != null && fileNew.exists()) {
       fileNew.delete();
@@ -331,6 +458,9 @@ public class SourceAction extends ManagerBaseAction {
     session.remove(Constants.SESSION_FILE);
     session.remove(Constants.SESSION_FILE_NAME);
     session.remove(Constants.SESSION_FILE_CONTENT_TYPE);
+    session.remove(Constants.SESSION_URL);
+    session.remove(Constants.SESSION_SOURCE_NAME);
+    session.remove(Constants.SESSION_SOURCE_OVERWRITE_MESSAGE);
   }
 
   @Override
@@ -347,8 +477,7 @@ public class SourceAction extends ManagerBaseAction {
       } else {
         result = SUCCESS;
       }
-    } else {
-      // new one
+    } else { // new one
       if (file == null) {
         try {
           resource.addSource(source, false);
@@ -394,6 +523,18 @@ public class SourceAction extends ManagerBaseAction {
     }
   }
 
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  public void setSourceName(String sourceName) {
+    this.sourceName = sourceName;
+  }
+
+  public void setSourceType(String sourceType) {
+    this.sourceType = sourceType;
+  }
+
   public void setFile(File file) {
     this.file = file;
   }
@@ -408,8 +549,16 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setRdbms(String jdbc) {
     this.rdbms = jdbc;
-    if (source != null && !source.isFileSource()) {
+    if (source != null && source instanceof SqlSource) {
       ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
+    }
+  }
+
+  public void setSqlSourcePassword(String sqlSourcePassword) {
+    if (source != null && source instanceof SqlSource) {
+      ((SqlSource) source).setPassword(sqlSourcePassword);
+      // source should be re-analyzed after password update
+      this.analyze = true;
     }
   }
 
@@ -455,7 +604,7 @@ public class SourceAction extends ManagerBaseAction {
       } else if (id == null && resource.getSources().contains(source)) {
         addFieldError("source.name", getText("manage.source.unique"));
       }
-      if (SqlSource.class.isInstance(source)) {
+      if (source instanceof SqlSource) {
         // SQL SOURCE
         SqlSource src = (SqlSource) source;
         // pure ODBC connections need only a DSN, no server

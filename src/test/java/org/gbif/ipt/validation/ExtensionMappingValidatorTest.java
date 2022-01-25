@@ -1,7 +1,22 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.validation;
 
+import org.gbif.dwc.ArchiveField;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwca.io.ArchiveField;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -10,21 +25,20 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ExtensionMappingValidatorTest {
 
@@ -32,12 +46,12 @@ public class ExtensionMappingValidatorTest {
   private ExtensionMapping extensionMapping;
   private Resource resource;
   private ExtensionMappingValidator validator;
-  private List<String[]> peek = Lists.newArrayList();
+  private List<String[]> peek = new ArrayList<>();
 
-  @Before
+  @BeforeEach
   public void setup() {
     // set small list of source column names representing a source file to be mapped
-    columns = new ArrayList<String>();
+    columns = new ArrayList<>();
     columns.add("identificationID");
     columns.add("identificationQualifier");
     columns.add("unknown");
@@ -46,7 +60,7 @@ public class ExtensionMappingValidatorTest {
     // create a new Extension, that represents the Darwin Core Occurrence Core
     Extension extension = new Extension();
     extension.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);
-    List<ExtensionProperty> extensionProperties = new ArrayList<ExtensionProperty>();
+    List<ExtensionProperty> extensionProperties = new ArrayList<>();
     ExtensionProperty extensionProperty = new ExtensionProperty();
     extensionProperty.setQualname(DwcTerm.occurrenceID.qualifiedName());
     extensionProperties.add(extensionProperty);
@@ -57,7 +71,7 @@ public class ExtensionMappingValidatorTest {
     extensionMapping.setExtension(extension);
 
     // 2 translated fields pointing at same source column
-    Set<PropertyMapping> fields = Sets.newHashSet();
+    Set<PropertyMapping> fields = new HashSet<>();
 
     PropertyMapping mappingCoreid = new PropertyMapping();
     mappingCoreid.setTerm(DwcTerm.occurrenceID);
@@ -85,7 +99,7 @@ public class ExtensionMappingValidatorTest {
     assertEquals(0, status.getMultipleTranslationsForSameColumn().size());
 
     // field translation
-    Map<String, String> translation = Maps.newHashMap();
+    Map<String, String> translation = new HashMap<>();
     translation.put("id1", "translated-id1");
 
     Set<PropertyMapping> fields = extensionMapping.getFields();

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.model;
 
 import org.gbif.api.model.common.DOI;
@@ -21,31 +36,25 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Function;
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static com.google.common.base.Objects.equal;
 
 /**
  * The main class to represent an IPT resource.
@@ -88,12 +97,12 @@ public class Resource implements Serializable, Comparable<Resource> {
   private BigDecimal replacedEmlVersion;
   // last time resource was successfully published
   private Date lastPublished;
-  // next time resource is scheduled to be pubished
+  // next time resource is scheduled to be published
   private Date nextPublished;
   // core record count
   private int recordsPublished = 0;
   // record counts by extension: Map<rowType, count>
-  private Map<String, Integer> recordsByExtension = Maps.newHashMap();
+  private Map<String, Integer> recordsByExtension = new HashMap<>();
   // registry data - only exists when status=REGISTERED
   private UUID key;
   private Organisation organisation;
@@ -105,13 +114,13 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Date metadataModified;
   private Date mappingsModified;
   private Date sourcesModified;
-  private Set<User> managers = new HashSet<User>();
+  private Set<User> managers = new HashSet<>();
   // mapping configs
-  private Set<Source> sources = new HashSet<Source>();
-  private List<ExtensionMapping> mappings = Lists.newArrayList();
+  private Set<Source> sources = new HashSet<>();
+  private List<ExtensionMapping> mappings = new ArrayList<>();
 
   private String changeSummary;
-  private List<VersionHistory> versionHistory = Lists.newLinkedList();
+  private List<VersionHistory> versionHistory = new ArrayList<>();
 
   private IdentifierStatus identifierStatus = IdentifierStatus.UNRESERVED;
   private DOI doi;
@@ -130,11 +139,12 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param history VersionHistory to add
    */
   public void addVersionHistory(VersionHistory history) {
-    Preconditions.checkNotNull(history);
+    Objects.requireNonNull(history);
     boolean exists = false;
     for (VersionHistory vh : getVersionHistory()) {
       if (vh.getVersion().equals(history.getVersion())) {
         exists = true;
+        break;
       }
     }
     if (!exists) {
@@ -221,6 +231,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * (non-Javadoc)
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
+  @Override
   public int compareTo(Resource o) {
     return shortname.compareToIgnoreCase(o.shortname);
   }
@@ -272,7 +283,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (src != null) {
       result = sources.remove(src);
       // also remove existing mappings
-      List<ExtensionMapping> ems = new ArrayList<ExtensionMapping>(mappings);
+      List<ExtensionMapping> ems = new ArrayList<>(mappings);
       for (ExtensionMapping em : ems) {
         if (em.getSource() != null && src.equals(em.getSource())) {
           deleteMapping(em);
@@ -288,7 +299,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean hasMappedSource(Source src) {
     if (src != null) {
-      for (ExtensionMapping em : new ArrayList<ExtensionMapping>(mappings)) {
+      for (ExtensionMapping em : new ArrayList<>(mappings)) {
         if (em.getSource() != null && src.equals(em.getSource())) {
           LOG.debug("Source mapped to " + em.getExtension().getTitle());
           return true;
@@ -307,14 +318,14 @@ public class Resource implements Serializable, Comparable<Resource> {
       return false;
     }
     Resource o = (Resource) other;
-    return equal(shortname, o.shortname);
+    return Objects.equals(shortname, o.shortname);
   }
 
   /**
    * @return all core mappings, excluding extension mappings with core row types
    */
   public List<ExtensionMapping> getCoreMappings() {
-    List<ExtensionMapping> cores = new ArrayList<ExtensionMapping>();
+    List<ExtensionMapping> cores = new ArrayList<>();
     String coreRowType = getCoreRowType();
     for (ExtensionMapping m : mappings) {
       if (m.isCore() && coreRowType != null && coreRowType.equalsIgnoreCase(m.getExtension().getRowType())) {
@@ -428,9 +439,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (last != null) {
       DOI doi = last.getDoi();
       IdentifierStatus status = last.getStatus();
-      if (doi != null && status == IdentifierStatus.PUBLIC) {
-        return true;
-      }
+      return doi != null && status == IdentifierStatus.PUBLIC;
     }
     return false;
   }
@@ -466,7 +475,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   public String getLastPublishedVersionsChangeSummary() {
     VersionHistory last = getLastPublishedVersion();
     if (last != null) {
-      return Strings.emptyToNull(last.getChangeSummary());
+      return StringUtils.trimToNull(last.getChangeSummary());
     }
     return null;
   }
@@ -540,13 +549,12 @@ public class Resource implements Serializable, Comparable<Resource> {
     return managers;
   }
 
-
   /**
    * @return a list of extensions that have been mapped to, starting with the extension that was mapped first (core
    * mapping), and ending with the extension that was mapped last. Elements in the list are unique.
    */
   public List<Extension> getMappedExtensions() {
-    LinkedHashSet<Extension> extensions = Sets.newLinkedHashSet();
+    LinkedHashSet<Extension> extensions = new LinkedHashSet<>();
     for (ExtensionMapping em : mappings) {
       if (em.getExtension() != null && em.getSource() != null) {
         extensions.add(em.getExtension());
@@ -554,7 +562,7 @@ public class Resource implements Serializable, Comparable<Resource> {
         LOG.error("ExtensionMapping referencing NULL Extension or Source for resource: " + getShortname());
       }
     }
-    return Lists.newArrayList(extensions);
+    return new ArrayList<>(extensions);
   }
 
   public ExtensionMapping getMapping(String rowType, Integer index) {
@@ -581,7 +589,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return the list of mappings for the requested extension rowtype
    */
   public List<ExtensionMapping> getMappings(String rowType) {
-    List<ExtensionMapping> maps = new ArrayList<ExtensionMapping>();
+    List<ExtensionMapping> maps = new ArrayList<>();
     if (rowType != null) {
       for (ExtensionMapping m : mappings) {
         if (rowType.equals(m.getExtension().getRowType())) {
@@ -626,12 +634,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public List<Source> getSources() {
-    return Ordering.natural().nullsLast().onResultOf(new Function<Source, String>() {
-      @Nullable
-      public String apply(@Nullable Source src) {
-        return (src == null) ? null : src.getName();
-      }
-    }).sortedCopy(sources);
+    return sources.stream()
+        .sorted(Comparator.nullsLast((first, last) -> StringUtils.compare(first.getName(), last.getName(), false)))
+        .collect(Collectors.toList());
   }
 
   @NotNull
@@ -817,7 +822,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public void setCoreType(@Nullable String coreType) {
-    this.coreType = Strings.isNullOrEmpty(coreType) ? null : coreType;
+    this.coreType = StringUtils.isBlank(coreType) ? null : coreType;
   }
 
   public void setCreated(Date created) {
@@ -917,7 +922,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @param subtype subtype String
    */
   public void setSubtype(String subtype) {
-    this.subtype = (Strings.isNullOrEmpty(subtype)) ? null : subtype.toLowerCase();
+    this.subtype = StringUtils.isBlank(subtype) ? null : subtype.toLowerCase();
   }
 
   /**
@@ -963,6 +968,9 @@ public class Resource implements Serializable, Comparable<Resource> {
       case DAILY:
         this.updateFrequencyHour = hour;
         this.updateFrequencyMinute = minute;
+        break;
+      // ignore others
+      default:
         break;
     }
   }
@@ -1027,7 +1035,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   @NotNull
   public List<VersionHistory> getVersionHistory() {
     if (versionHistory == null) {
-      versionHistory = Lists.newLinkedList();
+      versionHistory = new ArrayList<>();
     }
     return versionHistory;
   }
@@ -1132,7 +1140,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     StringBuilder sb = new StringBuilder();
 
     // make list of verified authors (having first and last name)
-    List<String> verifiedAuthorList = Lists.newArrayList();
+    List<String> verifiedAuthorList = new ArrayList<>();
     for (Agent creator : getEml().getCreators()) {
       String authorName = getAuthorName(creator);
       if (authorName != null) {
@@ -1150,7 +1158,8 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
 
     // add year the resource was most recently published
-    int publicationYear = getPublicationYear(getEml().getPubDate());
+    Date pubDate = getEml().getPubDate() != null ? getEml().getPubDate() : new Date();
+    int publicationYear = getPublicationYear(pubDate);
     if (publicationYear > 0) {
       sb.append(" (");
       sb.append(publicationYear);
@@ -1186,7 +1195,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(getDoi().getUrl());
     }
     // otherwise add the citation identifier instead
-    else if (getEml().getCitation() != null && !Strings.isNullOrEmpty(getEml().getCitation().getIdentifier())) {
+    else if (getEml().getCitation() != null && StringUtils.isNotBlank(getEml().getCitation().getIdentifier())) {
       sb.append(getEml().getCitation().getIdentifier());
     }
     // otherwise use its IPT homepage as the identifier
@@ -1204,7 +1213,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @return author name
    */
-  @VisibleForTesting
   protected String getAuthorName(Agent creator) {
     StringBuilder sb = new StringBuilder();
     String lastName = StringUtils.trimToNull(creator.getLastName());
@@ -1214,7 +1222,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       sb.append(lastName);
       sb.append(" ");
       // add first initial of each first name, capitalized
-      String[] names = firstNames.split("\\s+");
+      String[] names = firstNames.split("\\s+", -1);
       for (int i = 0; i < names.length; i++) {
         sb.append(StringUtils.upperCase(String.valueOf(names[i].charAt(0))));
         if (i < names.length - 1) {
@@ -1234,7 +1242,6 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @return publication year
    */
-  @VisibleForTesting
   protected int getPublicationYear(Date publicationDate) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(publicationDate);
@@ -1302,7 +1309,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * If the status of the DOI is unavailable, the resource DOI will be removed from the list.
    */
   public synchronized void updateAlternateIdentifierForDOI() {
-    Preconditions.checkNotNull(eml);
+    Objects.requireNonNull(eml);
 
     if (doi != null) {
       // retrieve a list of the resource's alternate identifiers
@@ -1310,7 +1317,7 @@ public class Resource implements Serializable, Comparable<Resource> {
       if (identifierStatus.equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) ||
           identifierStatus.equals(IdentifierStatus.PUBLIC)) {
         // make sure the DOI always appears first
-        List<String> reorderedList = Lists.newArrayList();
+        List<String> reorderedList = new ArrayList<>();
         reorderedList.add(doi.toString());
         // make sure the DOI doesn't appear twice
         for (String id : ids) {
@@ -1347,7 +1354,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    * If the status of the DOI is unavailable or unreserved, the resource DOI will be unset as the citation identifier.
    */
   public synchronized void updateCitationIdentifierForDOI() {
-    Preconditions.checkNotNull(eml);
+    Objects.requireNonNull(eml);
 
     if (doi != null) {
       // retrieve resource's citation identifier

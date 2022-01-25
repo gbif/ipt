@@ -1,16 +1,18 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.model;
 
 import org.gbif.dwc.terms.Term;
@@ -34,7 +36,7 @@ public class ExtensionMapping implements Serializable {
   private Source source;
   private Extension extension; // persist only the rowType
   // TreeSet will ensure set of PropertyMappings remain ordered
-  private Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
+  private Set<PropertyMapping> fields = new TreeSet<>();
   private Integer idColumn;
   private String idSuffix;
   private RecordFilter filter;
@@ -49,7 +51,7 @@ public class ExtensionMapping implements Serializable {
   public List<String> getColumns(List<String[]> peek) {
     if (!peek.isEmpty()) {
       int columnsCount = peek.get(0).length;
-      List<String> columns = new ArrayList<String>(columnsCount);
+      List<String> columns = new ArrayList<>(columnsCount);
       for (int count = 0; count < columnsCount; count++) {
         String value = null;
         for (String[] row : peek) {
@@ -68,7 +70,7 @@ public class ExtensionMapping implements Serializable {
       }
       return columns;
     }
-    return new ArrayList<String>();
+    return new ArrayList<>();
   }
 
   public Extension getExtension() {

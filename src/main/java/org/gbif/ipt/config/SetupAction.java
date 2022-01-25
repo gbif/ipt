@@ -1,13 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.config;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig.REGISTRY_TYPE;
 import org.gbif.ipt.model.Extension;
@@ -18,18 +25,30 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.*;
+import org.gbif.ipt.service.admin.ConfigManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.HttpClient;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
@@ -46,6 +65,7 @@ public class SetupAction extends BaseAction {
   private final DataDir dataDir;
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabulariesManager;
+  private final HttpClient client;
 
   private final UserValidator userValidation = new UserValidator();
 
@@ -60,22 +80,21 @@ public class SetupAction extends BaseAction {
   // can't pass a literal boolean to ftl, using int instead...
   protected Integer ignoreUserValidation = 0;
   private boolean setup2 = false;
-  private final HttpUtil httpUtil;
 
   private static final String MODE_DEVELOPMENT = "Test";
   private static final String MODE_PRODUCTION = "Production";
-  private static final List<String> MODES = ImmutableList.of(MODE_DEVELOPMENT, MODE_PRODUCTION);
+  private static final List<String> MODES = Arrays.asList(MODE_DEVELOPMENT, MODE_PRODUCTION);
 
   @Inject
   public SetupAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager regManager,
-    ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
-    ExtensionManager extensionManager, DefaultHttpClient client, VocabulariesManager vocabulariesManager) {
+                     ConfigManager configManager, UserAccountManager userManager, DataDir dataDir,
+                     ExtensionManager extensionManager, HttpClient client, VocabulariesManager vocabulariesManager) {
     super(textProvider, cfg, regManager);
     this.configManager = configManager;
     this.userManager = userManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
-    this.httpUtil = new HttpUtil(client);
+    this.client = client;
     this.vocabulariesManager = vocabulariesManager;
   }
 
@@ -89,7 +108,7 @@ public class SetupAction extends BaseAction {
 
   @Override
   public String getBaseURL() {
-    if (Strings.isNullOrEmpty(baseURL)) {
+    if (StringUtils.isBlank(baseURL)) {
       // try to detect default values if not yet configured
       if (StringUtils.trimToNull(cfg.getBaseUrl()) == null) {
         Enumeration<String> headerNames = req.getHeaderNames();
@@ -174,14 +193,19 @@ public class SetupAction extends BaseAction {
    */
   public String setup() {
     if (isHttpPost() && dataDirPath != null) {
-
       // since IPT v2.2, user must check that they have read and understood disclaimer
       if (!readDisclaimer) {
         addFieldError("readDisclaimer", getText("admin.config.setup.read.error"));
         return INPUT;
       }
+    }
 
-      File dd = new File(dataDirPath.trim());
+    if ((dataDir.dataDir != null && (!dataDir.dataDir.exists() || dataDir.isConfiguredButEmpty()))
+        || (isHttpPost() && dataDirPath != null)) {
+
+      LOG.info("Set up data directory {}", dataDir.dataDir);
+
+      File dd = dataDirPath != null ? new File(dataDirPath.trim()) : dataDir.dataDir;
       try {
         if (dd.isAbsolute()) {
           boolean created = configManager.setDataDir(dd);
@@ -206,8 +230,10 @@ public class SetupAction extends BaseAction {
         addActionError(msg);
       }
     }
+
     if (dataDir.isConfigured()) {
       // the data dir is already/now configured, skip the first setup step
+      LOG.info("Skipping setup step 1");
       return SUCCESS;
     }
     return INPUT;
@@ -407,7 +433,7 @@ public class SetupAction extends BaseAction {
         } else {
           try {
             HttpHost host = URLUtils.getHost(proxy);
-            if (!httpUtil.verifyHost(host)) {
+            if (!client.verifyHost(host)) {
               addFieldError("proxy", getText("admin.config.error.connectionRefused") + " " + proxy);
             }
           } catch (MalformedURLException e) {

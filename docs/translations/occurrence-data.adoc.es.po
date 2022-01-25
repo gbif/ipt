@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:21\n"
+"POT-Creation-Date: 2021-11-10 10:42+0000\n"
+"PO-Revision-Date: 2021-12-01 23:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -18,15 +18,14 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:3
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:27
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/customization.adoc:12
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
@@ -36,19 +35,19 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/checklist-data.adoc:10
 #: en/modules/ROOT/pages/occurrence-data.adoc:11
 msgid "Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names."
-msgstr ""
+msgstr "Finalmente, sus datos deben ser transformados a una estructura de tabla utilizando nombres de términos Darwin Core (DwC) como nombres de las columnas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:12
 #: en/modules/ROOT/pages/occurrence-data.adoc:13
 msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
-msgstr ""
+msgstr "Intente poner sus datos en el <<Modelos,modelo Excel>>, que incluye todos los <<Campos DwC requeridos,campos DwC requridos>> y los <<Campos DwC recomendados,campos DwC recomendados>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:14
 #: en/modules/ROOT/pages/occurrence-data.adoc:15
 msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible."
-msgstr ""
+msgstr "De manera alternativa, si sus datos están en una xref:database-connection.adoc[base de datos compatible], puede elaborar una tabla SQL (ver) utilizando nombres de columnas DwC. Sea cuidadoso para incluir todos los <<Required DwC Fields,required DwC fields>> y añada tantos <<Recommended DwC Fields,recommended DwC fields>> como sea posible."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:17
@@ -56,7 +55,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:23
 #, no-wrap
 msgid "Templates"
-msgstr ""
+msgstr "Modelos"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:24
@@ -64,13 +63,13 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:30
 #, no-wrap
 msgid "Required DwC fields"
-msgstr ""
+msgstr "Campos DwC requeridos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:28
 #: en/modules/ROOT/pages/occurrence-data.adoc:32
-msgid "http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:30
@@ -78,13 +77,13 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:36
 #, no-wrap
 msgid "Recommended DwC fields"
-msgstr ""
+msgstr "Campos DwC recomendados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:33
 #: en/modules/ROOT/pages/occurrence-data.adoc:38
-msgid "http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] - and other higher taxonomy if possible"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
+msgstr "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - y otra taxonomía superior si es posible"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:36
@@ -93,7 +92,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:47
 #, no-wrap
 msgid "Exemplar datasets"
-msgstr ""
+msgstr "Conjuntos de datos ejemplares"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
@@ -102,168 +101,169 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:55
 #, no-wrap
 msgid "FAQ"
-msgstr ""
+msgstr "Preguntas frecuentes"
 
 #. type: Title =
 #: en/modules/ROOT/pages/occurrence-data.adoc:1
 #, no-wrap
 msgid "Occurrence Data"
-msgstr ""
+msgstr "Datos de registros biológicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:5
 msgid "Resources which present evidence of the occurrence of a species at a particular place and normally on a specified date.  These datasets expand on most Checklist Data because they contribute to mapping the historical or current distribution of a species. At the most basic, such datasets may provide only general locality information (even limited to a country identifier).  Ideally they also include coordinates and a coordinate precision to support fine scale mapping.  In many cases, these datasets may separately record multiple individuals of the same species. Examples of such datasets include databases of specimens in natural history collections, citizen science observations, data from species atlas projects, etc.  If sufficient information exists in the source dataset (or applies consistently to all occurrences in the dataset), it is recommended that these datasets are presented as xref:sampling-event-data.adoc[Sampling Event Data].  These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata]."
-msgstr ""
+msgstr "Recursos que presentan pruebas de la presencia de una especie en un lugar concreto y normalmente en una fecha determinada. Estos conjuntos de datos amplían la mayoría de los datos de las listados de especies porque contribuyen a mapear la distribución histórica o actual de una especie. En el nivel más básico, estos conjuntos de datos pueden proporcionar sólo información general sobre la localidad (incluso limitada a un identificador de país). Lo ideal es que también incluyan coordenadas y una precisión de coordenadas para apoyar el mapeo a escala fina. En muchos casos, estos conjuntos de datos pueden registrar por separado múltiples individuos de la misma especie. Las bases de datos de especímenes de las colecciones de historia natural, las observaciones de la ciencia ciudadana, los datos de los proyectos de atlas de especies, etc. son ejemplos de estos conjuntos de datos. Si existe suficiente información en el conjunto de datos fuente (o se aplica de forma coherente a todos los registros biológicos del conjunto de datos), se recomienda que estos conjuntos de datos se presenten como xref:sampling-event-data.adoc[datos de eventos de muestreo]. Estos conjuntos de datos incluyen la misma información descriptiva básica incluida en xref:resource-metadata.adoc[metadatos del recurso]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/occurrence-data.adoc:6
 #, no-wrap
 msgid "How to transform your data into occurrence data"
-msgstr ""
+msgstr "Cómo transformar sus datos en datos de registros biológicos"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/occurrence-data.adoc:8
 #, no-wrap
 msgid "ipt2/flow-od.png"
-msgstr ""
+msgstr "ipt2/flow-od.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:17
 msgid "For extra guidance, you can look at the <<Exemplar datasets,exemplar datasets>>."
-msgstr ""
+msgstr "Para obtener una orientación adicional puede consultar los <<Conjuntos de datos ejemplares, conjuntos de datos ejemplares>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:19
-msgid "You can augment your table with extra DwC columns, but only DwC terms from this http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml[list]."
-msgstr ""
+msgid "You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}.xml[list]."
+msgstr "Puede aumentar su tabla incluyendo columnas DwC adicionales, pero sólo con términos DwC de esta {latest-dwc-occurrence}.xml[lista]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:24
 msgid "link:{attachmentsdir}/downloads/occurrence_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/occurrence_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
-msgstr ""
+msgstr "link:{attachmentsdir}/downloads/occurrence_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Modelo de Excel]] link:{attachmentsdir}/downloads/occurrence_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Modelo de Excel (con datos de ejemplo)]]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:26
 msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can."
-msgstr ""
+msgstr "Llene el formato y súbalo al IPT. Intente ampliarlo con tantos  http://rs.tdwg.org/dwc/terms/[términos DwC] como pueda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:30
-msgid "http://rs.tdwg.org/dwc/terms/#occurrenceID[occurrenceID]"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:31
-msgid "http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:33
 #: en/modules/ROOT/pages/sampling-event-data.adoc:34
-msgid "http://rs.tdwg.org/dwc/terms/#eventDate[eventDate]"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:37
-msgid "http://rs.tdwg.org/dwc/terms/#taxonRank[taxonRank] - to substantiate scientificName"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - to substantiate scientificName"
+msgstr "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - para justificar el nombre científico (scientificName)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
-msgid "http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs.tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/dwc/terms/#geodeticDatum[geodeticDatum] - to provide a specific point location"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
+msgstr "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - para proporcionar la ubicación de un punto específico"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
 #: en/modules/ROOT/pages/sampling-event-data.adoc:45
-msgid "http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
+msgstr "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:41
-msgid "http://rs.tdwg.org/dwc/terms/#individualCount[individualCount] / http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] & http://rs.tdwg.org/dwc/terms/#organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence"
-msgstr ""
+msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence"
+msgstr "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - para registrar la cantidad de registros biológicos de una especie"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:45
 msgid "CUMV Amphibian Collection (Arctos): http://ipt.vertnet.org:8080/ipt/archive.do?r=cumv_amph[DwC-A] / http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph[IPT homepage]"
-msgstr ""
+msgstr "CUMV Amphibian Collection (Arctos): http://ipt.vertnet.org:8080/ipt/archive.do?r=cumv_amph[DwC-A] / http://ipt.vertnet.org:8080/ipt/resource.do?r=cumv_amph[IPT homepage]"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:48
 #, no-wrap
 msgid "Q. How do I indicate a species was absent?"
-msgstr ""
+msgstr "P. ¿Cómo puedo indicar que una especie está ausente?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
 #, no-wrap
-msgid "*A.* Set http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus]=link:http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[\"absent\"]. In addition, http://rs.tdwg.org/dwc/terms/#individualCount[individualCount] and http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] should be equal to 0.\n"
-msgstr ""
+msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
+msgstr "*A.* Establecer https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. Además, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] y https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] deben ser iguales a 0.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:52
 #, no-wrap
 msgid "Q. How can I generalize sensitive species occurrence data?"
-msgstr ""
+msgstr "P. ¿Cómo puedo generalizar datos de registros biológicos de especies sensibles?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:55
 #, no-wrap
 msgid "*A.* How you generalize sensitive species data (e.g. restrict the resolution of the data) depends on the species' category of sensitivity. Where there is low risk of perverse outcomes, unrestricted publication of sensitive species data remains appropriate. Note it is the responsibility of the publisher to protect sensitive species occurrence data. For guidance, please refer to this https://www.gbif.org/resource/80512[best-practice guide]. You could refer to this http://science.sciencemag.org/content/356/6340/800[recent essay in Science], which presents a simplified assessment scheme that can be used to help assess the risks from publishing sensitive species data.\n"
-msgstr ""
+msgstr "*A.* La manera de generalizar los datos de especies sensibles (por ejemplo, restringiendo la resolución de los datos) depende de la categoría de sensibilidad de la especie. Cuando hay un bajo riesgo de resultados negativos, sigue siendo apropiada la publicación sin restricciones de los datos de especies sensibles. Tenga en cuenta que es responsabilidad del editor proteger los datos sobre la presencia de especies sensibles. Para obtener orientación, consulte esta https://www.gbif.org/resource/80512[guía de buenas prácticas]. Puede consultar este http://science.sciencemag.org/content/356/6340/800[ensayo reciente en Science], que presenta un esquema de evaluación simplificado que puede utilizarse para ayudar a evaluar los riesgos de la publicación de datos sobre especies sensibles.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:57
-msgid "When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term http://rs.tdwg.org/dwc/terms/#informationWithheld[informationWithheld]."
-msgstr ""
+msgid "When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
+msgstr "Al generalizar datos, debe intentar no reducir el valor de los datos para el análisis y hacer que los usuarios sepan cómo y por qué se modificó el registro original utilizando el elemento Darwin Core https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:59
 msgid "As indicated in the http://www.gbif.org/resource/80512[best-practice guide], you should also publish a checklist of the sensitive species being generalized. For each species you should explain:"
-msgstr ""
+msgstr "Como se indica en la http://www.gbif.org/resource/80512[guía de buenas prácticas], también debe publicar una listado de las especies sensibles que se están generalizando. Para cada especie deberá explicar:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:61
 msgid "the rationale for inclusion in the list"
-msgstr ""
+msgstr "la justificación de la inclusión en la lista"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:62
 msgid "the geographic coverage of sensitivity"
-msgstr ""
+msgstr "la cobertura geográfica de la sensibilidad"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:63
 msgid "its sensitivity category"
-msgstr ""
+msgstr "la categoría de sensibilidad"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:64
 msgid "the date to review its sensitivity"
-msgstr ""
+msgstr "la fecha en que se revisará la sensibilidad"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:66
 msgid "This will help alert other data custodians that these species are regarded as potentially sensitive in a certain area and that they should take the sensitivity into account when publishing the results of their analyses, etc."
-msgstr ""
+msgstr "Esto ayudará a alertar a otros custodios de datos de que estas especies se consideran potencialmente sensibles en una zona determinada y que deben tener en cuenta la sensibilidad al publicar los resultados de sus análisis, etc."
 
 #. type: Title =====
 #: en/modules/ROOT/pages/occurrence-data.adoc:67
 #, no-wrap
 msgid "Helpful formulas for generalizing point location"
-msgstr ""
+msgstr "Ecuaciones útiles para generalizar la localización de puntos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:70
 msgid "The following formula obscures a latitude/longitude point by a factor of 5000m. Note pointX and pointY must be provided in 'length in meters' and TRUNC truncates the number to an integer by removing the decimal part:"
-msgstr ""
+msgstr "La siguiente ecuación difumina un punto de latitud/longitud por un factor de 5000m. Tenga en cuenta que pointX y pointY deben proporcionarse en \"longitud en metros\" y que TRUNC trunca el número a un entero eliminando la parte decimal:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/occurrence-data.adoc:74
 #, no-wrap
 msgid "pointX = TRUNC(pointX / 5000) * 5000\n"
 "pointY = TRUNC(pointY / 5000) * 5000\n"
-msgstr ""
+msgstr "pointX = TRUNC(pointX / 5000) * 5000\n"
+"pointY = TRUNC(pointY / 5000) * 5000\n"
 

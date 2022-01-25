@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 10:56+0000\n"
+"POT-Creation-Date: 2022-01-13 16:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,13 +135,13 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:29
-#: en/modules/ROOT/pages/dwca-guide.adoc:218
+#: en/modules/ROOT/pages/dwca-guide.adoc:219
 msgid "http://www.gnu.org/software/libiconv/"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:30
-#: en/modules/ROOT/pages/dwca-guide.adoc:219
+#: en/modules/ROOT/pages/dwca-guide.adoc:220
 msgid "http://gnuwin32.sourceforge.net/packages/libiconv.htm"
 msgstr ""
 
@@ -159,14 +159,14 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:148 en/modules/ROOT/pages/faq.adoc:184
-#: en/modules/ROOT/pages/faq.adoc:194
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:197
+#: en/modules/ROOT/pages/faq.adoc:207
 msgid "{blank}"
 msgstr ""
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/data-preparation.adoc:38
-#: en/modules/ROOT/pages/dwca-guide.adoc:225
+#: en/modules/ROOT/pages/dwca-guide.adoc:226
 #, no-wrap
 msgid "iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt\n"
 msgstr ""

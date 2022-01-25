@@ -1,16 +1,18 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.Term;
@@ -33,12 +35,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
 
 public class TranslationAction extends ManagerBaseAction {
 
@@ -59,9 +61,9 @@ public class TranslationAction extends ManagerBaseAction {
      * Return a map populated with all source value to translated value pairs.
      */
     public Map<String, String> getPersistentMap() {
-      Map<String, String> m = new HashMap<String, String>();
+      Map<String, String> m = new HashMap<>();
       for (Entry<String, String> translatedValueEntry: translatedValues.entrySet()) {
-        if (!Strings.isNullOrEmpty(translatedValueEntry.getValue())) {
+        if (StringUtils.isNotBlank(translatedValueEntry.getValue())) {
          m.put(sourceValues.get(translatedValueEntry.getKey()), translatedValueEntry.getValue().trim());
         }
       }
@@ -116,9 +118,8 @@ public class TranslationAction extends ManagerBaseAction {
   private PropertyMapping field;
   private ExtensionProperty property;
   private ExtensionMapping mapping;
-  private Map<String, String> vocabTerms = new HashMap<String, String>();
+  private Map<String, String> vocabTerms = new HashMap<>();
   private Integer mid;
-  private String id;
 
   @Inject
   public TranslationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -168,9 +169,9 @@ public class TranslationAction extends ManagerBaseAction {
     // proceed with deletion
     if (field != null) {
       // 1. ensure the translation map on the PropertyMapping (field) is empty
-      field.setTranslation(new TreeMap<String, String>());
+      field.setTranslation(new TreeMap<>());
       // 2. ensure the static sessionScoped translation for this rowType and ConceptTerm is empty
-      trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<String, String>(), new TreeMap<String, String>());
+      trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<>(), new TreeMap<>());
       // 3. save the resource
       saveResource();
       // 4. add msg to appear in UI indicating the translation for this PropertyMapping has been deleted
@@ -243,7 +244,7 @@ public class TranslationAction extends ManagerBaseAction {
         mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE), mid);
       }
       // reinitialize translation, including maps
-      trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<String, String>(), new TreeMap<String, String>());
+      trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<>(), new TreeMap<>());
       // reload new values
       int i = 1;
       for (String val : sourceManager.inspectColumn(mapping.getSource(), field.getIndex(), 1000, 10000)) {
@@ -295,11 +296,6 @@ public class TranslationAction extends ManagerBaseAction {
 
   public PropertyMapping getField() {
     return field;
-  }
-
-  @Override
-  public String getId() {
-    return id;
   }
 
   public Integer getMid() {

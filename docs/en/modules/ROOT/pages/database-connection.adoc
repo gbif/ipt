@@ -10,17 +10,19 @@ The IPT can use database connections to import data from tables or views. Curren
 * MySQL
 * Oracle
 * PostgreSQL
-* Sybase databases
+* Sybase
 
 == Adding new JDBC drivers
 
-You can add your own JDBC drivers to the IPT if needed. For example if you prefer to use the Microsoft JDBC driver for SQL Server or want to add one for SQLite. The following steps assume you have a working IPT installed with an "exploded" WAR, i.e. you have a folder `ipt` (or however you named your instance) in your application server's webapps folder. The IPT needs to be stopped before you start adding a driver:
+If you run the IPT within a servlet container (like Tomcat), you can add your own JDBC drivers to the IPT. This allows you to support a different database, or to change the connection settings for one of the existing database types.
+
+The following steps assume you have a working IPT installed with an "exploded" WAR, i.e. you have a folder `ipt` (or however you named your instance) in your application server's webapps folder. The IPT needs to be stopped before you start adding a driver.
 
 === Add JDBC driver JAR to classpath
 
 First get hold of the JAR file of the driver you want to add, for example download the SQLite jar here: https://bitbucket.org/xerial/sqlite-jdbc/downloads
 
-You need to copy this jar into the classpath of your webapp. The simplest is to copy it to the `ipt/WEB-INF/lib` directory.
+You need to copy this JAR into the classpath of your webapp. The simplest is to copy it to the `ipt/WEB-INF/lib` directory.
 
 === Modify jdbc.properties
 
@@ -37,11 +39,17 @@ pgsql.limitType=LIMIT
 There are 4 properties that you need to add for each driver. All 4 have to start with the same prefix that you can freely choose without any further meaning:
 
 * `title`: The title to be displayed in the IPT for this driver
-* `driver`: The driver java class to be used when connecting
-* `url`: A template to build the url for connecting. There are 2 variables that can be used in the url string which will be replaced by the actual settings configured: `\{host}` and `\{database}`
+* `driver`: The driver Java class to be used when connecting
+* `url`: A template to build the URL for connecting. There are 2 variables that can be used in the URL string which will be replaced by the actual settings configured: `\{host}` and `\{database}`
 * `limitType`: How to limit the amount of data returned. Possible values are `LIMIT`, `TOP`, `ROWNUM`. This is driver specific.
 
-In the SQLite example above the driver connects to a file, so no `\{host}` is used in the url template. Please add the following to the jdbc.properties to add the SQLite driver:
+In the PostgreSQL example above, and with reference to the https://jdbc.postgresql.org/documentation/head/connect.html[PostgreSQL driver documentation], the following change would enable an encrypted connection:
+
+----
+pgsql.url=jdbc:postgresql://{host}/{database}?sslmode=require
+----
+
+The following example is for an SQLite driver.  This connects to a file, so no `\{host}` is used in the URL template:
 
 ----
 # SQLite driver

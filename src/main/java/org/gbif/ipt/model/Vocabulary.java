@@ -1,9 +1,17 @@
 /*
- * Copyright 2009 GBIF. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.gbif.ipt.model;
 
@@ -14,15 +22,14 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
-import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
-import static com.google.common.base.Objects.equal;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Class represents a Vocabulary.
@@ -40,12 +47,12 @@ public class Vocabulary implements Comparable, Serializable {
   private boolean isLatest;
   private Date issued;
   private URL link; // to further documentation
-  private List<VocabularyConcept> concepts = new LinkedList<VocabularyConcept>();
+  private List<VocabularyConcept> concepts = new ArrayList<>();
   private Date modified = new Date();
 
   public void addConcept(VocabularyConcept concept) {
     if (concepts == null) {
-      concepts = new LinkedList<VocabularyConcept>();
+      concepts = new ArrayList<>();
     }
     concept.setVocabulary(this);
 
@@ -62,6 +69,7 @@ public class Vocabulary implements Comparable, Serializable {
     concepts.add(concept);
   }
 
+  @Override
   public int compareTo(Object object) {
     Vocabulary myClass = (Vocabulary) object;
     return new CompareToBuilder().append(this.uriString, myClass.uriString).toComparison();
@@ -76,7 +84,7 @@ public class Vocabulary implements Comparable, Serializable {
       return false;
     }
     Vocabulary o = (Vocabulary) other;
-    return equal(uriString, o.uriString);
+    return Objects.equals(uriString, o.uriString);
   }
 
   public VocabularyConcept findConcept(String term) {

@@ -1,7 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.validation;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.ipt.action.admin.OrganisationsAction;
 import org.gbif.ipt.config.AppConfig;
@@ -13,20 +26,23 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.file.properties.PropertiesUtil;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(Parameterized.class)
 public class OrganisationSupportIT {
 
   private static final Logger LOG = LogManager.getLogger(OrganisationSupportIT.class);
@@ -44,15 +60,7 @@ public class OrganisationSupportIT {
   private static AppConfig mockCfg;
   private static RegistryManager mockRegistryManager;
 
-  private Organisation organisation;
-  private boolean isValid;
-
-  public OrganisationSupportIT(Organisation organisation, boolean isValid) {
-    this.organisation = organisation;
-    this.isValid = isValid;
-  }
-
-  @BeforeClass
+  @BeforeAll
   public static void init() {
     // config in production mode
     mockCfg = mock(AppConfig.class);
@@ -64,9 +72,7 @@ public class OrganisationSupportIT {
     when(mockRegistryManager.validateOrganisation(ORGANISATION_KEY, VALID_ORGANISATION_PASSWORD)).thenReturn(true);
   }
 
-  @Parameterized.Parameters
-  public static Object[][] data() throws IOException {
-
+  public static Stream<Arguments> data() throws IOException {
     // read DataCite config from YAML file
     Properties p = PropertiesUtil.loadProperties("datacite.properties");
     ClientConfiguration cfg = ClientConfiguration.builder()
@@ -108,15 +114,16 @@ public class OrganisationSupportIT {
     o5.setAgencyAccountPassword(cfg.getPassword());
     o5.setDoiPrefix("10.9999"); // wrong
 
-    return new Object[][]{
-        {o1, true},
-        {o3, false},
-        {o5, false},
-    };
+    return Stream.of(
+        Arguments.of(o1, true),
+        Arguments.of(o3, false),
+        Arguments.of(o5, false)
+    );
   }
 
-  @Test
-  public void testValidate() {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testValidate(Organisation organisation, boolean isValid) {
     LOG.info("Testing " + organisation.getDoiRegistrationAgency() + "...");
     OrganisationSupport organisationSupport = new OrganisationSupport(mockRegistryManager, mockCfg);
     assertEquals(isValid, organisationSupport.validate(action, organisation));

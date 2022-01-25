@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.utils;
 
 import org.gbif.api.model.common.DOI;
@@ -29,17 +44,18 @@ import org.gbif.metadata.eml.TemporalCoverage;
 import org.gbif.metadata.eml.UserId;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.google.common.collect.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DataCiteMetadataBuilderTest {
 
@@ -69,7 +85,7 @@ public class DataCiteMetadataBuilderTest {
     resource.setEml(eml);
 
     eml.setTitle("Ants of New York State");
-    List<String> description = Lists.newArrayList();
+    List<String> description = new ArrayList<>();
     description.add("Comprehensive ants collection.");
     description.add("Mostly dried preserved.");
     eml.setDescription(description);
@@ -78,7 +94,7 @@ public class DataCiteMetadataBuilderTest {
     Agent creator1 = new Agent();
     creator1.setLastName("Smith");
     creator1.setFirstName("Jim");
-    List<UserId> userIds = Lists.newArrayList();
+    List<UserId> userIds = new ArrayList<>();
     UserId userId1 = new UserId("http://orcid.org", "0000-0099-6824-9999");
     userIds.add(userId1);
     creator1.setUserIds(userIds);
@@ -86,7 +102,7 @@ public class DataCiteMetadataBuilderTest {
 
     Agent creator2 = new Agent();
     creator2.setLastName("GBIF");
-    List<UserId> userIds2 = Lists.newArrayList();
+    List<UserId> userIds2 = new ArrayList<>();
     creator2.setUserIds(userIds2);
     eml.addCreator(creator2);
 
@@ -94,7 +110,7 @@ public class DataCiteMetadataBuilderTest {
     Agent contributor1 = new Agent();
     contributor1.setLastName("Love");
     contributor1.setFirstName("Brian");
-    List<UserId> contributorUserIds = Lists.newArrayList();
+    List<UserId> contributorUserIds = new ArrayList<>();
     UserId contributorUserId1 = new UserId("http://orcid.org", "0000-0099-6824-1234");
     contributorUserIds.add(contributorUserId1);
     contributor1.setUserIds(contributorUserIds);
@@ -104,7 +120,7 @@ public class DataCiteMetadataBuilderTest {
     Agent contributor2 = new Agent();
     contributor2.setLastName("Wong");
     contributor2.setFirstName("Markus");
-    List<UserId> contributorUserIds2 = Lists.newArrayList();
+    List<UserId> contributorUserIds2 = new ArrayList<>();
     contributor2.setUserIds(contributorUserIds2);
     eml.addMetadataProvider(contributor2);
 
@@ -112,7 +128,7 @@ public class DataCiteMetadataBuilderTest {
     Agent contributor3 = new Agent();
     contributor3.setPosition("Insects Curator");
     contributor3.setRole("curator");
-    List<UserId> contributorUserIds3 = Lists.newArrayList();
+    List<UserId> contributorUserIds3 = new ArrayList<>();
     contributor3.setUserIds(contributorUserIds3);
     eml.addAssociatedParty(contributor3);
 
@@ -158,7 +174,7 @@ public class DataCiteMetadataBuilderTest {
     BibliographicCitationSet bibliographicCitationSet = new BibliographicCitationSet();
     Citation citation1 = new Citation("Citation of first bibliographic citation", "http://doi.org/10.5072/bibcite1");
     Citation citation2 = new Citation("Citation of second bibliographic citation", "http://doi.org/10.5072/bibcite2");
-    List<Citation> citations = Lists.newArrayList();
+    List<Citation> citations = new ArrayList<>();
     citations.add(citation1);
     citations.add(citation2);
     bibliographicCitationSet.setBibliographicCitations(citations);
@@ -331,7 +347,7 @@ public class DataCiteMetadataBuilderTest {
     assertEquals("eng", dataCiteMetadata.getDescriptions().getDescription().get(0).getLang());
 
     // GeoLocation
-    assertEquals("Box{westBoundLongitude=-115.46875, eastBoundLongitude=-112.6535, southBoundLatitude=51.8533, northBoundLatitude=51.973587}",
+    assertEquals("Box[westBoundLongitude=-115.46875, eastBoundLongitude=-112.6535, southBoundLatitude=51.8533, northBoundLatitude=51.973587]",
         dataCiteMetadata.getGeoLocations().getGeoLocation().get(0).getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox().get(1).toString());
     assertEquals("NE Calgary Region",
       dataCiteMetadata.getGeoLocations().getGeoLocation().get(0).getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox().get(0));
@@ -340,45 +356,45 @@ public class DataCiteMetadataBuilderTest {
   /**
    * Publisher name is an empty string.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testGetPublisherWithEmptyName() throws InvalidMetadataException {
+  @Test
+  public void testGetPublisherWithEmptyName() {
     Resource resource = new Resource();
     Organisation organisation = new Organisation();
     organisation.setName("");
     resource.setOrganisation(organisation);
-    DataCiteMetadataBuilder.getPublisher(resource);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.getPublisher(resource));
   }
 
   /**
    * Publisher does not exist.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testGetPublisherNotExisting() throws InvalidMetadataException {
+  @Test
+  public void testGetPublisherNotExisting() {
     Resource resource = new Resource();
-    DataCiteMetadataBuilder.getPublisher(resource);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.getPublisher(resource));
   }
 
   /**
    * Publisher does not exist, because default organisation "No organisation" has been assigned to resource.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testGetPublisherDefaultAssigned() throws InvalidMetadataException {
+  @Test
+  public void testGetPublisherDefaultAssigned() {
     Resource resource = new Resource();
     Organisation o = new Organisation();
     o.setKey(Constants.DEFAULT_ORG_KEY.toString());
     o.setName("No organisation");
     resource.setOrganisation(o);
-    DataCiteMetadataBuilder.getPublisher(resource);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.getPublisher(resource));
   }
 
   /**
    * Title is an empty string.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlTitlesWithEmptyTitle() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlTitlesWithEmptyTitle() {
     Eml eml = new Eml();
     eml.setTitle("");
-    DataCiteMetadataBuilder.convertEmlTitles(eml);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlTitles(eml));
   }
 
 
@@ -386,7 +402,7 @@ public class DataCiteMetadataBuilderTest {
    * Scheme not recognized - only ORCID and ResearcherId are supported.
    */
   @Test
-  public void testConvertEmlUserIdWithUnrecognizedScheme() throws InvalidMetadataException {
+  public void testConvertEmlUserIdWithUnrecognizedScheme() {
     UserId userId1 = new UserId("http://unrecognized.org", "0000-0099-6824-9999");
     NameIdentifier id = DataCiteMetadataBuilder.convertEmlUserIdIntoCreatorNameIdentifier(userId1);
     assertNull(id);
@@ -397,7 +413,7 @@ public class DataCiteMetadataBuilderTest {
    * required to output a NameIdentifier.
    */
   @Test
-  public void testConvertEmlUserIdWithMissingSchemeURI() throws InvalidMetadataException {
+  public void testConvertEmlUserIdWithMissingSchemeURI() {
     UserId userId1 = new UserId("", "0000-0099-6824-9999");
     assertNull(DataCiteMetadataBuilder.convertEmlUserIdIntoCreatorNameIdentifier(userId1));
   }
@@ -405,35 +421,35 @@ public class DataCiteMetadataBuilderTest {
   /**
    * First agent in list had an empty name.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlCreatorsWithEmptyName() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlCreatorsWithEmptyName() {
     Agent creator1 = new Agent();
     creator1.setLastName("");
     creator1.setFirstName("");
-    List<Agent> creators = Lists.newArrayList();
+    List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
-    DataCiteMetadataBuilder.convertEmlCreators(creators);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlCreators(creators));
   }
 
   /**
    * Agents list was empty.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlCreatorsWithEmptyList() throws InvalidMetadataException {
-    List<Agent> creators = Lists.newArrayList();
-    DataCiteMetadataBuilder.convertEmlCreators(creators);
+  @Test
+  public void testConvertEmlCreatorsWithEmptyList() {
+    List<Agent> creators = new ArrayList<>();
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlCreators(creators));
   }
 
   /**
    * First agent in list only had position name.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlCreatorsWithPositionName() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlCreatorsWithPositionName() {
     Agent creator1 = new Agent();
     creator1.setPosition("President");
-    List<Agent> creators = Lists.newArrayList();
+    List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
-    DataCiteMetadataBuilder.convertEmlCreators(creators);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlCreators(creators));
   }
 
   /**
@@ -443,7 +459,7 @@ public class DataCiteMetadataBuilderTest {
   public void testConvertEmlCreatorsWithOrganisationName() throws InvalidMetadataException {
     Agent creator1 = new Agent();
     creator1.setOrganisation("NHM London");
-    List<Agent> creators = Lists.newArrayList();
+    List<Agent> creators = new ArrayList<>();
     creators.add(creator1);
     DataCiteMetadata.Creators ls = DataCiteMetadataBuilder.convertEmlCreators(creators);
     DataCiteMetadata.Creators.Creator c = ls.getCreator().get(0);
@@ -454,7 +470,7 @@ public class DataCiteMetadataBuilderTest {
    * Scheme not recognized - only ORCID and ResearcherId are supported.
    */
   @Test
-  public void testConvertEmlContributorUserIdWithUnrecognizedScheme() throws InvalidMetadataException {
+  public void testConvertEmlContributorUserIdWithUnrecognizedScheme() {
     UserId userId1 = new UserId("http://unrecognized.org", "0000-0099-6824-9999");
     NameIdentifier id = DataCiteMetadataBuilder.convertEmlUserIdIntoContributorNameIdentifier(userId1);
     assertNull(id);
@@ -465,7 +481,7 @@ public class DataCiteMetadataBuilderTest {
    * required to output a NameIdentifier.
    */
   @Test
-  public void testConvertEmlContributorUserIdWithMissingSchemeURI() throws InvalidMetadataException {
+  public void testConvertEmlContributorUserIdWithMissingSchemeURI() {
     UserId userId1 = new UserId("", "0000-0099-6824-9999");
     assertNull(DataCiteMetadataBuilder.convertEmlUserIdIntoContributorNameIdentifier(userId1));
   }
@@ -473,13 +489,13 @@ public class DataCiteMetadataBuilderTest {
   /**
    * First agent in list had an empty name, no organisation, and no position.
    */
-  @Test(expected = InvalidMetadataException.class)
-  public void testConvertEmlContributorWithEmptyName() throws InvalidMetadataException {
+  @Test
+  public void testConvertEmlContributorWithEmptyName() {
     Agent contributor = new Agent();
     contributor.setLastName("");
     contributor.setFirstName("");
-    List<Agent> contributors = Lists.newArrayList();
+    List<Agent> contributors = new ArrayList<>();
     contributors.add(contributor);
-    DataCiteMetadataBuilder.convertEmlContributors(contributors);
+    assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlContributors(contributors));
   }
 }

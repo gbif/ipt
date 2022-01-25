@@ -11,16 +11,17 @@ This page allows a user having the Admin role to make and change settings for th
 
 image::ipt2/administration/IPTAdminConfigIPT.png[]
 
-* *Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.
+* [[public-url]] *Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible.
 +
 --
 [NOTE]
+.Manually updating the Public URL
 ====
 The IPT tests the Public URL for accessibility from the client computer when the IPT Settings are saved. If the IPT is not accessible at the given Public URL, the IPT will display a warning message and the changes will not be saved. The procedure to change the Public URL if the new URL is not yet functional (such as a port change that requires the IPT to be restarted) is given here:
 
-* log out of and shut down the IPT.
-* in the data directory for the IPT, open the file config/ipt.properties with a simple text editor - one that does not add extra codes, such as Notepad, TextEdit, vi, etc. (not Microsoft Word).
-* in the ipt.properties file, change the line starting with "ipt.baseURL" to the new URL with the new port, using the backslash to escape the colon character. For example, enter `ipt.baseURL=http\://example.org\:7001/ipt` for http://example.org:7001/ipt.
+* shut down the IPT.
+* in the data directory for the IPT, open the file `config/ipt.properties` with a simple or programming text editor such as Notepad, TextEdit, vim (not Microsoft Word).
+* in the `ipt.properties` file, change the line starting with `ipt.baseURL` to the new URL with the new port, using the backslash to escape the colon character. For example, enter `ipt.baseURL=http\://example.org\:7001/ipt` for http://example.org:7001/ipt.
 * restart the IPT in the servlet container.
 * update the metadata for the IPT as described in the next section of this user manual entitled "Publish all resources".
 ====
@@ -166,8 +167,6 @@ For any of the extensions that have not yet been installed in the IPT, there is 
 
 === Remove extension
 For any extension that has already been installed in the IPT, it can be removed by clicking the button labelled "Remove". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping.
-
-image::ipt2/administration/IPTAdminExtensionsDetailVocabulary.png[]
 
 === Update extension
 For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled "Update". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished.

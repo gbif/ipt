@@ -1,10 +1,25 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.task;
 
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -39,6 +54,8 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.HttpClient;
+import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
@@ -46,27 +63,29 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.collect.Maps;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -86,10 +105,10 @@ public class GenerateDwcaEventTest {
   private ReportHandler mockHandler;
   private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
-    Map<String, String> basisOfRecords = Maps.newHashMap();
+    Map<String, String> basisOfRecords = new HashMap<>();
     basisOfRecords.put("preservedspecimen", "Preserved Specimen");
     basisOfRecords.put("fossilspecimen", "Fossil Specimen");
     basisOfRecords.put("livingspecimen", "Living Specimen");
@@ -135,7 +154,7 @@ public class GenerateDwcaEventTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
 
     // investigate event core data file
     assertEquals(DwcTerm.Event, archive.getCore().getRowType());
@@ -149,22 +168,23 @@ public class GenerateDwcaEventTest {
     assertEquals("sampleSizeUnit", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
     // confirm data written to event core data file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st core record
-    String[] row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("1", row[1]);
-    assertEquals("mist net", row[2]);
-    assertEquals("5", row[3]);
-    assertEquals("metre", row[4]);
+    Record record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("1", record.column(1));
+    assertEquals("mist net", record.column(2));
+    assertEquals("5", record.column(3));
+    assertEquals("metre", record.column(4));
     // 2nd core record
-    row = reader.next();
-    assertEquals("2", row[0]);
-    assertEquals("2", row[1]);
-    assertEquals("mist net", row[2]);
-    assertEquals("5", row[3]);
-    assertEquals("metre", row[4]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("2", record.column(0));
+    assertEquals("2", record.column(1));
+    assertEquals("mist net", record.column(2));
+    assertEquals("5", record.column(3));
+    assertEquals("metre", record.column(4));
+    iterator.close();
 
     // investigate extension file
     ArchiveFile extFile = archive.getExtensions().iterator().next();
@@ -178,20 +198,20 @@ public class GenerateDwcaEventTest {
     assertEquals("kingdom", extFile.getFieldsSorted().get(2).getTerm().simpleName());
 
     // confirm data written to file
-    reader = extFile.getCSVReader();
+    iterator = extFile.iterator();
     // 1st record
-    row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("puma concolor", row[2]);
-    assertEquals("animalia", row[3]);
+    record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("puma concolor", record.column(2));
+    assertEquals("animalia", record.column(3));
     // 2nd record
-    row = reader.next();
-    assertEquals("2", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("pumm:concolor", row[2]);
-    assertEquals("animalia", row[3]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("2", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("pumm:concolor", record.column(2));
+    assertEquals("animalia", record.column(3));
+    iterator.close();
 
     // since basisOfRecord was occurrence, and this is ambiguous, there should be a warning message!
     boolean foundWarningAboutAmbiguousBOR = false;
@@ -218,7 +238,7 @@ public class GenerateDwcaEventTest {
    * A generated DwC-a with event core and occurrence extension missing a core recordID value is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreMissingID() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -228,14 +248,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension with recordID unmapped is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreIDUnmapped() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -245,14 +265,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension having a duplicate core recordID value is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreDuplicateID() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -262,14 +282,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension missing a extension recordID value is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateExtensionMissingID() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -279,14 +299,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension missing a basisOfRecord value is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateExtensionMissingBOR() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -296,14 +316,14 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with event core and occurrence extension with basisOfRecord unmapped is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateExtensionBORUnmapped() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/event/resource.xml");
@@ -313,7 +333,7 @@ public class GenerateDwcaEventTest {
 
     generateDwca =
       new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
@@ -338,7 +358,7 @@ public class GenerateDwcaEventTest {
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);

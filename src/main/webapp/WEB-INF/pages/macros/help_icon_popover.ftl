@@ -1,5 +1,5 @@
 <#ftl output_format='HTML'>
-<div class='info\'>
+<div class='info'>
     <#if help=='i18n'>
         <#if i18nkey==''>
             <@s.text name='${name}.help' escapeHtml=true/>
@@ -15,7 +15,9 @@
         <p><@s.text name='help.options'/></p>
         <ol>
             <#list helpOptions?keys as val>
-                <li><a href='#' val='${val}'>${helpOptions[val]}</a></li>
+                <li>
+                    <a href='#' class='helpOptionLink inputName-${name} inputValue-${val}'>${helpOptions[val]}</a>
+                </li>
             </#list>
         </ol>
     </#if>

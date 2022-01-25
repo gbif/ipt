@@ -12,7 +12,7 @@
     <div class="my-3 p-3 bg-body rounded shadow-sm">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
             <@s.text name="portal.home.title"/>
         </h5>
         <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2"></div>

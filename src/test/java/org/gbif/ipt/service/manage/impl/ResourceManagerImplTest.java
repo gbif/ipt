@@ -1,22 +1,24 @@
-/***************************************************************************
- * Copyright 2011 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.UnsupportedArchiveException;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.UnsupportedArchiveException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -68,6 +70,7 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
@@ -86,55 +89,56 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Future;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
+import org.apache.commons.collections4.ListValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ResourceManagerImplTest {
 
   // Mock classes
-  private AppConfig mockAppConfig = MockAppConfig.buildMock();
-  private UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
-  private UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
-  private RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
-  private OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
-  private JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
-  private SourceManager mockSourceManager = mock(SourceManager.class);
-  private RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
-  private GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-  private PasswordConverter mockPasswordConverter = mock(PasswordConverter.class);
-  private Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
-  private VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
-  private SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
+  private final AppConfig mockAppConfig = MockAppConfig.buildMock();
+  private final UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
+  private final UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
+  private final RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+  private final OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
+  private final JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
+  private final SourceManager mockSourceManager = mock(SourceManager.class);
+  private final RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
+  private final GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
+  private final PasswordConverter mockPasswordConverter = mock(PasswordConverter.class);
+  private final Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
+  private final VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
+  private final SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
 
-  private DataDir mockedDataDir = MockDataDir.buildMock();
-  private BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
+  private final DataDir mockedDataDir = MockDataDir.buildMock();
+  private final BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
 
   private User creator;
   private Resource resource;
@@ -148,7 +152,7 @@ public class ResourceManagerImplTest {
   private static final String DATASET_SUBTYPE_SPECIMEN_IDENTIFIER = "specimen";
   private static final String RESOURCE_SHORTNAME = "res2";
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     // create user.
     creator = new User();
@@ -179,9 +183,8 @@ public class ResourceManagerImplTest {
   }
 
   public ResourceManagerImpl getResourceManagerImpl() throws IOException, SAXException, ParserConfigurationException {
-
     // mock creation of datasetSubtypes Map, with 2 occurrence subtypes, and 6 checklist subtypes
-    Map<String, String> datasetSubtypes = new LinkedHashMap<String, String>();
+    Map<String, String> datasetSubtypes = new LinkedHashMap<>();
     datasetSubtypes.put("", "Select a subtype");
     datasetSubtypes.put("taxonomicAuthority", "Taxonomic Authority");
     datasetSubtypes.put("nomenclatorAuthority", "Nomenclator Authority");
@@ -202,7 +205,7 @@ public class ResourceManagerImplTest {
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
@@ -423,16 +426,15 @@ public class ResourceManagerImplTest {
    * test resource creation from single DwC-A zipped file, having no rowType. The rowType is determined by the
    * identifier term (e.g. rowType dwc:Occurrence corresponds to existence of term occurrenceID).
    */
-  @Test(expected = ImportException.class)
-  public void testCreateFromSingleZippedFileWithNoRowType()
-    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
-    AlreadyExistingException {
+  @Test
+  public void testCreateFromSingleZippedFileWithNoRowType() throws Exception {
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
     // retrieve sample DwC-A file
     File dwca = FileUtils.getClasspathFile("resources/occurrence.txt.zip");
     // create a new resource.
-    resourceManager.create(RESOURCE_SHORTNAME, null, dwca, creator, baseAction);
+    assertThrows(ImportException.class,
+        () -> resourceManager.create(RESOURCE_SHORTNAME, null, dwca, creator, baseAction));
   }
 
   /**
@@ -585,10 +587,8 @@ public class ResourceManagerImplTest {
   /**
    * test resource creation from zipped file, but resource.xml references non-existent extension.
    */
-  @Test(expected = ImportException.class)
-  public void testCreateFromZippedFileNonexistentExtension()
-    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
-    InvalidFilenameException {
+  @Test
+  public void testCreateFromZippedFileNonexistentExtension() throws Exception {
     // retrieve sample zipped resource folder
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_nonexistent_ext.xml");
     // mock finding resource.xml file
@@ -601,17 +601,16 @@ public class ResourceManagerImplTest {
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
 
     // create a new resource.
-    resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
+    assertThrows(ImportException.class,
+        () -> resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction));
   }
 
   /**
    * Test resource creation from zipped sampling-event DwC-A where occurrence extension uses a RowType/Extension
    * that hasn't been installed yet.
    */
-  @Test(expected = ImportException.class)
-  public void testExtensionRowTypeNotInstalled()
-    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
-    AlreadyExistingException {
+  @Test
+  public void testExtensionRowTypeNotInstalled() throws Exception {
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -639,18 +638,16 @@ public class ResourceManagerImplTest {
       .thenReturn(fileSourceOccurrence);
 
     // create a new resource.
-    resourceManager.create("res-extension", null, dwca, creator, baseAction);
+    assertThrows(ImportException.class,
+        () -> resourceManager.create("res-extension", null, dwca, creator, baseAction));
   }
 
   /**
    * Test resource creation from zipped sampling-event DwC-A where event core is missing the id element.
    * The test ensures that an ImportException gets thrown, as the id element is mandatory with extensions.
    */
-  @Test(expected = ImportException.class)
-  public void testMissingIdElementInCoreMapping()
-    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
-    AlreadyExistingException {
-
+  @Test
+  public void testMissingIdElementInCoreMapping() throws Exception {
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
 
@@ -677,7 +674,8 @@ public class ResourceManagerImplTest {
       .thenReturn(fileSourceOccurrence);
 
     // create a new resource.
-    resourceManager.create("res-extension", null, dwca, creator, baseAction);
+    assertThrows(ImportException.class,
+        () -> resourceManager.create("res-extension", null, dwca, creator, baseAction));
   }
 
   /**
@@ -773,10 +771,8 @@ public class ResourceManagerImplTest {
   /**
    * test resource creation from file, but filename presumed to contain an illegal non-alphanumeric character
    */
-  @Test(expected = InvalidFilenameException.class)
-  public void testCreateFromZippedFileWithInvalidFilename()
-    throws AlreadyExistingException, ImportException, SAXException, ParserConfigurationException, IOException,
-    InvalidFilenameException {
+  @Test
+  public void testCreateFromZippedFileWithInvalidFilename() throws Exception {
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
     // mock SourceManager trying to add file with illegal character in filename
@@ -785,7 +781,8 @@ public class ResourceManagerImplTest {
     // retrieve sample gzip DwC-A file
     File dwca = FileUtils.getClasspathFile("resources/occurrence2.txt.zip");
     // create a new resource, triggering exception
-    resourceManager.create("res-single-gz", null, dwca, creator, baseAction);
+    assertThrows(InvalidFilenameException.class,
+        () -> resourceManager.create("res-single-gz", null, dwca, creator, baseAction));
   }
 
   /**
@@ -838,11 +835,10 @@ public class ResourceManagerImplTest {
     assertTrue(mockedDataDir.resourceFile("math", ResourceManagerImpl.PERSISTENCE_FILE).exists());
   }
 
-  // TODO: 2019-06-17 it's weird, fails only all the test were launched
   /**
    * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
    */
-  @Ignore("floating behaviour")
+  @Disabled("floating behaviour, only fails when all the test launched")
   @Test
   public void testLoadFromDir()
     throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
@@ -945,6 +941,7 @@ public class ResourceManagerImplTest {
 
     resource = manager.inferCoreType(resource);
     // assert the coreType has now been correctly inferred
+    assertNotNull(resource.getCoreType());
     assertEquals(Resource.CoreRowType.CHECKLIST.toString().toLowerCase(), resource.getCoreType().toLowerCase());
   }
 
@@ -956,7 +953,7 @@ public class ResourceManagerImplTest {
     resource.setSubtype("unknown");
     resource = manager.standardizeSubtype(resource);
     // assert the subtype has been set to null, since it doesn't correspond to a known vocab term
-    assertEquals(null, resource.getSubtype());
+    assertNull(resource.getSubtype());
 
     resource.setSubtype(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER);
     resource = manager.standardizeSubtype(resource);
@@ -978,7 +975,7 @@ public class ResourceManagerImplTest {
     resource.setShortname("bees");
     Eml eml = new Eml();
     eml.setTitle("Bees of Kansas");
-    eml.setAlternateIdentifiers(new LinkedList<String>());
+    eml.setAlternateIdentifiers(new LinkedList<>());
     resource.setEml(eml);
     resource.setStatus(PublicationStatus.PRIVATE);
 
@@ -986,7 +983,7 @@ public class ResourceManagerImplTest {
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
 
     // update the alt. id - it should not have been set, since the resource is Private
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
+    assertEquals(0, resource.getEml().getAlternateIdentifiers().size());
 
     // change resource to PUBLIC
     resource.setStatus(PublicationStatus.PUBLIC);
@@ -1020,7 +1017,7 @@ public class ResourceManagerImplTest {
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
 
     // update the alt. id - it should disapear since the resource is Private now
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
+    assertEquals(0, resource.getEml().getAlternateIdentifiers().size());
   }
 
   @Test
@@ -1037,21 +1034,21 @@ public class ResourceManagerImplTest {
     resource.setShortname("bees");
     Eml eml = new Eml();
     eml.setTitle("Bees of Kansas");
-    eml.setAlternateIdentifiers(new LinkedList<String>());
+    eml.setAlternateIdentifiers(new LinkedList<>());
     resource.setEml(eml);
     resource.setStatus(PublicationStatus.PRIVATE);
 
     // update alt. id
     manager.updateAlternateIdentifierForRegistry(resource);
     // update the alt. id - it should not have been set, since the resource isn't registered yet
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
+    assertEquals(0, resource.getEml().getAlternateIdentifiers().size());
 
     // change resource to PUBLIC
     resource.setStatus(PublicationStatus.PUBLIC);
     // update alt. id
     manager.updateAlternateIdentifierForRegistry(resource);
     // update the alt. id - it should not have been set, since the resource isn't registered yet
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 0);
+    assertEquals(0, resource.getEml().getAlternateIdentifiers().size());
 
     // change resource to Registered and give it a Registry UUID
     UUID key = UUID.randomUUID();
@@ -1066,7 +1063,7 @@ public class ResourceManagerImplTest {
     // try to update alt. id again
     manager.updateAlternateIdentifierForRegistry(resource);
     // there should still only be 1
-    assertTrue(resource.getEml().getAlternateIdentifiers().size() == 1);
+    assertEquals(1, resource.getEml().getAlternateIdentifiers().size());
   }
 
   @Test
@@ -1082,7 +1079,7 @@ public class ResourceManagerImplTest {
     resource.setStatus(PublicationStatus.PUBLIC);
 
     // mock returning list of resources that are associated to the Academy of Natural Sciences organization
-    List<Resource> organisationsResources = new ArrayList<Resource>();
+    List<Resource> organisationsResources = new ArrayList<>();
     Resource r1 = new Resource();
     r1.setKey(UUID.fromString(registeredDigirResourceUUID));
     r1.setTitle("Herpetology");
@@ -1100,7 +1097,7 @@ public class ResourceManagerImplTest {
     assertEquals(organisation, registered.getOrganisation());
   }
 
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testRegisterMigratedResourceTooManyUUID() throws IOException, SAXException, ParserConfigurationException {
     ResourceManager manager = getResourceManagerImpl();
 
@@ -1117,10 +1114,10 @@ public class ResourceManagerImplTest {
     // indicate resource is ready to be published, by setting its status to Public
     resource.setStatus(PublicationStatus.PUBLIC);
 
-    manager.register(resource, organisation, ipt, baseAction);
+    assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
 
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testRegisterMigratedResourceWithBadUUID() throws IOException, SAXException, ParserConfigurationException {
     ResourceManager manager = getResourceManagerImpl();
 
@@ -1131,7 +1128,7 @@ public class ResourceManagerImplTest {
     resource.setStatus(PublicationStatus.PUBLIC);
 
     // mock returning list of resources that are associated to the Academy of Natural Sciences organization
-    List<Resource> organisationsResources = new ArrayList<Resource>();
+    List<Resource> organisationsResources = new ArrayList<>();
     Resource r1 = new Resource();
     // resource has different UUID than the one in the alternate identifiers list - interpreted as failed migration
     r1.setKey(UUID.fromString(UUID.randomUUID().toString()));
@@ -1140,10 +1137,10 @@ public class ResourceManagerImplTest {
 
     when(mockRegistryManager.getOrganisationsResources(anyString())).thenReturn(organisationsResources);
 
-    manager.register(resource, organisation, ipt, baseAction);
+    assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
 
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testRegisterMigratedResourceWithDuplicateUUIDCase1()
     throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
     ResourceManagerImpl manager = getResourceManagerImpl();
@@ -1162,10 +1159,10 @@ public class ResourceManagerImplTest {
     manager.get("res1").setStatus(PublicationStatus.PUBLIC);
 
     // should throw InvalidConfigException
-    manager.register(resource, organisation, ipt, baseAction);
+    assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
 
-  @Test(expected = InvalidConfigException.class)
+  @Test
   public void testRegisterMigratedResourceWithDuplicateUUIDCase2()
     throws IOException, SAXException, ParserConfigurationException, AlreadyExistingException {
     ResourceManagerImpl manager = getResourceManagerImpl();
@@ -1184,7 +1181,7 @@ public class ResourceManagerImplTest {
     manager.get("res1").setStatus(PublicationStatus.REGISTERED);
 
     // should throw InvalidConfigException
-    manager.register(resource, organisation, ipt, baseAction);
+    assertThrows(InvalidConfigException.class, () -> manager.register(resource, organisation, ipt, baseAction));
   }
 
   @Test
@@ -1219,9 +1216,7 @@ public class ResourceManagerImplTest {
    * test open archive of zipped file, with DwC-A located inside parent folder.
    */
   @Test
-  public void testOpenArchiveInsideParentFolder() throws ParserConfigurationException, SAXException, IOException {
-    // create instance of manager
-    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+  public void testOpenArchiveInsideParentFolder() throws IOException {
     // decompress archive
     File dwcaDir = FileUtils.createTempDir();
     // DwC-A located inside parent folder
@@ -1229,7 +1224,7 @@ public class ResourceManagerImplTest {
     // decompress the incoming file
     CompressionUtil.decompressFile(dwcaDir, dwca, true);
     // open DwC-A located inside parent folder
-    Archive archive = ArchiveFactory.openArchive(dwcaDir);
+    Archive archive = DwcFiles.fromLocation(dwcaDir.toPath());
     assertNotNull(archive);
     assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, archive.getCore().getRowType().qualifiedName());
   }
@@ -1237,10 +1232,8 @@ public class ResourceManagerImplTest {
   /**
    * test failure, opening archive of zipped file, with invalid DwC-A located inside parent folder.
    */
-  @Test(expected = UnsupportedArchiveException.class)
-  public void testOpenArchiveInsideParentFolderFails() throws ParserConfigurationException, SAXException, IOException {
-    // create instance of manager
-    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+  @Test
+  public void testOpenArchiveInsideParentFolderFails() throws IOException {
     // decompress archive
     File dwcaDir = FileUtils.createTempDir();
     // DwC-A located inside parent folder, with invalid meta.xml
@@ -1248,7 +1241,7 @@ public class ResourceManagerImplTest {
     // decompress the incoming file
     CompressionUtil.decompressFile(dwcaDir, dwca, true);
     // open DwC-A located inside parent folder, which throws UnsupportedArchiveException wrapping SaxParseException
-    ArchiveFactory.openArchive(dwcaDir);
+    assertThrows(UnsupportedArchiveException.class, () -> DwcFiles.fromLocation(dwcaDir.toPath()));
   }
 
   @Test
@@ -1295,7 +1288,7 @@ public class ResourceManagerImplTest {
    * Publishes non-registered metadata-only resource that has been assigned a DOI. When trying to publish a new
    * minor version an exception is thrown because the DataCite metadata is invalid (missing publisher).
    */
-  @Test(expected = PublicationException.class)
+  @Test
   public void testPublishResourceWithDOIAssignedButInvalidDOIMetadata()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1333,7 +1326,8 @@ public class ResourceManagerImplTest {
     assertEquals(new BigDecimal("3.1"), resource.getNextVersion());
 
     // publish, will try to update DOI, triggering exception
-    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+    assertThrows(PublicationException.class,
+        () -> resourceManager.publish(resource, resource.getNextVersion(), baseAction));
   }
 
   /**
@@ -1343,7 +1337,7 @@ public class ResourceManagerImplTest {
    * When trying to publish a new major version an exception is thrown because the DataCite metadata is invalid
    * (missing publisher).
    */
-  @Test(expected = PublicationException.class)
+  @Test
   public void testPublishPublicResourceWithDOIReservedButInvalidDOIMetadata()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1374,7 +1368,8 @@ public class ResourceManagerImplTest {
     assertEquals(new BigDecimal("4.0"), resource.getNextVersion());
 
     // publish, will try to register DOI, triggering exception
-    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+    assertThrows(PublicationException.class,
+        () -> resourceManager.publish(resource, resource.getNextVersion(), baseAction));
   }
 
   /**
@@ -1384,7 +1379,7 @@ public class ResourceManagerImplTest {
    * When trying to publish a new major version an exception is thrown because the DataCite metadata is invalid
    * (missing publisher).
    */
-  @Test(expected = PublicationException.class)
+  @Test
   public void testPublishPublicResourceWithDOIAssignedAndReservedButInvalidDOIMetadata()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1418,14 +1413,15 @@ public class ResourceManagerImplTest {
     assertEquals(new BigDecimal("4.0"), resource.getNextVersion());
 
     // publish, will try to replace DOI with new reserved DOI, triggering exception
-    resourceManager.publish(resource, resource.getNextVersion(), baseAction);
+    assertThrows(PublicationException.class,
+        () -> resourceManager.publish(resource, resource.getNextVersion(), baseAction));
   }
 
   @Test
   public void testHasMaxProcessFailures() throws ParserConfigurationException, SAXException, IOException {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
-    ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
+    ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
     processFailures.put("res1", new Date());
     processFailures.put("res1", new Date());
     processFailures.put("res2", new Date());
@@ -1441,7 +1437,7 @@ public class ResourceManagerImplTest {
     assertTrue(resourceManager.hasMaxProcessFailures(resource));
   }
 
-  @Test(expected = PublicationException.class)
+  @Test
   public void testPublishNonRegisteredMetadataOnlyResourceFailure()
     throws ParserConfigurationException, SAXException, IOException, AlreadyExistingException, ImportException,
     InvalidFilenameException {
@@ -1455,11 +1451,13 @@ public class ResourceManagerImplTest {
     // make pre-publication assertions
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
 
-    //to trigger PublicationException, indicate publication already in progress (add Future to processFutures)
+    // to trigger PublicationException, indicate publication already in progress (add Future to processFutures)
+    // noinspection unchecked
     resourceManager.getProcessFutures().put(resource.getShortname(), mock(Future.class));
 
     // publish, catching expected Exception
-    resourceManager.publish(resource, BigDecimal.valueOf(4.0), baseAction);
+    assertThrows(PublicationException.class,
+        () -> resourceManager.publish(resource, BigDecimal.valueOf(4.0), baseAction));
   }
 
   /**
@@ -1597,7 +1595,6 @@ public class ResourceManagerImplTest {
     return mockedDataDir;
   }
 
-
   /**
    * Ensure previous published version can be reconstructed properly.
    */
@@ -1637,7 +1634,7 @@ public class ResourceManagerImplTest {
     resource.setOrganisation(organisation);
     assertEquals(organisation.getKey(), resource.getOrganisation().getKey());
     resource.getEml().setTitle("Title for pending version 1.2");
-    List<String> description = Lists.newArrayList();
+    List<String> description = new ArrayList<>();
     description.add("Title description for pending version 1.2");
     resource.getEml().setDescription(description);
 
@@ -1698,7 +1695,7 @@ public class ResourceManagerImplTest {
     resource.setKey(key);
 
     resource.getEml().setTitle("Title for pending version 5.1");
-    List<String> description = Lists.newArrayList();
+    List<String> description = new ArrayList<>();
     description.add("Description for pending version 5.1");
     resource.getEml().setDescription(description);
 
@@ -1789,8 +1786,7 @@ public class ResourceManagerImplTest {
    */
   @Test
   public void testLoadPre2Point2Resource()
-    throws ParserConfigurationException, SAXException, IOException, InvalidFilenameException, ImportException,
-    AlreadyExistingException {
+    throws ParserConfigurationException, SAXException, IOException {
     // create new resource from configuration file (resource.xml) that does not have version history
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_v1_1.xml");
     when(mockedDataDir.resourceFile(anyString(), anyString())).thenReturn(resourceXML);
@@ -1988,9 +1984,9 @@ public class ResourceManagerImplTest {
     // private and published
     version2.setReleased(new Date());
     assertEquals(manager.latest(1, 25).size(), 0);
-
   }
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   @Test
   public void testLoad() throws ParserConfigurationException, SAXException, IOException {
     ResourceManagerImpl manager = getResourceManagerImpl();
@@ -2012,7 +2008,9 @@ public class ResourceManagerImplTest {
     assertTrue(res1.exists());
     assertTrue(eml.exists());
     assertTrue(cfg.exists());
-    assertEquals(2, res1.listFiles().length);
+    File[] files = res1.listFiles();
+    assertNotNull(files);
+    assertEquals(2, files.length);
 
     // possibly invalid resource, but we no longer delete such
     File res2 = new File (resourceDirectory, "res2");
@@ -2021,7 +2019,9 @@ public class ResourceManagerImplTest {
     eml2.createNewFile();
     assertTrue(res2.exists());
     assertTrue(eml2.exists());
-    assertEquals(1, res2.listFiles().length);
+    files = res2.listFiles();
+    assertNotNull(files);
+    assertEquals(1, files.length);
 
     // possibly invalid resource, but we no longer delete such
     File res3 = new File (resourceDirectory, "res3");
@@ -2030,12 +2030,16 @@ public class ResourceManagerImplTest {
     cfg3.createNewFile();
     assertTrue(res3.exists());
     assertTrue(cfg3.exists());
-    assertEquals(1, res3.listFiles().length);
+    files = res3.listFiles();
+    assertNotNull(files);
+    assertEquals(1, files.length);
 
     // empty resource directory
     File res4 = new File (resourceDirectory, "res4");
     res4.mkdir();
-    assertEquals(0, res4.listFiles().length);
+    files = res4.listFiles();
+    assertNotNull(files);
+    assertEquals(0, files.length);
 
     // valid resource
     File res5 = new File (resourceDirectory, "res5");
@@ -2047,15 +2051,23 @@ public class ResourceManagerImplTest {
     assertTrue(res5.exists());
     assertTrue(cfg5.exists());
     assertTrue(eml5.exists());
-    assertEquals(2, res5.listFiles().length);
+    files = res5.listFiles();
+    assertNotNull(files);
+    assertEquals(2, files.length);
 
-    assertEquals(5, resourceDirectory.listFiles().length);
+    files = resourceDirectory.listFiles();
+    assertNotNull(files);
+    assertEquals(5, files.length);
 
     // load resource, ensure empty directories are cleaned up
     manager.load(resourceDirectory, creator);
-    assertEquals(4, resourceDirectory.listFiles().length);
-    Set<String> mySet = new HashSet<String>(Arrays.asList(resourceDirectory.list()));
-    assertTrue("res1", mySet.contains("res1"));
-    assertTrue("res5", mySet.contains("res5"));
+    files = resourceDirectory.listFiles();
+    assertNotNull(files);
+    assertEquals(4, files.length);
+    String[] fileNames = resourceDirectory.list();
+    assertNotNull(fileNames);
+    Set<String> mySet = new HashSet<>(Arrays.asList(fileNames));
+    assertTrue(mySet.contains("res1"), "res1");
+    assertTrue(mySet.contains("res5"), "res5");
   }
 }

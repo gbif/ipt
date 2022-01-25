@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 11:52+0000\n"
+"POT-Creation-Date: 2021-09-04 19:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgid ""
 "Translations for the user interface are contained in the file "
 "`ApplicationResources_en.properties`.  You are welcome to ask mailto:"
 "helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/"
-"[GBIF's develoment IPT], where new translations will be applied."
+"[GBIF's development IPT], where new translations will be applied."
 msgstr ""
 
 #. type: Target for macro image
@@ -130,7 +130,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:30
 msgid ""
-"Translations for the user manual are in the CrowdIn folder `docs/"
+"Translations for the user manual are in the Crowdin folder `docs/"
 "translations`.  The user manual is written in https://docs.asciidoctor.org/"
 "asciidoc/latest/[Asciidoctor], and some syntax is necessary in the "
 "translations – for example, `+++*bold*, _italic_ or `monospaced` text+++`."
@@ -143,39 +143,46 @@ msgid ""
 "and/or sections within pages) work in the translated versions."
 msgstr ""
 
+#. type: Plain text
+#: en/modules/ROOT/pages/translations.adoc:34
+msgid ""
+"New translations added using Crowdin should appear in the https://ipt.gbif-"
+"uat.org/manual/[UAT version of this manual] around 15-60 minutes later."
+msgstr ""
+
 #. type: Title ===
-#: en/modules/ROOT/pages/translations.adoc:33
+#: en/modules/ROOT/pages/translations.adoc:35
 #, no-wrap
 msgid "Plain hyperlinks"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:36
+#: en/modules/ROOT/pages/translations.adoc:38
 msgid ""
 "When translating these, it's appropriate to link to a translated version of "
 "the page if the content is equivalent.  Translate as follows:"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/translations.adoc:40
+#: en/modules/ROOT/pages/translations.adoc:42
 #, no-wrap
 msgid "https://www.gbif.org/the-gbif-network[GBIF's diverse Participants]\n"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/translations.adoc:42
+#: en/modules/ROOT/pages/translations.adoc:44
 #, no-wrap
 msgid "https://www.gbif.org/es/the-gbif-network[los diversos Aliados de GBIF]\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/translations.adoc:44
+#: en/modules/ROOT/pages/translations.adoc:46
 #, no-wrap
 msgid "Same-page crossreferences"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:47
+#: en/modules/ROOT/pages/translations.adoc:49
 msgid ""
 "These are links to locations within a page, and are usually made with the "
 "crossreference syntax: `\\<<Target Heading Text>>`, and sometimes the form `"
@@ -184,30 +191,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:49
+#: en/modules/ROOT/pages/translations.adoc:51
 msgid "Therefore, a crossreference translation is like this:"
-msgstr ""
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/translations.adoc:53
-#, no-wrap
-msgid "click on the button labelled \"Add\" to open the <<Data Source selection page>>.\n"
 msgstr ""
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/translations.adoc:55
 #, no-wrap
+msgid "click on the button labelled \"Add\" to open the <<Data Source selection page>>.\n"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/translations.adoc:57
+#, no-wrap
 msgid "clic en el botón \"Agregar\" para abrir la <<Página de selección del Conjunto de Datos>>.\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/translations.adoc:57
+#: en/modules/ROOT/pages/translations.adoc:59
 #, no-wrap
 msgid "Different-page crossreferences"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:60
+#: en/modules/ROOT/pages/translations.adoc:62
 msgid ""
 "The simplest links to different pages are to the top of the linked page.  "
 "These have the form `\\xref:filename.adoc[display text]`.  Only the display "
@@ -215,19 +222,19 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/translations.adoc:64
+#: en/modules/ROOT/pages/translations.adoc:66
 #, no-wrap
 msgid "refer to the xref:doi-workflow.adoc[DOI Workflows] page\n"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/translations.adoc:66
+#: en/modules/ROOT/pages/translations.adoc:68
 #, no-wrap
 msgid "consulte la página de xref:doi-workflow.adoc[flujo de trabajo de los DOIs].\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:69
+#: en/modules/ROOT/pages/translations.adoc:71
 msgid ""
 "More complicated are links to a specific section within another page.  These "
 "must use the link target, which is generated automatically on each heading: "
@@ -238,7 +245,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:71
+#: en/modules/ROOT/pages/translations.adoc:73
 msgid ""
 "The crossreference is then written as `\\xref:filename.adoc#link-"
 "target[display text]`, for example `\\xref:manage-resources.adoc#resource-"
@@ -247,7 +254,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:73
+#: en/modules/ROOT/pages/translations.adoc:75
 msgid ""
 "An English heading `Source Data` has the link target `source-data`.  The "
 "Spanish translation of the heading, `Conjunto de datos`, has the target "
@@ -255,25 +262,25 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/translations.adoc:77
+#: en/modules/ROOT/pages/translations.adoc:79
 #, no-wrap
 msgid "Files can be uploaded … when xref:manage-resources.adoc#source-data[adding new source data files].\n"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/translations.adoc:79
+#: en/modules/ROOT/pages/translations.adoc:81
 #, no-wrap
 msgid "La carga de archivos al se puede … cuando se xref:manage-resources.adoc#conjunto-de-datos[agregan nuevos archivos de conjuntos de datos].\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/translations.adoc:81
+#: en/modules/ROOT/pages/translations.adoc:83
 #, no-wrap
 msgid "Images and downloads"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:84
+#: en/modules/ROOT/pages/translations.adoc:86
 msgid ""
 "Some screenshot images can be translated, and others (without any English "
 "text) can be the same across all languages.  The default is for the same "
@@ -283,7 +290,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:86
+#: en/modules/ROOT/pages/translations.adoc:88
 msgid ""
 "For example, the default (English) image shown on the xref:home.adoc[home "
 "menu page] is stored in GitHub at https://github.com/gbif/ipt/blob/master/"
@@ -295,32 +302,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:88
+#: en/modules/ROOT/pages/translations.adoc:90
 msgid ""
 "The syntax to include this image in the manual, `image::ipt2/home/IPTHome."
 "png[]`, does not require translation."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/translations.adoc:89
+#: en/modules/ROOT/pages/translations.adoc:91
 #, no-wrap
 msgid "Languages"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:92
+#: en/modules/ROOT/pages/translations.adoc:94
 msgid "Spanish (partial)"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:93
+#: en/modules/ROOT/pages/translations.adoc:95
 msgid "Traditional Chinese (started)"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/translations.adoc:94
+#: en/modules/ROOT/pages/translations.adoc:96
 msgid ""
-"If you want to translate the user interface into another language, please "
-"email helpdesk@gbif.org.  It is not necessary to translate the entire manual "
-"– untranslated sections will be shown in English."
+"If you want to translate the user manual into another language, please email "
+"helpdesk@gbif.org.  It is not necessary to translate the entire manual – "
+"untranslated sections will be shown in English."
 msgstr ""

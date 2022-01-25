@@ -1,15 +1,9 @@
 <#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><@s.text name='manage.mapping.title'/></title>
-    <script>
-        $(document).ready(function(){
-            initHelp();
-        });
-    </script>
-
-    <#assign currentMenu = "manage"/>
-    <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/forms.ftl"/>
+<#include "/WEB-INF/pages/inc/header.ftl">
+<title><@s.text name='manage.mapping.title'/></title>
+<#assign currentMenu = "manage"/>
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <main class="container">
     <form class="topForm" action="mapping.do" method="post">
@@ -17,7 +11,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
                 ${mapping.extension.title}
             </h5>
 
@@ -32,7 +26,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
                 <@s.text name='manage.mapping.source'/>
             </h5>
 

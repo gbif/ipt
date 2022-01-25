@@ -1,8 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.portal;
 
-import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
-import com.opensymphony.xwork2.LocaleProviderFactory;
-import com.opensymphony.xwork2.inject.Container;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
@@ -33,21 +45,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.Maps;
-import freemarker.template.TemplateException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
+import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
+import com.opensymphony.xwork2.LocaleProviderFactory;
+import com.opensymphony.xwork2.inject.Container;
+
+import freemarker.template.TemplateException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -62,7 +77,7 @@ public class ResourceActionTest {
 
   private static User MANAGER;
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException, TemplateException {
     SimpleTextProvider textProvider = new SimpleTextProvider();
     LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
@@ -74,7 +89,7 @@ public class ResourceActionTest {
     Container container = mock(Container.class);
 
     // mock: vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.getDefault().getLanguage(), false);
-    Map<String, String> ranks = new LinkedHashMap<String, String>();
+    Map<String, String> ranks = new LinkedHashMap<>();
     ranks.put("kingdom", "http://rs.gbif.org/vocabulary/gbif/rank/kingdom");
     ranks.put("Class", "http://rs.gbif.org/vocabulary/gbif/rank/class");
     when(mockVocabManager.getI18nVocab(anyString(), anyString(), anyBoolean())).thenReturn(ranks);
@@ -116,13 +131,13 @@ public class ResourceActionTest {
     TaxonKeyword keyword3 = new TaxonKeyword();
     keyword3.setCommonName("Sedges");
 
-    List<TaxonKeyword> keywordList = new ArrayList<TaxonKeyword>();
+    List<TaxonKeyword> keywordList = new ArrayList<>();
     keywordList.add(keyword1);
     keywordList.add(keyword2);
     keywordList.add(keyword3);
     coverage1.setTaxonKeywords(keywordList);
 
-    List<TaxonomicCoverage> coverages = new ArrayList<TaxonomicCoverage>();
+    List<TaxonomicCoverage> coverages = new ArrayList<>();
     coverages.add(coverage1);
     resource.getEml().setTaxonomicCoverages(coverages);
 
@@ -234,7 +249,7 @@ public class ResourceActionTest {
   @Test
   public void testDetailForLoggedInManager() {
     // simulate manager being logged in
-    Map<String, Object> session = new HashMap<String, Object>();
+    Map<String, Object> session = new HashMap<>();
     session.put(Constants.SESSION_USER, MANAGER);
     action.setSession(session);
 
@@ -271,22 +286,20 @@ public class ResourceActionTest {
 
   @Test
   public void testGetRecordsByExtensionOrdered() {
-    Map<String, Integer> counts = Maps.newLinkedHashMap();
+    Map<String, Integer> counts = new LinkedHashMap<>();
     counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
     counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
     counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);
     action.setRecordsByExtensionForVersion(counts);
 
     // do ordering
-    ImmutableSortedMap<String, Integer> orderedCounts = action.getRecordsByExtensionOrdered();
-    orderedCounts.firstEntry().getValue();
-    assertEquals(100, orderedCounts.firstEntry().getValue().intValue());
-    assertEquals(10, orderedCounts.lastEntry().getValue().intValue());
+    LinkedHashMap<String, Integer> orderedCounts = action.getRecordsByExtensionOrdered();
+    assertEquals("[100, 55, 10]", orderedCounts.values().toString());
   }
 
   @Test
   public void testGetMaxRecordsInExtension() {
-    Map<String, Integer> counts = Maps.newLinkedHashMap();
+    Map<String, Integer> counts = new LinkedHashMap<>();
     counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
     counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
     counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);

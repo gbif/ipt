@@ -20,7 +20,10 @@ The following is known to run:
 export CATALINA_OPTS="-Xms512M -Xmx1024M -XX:PermSize=512M -XX:MaxPermSize=1024M"
 ----
 
+[#file-permissions]
 === I get the following error: "The data directory '/directory' is not writable. What should I do?
+
+This also applies to similar errors for creating files, like `RollingFileManager … unable to create manager for … debug.log`.
 
 Assuming you are running Tomcat, you need to ensure the user running Tomcat has permissions on the directory. To find out the user running Tomcat on Linux, open a shell and enter the following command:
 
@@ -31,26 +34,36 @@ $ ps waux | grep tomcat
 If the user is "tomcatuser", and this user belongs to group "tomcatgroup" then change the ownership of the IPT data directory (and its child folders and files) by entering the following command:
 
 ----
-$ chown -R tomcatuser:tomcatgroup directory/
+$ chown -R tomcatuser:tomcatgroup directory
 ----
 
 To ensure only this user has write permission, enter the following command:
 
 ----
-$ chmod -R 755 directory/
+$ chmod -R 755 directory
 ----
 
-On systems with security sandboxing, you may need to grant permissions to the directory.  For example, on Debian you need to add a SystemD override:
+[IMPORTANT]
+====
+Some Linux systems use sandboxing to provide additional security.  Setting the file ownership and permissions is _not sufficient_ on these systems.  See the <<sandboxing,following question>>.
+====
+
+Note that if you are running your IPT on a Windows operating system, you will need to check that your folder didn't revert to read-only permissions.
+
+[#sandboxing]
+=== My file permissions are correct, but I still see errors about read/write permissions.
+
+Some Linux systems have additional protections, called security sandboxing.  In this case, you usually need to grant additional permissions for Tomcat to access the data directory.  For example, on Debian and Ubuntu you need to add a SystemD override:
 
 ----
-$ systemctl edit syslog.service
+$ sudo systemctl edit tomcat9.service
+
+# Put this into the file that opens (it will usually be blank), then save it:
 [Service]
-ReadWritePaths=/path/to/directory/
-$ systemctl daemon-reload
-$ systemctl restart tomcat8
-----
+ReadWritePaths=/path/to/data/directory/
 
-Note that if you are running your IPT on a windows operating system, you will need to check that your folder didn't revert to read-only permissions.
+$ sudo systemctl restart tomcat9
+----
 
 === How can I change the IPT's default language?
 

@@ -1,22 +1,24 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
- ***************************************************************************/
-
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.validation;
 
 import java.util.Date;
+
 import javax.mail.internet.InternetAddress;
 
-import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,6 +52,7 @@ public abstract class BaseValidator {
    *
    * @return true if string
    */
+  @SuppressWarnings("SameParameterValue")
   protected boolean existsInRange(String x, int minLength, int maxLength) {
     x = StringUtils.trimToNull(x);
     return x != null && x.length() >= minLength && x.length() <= maxLength;
@@ -62,7 +65,7 @@ public abstract class BaseValidator {
         internetAddress.validate();
         return true;
       } catch (javax.mail.internet.AddressException e) {
-        LOG.debug("Email address was invalid: " + Strings.nullToEmpty(email));
+        LOG.debug("Email address was invalid: " + StringUtils.trimToEmpty(email));
       }
     }
     return false;

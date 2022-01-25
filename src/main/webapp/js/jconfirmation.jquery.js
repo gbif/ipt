@@ -1,34 +1,94 @@
-(function ($) {
+﻿(function ($) {
 
     jQuery.fn.jConfirmAction = function (options) {
 
         // Some jConfirmAction options (limited to customize language) :
+        // titleQuestion: a text for modal title
         // question : a text for your question.
         // yesAnswer : a text for Yes answer.
         // cancelAnswer : a text for Cancel/No answer.
         // checkboxText: a text for the checkbox needed to confirm for Yes answer (optional)
         // summary: a textarea to enter a summary for the submit
+        // buttonType: a button type (color)
         var theOptions = jQuery.extend({
             titleQuestion: "Are you sure?",
-            question: "Are you sure?",
+            question: undefined,
             yesAnswer: "Yes",
             cancelAnswer: "Cancel",
             checkboxText: undefined,
-            summary: undefined
+            summary: undefined,
+            buttonType: "danger"
         }, options);
         return this.each(function () {
 
             $(this).bind('click', function (e) {
                 var submitBtn = $(this);
+
                 if ($(this).attr("jconfirmed")) {
                     submitBtn.removeAttr("jconfirmed");
                 } else {
                     e.preventDefault();
                     thisHref = $(this).attr('href');
 
-                    var btns = {};
-                    btns[theOptions.yesAnswer] = function () {
-                        $(this).dialog("close");
+                    // get empty modal window
+                    var dialogWindow = $("#dialog-confirm");
+
+                    // prepare html content for modal window
+                    var content = '<div class="modal-dialog modal-confirm modal-dialog-centered">';
+                    content += '<div class="modal-content">';
+
+                    // header
+                    content += '<div class="modal-header flex-column">';
+                    content += '<div class="icon-box"><i class="confirm-danger-icon">!</i></div>'
+                    content += '<h5 class="modal-title w-100" id="staticBackdropLabel">' + theOptions.titleQuestion + '</h5>';
+                    content += '<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>'
+                    content += '</div>';
+
+                    // body
+                    content += '<div class="modal-body">';
+
+                    // checkbox if present
+                    if (theOptions.checkboxText !== undefined) {
+                        content += '<div class="form-check mb-2">';
+                        content += '<input id="checkbox-confirm" class="form-check-input" type="checkbox" >';
+                        content += '<label class="form-check-label" for="checkbox-confirm">';
+                        content += theOptions.checkboxText;
+                        content += '</label>';
+                        content += '</div>';
+                    }
+
+                    // question if present
+                    if (theOptions.question !== undefined) {
+                        content += '<p>' + theOptions.question + '</p>';
+                    }
+
+                    // summary if present
+                    if (theOptions.summary !== undefined) {
+                        content += '<div class="mt-3"><textarea id="dialogSummary" rows="5" class="dialog-summary form-control" placeholder="' + theOptions.summary + '"></textarea></div>';
+                    }
+                    content += '</div>'
+
+                    // footer
+                    content += '<div class="modal-footer justify-content-center">'
+                    content += '<button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + theOptions.cancelAnswer+ '</button>';
+                    content += '<button id="yes-button" type="button" class="btn btn-outline-gbif-' + theOptions.buttonType + '">' + theOptions.yesAnswer + '</button>';
+                    content += '</div>';
+
+                    content += '</div>';
+                    content += '</div>';
+
+                    // add content to window
+                    dialogWindow.html(content);
+
+                    var yesButton = $("#yes-button");
+                    var cancelButton = $("#cancel-button");
+
+                    // hide yes button if checkbox present
+                    if (theOptions.checkboxText !== undefined) {
+                        yesButton.hide();
+                    }
+
+                    yesButton.on("click", function () {
                         if (thisHref != null) {
                             window.location = thisHref;
                         } else {
@@ -37,69 +97,22 @@
                             $("#summary").empty().append(selected);
                             submitBtn.click();
                         }
-                    };
-                    btns[theOptions.cancelAnswer] = function () {
-                        $(this).dialog("close");
+                    });
+
+                    cancelButton.on("click", function() {
                         submitBtn.removeAttr("jconfirmed");
-                    };
+                    });
 
-                    var content = '<p>' + theOptions.question + '</p>';
-
-                    if (theOptions.checkboxText !== undefined) {
-                        content = '<div class="form-check mb-2">\n' +
-                            '<input class="form-check-input" type="checkbox" id="cbox">\n' +
-                            '<label class="form-check-label" for="cbox">\n' +
-                            theOptions.checkboxText +
-                            '</label>\n' +
-                            '</div>' + theOptions.question;
-                    }
-
-                    if (theOptions.summary !== undefined) {
-                        content += '<div class="mt-3"><textarea id="dialogSummary" rows="5" class="dialog-summary form-control" placeholder="' + theOptions.summary + '"></textarea></div>';
-                    }
-
-                    $('#dialog-confirm').html(content);
-
-                    $('#cbox').click(function () {
-                        if ($('#cbox').prop('checked')) {
-                            $('.ui-dialog-buttonset button:first-child').show();
+                    // show yes button if checkbox is selected
+                    $('#checkbox-confirm').on("click", function () {
+                        if ($('#checkbox-confirm').prop('checked')) {
+                            yesButton.show();
                         } else {
-                            $('.ui-dialog-buttonset button:first-child').hide();
-                        }
-
-                    });
-
-                    $('#dialog-confirm').dialog({
-                        resizable: false,
-                        modal: true,
-                        buttons: btns,
-                        // modal window fixed positioning to prevent page elements from changing position
-                        create: function (event, ui) {
-                            $(event.target).parent().css('position', 'fixed');
-                        },
-                        resizeStop: function (event, ui) {
-                            var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
-                                (Math.floor(ui.position.top) - $(window).scrollTop())];
-                            $(event.target).parent().css('position', 'fixed');
-                            $(dlg).dialog('option', 'position', position);
+                            yesButton.hide();
                         }
                     });
 
-                    // add bootstrap design to modal's title, content and footer
-                    var dialog = $('.ui-dialog');
-                    dialog.addClass('modal-content');
-                    dialog.find('.ui-dialog-titlebar').addClass('modal-header').find('.ui-dialog-titlebar-close').addClass('btn-close');
-                    dialog.find('.ui-dialog-title').addClass('modal-title fw-bold').html(theOptions.titleQuestion);
-                    dialog.find('.ui-dialog-content').addClass('modal-body');
-                    dialog.find('.ui-dialog-buttonpane').addClass('modal-footer');
-
-                    // add bootstrap design to modal buttons
-                    $('.ui-dialog-buttonset button:first-child').addClass('btn btn-sm btn-outline-gbif-primary mx-2');
-                    $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-sm btn-outline-secondary');
-
-                    if (theOptions.checkboxText != undefined) {
-                        $('.ui-dialog-buttonset button:first-child').hide();
-                    }
+                    dialogWindow.modal('show');
                 }
             });
 

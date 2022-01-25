@@ -110,23 +110,23 @@
 
 <script>
     $(document).ready(function(){
-        initHelp();
         <#if confirmOverwrite>
         showConfirmOverwrite();
         </#if>
         var $registered = false;
 
-        $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='basic.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>"});
-        $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmDeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmUndeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+        $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+        $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary"});
+        $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+        $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+        $('.confirmDeletionFromIptOnly').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptOnly.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+        $('.confirmUndeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
 
-        $('.confirmReserveDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+        $('.confirmReserveDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmDeleteDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>"});
-        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
+        $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary"});
+        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'/></br></br><@s.text name='manage.overview.publishing.doi.summary'/></br></br><@s.text name='manage.overview.publishing.doi.confirm.end'/>", yesAnswer : "<@s.text name='basic.yes'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
 
         var showReport=false;
         $("#toggleReport").click(function() {
@@ -151,12 +151,7 @@
                 $(this).parent('form').submit();
             });
         });
-        $("#file").change(function() {
-            var usedFileName = $("#file").prop("value");
-            if(usedFileName != "") {
-                $("#add").attr("value", '<@s.text name="button.add"/>');
-            }
-        });
+
         $("#emlFile").change(function() {
             var usedFileName = $("#emlFile").prop("value");
             if(usedFileName != "") {
@@ -170,10 +165,54 @@
             $("#emlReplace").hide();
             $("#emlCancel").hide();
         });
+
+        $("#sourceType").change(function (e) {
+            var sourceType = this.options[e.target.selectedIndex].value;
+
+            if (sourceType === 'source-file') {
+                $("#url").hide();
+                $("#sourceName").hide();
+                $("#url").prop("value", "");
+                $("#file").show();
+                $("#clear").show();
+                $("#add").attr("value", '<@s.text name="button.add"/>');
+                $("#add").hide();
+            } else if (sourceType === 'source-url') {
+                $("#url").show();
+                $("#sourceName").show();
+                $("#file").hide();
+                $("#file").prop("value", "");
+                $("#clear").show();
+                $("#add").attr("value", '<@s.text name="button.add"/>');
+                $("#add").show();
+            } else {
+                $("#file").hide();
+                $("#sourceName").hide();
+                $("#file").prop("value", "");
+                $("#url").hide();
+                $("#url").prop("value", "");
+                $("#clear").hide();
+                $("#add").attr("value", '<@s.text name="button.connectDB"/>');
+                $("#add").show();
+            }
+        })
+
+        $("#file").change(function() {
+            var usedFileName = $("#file").prop("value");
+            if (usedFileName !== "") {
+                var addButton = $('#add');
+                addButton.attr("value", '<@s.text name="button.add"/>');
+                addButton.show();
+            }
+        });
+
         $("#clear").click(function(event) {
             event.preventDefault();
             $("#file").prop("value", "");
-            $("#add").attr("value", '<@s.text name="button.connectDB"/>');
+            $("#url").prop("value", "");
+            if ($("#file").is(":visible")) {
+                $("#add").hide();
+            }
         });
 
         $(function() {
@@ -181,44 +220,51 @@
         });
 
         function showConfirmOverwrite() {
-            var question='<p><@s.text name="manage.resource.addSource.confirm"/></p>';
-            $('#dialog').html(question);
-            $("#dialog").dialog({
-                'modal'     : true,
-                'title'		: '<@s.text name="basic.confirm"/>',
-                'buttons'   : {
-                    '<@s.text name="basic.yes"/>': function(){
-                        $(this).dialog("close");
-                        $("#add").click();
-                    },
-                    '<@s.text name="basic.no"/>' : function(){
-                        $(this).dialog("close");
-                        $("#cancel").click();
-                    }
-                },
-                // modal window fixed positioning to prevent page elements from changing position
-                create: function (event, ui) {
-                    $(event.target).parent().css('position', 'fixed');
-                },
-                resizeStop: function (event, ui) {
-                    var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
-                        (Math.floor(ui.position.top) - $(window).scrollTop())];
-                    $(event.target).parent().css('position', 'fixed');
-                    $(dlg).dialog('option', 'position', position);
-                }
+            var dialogWindow = $("#dialog");
+            var titleQuestion = '<@s.text name="basic.confirm"/>';
+
+            var question = <#if overwriteMessage?has_content>"${overwriteMessage}"<#else>"<@s.text name="manage.resource.addSource.sameName.confirm"/>"</#if>
+
+            var yesButtonText = '<@s.text name="basic.yes"/>';
+            var cancelButtonText = '<@s.text name="basic.no"/>';
+
+            // prepare html content for modal window
+            var content = '<div class="modal-dialog modal-confirm modal-dialog-centered">';
+            content += '<div class="modal-content">';
+
+            // header
+            content += '<div class="modal-header flex-column">';
+            content += '<div class="icon-box"><i class="confirm-danger-icon">!</i></div>'
+            content += '<h5 class="modal-title w-100" id="staticBackdropLabel">' + titleQuestion + '</h5>';
+            content += '<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>'
+            content += '</div>';
+
+            // body
+            content += '<div class="modal-body">';
+            content += '<p>' + question + '</p>';
+            content += '</div>'
+
+            // footer
+            content += '<div class="modal-footer justify-content-center">'
+            content += '<button id="cancel-button" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">' + cancelButtonText + '</button>';
+            content += '<button id="yes-button" type="button" class="btn btn-outline-gbif-primary">' + yesButtonText + '</button>';
+            content += '</div>';
+
+            content += '</div>';
+            content += '</div>';
+
+            // add content to window
+            dialogWindow.html(content);
+
+            $("#yes-button").on("click", function () {
+                $("#add").click()
             });
 
-            // add bootstrap design to modal's title, content and footer
-            var dialog = $('.ui-dialog');
-            dialog.addClass('modal-content');
-            dialog.find('.ui-dialog-titlebar').addClass('modal-header').find('.ui-dialog-titlebar-close').addClass('btn-close');
-            dialog.find('.ui-dialog-title').addClass('modal-title fw-bold').html('<@s.text name="basic.confirm"/>');
-            dialog.find('.ui-dialog-content').addClass('modal-body');
-            dialog.find('.ui-dialog-buttonpane').addClass('modal-footer');
+            $("#cancel-button").on("click", function () {
+                $("#canceloverwrite").click();
+            });
 
-            // add bootstrap design to modal buttons
-            $('.ui-dialog-buttonset button:first-child').addClass('btn btn-sm btn-outline-gbif-primary mx-2');
-            $('.ui-dialog-buttonset button:nth-child(2)').addClass('btn btn-sm btn-outline-secondary');
+            dialogWindow.modal('show');
         }
 
         // load a preview of the mapping in the modal window
@@ -263,7 +309,7 @@
 
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
                 <span class="resourceOverviewTitle"><@s.text name="manage.overview.title"/>: </span>
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </h5>
@@ -316,20 +362,20 @@
                                     <i class="bi bi-exclamation-triangle"></i>
                                 </button>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
                                         <@s.text name="button.delete"/>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
                                         <li>
                                             <form action="resource-delete.do" method='post'>
                                                 <input name="r" type="hidden" value="${resource.shortname}" />
-                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIptAndGbif"/>
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" name="delete" key="button.delete.fromIptAndGbif"/>
                                             </form>
                                         </li>
                                         <li>
                                             <form action="resource-deleteFromIpt.do" method='post'>
                                                 <input name="r" type="hidden" value="${resource.shortname}" />
-                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIpt"/>
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" name="delete" key="button.delete.fromIpt"/>
                                             </form>
                                         </li>
                                     </ul>
@@ -338,20 +384,20 @@
                             </div>
                         <#else>
                             <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
                                     <@s.text name="button.delete"/>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
                                     <li>
                                         <form action="resource-delete.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" name="delete" key="button.delete.fromIptAndGbif"/>
                                         </form>
                                     </li>
                                     <li>
                                         <form action="resource-deleteFromIpt.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion w-100" name="delete" key="button.delete.fromIpt"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" name="delete" key="button.delete.fromIpt"/>
                                         </form>
                                     </li>
                                 </ul>
@@ -361,7 +407,7 @@
                 </div>
             </div>
 
-            <div id="dialog" class="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="display: none"></div>
+            <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
         </div>
 
         <!-- when resource is of type metadata-only, there is no need to show source data and mapping sections -->
@@ -373,7 +419,7 @@
         </#if>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="publish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
                 <#assign overviewTitleInfo>
                     <#if resource.coreType?has_content && resource.coreType==metadataType>
                         <@s.text name="manage.overview.published.description.metadataOnly"/>
@@ -595,7 +641,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="autopublish">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
                 <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                 <@s.text name="manage.overview.autopublish.title"/>
             </h5>
@@ -603,7 +649,7 @@
             <div class="row">
                 <div class="col-lg-9 order-lg-last">
                     <div class="mx-md-4 mx-2">
-                        <p class="mb-0">
+                        <p>
                             <#if resource.usesAutoPublishing()>
                                 <@s.text name="manage.overview.autopublish.intro.activated"/>
                             <#else>
@@ -611,9 +657,9 @@
                             </#if>
                         </p>
 
-                        <div class="details table-responsive">
-                            <table class="table table-sm table-borderless text-smaller">
-                                <#if resource.usesAutoPublishing()>
+                        <#if resource.usesAutoPublishing()>
+                            <div class="details table-responsive mt-3">
+                                <table class="table table-sm table-borderless text-smaller">
                                     <tr>
                                         <th class="col-4"><@s.text name='manage.overview.autopublish.publication.frequency'/></th>
                                         <td><@s.text name="${autoPublishFrequencies.get(resource.updateFrequency.identifier)}"/></td>
@@ -622,9 +668,9 @@
                                         <th><@s.text name='manage.overview.autopublish.publication.next.date'/></th>
                                         <td>${resource.nextPublished?datetime?string.long_short}</td>
                                     </tr>
-                                </#if>
-                            </table>
-                        </div>
+                                </table>
+                            </div>
+                        </#if>
                     </div>
                 </div>
 
@@ -649,7 +695,7 @@
         </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="visibility">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
                 <#assign visibilityTitleInfo>
                     <@s.text name='manage.overview.visibility.description'/>
                     <br><br>
@@ -667,21 +713,23 @@
 
                             <p>
                                 <#if resource.status=="PRIVATE">
-                                    <span class="badge rounded-pill bg-danger">
+                                    <span class="badge rounded-pill bg-gbif-danger">
                                         <@s.text name="resource.status.${resource.status?lower_case}"/>
                                     </span>
                                 <#else>
-                                    <span class="badge rounded-pill bg-success">
+                                    <span class="badge rounded-pill bg-gbif-primary">
                                         <@s.text name="resource.status.${resource.status?lower_case}"/>
                                     </span>
                                 </#if>
                                 <@s.text name="manage.resource.status.intro.${resource.status?lower_case}"/>
                             </p>
 
-                            <div class="text-gbif-danger">
-                                <i class="bi bi-exclamation-triangle"></i>
-                                <em><@s.text name="manage.overview.published.testmode.warning"/></em>
-                            </div>
+                            <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
+                                <p class="text-gbif-danger">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <em><@s.text name="manage.overview.published.testmode.warning"/></em>
+                                </p>
+                            </#if>
 
                             <#if resource.status=="REGISTERED" && resource.key??>
                                 <div class="details table-responsive">
@@ -699,7 +747,18 @@
                                             </tr>
                                             <tr>
                                                 <th><@s.text name="manage.overview.visibility.organisation.contact"/></th>
-                                                <td>${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}</td>
+                                                <td>
+                                                    <#-- Check if name or email missing -->
+                                                    <#if resource.organisation.primaryContactName?? && resource.organisation.primaryContactEmail??>
+                                                        ${resource.organisation.primaryContactName!}, ${resource.organisation.primaryContactEmail!}
+                                                    <#elseif resource.organisation.primaryContactName??>
+                                                        ${resource.organisation.primaryContactName!}
+                                                    <#elseif resource.organisation.primaryContactEmail??>
+                                                        ${resource.organisation.primaryContactEmail!}
+                                                    <#else>
+                                                        -
+                                                    </#if>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th><@s.text name="manage.overview.visibility.endorsing.node"/></th>
@@ -719,7 +778,7 @@
                         <#assign actionMethod>makePublic</#assign>
                     </#if>
 
-                    <div class="mx-md-4 mx-2 d-flex">
+                    <div class="mx-md-4 mx-2 d-flex flex-wrap">
                         <form class="me-1" action='resource-${actionMethod}.do' method='post'>
                             <input name="r" type="hidden" value="${resource.shortname}"/>
                             <#if resource.status=="PUBLIC">
@@ -788,8 +847,68 @@
             </div>
         </div>
 
+        <#if resource.key?has_content>
+            <div class="my-3 p-3 bg-body rounded shadow-sm" id="networks">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
+                    <@popoverPropertyInfo "manage.overview.networks.description"/>
+                    <@s.text name="manage.overview.networks.title"/>
+                </h5>
+
+                <div class="row">
+                    <div class="col-lg-9 order-lg-last">
+                        <div class="mx-md-4 mx-2">
+                            <p>
+                                <@s.text name="manage.overview.networks.intro"/>
+                            </p>
+
+                            <#if (resourceNetworks?size>0)>
+                                <div class="details table-responsive">
+                                    <table class="table table-sm table-borderless text-smaller">
+                                        <#list resourceNetworks as n>
+                                            <tr>
+                                                <th class="col-4">
+                                                    ${n.title!""}
+                                                </th>
+                                                <td>
+                                                    <a href="${cfg.portalUrl}/network/${n.key}" target="_blank">${n.key}</a>&nbsp;
+                                                </td>
+                                                <td class="d-flex justify-content-end">
+                                                    <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key}">
+                                                        <@s.text name='button.delete'/>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </#list>
+                                    </table>
+                                </div>
+                            <#else>
+                                <@s.text name="manage.overview.networks.no.data"/>
+                            </#if>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 border-lg-right">
+                        <#if (potentialNetworks?size>0)>
+                            <div class="mx-md-4 mx-2">
+                                <form action='resource-addNetwork.do' method='post'>
+                                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                                    <select name="id" class="form-select form-select-sm my-1" id="network" size="1">
+                                        <option value=""></option>
+                                        <#list potentialNetworks?sort_by("title") as n>
+                                            <option value="${n.key}">${n.title}</option>
+                                        </#list>
+                                    </select>
+                                    <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
+                                </form>
+                            </div>
+                        </#if>
+                    </div>
+                </div>
+            </div>
+        </#if>
+
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="managers">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
                 <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                 <@s.text name="manage.overview.resource.managers"/>
             </h5>

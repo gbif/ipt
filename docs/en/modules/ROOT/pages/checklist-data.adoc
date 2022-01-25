@@ -21,17 +21,17 @@ link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[imag
 
 Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}.xml[list].
 
-==== Required DwC fields
+=== Required DwC fields
 
-* http://rs.tdwg.org/dwc/terms/#taxonID[taxonID]
-* http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]
-* http://rs.tdwg.org/dwc/terms/#taxonRank[taxonRank]
+* https://dwc.tdwg.org/terms/#dwc:taxonID[taxonID]
+* https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]
+* https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank]
 
 === Recommended DwC fields
 
-* http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] - and other higher taxonomy if possible
-* http://rs.tdwg.org/dwc/terms/#parentNameUsageID[parentNameUsageID] - in situations where a taxonomy is meant to be published
-* http://rs.tdwg.org/dwc/terms/#acceptedNameUsageID[acceptedNameUsageID] - in situations where a taxonomy is meant to be published
+* https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible
+* https://dwc.tdwg.org/terms/#dwc:parentNameUsageID[parentNameUsageID] - in situations where a taxonomy is meant to be published
+* https://dwc.tdwg.org/terms/#dwc:acceptedNameUsageID[acceptedNameUsageID] - in situations where a taxonomy is meant to be published
 
 === Exemplar datasets
 
@@ -49,4 +49,4 @@ Populate it and upload it to the IPT. Try to augment it with as many http://rs.t
 
 ==== Q. *Can I update the https://doi.org/10.15468/39omei[GBIF Backbone Taxonomy] with names from my checklist?*
 
-*A.* Yes. To do so, you must publish your checklist, make it publicly available online under a GBIF-supported license (CC0, CC-BY, CC-BY-NC) and register it with GBIF. GBIF can then manually review it to determine if it is a suitable backbone source, e.g. by looking at how its names overlap with the backbone. Ideally the checklist will provide at least a minimal classification like a http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] and http://rs.tdwg.org/dwc/terms/#family[family], be of high data quality meaning it has few name usage issues, include http://rs.tdwg.org/dwc/terms/#scientificNameAuthorship[scientificNameAuthorship] of names, supplying the http://rs.tdwg.org/dwc/terms/#namePublishedIn[namePublishedIn] reference, etc.
+*A.* Yes. To do so, you must publish your checklist, make it publicly available online under a GBIF-supported license (CC0, CC-BY, CC-BY-NC) and register it with GBIF. GBIF can then manually review it to determine if it is a suitable backbone source, e.g. by looking at how its names overlap with the backbone. Ideally the checklist will provide at least a minimal classification like a https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] and https://dwc.tdwg.org/terms/#dwc:family[family], be of high data quality meaning it has few name usage issues, include https://dwc.tdwg.org/terms/#dwc:scientificNameAuthorship[scientificNameAuthorship] of names, supplying the https://dwc.tdwg.org/terms/#dwc:namePublishedIn[namePublishedIn] reference, etc.

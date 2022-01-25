@@ -7,8 +7,6 @@
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script>
         $(document).ready(function () {
-            initHelp();
-
             $("#buttonUpload").click(function () {
                 return ajaxFileUpload();
             });
@@ -56,123 +54,151 @@
                 return false;
             }
 
+            $('#metadata-section').change(function () {
+                var metadataSection = $('#metadata-section').find(':selected').val()
+                $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
+            });
+
         });
     </script>
-    <#assign auxTopNavbar=true />
-    <#assign auxTopNavbarPage = "metadata" />
+    <#assign currentMetadataPage = "additional"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <main class="container">
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+        <div class="container-fluid bg-body border-bottom">
+            <div class="container pt-2">
+                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+            </div>
 
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+            <div class="container p-3">
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
-                <@s.text name='manage.metadata.additional.title'/>:
-                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-            </h5>
-
-            <p class="mx-md-4 mx-2 mb-0">
-                <@s.text name='manage.metadata.additional.intro'/>
-            </p>
-
-            <!-- Resource Logo -->
-            <div id="logofields" class="row g-3 mx-md-3 mx-1 pb-1 mt-1">
-                <div class="col-lg-6">
-                    <#if eml.dateStamp??>
-                        <@input name="dateStamp" value='${eml.dateStamp?date?string("yyyy-MM-dd")}' i18nkey="eml.dateStamp" help="i18n" disabled=true />
-                    <#else>
-                        <@input name="dateStamp" value="" i18nkey="eml.dateStamp" help="i18n" disabled=true />
-                    </#if>
+                <div class="text-center">
+                    <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                        <@s.text name='manage.metadata.additional.title'/>
+                    </h5>
                 </div>
 
-                <div class="col-lg-6">
-                    <#if eml.pubDate??>
-                        <@input name="eml.pubDate" value='${eml.pubDate?date?string("yyyy-MM-dd")}' i18nkey="eml.pubDate" help="i18n" disabled=true />
-                    <#else>
-                        <@input name="eml.pubDate" value="" i18nkey="eml.pubDate" help="i18n" disabled=true />
-                    </#if>
+                <div class="text-center fs-smaller">
+                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </div>
+            </div>
+        </div>
 
-                <div class="col-lg-9">
-                    <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n" type="url" />
-                    <@s.file cssClass="form-control my-1" name="file"/>
-                    <button class="button btn btn-outline-gbif-primary" id="buttonUpload">
-                        <@s.text name="button.upload"/>
-                    </button>
-                </div>
+        <#include "metadata_section_select.ftl"/>
 
-                <div class="col-lg-3 d-flex justify-content-start align-items-center">
-                    <div id="resourcelogo">
-                        <#if resource.eml.logoUrl?has_content>
-                            <img src="${resource.eml.logoUrl}" />
-                        </#if>
+        <div class="container-fluid bg-body">
+            <div class="container bd-layout">
+
+                <main class="bd-main bd-main-right">
+                    <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                        <#include "eml_sidebar.ftl"/>
                     </div>
-                </div>
-            </div>
 
-            <div class="row g-3 mx-md-3 mx-1 pb-3 mt-1">
-                <!-- Purpose -->
-                <div>
-                    <@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
-                </div>
+                    <div class="bd-content ps-lg-4">
+                        <div class="my-md-3 p-3">
+                            <p class="mb-0">
+                                <@s.text name='manage.metadata.additional.intro'/>
+                            </p>
 
-                <!-- Maintenance Update Frequency -->
-                <div>
-                    <@text name="eml.updateFrequencyDescription" i18nkey="eml.updateFrequencyDescription" help="i18n" />
-                </div>
+                            <!-- Resource Logo -->
+                            <div id="logofields" class="row g-3 pb-1 mt-1">
+                                <div class="col-lg-6">
+                                    <#if eml.dateStamp??>
+                                        <@input name="dateStamp" value='${eml.dateStamp?date?string("yyyy-MM-dd")}' i18nkey="eml.dateStamp" help="i18n" disabled=true />
+                                    <#else>
+                                        <@input name="dateStamp" value="" i18nkey="eml.dateStamp" help="i18n" disabled=true />
+                                    </#if>
+                                </div>
 
-                <!-- Additional info -->
-                <div>
-                    <@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
-                </div>
-            </div>
+                                <div class="col-lg-6">
+                                    <#if eml.pubDate??>
+                                        <@input name="eml.pubDate" value='${eml.pubDate?date?string("yyyy-MM-dd")}' i18nkey="eml.pubDate" help="i18n" disabled=true />
+                                    <#else>
+                                        <@input name="eml.pubDate" value="" i18nkey="eml.pubDate" help="i18n" disabled=true />
+                                    </#if>
+                                </div>
 
-        </div>
+                                <div class="col-lg-9">
+                                    <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n" type="url" />
+                                    <@s.file cssClass="form-control my-1" name="file"/>
+                                    <button class="button btn btn-outline-gbif-primary" id="buttonUpload">
+                                        <@s.text name="button.upload"/>
+                                    </button>
+                                </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <!-- Alternative identifiers -->
-            <div class="listBlock">
-                <@textinline name="manage.metadata.alternateIdentifiers.title" help="i18n"/>
-                <div id="items">
-                    <#list eml.alternateIdentifiers as item>
-                        <div id="item-${item_index}" class="item row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1">
-                            <div class="mt-1 d-flex justify-content-end">
-                                <a id="removeLink-${item_index}" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
+                                <div class="col-lg-3 d-flex justify-content-start align-items-center">
+                                    <div id="resourcelogo">
+                                        <#if resource.eml.logoUrl?has_content>
+                                            <img src="${resource.eml.logoUrl}" />
+                                        </#if>
+                                    </div>
+                                </div>
                             </div>
-                            <@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
+
+                            <div class="row g-3 mt-1">
+                                <!-- Purpose -->
+                                <div>
+                                    <@text name="eml.purpose" i18nkey="eml.purpose" help="i18n"/>
+                                </div>
+
+                                <!-- Maintenance Update Frequency -->
+                                <div>
+                                    <@text name="eml.updateFrequencyDescription" i18nkey="eml.updateFrequencyDescription" help="i18n" />
+                                </div>
+
+                                <!-- Additional info -->
+                                <div>
+                                    <@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
+                                </div>
+                            </div>
+
                         </div>
-                    </#list>
-                </div>
 
-                <div class="addNew col-12 mx-md-4 mx-2 mt-1">
-                    <a id="plus" href="">[ <@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
-                </div>
+                        <div class="my-md-3 p-3">
+                            <!-- Alternative identifiers -->
+                            <div class="listBlock">
+                                <@textinline name="manage.metadata.alternateIdentifiers.title" help="i18n"/>
+                                <div id="items">
+                                    <#list eml.alternateIdentifiers as item>
+                                        <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
+                                            <div class="mt-1 d-flex justify-content-end">
+                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                            </div>
+                                            <@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
+                                        </div>
+                                    </#list>
+                                </div>
 
-                <div id='buttons' class="buttons col-12 mx-md-4 mx-2 mt-3">
-                    <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                    <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel"/>
-                </div>
+                                <div class="addNew col-12 mt-1">
+                                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                </div>
 
+                                <div id='buttons' class="buttons col-12 mt-3">
+                                    <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
+                                    <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
+                                </div>
+
+                            </div>
+
+                            <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
+                            <input id="r" name="r" type="hidden" value="${resource.shortname}" />
+                            <input id="validate" name="validate" type="hidden" value="false" />
+
+                            <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
+                                <div class="mt-1 d-flex justify-content-end">
+                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                </div>
+                                <@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
+                            </div>
+
+                            <img id="baseimg" src="${baseURL}/logo.do?r=${resource.shortname}" style="display:none;"/>
+                        </div>
+                    </div>
+                </main>
             </div>
-
-            <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
-            <input id="r" name="r" type="hidden" value="${resource.shortname}" />
-            <input id="validate" name="validate" type="hidden" value="false" />
-
-            <div id="baseItem" class="item clearfix row g-3 mx-md-3 mx-1 border-bottom pb-3 mt-1" style="display:none;">
-                <div class="mt-1 d-flex justify-content-end">
-                    <a id="removeLink" class="removeLink" href="">[ <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/> ]</a>
-                </div>
-                <@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
-            </div>
-
-            <img id="baseimg" src="${baseURL}/logo.do?r=${resource.shortname}" style="display:none;"/>
         </div>
-    </main>
-
     </form>
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

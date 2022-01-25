@@ -1,9 +1,17 @@
 /*
- * Copyright 2009 GBIF. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.gbif.ipt.model;
 
@@ -11,12 +19,10 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import com.google.common.base.Objects;
 import org.apache.commons.lang3.builder.CompareToBuilder;
-
-import static com.google.common.base.Objects.equal;
 
 /**
  * A single, identifiable concept in a vocabulary. For example "DE" is an identifier for the concept of Germany, while
@@ -34,8 +40,8 @@ public class VocabularyConcept implements Comparable, Serializable {
   private String uri; // a URI denoting the concept, mostly used in rdf
   private URL link; // web link to some more human documentation
   private int order = -1; // to maintain any custom order not based on a natural concept property
-  private Set<VocabularyTerm> alternativeTerms = new HashSet<VocabularyTerm>();
-  private Set<VocabularyTerm> preferredTerms = new HashSet<VocabularyTerm>();
+  private Set<VocabularyTerm> alternativeTerms = new HashSet<>();
+  private Set<VocabularyTerm> preferredTerms = new HashSet<>();
 
   public void addAlternativeTerm(VocabularyTerm term) {
     alternativeTerms.add(term);
@@ -45,6 +51,7 @@ public class VocabularyConcept implements Comparable, Serializable {
     preferredTerms.add(term);
   }
 
+  @Override
   public int compareTo(Object object) {
     VocabularyConcept myClass = (VocabularyConcept) object;
     return new CompareToBuilder().append(this.vocabulary, myClass.vocabulary).append(this.order, myClass.order)
@@ -60,7 +67,7 @@ public class VocabularyConcept implements Comparable, Serializable {
       return false;
     }
     VocabularyConcept o = (VocabularyConcept) other;
-    return equal(vocabulary, o.vocabulary) && equal(identifier, o.identifier) && equal(uri, o.uri);
+    return Objects.equals(vocabulary, o.vocabulary) && Objects.equals(identifier, o.identifier) && Objects.equals(uri, o.uri);
   }
 
   public Set<VocabularyTerm> getAlternativeTerms() {
@@ -106,7 +113,7 @@ public class VocabularyConcept implements Comparable, Serializable {
    * @return a set of all terms, preferred or alternative, for this concept
    */
   public Set<VocabularyTerm> getTerms() {
-    Set<VocabularyTerm> t = new HashSet<VocabularyTerm>(preferredTerms);
+    Set<VocabularyTerm> t = new HashSet<>(preferredTerms);
     t.addAll(alternativeTerms);
     return t;
   }
@@ -121,7 +128,7 @@ public class VocabularyConcept implements Comparable, Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(vocabulary, identifier, uri);
+    return Objects.hash(vocabulary, identifier, uri);
   }
 
   public void setAlternativeTerms(Set<VocabularyTerm> alternativeTerms) {

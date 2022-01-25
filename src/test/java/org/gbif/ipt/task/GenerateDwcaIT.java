@@ -1,14 +1,25 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.task;
 
-import com.google.common.collect.Maps;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.servlet.ServletModule;
-import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -44,30 +55,40 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.HttpClient;
+import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
-import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.properties.PropertiesUtil;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import javax.validation.constraints.NotNull;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import javax.validation.constraints.NotNull;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.servlet.ServletModule;
+import com.google.inject.struts2.Struts2GuicePluginModule;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -110,7 +131,7 @@ public class GenerateDwcaIT {
     }
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void init() throws IOException {
     // load database account username and password from the properties file
     Properties p = PropertiesUtil.loadProperties("testdb.properties");
@@ -119,7 +140,7 @@ public class GenerateDwcaIT {
     dbCfg.setPassword(p.getProperty("password"));
 
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
-    Map<String, String> basisOfRecords = Maps.newHashMap();
+    Map<String, String> basisOfRecords = new HashMap<>();
     basisOfRecords.put("preservedspecimen", "Preserved Specimen");
     basisOfRecords.put("fossilspecimen", "Fossil Specimen");
     basisOfRecords.put("livingspecimen", "Living Specimen");
@@ -133,7 +154,7 @@ public class GenerateDwcaIT {
       .thenReturn(basisOfRecords);
   }
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     resourceDir = FileUtils.createTempDir();
 
@@ -189,21 +210,24 @@ public class GenerateDwcaIT {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile core = archive.getCore();
+    ClosableIterator<Record> iterator = core.iterator();
+
     // 1st record
-    String[] row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("1", row[2]);
-    assertEquals("", row[3]);
-    assertEquals("occurrence", row[4]);
-    reader.close();
+    Record record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("1", record.column(2));
+    assertNull(record.column(3));
+    assertEquals("occurrence", record.column(4));
+
+    iterator.close();
   }
 
   /**
@@ -238,7 +262,7 @@ public class GenerateDwcaIT {
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);

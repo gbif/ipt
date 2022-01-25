@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.dwc.terms.DcTerm;
@@ -22,43 +37,49 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.google.common.io.Files;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.junit.Before;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("HttpUrlsUsage")
 public class ExtensionManagerImplTest {
 
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
@@ -67,7 +88,7 @@ public class ExtensionManagerImplTest {
   private ResourceManager resourceManager;
   private AppConfig appConfig;
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     resourceManager = mock(ResourceManager.class);
     DataDir mockDataDir = mock(DataDir.class);
@@ -80,25 +101,29 @@ public class ExtensionManagerImplTest {
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
 
     // construct ExtensionFactory using injected parameters
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
 
     // construct mock RegistryManager:
     // mock getExtensions() response from Registry with local test resource (list of extensions from extensions.json)
-    HttpUtil mockHttpUtil = mock(HttpUtil.class);
-    HttpUtil.Response mockResponse = mock(HttpUtil.Response.class);
-    mockResponse.content = IOUtils
-      .toString(ExtensionManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"), "UTF-8");
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    HttpClient mockHttpUtil = mock(HttpClient.class);
+    HttpResponse mockResponse = mock(HttpResponse.class);
+    ExtendedResponse extResponse = new ExtendedResponse(mockResponse);
+
+    extResponse.setContent(IOUtils
+      .toString(
+          Objects.requireNonNull(ExtensionManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json")),
+          StandardCharsets.UTF_8));
+    when(mockHttpUtil.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
       new RegistryManagerImpl(appConfig, mockDataDir, mockHttpUtil, saxf, warnings, mockSimpleTextProvider,
         mockRegistrationManager, resourceManager);
 
-    File myTmpDir = Files.createTempDir();
+    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
     assertTrue(myTmpDir.isDirectory());
 
     // copy occurrence core extension file to temporary directory
@@ -206,10 +231,9 @@ public class ExtensionManagerImplTest {
   /**
    * Test when IPT is configured with extra core type not matching a registered extension.
    */
-  @Test(expected = InvalidConfigException.class)
-  public void testInstallCoreTypesBadCoreConfiguration() throws IOException, ParserConfigurationException,
-    SAXException {
-    File tmpDir = Files.createTempDir();
+  @Test
+  public void testInstallCoreTypesBadCoreConfiguration() throws Exception {
+    File tmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
     File dataDirLocation = new File(tmpDir, "datadir.location");
     File testDataDir = FileUtils.getClasspathFile("dataDir");
     org.apache.commons.io.FileUtils.copyDirectoryToDirectory(testDataDir, tmpDir); // copy testDataDir to tmp location
@@ -220,7 +244,7 @@ public class ExtensionManagerImplTest {
     builtDataDir.setDataDir(dataDir);
     appConfig = new AppConfig(builtDataDir);
     // trigger exception
-    extensionManager.installCoreTypes();
+    assertThrows(InvalidConfigException.class, () -> extensionManager.installCoreTypes());
   }
 
   /**
@@ -255,7 +279,7 @@ public class ExtensionManagerImplTest {
     Resource r = getTestResource(ext);
 
     // populate list of resources, and mock resourceManager.list()
-    List<Resource> resources = Lists.newArrayList();
+    List<Resource> resources = new ArrayList<>();
     resources.add(r);
     when(resourceManager.list()).thenReturn(resources);
 
@@ -270,16 +294,16 @@ public class ExtensionManagerImplTest {
     assertNotNull(migrated.getExtension().getIssued());
     // test for example index 3 (rights term should have been replaced by dc:license)
     PropertyMapping licenseMapping = migrated.getField(DcTerm.license.qualifiedName());
-    assertTrue(licenseMapping.getIndex().compareTo(3) == 0);
+    assertEquals(0, licenseMapping.getIndex().compareTo(3));
   }
 
   @Test
   public void testMigrateResourceToNewExtensionVersion() throws IOException {
     ExtensionManagerImpl manager =
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
-        mock(ResourceManager.class), mock(HttpUtil.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
+        mock(ResourceManager.class), mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(RegistryManager.class));
-    File myTmpDir = Files.createTempDir();
+    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
 
     // load current (installed) version of Occurrence extension
     File occCore = FileUtils.getClasspathFile("extensions/dwc_occurrence.xml");
@@ -305,15 +329,15 @@ public class ExtensionManagerImplTest {
 
     // index 0 (id term should have stayed the same)
     PropertyMapping verifiedIdMapping = migrated.getField(DwcTerm.occurrenceID.qualifiedName());
-    assertTrue(verifiedIdMapping.getIndex().compareTo(0) == 0);
+    assertEquals(0, verifiedIdMapping.getIndex().compareTo(0));
 
     // index 1 (individualID term should have been replaced by dwc:organismID)
     PropertyMapping organismIdMapping = migrated.getField(DwcTerm.organismID.qualifiedName());
-    assertTrue(organismIdMapping.getIndex().compareTo(1) == 0);
+    assertEquals(0, organismIdMapping.getIndex().compareTo(1));
 
     // index 3 (rights term should have been replaced by dc:license)
     PropertyMapping licenseMapping = migrated.getField(DcTerm.license.qualifiedName());
-    assertTrue(licenseMapping.getIndex().compareTo(3) == 0);
+    assertEquals(0, licenseMapping.getIndex().compareTo(3));
 
     // index 2 (formerly dc:source) and index 4 (formerly dwc:occurrenceDetails) could both be migrated to dc:references
     // only one property mapping to dc:references can exist though
@@ -329,7 +353,7 @@ public class ExtensionManagerImplTest {
     r.setShortname("ants");
     ExtensionMapping em = new ExtensionMapping();
     em.setExtension(extension);
-    Set<PropertyMapping> propertyMappings = Sets.newHashSet();
+    Set<PropertyMapping> propertyMappings = new HashSet<>();
 
     // index 0 (id term)
     PropertyMapping idMapping = new PropertyMapping();
@@ -381,9 +405,9 @@ public class ExtensionManagerImplTest {
   public void testGetRedundantGroups() throws IOException {
     ExtensionManagerImpl manager =
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
-        mock(ResourceManager.class), mock(HttpUtil.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
+        mock(ResourceManager.class), mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(RegistryManager.class));
-    File myTmpDir = Files.createTempDir();
+    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
 
     // load Occurrence extension
     File occ = FileUtils.getClasspathFile("extensions/dwc_occurrence.xml");

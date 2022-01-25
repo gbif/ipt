@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -15,14 +30,17 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +51,7 @@ public class SourceManagerImplTest {
   private TextFileSource src1;
   private SqlSource src2;
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     File ddFile = File.createTempFile("distribution", ".txt");
     File logFile = File.createTempFile("distribution", "log");
@@ -77,7 +95,7 @@ public class SourceManagerImplTest {
     assertEquals(1, resource.getSources().size());
   }
 
-  @Test (expected=AlreadyExistingException.class)
+  @Test
   public void testAddDuplicateSource() throws AlreadyExistingException {
     resource.addSource(src1, false);
     resource.addSource(src2, false);
@@ -88,16 +106,17 @@ public class SourceManagerImplTest {
     src3.setName("Identifications");
 
     // expected to throw AlreadyExistingException
-    resource.addSource(src3, false);
-  }
-
-  @Test (expected=InvalidFilenameException.class)
-  public void testAddSourceWithInvalidFilename() throws IOException, InvalidFilenameException, ImportException {
-    manager.add(resource, File.createTempFile("taxøn", "txt"), "taxøn.txt");
+    assertThrows(AlreadyExistingException.class, () -> resource.addSource(src3, false));
   }
 
   @Test
-  public void testAnalyze() throws ImportException, IOException, InvalidFilenameException {
+  public void testAddSourceWithInvalidFilename() {
+    assertThrows(InvalidFilenameException.class,
+        () -> manager.add(resource, File.createTempFile("taxøn", "txt"), "taxøn.txt"));
+  }
+
+  @Test
+  public void testAnalyze() throws Exception {
     // analyze individual source file with no header row, and 77 real rows of source data
     File srcFile = FileUtils.getClasspathFile("data/distribution.txt");
     // add source file to test Resource
@@ -116,16 +135,17 @@ public class SourceManagerImplTest {
     assertEquals(76, fileSource.getRows());
     assertEquals(2018, fileSource.getFileSize());
     assertTrue(fileSource.isReadable());
-    assertEquals(null, ((TextFileSource) fileSource).getFieldsEnclosedBy());
-    assertEquals("\t", ((TextFileSource) fileSource).getFieldsTerminatedBy());
+    assertNull(fileSource.getFieldsEnclosedBy());
+    assertEquals("\t", fileSource.getFieldsTerminatedBy());
   }
 
-  @Test(expected = ImportException.class)
-  public void testAnalyzeEmptyFile() throws InvalidFilenameException, ImportException {
+  @Disabled("dwca-io does not validate this anymore")
+  @Test
+  public void testAnalyzeEmptyFile() {
     // analyze individual source file absolutely no data inside at all
     File srcFile = FileUtils.getClasspathFile("data/image_empty.txt");
     // add source file to test Resource
-    manager.add(resource, srcFile, srcFile.getName());
+    assertThrows(ImportException.class, () -> manager.add(resource, srcFile, srcFile.getName()));
   }
 
   @Test

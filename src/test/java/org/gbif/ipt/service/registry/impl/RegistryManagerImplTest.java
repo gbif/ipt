@@ -1,16 +1,18 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.api.model.common.DOI;
@@ -30,7 +32,8 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
@@ -38,27 +41,28 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
-import org.gbif.utils.HttpUtil.Response;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -73,14 +77,14 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   private ConfigWarnings mockConfigWarnings;
   private SimpleTextProvider mockSimpleTextProvider;
   private RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
-  private ResourceManager mockResourceManager = mock(ResourceManager.class);
-  private HttpUtil mockHttpUtil;
-  private HttpUtil.Response mockResponse;
+  private final ResourceManager mockResourceManager = mock(ResourceManager.class);
+  private HttpClient mockHttpClient;
+  private ExtendedResponse extResponse;
 
-  @Before
+  @BeforeEach
   public void setup() throws SAXException, ParserConfigurationException {
-    mockHttpUtil = mock(HttpUtil.class);
-    mockResponse = mock(HttpUtil.Response.class);
+    mockHttpClient = mock(HttpClient.class);
+    extResponse = new ExtendedResponse(mock(HttpResponse.class));
     mockAppConfig = mock(AppConfig.class);
     mockDataDir = mock(DataDir.class);
     mockSAXParserFactory = mock(SAXParserFactory.class);
@@ -92,13 +96,15 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   @Test
   public void testGetExtensions() throws SAXException, ParserConfigurationException, IOException, URISyntaxException {
     // mock response from Registry with local test resource
-    mockResponse.content =
-      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions.json"), "UTF-8");
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    extResponse.setContent(
+      IOUtils.toString(
+          Objects.requireNonNull(RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions.json")),
+          StandardCharsets.UTF_8));
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Extension> extensions = manager.getExtensions();
@@ -106,7 +112,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     assertEquals(22, extensions.size());
 
     // a total of 1 Extensions with rowType Occurrence are expected
-    List<Extension> occurrenceCoreExtensions = Lists.newArrayList();
+    List<Extension> occurrenceCoreExtensions = new ArrayList<>();
     for (Extension x: extensions) {
       if (x.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
         occurrenceCoreExtensions.add(x);
@@ -118,13 +124,15 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   @Test
   public void testGetSandboxExtensions() throws SAXException, ParserConfigurationException, IOException, URISyntaxException {
     // mock response from Registry with local test resource
-    mockResponse.content =
-      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json"), "UTF-8");
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    extResponse.setContent(
+      IOUtils.toString(
+          Objects.requireNonNull(RegistryManagerImplTest.class.getResourceAsStream("/responses/extensions_sandbox.json")),
+          StandardCharsets.UTF_8));
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Extension> extensions = manager.getExtensions();
@@ -132,7 +140,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     assertEquals(52, extensions.size());
 
     // a total of 3 Extensions with rowType Occurrence are expected
-    List<Extension> occurrenceCoreExtensions = Lists.newArrayList();
+    List<Extension> occurrenceCoreExtensions = new ArrayList<>();
     for (Extension x: extensions) {
       if (x.getRowType().equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
         occurrenceCoreExtensions.add(x);
@@ -146,11 +154,11 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock response from Registry as ClassCastException
     ConnectException connectException = new ConnectException("ConnectException occurred!");
-    when(mockHttpUtil.get(anyString())).thenThrow(connectException);
+    when(mockHttpClient.get(anyString())).thenThrow(connectException);
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     // getExtensions() throws a RegistryException of type PROXY
@@ -165,12 +173,12 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   public void testGetExtensionsEmptyContentThrowsRegistryException()
     throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock response from Registry as empty content
-    mockResponse.content = null;
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    extResponse.setContent(null);
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     // getExtensions() throws a RegistryException of type BAD_RESPONSE
@@ -185,11 +193,11 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   public void testGetExtensionsBadURLThrowsRegistryException()
     throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock response HttpUtil as URISyntaxException
-    when(mockHttpUtil.get(anyString())).thenThrow(new URISyntaxException("httpgoog.c", "Wrong syntax!"));
+    when(mockHttpClient.get(anyString())).thenThrow(new URISyntaxException("httpgoog.c", "Wrong syntax!"));
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     // getExtensions() throws a RegistryException of type BAD_REQUEST
@@ -204,14 +212,16 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   @Test
   public void testGetVocabularies() throws SAXException, ParserConfigurationException, IOException, URISyntaxException {
     // mock response from Registry with local test resource
-    mockResponse.content =
-      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/thesauri.json"), "UTF-8");
+    extResponse.setContent(
+      IOUtils.toString(
+          Objects.requireNonNull(RegistryManagerImplTest.class.getResourceAsStream("/responses/thesauri.json")),
+          StandardCharsets.UTF_8));
 
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Vocabulary> vocabularies = manager.getVocabularies();
@@ -221,21 +231,23 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   @Test
   public void testGetVocabulariesSandbox() throws SAXException, ParserConfigurationException, IOException, URISyntaxException {
     // mock response from Registry with local test resource
-    mockResponse.content =
-      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json"), "UTF-8");
+    extResponse.setContent(
+      IOUtils.toString(
+          Objects.requireNonNull(RegistryManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json")),
+          StandardCharsets.UTF_8));
 
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Vocabulary> vocabularies = manager.getVocabularies();
     assertEquals(65, vocabularies.size());
 
     // a total of 2 Vocabularies for QuantityType
-    List<Vocabulary> quantityTypeVocabularies = Lists.newArrayList();
+    List<Vocabulary> quantityTypeVocabularies = new ArrayList<>();
     for (Vocabulary v: vocabularies) {
       if (v.getUriString().contains("quantityType")) {
         quantityTypeVocabularies.add(v);
@@ -248,31 +260,36 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   public void testGetOrganisationsResources()
     throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock response from Registry with local test resource
-    mockResponse.content = IOUtils
-      .toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/organisations_resources.json"), "UTF-8");
+    extResponse.setContent(
+        IOUtils.toString(
+            Objects.requireNonNull(RegistryManagerImplTest.class.getResourceAsStream("/responses/organisations_resources.json")),
+          StandardCharsets.UTF_8));
 
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     List<Resource> resources = manager.getOrganisationsResources("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
     assertEquals(3, resources.size());
   }
 
+  @SuppressWarnings("HttpUrlsUsage")
   @Test
   public void testGetOrganisation() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock response from Registry with local test resource
-    mockResponse.content =
-      IOUtils.toString(RegistryManagerImplTest.class.getResourceAsStream("/responses/organisation.json"), "UTF-8");
+    extResponse.setContent(
+      IOUtils.toString(
+          Objects.requireNonNull(RegistryManagerImplTest.class.getResourceAsStream("/responses/organisation.json")),
+          StandardCharsets.UTF_8));
 
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager manager =
-      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     Organisation organisation = manager.getRegisteredOrganisation("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
@@ -314,12 +331,12 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
 
     // create instance of RegistryManager
     RegistryManagerImpl manager =
-      new RegistryManagerImpl(appConfig, dataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(appConfig, dataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
-    DOI expectedDOI = new DOI("http://doi.org/10.5072/fk22zu2ds");
+    DOI expectedDOI = new DOI("https://doi.org/10.5072/fk22zu2ds");
     DOI existingDOI = manager.getLastPublishedVersionExistingDoi(p);
-    assertTrue(expectedDOI.equals(existingDOI));
+    assertEquals(expectedDOI, existingDOI);
 
     // retrieve eml.xml file for version 5.0 WITHOUT citation identifier
     eml = FileUtils.getClasspathFile("resources/res1/eml.xml");
@@ -340,7 +357,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
   public void testGetRegistryExceptionType() throws ParserConfigurationException, SAXException {
     // create instance of RegistryManager
     RegistryManagerImpl manager =
-      new RegistryManagerImpl(mockAppConfig, dataDir, mockHttpUtil, mockSAXParserFactory, mockConfigWarnings,
+      new RegistryManagerImpl(mockAppConfig, dataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, mockResourceManager);
 
     assertEquals(RegistryException.Type.BAD_REQUEST, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode()));

@@ -11,10 +11,18 @@
 
 [#if warnings?size>0]
     [#list warnings as w]
-        <div class="alert alert-warning mx-md-4 mx-2 mt-2 alert-dismissible fade show" role="alert">
-            <div class="overflow-x-hidden">${w!}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        [#if w?index < 3]
+            <div class="alert alert-warning mx-md-4 mx-2 mt-2 alert-dismissible fade show" role="alert">
+                <div class="overflow-x-hidden">
+                    ${w!}
+                    [#if w?index == 2]
+                        <br>
+                        (There are more warnings, see logs for details)
+                    [/#if]
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        [/#if]
     [/#list]
 [/#if]
 

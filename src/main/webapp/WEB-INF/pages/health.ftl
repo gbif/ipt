@@ -7,7 +7,7 @@
 <main class="container">
 
   <div class="my-3 p-3 bg-body rounded shadow-sm">
-    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header text-center">
+    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
       <@s.text name="portal.health.title"/>
     </h5>
 
@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                   <td><@s.text name="portal.health.network.repository.access"/></td>
-                  <td class="text-end ${networkRegistry?string("text-gbif-primary", "text-gbif-danger")}">
+                  <td class="text-end ${networkRepository?string("text-gbif-primary", "text-gbif-danger")}">
                     <#if networkRepository>
                       <@s.text name="portal.health.operational"/>
                     <#else>

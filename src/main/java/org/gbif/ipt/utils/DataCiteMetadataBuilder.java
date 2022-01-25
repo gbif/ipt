@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.utils;
 
 import org.gbif.api.model.common.DOI;
@@ -28,14 +43,13 @@ import org.gbif.metadata.eml.UserId;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,7 +75,7 @@ public class DataCiteMetadataBuilder {
 
   private static final Logger LOG = LogManager.getLogger(DataCiteMetadataBuilder.class);
   private static final ObjectFactory FACTORY = new ObjectFactory();
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
   public static DataCiteMetadata createDataCiteMetadata(DOI doi, Resource resource) throws InvalidMetadataException {
 
@@ -191,7 +205,7 @@ public class DataCiteMetadataBuilder {
     DataCiteMetadata.Sizes sizes = FACTORY.createDataCiteMetadataSizes();
     // # of records published
     if (resource.hasPublishedData()) {
-      sizes.getSize().add(String.valueOf(resource.getRecordsPublished()) + " " + RECORDS_NAME);
+      sizes.getSize().add(resource.getRecordsPublished() + " " + RECORDS_NAME);
     }
     return sizes;
   }
@@ -205,7 +219,7 @@ public class DataCiteMetadataBuilder {
     DataCiteMetadata.Descriptions descriptions = FACTORY.createDataCiteMetadataDescriptions();
     if (!eml.getDescription().isEmpty()) {
       for (String para : eml.getDescription()) {
-        if (!Strings.isNullOrEmpty(para)) {
+        if (StringUtils.isNotBlank(para)) {
           DataCiteMetadata.Descriptions.Description description = FACTORY.createDataCiteMetadataDescriptionsDescription();
           description.setDescriptionType(DescriptionType.ABSTRACT);
           description.setLang(eml.getMetadataLanguage());
@@ -225,7 +239,7 @@ public class DataCiteMetadataBuilder {
   protected static DataCiteMetadata.GeoLocations getGeoLocations(List<GeospatialCoverage> geospatialCoverages) {
     DataCiteMetadata.GeoLocations geoLocations = FACTORY.createDataCiteMetadataGeoLocations();
     for (GeospatialCoverage coverage : geospatialCoverages) {
-      if (!Strings.isNullOrEmpty(coverage.getDescription())) {
+      if (StringUtils.isNotBlank(coverage.getDescription())) {
         DataCiteMetadata.GeoLocations.GeoLocation geoLocation = FACTORY.createDataCiteMetadataGeoLocationsGeoLocation();
 
         geoLocation.getGeoLocationPlaceOrGeoLocationPointOrGeoLocationBox()
@@ -253,7 +267,7 @@ public class DataCiteMetadataBuilder {
    */
   protected static DataCiteMetadata.RightsList getRightsList(Eml eml) {
     DataCiteMetadata.RightsList rightsList = FACTORY.createDataCiteMetadataRightsList();
-    if (!Strings.isNullOrEmpty(eml.parseLicenseUrl()) && !Strings.isNullOrEmpty(eml.parseLicenseTitle())) {
+    if (StringUtils.isNotBlank(eml.parseLicenseUrl()) && StringUtils.isNotBlank(eml.parseLicenseTitle())) {
       DataCiteMetadata.RightsList.Rights rights = FACTORY.createDataCiteMetadataRightsListRights();
       rights.setValue(eml.parseLicenseTitle());
       rights.setRightsURI(eml.parseLicenseUrl());
@@ -294,7 +308,7 @@ public class DataCiteMetadataBuilder {
     DataCiteMetadata.RelatedIdentifiers rids = FACTORY.createDataCiteMetadataRelatedIdentifiers();
     // from bibliographic citations
     for (Citation citation : bibliographicCitations) {
-      if (!Strings.isNullOrEmpty(citation.getIdentifier())) {
+      if (StringUtils.isNotBlank(citation.getIdentifier())) {
         DataCiteMetadata.RelatedIdentifiers.RelatedIdentifier rid =
           FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
         rid.setValue(citation.getIdentifier());
@@ -305,7 +319,7 @@ public class DataCiteMetadataBuilder {
     }
     // from PhysicalData
     for (PhysicalData data : physicalDatas) {
-      if (!Strings.isNullOrEmpty(data.getDistributionUrl())) {
+      if (StringUtils.isNotBlank(data.getDistributionUrl())) {
         if (data.getDistributionUrl().startsWith(HTTP_PROTOCOL)) {
           DataCiteMetadata.RelatedIdentifiers.RelatedIdentifier rid =
             FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
@@ -355,9 +369,8 @@ public class DataCiteMetadataBuilder {
    *
    * @throws InvalidMetadataException if mandatory publisher cannot be retrieved
    */
-  @VisibleForTesting
   protected static String getPublisher(Resource resource) throws InvalidMetadataException {
-    if (resource.getOrganisation() != null && !Strings.isNullOrEmpty(resource.getOrganisation().getName())
+    if (resource.getOrganisation() != null && StringUtils.isNotBlank(resource.getOrganisation().getName())
         && !resource.getOrganisation().getKey().equals(Constants.DEFAULT_ORG_KEY)) {
       return resource.getOrganisation().getName();
     } else {
@@ -375,7 +388,6 @@ public class DataCiteMetadataBuilder {
    *
    * @throws InvalidMetadataException if mandatory publication year cannot be retrieved
    */
-  @VisibleForTesting
   protected static String getPublicationYear(Eml eml) throws InvalidMetadataException {
     if (eml.getDateStamp() != null) {
       Calendar cal = Calendar.getInstance();
@@ -396,7 +408,6 @@ public class DataCiteMetadataBuilder {
    *
    * @throws org.gbif.doi.service.InvalidMetadataException if mandatory number of creators cannot be created/returned
    */
-  @VisibleForTesting
   protected static DataCiteMetadata.Creators convertEmlCreators(List<Agent> agents) throws InvalidMetadataException {
     DataCiteMetadata.Creators creators = FACTORY.createDataCiteMetadataCreators();
     if (!agents.isEmpty()) {
@@ -404,7 +415,7 @@ public class DataCiteMetadataBuilder {
         DataCiteMetadata.Creators.Creator creator = FACTORY.createDataCiteMetadataCreatorsCreator();
         // name is mandatory, in order of priority:
         // 1. try agent name
-        if (!Strings.isNullOrEmpty(agent.getFullName())) {
+        if (StringUtils.isNotBlank(agent.getFullName())) {
           final DataCiteMetadata.Creators.Creator.CreatorName creatorName = FACTORY.createDataCiteMetadataCreatorsCreatorCreatorName();
           creatorName.setValue(agent.getFullName());
           creator.setCreatorName(creatorName);
@@ -419,14 +430,14 @@ public class DataCiteMetadataBuilder {
             }
           }
           // affiliation is optional
-          if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
+          if (StringUtils.isNotBlank(agent.getOrganisation())) {
             final Affiliation affiliation = FACTORY.createAffiliation();
             affiliation.setValue(agent.getOrganisation());
             creator.getAffiliation().add(affiliation);
           }
         }
         // 2. try organisation name
-        else if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
+        else if (StringUtils.isNotBlank(agent.getOrganisation())) {
           final DataCiteMetadata.Creators.Creator.CreatorName creatorName = FACTORY.createDataCiteMetadataCreatorsCreatorCreatorName();
           creatorName.setValue(agent.getOrganisation());
           creator.setCreatorName(creatorName);
@@ -435,7 +446,7 @@ public class DataCiteMetadataBuilder {
         else {
           throw new InvalidMetadataException(
             "DataCite schema (v4) requires creator have a name! Creator can be an organisation or person. Check creator/agent: "
-            + agent.toString());
+            + agent);
         }
         // add to list
         creators.getCreator().add(creator);
@@ -459,7 +470,7 @@ public class DataCiteMetadataBuilder {
    */
   private static List<Agent> prepareContributorsFromEmlAgents(List<Agent> contacts, List<Agent> metadataProviders,
     List<Agent> associatedParties) {
-    List<Agent> ls = Lists.newArrayList();
+    List<Agent> ls = new ArrayList<>();
 
     // add type to contacts
     for (Agent contact : contacts) {
@@ -488,7 +499,6 @@ public class DataCiteMetadataBuilder {
    *
    * @throws org.gbif.doi.service.InvalidMetadataException if name or type cannot be set
    */
-  @VisibleForTesting
   protected static DataCiteMetadata.Contributors convertEmlContributors(List<Agent> agents)
     throws InvalidMetadataException {
     DataCiteMetadata.Contributors contributors = FACTORY.createDataCiteMetadataContributors();
@@ -496,7 +506,7 @@ public class DataCiteMetadataBuilder {
       DataCiteMetadata.Contributors.Contributor contributor = FACTORY.createDataCiteMetadataContributorsContributor();
       // name is mandatory, in order of priority:
       // 1. try agent name
-      if (!Strings.isNullOrEmpty(agent.getFullName())) {
+      if (StringUtils.isNotBlank(agent.getFullName())) {
         final DataCiteMetadata.Contributors.Contributor.ContributorName contributorName = FACTORY.createDataCiteMetadataContributorsContributorContributorName();
         contributorName.setValue(agent.getFullName());
         contributor.setContributorName(contributorName);
@@ -511,25 +521,25 @@ public class DataCiteMetadataBuilder {
           }
         }
         // affiliation is optional
-        if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
+        if (StringUtils.isNotBlank(agent.getOrganisation())) {
           final Affiliation affiliation = FACTORY.createAffiliation();
           affiliation.setValue(agent.getOrganisation());
           contributor.getAffiliation().add(affiliation);
         }
       }
       // 2. try organisation name
-      else if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
+      else if (StringUtils.isNotBlank(agent.getOrganisation())) {
         final DataCiteMetadata.Contributors.Contributor.ContributorName contributorName = FACTORY.createDataCiteMetadataContributorsContributorContributorName();
         contributorName.setValue(agent.getOrganisation());
         contributor.setContributorName(contributorName);
       }
       // 3. try position name
-      else if (!Strings.isNullOrEmpty(agent.getPosition())) {
+      else if (StringUtils.isNotBlank(agent.getPosition())) {
         final DataCiteMetadata.Contributors.Contributor.ContributorName contributorName = FACTORY.createDataCiteMetadataContributorsContributorContributorName();
         contributorName.setValue(agent.getPosition());
         contributor.setContributorName(contributorName);
         // affiliation is optional
-        if (!Strings.isNullOrEmpty(agent.getOrganisation())) {
+        if (StringUtils.isNotBlank(agent.getOrganisation())) {
           final Affiliation affiliation = FACTORY.createAffiliation();
           affiliation.setValue(agent.getOrganisation());
           contributor.getAffiliation().add(affiliation);
@@ -538,14 +548,14 @@ public class DataCiteMetadataBuilder {
       // otherwise if no name, organisation name, or position name found, throw exception
       else {
         throw new InvalidMetadataException(
-          "DataCite schema (v4) requires contributor have a name! Check contributor/agent: " + agent.toString());
+          "DataCite schema (v4) requires contributor have a name! Check contributor/agent: " + agent);
       }
 
       // contributorType is mandatory, if not found throw exception
       String role = agent.getRole();
-      if (Strings.isNullOrEmpty(role)) {
+      if (StringUtils.isBlank(role)) {
         throw new InvalidMetadataException(
-          "DataCite schema (v4) requires contributor have a type! Check contributor/agent: " + agent.toString());
+          "DataCite schema (v4) requires contributor have a type! Check contributor/agent: " + agent);
       }
 
       // contributor type, defaulting to RELATED_PERSON if no suitable match exists
@@ -568,8 +578,7 @@ public class DataCiteMetadataBuilder {
         type = ContributorType.DATA_COLLECTOR;
       } else if (role.equalsIgnoreCase("principalInvestigator")) {
         type = ContributorType.PROJECT_LEADER;
-      } else if (role.equalsIgnoreCase("processor") || role.equalsIgnoreCase("publisher") || role
-        .equalsIgnoreCase("programmer")) {
+      } else if (role.equalsIgnoreCase("processor") || role.equalsIgnoreCase("programmer")) {
         type = ContributorType.PRODUCER;
       } else {
         type = ContributorType.RELATED_PERSON;
@@ -594,7 +603,7 @@ public class DataCiteMetadataBuilder {
    * @throws org.gbif.doi.service.InvalidMetadataException if mandatory number of titles cannot be created/returned
    */
   protected static DataCiteMetadata.Titles convertEmlTitles(Eml eml) throws InvalidMetadataException {
-    if (!Strings.isNullOrEmpty(eml.getTitle())) {
+    if (StringUtils.isNotBlank(eml.getTitle())) {
       DataCiteMetadata.Titles titles = FACTORY.createDataCiteMetadataTitles();
       DataCiteMetadata.Titles.Title primary = FACTORY.createDataCiteMetadataTitlesTitle();
       primary.setValue(eml.getTitle());
@@ -624,13 +633,13 @@ public class DataCiteMetadataBuilder {
       for (String keyword : keywordSet.getKeywords()) {
         DataCiteMetadata.Subjects.Subject subject = FACTORY.createDataCiteMetadataSubjectsSubject();
         subject.setValue(keyword);
-        if (!Strings.isNullOrEmpty(language)) {
+        if (StringUtils.isNotBlank(language)) {
           subject.setLang(language);
         }
         subject.setLang(language);
         // keyword thesaurus is either schemeURI or subjectScheme
         String thesaurus = keywordSet.getKeywordThesaurus();
-        if (!Strings.isNullOrEmpty(thesaurus)) {
+        if (StringUtils.isNotBlank(thesaurus)) {
           if (thesaurus.startsWith(HTTP_PROTOCOL)) {
             try {
               URI schemeUri = new URI(keywordSet.getKeywordThesaurus());
@@ -662,14 +671,14 @@ public class DataCiteMetadataBuilder {
     // created date
     if (created != null) {
       DataCiteMetadata.Dates.Date createdDate = FACTORY.createDataCiteMetadataDatesDate();
-      createdDate.setValue(DATE_FORMAT.format(created));
+      createdDate.setValue(dateFormat.format(created));
       createdDate.setDateType(DateType.CREATED);
       dates.getDate().add(createdDate);
     }
 
     // updated date = now
     DataCiteMetadata.Dates.Date updatedDate = FACTORY.createDataCiteMetadataDatesDate();
-    updatedDate.setValue(DATE_FORMAT.format(new Date()));
+    updatedDate.setValue(dateFormat.format(new Date()));
     updatedDate.setDateType(DateType.UPDATED);
     dates.getDate().add(updatedDate);
 
@@ -677,14 +686,14 @@ public class DataCiteMetadataBuilder {
     for (TemporalCoverage coverage : coverages) {
       if (coverage.getType().equals(TemporalCoverageType.SINGLE_DATE)) {
         DataCiteMetadata.Dates.Date singleDate = FACTORY.createDataCiteMetadataDatesDate();
-        singleDate.setValue(DATE_FORMAT.format(coverage.getStartDate()));
+        singleDate.setValue(dateFormat.format(coverage.getStartDate()));
         singleDate.setDateType(DateType.VALID);
         dates.getDate().add(singleDate);
       } else if (coverage.getType().equals(TemporalCoverageType.DATE_RANGE)) {
         // construct range using RKMS-ISO8601 standard e.g. 2004-03-02/2005-06-02
         DataCiteMetadata.Dates.Date range = FACTORY.createDataCiteMetadataDatesDate();
-        String start = DATE_FORMAT.format(coverage.getStartDate());
-        String end = DATE_FORMAT.format(coverage.getEndDate());
+        String start = dateFormat.format(coverage.getStartDate());
+        String end = dateFormat.format(coverage.getEndDate());
         range.setValue(start + "/" + end);
         range.setDateType(DateType.VALID);
         dates.getDate().add(range);
@@ -694,8 +703,7 @@ public class DataCiteMetadataBuilder {
   }
 
   private String convertDateToYearMonthDay(Date date) {
-
-    return DATE_FORMAT.format(date);
+    return dateFormat.format(date);
   }
 
   /**
@@ -708,18 +716,17 @@ public class DataCiteMetadataBuilder {
    *
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
    */
-  @VisibleForTesting
   protected static NameIdentifier convertEmlUserIdIntoCreatorNameIdentifier(
     UserId userId) {
-    if (!Strings.isNullOrEmpty(userId.getIdentifier()) && !Strings.isNullOrEmpty(userId.getDirectory())) {
-      String directory = Strings.nullToEmpty(userId.getDirectory()).toLowerCase();
+    if (StringUtils.isNotBlank(userId.getIdentifier()) && StringUtils.isNotBlank(userId.getDirectory())) {
+      String directory = StringUtils.trimToEmpty(userId.getDirectory()).toLowerCase();
       if (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) || directory
         .contains(RESEARCHERID_NAME_IDENTIFIER_SCHEME.toLowerCase())) {
         NameIdentifier nid = FACTORY.createNameIdentifier();
         nid.setValue(userId.getIdentifier());
         nid.setSchemeURI(userId.getDirectory());
         nid.setNameIdentifierScheme(
-          (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase())) ? ORCID_NAME_IDENTIFIER_SCHEME
+          directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ? ORCID_NAME_IDENTIFIER_SCHEME
             : RESEARCHERID_NAME_IDENTIFIER_SCHEME);
         return nid;
       } else {
@@ -740,18 +747,17 @@ public class DataCiteMetadataBuilder {
    *
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
    */
-  @VisibleForTesting
   protected static NameIdentifier convertEmlUserIdIntoContributorNameIdentifier(
     UserId userId) {
-    if (!Strings.isNullOrEmpty(userId.getIdentifier()) && !Strings.isNullOrEmpty(userId.getDirectory())) {
-      String directory = Strings.nullToEmpty(userId.getDirectory()).toLowerCase();
+    if (StringUtils.isNotBlank(userId.getIdentifier()) && StringUtils.isNotBlank(userId.getDirectory())) {
+      String directory = StringUtils.trimToEmpty(userId.getDirectory()).toLowerCase();
       if (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) || directory
         .contains(RESEARCHERID_NAME_IDENTIFIER_SCHEME.toLowerCase())) {
         NameIdentifier nid = FACTORY.createNameIdentifier();
         nid.setValue(userId.getIdentifier());
         nid.setSchemeURI(userId.getDirectory());
         nid.setNameIdentifierScheme(
-          (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase())) ? ORCID_NAME_IDENTIFIER_SCHEME
+          directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ? ORCID_NAME_IDENTIFIER_SCHEME
             : RESEARCHERID_NAME_IDENTIFIER_SCHEME);
         return nid;
       } else {

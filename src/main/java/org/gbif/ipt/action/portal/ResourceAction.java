@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.portal;
 
 import org.gbif.api.model.common.DOI;
@@ -32,26 +47,25 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.base.Functions;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
-import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
+
+import com.google.inject.Inject;
 
 public class ResourceAction extends PortalBaseAction {
 
@@ -75,7 +89,7 @@ public class ResourceAction extends PortalBaseAction {
   private Map<String, String> frequencies;
   private Map<String, String> types;
   private int recordsPublishedForVersion;
-  private Map<String, Integer> recordsByExtensionForVersion = Maps.newHashMap();
+  private Map<String, Integer> recordsByExtensionForVersion = new HashMap<>();
   private String coreType;
   private String dwcaSizeForVersion;
   private String emlSizeForVersion;
@@ -120,7 +134,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   private Eml loadEmlFromFile(String shortname, @NotNull BigDecimal version)
     throws IOException, SAXException, ParserConfigurationException {
-    Preconditions.checkNotNull(version);
+    Objects.requireNonNull(version);
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
     InputStream in = new FileInputStream(emlFile);
@@ -131,7 +145,7 @@ public class ResourceAction extends PortalBaseAction {
    * Return the latest published public (or registered) version, or null if the last published version was private or
    * deleted.
    * </br>
-   * Important, VersionHistory goes from latest published (first index) to earliest published (last index).
+   * Important, VersionHistory goes from the latest published (first index) to the earliest published (last index).
    *
    * @param resource resource
    *
@@ -156,7 +170,7 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * Return the latest published version regardless of its visibility (e.g. public or private).
    * </br>
-   * Important, VersionHistory goes from latest published (first index) to earliest published (last index).
+   * Important, VersionHistory goes from the latest published (first index) to the earliest published (last index).
    *
    * @param resource resource
    *
@@ -179,7 +193,7 @@ public class ResourceAction extends PortalBaseAction {
    * known
    */
   private PublicationStatus getPublishedVersionsPublicationStatus(Resource resource, BigDecimal version) {
-    Preconditions.checkNotNull(version);
+    Objects.requireNonNull(version);
     List<VersionHistory> history = resource.getVersionHistory();
     if (!history.isEmpty()) {
       for (VersionHistory vh : history) {
@@ -196,7 +210,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * Return the DOI for version requested, or null if no DOI was assigned or the resource's VersionHistory list is
-   * null or empty. Important, VersionHistory goes from latest published (first index) to earliest published (last
+   * null or empty. Important, VersionHistory goes from the latest published (first index) to the earliest published (last
    * index).
    *
    * @return DOI for published version, or null if no DOI was assigned or VersionHistory list was null or empty
@@ -315,7 +329,7 @@ public class ResourceAction extends PortalBaseAction {
 
     // ensure record counts by extension always exists, defaulting to empty map
     if (recordsByExtensionForVersion == null) {
-      Map<String, Integer> m = Maps.newHashMap();
+      Map<String, Integer> m = new HashMap<>();
       setRecordsByExtensionForVersion(m);
     }
 
@@ -331,11 +345,11 @@ public class ResourceAction extends PortalBaseAction {
       organizedCoverages = constructOrganizedTaxonomicCoverages(eml.getTaxonomicCoverages());
     }
     // roles list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    roles = new LinkedHashMap<String, String>();
+    roles = new LinkedHashMap<>();
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
 
     // preservation methods list, derived from XML vocabulary, and displayed in drop-down on Collections Data Page.
-    preservationMethods = new LinkedHashMap<String, String>();
+    preservationMethods = new LinkedHashMap<>();
     preservationMethods
       .putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_PRESERVATION_METHOD, getLocaleLanguage(), false));
 
@@ -343,23 +357,24 @@ public class ResourceAction extends PortalBaseAction {
     languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
 
     // countries list, derived from XML vocabulary, and displayed in drop-down where new contacts are created
-    countries = new LinkedHashMap<String, String>();
+    countries = new LinkedHashMap<>();
     countries.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_COUNTRY, getLocaleLanguage(), true));
 
     // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
-    ranks = new LinkedHashMap<String, String>();
+    ranks = new LinkedHashMap<>();
     ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
 
     // update frequencies list, derived from XML vocabulary, and displayed on Basic Metadata Page
-    frequencies = new LinkedHashMap<String, String>();
+    frequencies = new LinkedHashMap<>();
     frequencies.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false));
 
     // Dataset core type list, derived from XML vocabulary
-    types = new LinkedHashMap<String, String>();
+    types = new LinkedHashMap<>();
     types.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_TYPE, getLocaleLanguage(), false));
     types = MapUtils.getMapWithLowercaseKeys(types);
-    coreType = (resource.getCoreType() != null && types.containsKey(resource.getCoreType().toLowerCase())) ? types
-      .get(resource.getCoreType().toLowerCase()) : Resource.CoreRowType.OTHER.toString();
+    coreType = (resource.getCoreType() != null && types.containsKey(resource.getCoreType().toLowerCase()))
+        ? types.get(resource.getCoreType().toLowerCase())
+        : types.get(Resource.CoreRowType.OTHER.toString().toLowerCase());
   }
 
   /**
@@ -383,12 +398,7 @@ public class ResourceAction extends PortalBaseAction {
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
-    } catch (SAXException e) {
-      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), shortname});
-      LOG.error(msg);
-      addActionError(msg);
-      return ERROR;
-    } catch (ParserConfigurationException e) {
+    } catch (SAXException | ParserConfigurationException e) {
       String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
@@ -441,8 +451,7 @@ public class ResourceAction extends PortalBaseAction {
     copy.setEml(eml);
 
     // create new VersionHistory
-    List<VersionHistory> histories = Lists.newArrayList();
-    histories.addAll(resource.getVersionHistory());
+    List<VersionHistory> histories = new ArrayList<>(resource.getVersionHistory());
     copy.setVersionHistory(histories);
     VersionHistory history = new VersionHistory(nextVersion, releaseDate, PublicationStatus.PUBLIC);
 
@@ -472,7 +481,7 @@ public class ResourceAction extends PortalBaseAction {
    * Admin users and resource managers can see all published versions of a resource.
    * </br>
    * Non authorized users can only see published versions that were publicly available at the time of publishing, or
-   * that are registered (needed for resource published prior to IPT v2.2.
+   * that are registered (needed for resource published prior to IPT v2.2).
    * </br>
    * Please note that changing a resource's visibility from private to public does not change the visibility of the
    * last published version.
@@ -498,7 +507,7 @@ public class ResourceAction extends PortalBaseAction {
           addActionWarning(getText("portal.resource.warning.notPublic", new String[] {status.toLowerCase()}));
         }
       }
-      // otherwise only published public versions can be shown
+      // otherwise, only published public versions can be shown
       else {
         // if no specific version was requested, find the latest published public version
         if (version == null) {
@@ -533,12 +542,7 @@ public class ResourceAction extends PortalBaseAction {
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
-    } catch (SAXException e) {
-      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
-      LOG.error(msg);
-      addActionError(msg);
-      return ERROR;
-    } catch (ParserConfigurationException e) {
+    } catch (SAXException | ParserConfigurationException e) {
       String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
       LOG.error(msg);
       addActionError(msg);
@@ -557,7 +561,7 @@ public class ResourceAction extends PortalBaseAction {
    * @param coverages list of resource's TaxonomicCoverage
    */
   List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
-    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<OrganizedTaxonomicCoverage>();
+    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<>();
     for (TaxonomicCoverage coverage : coverages) {
       OrganizedTaxonomicCoverage organizedCoverage = new OrganizedTaxonomicCoverage();
       organizedCoverage.setDescription(coverage.getDescription());
@@ -569,7 +573,7 @@ public class ResourceAction extends PortalBaseAction {
 
   /**
    * For each unique rank, this method constructs a new OrganizedTaxonomicKeywords that contains a list of display
-   * names coming from a resource's TaxonomicCoverage's TaxonKeywords corresponding to that rank. The display nane
+   * names coming from a resource's TaxonomicCoverage's TaxonKeywords corresponding to that rank. The display name
    * consists of "scientific name (common name)". Another OrganizedTaxonomicKeywords is also created for the unknown
    * rank, that is a TaxonomicKeyword not having a rank.
    *
@@ -578,12 +582,12 @@ public class ResourceAction extends PortalBaseAction {
    * @return list of OrganizedTaxonomicKeywords (one for each rank + unknown rank), or an empty list if none were added
    */
   private List<OrganizedTaxonomicKeywords> setOrganizedTaxonomicKeywords(List<TaxonKeyword> keywords) {
-    List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<OrganizedTaxonomicKeywords>();
+    List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<>();
 
-    // also we want a unique set of names corresponding to empty rank
-    Set<String> uniqueNamesForEmptyRank = new HashSet<String>();
+    // also, we want a unique set of names corresponding to empty rank
+    Set<String> uniqueNamesForEmptyRank = new HashSet<>();
 
-    ranks = new LinkedHashMap<String, String>();
+    ranks = new LinkedHashMap<>();
     ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
 
     for (String rank : ranks.keySet()) {
@@ -610,7 +614,7 @@ public class ResourceAction extends PortalBaseAction {
       // create special OrganizedTaxonomicKeywords for empty rank
       OrganizedTaxonomicKeywords emptyRankKeywords = new OrganizedTaxonomicKeywords();
       emptyRankKeywords.setRank("Unranked");
-      emptyRankKeywords.setDisplayNames(new ArrayList<String>(uniqueNamesForEmptyRank));
+      emptyRankKeywords.setDisplayNames(new ArrayList<>(uniqueNamesForEmptyRank));
       organizedTaxonomicKeywordsList.add(emptyRankKeywords);
     }
     // return list
@@ -771,7 +775,7 @@ public class ResourceAction extends PortalBaseAction {
     if (!recordsByExtensionForVersion.isEmpty()) {
       for (String rowType : recordsByExtensionForVersion.keySet()) {
         int extensionCount = recordsByExtensionForVersion.get(rowType);
-        count = (extensionCount > count) ? extensionCount : count;
+        count = Math.max(extensionCount, count);
       }
     }
     return count;
@@ -781,10 +785,14 @@ public class ResourceAction extends PortalBaseAction {
    * @return map of record counts by extension for published version (specified from version parameter), sorted by
    * count then by extension name for uniqueness (as two extensions can have the same count)
    */
-  public ImmutableSortedMap<String, Integer> getRecordsByExtensionOrdered() {
-    return ImmutableSortedMap.copyOf(recordsByExtensionForVersion,
-      Ordering.natural().reverse().onResultOf(Functions.forMap(recordsByExtensionForVersion))
-        .compound(Ordering.<String> natural()));
+  public LinkedHashMap<String, Integer> getRecordsByExtensionOrdered() {
+    LinkedHashMap<String, Integer> result = new LinkedHashMap<>();
+    recordsByExtensionForVersion
+        .entrySet().stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
+        .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
+
+    return result;
   }
 
   /**

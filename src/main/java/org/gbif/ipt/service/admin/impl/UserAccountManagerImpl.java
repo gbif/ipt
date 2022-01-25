@@ -1,5 +1,21 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.admin.impl;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
@@ -24,7 +40,6 @@ import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -33,7 +48,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -41,12 +55,11 @@ import com.thoughtworks.xstream.XStream;
 /**
  * Reads user accounts from a simple XStream managed xml file.
  */
-
 @Singleton
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
 
   public static final String PERSISTENCE_FILE = "users.xml";
-  private Map<String, User> users = new LinkedHashMap<String, User>();
+  private Map<String, User> users = new LinkedHashMap<>();
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
@@ -85,6 +98,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return user;
   }
 
+  @Override
   public User authenticate(String email, String password) {
     if (allowSimplifiedAdminLogin && email != null && email.equalsIgnoreCase("admin")) {
       // lookup the admins email address#
@@ -97,6 +111,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return null;
   }
 
+  @Override
   public void create(User user) throws AlreadyExistingException, IOException {
     if (user != null) {
       if (get(user.getEmail()) != null) {
@@ -108,6 +123,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   }
 
   private void defineXstreamMapping(PasswordConverter passwordConverter) {
+    xstream.addPermission(AnyTypePermission.ANY);
     xstream.alias("user", User.class);
     xstream.useAttributeFor(User.class, "email");
     xstream.useAttributeFor(User.class, "password");
@@ -119,6 +135,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     xstream.registerConverter(passwordConverter);
   }
 
+  @Override
   public User delete(String email) throws DeletionNotAllowedException, IOException {
     if (email != null) {
       User remUser = get(email);
@@ -139,7 +156,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           }
         }
 
-        Set<String> resourcesCreatedByUser = new HashSet<String>();
+        Set<String> resourcesCreatedByUser = new HashSet<>();
         for (Resource r : resourceManager.list()) {
           User creator = get(r.getCreator().getEmail());
           if (creator != null && creator.equals(remUser)) {
@@ -147,9 +164,9 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           }
         }
 
-        Set<String> resourcesManagedOnlyByUser = new HashSet<String>();
+        Set<String> resourcesManagedOnlyByUser = new HashSet<>();
         for (Resource r : resourceManager.list(remUser)) {
-          Set<User> managers = Sets.newHashSet();
+          Set<User> managers = new HashSet<>();
           // add creator to list of managers, but only if creator has manager rights!
           User creator = get(r.getCreator().getEmail());
           if (creator != null && creator.hasManagerRights()) {
@@ -195,6 +212,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
    *
    * @return User if found, null otherwise
    */
+  @Override
   public User get(String email) {
     if (email != null && users.containsKey(email.toLowerCase())) {
       return users.get(email.toLowerCase());
@@ -216,27 +234,26 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return false;
   }
 
+  @Override
   public String getDefaultAdminEmail() {
     return cfg.getAdminEmail();
   }
 
+  @Override
   public User getSetupUser() {
     return setupUser;
   }
 
+  @Override
   public List<User> list() {
-    ArrayList<User> userList = new ArrayList<User>(users.values());
-    Collections.sort(userList, new Comparator<User>() {
-
-      public int compare(User o1, User o2) {
-        return (o1.getFirstname() + " " + o1.getLastname()).compareTo(o2.getFirstname() + " " + o2.getLastname());
-      }
-    });
+    ArrayList<User> userList = new ArrayList<>(users.values());
+    userList.sort(Comparator.comparing(o -> (o.getFirstname() + " " + o.getLastname())));
     return userList;
   }
 
+  @Override
   public List<User> list(Role role) {
-    List<User> matchingUsers = new ArrayList<User>();
+    List<User> matchingUsers = new ArrayList<>();
     for (User u : users.values()) {
       if (u.getRole() == role) {
         matchingUsers.add(u);
@@ -245,12 +262,10 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     return matchingUsers;
   }
 
+  @Override
   public void load() throws InvalidConfigException {
-    Reader userReader;
-    ObjectInputStream in = null;
-    try {
-      userReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE));
-      in = xstream.createObjectInputStream(userReader);
+    try (ObjectInputStream in = xstream.createObjectInputStream(
+        FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE)))) {
       users.clear();
       while (true) {
         try {
@@ -269,35 +284,31 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     } catch (IOException e) {
       LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());
-    } finally {
-      if (in != null) {
-        try {
-          in.close();
-        } catch (IOException e) {
-        }
-      }
     }
   }
 
+  @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all " + users.size() + " user accounts...");
-    Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
-    ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users");
-    for (Entry<String, User> entry : users.entrySet()) {
-      out.writeObject(entry.getValue());
+    try (Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
+         ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users")) {
+      for (Entry<String, User> entry : users.entrySet()) {
+        out.writeObject(entry.getValue());
+      }
     }
-    out.close();
   }
 
   /*
    * (non-Javadoc)
    * @see org.gbif.ipt.service.admin.UserAccountManager#save(org.gbif.ipt.model.User)
    */
+  @Override
   public void save(User user) throws IOException {
     addUser(user);
     save();
   }
 
+  @Override
   public void setSetupUser(User setupUser) {
     this.setupUser = setupUser;
   }

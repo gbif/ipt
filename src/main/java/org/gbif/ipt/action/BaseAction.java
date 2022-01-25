@@ -1,16 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action;
 
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.util.ValueStack;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.SessionAware;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Ipt;
@@ -18,13 +22,30 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ws.util.XSSUtil;
+import org.gbif.ipt.utils.XSSUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.UriBuilder;
-import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.SessionAware;
+
+import com.google.inject.Inject;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.util.ValueStack;
 
 /**
  * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
@@ -40,12 +61,12 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public static final String NOT_FOUND = "404";
   public static final String NOT_ALLOWED = "401";
   public static final String NOT_ALLOWED_MANAGER = "401-manager";
+  public static final String LOGIN = "login";
   public static final String HOME = "home";
   public static final String LOCKED = "locked";
   public static final String NOT_AVAILABLE = "410";
 
-
-  protected List<String> warnings = new ArrayList<String>();
+  protected List<String> warnings = new ArrayList<>();
   protected Map<String, Object> session;
   protected HttpServletRequest req;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
@@ -116,8 +137,8 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public String getRequestURL() {
     try {
       return UriBuilder.fromUri(getBaseURL())
-          .path(Strings.nullToEmpty(req.getServletPath()))
-          .path(Strings.nullToEmpty(req.getPathInfo()))
+          .path(StringUtils.trimToEmpty(req.getServletPath()))
+          .path(StringUtils.trimToEmpty(req.getPathInfo()))
           .replaceQuery(req.getQueryString())
           .replaceQueryParam("request_locale")
           .build().toString();
@@ -159,7 +180,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    */
   public String getLocaleLanguage() {
     if (getLocale() != null) {
-      String requestedLocale = Strings.emptyToNull(getLocale().getLanguage());
+      String requestedLocale = StringUtils.trimToNull(getLocale().getLanguage());
       if (requestedLocale != null && !XSSUtil.containsXSS(requestedLocale)) {
         ResourceBundle resourceBundle = textProvider.getTexts(new Locale(requestedLocale));
         return resourceBundle.getLocale().getLanguage();
@@ -243,17 +264,11 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   public boolean isAdminRights() {
     User user = getCurrentUser();
-    if (user != null && user.hasAdminRights()) {
-      return true;
-    }
-    return false;
+    return user != null && user.hasAdminRights();
   }
 
   protected boolean isHttpPost() {
-    if (req.getMethod().equalsIgnoreCase("post")) {
-      return true;
-    }
-    return false;
+    return req != null && req.getMethod().equalsIgnoreCase("post");
   }
 
   /**
@@ -267,10 +282,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
 
   public boolean isManagerRights() {
     User user = getCurrentUser();
-    if (user != null && user.hasManagerRights()) {
-      return true;
-    }
-    return false;
+    return user != null && user.hasManagerRights();
   }
 
   /**
@@ -279,9 +291,12 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    */
   public Cookie getCookie(String name) {
     if (req != null) {
-      for (Cookie c : req.getCookies()) {
-        if (name.equals(c.getName())) {
-          return c;
+      Cookie[] cookies = req.getCookies();
+      if (cookies != null) {
+        for (Cookie c : req.getCookies()) {
+          if (name.equals(c.getName())) {
+            return c;
+          }
         }
       }
     }
@@ -295,6 +310,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * is not sufficient to load your entities, you can access the request object directly like we do here and read any
    * other parameter you need to prepare the action for the param phase.
    */
+  @Override
   public void prepare() {
     // see if an id was provided in the request.
     // we dont use the PARAM - PREPARE - PARAM interceptor stack
@@ -303,10 +319,12 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     id = StringUtils.trimToNull(req.getParameter("id"));
   }
 
+  @Override
   public void setServletRequest(HttpServletRequest req) {
     this.req = req;
   }
 
+  @Override
   public void setSession(Map<String, Object> session) {
     this.session = session;
     // always keep sth in the session otherwise the session is not maintained and e.g. the message redirect interceptor
@@ -345,8 +363,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    */
   @Nullable
   public Organisation getDefaultOrganisation() {
-    Organisation noOrganisation = registrationManager.get(Constants.DEFAULT_ORG_KEY);
-    return (noOrganisation == null) ? null : noOrganisation;
+    return registrationManager.get(Constants.DEFAULT_ORG_KEY);
   }
 
 }

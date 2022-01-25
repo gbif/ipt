@@ -1,8 +1,24 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.SourceException;
@@ -10,8 +26,10 @@ import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import com.google.inject.ImplementedBy;
@@ -33,10 +51,24 @@ public interface SourceManager {
    * @return file or excel source that has been added
    *
    * @throws ImportException if the file cant be copied or read
-   * @throws org.gbif.ipt.service.InvalidFilenameException if the source filename contained illegal characters
+   * @throws InvalidFilenameException if the source filename contained illegal characters
    */
   FileSource add(Resource resource, File file, @Nullable String sourceName)
     throws ImportException, InvalidFilenameException;
+
+  /**
+   * Adds one text file as a URL source to a resource configuration.
+   * The file will be analyzed to detect the character encoding and delimiters.
+   *
+   * @param resource    resource
+   * @param url         the text source file (URL) to be added to this resource
+   * @param sourceName  name of the source
+   *
+   * @return URL source that has been added
+   *
+   * @throws ImportException if the file can't be copied or read
+   */
+  UrlSource add(Resource resource, URI url, @Nullable String sourceName) throws ImportException;
 
   /**
    * Checks if a source is readable and analyzes its file size, number of rows and other source properties which will

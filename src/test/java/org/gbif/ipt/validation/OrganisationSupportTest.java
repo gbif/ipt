@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.validation;
 
 import org.gbif.ipt.action.admin.OrganisationsAction;
@@ -9,17 +24,18 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(Parameterized.class)
 public class OrganisationSupportTest {
 
   private static final String ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5").toString();
@@ -29,18 +45,7 @@ public class OrganisationSupportTest {
       mock(OrganisationSupport.class), mock(OrganisationsAction.RegisteredOrganisations.class),
       mock(ResourceManager.class));
 
-  private AppConfig mockCfg;
-  private Organisation organisation;
-  private boolean isValid;
-
-  public OrganisationSupportTest(Organisation organisation, boolean isValid, AppConfig cfg) {
-    this.organisation = organisation;
-    this.isValid = isValid;
-    this.mockCfg = cfg;
-  }
-
-  @Parameterized.Parameters
-  public static Object[][] data() {
+  public static Stream<Arguments> data() {
     // config in production mode
     AppConfig mockCfgProduction = mock(AppConfig.class);
     when(mockCfgProduction.getRegistryType()).thenReturn(AppConfig.REGISTRY_TYPE.PRODUCTION);
@@ -142,23 +147,24 @@ public class OrganisationSupportTest {
     o11.setAgencyAccountPassword("GOOD_PASSWORD");
     o11.setDoiPrefix("prefix");
 
-    return new Object[][] {
-        {o1, true, mockCfgProduction},
-        {o2, false, mockCfgProduction},
-        {o3, false, mockCfgProduction},
-        {o4, false, mockCfgProduction},
-        {o5, false, mockCfgProduction},
-        {o6, false, mockCfgProduction},
-        {o7, false, mockCfgProduction},
-        {o8, false, mockCfgProduction},
-        {o9, false, mockCfgProduction},
-        {o10, false, mockCfgTest},
-        {o11, false, mockCfgProduction}
-    };
+    return Stream.of(
+        Arguments.of(o1, true, mockCfgProduction),
+        Arguments.of(o2, false, mockCfgProduction),
+        Arguments.of(o3, false, mockCfgProduction),
+        Arguments.of(o4, false, mockCfgProduction),
+        Arguments.of(o5, false, mockCfgProduction),
+        Arguments.of(o6, false, mockCfgProduction),
+        Arguments.of(o7, false, mockCfgProduction),
+        Arguments.of(o8, false, mockCfgProduction),
+        Arguments.of(o9, false, mockCfgProduction),
+        Arguments.of(o10, false, mockCfgTest),
+        Arguments.of(o11, false, mockCfgProduction)
+    );
   }
 
-  @Test
-  public void testValidateInProductionMode() {
+  @ParameterizedTest
+  @MethodSource("data")
+  public void testValidateInProductionMode(Organisation organisation, boolean isValid, AppConfig mockCfg) {
     RegistryManager mockRegistryManager = mock(RegistryManager.class);
     when(mockRegistryManager.validateOrganisation(ORGANISATION_KEY, VALID_ORGANISATION_PASSWORD)).thenReturn(true);
     OrganisationSupport organisationSupport = new OrganisationSupport(mockRegistryManager, mockCfg);

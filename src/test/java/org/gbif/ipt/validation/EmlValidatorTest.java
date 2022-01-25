@@ -1,16 +1,18 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.validation;
 
 import org.gbif.api.vocabulary.Language;
@@ -31,26 +33,25 @@ import org.gbif.metadata.eml.UserId;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -63,7 +64,7 @@ public class EmlValidatorTest {
   private BaseAction action;
   private Organisation organisation;
 
-  @Before
+  @BeforeEach
   public void before() throws IOException, SAXException, ParserConfigurationException {
     AppConfig mockCfg = mock(AppConfig.class);
     SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
@@ -170,7 +171,7 @@ public class EmlValidatorTest {
   @Test
   public void testBasicPartDescriptionMissing() {
     // invalid
-    List<String> description = Lists.newArrayList();
+    List<String> description = new ArrayList<>();
     eml.setDescription(description);
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     description.add("shrt");
@@ -255,9 +256,7 @@ public class EmlValidatorTest {
     try {
       Eml emlWithIssues = EmlFactory.build(FileUtils.classpathStream("data/emlGeographicIssues.xml"));
       assertEquals(emlWithIssues.getGeospatialCoverages().get(0).getBoundingCoordinates(), BBox.newWorldInstance());
-    } catch (IOException e) {
-      fail();
-    } catch (SAXException e) {
+    } catch (IOException | SAXException e) {
       fail();
     } catch (ParserConfigurationException e) {
       e.printStackTrace();
@@ -426,7 +425,7 @@ public class EmlValidatorTest {
   }
 
   @Test
-  public void testTempCovPartRangeIncomplete() throws ParseException {
+  public void testTempCovPartRangeIncomplete() {
     // invalid
     eml.getTemporalCoverages().get(0).setStartDate(null);
     eml.getTemporalCoverages().get(0).setEndDate(new Date());
@@ -434,7 +433,7 @@ public class EmlValidatorTest {
   }
 
   @Test
-  public void testTempCovPartSingleDateIncomplete() throws ParseException {
+  public void testTempCovPartSingleDateIncomplete() {
     // 1st is empty, but next 3 aren't = INVALID
     eml.getTemporalCoverages().get(0).setStartDate(null);
     eml.getTemporalCoverages().get(0).setEndDate(null);
@@ -459,7 +458,7 @@ public class EmlValidatorTest {
   @Test
   public void testKeywordsPartKeywordListIncomplete() {
     // invalid
-    eml.getKeywords().get(0).setKeywords(new ArrayList<String>());
+    eml.getKeywords().get(0).setKeywords(new ArrayList<>());
     assertFalse(validator.isValid(resource, MetadataSection.KEYWORDS_SECTION));
   }
 
@@ -737,6 +736,7 @@ public class EmlValidatorTest {
     // populate basic mandatory elements
     Organisation organisation = new Organisation();
     organisation.setName("NHM");
+    organisation.setKey(UUID.randomUUID().toString());
     resource.setOrganisation(organisation);
 
     resource.setCoreType(Resource.CoreRowType.CHECKLIST.toString());

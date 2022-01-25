@@ -1,6 +1,8 @@
-%define nr_ver 2.5.0
-%define nr_ver_extra -RC1
-%define release_number 0.1
+%define nr_ver 2.5.5
+# Set to -RC1 etc for release candidates, and <percent>nil for releases
+%define nr_ver_extra %nil
+# Set to 0.1 etc for release candidates, and 1 etc for releases
+%define release_number 1
 
 Name: ipt
 Version: %{nr_ver}
@@ -11,13 +13,11 @@ Source0: https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}%{nr_
 Source1: ipt.service
 Source2: ipt.sysconfig
 Source3: ipt-vhost.conf
-Source4: man7/ipt.7.ronn
+Source4: ipt.7
 Summary: GBIF Integrated Publishing Toolkit (IPT)
 BuildArch: noarch
 
 %{?systemd_requires}
-#BuildRequires: systemd
-BuildRequires: nodejs-ronn
 %define _unitdir /usr/lib/systemd/system
 
 Requires: java >= 1:1.8.0
@@ -35,14 +35,11 @@ facilitate sharing biodiversity data as Darwin Core Archives (DWCA).
 
 This package runs a single, standalone instance of the IPT.
 
-Documentation is available on https://www.gbif.org/ipt
+Documentation is available on https://ipt.gbif.org/manual
 
 %prep
 cp %{SOURCE0} ipt.war
 cp %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} .
-
-%build
-ronn --roff --organization Global\ Biodiversity\ Information\ Facility ipt.7.ronn || /usr/lib/node_modules/ronn/bin/ronn.js --roff ipt.7.ronn > ipt.7
 
 %install
 install -D -p -m 644 ipt.war %{buildroot}%{_javadir}/gbif/ipt.war
@@ -74,9 +71,21 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 %systemd_postun_with_restart ipt.service
 
 %changelog
-* Fri Jun 25 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0-0.1
+* Mon Dec 20 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.5-1
+- Publish IPT 2.5.5 release.
+* Fri Dec 10 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.4-1
+- Publish IPT 2.5.4 release.
+* Mon Dec 06 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.3-1
+- Publish IPT 2.5.3 release.
+* Mon Nov 20 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.2-1
+- Publish IPT 2.5.2 release.
+* Mon Sep 06 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.1-1
+- Publish IPT 2.5.1 release.
+* Mon Aug 23 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0-1
+- Publish IPT 2.5.0 release.
+* Fri Jun 25 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0RC1-0.1
 - Publish IPT 2.5.0-RC1 pre-release.
-* Wed Sep 08 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.2-1
+* Tue Sep 08 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.2-1
 - Publish IPT 2.4.2 release.
 * Wed Sep 02 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.1-1
 - Publish IPT 2.4.1 release.

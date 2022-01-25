@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.api.model.common.DOI;
@@ -18,15 +33,14 @@ import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
 
 /**
  * The Action responsible for all user input relating to the organisations allowed in the IPT.
@@ -42,7 +56,7 @@ public class OrganisationsAction extends POSTAction {
   @SessionScoped
   public static class RegisteredOrganisations {
 
-    private List<Organisation> organisations = new ArrayList<Organisation>();
+    private List<Organisation> organisations = new ArrayList<>();
     private final RegistryManager registryManager;
 
     @Inject
@@ -58,7 +72,7 @@ public class OrganisationsAction extends POSTAction {
      * Invalidates the session scoped cache of organisations.
      */
     public void clearCache() {
-      organisations = new ArrayList<Organisation>();
+      organisations = new ArrayList<>();
     }
 
     public void load() throws RuntimeException {
@@ -86,7 +100,7 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private final RegisteredOrganisations orgSession;
 
-  private static final List<String> DOI_REGISTRATION_AGENCIES = ImmutableList.of(DOIRegistrationAgency.DATACITE.name());
+  private static final List<String> DOI_REGISTRATION_AGENCIES = Collections.singletonList(DOIRegistrationAgency.DATACITE.name());
 
   @Inject
   public OrganisationsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -149,9 +163,7 @@ public class OrganisationsAction extends POSTAction {
   public List<Organisation> getOrganisations() {
     List<Organisation> allOrganisations = orgSession.organisations;
     for (Organisation linkedOrganisation : getLinkedOrganisations()) {
-      if (allOrganisations.contains(linkedOrganisation)) {
-        allOrganisations.remove(linkedOrganisation);
-      }
+      allOrganisations.remove(linkedOrganisation);
     }
     return allOrganisations;
   }
@@ -187,12 +199,7 @@ public class OrganisationsAction extends POSTAction {
     linkedOrganisations = registrationManager.listAll();
 
     // remove default organisation named "no organisation" from list of editable organisations
-    for (Iterator<Organisation> iter = linkedOrganisations.listIterator(); iter.hasNext(); ) {
-      Organisation entry = iter.next();
-      if (entry.getKey().equals(Constants.DEFAULT_ORG_KEY)) {
-        iter.remove();
-      }
-    }
+    linkedOrganisations.removeIf(entry -> entry.getKey().equals(Constants.DEFAULT_ORG_KEY));
 
     if (id == null) {
       //  if no id was submitted we wanted to create a new organisation
@@ -299,7 +306,6 @@ public class OrganisationsAction extends POSTAction {
    *
    * @return true if DOIs assigned using another account are found in the IPT, false otherwise
    */
-  @VisibleForTesting
   protected boolean isAnotherAccountInUseAlready(Organisation organisation) {
     // iterate through all resources, including deleted ones since they can be undeleted
     for (Resource resource : resourceManager.list()) {

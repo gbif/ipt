@@ -1,8 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.portal;
 
-import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
-import com.opensymphony.xwork2.LocaleProviderFactory;
-import com.opensymphony.xwork2.inject.Container;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Organisation;
@@ -18,19 +30,24 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.common.collect.Lists;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
+import com.opensymphony.xwork2.LocaleProviderFactory;
+import com.opensymphony.xwork2.inject.Container;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +61,7 @@ public class HomeActionTest {
   private static final int RECORDS_PUBLISHED = 1000;
   private static Organisation organisation = new Organisation();
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     Container container = mock(Container.class);
@@ -66,7 +83,7 @@ public class HomeActionTest {
     p.setRecordsPublished(999999); // different than version 1.34
     p.setOrganisation(organisation);
 
-    List<Resource> publishedPublic = Lists.newArrayList();
+    List<Resource> publishedPublic = new ArrayList<>();
     publishedPublic.add(p);
 
     ResourceManager resourceManager = mock(ResourceManager.class);
@@ -97,7 +114,7 @@ public class HomeActionTest {
    * home resource table. Instead, the title of the last public published version should show instead.
    */
   @Test
-  @Ignore("floating behaviour")
+  @Disabled("floating behaviour")
   public void testPrepare() {
     action.prepare();
     assertEquals(1, action.getResources().size());

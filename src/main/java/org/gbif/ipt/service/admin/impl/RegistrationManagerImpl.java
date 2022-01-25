@@ -1,15 +1,21 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.admin.impl;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Ordering;
-import com.google.common.io.Closer;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.thoughtworks.xstream.XStream;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
@@ -42,7 +48,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -50,18 +55,22 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.thoughtworks.xstream.XStream;
 
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
 
   private static final Logger LOG = LogManager.getLogger(RegistrationManagerImpl.class);
 
-  private static final Comparator<Organisation> ORG_BY_NAME_ORD = new Comparator<Organisation>() {
-
-    public int compare(Organisation left, Organisation right) {
-      return StringUtils.compare(left.getName(), right.getName());
-    }
-  };
+  private static final Comparator<Organisation> ORG_BY_NAME_ORD = (left, right) -> StringUtils.compare(left.getName(), right.getName());
 
   public static final String PERSISTENCE_FILE_V1 = "registration.xml";
   public static final String PERSISTENCE_FILE_V2 = "registration2.xml";
@@ -70,20 +79,18 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   private final XStream xstreamV2 = new XStream();
   private ResourceManager resourceManager;
   private RegistryManager registryManager;
-  private DefaultHttpClient client;
-
 
   @Inject
   public RegistrationManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    RegistryManager registryManager, PasswordConverter passwordConverter, DefaultHttpClient client) {
+    RegistryManager registryManager, PasswordConverter passwordConverter) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     defineXstreamMappingV1();
     defineXstreamMappingV2(passwordConverter);
     this.registryManager = registryManager;
-    this.client = client;
   }
 
+  @Override
   public Organisation addAssociatedOrganisation(Organisation organisation)
     throws AlreadyExistingException, InvalidConfigException {
     if (organisation != null) {
@@ -108,6 +115,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    *
    * @return organisation with activated DOI agency account if found, null otherwise
    */
+  @Override
   public Organisation findPrimaryDoiAgencyAccount() {
     for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
       if (organisation.isAgencyAccountPrimary()) {
@@ -117,6 +125,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return null;
   }
 
+  @Override
   public DoiService getDoiService() throws InvalidConfigException {
     Organisation organisation = findPrimaryDoiAgencyAccount();
     if (organisation != null) {
@@ -124,7 +133,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       String password = organisation.getAgencyAccountPassword();
       DOIRegistrationAgency agency = organisation.getDoiRegistrationAgency();
 
-      if (!Strings.isNullOrEmpty(username) && !Strings.isNullOrEmpty(password) && agency != null) {
+      if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password) && agency != null) {
         return new RestJsonApiDataCiteService(cfg.getDataCiteUrl(), username, password);
       } else {
         throw new InvalidConfigException(TYPE.REGISTRATION_BAD_CONFIG,
@@ -136,6 +145,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return null;
   }
 
+  @Override
   public Organisation addHostingOrganisation(Organisation organisation) {
     if (organisation != null) {
       LOG.debug("Adding hosting organisation " + organisation.getKey() + " - " + organisation.getName());
@@ -144,6 +154,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return organisation;
   }
 
+  @Override
   public void addIptInstance(Ipt ipt) {
     if (ipt != null) {
       if (ipt.getCreated() == null) {
@@ -168,22 +179,22 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       if (key != null) {
         i.setKey(key);
       }
-      i.setDescription(Strings.emptyToNull(ipt.getDescription()));
-      i.setWsPassword(Strings.emptyToNull(ipt.getWsPassword()));
-      i.setName(Strings.emptyToNull(ipt.getName()));
+      i.setDescription(StringUtils.trimToNull(ipt.getDescription()));
+      i.setWsPassword(StringUtils.trimToNull(ipt.getWsPassword()));
+      i.setName(StringUtils.trimToNull(ipt.getName()));
       i.setCreated(ipt.getCreated());
-      i.setLanguage(Strings.emptyToNull(ipt.getLanguage()));
-      i.setLogoUrl(Strings.emptyToNull(ipt.getLogoUrl()));
-      i.setHomepageURL(Strings.emptyToNull(ipt.getHomepageURL()));
-      i.setOrganisationKey(Strings.emptyToNull(ipt.getOrganisationKey().toString()));
-      i.setPrimaryContactType(Strings.emptyToNull(ipt.getPrimaryContactType()));
-      i.setPrimaryContactPhone(Strings.emptyToNull(ipt.getPrimaryContactPhone()));
-      i.setPrimaryContactLastName(Strings.emptyToNull(ipt.getPrimaryContactLastName()));
-      i.setPrimaryContactFirstName(Strings.emptyToNull(ipt.getPrimaryContactFirstName()));
-      i.setPrimaryContactAddress(Strings.emptyToNull(ipt.getPrimaryContactAddress()));
-      i.setPrimaryContactEmail(Strings.emptyToNull(ipt.getPrimaryContactEmail()));
-      i.setPrimaryContactDescription(Strings.emptyToNull(ipt.getPrimaryContactDescription()));
-      i.setPrimaryContactName(Strings.emptyToNull(ipt.getPrimaryContactName()));
+      i.setLanguage(StringUtils.trimToNull(ipt.getLanguage()));
+      i.setLogoUrl(StringUtils.trimToNull(ipt.getLogoUrl()));
+      i.setHomepageURL(StringUtils.trimToNull(ipt.getHomepageURL()));
+      i.setOrganisationKey(StringUtils.trimToNull(ipt.getOrganisationKey().toString()));
+      i.setPrimaryContactType(StringUtils.trimToNull(ipt.getPrimaryContactType()));
+      i.setPrimaryContactPhone(StringUtils.trimToNull(ipt.getPrimaryContactPhone()));
+      i.setPrimaryContactLastName(StringUtils.trimToNull(ipt.getPrimaryContactLastName()));
+      i.setPrimaryContactFirstName(StringUtils.trimToNull(ipt.getPrimaryContactFirstName()));
+      i.setPrimaryContactAddress(StringUtils.trimToNull(ipt.getPrimaryContactAddress()));
+      i.setPrimaryContactEmail(StringUtils.trimToNull(ipt.getPrimaryContactEmail()));
+      i.setPrimaryContactDescription(StringUtils.trimToNull(ipt.getPrimaryContactDescription()));
+      i.setPrimaryContactName(StringUtils.trimToNull(ipt.getPrimaryContactName()));
     }
     return i;
   }
@@ -215,6 +226,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * Define XStream used to parse former registration (registration.xml).
    */
   private void defineXstreamMappingV1() {
+    xstreamV1.addPermission(AnyTypePermission.ANY);
     xstreamV1.omitField(LegacyRegistration.class, "associatedOrganisations");
     xstreamV1.alias("organisation", LegacyOrganisation.class);
     xstreamV1.alias("registry", LegacyRegistration.class);
@@ -226,6 +238,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * @param passwordConverter PasswordConverter
    */
   private void defineXstreamMappingV2(PasswordConverter passwordConverter) {
+    xstreamV2.addPermission(AnyTypePermission.ANY);
     xstreamV2.omitField(Registration.class, "associatedOrganisations");
     xstreamV2.alias("organisation", Organisation.class);
     xstreamV2.alias("registry", Registration.class);
@@ -233,6 +246,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     xstreamV2.registerConverter(passwordConverter);
   }
 
+  @Override
   public Organisation delete(String key) throws DeletionNotAllowedException {
     Organisation org = get(key);
     if (org != null) {
@@ -259,6 +273,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return org;
   }
 
+  @Override
   public Organisation get(String key) {
     if (key == null) {
       return null;
@@ -266,6 +281,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return registration.getAssociatedOrganisations().get(key);
   }
 
+  @Override
   public Organisation get(UUID key) {
     if (key == null) {
       return null;
@@ -273,35 +289,35 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     return registration.getAssociatedOrganisations().get(key.toString());
   }
 
+  @Override
   public Organisation getHostingOrganisation() {
     return registration.getHostingOrganisation();
   }
 
+  @Override
   public Ipt getIpt() {
     return registration.getIpt();
   }
 
+  @Override
   public List<Organisation> list() {
-    List<Organisation> organisationList = new ArrayList<Organisation>();
-    for (Organisation organisation : Ordering.from(ORG_BY_NAME_ORD)
-      .sortedCopy(registration.getAssociatedOrganisations().values())) {
-      if (organisation.isCanHost()) {
-        organisationList.add(organisation);
-      }
-    }
-    return organisationList;
+    return registration.getAssociatedOrganisations().values().stream()
+        .filter(Organisation::isCanHost)
+        .sorted(ORG_BY_NAME_ORD)
+        .collect(Collectors.toList());
   }
 
+  @Override
   public List<Organisation> listAll() {
-    return Ordering.from(ORG_BY_NAME_ORD).sortedCopy(registration.getAssociatedOrganisations().values());
+    return registration.getAssociatedOrganisations().values().stream()
+        .sorted(ORG_BY_NAME_ORD)
+        .collect(Collectors.toList());
   }
 
+  @Override
   public void load() throws InvalidConfigException {
-    Closer closer = Closer.create();
-    try {
-      Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
-      ObjectInputStream in = closer.register(xstreamV2.createObjectInputStream(registrationReader));
-
+    try (Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
+         ObjectInputStream in = xstreamV2.createObjectInputStream(registrationReader)) {
       registration.getAssociatedOrganisations().clear();
 
       try {
@@ -337,23 +353,18 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
         "Couldnt read the registration information: " + e.getMessage());
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-      }
     }
 
     // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
     updateAssociatedOrganisationsMetadata();
   }
 
+  @Override
   public Organisation getFromDisk(String key) {
-    Closer closer = Closer.create();
-    SortedMap<String, Organisation> associatedOrganisations = new TreeMap<String, Organisation>();
-    try {
-      Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
-      ObjectInputStream in = closer.register(xstreamV2.createObjectInputStream(registrationReader));
+    SortedMap<String, Organisation> associatedOrganisations = new TreeMap<>();
+    try (Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
+         ObjectInputStream in = xstreamV2.createObjectInputStream(registrationReader)) {
+
       in.readObject(); // skip over Registration block
       // now parse the associated organisations
       while (true) {
@@ -370,23 +381,17 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     } catch (IOException e) {
       LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG, "Couldnt read registration info: " + e.getMessage());
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-      }
     }
     // return the organisation requested
     return associatedOrganisations.get(key);
   }
 
+  @Override
   public void encryptRegistration() throws InvalidConfigException {
-    Closer closer = Closer.create();
     File registrationV1 = dataDir.configFile(PERSISTENCE_FILE_V1);
     if (registrationV1.exists()) {
-      try {
-        Reader registrationReader = FileUtils.getUtf8Reader(registrationV1);
-        ObjectInputStream in = closer.register(xstreamV1.createObjectInputStream(registrationReader));
+      try (Reader registrationReader = FileUtils.getUtf8Reader(registrationV1);
+        ObjectInputStream in = xstreamV1.createObjectInputStream(registrationReader)) {
         registration.getAssociatedOrganisations().clear();
 
         try {
@@ -438,11 +443,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         throw new InvalidConfigException(TYPE.REGISTRATION_CONFIG,
           "Couldnt read the registration information: " + e.getMessage());
       } finally {
-        try {
-          closer.close();
-        } catch (IOException e) {
-        }
-
         // delete former registration configuration (registration.xml)
         org.apache.commons.io.FileUtils.deleteQuietly(registrationV1);
       }
@@ -493,27 +493,27 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       if (o != null) {
 
         String oKey = (o.getKey() == null) ? null : o.getKey().toString();
-        String oName = Strings.emptyToNull(o.getName());
+        String oName = StringUtils.trimToNull(o.getName());
 
         // sanity check - only the key must be exactly the same, and at least the name must not be null
         if (oKey != null && oKey.equalsIgnoreCase(key) && oName != null) {
           // organisation
           organisation.setName(oName);
-          organisation.setDescription(Strings.emptyToNull(o.getDescription()));
-          organisation.setHomepageURL(Strings.emptyToNull(o.getHomepageURL()));
+          organisation.setDescription(StringUtils.trimToNull(o.getDescription()));
+          organisation.setHomepageURL(StringUtils.trimToNull(o.getHomepageURL()));
           // organisation node
-          organisation.setNodeKey(Strings.emptyToNull(o.getNodeKey()));
-          organisation.setNodeName(Strings.emptyToNull(o.getNodeName()));
-          organisation.setNodeContactEmail(Strings.emptyToNull(o.getNodeContactEmail()));
+          organisation.setNodeKey(StringUtils.trimToNull(o.getNodeKey()));
+          organisation.setNodeName(StringUtils.trimToNull(o.getNodeName()));
+          organisation.setNodeContactEmail(StringUtils.trimToNull(o.getNodeContactEmail()));
           // organisation primary contact
-          organisation.setPrimaryContactName(Strings.emptyToNull(o.getPrimaryContactName()));
-          organisation.setPrimaryContactFirstName(Strings.emptyToNull(o.getPrimaryContactFirstName()));
-          organisation.setPrimaryContactLastName(Strings.emptyToNull(o.getPrimaryContactLastName()));
-          organisation.setPrimaryContactAddress(Strings.emptyToNull(o.getPrimaryContactAddress()));
-          organisation.setPrimaryContactDescription(Strings.emptyToNull(o.getPrimaryContactDescription()));
-          organisation.setPrimaryContactEmail(Strings.emptyToNull(o.getPrimaryContactEmail()));
-          organisation.setPrimaryContactPhone(Strings.emptyToNull(o.getPrimaryContactPhone()));
-          organisation.setPrimaryContactType(Strings.emptyToNull(o.getPrimaryContactType()));
+          organisation.setPrimaryContactName(StringUtils.trimToNull(o.getPrimaryContactName()));
+          organisation.setPrimaryContactFirstName(StringUtils.trimToNull(o.getPrimaryContactFirstName()));
+          organisation.setPrimaryContactLastName(StringUtils.trimToNull(o.getPrimaryContactLastName()));
+          organisation.setPrimaryContactAddress(StringUtils.trimToNull(o.getPrimaryContactAddress()));
+          organisation.setPrimaryContactDescription(StringUtils.trimToNull(o.getPrimaryContactDescription()));
+          organisation.setPrimaryContactEmail(StringUtils.trimToNull(o.getPrimaryContactEmail()));
+          organisation.setPrimaryContactPhone(StringUtils.trimToNull(o.getPrimaryContactPhone()));
+          organisation.setPrimaryContactType(StringUtils.trimToNull(o.getPrimaryContactType()));
           LOG.debug("Organisation (" + key + ") updated with latest metadata from Registry");
         } else {
           LOG.debug("Update of organisation failed: organisation retrieved from Registry was missing name");
@@ -526,6 +526,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
   }
 
+  @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all user organisations associated to this IPT...");
     Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE_V2));

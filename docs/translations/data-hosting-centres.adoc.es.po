@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:24\n"
+"POT-Creation-Date: 2021-12-09 11:45+0000\n"
+"PO-Revision-Date: 2021-12-09 12:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -18,15 +18,14 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:3
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:27
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/customization.adoc:12
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
@@ -36,595 +35,600 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:1
 #, no-wrap
 msgid "Data Hosting Centres"
-msgstr ""
+msgstr "Centros de alojamiento de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:6
 msgid "A data hosting centre (DHC) can provide you with an account on their IPT, allowing you to manage your own datasets, and publish them through https://www.gbif.org[GBIF.org]."
-msgstr ""
+msgstr "Un centro de alojamiento de datos (DHC por sus siglas en ingles ) puede proporcionarle una cuenta en su IPT, permitiéndole gestionar sus propios conjuntos de datos y publicarlos a través de https://www.gbif.org[GBIF.org]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:8
 msgid "Using a DHC is highly recommended because it will save you time and money setting up your own IPT instance, and you can receive helpdesk support in your own language."
-msgstr ""
+msgstr "El uso de un DHC es muy recomendable pues le ahorrará tiempo y dinero a la hora de configurar su propia instancia de IPT, además, podrá recibir apoyo del centro de ayuda en su propio idioma."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:10
 msgid "Please use this page to discover a trusted DHC by country or by theme that is right for you. If no appropriate DHC exists, or the DHC doesn't reply promptly to your enquiry, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] for assistance."
-msgstr ""
+msgstr "Por favor, use esta página para descubrir un DHC de confianza, ya sea por país o por tema, que sea adecuado para usted. Si no existe un DHC adecuado o el DHC no responde rápidamente a su consulta, póngase en contacto con el mailto:helpdesk@gbif.org[centro de ayuda de GBIF] para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:12
 msgid "Please note that to qualify as a trusted DHC, the centre must meet a strict set of criteria. Like so, you can trust the DHC will keep their IPT online near 100% of the time, and they will ensure that your dataset is backed up."
-msgstr ""
+msgstr "Tenga en cuenta que para ser considerado un DHC de confianza, el centro debe cumplir una serie de criterios estrictos. De esta manera, puede confiar en que el DHC mantendrá su IPT en línea cerca del 100% del tiempo y se asegurará de que su conjunto de datos esté respaldado."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:13
 #, no-wrap
 msgid "Data Hosting Centre Criteria"
-msgstr ""
+msgstr "Criterios de los centros de alojamiento de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:16
 msgid "A DHC must meet the following set of strict requirements in order to be recommended to publishers:"
-msgstr ""
+msgstr "Un DHC debe cumplir la siguiente serie de requisitos estrictos para ser recomendado a los publicadores:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:18
 msgid "Their IPT is online near 100% of the time"
-msgstr ""
+msgstr "Su IPT está en línea casi el 100% del tiempo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:19
 msgid "They can properly administer their IPT:"
-msgstr ""
+msgstr "Pueden administrar adecuadamente su IPT:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:20
 msgid "Keeping it up-to-date with latest version"
-msgstr ""
+msgstr "Manteniéndolo actualizado con la última versión"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:21
-msgid "Ensuring the IPT data directory is regularly backed-up"
-msgstr ""
+msgid "Keeping the operating system and servlet container (if used) up-to-date"
+msgstr "Mantener actualizados el sistema operativo y el contenedor de servlets (si se usa)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:22
-msgid "Managing user accounts"
-msgstr ""
+msgid "Ensuring the IPT data directory is regularly backed-up"
+msgstr "Asegurando la realización de copias de seguridad periódicas del directorio de datos del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:23
-msgid "Managing IPT cores and extensions"
-msgstr ""
+msgid "Managing user accounts"
+msgstr "Administrando las cuentas de usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:24
-msgid "They have a proven track-record of hosting data for publishers in their country"
-msgstr ""
+msgid "Managing IPT cores and extensions"
+msgstr "Administrando los núcleos y extensiones de IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:25
-msgid "They can provide prompt and knowledgeable helpdesk support:"
-msgstr ""
+msgid "They have a proven track-record of hosting data for publishers in their country"
+msgstr "Tienen un historial comprobado de alojamiento de datos para publicadores en su país."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:26
-msgid "They know how to use the IPT to publish data through GBIF.org"
-msgstr ""
+msgid "They can provide prompt and knowledgeable helpdesk support:"
+msgstr "Pueden proporcionar asistencia técnica rápida y bien informada:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:27
-msgid "They know about biodiversity data standards in general"
-msgstr ""
+msgid "They know how to use the IPT to publish data through GBIF.org"
+msgstr "Saben cómo usar el IPT para publicar datos a través de GBIF.org"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:28
-msgid "They know how to publish data papers"
-msgstr ""
+msgid "They know about biodiversity data standards in general"
+msgstr "Conocen los estándares de datos de biodiversidad en general"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:30
-msgid "If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org."
-msgstr ""
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:29
+msgid "They know how to publish data papers"
+msgstr "Saben cómo publicar artículos de datos"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:31
+msgid "If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org[helpdesk@gbif.org]."
+msgstr "Si cree que su DHC cumple con estos estándares y le gustaría ofrecer sus servicios a los publicadores de su país, envíe un correo electrónico a mailto:helpdesk@gbif.org[helpdesk@gbif.org]."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:31
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:32
 #, no-wrap
 msgid "Data Hosting Centres by Theme"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:34
-msgid "<<Freshwater data>>"
-msgstr ""
+msgstr "Centros de alojamiento de datos por tema"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:35
-msgid "<<Marine data>>"
-msgstr ""
+msgid "<<Freshwater data>>"
+msgstr "<<Datos dulceacuícolas>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:36
-msgid "<<Vertebrate data>>"
-msgstr ""
-
-#. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:37
-#, no-wrap
-msgid "Data Hosting Centres by Location"
-msgstr ""
+msgid "<<Marine data>>"
+msgstr "<<Datos marinos>>"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:40
-msgid "<<Belgium>>"
-msgstr ""
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:37
+msgid "<<Vertebrate data>>"
+msgstr "<<Datos de vertebrados>>"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:38
+#, no-wrap
+msgid "Data Hosting Centres by Location"
+msgstr "Centros de alojamiento de datos por ubicación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:41
-msgid "<<Canada>> ⭐"
-msgstr ""
+msgid "<<Belgium>>"
+msgstr "<<Bélgica>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:42
-msgid "<<Colombia>> ⭐"
-msgstr ""
+msgid "<<Canada>> ⭐"
+msgstr "<<Canadá>> ⭐"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:43
-msgid "<<Denmark>>"
-msgstr ""
+msgid "<<Colombia>> ⭐"
+msgstr "<<Colombia>> ⭐"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:44
-msgid "<<Finland>>"
-msgstr ""
+msgid "<<Denmark>>"
+msgstr "<<Dinamarca>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:45
-msgid "<<France>> (also for Benin, Botswana, Burkina Faso, Cameroon, Côte d'Ivoire, Gabon, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo and Uganda)"
-msgstr ""
+msgid "<<Finland>>"
+msgstr "<<Finlandia>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:46
-msgid "<<Norway>>"
-msgstr ""
+msgid "<<France>> (also for Benin, Botswana, Burkina Faso, Cameroon, Côte d'Ivoire, Gabon, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo and Uganda)"
+msgstr "<<Francia>> (también para Benín, Botswana, Burkina Faso, Camerún, Costa de Marfil, Gabón, Ghana, Guinea, Madagascar, Nigeria, Senegal, Togo y Uganda)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:47
-msgid "<<Portugal>>"
-msgstr ""
+msgid "<<Norway>>"
+msgstr "<<Noruega>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:48
-msgid "<<South Africa>>"
-msgstr ""
+msgid "<<Portugal>>"
+msgstr "<<Portugal>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:49
-msgid "<<Spain>> ⭐"
-msgstr ""
+msgid "<<South Africa>>"
+msgstr "<<Sudáfrica>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:50
-msgid "<<Sweden>>"
-msgstr ""
+msgid "<<Spain>> ⭐"
+msgstr "<<España>> ⭐"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:51
-msgid "<<Taiwan>>"
-msgstr ""
+msgid "<<Sweden>>"
+msgstr "<<Suecia>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:52
-msgid "<<USA>>"
-msgstr ""
+msgid "<<Taiwan>>"
+msgstr "<<Taiwán>>"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:54
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:53
+msgid "<<USA>>"
+msgstr "<<EUA>>"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:55
 msgid "⭐ Designates a country with an IPT serving as a repository, able to assign DOIs to datasets underlying scientific publications in journals such as https://www.nature.com/sdata/[Scientific Data]."
-msgstr ""
+msgstr "⭐Designa a un país con un IPT que actúa como repositorio, capaz de asignar DOI a los conjuntos de datos de publicaciones científicas en revistas como https://www.nature.com/sdata/[Datos científicos]."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:55
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:56
 #, no-wrap
 msgid "Belgium"
-msgstr ""
+msgstr "Bélgica"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:58
-msgid "The https://www.biodiversity.be[Belgium Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organizations:"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:60
-msgid "http://www.naturalsciences.be[Royal Belgian Institute of Natural Sciences]"
-msgstr ""
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:59
+msgid "The https://www.biodiversity.be[Belgian Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity Platform shares their IPT with the following organizations:"
+msgstr "La https://www.biodiversity.be[Belgian Biodiversity Platform] ofrece soporte técnico a los publicadores en Bélgica y soporte de alojamiento para conjuntos de datos en https://ipt.biodiversity.be/[Belgian BIF IPT]. Póngase en contacto con André Heughebaert <a.heughebaert@biodiversity.be> para obtener ayuda. La Belgian Biodiversity Platform comparte su IPT con las siguientes organizaciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:61
-msgid "http://www.ulg.be[University of Liège]"
-msgstr ""
+msgid "http://www.naturalsciences.be[Royal Belgian Institute of Natural Sciences]"
+msgstr "http://www.naturalsciences.be[Royal Belgian Institute of Natural Sciences]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:62
-msgid "http://www.plantentuinmeise.be[Botanical Garden Meise]"
-msgstr ""
+msgid "http://www.ulg.be[University of Liège]"
+msgstr "http://www.ulg.be[Universidad de Liège]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:63
-msgid "http://biodiversite.wallonie.be[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)]"
-msgstr ""
+msgid "http://www.plantentuinmeise.be[Botanical Garden Meise]"
+msgstr "http://www.plantentuinmeise.be[Jardín botánico de Meise]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:64
-msgid "http://www.portail.umons.ac.be[University of Mons-Hainaut]"
-msgstr ""
+msgid "http://biodiversite.wallonie.be[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)]"
+msgstr "http://biodiversite.wallonie.be[Service Public de Wallonie – Département d’Etude du Milieu Naturel et Agricole (SPW – DEMNA)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:65
-msgid "http://www.ulb.ac.be/[Université Libre de Bruxelles ]"
-msgstr ""
+msgid "http://www.portail.umons.ac.be[University of Mons-Hainaut]"
+msgstr "http://www.portail.umons.ac.be[Universidad de Mons-Hainaut]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:66
-msgid "http://www.africamuseum.be[Royal Museum for Central Africa, Belgium]"
-msgstr ""
+msgid "http://www.ulb.ac.be/[Université Libre de Bruxelles ]"
+msgstr "http://www.ulb.ac.be/[Universidad Libre de Bruxelles]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:67
-msgid "http://www.ugent.be[Ghent University]"
-msgstr ""
+msgid "http://www.africamuseum.be[Royal Museum for Central Africa, Belgium]"
+msgstr "http://www.africamuseum.be[Royal Museum for Central Africa, Belgium]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:68
-msgid "https://www.natagriwal.be/[Natagriwal]"
-msgstr ""
+msgid "http://www.ugent.be[Ghent University]"
+msgstr "http://www.ugent.be[Universidad de Ghent]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:69
+msgid "https://www.natagriwal.be/[Natagriwal]"
+msgstr "https://www.natagriwal.be/[Natagriwal]"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:70
 msgid "https://www.itg.be/[Institute of Tropical Medicine Antwerp]"
-msgstr ""
+msgstr "https://www.itg.be/[Institute of Tropical Medicine Antwerp]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:71
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:72
 msgid "The Belgian Biodiversity Platform also hosts an IPT for each of these countries/institutions:"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:73
-msgid "http://ipt-mrbif.bebif.be/[GBIF Mauritania IPT]"
-msgstr ""
+msgstr "La Belgian Biodiversity Platform también alberga un IPT para cada uno de estos países/instituciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:74
-msgid "http://ipt.biodiversity.aq/[Antabif IPT]"
-msgstr ""
+msgid "http://ipt-mrbif.bebif.be/[GBIF Mauritania IPT]"
+msgstr "http://ipt-mrbif.bebif.be/[IPT GBIF Mauritania]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:75
+msgid "http://ipt.biodiversity.aq/[Antabif IPT]"
+msgstr "http://ipt.biodiversity.aq/[IPT Antabif]"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:76
 msgid "http://data.freshwaterbiodiversity.eu/ipt/[Biofresh IPT]"
-msgstr ""
+msgstr "http://data.freshwaterbiodiversity.eu/ipt/[IPT Biofresh]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:77
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:78
 msgid "The Research Institute for Nature and Forest (INBO) also provides http://data.inbo.be/ipt[IPT] hosting support for datasets originating from the Flemish region. The INBO is sharing their IPT instance with these organizations:"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:79
-msgid "http://www.natuurpunt.be[Natuurpunt]"
-msgstr ""
+msgstr "El Instituto de Investigación para la Naturaleza y los Bosques (INBO) también proporciona soporte de alojamiento http://data.inbo.be/ipt[IPT] para conjuntos de datos que se originan en la región flamenca. El INBO comparte su instancia de IPT con estas organizaciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:80
-msgid "http://www.vmm.be[Flemish Environment Agency VMM]"
-msgstr ""
+msgid "http://www.natuurpunt.be[Natuurpunt]"
+msgstr "http://www.natuurpunt.be[Natuurpunt]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:82
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:81
+msgid "http://www.vmm.be[Flemish Environment Agency VMM]"
+msgstr "http://www.vmm.be[Agencia Flamenca de Medio Ambiente VMM]"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:83
 msgid "The Flanders Marine Institute (VLIZ) is hosting a server with multiple IPT installations for http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] & http://www.emodnet-biology.eu[EMODnet Biology] at http://ipt.vliz.be. Publishers of marine data should refer to the section <<Marine data>>."
-msgstr ""
+msgstr "El Instituto Marino Flanders (VLIZ) aloja un servidor con múltiples instalaciones del IPT para http://www.vliz.be[VLIZ], http://www.iobis.org[OBIS] y http://www.emodnet-biology.eu[EMODnet Biology] en http://ipt.vliz.be. Los publicadores de datos marinos deben consultar la sección <<Datos marinos>>."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:83
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:84
 #, no-wrap
 msgid "Canada"
-msgstr ""
+msgstr "Canadá"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:86
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:87
 msgid "The http://www.cbif.gc.ca/[Canadian Biodiversity Information Facility (CBIF)] does not run an IPT."
-msgstr ""
+msgstr "El http://www.cbif.gc.ca/[Canadian Biodiversity Information Facility (CBIF)] no ejecuta un IPT."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:88
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:89
 msgid "Therefore you are recommended to contact Canadensys, which provides helpdesk support to new publishers in Canada, and hosting support for datasets on the http://data.canadensys.net/ipt[Canadensys IPT]. Please contact Canadensys <canadensys.network@gmail.com> for assistance."
-msgstr ""
+msgstr "Por lo tanto, se recomienda que se ponga en contacto con Canadensys, que ofrece asistencia a los nuevos editores en Canadá, y soporte de alojamiento para los conjuntos de datos en el http://data.canadensys.net/ipt[IPT Canadensys]. Póngase en contacto con Canadensys <canadensys.network@gmail.com> para obtener ayuda."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:90
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:91
 msgid "The http://data.canadensys.net/ipt[Canadensys IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000855[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
-msgstr ""
+msgstr "El http://data.canadensys.net/ipt[IPT Canadensys] se reconoce como un repositorio en https://fairsharing.org/biodbcore-000855[FAIRSharing.org]. Cada vez son más las revistas que remiten a los autores a un repositorio adecuado en FAIRSharing.org para garantizar que los datos de las publicaciones científicas se depositen de forma estandarizada."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:91
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:92
 #, no-wrap
 msgid "Colombia"
-msgstr ""
+msgstr "Colombia"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:94
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:95
 msgid "The http://www.sibcolombia.net/[Colombian Biodiversity Information System (SiB Colombia)] provides helpdesk support to new publishers in Colombia, and hosting support for datasets on the http://ipt.sibcolombia.net/sib/[SiB Colombia IPT]. Please contact SiB Colombia <sib@humboldt.org.co> for assistance."
-msgstr ""
+msgstr "El http://www.sibcolombia.net/[Sistema de Información de Biodiversidad Colombiano (SiB Colombia)] ofrece soporte técnico a los nuevos publicadores en Colombia y soporte de alojamiento para los conjuntos de datos en el http://ipt.sibcolombia.net/sib/[IPT SiB Colombia]. Para obtener ayuda por favor póngase en contacto con <sib@humboldt.org.co>."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:96
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:97
 msgid "The http://ipt.sibcolombia.net/sib/[SiB Colombia IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
-msgstr ""
+msgstr "El  http://ipt.sibcolombia.net/sib/[IPT SiB Colombia]  se reconoce como un repositorio en https://fairsharing.org/biodbcore-000856[FAIRSharing.org]. Cada vez son más las revistas que remiten a los autores a un repositorio adecuado en FAIRSharing.org para garantizar que los datos de las publicaciones científicas se depositen de forma estandarizada."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:97
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:98
 #, no-wrap
 msgid "Denmark"
-msgstr ""
+msgstr "Dinamarca"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:100
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:101
 msgid "The http://danbif.dk/[Danish Biodiversity Information Facility (DanBIF)] provides helpdesk support to new publishers in Denmark, and hosting support for datasets on the http://danbif.au.dk/ipt/[DanBIF IPT]. Please contact DanBIF <icalabuig@snm.ku.dk> for assistance."
-msgstr ""
+msgstr "El http://danbif.dk/[Danish Biodiversity Information Facility (DanBIF)] ofrece soporte técnico a los nuevos publicadores en Dinamarca y soporte de alojamiento para los conjuntos de datos en el http://danbif.au.dk/ipt/[DanBIF IPT]. Para obtener ayuda por favor póngase en contacto con <icalabuig@snm.ku.dk>."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:101
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:102
 #, no-wrap
 msgid "Finland"
-msgstr ""
+msgstr "Finlandia"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:104
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:105
 msgid "The Finnish Biodiversity Information Facility (FinBIF) (https://laji.fi/) provides helpdesk support to new publishers in Finland, and hosting support for datasets on the FinBIF IPT (https://ipt.laji.fi/ipt). Please contact FinBIF eija-leena.laiho@helsinki.fi for assistance."
-msgstr ""
+msgstr "El Servicio Finnish Biodiversity Information Facility (FinBIF) (https://laji.fi/) ofrece soporte técnico a los nuevos publicadores en Finlandia y soporte de alojamiento para los conjuntos de datos en el IPT de FinBIF (https://ipt.laji.fi/ipt). Póngase en contacto con FinBIF eija-leena.laiho@helsinki.fi para obtener ayuda."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:105
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:106
 #, no-wrap
 msgid "France"
-msgstr ""
+msgstr "Francia"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:108
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:109
 msgid "http://www.gbif.fr/[GBIF France] provides helpdesk support to new publishers and hosts an IPT for each of these countries:"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:110
-msgid "http://ipt-benin.gbif.fr[GBIF Benin IPT]"
-msgstr ""
+msgstr "http://www.gbif.fr/[GBIF Francia] ofrece asistencia a los nuevos publicadores y alberga un IPT para cada uno de estos países:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:111
-msgid "http://ipt-botswana.gbif.fr/[Botswana IPT] - _Note Botswana is not a GBIF Participant_"
-msgstr ""
+msgid "http://ipt-benin.gbif.fr[GBIF Benin IPT]"
+msgstr "http://ipt-benin.gbif.fr[IPT GBIF Benín]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:112
-msgid "http://ipt-burkinafaso.gbif.fr[Burkina Faso IPT] - _Note Burkina Faso is not a GBIF Participant_"
-msgstr ""
+msgid "http://ipt-botswana.gbif.fr/[Botswana IPT] - _Note Botswana is not a GBIF Participant_"
+msgstr "http://ipt-botswana.gbif.fr/[IPT Botswana] _Nota: Botswana no es participante de GBIF_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:113
-msgid "http://ipt-cameroun.gbif.fr[Cameroon IPT]"
-msgstr ""
+msgid "http://ipt-burkinafaso.gbif.fr[Burkina Faso IPT] - _Note Burkina Faso is not a GBIF Participant_"
+msgstr "http://ipt-burkinafaso.gbif.fr[IPT Burkina Faso] - Nota: Burkina Faso no es participante de GBIF_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:114
-msgid "http://ipt-cotedivoire.gbif.fr[Côte d'Ivoire IPT] - _Note Côte d'Ivoire is not a GBIF Participant_"
-msgstr ""
+msgid "http://ipt-cameroun.gbif.fr[Cameroon IPT]"
+msgstr "http://ipt-cameroun.gbif.fr[IPT Camerún]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:115
-msgid "http://ipt.gbif.fr[GBIF France IPT]"
-msgstr ""
+msgid "http://ipt-cotedivoire.gbif.fr[Côte d'Ivoire IPT] - _Note Côte d'Ivoire is not a GBIF Participant_"
+msgstr "http://ipt-cotedivoire.gbif.fr[IPT Costa de Marfil] _Nota: Costa de Marfil no es un Participante GBIF_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:116
-msgid "http://ipt-gabon.gbif.fr[Gabon IPT] - _Note Gabon is not a GBIF Participant_"
-msgstr ""
+msgid "http://ipt.gbif.fr[GBIF France IPT]"
+msgstr "http://ipt.gbif.fr[IPT GBIF Francia]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:117
-msgid "http://ipt-ghana.gbif.fr[Ghana BIF IPT]"
-msgstr ""
+msgid "http://ipt-gabon.gbif.fr[Gabon IPT] - _Note Gabon is not a GBIF Participant_"
+msgstr "http://ipt-gabon.gbif.fr[IPT Gabón] _Nota: Gabón no es un participante de GBIF_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:118
-msgid "http://ipt-guinee.gbif.fr[GBIF Guinea IPT]"
-msgstr ""
+msgid "http://ipt-ghana.gbif.fr[Ghana BIF IPT]"
+msgstr "http://ipt-ghana.gbif.fr[IPT Ghana BIF]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:119
-msgid "http://ipt-inpn.gbif.fr/[INPN IPT]"
-msgstr ""
+msgid "http://ipt-guinee.gbif.fr[GBIF Guinea IPT]"
+msgstr "http://ipt-guinee.gbif.fr[IPT GBIF Guinea]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:120
-msgid "http://ipt.madbif.mg[MadBIF IPT]"
-msgstr ""
+msgid "http://ipt-inpn.gbif.fr/[INPN IPT]"
+msgstr "http://ipt-inpn.gbif.fr/[IPT INPN]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:121
-msgid "http://ipt-nigeria.gbif.fr[GBIF Nigeria IPT]"
-msgstr ""
+msgid "http://ipt.madbif.mg[MadBIF IPT]"
+msgstr "http://ipt.madbif.mg[IPT MadBIF]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:122
-msgid "http://ipt-senegal.gbif.fr[Senegal IPT] - _Note Senegal is not a GBIF participant_"
-msgstr ""
+msgid "http://ipt-nigeria.gbif.fr[GBIF Nigeria IPT]"
+msgstr "http://ipt-nigeria.gbif.fr[IPT GBIF Nigeria]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:123
-msgid "http://ipt-togo.gbif.fr[GBIF Togo IPT]"
-msgstr ""
+msgid "http://ipt-senegal.gbif.fr[Senegal IPT] - _Note Senegal is not a GBIF participant_"
+msgstr "http://ipt-senegal.gbif.fr[IPT Senegal] _Nota: Senegal no es un participante de GBIF_"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:124
-msgid "http://ipt-uganda.gbif.fr[GBIF Uganda IPT]"
-msgstr ""
+msgid "http://ipt-togo.gbif.fr[GBIF Togo IPT]"
+msgstr "http://ipt-togo.gbif.fr[IPT GBIF Togo]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:126
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:125
+msgid "http://ipt-uganda.gbif.fr[GBIF Uganda IPT]"
+msgstr "http://ipt-uganda.gbif.fr[IPT GBIF Uganda]"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:127
 msgid "Please contact GBIF-France <gbif@gbif.fr> for assistance. For technical issues please write to <dev@gbif.fr> instead."
-msgstr ""
+msgstr "Póngase en contacto con GBIF Francia <gbif@gbif.fr> para obtener ayuda. Para problemas técnicos, escriba a <dev@gbif.fr>."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:127
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:128
 #, no-wrap
 msgid "Norway"
-msgstr ""
+msgstr "Noruega"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:130
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:131
 msgid "http://www.gbif.no/[GBIF Norway] provides helpdesk support to new publishers in Norway, and hosting support for datasets on the http://ipt.gbif.no/[GBIF Norway IPT]. Please contact GBIF Norway <helpdesk@gbif.no> for assistance."
-msgstr ""
+msgstr "http://www.gbif.no/[GBIF Noruega] ofrece soporte técnico a los nuevos publicadores en Noruega y soporte de alojamiento para los conjuntos de datos en el http://ipt.gbif.no/[IPT GBIF Noruega]. Para obtener ayuda por favor póngase en contacto con <helpdesk@gbif.no>."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:131
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:132
 #, no-wrap
 msgid "Portugal"
-msgstr ""
+msgstr "Portugal"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:134
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:135
 msgid "http://www.gbif.pt/[GBIF Portugal] provides helpdesk support to new publishers in Portugal, and hosting support for datasets on the http://ipt.gbif.pt/ipt/[GBIF Portugal IPT]. Please contact GBIF Portugal <node@gbif.pt> for assistance."
-msgstr ""
+msgstr "http://www.gbif.pt/[GBIF Portugal] ofrece soporte técnico a los nuevos publicadores en Portugal y soporte de alojamiento para los conjuntos de datos en el http://ipt.gbif.pt/ipt/[IPT GBIF Portugal]. Para obtener ayuda por favor póngase en contacto con <node@gbif.pt>."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:135
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:136
 #, no-wrap
 msgid "South Africa"
-msgstr ""
+msgstr "Sudáfrica"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:138
-msgid "The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://197.189.235.147:8080/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance."
-msgstr ""
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:139
+msgid "The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://ipt.sanbi.org.za/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance."
+msgstr "El http://www.sanbi.org/[Instituto Nacional de Biodiversidad de Sudáfrica (SANBI)] ofrece soporte técnico a los nuevos publicadores en Sudáfrica y soporte de alojamiento para los conjuntos de datos en el http://ipt.sanbi.org.za/iptsanbi/[IPT del SANBI]. Para obtener ayuda por favor póngase en contacto con <f.ramwashe@sanbi.org.za>."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:139
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:140
 #, no-wrap
 msgid "Spain"
-msgstr ""
+msgstr "España"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:142
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:143
 msgid "http://www.gbif.es/[GBIF Spain] provides helpdesk support to new publishers in Spain, and hosting support for datasets on the http://www.gbif.es/ipt/[GBIF Spain IPT]. Please contact <info@gbif.es> for assistance."
-msgstr ""
+msgstr "http://www.gbif.pt/[GBIF España] ofrece soporte técnico a los nuevos publicadores en España y soporte de alojamiento para los conjuntos de datos en el http://www.gbif.es/ipt/[IPT GBIF España]. Para obtener ayuda por favor póngase en contacto con <info@gbif.es>."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:144
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:145
 msgid "The http://www.gbif.es/ipt/[GBIF Spain IPT] is recognized as a repository in https://fairsharing.org/biodbcore-000854[FAIRSharing.org]. An increasing number of journals refer authors to an appropriate repository in FAIRSharing.org in order to ensure data underlying scientific publications gets deposited in a standardized manner."
-msgstr ""
+msgstr "El http://www.gbif.es/ipt/[IPT de GBIF España] se reconoce como un repositorio en https://fairsharing.org/biodbcore-000854[FAIRSharing.org]. Cada vez son más las revistas que remiten a los autores a un repositorio adecuado en FAIRSharing.org para garantizar que los datos de las publicaciones científicas se depositen de forma estandarizada."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:145
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:146
 #, no-wrap
 msgid "Sweden"
-msgstr ""
+msgstr "Suecia"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:148
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:149
 msgid "http://www.gbif.se/[GBIF Sweden] provides helpdesk support to new publishers in Sweden, and hosting support for datasets on the http://www.gbif.se/ipt/[GBIF Sweden IPT]. Please contact Anders Telenius <anders.telenius@nrm.se> for assistance."
-msgstr ""
+msgstr "http://www.gbif.se/[GBIF Suecia] ofrece soporte técnico a los nuevos publicadores en Suecia y soporte de alojamiento para los conjuntos de datos en el http://www.gbif.se/ipt/[IPT GBIF Suecia]. Para obtener ayuda por favor póngase en contacto con Anders Telenius <anders.telenius@nrm.se>."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:149
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:150
 #, no-wrap
 msgid "Taiwan"
-msgstr ""
+msgstr "Taiwán"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:152
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:153
 msgid "The http://www.taibif.tw/[Taiwan Biodiversity Information Facility (TaiBIF)] provides helpdesk support to new publishers in Taiwan, and hosting support for datasets on the http://ipt.taibif.tw/[TaiBIF IPT]. Please contact Melissa Liu <melissaliu0520@gmail.com> for assistance."
-msgstr ""
+msgstr "El http://www.taibif.tw/[Taiwan Biodiversity Information Facility (TaiBIF)] ofrece soporte técnico a los nuevos publicadores en Taiwán y soporte de alojamiento para los conjuntos de datos en el http://ipt.taibif.tw/[IPT TaiBIF]. Para obtener ayuda por favor póngase en contacto con Melissa Liu <melissaliu0520@gmail.com>."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:153
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:154
 #, no-wrap
 msgid "USA"
-msgstr ""
+msgstr "EE.UU."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:156
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:157
 msgid "The http://ipt.idigbio.org[iDigBio IPT] provides helpdesk support to new data publishers in the US, and data publishing resources for datasets needing data mobilization support. Please contact data@idigbio.org for assistance."
-msgstr ""
+msgstr "El http://ipt.idigbio.org[IPT iDigBio] ofrece soporte técnico a los nuevos publicadores en los Estados Unidos y recursos de publicación de datos para conjuntos de datos que necesitan soporte para la movilización de datos. Para obtener ayuda por favor póngase en contacto con data@idigbio.org."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:158
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:159
 msgid "http://vertnet.org/[VertNet] provides helpdesk support to institutions that have vertebrates among one or more of the data sets they want to publish. In other words, if the institution is interested in publishing vertebrate data sets (whether specimens or observations), VertNet will help with publishing all of their data sets. This promotes efficiency when providing and maintaining support to the institution."
-msgstr ""
+msgstr "http://vertnet.org/[VertNet] ofrece soporte técnico a las instituciones que tienen vertebrados en uno o más de los conjuntos de datos que desean publicar. En otras palabras, si la institución está interesada en publicar conjuntos de datos de vertebrados (ya sean especímenes u observaciones), VertNet ayudará a publicar todos sus conjuntos de datos. Esto promueve la eficiencia al brindar y mantener el apoyo a la institución."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:160
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:161
 msgid "The http://www.usgs.gov/[United States Geological Survey (USGS)] provides helpdesk support to new publishers in the United States partnered or affiliated with the USGS or the U.S. Federal Government, and hosting support for datasets on the https://bison.usgs.gov/ipt[USGS BISON IPT]. Please contact <bison@usgs.gov> for assistance. Also note the USGS hosts IPTs for the following organizations/resources:"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:162
-msgid "https://www1.usgs.gov/obis-usa/ipt/[Ocean Biogeographic Information System USA - OBIS-USA]"
-msgstr ""
+msgstr "El http://www.usgs.gov/[United States Geological Survey (USGS)] ofrece soporte técnico a los nuevos publicadores en los Estados Unidos asociados o afiliados con el USGS o el gobierno federal de los EE.UU. y brinda soporte de alojamiento para conjuntos de datos en https://bison.usgs.gov/ipt[IPT USGS BISON]. Para obtener ayuda comuníquese con <bison@usgs.gov>. También tenga en cuenta que el USGS aloja IPT para las siguientes organizaciones/recursos: "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:163
-msgid "https://nas.er.usgs.gov/ipt/[Non-indigenous Aquatic Species (NAS) information resource for the USGS]"
-msgstr ""
+msgid "https://www1.usgs.gov/obis-usa/ipt/[Ocean Biogeographic Information System USA - OBIS-USA]"
+msgstr "https://www1.usgs.gov/obis-usa/ipt/[Ocean Biogeographic Information System USA - OBIS-USA]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:164
+msgid "https://nas.er.usgs.gov/ipt/[Non-indigenous Aquatic Species (NAS) information resource for the USGS]"
+msgstr "https://nas.er.usgs.gov/ipt/[Recurso de información Non-indigenous Aquatic Species (NAS) para el USGS]"
+
+#. type: Plain text
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:165
 msgid "https://bison.usgs.gov/ipt[USGS Biodiversity Information Serving Our Nation (BISON) IPT]"
-msgstr ""
+msgstr "https://bison.usgs.gov/ipt[IPT USGS Biodiversity Information Serving Our Nation (BISON)]"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:165
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:166
 #, no-wrap
 msgid "Freshwater data"
-msgstr ""
+msgstr "Datos dulceacuícolas"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:168
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:169
 msgid "http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] provides data hosting and helpdesk support to publishers of freshwater data around the globe on the http://data.freshwaterbiodiversity.eu/ipt/[Biofresh IPT], hosted by the Belgium Biodiversity Platform. Biofresh is an EU-funded international project that aims to build a global information platform for scientists and ecosystem managers with access to all available databases describing the distribution, status and trends of global freshwater biodiversity. BioFresh integrates the freshwater biodiversity competencies and expertise of 19 research institutions."
-msgstr ""
+msgstr "http://data.freshwaterbiodiversity.eu/ipt/[Biofresh] proporciona alojamiento de datos y soporte técnico a los publicadores de datos de agua dulce de todo el mundo en http://data.freshwaterbiodiversity.eu/ipt/[IPT Biofresh], alojado por la Belgium Biodiversity Platform. Biofresh, es un proyecto internacional financiado por la Unión Europea que tiene como objetivo construir una plataforma de información global para científicos y administradores de ecosistemas con acceso a todas las bases de datos disponibles que describen la distribución, el estado y las tendencias de la biodiversidad mundial de agua dulce. BioFresh integra las capacidades y la experiencia en biodiversidad de agua dulce de 19 instituciones de investigación."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:169
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:170
 #, no-wrap
 msgid "Marine data"
-msgstr ""
+msgstr "Datos marinos"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:172
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:173
 msgid "http://www.iobis.org[OBIS] provides data hosting and helpdesk support to publishers of marine data around the globe. EurOBIS/Flanders Marine Institute (VLIZ) hosts multiple IPT installations discoverable at http://ipt.vliz.be/ on behalf of various OBIS Nodes. Currently, there are more than http://www.iobis.org/about/[20 OBIS Nodes] around the world connecting 500 institutions from 56 countries."
-msgstr ""
+msgstr "http://www.iobis.org[OBIS] proporciona alojamiento de datos y soporte técnico a publicadores de datos marinos de todo el mundo. EurOBIS/Flanders Marine Institute (VLIZ) aloja múltiples instalaciones IPT que se pueden encontrar en http://ipt.vliz.be/ en nombre de varios Nodos OBIS. Actualmente, hay más de http://www.iobis.org/about/[20 Nodos OBIS] en todo el mundo que conectan a 500 instituciones de 56 países."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:173
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:174
 #, no-wrap
 msgid "Vertebrate data"
-msgstr ""
+msgstr "Datos de vertebrados"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:176
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:177
 msgid "http://vertnet.org/[VertNet] provides data hosting and helpdesk support to publishers of vertebrate specimen and observation data. Hosted data can be seen on the http://ipt.vertnet.org/[VertNet IPT]. Please contact David Bloom <dbloom@vertnet.org> for assistance."
-msgstr ""
+msgstr "http://vertnet.org/[VertNet] proporciona alojamiento de datos y soporte técnico a publicadores de datos de especímenes y observaciones de vertebrados. Los datos alojados se pueden ver en http://ipt.vertnet.org/[IPT VertNet]. Póngase en contacto con David Bloom <dbloom@vertnet.org> para obtener ayuda."
 
 #. type: Title ==
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:177
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:178
 #, no-wrap
 msgid "Certification"
-msgstr ""
+msgstr "Certificación"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/data-hosting-centres.adoc:179
+#: en/modules/ROOT/pages/data-hosting-centres.adoc:180
 msgid "By becoming certified, repositories can demonstrate to both their users and their funders that an independent authority has evaluated them and endorsed their trustworthiness. The World Data System (WDS) and the Data Seal of Approval (DSA) have merged their data repository certifications into a set of harmonized common requirements for certification of repositories named the https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR) Requirements]. The Core certification requires a data repository supply evidence that they are sustainable and trustworthy. A repository first conducts an internal self-assessment, which is then reviewed by community peers. More information about the certification process can be found https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[here]."
-msgstr ""
+msgstr "Al obtener la certificación, los repositorios pueden demostrar tanto a sus usuarios como a sus financiadores que una autoridad independiente los ha evaluado y respaldado su confiabilidad. El World Data System (WDS) y el Data Seal of Approval (DSA) han fusionado sus certificaciones de repositorios de datos en un conjunto de requisitos comunes estandarizados para la certificación de repositorios denominados https://goo.gl/fxVbgc[Core Trustworthy Data Repositories (Core TDR) Requirements]. La certificación Core requiere que un repositorio de datos proporcione pruebas de que es sostenible y confiable. El repositorio primero realiza una autoevaluación interna, que luego es revisada por pares de la comunidad. Puede encontrar más información sobre el proceso de certificación https://zenodo.org/record/168411/files/Intro_To_Core_Trustworthy_Data_Repositories_Requirements_2016-11.pdf[aquí]."
 

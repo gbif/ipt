@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"POT-Creation-Date: 2021-11-10 10:42+0000\n"
+"PO-Revision-Date: 2021-11-10 11:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -18,12 +18,12 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:3
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:27
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/customization.adoc:12
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
@@ -71,24 +71,24 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:55
 #, no-wrap
 msgid "FAQ"
-msgstr ""
+msgstr "問答集"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:33
 #: en/modules/ROOT/pages/sampling-event-data.adoc:34
-msgid "http://rs.tdwg.org/dwc/terms/#eventDate[eventDate]"
+msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
-msgid "http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs.tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/dwc/terms/#geodeticDatum[geodeticDatum] - to provide a specific point location"
+msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
 #: en/modules/ROOT/pages/sampling-event-data.adoc:45
-msgid "http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]"
+msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
 msgstr ""
 
 #. type: Title =
@@ -131,12 +131,12 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:18
-msgid "Each sampling event record should include all <<Required DwC Fields,required DwC fields>> and as many <<Recommended DwC Fields,recommended DwC fields>> as possible. You can augment your table with extra DwC columns, but only DwC terms from this http://rs.gbif.org/core/dwc_event_2015_05_29.xml[list]."
+msgid "Each sampling event record should include all <<Required DwC Fields,required DwC fields>> and as many <<Recommended DwC Fields,recommended DwC fields>> as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-event}.xml[list]."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:20
-msgid "Similarly each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise when the location of individual occurrences isn't supplied, its location gets inherited from the event."
+msgid "Similarly each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}.xml[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise when the location of individual occurrences isn't supplied, its location gets inherited from the event."
 msgstr ""
 
 #. type: Plain text
@@ -156,42 +156,42 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:33
-msgid "http://rs.tdwg.org/dwc/terms/#eventID[eventID] - also required for associated occurrence data (to link them together)"
+msgid "https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - also required for associated occurrence data (to link them together)"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:35
-msgid "http://rs.tdwg.org/dwc/terms/#samplingProtocol[samplingProtocol]"
+msgid "https://dwc.tdwg.org/terms/#dwc:samplingProtocol[samplingProtocol]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:39
-msgid "http://rs.tdwg.org/dwc/terms/#sampleSizeValue[sampleSizeValue] & http://rs.tdwg.org/dwc/terms/#sampleSizeUnit[sampleSizeUnit]"
+msgid "hhttps://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:40
-msgid "http://rs.tdwg.org/dwc/terms/#parentEventID[parentEventID] - in situations where the event is part of an event series"
+msgid "https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - in situations where the event is part of an event series"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:41
-msgid "http://rs.tdwg.org/dwc/terms/#samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event"
+msgid "https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:42
-msgid "http://rs.tdwg.org/dwc/terms/#locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier"
+msgid "https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:44
-msgid "http://rs.tdwg.org/dwc/terms/#footprintWKT[footprintWKT] & http://rs.tdwg.org/dwc/terms/#footprintSRS[footprintSRS] - to provide a specific shape location"
+msgid "https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - to provide a specific shape location"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:46
-msgid "http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus] - only for associated occurrence data to record presence/absence data."
+msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - only for associated occurrence data to record presence/absence data."
 msgstr ""
 
 #. type: Plain text
@@ -228,7 +228,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:60
 #, no-wrap
-msgid "*A.* All sampling events at the same location must share the same http://rs.tdwg.org/dwc/terms/#locationID[locationID].\n"
+msgid "*A.* All sampling events at the same location must share the same https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
 msgstr ""
 
 #. type: Title ====
@@ -267,7 +267,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:74
-msgid "http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus]=link:http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[\"absent\"]"
+msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]"
 msgstr ""
 
 #. type: Plain text
@@ -277,12 +277,12 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:78
-msgid "http://rs.tdwg.org/dwc/terms/#individualCount[individualCount]=\"0\""
+msgid "hhttps://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:79
-msgid "http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] & http://rs.tdwg.org/dwc/terms/#organismQuantityType[organismQuantityType] pair. \"e.g. 0 individuals\""
+msgid "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair. \"e.g. 0 individuals\""
 msgstr ""
 
 #. type: Plain text

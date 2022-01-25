@@ -1,16 +1,18 @@
-/***************************************************************************
- * Copyright 2011 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -34,22 +36,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * @author hftobon
- */
 public class UserAccountManagerImplTest {
 
   private PasswordConverter mockedPasswordConverter = mock(PasswordConverter.class);
@@ -57,13 +56,13 @@ public class UserAccountManagerImplTest {
   private static File userFile;
   private User admin, manager, publisher, user;
 
-  @BeforeClass
+  @BeforeAll
   public static void initialiseOnce() {
     userFile =
       new File(System.getProperty("java.io.tmpdir") + File.separatorChar + UserAccountManagerImpl.PERSISTENCE_FILE);
   }
 
-  @After
+  @AfterEach
   public void deleteFile() {
     if (userFile.exists()) {
       userFile.delete();
@@ -79,7 +78,7 @@ public class UserAccountManagerImplTest {
     return new UserAccountManagerImpl(mockedCfg, mockedDataDir, mockedResourceManager, mockedPasswordConverter);
   }
 
-  @Before
+  @BeforeEach
   public void initialise() {
 
     // Admin user
@@ -200,12 +199,12 @@ public class UserAccountManagerImplTest {
     }
 
     // Case #3. Ensure the last manager of a resource cannot be deleted
-    List<Resource> resources = new ArrayList<Resource>();
+    List<Resource> resources = new ArrayList<>();
 
     Resource res1 = new Resource();
     res1.setShortname("res1");
     res1.setCreator(manager);
-    Set<User> managers1 = new HashSet<User>();
+    Set<User> managers1 = new HashSet<>();
     managers1.add(manager);
     res1.setManagers(managers1);
     resources.add(res1);
@@ -226,7 +225,7 @@ public class UserAccountManagerImplTest {
     // Case #5. Ensure the creator of resources cannot be deleted
     userManager.create(manager);
     assertEquals(3, userManager.list().size());
-    managers1 = new HashSet<User>();
+    managers1 = new HashSet<>();
     managers1.add(manager);
     res1.setManagers(managers1);
     when(mockedResourceManager.list()).thenReturn(resources);

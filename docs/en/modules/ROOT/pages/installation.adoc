@@ -4,7 +4,7 @@
 
 The IPT stores configuration, resources, users and logs in its data directory.  This can be set during installation, or the first time the IPT is run.
 
-A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\ipt-data` is appropriate.  The IPT must have write permission to the chosen location.
+A typical location on Linux is `/var/lib/ipt` (installed from packages) or `/srv/ipt` (running in Tomcat).  On Windows, `C:\ipt-data` is appropriate.  The IPT must have write permission to the chosen location, see the xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[FAQ entry] if you have problems.
 
 [CAUTION]
 ====
@@ -69,7 +69,7 @@ The most common servlet containers used to deploy the IPT are Tomcat, Jetty and 
 
 === Tomcat
 
-The IPT has been tested and works well with Tomcat 7, 8 or 9. The Apache Tomcat documentation can be found on http://tomcat.apache.org/.
+The IPT has been tested and works well with recent releases of Tomcat 7, 8 or 9. The Apache Tomcat documentation can be found on http://tomcat.apache.org/.
 
 . Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or xref:tomcat-installation-windows.adoc[Windows], or refer to the Tomcat documentation.
 
@@ -78,7 +78,7 @@ The IPT has been tested and works well with Tomcat 7, 8 or 9. The Apache Tomcat 
 --
 TIP: This step is optional, but is recommended to improve security and simplify the upgrade procedure.
 
-Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/conf/Catalina/localhost/ipt.xml`.
+Locate the Tomcat configuration directory (usually `/etc/tomcat` or `/etc/tomcat9` on Linux, `C:\Program Files\Apache Software Foundation\Tomcat X.Y\conf` on Windows), and create a file `Catalina/localhost/ipt.xml` (described in the https://tomcat.apache.org/tomcat-8.5-doc/config/context.html#Defining_a_context[Tomcat documentation "Defining a context"]).   For example, on a typical CentOS Linux installation, the file would be `/etc/tomcat/Catalina/localhost/ipt.xml`. The file should be readable by the Tomcat process.
 
 Define the `IPT_DATA_DIR` parameter within the file — copy and paste the text here, since the case of the letters is important:
 
@@ -88,6 +88,8 @@ Define the `IPT_DATA_DIR` parameter within the file — copy and paste the text 
   <Parameter name="IPT_DATA_DIR" value="/srv/ipt"/>
 </Context>
 ----
+
+Ensure the Tomcat server either has permission to create this directory, or create it and then grant read and write permission. See xref:faq.adoc#i-get-the-following-error-the-data-directory-directory-is-not-writable-what-should-i-do[this FAQ entry] if you have errors about write permissions on the data directory.
 
 [NOTE]
 ====
@@ -100,14 +102,14 @@ If the data directory location needs to be changed, remove/edit this file and re
 . Deploy the IPT
 +
 --
-Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running. You can then invoke the IPT in a web browser running on the same server by using the following URL: http://localhost:8080/ipt
-
-If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
+Download the latest WAR release of the IPT from the xref:releases.adoc[releases page] and rename it to `ipt.war` (or similar, matching `ipt.xml` from step 2 if used). Copy the `ipt.war` file to the Tomcat webapps folder, and then start Tomcat if it is not already running.
 --
 
 Successful deployment of the IPT within a servlet container will make the IPT accessible through a web browser at a URL determined by the servlet's name and port, followed by /ipt (e.g., http://server.example.org:8080/ipt). If the installation was successful, the initial IPT setup page will appear in a web browser using the IPT's URL.
 
 Then continue to <<Opening the IPT to the Internet>>.
+
+If the installation doesn't start please check the `catalina.out` logfile, and refer to the xref:faq.adoc[FAQ] for help.
 
 The following screencast also explains how to install the IPT using Tomcat, assuming Tomcat has already been installed.
 
@@ -117,6 +119,10 @@ video::116142276[vimeo,width=100%]
 [TIP]
 ====
 Multiple IPTs can be installed on the same server with a small variation to this process.  Rather than (or in addition to) using `ipt.xml` and `ipt.war`, use different names and change the files accordingly: on https://cloud.gbif.org/[cloud.gbif.org] we have `africa.xml` and `africa.war`, `bid.xml` and `bid.war` etc.
+
+Different IPT versions may be installed side-by-side, though we always recommend always using the latest version.
+
+_Ensure each IPT is configured to use its own data directory!_
 ====
 
 === Jetty
@@ -165,3 +171,17 @@ The configuration used by `ipt.gbif.org` is shown here as an example.  It uses A
 ----
 include::partial$apache-configuration-example.conf[]
 ----
+
+Nginx can also be used as a reverse proxy. An example configuration is below.
+
+// The Nginx configuration example is in a separate file so the translation system can ignore it.
+[source,nginx]
+----
+include::partial$nginx-configuration-example.conf[]
+----
+
+=== TLS certificate configuration
+
+For production deployments of the IPT we recommend using a TLS certificate, so information such as logins are secured when accessing the IPT.  The procedure to set this up sometimes depends on your institution's policies, but the free https://letsencrypt.org/[LetsEncrypt] service is a good choice.  They https://certbot.eff.org/instructions[provide instructions] for adding a certificate to Apache, Nginx and many other webservers running on Linux or Windows.
+
+For a new deployment, it is best to set up the webserver with TLS first, then install and set up the IPT.  Adding a certificate to a configured IPT requires changing the public URL.  See the note on xref:administration.adoc#public-url[updating the public URL] in the administration section.

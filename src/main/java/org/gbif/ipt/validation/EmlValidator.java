@@ -1,13 +1,18 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
- ***************************************************************************/
-
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.validation;
 
 import org.gbif.api.vocabulary.Language;
@@ -43,9 +48,11 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
+
 import javax.annotation.Nullable;
 
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.inject.Inject;
 
 public class EmlValidator extends BaseValidator {
@@ -68,7 +75,7 @@ public class EmlValidator extends BaseValidator {
    * @return the URL always having a scheme component, or null if incoming URL string was null or empty
    */
   public static String formatURL(String url) {
-    if (!Strings.isNullOrEmpty(url)) {
+    if (StringUtils.isNotBlank(url)) {
       try {
         URI uri = URI.create(url);
         if (uri.isAbsolute()) {
@@ -167,7 +174,7 @@ public class EmlValidator extends BaseValidator {
           // can't bypass the basic metadata page - it is absolutely mandatory
 
           // Title - mandatory
-          if (Strings.isNullOrEmpty(eml.getTitle())) {
+          if (StringUtils.isBlank(eml.getTitle())) {
             action.addFieldError("eml.title",
               action.getText("validation.required", new String[] {action.getText("eml.title")}));
           }
@@ -189,7 +196,7 @@ public class EmlValidator extends BaseValidator {
           }
 
           // intellectual rights - mandatory
-          if (Strings.isNullOrEmpty(eml.getIntellectualRights())) {
+          if (StringUtils.isBlank(eml.getIntellectualRights())) {
             action.addFieldError("eml.intellectualRights.license",
               action.getText("validation.required", new String[] {action.getText("eml.intellectualRights.license")}));
           }
@@ -204,7 +211,7 @@ public class EmlValidator extends BaseValidator {
           }
 
           // type - mandatory
-          if (Strings.isNullOrEmpty(resource.getCoreType())) {
+          if (StringUtils.isBlank(resource.getCoreType())) {
             action.addFieldError("resource.coreType",
               action.getText("validation.required", new String[] {action.getText("resource.coreType")}));
           }
@@ -212,13 +219,13 @@ public class EmlValidator extends BaseValidator {
           // 3 Mandatory fields with default values set: metadata language, data language, and update frequency
 
           // metadata language - mandatory (defaults to 3 letter ISO code for English)
-          if (Strings.isNullOrEmpty(eml.getMetadataLanguage())) {
+          if (StringUtils.isBlank(eml.getMetadataLanguage())) {
             action.addActionWarning(action.getText("eml.metadataLanguage.default"));
             eml.setMetadataLanguage(Language.ENGLISH.getIso3LetterCode());
           }
 
           // data language - mandatory unless resource is metadata-only (defaults to English)
-          if (Strings.isNullOrEmpty(eml.getLanguage()) && resource.getCoreType() != null &&
+          if (StringUtils.isBlank(eml.getLanguage()) && resource.getCoreType() != null &&
               !resource.getCoreType().equalsIgnoreCase(Resource.CoreRowType.METADATA.toString())) {
             action.addActionWarning(action.getText("eml.language.default"));
             eml.setLanguage(Language.ENGLISH.getIso3LetterCode());
@@ -465,7 +472,7 @@ public class EmlValidator extends BaseValidator {
                       new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
                 }
               /* description - mandatory and greater than 2 chars */
-                if (Strings.isNullOrEmpty(eml.getGeospatialCoverages().get(index).getDescription())) {
+                if (StringUtils.isBlank(eml.getGeospatialCoverages().get(index).getDescription())) {
                   action
                     .addFieldError(
                       "eml.geospatialCoverages[" + index + "].description",
@@ -680,8 +687,8 @@ public class EmlValidator extends BaseValidator {
           if (!isMethodsPageEmpty(eml)) {
 
             boolean emptyFields = false;
-            if (Strings.isNullOrEmpty(eml.getSampleDescription()) && Strings.isNullOrEmpty(eml.getStudyExtent()) &&
-                Strings.isNullOrEmpty(eml.getQualityControl())) {
+            if (StringUtils.isBlank(eml.getSampleDescription()) && StringUtils.isBlank(eml.getStudyExtent()) &&
+                StringUtils.isBlank(eml.getQualityControl())) {
               eml.setSampleDescription(null);
               eml.setStudyExtent(null);
               eml.setQualityControl(null);
@@ -703,11 +710,11 @@ public class EmlValidator extends BaseValidator {
             }
             // both study extent and sampling description required if either one is present
             if (!emptyFields) {
-              if (!Strings.isNullOrEmpty(eml.getSampleDescription()) && Strings.isNullOrEmpty(eml.getStudyExtent())) {
+              if (StringUtils.isNotBlank(eml.getSampleDescription()) && StringUtils.isBlank(eml.getStudyExtent())) {
                 action.addFieldError("eml.studyExtent",
                   action.getText("validation.required", new String[] {action.getText("eml.studyExtent")}));
               }
-              if (!Strings.isNullOrEmpty(eml.getStudyExtent()) && Strings.isNullOrEmpty(eml.getSampleDescription())) {
+              if (StringUtils.isNotBlank(eml.getStudyExtent()) && StringUtils.isBlank(eml.getSampleDescription())) {
                 action.addFieldError("eml.sampleDescription",
                   action.getText("validation.required", new String[] {action.getText("eml.sampleDescription")}));
               }
@@ -731,7 +738,7 @@ public class EmlValidator extends BaseValidator {
             // evaluate Citation
             if (eml.getCitation() != null) {
               // citation identifier must be between 2 and 200 characters long
-              if (!Strings.isNullOrEmpty(eml.getCitation().getIdentifier())
+              if (StringUtils.isNotBlank(eml.getCitation().getIdentifier())
                   && !existsInRange(eml.getCitation().getIdentifier(), 2, 200)) {
                 action.addFieldError("eml.citation.identifier",
                   action.getText("validation.field.invalidSize", new String[]
@@ -746,7 +753,7 @@ public class EmlValidator extends BaseValidator {
 
             int index = 0;
             for (Citation citation : eml.getBibliographicCitations()) {
-              if (!Strings.isNullOrEmpty(citation.getIdentifier()) && !exists(citation.getIdentifier())) {
+              if (StringUtils.isNotBlank(citation.getIdentifier()) && !exists(citation.getIdentifier())) {
                 action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier",
                   action
                     .getText("validation.field.blank",
@@ -785,7 +792,7 @@ public class EmlValidator extends BaseValidator {
               String preservationMethod = eml.getSpecimenPreservationMethods().get(index);
 
               // collection name is required, collection id and parent collection id are NOT required
-              if (Strings.isNullOrEmpty(preservationMethod)) {
+              if (StringUtils.isBlank(preservationMethod)) {
                 action.addFieldError("eml.specimenPreservationMethods[" + index + "]",
                   action.getText("validation.required", new String[] {action.getText("eml.specimenPreservationMethod")}));
               }
@@ -829,7 +836,7 @@ public class EmlValidator extends BaseValidator {
           // at least one field has to have had data entered into it to qualify for validation
           if (!isPhysicalPageEmpty(eml)) {
             // null or empty URLs bypass validation
-            if (!Strings.isNullOrEmpty(eml.getDistributionUrl())) {
+            if (StringUtils.isNotBlank(eml.getDistributionUrl())) {
               // retrieve a formatted homepage URL including scheme component
               String formattedUrl = formatURL(eml.getDistributionUrl());
               if (formattedUrl == null || !isWellFormedURI(formattedUrl)) {
@@ -919,10 +926,10 @@ public class EmlValidator extends BaseValidator {
       String design = project.getDesignDescription();
       String desc = area.getDescriptorValue();
 
-      return (Strings.isNullOrEmpty(title) &&
-        Strings.isNullOrEmpty(funding) &&
-        Strings.isNullOrEmpty(design) &&
-        Strings.isNullOrEmpty(desc) &&
+      return (StringUtils.isBlank(title) &&
+        StringUtils.isBlank(funding) &&
+        StringUtils.isBlank(design) &&
+        StringUtils.isBlank(desc) &&
         isAgentsListEmpty(personnelList));
     }
     return false;
@@ -944,13 +951,13 @@ public class EmlValidator extends BaseValidator {
 
     // there must be absolutely nothing entered for any method steps
     for (String method : methods) {
-      if (!Strings.isNullOrEmpty(method)) {
+      if (StringUtils.isNotBlank(method)) {
         return false;
       }
     }
 
-    return (Strings.isNullOrEmpty(studyExtent) &&
-      Strings.isNullOrEmpty(sample) && Strings.isNullOrEmpty(quality));
+    return (StringUtils.isBlank(studyExtent) &&
+      StringUtils.isBlank(sample) && StringUtils.isBlank(quality));
   }
 
   /**
@@ -990,7 +997,7 @@ public class EmlValidator extends BaseValidator {
       String citationId = citation.getIdentifier();
       String citationText = citation.getCitation();
 
-      return (Strings.isNullOrEmpty(citationId) && Strings.isNullOrEmpty(citationText));
+      return (StringUtils.isBlank(citationId) && StringUtils.isBlank(citationText));
     }
     return true;
   }
@@ -1005,7 +1012,7 @@ public class EmlValidator extends BaseValidator {
   private boolean isCollectionsPageEmpty(Eml eml) {
     // check whether all specimen preservation methods are empty
     for (String preservationMethod: eml.getSpecimenPreservationMethods()) {
-      if (!Strings.isNullOrEmpty(preservationMethod)) {
+      if (StringUtils.isNotBlank(preservationMethod)) {
         return false;
       }
     }
@@ -1044,7 +1051,7 @@ public class EmlValidator extends BaseValidator {
       int uncertainty = (unit.getUncertaintyMeasure() == null) ? 0 : unit.getUncertaintyMeasure();
       int mean = (unit.getRangeMean() == null) ? 0 : unit.getRangeMean();
 
-      return (Strings.isNullOrEmpty(unitType) &&
+      return (StringUtils.isBlank(unitType) &&
         rangeEnd == 0 &&
         rangeStart == 0 &&
         uncertainty == 0 && mean == 0);
@@ -1065,9 +1072,9 @@ public class EmlValidator extends BaseValidator {
       String collectionId = collection.getCollectionId();
       String parentCollectionId = collection.getParentCollectionId();
 
-      return (Strings.isNullOrEmpty(collectionName) &&
-              Strings.isNullOrEmpty(collectionId) &&
-              Strings.isNullOrEmpty(parentCollectionId));
+      return (StringUtils.isBlank(collectionName) &&
+              StringUtils.isBlank(collectionId) &&
+              StringUtils.isBlank(parentCollectionId));
     }
     return true;
   }
@@ -1091,7 +1098,7 @@ public class EmlValidator extends BaseValidator {
       }
     }
     // otherwise it all comes down to the homepage URL
-    return Strings.isNullOrEmpty(homepageUrl);
+    return StringUtils.isBlank(homepageUrl);
   }
 
   /**
@@ -1109,10 +1116,10 @@ public class EmlValidator extends BaseValidator {
       String distributionUrl = data.getDistributionUrl();
       String name = data.getName();
 
-      return (Strings.isNullOrEmpty(charset) &&
-        Strings.isNullOrEmpty(format) &&
-        Strings.isNullOrEmpty(formatVersion) &&
-        Strings.isNullOrEmpty(distributionUrl) && Strings.isNullOrEmpty(name));
+      return (StringUtils.isBlank(charset) &&
+        StringUtils.isBlank(format) &&
+        StringUtils.isBlank(formatVersion) &&
+        StringUtils.isBlank(distributionUrl) && StringUtils.isBlank(name));
     }
     return true;
   }
@@ -1128,7 +1135,7 @@ public class EmlValidator extends BaseValidator {
     // total of 2 fields on page
     if (!eml.getKeywords().isEmpty()) {
       KeywordSet set1 = eml.getKeywords().get(0);
-      return Strings.isNullOrEmpty(set1.getKeywordsString()) && Strings.isNullOrEmpty(set1.getKeywordThesaurus());
+      return StringUtils.isBlank(set1.getKeywordsString()) && StringUtils.isBlank(set1.getKeywordThesaurus());
     }
     return true;
   }
@@ -1150,14 +1157,14 @@ public class EmlValidator extends BaseValidator {
     // skip hierarchy - it's auto-set
 
     for (String id : eml.getAlternateIdentifiers()) {
-      if (!Strings.isNullOrEmpty(id)) {
+      if (StringUtils.isNotBlank(id)) {
         return false;
       }
     }
 
-    return (Strings.isNullOrEmpty(logo) &&
-      Strings.isNullOrEmpty(rights) &&
-      Strings.isNullOrEmpty(info) && Strings.isNullOrEmpty(purpose));
+    return (StringUtils.isBlank(logo) &&
+      StringUtils.isBlank(rights) &&
+      StringUtils.isBlank(info) && StringUtils.isBlank(purpose));
 
   }
 
@@ -1198,9 +1205,9 @@ public class EmlValidator extends BaseValidator {
       String period = cov.getLivingTimePeriod();
       Date start = cov.getStartDate();
 
-      return (Strings.isNullOrEmpty(formationPeriod) &&
+      return (StringUtils.isBlank(formationPeriod) &&
         end == null &&
-        Strings.isNullOrEmpty(period) && start == null);
+        StringUtils.isBlank(period) && start == null);
     }
     return true;
   }
@@ -1241,7 +1248,7 @@ public class EmlValidator extends BaseValidator {
         }
       }
       // gotten here means all TaxonKeyword were empty, therefore the only thing left to check is the description
-      return Strings.isNullOrEmpty(description);
+      return StringUtils.isBlank(description);
     }
     return true;
   }
@@ -1258,7 +1265,7 @@ public class EmlValidator extends BaseValidator {
       String scientificName = word.getScientificName();
       String common = word.getCommonName();
       String rank = word.getRank();
-      return Strings.isNullOrEmpty(scientificName) && Strings.isNullOrEmpty(common) && Strings.isNullOrEmpty(rank);
+      return StringUtils.isBlank(scientificName) && StringUtils.isBlank(common) && StringUtils.isBlank(rank);
     }
     return true;
   }
@@ -1284,9 +1291,9 @@ public class EmlValidator extends BaseValidator {
         Double lat2 = p2.getLatitude();
         Double lon2 = p2.getLongitude();
 
-        return (lat1 == null && lon1 == null && lat2 == null && lon2 == null && Strings.isNullOrEmpty(description));
+        return (lat1 == null && lon1 == null && lat2 == null && lon2 == null && StringUtils.isBlank(description));
       } else {
-        return Strings.isNullOrEmpty(description);
+        return StringUtils.isBlank(description);
       }
     }
     return true;
@@ -1334,20 +1341,20 @@ public class EmlValidator extends BaseValidator {
         identifier = userId.getIdentifier();
       }
 
-      return (Strings.isNullOrEmpty(city) &&
-              Strings.isNullOrEmpty(street) &&
-              Strings.isNullOrEmpty(country) &&
-              Strings.isNullOrEmpty(code) &&
-              Strings.isNullOrEmpty(province) &&
-              Strings.isNullOrEmpty(first) &&
-              Strings.isNullOrEmpty(last) &&
-              Strings.isNullOrEmpty(email) &&
-              Strings.isNullOrEmpty(home) &&
-              Strings.isNullOrEmpty(org) &&
-              Strings.isNullOrEmpty(phone) &&
-              Strings.isNullOrEmpty(position) &&
-              Strings.isNullOrEmpty(directory) &&
-              Strings.isNullOrEmpty(identifier));
+      return (StringUtils.isBlank(city) &&
+              StringUtils.isBlank(street) &&
+              StringUtils.isBlank(country) &&
+              StringUtils.isBlank(code) &&
+              StringUtils.isBlank(province) &&
+              StringUtils.isBlank(first) &&
+              StringUtils.isBlank(last) &&
+              StringUtils.isBlank(email) &&
+              StringUtils.isBlank(home) &&
+              StringUtils.isBlank(org) &&
+              StringUtils.isBlank(phone) &&
+              StringUtils.isBlank(position) &&
+              StringUtils.isBlank(directory) &&
+              StringUtils.isBlank(identifier));
     }
     return true;
   }

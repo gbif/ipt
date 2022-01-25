@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:21\n"
+"POT-Creation-Date: 2021-11-10 10:42+0000\n"
+"PO-Revision-Date: 2021-11-10 11:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -18,19 +18,18 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:3
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:27
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/customization.adoc:12
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
-msgstr ""
+msgstr "介紹"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:10
@@ -64,12 +63,12 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:30
 #, no-wrap
 msgid "Required DwC fields"
-msgstr ""
+msgstr "必填的達爾文核心集欄位"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:28
 #: en/modules/ROOT/pages/occurrence-data.adoc:32
-msgid "http://rs.tdwg.org/dwc/terms/#scientificName[scientificName]"
+msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
 msgstr ""
 
 #. type: Title ===
@@ -78,12 +77,12 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:36
 #, no-wrap
 msgid "Recommended DwC fields"
-msgstr ""
+msgstr "建議填寫的達爾文核心集欄位"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:33
 #: en/modules/ROOT/pages/occurrence-data.adoc:38
-msgid "http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] - and other higher taxonomy if possible"
+msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
 msgstr ""
 
 #. type: Title ===
@@ -102,7 +101,7 @@ msgstr ""
 #: en/modules/ROOT/pages/sampling-event-data.adoc:55
 #, no-wrap
 msgid "FAQ"
-msgstr ""
+msgstr "問答集"
 
 #. type: Title =
 #: en/modules/ROOT/pages/occurrence-data.adoc:1
@@ -119,7 +118,7 @@ msgstr ""
 #: en/modules/ROOT/pages/occurrence-data.adoc:6
 #, no-wrap
 msgid "How to transform your data into occurrence data"
-msgstr ""
+msgstr "如何將您的資料轉換為物種出現紀錄"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/occurrence-data.adoc:8
@@ -134,7 +133,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:19
-msgid "You can augment your table with extra DwC columns, but only DwC terms from this http://rs.gbif.org/core/dwc_occurrence_2015-07-02.xml[list]."
+msgid "You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}.xml[list]."
 msgstr ""
 
 #. type: Plain text
@@ -149,40 +148,40 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:30
-msgid "http://rs.tdwg.org/dwc/terms/#occurrenceID[occurrenceID]"
+msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceID[occurrenceID]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:31
-msgid "http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]"
+msgid "https://dwc.tdwg.org/terms/#dwc:basisOfRecord[basisOfRecord]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:33
 #: en/modules/ROOT/pages/sampling-event-data.adoc:34
-msgid "http://rs.tdwg.org/dwc/terms/#eventDate[eventDate]"
+msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:37
-msgid "http://rs.tdwg.org/dwc/terms/#taxonRank[taxonRank] - to substantiate scientificName"
+msgid "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank] - to substantiate scientificName"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
-msgid "http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs.tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/dwc/terms/#geodeticDatum[geodeticDatum] - to provide a specific point location"
+msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
 #: en/modules/ROOT/pages/sampling-event-data.adoc:45
-msgid "http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]"
+msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:41
-msgid "http://rs.tdwg.org/dwc/terms/#individualCount[individualCount] / http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] & http://rs.tdwg.org/dwc/terms/#organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence"
+msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] / https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] - to record the quantity of a species occurrence"
 msgstr ""
 
 #. type: Plain text
@@ -194,19 +193,19 @@ msgstr ""
 #: en/modules/ROOT/pages/occurrence-data.adoc:48
 #, no-wrap
 msgid "Q. How do I indicate a species was absent?"
-msgstr ""
+msgstr "問：如何表示某地沒有這個物種（指出物種的缺如狀態）？"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
 #, no-wrap
-msgid "*A.* Set http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus]=link:http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[\"absent\"]. In addition, http://rs.tdwg.org/dwc/terms/#individualCount[individualCount] and http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] should be equal to 0.\n"
+msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
 msgstr ""
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:52
 #, no-wrap
 msgid "Q. How can I generalize sensitive species occurrence data?"
-msgstr ""
+msgstr "問：如何模糊化敏感物種的出現紀錄？ "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:55
@@ -216,7 +215,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:57
-msgid "When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term http://rs.tdwg.org/dwc/terms/#informationWithheld[informationWithheld]."
+msgid "When generalizing data you should try not to reduce the value of the data for analysis, and make users aware how and why the original record was modified using the Darwin Core term https://dwc.tdwg.org/terms/#dwc:informationWithheld[informationWithheld]."
 msgstr ""
 
 #. type: Plain text
@@ -237,7 +236,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:63
 msgid "its sensitivity category"
-msgstr ""
+msgstr "敏感度類別"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:64

@@ -1,11 +1,27 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.registry.impl;
 
-import com.google.common.collect.Lists;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.ConfigWarnings;
-import org.gbif.ipt.model.*;
+import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -16,26 +32,33 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.IptMockBaseTest;
 import org.gbif.metadata.eml.Eml;
-import org.gbif.utils.HttpUtil;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * Integration tests hitting sandbox registry (legacy) web services.
  */
-@Ignore("These require live UAT webservice and should therefore only run when manually triggered")
+@Disabled("These require live UAT webservice and should therefore only run when manually triggered")
 public class RegistryManagerImplIT extends IptMockBaseTest {
 
   // logging
@@ -49,7 +72,7 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
   private RegistryManager manager;
   private ResourceManager resourceManager;
 
-  @Before
+  @BeforeEach
   public void setup() throws SAXException, ParserConfigurationException {
     ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
@@ -58,7 +81,7 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
 
     // manager that issues real http requests
     manager =
-      new RegistryManagerImpl(cfg, dataDir, new HttpUtil(buildHttpClient()), buildSaxFactory(), mockConfigWarnings,
+      new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory(), mockConfigWarnings,
         mockSimpleTextProvider, mockRegistrationManager, resourceManager);
   }
 
@@ -112,7 +135,7 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
       res.setLastPublished(new Date());
 
       Eml eml = new Eml();
-      List<String> description = Lists.newArrayList();
+      List<String> description = new ArrayList<>();
       description.add(
         "An IPT unit test resource that can be deleted. Testing unicode characters like ą ć ę ł ń  ś ź ż (for polish) ť ů ž č ď ě ň ř š (for czech) and other taken from http://www.alanflavell.org.uk/unicode/unidata.html  ᠀᠔ᡎᢥ(mongolian) ⅛  Ⅳ ⅸ ↂ (numbers) ∀ ∰ ⊇ ⋩ (maths) CJK Symbols and Punctuation U+3000 – U+303F (12288–12351) 々 〒 〣 〰 Hiragana U+3040 – U+309F (12352–12447) あ ぐ る ゞ Katakana U+30A0 – U+30FF (12448–12543) ア ヅ ヨ ヾ Bopomofo U+3100 – U+312F (12544–12591) ㄆ ㄓ ㄝ ㄩ Hangul Compatibility Jamo U+3130 – U+318F (12592–12687) ㄱ ㄸ ㅪ ㆍ Kanbun U+3190 – U+319F (12688–12703) ㆐ ㆕ ㆚ ㆟ Bopomofo Extended U+31A0 – U+32BF (12704–12735) ㆠ ㆧ ㆯ ㆷ Katakana Phonetic Extensions U+31F0 – U+31FF (12784–12799) ㇰ ㇵ ㇺ ㇿ Enclosed CJK Letters and Months U+3200 – U+32FF (12800–13055) ㈔ ㈲ ㊧ ㋮ CJK Compatibility U+3300 – U+33FF (13056–13311) ㌃ ㍻ ㎡ ㏵ CJK Unified Ideographs Extension A U+3400 – U+4DB5 (13312–19893) 㐅 㒅 㝬 㿜 Yijing Hexagram Symbols U+4DC0 – U+4DFF (19904–19967) ䷂ ䷫ ䷴ ䷾ CJK Unified Ideographs U+4E00 – U+9FFF (19968–40959) 一 憨 田 龥 Yi Syllables U+A000 – U+A48F (40960–42127) ꀀ ꅴ ꊩ ꒌ Yi Radicals U+A490 – U+A4CF (42128–42191) ꒐ ꒡ ꒰ ꓆ ");
       eml.setAbstract(description);
@@ -132,7 +155,7 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
       manager.updateResource(res, iptKey);
 
       // mock resourceManager returning registered resource in list of resources
-      List<Resource> registeredResources = Lists.newArrayList();
+      List<Resource> registeredResources = new ArrayList<>();
       registeredResources.add(res);
       when(resourceManager.list(PublicationStatus.REGISTERED)).thenReturn(registeredResources);
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:24\n"
+"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"PO-Revision-Date: 2021-08-19 10:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,112 +20,112 @@ msgstr ""
 #: en/modules/ROOT/pages/core.adoc:13
 #: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
 msgid "Instructions"
-msgstr ""
+msgstr "Instrucciones"
 
 #. type: Title =
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:1
 #, no-wrap
 msgid "Data Quality Checklist"
-msgstr ""
+msgstr "Comprobación de la calidad de los datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:4
 msgid "Use this checklist to help review biodiversity datasets. Note it is particularly suited for checking occurrence and sampling event datasets."
-msgstr ""
+msgstr "Use esta lista de comprobación para ayudar a revisar los conjuntos de datos sobre biodiversidad. Tenga en cuenta que es esta es ideal para comprobar los conjuntos de datos de ocurrencia y de eventos de muestreo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:6
 msgid "The checklist will help ensure that the data is complete, meaning it contains valid answers to the five Ws:"
-msgstr ""
+msgstr "El listado de especies ayudará a asegurar que los datos están completos, respondiendo a las siguientes preguntas:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:8
 msgid "<<What event happened?>>"
-msgstr ""
+msgstr "<<¿Qué evento tuvo lugar?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:9
 msgid "<<Who acted in the event?>>"
-msgstr ""
+msgstr "<<¿Quién ha participado en el evento?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:10
 msgid "<<When did the event take place?>>"
-msgstr ""
+msgstr "<<¿Cuándo tuvo lugar el evento?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:11
 msgid "<<Where did the event take place?>>"
-msgstr ""
+msgstr "<<¿Dónde tuvo lugar el evento?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:12
 msgid "<<Why did the event happen?>>"
-msgstr ""
+msgstr "<<¿Por qué tuvo lugar el evento?>>"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:14
 msgid "Examples of events include a species observation, a physical specimen being collected, or a biological sampling event."
-msgstr ""
+msgstr "Algunos ejemplos de eventos son la observación de una especie, la recogida de un espécimen físico o un evento de muestreo biológico."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:16
 msgid "Additionally, the checklist ensures that the <<Dataset Metadata>> also contains answers to the five Ws in order to facilitate reuse of the data."
-msgstr ""
+msgstr "De manera adicional, el listado de especies asegura que los <<Metadatos del Conjunto de Datos>> contienen también respuestas a las preguntas anteriores para facilitar la reutilización de los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:20
 msgid "If the dataset has been registered with GBIF, give yourself a running start by reviewing the dataset's 'Stats' page. Here you can find the set of issues that GBIF discovered while interpreting the dataset:"
-msgstr ""
+msgstr "Si el conjunto de datos ha sido registrado con GBIF, comience revisando la página de \"Estadísticas\" del conjunto de datos. Aquí encontrará las incidencias que GBIF descubrió al interpretar el conjunto de datos:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:21
 #, no-wrap
 msgid "ipt2/InterpretationIssues2.png"
-msgstr ""
+msgstr "ipt2/InterpretationIssues2.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:24
 msgid "Next, read the dataset metadata to get a better understanding about the data."
-msgstr ""
+msgstr "A continuación, lea los metadatos del conjunto de datos para lograr un mejor conocimiento de los datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:26
 msgid "Next, load the data into https://openrefine.org/[OpenRefine]. This will allow https://docs.openrefine.org/manual/facets[faceted browsing] to get the big picture of the data."
-msgstr ""
+msgstr "Después, cargue los datos en https://openrefine.org/[OpenRefine]. Esto permitirá la https://docs.openrefine.org/manual/facets[navegación por temas] para obtener una visión de los datos a grandes rasgos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:28
 msgid "There are various ways each of the five Ws can be answered. Each 'check' relates to one or more Darwin Core fields. Therefore try to perform as many checks as possible based on the Darwin Core fields present in the dataset."
-msgstr ""
+msgstr "Existen varias vías para responder a las preguntas de más arriba. Cada \"comprobación\" se relaciona con uno o más campos Darwin Core. Por ello, intente realizar tantas comprobaciones como sea posible basadas en los campos Darwin Core incluidos en el conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:30
 msgid "Compile a list of all checks that fail and report them back to the data publisher, referring to each check by its 'Check-ID'. This will make providing feedback a less time consuming and verbose process."
-msgstr ""
+msgstr "Elabore una lista con todos los fallos y repórtelos al publicador de datos, haciendo referencia a cada comprobación mediante su 'Check-ID'. Esto hará que compartir comentarios sea un proceso detallado y que requiera menos tiempo."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:31
 #, no-wrap
 msgid "Quality checks"
-msgstr ""
+msgstr "Controles de calidad"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:33
 #, no-wrap
 msgid "What event happened?"
-msgstr ""
+msgstr "¿Qué evento tuvo lugar?"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:35
 #, no-wrap
 msgid "What type of event was it?"
-msgstr ""
+msgstr "¿Qué tipo de evento fue?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:44
@@ -135,53 +135,60 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *what 2* | `occurrenceID`, `basisOfRecord`, `catalogNumber`, `collectionCode`, `eventID`  | The specimen preservation event uniquely identified by `occurrenceID` and having `basisOfRecord` equal to `PreservedSpecimen`, `FossilSpecimen` or `LivingSpecimen` indicating its specific type. Ideally a specimen is deposited in a collection and therefore can be assigned both a `catalogNumber` and `collectionCode`.  If this specimen was derived from a sampling event, it must have the `eventID` of the sampling event filled in.\n"
 "| *what 3* | `occurrenceID`, `basisOfRecord`, `materialSampleID`, `catalogNumber`, `collectionCode`, `eventID`  | The physical result of a sampling event uniquely identified by both `occurrenceID` and having `basisOfRecord` equal to `MaterialSample`. If the sample was preserved (vs destructively processed) as a specimen and deposited in a collection it will ideally be assigned both a `catalogNumber` and `collectionCode`. The `eventID` of the sampling event must be filled in.\n"
 "| *what 4* | `eventID`, `fieldNumber`, `parentEventID`   | The actual sampling event uniquely identified by `eventID`. The `eventID` should be a GUID, otherwise it should reuse the `fieldNumber`. The `parentEventID` indicates the event is a sub-sampling event. To be valid, all `parentEventIDs` must reference `eventIDs` of records defined in the same dataset. Otherwise, the `parentEventID` must be a globally unique identifier (e.g. DOI, HTTP, URI, etc) that resolves to an event record described elsewhere. Ideally all sub-sampling events share the same data and location as the parent event.\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *what 1* | `occurrenceID`, `basisOfRecord`, `eventID`  | El evento de observaciones de especies identificado de forma individual por `occurrenceID` y teniendo un `basisOfRecord` igual a la `HumanObservation` o `MachineObservation` indicando si la observación fue realizada por una máquina o por una o más personas. Si esta observación está derivada de un evento de muestreo, se debe rellenar el `eventID` del evento de muestreo.\n"
+"| *what 2* | `occurrenceID`, `basisOfRecord`, `catalogNumber`, `collectionCode`, `eventID`  | El evento de conservación de un espécimen identificado de forma individual por `occurrenceID` y teniendo un `basisOfRecord` igual a la `PreservedSpecimen`, `FossilSpecimen` o `LivingSpecimen` indicando su tipo específico. Lo normal es que un espécimen se deposite en una colección y por ello pueda asignársele tanto un `catalogNumber` como un `collectionCode`. Si este espécimen está derivado de un evento de muestreo, se debe rellenar el `eventID` del evento de muestreo.\n"
+"| *what 3* | `occurrenceID`, `basisOfRecord`, `materialSampleID`, `catalogNumber`, `collectionCode`, `eventID`  | El resultado físico de un evento de muestreo identificado de forma individual por `occurrenceID` y teniendo un `basisOfRecord` igual a `MaterialSample`. Si la muestra fue conservada (en vez de procesada de manera destructiva) como un espécimen y depositada en una colección, lo normal sería asignarle un `catalogNumber` y un `collectionCode`. Se debe rellenar el `eventID` del evento de muestreo.\n"
+"| *what 4* | `eventID`, `fieldNumber`, `parentEventID`   | El evento de muestreo concreto identificado de manera única por `eventID`. El `eventID` debería ser un GUID, en caso contrario debería reutilizar el `fieldNumber`. El `parentEventID` indica que el evento es un sub-evento de muestreo. Para ser válidos, todos los `parentEventIDs` deben hacer referencia a los `eventIDs` de los registros definidos en el mismo conjunto de datos. De lo contrario, el `parentEventID` debe ser un identificador global único (ej.: DOI, HTTP, URI, etc) que resulte en un registro del evento descrito en cualquier otro lugar. Lo normal es que todos los sub-eventos de muestreo compartan la misma fecha y localización como en el evento padre.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:46
 #, no-wrap
 msgid "If it was a species occurrence related event - how many species were there?"
-msgstr ""
+msgstr "Si fue un evento relacionado con presencia de especies - ¿cuántas especies había?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:52
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
-"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[GBIF Occurrence Status Vocabulary].\n"
-msgstr ""
+"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}.xml[GBIF Occurrence Status Vocabulary].\n"
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | La abundancia de especies debe completarse utilizando `individualCount` y la pareja `organismQuantity` & `organismQuantityType`. Para la abundancia relativa utiliza la pareja `organismQuantity` & `organismQuantityType` con valores para `organismQuantityType` procedentes del {latest-quantity-type}[Vocabulario GBIF para los Tipos Cuantitativos]. La abundancia cero (ausencia de especies) debe estar acompañada de `occurrenceStatus` marcada como \"ausencia\" por el {latest-occurrence-status}.xml[Vocabulario GBIF para el Estado de los Registros].\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:54
 #, no-wrap
 msgid "If it was a species occurrence related event - what species was it?"
-msgstr ""
+msgstr "Si fue un evento relacionado con presencia de especies - ¿qué especies había?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:61
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
-"| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
+"| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the {latest-rank}[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
 "| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`).\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | El nombre científico completo con información sobre el autor y la fecha si se conocen debe ser incluidos en `scientificName`. Para evitar la ambigüedad, el `taxonRank` del nombre científico debería ser proporcionado como se indica en el {latest-rank}[Vocabulario GBIF sobre Clasificación Taxonómica]. Para evitar la ambigüedad, se debería también proporcionar el mayor nivel de taxonomía posible: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
+"| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | El identificador para el Taxón asignado al sujeto. Si el taxón se define de acuerdo a fuente bien conocidas, se recomienda rellenar el `nameAccordingTo` con el nombre de la fuente y el `nameAccordingToID` con el identificador para el Taxón asignado por la fuente (igual que en `taxonID`).\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:63
 #, no-wrap
 msgid "Case 1: Species observation from a camera trap"
-msgstr ""
+msgstr "Case 1: Observación de especies con una cámara trampa"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:85
 #, no-wrap
 msgid "| Field | Value | Constraint\n\n"
 "| `occurrenceID` | \"HAMAARAG:T0_L_049:6199\" | Must be a GUID or an identifier that is near globally unique. Integer identifiers are not allowed.\n"
-"| `basisOfRecord` | \"MachineObservation\" | Must match http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type Vocabulary]\n"
+"| `basisOfRecord` | \"MachineObservation\" | Must match {latest-basis-of-record}[Darwin Core Type Vocabulary]\n"
 "| `individualCount` | 1 | Must be an integer, 0 or greater\n"
 "| `organismQuantity` | 1 | Must pair with `organismQuantityType`\n"
-"| `organismQuantityType` | \"individuals\" | Must match http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml[GBIF Quantity Type Vocabulary]\n"
-"| `occurrenceStatus` | \"present\" | Must match http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[GBIF Occurrence Status Vocabulary]\n"
+"| `organismQuantityType` | \"individuals\" | Must match {latest-quantity-type}[GBIF Quantity Type Vocabulary]\n"
+"| `occurrenceStatus` | \"present\" | Must match {latest-occurrence-status}[GBIF Occurrence Status Vocabulary]\n"
 "| `scientificName` | \"Canis aureus Linnaeus, 1758\" | Must be the full scientific name, with authorship and date information if known.\n"
-"| `taxonRank` | \"species\" | Must match http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml[GBIF Taxon Rank Vocabulary]\n"
+"| `taxonRank` | \"species\" | Must match {latest-rank}[GBIF Taxon Rank Vocabulary]\n"
 "| `kingdom` | \"Animalia\" | Must be the full scientific name of the kingdom in which the taxon is classified.\n"
 "| `phylum` | \"Chordata\" | Must be the full scientific name of the phylum or division in which the taxon is classified.\n"
 "| `class` | \"Mammalia\" | Must be the full scientific name of the class in which the taxon is classified.\n"
@@ -191,13 +198,30 @@ msgid "| Field | Value | Constraint\n\n"
 "| `taxonID` | http://www.gbif.org/species/5219219 | Must be a GUID or an identifier related to the source\n"
 "| `nameAccordingTo` | \"GBIF Backbone Taxonomy, May 2016\" | Must be reference including date\n"
 "| `nameAccordingToID` | \"http://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c\" | Must be a GUID or an identifier for the source\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `occurrenceID` | \"HAMAARAG:T0_L_049:6199\" | Debe ser un GUID o lo más cercano posible a un identificador único y global. Identificadores de números enteros no son validos.\n"
+"| `basisOfRecord` | \"MachineObservation\" | Debe coincidir con el {latest-basis-of-record}[Vocabulario de Tipos Darwin Core]\n"
+"| `individualCount` | 1 | Debe ser un número entero, 0 o superior\n"
+"| `organismQuantity` | 1 | Debe estar emparejado con `organismQuantityType`\n"
+"| `organismQuantityType` | \"individuals\" | Debe coincidir con el {latest-quantity-type}[Vocabulario GBIF sobre los Tipos Cuantitativos]\n"
+"| `occurrenceStatus` | \"present\" | Debe coincidir con el {latest-occurrence-status}[Vocabulario GBIF sobre el Estado de los Registros]\n"
+"| `scientificName` | \"Canis aureus Linnaeus, 1758\" | Debe ser el nombre científico completo, con información sobre el autor y la fecha si se conoce.\n"
+"| `taxonRank` | \"species\" | Debe coincidir con el {latest-rank}[Vocabulario GBIF sobre Clasificación de Taxones]\n"
+"| `kingdom` | \"Animalia\" | Debe ser el nombre científico completo del reino en el que está clasificado el taxón.\n"
+"| `phylum` | \"Chordata\" | Debe ser el nombre científico completo del filo o división en el que está clasificado el taxón.\n"
+"| `class` | \"Mammalia\" | Debe ser el nombre científico completo de la clase en la que está clasificado el taxón.\n"
+"| `order` | \"Carnivora\" | Debe ser el nombre científico completo del orden en el que está clasificado el taxón.\n"
+"| `family` | \"Canidae\" | Debe ser el nombre científico completo de la familia en la que está clasificado el taxón.\n"
+"| `genus` | \"Canis Linnaeus, 1758\" | Debe ser el nombre científico completo del género en el que está clasificado el taxón.\n"
+"| `taxonID` | http://www.gbif.org/species/5219219 | Debe ser un GUID o un identificador relacionado con la fuente.\n"
+"| `nameAccordingTo` | \"GBIF Backbone Taxonomy, May 2016\" | Debe ser una referencia que incluya fecha\n"
+"| `nameAccordingToID` | \"http://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c\" | Debe ser un GUID o un identificador para la fuente\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:87
 #, no-wrap
 msgid "Who acted in the event?"
-msgstr ""
+msgstr "¿Quién participó en el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:95
@@ -206,13 +230,16 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *who 1* | `recordedBy` | The full names of each person acting in the event (e.g. collecting, observing, etc) should be entered in `recordedBy` using the vertical bar as a separator. Note there is a separate field for capturing the person(s) making the identification (see below).\n"
 "| *who 2* | `institutionCode`, `ownerInstitutionCode` | A name or acronym of the institution acting in the event may be entered in `institutionCode` and `ownerInstitutionCode`. These can be different hence `institutionCode` can have physical custody of a specimen and `ownerInstitutionCode` can have legal ownership of the specimen.\n"
 "| *who 3* | `identifiedBy` | The full names of each person, group, or organization responsible for assigning the Taxon to the subject should be entered in `identifiedBy` using the vertical bar as a separator.\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *who 1* | `recordedBy` | Los nombres completos de cada persona que participó en el evento (ej.: colectando, observando, etc.) deberían ser introducidos en `recordedBy` utilizando la barra vertical como un separador. Tenga en cuenta que existe un campo separado para indicar la(s) persona(s) que realizó la identificación (ver más abajo).\n"
+"| *who 2* | `institutionCode`, `ownerInstitutionCode` | Un nombre o acrónimo de la institución que participó en el evento puede ser incluido en `institutionCode` y `ownerInstitutionCode`. Éstos pueden ser diferentes ya que `institutionCode` puede tener la custodia física de un espécimen y `ownerInstitutionCode` puede tener la propiedad legal del espécimen.\n"
+"| *who 3* | `identifiedBy` | Los nombres completos de cada persona, grupo u organización responsable de asignar el Taxón al sujeto en cuestión deberían se introducidos en `identifiedBy` utilizando la barra vertical como separador.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:97
 #, no-wrap
 msgid "Case 1: Two different people collecting and identifying a specimen"
-msgstr ""
+msgstr "Caso 1: Dos personas diferentes colectando e identificando un espécimen"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:106
@@ -222,13 +249,17 @@ msgid "| Field | Value | Constraint\n\n"
 "| `institutionCode` | \"ZMUC\" | Must be an acronym or name of an institution\n"
 "| `ownerInstitutionCode` | \"ZMUC\" | Must be an acronym or name of an institution\n"
 "| `identifiedBy` | \"Jan Pedersen\" | Must be names of one or more persons, groups or organizations\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `recordedBy` | \"Ole Karsholt\" | Debe ser el nombre de una o más personas\n"
+"| `institutionCode` | \"ZMUC\" | Debe ser un acrónimo o nombre de una institución\n"
+"| `ownerInstitutionCode` | \"ZMUC\" | Debe ser un acrónimo o nombre de una institución\n"
+"| `identifiedBy` | \"Jan Pedersen\" | Debe ser el nombre de una o más personas, grupo u organizaciones\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:108
 #, no-wrap
 msgid "When did the event take place?"
-msgstr ""
+msgstr "¿Cuándo tuvo lugar el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:118
@@ -239,13 +270,18 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Although it appears redundant, it is recommended trying to fill in `year`, `month`, `day`, `eventTime` and `startDayOfYear` for single dates/date-times. If the start date resolution is specific to the day fill in `startDayOfYear`.\n"
 "| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Although it appears redundant, it is recommended trying to fill in `eventTime`, `year`, `month`, `day`, `startDayOfYear` and `endDayOfYear` for date ranges as completely as possible. If there is a date range spanning days, `day` is left blank. If there is a date range spanning months, `month` is left blank. If there is a date range spanning years, `year` is left blank. If the start date resolution is specific to the day fill in `startDayOfYear`. If the end date resolution is specific to the day fill in `endDayOfYear`.\n"
 "| *when 5* | `eventRemarks` | If no `eventDate` can be filled in, an explanation should be provided in `eventRemarks`\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *when 1* | `eventDate` | La fecha, fecha-hora, rango de fecha o rango de fecha-hora durante la cual ocurrió el Evento debería ser introducido en `eventDate` en formato https://en.wikipedia.org/wiki/ISO_8601[ISO 8601]. Las fechas parciales pueden ser proporcionadas si incluyen al menos un año y mes, ej.: \"2007-03\".\n"
+"| *when 2* | `verbatimEventDate` | Si hay que convertir el valor original en https://en.wikipedia.org/wiki/ISO_8601[ISO 8601] `verbatimEventDate` debería ser completado con ese valor original.\n"
+"| *when 3* | `eventTime`, `year`, `month`, `day`, `startDayOfYear` | Aunque parezca repetitivo, se recomienda intentar rellenar el `year`, `month`, `day`, `eventTime` y `startDayOfYear` para fechas/fechas-horas únicas. Si la resolución de la fecha de inicio es específica para el día, rellenar en `startDayOfYear`.\n"
+"| *when 4* | `eventTime`, `year`, `month`, `day`, `startDayOfYear`, `endDayOfYear` | Aunque parezca repetitivo, se recomienda intentar rellenar lo más completo posible el `year`, `month`, `day`, `startDayOfYear` y `endDayOfYear` en el caso de rangos de fechas. Si el rango de fechas abarca varios días, dejar en blanco el campo `day`.  Si el rango de fechas abarca varios meses, dejar en blanco el campo `month`. Si el rango de fechas abarca varios años, dejar en blanco el campo `year`. Si la resolución de la fecha de inicio es específica para el día, rellenar en `startDayOfYear`. Si la resolución de la fecha de fin es específica para el día, rellenar en `endDayOfYear`.\n"
+"| *when 5* | `eventRemarks` | Si no se puede rellenar el campo `eventDate`, se debería al menos proporcionar una explicación en el campo `eventRemarks`\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:120
 #, no-wrap
 msgid "Case 1: Single date"
-msgstr ""
+msgstr "Caso 1: Fecha única"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:131
@@ -257,13 +293,19 @@ msgid "| Field | Value | Constraint\n\n"
 "| `day` | 20 | Must be between 1-31\n"
 "| `startDayOfYear` | 79 | Must be between 1-366\n"
 "| `verbatimEventDate` | \"Mar 20, 07\" | Original date or date description\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `eventDate` | 2007-03-20 | Debe estar en formato https://en.wikipedia.org/wiki/ISO_8601[ISO 8601]\n"
+"| `year` | 2007 | Debe ser un año de cuatro dígitos\n"
+"| `month` | 3 | Debe estar entre 1-12\n"
+"| `day` | 20 | Debe estar entre 1-31\n"
+"| `startDayOfYear` | 79 | Debe estar entre 1-366\n"
+"| `verbatimEventDate` | \"Mar 20, 07\" | La fecha original o la descripción de la fecha\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:133
 #, no-wrap
 msgid "Case 2: Date-time range spanning days"
-msgstr ""
+msgstr "Caso 2: Rango de fecha-hora abarcando varios días"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:146
@@ -277,13 +319,21 @@ msgid "| Field | Value\n\n"
 "| `startDayOfYear` | 79\n"
 "| `endDayOfYear` | 86\n"
 "| `verbatimEventDate` | \"The third week in March 07, for 6 hours starting at midnight.\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `eventDate` | 2007-03-20T00:00:00Z/2007-03-27T06:00:00Z\n"
+"| `eventTime` | 00:00:00Z/06:00:00Z\n"
+"| `year` | 2007\n"
+"| `month` | 3\n"
+"| `day` |\n"
+"| `startDayOfYear` | 79\n"
+"| `endDayOfYear` | 86\n"
+"| `verbatimEventDate` | \"La tercera semana de Marzo de 2007, durante 6 horas, empezando a medianoche.\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:148
 #, no-wrap
 msgid "Case 3: Partial date"
-msgstr ""
+msgstr "Caso 3: Fecha parcial"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:158
@@ -294,26 +344,32 @@ msgid "| Field | Value\n\n"
 "| `month` | 3\n"
 "| `day` |\n"
 "| `eventRemarks` | \"Exact collection day was never recorded\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `eventDate` | 2007-03\n"
+"| `year` | 2007\n"
+"| `month` | 3\n"
+"| `day` |\n"
+"| `eventRemarks` | \"El día exacto de la colecta nunca se registró\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:160
 #, no-wrap
 msgid "Case 4: Missing date"
-msgstr ""
+msgstr "Caso 4: Falta fecha"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:166
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `eventRemarks` | \"Event date was not found in legacy data\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `eventRemarks` | \"La fecha del evento no se encontró en los datos heredados\"\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:168
 #, no-wrap
 msgid "Where did the event take place?"
-msgstr ""
+msgstr "¿Dónde tuvo lugar el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:181
@@ -327,13 +383,21 @@ msgid "| Check-ID | Fields | Requirements\n\n"
 "| *where 6* |`informationWitheld` | If the point location should exist, but has not been entered, an explanation should be provided in `informationWitheld`.\n"
 "| *where 7* | `georeferenceRemarks` | If the point location does not exist, or the point location is calculated from the cent er of a grid cell (versus from GPS reading) an explanation should be provided in `georeferenceRemarks`.\n"
 "| *where 8* | `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | As much supplementary information as possible about the location should also be provided. If no `country` and `countryCode` can be provided then an explanation as to why should be entered in `locationRemarks`\n"
-msgstr ""
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *where 1* | `decimalLatitude`, `decimalLongitude`, `geodeticDatum` | Las coordenadas de localización por puntos se deben introducir en grados decimales en `decimalLatitude` y `decimalLongitude`. El sistema de referencia espacial en el que se basan las coordenadas se debe introducir en `geodeticDatum` utilizando el código EPSG si se conoce, ej.: \"EPSG:4326\". De lo contrario, se debe usar un vocabulario controlado para el nombre o código del `geodeticDatum` si se conoce, ej.: \"WGS84\". Si ninguno de estos es conocido, utilizar el valor \"unknown\".\n"
+"| *where 2* |`footprintWKT`, `footprintSRS` | Para proporcionar una localización específica por forma introduzca una representación en archivo de Text Bien Conocido (WKT, por sus siglas en inglés) para la forma en el campo `footprintWKT`. El sistema de referencia espacial en el que se basa la forma se debe introducir en `footprintSRS` utilizando el código EPSG, ej.: \"EPSG:4326\".\n"
+"| *where 3* |`coordinateUncertaintyInMeters`, `dataGeneralizations` | `coordinateUncertaintyInMeters` debe expresar la incertidumbre de la lectura del GPS en metros. Para grandes incertidumbres (más de 1.000 metros) comprobar `dataGeneralizations` para ver si la localización fue generalizada a propósito, ej.: para proteger especies sensibles.\n"
+"| *where 4* |`verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` | Si las coordenadas originales de localización por puntos tuvieran que ser convertidas desde otro sistema de coordenadas como 'grados minutos segundos' `verbatimCoordinates`, `verbatimLatitude`, `verbatimLongitude`, `verbatimCoordinateSystem`, `verbatimSRS` deberían ser rellenados con las coordenadas originales de la Localización.\n"
+"| *where 5* | `dataGeneralizations` | Si se tomaron acciones para expresar la localización por puntos de manera menos específica que la original o la coordinateUncertaintyInMeters es muy alta, se debe introducir una explicación en `dataGeneralizations`.\n"
+"| *where 6* |`informationWitheld` | Si la localización por puntos debe estar presente pero no se ha introducido, debería proporcionarse una explicación en `informationWitheld`.\n"
+"| *where 7* | `georeferenceRemarks` | Si la localización por puntos no existe o se ha calculado a partir del centro de una celda (en comparación a las lecturas GPS), se debería introducir una explicación en `georeferenceRemarks`.\n"
+"| *where 8* | `continent`, `waterBody`, `islandGroup`, `island`, `country`, `countryCode`, `stateProvince`, `county`, `municipality`, `locality`, `locationRemarks` | Se debe proporcionar tanta información adicional sobre la localización como sea posible. Si no se puede proporcionar el `country` y el `countryCode`, se debería introducir una explicación de por qué en `locationRemarks`\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:183
 #, no-wrap
 msgid "Case 1: Point location converted from degrees minutes seconds to decimal degrees"
-msgstr ""
+msgstr "Caso 1: Localización por puntos convertida de grados minutos segundos a grados decimales"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:202
@@ -353,13 +417,27 @@ msgid "| Field | Value | Constraint\n\n"
 "| `stateProvince` | \"New York\" |\n"
 "| `county` | \"Tomkins County\" |\n"
 "| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | Must be a specific description of the place\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `decimalLatitude` | 42.4566 | Debe estar entre -90 y 90, ambos inclusive\n"
+"| `decimalLongitude` | -76.45442 | Debe estar entre -180 y 180, ambos inclusive\n"
+"| `geodeticDatum` | \"EPSG:4326\" | Idealmente un http://spatialreference.org/ref/epsg/wgs-84/[código EPSG] o vocabulario controlado, si no \"unknown\"\n"
+"| `coordinateUncertaintyInMeters` | 500 | Cero NO es un valor válido\n"
+"| `verbatimCoordinates` | 42° 27' 23.76\", -76° 27' 15.91\" |\n"
+"| `verbatimLatitude` | 42° 27' 23.76\" |\n"
+"| `verbatimLongitude` | -76° 27' 15.91\" |\n"
+"| `verbatimCoordinateSystem` | \"grados minutos segundos\" |\n"
+"| `continent` | \"North America\" | Preferiblemente nombres en inglés de acuerdo a http://www.getty.edu/research/tools/vocabularies/tgn/[Tesauros de Nombres Geográficos de Getty]\n"
+"| `country` | \"United States\" | Preferiblemente nombres en inglés de acuerdo a http://www.getty.edu/research/tools/vocabularies/tgn/[Tesauros de Nombres Geográficos de Getty]\n"
+"| `countryCode` | \"US\" | Deben ser https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2[códigos de países ISO 3166-1-alpha-2]\n"
+"| `stateProvince` | \"New York\" |\n"
+"| `county` | \"Tomkins County\" |\n"
+"| `locality` | \"Ithaca, Forest Home, CU Rifle Range\" | Debe ser una descripción específica del lugar\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:204
 #, no-wrap
 msgid "Case 2: Point location that was generalized"
-msgstr ""
+msgstr "Caso 2: Localización por puntos que fue generalizada"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:214
@@ -370,52 +448,60 @@ msgid "| Field | Value\n\n"
 "| `geodeticDatum` | \"EPSG:4326\"\n"
 "| `coordinateUncertaintyInMeters` | 5000\n"
 "| `dataGeneralizations` | \"Point location obscured by a factor of 5000m\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `decimalLatitude` | 42.44\n"
+"| `decimalLongitude` | -76.33\n"
+"| `geodeticDatum` | \"EPSG:4326\"\n"
+"| `coordinateUncertaintyInMeters` | 5000\n"
+"| `dataGeneralizations` | \"Localización por puntos difuminada por un factor de 5.000m\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:216
 #, no-wrap
 msgid "Case 3: Point location exists but not provided"
-msgstr ""
+msgstr "Caso 3: La localización por puntos existe pero no se ha proporcionado"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:222
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `informationWitheld` | \"Point location hidden to protect sensitive species. Available upon request.\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `informationWitheld` | \"Localización por puntos escondida para proteger especies sensibles. Disponible mediante solicitud.\"\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:224
 #, no-wrap
 msgid "Case 4: Point location does not exist"
-msgstr ""
+msgstr "Caso 4: La localización por puntos no existe"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:230
 #, no-wrap
 msgid "| Field | Value\n\n"
 "| `dataGeneralizations` | \"Point location was not found in legacy data\"\n"
-msgstr ""
+msgstr "| Campo | Valor\n\n"
+"| `dataGeneralizations` | \"La localización por puntos no se encontró en los datos heredados\"\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:232
 #, no-wrap
 msgid "Why did the event happen?"
-msgstr ""
+msgstr "¿Por qué tuvo lugar el evento?"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:238
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
-"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.\n"
-msgstr ""
+"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.\n"
+msgstr "| Check-ID | Campos | Requisitos\n\n"
+"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | El nombre del método o protocolo de muestreo utilizado para crear el evento debe ser introducido en `samplingProtocol`. Una URL referenciando la descripción es preferible a extensas descripciones de métodos. Un protocolo de muestreo debe definir su área, duración, etc. utilizando la pareja `sampleSizeValue` & `sampleSizeUnit`, con valores para `sampleSizeUnit` procedentes del {latest-unit-of-measurement}[Vocabulario de Unidades de Medidas]. Se pueden introducir descripciones más genéricas del esfuerzo o duración del muestreo en `samplingEffort`. Si se desconoce la información sobre el área o la duración, `eventRemarks` debe proporcionar una explicación de por qué.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:240
 #, no-wrap
 msgid "Case 1: Because of a butterfly monitoring scheme"
-msgstr ""
+msgstr "Caso 1: Debido a un esquema de monitoreo de mariposas"
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:250
@@ -423,21 +509,26 @@ msgstr ""
 msgid "| Field | Value | Constraint\n\n"
 "| `samplingProtocol` | \"Pollard walks\" | Must be a short name or URL referencing a method or sampling protocol\n"
 "| `sampleSizeValue` | 250 | Must pair with `sampleSizeUnit`\n"
-"| `sampleSizeUnit` | \"square_metre\" | Must match http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml[Unit of Measurement Vocabulary]\n"
+"| `sampleSizeUnit` | \"square_metre\" | Must match {latest-unit-of-measurement}[Unit of Measurement Vocabulary]\n"
 "| `samplingEffort` | \"Average of 30 Minutes walk along transect\" | Can be a free-text description\n"
 "| `eventRemarks` | \"No occurrences of Lepidoptera recorded for entire transect\" | Can be a free-text description\n"
-msgstr ""
+msgstr "| Campo | Valor | Limitaciones\n\n"
+"| `samplingProtocol` | \"Caminatas polares\" | Debe ser un nombre corto o un URL con referencia a un método o protocolo de muestreo\n"
+"| `sampleSizeValue` | 250 | Debe emparejarse con `sampleSizeUnit`\n"
+"| `sampleSizeUnit` | \"square_metre\" | Debe coincidir con el {latest-unit-of-measurement}[Vocabulario de Unidades de Medida]\n"
+"| `samplingEffort` | \"Un promedio de 30 minutos caminando en el transecto\" | Puede ser una descripción de texto libre\n"
+"| `eventRemarks` | \"No se obtienen registros de Lepidoptera en todo el transecto\" | Puede ser una descripción de texto libre\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:252
 #, no-wrap
 msgid "Dataset Metadata"
-msgstr ""
+msgstr "Metadatos del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:255
 msgid "The dataset metadata should contain enough information to facilitate reuse of the data while preventing misinterpretation. Publishers should also provide evidence of the rigour that went into producing the data while acknowledging its various contributors and funders. Ultimately this may lead to new sources of collaboration and funding."
-msgstr ""
+msgstr "Los metadatos del conjunto de datos deberían contener suficiente información para facilitar la reutilización de los datos y se previene la malinterpretaciones. Los publicadores deberían también proporcionar evidencias del rigor con el que se obtuvieron los datos y agradecer a sus varios contribuidores y financiadores. En última instancia, esto puede conducir a nuevas fuentes de financiación y colaboración."
 
 #. type: Table
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:269
@@ -453,5 +544,15 @@ msgid "| Field | Requirements | Examples\n\n"
 "| `Project Identifier` | is a GUID or other identifier that is near globally unique. _Note this is required for BID projects._ | _\"BID-AF2015-0134-REG\"_\n"
 "| `Sampling Methods` | information about the sampling methodology used in creating the dataset, similar to the methods section of a journal article. _Note this is required for sampling event datasets._ | _See https://cloud.gbif.org/griis/resource?r=global#methods[here]_\n"
 "| `Citation` | how the dataset should be cited. Use of the xref:citation.adoc[IPT Citation Format] (based on DataCite's preferred citation format and that satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]) is highly recommended. | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
-msgstr ""
+msgstr "| Campo | Requisitos | Ejemplos\n\n"
+"| `Title` | es un nombre conciso que describe los contenidos del conjunto de datos y que lo distingue de otros. | _\"Reef Life Survey: Global reef fish dataset\"_, _\"Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen\"_\n"
+"| `Description` | es un párrafo (resumen) corto que describe el contenido del conjunto de datos. | _\"Este conjunto de datos contiene registros de peces óseos y elasmobranquios colectados por buceadores de Reef Life Survey (RLS) en transectos de 50 m en arrecifes de coral rocosos poco profundos de todo el mundo. La información sobre abundancia está disponible para todos los registros encontrados dentro de unos límites de muestreo cuantitativos (franjas de 50 x 5 m durante una única inmersión a cada lado de la línea del transecto, distinguido cada uno como un Bloque), y los registros fuera de muestreo se identifican únicamente como presencias (Método 0).\"_\n"
+"| `Publishing Organization` | la organización responsable de la publicación (producción, lanzamiento y tenencia) de este recurso. | _\"Reef Life Survey\"_\n"
+"| `License` | debe ser una de las tres opciones legibles por máquinas (CC0 1.0, CC-BY 4.0 o CC-BY-NC 4.0), que proporcionan una forma estandarizada para definir los usos apropiados del conunto de datos. | _\"Este trabajo está protegido por una  http://creativecommons.org/licenses/by/4.0/legalcode[Liciencia Creative Commons de Reconocimiento (CC-BY) 4.0].\"_\n"
+"| `Creator(s)` | las personas y organizaciones que crearon el conjunto de datos, en orden de prioridad. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Metadata Provider(s)` | las personas y organizaciones que escribieron los metadatos del conjunto de datos, en orden de prioridad. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Contact(s)` | las personas y organizaciones que deberían ser contactadas para obtener más información sobre el recurso o a las que se deben comunicar los problemas que presenta el conjunto de datos. Se recomienda utilizar un identificador personal como ORCID o ResearcherID. | _\"John Smith, jsmith@gbif.org, http://orcid.org/0000-0002-1825-0097\"_\n"
+"| `Project Identifier` | es un GUID u otro identificador que está cerca de ser global y único. _Tenga en cuenta que esto es obligatorio para proyectos BID._ | _\"BID-AF2015-0134-REG\"_\n"
+"| `Sampling Methods` | información sobre la metodología de muestreo utilizada en la creación del conjunto de datos, similar a la sección de métodos de un artículo científico. _Tenga en cuenta que esto es obligatorio para conjuntos de datos de eventos de muestreo._ | _Ver https://cloud.gbif.org/griis/resource?r=global#methods[here]_\n"
+"| `Citation` | cómo debería ser citado el conjunto de datos. Se recomienda encarecidamente utilizar el xref:citation.adoc[Formato de Citas del IPT] (basado en el formato de citas preferido por DataCite's y que cumple la  https://www.force11.org/datacitation[Declaración Conjunta de los Principios de Citas de Datos]). | _\"Edgar G J, Stuart-Smith R D (2014): Reef Life Survey: Global reef fish dataset. v2.0. Reef Life Survey. Dataset/Sampling event. http://doi.org/10.15468/qjgwba\"_\n"
 

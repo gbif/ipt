@@ -1,7 +1,7 @@
 <!-- Represents source data and mapping data sections on resource overview page -->
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="sources">
     <div class="titleOverview">
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
             <#assign sourcesInfo>
                 <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/>
             </#assign>
@@ -11,12 +11,12 @@
         </h5>
 
         <div class="row">
-            <div class="col-xl-9 order-xl-last">
+            <div class="col-lg-9 order-lg-last">
                 <div class="mx-md-4 mx-2">
                     <p>
                         <@s.text name='manage.overview.source.intro'/>
                     </p>
-                    <div class="details">
+                    <div class="details mb-3">
                         <#if sourcesModifiedSinceLastPublication>
                             <@s.text name='manage.home.last.modified'/> ${resource.getSourcesModified()?datetime?string.medium!}
                         <#elseif resource.lastPublished??>
@@ -32,13 +32,33 @@
                                     <tr>
                                         <#if src.isFileSource()>
                                             <th class="col-4">${src.name} <@s.text name='manage.overview.source.file'/></th>
-                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
+                                            <td>
+                                                ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
+                                                ${(src.lastModified?datetime?string.medium)!}<br>
+                                                <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
+                                            </td>
                                         <#elseif src.isExcelSource()>
                                             <th class="col-4">${src.name} <@s.text name='manage.overview.source.excel'/></th>
-                                            <td>${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/>.&nbsp;${(src.lastModified?datetime?string.medium)!}<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
+                                            <td>
+                                                ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
+                                                ${(src.lastModified?datetime?string.medium)!}<br>
+                                                <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
+                                            </td>
+                                        <#elseif src.isUrlSource()>
+                                            <th class="col-4">${src.name} <@s.text name='manage.overview.source.url'/></th>
+                                            <td>
+                                                ${src.url!"..."}<br>
+                                                ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
+                                                ${(src.lastModified?datetime?string.medium)!}<br>
+                                                <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
+                                            </td>
                                         <#else>
                                             <th class="col-4">${src.name} <@s.text name='manage.overview.source.sql'/></th>
-                                            <td>db=${src.database!"..."},&nbsp;${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/>.<#if !src.readable>&nbsp;<i class="bi bi-exclamation-triangle-fill text-warning"></#if></td>
+                                            <td>
+                                                ${src.database!"..."}<br>
+                                                ${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
+                                                <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
+                                            </td>
                                         </#if>
                                         <td class="d-flex justify-content-end">
                                           <div class="btn-group" role="group">
@@ -47,7 +67,7 @@
                                               <i class="bi bi-download"></i>
                                             </a>
                                             </#if>
-                                            <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
+                                            <a class="btn btn-sm btn-outline-secondary" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
                                               <@s.text name='button.edit'/>
                                             </a>
                                           </div>
@@ -61,22 +81,34 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 border-xl-right">
+            <div class="col-lg-3 border-lg-right">
                 <div class="mx-md-4 mx-2">
                     <form action='addsource.do' method='post' enctype="multipart/form-data">
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <input name="validate" type="hidden" value="false"/>
 
+                        <select id="sourceType" name="sourceType" class="form-select form-select-sm">
+                            <option value="source-sql" selected><@s.text name='manage.source.database'/></option>
+                            <option value="source-file"><@s.text name='manage.source.file'/></option>
+                            <option value="source-url"><@s.text name='manage.source.url'/></option>
+                        </select>
+
                         <div class="row">
                             <div class="col-12">
-                                <@s.file name="file" cssClass="form-control form-control-sm my-1" key="manage.resource.create.file"/>
+                                <@s.file name="file" cssClass="form-control form-control-sm my-1" cssStyle="display: none;" key="manage.resource.create.file"/>
+                                <input type="text" id="sourceName" name="sourceName" class="form-control form-control-sm my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
+                                <input type="url" id="url" name="url" class="form-control form-control-sm my-1" placeholder="URL" style="display: none">
                             </div>
                             <div class="col-12">
-                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.connectDB"/>
-                                <@s.submit name="clear" cssClass="btn btn-sm btn-outline-secondary my-1" key="button.clear"/>
-                                <@s.submit name="cancel" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.cancel" method="cancelOverwrite"/>
+                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.connect"/>
+                                <@s.submit name="clear" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.clear"/>
                             </div>
                         </div>
+                    </form>
+                    <form action='canceloverwrite.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <input name="validate" type="hidden" value="false"/>
+                        <@s.submit name="canceloverwrite" key="button.cancel" cssStyle="display: none;" cssClass="btn btn-sm btn-outline-secondary my-1"/>
                     </form>
                 </div>
             </div>
@@ -87,7 +119,7 @@
 </div>
 
 <div class="my-3 p-3 bg-body rounded shadow-sm" id="mappings">
-    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header">
+    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
         <#assign mappingsInfo>
             <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text></br></br><@s.text name='manage.overview.source.description5'/><@s.text name='manage.overview.DwC.Mappings.coretype.description1'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description2'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description3'/></br></br><@s.text name='manage.overview.DwC.Mappings.coretype.description4'/>
         </#assign>
@@ -125,7 +157,7 @@
                                             <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                            <a class="btn btn-sm btn-outline-secondary" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                 <@s.text name='button.edit'/>
                                             </a>
                                         </div>
@@ -149,7 +181,7 @@
                                                         <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
-                                                        <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                        <a class="btn btn-sm btn-outline-secondary" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
                                                             <@s.text name='button.edit'/>
                                                         </a>
                                                     </div>

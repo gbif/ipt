@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:24\n"
+"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"PO-Revision-Date: 2021-08-19 10:53\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/core.adoc:13
 #: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
@@ -31,7 +31,7 @@ msgstr ""
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:1
 #, no-wrap
 msgid "Data Quality Checklist"
-msgstr ""
+msgstr "資料品質檢核表"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:4
@@ -147,7 +147,7 @@ msgstr ""
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:52
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
-"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[GBIF Occurrence Status Vocabulary].\n"
+"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}.xml[GBIF Occurrence Status Vocabulary].\n"
 msgstr ""
 
 #. type: Title ====
@@ -160,7 +160,7 @@ msgstr ""
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:61
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
-"| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
+"| *what 6* | `scientificName`, `taxonRank`, `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus` | The full scientific name with authorship and date information if known must be entered in `scientificName`. To prevent ambiguity, the `taxonRank` of the scientific name should be supplied as per the {latest-rank}[GBIF Taxonomic Rank Vocabulary]. Also to prevent ambiguity, as much higher taxonomy as possible should be filled in: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`.\n"
 "| *what 7* | `taxonID`, `nameAccordingTo`, `nameAccordingToID` | The identifier for the Taxon assigned to the subject. If the Taxon is defined according to a well known source, it is recommended filling in `nameAccordingTo` with the name of the source and `nameAccordingToID` with the identifier for the Taxon assigned as per the source (same as `taxonID`).\n"
 msgstr ""
 
@@ -175,13 +175,13 @@ msgstr ""
 #, no-wrap
 msgid "| Field | Value | Constraint\n\n"
 "| `occurrenceID` | \"HAMAARAG:T0_L_049:6199\" | Must be a GUID or an identifier that is near globally unique. Integer identifiers are not allowed.\n"
-"| `basisOfRecord` | \"MachineObservation\" | Must match http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type Vocabulary]\n"
+"| `basisOfRecord` | \"MachineObservation\" | Must match {latest-basis-of-record}[Darwin Core Type Vocabulary]\n"
 "| `individualCount` | 1 | Must be an integer, 0 or greater\n"
 "| `organismQuantity` | 1 | Must pair with `organismQuantityType`\n"
-"| `organismQuantityType` | \"individuals\" | Must match http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml[GBIF Quantity Type Vocabulary]\n"
-"| `occurrenceStatus` | \"present\" | Must match http://rs.gbif.org/vocabulary/gbif/occurrence_status.xml[GBIF Occurrence Status Vocabulary]\n"
+"| `organismQuantityType` | \"individuals\" | Must match {latest-quantity-type}[GBIF Quantity Type Vocabulary]\n"
+"| `occurrenceStatus` | \"present\" | Must match {latest-occurrence-status}[GBIF Occurrence Status Vocabulary]\n"
 "| `scientificName` | \"Canis aureus Linnaeus, 1758\" | Must be the full scientific name, with authorship and date information if known.\n"
-"| `taxonRank` | \"species\" | Must match http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml[GBIF Taxon Rank Vocabulary]\n"
+"| `taxonRank` | \"species\" | Must match {latest-rank}[GBIF Taxon Rank Vocabulary]\n"
 "| `kingdom` | \"Animalia\" | Must be the full scientific name of the kingdom in which the taxon is classified.\n"
 "| `phylum` | \"Chordata\" | Must be the full scientific name of the phylum or division in which the taxon is classified.\n"
 "| `class` | \"Mammalia\" | Must be the full scientific name of the class in which the taxon is classified.\n"
@@ -408,7 +408,7 @@ msgstr ""
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:238
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
-"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.\n"
+"| *why 1* | `samplingProtocol`, `sampleSizeValue`, `sampleSizeUnit`, `samplingEffort`, `eventRemarks` | The name of the method or sampling protocol used to create the event should be entered in `samplingProtocol`. A URL referencing the description is preferred over lengthy method descriptions. A sampling protocol must define its area, duration, etc using the pair `sampleSizeValue` & `sampleSizeUnit`, with values for `sampleSizeUnit` coming from the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. More generic descriptions of the effort or duration of the sampling event can be entered in `samplingEffort`. If information about the area or duration is missing, `eventRemarks` must provide an explanation why.\n"
 msgstr ""
 
 #. type: Title ====
@@ -423,7 +423,7 @@ msgstr ""
 msgid "| Field | Value | Constraint\n\n"
 "| `samplingProtocol` | \"Pollard walks\" | Must be a short name or URL referencing a method or sampling protocol\n"
 "| `sampleSizeValue` | 250 | Must pair with `sampleSizeUnit`\n"
-"| `sampleSizeUnit` | \"square_metre\" | Must match http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml[Unit of Measurement Vocabulary]\n"
+"| `sampleSizeUnit` | \"square_metre\" | Must match {latest-unit-of-measurement}[Unit of Measurement Vocabulary]\n"
 "| `samplingEffort` | \"Average of 30 Minutes walk along transect\" | Can be a free-text description\n"
 "| `eventRemarks` | \"No occurrences of Lepidoptera recorded for entire transect\" | Can be a free-text description\n"
 msgstr ""

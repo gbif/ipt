@@ -29,20 +29,20 @@ Populate it and upload it to the IPT.
 
 === Required DwC fields
 
-* http://rs.tdwg.org/dwc/terms/#eventID[eventID] - also required for associated occurrence data (to link them together)
-* http://rs.tdwg.org/dwc/terms/#eventDate[eventDate]
-* http://rs.tdwg.org/dwc/terms/#samplingProtocol[samplingProtocol]
+* https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - also required for associated occurrence data (to link them together)
+* https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]
+* https://dwc.tdwg.org/terms/#dwc:samplingProtocol[samplingProtocol]
 
 === Recommended DwC fields
 
-* http://rs.tdwg.org/dwc/terms/#sampleSizeValue[sampleSizeValue] & http://rs.tdwg.org/dwc/terms/#sampleSizeUnit[sampleSizeUnit]
-* http://rs.tdwg.org/dwc/terms/#parentEventID[parentEventID] - in situations where the event is part of an event series
-* http://rs.tdwg.org/dwc/terms/#samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event
-* http://rs.tdwg.org/dwc/terms/#locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier
-* http://rs.tdwg.org/dwc/terms/#decimalLatitude[decimalLatitude] & http://rs.tdwg.org/dwc/terms/#decimalLongitude[decimalLongitude] & http://rs.tdwg.org/dwc/terms/#geodeticDatum[geodeticDatum] - to provide a specific point location
-* http://rs.tdwg.org/dwc/terms/#footprintWKT[footprintWKT] & http://rs.tdwg.org/dwc/terms/#footprintSRS[footprintSRS] - to provide a specific shape location
-* http://rs.tdwg.org/dwc/terms/#countryCode[countryCode]
-* http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus] - only for associated occurrence data to record presence/absence data.
+* hhttps://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]
+* https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - in situations where the event is part of an event series
+* https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event
+* https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier
+* https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location
+* https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - to provide a specific shape location
+* https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]
+* https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - only for associated occurrence data to record presence/absence data.
 
 === Exemplar datasets
 
@@ -56,7 +56,7 @@ Populate it and upload it to the IPT.
 
 ==== Q. How do I indicate that a sampling event was part of a time series?
 
-*A.* All sampling events at the same location must share the same http://rs.tdwg.org/dwc/terms/#locationID[locationID].
+*A.* All sampling events at the same location must share the same https://dwc.tdwg.org/terms/#dwc:locationID[locationID].
 
 ==== Q. How do I publish a hierarchy of events (recursive data type) using parentEventID?
 
@@ -70,12 +70,12 @@ Alternatively, you can make species absences explicit by adding a species occurr
 
 Mandatory:
 
-* http://rs.tdwg.org/dwc/terms/#occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml["absent"]
+* https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml["absent"]
 
 Optional (provide one or both):
 
-* http://rs.tdwg.org/dwc/terms/#individualCount[individualCount]="0"
-* http://rs.tdwg.org/dwc/terms/#organismQuantity[organismQuantity] & http://rs.tdwg.org/dwc/terms/#organismQuantityType[organismQuantityType] pair. "e.g. 0 individuals"
+* hhttps://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]="0"
+* https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair. "e.g. 0 individuals"
 
 *Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data being recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.
 

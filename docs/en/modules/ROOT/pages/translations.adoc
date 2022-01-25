@@ -8,7 +8,7 @@ In the Crowdin IPT project, the file `Glossary` is not part of either the user i
 
 == Translating the User Interface
 
-Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's develoment IPT], where new translations will be applied.
+Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied.
 
 image::ipt2/v22/Crowdin-Join.png[]
 
@@ -26,9 +26,11 @@ If you want to translate the user interface into another language, please email 
 
 == Translating the User Manual
 
-Translations for the user manual are in the CrowdIn folder `docs/translations`.  The user manual is written in https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], and some syntax is necessary in the translations – for example, `+++*bold*, _italic_ or `monospaced` text+++`.
+Translations for the user manual are in the Crowdin folder `docs/translations`.  The user manual is written in https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], and some syntax is necessary in the translations – for example, `+++*bold*, _italic_ or `monospaced` text+++`.
 
 Particular care is needed to ensure cross-references (links between pages and/or sections within pages) work in the translated versions.
+
+New translations added using Crowdin should appear in the https://ipt.gbif-uat.org/manual/[UAT version of this manual] around 15-60 minutes later.
 
 === Plain hyperlinks
 
@@ -91,4 +93,4 @@ The syntax to include this image in the manual, `image::ipt2/home/IPTHome.png[]`
 * Spanish (partial)
 * Traditional Chinese (started)
 
-If you want to translate the user interface into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English.
+If you want to translate the user manual into another language, please email helpdesk@gbif.org.  It is not necessary to translate the entire manual – untranslated sections will be shown in English.

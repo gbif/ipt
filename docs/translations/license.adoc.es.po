@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:17\n"
+"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"PO-Revision-Date: 2021-08-19 10:52\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,78 +20,78 @@ msgstr ""
 #: en/modules/ROOT/pages/core.adoc:13
 #: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
 msgid "Instructions"
-msgstr ""
+msgstr "Instrucciones"
 
 #. type: Title =
 #: en/modules/ROOT/pages/license.adoc:1
 #, no-wrap
 msgid "Adding a new License"
-msgstr ""
+msgstr "Agregar una nueva licencia"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:6
 msgid "This page contains configuration instructions for advanced IPT users only.  Datasets published with a different license to those included by GBIF cannot be published to GBIF, or registered to GBIF."
-msgstr ""
+msgstr "Esta página contiene instrucciones de configuración sólo para usuarios IPT avanzados. Los conjuntos de datos publicados con una licencia diferente a las incluidas por GBIF no pueden ser publicadas en GBIF, o registradas en GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:8
 msgid "We recommend publishing a metadata-only dataset instead."
-msgstr ""
+msgstr "Recomendamos publicar un conjunto de datos con sólo metadatos en su lugar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:11
 msgid "Since IPT v2.2 the IPT offers 3 machine readable licenses to choose from when applying a license to your resource:"
-msgstr ""
+msgstr "A partir de IPT v2.2, el IPT ofrece 3 licencias legibles por máquina para ser elegidas cuando se aplica una licencia a tu recurso:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:13
 msgid "Public Domain (CC0 1.0, technically a waiver)"
-msgstr ""
+msgstr "Dominio Público (CC0 1.0 técnicamente una renuncia)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:14
 msgid "Creative Commons Attribution (CC-BY 4.0)"
-msgstr ""
+msgstr "Atribución Creative Commons (CC-BY 4.0)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:15
 msgid "Creative Commons Attribution Non Commercial (CC-BY-NC 4.0)"
-msgstr ""
+msgstr "Atribución no comercial Creative Commons (CC-BY-NC 4.0)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:17
 msgid "Each license has a default rights statement associated to it that gets shown to users. For example, if the publisher chooses to apply CC-BY to their resource, this rights statement shown to users is:"
-msgstr ""
+msgstr "Cada licencia tiene una declaración de derechos por defecto asociada a esta que se muestra a los usuarios. Por ejemplo, si el publicador elige aplicar CC-BY a sus recursos, esta declaración de derechos mostrada a los usuarios es:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:20
 msgid "This work is licensed under a https://creativecommons.org/licenses/by/4.0/legalcode[Creative Commons Attribution (CC-BY) 4.0 License]."
-msgstr ""
+msgstr "Este trabajo es licenciado bajo una https://creativecommons.org/licenses/by/4.0/legalcode[licencia de Atribución Creative Commons (CC-BY) 4.0]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:22
 msgid "The list of licenses and their rights statements can be modified, however, which is useful for communities that need to apply different licenses to their resources, or that want to include additional usage instructions."
-msgstr ""
+msgstr "El listado de licencias y sus declaraciones de derechos pueden ser modificadas, sin embargo, lo cual es útil para las comunidades que necesitan aplicar diferentes licencias a sus recursos, o que quieren incluir instrucciones de uso adicionales."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:24
 msgid "The steps below explain how to configure the IPT with another license to choose from."
-msgstr ""
+msgstr "Los pasos debajo explican como configurar el IPT con otra licencia para elegir."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:28
 msgid "Locate the licenses.properties file e.g. `/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Open the file in a text editor, and do the following:"
-msgstr ""
+msgstr "Ubica el archivo licenses.properties, por ejemplo `/tomcat7/webapps/ipt/WEB-INF/classes/org/gbif/metadata/eml/licenses.properties`. Abra el archivo en un editor de texto, y haga lo siguiente:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:30
 msgid "Add a new property defining the license name using the following format:"
-msgstr ""
+msgstr "Agregue una nueva propiedad definiendo el nombre de la licencia usando el siguiente formato:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/license.adoc:35
@@ -99,12 +99,14 @@ msgstr ""
 msgid "license.name.<prefix>=Name\n"
 "# For example:\n"
 "license.name.odcby=Open Data Commons Attribution License (ODC-By) 1.0\n"
-msgstr ""
+msgstr "license.name.<prefix>=Nombre\n"
+"# Por ejemplo:\n"
+"license.name.odcby=Licencia de Atribución Open Data Commons (ODC-By) 1.0\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:38
 msgid "Add a new property defining the license rights statement using the following format:"
-msgstr ""
+msgstr "Agregue una nueva propiedad definiendo la declaración de derechos de la licencia usando el siguiente formato:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/license.adoc:43
@@ -112,35 +114,37 @@ msgstr ""
 msgid "license.text.<prefix>=Text\n"
 "# For example:\n"
 "license.text.odcby=This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Open Data Commons Attribution License (ODC-By) 1.0</a>.\n"
-msgstr ""
+msgstr "license.text.<prefix>=Texto\n"
+"# Por ejemplo:\n"
+"license.text.odcby=Este trabajo es licenciado bajo una <a href=\"http://www.opendatacommons.org/licenses/by/1.0\">Licencia de atribución Open Data Commons (ODC-By) 1.0</a>.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:46 en/modules/ROOT/pages/user-id.adoc:36
 msgid "Double check"
-msgstr ""
+msgstr "Doble verificación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:47
 msgid "the _prefix_ of both keys matches,"
-msgstr ""
+msgstr "el _prefijo_ de ambas llaves coincide,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:48
 msgid "an HTML anchor defining the license name and URL is included in the text since this is what makes the license machine readable,"
-msgstr ""
+msgstr "un ancho de HTML define el nombre de la licencia y la URL es incluida en el texto ya que esto es lo que hace que sea legible por la máquina de licencias,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:49
 msgid "the name used in the HTML anchor is the same as name used in the name property above."
-msgstr ""
+msgstr "el nombre usado en el ancho HTML es el mismo nombre que es usado en la propiedad anterior."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50
 msgid "Backup the licenses.properties file, since it will get overwritten the next time you upgrade your IPT"
-msgstr ""
+msgstr "Haga una copia de respaldo del archivo licenses.properties, ya que será sobrescrito la próxima vez que actualice su IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/license.adoc:50 en/modules/ROOT/pages/user-id.adoc:39
 msgid "Restart your servlet container (e.g. Tomcat) so that the new configuration takes effect"
-msgstr ""
+msgstr "Reinicie su contenedor de servlet (por ejemplo, Tomcat) para que la nueva configuración surta efecto"
 

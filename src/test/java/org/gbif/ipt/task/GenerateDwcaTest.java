@@ -1,26 +1,26 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.task;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -56,6 +56,8 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.utils.HttpClient;
+import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
@@ -63,37 +65,36 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.collect.Maps;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GenerateDwcaTest {
-  private static final Logger LOG = LogManager.getLogger(GenerateDwcaTest.class);
+
   private static final String RESOURCE_SHORTNAME = "res1";
   private static final String VERSIONED_ARCHIVE_FILENAME = "dwca-3.0.zip";
 
@@ -108,10 +109,10 @@ public class GenerateDwcaTest {
   private File tmpDataDir;
   private File resourceDir;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() {
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
-    Map<String, String> basisOfRecords = Maps.newHashMap();
+    Map<String, String> basisOfRecords = new HashMap<>();
     basisOfRecords.put("preservedspecimen", "Preserved Specimen");
     basisOfRecords.put("fossilspecimen", "Fossil Specimen");
     basisOfRecords.put("livingspecimen", "Living Specimen");
@@ -125,7 +126,7 @@ public class GenerateDwcaTest {
       .thenReturn(basisOfRecords);
   }
 
-  @Before
+  @BeforeEach
   public void setup() throws IOException {
     // create resource, version 3.0
     resource = new Resource();
@@ -160,11 +161,11 @@ public class GenerateDwcaTest {
   /**
    * A resource with no core is expected to throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testResourceWithNoCore() throws Exception {
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mock(SourceManager.class), mockAppConfig,
       mock(VocabulariesManager.class));
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   @Test
@@ -195,7 +196,7 @@ public class GenerateDwcaTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
@@ -207,31 +208,31 @@ public class GenerateDwcaTest {
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st record
-    String[] row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("1", row[2]);
-    assertEquals("puma concolor", row[3]);
-    assertEquals("occurrence", row[4]);
+    Record record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("1", record.column(2));
+    assertEquals("puma concolor", record.column(3));
+    assertEquals("occurrence", record.column(4));
     // 2nd record
-    row = reader.next();
-    assertEquals("2", row[0]);
-    assertEquals("occurrence", row[1]);
-    assertEquals("2", row[2]);
-    assertEquals("pumm:concolor", row[3]);
-    assertEquals("occurrence", row[4]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("2", record.column(0));
+    assertEquals("occurrence", record.column(1));
+    assertEquals("2", record.column(2));
+    assertEquals("pumm:concolor", record.column(3));
+    assertEquals("occurrence", record.column(4));
+    iterator.close();
 
     // since basisOfRecord was occurrence, and this is ambiguous, there should be a warning message!
     boolean foundWarningAboutAmbiguousBOR = false;
     // since there was an empty line at bottom of file, there should be a warning message!
     boolean foundWarningAboutEmptyLine = false;
-    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
-      TaskMessage msg = iter.next();
+    for (TaskMessage msg : generateDwca.report().getMessages()) {
       if (msg.getMessage().startsWith("2 line(s) use ambiguous basisOfRecord")) {
-         foundWarningAboutAmbiguousBOR = true;
+        foundWarningAboutAmbiguousBOR = true;
       } else if (msg.getMessage().startsWith("1 empty line(s) skipped")) {
         foundWarningAboutEmptyLine = true;
       }
@@ -279,7 +280,7 @@ public class GenerateDwcaTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(5, archive.getCore().getFieldsSorted().size());
@@ -292,25 +293,26 @@ public class GenerateDwcaTest {
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(4).getTerm().simpleName());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st record
-    String[] row = reader.next();
-    assertEquals("1", row[0]);
-    assertEquals("doi:10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
-    assertEquals("occurrence", row[2]);
-    assertEquals("1", row[3]);
-    assertEquals("puma concolor", row[4]);
-    assertEquals("occurrence", row[5]);
+    Record record = iterator.next();
+    assertEquals("1", record.column(0));
+    assertEquals("doi:10.5072/gc8gqc", record.column(1)); // confirm resource DOI used for datasetID
+    assertEquals("occurrence", record.column(2));
+    assertEquals("1", record.column(3));
+    assertEquals("puma concolor", record.column(4));
+    assertEquals("occurrence", record.column(5));
 
     // 2nd record
-    row = reader.next();
-    assertEquals("2", row[0]);
-    assertEquals("doi:10.5072/gc8gqc", row[1]); // confirm resource DOI used for datasetID
-    assertEquals("occurrence", row[2]);
-    assertEquals("2", row[3]);
-    assertEquals("pumm:concolor", row[4]);
-    assertEquals("occurrence", row[5]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("2", record.column(0));
+    assertEquals("doi:10.5072/gc8gqc", record.column(1)); // confirm resource DOI used for datasetID
+    assertEquals("occurrence", record.column(2));
+    assertEquals("2", record.column(3));
+    assertEquals("pumm:concolor", record.column(4));
+    assertEquals("occurrence", record.column(5));
+    iterator.close();
   }
 
   @Test
@@ -342,7 +344,7 @@ public class GenerateDwcaTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
@@ -354,30 +356,31 @@ public class GenerateDwcaTest {
     assertEquals("kingdom", archive.getCore().getFieldsSorted().get(3).getTerm().simpleName());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st record
-    String[] row = reader.next();
+    Record record = iterator.next();
     // no id was mapped, so the first column (ID column, index 0) is empty
-    assertEquals("", row[0]);
-    assertEquals("HumanObservation", row[1]);
-    assertEquals("1", row[2]);
-    assertEquals("puma concolor", row[3]);
-    assertEquals("Animalia", row[4]);
+    assertNull(record.column(0));
+    assertEquals("HumanObservation", record.column(1));
+    assertEquals("1", record.column(2));
+    assertEquals("puma concolor", record.column(3));
+    assertEquals("Animalia", record.column(4));
     // 2nd record
-    row = reader.next();
-    assertEquals("", row[0]);
-    assertEquals("HumanObservation", row[1]);
-    assertEquals("2", row[2]);
-    assertEquals("Panthera onca", row[3]);
-    assertEquals("Animalia", row[4]);
-    reader.close();
+    record = iterator.next();
+    assertNull(record.column(0));
+    assertEquals("HumanObservation", record.column(1));
+    assertEquals("2", record.column(2));
+    assertEquals("Panthera onca", record.column(3));
+    assertEquals("Animalia", record.column(4));
+    iterator.close();
   }
 
   /**
    * A generated DwC-a with occurrenceID mapped, but missing one or more occurrenceID values, is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testValidateCoreFromSingleSourceFileMissingIds() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
@@ -387,14 +390,14 @@ public class GenerateDwcaTest {
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mock(VocabulariesManager.class));
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with occurrenceID mapped, but having non unique occurrenceID values, is expected to
    * throw a GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testValidateCoreFromSingleSourceFileNonUniqueIds() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
@@ -404,14 +407,14 @@ public class GenerateDwcaTest {
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mock(VocabulariesManager.class));
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * A generated DwC-a with occurrenceID mapped, but with occurrenceID values that are non unique when compared with
    * case insensitivity, is expected to throw a GeneratorException. E.g. FISHES:1 and fishes:1 are considered equal.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testValidateCoreFromSingleSourceFileNonUniqueIdsCase() throws Exception {
     // retrieve sample zipped resource XML configuration file
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
@@ -422,7 +425,7 @@ public class GenerateDwcaTest {
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mock(VocabulariesManager.class));
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
@@ -457,7 +460,7 @@ public class GenerateDwcaTest {
 
     // construct ExtensionFactory using injected parameters
     Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    DefaultHttpClient httpClient = injector.getInstance(DefaultHttpClient.class);
+    HttpClient httpClient = injector.getInstance(HttpClient.class);
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
     SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
@@ -565,7 +568,7 @@ public class GenerateDwcaTest {
   /**
    * Confirm occurrence core with rows missing basisOfRecord throws GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreFromSingleSourceFileMissingBasisOfRecord() throws Exception {
     // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_doi_dataset_id.xml");
@@ -574,14 +577,14 @@ public class GenerateDwcaTest {
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * Confirm occurrence core with rows with basisOfRecord not matching Darwin Core Type Vocabulary throws
    * GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreFromSingleSourceFileNonMatchingBasisOfRecord() throws Exception {
     // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_doi_dataset_id.xml");
@@ -590,13 +593,13 @@ public class GenerateDwcaTest {
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
    * Confirm occurrence core missing required basisOfRecord mapping throws GeneratorException.
    */
-  @Test(expected = GeneratorException.class)
+  @Test
   public void testGenerateCoreFromSingleSourceFileMissingBasisOfRecordMapping() throws Exception {
     // retrieve sample zipped resource XML configuration file corresponding to occurrence_missing_bor.txt
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_no_bor_mapped.xml");
@@ -605,7 +608,7 @@ public class GenerateDwcaTest {
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
       mockVocabulariesManager);
-    generateDwca.call();
+    assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
   /**
@@ -640,7 +643,7 @@ public class GenerateDwcaTest {
     File dir = FileUtils.createTempDir();
     CompressionUtil.decompressFile(dir, versionedDwca, true);
 
-    Archive archive = ArchiveFactory.openArchive(dir);
+    Archive archive = DwcFiles.fromLocation(dir.toPath());
     assertEquals(DwcTerm.Occurrence, archive.getCore().getRowType());
     assertEquals(0, archive.getCore().getId().getIndex().intValue());
     assertEquals(4, archive.getCore().getFieldsSorted().size());
@@ -651,14 +654,15 @@ public class GenerateDwcaTest {
     assertEquals("associatedMedia", archive.getCore().getFieldsSorted().get(2).getTerm().simpleName());
 
     // confirm data written to file
-    CSVReader reader = archive.getCore().getCSVReader();
+    ArchiveFile coreFile = archive.getCore();
+    ClosableIterator<Record> iterator = coreFile.iterator();
     // 1st record
-    String[] row = reader.next();
-    assertEquals("http://dummyimage.com/1|http://dummyimage.com/2", row[3]);
+    Record record = iterator.next();
+    assertEquals("http://dummyimage.com/1|http://dummyimage.com/2", record.column(3));
     // 2nd record
-    row = reader.next();
-    assertEquals("http://dummyimage.com/3|http://dummyimage.com/4", row[3]);
-    reader.close();
+    record = iterator.next();
+    assertEquals("http://dummyimage.com/3|http://dummyimage.com/4", record.column(3));
+    iterator.close();
   }
 
   /**
@@ -678,10 +682,10 @@ public class GenerateDwcaTest {
 
     // check for warning message
     boolean foundWarning = false;
-    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
-      TaskMessage msg = iter.next();
+    for (TaskMessage msg : generateDwca.report().getMessages()) {
       if (msg.getMessage().equals("The sampling event resource has no associated occurrences.")) {
         foundWarning = true;
+        break;
       }
     }
     assertTrue(foundWarning);

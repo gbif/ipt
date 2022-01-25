@@ -1,8 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.manage;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import freemarker.template.TemplateException;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
@@ -23,29 +35,35 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlWriter;
-import org.junit.Before;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.commons.collections4.ListValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
+import freemarker.template.TemplateException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -54,12 +72,12 @@ public class OverviewActionTest {
   private OverviewAction action;
   private File emlFile;
 
-  @Before
+  @BeforeEach
   public void setup()
     throws IOException, ParserConfigurationException, SAXException, AlreadyExistingException, ImportException {
 
     ResourceManager mockResourceManager = mock(ResourceManager.class);
-    ListMultimap<String, Date> processFailures = ArrayListMultimap.create();
+    ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
     processFailures.put("res1", new Date());
     processFailures.put("res1", new Date());
     when(mockResourceManager.getProcessFailures()).thenReturn(processFailures);
@@ -68,13 +86,13 @@ public class OverviewActionTest {
     emlFile = File.createTempFile("eml-1.0", ".xml");
     AppConfig mockCfg = mock(AppConfig.class);
     DataDir mockDataDir = mock(DataDir.class);
-    when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlFile);
+    when(mockDataDir.resourceEmlFile(any(), any(BigDecimal.class))).thenReturn(emlFile);
     when(mockCfg.getDataDir()).thenReturn(mockDataDir);
 
     // mock action
     action =
       new OverviewAction(mock(SimpleTextProvider.class), mockCfg, mock(RegistrationManager.class), mockResourceManager,
-        mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class));
+        mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class), mock(RegistryManager.class));
   }
 
   @Test
@@ -306,7 +324,7 @@ public class OverviewActionTest {
     // mock action
     action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
       mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class),
-            mock(VocabulariesManager.class));
+            mock(VocabulariesManager.class), mock(RegistryManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());
@@ -346,7 +364,7 @@ public class OverviewActionTest {
     // mock action
     action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
       mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class),
-            mock(VocabulariesManager.class));
+            mock(VocabulariesManager.class), mock(RegistryManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());

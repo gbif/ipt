@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.DwcTerm;
@@ -18,18 +33,19 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +54,7 @@ public class MappingActionTest {
   private MappingAction action;
   private static final String RESOURCE_SHORT_NAME = "myResource";
 
-  @Before
+  @BeforeEach
   public void setup() {
     // Mock HttpServletRequest
     HttpServletRequest req = mock(HttpServletRequest.class);
@@ -66,7 +82,7 @@ public class MappingActionTest {
     // create a new Extension, that represents the Darwin Core Occurrence Core
     Extension occurrenceCore = new Extension();
     occurrenceCore.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);
-    List<ExtensionProperty> extensionProperties = new ArrayList<ExtensionProperty>();
+    List<ExtensionProperty> extensionProperties = new ArrayList<>();
     ExtensionProperty extensionProperty = new ExtensionProperty();
     extensionProperty.setQualname(DwcTerm.occurrenceID.qualifiedName());
     extensionProperties.add(extensionProperty);
@@ -91,7 +107,7 @@ public class MappingActionTest {
     when(mockResourceManager.get(anyString())).thenReturn(resource);
 
     // fields: small subset of 2 fields from identification history extension
-    List<PropertyMapping> fields = new ArrayList<PropertyMapping>();
+    List<PropertyMapping> fields = new ArrayList<>();
     PropertyMapping identificationId = new PropertyMapping();
     identificationId.setTerm(DwcTerm.identificationID);
     identificationId.setIndex(0);
@@ -131,7 +147,7 @@ public class MappingActionTest {
     assertEquals("scientificname", action.normalizeColumnName(col3));
   }
 
-  @Ignore("the mapping and the resource's mapping are not the same object and so the remove(mapping) is always false")
+  @Disabled("the mapping and the resource's mapping are not the same object and so the remove(mapping) is always false")
   public void testDelete() {
     // prepare id, mid parameters
     action.prepare();

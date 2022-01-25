@@ -1,13 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.portal;
 
-
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.inject.Inject;
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.json.annotations.JSON;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
@@ -16,13 +23,23 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.ResourceUtils;
 
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.json.annotations.JSON;
+
+import com.google.inject.Inject;
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Action serialized into JSON - used to get a simple JSON inventory of registered resources.
@@ -31,7 +48,7 @@ public class InventoryAction extends ActionSupport {
 
   private final AppConfig cfg;
   private final ResourceManager resourceManager;
-  private List<DatasetItem> inventory = Lists.newArrayList();
+  private List<DatasetItem> inventory = new ArrayList<>();
 
   @Inject
   public InventoryAction(AppConfig cfg, ResourceManager resourceManager) {
@@ -39,6 +56,7 @@ public class InventoryAction extends ActionSupport {
     this.resourceManager = resourceManager;
   }
 
+  @Override
   public String execute() {
     // load all registered resources, and populate inventory
     List<Resource> registered = resourceManager.list(PublicationStatus.REGISTERED);
@@ -60,7 +78,7 @@ public class InventoryAction extends ActionSupport {
   /**
    * Class representing dataset item returned in inventory response serialized into JSON.
    */
-  public class DatasetItem {
+  public static class DatasetItem {
 
     private String title;
     private String type;
@@ -70,7 +88,7 @@ public class InventoryAction extends ActionSupport {
     private String eml;
     private String dwca;
     private BigDecimal version;
-    private Map<String, Integer> recordsByExtension = Maps.newHashMap();
+    private Map<String, Integer> recordsByExtension = new HashMap<>();
 
     /**
      * @return the dataset title
@@ -163,7 +181,7 @@ public class InventoryAction extends ActionSupport {
      */
     public void setRecordsByExtension(Map<String, Integer> recordsByExtension) {
       if (recordsByExtension != null) {
-        this.recordsByExtension = ImmutableMap.copyOf(recordsByExtension);
+        this.recordsByExtension = Collections.unmodifiableMap(recordsByExtension);
       }
     }
 
@@ -194,7 +212,7 @@ public class InventoryAction extends ActionSupport {
    * @param resources list of registered resources
    */
   public void populateInventory(List<Resource> resources) {
-    List<DatasetItem> items = Lists.newArrayList();
+    List<DatasetItem> items = new ArrayList<>();
     for (Resource r : resources) {
       DatasetItem item = new DatasetItem();
 
@@ -211,7 +229,7 @@ public class InventoryAction extends ActionSupport {
       );
 
       // populate DatasetItem representing last published version of the registered dataset
-      item.setTitle(Strings.emptyToNull(lastPublished.getTitle()));
+      item.setTitle(StringUtils.trimToNull(lastPublished.getTitle()));
       item.setRecords(lastPublished.getRecordsPublished());
       item.setLastPublished(lastPublished.getLastPublished());
       item.setGbifKey(lastPublished.getKey().toString());
@@ -219,7 +237,7 @@ public class InventoryAction extends ActionSupport {
       item.setEml(cfg.getResourceEmlUrl(shortname));
       item.setDwca(cfg.getResourceArchiveUrl(shortname));
       item.setVersion(version);
-      item.setType(Strings.emptyToNull(r.getCoreType()));
+      item.setType(StringUtils.trimToNull(r.getCoreType()));
       items.add(item);
     }
     setInventory(items);

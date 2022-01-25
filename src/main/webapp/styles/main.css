@@ -39,28 +39,82 @@ header, .dropdown-menu {
     background-color: #61a861 !important;
 }
 
-.bg-gbif-green-gradient {
-    background: linear-gradient(#78b578, #71b171) !important;
+.bg-gbif-main-navbar {
+    background: linear-gradient(#78b578, #71b171);
 }
 
 .navbar-button {
     color: #61a861 !important;
+    background: white;
 }
 
 .navbar-button:hover {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
+
+.gbif-translate-icon, .gbif-heartbeat-icon {
+    fill: white;
+}
 /* Logo, header, menu etc. END */
 
 
 /* Admin page styles START */
-.admin-item:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+.admin-col-listing .admin-col-listing-item {
+    position: relative;
+    display: block;
+    height: 100%;
+    padding: 4rem;
+    color: #4e565f;
+    transition: all .2s ease-in-out;
+    text-decoration: none;
 }
 
-.admin-item {
-    transition: .5s;
-    transition-timing-function: ease-in-out;
+@media (max-width: 1200px) {
+    .admin-col-listing .admin-col-listing-item {
+        padding: 2rem;
+    }
+}
+
+.admin-icon-wrapper {
+    transition: transform .5s;
+    transition-timing-function: ease-out;
+}
+
+.admin-icon-wrapper:hover {
+    transform: scale(1.75);
+}
+
+.admin-col-listing .admin-col-listing-item .admin-icon {
+    color: #61a861;
+}
+
+.admin-icon {
+    font-size: 36px;
+}
+
+.admin-col-listing .admin-col-listing-item .admin-card-title {
+    margin-top: .5rem;
+}
+
+.admin-card {
+    display: block;
+    padding: 1px 0;
+    background-color: #fff;
+    border: none;
+}
+
+.admin-card .admin-card-title:last-child {
+    margin-bottom: 0;
+}
+
+.admin-card .card-body {
+    padding: 0 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-card-title {
+    font-size: 1rem;
 }
 /* Admin page styles END */
 
@@ -82,54 +136,119 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi) {
     color: #4BA2CE !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi):hover {
     color: #2c79a1 !important;
     text-decoration: underline !important;
+}
+
+a.leaflet-control-zoom-in:focus, a.leaflet-control-zoom-in:hover,
+a.leaflet-control-zoom-out:focus, a.leaflet-control-zoom-out:hover,
+a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
+    text-decoration: none !important;
 }
 /* Links color with exception for some classes END */
 
 
+/* Datepicker styles START */
+.datepicker table tr td span.active, .datepicker table tr td span.active.disabled, .datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active:hover {
+    background-image: linear-gradient(to bottom, #61a861, #61a861) !important;
+}
+
+.datepicker table tr td.active, .datepicker table tr td.active.disabled, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active:hover {
+    background-image: linear-gradient(to bottom, #61a861, #61a861) !important;
+}
+
+.datepicker td, .datepicker th {
+    font-size: 1rem !important;
+}
+
+.datepicker-days td, .datepicker-days th {
+    width: 40px !important;
+}
+/* Datepicker styles END */
+
+
 /* Custom colors */
 .text-gbif-primary {
-    color: #61a861 !important;
+    color: #61a861;
 }
 
 .text-gbif-danger {
-    color: #e36370 !important;
+    color: #e36370;
 }
 
 .text-gbif-header {
-    color: #4E565F !important;
+    color: #4E565F;
+}
+
+.text-gbif-header-2 {
+    color: #58687b;
 }
 
 .bg-gbif-primary {
-  background-color: #61a861 !important;
+  background-color: #61a861;
 }
 
 .bg-gbif-danger {
-  background-color: #e36370 !important;
+  background-color: #e36370;
 }
 
 .bg-gbif-header {
-  background-color: #4E565F !important;
+  background-color: #4E565F;
 }
+
+/* Custom alerts colors START */
+.alert-success {
+    color: #1e4620;
+    background-color: #edf7ed;
+    border-color: #edf7ed;
+}
+
+.alert-warning {
+    color: #663c00;
+    background-color: #fff4e5;
+    border-color: #fff4e5;
+}
+
+.alert-danger {
+    color: #5f2120;
+    background-color: #fdeded;
+    border-color: #fdeded;
+}
+/* Custom alerts colors END */
+
+
+/* GBIF gray colored outline button START */
+.btn-outline-secondary {
+    color: #4e565f !important;
+    border-color: #bec6ce !important;
+}
+.btn-outline-secondary:hover, .btn-outline-secondary:active {
+    color: #212529 !important;
+    background-color: #eaecef !important;
+    border-color: #bec6ce !important;
+}
+.btn-outline-secondary:focus, .btn-outline-secondary:active:focus {
+    box-shadow: 0 0 0 0.25rem rgba(190, 198, 206, 0.25); !important;
+}
+/* GBIF gray colored outline button START */
 
 
 /* GBIF green colored outline button START */
 .btn-outline-gbif-primary {
-    color: #61a861 !important;
-    border-color: #61a861 !important;
+    color: #61a861;
+    border-color: rgba(97, 168, 97, 0.5);
 }
 .btn-outline-gbif-primary:hover {
-    color: #fff !important;
-    background-color: #61a861 !important;
-    border-color: #61a861 !important;
+    color: #61a861;
+    background-color: rgba(97, 168, 97, 0.04);
+    border-color: #61a861;
 }
 .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
     box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25); !important;
@@ -152,11 +271,11 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):hover 
 /* GBIF red colored outline button START */
 .btn-outline-gbif-danger {
     color: #e36370;
-    border-color: #e36370;
+    border-color: rgba(227, 99, 112, 0.5);
 }
 .btn-outline-gbif-danger:hover {
-    color: #fff;
-    background-color: #e36370;
+    color: #e36370;
+    background-color: rgba(227, 99, 112, 0.04);
     border-color: #e36370;
 }
 .btn-check:focus + .btn-outline-gbif-danger, .btn-outline-gbif-danger:focus {
@@ -182,17 +301,25 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link):hover 
     color: #212529;
 }
 
+.form-select:hover {
+    border-color: rgba(33, 37, 41, 0.5);
+}
+
+.form-control:hover {
+    border-color: rgba(33, 37, 41, 0.5);
+}
+
 .form-control:focus {
     background-color: #fff;
     border-color: #92c392;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
+    box-shadow: none;
 }
 
 .form-select:focus {
     border-color: #92c392;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
+    box-shadow: none;
 }
 
 .form-check-input:not(.is-invalid):focus {
@@ -365,10 +492,11 @@ td.left_padding {
 
 #watermark {
     position: fixed;
-    opacity: 0.15;
+    opacity: 0.5;
     z-index: 1000;
-    color: #666;
-    font-size: 650%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: #61a861;
 }
 
 
@@ -410,21 +538,13 @@ td.left_padding {
 /* Licence logos styling END */
 
 
-/* DOI styling START */
-span.doi {
-    background: #61a861;
-    color: #fff;
-}
-/* DOI styling END */
-
-
 /* Version table pointer styling */
 img.latestVersionHidden {
     opacity: 0.2;
 }
 
 
-/* Data records chars styling START*/
+/* Data records chars styling START */
 ul.no_bullets li {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     padding-left: 0;
@@ -461,7 +581,7 @@ ul.horizontal_graph .value_label {
     margin: 0 0 0 10px;
     padding: 0;
 }
-/* Data records chars styling START*/
+/* Data records chars styling END */
 
 
 /* Metadata map size */
@@ -490,24 +610,6 @@ ul.horizontal_graph .value_label {
 }
 
 
-/* Mapping page custom colors */
-#filter {
-    color: #0080FF;
-}
-
-#coreID {
-    color: #008959;
-}
-
-div.requiredMapping {
-    background-color: #E6F5EB;
-}
-
-div.mappingFiler {
-    background-color: #F0FAFF;
-}
-
-
 /* Pointer at info\warning icons */
 i {
     cursor: pointer;
@@ -530,6 +632,12 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 }
 
 
+/* Alerts close buttons */
+.btn-close:focus {
+    box-shadow: none;
+}
+
+
 /* Utilities */
 .overflow-x-auto {
     overflow-x: auto !important;
@@ -539,6 +647,341 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     overflow-x: hidden !important;
 }
 
+/* Deprecated, replace with fs-smaller */
 .text-smaller {
     font-size: 0.875rem !important;
+}
+
+.fs-smaller {
+    font-size: 0.875rem !important;
+}
+
+.fs-smaller-2 {
+    font-size: 0.75rem !important;
+}
+
+.fw-400 {
+    font-weight: 400;
+}
+
+/* Modal windows START */
+.modal-confirm .modal-content {
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+}
+
+.modal-confirm h5 {
+    text-align: center;
+    font-size: 20px;
+    margin: 30px 0 -10px;
+}
+
+.modal-confirm .btn {
+    min-width: 120px;
+}
+
+.modal-confirm .icon-box {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border-radius: 50%;
+    z-index: 9;
+    text-align: center;
+    border: 3px solid #e36370;
+}
+
+.modal-confirm .icon-box i {
+    color: #e36370;
+    font-size: 46px;
+    display: inline-block;
+    margin-top: 13px;
+}
+
+.confirm-danger-icon {
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    cursor: auto;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.modal-confirm .modal-header {
+    border-bottom: none;
+    position: relative;
+}
+
+.modal-confirm .modal-footer {
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 10px 15px 25px;
+}
+
+.modal-confirm .close {
+    position: absolute;
+    top: -5px;
+    right: -2px;
+}
+
+.modal-header .close {
+    padding: 1rem 1rem;
+    margin: -1rem -1rem -1rem auto;
+}
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+.close:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+.close:not(:disabled):not(.disabled):focus, .close:not(:disabled):not(.disabled):hover {
+    opacity: .75;
+}
+/* Modal windows END */
+
+
+/* Anchors START */
+.anchor {
+    display: block;
+    visibility: hidden;
+}
+
+.anchor-base {
+    height: 45px;
+    margin-top: -59px;
+}
+
+.anchor-resource-page {
+    height: 45px;
+    margin-top: -59px;
+}
+
+.anchor-mapping-page {
+    height: 96px;
+    margin-top: -110px;
+}
+/* Anchors END */
+
+
+/* Sidebars and related (resource view, mapping, metadata) START */
+@media (max-width: 768px) {
+    .bd-main {
+        grid-template-areas:
+                "toc content";
+        grid-template-columns: 1fr 4fr;
+        grid-template-rows: 1fr auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .bd-toc {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 5rem;
+        right: 0;
+        z-index: 2;
+        height: calc(100vh - 7rem);
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .bd-toc {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .bd-layout {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-areas: "main";
+    }
+
+    .bd-main {
+        display: grid;
+        gap: inherit;
+        grid-template-areas:
+                    "toc content";
+        grid-template-rows: auto auto 1fr;
+    }
+
+    .bd-main-right {
+        grid-template-areas:
+                    "content toc";
+        grid-template-columns: 1fr auto;
+    }
+
+
+    #metadata-selector-container {
+        display: none;
+    }
+}
+
+.bd-main {
+    grid-area: main;
+}
+
+.bd-toc {
+    grid-area: toc;
+}
+
+.bd-content {
+    grid-area: content;
+    min-width: 1px;
+}
+
+.bd-toc nav ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.bd-toc nav a.sidebar-link, .bd-toc nav a.sidebar-navigation-link {
+    font-size: 0.875rem;
+    color: #4e565f !important;
+    text-decoration: none !important;
+    padding: 10px;
+    margin-left: -10px;
+    display: block;
+    line-height: 1rem;
+    cursor: pointer;
+}
+
+.bd-toc nav a.sidebar-navigation-link {
+    border-left: 2px solid #e2e7ea;
+}
+
+.bd-toc nav a:hover {
+    text-decoration: none !important;
+    color: #4e565f !important;
+}
+
+.bd-toc nav a.active {
+    border-left: 2px solid #09c;
+}
+
+#additional {
+    height: 100vh;
+    min-height: 200px;
+}
+
+.anchor-home-resource-page {
+    height: 45px;
+    margin-top: -59px;
+}
+
+.logoImg>img {
+    max-height: 64px;
+}
+
+dt, dd {
+    display: inline;
+}
+/* Sidebars and related (resource view, mapping, metadata) END */
+
+
+/* DOI link START */
+.doi {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.doi, .smaller {
+    font-size: 12px;
+}
+
+.doi span:first-of-type {
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+    background: #09c;
+    padding: 0 4px;
+    border-radius: 5px 0 0 5px;
+    color: #fff;
+    border-right-width: 0;
+    border-color: #09c;
+}
+
+.doi span {
+    border: 1px solid #dbe3e7;
+}
+
+.doi span:last-of-type {
+    background: #fff;
+    padding: 0 7px;
+    border-radius: 0 5px 5px 0;
+    border-left-width: 0;
+}
+.doi span:last-of-type, a.doi:hover {
+    color: #333;
+    text-decoration: none !important;
+}
+
+a.doi:hover span:first-of-type {
+    background: #004d66;
+    border-color: #004d66;
+}
+/* DOI link END */
+
+/* GBIF icons (see portal16) START */
+@font-face {
+    font-family: 'gbificons';
+    src:url('./fonts/gbificons.eot?v=1594215369');
+    src:url('./fonts/gbificons.eot?v=1594215369#iefix') format('embedded-opentype'),
+    url('./fonts/gbificons.ttf?v=1594215369') format('truetype'),
+    url('./fonts/gbificons.woff?v=1594215369') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.gb-icon:before {
+    font-family: 'gbificons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.gb-icon-quote:before {
+    content: "\EA41";
+}
+/* GBIF icons END */
+
+
+/* Citation border */
+#intellectualRightsDiv, .howtocite {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
 }

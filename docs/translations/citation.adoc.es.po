@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:23\n"
+"POT-Creation-Date: 2021-08-24 11:55+0000\n"
+"PO-Revision-Date: 2021-08-24 12:16\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -18,15 +18,14 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:3
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:27
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/customization.adoc:12
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
@@ -36,44 +35,44 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/citation.adoc:1
 #, no-wrap
 msgid "Dataset Citation Format"
-msgstr ""
+msgstr "Formato de Citas de los Conjuntos de Datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:4
 msgid "the citation format used in the IPT is not used by GBIF.org.  See https://www.gbif.org/faq?q=citation for background information on this."
-msgstr ""
+msgstr "el formato de citas utilizado en el IPT no es el utilizado por GBIF.org. Explore https://www.gbif.org/faq?q=citation para obtener mayor información sobre este tema."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:8
 msgid "Since IPT v2.2 data publishers can choose to let the IPT auto-generate a citation for their dataset. Before publishers had to enter their own citation."
-msgstr ""
+msgstr "Desde la v.2.2 del IPT, los publicadores de datos pueden elegir permitir al IPT autogenerar un cita para su conjunto de datos. Antes, los publicadores eran quienes tenían que introducir su propia cita."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:10
 msgid "The auto-generated citation format includes the dataset version number and DOI. Human readers can use the DOI to link to the dataset homepage, and can use the version number to locate and download the exact version. This enables reproducing scientific results based on usage of the dataset."
-msgstr ""
+msgstr "El formato de cita autogenerada incluye el número de versión y el DOI del conjunto de datos. Los lectores humanos pueden utilizar el DOI para vincular la página de portada del conjunto de datos y pueden utilizar el número de versión para localizar y descargar la versión exacta. Esto permite hacer un seguimiento de los resultados científicos basados en el uso de un conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:12
 msgid "A detailed description of the IPT's citation format is described below. It is important to note that the format is based on DataCite’s preferred citation format, and satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]. For more information about the DataCite format, you can refer to Section 2.2 Citation of their http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Metadata Schema]. Each part of the citation is described in the table below, with several examples given afterwards."
-msgstr ""
+msgstr "A continuación se describe en detalle el formato de citas del IPT. Es importante tener en cuenta que el formato está basado en el formato de citas preferido por DataCite y es acorde a la https://www.force11.org/datacitation[Joint Declaración de los Principios de Citado de Datos]. Para más información sobre el formato de DataCite, puede dirijirse a la Sección 2.2 Citas de su http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Esquema de Metadatos]. Cada parte de la cita se describe en la siguiente tabla, incluyendo después varios ejemplos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/citation.adoc:13
 #, no-wrap
 msgid "Citation Format"
-msgstr ""
+msgstr "Formato de la cita"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/citation.adoc:17
 #, no-wrap
 msgid "Creators¹ (PublicationYear²): Title³. Version⁴. Publisher⁵. ResourceType⁶. Identifier⁷\n"
-msgstr ""
+msgstr "Creadores¹ (AñoPublicación²): Título³. Versión⁴. Publicador⁵. TipoRecurso⁶. Identificador⁷\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:20
 msgid "7 citation parts explained:"
-msgstr ""
+msgstr "Explicación de las 7 partes de la cita:"
 
 #. type: Table
 #: en/modules/ROOT/pages/citation.adoc:46
@@ -94,44 +93,59 @@ msgid "| Citation Part\n"
 "| Type of resource published. A description of the type of resource constructed using the ResourceTypeGeneral/ResourceType pair: ResourceTypeGeneral will always be equal to “Dataset”, and the ResourceType is a single term specifying the specific type of dataset, e.g. \"Occurrence\" or \"Checklist\".\n\n"
 "| 7. Identifier\n"
 "| The DOI (digital object identifier) handle that resolves to the online dataset. If a DOI is lacking, a link to the online IPT dataset page will be used instead. A DOI is highly preferred, since the DOI guarantees persistent access, whereas the IPT URL can change. For citation purposes, DataCite recommends that DOIs are displayed as linkable, permanent URLs.\n"
-msgstr ""
+msgstr "| Parte de la cita\n"
+"| Descripción\n\n"
+"| 1. Creadores\n"
+"| Uno o más individuos, grupos o instituciones responsables de la creación del conjunto de datos. Todos los contribuyentes del conjunto de datos deberían ser enumerados - ver  https://www.force11.org/datacitation#JDCP2[principio 2 de citas de datos]. Los creadores deben ser conscientes, sin embargo, de que la lista completa puede ser recortada por la Revista durante la maquetación (ej.: De acuerdo a las http://www.nature.com/sdata/for-authors/submission-guidelines#references[guías de Nature] recortarán a partir del sexto creador). Los creadores deben incluir primero el apellido, seguido de las iniciales de sus nombres. Los creadores son incluidos en función de la importancia de su rol en la creación del conjunto de datos, siendo el creador más importante el que aparezca primero. Los creadores van separados por comas.\n\n"
+"| 2. AñoPublicación\n"
+"| Año en que la versión del conjunto de datos fue publicada.\n\n"
+"| 3. Título\n"
+"| Título del conjunto de datos. Solo la primera palabra del título debería ir en mayúsculas y el título debería ser escrito tal como aparece en el citado trabajo, concluyendo con un punto final.\n\n"
+"| 4. Versión\n"
+"| La versión del conjunto de datos. El IPT asigna un nuevo número de versión cada vez que el conjunto de datos se publica. La versión debería estar escrita así \"Versión versión_mayor.versión_menor\". El número de versión permite la \"identificación, acceso, y verificación de los datos específicos que respaldan una solicitud\" - ver https://www.force11.org/datacitation#JDCP7[principio 7 de citas de datos].\n\n"
+"| 5. Publicador\n"
+"| Institución que publica (y posee) el conjunto de datos. Para continuar dando crédito al repositorio que aloja los datos, el nombre del repositorio podría ser incluido en la sección de creadores.\n\n"
+"| 6. TipoRecurso\n"
+"| Tipo de recurso publicado. Una descripción del tipo de recurso que se forma utilizando la pareja TipoGeneralRecurso/TipoRecurso: TipoGeneralRecurso siempre será igual a \"Conjunto de datos\", y el TipoRecurso es un único término que concreta el tipo específico de conjunto de datos, ej.: \"Registros de Presencia\" o \"Listado de Especies\".\n\n"
+"| 7. Identificador\n"
+"| El Identificador de Objeto Digital (DOI, por sus siglas en inglés) que dirige al conjunto de datos online. Si no existe DOI, en su lugar se debe usar un enlace a la página del conjunto de datos en el IPT. Es altamente preferible utilizar un DOI, ya que el DOI garantiza acceso persistente, sin importar si la URL del IPT cambia. Para las futuras citas, DataCite recomienda que los DOIs se muestren como URLs permanentes y clicables.\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/citation.adoc:48
 #, no-wrap
 msgid "Example Citations"
-msgstr ""
+msgstr "Citas de ejemplo"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:50
 #, no-wrap
 msgid "Example citation for occurrence dataset, with institutional creator, and DOI:"
-msgstr ""
+msgstr "Ejemplo de cita para un conjunto de datos de registro de presencia, con creador institucional y DOI:"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:53
 msgid "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 2.1. University of Guelph. Dataset/Occurrence. https://doi.org/10.5886/qzxxd2pa"
-msgstr ""
+msgstr "Biodiversity Institute of Ontario (2011) Migratory birds of Ontario. Version 2.1. University of Guelph. Dataset/Occurrence. https://doi.org/10.5886/qzxxd2pa"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:55
 #, no-wrap
 msgid "Example citation for checklist dataset, with more than 9 creators, and DOI:"
-msgstr ""
+msgstr "Ejemplo de cita para un conjunto de datos de listado de especies, con más de 9 creadores y un DOI:"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:58
 msgid "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 3.1. Université de Montréal Biodiversity Centre. Dataset/Checklist. https://doi.org/10.5886/1bft7W5f"
-msgstr ""
+msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélisle P, Gendreau C, Shorthouse D (2010) Database of vascular plants of Canada. Version 3.1. Université de Montréal Biodiversity Centre. Dataset/Checklist. https://doi.org/10.5886/1bft7W5f"
 
 #. type: Block title
 #: en/modules/ROOT/pages/citation.adoc:60
 #, no-wrap
 msgid "Example citation for occurrence dataset with 3 creators, and without DOI:"
-msgstr ""
+msgstr "Ejemplo de cita para un conjunto de datos de registro de presencia, con 3 creadores y sin DOI:"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:63
 msgid "Harihar A, Pandav B, Hussein M (2014) Camera trap database of Tigers from Rajaji National Park, Uttarakhand. Version 1.0. Wildlife Institute of India. Dataset/Occurrence Data. http://ibif.gov.in:8080/ipt/resource.do?r=camera_trap_rajaji_np"
-msgstr ""
+msgstr "Harihar A, Pandav B, Hussein M (2014) Camera trap database of Tigers from Rajaji National Park, Uttarakhand. Version 1.0. Wildlife Institute of India. Dataset/Occurrence Data. http://ibif.gov.in:8080/ipt/resource.do?r=camera_trap_rajaji_np"
 

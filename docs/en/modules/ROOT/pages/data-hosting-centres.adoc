@@ -17,6 +17,7 @@ A DHC must meet the following set of strict requirements in order to be recommen
 * Their IPT is online near 100% of the time
 * They can properly administer their IPT:
 ** Keeping it up-to-date with latest version
+** Keeping the operating system and servlet container (if used) up-to-date
 ** Ensuring the IPT data directory is regularly backed-up
 ** Managing user accounts
 ** Managing IPT cores and extensions
@@ -26,7 +27,7 @@ A DHC must meet the following set of strict requirements in order to be recommen
 ** They know about biodiversity data standards in general
 ** They know how to publish data papers
 
-If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org.
+If you believe your DHC meets these standards, and would like to offer your services to publishers in your country, please email mailto:helpdesk@gbif.org[helpdesk@gbif.org].
 
 == Data Hosting Centres by Theme
 
@@ -54,7 +55,7 @@ If you believe your DHC meets these standards, and would like to offer your serv
 
 == Belgium
 
-The https://www.biodiversity.be[Belgium Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity platform shares their IPT with the following organizations:
+The https://www.biodiversity.be[Belgian Biodiversity Platform] provides helpdesk support to publishers in Belgium and hosting support for datasets on the https://ipt.biodiversity.be/[Belgian BIF IPT]. Please contact André Heughebaert <a.heughebaert@biodiversity.be> for assistance. The Belgian Biodiversity Platform shares their IPT with the following organizations:
 
 * http://www.naturalsciences.be[Royal Belgian Institute of Natural Sciences]
 * http://www.ulg.be[University of Liège]
@@ -134,7 +135,7 @@ http://www.gbif.pt/[GBIF Portugal] provides helpdesk support to new publishers i
 
 == South Africa
 
-The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://197.189.235.147:8080/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance.
+The http://www.sanbi.org/[South African National Biodiversity Institute (SANBI)] provides helpdesk support to new publishers in South Africa, and hosting support for datasets on the http://ipt.sanbi.org.za/iptsanbi/[SANBI IPT]. Please contact <f.ramwashe@sanbi.org.za> for assistance.
 
 == Spain
 

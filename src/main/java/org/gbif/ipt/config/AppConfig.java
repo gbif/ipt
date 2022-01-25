@@ -1,30 +1,57 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.config;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.io.Closer;
-import com.google.gson.annotations.Since;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
 
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.UriBuilder;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.stream.Collectors;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.UriBuilder;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.gson.annotations.Since;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 @Singleton
 public class AppConfig {
@@ -60,17 +87,25 @@ public class AppConfig {
 
   // to support compatibility with historical data directories, we default to the original hard coded
   // types that were scattered across the code.
-  private static final List<String> DEFAULT_CORE_ROW_TYPES =
-    ImmutableList.of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_ROWTYPE_TAXON, Constants.DWC_ROWTYPE_EVENT);
+  private static final List<String> DEFAULT_CORE_ROW_TYPES;
 
   // mapping of the id to the term that is the row ID
-  private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS = Maps.newHashMap((ImmutableMap
-    .of(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID,
-      Constants.DWC_ROWTYPE_TAXON, Constants.DWC_TAXON_ID,
-      Constants.DWC_ROWTYPE_EVENT, Constants.DWC_EVENT_ID)));
+  private static final Map<String, String> DEFAULT_CORE_ROW_TYPES_ID_TERMS;
 
-  private static List<String> coreRowTypes = DEFAULT_CORE_ROW_TYPES;
-  private static Map<String, String> coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
+  private static List<String> coreRowTypes;
+  private static Map<String, String> coreRowTypeIdTerms;
+
+  static {
+    DEFAULT_CORE_ROW_TYPES = Arrays.asList(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_ROWTYPE_TAXON, Constants.DWC_ROWTYPE_EVENT);
+
+    DEFAULT_CORE_ROW_TYPES_ID_TERMS = new HashMap<>();
+    DEFAULT_CORE_ROW_TYPES_ID_TERMS.put(Constants.DWC_ROWTYPE_OCCURRENCE, Constants.DWC_OCCURRENCE_ID);
+    DEFAULT_CORE_ROW_TYPES_ID_TERMS.put(Constants.DWC_ROWTYPE_TAXON, Constants.DWC_TAXON_ID);
+    DEFAULT_CORE_ROW_TYPES_ID_TERMS.put(Constants.DWC_ROWTYPE_EVENT, Constants.DWC_EVENT_ID);
+
+    coreRowTypes = DEFAULT_CORE_ROW_TYPES;
+    coreRowTypeIdTerms = DEFAULT_CORE_ROW_TYPES_ID_TERMS;
+  }
 
   private AppConfig() {
   }
@@ -145,7 +180,7 @@ public class AppConfig {
   public Double getLatitude() {
     try {
       String val = properties.getProperty(IPT_LATITUDE);
-      if (!Strings.isNullOrEmpty(val)) {
+      if (StringUtils.isNotBlank(val)) {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
@@ -157,7 +192,7 @@ public class AppConfig {
   public Double getLongitude() {
     try {
       String val = properties.getProperty(IPT_LONGITUDE);
-      if (!Strings.isNullOrEmpty(val)) {
+      if (StringUtils.isNotBlank(val)) {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
@@ -226,7 +261,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceArchiveUrl(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_DWCA)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
@@ -237,7 +272,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceEmlUrl(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_EML)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
@@ -248,7 +283,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceLogoUrl(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_LOGO)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
@@ -267,7 +302,7 @@ public class AppConfig {
    */
   @NotNull
   public URI getResourceUri(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build();
@@ -278,7 +313,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceGuid(@NotNull String shortname) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_ID, shortname).build().toString();
@@ -289,7 +324,7 @@ public class AppConfig {
    */
   @NotNull
   public URI getResourceVersionUri(@NotNull String shortname, @NotNull BigDecimal version) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return UriBuilder.fromPath(getBaseUrl()).path(Constants.REQ_PATH_RESOURCE)
       .queryParam(Constants.REQ_PARAM_RESOURCE, shortname)
@@ -303,7 +338,7 @@ public class AppConfig {
    */
   @NotNull
   public String getResourceVersionUri(@NotNull String shortname, @NotNull String version) {
-    Preconditions.checkNotNull(getBaseUrl());
+    Objects.requireNonNull(getBaseUrl());
 
     return getResourceVersionUri(shortname, new BigDecimal(version)).toString();
   }
@@ -313,10 +348,7 @@ public class AppConfig {
   }
 
   public boolean hasLocation() {
-    if (getLongitude() != null && getLatitude() != null) {
-      return true;
-    }
-    return false;
+    return getLongitude() != null && getLatitude() != null;
   }
 
   /**
@@ -334,7 +366,7 @@ public class AppConfig {
   public Integer getArchivalLimit() {
     try {
       String val = properties.getProperty(ARCHIVAL_LIMIT);
-      if (!Strings.isNullOrEmpty(val)) {
+      if (StringUtils.isNotBlank(val)) {
         return Integer.valueOf(val);
       }
     } catch (NumberFormatException e) {
@@ -359,7 +391,7 @@ public class AppConfig {
    * Load application configuration from application properties file (application.properties) and from
    * user configuration file (ipt.properties), which includes populating core configuration.
    */
-  protected void loadConfig() throws InvalidConfigException {
+  public void loadConfig() throws InvalidConfigException {
     InputStreamUtils streamUtils = new InputStreamUtils();
     InputStream configStream = streamUtils.classpathStream(CLASSPATH_PROPFILE);
     // load default configuration from application.properties
@@ -371,7 +403,7 @@ public class AppConfig {
         props.load(configStream);
         LOG.debug("Loaded default configuration from application.properties in classpath");
       }
-      if (dataDir.dataDir != null && dataDir.dataDir.exists()) {
+      if (dataDir.isConfigured()) {
         // load user configuration properties from data dir ipt.properties (if it exists)
         File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
         if (userCfgFile.exists()) {
@@ -418,14 +450,20 @@ public class AppConfig {
     String ids = properties.getProperty(CORE_ROW_ID_TERMS);
     if (cores != null && ids != null) {
       LOG.info("Using custom core mapping");
-      List<String> configCores = Lists.newArrayList(Splitter.on('|').trimResults().omitEmptyStrings().split(cores));
-      List<String> configIDs = Lists.newArrayList(Splitter.on('|').trimResults().omitEmptyStrings().split(ids));
+      List<String> configCores = Arrays.stream(cores.split("\\|"))
+          .map(org.gbif.utils.text.StringUtils::trim)
+          .filter(StringUtils::isNotEmpty)
+          .collect(Collectors.toList());
+      List<String> configIDs = Arrays.stream(ids.split("\\|"))
+          .map(org.gbif.utils.text.StringUtils::trim)
+          .filter(StringUtils::isNotEmpty)
+          .collect(Collectors.toList());
 
       if (configCores.size() == configIDs.size()) {
-        coreRowTypes = Lists.newArrayList(DEFAULT_CORE_ROW_TYPES);
+        coreRowTypes = new ArrayList<>(DEFAULT_CORE_ROW_TYPES);
         coreRowTypes.addAll(configCores);
 
-        coreRowTypeIdTerms = Maps.newHashMap(DEFAULT_CORE_ROW_TYPES_ID_TERMS);
+        coreRowTypeIdTerms = new HashMap<>(DEFAULT_CORE_ROW_TYPES_ID_TERMS);
         for (int i = 0; i < configCores.size(); i++) {
           coreRowTypeIdTerms.put(configCores.get(i), configIDs.get(i));
         }
@@ -452,7 +490,7 @@ public class AppConfig {
         LOG.info("Reading registry lock file to determine if the DataDir is locked to a registry yet.");
         String regTypeAsString = StringUtils.trimToEmpty(FileUtils.readFileToString(lockFile, "UTF-8"));
         this.type = REGISTRY_TYPE.valueOf(regTypeAsString);
-        LOG.info("DataDir is locked to registry type: " + type.toString());
+        LOG.info("DataDir is locked to registry type: " + type);
       } catch (IllegalArgumentException e) {
         LOG.error("Cannot interpret registry lock file contents!", e);
         throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot interpret registry lock file contents!");
@@ -465,7 +503,8 @@ public class AppConfig {
     }
   }
 
-  protected void saveConfig() throws IOException {
+  // public to be accessible by ConfigManager
+  public void saveConfig() throws IOException {
     // save property config file
     OutputStream out = null;
     try {
@@ -482,7 +521,7 @@ public class AppConfig {
           props.remove(key);
         }
       }
-      props.store(out, "IPT configuration, last saved " + new Date().toString());
+      props.store(out, "IPT configuration, last saved " + new Date());
       out.close();
     } finally {
       if (out != null) {
@@ -496,7 +535,7 @@ public class AppConfig {
   }
 
   protected void setRegistryType(REGISTRY_TYPE newType) throws InvalidConfigException {
-    Preconditions.checkNotNull(newType, "Registry type cannot be null");
+    Objects.requireNonNull(newType, "Registry type cannot be null");
     if (this.type != null) {
       if (this.type == newType) {
         // already contains the same information. Dont do anything
@@ -516,16 +555,12 @@ public class AppConfig {
   }
 
   private void writeRegistryLockFile(REGISTRY_TYPE registryType) throws IOException {
-    Closer closer = Closer.create();
-    try {
-      // set lock file if not yet existing
-      File lockFile = getRegistryTypeLockFile();
-      Writer lock = closer.register(new FileWriter(lockFile, false));
+    // set lock file if not yet existing
+    File lockFile = getRegistryTypeLockFile();
+    try (Writer lock = Files.newBufferedWriter(lockFile.toPath(), StandardCharsets.UTF_8)) {
       lock.write(registryType.name());
       lock.flush();
       LOG.info("Locked DataDir to registry of type " + registryType);
-    } finally {
-      closer.close();
     }
   }
 }

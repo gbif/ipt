@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
@@ -15,11 +30,12 @@ import org.gbif.ipt.validation.UserValidator;
 import java.io.IOException;
 import java.util.List;
 
-import com.google.inject.Inject;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
 
 /**
  * The Action responsible for all user input relating to the user accounts in the IPT.
@@ -31,6 +47,11 @@ public class UserAccountsAction extends POSTAction {
 
   private static final long serialVersionUID = 8892204508303815998L;
   private static final int PASSWORD_LENGTH = 8;
+  private static final String PASSWORD_ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+  private static final RandomStringGenerator PASSWORD_GENERATOR =
+      new RandomStringGenerator.Builder()
+          .selectFrom(PASSWORD_ALLOWED_CHARS.toCharArray())
+          .build();
 
   private final UserAccountManager userManager;
   private final UserValidator validator = new UserValidator();
@@ -51,7 +72,7 @@ public class UserAccountsAction extends POSTAction {
   @Override
   public String delete() {
     if (getCurrentUser().getEmail().equalsIgnoreCase(id)) {
-      // cant remove logged in user
+      // can't remove logged in user
       addActionError(getText("admin.user.deleted.current"));
     } else {
       try {
@@ -68,14 +89,12 @@ public class UserAccountsAction extends POSTAction {
         } else if (Reason.LAST_RESOURCE_MANAGER == e.getReason()) {
           addActionError(getText("admin.user.deleted.lastmanager", new String[] {e.getMessage()}));
         } else if (Reason.IS_RESOURCE_CREATOR == e.getReason()) {
-          // TODO i18n
-          addActionError("The User cannot be deleted as it is the creator for the following resources: " + e.getMessage()
-                         + " Consider downgrading the User's role, as an alternative action.");
+          addActionError(getText("admin.user.deleted.error.creator", new String[] {e.getMessage()}));
         } else {
           addActionError(getText("admin.user.deleted.error"));
         }
       } catch (IOException e) {
-        addActionError(getText("admin.user.cantSave") + ": " + e.getMessage());
+        addActionError(getText("admin.user.cantSave", new String[] {e.getMessage()}));
       }
     }
     return INPUT;
@@ -110,7 +129,7 @@ public class UserAccountsAction extends POSTAction {
       newUser = true;
     } else {
       // modify copy of existing user - otherwise we even change the proper instances when canceling the request or
-      // submitting non validating data
+      // submitting non-validating data
       user = userManager.get(id);
     }
 
@@ -140,8 +159,7 @@ public class UserAccountsAction extends POSTAction {
         userManager.create(user);
         addActionMessage(getText("admin.user.added"));
       } else if (resetPassword) {
-        String newPassword =
-          RandomStringUtils.random(PASSWORD_LENGTH, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+        String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
         user.setPassword(newPassword);
         userManager.save(user);
         addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));

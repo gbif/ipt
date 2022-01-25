@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.mock;
 
 import org.gbif.ipt.config.DataDir;
@@ -9,15 +24,13 @@ import java.io.File;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * This class simulates a DataDir object and must only be used for Unit Tests purposes.
- *
- * @author hftobon
  */
 public class MockDataDir {
 
@@ -40,6 +53,7 @@ public class MockDataDir {
     // resource.xml is going to be located in temp directory: tmpDir/shortName/resource.xml
     when(dataDir.resourceFile(any(Resource.class), anyString())).thenAnswer(new Answer<File>() {
 
+      @Override
       public File answer(InvocationOnMock invocation) throws Throwable {
         // create a file in OS temp directory named as shortName-resource.xml
         Resource resource = (Resource) invocation.getArguments()[0];
@@ -68,6 +82,7 @@ public class MockDataDir {
     // retrieve existing resource.xml file located inside tmpDir/shortName
     when(dataDir.resourceFile(anyString(), anyString())).thenAnswer(new Answer<File>() {
 
+      @Override
       public File answer(InvocationOnMock invocation) throws Throwable {
         String shortname = (String) invocation.getArguments()[0];
         String xmlName = (String) invocation.getArguments()[1];

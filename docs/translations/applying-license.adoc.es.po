@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-06-26 14:23\n"
+"POT-Creation-Date: 2021-08-24 11:55+0000\n"
+"PO-Revision-Date: 2021-11-30 19:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,19 +20,18 @@ msgstr ""
 #: en/modules/ROOT/pages/applying-license.adoc:1
 #, no-wrap
 msgid "Applying a License to a Dataset"
-msgstr ""
+msgstr "Aplicar una Licencia a un Conjunto de Datos"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:3
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:27
-#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:28
+#: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:21
 #: en/modules/ROOT/pages/citation.adoc:5
-#: en/modules/ROOT/pages/customization.adoc:3
+#: en/modules/ROOT/pages/customization.adoc:12
 #: en/modules/ROOT/pages/data-hosting-centres.adoc:3
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:24
 #: en/modules/ROOT/pages/launch.adoc:3
 #: en/modules/ROOT/pages/occurrence-data.adoc:3
-#: en/modules/ROOT/pages/quick-reference-guide.adoc:3
 #: en/modules/ROOT/pages/sampling-event-data.adoc:3
 #, no-wrap
 msgid "Introduction"
@@ -41,108 +40,108 @@ msgstr "Introducción"
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:6
 msgid "In accordance with the http://www.gbif.org/terms/licences[GBIF licensing policy], a dataset should be made available for use under CC0, CC-BY, or CC-BY-NC. GBIF's recommended best practice is to use the most recent version, which 4.0 for CC-BY and CC-BY-NC. This is in line with Creative Commons' recommendation that:"
-msgstr ""
+msgstr "De acuerdo con la http://www.gbif.org/terms/licences[política de licencias de GBIF], un conjunto de datos debe estar disponible para su uso bajo CC0, CC-BY o CC-BY-NC. La mejor opción, recomendada por GBIF, es utilizar la versión más reciente, la 4.0 para CC-BY y CC-BY-NC. Esto va acorde con la recomendación de Creative Commons de que:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:9
 msgid "You should always use the latest version of the Creative Commons licenses in order to take advantage of the many improvements described on the https://wiki.creativecommons.org/wiki/License_Versions[license versions page]. In particular, 4.0 is meant to be better suited to international use, and use in many different contexts, including https://blog.creativecommons.org/2011/08/23/data-governance-our-idea-for-the-moore-foundation/[sharing data]."
-msgstr ""
+msgstr "Usted siempre debe usar la última versión de las licencias de Creative Commons para aprovechar al máximo las mejoras descritas en la https://wiki.creativecommons.org/wiki/License_Versions[license versions page]. En particular, la licencia 4.0 está destinada a adaptarse mejor al uso internacional, y se puede usar en muchos contextos distintos, incluido https://blog.creativecommons.org/2011/08/23/data-governance-our-idea-for-the-moore-foundation/[sharing data]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:11
 msgid "More information about what's new in the 4.0 CC license suite can be found https://creativecommons.org/version4/[here]. This is the version supported by the since version v2.3.2 of the IPT."
-msgstr ""
+msgstr "Puede encontrar más información sobre las novedades en la licencia 4.0 CC  en https://creativecommons.org/version4/[here]. Esta es la versión compatible con la versión v2.3.2 del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:13
 msgid "The remainder of this page describes how to properly apply a license to a dataset, and how to ensure consistency at the dataset level and the record level."
-msgstr ""
+msgstr "El resto de esta página describe cómo aplicar correctamente una licencia a un conjunto de datos, y cómo garantizar la coherencia a nivel del conjunto de datos y del nivel del registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:15
 msgid "Please note that CC0 is technically a waiver."
-msgstr ""
+msgstr "Tenga en cuenta que CC0 es técnicamente una exención."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:16
 #, no-wrap
 msgid "Dataset Level"
-msgstr ""
+msgstr "Nivel de Conjunto de Datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:19
 msgid "The license chosen must apply to the dataset as a whole. Only one license should be applied at the *dataset level*, even if multiple licenses are complimentary to each other (e.g. CC-BY and ODC-By)."
-msgstr ""
+msgstr "La licencia escogida debe aplicar a todo el conjunto de datos. Se debe aplicar una sola licencia únicamente a  *nivel de conjunto de datos*, incluso si varias licencias son complementarias entre sí (por ejemplo, CC-BY y ODC-By)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:21
 msgid "To apply a license at the *dataset level* in the IPT, choose a license from the drop down on the basic metadata page:"
-msgstr ""
+msgstr "Para aplicar una licencia a *nivel de conjunto de datos* en el IPT, elija una licencia del menú desplegable en la página de metadatos básicos:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/applying-license.adoc:22
 #, no-wrap
 msgid "ipt2/v22/LicenseDropdownWide.png"
-msgstr ""
+msgstr "ipt2/v22/LicenseDropdownWide.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:25
 msgid "In case different licenses apply to separate components of a dataset, the recommended best practice is to publish each component separately having their own metadata and identifier (e.g. DOI). This recommendation is in compliance with DataCite's recommended practice for such cases."
-msgstr ""
+msgstr "En caso de que diferentes licencias apliquen a componentes separados de un conjunto de datos, la mejor práctica recomendada es publicar cada componente por separado con sus propios metadatos y su propio identificador (por ejemplo, el DOI). Esta recomendación cumple con las recomendaciones de DataCite para tales casos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:26
 #, no-wrap
 msgid "Record Level"
-msgstr ""
+msgstr "Nivel de Registro"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:29
 msgid "All licenses specified at the *record level* should comply with the license at the dataset level."
-msgstr ""
+msgstr "Todas las licencias especificadas bajo el *nivel de registro* deben ser coherentes con la licencia a nivel del conjunto de datos. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:31
 msgid "To apply a license at the *record level* using the IPT, publishers should use/map to the Darwin Core term http://rs.tdwg.org/dwc/terms/index.htm#dcterms:license[license]. As per Darwin Core's recommendation, the URI of the license should be used to populate the license. Be careful not to add contradictory usage restrictions in the Darwin Core term http://rs.tdwg.org/dwc/terms/index.htm#dcterms:accessRights[accessRights]. In theory, the license should provide sufficient access rights information without having to specify them in accessRights also."
-msgstr ""
+msgstr "Para aplicar una licencia en el *nivel de registro* usando el IPT, los publicadores deben usar/mapear el término de Darwin Core http://rs.tdwg.org/dwc/terms/index.htm#dcterms:license[license]. Según la recomendación de Darwin Core, el URI de la licencia debe usarse para completar la licencia. Tenga cuidado de no agregar restricciones de uso contradictorias en el término de Darwin Core http://rs.tdwg.org/dwc/terms/index.htm#dcterms:accessRights[accessRights]. En teoría, la licencia debería proporcionar suficiente información sobre los derechos de acceso sin tener que especificarlos también en accessRights."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:33
 msgid "Please note the Darwin Core term http://rs.tdwg.org/dwc/terms/history/#dcterms:rights[rights] has now been deprecated and should no longer be used."
-msgstr ""
+msgstr "Tenga en cuenta que el término de Darwin Core http://rs.tdwg.org/dwc/terms/history/#dcterms:rights[rights] ha quedado obsoleto y ya no debería utilizarse."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:34
 #, no-wrap
 msgid "Supplementary Information"
-msgstr ""
+msgstr "Información Adicional"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/applying-license.adoc:36
 #, no-wrap
 msgid "How To Manually Apply a License"
-msgstr ""
+msgstr "Cómo Aplicar una Licencia Manualmente"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:39
 msgid "Resource metadata can be populated automatically from an EML metadata document during resource creation. A license supplied in the EML document is interpretable so long as it is supplied in a machine readable format."
-msgstr ""
+msgstr "Los Recursos de metadatos se pueden completar automáticamente desde un documento de metadatos en EML durante la creación de recursos. Una licencia proporcionada en el documento EML es interpretable siempre que se proporcione en un formato legible por máquina."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:41
 msgid "To supply a license in EML in a machine readable format, use the `<ulink>` element inside `<intellectualRights><para>` to specify both the title and URL of the license. Be aware that documents complying with the GBIF Metadata Profile must use the latest version of the schema (v1.1) for this to be valid XML."
-msgstr ""
+msgstr "Para proporcionar una licencia en EML en un formato legible por máquina, utilice el elemento `<ulink>` dentro de `<intellectualRights><para>` para especificar tanto el título como la URL de la licencia. Tenga en cuenta que los documentos que cumplen con el Perfil de Metadatos de GBIF deben utilizar la última versión del esquema (v1.1) para que sea un XML válido."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/applying-license.adoc:43
 msgid "Below is an example `<intellectualRights>` for the three licenses that GBIF supports demonstrating how to provide them in machine readable format. To apply, simply replace the `<intellectualRights>` block in your EML document with the `<intellectualRights>` below corresponding to the license of your choice."
-msgstr ""
+msgstr "A continuación se muestra un ejemplo de `<intellectualRights>` para las tres licencias que GBIF admite y muestra cómo proporcionarlas en formato legible por máquina. Para aplicar, simplemente reemplace el bloque `<intellectualRights>` en su documento EML con el `<intellectualRights>` a continuación correspondiente a la licencia de su elección."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/applying-license.adoc:44
 #, no-wrap
 msgid "Public Domain (CC0 1.0)"
-msgstr ""
+msgstr "Dominio Público (CC0 1.0)"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/applying-license.adoc:50
@@ -150,13 +149,15 @@ msgstr ""
 msgid "<intellectualRights>\n"
 "   <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction</para>\n"
 "</intellectualRights>\n"
-msgstr ""
+msgstr "<intellectualRights>\n"
+"   <para>En la medida de lo posible según la ley, el editor ha renunciado a todos los derechos sobre estos datos y los ha dedicado al <ulink url=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\"><citetitle>Dominio público (CC0 1.0)</citetitle></ulink>. Los usuarios pueden copiar, modificar, distribuir y utilizar el trabajo, incluso con fines comerciales, sin restricción</para>\n"
+"</intellectualRights>\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/applying-license.adoc:52
 #, no-wrap
 msgid "Creative Commons Attribution (CC-BY) 4.0"
-msgstr ""
+msgstr "Atribución Creative Commons (CC-BY) 4.0"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/applying-license.adoc:58
@@ -164,13 +165,15 @@ msgstr ""
 msgid "<intellectualRights>\n"
 "  <para>This work is licensed under a <ulink url=\"http://creativecommons.org/licenses/by/4.0/legalcode\"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>\n"
 "</intellectualRights>\n"
-msgstr ""
+msgstr "<intellectualRights>\n"
+"  <para>Este contenido se encuentra bajo una <ulink url=\"http://creativecommons.org/licenses/by/4.0/legalcode\"><citetitle>Licencia de Atribución Creative Commons (CC-BY) 4.0</citetitle></ulink>.</para>\n"
+"</intellectualRights>\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/applying-license.adoc:60
 #, no-wrap
 msgid "Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0"
-msgstr ""
+msgstr "Atribución No Comercial de Creative Commons (CC-BY-NC) 4.0"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/applying-license.adoc:66
@@ -178,5 +181,7 @@ msgstr ""
 msgid "<intellectualRights>\n"
 "  <para>This work is licensed under a <ulink url=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>\n"
 "</intellectualRights>\n"
-msgstr ""
+msgstr "<intellectualRights>\n"
+"  <para>Este contenido se encuentra bajo una <ulink url=\"http://creativecommons.org/licenses/by-nc/4.0/legalcode\"><citetitle>Licencia de Atribución No Comercial de Creative Commons (CC-BY-NC) 4.0</citetitle></ulink>.</para>\n"
+"</intellectualRights>\n"
 

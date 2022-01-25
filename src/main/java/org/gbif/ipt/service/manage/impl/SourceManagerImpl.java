@@ -1,34 +1,39 @@
-/***************************************************************************
- * Copyright 2010 Global Biodiversity Information Facility Secretariat
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * http://www.apache.org/licenses/LICENSE-2.0
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- ***************************************************************************/
-
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.manage.impl;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-import com.google.inject.Inject;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.gbif.dwca.io.Archive;
-import org.gbif.dwca.io.ArchiveFactory;
-import org.gbif.dwca.io.ArchiveFile;
-import org.gbif.dwca.io.UnsupportedArchiveException;
+import org.gbif.dwc.Archive;
+import org.gbif.dwc.ArchiveFile;
+import org.gbif.dwc.DwcFiles;
+import org.gbif.dwc.UnsupportedArchiveException;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.*;
-import org.gbif.ipt.service.*;
+import org.gbif.ipt.model.ExcelFileSource;
+import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.RowIterable;
+import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SqlSource;
+import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
+import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -36,12 +41,32 @@ import org.gbif.utils.file.csv.UnknownDelimitersException;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.*;
-import java.util.*;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.inject.Inject;
 
 public class SourceManagerImpl extends BaseManager implements SourceManager {
 
@@ -50,7 +75,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private final ClosableReportingIterator<String[]> rows;
     private final int column;
 
-    ColumnIterator(FileSource source, int column) throws IOException {
+    ColumnIterator(RowIterable source, int column) throws IOException {
       rows = source.rowIterator();
       this.column = column;
     }
@@ -60,10 +85,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       rows.close();
     }
 
+    @Override
     public boolean hasNext() {
       return rows.hasNext();
     }
 
+    @Override
     public Object next() {
       String[] row = rows.next();
       if (row == null || row.length < column) {
@@ -72,6 +99,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       return row[column];
     }
 
+    @Override
     public void remove() {
       // unsupported
     }
@@ -112,6 +140,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       sourceName = source.getName();
     }
 
+    @Override
     public void close() {
       if (rs != null) {
         try {
@@ -125,10 +154,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     }
 
+    @Override
     public boolean hasNext() {
       return hasNext;
     }
 
+    @Override
     public Object next() {
       String val = null;
       if (hasNext) {
@@ -143,6 +174,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       return val;
     }
 
+    @Override
     public void remove() {
       // unsupported
     }
@@ -172,6 +204,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       this.rowError = false;
     }
 
+    @Override
     public void close() {
       if (rs != null) {
         try {
@@ -185,10 +218,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     }
 
+    @Override
     public boolean hasNext() {
       return hasNext;
     }
 
+    @Override
     public String[] next() {
       String[] val = new String[rowSize];
       if (hasNext) {
@@ -239,18 +274,22 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       errorMessage = null;
     }
 
+    @Override
     public void remove() {
       // unsupported
     }
 
+    @Override
     public boolean hasRowError() {
       return rowError;
     }
 
+    @Override
     public String getErrorMessage() {
       return errorMessage;
     }
 
+    @Override
     public Exception getException() {
       return exception;
     }
@@ -279,6 +318,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setDateFormat(from.getDateFormat());
   }
 
+  public static void copyArchiveFileProperties(ArchiveFile from, UrlSource to) {
+    to.setEncoding(from.getEncoding());
+    to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? null : from.getFieldsEnclosedBy().toString());
+    to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
+    to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
+    to.setDateFormat(from.getDateFormat());
+  }
+
   /**
    * Tests if the the file name is composed of alpha-numeric characters, plus ".", "-", "_", ")", "(", and " ".
    *
@@ -286,7 +333,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    *
    * @return <tt> if accepted, <tt>false</tt> otherwise
    */
-  @VisibleForTesting
   protected boolean acceptableFileName(String fileName) {
     boolean matches = acceptedPattern.matcher(fileName).matches();
     if (!matches) {
@@ -306,7 +352,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     TextFileSource src = new TextFileSource();
     try {
       // anaylze individual files using the dwca reader
-      Archive arch = ArchiveFactory.openArchive(file);
+      Archive arch = DwcFiles.fromLocation(file.toPath());
       copyArchiveFileProperties(arch.getCore(), src);
     } catch (UnknownDelimitersException e) {
       // this file is invalid
@@ -322,6 +368,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return src;
   }
 
+  @Override
   public FileSource add(Resource resource, File file, String fileName) throws ImportException,
     InvalidFilenameException {
     LOG.debug("ADDING SOURCE " + fileName + " FROM " + file.getAbsolutePath());
@@ -364,13 +411,97 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+  @Override
+  public UrlSource add(Resource resource, URI url, String sourceName) throws ImportException {
+    LOG.debug("ADDING URL SOURCE " + url);
+
+    UrlSource src;
+    String filename = FilenameUtils.getName(url.toString());
+    LOG.debug("File name: {}", filename);
+
+    String finalSourceName;
+    if (StringUtils.isEmpty(sourceName)) {
+      finalSourceName = FilenameUtils.getBaseName(url.toString());
+      LOG.debug("No source name provided, extract from URL: {}", finalSourceName);
+    } else {
+      finalSourceName = sourceName;
+    }
+
+    src = new UrlSource();
+    File file = new File(dataDir.tmpDir(), filename);
+
+    try (InputStream in = url.toURL().openStream()) {
+      Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      src.setFile(file);
+      // analyze individual files using the dwca reader
+      Archive arch = DwcFiles.fromLocation(file.toPath());
+      copyArchiveFileProperties(arch.getCore(), src);
+    } catch (IOException e) {
+      // this file is invalid
+      LOG.warn(e.getMessage());
+      throw new ImportException(e);
+    } catch (UnsupportedArchiveException e) {
+      // fine, can't read it with dwca library, but might still be a valid file for manual setup
+      LOG.warn(e.getMessage());
+    }
+
+    src.setName(finalSourceName);
+    src.setUrl(url);
+    src.setResource(resource);
+
+    try {
+      src.setLastModified(new Date());
+
+      resource.addSource(src, true);
+    } catch (AlreadyExistingException e) {
+      throw new ImportException(e);
+    }
+
+    analyze(src);
+    return src;
+  }
+
+  @Override
   public String analyze(Source source) {
     if (source instanceof SqlSource) {
       return analyze((SqlSource) source);
-
+    } else if (source instanceof UrlSource) {
+      return analyze((UrlSource) source);
     } else {
       return analyze((FileSource) source);
     }
+  }
+
+  private String analyze(UrlSource src) {
+    File logFile = dataDir.sourceLogFile(src.getResource().getShortname(), src.getName());
+    try {
+      FileUtils.deleteQuietly(logFile);
+
+      Set<Integer> emptyLines;
+      try {
+        emptyLines = src.analyze();
+      } catch (IOException e) {
+        return e.getMessage();
+      }
+
+      try (BufferedWriter logWriter = Files.newBufferedWriter(logFile.toPath(), StandardCharsets.UTF_8)) {
+        logWriter.write(
+            "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
+        if (!emptyLines.isEmpty()) {
+          for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
+            logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+          }
+        } else {
+          logWriter.write("No rows were skipped in this source");
+        }
+
+        logWriter.flush();
+      }
+    } catch (IOException e) {
+      LOG.warn("Can't write source log file " + logFile.getAbsolutePath(), e);
+    }
+
+    return null;
   }
 
   private String analyze(SqlSource ss) {
@@ -425,7 +556,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private String analyze(FileSource src) {
-    BufferedWriter logWriter = null;
     File logFile = dataDir.sourceLogFile(src.getResource().getShortname(), src.getName());
     try {
       FileUtils.deleteQuietly(logFile);
@@ -437,26 +567,21 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         return e.getMessage();
       }
 
-      logWriter = new BufferedWriter(new FileWriter(logFile));
-      logWriter.write(
-        "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
-      if (!emptyLines.isEmpty()) {
-        for (Integer i : Ordering.natural().sortedCopy(emptyLines)) {
-          logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+      try (BufferedWriter logWriter = Files.newBufferedWriter(logFile.toPath(), StandardCharsets.UTF_8)) {
+        logWriter.write(
+            "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
+        if (!emptyLines.isEmpty()) {
+          for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
+            logWriter.write("Line: " + i + " [EMPTY LINE]\n");
+          }
+        } else {
+          logWriter.write("No rows were skipped in this source");
         }
-      } else {
-        logWriter.write("No rows were skipped in this source");
+
+        logWriter.flush();
       }
-
-
-      logWriter.flush();
-
     } catch (IOException e) {
       LOG.warn("Can't write source log file " + logFile.getAbsolutePath(), e);
-    } finally {
-      if (logWriter != null) {
-        IOUtils.closeQuietly(logWriter);
-      }
     }
 
     return null;
@@ -466,19 +591,25 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#columns(org.gbif.ipt.model.SourceBase)
    */
+  @Override
   public List<String> columns(Source source) {
     if (source == null) {
-      return Lists.newArrayList();
+      return new ArrayList<>();
     }
 
     if (source instanceof SqlSource) {
       return columns((SqlSource) source);
     }
+
+    if (source instanceof UrlSource) {
+      return ((UrlSource) source).columns();
+    }
+
     return ((FileSource) source).columns();
   }
 
   private List<String> columns(SqlSource source) {
-    List<String> columns = new ArrayList<String>();
+    List<String> columns = new ArrayList<>();
     Connection con = null;
     Statement stmt = null;
     ResultSet rs = null;
@@ -538,6 +669,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.MappingConfigManager#delete(org.gbif.ipt.model.SourceBase.TextFileSource)
    */
+  @Override
   public boolean delete(Resource resource, Source source) {
     if (source == null) {
       return false;
@@ -608,8 +740,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#inspectColumn(org.gbif.ipt.model.SourceBase, int, int)
    */
+  @Override
   public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
-    Set<String> values = new HashSet<String>();
+    Set<String> values = new HashSet<>();
     try (ClosableIterator<Object> iter = iterSourceColumn(source, column, maxRows)){
       // get distinct values
       while (iter.hasNext() && (maxValues < 1 || values.size() < maxValues)) {
@@ -637,9 +770,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       } else {
         return new SqlColumnIterator(src, column);
       }
-
     } else {
-      return new ColumnIterator((FileSource) source, column);
+      return new ColumnIterator((RowIterable) source, column);
     }
   }
 
@@ -647,16 +779,18 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.SourceManager#peek(org.gbif.ipt.model.SourceBase)
    */
+  @Override
   public List<String[]> peek(Source source, int rows) {
     if (source instanceof SqlSource) {
       return peek((SqlSource) source, rows);
+    } else {
+      // Excel, file and URL sources
+      return peek((RowIterable) source, rows);
     }
-    // both excel and file implement FileSource
-    return peek((FileSource) source, rows);
   }
 
-  private List<String[]> peek(FileSource source, int rows) {
-    List<String[]> preview = Lists.newArrayList();
+  private List<String[]> peek(RowIterable source, int rows) {
+    List<String[]> preview = new ArrayList<>();
     if (source != null) {
       try (ClosableReportingIterator<String[]> iter = source.rowIterator()){
         while (rows > 0 && iter.hasNext()) {
@@ -664,7 +798,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           preview.add(iter.next());
         }
       } catch (Exception e) {
-        LOG.warn("Can't peek into source " + source.getName(), e);
+        LOG.warn("Can't peek into source " + ((Source) source).getName(), e);
       }
     }
 
@@ -672,7 +806,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private List<String[]> peek(SqlSource source, int rows) {
-    List<String[]> preview = new ArrayList<String[]>();
+    List<String[]> preview = new ArrayList<>();
     Connection con = null;
     Statement stmt = null;
     ResultSet rs = null;
@@ -725,6 +859,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return preview;
   }
 
+  @Override
   public ClosableReportingIterator<String[]> rowIterator(Source source) throws SourceException {
     if (source == null) {
       return null;
@@ -732,9 +867,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     try {
       if (source instanceof SqlSource) {
         return new SqlRowIterator((SqlSource) source);
+      } else {
+        // Excel, file and URL sources
+        return ((RowIterable) source).rowIterator();
       }
-      // both excel and file implement FileSource
-      return ((FileSource) source).rowIterator();
 
     } catch (Exception e) {
       LOG.error("Exception while reading source " + source.getName(), e);

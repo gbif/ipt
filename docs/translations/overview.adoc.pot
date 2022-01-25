@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
+"POT-Creation-Date: 2021-08-26 08:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,7 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:36
 msgid ""
 "Example link to the account information page for the logged in user: image:"
-"ipt2/Control-LinkExample.png[]"
+"ipt2/controls/Control-LinkExample.png[]"
 msgstr ""
 
 #. type: Plain text
@@ -176,13 +176,13 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:44
 #, no-wrap
-msgid "**Trash icon** image:ipt2/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.\n"
+msgid "**Trash icon** image:ipt2/controls/Control-TrashIcon.png[] - this icon is associated with other controls on the page. Clicking on the icon will delete the associated data.\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:46
 #, no-wrap
-msgid "**Calendar icon** image:ipt2/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.\n"
+msgid "**Calendar icon** image:ipt2/controls/Control-CalendarIcon.png[] - this icon is associated with a text field meant to contain a date. Clicking on the icon opens a small calendar with controls that allow the user to scroll forward and backward from the currently selected month and year, select boxes to choose a different month or year, and days of the week arranged in a standard New Era calendar. Selecting a specific day will place the date in the correct format into the associated text box.\n"
 msgstr ""
 
 #. type: Plain text
@@ -194,7 +194,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:50
-msgid "image:ipt2/Control-TextBoxWithCalendarOpen.png[]"
+msgid "image:ipt2/controls/Control-TextBoxWithCalendarOpen.png[]"
 msgstr ""
 
 #. type: Plain text
@@ -207,14 +207,14 @@ msgstr ""
 #: en/modules/ROOT/pages/overview.adoc:55
 msgid ""
 "Example table sorted in ascending order by the column labelled \"Name\".  "
-"image:ipt2/Control-TableSortedAscending.png[]"
+"image:ipt2/controls/Control-TableSortedAscending.png[]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/overview.adoc:58
 msgid ""
 "Example table sorted in descending order by the column labelled \"Type\".  "
-"image:ipt2/Control-TableSortedDescending.png[]"
+"image:ipt2/controls/Control-TableSortedDescending.png[]"
 msgstr ""
 
 #. type: Title ===
@@ -241,55 +241,27 @@ msgstr ""
 msgid "image:ipt2/controls/Control-UploadSourceData.png[width=230]"
 msgstr ""
 
-#. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:68
-msgid ""
-"The IPT has an upload size limit of 100MB. There is no limit to the size of "
-"Darwin Core Archive the IPT can export/publish though. For loading datasets "
-"larger than 100MB in size into the IPT, the following work-arounds are "
-"recommended:"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:70
-msgid "compressing the file (with zip or gzip)"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:71
-msgid ""
-"loading the data into one of the many xref:database-connection."
-"adoc[databases supported by the IPT]"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:72
-msgid ""
-"splitting the file up (when the dataset is published the IPT will "
-"concatenate the files in the order they are mapped)"
-msgstr ""
-
 #. type: Title ==
-#: en/modules/ROOT/pages/overview.adoc:73
+#: en/modules/ROOT/pages/overview.adoc:67
 #, no-wrap
 msgid "Controls that appear on all pages"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:75
+#: en/modules/ROOT/pages/overview.adoc:69
 msgid ""
 "This section describes several features that are accessible in the header "
 "and footer of most of the pages of the IPT."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/overview.adoc:76
+#: en/modules/ROOT/pages/overview.adoc:70
 #, no-wrap
 msgid "Header"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:78
+#: en/modules/ROOT/pages/overview.adoc:72
 msgid ""
 "The header section of the IPT appears in the upper right of most pages and "
 "allows basic control over the IPT, including who is using it, and in what "
@@ -298,102 +270,102 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:80
+#: en/modules/ROOT/pages/overview.adoc:74
 msgid "Header, not logged in, English language chosen for the user interface:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/overview.adoc:81
+#: en/modules/ROOT/pages/overview.adoc:75
 #, no-wrap
 msgid "ipt2/controls/IPTHeaderNotLoggedIn.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:84
+#: en/modules/ROOT/pages/overview.adoc:78
 msgid "Header, logged in, English language chosen for the user interface:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/overview.adoc:85
+#: en/modules/ROOT/pages/overview.adoc:79
 #, no-wrap
 msgid "ipt2/controls/IPTHeaderLoggedIn.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:88
+#: en/modules/ROOT/pages/overview.adoc:82
 #, no-wrap
 msgid "**Login** - A user who has already been created in this IPT instance can log in by entering the email address and password in the upper right-hand corner of the page, and then click on the \"Login\" link. Only an existing user having the Admin role can create new users. The process for creating new users is explained under the \"Configure User accounts\" heading in the \"Administration Menu\" section. The process of initializing the IPT creates the first user having the Admin role.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:89
+#: en/modules/ROOT/pages/overview.adoc:83
 #, no-wrap
 msgid "**Logout** - If someone is logged in to the IPT, the email address of the person who is logged in is given in the upper right-hand corner of the page along with a \"Logout\" link.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:90
+#: en/modules/ROOT/pages/overview.adoc:84
 #, no-wrap
 msgid "**Account** - To see this link and the page to which it leads, you must be logged into the IPT. The page shows the details of the account information for the person who is logged in to the IPT and allows them to be changed. The details of the fields found on this page can be found under the \"Configure User accounts\" heading in the \"Administration Menu\" section.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:91
+#: en/modules/ROOT/pages/overview.adoc:85
 #, no-wrap
 msgid "**Language selection** - In the upper right-hand corner of the page is a name depicting the language in which the IPT is currently being presented. The default language for the IPT is English. The language of the user interface can be changed by selecting a name for the desired language, if available. GBIF actively seeks translations for the IPT into additional languages. For more information, consult the xref:translations.adoc[How to Translate] page.\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/overview.adoc:92
+#: en/modules/ROOT/pages/overview.adoc:86
 #, no-wrap
 msgid "Footer"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:94
+#: en/modules/ROOT/pages/overview.adoc:88
 msgid ""
 "The footer section of the IPT appears along the bottom of most pages and "
 "contains information about the IPT version and links to important resources."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/overview.adoc:95
+#: en/modules/ROOT/pages/overview.adoc:89
 #, no-wrap
 msgid "ipt2/controls/IPTFooter.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:98
+#: en/modules/ROOT/pages/overview.adoc:92
 #, no-wrap
 msgid "**Version** - At the left of the footer at bottom of the page is the version of the IPT that is currently running. The version information can be used to determine which features are included in the IPT and what bugs are known to exist. This is the version information that is requested when making bug reports.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:99
+#: en/modules/ROOT/pages/overview.adoc:93
 #, no-wrap
 msgid "**About the IPT** - This link leads to the https://www.gbif.org/ipt[IPT website], where further information about the IPT can be found, including the version history, roadmap, uptake statistics, and further related documentation.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:100
+#: en/modules/ROOT/pages/overview.adoc:94
 #, no-wrap
 msgid "**User Manual** - This link opens the most recently released online version of the IPT User Manual.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:101
+#: en/modules/ROOT/pages/overview.adoc:95
 #, no-wrap
 msgid "https://github.com/gbif/ipt/issues/[*Report a bug*] - This link opens the list of known open issues for the IPT. If you think you have encountered a bug, look at the list of known issues first to see if the bug has already been reported. If it has, you may add new information as a comment to the existing bug report that might help engineers to diagnose the problem and get it fixed. If no bug similar to the one you have encountered in the IPT appears on the list, you can create a new bug report by clicking on the \"New issues\" link. When entering a bug report, it is useful to include the version of the IPT you are using (see the explanation for \"Version\", above).\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:102
+#: en/modules/ROOT/pages/overview.adoc:96
 #, no-wrap
 msgid "https://github.com/gbif/ipt/issues/new[*Request new feature*] - This link opens a specific form in the IPT issue tracker that can be filled in to request a capability that the IPT does not currently have.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/overview.adoc:102
+#: en/modules/ROOT/pages/overview.adoc:96
 #, no-wrap
 msgid "**Copyright** - The copyright for the IPT software is held by the Global Biodiversity Information Facility. A link to the home page for GBIF is provided. Details of the copyright and licensing can be seen in the \"About the IPT\" section of this user manual.\n"
 msgstr ""

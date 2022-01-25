@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-07-02 13:07+0000\n"
+"POT-Creation-Date: 2021-12-14 12:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,8 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/core.adoc:13
-#: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
@@ -98,7 +97,7 @@ msgstr ""
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17
-#: en/modules/ROOT/pages/index.adoc:28
+#: en/modules/ROOT/pages/index.adoc:30
 #, no-wrap
 msgid "How to publish biodiversity data through GBIF.org using the IPT"
 msgstr ""

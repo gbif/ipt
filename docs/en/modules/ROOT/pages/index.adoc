@@ -1,5 +1,7 @@
 = GBIF Integrated Publishing Toolkit (IPT) User Manual
 
+_For information on the latest release, including downloads, see the xref:releases.adoc[Releases] page._
+
 The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source web application that makes it easy to share four types of biodiversity-related information:
 
 . primary taxon occurrence data
@@ -7,7 +9,7 @@ The GBIF Integrated Publishing Toolkit (IPT) is a freely available open source w
 . sampling event data
 . general metadata about data sources.
 
-An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.  More information about the GBIF IPT can be found at the https://www.gbif.org/ipt[IPT website].
+An IPT instance as well as the data and metadata registered through the IPT are connected to the GBIF Registry, are indexed for consultation via the GBIF network and portal, and are made accessible for public use.  The IPT can also be configured with a DataCite account in order to assign DOIs to datasets transforming it into a data repository.
 
 Founded and funded by governments in 2001, The Global Biodiversity Information Facility (GBIF) is the world's largest multi-lateral initiative for enabling free access to biodiversity data via the
 Internet. https://www.gbif.org/participation/participant-list[GBIF's diverse Participants] include primarily countries and

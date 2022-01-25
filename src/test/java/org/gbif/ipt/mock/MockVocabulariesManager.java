@@ -1,9 +1,17 @@
 /*
- * Copyright 2009 GBIF. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.gbif.ipt.mock;
 
@@ -33,6 +41,7 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
    * Get one of the installed vocabularies by its unique identifier, populate its list of VocabularyConcept, and
    * return it.
    */
+  @Override
   public Vocabulary get(String uri) {
     Vocabulary v = new Vocabulary();
     Map<String, String> vocabMap = getI18nVocab(uri, Locale.getDefault().getDisplayLanguage(), false);
@@ -65,8 +74,9 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
   /**
    * Mock minimal copies of rank, country, language, and preservation method vocabularies being installed.
    */
+  @Override
   public Map<String, String> getI18nVocab(String uri, String lang, boolean sort) {
-    Map<String, String> vocabMap = new LinkedHashMap<String, String>();
+    Map<String, String> vocabMap = new LinkedHashMap<>();
     if (uri.equals(Constants.VOCAB_URI_RANKS)) {
       vocabMap.put("domain", "domain");
       vocabMap.put("kingdom", "kingdom");
@@ -115,10 +125,12 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
     return vocabMap;
   }
 
+  @Override
   public List<Vocabulary> list() {
     return new ArrayList<Vocabulary>();
   }
 
+  @Override
   public int load() {
     return 0;
   }

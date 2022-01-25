@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
@@ -13,44 +28,55 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.HttpUtil;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.common.io.Files;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xml.sax.SAXException;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.struts2.Struts2GuicePluginModule;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.junit.Before;
-import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class VocabulariesManagerImplTest {
 
-  private static final File TMP_DIR = Files.createTempDir();
+  private static File TMP_DIR;
   private VocabulariesManager manager;
   private DataDir dataDir;
   private AppConfig appConfig;
 
-  @Before
+  @BeforeAll
+  public static void beforeClassSetup() {
+    TMP_DIR = org.gbif.ipt.utils.FileUtils.createTempDir();
+  }
+
+  @BeforeEach
   public void setup() throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
     dataDir = mock(DataDir.class);
     appConfig = new AppConfig(dataDir);
@@ -62,15 +88,18 @@ public class VocabulariesManagerImplTest {
 
     // construct mock RegistryManager:
     // mock getVocabularies() response from Registry with local test resource (list of vocabularies from thesauri_sandbox.json)
-    HttpUtil mockHttpUtil = mock(HttpUtil.class);
-    HttpUtil.Response mockResponse = mock(HttpUtil.Response.class);
-    mockResponse.content =
-      IOUtils.toString(ExtensionManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json"), "UTF-8");
-    when(mockHttpUtil.get(anyString())).thenReturn(mockResponse);
+    HttpClient mockHttpClient = mock(HttpClient.class);
+    HttpResponse mockResponse = mock(HttpResponse.class);
+    ExtendedResponse extResponse = new ExtendedResponse(mockResponse);
+    extResponse.setContent(
+      IOUtils.toString(
+          Objects.requireNonNull(ExtensionManagerImplTest.class.getResourceAsStream("/responses/thesauri_sandbox.json")),
+          StandardCharsets.UTF_8));
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
-      new RegistryManagerImpl(appConfig, dataDir, mockHttpUtil, saxf, warnings, mock(SimpleTextProvider.class),
+      new RegistryManagerImpl(appConfig, dataDir, mockHttpClient, saxf, warnings, mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(ResourceManager.class));
 
     assertTrue(TMP_DIR.isDirectory());
@@ -150,10 +179,10 @@ public class VocabulariesManagerImplTest {
     // were downloaded already. Furthermore, mock download() response with StatusLine with 200 OK response code
     StatusLine sl = mock(StatusLine.class);
     when(sl.getStatusCode()).thenReturn(HttpStatus.SC_OK);
-    when(mockHttpUtil.download(any(URL.class), any(File.class))).thenReturn(sl);
+    when(mockHttpClient.download(any(URL.class), any(File.class))).thenReturn(sl);
 
     manager =
-      new VocabulariesManagerImpl(appConfig, dataDir, vocabularyFactory, mockHttpUtil, mockRegistryManager, warnings,
+      new VocabulariesManagerImpl(appConfig, dataDir, vocabularyFactory, mockHttpClient, mockRegistryManager, warnings,
         mock(SimpleTextProvider.class), mock(RegistrationManager.class));
   }
 
@@ -221,6 +250,7 @@ public class VocabulariesManagerImplTest {
     assertEquals("http://rs.gbif.org/vocabulary/gbif/rank.xml", v.getUriResolvable().toString());
   }
 
+  // TODO: 20/09/2021 empty test
   @Test
   public void testUpdateIfChanged() {
 

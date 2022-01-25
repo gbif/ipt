@@ -1,7 +1,20 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.action.manage;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.common.DoiData;
 import org.gbif.api.model.common.DoiStatus;
@@ -21,6 +34,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
@@ -28,10 +42,6 @@ import org.gbif.metadata.eml.Agent;
 import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.utils.file.properties.PropertiesUtil;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -40,11 +50,18 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +69,7 @@ import static org.mockito.Mockito.when;
  * Other ITs for OverviewAction that can't run as parameterized tests for example or that
  * need a special DOI account.
  */
-@Ignore
+@Disabled
 public class OverviewActionOtherIT {
 
   private static final Logger LOG = LogManager.getLogger(OverviewActionIT.class);
@@ -62,7 +79,7 @@ public class OverviewActionOtherIT {
   private Resource r;
   private OverviewAction action;
 
-  @BeforeClass
+  @BeforeAll
   public static void setup() throws IOException {
     // load DataCite account username and password from the properties file
     Properties p = PropertiesUtil.loadProperties("datacite.properties");
@@ -80,7 +97,7 @@ public class OverviewActionOtherIT {
   /**
    * Generate a new test resource for each test.
    */
-  @Before
+  @BeforeEach
   public void before() {
     r = new Resource();
     Eml eml = new Eml();
@@ -154,7 +171,8 @@ public class OverviewActionOtherIT {
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
-        mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class),
+        mock(RegistryManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -225,7 +243,8 @@ public class OverviewActionOtherIT {
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
-        mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class),
+        mock(RegistryManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -295,7 +314,8 @@ public class OverviewActionOtherIT {
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
-        mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class),
+        mock(RegistryManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -362,7 +382,8 @@ public class OverviewActionOtherIT {
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
-        mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class),
+        mock(RegistryManager.class));
 
     LOG.info("Testing DataCite with test Prefix...");
     action.setDeleteDoi("true");

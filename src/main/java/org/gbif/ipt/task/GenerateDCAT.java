@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.task;
 
 import org.gbif.api.vocabulary.Language;
@@ -19,34 +34,30 @@ import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.io.Closer;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Class to generate a DCAT feed, including all resources that are published, public and have a license.
@@ -63,7 +74,7 @@ public class GenerateDCAT {
   private static final String DCAT_SETTINGS = "org/gbif/metadata/eml/dcatsettings.properties";
   private static final String PREFIXES_PROPERTIES = "org/gbif/metadata/eml/dcat.properties";
   private static final LanguageParser LANGUAGE_PARSER = LanguageParser.getInstance();
-  private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
+  private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX");
   private static final InputStreamUtils streamUtils = new InputStreamUtils();
 
   // DCAT settings keys
@@ -77,8 +88,8 @@ public class GenerateDCAT {
   private static final String CATALOG_RIGHTS_KEY = "catalogRights";
   private static final String CACHING_TIME_KEY = "cachingTime";
 
-  private Map<String, String> settings;
-  private Map<String, String> prefixes;
+  private final Map<String, String> settings;
+  private final Map<String, String> prefixes;
 
   // String used to cache the feed
   private String feed = "";
@@ -94,8 +105,8 @@ public class GenerateDCAT {
     this.cfg = cfg;
     this.registrationManager = registrationManager;
     this.resourceManager = resourceManager;
-    settings = ImmutableMap.copyOf(loadDCATSettings());
-    prefixes = ImmutableMap.copyOf(loadDCATPrefixes());
+    settings = Collections.unmodifiableMap(loadDCATSettings());
+    prefixes = Collections.unmodifiableMap(loadDCATPrefixes());
   }
 
   /**
@@ -107,7 +118,7 @@ public class GenerateDCAT {
     // determine caching time, from settings
     long cacheTime;
     try {
-     cacheTime = Long.valueOf(settings.get(CACHING_TIME_KEY));
+     cacheTime = Long.parseLong(settings.get(CACHING_TIME_KEY));
     } catch (NumberFormatException e) {
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
         "Invalid caching time in properties file: " + DCAT_SETTINGS);
@@ -141,7 +152,7 @@ public class GenerateDCAT {
     feed.append(createDCATCatalogInformation());
     feed.append("\n");
 
-    Set<String> organisations = new HashSet<String>();
+    Set<String> organisations = new HashSet<>();
 
     //add organisation of Catalog
     String publisherBaselink = settings.get(PUBLISHER_BASELINK_KEY);
@@ -158,7 +169,7 @@ public class GenerateDCAT {
     }
 
     //Datasets and Distributions
-    Set<String> themes = new HashSet<String>();
+    Set<String> themes = new HashSet<>();
     String themeUri = settings.get(THEME_URI_KEY);
     String datasetThemeLabel = settings.get(DATASET_THEME_LABEL_KEY);
     String themeTaxonomyUri = settings.get(THEME_TAXONOMY_URI_KEY);
@@ -235,10 +246,9 @@ public class GenerateDCAT {
    * This method loads the DCAT settings from dcatsettings.properties.
    */
   private Map<String, String> loadDCATSettings() {
-    Map<String, String> loadedSettings = Maps.newHashMap();
-    Closer closer = Closer.create();
-    try {
-      InputStream configStream = closer.register(streamUtils.classpathStream(DCAT_SETTINGS));
+    Map<String, String> loadedSettings = new HashMap<>();
+
+    try (InputStream configStream = streamUtils.classpathStream(DCAT_SETTINGS)) {
       if (configStream == null) {
         LOG.error("Failed to load DCAT settings: " + DCAT_SETTINGS);
       } else {
@@ -254,16 +264,10 @@ public class GenerateDCAT {
               "Invalid properties file: " + DCAT_SETTINGS);
           }
         }
-        LOG.debug("Loaded static DCAT settings: " + loadedSettings.toString());
+        LOG.debug("Loaded static DCAT settings: " + loadedSettings);
       }
     } catch (Exception e) {
       LOG.error("Failed to load DCAT settings from: " + DCAT_SETTINGS, e);
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-        LOG.debug("Failed to close input stream on DCAT settings file: " + DCAT_SETTINGS, e);
-      }
     }
     return loadedSettings;
   }
@@ -272,11 +276,9 @@ public class GenerateDCAT {
    * This method loads the DCAT prefixes from dcat.properties.
    */
   private Map<String, String> loadDCATPrefixes() {
-    HashMap<String, String> prefixes = new HashMap<String, String>();
-    Closer closer = Closer.create();
-    try {
-      InputStreamUtils streamUtils = new InputStreamUtils();
-      InputStream configStream = streamUtils.classpathStream(PREFIXES_PROPERTIES);
+    HashMap<String, String> prefixes = new HashMap<>();
+    InputStreamUtils streamUtils = new InputStreamUtils();
+    try (InputStream configStream = streamUtils.classpathStream(PREFIXES_PROPERTIES);) {
       if (configStream == null) {
         LOG.error("Could not load DCAT prefixes from file: " + PREFIXES_PROPERTIES);
       } else {
@@ -292,16 +294,10 @@ public class GenerateDCAT {
               "Invalid properties file: " + PREFIXES_PROPERTIES);
           }
         }
-        LOG.debug("Loaded DCAT prefixes: " + prefixes.toString());
+        LOG.debug("Loaded DCAT prefixes: " + prefixes);
       }
     } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        closer.close();
-      } catch (IOException e) {
-        LOG.error("Failed to close input stream on DCAT prefixes file: " + PREFIXES_PROPERTIES);
-      }
+      LOG.error("Exception while loading DCAT prefixes", e);
     }
     return prefixes;
   }
@@ -311,7 +307,6 @@ public class GenerateDCAT {
    *
    * @return String representation of Prefixes
    */
-  @VisibleForTesting
   protected String createPrefixesInformation() {
     StringBuilder prefixBuilder = new StringBuilder();
     for (String pre : prefixes.keySet()) {
@@ -345,14 +340,13 @@ public class GenerateDCAT {
    *
    * @return String DCAT Catalog
    */
-  @VisibleForTesting
   protected String createDCATCatalogInformation() {
     StringBuilder catalogBuilder = new StringBuilder();
-    List<String> themeTaxonomies = new ArrayList<String>();
+    List<String> themeTaxonomies = new ArrayList<>();
     Ipt ipt = registrationManager.getIpt();
 
     //Run over resources
-    List<String> uris = new ArrayList<String>();
+    List<String> uris = new ArrayList<>();
     Date firstCreation = new Date();
     boolean firstPublishedDatePresent = false;
     Date lastModification = new Date(0);
@@ -501,7 +495,6 @@ public class GenerateDCAT {
    *
    * @return String DCAT Dataset for one resource
    */
-  @VisibleForTesting
   protected String createDCATDatasetInformation(Resource resource) {
     StringBuilder datasetBuilder = new StringBuilder();
     Eml eml = resource.getEml();
@@ -524,7 +517,7 @@ public class GenerateDCAT {
       StringBuilder description = new StringBuilder();
       Iterator<String> iter = eml.getDescription().iterator();
       while (iter.hasNext()) {
-        String des = Strings.emptyToNull(iter.next());
+        String des = StringUtils.trimToNull(iter.next());
         if (des != null) {
           description.append(des);
         }
@@ -539,10 +532,10 @@ public class GenerateDCAT {
     //dcat:keyword
     // note: duplicate keywords cannot exist, see issue #1210
     if (!eml.getKeywords().isEmpty()) {
-      List<String> keywords = Lists.newArrayList();
+      List<String> keywords = new ArrayList<>();
       for (KeywordSet keywordSet : eml.getKeywords()) {
         for (String keyword : keywordSet.getKeywords()) {
-          if (!Strings.isNullOrEmpty(keyword) && !keywords.contains(keyword)) {
+          if (StringUtils.isNotBlank(keyword) && !keywords.contains(keyword)) {
             keywords.add(keyword);
           }
         }
@@ -645,7 +638,7 @@ public class GenerateDCAT {
     if (languageLink != null) {
       addPredicateToBuilder(datasetBuilder, "dct:language");
       ParseResult<Language> result = LANGUAGE_PARSER.parse(eml.getMetadataLanguage());
-      String ln = (result.isSuccessful()) ? languageLink + result.getPayload().getIso2LetterCode().toLowerCase()
+      String ln = result.isSuccessful() ? languageLink + result.getPayload().getIso2LetterCode().toLowerCase()
         : languageLink + "en";
       addObjectToBuilder(datasetBuilder, ln, ObjectTypes.RESOURCE);
     }
@@ -671,10 +664,9 @@ public class GenerateDCAT {
    *
    * @return String DCAT Distribution for one resource
    */
-  @VisibleForTesting
   protected String createDCATDistributionInformation(Resource resource) {
-    Preconditions.checkNotNull(resource.getEml());
-    Preconditions.checkNotNull(resource.getEml().parseLicenseUrl());
+    Objects.requireNonNull(resource.getEml());
+    Objects.requireNonNull(resource.getEml().parseLicenseUrl());
 
     StringBuilder distributionBuilder = new StringBuilder();
 
@@ -756,7 +748,10 @@ public class GenerateDCAT {
    */
   private void addObjectsToBuilder(@NotNull StringBuilder builder, @NotNull List<String> objects,
     @NotNull ObjectTypes type) {
-    Preconditions.checkArgument(objects.size() >= 1);
+    if (objects.size() == 0) {
+      throw new IllegalArgumentException();
+    }
+
     for (String s : objects) {
       if (objects.indexOf(s) != 0) {
         builder.append(" , ");
@@ -829,7 +824,7 @@ public class GenerateDCAT {
    * @return ISO8601 string representation for a date
    */
   private String parseToIsoDate(@NotNull Date dateStamp) {
-    return DATE_FORMAT.format(dateStamp);
+    return dateFormat.format(dateStamp);
   }
 
   /**

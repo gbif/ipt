@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.gbif.ipt.struts2;
 
 import java.text.MessageFormat;
@@ -8,9 +23,10 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import com.opensymphony.xwork2.LocaleProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.opensymphony.xwork2.LocaleProvider;
 
 /**
  * A basic text provider for internationalised messages that can replace the native struts2 one. It uses only a single
@@ -21,7 +37,7 @@ public class SimpleTextProvider {
 
   private static final Logger LOG = LogManager.getLogger(SimpleTextProvider.class);
   private static final String DEFAULT_BUNDLE = "ApplicationResources";
-  private final Set<String> baseBundleNames = new HashSet<String>();
+  private final Set<String> baseBundleNames = new HashSet<>();
 
   public SimpleTextProvider() {
     baseBundleNames.add(DEFAULT_BUNDLE);

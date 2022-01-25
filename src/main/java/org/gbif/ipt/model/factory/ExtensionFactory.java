@@ -1,35 +1,43 @@
 /*
- * Copyright 2009 GBIF. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
+ * Copyright 2021 Global Biodiversity Information Facility (GBIF)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.gbif.ipt.model.factory;
 
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.utils.ExtendedResponse;
+import org.gbif.utils.HttpClient;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.apache.commons.digester.Digester;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Building from XML definitions. Because an extension can reference thesauri, this is a 2 pass parsing process.
@@ -50,7 +58,7 @@ public class ExtensionFactory {
   private final HttpClient client;
 
   @Inject
-  public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory, DefaultHttpClient client) {
+  public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory, org.gbif.utils.HttpClient client) {
     this.thesaurusRule = thesaurusRule;
     this.saxf = factory;
     this.client = client;
@@ -64,7 +72,7 @@ public class ExtensionFactory {
    * @return The collection of Extensions
    */
   public Collection<Extension> build(Collection<String> urls) {
-    List<Extension> extensions = new LinkedList<Extension>();
+    List<Extension> extensions = new ArrayList<>();
 
     for (String urlAsString : urls) {
       try {
@@ -171,25 +179,19 @@ public class ExtensionFactory {
    * @return The extension
    */
   public Extension build(String url) throws IOException, SAXException {
-
-    HttpGet get = new HttpGet(url);
-
     // execute
     try {
-      HttpResponse response = client.execute(get);
-      HttpEntity entity = response.getEntity();
+      ExtendedResponse response = client.get(url);
+      HttpEntity entity = response.getResponse().getEntity();
       if (entity != null) {
         // copy stream to local file
-        InputStream is = entity.getContent();
-        try {
+        try (InputStream is = entity.getContent()) {
           Extension e = build(is);
           LOG.info("Successfully parsed extension: " + e.getTitle());
           return e;
 
         } catch (SAXException e) {
           LOG.error("Unable to parse XML for extension: " + e.getMessage(), e);
-        } finally {
-          is.close();
         }
         // close http connection
         EntityUtils.consume(entity);

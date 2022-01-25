@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-06-28 09:18\n"
+"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"PO-Revision-Date: 2021-08-19 10:53\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -56,7 +56,7 @@ msgstr ""
 #: en/modules/ROOT/pages/core.adoc:13
 #: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
-#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:89
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
 #: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
 #, no-wrap
@@ -71,7 +71,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:18
-msgid "The core XML definition has to comply with the http://rs.gbif.org/schema/extension.xsd[GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as the http://rs.gbif.org/core/dwc_occurrence.xml[Darwin Core Occurrence Core]. Please note, the core definition must contain a property that serves as the record identifier (e.g. http://rs.tdwg.org/dwc/terms/occurrenceID for the Occurrence core, or http://rs.tdwg.org/dwc/terms/eventID for the Event Core. The process of creating a new non-core extension is exactly the same as for a core extension. The process of creating a new vocabulary (as a data type for a property within the core, or non-core extension) is different only in that the XML definition has to comply with the http://rs.gbif.org/schema/thesaurus.xsd[GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as the http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary]."
+msgid "The core XML definition has to comply with the http://rs.gbif.org/schema/extension.xsd[GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as the {latest-dwc-occurrence}.xml[Darwin Core Occurrence Core]. Please note, the core definition must contain a property that serves as the record identifier (e.g. http://rs.tdwg.org/dwc/terms/occurrenceID for the Occurrence core, or http://rs.tdwg.org/dwc/terms/eventID for the Event Core. The process of creating a new non-core extension is exactly the same as for a core extension. The process of creating a new vocabulary (as a data type for a property within the core, or non-core extension) is different only in that the XML definition has to comply with the http://rs.gbif.org/schema/thesaurus.xsd[GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as the {latest-basis-of-record}[Darwin Core Type vocabulary]."
 msgstr ""
 
 #. type: Plain text
@@ -93,7 +93,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:27
-msgid "To configure the IPT to use the http://rs.gbif.org/sandbox/core/dwc_material_sample.xml[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
+msgid "To configure the IPT to use the {sandbox-material-sample}[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
 msgstr ""
 
 #. type: Plain text

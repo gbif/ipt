@@ -31,13 +31,14 @@
     <action name="home" class="org.gbif.ipt.action.manage.HomeAction">
       <result>/WEB-INF/pages/manage/home.ftl</result>
     </action>
+
     <action name="locked" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
       <result>/WEB-INF/pages/manage/locked.ftl</result>
     </action>
 
     <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">104857600</param>
+        <param name="maximumSize">209715200</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
@@ -46,7 +47,7 @@
 
     <action name="replace-eml" class="org.gbif.ipt.action.manage.EmlAction" method="replaceEml">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">104857600</param>
+        <param name="maximumSize">209715200</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
@@ -59,20 +60,24 @@
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
     </action>
+
     <action name="publish" class="org.gbif.ipt.action.manage.OverviewAction" method="publish">
       <result name="publishing">/WEB-INF/pages/manage/locked.ftl</result>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="error">/WEB-INF/pages/manage/overview.ftl</result>
     </action>
+
     <action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
       <interceptor-ref name="ajaxStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="error">/WEB-INF/pages/manage/locked.ftl</result>
     </action>
+
     <action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
-      <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
-      <allowed-methods>addManager,delete,deleteFromIpt,deleteDoi,deleteManager,makePrivate,makePublic,registerResource,reserveDoi,undelete</allowed-methods>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <allowed-methods>addNetwork,addManager,delete,deleteFromIpt,deleteDoi,deleteNetwork,deleteManager,makePrivate,makePublic,registerResource,reserveDoi,undelete</allowed-methods>
     </action>
 
     <action name="auto-publish" class="org.gbif.ipt.action.manage.AutoPublishAction">
@@ -97,15 +102,23 @@
       <result name="input">/WEB-INF/pages/manage/source.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
+
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
       <interceptor-ref name="fileUpload">
-        <param name="maximumSize">104857600</param>
+        <param name="maximumSize">209715200</param>
       </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="success">/WEB-INF/pages/manage/source.ftl</result>
       <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
+
+    <action name="canceloverwrite" class="org.gbif.ipt.action.manage.SourceAction" method="cancelOverwrite">
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <action name="raw-source" class="org.gbif.ipt.action.portal.ResourceFileAction" method="rawsource">
       <result name="success" type="stream">
         <param name="contentType">${mimeType}</param>
@@ -114,6 +127,7 @@
         <param name="bufferSize">1024</param>
       </result>
     </action>
+
     <action name="uploadlogo" class="org.gbif.ipt.action.manage.SourceAction" method="uploadLogo">
       <interceptor-ref name="fileUpload">
         <param name="maximumSize">2097152</param>
@@ -123,24 +137,29 @@
       <result name="input" type="redirect">${baseURL}/manage/metadata-additional.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
+
     <action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">
       <interceptor-ref name="ajaxStack"/>
       <result>/WEB-INF/pages/manage/peek.ftl</result>
     </action>
+
     <action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
       <result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/mappingSource.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
+
     <action name="history" class="org.gbif.ipt.action.manage.VersionHistoryAction">
       <result name="input">/WEB-INF/pages/manage/version_history.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}&amp;v=${version}</result>
+      <result name="success" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}&amp;v=${versionString}</result>
       <result name="back" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}</result>
     </action>
+
     <action name="detail" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
       <result>/WEB-INF/pages/portal/resource_new.ftl</result>
     </action>
+
     <action name="vocabulary" class="org.gbif.ipt.action.admin.VocabulariesAction">
       <result>/WEB-INF/pages/manage/vocabulary.ftl</result>
     </action>
@@ -149,9 +168,11 @@
       <result>/WEB-INF/pages/manage/translation.ftl</result>
       <result name="none" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
     </action>
+
     <action name="translationReload" class="org.gbif.ipt.action.manage.TranslationAction" method="reload">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
     </action>
+
     <action name="translationAutomap" class="org.gbif.ipt.action.manage.TranslationAction" method="automap">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
     </action>
