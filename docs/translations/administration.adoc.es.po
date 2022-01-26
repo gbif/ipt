@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2022-01-24 18:16\n"
+"PO-Revision-Date: 2022-01-26 21:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -290,7 +290,7 @@ msgstr "No se puede eliminar un usuario si es el creador o uno o más recursos. 
 #: en/modules/ROOT/pages/administration.adoc:75
 #, no-wrap
 msgid "Configure GBIF registration options"
-msgstr "Configurar las opciones de registro de GBIF"
+msgstr "Configuración de las opciones de registro de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
@@ -305,7 +305,7 @@ msgstr "El primer paso para registrar un recurso en GBIF es probar que el IPT te
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:81
 msgid "If the validation test is unsuccessful, an error message will suggest the nature of the problem with the communication between the GBIF Registry and the IPT. Causes for an error include:"
-msgstr "Si la prueba de validación no tiene éxito, un mensaje de error sugerirá la naturaleza del problema con la comunicación entre el Registro GBIF y el IPT. Las causas de un error incluyen:"
+msgstr "Si la prueba de validación no tiene éxito, un mensaje de error sugerirá la naturaleza del problema con la comunicación entre el Registro GBIF y el IPT. Las causas de error incluyen:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:83
