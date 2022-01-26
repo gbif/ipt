@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2022-01-26 21:48\n"
+"PO-Revision-Date: 2022-01-26 22:22\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -358,43 +358,43 @@ msgstr "A continuación se encuentran las explicaciones de la información espec
 #: en/modules/ROOT/pages/administration.adoc:96
 #, no-wrap
 msgid "*Organization* - the select box contains a list of organizations in the GBIF registry. Select the single organization with which this IPT instance will be associated. If you are unable to find the organization you seek on the list, use the GBIF Registry (https://www.gbif.org/publisher/search) to determine if the organization is registered under a name other than what you expected. If the organization is not yet registered with GBIF, please contact the GBIF Help Desk to register the organization before proceeding with the registration of the IPT. Click on the help icon and then click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.\n"
-msgstr "*Organización* - El cuadro seleccionado contiene una lista de organizaciones en el Registro GBIF. Seleccione una organización con la cual será asociado este IPT. Si la organización deseada no se encuentra en la lista, use el Registro GBIF (https://www.gbif.org/es/publisher/search) para determinar si la organización está registrada bajo otro nombre que no esperaba. Si la organización aún no está registrada ante GBIF, por favor contacte a la \"Mesa de Ayuda\" para registrar la organización, antes de proceder con el registro del IPT. Haga clic sobre el enlace de ayuda “GBIF Help Desk” para abrir un correo electrónico predeterminado, en donde puede completarlo con la información necesaria antes de enviarlo.\n"
+msgstr "*Organización*: el cuadro seleccionado contiene una lista de organizaciones en el Registro GBIF. Seleccione una única organización con la cual será asociado este IPT. Si la organización deseada no se encuentra en la lista, use el Registro GBIF (https://www.gbif.org/es/publisher/search) para determinar si la organización está registrada con un nombre distinto al que esperaba. Si la organización aún no está registrada en GBIF, por favor contacte al Centro de ayuda de GBIF para registrar la organización antes de proceder con el registro del IPT. Haga clic sobre el enlace de ayuda “GBIF Help Desk” para abrir un correo electrónico predeterminado que puede completar con la información necesaria antes de enviarlo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:97
 #, no-wrap
 msgid "*Organization's password* - the correct password registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's password, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Password text box after selecting an organization in the Organization select box. The password will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
-msgstr "*Contraseña de la Organización* - La contraseña correcta para la organización seleccionada, registrada en el Registro GBIF, debe ser ingresada en este campo para verificar que el usuario tiene la autorización requerida para asociar el IPT con aquella organización. Si no posee la contraseña de la organización, debe solicitarla al contacto registrado. Un enlace al contacto principal de la organización registrada aparecerá debajo de este campo, después de seleccionar una organización en el campo Organización. La contraseña será usada para autenticar el registro del IPT cuando se haga clic sobre el botón “Guardar”.\n"
+msgstr "*Contraseña de la organización*: la contraseña correcta registrada en GBIF para la organización seleccionada debe ser ingresada en esta caja de texto para verificar que el usuario tiene la autorización requerida para asociar la instancia de IPT con esa organización. Si no dispone de la contraseña de la organización, puede solicitarla al contacto registrado. Debajo del cuadro de texto \"Contraseña de la organización\" aparecerá un enlace al contacto principal registrado para la organización. La contraseña se utilizará para autenticar el registro del IPT cuando se pulse el botón \"Guardar\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:98
 #, no-wrap
 msgid "*Alias* - enter a convenient name or code to represent the organization within this instance of the IPT. The alias will appear in place of the full organization name in organization select boxes in the IPT user interfaces.\n"
-msgstr "*Alias* - Ingrese un nombre o código conveniente para representar la organización dentro del IPT. El alias aparecerá, en lugar del nombre completo de la organización, en los campos de selección de la organización, de las interfaces del usuario en el IPT.\n"
+msgstr "*Alias*: ingrese un nombre o código conveniente para representar la organización dentro del IPT. El alias aparecerá en lugar del nombre completo de la organización en los cuadros de selección de \"Organización\" en las interfaces de usuario del IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:99
 #, no-wrap
 msgid "*Can publish resources?* - check this box if the selected organization can also be associated with resources published on this instance of the IPT. If left unchecked, the organization will not appear in the list of organizations available to associate with a resource. Leave unchecked only if this organization is only the host for the IPT instance, not for any of the resources published through the IPT instance.\n"
-msgstr "*¿Puede publicar recursos?* - Seleccione este recuadro si la organización seleccionada también puede ser asociada con recursos publicados en este IPT. Si se deja sin seleccionar, la organización no aparecerá en la lista de organizaciones disponibles para asociar con un recurso. Deje el recuadro sin marcar, solamente si la organización tiene como función alojar el IPT, y no asociar cualquiera de los recursos publicados a través del IPT.\n"
+msgstr "*¿Puede publicar recursos?*: seleccione este recuadro si la organización también puede ser asociada con recursos publicados en este IPT. Si se deja sin seleccionar, la organización no aparecerá en la lista de organizaciones disponibles para asociar con un recurso. Deje el recuadro sin marcar solamente si la organización tiene como función alojar el IPT y no asociar recursos publicados a través del IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:100
 #, no-wrap
 msgid "*Title for the IPT installation* - enter the title of the IPT installation to be used in the GBIF Registry. The title is the primary information used for listing and searching for the IPT installations in the Registry.\n"
-msgstr "*Título para la Instalación del IPT* - ingrese el título de la instalación del IPT a ser usado en el Registro GBIF. El título es la información primaria usada para listar y buscar en el Registro por instalaciones de IPT.\n"
+msgstr "*Título para la instalación del IPT*: ingrese el título de la instalación del IPT a ser usado en el Registro GBIF. El título es la información primaria usada para listar y buscar en el Registro por instalaciones de IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:101
 #, no-wrap
 msgid "*Description for this IPT installation* - enter the description of the IPT installation to be used in the GBIF Registry. The description is meant to help users of the Registry to further understand the significance of the IPT instance by allowing further information beyond the specific metadata fields to be shared.\n"
-msgstr "*Descripción para esta instalación del IPT* - Ingrese en el Registro GBIF la descripción de la instalación del IPT a ser usada. La descripción pretende ayudar a los usuarios del Registro a entender el significado del IPT, permitiendo información adicional a la compartida en los campos específicos para metadatos.\n"
+msgstr "*Descripción para esta instalación del IPT*: ingrese en el Registro GBIF la descripción de la instalación del IPT a ser usada. La descripción pretende ayudar a los usuarios del Registro a entender el significado del IPT, permitiendo información adicional a la compartida en los campos específicos para metadatos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:102
 #, no-wrap
 msgid "*Contact Name* - enter the name of the person who should be contacted for information about the IPT installation. This person should be someone who has an Admin role in the IPT instance and knows the technical details about the installation.\n"
-msgstr "*Nombre del Contacto* - Ingrese el nombre de la persona quien debe ser contactada para información acerca de la instalación del IPT. Esta persona debe ser alguien quien tenga un rol Administrador y conozca los detalles técnicos acerca de la instalación.\n"
+msgstr "*Nombre del contacto*: ingrese el nombre de la persona quien debe ser contactada para información acerca de la instalación del IPT. Esta persona debe ser alguien quien tenga un rol de Administrador y conozca los detalles técnicos acerca de la instalación.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:103
