@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2022-01-26 21:14\n"
+"PO-Revision-Date: 2022-01-26 21:48\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -311,25 +311,25 @@ msgstr "Si la prueba de validación no tiene éxito, un mensaje de error sugerir
 #: en/modules/ROOT/pages/administration.adoc:83
 #, no-wrap
 msgid "*No Internet connectivity* - The IPT requires an active Internet connection to function properly. An error will occur if connectivity to the Internet is lost when the button labelled \"Validate\" button is clicked. Restore Internet connectivity before trying to proceed with registration.\n"
-msgstr "*No hay conexión a Internet* - Para un funcionamiento apropiado, el IPT requiere una conexión activa a Internet. Ocurrirá un error, si la conexión a Internet se interrumpe cuando se haga clic sobre el botón “Validar”. Restaure la conexión a Internet antes de intentar el registro.\n"
+msgstr "*No hay conexión a Internet:  el IPT requiere una conexión activa a Internet para funcionar correctamente. Se producirá un error si se pierde la conectividad a Internet al pulsar el botón \"Validar\". Restaure la conectividad a Internet antes de intentar proceder con el registro.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:84
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
-msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref:initial-setup.adoc[Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Opciones de configuración el IPT>>).\n"
+msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref:initial-setup.adoc[Configuración inicial del IPT]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Opciones de configuración del IPT>>).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:85
 #, no-wrap
 msgid "*Firewall* - If the Internet connection is live, a firewall may be preventing connections to the public URL or institutional proxy. Change the firewall or institutional proxy settings to all outside connections.\n"
-msgstr "*Firewall* - Si la conexión a Internet es correcta, un firewall puede estar evitando las conexiones a la URL Base o el Proxy. Cambie la configuración del firewall o proxy para todas las conexiones externas.\n"
+msgstr "*Firewall*: si la conexión a Internet es correcta, un firewall puede estar evitando las conexiones a la URL pública o el Proxy. Cambie la configuración del firewall o proxy para todas las conexiones externas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:86
 #, no-wrap
 msgid "*GBIF Registry inaccessible* - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF help desk (helpdesk@gbif.org).\n"
-msgstr "*Registro GBIF sin acceso* - Si un mensaje de error sugiere que ninguno de los errores previos ha ocurrido y aún hay una falla con la comunicación al Registro GBIF, por favor reporte a la \"Mesa de Ayuda\" que hay problemas con la conexión al Registro GBIF (helpdesk@gbif.org).\n"
+msgstr "*Registro GBIF inaccesible*: si un mensaje de error sugiere que ninguno de los errores previos ha ocurrido y aún hay una falla con la comunicación al Registro GBIF, por favor que hay problemas con la conexión al Registro GBIF o al Centro de ayuda de GBIF (helpdesk@gbif.org).\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:87
@@ -340,7 +340,7 @@ msgstr "ipt2/administration/IPTAdminRegistrationStep1.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:90
 msgid "If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its password must be known*. For explanations of the fields and selections on this form, refer to the information below."
-msgstr "Si el IPT pasa la etapa de validación mencionada anteriormente, aparecerá un formato que requiere información adicional para el registro. En esta etapa, el IPT es asociado con una organización. *La organización ya debe estar registrada en el Registro GBIF, y su contraseña debe ser conocida.* A continuación se encuentran las explicaciones de los campos y selecciones de este formato."
+msgstr "Si el IPT supera el paso de validación anterior, aparecerá un formulario con información adicional necesaria para el registro. En este paso, la instancia del IPT se asocia a una organización. *La organización debe estar registrada en el Registro de GBIF y su contraseña debe ser conocida*. A continuación se encuentran las explicaciones de los campos y selecciones de este formato."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:91
