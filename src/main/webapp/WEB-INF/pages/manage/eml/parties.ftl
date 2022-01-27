@@ -12,7 +12,8 @@
     </script>
     <style>
         .popover {
-            max-width: 50%;
+            width: 50%;
+            max-width: 600px;
         }
     </style>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
