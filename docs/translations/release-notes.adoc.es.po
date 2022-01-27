@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-01-27 14:43\n"
+"PO-Revision-Date: 2022-01-27 16:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -217,7 +217,7 @@ msgstr "La lista completa de características nuevas está documentada en la xre
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:78
 msgid "IPT 2.5.6 changes the way user passwords are stored to improve their security. Once the IPT has been upgraded to version 2.5.6 (or later), it is not possible to downgrade."
-msgstr ""
+msgstr "IPT 2.5.6 cambia la manera en que se almacenan las contraseñas de usuarios para mejorar la seguridad. Cuando el IPT ha sido actualizado a la versión 2.5.6 (o posterior), no es posible regresar a una versión anterior."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:79
