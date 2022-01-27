@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-01-27 22:00\n"
+"PO-Revision-Date: 2022-01-27 22:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -446,12 +446,12 @@ msgstr "Configurar organizaciones"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:114
 msgid "This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the \"Configure GBIF registration\" heading of the \"Administration Menu\" section). Once registered, this page shows a list of organizations that can be associated with resources in this IPT instance. An IPT that hosts data for organizations other than the one to which it is associated must have the additional organizations configured before they can be used."
-msgstr "La página no está disponible hasta que el IPT haya sido registrado exitosamente en el Registro GBIF (véase información bajo el encabezado “Configurar Opciones para el Registro GBIF” de la sección “Menú Administración”). Una vez registrado, esta página muestra una lista de organizaciones que pueden ser asociadas con los recursos en este IPT. Un IPT tiene datos alojados para otras organizaciones y para que estas puedan ser asociadas, deben configurarse antes que puedan ser usadas."
+msgstr "Esta página no está disponible hasta que la instancia de IPT haya sido registrada con éxito en el Registro de GBIF (ver la información en el encabezado \"Configurar el registro de GBIF\" de la sección \"Menú administración\"). Una vez registrado, esta página muestra una lista de organizaciones que pueden ser asociadas con recursos en esta instancia de IPT. Un IPT que aloja datos de organizaciones distintas a la que está asociado debe tener configuradas las organizaciones adicionales antes de poder utilizarlas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:116
 msgid "An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessary have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance."
-msgstr "Un IPT capaz de asignar DOIs a los recursos, para esto debe tener las organizaciones configuradas con una cuenta en DataCite. Para que la organización sea configurada con las cuentas de DataCite, no es necesario que la organización esté en capacidad de publicar recursos (estar asociada a algún recurso). Solo puede utilizarse una cuenta de DataCite a la vez para realizar el registro de los DOIs, y el modo de archivo del IPT debe estar encendido (por favor consulte la sección <<Opciones de configuración el IPT>> para más información acerca del modo de archivo). La lista de organizaciones muestra cuales han sido configuradas con una cuenta en DataCite, y cuál ha sido seleccionada para el registro de los DOIs para todos los recursos correspondientes en este IPT."
+msgstr "Un IPT capaz de asignar DOI a los recursos debe tener también una organización configurada con una cuenta DataCite. Para estar configurada con una cuenta DataCite, la organización no es necesario que la organización esté en capacidad de publicar recursos (estar asociada a recursos). Sólo se puede utilizar una cuenta DataCite a la vez para registrar DOIs y el modo de archivo del IPT también debe estar activo (por favor, consulte la sección <<Configuraración de las opciones del IPT>> para obtener más información sobre el modo de archivo). La lista de organizaciones muestra qué organizaciones han sido configuradas con cuentas DataCite y cuál ha sido seleccionada para registrar DOIs para todos los recursos en esta instancia de IPT."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:117
@@ -463,12 +463,12 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:119
 #, no-wrap
 msgid "Edit organization"
-msgstr "Editar una Organización"
+msgstr "Editar una organización"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:121
 msgid "On this page a user having the Admin role can edit the organization. Click on the button labelled \"Edit\" to open the page containing the details of the selected organization. For explanations of the fields and selections on this form, refer to the information below."
-msgstr "En esta página los usuarios que tengan el rol Administrador podrán editar las organizaciones. Haga clic sobre el botón “Editar” para abrir la página que contiene los detalles de la organización seleccionada."
+msgstr "En esta página, un usuario con el rol de Administrador puede editar la organización. Haga clic en el botón \"Editar\" para abrir la página que contiene los detalles de la organización seleccionada. Para obtener explicaciones sobre los campos y las selecciones de este formulario, consulte la información a continuación:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:122
@@ -480,7 +480,7 @@ msgstr "ipt2/administration/IPTAdminOrgsEditOrg.png"
 #: en/modules/ROOT/pages/administration.adoc:127
 #, no-wrap
 msgid "*Organization name* - the title of the organization as registered in the GBIF Registry. *Note*: this cannot be changed.\n"
-msgstr "*Nombre de la organización* - El título de la organización inscrita en el registro de GBIF. *Nota*: Este no puede ser cambiado.\n"
+msgstr "*Nombre de la organización*: el título de la organización inscrita en el Registro de GBIF. *Nota*: No puede ser cambiado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:128
@@ -492,49 +492,49 @@ msgstr "*Token compartido de organización*: el token compartido que debe usarse
 #: en/modules/ROOT/pages/administration.adoc:129
 #, no-wrap
 msgid "*Organization alias* - a name given to the organization for convenience within the IPT instance; aliases, rather then the full Organization Name appear in Organization selection lists in the IPT.\n"
-msgstr "*Alias* - Ingrese un nombre conveniente para representar la organización dentro del IPT. El alias aparecerá, en lugar del nombre completo de la organización y en los campos de selección de la organización, de las interfaces del usuario en el IPT.\n"
+msgstr "*Alias*: ingrese un nombre conveniente para representar la organización dentro del IPT. El alias aparecerá en lugar del nombre completo de la organización y en los campos de selección de organización de las interfaces del usuario en el IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:130
 #, no-wrap
 msgid "*Can publish resources* - this checkbox indicates whether the organization can be associated with resources in the IPT. Only those organizations having this box checked will appear in lists to be associated with resources.\n"
-msgstr "*¿Puede publicar recursos?* - Seleccione este recuadro si la organización seleccionada también puede ser asociada con recursos publicados en este IPT. Si se selecciona este cuadro, la organización aparecerá en la lista de organizaciones disponibles para asociar con un recurso.\n"
+msgstr "*¿Puede publicar recursos?*: seleccione este recuadro si la organización seleccionada también puede ser asociada con recursos publicados en este IPT. Si selecciona este recuadro la organización aparecerá en la lista de organizaciones disponibles para asociar con un recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:131
 #, no-wrap
 msgid "*DOI registration agency* - the type of account used to register DOIs for resources; can be either DataCite. *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). *Note*: confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.\n"
-msgstr "*Agencia de registro del DOI* - El tipo de cuenta utilizada para el registro de los DOIs para los recursos; puede ser DataCite. *Nota*: La cuenta para la organización se expide después de que se firma un acuerdo con un miembro de DataCite, donde se permita registrar DOIs bajo uno o más prefijos (e.g. 10.5072) en uno o más dominios (e.g. gbif.org). *Nota*: Confirme que la cuenta pueda regostar DOIs bajo dominios del IPT/URL base, de lo contrario los registros a través de IPT no funcionarán.\n"
+msgstr "*Agencia de registro del DOI*: el tipo de cuenta utilizada para registrar los DOI de los recursos, puede ser DataCite. *Nota*: se expide una cuenta a la organización después de que ésta firme un acuerdo con un miembro de DataCite que le da permiso para registrar DOIs bajo uno o más prefijos (p. ej. 10.5072) en uno o más dominios (p. ej., gbif.org). *Nota*: confirme que la cuenta realmente puede registrar DOIs bajo el dominio/URL pública del IPT, de lo contrario los registros a través del IPT no funcionarán.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:132
 #, no-wrap
 msgid "*Account username* - the username (symbol) of the DataCite account issued to the organization.\n"
-msgstr "*Nombre de usuario de la cuenta* - El nombre de usuario (símbolo) de la cuenta expedida a la organización por DataCite.\n"
+msgstr "*Nombre de usuario de la cuenta*: el nombre de usuario (símbolo) de la cuenta expedida a la organización por DataCite.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:133
 #, no-wrap
 msgid "*Account password* - the password of the DataCite account issued to the organization.\n"
-msgstr "*Contraseña de la cuenta* - La contraseña de la cuenta expedida a la organización por DataCite.\n"
+msgstr "*Contraseña de la cuenta*: la contraseña de la cuenta expedida a la organización por DataCite.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:134
 #, no-wrap
 msgid "*DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a test prefix (see https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) when running the IPT in test mode.\n"
-msgstr "*DOI prefijo/shoulder* - El DOI prefijo/shoulder utilizado para DOIs. Este prefijo es único para la cuenta expedida para la organización. Nota: Use siempre un prefijo de prueba (... https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) cuando utilice el IPT en modo de prueba.\n"
+msgstr "*Prefijo del DOI*: el prefijo del DOI utilizado para acuñar DOI. Este prefijo es único para la cuenta expedida para la organización. Nota: siempre use un prefijo de prueba (ver https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) cuando utilice el IPT en modo de prueba.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:135
 #, no-wrap
 msgid "*Account activated* - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.\n"
-msgstr "*Cuenta activada* - Este cuadro de selección indica si la cuenta en DataCite es la única utilizada para registrar DOIs para conjuntos de datos en el IPT. Solo es posible activar una cuenta DataCite a la vez.\n"
+msgstr "*Cuenta activada*: este cuadro de selección indica si la cuenta en DataCite es la única utilizada para registrar los DOI de los conjuntos de datos en el IPT. Solo es posible activar una cuenta DataCite a la vez.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:136
 #, no-wrap
 msgid "Add organization"
-msgstr "Adicionar una Organización"
+msgstr "Adicionar una organización"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:138
