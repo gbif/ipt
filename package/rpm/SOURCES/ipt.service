@@ -5,7 +5,10 @@ Documentation=man:ipt(7)
 
 [Service]
 EnvironmentFile=/etc/sysconfig/ipt
-ExecStart=/usr/bin/java -jar /usr/share/java/jetty/jetty-runner.jar --port $IPT_PORT /usr/share/java/gbif/ipt.war
+# Unpack the IPT's WAR file into /run/ipt/work
+RuntimeDirectory=ipt
+ExecStartPre=/usr/bin/mkdir -p /run/ipt/work
+ExecStart=/usr/bin/java -Djetty.home=/run/ipt -jar /usr/share/java/jetty/jetty-runner.jar --port $IPT_PORT /usr/share/java/gbif/ipt.war
 Restart=on-failure
 User=ipt
 Group=ipt
