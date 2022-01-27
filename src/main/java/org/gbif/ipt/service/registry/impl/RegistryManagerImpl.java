@@ -531,10 +531,18 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<Network> networks = new ArrayList<>();
     if (resource != null && resource.getKey() != null) {
       try {
+        ExtendedResponse response = requestHttpGetFromRegistry(getResourceListNetworksURL(resource.getKey().toString()));
+
+        if (response.getStatusCode() != 200) {
+          throw new RegistryException(
+              Type.BAD_RESPONSE,
+              getResourceListNetworksURL(resource.getKey().toString()),
+              "Wrong response code " + response.getStatusCode());
+        }
+
+        String content = response.getContent();
         networks = gson
-            .fromJson(requestHttpGetFromRegistry(getResourceListNetworksURL(resource.getKey().toString())).getContent(),
-                new TypeToken<List<Network>>() {
-                }.getType());
+            .fromJson(content, new TypeToken<List<Network>>() {}.getType());
       } catch (RegistryException e) {
         // log as specific error message as possible about why the Registry error occurred
         String msg = RegistryException.logRegistryException(e, baseAction);
