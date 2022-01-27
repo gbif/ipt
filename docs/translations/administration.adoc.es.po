@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-01-27 17:18\n"
+"PO-Revision-Date: 2022-01-27 22:00\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -429,7 +429,7 @@ msgstr "Editar el registro en GBIF"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:109
 msgid "After the IPT has been registered, this page allows a user to update the IPT registration information. The update will ensure the IPT and all its registered resources are in sync with the GBIF Registry. *Administrators should run an update each time the public URL of the IPT changes*. Administrators can also run an update in order to update the title, description, contact name, and contact email of the IPT instance. This page does not support changing the hosting organization. To do so, administrators must contact the GBIF Helpdesk (helpdesk@gbif.org) directly."
-msgstr "Una vez que se ha registrado el IPT, esta página permite al usuario actualizar la información de registro del IPT. La actualización garantizará que el IPT y todos sus recursos registrados estén sincronizados con el Registro de GBIF. * Los administradores deben ejecutar una actualización cada vez que cambie la URL pública del IPT *. Los administradores también pueden ejecutar una actualización para actualizar el título, la descripción, el nombre de contacto y el correo electrónico de contacto de la instancia de IPT. Esta página no admitle el cambio de organización de alojamiento. Para hacerlo, los administradores deben comunicarse directamente con el servicio de asistencia de GBIF (helpdesk@gbif.org)."
+msgstr "Una vez registrado el IPT, esta página permite al usuario actualizar la información del registro en el IPT. La actualización asegurará que el IPT y todos sus recursos registrados estén sincronizados con el Registro de GBIF. *Los administradores deben ejecutar una actualización cada vez que la URL pública del IPT cambie*. Los administradores también pueden ejecutar una actualización para actualizar el título, la descripción, el nombre de contacto y el correo electrónico de contacto de la instancia del IPT. Esta página no permite cambiar la organización de alojamiento. Para ello, los administradores deben ponerse en contacto directamente con el Centro de ayuda GBIF (helpdesk@gbif.org)."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:110
@@ -441,7 +441,7 @@ msgstr "ipt2/administration/IPTAdminEditRegistration.png"
 #: en/modules/ROOT/pages/administration.adoc:112
 #, no-wrap
 msgid "Configure Organizations"
-msgstr "Configurar Organizaciones"
+msgstr "Configurar organizaciones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:114
