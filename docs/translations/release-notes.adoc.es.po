@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-01-13 16:56+0000\n"
-"PO-Revision-Date: 2022-01-13 17:00\n"
+"POT-Creation-Date: 2022-01-27 14:31+0000\n"
+"PO-Revision-Date: 2022-01-27 14:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -39,7 +39,7 @@ msgstr "Cambios importantes en esta versión"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
-#: en/modules/ROOT/pages/release-notes.adoc:87
+#: en/modules/ROOT/pages/release-notes.adoc:88
 #, no-wrap
 msgid "When all else fails"
 msgstr "Cuando todo lo demás falla"
@@ -63,8 +63,8 @@ msgstr "Asegúrese de *realizar copia de seguridad del directorio de datos del I
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:10
-msgid "Once an IPT has been upgraded to 2.3.x or later from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files."
-msgstr "Una vez que el IPT ha sido actualizado a 2.3.x o posterior desde la versión 2.2 o anterior, no será posible volver a una versión anterior debido a cambios en la configuración de los archivos del IPT."
+msgid "Once an IPT has been upgraded to 2.5.6 or later from 2.5.5 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:12
@@ -216,46 +216,51 @@ msgstr "La lista completa de características nuevas está documentada en la xre
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:78
+msgid "IPT 2.5.6 changes the way user passwords are stored to improve their security. Once the IPT has been upgraded to version 2.5.6 (or later), it is not possible to downgrade."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:79
 msgid "IPT 2.5.2 includes a bugfix for metadata editing. Use this version rather than 2.5.0 or 2.5.1."
 msgstr "IPT 2.5.2 incluye una corrección de errores en la edición de metadatos. Utilice esta versión en vez de la 2.5.0 o la 2.5.1."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:79
+#: en/modules/ROOT/pages/release-notes.adoc:80
 msgid "IPT 2.5.1 includes a bugfix to connect to database sources, but it otherwise identical to version 2.5.0."
 msgstr "IPT 2.5.1 incluye una corrección de errores para conectarse a las fuentes de la base de datos, pero por lo demás es idéntica a la versión 2.5.0."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:80
+#: en/modules/ROOT/pages/release-notes.adoc:81
 msgid "IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work."
 msgstr "El IPT 2.5.0 incluye concectores de bases de datos (bibliotecas JDBC) actualizados para MySQL, PostgreSQL, MS SQL Server, Sybase y Oracle. Por favor, compruebe que las configuraciones de su base de datos aún funciona."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:81
+#: en/modules/ROOT/pages/release-notes.adoc:82
 msgid "IPT 2.5.0 now includes a troubleshooting page, with full details accessible only to administrators, accessible from the main menu."
 msgstr "IPT 2.5.0 ahora incluye una página de solución de problemas, con todos los detalles accesibles sólo para los administradores desde el menú principal."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:82
+#: en/modules/ROOT/pages/release-notes.adoc:83
 msgid "IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions."
 msgstr "El IPT 2.5.0 puede ahora leer una ubicación de directorio de datos desde un contenedor servlet, vea el xref:installation.adoc#tomcat[paso 2] de las instrucciones de instalación."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:83
+#: en/modules/ROOT/pages/release-notes.adoc:84
 msgid "IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)"
 msgstr "El IPT 2.5.0 ya no es compatible con Microsoft Internet Explorer. (El propio Microsoft https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[ya no es compatible con MSIE] para sus servidores online MS365.)"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:84
+#: en/modules/ROOT/pages/release-notes.adoc:85
 msgid "The documentation has moved to this new location; links have been made from the old GitHub Wiki."
 msgstr "La documentación se ha movido a esta nueva ubicación; se aportarán enlaces desde la antigua Wiki de GitHub."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:86
+#: en/modules/ROOT/pages/release-notes.adoc:87
 msgid "If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release]."
 msgstr "Si está actualizando desde una versión anterior a la 2.4, por favor, consulte las notas de la link:../../../en/ipt/2.4/release-notes[versión antigua]."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:89
+#: en/modules/ROOT/pages/release-notes.adoc:90
 msgid "See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list]."
 msgstr "Explore las xref:faq.adoc[FAQ], que continúan siendo actualizadas con buenas preguntas, o pregunte en la https://lists.gbif.org/mailman/listinfo/ipt/[lista de mailing del IPT]."
 
