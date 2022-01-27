@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-01-27 22:28\n"
+"PO-Revision-Date: 2022-01-27 23:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -551,22 +551,22 @@ msgstr "ipt2/administration/IPTAdminOrgsAddOrg.png"
 #: en/modules/ROOT/pages/administration.adoc:141
 #, no-wrap
 msgid "Configure Core Types and Extensions"
-msgstr "Configurar Estándares y Extensiones"
+msgstr "Configurar estándares y extensiones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:143
 msgid "This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon Core Type supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. A distinction is made between Core Types and extensions. Core types provide the basis for data records, (Occurrence, Taxon, and Event for example) while extensions provide the means to associate additional data with a record of the Core Type. Only one Core Type can be selected for a given resource as explained under the \"Darwin Core Mappings\" heading of the \"Resource Overview\" section."
-msgstr "Esta página permite a un usuario con rol Administrador, importar y compartir varios tipos de datos predefinidos desde el Registro GBIF. Cada tipo incluye propiedades (campos, elementos) que soportan un propósito específico. Por ejemplo, el estándar Darwin Core Taxon, soporta información pertinente a nombres taxonómicos, nombre comunes, y conceptos del taxón, permitiendo al IPT alojar recursos para listas de chequeo taxonómico y nomenclatural. Hay una diferencia entre Estándares y Extensiones. Los estándares proveen la base para el registro de los datos (por ejemplo, Registros biológicos y Nombres taxonómicos), mientras que las extensiones facilitan los medios para asociar datos adicionales con un registro del estándar. Solamente un estándar puede ser seleccionado para un recurso de datos, como se explicó en el encabezado “Mapeo Darwin Core_” de la sección “Vista General del Recurso”."
+msgstr "Esta página permite a un usuario con el rol de Administrador habilitar la instancia del IPT para importar y compartir varios tipos de datos predefinidos del Registro de GBIF. Cada tipo incluye propiedades (campos, elementos) que soportan un propósito específico. Por ejemplo, el Estándar Darwin core Taxon soporta información relativa a nombres taxonómicos, usos de nombres de taxones y conceptos de taxones, y permite al IPT alojar recursos para listas taxonómicas y de nomenclatura. Hay una diferencia entre Estándares y Extensiones. Los estándares proveen la base para el registro de los datos (por ejemplo, Registros biológicos y Nombres taxonómicos), mientras que las extensiones facilitan los medios para asociar datos adicionales con un registro del estándar. Solamente un estándar puede ser seleccionado para un recurso de datos, como se explicó en el encabezado “Mapeo Darwin Core” de la sección “Vista general del recurso”."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:145
 msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
-msgstr "Los vocabularios contienen una lista de valores válidos que un elemento particular en un estándar o extensión pueda tomar. Por ejemplo, el https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario de Darwin Core] contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
+msgstr "Los vocabularios contienen una lista de valores válidos que puede tomar un elemento particular en un estándar o extensión. Por ejemplo, el https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario Darwin Core] contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:147
 msgid "Following the lists of installed Core Types and Extensions, there is a section labelled \"Synchronize Extensions and Vocabularies\" having a single button labelled \"Synchronize\". The latest versions of Core Types and Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section."
-msgstr "Luego de la lista de estándares y extensiones instaladas, se encuentra la sección \"Sincronizar extensiones y Vocabularios\" con un solo botón: \"Sincronizar\". Las versiones más recientes existentes en el Registro de GBIF de los estándares y las extensiones pero que aún no han sido instaladas, se encuentran listadas debajo de la sección de vocabularios."
+msgstr "Luego de la lista de estándares y extensiones instaladas, hay una sección llamada \"Sincronizar Extensiones y Vocabularios\" que tiene un único botón llamado \"Sincronizar\". Las últimas versiones de los estándares y extensiones que existen en el Registro de GBIF pero que aún no han sido instaladas están listadas debajo de la sección de Vocabularios."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:148
