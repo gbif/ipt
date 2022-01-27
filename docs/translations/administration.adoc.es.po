@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-01-27 14:43\n"
+"PO-Revision-Date: 2022-01-27 16:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -340,7 +340,7 @@ msgstr "ipt2/administration/IPTAdminRegistrationStep1.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:90
 msgid "If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its shared token must be known*. For explanations of the fields and selections on this form, refer to the information below."
-msgstr ""
+msgstr "Si el IPT supera el paso de validación anterior, aparecerá un formulario con información adicional necesaria para el registro. En este paso, la instancia del IPT se asocia a una organización. *La organización debe estar registrada en el Registro de GBIF y su token compartido debe ser conocido*. A continuación se encuentran las explicaciones de los campos y selecciones de este formato."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:91
@@ -364,7 +364,7 @@ msgstr "*Organización*: el cuadro seleccionado contiene una lista de organizaci
 #: en/modules/ROOT/pages/administration.adoc:97
 #, no-wrap
 msgid "*Organization's shared token* - the shared token registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's shared token, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Shared Token text box after selecting an organization in the Organization select box. The shared token will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
-msgstr ""
+msgstr "*Token compartido de la organización*: el token compartido registrado en GBIF para la organización seleccionada debe ser ingresado en esta caja de texto para verificar que el usuario tiene la autorización requerida para asociar la instancia de IPT con esa organización. Si no dispone del token compartido de la organización, puede solicitarlo al contacto registrado. Aparecerá un enlace al contacto principal registrado para la organización debajo del cuadro de texto \"Token compartido de la organización\" después de seleccionar una organización en el cuadro de selección Organización. El token compartido se utilizará para autenticar el registro del IPT cuando se pulse el botón \"Guardar\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:98
@@ -400,19 +400,19 @@ msgstr "*Nombre del contacto*: ingrese el nombre de la persona quien debe ser co
 #: en/modules/ROOT/pages/administration.adoc:103
 #, no-wrap
 msgid "*Contact Email* - enter the current email address of the person whose name is given in the Contact Name.\n"
-msgstr "*Correo Electrónico del Contacto* - Ingrese la dirección electrónica actual de la persona cuyo nombre fue ingresado en el campo anterior.\n"
+msgstr "*Correo electrónico del contacto*: ingrese la dirección electrónica actual de la persona cuyo nombre fue ingresado en el campo anterior.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:104
 #, no-wrap
 msgid "*IPT password* - enter the password that should be used to edit the entry for this IPT installation in the GBIF Registry.\n"
-msgstr "*Contraseña del IPT* - ingrese la contraseña que debe ser usada para editar la instalación de este IPT en el Registro GBIF.\n"
+msgstr "*Contraseña del IPT*: ingrese la contraseña que debe ser usada para editar la instalación de este IPT en el Registro GBIF.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:105
 #, no-wrap
 msgid "*Save* - when all of the information above is entered or selected, click on the button labelled \"Save\" to register the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organization. Also, after a successful registration, the Configure Organizations page will become accessible from the Administration menu.\n"
-msgstr "*Guardar* - Cuando toda la información anterior haya sido ingresada o seleccionada, haga clic sobre el botón “Guardar” para registrar la instalación del IPT ante el Registro GBIF. Después de realizar un registro exitoso de la instalación del IPT, la página, para configurar las opciones del Registro GBIF, mostrará que el IPT ya ha sido registrado y asociado con la organización seleccionada. Además, la página \"Configurar Organizaciones\" llegará a estar disponible en el \"Menú Administración\".\n"
+msgstr "*Guardar*: cuando toda la información anterior haya sido ingresada o seleccionada, haga clic sobre el botón “Guardar” para registrar la instalación del IPT ante el Registro de GBIF. Después de registrar con éxito la instalación del IPT la página para configurar las opciones del Registro GBIF mostrará que el IPT ya ha sido registrado y asociado con la organización seleccionada. Además, la página \"Configurar organizaciones\" será accesible desde el \"Menú administración\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:106
@@ -486,7 +486,7 @@ msgstr "*Nombre de la organización* - El título de la organización inscrita e
 #: en/modules/ROOT/pages/administration.adoc:128
 #, no-wrap
 msgid "*Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.\n"
-msgstr ""
+msgstr "*Token compartido de organización*: el token compartido que debe usarse para editar la entrada de esta organización en el Registro de GBIF.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:129
@@ -539,7 +539,7 @@ msgstr "Adicionar una Organización"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:138
 msgid "Organizations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labelled \"Add\" to open a page on which an additional organization can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the \"Edit Organization\" section above. After the desired organization is selected and all other data entered, including the shared token for the organization, click on the button labelled \"Save\" to add the selected organization to the list."
-msgstr ""
+msgstr "Las organizaciones no se pueden asociar con los recursos hasta que un usuario que tenga el rol de Administrador las agregue. Haga clic en el botón \"Añadir\" para abrir una página en la que se puede seleccionar una organización adicional del Registro de GBIF para ser utilizada en esta instancia del IPT. Para las explicaciones de los campos y selecciones de esta página, consulte la información en la sección \"Editar organización\" más arriba. Una vez seleccionada la organización deseada y diligenciados todos los demás datos, incluido el token compartido para la organización, haga clic en el botón \"Guardar\" para añadir la organización seleccionada a la lista."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:139
