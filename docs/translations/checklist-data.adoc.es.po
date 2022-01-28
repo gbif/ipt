@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-11-12 15:59\n"
+"PO-Revision-Date: 2022-01-28 00:50\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -21,12 +21,12 @@ msgstr ""
 #: en/modules/ROOT/pages/checklist-data.adoc:1
 #, no-wrap
 msgid "Checklist Data"
-msgstr "Datos del Listado Taxonómico"
+msgstr "Datos de listas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:4
 msgid "Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitized collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as xref:occurrence-data.adoc[Occurrence Data]. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata]."
-msgstr "Recursos que comprenden una lista de especies perteneciente a alguna categoría (ej.: taxonómica, geográfica, basada en riesgo, listas rojas, variedades silvestres de cultivo) y opcionalmente con una mayor clasificación y/o rasgos adicionales asociados con cada especie. Algunos ejemplos de estos conjuntos de datos incluyen listados taxonómicos de especies regional o global, listas rojas nacionales o internacionales, catálogos de especies incluidos en colecciones sin digitalizar, listado de especies de parques, etc. Si existe suficiente información en la fuente del conjunto de datos (o aplica de manera consistente a todas las especies de la lista de especies), se recomienda que estos conjuntos de datos se presenten como xref:occurrence-data.adoc[Datos de Presencia]. Estos conjuntos de datos incluyen la misma información descriptiva básica incluida en los xref:resource-metadata.adoc[Recursos de metadatos]."
+msgstr "Recursos que comprenden una lista de especies perteneciente a alguna categoría (p. ej., taxonómica, geográfica, basada en riesgo, listas rojas, variedades silvestres de cultivo) y opcionalmente con una mayor clasificación y/o rasgos adicionales asociados con cada especie. Algunos ejemplos de estos conjuntos de datos incluyen listas de especies a nivel regional o global, listas rojas nacionales o internacionales, catálogos de especies incluidos en colecciones sin digitalizar, listas de especies de parques, etc. Si existe suficiente información en la fuente del conjunto de datos (o aplica de manera consistente a todas las especies de la lista de especies), se recomienda que estos conjuntos de datos se presenten como xref:occurrence-data.adoc[Datos de registros biológicos]. Estos conjuntos de datos incluyen la misma información descriptiva básica incluida en los xref:resource-metadata.adoc[Metadatos del recurso]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/checklist-data.adoc:5
