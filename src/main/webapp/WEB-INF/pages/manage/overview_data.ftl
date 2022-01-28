@@ -135,6 +135,12 @@
                     <@s.text name='manage.overview.DwC.Mappings.description'/>
                 </p>
 
+                <#if !(potentialCores?size>0)>
+                    <p class="text-gbif-warning fst-italic">
+                        <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
+                    </p>
+                </#if>
+
                 <div class="details mb-3">
                     <#if mappingsModifiedSinceLastPublication>
                         <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?datetime?string.medium!}
@@ -223,17 +229,6 @@
                         </select>
                         <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
                     </form>
-                <#else>
-                    <div class="d-flex justify-content-start">
-                        <div class="input-group">
-                            <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.DwC.Mappings.cantdo" escapeHtml=true/>">
-                                <i class="bi bi-exclamation-triangle"></i>
-                            </button>
-                            <select class="form-select form-select-sm">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
                 </#if>
             </div>
         </div>
