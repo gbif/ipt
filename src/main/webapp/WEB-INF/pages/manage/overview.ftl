@@ -847,21 +847,22 @@
             </div>
         </div>
 
-        <#if resource.key?has_content>
-            <div class="my-3 p-3 bg-body rounded shadow-sm" id="networks">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
-                    <@popoverPropertyInfo "manage.overview.networks.description"/>
-                    <@s.text name="manage.overview.networks.title"/>
-                </h5>
 
-                <div class="row">
-                    <div class="col-lg-9 order-lg-last">
-                        <div class="mx-md-4 mx-2">
-                            <p>
-                                <@s.text name="manage.overview.networks.intro"/>
-                            </p>
+        <div class="my-3 p-3 bg-body rounded shadow-sm" id="networks">
+            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
+                <@popoverPropertyInfo "manage.overview.networks.description"/>
+                <@s.text name="manage.overview.networks.title"/>
+            </h5>
 
+            <div class="row">
+                <div class="col-lg-9 order-lg-last">
+                    <div class="mx-md-4 mx-2">
+                        <#if resource.key?has_content>
                             <#if (resourceNetworks?size>0)>
+                                <p>
+                                    <@s.text name="manage.overview.networks.intro"/>
+                                </p>
+
                                 <div class="details table-responsive">
                                     <table class="table table-sm table-borderless text-smaller">
                                         <#list resourceNetworks as n>
@@ -882,12 +883,20 @@
                                     </table>
                                 </div>
                             <#else>
-                                <@s.text name="manage.overview.networks.no.data"/>
+                                <p>
+                                    <@s.text name="manage.overview.networks.no.data"/>
+                                </p>
                             </#if>
-                        </div>
+                        <#else>
+                            <p class="text-gbif-warning fst-italic">
+                                <@s.text name="manage.overview.networks.not.registered"/>
+                            </p>
+                        </#if>
                     </div>
+                </div>
 
-                    <div class="col-lg-3 border-lg-right">
+                <div class="col-lg-3 border-lg-right">
+                    <#if resource.key?has_content>
                         <#if (potentialNetworks?size>0)>
                             <div class="mx-md-4 mx-2">
                                 <form action='resource-addNetwork.do' method='post'>
@@ -902,10 +911,10 @@
                                 </form>
                             </div>
                         </#if>
-                    </div>
+                    </#if>
                 </div>
             </div>
-        </#if>
+        </div>
 
         <div class="my-3 p-3 bg-body rounded shadow-sm" id="managers">
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
