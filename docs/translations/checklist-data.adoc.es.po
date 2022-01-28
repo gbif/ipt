@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2022-01-28 01:23\n"
+"PO-Revision-Date: 2022-01-28 20:11\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -186,5 +186,5 @@ msgstr "P. *¿Puedo actualizar el https://doi.org/10.15468/39omei[Árbol taxonó
 #: en/modules/ROOT/pages/checklist-data.adoc:52
 #, no-wrap
 msgid "*A.* Yes. To do so, you must publish your checklist, make it publicly available online under a GBIF-supported license (CC0, CC-BY, CC-BY-NC) and register it with GBIF. GBIF can then manually review it to determine if it is a suitable backbone source, e.g. by looking at how its names overlap with the backbone. Ideally the checklist will provide at least a minimal classification like a https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] and https://dwc.tdwg.org/terms/#dwc:family[family], be of high data quality meaning it has few name usage issues, include https://dwc.tdwg.org/terms/#dwc:scientificNameAuthorship[scientificNameAuthorship] of names, supplying the https://dwc.tdwg.org/terms/#dwc:namePublishedIn[namePublishedIn] reference, etc.\n"
-msgstr "*R.* Sí. Para hacerlo, debe publicar su listado de especies, hacerlo público de manera online bajo una licencia permitida por GBIF (CC0, CC-BY, CC-BY-NC) y registrarlo con GBIF. Entonces, GBIF lo revisará manualmente para determinar si es un recurso apropiado para el backbone, p. ej.,: comprobando como sus nombres coinciden con el Árbol taxonómico. Lo ideal es que el listado de especies proporcione al menos una clasificación mínima como un http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] y una http://rs.tdwg.org/dwc/terms/#family[family], tenga datos de alta calidad, es decir, que presente pocas incidencias en el uso de nombres, incluya http://rs.tdwg.org/dwc/terms/#scientificNameAuthorship[scientificNameAuthorship] para los nombres, proporcionando la referencia del http://rs.tdwg.org/dwc/terms/#namePublishedIn[namePublishedIn], etc.\n"
+msgstr "*R.* Si. Para hacerlo, debe publicar su listado de especies, hacerlo público de manera online bajo una licencia permitida por GBIF (CC0, CC-BY, CC-BY-NC) y registrarlo con GBIF. Entonces, GBIF lo revisará manualmente para determinar si es un recurso apropiado para el backbone, p. ej.,: comprobando como sus nombres coinciden con el Árbol taxonómico. Lo ideal es que el listado de especies proporcione al menos una clasificación mínima como un http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] y una http://rs.tdwg.org/dwc/terms/#family[family], tenga datos de alta calidad, es decir, que presente pocas incidencias en el uso de nombres, incluya http://rs.tdwg.org/dwc/terms/#scientificNameAuthorship[scientificNameAuthorship] para los nombres, proporcionando la referencia del http://rs.tdwg.org/dwc/terms/#namePublishedIn[namePublishedIn], etc.\n"
 
