@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-12-02 02:15\n"
+"PO-Revision-Date: 2022-01-28 23:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -37,7 +37,7 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/sampling-event-data.adoc:23
 #, no-wrap
 msgid "Templates"
-msgstr "Modelos"
+msgstr "Plantillas"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:24
@@ -62,7 +62,7 @@ msgstr "Campos DwC recomendados"
 #: en/modules/ROOT/pages/sampling-event-data.adoc:47
 #, no-wrap
 msgid "Exemplar datasets"
-msgstr "Conjuntos de datos ejemplares"
+msgstr "Conjuntos de datos de ejemplo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
@@ -83,7 +83,7 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
 #: en/modules/ROOT/pages/occurrence-data.adoc:39
 #: en/modules/ROOT/pages/sampling-event-data.adoc:43
 msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
-msgstr "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - para proporcionar la ubicación de un punto específico"
+msgstr "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum], para proporcionar la ubicación de un punto específico"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:40
@@ -95,12 +95,12 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
 #: en/modules/ROOT/pages/sampling-event-data.adoc:1
 #, no-wrap
 msgid "Sampling Event Data"
-msgstr "Datos de Eventos de Muestreo"
+msgstr "Datos de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:6
 msgid "Resources which present evidence not only of the occurrence of a species at a particular place and time, but also sufficient detail to assess community composition for a broader taxonomic group or relative abundance of species at multiple times and places.  Such datasets derive from standardized protocols for measuring and observing biodiversity.  Examples include vegetation transects, standardized bird census data, eco-genomic samples, etc. These add to Occurrence Data by indicating what protocol was followed, which occurrence records derive from a sampling event following the protocol, and ideally the relative abundance (by a suitable numerical measure) of species recorded in the sample.  These additional elements can support better comparison of the data from different times and places (where the same protocol is indicated) and may in some cases enable researchers to infer absence of particular species from particular sites. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata] and the same standard elements as in xref:occurrence-data.adoc[Occurrence Data]."
-msgstr "Recursos que muestran no solo la evidencia de la presencia de una especie en un lugar y momento particular, sino también suficiente detalle para evaluar la composición de las comunidades para un grupo taxonómico más amplio o la abundancia relativa de especies en múltiples momentos y lugares. Tales conjuntos de datos derivan de protocolos estandarizados para medir y observar la biodiversidad. Algunos ejemplos incluyen los transectos de vegetación, los datos estandarizados de censos de aves, muestras eco-genómicas, etc. Indicando que protocolo se siguió, estos conjuntos de datos añaden a los de Presencia de Especies información sobre qué registro de presencia deriva de un evento de muestro siguiendo el protocolo e, idealmente, la abundancia relativa (mediante una medida numérica apropiada) de las especies registradas en la muestra. Estos elementos adicionales pueden soportar mejores comparaciones de los datos de diferentes momentos y lugares (donde se indique el mismo protocolo) y, en algunos casos, puede permitir a los investigadores inferir ausencias de especies particulares de lugares particulares. Estos conjuntos de datos incluyen la misma información descriptiva básica de los xref:resource-metadata.adoc[metadatos de Recursos] y los mismos elementos estándar de xref:occurrence-data.adoc[Datos de Presencia de Especies]."
+msgstr "Recursos que muestran no solo la evidencia de la presencia de una especie en un lugar y momento particular, sino también suficiente detalle para evaluar la composición de las comunidades para un grupo taxonómico más amplio o la abundancia relativa de especies en múltiples momentos y lugares. Tales conjuntos de datos derivan de protocolos estandarizados para medir y observar la biodiversidad. Algunos ejemplos incluyen los transectos de vegetación, los datos estandarizados de censos de aves, muestras eco-genómicas, etc. Estos datos se añaden a los datos de ocurrencia indicando qué protocolo se siguió, qué registros de presencia se derivan de un evento de muestreo que sigue el protocolo e, idealmente, la abundancia relativa (mediante una medida numérica adecuada) de las especies registradas en la muestra. Estos elementos adicionales pueden ayudar a comparar mejor los datos de diferentes épocas y lugares (cuando se usa el mismo protocolo) y, en algunos casos, pueden permitir a los investigadores inferir la ausencia de determinadas especies en determinados lugares. Estos conjuntos de datos incluyen la misma información descriptiva básica incluida en los xref:resource-metadata.adoc[Metadatos del recurso] y los mismos elementos estándar que en xref:occurrence-data.adoc[Datos de registros biológicos]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/sampling-event-data.adoc:7
@@ -122,12 +122,12 @@ msgstr "En última instancia, sus datos deben transformarse en dos tablas utiliz
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:14
 msgid "Try putting your data into the <<Templates,Excel template>>, which includes two sheets: one for sampling events and another for associated species occurrences."
-msgstr "Pruebe a poner sus datos en el <<Modelos,modelo de Excel>>, que incluye dos hojas: una para los eventos de muestreo y otra para los registros de las especies asociados."
+msgstr "Pruebe poner sus datos en la <<Plantillas,plantilla de Excel>>, que incluye dos hojas: una para los eventos de muestreo y otra para los registros biológicos asociados."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:16
 msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write two SQL tables (views) using DwC column names: one for sampling events and another for associated species occurrences."
-msgstr "Alternativamente, si sus datos se almacenan en una xref:database-connection.adoc[base de datos compatible], puede escribir dos tablas SQL (ver) utilizando nombres de columnas DwC: una para los eventos de muestreo y otra para los registros de las especies asociados."
+msgstr "Alternativamente, si sus datos se almacenan en una xref:database-connection.adoc[base de datos compatible], puede escribir dos tablas SQL (ver) utilizando nombres de columnas DwC: una para los eventos de muestreo y otra para los registrosbiológicos asociados."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:18
@@ -142,12 +142,12 @@ msgstr "Del mismo modo, cada registro biológico de una especie debe incluir tod
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:22
 msgid "For extra guidance, you can refer to the guide xref:best-practices-sampling-event-data.adoc[Best Practices in Publishing Sampling-event data] and look at the <<Templates,template populated with example data>> or the list of <<Exemplar datasets,exemplar datasets>>."
-msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-checklists.adoc[Buenas Prácticas en la Publicación de Listados de Especies] y eche un vistazo a los <<Conjuntos de datos ejemplares,conjuntos de datos ejemplares>>."
+msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-checklists.adoc[Buenas Prácticas para la publicación de listados de especies] y eche un vistazo a los <<Conjuntos de datos de ejemplo,conjuntos de datos de ejemplos>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:27
 msgid "link:{attachmentsdir}/downloads/event_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/event_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
-msgstr "link:{attachmentsdir}/downloads/event_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Modelo de Excel]] link:link:{attachmentsdir}/downloads/event_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Modelo de Excel (con datos de ejemplo)]]"
+msgstr "link:{attachmentsdir}/downloads/event_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Plantilla de Excel]] link:link:{attachmentsdir}/downloads/event_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Plantilla de Excel (con datos de ejemplo)]]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:29
@@ -157,7 +157,7 @@ msgstr "Llene el formato y cárguelo al IPT."
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:33
 msgid "https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - also required for associated occurrence data (to link them together)"
-msgstr "https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - también es necesario para los datos de sucesos asociados (para vincularlos)"
+msgstr "https://dwc.tdwg.org/terms/#dwc:eventID[eventID], también es necesario para los datos de registros biológicos asociados (para vincularlos)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:35
@@ -172,27 +172,27 @@ msgstr "hhttps://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & http
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:40
 msgid "https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - in situations where the event is part of an event series"
-msgstr "https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - en situaciones en las que el evento es parte de una serie de eventos"
+msgstr "https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID], en situaciones en las que el evento es parte de una serie de eventos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:41
 msgid "https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event"
-msgstr "https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - para proporcionar evidencia del rigor del evento de muestreo"
+msgstr "https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort], para proporcionar evidencia del rigor del evento de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:42
 msgid "https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier"
-msgstr "https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - en situaciones en las que la parcela / transecta muestreada tiene un identificador único"
+msgstr "https://dwc.tdwg.org/terms/#dwc:locationID[locationID], en situaciones en las que la parcela/transecto muestreada tiene un identificador único"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:44
 msgid "https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - to provide a specific shape location"
-msgstr "https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - para proporcionar una ubicación de forma específica"
+msgstr "https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS], para proporcionar una ubicación de forma específica"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:46
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - only for associated occurrence data to record presence/absence data."
-msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - sólo para datos de sucesos asociados para registrar datos de presencia / ausencia."
+msgstr "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus], sólo para datos de registros biológicos asociados para registrar datos de presencia/ausencia."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:50
@@ -217,7 +217,7 @@ msgstr "Estudio sobre Lepidurus arcticus Noreste de Groenlandia 2013: http://gbi
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:54
 msgid "Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen: http://danbif.au.dk/ipt/archive.do?r=rooftop&v=1.4[DwC-A] / http://danbif.au.dk/ipt/resource?r=rooftop[IPT homepage]"
-msgstr "Insectos de una trampa de luz (1992–2009), rooftop Zoological Museum, Copenhagen: http://danbif.au.dk/ipt/archive.do?r=rooftop&v=1.4[DwC-A] / http://danbif.au.dk/ipt/resource?r=rooftop[IPT homepage]"
+msgstr "Insectos de una trampa de luz (1992–2009), rooftop Zoological Museum, Copenhagen: http://danbif.au.dk/ipt/archive.do?r=rooftop&v=1.4[DwC-A] / http://danbif.au.dk/ipt/resource?r=rooftop[página de inicio del IPT]"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/sampling-event-data.adoc:57
@@ -229,19 +229,19 @@ msgstr "P. ¿Cómo puedo indicar que un evento de muestreo forma parte de una se
 #: en/modules/ROOT/pages/sampling-event-data.adoc:60
 #, no-wrap
 msgid "*A.* All sampling events at the same location must share the same https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
-msgstr "*A.* Todos los eventos de muestreo en el mismo lugar deben compartir el mismo https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
+msgstr "*R.* Todos los eventos de muestreo en el mismo lugar deben compartir el mismo https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/sampling-event-data.adoc:61
 #, no-wrap
 msgid "Q. How do I publish a hierarchy of events (recursive data type) using parentEventID?"
-msgstr "Q. ¿Cómo puedo publicar una jerarquía de eventos (tipo de datos recursivos) utilizando parentEventID?"
+msgstr "R. ¿Cómo puedo publicar una jerarquía de eventos (tipo de datos recursivos) utilizando parentEventID?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:64
 #, no-wrap
 msgid "*A.* The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, all parentEventIDs must reference eventIDs of records defined in the same dataset. Otherwise, the parentEventID must be globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references.\n"
-msgstr "*R.* El ejemplo clásico es el submuestreo de una parcela más grande. Para agrupar todos los eventos de submuestreo (hijo) bajo el evento de muestreo (padre), el parentEventID de todos los eventos de submuestreo debe establecerse en el eventID del evento de muestreo (padre). Para que sean válidos, todos los parentEventIDs deben hacer referencia a eventIDs de registros definidos en el mismo conjunto de datos. De lo contrario, el parentEventID debe ser un identificador único global (p. ej. DOI, HTTP URI, etc.) que haga referencia a un registro de evento descrito en otro lugar. Lo ideal es que todos los eventos de submuestreo (hijos) compartan la misma fecha y ubicación que el evento (padre) al que hacen referencia.\n"
+msgstr "*R.* El ejemplo clásico es el submuestreo de una parcela más grande. Para agrupar todos los eventos de submuestreo (hijo) bajo el evento de muestreo (padre), el parentEventID de todos los eventos de submuestreo debe establecerse en el eventID del evento de muestreo (padre). Para que sean válidos, todos los parentEventIDs deben hacer referencia a eventIDs de registros definidos en el mismo conjunto de datos. De lo contrario, el parentEventID debe ser un identificador único global (p. ej., DOI, HTTP URI, etc.) que haga referencia a un registro de evento descrito en otro lugar. Lo ideal es que todos los eventos de submuestreo (hijos) compartan la misma fecha y ubicación que el evento (padre) al que hacen referencia.\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/sampling-event-data.adoc:65
@@ -253,7 +253,7 @@ msgstr "P. ¿Cómo puedo publicar datos de ausencia?"
 #: en/modules/ROOT/pages/sampling-event-data.adoc:68
 #, no-wrap
 msgid "*A.* *Step 1*: Include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] demonstrates how this looks.\n"
-msgstr "*A.* *Paso 1*: Incluir los registros de eventos de muestreo, incluso si el muestreo no produjo registros biológicos de especies derivados. Esto permite inferir la ausencia de especies. Este http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[ejemplo de conjunto de datos de eventos de muestreo de Noruega] muestra cómo se ve esto.\n"
+msgstr "*R.* *Paso 1*: Incluir los registros de eventos de muestreo, incluso si el muestreo no produjo registros biológicos de especies derivados. Esto permite inferir la ausencia de especies. Este http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[ejemplo de conjunto de datos de eventos de muestreo de Noruega] muestra cómo se ve esto.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:70
@@ -283,7 +283,7 @@ msgstr "hhttps://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:79
 msgid "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair. \"e.g. 0 individuals\""
-msgstr "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] par. \"e.j. 0 individuos\""
+msgstr "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] \"p. e.j., 0 individuos\""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:81
@@ -299,5 +299,5 @@ msgstr "Puede encontrar instrucciones para crear un listado de especies xref:che
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:84
 msgid "To link the checklist to the sampling event dataset, add the checklist to the dataset metadata in the xref:manage-resources.adoc#external-links[External links] section."
-msgstr "Para vincular el listado de especies al conjunto de datos del evento de muestreo, añada la lista de comprobación a los metadatos del conjunto de datos en la sección xref:manage-resources.adoc#external-links[Enlaces Externos]."
+msgstr "Para vincular el listado de especies al conjunto de datos del evento de muestreo, añada la lista de comprobación a los metadatos del conjunto de datos en la sección xref:manage-resources.adoc#external-links[Enlaces externos]."
 
