@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2022-01-28 22:59\n"
+"PO-Revision-Date: 2022-01-28 23:29\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -139,7 +139,7 @@ msgstr "Puede aumentar su tabla incluyendo columnas DwC adicionales, pero sólo 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:24
 msgid "link:{attachmentsdir}/downloads/occurrence_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/occurrence_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
-msgstr "link:{attachmentsdir}/downloads/occurrence_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Modelo de Excel]] link:{attachmentsdir}/downloads/occurrence_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Modelo de Excel (con datos de ejemplo)]]"
+msgstr "link:{attachmentsdir}/downloads/occurrence_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Plantilla de Excel]] link:{attachmentsdir}/downloads/occurrence_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Plantilla de Excel (con datos de ejemplo)]]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:26
@@ -211,7 +211,7 @@ msgstr "P. ¿Cómo puedo generalizar datos de registros biológicos de especies 
 #: en/modules/ROOT/pages/occurrence-data.adoc:55
 #, no-wrap
 msgid "*A.* How you generalize sensitive species data (e.g. restrict the resolution of the data) depends on the species' category of sensitivity. Where there is low risk of perverse outcomes, unrestricted publication of sensitive species data remains appropriate. Note it is the responsibility of the publisher to protect sensitive species occurrence data. For guidance, please refer to this https://www.gbif.org/resource/80512[best-practice guide]. You could refer to this http://science.sciencemag.org/content/356/6340/800[recent essay in Science], which presents a simplified assessment scheme that can be used to help assess the risks from publishing sensitive species data.\n"
-msgstr "*A.* La manera de generalizar los datos de especies sensibles (por ejemplo, restringiendo la resolución de los datos) depende de la categoría de sensibilidad de la especie. Cuando hay un bajo riesgo de resultados negativos, sigue siendo apropiada la publicación sin restricciones de los datos de especies sensibles. Tenga en cuenta que es responsabilidad del editor proteger los datos sobre la presencia de especies sensibles. Para obtener orientación, consulte esta https://www.gbif.org/resource/80512[guía de buenas prácticas]. Puede consultar este http://science.sciencemag.org/content/356/6340/800[ensayo reciente en Science], que presenta un esquema de evaluación simplificado que puede utilizarse para ayudar a evaluar los riesgos de la publicación de datos sobre especies sensibles.\n"
+msgstr "*R.* La manera de generalizar los datos de especies sensibles (por ejemplo, restringiendo la resolución de los datos) depende de la categoría de sensibilidad de la especie. Cuando hay un bajo riesgo de resultados negativos, sigue siendo apropiada la publicación sin restricciones de los datos de especies sensibles. Tenga en cuenta que es responsabilidad del editor proteger los datos de registros biológicos de especies sensibles. Para obtener orientación, consulte esta https://www.gbif.org/resource/80512[guía de buenas prácticas]. Puede consultar este http://science.sciencemag.org/content/356/6340/800[ensayo reciente en Science], que presenta un esquema de evaluación simplificado que puede utilizarse para ayudar a evaluar los riesgos de la publicación de datos sobre especies sensibles.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:57
