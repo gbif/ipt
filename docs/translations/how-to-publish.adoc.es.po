@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2021-12-14 13:22\n"
+"PO-Revision-Date: 2022-01-28 00:19\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -43,7 +43,7 @@ msgstr "Cómo publicar datos sobre biodiversidad a través de GBIF.org"
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:4
 msgid "GBIF supports publication, discovery and use of four classes of data:"
-msgstr "GBIF admite la publicación, el descubrimiento y el uso de cuatro clases de datos:"
+msgstr "GBIF admite la publicación, la búsqueda y el uso de cuatro clases de datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:6
@@ -55,7 +55,7 @@ msgstr "xref:resource-metadata.adoc[Metadatos del recurso]"
 #: en/modules/ROOT/pages/how-to-publish.adoc:7
 #: en/modules/ROOT/pages/how-to-publish.adoc:39
 msgid "xref:checklist-data.adoc[Checklist Data]"
-msgstr "xref:checklist-data.adoc[Datos de listado taxonómico]"
+msgstr "xref:checklist-data.adoc[Datos de listas taxonómicas]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:8
@@ -72,7 +72,7 @@ msgstr "xref:sampling-event-data.adoc[Datos de eventos de muestreo]"
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:11
 msgid "At the simplest, GBIF enables sharing information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support an increasingly richer and wider range of information on species, their distributions and abundance."
-msgstr "En su forma más simple, GBIF permite compartir información que describe un recurso de datos de biodiversidad – incluso cuando actualmente no hay más información digital disponible del recurso. Otras clases de datos respaldan una gama de información cada vez más rica y con mayor rango de información sobre las especies, sus distribuciones y su abundancia."
+msgstr "En su forma más simple, GBIF permite compartir información que describe un recurso de datos de biodiversidad, incluso cuando actualmente no hay más información digital disponible del recurso. Otras clases de datos respaldan una gama de información cada vez más rica y con mayor rango de información sobre las especies, sus distribuciones y su abundancia."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:13
@@ -82,7 +82,7 @@ msgstr "Se recomienda a los publicadores de datos que compartan sus datos utiliz
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:15
 msgid "To give yourself an introduction to how the IPT can be used to publish biodiversity data through GBIF.org, it's highly recommended watching this concise 25 minute live demo below:"
-msgstr "Para darse una introducción a cómo se puede utilizar el IPT para publicar datos de biodiversidad a través de GBIF.org, se recomienda ver esta concisa demostración en vivo de 25 minutos a continuación:"
+msgstr "Para que usted tenga una idea de cómo se puede utilizar el IPT para publicar datos sobre la biodiversidad a través de GBIF.org, se recomienda que vea la concisa demostración en vivo de 25 minutos a continuación:"
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17
