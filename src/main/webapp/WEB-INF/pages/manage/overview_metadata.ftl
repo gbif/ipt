@@ -4,7 +4,7 @@
         <#assign metadataHeaderInfo>
             <@s.text name='manage.metadata.description'/>
             <#if resource.coreType?has_content && resource.coreType==metadataType>
-                </br></br>
+                <br><br>
                 <@s.text name='manage.overview.source.hidden'>
                     <@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param>
                 </@s.text>
@@ -20,6 +20,12 @@
             <p class="mx-md-4 mx-2">
                 <@s.text name="manage.overview.metadata.description"/>
             </p>
+
+            <#if missingMetadata>
+                <p class="mx-md-4 mx-2 text-gbif-warning fst-italic">
+                    <@s.text name="manage.overview.missing.metadata"/>
+                </p>
+            </#if>
 
             <div class="table-responsive mx-md-4 mx-2">
                 <table class="table table-sm">
@@ -50,19 +56,7 @@
                 </form>
                 <form action='metadata-basic.do' method='get' class="my-1">
                     <input name="r" type="hidden" value="${resource.shortname}"/>
-                    <#if missingMetadata>
-                        <div class="btn-group" role="group">
-                            <#assign metadataSubmitWarning>
-                                <@s.text name="manage.overview.missing.metadata"/>
-                            </#assign>
-                            <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${metadataSubmitWarning}">
-                                <i class="bi bi-exclamation-triangle"></i>
-                            </button>
-                            <@s.submit cssClass="btn btn-sm btn-outline-warning" name="edit" key="button.edit"/>
-                        </div>
-                    <#else>
-                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
-                    </#if>
+                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
                 </form>
             </div>
         </div>
