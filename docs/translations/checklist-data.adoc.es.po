@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2022-01-28 00:50\n"
+"PO-Revision-Date: 2022-01-28 01:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: en/modules/ROOT/pages/checklist-data.adoc:1
 #, no-wrap
 msgid "Checklist Data"
-msgstr "Datos de listas"
+msgstr "Datos de listas de especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:4
@@ -44,24 +44,24 @@ msgstr "ipt2/flow-cd.png"
 #: en/modules/ROOT/pages/checklist-data.adoc:10
 #: en/modules/ROOT/pages/occurrence-data.adoc:11
 msgid "Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names."
-msgstr "Finalmente, sus datos deben ser transformados a una estructura de tabla utilizando nombres de términos Darwin Core (DwC) como nombres de las columnas."
+msgstr "Finalmente, sus datos deben ser transformados a una estructura de tabla utilizando nombres de elementos Darwin Core (DwC) como nombres de las columnas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:12
 #: en/modules/ROOT/pages/occurrence-data.adoc:13
 msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
-msgstr "Intente poner sus datos en el <<Modelos,modelo Excel>>, que incluye todos los <<Campos DwC requeridos,campos DwC requridos>> y los <<Campos DwC recomendados,campos DwC recomendados>>."
+msgstr "Intente poner sus datos en el <<Plantillas,plantilla de Excel>>, que incluye todos los <<Campos DwC requeridos, campos DwC requridos>> y los <<Campos DwC recomendados,campos DwC recomendados>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:14
 #: en/modules/ROOT/pages/occurrence-data.adoc:15
 msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible."
-msgstr "De manera alternativa, si sus datos están en una xref:database-connection.adoc[base de datos compatible], puede elaborar una tabla SQL (ver) utilizando nombres de columnas DwC. Sea cuidadoso para incluir todos los <<Required DwC Fields,required DwC fields>> y añada tantos <<Recommended DwC Fields,recommended DwC fields>> como sea posible."
+msgstr "De manera alternativa, si sus datos están en una xref:database-connection.adoc[base de datos compatible], puede elaborar una tabla SQL (ver) utilizando nombres de columnas DwC. Sea cuidadoso para incluir todos los <<Campos DwC requeridos, campos DwC requridos>> y añada tantos <<Campos DwC recomendados,campos DwC recomendados>> como sea posible."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:16
 msgid "For extra guidance, you can refer to the guide xref:best-practices-checklists.adoc[Best Practices in Publishing Species Checklists] and look at the <<Exemplar Datasets,exemplar datasets>>."
-msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-checklists.adoc[Buenas Prácticas en la Publicación de Listados de Especies] y eche un vistazo a los <<Conjuntos de datos ejemplares,conjuntos de datos ejemplares>>."
+msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-checklists.adoc[Buenas prácticas para la publicación de listas de especies] y eche un vistazo a los <<Conjuntos de datos de ejemplo, conjuntos de datos de ejemplo>>."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:17
@@ -69,17 +69,17 @@ msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-ch
 #: en/modules/ROOT/pages/sampling-event-data.adoc:23
 #, no-wrap
 msgid "Templates"
-msgstr "Modelos"
+msgstr "Plantillas"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:21
 msgid "link:{attachmentsdir}/downloads/checklist_ipt_template_v1.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
-msgstr "link:{attachmentsdir}/downloads/checklist_ipt_template_v1.xlsx[image:ipt2/excel-template2.png[Modelo de Excel]] link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[image:ipt2/excel-template-data2.png[Modelo de Excel (con datos de ejemplo)]"
+msgstr "link:{attachmentsdir}/downloads/checklist_ipt_template_v1.xlsx[image:ipt2/excel-template2.png[Plantilla de Excel]] link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[image:ipt2/excel-template-data2.png[Plantilla de Excel (con datos de ejemplo)]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:23
 msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}.xml[list]."
-msgstr "Rellénelo y súbalo al IPT. Intente ampliarlo con tantos  http://rs.tdwg.org/dwc/terms/[términos DwC] como pueda. Puede ampliar su tabla central con columnas DwC extras pero solo con términos DwC de esta {latest-dwc-taxon}.xml[list]."
+msgstr "Complételo y súbalo al IPT. Intente ampliarlo con tantos  http://rs.tdwg.org/dwc/terms/[elementos DwC] como pueda. Puede ampliar su tabla central con columnas DwC extras pero solo con términos DwC de esta {latest-dwc-taxon}.xml[lista]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:24
@@ -136,12 +136,12 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:acceptedNameUsageID[acceptedNameUsageID]
 #: en/modules/ROOT/pages/sampling-event-data.adoc:47
 #, no-wrap
 msgid "Exemplar datasets"
-msgstr "Conjuntos de datos ejemplares"
+msgstr "Conjuntos de datos de ejemplo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:39
 msgid "Database of Vascular Plants of Canada (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[IPT homepage]"
-msgstr "Base de datos de Plantas Vasculares de Canadá (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[portada del IPT]"
+msgstr "Base de datos de Plantas Vasculares de Canadá (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[página en el IPT]"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
@@ -162,7 +162,7 @@ msgstr "P. *¿Cómo añado nombres comunes al registro de un taxón?*"
 #: en/modules/ROOT/pages/checklist-data.adoc:45
 #, no-wrap
 msgid "*A.* Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this {latest-vernacularname}[list]. You can upload this table to the IPT, and map it to the {latest-vernacularname}[Vernacular Name extension].\n"
-msgstr "*R.* Elabora una tabla de nombres comunes. La tabla debe incluir una columna taxonID. De esa forma, cada fila puede vincularse al registro (principal) del taxón. Puede ampliar su tabla de nombres comunes con columnas adicionales pero solo utilizando nombres de términos de esta {latest-vernacularname}[list]. Puede subir esta tabla al IPT y llevarla a la {latest-vernacularname}[extensión de Nombres Vernáculos].\n"
+msgstr "*R.* Elabore una tabla de nombres comunes. La tabla debe incluir una columna taxonID. De esa forma, cada fila puede vincularse al registro (principal) del taxón. Puede ampliar su tabla de nombres comunes con columnas adicionales pero solo utilizando nombres de términos de esta {latest-vernacularname}[lista]. Puede subir esta tabla al IPT y llevarla a la {latest-vernacularname}[extensión Vernacular Name].\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/checklist-data.adoc:46
@@ -174,17 +174,17 @@ msgstr "P. *¿Cómo añado el estado de amenaza de una esecie tal como define la
 #: en/modules/ROOT/pages/checklist-data.adoc:49
 #, no-wrap
 msgid "*A.* Make a table of geographic distributions of a taxon. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your geographic distributions table with extra columns such as the threat status, but only using term names from this {latest-species-distribution}[list]. You can upload this table to the IPT, and map it to the {latest-species-distribution}[Species Distribution extension].\n"
-msgstr "*R.* Elabore una tabla de distribuciones geográficas para un taxón. La tabla debe incluir una columna taxonID. De esa forma, cada fila puede vincularse al registro (principal) del taxón. Puede ampliar su tabla de distribuciones geográficas con columnas adicionales como el estado de amenaza pero solo utilizando nombres de términos de esta {latest-species-distribution}[list]. Puede subir esta tabla al IPT y llevarla a la {latest-vernacularname}[extensión de Distribución de Especies].\n"
+msgstr "*R.* Elabore una tabla de distribuciones geográficas para un taxón. La tabla debe incluir una columna taxonID. De esa forma, cada fila puede vincularse al registro (principal) del taxón. Puede ampliar su tabla de distribuciones geográficas con columnas adicionales como el estado de amenaza pero solo utilizando nombres de términos de esta {latest-species-distribution}[lista]. Puede subir esta tabla al IPT y llevarla a la {latest-vernacularname}[extensión de Distribución de especies].\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/checklist-data.adoc:50
 #, no-wrap
 msgid "Q. *Can I update the https://doi.org/10.15468/39omei[GBIF Backbone Taxonomy] with names from my checklist?*"
-msgstr "P. *¿Puedo subir la https://doi.org/10.15468/39omei[Taxonomía del Backbone de GBIF] con nombres de mi listado de especies?*"
+msgstr "P. *¿Puedo actualizar el https://doi.org/10.15468/39omei[Árbol taxonómico de GBIF] con nombres de mi listado de especies?*"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:52
 #, no-wrap
 msgid "*A.* Yes. To do so, you must publish your checklist, make it publicly available online under a GBIF-supported license (CC0, CC-BY, CC-BY-NC) and register it with GBIF. GBIF can then manually review it to determine if it is a suitable backbone source, e.g. by looking at how its names overlap with the backbone. Ideally the checklist will provide at least a minimal classification like a https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] and https://dwc.tdwg.org/terms/#dwc:family[family], be of high data quality meaning it has few name usage issues, include https://dwc.tdwg.org/terms/#dwc:scientificNameAuthorship[scientificNameAuthorship] of names, supplying the https://dwc.tdwg.org/terms/#dwc:namePublishedIn[namePublishedIn] reference, etc.\n"
-msgstr "*R.* Sí. Para hacerlo, debe publicar su listado de especies, hacerlo público de manera online bajo una licencia permitida por GBIF (CC0, CC-BY, CC-BY-NC) y registrarlo con GBIF. Entonces, GBIF lo revisará manualmente para determinar si es un recurso apropiado para el backbone, ej.: comprobando como sus nombres se solapan con el backbone. Lo ideal es que el listado de especies proporcione al menos una clasificación mínima como un http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] y una http://rs.tdwg.org/dwc/terms/#family[family] tenga datos de alta calidad, es decir, que presente pocas incidencias en el uso de nombres, incluya http://rs.tdwg.org/dwc/terms/#scientificNameAuthorship[scientificNameAuthorship] para los nombres, proporcionando la referencia del http://rs.tdwg.org/dwc/terms/#namePublishedIn[namePublishedIn], etc.\n"
+msgstr "*R.* Sí. Para hacerlo, debe publicar su listado de especies, hacerlo público de manera online bajo una licencia permitida por GBIF (CC0, CC-BY, CC-BY-NC) y registrarlo con GBIF. Entonces, GBIF lo revisará manualmente para determinar si es un recurso apropiado para el backbone, p. ej.,: comprobando como sus nombres coinciden con el Árbol taxonómico. Lo ideal es que el listado de especies proporcione al menos una clasificación mínima como un http://rs.tdwg.org/dwc/terms/#kingdom[kingdom] y una http://rs.tdwg.org/dwc/terms/#family[family], tenga datos de alta calidad, es decir, que presente pocas incidencias en el uso de nombres, incluya http://rs.tdwg.org/dwc/terms/#scientificNameAuthorship[scientificNameAuthorship] para los nombres, proporcionando la referencia del http://rs.tdwg.org/dwc/terms/#namePublishedIn[namePublishedIn], etc.\n"
 
