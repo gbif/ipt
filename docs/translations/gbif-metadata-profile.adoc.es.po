@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-01-31 21:23\n"
+"PO-Revision-Date: 2022-01-31 21:54\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -701,14 +701,14 @@ msgid "| Term       | Definition\n\n"
 "| {eml-location}/eml-coverage.html#endDate[endDate]| Subfield of rangeOfDates field: It may be used multiple times with a beginDate field to document multiple date ranges.  A single time stamp signifying the end of some time period. The calendar date field is used to express a date, giving the year, month, and day. The format should be one that complies with the International Standards Organization's standard 8601. The recommended format for EML is YYYY-MM-DD, where Y is the four digit year, M is the two digit month code (01 - 12, where January = 01), and D is the two digit day of the month (01 - 31). This field can also be used to enter just the year portion of a date. E.g. 2010-09-20.\n\n"
 "| {eml-location}/eml-coverage.html#singleDateTime[singleDateTime] | The SingleDateTime field is intended to describe a single date and time for an event.\n"
 msgstr "| Término        | Definición\n\n"
-"| {eml-location}/eml-coverage.html#beginDate [Fecha de inicio] | Subcampo del campo rangeOfDates: Se puede usar varias veces con un campo Fecha de término para documentar múltiples rangos de fechas. Un tiempo único significa el comienzo de un período de tiempo. El campo de fecha (calendario) se usa para expresar una fecha, proporcionando el año, mes y día. El formato debe cumplir con el estándar 8601 de la Organización Internacional de Estándares. El formato recomendado para EML es AAAA-MM-DD, donde Y es el año de cuatro dígitos, M es el código de mes de dos dígitos (01 - 12, donde enero = 01) y D es el día del mes de dos dígitos (01 - 31). Este campo también se puede usar para ingresar solo una parte del año de una fecha. P.ej. 2010-09-20\n\n"
-"| {eml-location} /eml-coverage.html#endDate [Fecha de término] | Subcampo del campo rangeOfDates: Se puede usar varias veces con un campo Fecha de inicio para documentar múltiples rangos de fechas. Un tiempo único significa el final de algún período de tiempo. El campo de fecha del calendario se usa para expresar una fecha, proporcionando el año, mes y día. El formato debe cumplir con el estándar 8601 de la Organización Internacional de Estándares. El formato recomendado para EML es AAAA-MM-DD, donde Y es el año de cuatro dígitos, M es el código de mes de dos dígitos (01 - 12, donde enero = 01) y D es el día del mes de dos dígitos (01 - 31). Este campo también se puede usar para ingresar solo la parte del año de una fecha. P.ej. 2010-09-20.\n\n"
+"| {eml-location}/eml-coverage.html#beginDate [Fecha inicial (beginDate)] | Subcampo del campo Rango de fechas (rangeOfDates): Se puede usar varias veces con un campo Fecha final para documentar múltiples rangos de fechas. Un tiempo único significa el comienzo de un período de tiempo. El calendario se usa para expresar una fecha, proporcionando el año, mes y día. El formato debe cumplir con el estándar 8601 de la Organización Internacional de Estándares. El formato recomendado para EML es AAAA-MM-DD, donde A es el año de cuatro dígitos, M es el código de mes de dos dígitos (01 - 12, donde enero = 01) y D es el día del mes de dos dígitos (01 - 31). Este campo también se puede usar para ingresar solo la parte correspondiente al año de una fecha. P.ej., 2010-09-20\n\n"
+"| {eml-location} /eml-coverage.html#endDate [Fecha de final (endDate)] | Subcampo del campo Rango de fechas (rangeOfDates): Se puede usar varias veces con un campo de Fecha inicial para documentar múltiples rangos de fechas. Un tiempo único significa el final de algún período de tiempo. El calendario se usa para expresar una fecha, proporcionando el año, mes y día. El formato debe cumplir con el estándar 8601 de la Organización Internacional de Estándares. El formato recomendado para EML es AAAA-MM-DD, donde A es el año de cuatro dígitos, M es el código de mes de dos dígitos (01 - 12, donde enero = 01) y D es el día del mes de dos dígitos (01 - 31). EEste campo también se puede usar para ingresar solo la parte correspondiente al año de una fecha. P. ej., 2010-09-20.\n\n"
 "| {eml-location} /eml-coverage.html#singleDateTime [Fecha única] | El campo Fecha única está diseñado para describir una única fecha y hora para un evento.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:296
 msgid "This field documents scientific methods used in the collection of the resource. It includes information on items such as tools, instrument calibration and software."
-msgstr "Este campo documenta los métodos científicos utilizados en la recopilación del recurso. Incluye información sobre elementos como herramientas, calibración de instrumentos y software."
+msgstr "Este campo documenta los métodos de muestreo utilizados durante la colecta del recurso. Incluye información sobre elementos como herramientas, calibración de instrumentos y software."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:309
@@ -720,16 +720,16 @@ msgid "| Term            | Definition\n\n"
 "| {eml-location}/eml-methods.html#studyExtent[studyExtent] | Subfield of the sampling field. The coverage field allows for a textual description of the specific sampling area, the sampling frequency (temporal boundaries, frequency of occurrence), and groups of living organisms sampled (taxonomic coverage). The field studyExtent represents both a specific sampling area and the sampling frequency (temporal boundaries, frequency of occurrence). The geographic studyExtent is usually a surrogate (representative area of) for the larger area documented in the \"studyAreaDescription\".\n\n"
 "| {eml-location}/eml-methods.html#samplingDescription[samplingDescription] | Subfield of the sampling field. The samplingDescription field allows for a text-based/human readable description of the sampling procedures used in the research project. The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article.\n"
 msgstr "| Término      | Definición\n\n"
-"| {eml-location}/eml-methods.html#methodStep[methodStep] | El campo methodStep permite conjuntos repetidos de elementos que documentan una serie de procedimientos seguidos para producir un objeto de datos. Estos incluyen descripciones de texto de los procedimientos, literatura relevante, software, instrumentación, datos de origen y cualquier medida de control de calidad tomada.\n\n"
-"| {eml-location}/eml-methods.html#qualityControl[qualityControl] | El campo qualityControl proporciona una ubicación para la descripción de las acciones tomadas para controlar o evaluar la calidad de los datos resultantes del paso del método asociado.\n\n"
-"| {eml-location}/eml-methods.html#sampling[sampling]| Descripción de los procedimientos de muestreo, incluida la cobertura geográfica, temporal y taxonómica del estudio.\n\n"
-"| {eml-location}/eml-methods.html#studyExtent[studyExtent]| Subcampo del campo de muestreo. El campo studyExtent permite una descripción textual del área de muestreo específica, la frecuencia de muestreo (límites temporales, frecuencia de ocurrencia) y grupos de organismos vivos muestreados (cobertura taxonómica). La extensión del estudio de campo representa tanto un área de muestreo específica como la frecuencia de muestreo (límites temporales, frecuencia de ocurrencia). La extensión geográfica del estudio suele ser un sustituto (área representativa de) del área más grande documentada en la \"descripción del área de estudio\".\n\n"
-"| {eml-location}/eml-methods.html#samplingDescription[sampleDescription]| Subcampo del campo de muestreo. El campo sampleDescription permite una descripción basada en texto legible por humanos de los procedimientos de muestreo utilizados en el proyecto de investigación. El contenido de este elemento sería similar a una descripción de los procedimientos de muestreo que se encuentran en la sección de métodos de un artículo de revista.\n"
+"| {eml-location}/eml-methods.html#methodStep[Metodología paso a paso (methodStep)] | El campo Metodología paso a paso (methodStep) permite la repetición de conjuntos de elementos que documentan una serie de procedimientos seguidos para producir un objeto de datos. Incluyen descripciones de texto de los procedimientos, la literatura pertinente, el software, la instrumentación, los datos de origen y cualquier medida de control de calidad \n\n"
+"| {eml-location}/eml-methods.html#qualityControl[Control de calidad (qualityControl)] | El campo Control de calidad (qualityControl) proporciona un lugar para documentar las acciones tomadas para controlar o evaluar la calidad de los datos resultantes del paso del método asociado.\n\n"
+"| {eml-location}/eml-methods.html#sampling[Muestreo (sampling)]| Descripción de los métodos de muestreo, incluida la cobertura geográfica, temporal y taxonómica del estudio.\n\n"
+"| {eml-location}/eml-methods.html#studyExtent[Extensión del estudio (studyExtent)]| Subcampo del campo de muestreo. El campo Extensión del estudio (studyExtent) permite una descripción textual del área de muestreo específica, la frecuencia de muestreo (límites temporales, frecuencia de ocurrencia) y grupos de organismos vivos muestreados (cobertura taxonómica). La extensión del estudio de campo representa tanto un área de muestreo específica como la frecuencia de muestreo (límites temporales, frecuencia de ocurrencia). La extensión geográfica del estudio suele ser un sustituto (área representativa de) del área más grande documentada en la \"descripción del área de estudio\".\n\n"
+"| {eml-location}/eml-methods.html#samplingDescription[Descripción del muestrepo (sampleDescription)]| Subcampo del campo de muestreo. El campo Descripción del muestrepo (sampleDescription) permite una descripción basada en texto legible por humanos de los procedimientos de muestreo utilizados en el proyecto de investigación. El contenido de este elemento sería similar a una descripción de los procedimientos de muestreo que se encuentran en la sección de métodos de un artículo científico.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:314
 msgid "Contain a rights management statement for the resource, or a reference to a service providing such information."
-msgstr "Contener una declaración de gestión de derechos para el recurso o una referencia a un servicio que proporciona dicha información."
+msgstr "Contiene una declaración de gestión de derechos para el recurso o una referencia a un servicio que proporciona dicha información."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:321
@@ -738,19 +738,19 @@ msgid "| Term           | Definition\n\n"
 "| {eml-location}/eml-dataset.html#purpose[purpose] | A description of the purpose of this dataset.\n\n"
 "| {eml-location}/eml-resource.html#intellectualRights[intellectualRights] | A rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might include requirements for use, requirements for attribution, or other requirements the owner would like to impose. E.g., © 2001 Regents of the University of California Santa Barbara. Free for use by all individuals provided that the owners are acknowledged in any use or publication.\n"
 msgstr "| Término     | Definición\n\n"
-"| {eml-location}/eml-dataset.html#purpose[purpose] | Una descripción del propósito de este conjunto de datos.\n\n"
-"| {eml-location}/eml-resource.html#intellectualRights[intelectualRights] | Una declaración de derechos para el recurso o una referencia a un servicio que proporciona dicha información. La información sobre derechos abarca los derechos de propiedad intelectual (IPR), los derechos de autor y varios derechos de propiedad. En el caso de un conjunto de datos, los derechos pueden incluir requisitos de uso, requisitos de atribución u otros requisitos que el propietario quisiera imponer. Por ejemplo, © 2001 Regents de la Universidad de California en Santa Bárbara. Gratis para uso de todas las personas siempre que se reconozca a los propietarios en cualquier uso o publicación.\n"
+"| {eml-location}/eml-dataset.html#purpose[Propósito (purpose)] | Una descripción del propósito de este conjunto de datos.\n\n"
+"| {eml-location}/eml-resource.html#intellectualRights[Derechos intelectuales (intelectualRights)] | Una declaración de derechos para el recurso o una referencia a un servicio que proporciona dicha información. La información sobre derechos abarca los derechos de propiedad intelectual (IPR), los derechos de autor y varios derechos de propiedad. En el caso de un conjunto de datos, los derechos pueden incluir requisitos de uso, requisitos de atribución u otros requisitos que el propietario quisiera imponer. Por ejemplo, © 2001 Regents de la Universidad de California en Santa Bárbara. Gratis para uso de todas las personas siempre que se reconozca a los propietarios en cualquier uso o publicación.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:323
 #, no-wrap
 msgid "Additional Metadata + http://www.tdwg.org/activities/ncd/[Natural Collections Description Data (NCD)] Related"
-msgstr "Metadatos adicionales relacionados + http://www.tdwg.org/activities/ncd/[Datos de descripción de colecciones naturales (NCD)]"
+msgstr "Metadatos adicionales + http://www.tdwg.org/activities/ncd/[Datos de descripción de colecciones naturales (NCD)] relacionados"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:326
 msgid "The additionalMetadata field is a container for any other relevant metadata that pertains to the resource being described. This field allows EML to be extensible in that any XML-based metadata can be included in this element. The elements provided here in the GMP include those required for conformance with ISO 19139 and a subset of NCD (Natural Collections Descriptions) elements."
-msgstr "El campo additionalMetadata es un contenedor para cualquier otro metadato relevante que pertenezca al recurso que se describe. Este campo permite que EML sea extensible ya que cualquier metadato basado en XML puede incluirse en este elemento. Los elementos proporcionados aquí en las GMP incluyen aquellos requeridos para la conformidad con ISO 19139 y un subconjunto de elementos NCD (Descripciones de Colecciones Naturales)."
+msgstr "El campo Metadatos adicionales (additionalMetadata) es un contenedor para cualquier otro metadato relevante que pertenezca al recurso que se describe. Este campo permite que EML sea extensible, ya que cualquier metadato basado en XML puede incluirse en este elemento. Los elementos proporcionados aquí en las GMP incluyen aquellos requeridos para la conformidad con ISO 19139 y un subconjunto de elementos NCD (Descripciones de colecciones naturales)."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:359
@@ -772,19 +772,19 @@ msgid "| Term                   | Definition\n\n"
 "| jgtiCuratorialUnit\n"
 "a| A quantitative descriptor (number of specimens, samples or batches). The actual quantification could be covered by\n\n"
 msgstr "| Término | Definición\n\n"
-"| dateStamp | La fecha y hora en que se creó o modificó el documento de metadatos. Por ejemplo, 2002-10-23T18:13:51.235+01: 00\n\n"
-"| metadataLanguage | El idioma en el que está escrito el documento de metadatos (a diferencia del recurso que se describe por los metadatos). Compuesto por un código de tres letras ISO639-2/T y un código de país de tres letras ISO3166-1. Por ejemplo, en_GB\n\n"
-"| hierarchyLevel | Nivel del conjunto de datos al que se aplican los metadatos; el valor predeterminado es \"conjunto de datos\", por ejemplo, dataset\n\n"
-"| {eml-location}/eml-literature.html#citation[citation] | La cita por la obra en sí. Ver {eml-location}/eml-literature.html#citation[eml]\n\n"
-"| bibliography | Una lista de citas (ver más abajo) que forman una bibliografía sobre la literatura relacionada/utilizada en el conjunto de datos\n\n"
-"| physical| Un elemento contenedor para todos los elementos que le permiten describir las características internas/externas y la distribución de un objeto de datos (por ejemplo, dataObject, dataFormat, distribution). Puede repetir.\n\n"
-"| resourceLogoUrl |URL del logotipo asociado a un recurso. Por ejemplo, http://www.gbif.org/logo.jpg\n\n"
-"| parentCollectionIdentifier | Subcampo del campo de colección. Es un campo opcional. Identificador de la colección principal de esta subcolección. Permite crear una jerarquía de colecciones y subcolecciones.\n\n"
-"| collectionName | Subcampo del campo de colección. Es un campo opcional. Nombre oficial de la Colección en el idioma local.\n\n"
-"| collectionIdentifier | Subcampo del campo de colección. Es un campo opcional. El URI (LSID o URL) de la colección. En RDF, se usa como URI del recurso de colección.\n\n"
-"| formationPeriod | Descripción de texto del período de tiempo durante el cual se reunió la colección. Por ejemplo, \"victoriana\" o \"1922-1932\" o \"c. 1750\".\n\n"
-"| livingTimePeriod | Período de tiempo durante el cual el material biológico estuvo vivo (para colecciones paleontológicas).\n\n"
-"| specimenPreservationMethod | Palabra clave de la lista de selección que indica el proceso o la técnica utilizada para prevenir el deterioro físico de las colecciones muertas. Se espera que contenga una instancia del vocabulario del término de tipo de método de preservación de muestras. Por ejemplo, formaldehído.\n\n"
+"| Fecha (dateStamp) | La fecha y hora en que se creó o modificó el documento de metadatos. Por ejemplo, 2002-10-23T18:13:51.235+01: 00\n\n"
+"| Lenguaje de los metadatos (metadataLanguage) | El idioma en el que está escrito el documento de metadatos (a diferencia del de el recurso que se describe en los metadatos). Compuesto por un código de tres letras ISO639-2/T y un código de país de tres letras ISO3166-1. Por ejemplo, en_GB\n\n"
+"| Nivel jerárquico (hierarchyLevel) | Nivel del conjunto de datos al que se aplican los metadatos, el valor predeterminado es \"conjunto de datos\", p. ej.,, dataset\n\n"
+"| {eml-location}/eml-literature.html#citation[ Referencia (citation)] | La cita de la obra en sí. Ver {eml-location}/eml-literature.html#citation[eml]\n\n"
+"| Bibliografía (bibliography) | Una lista de citas (ver más abajo) que forman una bibliografía sobre la literatura relacionada/utilizada en el conjunto de datos\n\n"
+"| physical| Un elemento contenedor para todos los elementos que le permiten describir las características internas/externas y la distribución de un objeto de datos (por ejemplo, dataObject, dataFormat, distribution). Se puede repetir.\n\n"
+"| URL del logo del recurso (resourceLogoUrl) |URL del logo asociado a un recurso. Por ejemplo, http://www.gbif.org/logo.jpg\n\n"
+"| Identificador de la colección parentsl (parentCollectionIdentifier) | Subcampo del campo de colección. Es un campo opcional. Identificador de la colección principal de esta subcolección. Permite crear una jerarquía de colecciones y subcolecciones.\n\n"
+"| Nombre de la colección (collectionName)| Subcampo del campo de colección. Es un campo opcional. Nombre oficial de la Colección en el idioma local.\n\n"
+"| Identificador de la colección (collectionIdentifier) | Subcampo del campo de colección. Es un campo opcional. El URI (LSID o URL) de la colección. En RDF, se usa como URI del recurso de colección.\n\n"
+"| Periodo de formación (formationPeriod) | Descripción de texto del período de tiempo durante el cual se reunió la colección. Por ejemplo, \"victoriana\" o \"1922-1932\" o \"c. 1750\".\n\n"
+"| Periodo de vida (livingTimePeriod) | Período de tiempo durante el cual el material biológico estuvo vivo (para colecciones paleontológicas).\n\n"
+"| Método de preservación de especímenes (specimenPreservationMethod) | Palabra clave de la lista de selección que indica el proceso o la técnica utilizada para prevenir el deterioro físico de las colecciones muertas. Se espera que contenga una instancia del vocabulario del término de tipo de método de preservación de muestras. Por ejemplo, formaldehído.\n\n"
 "| jgtiCuratorialUnit\n"
 "a| Un descriptor cuantitativo (número de especímenes, muestras o lotes). La cuantificación real podría estar cubierta por\n\n"
 
