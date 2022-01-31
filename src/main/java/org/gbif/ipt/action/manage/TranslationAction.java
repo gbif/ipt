@@ -42,6 +42,8 @@ import org.apache.logging.log4j.Logger;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
+import freemarker.ext.beans.SimpleMapModel;
+
 public class TranslationAction extends ManagerBaseAction {
 
   private static final long serialVersionUID = -8350422710092468050L;
@@ -118,7 +120,7 @@ public class TranslationAction extends ManagerBaseAction {
   private PropertyMapping field;
   private ExtensionProperty property;
   private ExtensionMapping mapping;
-  private Map<String, String> vocabTerms = new HashMap<>();
+  private SimpleMapModel vocabTerms;
   private Integer mid;
 
   @Inject
@@ -211,7 +213,9 @@ public class TranslationAction extends ManagerBaseAction {
         notFound = false;
         property = mapping.getExtension().getProperty(field.getTerm());
         if (property.getVocabulary() != null) {
-          vocabTerms = vocabManager.getI18nVocab(property.getVocabulary().getUriString(), getLocaleLanguage(), true);
+          Map<String, String> vocabTermsRawData =
+              vocabManager.getI18nVocab(property.getVocabulary().getUriString(), getLocaleLanguage(), true);
+          vocabTerms = new SimpleMapModel(vocabTermsRawData, null);
         }
         if (!trans.isLoaded(mapping.getExtension().getRowType(), field.getTerm())) {
           reloadSourceValues();
@@ -314,7 +318,7 @@ public class TranslationAction extends ManagerBaseAction {
     return trans.getTranslatedValues();
   }
 
-  public Map<String, String> getVocabTerms() {
+  public SimpleMapModel getVocabTerms() {
     return vocabTerms;
   }
 
