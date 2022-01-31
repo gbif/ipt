@@ -444,6 +444,69 @@
                         <@s.text name="manage.overview.published.intro"/>
                     </p>
 
+                    <!-- resources cannot be published if the mandatory metadata is missing -->
+                    <#if missingMetadata>
+                        <p class="mx-md-4 mx-2 text-gbif-warning fst-italic">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <@s.text name="manage.overview.published.missing.metadata"/>
+                        </p>
+
+                        <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
+                    <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+                        <p class="mx-md-4 mx-2 text-gbif-warning fst-italic">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
+                        </p>
+
+                        <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
+                    <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
+                    || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
+                    || resource.status == "REGISTERED">
+                        <!-- the user must have registration rights -->
+                        <#if !currentUser.hasRegistrationRights()>
+                            <p class="mx-md-4 mx-2 text-gbif-warning fst-italic">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <@s.text name="manage.resource.status.publication.forbidden"/>
+                                &nbsp;<@s.text name="manage.resource.role.change"/>
+                            </p>
+
+                            <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
+                        <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
+                        || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
+                        && !organisationWithPrimaryDoiAccount??>
+
+                            <p class="mx-md-4 mx-2 text-gbif-warning fst-italic">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
+                            </p>
+
+                            <!-- when a DOI is reserved.. -->
+                        <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                            <!-- and the resource has no existing DOI and its status is private..  -->
+                            <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
+                                <!-- and the resource has never been published before, the first publication is a new major version -->
+                                <#if !resource.lastPublished??>
+                                    <p class="mx-md-4 mx-2 text-gbif-warning fst-italic">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
+                                    </p>
+
+                                    <!-- and the resource has been published before, the next publication is a new minor version -->
+                                <#else>
+                                    <p class="mx-md-4 mx-2 text-gbif-primary fst-italic">
+                                        <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
+                                    </p>
+                                </#if>
+
+                                <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
+                            <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
+                                <p class="mx-md-4 mx-2 text-gbif-primary fst-italic">
+                                    <@s.text name="manage.overview.publishing.doi.register.help"/>
+                                </p>
+                            </#if>
+                        </#if>
+                    </#if>
+
                     <div class="details">
                         <#assign lastPublishedTitle><@s.text name="manage.overview.published.last.publication.intro"/></#assign>
                         <#assign nextPublishedTitle><@s.text name="manage.overview.published.next.publication.intro"/></#assign>
@@ -768,6 +831,40 @@
                                     </table>
                                 </div>
                             </#if>
+
+                            <#if resource.status=="PUBLIC">
+                                <#if !currentUser.hasRegistrationRights()>
+                                    <!-- Show warning: user must have registration rights -->
+                                    <p class="text-gbif-warning fst-italic">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                                    </p>
+                                <#elseif missingValidPublishingOrganisation?string == "true">
+                                    <!-- Show warning: user must assign valid publishing organisation -->
+                                    <p class="text-gbif-warning fst-italic">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        <@s.text name="manage.overview.visibility.missing.organisation"/>
+                                    </p>
+                                <#elseif missingRegistrationMetadata?string == "true">
+                                    <!-- Show warning: user must fill in minimum registration metadata -->
+                                    <p class="text-gbif-warning fst-italic">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        <@s.text name="manage.overview.visibility.missing.metadata" />
+                                    </p>
+                                <#elseif !resource.isLastPublishedVersionPublic()>
+                                    <!-- Show warning: last published version must be publicly available to register -->
+                                    <p class="text-gbif-warning fst-italic">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
+                                    </p>
+                                <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
+                                    <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
+                                    <p class="text-gbif-warning fst-italic">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
+                                    </p>
+                                </#if>
+                            </#if>
                         </div>
                     </div>
                 </div>
@@ -788,50 +885,25 @@
                                         <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                                     </#assign>
 
-                                    <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${visibilityConfirmRegistrationWarning}">
-                                            <i class="bi bi-exclamation-triangle"></i>
-                                        </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
-                                    </div>
+                                    <@s.submit cssClass="confirmRegistration btn btn-sm  btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
                                 <#elseif missingValidPublishingOrganisation?string == "true">
                                     <!-- Disable register button and show warning: user must assign valid publishing organisation -->
-                                    <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.organisation" escapeHtml=true/>">
-                                            <i class="bi bi-exclamation-triangle"></i>
-                                        </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
-                                    </div>
+                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
                                 <#elseif missingRegistrationMetadata?string == "true">
                                     <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
-                                    <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.visibility.missing.metadata" escapeHtml=true/>">
-                                            <i class="bi bi-exclamation-triangle"></i>
-                                        </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
-                                    </div>
+                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
                                 <#elseif !resource.isLastPublishedVersionPublic()>
                                     <!-- Disable register button and show warning: last published version must be publicly available to register -->
-                                    <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.notPublic" escapeHtml=true/>">
-                                            <i class="bi bi-exclamation-triangle"></i>
-                                        </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
-                                    </div>
+                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
                                 <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                     <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                    <div class="btn-group my-1" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>">
-                                            <i class="bi bi-exclamation-triangle"></i>
-                                        </button>
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-secondary" name="register" key="button.register" disabled="true"/>
-                                    </div>
+                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
                                 <#else>
-                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary my-1" name="register" key="button.register"/>
+                                    <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register"/>
                                 </#if>
                             <#else>
                                 <#if resource.status=="PRIVATE">
-                                    <@s.submit name="makePrivate" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.public"/>
+                                    <@s.submit name="makePrivate" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.public"/>
                                 </#if>
                             </#if>
                         </form>
@@ -839,7 +911,7 @@
                         <#if resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
                             <#assign actionMethod>makePrivate</#assign>
                             <form action='resource-${actionMethod}.do' method='post'>
-                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary my-1" name="unpublish" key="button.private" />
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-primary" name="unpublish" key="button.private" />
                             </form>
                         </#if>
                     </div>
@@ -888,8 +960,9 @@
                                 </p>
                             </#if>
                         <#else>
-                            <p class="text-gbif-warning fst-italic">
-                                <@s.text name="manage.overview.networks.not.registered"/>
+                            <p class="text-gbif-warning">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <em><@s.text name="manage.overview.networks.not.registered"/></em>
                             </p>
                         </#if>
                     </div>
