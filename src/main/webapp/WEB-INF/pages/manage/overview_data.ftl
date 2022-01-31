@@ -137,6 +137,7 @@
 
                 <#if !(potentialCores?size>0)>
                     <p class="text-gbif-warning fst-italic">
+                        <i class="bi bi-exclamation-triangle"></i>
                         <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
                     </p>
                 </#if>

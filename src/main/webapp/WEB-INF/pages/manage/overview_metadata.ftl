@@ -23,6 +23,7 @@
 
             <#if missingMetadata>
                 <p class="mx-md-4 mx-2 text-gbif-warning fst-italic">
+                    <i class="bi bi-exclamation-triangle"></i>
                     <@s.text name="manage.overview.missing.metadata"/>
                 </p>
             </#if>
