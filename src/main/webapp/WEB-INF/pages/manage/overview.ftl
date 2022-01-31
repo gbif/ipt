@@ -386,22 +386,22 @@
                 </div>
             </div>
 
-            <#if resource.status == "DELETED" && !currentUser.hasRegistrationRights()>
-                <div class="mx-md-4 mx-2">
-                    <p class="text-gbif-warning fst-italic">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        <@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                    </p>
-                </div>
-            </#if>
-
-            <#if currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "PRIVATE")>
-                <div class="mx-md-4 mx-2">
-                    <p class="text-gbif-warning fst-italic">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                    </p>
-                </div>
+            <#if !currentUser.hasRegistrationRights()>
+                <#if resource.status == "DELETED">
+                    <div class="mx-md-4 mx-2">
+                        <p class="text-gbif-warning fst-italic">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                        </p>
+                    </div>
+                <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
+                    <div class="mx-md-4 mx-2">
+                        <p class="text-gbif-warning fst-italic">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                        </p>
+                    </div>
+                </#if>
             </#if>
 
             <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
