@@ -609,9 +609,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (IOException e) {
       throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (Exception e) {
-      String msg = "Bad registry response: " + e.getMessage();
-      LOG.error(msg, e);
-      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+      if (!(e instanceof RegistryException)) {
+        String msg = "Bad registry response: " + e.getMessage();
+        LOG.error(msg, e);
+        throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+      }
     }
   }
 
@@ -633,9 +635,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (IOException e) {
       throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (Exception e) {
-      String msg = "Bad registry response: " + e.getMessage();
-      LOG.error(msg, e);
-      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+      if (!(e instanceof RegistryException)) {
+        String msg = "Bad registry response: " + e.getMessage();
+        LOG.error(msg, e);
+        throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+      }
     }
   }
 
