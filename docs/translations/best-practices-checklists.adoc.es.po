@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:14\n"
+"PO-Revision-Date: 2022-01-31 22:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,7 +35,7 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Species Checklists"
-msgstr "Mejores prácticas para la publicación de Listados Taxonómicos"
+msgstr "Buenas prácticas para la publicación de listados taxonómicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:4
@@ -66,9 +66,9 @@ msgid "| Version | Description             | Date of release | Author(s)\n\n"
 "| xref:best-practices-checklists.adoc[2.1] | Transferred to AsciiDoctor | 24 May 2021 | Matthew Blissett\n"
 msgstr "| Version | Descripción            | Fecha de lanzamiento| Autor(es)\n\n"
 "| 1.0     | Versión de lanzamiento        | 1° Abril 2011    | David Remsen\n\n"
-"| https://links.gbif.org/checklist_best_practices[1.11] | Cambios editoriales menores | 28 Abril 2011   | David Remsen\n\n"
-"| https://github.com/gbif/ipt/wiki/BestPracticesChecklists[2.0] | Transferido a wiki, cambios importantes | 30 Marzo 2017   | Kyle Braak\n\n"
-"| xref:best-practices-checklists.adoc[2.1] | Transferido a AsciiDoctor | 24 Mayo 2021 | Matthew Blissett\n"
+"| https://links.gbif.org/checklist_best_practices[1.11] | Cambios editoriales menores | 28 de abril 2011   | David Remsen\n\n"
+"| https://github.com/gbif/ipt/wiki/BestPracticesChecklists[2.0] | Transferido a wiki, cambios importantes | 30 de marzo 2017   | Kyle Braak\n\n"
+"| xref:best-practices-checklists.adoc[2.1] | Transferido a AsciiDoctor | 24 de mayo 2021 | Matthew Blissett\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:21
@@ -83,7 +83,7 @@ msgstr "Citación sugerida"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:25
 msgid "GBIF (2017) Best Practices in Publishing Species Checklists, version 2.1. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
-msgstr "GBIF (2017) Mejores Prácticas en la Publicación de Listados de Especies, versión 2.1. Copenhague: Secretariado de GBIF. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
+msgstr "GBIF (2017) Buenas prácticas en la publicación de listados taxonómicos, versión 2.1. Copenhague: Secretaría de GBIF. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-checklists"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:27
