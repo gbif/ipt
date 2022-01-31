@@ -343,32 +343,23 @@
                     <#else>
                         <#if !currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED")>
                             <div class="btn-group btn-group-sm" role="group">
-                                <#assign resourceUndeleteInfo>
-                                    <@s.text name="manage.resource.status.deletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
-                                </#assign>
-                                <button type="button" class="btn btn-outline-gbif-danger align-self-start" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
-                                    <i class="bi bi-exclamation-triangle"></i>
+                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
+                                    <@s.text name="button.delete"/>
                                 </button>
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
-                                        <@s.text name="button.delete"/>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
-                                        <li>
-                                            <form action="resource-delete.do" method='post'>
-                                                <input name="r" type="hidden" value="${resource.shortname}" />
-                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" name="delete" key="button.delete.fromIptAndGbif"/>
-                                            </form>
-                                        </li>
-                                        <li>
-                                            <form action="resource-deleteFromIpt.do" method='post'>
-                                                <input name="r" type="hidden" value="${resource.shortname}" />
-                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" name="delete" key="button.delete.fromIpt"/>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-
+                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
+                                    <li>
+                                        <form action="resource-delete.do" method='post'>
+                                            <input name="r" type="hidden" value="${resource.shortname}" />
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" name="delete" key="button.delete.fromIptAndGbif"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="resource-deleteFromIpt.do" method='post'>
+                                            <input name="r" type="hidden" value="${resource.shortname}" />
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" name="delete" key="button.delete.fromIpt"/>
+                                        </form>
+                                    </li>
+                                </ul>
                             </div>
                         <#else>
                             <div class="btn-group btn-group-sm" role="group">
@@ -395,14 +386,23 @@
                 </div>
             </div>
 
-            <div class="mx-md-4 mx-2">
-                <#if resource.status == "DELETED" && !currentUser.hasRegistrationRights()>
+            <#if resource.status == "DELETED" && !currentUser.hasRegistrationRights()>
+                <div class="mx-md-4 mx-2">
                     <p class="text-gbif-warning fst-italic">
                         <i class="bi bi-exclamation-triangle"></i>
-                        <@s.text name="manage.resource.status.undeletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
+                        <@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                     </p>
-                </#if>
-            </div>
+                </div>
+            </#if>
+
+            <#if currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "PRIVATE")>
+                <div class="mx-md-4 mx-2">
+                    <p class="text-gbif-warning fst-italic">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                    </p>
+                </div>
+            </#if>
 
             <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
         </div>
@@ -717,6 +717,13 @@
                             </#if>
                         </p>
 
+                        <#if resource.isDeprecatedAutoPublishingConfiguration()>
+                            <p class="text-gbif-warning fst-italic">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
+                            </p>
+                        </#if>
+
                         <#if resource.usesAutoPublishing()>
                             <div class="details table-responsive mt-3">
                                 <table class="table table-sm table-borderless text-smaller">
@@ -738,16 +745,7 @@
                     <div class="mx-md-4 mx-2">
                         <form action='auto-publish.do' method='get'>
                             <input name="r" type="hidden" value="${resource.shortname}"/>
-                            <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>">
-                                        <i class="bi bi-exclamation-triangle"></i>
-                                    </button>
-                                    <@s.submit name="edit" cssClass="btn btn-sm btn-outline-warning" key="button.edit"/>
-                                </div>
-                            <#else>
-                                <@s.submit name="edit" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.edit"/>
-                            </#if>
+                            <@s.submit name="edit" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.edit"/>
                         </form>
                     </div>
                 </div>
