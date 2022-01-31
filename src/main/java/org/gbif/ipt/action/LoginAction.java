@@ -91,6 +91,7 @@ public class LoginAction extends POSTAction {
             authUser.setLastLoginToNow();
             userManager.save();
             session.put(Constants.SESSION_USER, authUser);
+            req.getSession().setMaxInactiveInterval(cfg.getSessionTimeout());
             // remember previous URL to redirect back to
             setRedirectUrl();
             return SUCCESS;
