@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-11-30 19:38\n"
+"PO-Revision-Date: 2022-01-31 15:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -55,13 +55,13 @@ msgstr "Instrucciones"
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:7
 #, no-wrap
 msgid "Document Control"
-msgstr "Documento de control"
+msgstr "Control del documento"
 
 #. type: Title =
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:1
 #, no-wrap
 msgid "GBIF Metadata Profile – How-to Guide"
-msgstr "Perfil de metadatos de GBIF - Guía práctica"
+msgstr "Guía práctida del perfil de metadatos de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:4
@@ -82,30 +82,30 @@ msgid "| Version | Description                  | Date of release | Author(s)\n\
 "| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0]     | Transferred to wiki, major edits | 19 June 2017      | Kyle Braak\n"
 "| xref:gbif-metadata-profile.adoc[2.1]     | Transferred to AsciiDoctor documentation | 25 May 2021      | Matthew Blissett\n"
 msgstr "| Versión | Descripción | Fecha de lanzamiento | Autor (es)\n\n"
-"| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0] | Comprobación de la coherencia en los documentos relevantes, enlaces actualizados a los sitios de producción, texto e imágenes actualizados para reflejar las funcionalidades actuales. | 1 de marzo de 2011 | KB, BK, MR\n"
+"| http://links.gbif.org/gbif_metadata_profile_how-to_en_v1[1.0] | Se ha comprobado la coherencia de los documentos pertinentes, se han actualizado los enlaces a los sitios de producción y se han actualizado los textos y las imágenes para reflejar las funcionalidades actuales. | 1 de marzo de 2011 | KB, BK, MR\n"
 "| https://github.com/gbif/ipt/wiki/GMPHowToGuide[2.0] | Transferido a wiki, ediciones importantes | 19 de junio de 2017 | Kyle Braak\n"
-"| xref: gbif-metadata-profile.adoc [2.1] | Transferido a la documentación de AsciiDoctor | 25 de mayo de 2021 | Matthew Blissett\n"
+"| xref: gbif-metadata-profile.adoc [2.1] | Transferido a la documentación AsciiDoctor | 25 de mayo de 2021 | Matthew Blissett\n"
 
 #.  The date uses the last change, ignoring formatting etc.
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:21
 msgid "GBIF (2011). GBIF Metadata Profile – How-to Guide, (contributed by Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhagen: GBIF Secretariat ISBN: 87-92020-24-0, accessible online at: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
-msgstr "GBIF (2011). Perfil de metadatos de GBIF - Guía práctica, (contribución de Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhague: Secretaría de GBIF ISBN: 87-92020-24-0, accesible en línea en: https: // ipt .gbif.org / manual / es / ipt / {página-versión} / gbif-metadata-profile"
+msgstr "GBIF (2011). Guía práctica del perfil de metadatos de GBIF, (contribución de Ó Tuama, Éamonn, Braak, K. Remsen, D.), Copenhague: Secretaría de GBIF ISBN: 87-92020-24-0, disponible en línea en: https://ipt.gbif.org/manual/en/ipt/{page-version}/gbif-metadata-profile"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:23
 msgid "_Cover Art Credit: John Giez, Maidenhair fern sporophyte, Adiatum sp._"
-msgstr "_Portada Crédito de arte: John Giez, esporofito de helecho Cabello de doncella, Adiatum sp._"
+msgstr "_Portada Crédito de arte: John Giez, esporofito del helecho cabello de doncella, Adiatum sp._"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:27
 msgid "Documenting the provenance and scope of datasets is required in order to publish data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ that enable users to evaluate the fitness-for-use of a dataset."
-msgstr "Es necesario documentar la procedencia y alcance de los conjuntos de datos para publicar datos a través de la red de GBIF. La documentación de los conjuntos de datos es conocida como \"metadatos de los recursos\" que permite a los usuarios evaluar la aptitud para el uso de un conjunto de datos."
+msgstr "La documentación de la procedencia y el alcance de los conjuntos de datos es necesaria para publicar los datos a través de la red de GBIF. La documentación de los conjuntos de datos se denomina \"metadatos de recursos\" y permite a los usuarios evaluar la aptitud para el uso (fitness-for-use) de un conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:29
 msgid "There are various ways to write a metadata document conforming to the GBIF Metadata Profile (GMP). This How-To Guide will go through the most common ways, such as using the GBIF Integrated Publishing Toolkit (IPT) metadata editor, the GBIF Resource Metadata template (pending), or generating a metadata document manually. The guide also serves as a reference guide to the GBIF Metadata Profile itself."
-msgstr "Hay varias maneras de escribir un documento de metadatos conforme al Perfil de Metadatos de GBIF (GMP). Esta guía práctica recorrerá las formas más comunes, como el uso del editor de metadatos del kit de herramientas de publicación integrado de GBIF (IPT), la plantilla de los metadatos de los recursos de GBIF (pendiente), o la generación manual de un documento de metadatos. La guía también sirve como guía de referencia para el propio Perfil de Metadatos de GBIF."
+msgstr "Hay varias formas de escribir un documento de metadatos conforme al Perfil de metadatos de GBIF (GMP). Esta guía práctica recorrerá las formas más comunes, como el uso del editor de metadatos del Integrated Publishing Toolkit (IPT) de GBIF, la plantilla de metadatos de recursos de GBIF (pendiente) o la generación manual de un documento de metadatos. La guía también sirve como guía de referencia al Perfil de metadatos de GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:31
