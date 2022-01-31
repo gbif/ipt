@@ -316,13 +316,13 @@
 
             <div class="row g-2 mx-md-4 mx-2">
                 <div class="col-lg-10">
-                    <span>
+                    <p>
                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                             <@s.text name="manage.overview.description.metadataOnly"/>
                         <#else>
                             <@s.text name="manage.overview.description"/>
                         </#if>
-                    </span>
+                    </p>
                 </div>
 
                 <div class="col-lg-2 d-lg-flex justify-content-lg-end">
@@ -338,19 +338,7 @@
                         <form action='resource-undelete.do' method='post'>
                             <input name="r" type="hidden" value="${resource.shortname}" />
 
-                            <#if !currentUser.hasRegistrationRights()>
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <#assign resourceUndeleteInfo>
-                                        <@s.text name="manage.resource.status.undeletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
-                                    </#assign>
-                                    <button type="button" class="btn btn-outline-gbif-primary" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="${resourceUndeleteInfo}">
-                                        <i class="bi bi-exclamation-triangle"></i>
-                                    </button>
-                                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
-                                </div>
-                            <#else>
-                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
-                            </#if>
+                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" name="undelete" key="button.undelete" disabled='${disableRegistrationRights?string}' />
                         </form>
                     <#else>
                         <#if !currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED")>
@@ -405,6 +393,15 @@
                         </#if>
                     </#if>
                 </div>
+            </div>
+
+            <div class="mx-md-4 mx-2">
+                <#if resource.status == "DELETED" && !currentUser.hasRegistrationRights()>
+                    <p class="text-gbif-warning fst-italic">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <@s.text name="manage.resource.status.undeletion.forbidden" escapeHtml=true/>&nbsp;<@s.text name="manage.resource.role.change" escapeHtml=true/>
+                    </p>
+                </#if>
             </div>
 
             <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
