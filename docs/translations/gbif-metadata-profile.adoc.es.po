@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-01-31 16:43\n"
+"PO-Revision-Date: 2022-01-31 17:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -644,7 +644,7 @@ msgstr "| Término         | Definición\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:242
 msgid "Describes the extent of the coverage of the resource in terms of its *spatial* extent, *temporal* extent, and *taxonomic* extent."
-msgstr "Describe la extensión de la cobertura del recurso en términos de su extensión * espacial *, extensión * temporal * y extensión * taxonómica *."
+msgstr "Describe la extensión de la cobertura del recurso en términos de su extensión *espacial*, *temporal* y *taxonómica*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:246
@@ -661,16 +661,16 @@ msgid "| Term                 | Definition\n\n"
 "| {eml-location}/eml-coverage.html#taxonRankValue[taxonRankValue] | The name representing the taxonomic rank of the taxon being described. E.g. Acer would be an example of a genus rank value, and rubrum would be an example of a species rank value, together indicating the common name of red maple. It is recommended to start with Kingdom and include ranks down to the most detailed level possible.\n\n"
 "| {eml-location}/eml-coverage.html#commonName[commonName]              | Applicable common names; these common names may be general descriptions of a group of organisms if appropriate. E.g., invertebrates, waterfowl.\n"
 msgstr "| Término                 | Definición\n\n"
-"| {eml-location}/eml-coverage.html#generalTaxonomicCoverage[Cobertura taxónomica general] | Cobertura taxonómica es un contenedor de información taxonómica sobre un recurso. Incluye una lista de nombres de especies (o rangos de nivel superior) para uno o más sistemas de clasificación. Una descripción del rango de los taxones abordados en el conjunto de datos o colección. Utilice una lista simple de taxones separados por coma. P. ej.  \"Todas las plantas vasculares se identificaron por familia o especie, los musgos y líquenes se identificaron como musgos o líquenes\". \n\n"
-"| {eml-location}/eml-coverage.html#taxonomicClassification[Clasificación taxonómica] | Información del rango de los taxones abordados en el conjunto de datos o colección.\n\n"
-"| {eml-location}/eml-coverage.html#taxonRankName[Nombre del rango del taxón]| El nombre del rango taxonómico para el taxón proporcionado. Por ejemplo, filo, clase, género, especie.\n\n\n"
-"| {eml-location}/eml-coverage.html#taxonRankValue[Valor para el rango taxonómico] | El nombre que representa el rango taxonómico del taxón que se describe. P.ej. Acer sería un ejemplo de un valor para el rango de género y rubrum sería un ejemplo de un valor de rango de especie, indicando juntos el nombre común de arce rojo. Se recomienda comenzar con Reino e incluir rangos inferiores hasta el nivel más detallado posible.\n\n"
-"| {eml-location}/eml-coverage.html#commonName[Nombre común]              | Nombres comunes aplicables; estos nombres comunes pueden ser descripciones generales de un grupo de organismos, si esto fuera adecuado. Por ejemplo, invertebrados, aves acuáticas.\n"
+"| {eml-location}/eml-coverage.html#generalTaxonomicCoverage[generalTaxonomicCoverage] | Cobertura taxonómica es un contenedor de información taxonómica sobre un recurso. Incluye una lista de nombres de especies (o rangos de nivel superior) para uno o más sistemas de clasificación. Una descripción del rango de los taxones abordados en el conjunto de datos o colección. Utilice una lista simple de taxones separados por coma. P. ej.,  \"Todas las plantas vasculares se identificaron por familia o especie, los musgos y líquenes se identificaron como musgos o líquenes\". \n\n"
+"| {eml-location}/eml-coverage.html#taxonomicClassification[taxonomicClassification] | Información del rango de los taxones abordados en el conjunto de datos o colección.\n\n"
+"| {eml-location}/eml-coverage.html#taxonRankName[taxonRankName]| El nombre del rango taxonómico para el taxón proporcionado. P. ej. filo, clase, género, especie.\n\n"
+"| {eml-location}/eml-coverage.html#taxonRankValue[taxonRankValue] | El nombre que representa el rango taxonómico del taxón que se describe. P. ej., Acer sería un ejemplo de un valor para el rango de género y rubrum sería un ejemplo de un valor de rango de especie, indicando juntos el nombre común del arce rojo. Se recomienda comenzar con Reino e incluir rangos inferiores hasta el nivel más detallado posible.\n\n"
+"| {eml-location}/eml-coverage.html#commonName[commonName]| Nombres comunes aplicables, estos nombres comunes pueden ser descripciones generales de un grupo de organismos si esto fuera adecuado. P. ej.,  invertebrados, aves acuáticas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:264
 msgid "A container for spatial information about a resource; allows a bounding box for the overall coverage (in lat long), and also allows description of arbitrary polygons with exclusions."
-msgstr "Un contenedor de información espacial sobre un recurso; permite un cuadro delimitador para la cobertura general (en latitud) y también permite la descripción de polígonos arbitrarios con exclusiones."
+msgstr "Un contenedor de información espacial sobre un recurso. Permite una caja delimitadora para la cobertura general (en latitud y longitud) y también permite la descripción de polígonos arbitrarios con exclusiones."
 
 #. type: Table
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:277
