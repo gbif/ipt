@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 19:39\n"
+"PO-Revision-Date: 2022-02-01 20:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -770,48 +770,48 @@ msgstr "El perfil de metadatos de GBIF admite elementos de datos a nivel de recu
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:304
 #, no-wrap
 msgid "*Intellectual Property Rights* – The metadata profile contains a rights management statement for the resource, or a reference to a service providing such information, such as a Creative Commons license. It also includes an element describing the intended use and purpose of the dataset.\n"
-msgstr "*Derechos de Propiedad Intelectual* – El perfil de metadatos contiene una declaración de gestión de derechos para el recurso o una referencia a un servicio que proporciona dicha información, como una licencia Creative Commons. También incluye un elemento que describe el uso previsto y el propósito del conjunto de datos.\n"
+msgstr "*Derechos de propiedad intelectual*: el perfil de metadatos contiene una declaración de gestión de derechos para el recurso o una referencia a un servicio que proporciona dicha información, como una licencia Creative Commons. También incluye un elemento que describe el uso previsto y el propósito del conjunto de datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:305
 #, no-wrap
 msgid "*Individuals and Organizations* – The metadata profile enables the description of any and all individuals, institutions or organizations that may be associated with a dataset. These agents may be ascribed different roles relative to the dataset and may include URLs to each resource. This section provides one method for describing and linking to individuals and organizations that have contributed to a checklist.\n"
-msgstr "*Individuos y organizaciones* – El perfil de metadatos permite la descripción de todas y cada una de los individuos, instituciones u organizaciones que pueden estar asociados con un conjunto de datos. A estos agentes se les pueden asignar diferentes roles en relación con el conjunto de datos y pueden incluir URL a cada recurso. Esta sección proporciona un método para describir y vincular a individuos y organizaciones que han contribuido a un listado taxonómico.\n"
+msgstr "*Individuos y organizaciones*: el perfil de metadatos permite la descripción de todos y cada uno de los individuos, instituciones u organizaciones que pueden estar asociados a un conjunto de datos. A estos agentes se les pueden asignar diferentes roles en relación con el conjunto de datos y se puede incluir una URL a cada recurso. Esta sección proporciona un método para describir y vincular a individuos y organizaciones que han contribuido a un listado taxonómico.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:306
 #, no-wrap
 msgid "*Source URL* – Links to the homepage of the source\n"
-msgstr "*URL de la fuente* – Enlaces a la página de inicio de la fuente\n"
+msgstr "*URL de la fuente*: enlaces a la página de inicio de la fuente\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:307
 #, no-wrap
 msgid "*Project Information* – If the checklist is linked to a particular project (e.g., “The Catalogue of Life”) there are a set of fields for describing the project in detail.\n"
-msgstr "*Información del proyecto* – Si el listado taxonómico está vinculado a un proyecto en particular (por ejemplo, \"El Catálogo de la Vida\"), hay un conjunto de campos para describir el proyecto en detalle.\n"
+msgstr "*Información del proyecto*: si el listado taxonómico está vinculado a un proyecto en particular (p. ej., \"El Catálogo de la Vida\"), hay un conjunto de campos para describir el proyecto en detalle.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:308
 #, no-wrap
 msgid "*Citation* – This element allows the checklist publisher to specify exactly how the checklist data should be cited when used. Example *“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”*\n"
-msgstr "*Citación* – Este elemento permite al editor del listado taxonómico especificar exactamente cómo se deben citar los datos del listado taxonómico cuando se utilicen. Ejemplo *“Apelantes W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). Registro mundial de especies marinas. Consultado en http://www.marinespecies.org el 22 de febrero de 2011”.*\n"
+msgstr "*Referenciación*: este elemento permite al editor del listado taxonómico especificar exactamente cómo se deben citar los datos del listado taxonómico cuando se utilicen. Ejemplo *“Appeltans W, Bouchet P, Boxshall GA, Fauchald K, Gordon DP, Hoeksema BW, Poore GCB, van Soest RWM, Stöhr S, Walter TC, Costello MJ. (eds) (2011). World Register of Marine Species. Accessed at http://www.marinespecies.org on 2011-02-22.”*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:309
 #, no-wrap
 msgid "*Bibliography* – A complete bibliography of sources can be described and included in the metadata document.\n"
-msgstr "*Bibliografía* - Se puede describir e incluir una bibliografía completa de fuentes en el documento de metadatos.\n"
+msgstr "*Referencias bibliogtáficas*: se puede describir e incluir una bibliografía completa de fuentes en el documento de metadatos.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:310
 #, no-wrap
 msgid "Data-level Citation and Attribution"
-msgstr "Citación y Atribución a nivel de Datos"
+msgstr "Citación y atribución a nivel de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:313
 msgid "Attribution and citation information recorded in the metadata document is common to all data records in a dataset. In some cases, additional granularity is needed even down to individual records. In these cases, there are record-level terms that are recommended for use in specifying citation and attribution information."
-msgstr "La información sobre atribuciones y citas registrada en el documento de metadatos es común a todos los registros de datos de un conjunto de datos. En algunos casos, se necesita una granularidad adicional incluso en los registros individuales. En estos casos, existen términos a nivel de registro que se recomiendan para su uso al especificar la información de citas y atribuciones."
+msgstr "La información de atribución y citación registrada en el documento de metadatos es común a todos los registros de datos de un conjunto de datos. En algunos casos, se necesita una mayor precisión, incluso en los registros individuales. En estos casos, hay términos a nivel de registro que se recomienda utilizar para especificar la información de citación y atribución."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:315
@@ -823,41 +823,41 @@ msgstr "*dwc:nameAccordingTo*: Este término puede usarse para identificar al in
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:316
 #, no-wrap
 msgid "*dwc:nameAccordingToID*: A unique identifier that returns the nameAccordingTo reference as described above. This could be a URL for example.\n"
-msgstr "*dwc:nameAccordingToID*: Un identificador único que devuelve la referencia nameAccordingTo como se describe arriba. Podría ser una URL, por ejemplo.\n"
+msgstr "*dwc:nameAccordingToID*: Un identificador único que retorna la referencia nameAccordingTo como se describe arriba. Podría ser una URL, por ejemplo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:317
 #, no-wrap
 msgid "*dwc:datasetName*: If the record is derived from an external dataset this dataset can be cited as a text string. (Example, “World Register of Marine Species, cited on 12 April 2011”)\n"
-msgstr "*dwc:datasetName*: Si el registro se deriva de un conjunto de datos externo, este conjunto de datos se puede citar como una cadena de texto. (Ejemplo, \"Registro mundial de especies marinas, citado el 12 de abril de 2011\")\n"
+msgstr "*dwc:datasetName*: si el registro se deriva de un conjunto de datos externo, este conjunto de datos se puede citar como una cadena de texto. (Ejemplo, \"Registro mundial de especies marinas, citado el 12 de abril de 2011\")\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:318
 #, no-wrap
 msgid "*dwc:datasetID* – An identifier that refers to a dataset, preferably resolvable.\n"
-msgstr "*dwc:datasetID* – Un identificador que se refiere a un conjunto de datos, preferiblemente que se pueda resolver.\n"
+msgstr "*dwc:datasetID*: un identificador que se refiere a un conjunto de datos, preferiblemente resoluble.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:319
 #, no-wrap
 msgid "*dc:source* – Link to the source web page\n"
-msgstr "*dc:source* - Enlace a la página web de la fuente\n"
+msgstr "*dc:source*: enlace a la página web de la fuente\n"
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:320
 #, no-wrap
 msgid "Use Case 1 - Checklists composed of multiple contributing datasets (e.g., Catalogue of Life, PESI, WoRMS)"
-msgstr "Caso de Uso 1 - Listado taxonómico compuestos por múltiples conjuntos de datos que contribuyen (por ejemplo, Catálogo de la Vida, PESI, WoRMS)"
+msgstr "Caso de uso 1: listado taxonómico compuestos por múltiples conjuntos de datos contribuyentes (p. ej., Catálogo de la Vida, PESI, WoRMS)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:323
 msgid "A taxonomic dataset may be a composite of multiple contributing sources, each of which needs to be acknowledged in addition to the collective resource itself. There are many examples of this. Perhaps the largest such collective effort is the Catalogue of Life Annual Checklist which aims to provide a complete listing of all the worlds living species. The checklist itself is composed of individual datasets that represent major taxonomic groups. Each of these resources, in turn, may be composed of contributions from a sub-network of specialists."
-msgstr "Un conjunto de datos taxonómicos puede ser una combinación de múltiples fuentes contribuyentes, cada una de las cuales debe reconocerse además del recurso colectivo en sí. Hay muchos ejemplos de esto. Quizás el mayor esfuerzo colectivo de este tipo es el listado taxonómico anual del Catálogo de la Vida, que tiene como objetivo proporcionar una lista completa de todas las especies vivientes del mundo. El listado taxonómico en sí está compuesto por conjuntos de datos individuales que representan los principales grupos taxonómicos. Cada uno de estos recursos, a su vez, puede estar compuesto por contribuciones de una subred de especialistas."
+msgstr "Un conjunto de datos taxonómicos puede ser una combinación de múltiples fuentes contribuyentes, cada una de las cuales debe reconocerse además del recurso colectivo en sí. Hay muchos ejemplos de esto. Quizás el mayor esfuerzo colectivo de este tipo es el listado taxonómico anual del Catálogo de la vida (Catalogue of Life), que tiene como objetivo proporcionar una lista completa de todas las especies vivientes del mundo. El listado taxonómico en sí está compuesto por conjuntos de datos individuales que representan los principales grupos taxonómicos. Cada uno de estos recursos, a su vez, puede estar compuesto por contribuciones de una subred de especialistas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:325
 msgid "Other examples include the Pan-European Species list, which is composed of a number of contributing datasets that include Fauna Europaea, the European Register of Marine Species, Euro+Med PlantBase and others. The World Register of Marine Species represents another such network."
-msgstr "Otros ejemplos incluyen la Lista Pan-Europea de Especies, que se compone de varios conjuntos de datos contribuyentes que incluyen Fauna Europaea, el Registro Europeo de Especies Marinas, Euro + Med PlantBase y otros. El Registro Mundial de Especies Marinas (WoRMS) representa otra red de este tipo."
+msgstr "Otros ejemplos incluyen la Lista pan-europea de especies, que se compone de varios conjuntos de datos contribuyentes que incluyen Fauna Europaea, el Registro Europeo de Especies Marinas, Euro+Med PlantBase y otros. El Registro Mundial de Especies Marinas (WoRMS) representa otra red de este tipo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:327
@@ -867,7 +867,7 @@ msgstr "La práctica recomendada para documentar eficazmente la procedencia de e
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:329
 msgid "A single metadata document is created to represent the collective resource itself, (e.g., the Catalogue of Life, the The World Register of Marine Species, etc.) This metadata document provides the proper citation, agents, rights, and other elements identified above. This document filename is referenced the Darwin Core Archive descriptor file, meta.xml. This links the document to the entire DwC-A dataset. Recommended best practice is that this file uses the GBIF metadata profile and be named EML.xml. In this case, the metadata descriptor XML would look like this:"
-msgstr "Se crea un único documento de metadatos para representar el recurso colectivo en sí (por ejemplo, el Catálogo de la Vida, el Registro Mundial de Especies Marinas, etc.). Este documento de metadatos proporciona la cita, los agentes, los derechos y otros elementos adecuados identificados anteriormente. El nombre de archivo de este documento se hace referencia al archivo descriptor del Archivo Darwin Core, meta.xml. Esto vincula el documento a todo el conjunto de datos DwC-A. La mejor práctica recomendada es que este archivo utilice el perfil de metadatos GBIF y se denomine EML.xml. En este caso, el XML del descriptor de metadatos se vería así:"
+msgstr "Se crea un único documento de metadatos para representar el recurso colectivo (p. ej., el Catálogo de la vida, el Registro mundial de especies marinas, etc.). Este documento de metadatos proporciona la cita, los agentes, los derechos y otros elementos identificados anteriormente. El nombre de archivo de este documento se hace referencia al archivo descriptivo del Archivo Darwin Core, meta.xml. Esto vincula el documento a todo el conjunto de datos DwC-A. La buena práctica recomendada es que este archivo utilice el perfil de metadatos GBIF y se denomine EML.xml. En este caso, el XML del descriptor de metadatos se vería así:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:332
