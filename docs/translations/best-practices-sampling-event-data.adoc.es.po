@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-04 19:52\n"
+"PO-Revision-Date: 2022-02-01 21:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -52,7 +52,7 @@ msgstr "Citación sugerida"
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #, no-wrap
 msgid "Darwin Core Archive data files in 'star schema'"
-msgstr "Archivos de datos  de Archivo Darwin Core en  'esquema en estrella'"
+msgstr "Archivos de datos de Archivo Darwin Core en \"esquema en estrella\""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:62
@@ -84,13 +84,13 @@ msgstr "Asegúrese de reemplazar todos los saltos de línea en un campo de datos
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:71
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
 msgid "Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `\\N` or `\\NULL`, but no other text sequence!"
-msgstr "Codifique los valores nulos como cadenas vacías, es decir, sin caracteres entre 2 delimitadores, o `\\N` o` \\NULL`, ¡pero ninguna otra secuencia de texto!"
+msgstr "Codifique los valores nulos como cadenas vacías, es decir, sin caracteres entre 2 delimitadores o `\\N` o` \\NULL`, ¡pero ninguna otra secuencia de texto!"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data"
-msgstr "Mejores Prácticas en la Publicación de Datos de Eventos de Muestreo"
+msgstr "Buenas prácticas para la publicación de datos de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
@@ -115,7 +115,7 @@ msgstr "| Versión | Descripción             | Fecha de publicación | Autor(es
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
 msgid "GBIF (2018) Best Practices in Publishing Sampling-event data, version 2.2. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-sampling-event-data"
-msgstr "GBIF (2018). Mejores prácticas en la publicación de datos de eventos de muestreo. Copenhagen: GBIF Secretariat https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-sampling-event-data"
+msgstr "GBIF (2018). Buenas prácticas para la publicación de datos de eventos de muestreo. Copenhagen: Secretaría de GBIF https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-sampling-event-data"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:24
