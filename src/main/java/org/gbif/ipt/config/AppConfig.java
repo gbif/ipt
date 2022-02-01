@@ -76,14 +76,16 @@ public class AppConfig {
   public static final String IPT_LONGITUDE = "location.lon";
   public static final String DEV_VERSION = "dev.version";
   public static final String ADMIN_EMAIL = "admin.email";
+  public static final String SESSION_TIMEOUT_PROPERTY = "session.timeout";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   private Properties properties = new Properties();
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
   private DataDir dataDir;
   private REGISTRY_TYPE type;
 
-  public static final int CSRF_TOKEN_EXPIRATION = 15 * 60; // in seconds
-  public static final int CSRF_PAGE_REFRESH_DELAY = 10 * 60 * 1000; // in milliseconds, should be lower than CSRF_TOKEN_EXPIRATION
+  private static final int SESSION_TIMEOUT = 60 * 60; // in seconds
+  private static final int CSRF_TOKEN_EXPIRATION = 15 * 60; // in seconds
+  private static final int CSRF_PAGE_REFRESH_DELAY = 10 * 60 * 1000; // in milliseconds, should be lower than CSRF_TOKEN_EXPIRATION
 
   // to support compatibility with historical data directories, we default to the original hard coded
   // types that were scattered across the code.
@@ -207,6 +209,20 @@ public class AppConfig {
     } catch (NumberFormatException e) {
       return 3;
     }
+  }
+
+  public int getSessionTimeout() {
+    String sessionTimeout = properties.getProperty(SESSION_TIMEOUT_PROPERTY);
+    if (sessionTimeout != null) {
+      return Integer.valueOf(sessionTimeout) * 60;
+    }
+    else {
+      return SESSION_TIMEOUT;
+    }
+  }
+
+  public int getCsrfTokenExpiration() {
+    return CSRF_TOKEN_EXPIRATION;
   }
 
   public int getCsrfPageRefreshDelay() {
