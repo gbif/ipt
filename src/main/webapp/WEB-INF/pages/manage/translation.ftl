@@ -31,8 +31,8 @@
             });
             // end hack
             <#-- use vocabulary -->
-            <#if (vocabTerms?size>0)>
-            var vocab = [<#list vocabTerms?keys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];
+            <#if (vocabTermsSize>0)>
+            var vocab = [<#list vocabTermsKeys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];
             $("#translation input").autocomplete({
                 source: vocab
             })
@@ -93,7 +93,7 @@
                 <colgroup>
                     <col width="400">
                     <!-- do not show column if term does not relate to vocabulary -->
-                    <#if (vocabTerms?size>0)>
+                    <#if (vocabTermsSize>0)>
                         <col width="16">
                     </#if>
                     <col width="400">
@@ -101,7 +101,7 @@
                 <tr>
                     <th><@s.text name="manage.translation.source.value"/></th>
                     <!-- do not show column if term does not relate to vocabulary -->
-                    <#if (vocabTerms?size>0)>
+                    <#if (vocabTermsSize>0)>
                         <th></th>
                     </#if>
                     <th><@s.text name="manage.translation.translated.value"/></th>
@@ -110,7 +110,7 @@
                     <tr>
                         <td>${sourceValuesMap.get(k)!}</td>
                         <!-- do not show column if term does not relate to vocabulary -->
-                        <#if (vocabTerms?size>0)>
+                        <#if (vocabTermsSize>0)>
                             <td>
                                 <#if vocabTerms[tmap.get(k)!k]??>
                                     <i class="bi bi-check-circle text-gbif-primary"></i>

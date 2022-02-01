@@ -28,9 +28,11 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -318,6 +320,15 @@ public class TranslationAction extends ManagerBaseAction {
 
   public SimpleMapModel getVocabTerms() {
     return vocabTerms;
+  }
+
+  public int getVocabTermsSize() {
+    return vocabTerms != null ? vocabTerms.size() : 0;
+  }
+
+  public Set<String> getVocabTermsKeys() {
+    return vocabTerms != null && (vocabTerms.getWrappedObject() instanceof Map) ?
+        ((Map) vocabTerms.getWrappedObject()).keySet() : Collections.emptySet();
   }
 
   /**
