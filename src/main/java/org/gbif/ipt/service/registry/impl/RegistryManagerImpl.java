@@ -213,9 +213,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return rs;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public void deregister(Resource resource) throws RegistryException {
@@ -248,9 +247,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<Extension> getExtensions() throws RegistryException {
@@ -317,9 +315,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/organisation/", organisationKey + ".json");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<Organisation> getOrganisations() {
@@ -365,9 +362,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return organisations;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisation()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public Organisation getRegisteredOrganisation(String key) {
@@ -467,9 +463,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8));
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<Vocabulary> getVocabularies() throws RegistryException {
@@ -480,9 +475,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return (jSONVocabularies.get("thesauri") == null) ? new ArrayList<>() : jSONVocabularies.get("thesauri");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisationsResources
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {

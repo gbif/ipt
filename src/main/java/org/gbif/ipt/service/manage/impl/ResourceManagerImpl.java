@@ -1948,10 +1948,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return null;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action)
@@ -2201,9 +2199,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {

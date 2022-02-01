@@ -328,10 +328,6 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.UserAccountManager#save(org.gbif.ipt.model.User)
-   */
   @Override
   public void save(User user) throws IOException {
     addUser(user);

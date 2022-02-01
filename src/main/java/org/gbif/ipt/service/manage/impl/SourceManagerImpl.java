@@ -585,9 +585,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.SourceManager#columns(org.gbif.ipt.model.SourceBase)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<String> columns(Source source) {
@@ -663,9 +662,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return columns;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.MappingConfigManager#delete(org.gbif.ipt.model.SourceBase.TextFileSource)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public boolean delete(Resource resource, Source source) {
@@ -734,9 +732,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return conn;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.SourceManager#inspectColumn(org.gbif.ipt.model.SourceBase, int, int)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
@@ -773,9 +770,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.SourceManager#peek(org.gbif.ipt.model.SourceBase)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<String[]> peek(Source source, int rows) {

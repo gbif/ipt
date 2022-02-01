@@ -1104,10 +1104,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     addMessage(Level.INFO, "meta.xml archive descriptor written");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.task.ReportingTask#currentException()
-   */
   @Override
   protected Exception currentException() {
     return exception;

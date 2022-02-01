@@ -225,10 +225,6 @@ public class Resource implements Serializable, Comparable<Resource> {
     sources.add(src);
   }
 
-  /*
-   * (non-Javadoc)
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
   @Override
   public int compareTo(Resource o) {
     return shortname.compareToIgnoreCase(o.shortname);
