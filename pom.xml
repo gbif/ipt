@@ -79,7 +79,7 @@
     <validation-api.version>2.0.1.Final</validation-api.version>
     <!-- NB XStream does not use semantic versioning.  Take care when upgrading, as we need to
          ensure the IPT can still load existing resource.xml and other configuration files -->
-    <xstream.version>1.4.18</xstream.version>
+    <xstream.version>1.4.19</xstream.version>
     <jaxb-api.version>2.3.1</jaxb-api.version>
     <jaxb-runtime.version>2.3.1</jaxb-runtime.version>
 
