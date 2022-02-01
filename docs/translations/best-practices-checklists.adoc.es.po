@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 20:04\n"
+"PO-Revision-Date: 2022-02-01 20:38\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -878,7 +878,7 @@ msgstr "<archive xmlns=\"http://rs.tdwg.org/dwc/text/\" metadata=\"eml.xml\">\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:335
 msgid "Additional metadata documents can be created for each of the component datasets and included in the archive. This allows each sub-component dataset to be documented as completely as the “parent” dataset with its own recommended citation, contributing individuals etc. As these datasets do not document the entire collection, they are not referenced in the meta.xml descriptor file. Instead they are referenced from individual data records via the *dwc:datasetID* term. If the metadata documents are included in the archive itself, the *dwc:datasetID* equals the filename of the document. Alternatively, it could refer to a URL or some other unique and resolvable identifier for the information. A less recommended but alternative approach would be adding a URL to a simple web page that describes the dataset as opposed to a structured metadata document."
-msgstr "Se pueden crear documentos de metadatos adicionales para cada uno de los conjuntos de datos de componentes e incluirlos en el archivo. Esto permite que cada conjunto de datos de subcomponentes se documente tan completamente como el conjunto de datos \"principal\" con su propia cita recomendada, personas contribuyentes, etc. Como estos conjuntos de datos no documentan la colección completa, no se hace referencia a ellos en el archivo descriptor meta.xml. En su lugar, se hace referencia a ellos desde registros de datos individuales a través del término *dwc:datasetID*. Si los documentos de metadatos están incluidos en el archivo en sí, *dwc:datasetID* es igual al nombre de archivo del documento. Alternativamente, podría hacer referencia a una URL o algún otro identificador único y que se pueda resolver para la información. Un enfoque menos recomendado pero alternativo sería agregar una URL a una página web simple que describa el conjunto de datos en lugar de un documento de metadatos estructurado."
+msgstr "Se pueden crear documentos de metadatos adicionales para cada uno de los conjuntos de datos componentes e incluirlos en el archivo. Esto permite que cada conjunto de datos de subcomponentes de forma tan completa como el conjunto de datos \"padre\", con su propia cita recomendada, personas contribuyentes, etc. Como estos conjuntos de datos no documentan toda la colección, no se hace referencia a ellos en el archivo descriptor meta.xml. En su lugar, se hace referencia a ellos desde registros de datos descriptivo a través del término *dwc:datasetID*. Si los documentos de metadatos están incluidos en el archivo en sí, *dwc:datasetID* es igual al nombre de archivo del documento. Alternativamente, podría hacer referencia a una URL o algún otro identificador único y que sea resoluble para la información. Un enfoque menos recomendado pero alternativo sería agregar una URL a una página web simple que describa el conjunto de datos en lugar de un documento de metadatos estructurado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:336
@@ -889,22 +889,22 @@ msgstr "Para citar individuos a nivel de registro, proporcionando un tercer nive
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:337
 #, no-wrap
 msgid "Use Case 2 - Checklists derived from one or more authority sources"
-msgstr "Caso de Uso 2 - Listados taxonómicos derivados de una o más fuentes de autoridad"
+msgstr "Caso de uso 2: listados taxonómicos derivados de una o más fuentes de autoridad"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:340
 msgid "A species checklist in this use case is compiled for a specific purpose but derives it’s basic taxonomic structure from one or more external taxonomic checklists that serve as *authority files*. The new compilation may include additional annotations to the basic source record that apply to the new lists focus. An example might be a European national species checklist derived from a database such as Fauna Europaea or the Catalogue of Life, which, in principle, provide the complete listing for a country as a subset of their own coverage. A national list may then add additional regional details such as a national threat status or some other property of interest, resulting in a new, derived dataset. In this case, it is important to be able to provide record-level attribution and linkages to the source dataset. The recommended means to do this are as follows."
-msgstr "En este caso de uso, un listado taxonómico de especies se compila para un propósito específico, pero su estructura taxonómica básica deriva de uno o más listados taxonómicos externos que sirven como *archivos de autoridad*. La nueva compilación puede incluir anotaciones adicionales al registro de origen básico que se aplican al enfoque de los nuevos listados. Un ejemplo podría ser listado taxonómicos de especies nacionales europeos derivado de una base de datos como Fauna Europaea o el Catálogo de la Vida, que, en principio, proporcionan la lista completa de un país como un subconjunto de su propia cobertura. Una lista nacional puede agregar detalles regionales adicionales, como un estado de amenaza nacional o alguna otra propiedad de interés, lo que da como resultado un nuevo conjunto de datos derivado. En este caso, es importante poder proporcionar atribuciones y vínculos a nivel de registro con el conjunto de datos de origen. Los medios recomendados para hacer esto son los siguientes."
+msgstr "En este caso de uso, un listado taxonómico de especies se compila para un propósito específico, pero su estructura taxonómica básica deriva de uno o más listados taxonómicos externos que sirven como *archivos de autoridad*. La nueva compilación puede incluir anotaciones adicionales al registro de origen básico que se aplican al enfoque de los nuevos listados. Un ejemplo podría ser listados taxonómicos de especies nacionales europeos derivados de una base de datos como Fauna europaea o el Catálogo de la vida, que, en principio, proporcionan la lista completa de un país como un subconjunto de su propia cobertura. Una lista nacional puede agregar detalles regionales adicionales, como un estado de amenaza nacional o alguna otra propiedad de interés, lo que da como resultado un nuevo conjunto de datos derivado. En este caso, es importante poder proporcionar atribuciones y vínculos a nivel de registro del conjunto de datos de origen. Los medios recomendados para hacer esto son los siguientes."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:342
 msgid "A single metadata document is created to represent the new, derived resource itself (e.g., National Checklist of the Netherlands). Datasets that are referenced can be cited in this metadata document."
-msgstr "Se crea un único documento de metadatos para representar el nuevo recurso derivado en sí mismo (por ejemplo, Listado Taxonómico Nacional de los Países Bajos). Los conjuntos de datos a los que se hace referencia se pueden citar en este documento de metadatos."
+msgstr "Se crea un único documento de metadatos para representar el nuevo recurso derivado (por ejemplo, Listado taxonómico nacional de los países bajos). Los conjuntos de datos a los que se hace referencia se pueden citar en este documento de metadatos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:343
 msgid "Fully described as organizations with a role of Contributor and links to the source web site."
-msgstr "Completamente descritas como organizaciones con un rol de Colaborador y enlaces al sitio web de origen."
+msgstr "Completamente descritas como organizaciones con un rol de colaborador y enlaces al sitio web de origen."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:344
@@ -924,7 +924,7 @@ msgstr "Hacer referencia al conjunto de datos por nombre en *dwc:datasetName*"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:347
 msgid "Referencing the dataset by ID (such as URL) in *dwc:datasetID* and linking to the dataset home page"
-msgstr "Hacer referencia al conjunto de datos por ID (como URL) en *dwc:datasetID* y vincularlo a la página de inicio del conjunto de datos"
+msgstr "Hacer referencia al conjunto de datos por ID (como la URL) en *dwc:datasetID* y vincularlo a la página de inicio del conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:348
@@ -934,7 +934,7 @@ msgstr "Proporcionar un enlace a la página de la especie correspondiente en el 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:349
 msgid "If dc:source is reserved for pointing to URL for the derived database, a link to the source database can still be added using the Alternative Identifiers extension."
-msgstr "Si dc:source está reservado para apuntar a la URL de la base de datos derivada, aún se puede agregar un enlace a la base de datos de origen utilizando la extensión de Identificadores Alternativos."
+msgstr "Si dc:source está reservado para apuntar a la URL de la base de datos derivada, aún se puede agregar un enlace a la base de datos de origen utilizando la extensión de Identificadores alternativos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:350
@@ -950,12 +950,12 @@ msgstr "Utilice *dwc:nameAccordingTo* o *dwc:nameAccordingToID* para hacer refer
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:352
 #, no-wrap
 msgid "Sharing Vernacular Names"
-msgstr "Compartiendo Nombres Vernáculos"
+msgstr "Compartiendo nombres comunes"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:355
 msgid "The sharing of vernacular name data associated with taxa in taxonomic checklists is supported. Vernacular names are shared as a separate, related file using the {latest-vernacularname}[Vernacular Names extension]. The extension supports a rich set of properties for describing vernacular name usages that include regional and morphological qualifiers."
-msgstr "Se apoya el intercambio de datos de nombres vernáculos asociados con taxones en listados taxonómicos. Los nombres vernáculos se comparten como un archivo relacionado separado usando la {latest-vernacularname}[extensión de nombres vernáculos]. La extensión admite un rico conjunto de propiedades para describir usos de nombres vernáculos que incluyen calificadores regionales y morfológicos."
+msgstr "Se permite compartir los datos de los nombres comunes asociados a los taxa en los listados taxonómicos. Los nombres comunes se comparten como un archivo separado y relacionado utilizando la extensión {latest-vernacularname}[Extensión de nombres comunes]. La extensión admite un rico conjunto de propiedades para describir los usos de los nombres comunes que incluyen calificadores regionales y morfológicos."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:356
@@ -966,18 +966,18 @@ msgstr "figures/myristica_fragrans.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:359
 msgid "Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 693 language code] for sharing language information. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilize the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
-msgstr "Los nombres vernáculos se referencian a través de una extensión, por lo tanto, deben estar vinculados a un taxón con nombre en el archivo de datos principal. Se recomienda además que un registro de nombres vernáculos proporcione una referencia de idioma que identifique el idioma representado por el uso del nombre vernáculo. La mejor práctica es utilizar el http://rs.gbif.org/vocabulary/iso/639-1.xml[Código de idioma ISO 693] para compartir información sobre el idioma. Los nombres vernáculos también pueden tener distintos usos regionales y esto se puede especificar mediante un elemento dwc:locality o, en un nivel menos preciso, utilizando un término dwc:country. Se recomienda que los nombres de países utilicen los http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
+msgstr "Los nombres comunes se referencian a través de una extensión, por lo tanto, deben estar vinculados a un taxón con nombre en el archivo de datos principal. Se recomienda además que un registro de nombres comunes proporcione una referencia lingüística que identifique la lengua representada por el uso del nombre común. La mejor práctica es utilizar el http://rs.gbif.org/vocabulary/iso/639-1.xml[Códigos de idiomas ISO 693] para compartir información sobre el idioma. Los nombres comunes también pueden tener distintos usos regionales y esto se puede especificar mediante un elemento dwc:locality o, en un nivel menos preciso, utilizando un término dwc:country. Se recomienda que los nombres de países utilicen los http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[Códigos de países ISO 6133]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:360
 #, no-wrap
 msgid "Sharing Species Descriptions"
-msgstr "Compartiendo Descripciones de Especies"
+msgstr "Compartiendo descripciones de especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:363
 msgid "The sharing of descriptive information related to a taxon is supported. Descriptive data are shared as a separate, related file using the via the {latest-description}[Taxon Description extension]. Descriptive data can be assigned to distinct description types and, as the data is published in an extension, multiple descriptive records may be linked to a single taxon, supporting a relatively rich set of data per taxon. It is recommended that the {latest-description-type}[description type vocabulary] be used to describe the descriptive information."
-msgstr "Se admite el intercambio de información descriptiva relacionada con un taxón. Los datos descriptivos se comparten como un archivo relacionado separado mediante la {latest-description}[extensión de descripción de taxón]. Los datos descriptivos pueden asignarse a distintos tipos de descripción y, dado que los datos se publican en una extensión, se pueden vincular varios registros descriptivos a un solo taxón, lo que respalda un conjunto relativamente rico de datos por taxón. Se recomienda que se utilice {latest-description-type}[vocabulario del tipo de descripción] para describir la información descriptiva."
+msgstr "Se puede compartir la información descriptiva relacionada con un taxón. Los datos descriptivos se comparten como un archivo separado y relacionado utilizando la {latest-description}[Extensión descripción del taxón]. Los datos descriptivos pueden asignarse a distintos tipos de descripción y, como los datos se publican en una extensión, pueden vincularse múltiples registros descriptivos a un solo taxón, lo que permite un conjunto relativamente rico de datos por taxón. Se recomienda utilizar el {latest-description-type}[vocabulario de tipos de descripción] para describir la información descriptiva."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:364
@@ -988,56 +988,56 @@ msgstr "Descripciones de múltiples líneas"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:367
 msgid "Descriptive information should be limited to single paragraph text blocks. Multiple paragraphs containing line breaks should be avoided or carefully managed in order to maintain the integrity of the resultant text file output as the Darwin Core Archive. Multi-line data fields served as text files require the record delimiters, which are usually line break characters, to be distinct from the line breaks used within a multi-line field. The best method for supporting multiple lines in a single field is to replace breaking characters with a non-breaking character or character set that a user can replace with proper breaks when the data is parsed and used. One option is to use the HTML break tag `<br>`."
-msgstr "La información descriptiva debe limitarse a bloques de texto de un solo párrafo. Se deben evitar o administrar con cuidado varios párrafos que contengan saltos de línea para mantener la integridad de la salida del archivo de texto resultante como Archivo Darwin Core. Los campos de datos de varias líneas que se sirven como archivos de texto requieren que los delimitadores de registro, que normalmente son caracteres de salto de línea, sean distintos de los saltos de línea utilizados en un campo de varias líneas. El mejor método para admitir varias líneas en un solo campo es reemplazar los caracteres que se rompen con un carácter o un conjunto de caracteres que no se rompen y que el usuario puede reemplazar con los cortes adecuados cuando se analizan y utilizan los datos. Una opción es utilizar la etiqueta de interrupción HTML `<br>`."
+msgstr "La información descriptiva debe limitarse a bloques de texto de un solo párrafo. Se deben evitar los párrafos múltiples que contengan saltos de línea, o gestionarse cuidadosamente, para mantener la integridad del archivo de texto resultante como Archivo Darwin Core. LLos campos de datos multilínea presentados como archivos de texto requieren que los delimitadores de registro, que suelen ser caracteres de salto de línea, sean distintos de los saltos de línea utilizados dentro de un campo multilínea. El mejor método para admitir varias líneas en un mismo campo es reemplazar los caracteres de ruptura por un carácter de no ruptura o por un conjunto de caracteres que el usuario pueda sustituir por las rupturas adecuadas cuando se analicen y utilicen los datos. Una opción es utilizar la etiqueta de ruptura HTML `<br>`."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:368
 #, no-wrap
 msgid "Sharing Species Distributions"
-msgstr "Compartiendo Distribuciones de Especies"
+msgstr "Compartiendo distribuciones de especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:371
 msgid "The sharing of distribution data is supported. Distribution data are shared as a separate, related file using the {latest-species-distribution}[Species Distribution extension]. This enables multiple distribution records to be published per taxon. The distribution extension is not only used to designate national or regional distribution descriptions, it also supports the qualification of the referenced distribution in regard to the threat status of the taxon, whether it is introduced, native, etc., and other properties that might be tied to a specific defined area."
-msgstr "Se admite el intercambio de datos de distribución. Los datos de distribución se comparten como un archivo relacionado independiente utilizando la {latest-species-distribution}[extensión de distribución de especies]. Esto permite publicar varios registros de distribución por taxón. La extensión de distribución no solo se utiliza para designar descripciones de distribución nacionales o regionales, sino que también respalda la calificación de la distribución referenciada con respecto al estado de amenaza del taxón, ya sea introducido, nativo, etc., y otras propiedades que podrían ser vinculado a un área definida específica."
+msgstr "Se pueden compartir datos de distribución. Los datos de distribución se comparten como un archivo separado y relacionado, utilizando la {latest-species-distribution}[Extensión de distribución de especies]. Esto permite publicar múltiples registros de distribución por taxón. La extensión de distribución no sólo se utiliza para designar las descripciones de distribución nacional o regional, sino que también permite calificar la distribución referenciada con respecto al estado de amenaza del taxón, si es introducido, nativo, etc., y otras propiedades que podrían estar vinculadas a un área específica definida."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:373
 msgid "The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element."
-msgstr "La mejor práctica recomendada para especificar un área distinta es a través de un identificador de área conocido o que se pueda resolver y que se publique mediante el elemento dwc:localityID."
+msgstr "La buena práctica recomendada para especificar un área distinta es a través de un identificador de área conocido o que sea resoluble y que se publique mediante el elemento dwc:localityID."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:375
 msgid "If the dwc:country element is used, it is recommended that the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes] be used."
-msgstr "Si se utiliza el elemento dwc:country, se recomienda utilizar los http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
+msgstr "Si se utiliza el elemento dwc:country, se recomienda utilizar los http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[códigos de países ISO 6133]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:376
 #, no-wrap
 msgid "Sharing References"
-msgstr "Compartir Referencias"
+msgstr "Compartir referencias"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:379
 msgid "The sharing of bibliographic citations is supported. Bibliographic data are shared as a separate, related file using the {latest-references}[References extension]. The References extension is recommended and designed for use in the sharing of synonymy information in monographs and annotated checklists. It supports the sharing of a parsed citation and therefore provides a more granular citation format that some of the citation-storing data elements in the core data file, such as dwc:namePublishedIn. This extension supports the taxonomic and nomenclatural qualification of a reference via the *dc:type* property, which, when used with {latest-reference-type}[the Reference Type vocabulary], can be used to distinguish a set of references related to a taxon."
-msgstr "Se apoya el intercambio de citas bibliográficas. Los datos bibliográficos se comparten como un archivo relacionado separado utilizando la {latest-reference}[extensión de referencias]. La extensión References se recomienda y está diseñada para su uso en el intercambio de información sobre sinonimia en monografías y listados taxonómicos anotados. Admite compartir una cita analizada y, por lo tanto, proporciona un formato de cita más granular que algunos de los elementos de datos de almacenamiento de citas en el archivo de datos principal, como dwc:namePublishedIn. Esta extensión admite la calificación taxonómica y nomenclatural de una referencia a través de la propiedad *dc:type*, que, cuando se usa con {latest-reference-type}[el vocabulario del tipo de referencia], se puede usar para distinguir un conjunto de referencias relacionadas con un taxón."
+msgstr "Se pueden compartir citas bibliográficas. Los datos bibliográficos se comparten como un archivo relacionado separado utilizando la {latest-reference}[extensión de referencias]. La extensión Referencias se recomienda y está diseñada para su uso en el intercambio de información sobre sinonimia en monografías y listados taxonómicos anotados. Admite compartir una cita analizada y, por lo tanto, proporciona un formato de cita más detallado que algunos de los elementos de datos de almacenamiento de citas en el archivo de datos principal, como dwc:namePublishedIn. Esta extensión admite la calificación taxonómica y nomenclatural de una referencia a través de la propiedad *dc:type*, que, cuando se usa con {latest-reference-type}[el vocabulario del tipo de referencia], se puede usar para distinguir un conjunto de referencias relacionadas con un taxón."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:380
 #, no-wrap
 msgid "Sharing Type information"
-msgstr "Compartir información de Tipos"
+msgstr "Compartir información de tipos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:383
 msgid "The sharing of information about types and specimens is supported. These data are shared as a separate, related file using the {latest-typesandspecimen}[Types and Specimens extension]. It supports the sharing of basic information about type specimens, type species and genera."
-msgstr "Se apoya el intercambio de información sobre tipos y especímenes. Estos datos se comparten como un archivo relacionado independiente utilizando la {latest-typesandspecimen}[extensión de tipos y muestras]. Apoya el intercambio de información básica sobre especímenes tipo, especies tipo y géneros."
+msgstr "Se puede compartir información sobre tipos y especímenes. Estos datos se comparten como un archivo relacionado independiente utilizando la {latest-typesandspecimen}[extensión de tipos y muestras].  Permite compartir información básica sobre especímenes tipo, especies y géneros tipo."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:384
 #, no-wrap
 msgid "Sharing Links and Identifiers"
-msgstr "Compartir Enlaces e Identificadores"
+msgstr "Compartir enlaces e identificadores"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:387
