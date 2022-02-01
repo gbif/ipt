@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2022-01-28 23:29\n"
+"PO-Revision-Date: 2022-02-01 22:15\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -41,13 +41,13 @@ msgstr "Finalmente, sus datos deben ser transformados a una estructura de tabla 
 #: en/modules/ROOT/pages/checklist-data.adoc:12
 #: en/modules/ROOT/pages/occurrence-data.adoc:13
 msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
-msgstr "Intente poner sus datos en el <<Modelos,modelo Excel>>, que incluye todos los <<Campos DwC requeridos,campos DwC requridos>> y los <<Campos DwC recomendados,campos DwC recomendados>>."
+msgstr "Intente poner sus datos en la <<Plantillas,plantilla de Excel>>, que incluye todos los <<Campos DwC requeridos,campos DwC requridos>> y los <<Campos DwC recomendados,campos DwC recomendados>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:14
 #: en/modules/ROOT/pages/occurrence-data.adoc:15
 msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible."
-msgstr "De manera alternativa, si sus datos están en una xref:database-connection.adoc[base de datos compatible], puede elaborar una tabla SQL (ver) utilizando nombres de columnas DwC. Sea cuidadoso para incluir todos los <<Required DwC Fields,required DwC fields>> y añada tantos <<Recommended DwC Fields,recommended DwC fields>> como sea posible."
+msgstr "De manera alternativa, si sus datos están en una xref:database-connection.adoc[base de datos compatible], puede elaborar una tabla SQL (ver) utilizando nombres de columnas DwC. Tenga cuidado de incluir todos los <<Campos DwC requeridos,campos DwC requridos>> y añada tantos <<Campos DwC recomendados,campos DwC recomendados>> como sea posible."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:17
@@ -55,7 +55,7 @@ msgstr "De manera alternativa, si sus datos están en una xref:database-connecti
 #: en/modules/ROOT/pages/sampling-event-data.adoc:23
 #, no-wrap
 msgid "Templates"
-msgstr "Modelos"
+msgstr "Plantillas"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:24
@@ -92,7 +92,7 @@ msgstr "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - y otra taxonomía sup
 #: en/modules/ROOT/pages/sampling-event-data.adoc:47
 #, no-wrap
 msgid "Exemplar datasets"
-msgstr "Conjuntos de datos ejemplares"
+msgstr "Conjuntos de datos de ejemplo"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:40
@@ -129,12 +129,12 @@ msgstr "ipt2/flow-od.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:17
 msgid "For extra guidance, you can look at the <<Exemplar datasets,exemplar datasets>>."
-msgstr "Para obtener una orientación adicional puede consultar los <<Conjuntos de datos ejemplares, conjuntos de datos ejemplares>>."
+msgstr "Para obtener una orientación adicional puede consultar los <<Conjuntos de datos de ejemplo, conjuntos de datos de ejemplo>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:19
 msgid "You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}.xml[list]."
-msgstr "Puede aumentar su tabla incluyendo columnas DwC adicionales, pero sólo con términos DwC de esta {latest-dwc-occurrence}.xml[lista]."
+msgstr "Puede complementar su tabla incluyendo columnas DwC adicionales, pero sólo con términos DwC de esta {latest-dwc-occurrence}.xml[lista]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:24
