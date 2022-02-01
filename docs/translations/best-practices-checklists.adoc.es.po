@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 20:38\n"
+"PO-Revision-Date: 2022-02-01 21:06\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1042,28 +1042,28 @@ msgstr "Compartir enlaces e identificadores"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:387
 msgid "It is possible to share and describe multiple links to related external resources using the {latest-identifier}[Alternate Identifier Extension]. It allows data publishers to embed links back to the source database or document via resolveable identifiers. Multiple identifiers, perhaps linking to both a web page as well as a more machine-readable web service response, may be provided for a single taxon. It is recommended that a format be included for each record to enable a user to know how to interpret the response information if an identifier is resolve-able. This is usually done by including the *media type* (or *MIME type*) in this field. A complete list of media types is https://www.iana.org/assignments/media-types/media-types.xhtml[available here]."
-msgstr "Es posible compartir y describir varios enlaces a recursos externos relacionados utilizando {latest-identifier}[Alternate Identifier Extension]. Permite a los editores de datos incorporar enlaces a la base de datos o al documento de origen a través de identificadores que se pueden resolver. Se pueden proporcionar múltiples identificadores, quizás vinculando tanto a una página web como a una respuesta de servicio web más legible por máquina, para un solo taxón. Se recomienda que se incluya un formato para cada registro para permitir al usuario saber cómo interpretar la información de respuesta si un identificador se puede resolver. Esto generalmente se hace incluyendo el *tipo de medio* (o *tipo MIME*) en este campo. Está https://www.iana.org/assignments/media-types/media-types.xhtml[disponible] una lista completa de tipos de medio."
+msgstr "Es posible compartir y describir varios enlaces a recursos externos relacionados utilizando {latest-identifier}[Extensión de identificador alternativo]. Esta extensión permite a los editores de datos incorporar enlaces a la base de datos o al documento de origen a través de identificadores resolubles. Se pueden proporcionar múltiples identificadores, quizás vinculando tanto a una página web como a una respuesta de servicio web más legible por máquina, para un solo taxón. Se recomienda que se incluya un formato para cada registro para permitir al usuario saber cómo interpretar la información de respuesta si un identificador es resoluble. Esto generalmente se hace incluyendo el *tipo de medio* (o *tipo MIME*) en este campo. Una lista completa de tipos de medios está https://www.iana.org/assignments/media-types/media-types.xhtml[disponible aquí] ."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:388
 #, no-wrap
 msgid "Creating a dynamic link to a species page"
-msgstr "Creando un enlace dinámico a páginas de especie"
+msgstr "Creando un enlace dinámico a páginas de especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:391
 msgid "Often, a link back to a source database follows a common format, differing only in the identifier number or taxon name used in the URL. This can result in a verbose and bloated extension file. The Darwin Core Archive format supports a more efficient way to define a URL template, which only needs to be defined once, and allows a variable to be embedded in the template eliminating the need for repetitively repeating a set of URLs for each taxon in the data file. This is done via the XML metafile component of a Darwin Core Archive. It does not use the References extension. This requires editing the XML metafile which requires some degree of familiarity with XML. GBIF xref:gbif-metadata-profile.adoc[provides a complete guide the to Darwin Core metafile]."
-msgstr "A menudo, un enlace a una base de datos de origen sigue un formato común, que difiere solo en el número de identificación o el nombre de taxón utilizado en la URL. Esto puede resultar en un archivo de extensión extenso y detallado. El formato del Archivo Darwin Core admite una forma más eficiente de definir una plantilla de URL, que solo debe definirse una vez, y permite que se incruste una variable en la plantilla, lo que elimina la necesidad de repetir repetidamente un conjunto de URL para cada taxón del archivo de datos. Esto se hace a través del componente de metarchivo XML del Archivo Darwin Core. No usa la extensión References. Esto requiere editar el metarchivo XML, lo que requiere cierto grado de familiaridad con XML. GBIF xref:gbif-metadata-profile.adoc[proporciona una guía completa del metarchivo de Darwin Core]."
+msgstr "A menudo, un enlace a una base de datos de origen sigue un formato común, que difiere solo en el número de identificación o el nombre de taxón utilizado en la URL. Esto puede resultar en un archivo de extensión excesivamente detallado. El formato del Archivo Darwin Core admite una forma más eficiente de definir una plantilla de URL, que solo debe definirse una vez y permite que se incruste una variable en la plantilla, lo que eliminando la necesidad de repetir un conjunto de URLs para cada taxón en el archivo de datos. Esto se hace a través del componente de metarchivo XML del Archivo Darwin Core. No usa la extensión Referencias. Esto requiere editar el metarchivo XML, lo que requiere cierto grado de familiaridad con XML. GBIF xref:gbif-metadata-profile.adoc[proporciona una guía completa del metarchivo Darwin Core]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:393
 msgid "The metafile supports the creation of variables in the metafile that may refer to a web page or web service call. This variable may be embedded in the URL and include a taxon identifier or the taxon name as one of the parameters in the URL. Any column in the published data can be referenced by enclosing the index number in curly braces “{}”. The taxon identifier in the core data file can also be referenced via the variable “\\{id}.” The following examples illustrate these features:"
-msgstr "El metarchivo admite la creación de variables en el metarchivo que pueden hacer referencia a una página web o una llamada de servicio web. Esta variable puede estar incrustada en la URL e incluir un identificador de taxón o el nombre de taxón como uno de los parámetros en la URL. Se puede hacer referencia a cualquier columna de los datos publicados encerrando el número de índice entre llaves “{}”. El identificador de taxón en el archivo de datos centrales también se puede hacer referencia a través de la variable \"\\{id}\". Los siguientes ejemplos ilustran estas características:"
+msgstr "El metarchivo permite la creación de variables en el metarchivo que pueden hacer referencia a una página web o una llamada de servicio web. Esta variable puede estar incrustada en la URL e incluir un identificador de taxón o el nombre de taxón como uno de los parámetros en la URL. Se puede hacer referencia a cualquier columna de los datos publicados encerrando el número de índice entre llaves “{}”. También se puede hacer referencia al identificador de taxón en el archivo de datos centrales a través de la variable \"\\{id}\". Los siguientes ejemplos ilustran estas funciones:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:395
 msgid "The Integrated Taxonomic Information System (ITIS) uses Taxonomic Serial Numbers (TSN) to provide links to taxon pages on its web site."
-msgstr "El Sistema Integrado de Información Taxonómica (ITIS) utiliza números de serie taxonómicos (TSN) para proporcionar enlaces a las páginas de taxones en su sitio web."
+msgstr "El Sistema de información taxonómico integrado (ITIS) utiliza números de serie taxonómicos (TSN) para proporcionar enlaces a las páginas de taxones en su sitio web."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:398
@@ -1073,7 +1073,7 @@ msgstr "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:400
 msgid "If a core data file is published using the ITIS TSN system a link can be composed and tied to the “identifier” term in the core data standard using the following syntax."
-msgstr "Si un archivo de datos núcleo se publica utilizando el sistema ITIS TSN, se puede componer y vincular un enlace al término \"identificador\" en el estándar de datos básicos utilizando la siguiente sintaxis."
+msgstr "Si un archivo de datos core se publica utilizando el sistema ITIS TSN, se puede componer y vincular un enlace al término \"identificador\" en el estándar de datos básicos utilizando la siguiente sintaxis."
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:403
@@ -1084,12 +1084,12 @@ msgstr "<field default=\"http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:406
 msgid "where the original numeric value is replaced by the variable `\\{id}`. This value would be derived from the core ID."
-msgstr "donde el valor numérico original se reemplaza por la variable `\\{id}`. Este valor se derivaría del ID del núcleo."
+msgstr "donde el valor numérico original se reemplaza por la variable `\\{id}`. Este valor se derivaría del ID del core."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:409
 msgid "The 2010 Catalogue of Life Annual Checklist provides similar identifiers. It also supports name-based searches that can also be encoded as URLs. For example,"
-msgstr "El Listado Taxonómico Anual del Catálogo de Vida 2010 proporciona identificadores similares. También admite búsquedas basadas en nombres que también se pueden codificar como URL. Por ejemplo,"
+msgstr "El Listado taxonómico anual 2010 del Catálogo de vida proporciona identificadores similares. También admite búsquedas basadas en nombres que también se pueden codificar como URL. Por ejemplo,"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:413
