@@ -38,13 +38,13 @@
     <test.datadir>/tmp/test-datadir</test.datadir>
 
     <!-- GBIF dependencies -->
-    <dwc-api.version>1.33</dwc-api.version>
+    <dwc-api.version>1.35</dwc-api.version>
     <dwca-io.version>2.11</dwca-io.version>
     <gbif-api.version>0.163</gbif-api.version>
-    <gbif-common.version>0.52</gbif-common.version>
+    <gbif-common.version>0.53</gbif-common.version>
     <gbif-doi.version>2.16</gbif-doi.version>
     <gbif-metadata-profile.version>1.3</gbif-metadata-profile.version>
-    <gbif-parsers.version>0.56</gbif-parsers.version>
+    <gbif-parsers.version>0.58</gbif-parsers.version>
     <gbif-registry-metadata.version>3.77</gbif-registry-metadata.version>
     <gbif-httputils.version>1.1</gbif-httputils.version>
 
@@ -72,7 +72,7 @@
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>5.8.2</junit.version>
     <log4j.version>2.17.1</log4j.version>
-    <mockito.version>4.2.0</mockito.version>
+    <mockito.version>4.3.1</mockito.version>
     <owasp-java-html-sanitizer.version>20211018.2</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <struts2.version>2.5.28.2</struts2.version>
