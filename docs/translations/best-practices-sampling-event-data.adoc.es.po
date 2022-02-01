@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 23:14\n"
+"PO-Revision-Date: 2022-02-01 23:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -432,7 +432,7 @@ msgstr "Publicar las especies sensibles/protegidas en un conjunto de datos separ
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:146
 msgid "Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records."
-msgstr "Publicar puntos no precisos para los datos sensibles en el conjunto de datos principal y publicar los detalles precisos en un conjunto de datos separado de acceso limitado, incluyendo todos los registros en ambos conjuntos de datos."
+msgstr "Publicar puntos no precisos para los datos sensibles en el conjunto de datos principal y publicar los detalles precisos en un conjunto de datos separado de acceso limitado; ambos conjuntos de datos incluyen todos los registros de datos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:147
@@ -444,14 +444,14 @@ msgstr "Conservar los datos originales"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:150
 msgid "Although verbatim data and descriptions are not visible on the GBIF.org web interface, they are made available to the community through downloads. When entering verbatim description, make sure to link them to the original event or occurrence. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber."
-msgstr "Aunque los datos y descripciones originales no son visibles en la web de GBIF.org, ellos se ponen al alcance de la comunidad a través de descargas. Cuando introduzca descripciones originales, asegúrese de vincularlas con el evento o registro original. Por ejemplo, el ID o código proporcionado en el evento original debe ser introducido en dwc:fieldNumber; el ID o código proporcionado en la observación del registro original debe ser introducido en dwc:recordNumber."
+msgstr "Aunque los datos y descripciones originales no son visibles en la web de GBIF.org, se ponen al alcance de la comunidad a través de descargas. Cuando introduzca descripciones originales, asegúrese de vincularlas con el evento o registro original. Por ejemplo, el ID o código proporcionado en el evento original debe ser introducido en dwc:fieldNumber, el ID o código proporcionado en la observación del registro original debe ser introducido en dwc:recordNumber."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:151
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
-msgstr "Publicar datos de proyectos como un conjunto de datos simple"
+msgstr "Publicar datos de proyectos como un único conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:154
@@ -463,7 +463,7 @@ msgstr "Los datos producidos por un proyecto de muestreo grande deberían ser pu
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
-msgstr "Republicar datos de presencia como datos de eventos de muestreo"
+msgstr "Republicar datos de registros biológicos como datos de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:159
@@ -473,19 +473,19 @@ msgstr "Los eventos de muestreo proporcionan mejor documentación y mayor benefi
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
 msgid "In order to do so, you should create a new sampling-event dataset and send an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations."
-msgstr "Para hacerlo, debe crear un nuevo conjunto de datos de eventos de muestreo y enviar un correo electrónico al servicio de asistencia de GBIF (helpdesk@gbif.org). En este correo, debe proporcionar los GUIDs tanto del conjunto de datos de presencia como del nuevo conjunto de datos. Entonces, podremos vincular el primer conjunto de datos con el más reciente antes de des-indexarlo, evitando así las duplicación de registros y conservando las citas."
+msgstr "Para hacerlo debe crear un nuevo conjunto de datos de eventos de muestreo y enviar un correo electrónico al servicio de asistencia de GBIF (helpdesk@gbif.org). En este correo, debe proporcionar los GUID tanto del conjunto de datos deregistros biológicos como del nuevo conjunto de datos. Entonces, podremos vincular el primer conjunto de datos con el más reciente antes de des-indexarlo, evitando así las duplicación de registros y conservando las citas."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr "Modelizar monitoreos continuos de individuos vivos"
+msgstr "Modelar monitoreos continuos de individuos vivos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:165
 msgid "If your dataset contains continuous monitoring of live individuals, such as bird tracking data, you can use dwc:organismID to store the ID of the individual being tracked. In addition to that, you should represent each individual being tracked as a single event."
-msgstr "Si su conjunto de datos contiene monitoreos continuos de individuos vivos, tales como datos de seguimiento de aves, puede utilizar dwc:organismID para almacenar el ID del individuo que está siendo monitoreado. Además de eso, debe representar cada individuo monitoreado como un evento único."
+msgstr "Si su conjunto de datos contiene monitoreos continuos de individuos vivos, tales como datos de monitoreo de aves, puede utilizar dwc:organismID para almacenar el ID del individuo que está siendo monitoreado. Además de eso, debe representar cada individuo monitoreado como un evento único."
 
 #.  TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded).
 #. type: Title ==
@@ -504,7 +504,7 @@ msgstr "Gestión de incidencias relacionadas con el conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
 msgid "If possible, we recommend tracking all the issues related to a given dataset using an issue management system such as the one provided by GitHub."
-msgstr "Si fuera posible, recomendamos hacer seguimiento de todas las incidencias relacionadas con un conjunto de datos en cuestión utilizando un sistema de gestión de incidencias tales como el proporcionado por GitHub."
+msgstr "Si fuera posible, recomendamos hacer seguimiento de todas las incidencias relacionadas con un conjunto de datos utilizando un sistema de gestión de incidencias tales como el proporcionado por GitHub."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
@@ -523,12 +523,12 @@ msgstr "Idealmente, los códigos y programas personalizados utilizados para tran
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr "Describir datos de eventos de muestreo en metadatos de conjuntos de datos"
+msgstr "Describir los datos de los eventos de muestreo en los metadatos de los conjuntos de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:181
 msgid "Publishers should document their dataset as much as possible with a particular emphasis on sampling methodologies."
-msgstr "Los publicadores deberían documentar sus conjuntos de datos tanto como sea posible con especial enfásis en las metodologías de muestreo."
+msgstr "Los editores deben documentar su conjunto de datos tanto como sea posible, haciendo especial hincapié en las metodologías de muestreo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
@@ -545,7 +545,7 @@ msgstr "Vincular conjuntos de datos relacionados"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:188
 msgid "Some datasets may come from the same research project or may be related in certain context. The current recommendation is to link them using a project identifier."
-msgstr "Algunos conjuntos de datos pueden proceder del mismo proyecto de investigación o puede estar relacionado en ciertos contextos. La recomendación actual es vincularlos utilizando un identificador de proyectos."
+msgstr "Algunos conjuntos de datos pueden proceder del mismo proyecto de investigación o pueden estar relacionados en ciertos contextos. La recomendación actual es vincularlos utilizando un identificador de proyectos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:189
@@ -569,7 +569,7 @@ msgstr "Ejemplos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:196
 msgid "Following are some examples of typical sampling-event data sets. In each case, the key fields in the Event core and Occurrence extension are provided. For some examples, additional extensions such as Relevé and measurement-or-fact are also included."
-msgstr "A continuación puede encontrar algunos ejemplos de típicos conjuntos de datos de eventos de muestreo. En cada caso, se proporcionan los campos clave para el evento central y las extensiones de registros. Para algunos ejemplos, las extensiones adicionales tales como Relevé y medidas-o-hechos también se han incluido."
+msgstr "A continuación se presentan algunos ejemplos de conjuntos de datos típicos de eventos de muestreo. En cada caso, se proporcionan los campos clave para el evento core y las extensiones de registros. Para algunos ejemplos, las extensiones adicionales tales como Relevé y medidas-o-hechos también se han incluido."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:197
@@ -586,7 +586,7 @@ msgstr "Muestreo de invertebrados acuáticos"
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:351
 #, no-wrap
 msgid "*Core (Event) table*\n"
-msgstr "*Tabla (de Evento) central*\n"
+msgstr "*Tabla core (de evento)*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:206
@@ -605,7 +605,7 @@ msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventD
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:360
 #, no-wrap
 msgid "*Extension (Occurrence) table*\n"
-msgstr "*Tabla de Extensiones (de registros)*\n"
+msgstr "*Tabla de extensiones (de registros)*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:217
@@ -616,10 +616,10 @@ msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ..
 "| C_1428 | _Gyraulus albus_ | 2 | individuals |\n"
 "| B_1538 | _Serratella ignita_ | 318 | individuals |\n"
 msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
-"| C_1428 | _Baetis rhodani_ | 14 | individuals |\n"
-"| C_1428 | _Ephemera danica_ | 15 | individuals |\n"
-"| C_1428 | _Gyraulus albus_ | 2 | individuals |\n"
-"| B_1538 | _Serratella ignita_ | 318 | individuals |\n"
+"| C_1428 | _Baetis rhodani_ | 14 | individuos |\n"
+"| C_1428 | _Ephemera danica_ | 15 | individuos |\n"
+"| C_1428 | _Gyraulus albus_ | 2 | individuos |\n"
+"| B_1538 | _Serratella ignita_ | 318 | individuos |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:220
@@ -635,14 +635,14 @@ msgstr "*Explicación*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:222
 msgid "_Ephemera danica_ : A total of 14 individuals from 1.25 square meters were obtained in this sampling event. The derived individuals per sq meter count is 11.2 (14/1.25)."
-msgstr "_Ephemera danica_ : Un total de 14 individuos de 1,25 metros cuadrados fueron obtenidos en este evento de muestreo. Los individuos derivados por m2 contabilizan como 11,2 (14/1,25)."
+msgstr "_Ephemera danica_ : Un total de 14 individuos de 1,25 metros cuadrados fueron obtenidos en este evento de muestreo. El recuento derivado de individuos por metro cuadrado es de 11,2 (14/1,25)."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:223
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
-msgstr "Muestreo de invertebrados de agua salobre"
+msgstr "Muestreo de invertebrados de aguas salobres"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:232
