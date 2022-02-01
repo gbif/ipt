@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 16:48\n"
+"PO-Revision-Date: 2022-02-01 19:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -748,23 +748,23 @@ msgstr "Citación y atribución"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:296
 msgid "Taxonomic checklists often represent significant intellectual and financial efforts on the part of the individuals and organizations who compile them. Some checklists may be derived from, or may reference, other source checklists to create new distinct thematic, regional or taxonomic views of the same source authority. Proper attribution and visibility of these sources is therefore a high priority."
-msgstr "Los listados taxonómicos a menudo representan importantes esfuerzos intelectuales y financieros por parte de las personas y organizaciones que los compilan. Algunos listados taxonómicos pueden derivarse de, o pueden hacer referencia a, otros listados taxonómicos de fuentes para crear nuevas vistas temáticas, regionales o taxonómicas distintas de la misma autoridad fuente. Por lo tanto, la atribución y visibilidad adecuadas de estas fuentes es una alta prioridad."
+msgstr "Los listados taxonómicos a menudo representan importantes esfuerzos intelectuales y financieros por parte de las personas y organizaciones que los compilan. Algunos listados taxonómicos pueden derivarse de, o hacer referencia a, otros listados taxonómicos fuente para crear nuevas vistas temáticas, regionales o taxonómicas distintas de la misma autoridad fuente. Por lo tanto, la atribución y visibilidad adecuadas de estas fuentes es, por tanto, una gran prioridad."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:298
 msgid "The DwC-A format provides a range of options and recommendations for providing proper citation and attribution. This range extends from global citation and attribution information that form part of the resource metadata down to record-level data elements. These options support the provision of multiple levels of attribution."
-msgstr "El formato DwC-A proporciona una variedad de opciones y recomendaciones para proporcionar citas y atribuciones adecuadas. Este rango se extiende desde la información global de citas y atribuciones que forman parte de los metadatos del recurso hasta los elementos de datos a nivel de registro. Estas opciones respaldan la provisión de múltiples niveles de atribución."
+msgstr "El formato DwC-A proporciona una variedad de opciones y recomendaciones para proporcionar citas y atribuciones adecuadas. Este rango se extiende desde la información global de citas y atribuciones que forman parte de los metadatos del recurso, hasta los elementos de datos a nivel de registro. Estas opciones respaldan la provisión de múltiples niveles de atribución."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:299
 #, no-wrap
 msgid "Metadata Citation and Attribution"
-msgstr "Citación y Atribución de Metadatos"
+msgstr "Citación y atribución de metadatos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:302
 msgid "The GBIF Metadata profile supports resource-level data elements that contribute to citation and attribution and enable detailed description of the scope and provenance of a checklist. A complete reference list to all the metadata elements is beyond the scope of this document and xref:gbif-metadata-profile.adoc[available] but specific citation and attribution-related elements include:"
-msgstr "El perfil de metadatos de GBIF admite elementos de datos a nivel de recursos que contribuyen a la cita y atribución y permiten una descripción detallada del alcance y la procedencia de un listado taxonómico. Una lista de referencia completa de todos los elementos de metadatos está más allá del alcance de este documento y xref:gbif-metadata-profile.adoc[diponible], pero los elementos específicos relacionados con la cita y la atribución incluyen:"
+msgstr "El perfil de metadatos de GBIF admite elementos de datos a nivel de recursos que contribuyen a la citación y atribución, y permiten una descripción detallada del alcance y la procedencia de un listado taxonómico. Una lista de referencia completa de todos los elementos de metadatos está más allá del alcance de este documento y existe documentación xref:gbif-metadata-profile.adoc[diponible] al respecto, pero los elementos específicos relacionados con la citación y atribución incluyen:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:304
