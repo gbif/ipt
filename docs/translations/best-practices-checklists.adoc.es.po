@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 21:06\n"
+"PO-Revision-Date: 2022-02-01 21:42\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1100,7 +1100,7 @@ msgstr "http://www.catalogueoflife.org/annual-checklist/2010/search/all/key/Stru
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:415
 msgid "embeds a scientific name “Struthio camelus” into a URL. Full scientific name combinations can be published in the core data file using the Darwin Core term “scientificName.” If we assume that this term represented the 12th column in our core data file we could use the syntax"
-msgstr "incrusta un nombre científico \"Struthio camelus\" en una URL. Las combinaciones de nombres científicos completos se pueden publicar en el archivo de datos principales utilizando el término básico de Darwin \"scientificName\". Si asumimos que este término representa la duodécima columna en nuestro archivo de datos central, podríamos usar la sintaxis"
+msgstr "incrusta el nombre científico \"Struthio camelus\" en una URL. Las combinaciones de nombres científicos completos se pueden publicar en el archivo de datos principales utilizando el término Darwin Core \"scientificName\". Si asumimos que este término representa la duodécima columna en nuestro archivo de datos central, podríamos usar la sintaxis"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:418
@@ -1117,17 +1117,17 @@ msgstr "donde `\\{12}` representa el valor de la duodécima columna que se susti
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:423
 #, no-wrap
 msgid "GBIF Checklist Extensions"
-msgstr "Extensiones de Listados Taxonómicos de GBIF"
+msgstr "Extensiones de listados taxonómicos de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:426
 msgid "The core data file in a checklist contains taxon records. The set of terms that can be used to describe a taxon record is defined by the Taxon (Core) Extension."
-msgstr "El archivo de datos núcleo en un listado taxonómico contiene registros de taxón. El conjunto de términos que se pueden utilizar para describir un registro de taxón está definido por la Extensión Taxon (Core)."
+msgstr "El archivo core de datos en un listado taxonómico contiene registros de taxón. El conjunto de términos que se pueden utilizar para describir un registro de taxón está definido por la Extensión Taxon (Core)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:428
 msgid "Each taxon record can be extended with one or more records in an extension file. The set of terms that can be used to describe each extension record is defined by its Extension."
-msgstr "Cada registro de taxón se puede ampliar con uno o más registros en un archivo de extensión. El conjunto de términos que se pueden utilizar para describir cada registro de extensión está definido por su Extensión."
+msgstr "Cada registro de taxón se puede complementar con uno o más registros en un archivo de extensión. El conjunto de términos que se pueden utilizar para describir cada registro de extensión está definido por su Extensión particular."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:430
@@ -1148,13 +1148,13 @@ msgstr "Última versión publicada: {latest-dwc-taxon}[{date-dwc-taxon}]"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:436
 msgid "Use this set of terms to provide the fundamental information for a species checklist including classification, synonymy and other key elements. Each row in this list represents a taxon name, either an accepted name or a synonym. The terms in this class support different methods for representing classification information. Classifications can be shared “spreadsheet-style” with columns for Kingdom, Phylum, Class, etc. or they can be shared “database-style” with each taxon row possessing a field containing the ID of its immediate parent. Please note that the tables contain the complete list of acceptable terms. The minimum requirement for sharing a checklist is as little as a list of species although an accompanying ID is highly recommended. Use this list of terms to identify the terms that best match the data to be shared. Don’t be daunted by the term names. Read the description to locate relevant terms."
-msgstr "Utilice este conjunto de términos para proporcionar la información fundamental para un listado taxonómico de especies, incluida la clasificación, la sinonimia y otros elementos clave. Cada fila de esta lista representa un nombre de taxón, ya sea un nombre aceptado o un sinónimo. Los términos de esta clase admiten diferentes métodos para representar información de clasificación. Las clasificaciones se pueden compartir \"estilo hoja de cálculo\" con columnas para Reino, Filo, Clase, etc. o se pueden compartir \"estilo base de datos\" con cada fila de taxón que posee un campo que contiene el ID de su padre inmediato. Tenga en cuenta que las tablas contienen la lista completa de términos aceptables. El requisito mínimo para compartir un listado taxonómico es tan pequeño como una lista de especies, aunque se recomienda encarecidamente una identificación adjunta. Utilice esta lista de términos para identificar los términos que mejor coincidan con los datos que se compartirán. No se deje intimidar por los nombres de los términos. Lea la descripción para localizar los términos relevantes."
+msgstr "Utilice este conjunto de términos para proporcionar la información fundamental para un listado taxonómico de especies, incluida la clasificación, la sinonimia y otros elementos clave. Cada fila de esta lista representa un nombre de taxón, ya sea un nombre aceptado o un sinónimo. Los términos de esta clase admiten diferentes métodos para representar información de clasificación. Las clasificaciones se pueden compartir \"estilo hoja de cálculo\" con columnas para Reino, Filo, Clase, etc. o se pueden compartir \"estilo base de datos\" con cada fila de taxón que posee un campo que contiene el ID de su padre inmediato. Tenga en cuenta que las tablas contienen la lista completa de términos aceptables. El requisito mínimo para compartir un listado taxonómico es simplemente una lista de especies, aunque se recomienda una identificación adjunta. Utilice esta lista de términos para identificar los términos que mejor coincidan con los datos que se compartirán. No se deje intimidar por los nombres de los términos. Lea la descripción para localizar los términos relevantes."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:437
 #, no-wrap
 msgid "Vernacular Names Extension"
-msgstr "Extensión de Nombres Vernáculos"
+msgstr "Extensión de Nombres comunes"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:440
@@ -1164,7 +1164,7 @@ msgstr "Última versión publicada: {latest-vernacularname}[{date-vernacularname
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:442
 msgid "This extension provides the means to share information related to common (vernacular) names linked to taxa in the core data file. Multiple vernacular names can be linked to the same taxon via the taxonID."
-msgstr "Esta extensión proporciona los medios para compartir información relacionada con nombres comunes (vernáculos) vinculados a taxones en el archivo de datos central. Se pueden vincular varios nombres vernáculos al mismo taxón a través del taxonID."
+msgstr "Esta extensión proporciona los medios para compartir información relacionada con nombres comunes vinculados a taxones en el archivo de datos central. Se pueden vincular varios nombres comunes al mismo taxón a través del taxonID."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:443
@@ -1180,13 +1180,13 @@ msgstr "Última versión publicada: {latest-references}[{date-references}]"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:448
 msgid "Use this extension to describe one or more bibliographic references related to a taxon in the core data file. Use the type field to qualify the references. This extension supports the sharing of referenced synonymic checklists."
-msgstr "Utilice esta extensión para describir una o más referencias bibliográficas relacionadas con un taxón en el archivo de datos núcleo. Utilice el campo de tipo para calificar las referencias. Esta extensión admite el intercambio de listados taxonómicos de sinónimos referenciadas."
+msgstr "Utilice esta extensión para describir una o más referencias bibliográficas relacionadas con un taxón en el archivo core de datos. Utilice el campo de tipo para calificar las referencias. Esta extensión permite el intercambio de listados taxonómicos de sinónimos referenciados."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:449
 #, no-wrap
 msgid "Species Distribution Extension"
-msgstr "Extensión de Distribución de Especies"
+msgstr "Extensión de Distribución de especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:452
@@ -1202,7 +1202,7 @@ msgstr "Utilice esta extensión para compartir información sobre una o más ref
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:456
 #, no-wrap
 msgid "Species Description Extension"
-msgstr "Extensión de Descripción de Especies"
+msgstr "Extensión de Descripción de especies"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:459
@@ -1218,7 +1218,7 @@ msgstr "Utilice esta extensión para proporcionar texto descriptivo de un taxón
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:463
 #, no-wrap
 msgid "Alternative Identifiers"
-msgstr "Identificadores Alternativos"
+msgstr "Identificadores alternativos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:466
@@ -1234,7 +1234,7 @@ msgstr "Utilice esta extensión si tiene más de un identificador o enlace a inf
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:469
 #, no-wrap
 msgid "Types and Specimens Extension"
-msgstr "Extensión de Tipos y Especímenes"
+msgstr "Extensión de Tipos y especímenes"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:472
@@ -1250,7 +1250,7 @@ msgstr "Utilice esta extensión para compartir datos relacionados con uno o más
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:475
 #, no-wrap
 msgid "Resource Relationship Extension"
-msgstr "Extensión de Relación de Recursos"
+msgstr "Extensión de Relación de recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:478
