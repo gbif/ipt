@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 22:15\n"
+"PO-Revision-Date: 2022-02-01 22:47\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -218,7 +218,7 @@ msgstr "Tamaño de muestra"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:68
 msgid "The following Darwin Core fields store the sample size of a sampling event:"
-msgstr "Los siguientes ficheros Darwin Core almacenan el tamaño de muestra de un evento de muestreo:"
+msgstr "Los siguientes campos Darwin Core almacenan el tamaño de muestra de un evento de muestreo:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:70
@@ -235,18 +235,18 @@ msgstr "*sampleSizeUnit*: la unidad de medida del tamaño (duración en tiempo, 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:73
 msgid "The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. Examples are given in Table 1 below."
-msgstr "El valor de sampleSizeValue es un número y debe tener su correspondiente sampleSizeUnit. El valor de sampleSizeUnit debe restringirse únicamente al uso de unidades del Sistema Internacional o a otras unidades aceptadas para su uso en el Sistema Internacional (ej.: minuto, hora, día, litro) de acuerdo al {latest-unit-of-measurement}[Vocabulario de Unidades de Medida]. Se proporcionan ejemplos a continuación en la tabla 1."
+msgstr "El valor de sampleSizeValue es un número y debe tener su correspondiente sampleSizeUnit. El valor de sampleSizeUnit debe restringirse únicamente al uso de unidades del Sistema Internacional u otras unidades aceptadas para su uso en el Sistema Internacional (p. ej., minuto, hora, día, litro) de acuerdo al {latest-unit-of-measurement}[Vocabulario de Unidades de medida]. Se proporcionan ejemplos a continuación en la tabla 1."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:75
 msgid "You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr "Puede representar un área de muestreo utilizando una forma WKT apropiada o una ubicación de punto de latitud / longitud. Si se hace correctamente, también se puede derivar el muestreo de la dirección en que se llevó a cabo. Por ejemplo, una línea de arrastre oceánica representada con una forma WKT LINESTRING permite determinar la dirección de la red de arrastre basándose en la notación estándar para escribir los puntos de inicio y finalización."
+msgstr "Puede representar un área de muestreo utilizando una forma WKT apropiada o una ubicación de punto de latitud/longitud. Si se hace correctamente, también se puede derivar el muestreo de la dirección en que se llevó a cabo. Por ejemplo, una línea de arrastre oceánica representada con una forma WKT LINESTRING permite determinar la dirección de la red de arrastre basándose en la notación estándar para escribir los puntos de inicio y finalización."
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:76
 #, no-wrap
 msgid "sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre."
-msgstr "sampleSizeValue y SampleSizeUnit deben usarse de manera conjunta, ej.: 3 metros cuadrados o 1 litro."
+msgstr "sampleSizeValue y SampleSizeUnit deben usarse de manera conjunta, p. ej., 3 metros cuadrados o 1 litro."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:84
@@ -272,7 +272,7 @@ msgstr "Cantidad y abundancia"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:89
 msgid "The following Darwin Core fields are also required to be used as a pair:"
-msgstr "Los siguientes archivos Darwin Core también deben ser usados en pareja:"
+msgstr "Los siguientes archivos Darwin Core también deben ser usados como un par:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:91
@@ -289,13 +289,13 @@ msgstr "*organismQuantityType*: el tipo de sistema de cuantificación usado para
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:94
 msgid "Table 2 lists some example values. The value of organismQuantity is a number or enumeration, e.g., “27” for an organismQuantityType “individuals”, “12.5” for an organismQuantityType “%biomass”, or “r” for an organismQuantityType “BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity being measured) is expected to be drawn from a small controlled vocabulary with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, “%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with organismQuantity values: “+” on DominScale; “5” on BraunBlanquetScale; “45” for %Biomass."
-msgstr "La Tabla 2 enumera algunos valores como ejemplo. El valor de organismQuantity es un número o enumeración, ej.: “27” para un organismQuantityType “individuos”, “12,5” para un organismQuantityType “%biomasa”, o “r” para un organismQuantityType “BraunBlanquetScale”. El valor de organismQuantityType (ej.: la entidad que está siendo medida) debe ser extraído de un vocabulario controlado reducido con términos como “Individuos”, “%Biomasa”, “%Biovolumen”, “%Especies”, “%Covertura”, “BraunBlanquetScale”, “DominScale”. Ejemplos cuando se combinan con valores organismQuantity: “+” en DominScale; “5” en BraunBlanquetScale; “45” para %Biomasa."
+msgstr "La Tabla 2 enumera algunos valores como ejemplo. El valor de organismQuantity es un número o una enumeración, p. ej., “27” para un organismQuantityType “individuos”, “12.5” para un organismQuantityType “%biomasa”, o “r” para un organismQuantityType “BraunBlanquetScale”. El valor de organismQuantityType (p. ej., la entidad que está siendo medida) debe ser extraído de un vocabulario controlado reducido con términos como “Individuos”, “%Biomasa”, “%Biovolumen”, “%Especies”, “%Cobertura”, “BraunBlanquetScale”, “DominScale”. Ejemplos cuando se combinan con los valores de organismQuantity: “+” en DominScale; “5” en BraunBlanquetScale; “45” para %Biomasa."
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:95
 #, no-wrap
 msgid "organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale."
-msgstr "organismQuantity y organismQuantityType deben usarse de manera conjunta, ej.: un conteo de 14 individuos, o un valor de código \"r\" en la escala Braun Blanquet."
+msgstr "organismQuantity y organismQuantityType deben usarse de manera conjunta, p. ej., un conteo de 14 individuos o un valor de código \"r\" en la escala Braun Blanquet."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:103
@@ -308,7 +308,7 @@ msgid "| organismQuantity | organismQuantityType\n\n"
 msgstr "| organismQuantity | organismQuantityType\n\n"
 "| 14 | individuos\n"
 "| r | BraunBlanquetScale\n"
-"| 0,4 | %Especies\n"
+"| 0.4 | %Especies\n"
 "| 31 | %Biomasa\n"
 
 #. type: Title ===
@@ -321,12 +321,12 @@ msgstr "Cómo identificar de forma única los eventos de muestreo"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:109
 msgid "Each event is uniquely identified using dwc:eventID and occasionally dwc:parentEventID. Although the type and format of identifier is arbitrary we recommend that publishers choose persistent globally unique identifier.  In the absence of a GUID, publishers may reuse the original fieldNumber."
-msgstr "Cada evento se identifica de manera única utilizando dwc:eventID y ocasionalmente dwc:parentEventID. Aunque el tipo y formato del identificador es arbitrario, recomendamos que los publicadores seleccionen identificadores únicos globales y persistentes (GUID). En ausencia de GUID, los publicadores pueden rechazar el fieldNumber original. "
+msgstr "Cada evento se identifica de manera única utilizando dwc:eventID y ocasionalmente dwc:parentEventID. Aunque el tipo y formato del identificador es arbitrario, recomendamos que los publicadores seleccionen identificadores únicos globales y persistentes (GUID). En ausencia de GUID, los publicadores pueden reutilizar el fieldNumber original. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
 msgid "Make sure to reuse existing stable identifiers and do not create a new identifier for an event when one is already declared."
-msgstr "Asegúrese de reutilizar identificadores estables existentes y no cree un nuevo identificador para un evento cuando ya haya uno aceptado."
+msgstr "Asegúrese de reutilizar identificadores estables existentes y no cree un nuevo identificador para un evento cuando ya hay uno aceptado."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
@@ -338,17 +338,17 @@ msgstr "Cómo expresar la jerarquía de eventos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:115
 msgid "Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3)."
-msgstr "Los eventos de muestreo pueden estar relacionados entre sí (ej.: muestras anidadas) mediante un identificador parental común. Por ejemplo, varios sub-eventos de muestreo en una parcela de Whittaker cada uno con sus propios eventID (ej.: \"A1:1\", \"A1:2\") compartirían un parentEventID común (ej.: \"A1\") lo que les permite vincularse entre sí fácilmente (ver Tabla 4 y Figura 3)."
+msgstr "Los eventos de muestreo pueden estar relacionados entre sí (p ej., muestras anidadas) mediante un identificador parental común. Por ejemplo, varios sub-eventos de muestreo en una parcela de Whittaker cada uno con sus propios eventID (p. ej.,: \"A1:1\", \"A1:2\") compartirían un parentEventID común (p. ej.,: \"A1\") lo que permite vincularlos entre sí fácilmente (ver Tabla 4 y Figura 3)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:117
 msgid "Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata."
-msgstr "Información más detallada sobre la naturaleza de la relación (ej.: parte de una serie de monitoreo) puede ser descrita en la sección de proyectos de los metadatos adjuntos."
+msgstr "En la sección de proyecto de los metadatos adjuntos puede encontrarse más información sobre la naturaleza de la relación (p. ej., parte de una serie de monitoreo)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:119
 msgid "You may also refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
-msgstr "También puede dirigirse a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
+msgstr "También puede dirigirse a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[preguntas frecuentes]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
@@ -360,14 +360,14 @@ msgstr "Cómo expresar datos de ausencia"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:123
 msgid "Refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]."
-msgstr "Diríjase a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]."
+msgstr "Diríjase a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[preguntas frecuentes]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
-msgstr "Cómo incluir multimedia complementaria"
+msgstr "Cómo incluir material multimedia complementario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:127
