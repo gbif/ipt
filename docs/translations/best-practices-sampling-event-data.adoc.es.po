@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 22:47\n"
+"PO-Revision-Date: 2022-02-01 23:14\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -377,7 +377,7 @@ msgstr "Puede elegir incluir medios complementarios para facilitar la interpreta
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:129
 msgid "The files associated have to be hosted on an external server and linked to the occurrence through the dwc:associatedMedia and dwc:associatedReferences. These files may be images, texts or a combination of both as long as the format type is specified. JPG, PNG, etc. images will be visible as thumbnails while PDFs will appear as clickable links."
-msgstr "Los ficheros asociados tienen que ser alojados en un servidor externo y enlazados la los registros a través de dwc:associatedMedia y dwc:associatedReferences. Estos ficheros pueden ser imágenes, textos o una combinación de ambos siempre que se especifique el tipo de formato. Las imágenes JPG, PNG, etc. serán visibles como miniaturas mientras que los PDFs aparecerán como enlaces clicables."
+msgstr "Los archivos asociados tienen que ser alojados en un servidor externo y enlazados la los registros a través de dwc:associatedMedia y dwc:associatedReferences. Estos archivos pueden ser imágenes, textos o una combinación de ambos siempre que se especifique el tipo de formato. Las imágenes JPG, PNG, etc. serán visibles como miniaturas mientras que los PDFs aparecerán como enlaces pulsables."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
@@ -391,7 +391,7 @@ msgstr "Publicar datos de eventos de muestreo"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
 #, no-wrap
 msgid "Using GUIDs for identifiers"
-msgstr "Utilizar GUIDs como identificadores"
+msgstr "Utilizar GUID como identificadores"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:135
@@ -401,7 +401,7 @@ msgstr "Numerosos campos requieren el uso de identificadores únicos: dwc:occurr
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:137
 msgid "As mentioned previously, although no particular format is enforced, we advise publishers to use Global Unique IDentifiers (GUIDs). There are a few online services which can provide such identifiers. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland."
-msgstr "Como se ha mencionado anteriormente, aunque no se obliga a utilizar un formato concreto, aconsejamos a los publicadores a utilizar Identificadores Únicos Globales (GUIDs, por sus siglas en inglés). Existen varios servicios online que pueden prorcionar tales identificadores. Por ejemplo, es posible utilizar http://www.geonames.org/ para encontrar (o incluso generar nuevos) identificadores para dwc:locationID, ej.: http://sws.geonames.org/10793757/ es un GUID para un lago en Groenlandia."
+msgstr "Como se ha mencionado anteriormente, aunque no es obligatorio  utilizar un formato concreto, aconsejamos a los publicadores utilizar Identificadores únicos globales (GUID, por sus siglas en inglés). Existen varios servicios online que pueden prorcionar tales identificadores. Por ejemplo, es posible utilizar http://www.geonames.org/ para encontrar (o incluso generar nuevos) identificadores para dwc:locationID, p. ej., http://sws.geonames.org/10793757/ es un GUID para un lago en Groenlandia."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:138
@@ -417,7 +417,7 @@ msgstr "Si su conjunto de datos contiene especies sensibles, existen varias form
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:143
 msgid "Simply removing these species from the dataset,"
-msgstr "Elimine simplemente estas especies el conjunto de datos,"
+msgstr "Simplemente eliminar estas especies el conjunto de datos,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:144
