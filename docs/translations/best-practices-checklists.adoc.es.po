@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 15:18\n"
+"PO-Revision-Date: 2022-02-01 15:51\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -161,25 +161,25 @@ msgstr "Formato del Archivo Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:50
 msgid "Darwin Core Archive (DwC-A) is an informatics data standard that makes use of the Darwin Core terms to produce a single, self-contained dataset for checklist data. The collection of files in an archive form a self-contained dataset, which can be provided as a single compressed (Zip or Gzip) file. A dataset is composed of a descriptive metadata document and a set of one or more data files. For more information about DwC-A refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "Archivo Darwin Core (DwC-A) es un estándar de datos informáticos que utiliza los términos de Darwin Core para producir un conjunto de datos único e independiente para los datos del listado taxonómico. La recopilación de archivos en un archivo forma un conjunto de datos autónomo, que se puede proporcionar como un solo archivo comprimido (Zip o Gzip). Un conjunto de datos se compone de un documento de metadatos descriptivo y un conjunto de uno o más archivos de datos. Para obtener más información sobre DwC-A, consulte la xref:darwin-core.adoc[Guía práctica de los archivos de Darwin Core]."
+msgstr "Archivo Darwin Core (DwC-A) es un estándar de datos informáticos que hace uso de los términos Darwin Core para producir un conjunto de datos único y autocontenido para los datos de las listas de control. La recopilación de archivos en un único archivo forma un conjunto de datos autocontenido, que puede proporcionarse como un único archivo comprimido (Zip o Gzip). Un conjunto de datos se compone de un documento de metadatos descriptivo y un conjunto de uno o más archivos de datos. Para obtener más información sobre DwC-A, consulte xref:darwin-core.adoc[Guía práctica de los Archivos Darwin Core]."
 
 #. type: Title ====
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:51
 #, no-wrap
 msgid "Checklist Metadata"
-msgstr "Metadatos de Listado Taxonómico"
+msgstr "Metadatos de listados taxonómicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:54
 msgid "Documenting the provenance and scope of datasets is required in order to publish checklist data through the GBIF network. Dataset documentation is referred to as ‘resource metadata’ and enables users to evaluate the fitness-for-use of a dataset. It may describe the scope and intended function of the list, methodologies and resources used for its compilation, and the individuals and organizations involved in its creation and management. Metadata is shared in a Darwin Core Archive as an XML document. GBIF provides a metadata profile for species checklists based on the Ecological Metadata Language. A How-to guide describes all the options for describing a species checklist using this format. See xref:gbif-metadata-profile.adoc[]."
-msgstr "Es necesario documentar la procedencia y el alcance de los conjuntos de datos para publicar los datos del listado taxonómico a través de la red GBIF. La documentación del conjunto de datos se denomina \"metadatos de recursos\" y permite a los usuarios evaluar la idoneidad para el uso de un conjunto de datos. Puede describir el alcance y la función prevista del listados, las metodologías y los recursos utilizados para su compilación, y las personas y organizaciones involucradas en su creación y gestión. Los metadatos se comparten en un Archivo Darwin Core como un documento XML. GBIF proporciona un perfil de metadatos para listados taxonómicos de especies basado en el lenguaje de metadatos ecológicos. Una guía práctica describe todas las opciones para describir un listado taxonómico de especies utilizando este formato. Consulte xref:gbif-metadata-profile.adoc[]."
+msgstr "Es necesario documentar la procedencia y el alcance de los conjuntos de datos para publicar los datos de listados taxonómicos a través de la red GBIF. La documentación del conjunto de datos se denomina \"metadatos del recurso\" y permite a los usuarios evaluar la aptitud para el uso de un conjunto de datos. Los metadatos pueden describir el alcance y la función prevista del listado, las metodologías y los recursos utilizados para su recopilación, y las personas y organizaciones involucradas en su creación y gestión. Los metadatos se comparten en un Archivo Darwin Core como un documento XML. GBIF proporciona un perfil de metadatos para listados taxonómicos de especies basado en el lenguaje de metadatos ecológicos. Existe una guía práctica describe todas las opciones para describir un listado taxonómico de especies utilizando este formato. Consulte xref:gbif-metadata-profile.adoc[]."
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:55
 #: en/modules/ROOT/pages/checklist-data.adoc:1
 #, no-wrap
 msgid "Checklist Data"
-msgstr "Datos del Listado Taxonómico"
+msgstr "Datos de listados taxonómicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:58
