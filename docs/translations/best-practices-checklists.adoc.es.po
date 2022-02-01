@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-01 15:51\n"
+"PO-Revision-Date: 2022-02-01 16:20\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -184,14 +184,14 @@ msgstr "Datos de listados taxonómicos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:58
 msgid "The Darwin Core Archive format provides the structural framework for publishing species checklists. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one *core file*, containing the basic checklist elements (species list, classification, synonymy) surrounded by a number of ‘*extensions*’, that describe related data types (such as common names). Links between core and extension records are made using a taxon identifier (*taxonID*) data element. In this way, many extension records can exist for each single core taxon record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to species checklists."
-msgstr "El formato Archivo Darwin Core proporciona el marco estructural para publicar listados taxonómicos de especies. Los Archivos de Darwin Core constan de una serie de uno o más archivos de texto, en formato estándar delimitado por comas o tabuladores. Los archivos están organizados lógicamente en forma de estrella con un *archivo central*, que contiene los elementos básicos del listado taxonómico (lista de especies, clasificación, sinonimia) rodeados por una serie de '*extensiones*', que describen tipos de datos relacionados (como nombres comunes). Los vínculos entre los registros centrales y de extensión se realizan utilizando un elemento de datos de identificador de taxón (*taxonID*). De esta manera, pueden existir muchos registros de extensión para cada registro de taxón principal. Este \"esquema en estrella\" proporciona un modelo de datos relacional simple que admite muchos tipos de anotaciones que son comunes a los listados taxonómicos de especies."
+msgstr "El formato Archivo Darwin Core proporciona el marco estructural para la publicación de listados taxonómicos. Los Archivos Darwin Core consisten en una serie de uno o más archivos de texto, en formato estándar delimitados por comas o por tabulaciones. Los archivos están organizados lógicamente en forma de estrella con un *archivo central*, que contiene los elementos básicos del listado taxonómico (listado de especies, clasificación, sinonimia) rodeado por una serie de \"*extensiones*\", que describen tipos de datos relacionados (como los nombres comunes). Los enlaces entre los registros core y los de extensión se realizan mediante un elemento de datos de identificación del taxón (*taxonID*). De este modo, pueden existir muchos registros de extensión para cada registro core de taxón. Este \"esquema en estrella\" proporciona un modelo de datos relacional sencillo que admite muchos tipos de anotaciones que son comunes en los listados taxonómicos."
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:59
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #, no-wrap
 msgid "Darwin Core Archive data files in 'star schema'"
-msgstr "Archivos de datos  de Archivo Darwin Core en  'esquema en estrella'"
+msgstr "Archivos de datos del Archivo Darwin Core en  'esquema en estrella'"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:60
@@ -205,12 +205,12 @@ msgstr "figures/dwc-a_checklist.png"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:14
 #, no-wrap
 msgid "Data file formatting recommendations"
-msgstr "Recomendaciones de formato de archivo de datos"
+msgstr "Recomendaciones sobre el formato de los archivos de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:65
 msgid "For ease in understanding, we may use the terms *field* in this guide to refer to the Darwin Core set of terms in the taxonomic publishing profile to which a users data will be mapped. For example, we will refer to the use of the *dwc:scientificName field* when referring to the Darwin Core term, *scientificName*."
-msgstr "Para facilitar la comprensión, podemos utilizar los términos *campo* en esta guía para hacer referencia al conjunto de términos de Darwin Core en el perfil de publicación taxonómica al que se asignarán los datos de un usuario. Por ejemplo, nos referiremos al uso del *campo dwc:scientificName* cuando nos refiramos al término Darwin Core, *scientificName*."
+msgstr "Para facilitar la comprensión, puede que utilicemos los términos *campo* en esta guía para referirnos al conjunto de términos Darwin Core en el perfil de publicación taxonómico al que se asignarán los datos de un usuario. Por ejemplo, nos referiremos al uso del campo *dwc:scientificName* cuando nos refiramos al término Darwin Core, *scientificName*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:67
@@ -233,19 +233,19 @@ msgstr "Codifique los archivos de texto como UTF-8"
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:70
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:63
 msgid "Make sure you replace all line breaks in a data field, i.e. `\\r` `\\n` or `\\r\\n` with either simple spaces or use 2 characters like `$$` to replace `\\r` to escape the line break if the intention is to preserve them. Another option is to replace line breaks with the HTML `<br>` tag."
-msgstr "Asegúrese de reemplazar todos los saltos de línea en un campo de datos, es decir, `\\r` `\\n` o `\\r\\n` con espacios simples o use 2 caracteres como `$$` para reemplazar `\\r` para escapar del salto de línea si la intención es preservarlos. Otra opción es reemplazar los saltos de línea con la etiqueta HTML `<br>` ."
+msgstr "Asegúrese de reemplazar todos los saltos de línea en un campo de datos, es decir, `\\r` `\\n` o `\\r\\n` con espacios simples o use 2 caracteres como `$$` para reemplazar `\\r` para evadir el salto de línea, si la intención es preservarlos. Otra opción es reemplazar los saltos de línea con la etiqueta HTML `<br>` ."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:71
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
 msgid "Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `\\N` or `\\NULL`, but no other text sequence!"
-msgstr "Codifique los valores nulos como cadenas vacías, es decir, sin caracteres entre 2 delimitadores, o `\\N` o` \\NULL`, ¡pero ninguna otra secuencia de texto!"
+msgstr "Codifique los valores nulos como cadenas vacías, es decir, sin caracteres entre 2 delimitadores o `\\N` o` \\NULL`, ¡pero ninguna otra secuencia de texto!"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:72
 #, no-wrap
 msgid "Sharing Scientific Names"
-msgstr "Compartir Nombres Científicos"
+msgstr "Compartir nombres científicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:75
@@ -269,13 +269,13 @@ msgstr "| scientificName\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:85
 msgid "The *dwc:scientificName* field stores the full scientific name of a taxon including authorship. This field should always be populated with data even if the names are split into component parts (as in C. below). Databases that do not provide a clean separation between the name part and the authorship part of the name should use this field for the entire concatenated name string. This may be needed for hybrid formulas, *sensu strictu* names, autonyms and other non-trivial binomials. This field is generally used in combination with the *dwc:taxonRank* field to store the scientific name parts of a full taxonomic list including the higher taxa."
-msgstr "El campo *dwc:scientificName* almacena el nombre científico completo de un taxón, incluida la autoría. Este campo siempre debe llenarse con datos incluso si los nombres están divididos en partes componentes (como en C. a continuación). Las bases de datos que no proporcionan una separación clara entre la parte del nombre y la parte de la autoría del nombre deben usar este campo para toda la cadena de nombres concatenados. Esto puede ser necesario para fórmulas híbridas, nombres *sensu stricto*, autónimos y otros binomios no triviales. Este campo se utiliza generalmente en combinación con el campo *dwc:taxonRank* para almacenar las partes del nombre científico de un listado taxonómico completo que incluye los taxones superiores."
+msgstr "El campo *dwc:scientificName* almacena el nombre científico completo de un taxón, incluida la autoría. Este campo siempre debe llenarse con datos, incluso si los nombres se dividen en partes componentes (como en C. a continuación). Las bases de datos que no proporcionan una separación clara entre la parte del nombre y la parte de la autoría del nombre deben usar este campo para toda la cadena de nombres concatenados. Esto puede ser necesario para fórmulas híbridas, nombres *sensu stricto*, autónimos y otros binomios no triviales. Este campo se utiliza generalmente en combinación con el campo *dwc:taxonRank* para almacenar las partes del nombre científico de un listado taxonómico completo que incluye los taxones superiores."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:86
 #, no-wrap
 msgid "B. Separate Name and Authorship parts"
-msgstr "B. Partes Separadas de Nombre y Autoría"
+msgstr "B. Separando las partes de nombre y autoría"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:92
@@ -288,13 +288,13 @@ msgstr "| scientificName                | scientificNameAuthorship\n\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:95
 msgid "Some databases separate a scientific name into a name part and an authorship part. In this case the *dwc:scientificName* and *dwc:scientificNameAuthorship* fields should be used."
-msgstr "Algunas bases de datos separan un nombre científico en una parte de nombre y una parte de autoría. En este caso, deben usarse los campos *dwc:scientificName* y *dwc:scientificNameAuthorship*."
+msgstr "Algunas bases de datos separan el nombre científico en una parte de nombre y otra parte de autoría. En este caso, deben usarse los campos *dwc:scientificName* y *dwc:scientificNameAuthorship*."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:96
 #, no-wrap
 msgid "C. Separated into name parts"
-msgstr "C. Separado en Partes de Nombre"
+msgstr "C. Separando en partes de nombre"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:102
@@ -307,13 +307,13 @@ msgstr "| Genus | specificEpithet | taxonRank | infraspecificEpithet | scientifi
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:105
 msgid "The Darwin Core provides a series of terms that enable scientific names to be separated into component parts. Some databases store species lists in such parsed components. In this case, sharing data in this form may be an option. If so, however, it is strongly recommended that an additional and complete name be composed from the parts and shared in the *dwc:scientificName* field (as in section A above). Note that in the table above, the Darwin Core term, *dwc:subgenus*, is not displayed but represents an additional name component."
-msgstr "Darwin Core proporciona una serie de términos que permiten separar los nombres científicos en partes componentes. Algunas bases de datos almacenan listas de especies en dichos componentes analizados. En este caso, compartir datos en este formulario puede ser una opción. Sin embargo, si es así, se recomienda encarecidamente que se componga un nombre adicional y completo a partir de las partes y se comparta en el campo *dwc:scientificName* (como en la sección A anterior). Tenga en cuenta que en la tabla anterior, el término Darwin Core, *dwc:subgenus*, no se muestra pero representa un componente de nombre adicional."
+msgstr "Darwin Core proporciona una serie de términos que permiten separar los nombres científicos en sus partes componentes. Algunas bases de datos almacenan listas de especies en estos componentes analizados. En este caso, compartir datos en este formulario puede ser una opción. Sin embargo, si es así, se recomienda que se componga un nombre adicional y completo a partir de las partes, y se comparta en el campo *dwc:scientificName* (como en la sección A anterior). Tenga en cuenta que en la tabla anterior, el término Darwin Core *dwc:subgenus* no se muestra pero representa un componente de nombre adicional."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:106
 #, no-wrap
 msgid "Infrageneric Markers"
-msgstr "Marcadores Infragenéricos"
+msgstr "Marcadores infragenéricos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:109
@@ -324,28 +324,28 @@ msgstr "Si es posible, proporcione un marcador de rango infragenérico como part
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:110
 #, no-wrap
 msgid "Publishing Classifications"
-msgstr "Publicar Clasificaciones"
+msgstr "Publicar clasificaciones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:113
 msgid "The Darwin Core provides two basic options for publishing classifications or taxonomic hierarchies; normalized and denormalized. These two options account for the primary means by which most classifications are managed in databases."
-msgstr "Darwin Core proporciona dos opciones básicas para publicar clasificaciones o jerarquías taxonómicas; normalizado y desnormalizado. Estas dos opciones representan el medio principal por el que la mayoría de las clasificaciones se gestionan en las bases de datos."
+msgstr "Darwin Core ofrece dos opciones básicas para publicar clasificaciones o jerarquías taxonómicas: normalizadas y desnormalizadas. Estas dos opciones representan los principales medios por los que se gestionan la mayoría de las clasificaciones en las bases de datos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:114
 #, no-wrap
 msgid "Normalized Classifications (Parent/Child)"
-msgstr "Clasificaciones Normalizadas (Padre/Hijo)"
+msgstr "Clasificaciones normalizadas (padre/hijo)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:117
 msgid "The recommended way to share a classification is in a normalized format. This may also be referred to in a database as a \"parent-child relationship\" or an \"adjacency list\". In a normalized taxonomic hierarchy, each taxon is represented by a single row. This includes both species and all higher taxa in the classification. Each row has at least the following component data elements."
-msgstr "La forma recomendada de compartir una clasificación es en formato normalizado. Esto también se puede denominar en una base de datos como una \"relación padre-hijo\" o una \"lista de adyacencia\". En una jerarquía taxonómica normalizada, cada taxón está representado por una única fila. Esto incluye tanto las especies como todos los taxones superiores de la clasificación. Cada fila tiene al menos los siguientes elementos de datos de componentes."
+msgstr "La forma recomendada de compartir una clasificación es en formato normalizado. Esto también se puede denominar en una base de datos como una \"relación padre-hijo\" o una \"lista de adyacencia\". En una jerarquía taxonómica normalizada, cada taxón está representado por una única fila. Esto incluye tanto las especies como todos los taxa superiores de la clasificación. Cada fila tiene al menos los siguientes elementos de datos de componentes."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:119
 msgid "A *dwc:taxonID* referring to the current taxon. *You can use whatever identifiers you have*."
-msgstr "A *dwc:taxonID* se refiere al taxón actual. *Puede utilizar los identificadores que tenga*."
+msgstr "El *dwc:taxonID* se refiere al taxón actual. *Puede utilizar los identificadores que tenga*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:120
@@ -360,12 +360,12 @@ msgstr "El *dwc:taxonRank * del taxón de referencia. Ejemplo: \"*especie*\""
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:122
 msgid "A reference to the taxon identifier of the immediate parent taxon stored in the *dwc:parentNameUsageID*. In the example below, the parent of record 7, for “*Panthera tigris* (Linnaeus)” is record 6, the genus “*Panthera*.”"
-msgstr "Una referencia al identificador de taxón del taxón padre inmediato almacenado en *dwc:parentNameUsageID*. En el siguiente ejemplo, el padre del registro 7, para \"*Panthera tigris* (Linnaeus)\" es el registro 6, el género \"*Panthera*\"."
+msgstr "Una referencia al identificador del taxón padre inmediato almacenado en el *dwc:parentNameUsageID*. En el siguiente ejemplo el padre del registro 7, \"*Panthera tigris* (Linnaeus)\", es el registro 6, el género \"*Panthera*\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:124
 msgid "A sample classification for a single species, the tiger, “*Panthera tigris*”, is illustrated below. Note that the top-most member of a hierarchy has no parent so that the parent identifier should be empty. Note that *dwc:scientificName* provides a common field for storing the name in this case but that the full set of options for names is described above in Sharing Scientific Names."
-msgstr "A continuación se ilustra una clasificación de muestra para una sola especie, el tigre, “*Panthera tigris*”. Tenga en cuenta que el miembro superior de una jerarquía no tiene padre, por lo que el identificador principal debe estar vacío. Tenga en cuenta que *dwc:scientificName* proporciona un campo común para almacenar el nombre en este caso, pero que el conjunto completo de opciones para los nombres se describe anteriormente en Compartir Nombre Científicos."
+msgstr "A continuación se muestra un ejemplo de clasificación para una sola especie, el tigre, \"*Panthera tigris*\". Tenga en cuenta que el miembro más alto de una jerarquía no tiene padre, por lo que el identificador del padre debe estar vacío. Tenga en cuenta que *dwc:scientificName* proporciona un campo común para almacenar el nombre en este caso, pero que el conjunto completo de opciones para los nombres se describe más arriba en \"Compartir nombres científicos\"."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:135
@@ -398,13 +398,13 @@ msgstr "Ventajas"
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:140
 #, no-wrap
 msgid "*Efficiency* – A normalized classification stores a single reference for each taxon in the hierarchy.\n"
-msgstr "*Eficiencia* – Una clasificación normalizada almacena una única referencia para cada taxón en la jerarquía.\n"
+msgstr "*Eficiencia*: una clasificación normalizada almacena una única referencia para cada taxón en la jerarquía.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:141
 #, no-wrap
 msgid "*Referential integrity* – Each taxon component has a distinct identifier that explicitly references its immediate parent. It is easy to verify that the taxonomic hierarchy is complete and properly formed.\n"
-msgstr "*Integridad referencial* – Cada componente de taxón tiene un identificador distinto que hace referencia explícita a su padre inmediato. Es fácil verificar que la jerarquía taxonómica esté completa y debidamente formada.\n"
+msgstr "*Integridad referencial*: cada componente del taxón tiene un identificador distinto que hace referencia explícita a su padre inmediato. Es fácil verificar que la jerarquía taxonómica esté completa y debidamente constituida.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:142
