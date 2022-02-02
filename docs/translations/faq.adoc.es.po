@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-01-27 16:53\n"
+"PO-Revision-Date: 2022-02-02 13:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,7 +35,7 @@ msgstr "{blank}"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:4
 msgid "Here you will find answers to the most frequently asked questions about the GBIF IPT. Please check the contents of this page before contacting the GBIF Helpdesk."
-msgstr "Aquí encontrará respuestas a las preguntas más frecuentes acerca del IPT de GBIF. Por favor consulte el contenido de esta página antes de contactar al servicio de asistencia técnica de GBIF."
+msgstr "Aquí encontrará respuestas a las preguntas más frecuentes sobre el IPT de GBIF. Por favor consulte el contenido de esta página antes de contactar al Centro de ayuda de GBIF."
 
 #. type: Title =
 #: en/modules/ROOT/pages/faq.adoc:5 en/modules/ROOT/pages/installation.adoc:1
@@ -52,7 +52,7 @@ msgstr "¿Cuál es la mejor manera de migrar mi IPT a otro servidor sin perder n
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:10
 msgid "There is one important directory that contains all the IPT's configuration and resources: the IPT's data directory. If you ensure this directory is regularly backed-up somewhere safe, you'll never lose any data."
-msgstr "Hay un directorio importante que contiene toda la configuración y los recursos del IPT: el directorio de datos del IPT. Si se asegura de que se haga una copia de seguridad de este directorio con regularidad en algún lugar seguro, nunca perderá ningún dato."
+msgstr "Hay un directorio importante que contiene toda la configuración y los recursos del IPT: el directorio de datos del IPT. Si se asegura de que se haga una copia de seguridad de este directorio con regularidad en algún lugar seguro nunca perderá ningún dato."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:12
