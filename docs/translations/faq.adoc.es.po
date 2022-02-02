@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-02-02 14:01\n"
+"PO-Revision-Date: 2022-02-02 14:33\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -333,7 +333,7 @@ msgstr "A menos que se eliminen estos caracteres de salto de línea, el IPT publ
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:130
 msgid "To solve this, you can remove these line breaking characters from the source file, replace the source file with the new one, and republish the resource. Remember that when uploading a source file, you can tell the IPT to replace the file with a new one as long as they both have the same name. That way the mappings don't have to be redone."
-msgstr "Para solucionar esto, puede eliminar estos caracteres de salto de línea del archivo origen, reemplace el archivo origen con el nuevo y vuelva a publicar el recurso. Recuerde que al cargar un archivo origen, puede decir al IPT que reemplace el archivo con uno nuevo siempre que ambos tengan el mismo nombre. De esa forma, no es necesario rehacer los mapeos."
+msgstr "Para solucionar este problema, puede eliminar los caracteres de salto de línea del archivo fuente, reemplace el archivo fuente por el nuevo archivo y vuelva a publicar el recurso. Recuerde que al cargar un archivo puede indicarle al IPT que reemplace el archivo con uno nuevo siempre que ambos tengan el mismo nombre. De esa forma, no es necesario rehacer los mapeos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:131
@@ -344,7 +344,7 @@ msgstr "¿Por qué los archivos publicados no incluyen todos los registros?"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:133
 msgid "Check the publication log for exceptions such as:"
-msgstr "Consulte la bitácora de la publicación para excepciones como:"
+msgstr "Compruebe el registro de publicación para ver si hay excepciones como:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:136
@@ -355,7 +355,7 @@ msgstr "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from c
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:139
 msgid "that means you have invalid date value in your data source, which, in this case, is `0000-00-00 00:00:00`."
-msgstr "esto quiere decir que tiene un valor de fecha no válido en su origen de datos, que en este caso es `0000-00-00 00:00:00`. "
+msgstr "esto quiere decir que tiene un valor de fecha que no es válido en su conjunto de datos, que en este caso es `0000-00-00 00:00:00`. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:142
@@ -365,7 +365,7 @@ msgstr "Para resolver esto, puede actualizar el valor con \"Null\" y actualizar 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:144
 msgid "The `0000-00-00 00:00:00` value in your SQL table could be resulted when importing, while having defined the column with \"Not Null\" and default value as `0000-00-00 00:00:00`."
-msgstr "El valor `0000-00-00 00:00:00` en su tabla SQL podría resultar al importar, mientras se ha mantenido la columna con \"Not null\" y el valor predeterminado como `0000-00-00 00: 00: 00`."
+msgstr "El valor `0000-00-00 00:00:00` en su tabla SQL podría generarse durante la importación, al haber definido la columna \"Not Null\" y el valor por defecto como `0000-00-00 00:00`."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:145
@@ -387,7 +387,7 @@ msgstr "Caused by: java.io.IOException: No space left on device\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:153
 msgid "in your publication log file, it means there is no space left in the disk partition that contains your IPT data directory."
-msgstr "en su bitácora de publicación, significa que no queda espacio en la partición del disco que contiene su directorio de datos IPT."
+msgstr "en su registro de publicación, significa que no queda espacio en la partición del disco que contiene su directorio de datos IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:155
@@ -407,7 +407,7 @@ msgstr "Mover su directorio de datos IPT a otra partición donde haya mas espaci
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:159
 msgid "Free up disk space (e.g. deleting temporary files, remove unused applications, etc)"
-msgstr "Liberar espacio en disco (por ejemplo, eliminar archivos temporales, eliminar aplicaciones no utilizadas, etc.)"
+msgstr "Liberar espacio en disco (p. ej., eliminar archivos temporales, eliminar aplicaciones no utilizadas, etc.)"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:160
