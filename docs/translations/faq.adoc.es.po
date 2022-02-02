@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-02-02 13:12\n"
+"PO-Revision-Date: 2022-02-02 14:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -57,7 +57,7 @@ msgstr "Hay un directorio importante que contiene toda la configuración y los r
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:12
 msgid "To move the IPT to a different server, just make sure that you copy the entire contents of the IPT's data directory over to the new server. It is important to preserve the same folder/file permissions. Then, xref:installation.adoc[install the IPT on the new server], using this directory as the data directory."
-msgstr "Para migrar el IPT a otro servidor, solo asegúrese de copiar todo el contenido de el directorio de datos del IPT en el nuevo servidor. Es importante conservar los mismos permisos de la carpeta/archivo. Luego, xref:installation.adoc[instalar el IPT en el nuevo servidor], usando este directorio como el directorio de datos."
+msgstr "Para migrar el IPT a otro servidor, solo asegúrese de copiar todo el contenido del directorio de datos del IPT a el nuevo servidor. Es importante conservar los mismos permisos de la carpeta/archivo. Luego, xref:installation.adoc[instalar el IPT en el nuevo servidor], usando este directorio como el directorio de datos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:13
@@ -68,7 +68,7 @@ msgstr "Mi instancia del IPT de GBIF es lenta. ¿Qué puedo hacer para mejorar e
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:16
 msgid "Apache Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the http://wiki.apache.org/tomcat/FAQ/Memory[Tomcat FAQ]"
-msgstr "El Apache Tomcat viene con muy poca memoria asignada. Para aumentar el rendimiento, esta cantidad debe incrementarse dependiendo de la cantidad de memoria física en el servidor. Si el servidor tiene al menos 2 GB de RAM, la memoria disponible debe aumentarse a 1 GB. Para obtener más información sobre cómo hacerlo, consulte las http://wiki.apache.org/tomcat/FAQ/Memory[Preguntas frecuentes del Tomcat]"
+msgstr "El Apache Tomcat viene con muy poca memoria asignada. Para aumentar el rendimiento, se debe incrementar el espacio asignado dependiendo de la cantidad de memoria física en el servidor. Si el servidor tiene al menos 2 GB de RAM, la memoria disponible debe aumentarse a 1 GB. Para obtener más información sobre cómo hacerlo, consulte las http://wiki.apache.org/tomcat/FAQ/Memory[Preguntas frecuentes del Tomcat]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:18
@@ -106,7 +106,7 @@ msgstr "$ ps waux | grep tomcat\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:35
 msgid "If the user is \"tomcatuser\", and this user belongs to group \"tomcatgroup\" then change the ownership of the IPT data directory (and its child folders and files) by entering the following command:"
-msgstr "Si el usuario es un \"tomcatuser\" y este usuario pertenece al grupo \"tomcatgroup\", cambie la propiedad del directorio de datos del IPT (y sus sub carpetas y archivos) ingresando el siguiente comando:"
+msgstr "Si el usuario es un \"tomcatuser\" y este usuario pertenece al grupo \"tomcatgroup\", cambie la propiedad del directorio de datos del IPT (y de sus sub-carpetas y archivos) ingresando el siguiente comando:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:38
@@ -117,7 +117,7 @@ msgstr "$ chown -R tomcatuser:tomcatgroup directory\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:41
 msgid "To ensure only this user has write permission, enter the following command:"
-msgstr "Para asegurarse de que solo este usuario tenga permiso de escritura, ingrese el siguiente comando:"
+msgstr "Para asegurarse de que únicamente este usuario tenga permiso de escritura, ingrese el siguiente comando:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:44
@@ -177,12 +177,12 @@ msgstr "¿Cómo puedo cambiar el idioma predeterminado del IPT?"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:71
 msgid "The IPT's default language is English, and there is no way to change the default language via the user interface."
-msgstr "El idioma por default del IPT es el inglés y no hay forma de cambiarlo en la interfaz de usuario."
+msgstr "El idioma por defecto del IPT es el inglés y no hay forma de cambiar el idioma por defecto en la interfaz de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:73
 msgid "It can be changed easily by manual configuration though. To change the default language from English to Portuguese for example, first locate the `struts.properties` file (if the IPT is deployed in Tomcat for example, it would be located in `tomcat/webapps/ipt/WEB-INF/classes`). Then update the `struts.locale` property to:"
-msgstr "Sin embargo, se puede cambiar fácilmente mediante la configuración manual. Para cambiar el idioma predeterminado del Inglés al Portugués por ejemplo, primero ubique el archivo `struts.properties` (si el IPT está instalado en Tomcat por ejemplo, debe ubicarse en `tomcat/webapps/ipt/WEB-INF/classes`). Luego actualice la propiedad `struts.locale` a:"
+msgstr "Sin embargo, se puede cambiar fácilmente mediante la configuración manual. Para cambiar el idioma predeterminado del inglés al portugués por ejemplo, primero ubique el archivo `struts.properties` (si el IPT está instalado en Tomcat por ejemplo, debe ubicarse en `tomcat/webapps/ipt/WEB-INF/classes`). Luego actualice la propiedad `struts.locale` a:"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/faq.adoc:76
@@ -193,7 +193,7 @@ msgstr "struts.locale=pt\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:79
 msgid "Restart Tomcat, and the IPT will startup in Portuguese."
-msgstr "Reinicie el Tomcat y el IPT se iniciará en Portugués."
+msgstr "Reinicie el tomcat y el IPT se iniciará en portugués."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:81
@@ -203,7 +203,7 @@ msgstr "Tenga en cuenta que el código de idioma de dos letras debe coincidir co
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:83
 msgid "Please note that every time you upgrade to a new version of the IPT, you will have to apply the same change."
-msgstr "Tome en cuenta que cada vez que actualice a una nueva versión del IPT, deberá aplicar el mismo cambio."
+msgstr "Tenga en cuenta que cada vez que actualice a una nueva versión del IPT, deberá aplicar el mismo cambio."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:84
@@ -224,7 +224,7 @@ msgstr "Por lo tanto, para cambiar al modo de producción, debe configurar una i
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:91
 msgid "To save time recreating resources, you can try transferring your 'test' resources to the production IPT. To do this simply \"upload an existing IPT resource using its zipped resource configuration folder.\" There are complete instructions on how to do this xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here]."
-msgstr "Para ahorrar tiempo en restablecer los recursos, puede intentar transferir sus recursos del modo de prueba al IPT de producción. Para hacer esto simplemente cargue un recurso IPT existente utilizando su carpeta de configuración de recursos comprimida. Las instrucciones completas sobre cómo hacer esto xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí]."
+msgstr "Para ahorrar tiempo en restablecer los recursos, puede intentar transferir sus recursos del modo de prueba al IPT de producción. Para hacer esto simplemente cargue un recurso IPT existente utilizando su carpeta de configuración de recursos comprimida. Las instrucciones completas sobre cómo hacer esto se encuentran xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:92
@@ -235,7 +235,7 @@ msgstr "¿Qué conexiones de salida hace el IPT?"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:95
 msgid "During setup, and in test mode, the IPT makes secure HTTPS outgoing connections to https://gbrds.gbif-uat.org and https://tools.gbif.org."
-msgstr "Durante la configuración y en modo de prueba, el IPT hace conexiones HTTPS seguras a https://gbrds.gbif-uat.org and https://tools.gbif.org."
+msgstr "Durante la configuración y en modo de prueba, el IPT hace conexiones HTTPS seguras a https://gbrds.gbif-uat.org y a https://tools.gbif.org."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:97
@@ -245,7 +245,7 @@ msgstr "Si se configura en modo de producción, el IPT hace conexiones HTTPS seg
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:99
 msgid "In both modes, the IPT makes normal HTTP outgoing connections to http://rs.gbif.org.  If you install particular additional vocabularies, the IPT will retrieve them from raw.githubusercontent.com or eol.org."
-msgstr "En ambos modos, el IPT hace conexiones HTTP normales a http://rs.gbif.org. Si instala vocabularios adicionales, el IPT los recuperará de raw.githubusercontent.com o de eol.org."
+msgstr "En ambos modos, el IPT hace conexiones HTTP normales a http://rs.gbif.org. Si instala vocabularios adicionales, el IPT los descargará de raw.githubusercontent.com o de eol.org."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:101
@@ -266,7 +266,7 @@ msgstr "¿Cómo puedo configurar mi IPT para asignar DOI a los conjuntos de dato
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:107
 msgid "In order to assign DOIs to datasets, the IPT must be configured with a DataCite account, which has itself been configured to mint DOIs under the IPT's domain."
-msgstr "Para asignar DOI a los conjuntos de datos, el IPT debe configurarse con una cuenta DataCite, que a su vez se ha configurado para crear DOI bajo el dominio del IPT."
+msgstr "Para asignar DOI a los conjuntos de datos, el IPT debe configurarse con una cuenta DataCite, que a su vez se haya sido configurada para crear DOI bajo el dominio del IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:109
@@ -276,37 +276,37 @@ msgstr "La cuenta de la organización titular ya debe estar asociada al IPT como
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:111
 msgid "All that remains, is to add the DataCite account information to the organization (e.g. the username, password, prefix, etc) and make sure the \"Account activated\" checklist has been checked. For help editing the organization and a description of each field in the form, you can refer to the xref:administration.adoc#edit-organization[Edit Organization] section of the User Manual."
-msgstr "Todo lo que queda es agregar la información de la organización a la cuenta DataCite (p. ej. el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration.adoc#edición-de-la-organización[Edición de la Organización] del manual de usuario."
+msgstr "Lo único que falta es agregar la información de la organización a la cuenta DataCite (p. ej., el nombre de usuario, la contraseña, el prefijo, etc.) y asegurarse de que se haya marcado como \"Cuenta activada\". Para obtener ayuda para editar la organización y una descripción de cada campo en el formulario, puede consultar la sección xref:administration-adoc#editar-una-organización[Editar una organización] del manual de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:113
 msgid "If you work for a GBIF ‘country' Node, please contact the mailto:helpdesk@gbif.org[GBIF Helpdesk] to enquire about getting a free DataCite account. GBIF has its own account with DataCite and may be able to provide 'country' Nodes with their own free account (determined on a case by case basis). GBIF has done this for Spain and Colombia so far, both of which have a strong track record of keeping their IPTs online near 100% of the time."
-msgstr "Si trabaja para un nodo GBIF de algún país, contacte a mailto:helpdesk@gbif.org[GBIF Helpdesk] para solicitar información de cómo obtener una cuenta DataCite gratuita. GBIF tiene su propia cuenta DataCite y puede proveer a los nodos de los países una cuenta gratuita (determinándolo caso por caso). GBIF ha hecho esto para España y Colombia hasta el momento, ambos tienen un sólido historial de mantener su IPT en línea casi el 100% del tiempo."
+msgstr "Si trabaja para un nodo GBIF de algún país, contacte al mailto:helpdesk@gbif.org[Centro de ayuda de GBIF] para solicitar información de cómo obtener una cuenta DataCite gratuita. GBIF tiene su propia cuenta DataCite y puede proveer a los nodos de los países una cuenta gratuita (dependiendo de cada caso). GBIF ha hecho esto para España y Colombia hasta el momento, ambos tienen un historial sólido de mantener su IPT en línea casi el 100% del tiempo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:115
 msgid "The following well-maintained IPTs have all been configured with a DataCite accounts, can assign DOIs to datasets, and are thus recognized as a repository in BioSharing.org, which is used by journals such as Nature to refer their authors to one or more repositories that are appropriate for the type of data they have."
-msgstr "Los siguientes IPT han sido configurados con cuentas DataCite, pueden asignar DOI a los conjuntos de datos y se reconocen como repositorio en BioSharing.org, que es usado por revistas como Nature para referir a sus autores a uno o mas repositorios que son adecuados para el tipo de datos que poseen."
+msgstr "Los siguientes IPT han sido configurados con cuentas DataCite, pueden asignar DOI a los conjuntos de datos y se reconocen como repositorios en BioSharing.org, que es usado por revistas como Nature para referir a sus autores a uno o mas repositorios que son adecuados para el tipo de datos que poseen."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:117
 msgid "http://www.gbif.es/ipt/[GBIF Spain IPT] - https://biosharing.org/biodbcore-000854[BioSharing record]"
-msgstr "http://www.gbif.es/ipt/[GBIF España IPT] - https://biosharing.org/biodbcore-000854[Registro de BioSharing]"
+msgstr "http://www.gbif.es/ipt/[GBIF España IPT], https://biosharing.org/biodbcore-000854[Registro de BioSharing]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:118
 msgid "http://data.canadensys.net/ipt/[Canadensys IPT] - https://biosharing.org/biodbcore-000855[BioSharing record]"
-msgstr "http://data.canadensys.net/ipt/[IPT Canadensys] - https://biosharing.org/biodbcore-000855[Registro de BioSharing]"
+msgstr "http://data.canadensys.net/ipt/[IPT Canadensys], https://biosharing.org/biodbcore-000855[Registro de BioSharing]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:119
 msgid "http://ipt.biodiversidad.co/sib/[GBIF Colombia IPT] - https://biosharing.org/biodbcore-000856[BioSharing record]"
-msgstr "http://ipt.biodiversidad.co/sib/[GBIF Colombia IPT] - https://biosharing.org/biodbcore-000856[Registro de BioSharing]"
+msgstr "http://ipt.biodiversidad.co/sib/[GBIF Colombia IPT], https://biosharing.org/biodbcore-000856[Registro de BioSharing]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:121
 msgid "Authors in Spain are already depositing their standardized data in the GBIF Spain IPT, e.g. the following dataset http://doi.org/10.15470/qomfu6 underlies this Scientific Data Data Descriptor: http://doi.org/10.1038/sdata.2016.85"
-msgstr "Los autores en España están depositados sus datos estandarizados en el IPT de GBIF España, p. ej. el siguiente conjunto de datos http://doi.org/10.15470/qomfu6 basado en este Descriptor de datos de datos científicos: http://doi.org/10.1038/sdata.2016.85"
+msgstr "Los autores en España están depositados sus datos estandarizados en el IPT de GBIF España, p. ej., el siguiente conjunto de datos http://doi.org/10.15470/qomfu6 basado en este Descriptor de datos científicos: http://doi.org/10.1038/sdata.2016.85"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/faq.adoc:122
@@ -323,7 +323,7 @@ msgstr "¿Por qué los archivos publicados contienen líneas discontinuas?"
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:126
 msgid "The IPT does not support source files that have multi-line fields (fields that include a newline character (`\\n`) or carriage return (`\\r`)) even if you have specified a field quote (a single character that encloses every field/column in a row) in the source's configuration."
-msgstr "El IPT no admite archivos de origen que tienen campos de varias líneas (campos que incluyen el carácter de nueva línea (`\\n`) o de retorno de carro (`\\r`)) incluso si ha especificado un carácter separador de campo (un carácter que delimita cada campo/columna en un renglón) en la configuración del origen. "
+msgstr "El IPT no admite archivos de origen que contienen campos multi línea (campos que incluyen el carácter de nueva línea (`\\n`) o saltos de línea (`\\r`), incluso si se ha especificado un carácter separador de campos (un carácter que delimita cada campo/columna en un renglón) en la configuración original. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:128
