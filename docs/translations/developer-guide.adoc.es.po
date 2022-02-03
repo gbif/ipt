@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 10:56+0000\n"
-"PO-Revision-Date: 2021-08-25 17:50\n"
+"PO-Revision-Date: 2022-02-03 17:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/developer-guide.adoc:1
 #, no-wrap
 msgid "Developer Guidelines"
-msgstr "Guías para desarrolladores"
+msgstr "Guía para desarrolladores"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:3
@@ -31,7 +31,7 @@ msgstr "Contribuciones"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:6
 msgid "The core development of the IPT is directed by GBIF, but the coding is a community effort and everyone is welcome to join. Java or HTML/jQuery developers are very welcome to contribute code patches. Patches can be submitted by creating a https://help.github.com/articles/creating-a-pull-request/[pull request] using a branch or fork of the https://github.com/gbif/ipt[IPT Git repository]."
-msgstr "El desarrollo principal del IPT está dirigido por GBIF, pero la codificación es un esfuerzo de la comunidad y todos son bienvenidos a unirse. Los desarrolladores de Java o HTML/jQuery son bienvenidos a contribuir con parches de código. Los parches se pueden enviar creando una https://help.github.com/articles/creating-a-pull-request/[pull request] usando una rama o bifurcación de https://github.com/gbif/ipt [ Repositorio IPT Git]. "
+msgstr "El desarrollo principal del IPT está dirigido por GBIF, pero la codificación es un esfuerzo de la comunidad y todos son bienvenidos a unirse. Los desarrolladores de Java o HTML/jQuery son bienvenidos a contribuir con parches de código. Los parches se pueden enviar creando una https://help.github.com/articles/creating-a-pull-request/[pull request] usando una rama o bifurcación del https://github.com/gbif/ipt [Repositorio Git del IPT]. "
 
 #. type: Title ==
 #: en/modules/ROOT/pages/developer-guide.adoc:7
@@ -57,7 +57,7 @@ msgstr "https://github.com/google/guice[Google Guice]"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:14
 msgid "https://freemarker.sourceforge.net/docs/[Freemarker] templating"
-msgstr "https://freemarker.sourceforge.net/docs/[Freemarker] plantillas"
+msgstr "Plantillas https://freemarker.sourceforge.net/docs/[Freemarker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:15
@@ -153,12 +153,12 @@ msgstr "Struts2"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:50
 msgid "`BaseAction.java` supplies the `AppConfig`, implements session aware and gives access to current user, implements a simpler `TextProvider` which is faster than the native Struts 2 one."
-msgstr "`BaseAction.java` proporciona el` AppConfig`, implementa el reconocimiento de sesión y da acceso al usuario actual, implementa un `TextProvider` más simple que es más rápido que el nativo Struts 2."
+msgstr "`BaseAction.java` proporciona el` AppConfig`, implementa el reconocimiento de sesión y da acceso al usuario actual, implementa un `TextProvider` más simple que es más rápido que el Struts 2 nativo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:52
 msgid "`SetupAndCancelInterceptor.java` checks if the data directory is configured and an admin user exists - otherwise redirects to the respective setup page."
-msgstr "`SetupAndCancelInterceptor.java` comprueba si el directorio de datos está configurado y existe un usuario administrador; de lo contrario, redirige a la página de configuración correspondiente."
+msgstr "`SetupAndCancelInterceptor.java` comprueba si el directorio de datos está configurado y existe un usuario administrador, de lo contrario, redirige a la página de configuración correspondiente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:54
@@ -178,12 +178,12 @@ msgstr "El nombre del resultado \"exitoso\" se llama cuando el envío del formul
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:60
 msgid "The action implements preparable, request aware and the execute method."
-msgstr "Las acciones que se pueden preparar, solicitud de cuenta y el método de ejecución."
+msgstr "La acción implementa los método preparable, solicitud de cuenta y ejecución."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:62
 msgid "execute: `FormAction` determines if a `POST` or `GET` is used and calls save (`POST`), delete (`POST + delete=true`) or nothing (`GET`)."
-msgstr "ejecutar: `FormAction` determina si se usa un` POST` o `GET` y llama a guardar (` POST`), eliminar (`POST + eliminar = verdadero`) o nada (` GET`)."
+msgstr "ejecutar: `FormAction` determina si se usa un` POST` o `GET` y llama a guardar (`POST`), eliminar (`POST + delete=true`) o nada (`GET`)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:64
@@ -198,7 +198,7 @@ msgstr "prepare: el parámetro `id` del objeto solicitud, este se almacena en la
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:69
 msgid "`POSTAction.java` simplifies working with forms. For modifying instance data always use `POST`, never `GET`.  Most full actions for modifying entities should override the following methods:"
-msgstr "`POSTAction.java` simplifica el trabajo con formularios. Para modificar los datos de la instancia, utilice siempre `POST`, nunca` GET`. La mayoría de las acciones completas para modificar entidades deben anular los siguientes métodos:"
+msgstr "`POSTAction.java` simplifica el trabajo con formularios. Para modificar los datos de la instancia, utilice siempre `POST`, nunca` GET`. La mayoría de las acciones completas para modificar entidades deberían anular los siguientes métodos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:71
@@ -218,7 +218,7 @@ msgstr "`delete ()`: este método se llama cuando se recibe un `POST` con un par
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:75
 msgid "If the `id` given does not exist you can set the `notFound` property to true in any of the above methods. The action will then return a 404 result name."
-msgstr "Si el `id` dado no existe, puede establecer la propiedad` notFound` en \"true\" en cualquiera de los métodos anteriores. La acción luego devolverá un nombre de resultado 404."
+msgstr "Si el `id` dado no existe, puede establecer la propiedad `notFound` en \"true\" en cualquiera de los métodos anteriores. La acción devolverá un nombre de resultado 404."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:77
@@ -234,7 +234,7 @@ msgstr "Diseño HTML"
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:81
 msgid "Links always use `+++${baseURL}/my/ipt/link.do+++`, so please refrain from using Struts or JSP URL tags!"
-msgstr "Los enlaces deben utilizarse siempre  con `+++ $ {} URLbase /my/ipt/link.do +++ ', ¡por lo que rogamos se abstenga de utilizar etiquetas de Struts o JSP URL!"
+msgstr "Los enlaces deben utilizarse siempre  con `+++${baseURL}/my/ipt/link.do+++` ¡por lo que rogamos se abstenga de utilizar etiquetas de Struts o JSP URL!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:83
@@ -249,7 +249,7 @@ msgstr "Los botones usan los botones adecuados o `input @ type = submit` (formul
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:87
 msgid "General best practice guides:"
-msgstr "Guías de las mejores practicas generales"
+msgstr "Guías de las buenas practicas generales"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:89
@@ -275,7 +275,7 @@ msgstr "Utilice solo jQuery (https://jquery.com/) para el código personalizado.
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:96
 msgid "Use jConfirmation plugin (https://github.com/hdytsgt/jConfirmAction) when asking for confirmation, e.g. deletes."
-msgstr "Utilice el complemento jConfirmation (https://github.com/hdytsgt/jConfirmAction) cuando solicite confirmación, p. Ej. elimina."
+msgstr "Utilice el complemento jConfirmation (https://github.com/hdytsgt/jConfirmAction) cuando solicite confirmación, p. ej., elimina."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/developer-guide.adoc:98
