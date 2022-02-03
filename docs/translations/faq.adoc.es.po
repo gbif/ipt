@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-02-02 14:33\n"
+"PO-Revision-Date: 2022-02-03 16:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -423,12 +423,12 @@ msgstr "Tenga en cuenta que la organización que publica el recurso no se puede 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:164
 msgid "In order to change the publishing organization, you need to republish the resource and then reset the desired publishing organization. To simplify the process, you can recreate the dataset from its zipped IPT resource folder. Instructions on how to do that can be found xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[here]."
-msgstr "Para cambiar la organización que publica, debe volver a publicar el recurso y luego reestablecer la organización deseada. Para simplificar el proceso, puede volver a generar el conjunto de datos desde su carpeta de recursos IPT comprimida. Las instrucciones de como realizarlo se encuentran xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí]."
+msgstr "Para cambiar la organización de publicación, debe volver a publicar el recurso y luego reestablecer la organización deseada. Para simplificar el proceso, puede volver a generar el conjunto de datos desde su carpeta de recursos IPT comprimida. Las instrucciones de como realizarlo se encuentran xref:manage-resources.adoc#upload-a-zipped-ipt-resource-configuration-folder[aquí]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:166
 msgid "You should migrate the resource from the old publishing organization to the new publishing organization by following xref:manage-resources.adoc#migrate-a-resource[these instructions]. Please pay careful attention to step 5, where you will have to ask the GBIF Helpdesk to update the GBIF Registry."
-msgstr "Migrar el recurso desde la organización anterior que publica a la nueva organización siguiendo xref:manage-resources.adoc#migrate-a-resource[estas instrucciones]. Preste especial atención al paso 5, en el que deberá solicitar al servicio de asistencia de GBIF que actualice el Registro de GBIF."
+msgstr "Debe migrar el recurso de la antigua organización de publicación a la nueva siguiendo xref:manage-resources.adoc#migrate-a-resource[estas instrucciones]. Por favor, preste mucha atención al paso 5, en el que tendrá que pedir al Centro de ayuda de GBIF que actualice el Registro de GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:168
