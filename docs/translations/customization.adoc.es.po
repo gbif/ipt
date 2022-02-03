@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-26 11:31\n"
+"PO-Revision-Date: 2022-02-03 17:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,12 +35,12 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/customization.adoc:1
 #, no-wrap
 msgid "How to Style Your IPT"
-msgstr "Cómo Diseñar su IPT"
+msgstr "Cómo diseñar su IPT"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/customization.adoc:6
 msgid "Customization using `custom.css` does not work in version 2.5.0, see https://github.com/gbif/ipt/issues/1634[this issue]."
-msgstr "La personalización usando `custom.css` no funciona en la versión 2.5.0, vea https://github.com/gbif/ipt/issues/1634[this issue]."
+msgstr "La personalización usando `custom.css` no funciona en la versión 2.5.0, vea https://github.com/gbif/ipt/issues/1634[este asunto]."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/customization.adoc:8
@@ -50,12 +50,12 @@ msgstr "Se pueden realizar personalizaciones básicas editando `$tomcat/webapps/
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:11
 msgid "Styling an IPT requires deployment using a servlet container like Tomcat.  A deployment from Linux packages or Docker could only be styled by overriding the `custom.css` file in a forward proxy."
-msgstr "Diseñar un IPT requiere implementación utilizando un contenedor de servlets como Tomcat. Una implementación de paquetes de Linux o Docker sólo se puede diseñar anulando el archivo `custom.css` en un proxy de reenvío."
+msgstr "Diseñar un IPT requiere la implementación utilizando un contenedor de servlets como Tomcat. Una implementación de paquetes de Linux o Docker sólo se puede diseñar anulando el archivo `custom.css` en un proxy de reenvío."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:15
 msgid "The following guide explains how to customize the IPT, and preserve your customization when upgrading your IPT's version."
-msgstr "La siguiente guía explica cómo personalizar el IPT, y cómo conservar su personalización al actualizar la versión de su IPT."
+msgstr "La siguiente guía explica cómo personalizar el IPT y cómo conservar su personalización al actualizar la versión de su IPT."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/customization.adoc:17
