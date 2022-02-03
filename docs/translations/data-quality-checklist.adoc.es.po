@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-19 10:53\n"
+"PO-Revision-Date: 2022-02-03 23:52\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -36,7 +36,7 @@ msgstr "Comprobación de la calidad de los datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:4
 msgid "Use this checklist to help review biodiversity datasets. Note it is particularly suited for checking occurrence and sampling event datasets."
-msgstr "Use esta lista de comprobación para ayudar a revisar los conjuntos de datos sobre biodiversidad. Tenga en cuenta que es esta es ideal para comprobar los conjuntos de datos de ocurrencia y de eventos de muestreo."
+msgstr "Use esta lista de comprobación para ayudar a revisar los conjuntos de datos sobre biodiversidad. Tenga en cuenta que es especialmente adecuada para verificar los conjuntos de datos de registros biológicos y eventos de muestreo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:6
