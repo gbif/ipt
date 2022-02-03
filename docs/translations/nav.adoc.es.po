@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-30 14:42+0000\n"
-"PO-Revision-Date: 2021-08-20 08:04\n"
+"PO-Revision-Date: 2022-02-03 17:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -121,7 +121,7 @@ msgstr "xref:sampling-event-data.adoc[]"
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:24
 msgid "Best Practice Guides"
-msgstr "Guías de mejores prácticas"
+msgstr "Guías de buenas prácticas"
 
 #. type: Plain text
 #: en/modules/ROOT/nav.adoc:25
