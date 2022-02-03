@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-01-13 16:56+0000\n"
-"PO-Revision-Date: 2022-02-03 21:27\n"
+"PO-Revision-Date: 2022-02-03 23:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -434,18 +434,18 @@ msgstr "xref:checklist-data.adoc#templates[Plantilla de datos de listados taxon�
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:130
 msgid "xref:occurrence-data.adoc#templates[Occurrence data template]: suitable for occurrence data (specimen, observation)"
-msgstr "xref:occurrence-data.adoc#templates[Modelos de datos de presencia de especies]: apropiado para datos de presencia de especies (espécimen, observación)"
+msgstr "xref:occurrence-data.adoc#templates[Plantilla de datos de registros biológicos]: apropiado para datos de registros biológicos (espécimen, observación)"
 
 #. .  Resource metadata template: suitable for composing a metadata document - pending but imminent
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:132
 msgid "xref:sampling-event-data.adoc#templates[Sampling-event data template]: suitable for sampling-event data"
-msgstr "xref:sampling-event-data.adoc#templates[Modelo de datos de eventos de muestreo]: apropiado para datos de eventos de muestreo"
+msgstr "xref:sampling-event-data.adoc#templates[Plantilla de datos de eventos de muestreo]: apropiado para datos de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:134
 msgid "Each template provides inline help and instructions in the worksheets."
-msgstr "Todos los modelos proporcionan ayuda e instrucciones en línea en las hojas de trabajo."
+msgstr "Todas las plantillas proporcionan ayuda e instrucciones en línea en las hojas de trabajo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:136
