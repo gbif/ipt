@@ -8,8 +8,8 @@ asciidoc:
   attributes:
     idprefix: '@'
     idseparator: '-@'
-    # EML
-    eml-location: http://web.archive.org/web/2013if_/http://knb.ecoinformatics.org/software/eml/eml-2.1.1
+    # EML — if this disappears (again), a version can be retrieved from https://eml.ecoinformatics.org/#older-versions-deprecated
+    eml-location: hhttps://sbclter.msi.ucsb.edu/external/InformationManagement/EML_211_schema/docs/eml-2.1.1
     # Cores
     latest-dwc-occurrence:   http://rs.gbif.org/core/dwc_occurrence_2020-07-15.xml
     date-dwc-occurrence:     "2020-07-15"

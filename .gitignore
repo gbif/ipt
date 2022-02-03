@@ -11,3 +11,13 @@ target/
 .classpath
 .project
 .settings/org.eclipse.jdt.core.prefs
+
+# Test files #
+/admin.log*
+/amphibians
+/debug.log*
+/eml*.xml
+/event
+/res1
+/resource.xml
+/rtf*.rtf
