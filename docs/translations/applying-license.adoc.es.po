@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2022-02-03 18:05\n"
+"PO-Revision-Date: 2022-02-04 16:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/applying-license.adoc:1
 #, no-wrap
 msgid "Applying a License to a Dataset"
-msgstr "Aplicar una licencia a un Conjunto de datos"
+msgstr "Aplicar una licencia a un conjunto de datos"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/applying-license.adoc:3
