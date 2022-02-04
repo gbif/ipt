@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2021-08-20 08:59\n"
+"PO-Revision-Date: 2022-02-04 16:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -27,12 +27,12 @@ msgstr "Novedades"
 #: en/modules/ROOT/pages/news.adoc:5
 #, no-wrap
 msgid "Latest Release: 2.5.0-RC1"
-msgstr "Última Versión: 2.5.0-RC1"
+msgstr "Última versión: 2.5.0-RC1"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:8
 msgid "Version 2.5.0-RC1 is available for download.  Please see the xref:releases.adoc[Releases] page."
-msgstr "La versión 2.5.0-RC1 está disponible para su descarga. Por favor, diríjase a la página de xref:releases.adoc[Lanzamientos]."
+msgstr "La versión 2.5.0-RC1 está disponible para su descarga. Por favor, diríjase a la página de xref:releases.adoc[lanzamientos]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/news.adoc:9
@@ -60,17 +60,17 @@ msgstr "Contenido destacado"
 #: en/modules/ROOT/pages/news.adoc:18
 #, no-wrap
 msgid "*Need help validating your dataset?* For help, refer to this new xref:data-quality-checklist[data quality checklist]. It is particularly suited for checking occurrence and sampling event datasets and will help ensure that the dataset is both valid and complete\n"
-msgstr "*¿Necesita ayuda para validar su conjunto de datos?* Para asistencia, diríjase a esta nueva xref:data-quality-checklist[lista de verificación de la calidad de los datos]. Resulta particularmente apropiada para comprobar conjuntos de datos de presencias de especies y de eventos de muestreo y le ayudará a asegurarse de que el conjunto de datos es válido y está completo\n"
+msgstr "*¿Necesita ayuda para validar su conjunto de datos?* Para asistencia, diríjase a esta nueva xref:data-quality-checklist[lista de verificación de la calidad de los datos]. Resulta particularmente apropiada para comprobar conjuntos de datos de registros biológicos y de eventos de muestreo y le ayudará a asegurarse de que el conjunto de datos es válido y está completo\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:20
 #, no-wrap
 msgid "*Confused about what types of data GBIF supports?* *Confused about how to publish data and register it with GBIF?* Check out the new xref:how-to-publish[How to Publish Guide]. It starts by describing the four classes of biodiversity data that can be published through GBIF.org. For each class of data you'll find a simple set of instructions guiding you through the publication steps. Try out the simple Excel templates designed to simplify publication even more!\n"
-msgstr "*¿Confuso sobre qué tipo de datos acepta GBIF?* *¿Confuso sobre cómo publicar datos y registrarlos en GBIF?* Explore la nueva xref:how-to-publish[Guía de Publicación]. Ésta comienza describiendo las cuatro clases de datos de biodiversidad que pueden publicarse a través de GBIF.org. Para cada clase de datos encontrará un sencillo conjunto de instrucciones que le guiarán en los pasos de publicación. ¡Pruebe los sencillos modelos Excel diseñados para simplificar aún más la publicación!\n"
+msgstr "*¿Confundido sobre qué tipo de datos acepta GBIF?* *¿Confundido sobre cómo publicar datos y registrarlos en GBIF?* Explore la nueva xref:how-to-publish[Guía de publicación]. Ésta comienza describiendo las cuatro clases de datos de biodiversidad que pueden publicarse a través de GBIF.org. Para cada clase de datos encontrará un sencillo conjunto de instrucciones que le guiarán en los pasos de publicación. ¡Pruebe las sencillas plantillas Excel diseñadas para simplificar aún más la publicación!\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/news.adoc:21
 #, no-wrap
 msgid "*Interested in writing your own resource metadata in XML?* Check out xref:gbif-metadata-profile.adoc[this new how-to guide].\n"
-msgstr "*¿Interesado en escribir tu propio recurso de metadatos en XML?* Explore xref:gbif-metadata-profile.adoc[esta nueva guía práctica].\n"
+msgstr "*¿Interesado en escribir su propio recurso de metadatos en XML?* Explore xref:gbif-metadata-profile.adoc[esta nueva guía práctica].\n"
 
