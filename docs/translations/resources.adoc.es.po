@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-28 09:10+0000\n"
-"PO-Revision-Date: 2021-08-20 08:04\n"
+"PO-Revision-Date: 2022-02-04 00:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -26,7 +26,7 @@ msgstr "Recursos"
 #: en/modules/ROOT/pages/resources.adoc:3
 #, no-wrap
 msgid "Darwin Core Archive documentation"
-msgstr "Documentación del archivo Darwin Core "
+msgstr "Documentación del Archivo Darwin Core "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:5
@@ -37,12 +37,12 @@ msgstr "Los detalles sobre la estructura de un archivo Darwin Core, abreviado Dw
 #: en/modules/ROOT/pages/resources.adoc:6
 #, no-wrap
 msgid "GBIF Help Desk"
-msgstr "Mesa de ayuda de GBIF"
+msgstr "Centro de ayuda de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:8
 msgid "Send email messages to helpdesk@gbif.org to report problems with GBIF services, such as the GBIF Registry. Do not send IPT-specific help question to the Help Desk. Instead send them to the IPT mailing list (see below)."
-msgstr "Envíe mensajes de correo electrónico a helpdesk@gbif.org para informar problemas con los servicios de GBIF, como el Registro de GBIF. No envíe preguntas de ayuda específicas de IPT a la mesa de ayuda. En su lugar, envíelos a la lista de correo de IPT (ver más abajo)."
+msgstr "Envíe correos electrónico a helpdesk@gbif.org para informar problemas con los servicios de GBIF, como el Registro de GBIF. No envíe preguntas de ayuda específicas de IPT al centro de ayuda. En su lugar, envíelos a la lista de correo de IPT (ver más abajo)."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:9
@@ -59,12 +59,12 @@ msgstr "Utilice esta aplicación en línea para encontrar información sobre org
 #: en/modules/ROOT/pages/resources.adoc:12
 #, no-wrap
 msgid "IPT GitHub site"
-msgstr "Sitio GitHub de IPT"
+msgstr "Sitio GitHub del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:14
 msgid "The https://github.org/gbif/ipt[IPT GitHub site] is the project repository for all of the open source code, management, and documentation of the IPT."
-msgstr "El https://github.org/gbif/ipt[sitio de GitHub de IPT] es el repositorio del proyecto para todo el código fuente abierto, la administración y la documentación del IPT."
+msgstr "El https://github.org/gbif/ipt[sitio de GitHub del IPT] es el repositorio del proyecto para todo el código fuente abierto, la administración y la documentación del IPT."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:15
@@ -75,34 +75,34 @@ msgstr "Documentación para desarrolladores de IPT"
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:17
 msgid "Developers who wish to contribute, or to use the latest revision of the source code for their installation should consult the xref:developer-guide.adoc[Developer Guide] section."
-msgstr "Los desarrolladores que deseen contribuir o utilizar la última revisión del código fuente para su instalación deben consultar la sección xref:developer-guide.adoc[Developer Guide]."
+msgstr "Los desarrolladores que deseen contribuir o utilizar la última revisión del código fuente para su instalación deben consultar la sección xref:developer-guide.adoc[Guía para desarroladores]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:18
 #, no-wrap
 msgid "IPT issue tracker"
-msgstr "Seguimiento de problemas de IPT"
+msgstr "Seguimiento de problemas del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:20
 msgid "The https://github.com/gbif/ipt/issues[issue tracker] is the bug report and feature request management system for the IPT software and documentation."
-msgstr "El https://github.com/gbif/ipt/issues[seguimiento de problemas] es el informe de errores y el sistema de gestión de solicitudes de funciones para el software y la documentación de IPT."
+msgstr "El https://github.com/gbif/ipt/issues[seguimiento de problemas] es el informe de errores y el sistema de gestión de solicitudes de funciones para el software y la documentación del IPT."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:21
 #, no-wrap
 msgid "IPT mailing list"
-msgstr "Lista de correo de IPT"
+msgstr "Lista de correo del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:23
 msgid "All *IPT Administrators* should sign up to the https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] to be notified of new releases and best practices for maintaining their IPT. Have a question about how to maintain the IPT that you can't find the answer to in the xref:faq.adoc[FAQ] or xref:index.adoc[User Manual]? Then send your question to the list to get it answered!"
-msgstr "Todos los *administradores de IPT* deben registrarse en https://lists.gbif.org/mailman/listinfo/ipt/[Lista de correo de IPT] para recibir notificaciones sobre nuevas versiones y mejores prácticas para mantener su IPT. ¿Tiene alguna pregunta sobre cómo mantener el IPT y no puede encontrar la respuesta en xref:faq.adoc [FAQ] o xref:index.adoc[manual de usuario]? ¡Entonces envíe su pregunta a la lista para obtener una respuesta!"
+msgstr "Todos los *administradores del IPT* deben registrarse en https://lists.gbif.org/mailman/listinfo/ipt/[Lista de correo del IPT] para recibir notificaciones sobre nuevas versiones y mejores prácticas para mantener su IPT. ¿Tiene alguna pregunta sobre cómo mantener el IPT y no puede encontrar la respuesta en las xref:faq.adoc[preguntas frecuentes] o en el xref:index.adoc[manual del usuario]? ¡Entonces envíe su pregunta a la lista para obtener una respuesta!"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/resources.adoc:25
 msgid "The https://lists.gbif.org/mailman/listinfo/ipt/[IPT Mailing List] can also be used by *IPT users* to support each other. Have a question about how to use the IPT that you can't find the answer to in the xref:faq.adoc[FAQ] or xref:index.adoc[User Manual]? Then send your question to the list to get it answered!"
-msgstr "La https://lists.gbif.org/mailman/listinfo/ipt/[lista de correo de IPT] también puede ser utilizada por *usuarios de IPT* para apoyarse entre sí. ¿Tiene alguna pregunta sobre cómo usar el IPT y no puede encontrar la respuesta en xref:faq.adoc[FAQ] o xref:index.adoc[manual de usuario]? ¡Entonces envíe su pregunta a la lista para obtener una respuesta!"
+msgstr "La https://lists.gbif.org/mailman/listinfo/ipt/[lista de correo de IPT] también puede ser utilizada por *usuarios de IPT* para apoyarse entre sí. ¿Tiene alguna pregunta sobre cómo usar el IPT y no puede encontrar la respuesta en las xref:faq.adoc[preguntas frecuentes] o en el xref:index.adoc[manual del usuario]? ¡Entonces envíe su pregunta a la lista para obtener una respuesta!"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/resources.adoc:26
