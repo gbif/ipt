@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-06-26 14:12+0000\n"
-"PO-Revision-Date: 2022-02-03 18:05\n"
+"PO-Revision-Date: 2022-02-04 16:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -42,7 +42,7 @@ msgstr "Leyenda:"
 #: en/modules/ROOT/pages/datacite-mappings.adoc:10
 #, no-wrap
 msgid "*DataCite property*: lists the name of the DataCite metadata property\n"
-msgstr "*Propiedad DataCite*: enumera el nombre de la propiedad de metadatos Datacite\n"
+msgstr "*Propiedad DataCite*: indica el nombre de la propiedad de metadatos de DataCite\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/datacite-mappings.adoc:11
