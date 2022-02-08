@@ -1,0 +1,190 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2021-11-10 10:42+0000\n"
+"PO-Revision-Date: 2022-01-13 12:18\n"
+"Last-Translator: \n"
+"Language-Team: Japanese\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/checklist-data.adoc.pot\n"
+"X-Crowdin-File-ID: 96\n"
+
+#. type: Title =
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:55
+#: en/modules/ROOT/pages/checklist-data.adoc:1
+#, no-wrap
+msgid "Checklist Data"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:4
+msgid "Resources comprising a list of species belonging to some category (e.g. taxonomic, geographic, trait-based, red list, crop wild relative) and optionally with higher classification and/or additional traits associated with each species.  Examples of such datasets include global or regional taxonomic checklists, global or national red lists, catalogues of species included in undigitized collections, park checklists, etc. If sufficient information exists in the source dataset (or applies consistently to all species in the checklist), it is recommended that these datasets are presented as xref:occurrence-data.adoc[Occurrence Data]. These datasets include the same basic descriptive information included under xref:resource-metadata.adoc[Resource metadata]."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/checklist-data.adoc:5
+#, no-wrap
+msgid "How to transform your data into checklist data"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/checklist-data.adoc:7
+#, no-wrap
+msgid "ipt2/flow-cd.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:10
+#: en/modules/ROOT/pages/occurrence-data.adoc:11
+msgid "Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:12
+#: en/modules/ROOT/pages/occurrence-data.adoc:13
+msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:14
+#: en/modules/ROOT/pages/occurrence-data.adoc:15
+msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:16
+msgid "For extra guidance, you can refer to the guide xref:best-practices-checklists.adoc[Best Practices in Publishing Species Checklists] and look at the <<Exemplar Datasets,exemplar datasets>>."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/checklist-data.adoc:17
+#: en/modules/ROOT/pages/occurrence-data.adoc:20
+#: en/modules/ROOT/pages/sampling-event-data.adoc:23
+#, no-wrap
+msgid "Templates"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:21
+msgid "link:{attachmentsdir}/downloads/checklist_ipt_template_v1.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/checklist_ipt_template_v1_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:23
+msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}.xml[list]."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/checklist-data.adoc:24
+#: en/modules/ROOT/pages/occurrence-data.adoc:27
+#: en/modules/ROOT/pages/sampling-event-data.adoc:30
+#, no-wrap
+msgid "Required DwC fields"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:27
+msgid "https://dwc.tdwg.org/terms/#dwc:taxonID[taxonID]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:28
+#: en/modules/ROOT/pages/occurrence-data.adoc:32
+msgid "https://dwc.tdwg.org/terms/#dwc:scientificName[scientificName]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:29
+msgid "https://dwc.tdwg.org/terms/#dwc:taxonRank[taxonRank]"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/checklist-data.adoc:30
+#: en/modules/ROOT/pages/occurrence-data.adoc:34
+#: en/modules/ROOT/pages/sampling-event-data.adoc:36
+#, no-wrap
+msgid "Recommended DwC fields"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:33
+#: en/modules/ROOT/pages/occurrence-data.adoc:38
+msgid "https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] - and other higher taxonomy if possible"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:34
+msgid "https://dwc.tdwg.org/terms/#dwc:parentNameUsageID[parentNameUsageID] - in situations where a taxonomy is meant to be published"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:35
+msgid "https://dwc.tdwg.org/terms/#dwc:acceptedNameUsageID[acceptedNameUsageID] - in situations where a taxonomy is meant to be published"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/checklist-data.adoc:36
+#: en/modules/ROOT/pages/occurrence-data.adoc:42
+#: en/modules/ROOT/pages/resource-metadata.adoc:37
+#: en/modules/ROOT/pages/sampling-event-data.adoc:47
+#, no-wrap
+msgid "Exemplar datasets"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:39
+msgid "Database of Vascular Plants of Canada (VASCAN): http://data.canadensys.net/ipt/archive.do?r=vascan[DwC-A] / http://data.canadensys.net/ipt/resource.do?r=vascan[IPT homepage]"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/checklist-data.adoc:40
+#: en/modules/ROOT/pages/faq.adoc:1
+#: en/modules/ROOT/pages/occurrence-data.adoc:46
+#: en/modules/ROOT/pages/sampling-event-data.adoc:55
+#, no-wrap
+msgid "FAQ"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/checklist-data.adoc:42
+#, no-wrap
+msgid "Q. *How do I add common names to a taxon record?*"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:45
+#, no-wrap
+msgid "*A.* Make a table of common names. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your common names table with extra columns, but only using term names from this {latest-vernacularname}[list]. You can upload this table to the IPT, and map it to the {latest-vernacularname}[Vernacular Name extension].\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/checklist-data.adoc:46
+#, no-wrap
+msgid "Q. *How do I add the threat status of a species as defined by IUCN?*"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:49
+#, no-wrap
+msgid "*A.* Make a table of geographic distributions of a taxon. The table must include a taxonID column. That way, each row can link to the (core) taxon record. You can augment your geographic distributions table with extra columns such as the threat status, but only using term names from this {latest-species-distribution}[list]. You can upload this table to the IPT, and map it to the {latest-species-distribution}[Species Distribution extension].\n"
+msgstr ""
+
+#. type: Title ====
+#: en/modules/ROOT/pages/checklist-data.adoc:50
+#, no-wrap
+msgid "Q. *Can I update the https://doi.org/10.15468/39omei[GBIF Backbone Taxonomy] with names from my checklist?*"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/checklist-data.adoc:52
+#, no-wrap
+msgid "*A.* Yes. To do so, you must publish your checklist, make it publicly available online under a GBIF-supported license (CC0, CC-BY, CC-BY-NC) and register it with GBIF. GBIF can then manually review it to determine if it is a suitable backbone source, e.g. by looking at how its names overlap with the backbone. Ideally the checklist will provide at least a minimal classification like a https://dwc.tdwg.org/terms/#dwc:kingdom[kingdom] and https://dwc.tdwg.org/terms/#dwc:family[family], be of high data quality meaning it has few name usage issues, include https://dwc.tdwg.org/terms/#dwc:scientificNameAuthorship[scientificNameAuthorship] of names, supplying the https://dwc.tdwg.org/terms/#dwc:namePublishedIn[namePublishedIn] reference, etc.\n"
+msgstr ""
+

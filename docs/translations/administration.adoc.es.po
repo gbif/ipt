@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2021-12-03 14:14\n"
+"POT-Creation-Date: 2022-01-27 14:31+0000\n"
+"PO-Revision-Date: 2022-01-27 23:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:1
 #, no-wrap
 msgid "Administration Menu"
-msgstr "Menú Administración"
+msgstr "Menú administración"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:4
@@ -30,8 +30,7 @@ msgstr "Este menú es visible únicamente para los usuarios que tienen el rol de
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:6
 msgid "This section describes each of the functions that are accessible from the Administration menu. Clicking on the Administration menu opens a page (see screen image, below) from which each of these specific administrative tasks can be accessed by clicking on the appropriate button. Note that the button labelled \"Organizations\" will remain disabled by default until the GBIF registration options have been set."
-msgstr "Esta sección describe cada una de las funciones que están disponibles desde el \"Menú Administración\". Haciendo clic sobre Administración, se abre una página (ver imagen a continuación) desde la cual, cada una de estas tareas administrativas puede ser revisada, haciendo clic sobre el botón apropiado. Tenga en cuenta que el botón etiquetado \"Organizaciones\" permanecerá deshabilitado de forma predeterminada hasta que se establezcan las opciones de registro de GBIF.\n\n"
-"Ícono de validado por la comunidad"
+msgstr "Esta sección describe cada una de las funciones que están disponibles desde el \"Menú administración\". Haciendo clic sobre Administración, se abre una página (ver imagen a continuación) desde la que se puede acceder a cada una de estas tareas administrativas haciendo clic sobre el botón apropiado. Tenga en cuenta que el botón etiquetado \"Organizaciones\" permanecerá deshabilitado de forma predeterminada hasta que se establezcan las opciones de registro de GBIF."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:7
@@ -44,7 +43,7 @@ msgstr "ipt2/administration/IPTAdminBeforeRegistration.png"
 #: en/modules/ROOT/pages/administration.adoc:9
 #, no-wrap
 msgid "Configure IPT settings"
-msgstr "Opciones de configuración el IPT"
+msgstr "Configuración de las opciones del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:11
@@ -60,7 +59,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:15
 msgid "[[public-url]] *Public URL* - This is the URL that points to the root of this IPT installation. The URL is set automatically during the installation of the IPT. The Public URL must be accessible via the Internet in order for the IPT to function fully. Configuring the IPT Public URL to use localhost, for example, will not allow the instance of the IPT to be registered with GBIF, will not allow the IPT to be associated with an organization and will not allow the resources to be publicly accessible."
-msgstr "[[url-pública]] *URL pública*: esta es la URL que apunta a la raíz de esta instalación de IPT. La URL se establece automáticamente durante la instalación de IPT. La URL pública debe ser accesible a través de Internet para que el IPT funcione completamente. Configurar la URL pública de IPT para usar localhost, por ejemplo, no permitirá que la instancia de IPT se registre con GBIF, no permitirá que el IPT se asocie con una organización y no permitirá que los recursos sean de acceso público."
+msgstr "[[url-pública]] *URL pública*: esta es la URL que direcciona a la raíz de esta instalación de IPT. La URL se establece automáticamente durante la instalación de IPT. La URL pública debe ser accesible a través de Internet para que el IPT funcione completamente. Configurar la URL pública de IPT para usar localhost, por ejemplo, no permitirá que la instancia de IPT se registre con GBIF, no permitirá que el IPT se asocie con una organización y no permitirá que los recursos sean de acceso público."
 
 #. type: Block title
 #: en/modules/ROOT/pages/administration.adoc:18
@@ -71,7 +70,7 @@ msgstr "Actualización manual de la URL pública"
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:21
 msgid "The IPT tests the Public URL for accessibility from the client computer when the IPT Settings are saved. If the IPT is not accessible at the given Public URL, the IPT will display a warning message and the changes will not be saved. The procedure to change the Public URL if the new URL is not yet functional (such as a port change that requires the IPT to be restarted) is given here:"
-msgstr "Cuando la configuración del IPT es guardada, el IPT prueba la disponibilidad de la URL Base desde el computador del cliente. Si el IPT no está disponible en la URL Base establecida, el IPT mostrará un mensaje de advertencia y los cambios no podrán ser guardados. Si la nueva URL aún no es funcional (tal como un cambio de puerto que requiere un reinicio del IPT), a continuación se explica el procedimiento para cambiar la URL Base:"
+msgstr "Cuando la configuración del IPT es guardada, el IPT prueba la disponibilidad de la URL pública desde el computador del cliente. Si el IPT no está disponible en la URL pública establecida, mostrará un mensaje de advertencia y los cambios no podrán ser guardados. El procedimiento para cambiar la URL pública, si la nueva URL aún no es funcional (como un cambio de puerto que requiere que el IPT se reinicie), se indica aquí:"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:23
@@ -81,7 +80,7 @@ msgstr "apague el IPT"
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:24
 msgid "in the data directory for the IPT, open the file `config/ipt.properties` with a simple or programming text editor such as Notepad, TextEdit, vim (not Microsoft Word)."
-msgstr "En el directorio de datos para el IPT, abra con un editor de texto plano el archivo `config/ipt.properties` – use un editor que no adicione códigos extra, como NotePad, TextEdit, vim, etc. (no Microsoft Word)."
+msgstr "en el directorio de datos del IPT, abra el archivo `config/ipt.properties` con un editor de texto simple o de programación como Notepad, TextEdit, vim (no Microsoft Word)."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:25
@@ -96,7 +95,7 @@ msgstr "reinicie el IPT en el contenedor del servlet."
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:27
 msgid "update the metadata for the IPT as described in the next section of this user manual entitled \"Publish all resources\"."
-msgstr "actualice los metadatos para el IPT como se describe en la siguiente sección titulada “Publicar Todos los Recursos”."
+msgstr "actualice los metadatos para el IPT como se describe en la siguiente sección titulada “Publicar todos los recursos”."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:31
@@ -126,30 +125,30 @@ msgstr "*Modo Corrección de Errores* - Marque este cuadro si desea iniciar el I
 #: en/modules/ROOT/pages/administration.adoc:35
 #, no-wrap
 msgid "*Archival Mode* - Check this box if you want your IPT to archive all published versions for all resources. It will enable you to track a resource's version history. If unchecked, older versions will be overwritten with the latest. Beware not to run out of disk space.\n"
-msgstr "*Modo Archivo* - Marque esta casilla si desea que su IPT guarde todas las versiones publicadas para todos los recursos. Esto le permitirá realizar un seguimiento del historial de versiones de un recurso. Si no se marca, las versiones anteriores serán reemplazadas por la última. Tenga cuidado de no quedarse sin espacio en disco.\n"
+msgstr "*Modo archivo*: marque esta casilla si desea que su IPT guarde todas las versiones publicadas para todos los recursos. Esto le permitirá realizar un seguimiento del historial de versiones de un recurso. Si no se marca, las versiones anteriores serán reemplazadas por la última. Tenga cuidado de no quedarse sin espacio en disco.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:36
 #, no-wrap
 msgid "*IPT Server Location* - This area of the page allows the Admin to set the geographic coordinates (latitude and longitude) of the location of the server on which the IPT is installed. Setting these coordinates allows GBIF to map the location of this among other registered IPT installations around the world.\n"
-msgstr "*Ubicación del Servidor IPT* - Esta área de la página permite al administrador establecer las coordenadas geográficas (latitud y longitud) de la ubicación de servidor en el cual se instaló el IPT. El establecimiento de estas coordenadas permite al GBIF georreferenciar la ubicación de este, con las otras instalaciones del IPT registradas alrededor del mundo.\n"
+msgstr "*Ubicación del servidor IPT*: esta área de la página permite al administrador establecer las coordenadas geográficas (latitud y longitud) de la ubicación del servidor en el que está instalado el IPT. Establecer estas coordenadas permite a GBIF mapear la ubicación de esta y otras instalaciones IPT registradas alrededor del mundo.\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:37
 #, no-wrap
 msgid "Publish all resources"
-msgstr "Publicar Todos los Recursos"
+msgstr "Publicar todos los recursos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:39
 msgid "This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPT and registered resources' metadata in the Registry. Click on this button if multiple resources have been updated and you want to publish a new release for all of them instead of publishing them individually."
-msgstr "Esta opción es una acción administrativa al igual que el botón Publicar, solo que publica TODOS los recursos. Por lo tanto, para cada recurso, crea un nuevo DwC-A, EML y RTF y transmite la actualización al Registro y vía RSS. Además, también actualiza el IPT y los metadatos de los recursos registrados en el Registro. Haga clic en este botón si se han actualizado varios recursos y desea publicar una nueva versión para todos ellos en lugar de publicarlos individualmente."
+msgstr "Esta opción es una acción administrativa al igual que el botón \"Publicar\", solo que publica TODOS los recursos. Por lo tanto, para cada recurso, crea un nuevo DwC-A, EML y RTF, y transmite la actualización al Registro y vía RSS. Además, también actualiza el IPT y los metadatos de los recursos registrados en el Registro. Haga clic en este botón si se han actualizado varios recursos y desea publicar una nueva versión para todos ellos en lugar de publicarlos individualmente."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:40
 #, no-wrap
 msgid "Configure User accounts"
-msgstr "Configurar Cuentas de Usuario"
+msgstr "Configurar cuentas de usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:42
@@ -166,12 +165,12 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:45
 #, no-wrap
 msgid "Create a new user"
-msgstr "Crear un Nuevo Usuario"
+msgstr "Crear un nuevo usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:47
 msgid "A new user can be created by clicking on the button labelled \"Create\" below the list of existing users. This will open a page on which the information about the user can be entered, after which the new user can be created by clicking on the button labelled \"Save\"."
-msgstr "Un usuario nuevo puede ser creado haciendo clic en el botón “Crear” que está debajo de la lista de usuarios actuales. Se abrirá una página en la cual puede ser ingresada la información del usuario y luego el usuario nuevo puede ser creado haciendo clic en el botón “Guardar”."
+msgstr "Se puede crear un nuevo usuario haciendo clic en el botón \"Crear\" ubicado debajo de la lista de usuarios existentes. Se abrirá una página en la que se puede introducir la información sobre el usuario, tras lo cual se puede crear el nuevo usuario pulsando el botón \"Guardar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:48
@@ -183,25 +182,25 @@ msgstr "ipt2/administration/IPTAdminUserCreateUser.png"
 #: en/modules/ROOT/pages/administration.adoc:51
 #, no-wrap
 msgid "*Email* - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.\n"
-msgstr "*Correo electrónico* - La dirección de correo electrónico del usuario, es usada como un identificador para ingresar al IPT y no puede ser cambiada.\n"
+msgstr "*Correo electrónico*: la dirección de correo electrónico del usuario, es usada como un identificador para ingresar al IPT y no puede ser cambiada.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:52
 #, no-wrap
 msgid "*Note*: If the user requires a change of email address, the recommended procedure is to create a new user account with the new email address, then delete the user account having the antiquated email address.\n"
-msgstr "*Nota*: Si el usuario requiere un cambio de correo electrónico, el procedimiento recomendado es crear una nueva cuenta de usuario con la nueva dirección de correo electrónico, y luego eliminar la cuenta de usuario que tiene el correo electrónico antiguo.\n"
+msgstr "*Nota*: si el usuario requiere un cambio de correo electrónico, el procedimiento recomendado es crear una nueva cuenta de usuario con la nueva dirección de correo electrónico y luego eliminar la cuenta de usuario que tiene el correo electrónico antiguo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:53
 #, no-wrap
 msgid "*First name* - The first name of the user.\n"
-msgstr "*Nombre* - El nombre del usuario.\n"
+msgstr "*Nombre*: el nombre del usuario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:54
 #, no-wrap
 msgid "*Last name* - The last name of the user.\n"
-msgstr "*Apellido* - El apellido del usuario.\n"
+msgstr "*Apellido*: el apellido del usuario.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:55
@@ -213,7 +212,7 @@ msgstr "*Rol* - El rol que tendrá el usuario dentro del IPT. Usuarios con el ro
 #: en/modules/ROOT/pages/administration.adoc:56
 #, no-wrap
 msgid "*Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.\n"
-msgstr "*Contraseña* - la contraseña del usuario debe contener al menos 4 caracteres y debe ser segura y evitar la pérdida, puesto que desde la aplicación del IPT, esta contraseña no es recuperable.\n"
+msgstr "*Contraseña*: la contraseña del usuario debe contener al menos 4 caracteres y debe ser segura y evitar la pérdida, puesto que desde la aplicación del IPT esta contraseña no es recuperable.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:57
@@ -225,18 +224,18 @@ msgstr "*Nota*: Si la contraseña de un usuario se pierde, puede ser restablecid
 #: en/modules/ROOT/pages/administration.adoc:58
 #, no-wrap
 msgid "*Verify password* - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.\n"
-msgstr "*Verificar Contraseña* - Una copia exacta de la contraseña que fue ingresada anteriormente, para confirmar que esta fue ingresada como se pretende.\n"
+msgstr "*Verificar contraseña*: una copia exacta de la contraseña que fue ingresada anteriormente para confirmar que se ha introducido como se pretendía.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:59
 #, no-wrap
 msgid "Modify an existing user"
-msgstr "Modificar un Usuario Existente"
+msgstr "Modificar un usuario existente"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:61
 msgid "Information about users can be changed in the user details page after selecting the name of the user you wish to modify from the list of existing users. The user detail page shows all of the information about that user. The first name, last name, and role for the user can be changed by entering the new values and clicking on the button labelled \"Save\". Details of the information to be entered on this page can be found in the explanations in the \"Create a new user\" section, above."
-msgstr "La información acerca de los usuarios puede ser cambiada en la página de los detalles del usuario después de seleccionar, de la lista de usuarios existentes, el nombre del usuario que se desea modificar. La página de detalles del usuario muestra toda la información acerca del usuario. Pueden ser cambiados el nombre, apellido y rol del usuario, ingresando nuevos valores y haciendo clic en el botón “Guardar”. Los detalles de la información ingresada en esta página, puede ser encontrada en las explicaciones de la sección anterior “Crear un Nuevo Usuario”."
+msgstr "La información de los usuarios puede modificarse en la página de detalles del usuario después de seleccionar el nombre del usuario que desea modificar de la lista de usuarios existentes. La página de detalles del usuario muestra toda la información sobre ese usuario. El nombre, el apellido y la función del usuario pueden modificarse introduciendo los nuevos valores y haciendo clic en el botón \"Guardar\". Los detalles de la información que debe introducirse en esta página se encuentran en las explicaciones de la sección \"Crear un nuevo usuario\", más arriba."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:62
@@ -248,24 +247,24 @@ msgstr "ipt2/administration/IPTAdminUserEditUser.png"
 #: en/modules/ROOT/pages/administration.adoc:65
 #, no-wrap
 msgid "*Reset password* - If a user forgets a password, clicking on the button labelled \"Reset Password\" can generate a new one, after which a new password is given in an information message at the top of the page.\n"
-msgstr "*Restablecer Contraseña* - Si un usuario olvida la contraseña, se puede generar una nueva haciendo clic en el botón “Restablecer Contraseña”. Después de esto, una nueva contraseña es generada en un mensaje de información en la parte superior de la página.\n"
+msgstr "*Restablecer contraseña*: si un usuario olvida su contraseña, al hacer clic en el botón \"Restablecer contraseña\" se puede generar una nueva, tras lo cual se da una nueva contraseña en un mensaje informativo en la parte superior de la página.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:66
 #, no-wrap
 msgid "*Note*: The IPT does not inform the affected user of this change, so it is the responsibility of the Admin who resets the password to inform the user of the new one.\n"
-msgstr "*Nota*: El IPT no informa del cambio al usuario afectado, por lo tanto es responsabilidad del Administrador que restablece la contraseña, informar al usuario la nueva contraseña.\n"
+msgstr "*Nota*: el IPT no informa del cambio al usuario afectado, por lo tanto es responsabilidad del Administrador que restablece la contraseña, informar al usuario la contraseña nueva.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:67
 #, no-wrap
 msgid "Delete a user"
-msgstr "Eliminar un Usuario"
+msgstr "Eliminar un usuario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:69
 msgid "Users accounts that are no longer necessary can be deleted using the user detail page accessed by selecting the name of the user you wish to delete from the list of existing users. On the bottom of the user detail page, click on the button labelled \"Delete\" to remove this user account. There are several conditions under which a user cannot be deleted:"
-msgstr "Las cuentas de los usuarios que dejan de ser necesarias, pueden ser eliminadas usando la página detalles del usuario, disponible cuando se selecciona de la lista el nombre del usuario que se desea eliminar. Al final de la página detalles del usuario, hacer clic en el botón “Eliminar” para remover esta cuenta de usuario. Existen varias condiciones bajo las cuales un usuario no puede ser eliminado."
+msgstr "Las cuentas de usuario que ya no son necesarias pueden eliminarse a través de la página de detalles del usuario a la que se accede seleccionando el nombre del usuario que se desea eliminar de la lista de usuarios existentes. En la parte inferior de la página de detalles del usuario, haga clic en el botón \"Borrar\" para eliminar esta cuenta de usuario. Hay varias condiciones en las que un usuario no puede ser eliminado:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:71
@@ -275,7 +274,7 @@ msgstr "Un administrador no puede eliminar su propia cuenta mientras está conec
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:72
 msgid "The IPT installation must always have at least one user having the Admin role, so the last remaining Admin can not be deleted. To remove that user, first create a new user having the Admin role and log in with that new user to delete the other Admin account."
-msgstr "Igualmente, la instalación del IPT siempre debe tener al menos un usuario con el rol Administrador, de tal forma que el último Administrador no pueda ser eliminado. Para eliminar aquel usuario, primero se debe crear un nuevo usuario con el rol Administrador, e ingresar con este nuevo usuario para eliminar la otra cuenta de Administrador."
+msgstr "Igualmente, la instalación del IPT siempre debe tener al menos un usuario con el rol Administrador, de tal forma que el último Administrador no podrá ser eliminado. Para eliminar aquel usuario, primero se debe crear un nuevo usuario con el rol Administrador e ingresar con este nuevo usuario para eliminar la otra cuenta de Administrador."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:73
@@ -285,52 +284,52 @@ msgstr "Finalmente, cada recurso debe tener al menos un usuario asociado que ten
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:74
 msgid "A user cannot be deleted if it is the creator or one or more resources. To restrict the user's access to their resources, downgrade their role to type User. Refer to the <<Modify an existing user>> section for information about how to change a user's role."
-msgstr "No se puede eliminar un usuario si es el creador o uno o más recursos. Para restringir el acceso del usuario a sus recursos, baje su rol al tipo Usuario. Consulte la sección <<Modificar un Usuario Existente>> para obtener información sobre cómo cambiar el rol de un usuario."
+msgstr "No se puede eliminar un usuario si es el creador o uno o más recursos. Para restringir el acceso del usuario a sus recursos baje su rol al tipo Usuario. Consulte la sección <<Modificar un usuario existente>> para obtener información sobre cómo cambiar el rol de un usuario."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:75
 #, no-wrap
 msgid "Configure GBIF registration options"
-msgstr "Configurar Opciones para el Registro GBIF"
+msgstr "Configuración de las opciones de registro de GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
 msgid "This page allows a user to register the IPT instance in the GBIF Registry if this has not already been done. The IPT must be registered before any of the IPTs resources can be associated with an organization (see the information under the \"Configure Organizations\" heading in the \"Administration Menu\" section) or published (see the xref:manage-resources.adoc#published-versions[Published Versions] section). Information about a registered IPT and its public resources become searchable through the Registry's services, and the data from the public resources published on the IPT can be indexed for searching via the GBIF portal. If the IPT has already been registered, the registered information for the IPT can be edited opening the <<Edit GBIF registration>> page."
-msgstr "Esta página permite a los usuarios registrar el IPT en el Registro GBIF, solo si este aún no se ha hecho. El IPT debe ser registrado antes de asociar algún recurso del IPT con una organización (véase la información de “Configurar Organizaciones” en la sección \"Menú Administración\") o publicarlo (véase la sección xref:manage-resources.adoc#versiones-publicadas[Versiones Publicadas]). La información acerca de un IPT registrado y sus recursos públicos, llegan a estar disponibles a través de los servicios de Registro, y los datos de los recursos públicos en el IPT, pueden ser indexados con una búsqueda a través del portal GBIF. Si el IPT ya ha sido registrado, la información registrada por el IPT puede ser editada abriendo la página <<Editar el Registro GBIF>>."
+msgstr "Esta página permite al usuario registrar la instancia del IPT en el Registro de GBIF si aún no se ha hecho. El IPT debe ser registrado antes de que cualquiera de los recursos del IPT pueda ser asociado con una organización (ver la información en el encabezado \"Configurar organizaciones\" en la sección \"Menú administración\") o publicado (ver la sección xref:manage-resources.adoc#published-versions[Versiones publicadas]). La información sobre un IPT registrado y sus recursos públicos se pueden buscar a través de los servicios del Registro, y los datos de los recursos públicos publicados en el IPT pueden ser indexados para su búsqueda a través del portal de GBIF. Si el IPT ya ha sido registrado, la información registrada para el IPT puede ser editada abriendo la página <<Editar el Registro GBIF>>."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:79
 msgid "The first step to register with GBIF is to test that the IPT has a valid URL that can be reached by the GBIF services. To run this test, click on the button labelled \"Validate\"."
-msgstr "El primer paso para registrar un recurso ante GBIF, es probar que el IPT tenga una URL valida que pueda ser localizada por los servicios del GBIF. Para correr esta prueba, haga clic sobre el botón llamado “Validar”."
+msgstr "El primer paso para registrar un recurso en GBIF es probar que el IPT tenga una URL valida que pueda ser localizada por los servicios del GBIF. Para correr esta prueba, haga clic sobre el botón “Validar”."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:81
 msgid "If the validation test is unsuccessful, an error message will suggest the nature of the problem with the communication between the GBIF Registry and the IPT. Causes for an error include:"
-msgstr "Si la prueba de validación no es exitosa, un mensaje de error sugerirá la naturaleza del problema con la comunicación entre el Registro GBIF y el IPT. Las causas de un error incluyen:"
+msgstr "Si la prueba de validación no tiene éxito, un mensaje de error sugerirá la naturaleza del problema con la comunicación entre el Registro GBIF y el IPT. Las causas de error incluyen:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:83
 #, no-wrap
 msgid "*No Internet connectivity* - The IPT requires an active Internet connection to function properly. An error will occur if connectivity to the Internet is lost when the button labelled \"Validate\" button is clicked. Restore Internet connectivity before trying to proceed with registration.\n"
-msgstr "*No hay conexión a Internet* - Para un funcionamiento apropiado, el IPT requiere una conexión activa a Internet. Ocurrirá un error, si la conexión a Internet se interrumpe cuando se haga clic sobre el botón “Validar”. Restaure la conexión a Internet antes de intentar el registro.\n"
+msgstr "*No hay conexión a Internet:  el IPT requiere una conexión activa a Internet para funcionar correctamente. Se producirá un error si se pierde la conectividad a Internet al pulsar el botón \"Validar\". Restaure la conectividad a Internet antes de intentar proceder con el registro.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:84
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
-msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref:initial-setup.adoc[Configuración inicial]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Opciones de configuración el IPT>>).\n"
+msgstr "*URL de proxy pública o institucional incorrecta*: la URL pública se detecta y configura automáticamente durante el proceso de configuración del IPT (consulte la sección xref:initial-setup.adoc[Configuración inicial del IPT]). Los cambios en la configuración del servidor en el que está instalado el IPT podrían requerir un cambio en la URL pública o la URL del proxy institucional. Las URL de proxy públicas e institucionales se pueden cambiar en la página Configurar opciones de IPT (consulte las explicaciones de la URL pública y la URL de proxy institucional en la sección <<Opciones de configuración del IPT>>).\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:85
 #, no-wrap
 msgid "*Firewall* - If the Internet connection is live, a firewall may be preventing connections to the public URL or institutional proxy. Change the firewall or institutional proxy settings to all outside connections.\n"
-msgstr "*Firewall* - Si la conexión a Internet es correcta, un firewall puede estar evitando las conexiones a la URL Base o el Proxy. Cambie la configuración del firewall o proxy para todas las conexiones externas.\n"
+msgstr "*Firewall*: si la conexión a Internet es correcta, un firewall puede estar evitando las conexiones a la URL pública o el Proxy. Cambie la configuración del firewall o proxy para todas las conexiones externas.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:86
 #, no-wrap
 msgid "*GBIF Registry inaccessible* - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF help desk (helpdesk@gbif.org).\n"
-msgstr "*Registro GBIF sin acceso* - Si un mensaje de error sugiere que ninguno de los errores previos ha ocurrido y aún hay una falla con la comunicación al Registro GBIF, por favor reporte a la \"Mesa de Ayuda\" que hay problemas con la conexión al Registro GBIF (helpdesk@gbif.org).\n"
+msgstr "*Registro GBIF inaccesible*: si un mensaje de error sugiere que ninguno de los errores previos ha ocurrido y aún hay una falla con la comunicación al Registro GBIF, por favor que hay problemas con la conexión al Registro GBIF o al Centro de ayuda de GBIF (helpdesk@gbif.org).\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:87
@@ -340,8 +339,8 @@ msgstr "ipt2/administration/IPTAdminRegistrationStep1.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:90
-msgid "If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its password must be known*. For explanations of the fields and selections on this form, refer to the information below."
-msgstr "Si el IPT pasa la etapa de validación mencionada anteriormente, aparecerá un formato que requiere información adicional para el registro. En esta etapa, el IPT es asociado con una organización. *La organización ya debe estar registrada en el Registro GBIF, y su contraseña debe ser conocida.* A continuación se encuentran las explicaciones de los campos y selecciones de este formato."
+msgid "If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its shared token must be known*. For explanations of the fields and selections on this form, refer to the information below."
+msgstr "Si el IPT supera el paso de validación anterior, aparecerá un formulario con información adicional necesaria para el registro. En este paso, la instancia del IPT se asocia a una organización. *La organización debe estar registrada en el Registro de GBIF y su token compartido debe ser conocido*. A continuación se encuentran las explicaciones de los campos y selecciones de este formato."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:91
@@ -359,78 +358,78 @@ msgstr "A continuación se encuentran las explicaciones de la información espec
 #: en/modules/ROOT/pages/administration.adoc:96
 #, no-wrap
 msgid "*Organization* - the select box contains a list of organizations in the GBIF registry. Select the single organization with which this IPT instance will be associated. If you are unable to find the organization you seek on the list, use the GBIF Registry (https://www.gbif.org/publisher/search) to determine if the organization is registered under a name other than what you expected. If the organization is not yet registered with GBIF, please contact the GBIF Help Desk to register the organization before proceeding with the registration of the IPT. Click on the help icon and then click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.\n"
-msgstr "*Organización* - El cuadro seleccionado contiene una lista de organizaciones en el Registro GBIF. Seleccione una organización con la cual será asociado este IPT. Si la organización deseada no se encuentra en la lista, use el Registro GBIF (https://www.gbif.org/es/publisher/search) para determinar si la organización está registrada bajo otro nombre que no esperaba. Si la organización aún no está registrada ante GBIF, por favor contacte a la \"Mesa de Ayuda\" para registrar la organización, antes de proceder con el registro del IPT. Haga clic sobre el enlace de ayuda “GBIF Help Desk” para abrir un correo electrónico predeterminado, en donde puede completarlo con la información necesaria antes de enviarlo.\n"
+msgstr "*Organización*: el cuadro seleccionado contiene una lista de organizaciones en el Registro GBIF. Seleccione una única organización con la cual será asociado este IPT. Si la organización deseada no se encuentra en la lista, use el Registro GBIF (https://www.gbif.org/es/publisher/search) para determinar si la organización está registrada con un nombre distinto al que esperaba. Si la organización aún no está registrada en GBIF, por favor contacte al Centro de ayuda de GBIF para registrar la organización antes de proceder con el registro del IPT. Haga clic sobre el enlace de ayuda “GBIF Help Desk” para abrir un correo electrónico predeterminado que puede completar con la información necesaria antes de enviarlo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:97
 #, no-wrap
-msgid "*Organization's password* - the correct password registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's password, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Password text box after selecting an organization in the Organization select box. The password will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
-msgstr "*Contraseña de la Organización* - La contraseña correcta para la organización seleccionada, registrada en el Registro GBIF, debe ser ingresada en este campo para verificar que el usuario tiene la autorización requerida para asociar el IPT con aquella organización. Si no posee la contraseña de la organización, debe solicitarla al contacto registrado. Un enlace al contacto principal de la organización registrada aparecerá debajo de este campo, después de seleccionar una organización en el campo Organización. La contraseña será usada para autenticar el registro del IPT cuando se haga clic sobre el botón “Guardar”.\n"
+msgid "*Organization's shared token* - the shared token registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's shared token, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Shared Token text box after selecting an organization in the Organization select box. The shared token will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
+msgstr "*Token compartido de la organización*: el token compartido registrado en GBIF para la organización seleccionada debe ser ingresado en esta caja de texto para verificar que el usuario tiene la autorización requerida para asociar la instancia de IPT con esa organización. Si no dispone del token compartido de la organización, puede solicitarlo al contacto registrado. Aparecerá un enlace al contacto principal registrado para la organización debajo del cuadro de texto \"Token compartido de la organización\" después de seleccionar una organización en el cuadro de selección Organización. El token compartido se utilizará para autenticar el registro del IPT cuando se pulse el botón \"Guardar\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:98
 #, no-wrap
 msgid "*Alias* - enter a convenient name or code to represent the organization within this instance of the IPT. The alias will appear in place of the full organization name in organization select boxes in the IPT user interfaces.\n"
-msgstr "*Alias* - Ingrese un nombre o código conveniente para representar la organización dentro del IPT. El alias aparecerá, en lugar del nombre completo de la organización, en los campos de selección de la organización, de las interfaces del usuario en el IPT.\n"
+msgstr "*Alias*: ingrese un nombre o código conveniente para representar la organización dentro del IPT. El alias aparecerá en lugar del nombre completo de la organización en los cuadros de selección de \"Organización\" en las interfaces de usuario del IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:99
 #, no-wrap
 msgid "*Can publish resources?* - check this box if the selected organization can also be associated with resources published on this instance of the IPT. If left unchecked, the organization will not appear in the list of organizations available to associate with a resource. Leave unchecked only if this organization is only the host for the IPT instance, not for any of the resources published through the IPT instance.\n"
-msgstr "*¿Puede publicar recursos?* - Seleccione este recuadro si la organización seleccionada también puede ser asociada con recursos publicados en este IPT. Si se deja sin seleccionar, la organización no aparecerá en la lista de organizaciones disponibles para asociar con un recurso. Deje el recuadro sin marcar, solamente si la organización tiene como función alojar el IPT, y no asociar cualquiera de los recursos publicados a través del IPT.\n"
+msgstr "*¿Puede publicar recursos?*: seleccione este recuadro si la organización también puede ser asociada con recursos publicados en este IPT. Si se deja sin seleccionar, la organización no aparecerá en la lista de organizaciones disponibles para asociar con un recurso. Deje el recuadro sin marcar solamente si la organización tiene como función alojar el IPT y no asociar recursos publicados a través del IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:100
 #, no-wrap
 msgid "*Title for the IPT installation* - enter the title of the IPT installation to be used in the GBIF Registry. The title is the primary information used for listing and searching for the IPT installations in the Registry.\n"
-msgstr "*Título para la Instalación del IPT* - ingrese el título de la instalación del IPT a ser usado en el Registro GBIF. El título es la información primaria usada para listar y buscar en el Registro por instalaciones de IPT.\n"
+msgstr "*Título para la instalación del IPT*: ingrese el título de la instalación del IPT a ser usado en el Registro GBIF. El título es la información primaria usada para listar y buscar en el Registro por instalaciones de IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:101
 #, no-wrap
 msgid "*Description for this IPT installation* - enter the description of the IPT installation to be used in the GBIF Registry. The description is meant to help users of the Registry to further understand the significance of the IPT instance by allowing further information beyond the specific metadata fields to be shared.\n"
-msgstr "*Descripción para esta instalación del IPT* - Ingrese en el Registro GBIF la descripción de la instalación del IPT a ser usada. La descripción pretende ayudar a los usuarios del Registro a entender el significado del IPT, permitiendo información adicional a la compartida en los campos específicos para metadatos.\n"
+msgstr "*Descripción para esta instalación del IPT*: ingrese en el Registro GBIF la descripción de la instalación del IPT a ser usada. La descripción pretende ayudar a los usuarios del Registro a entender el significado del IPT, permitiendo información adicional a la compartida en los campos específicos para metadatos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:102
 #, no-wrap
 msgid "*Contact Name* - enter the name of the person who should be contacted for information about the IPT installation. This person should be someone who has an Admin role in the IPT instance and knows the technical details about the installation.\n"
-msgstr "*Nombre del Contacto* - Ingrese el nombre de la persona quien debe ser contactada para información acerca de la instalación del IPT. Esta persona debe ser alguien quien tenga un rol Administrador y conozca los detalles técnicos acerca de la instalación.\n"
+msgstr "*Nombre del contacto*: ingrese el nombre de la persona quien debe ser contactada para información acerca de la instalación del IPT. Esta persona debe ser alguien quien tenga un rol de Administrador y conozca los detalles técnicos acerca de la instalación.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:103
 #, no-wrap
 msgid "*Contact Email* - enter the current email address of the person whose name is given in the Contact Name.\n"
-msgstr "*Correo Electrónico del Contacto* - Ingrese la dirección electrónica actual de la persona cuyo nombre fue ingresado en el campo anterior.\n"
+msgstr "*Correo electrónico del contacto*: ingrese la dirección electrónica actual de la persona cuyo nombre fue ingresado en el campo anterior.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:104
 #, no-wrap
 msgid "*IPT password* - enter the password that should be used to edit the entry for this IPT installation in the GBIF Registry.\n"
-msgstr "*Contraseña del IPT* - ingrese la contraseña que debe ser usada para editar la instalación de este IPT en el Registro GBIF.\n"
+msgstr "*Contraseña del IPT*: ingrese la contraseña que debe ser usada para editar la instalación de este IPT en el Registro GBIF.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:105
 #, no-wrap
 msgid "*Save* - when all of the information above is entered or selected, click on the button labelled \"Save\" to register the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organization. Also, after a successful registration, the Configure Organizations page will become accessible from the Administration menu.\n"
-msgstr "*Guardar* - Cuando toda la información anterior haya sido ingresada o seleccionada, haga clic sobre el botón “Guardar” para registrar la instalación del IPT ante el Registro GBIF. Después de realizar un registro exitoso de la instalación del IPT, la página, para configurar las opciones del Registro GBIF, mostrará que el IPT ya ha sido registrado y asociado con la organización seleccionada. Además, la página \"Configurar Organizaciones\" llegará a estar disponible en el \"Menú Administración\".\n"
+msgstr "*Guardar*: cuando toda la información anterior haya sido ingresada o seleccionada, haga clic sobre el botón “Guardar” para registrar la instalación del IPT ante el Registro de GBIF. Después de registrar con éxito la instalación del IPT la página para configurar las opciones del Registro GBIF mostrará que el IPT ya ha sido registrado y asociado con la organización seleccionada. Además, la página \"Configurar organizaciones\" será accesible desde el \"Menú administración\".\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:106
 #, no-wrap
 msgid "*Note*: Any changes to the IPT registration (rather than resource registration - for which see the \"Visibility\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section as well as the information under the \"Publish all resources\" heading in the \"Administration Menu\" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).\n"
-msgstr "*Nota*: cualquier cambio en el registro del IPT (no en el registro de un recurso – para el cual véase la sección “Visibilidad” bajo el encabezado “Vista General del Recurso” en la sección “Menú Gestión de Recursos”, así como la información bajo el encabezado “Publicar Todos los Recursos” en la sección “Menú Administración”) tendrá que ser consultado con la \"Mesa de Ayuda GBIF\" (helpdesk@gbif.org).\n"
+msgstr "*Nota*: cualquier cambio en el registro del IPT (no en el registro de un recurso, para el cual debe dirigirse la sección “Visibilidad” bajo el encabezado “Vista general del recurso” en la sección “Menú gestión de recursos”, así como a la información bajo el encabezado “Publicar todos los recursos” en la sección “Menú administración”) tendrá que ser consultado con el Centro de ayuda de GBIF (helpdesk@gbif.org).\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:107
 #, no-wrap
 msgid "Edit GBIF registration"
-msgstr "Editar el Registro GBIF"
+msgstr "Editar el registro en GBIF"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:109
 msgid "After the IPT has been registered, this page allows a user to update the IPT registration information. The update will ensure the IPT and all its registered resources are in sync with the GBIF Registry. *Administrators should run an update each time the public URL of the IPT changes*. Administrators can also run an update in order to update the title, description, contact name, and contact email of the IPT instance. This page does not support changing the hosting organization. To do so, administrators must contact the GBIF Helpdesk (helpdesk@gbif.org) directly."
-msgstr "Una vez que se ha registrado el IPT, esta página permite al usuario actualizar la información de registro del IPT. La actualización garantizará que el IPT y todos sus recursos registrados estén sincronizados con el Registro de GBIF. * Los administradores deben ejecutar una actualización cada vez que cambie la URL pública del IPT *. Los administradores también pueden ejecutar una actualización para actualizar el título, la descripción, el nombre de contacto y el correo electrónico de contacto de la instancia de IPT. Esta página no admitle el cambio de organización de alojamiento. Para hacerlo, los administradores deben comunicarse directamente con el servicio de asistencia de GBIF (helpdesk@gbif.org)."
+msgstr "Una vez registrado el IPT, esta página permite al usuario actualizar la información del registro en el IPT. La actualización asegurará que el IPT y todos sus recursos registrados estén sincronizados con el Registro de GBIF. *Los administradores deben ejecutar una actualización cada vez que la URL pública del IPT cambie*. Los administradores también pueden ejecutar una actualización para actualizar el título, la descripción, el nombre de contacto y el correo electrónico de contacto de la instancia del IPT. Esta página no permite cambiar la organización de alojamiento. Para ello, los administradores deben ponerse en contacto directamente con el Centro de ayuda GBIF (helpdesk@gbif.org)."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:110
@@ -442,17 +441,17 @@ msgstr "ipt2/administration/IPTAdminEditRegistration.png"
 #: en/modules/ROOT/pages/administration.adoc:112
 #, no-wrap
 msgid "Configure Organizations"
-msgstr "Configurar Organizaciones"
+msgstr "Configurar organizaciones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:114
 msgid "This page is unavailable until the IPT instance has been successfully registered in the GBIF Registry (see the information under the \"Configure GBIF registration\" heading of the \"Administration Menu\" section). Once registered, this page shows a list of organizations that can be associated with resources in this IPT instance. An IPT that hosts data for organizations other than the one to which it is associated must have the additional organizations configured before they can be used."
-msgstr "La página no está disponible hasta que el IPT haya sido registrado exitosamente en el Registro GBIF (véase información bajo el encabezado “Configurar Opciones para el Registro GBIF” de la sección “Menú Administración”). Una vez registrado, esta página muestra una lista de organizaciones que pueden ser asociadas con los recursos en este IPT. Un IPT tiene datos alojados para otras organizaciones y para que estas puedan ser asociadas, deben configurarse antes que puedan ser usadas."
+msgstr "Esta página no está disponible hasta que la instancia de IPT haya sido registrada con éxito en el Registro de GBIF (ver la información en el encabezado \"Configurar el registro de GBIF\" de la sección \"Menú administración\"). Una vez registrado, esta página muestra una lista de organizaciones que pueden ser asociadas con recursos en esta instancia de IPT. Un IPT que aloja datos de organizaciones distintas a la que está asociado debe tener configuradas las organizaciones adicionales antes de poder utilizarlas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:116
 msgid "An IPT capable of assigning DOIs to resources must also have an organization configured with a DataCite account. To be configured with a DataCite account, the organization does not necessary have to be able to publish resources (be associated with resources). Only one DataCite account can be used to register DOIs at a time, and the IPT's archival mode must also be turned on (please refer to the <<Configure IPT settings>> section to learn more about the archival mode). The list of organizations shows which organizations have been configured with DataCite accounts, and which one has been selected to register DOIs for all resources in this IPT instance."
-msgstr "Un IPT capaz de asignar DOIs a los recursos, para esto debe tener las organizaciones configuradas con una cuenta en DataCite. Para que la organización sea configurada con las cuentas de DataCite, no es necesario que la organización esté en capacidad de publicar recursos (estar asociada a algún recurso). Solo puede utilizarse una cuenta de DataCite a la vez para realizar el registro de los DOIs, y el modo de archivo del IPT debe estar encendido (por favor consulte la sección <<Opciones de configuración el IPT>> para más información acerca del modo de archivo). La lista de organizaciones muestra cuales han sido configuradas con una cuenta en DataCite, y cuál ha sido seleccionada para el registro de los DOIs para todos los recursos correspondientes en este IPT."
+msgstr "Un IPT capaz de asignar DOI a los recursos debe tener también una organización configurada con una cuenta DataCite. Para estar configurada con una cuenta DataCite, la organización no es necesario que la organización esté en capacidad de publicar recursos (estar asociada a recursos). Sólo se puede utilizar una cuenta DataCite a la vez para registrar DOIs y el modo de archivo del IPT también debe estar activo (por favor, consulte la sección <<Configuraración de las opciones del IPT>> para obtener más información sobre el modo de archivo). La lista de organizaciones muestra qué organizaciones han sido configuradas con cuentas DataCite y cuál ha sido seleccionada para registrar DOIs para todos los recursos en esta instancia de IPT."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:117
@@ -464,12 +463,12 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:119
 #, no-wrap
 msgid "Edit organization"
-msgstr "Editar una Organización"
+msgstr "Editar una organización"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:121
 msgid "On this page a user having the Admin role can edit the organization. Click on the button labelled \"Edit\" to open the page containing the details of the selected organization. For explanations of the fields and selections on this form, refer to the information below."
-msgstr "En esta página los usuarios que tengan el rol Administrador podrán editar las organizaciones. Haga clic sobre el botón “Editar” para abrir la página que contiene los detalles de la organización seleccionada."
+msgstr "En esta página, un usuario con el rol de Administrador puede editar la organización. Haga clic en el botón \"Editar\" para abrir la página que contiene los detalles de la organización seleccionada. Para obtener explicaciones sobre los campos y las selecciones de este formulario, consulte la información a continuación:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:122
@@ -481,66 +480,66 @@ msgstr "ipt2/administration/IPTAdminOrgsEditOrg.png"
 #: en/modules/ROOT/pages/administration.adoc:127
 #, no-wrap
 msgid "*Organization name* - the title of the organization as registered in the GBIF Registry. *Note*: this cannot be changed.\n"
-msgstr "*Nombre de la organización* - El título de la organización inscrita en el registro de GBIF. *Nota*: Este no puede ser cambiado.\n"
+msgstr "*Nombre de la organización*: el título de la organización inscrita en el Registro de GBIF. *Nota*: No puede ser cambiado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:128
 #, no-wrap
-msgid "*Organization password* - the password that should be used to edit the entry for this organization in the GBIF Registry.\n"
-msgstr "*Contraseña de la organización* - La contraseña correcta para la organización seleccionada, registrada en el Registro GBIF.\n"
+msgid "*Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.\n"
+msgstr "*Token compartido de organización*: el token compartido que debe usarse para editar la entrada de esta organización en el Registro de GBIF.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:129
 #, no-wrap
 msgid "*Organization alias* - a name given to the organization for convenience within the IPT instance; aliases, rather then the full Organization Name appear in Organization selection lists in the IPT.\n"
-msgstr "*Alias* - Ingrese un nombre conveniente para representar la organización dentro del IPT. El alias aparecerá, en lugar del nombre completo de la organización y en los campos de selección de la organización, de las interfaces del usuario en el IPT.\n"
+msgstr "*Alias*: ingrese un nombre conveniente para representar la organización dentro del IPT. El alias aparecerá en lugar del nombre completo de la organización y en los campos de selección de organización de las interfaces del usuario en el IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:130
 #, no-wrap
 msgid "*Can publish resources* - this checkbox indicates whether the organization can be associated with resources in the IPT. Only those organizations having this box checked will appear in lists to be associated with resources.\n"
-msgstr "*¿Puede publicar recursos?* - Seleccione este recuadro si la organización seleccionada también puede ser asociada con recursos publicados en este IPT. Si se selecciona este cuadro, la organización aparecerá en la lista de organizaciones disponibles para asociar con un recurso.\n"
+msgstr "*¿Puede publicar recursos?*: seleccione este recuadro si la organización seleccionada también puede ser asociada con recursos publicados en este IPT. Si selecciona este recuadro la organización aparecerá en la lista de organizaciones disponibles para asociar con un recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:131
 #, no-wrap
 msgid "*DOI registration agency* - the type of account used to register DOIs for resources; can be either DataCite. *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). *Note*: confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.\n"
-msgstr "*Agencia de registro del DOI* - El tipo de cuenta utilizada para el registro de los DOIs para los recursos; puede ser DataCite. *Nota*: La cuenta para la organización se expide después de que se firma un acuerdo con un miembro de DataCite, donde se permita registrar DOIs bajo uno o más prefijos (e.g. 10.5072) en uno o más dominios (e.g. gbif.org). *Nota*: Confirme que la cuenta pueda regostar DOIs bajo dominios del IPT/URL base, de lo contrario los registros a través de IPT no funcionarán.\n"
+msgstr "*Agencia de registro del DOI*: el tipo de cuenta utilizada para registrar los DOI de los recursos, puede ser DataCite. *Nota*: se expide una cuenta a la organización después de que ésta firme un acuerdo con un miembro de DataCite que le da permiso para registrar DOIs bajo uno o más prefijos (p. ej. 10.5072) en uno o más dominios (p. ej., gbif.org). *Nota*: confirme que la cuenta realmente puede registrar DOIs bajo el dominio/URL pública del IPT, de lo contrario los registros a través del IPT no funcionarán.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:132
 #, no-wrap
 msgid "*Account username* - the username (symbol) of the DataCite account issued to the organization.\n"
-msgstr "*Nombre de usuario de la cuenta* - El nombre de usuario (símbolo) de la cuenta expedida a la organización por DataCite.\n"
+msgstr "*Nombre de usuario de la cuenta*: el nombre de usuario (símbolo) de la cuenta expedida a la organización por DataCite.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:133
 #, no-wrap
 msgid "*Account password* - the password of the DataCite account issued to the organization.\n"
-msgstr "*Contraseña de la cuenta* - La contraseña de la cuenta expedida a la organización por DataCite.\n"
+msgstr "*Contraseña de la cuenta*: la contraseña de la cuenta expedida a la organización por DataCite.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:134
 #, no-wrap
 msgid "*DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a test prefix (see https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) when running the IPT in test mode.\n"
-msgstr "*DOI prefijo/shoulder* - El DOI prefijo/shoulder utilizado para DOIs. Este prefijo es único para la cuenta expedida para la organización. Nota: Use siempre un prefijo de prueba (... https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) cuando utilice el IPT en modo de prueba.\n"
+msgstr "*Prefijo del DOI*: el prefijo del DOI utilizado para acuñar DOI. Este prefijo es único para la cuenta expedida para la organización. Nota: siempre use un prefijo de prueba (ver https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/) cuando utilice el IPT en modo de prueba.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:135
 #, no-wrap
 msgid "*Account activated* - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.\n"
-msgstr "*Cuenta activada* - Este cuadro de selección indica si la cuenta en DataCite es la única utilizada para registrar DOIs para conjuntos de datos en el IPT. Solo es posible activar una cuenta DataCite a la vez.\n"
+msgstr "*Cuenta activada*: este cuadro de selección indica si la cuenta en DataCite es la única utilizada para registrar los DOI de los conjuntos de datos en el IPT. Solo es posible activar una cuenta DataCite a la vez.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:136
 #, no-wrap
 msgid "Add organization"
-msgstr "Adicionar una Organización"
+msgstr "Adicionar una organización"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:138
-msgid "Organizations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labelled \"Add\" to open a page on which an additional organization can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the \"Edit Organization\" section above. After the desired organization is selected and all other data entered, including the password for the organization, click on the button labelled \"Save\" to add the selected organization to the list."
-msgstr "Las organizaciones no están disponibles para ser asociadas con los recursos hasta que no sean adicionadas por un usuario con el rol Administrador. Haga clic sobre el botón “Añadir”, para abrir una página en la cual una organización adicional puede ser seleccionada desde el Registro GBIF, para ser usada en el IPT. Para las explicaciones sobre los campos y selecciones en esta página, refiérase a la información bajo el encabezado “Configurar Opciones para el Registro GBIF” en la sección “Menú Administración” de este manual del usuario. Después que la organización deseada ha sido seleccionada y todos los datos han sido ingresados, incluyendo la contraseña para la organización, haga clic sobre el botón “Guardar” para adicionar la organización seleccionada a la lista."
+msgid "Organizations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labelled \"Add\" to open a page on which an additional organization can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the \"Edit Organization\" section above. After the desired organization is selected and all other data entered, including the shared token for the organization, click on the button labelled \"Save\" to add the selected organization to the list."
+msgstr "Las organizaciones no se pueden asociar con los recursos hasta que un usuario que tenga el rol de Administrador las agregue. Haga clic en el botón \"Añadir\" para abrir una página en la que se puede seleccionar una organización adicional del Registro de GBIF para ser utilizada en esta instancia del IPT. Para las explicaciones de los campos y selecciones de esta página, consulte la información en la sección \"Editar organización\" más arriba. Una vez seleccionada la organización deseada y diligenciados todos los demás datos, incluido el token compartido para la organización, haga clic en el botón \"Guardar\" para añadir la organización seleccionada a la lista."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:139
@@ -552,22 +551,22 @@ msgstr "ipt2/administration/IPTAdminOrgsAddOrg.png"
 #: en/modules/ROOT/pages/administration.adoc:141
 #, no-wrap
 msgid "Configure Core Types and Extensions"
-msgstr "Configurar Estándares y Extensiones"
+msgstr "Configurar estándares y extensiones"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:143
 msgid "This page allows a user having the Admin role to enable the instance of the IPT to import and share various pre-defined types of data from the GBIF Registry. Each type includes properties (fields, terms) that support a specific purpose. For example, the Darwin Core Taxon Core Type supports information pertaining to taxonomic names, taxon name usages, and taxon concepts and allows the IPT to host resources for taxonomic and nomenclatural checklists. A distinction is made between Core Types and extensions. Core types provide the basis for data records, (Occurrence, Taxon, and Event for example) while extensions provide the means to associate additional data with a record of the Core Type. Only one Core Type can be selected for a given resource as explained under the \"Darwin Core Mappings\" heading of the \"Resource Overview\" section."
-msgstr "Esta página permite a un usuario con rol Administrador, importar y compartir varios tipos de datos predefinidos desde el Registro GBIF. Cada tipo incluye propiedades (campos, elementos) que soportan un propósito específico. Por ejemplo, el estándar Darwin Core Taxon, soporta información pertinente a nombres taxonómicos, nombre comunes, y conceptos del taxón, permitiendo al IPT alojar recursos para listas de chequeo taxonómico y nomenclatural. Hay una diferencia entre Estándares y Extensiones. Los estándares proveen la base para el registro de los datos (por ejemplo, Registros biológicos y Nombres taxonómicos), mientras que las extensiones facilitan los medios para asociar datos adicionales con un registro del estándar. Solamente un estándar puede ser seleccionado para un recurso de datos, como se explicó en el encabezado “Mapeo Darwin Core_” de la sección “Vista General del Recurso”."
+msgstr "Esta página permite a un usuario con el rol de Administrador habilitar la instancia del IPT para importar y compartir varios tipos de datos predefinidos del Registro de GBIF. Cada tipo incluye propiedades (campos, elementos) que soportan un propósito específico. Por ejemplo, el Estándar Darwin core Taxon soporta información relativa a nombres taxonómicos, usos de nombres de taxones y conceptos de taxones, y permite al IPT alojar recursos para listas taxonómicas y de nomenclatura. Hay una diferencia entre Estándares y Extensiones. Los estándares proveen la base para el registro de los datos (por ejemplo, Registros biológicos y Nombres taxonómicos), mientras que las extensiones facilitan los medios para asociar datos adicionales con un registro del estándar. Solamente un estándar puede ser seleccionado para un recurso de datos, como se explicó en el encabezado “Mapeo Darwin Core” de la sección “Vista general del recurso”."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:145
 msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
-msgstr "Los vocabularios contienen una lista de valores válidos que un elemento particular en un estándar o extensión pueda tomar. Por ejemplo, el https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario de Darwin Core] contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
+msgstr "Los vocabularios contienen una lista de valores válidos que puede tomar un elemento particular en un estándar o extensión. Por ejemplo, el https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario Darwin Core] contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:147
 msgid "Following the lists of installed Core Types and Extensions, there is a section labelled \"Synchronize Extensions and Vocabularies\" having a single button labelled \"Synchronize\". The latest versions of Core Types and Extensions that exist in the GBIF Registry but have not yet been installed are listed below the Vocabularies section."
-msgstr "Luego de la lista de estándares y extensiones instaladas, se encuentra la sección \"Sincronizar extensiones y Vocabularios\" con un solo botón: \"Sincronizar\". Las versiones más recientes existentes en el Registro de GBIF de los estándares y las extensiones pero que aún no han sido instaladas, se encuentran listadas debajo de la sección de vocabularios."
+msgstr "Luego de la lista de estándares y extensiones instaladas, hay una sección llamada \"Sincronizar Extensiones y Vocabularios\" que tiene un único botón llamado \"Sincronizar\". Las últimas versiones de los estándares y extensiones que existen en el Registro de GBIF pero que aún no han sido instaladas están listadas debajo de la sección de Vocabularios."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:148
@@ -578,29 +577,29 @@ msgstr "ipt2/administration/IPTAdminExtensions.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:152
 msgid "The lists of extensions (installed and not installed) each have two columns. The left-hand column shows the name of the extension as a link and a button labelled either \"Install\" or \"Remove\". If the extension is out-of-date, another button labelled \"Update\" will also appear. In the right-hand column is a summary of the information about the extension, including a brief description of the type of data the extension is meant to accommodate, a link to more information about the extension if it exists, the date it was issued (released), the number of properties (fields, terms) in the extension, the name of the extension, its namespace, RowType, and keywords. For more information about these attributes of an extension, see the documentation on Darwin Core Archives at http://rs.tdwg.org/dwc/terms/guides/text/.  Following are the actions that can be taken with respect to extensions:"
-msgstr "Cada lista de extensiones (instaladas y no instaladas) tiene dos columnas. La columna de la izquierda muestra el nombre de la extensión como un enlace y un botón “Instalar” o “Eliminar”. Si la extensión esta desactualizada, aparecerá otro botón con la etiqueta \"Actualizar\". En la columna de la derecha hay un resumen de la información acerca de la extensión, el número de propiedades (campos, elementos) en la extensión, el nombre de la extensión, su espacio de nombres, tipo de fila y palabras clave. Para más información acerca de estos atributos de una extensión, véase la documentación sobre Archivos Darwin Core en http://rs.tdwg.org/dwc/terms/guides/text/. A continuación están las acciones que pueden ser tomadas respecto a las extensiones."
+msgstr "Cada lista de extensiones (instaladas y no instaladas) tiene dos columnas. La columna de la izquierda muestra el nombre de la extensión como un enlace y un botón “Instalar” o “Eliminar”. Si la extensión esta desactualizada, aparecerá el botón \"Actualizar\". En la columna de la derecha hay un resumen de la información de la extensión, el número de propiedades (campos, elementos) en la extensión, el nombre de la extensión, su Namespace, RowType y palabras clave. Para más información acerca de los atributos de una extensión diríjase a la documentación sobre Archivos Darwin Core en http://rs.tdwg.org/dwc/terms/guides/text/. A continuación están las acciones que pueden ser tomadas respecto a las extensiones."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:153
 #, no-wrap
 msgid "Synchronize Extensions and Vocabularies"
-msgstr "Sincronizar extensiones y Vocabularios"
+msgstr "Sincronizar extensiones y vocabularios"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:155
 msgid "An extension can make use of lists of terms of predefined values, known as controlled vocabularies. Periodically these vocabularies may also change (e.g. if new translations have been added) and require updating in the IPT. Click on the button labelled \"Synchronize\" to synchronize existing vocabularies with the GBIF Registry. After the update is complete, a message will indicate if the synchronization was successful or if there were any errors."
-msgstr "Una extensión puede utilizar una lista de términos de valores predefinidos, conocidos como vocabularios controlados. Estos vocabularios pueden cambiar periódicamente (e.g. si se agrega una nueva traducción) lo cual requiere su actualización en el IPT. Haga clic en el botón \"Sincronizar\" para Actualizar los vocabularios existentes con el Registro de GBIF. Luego de que la actualización se haya completado, aparecerá un mensaje que indicará si la sincronización ha sido exitosa o si hubo errores en el proceso."
+msgstr "Una extensión puede utilizar una lista de términos de valores predefinidos, conocidos como vocabularios controlados. Estos vocabularios pueden cambiar periódicamente (o. ej., si se agrega una nueva traducción) lo cual requiere su actualización en el IPT. Haga clic en el botón \"Sincronizar\" para Actualizar los vocabularios existentes con el Registro de GBIF. Luego de que la actualización se haya completado, aparecerá un mensaje que indicará si la sincronización ha sido exitosa o si hubo errores en el proceso."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:156
 #, no-wrap
 msgid "View extension details"
-msgstr "Ver Detalles de una Extensión"
+msgstr "Ver detalles de una extensión"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:158
 msgid "The title of each extension in the first column is a link to a detail page for that extension. The detail page shows all of the summary information that can be seen in the right-hand column of the extensions list as well as the detailed description, references, and examples for each of the properties in the extension."
-msgstr "En la primera columna, el título de cada extensión es un enlace a una página de detalles para aquella extensión. La página de detalles muestra toda la información resumida que puede ser vista en la columna de la derecha de la lista de extensiones, así como la descripción detallada, referencias y ejemplos para cada una de las propiedades de la extensión."
+msgstr "El título de cada extensión en la primera columna es un enlace a una página de detalles para esa extensión. La página de detalles muestra toda la información resumida que puede verse en la columna de la derecha de la lista de extensiones, así como la descripción detallada, las referencias y los ejemplos de cada una de las propiedades de la extensión."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:159
@@ -611,7 +610,7 @@ msgstr "ipt2/administration/IPTAdminExtensionsDetail.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:162
 msgid "For properties that have controlled vocabularies, the property information in the right-hand column will contain the name of the vocabulary as a link next to the label \"Vocabulary:\". Clicking on the link will open a detail page for the vocabulary, with a summary of the vocabulary at the top and a table of the valid values with further detailed information such as preferred and alternate terms and identifiers."
-msgstr "Para propiedades que tienen vocabularios controlados, la información sobre las propiedades, en la columna de la derecha, contendrá el nombre del vocabulario como un enlace al lado de \"Vocabulario\". Haciendo clic sobre este enlace, se abrirá una página de detalles para el vocabulario, con un resumen de este en la parte superior y una tabla de valores válidos con información más detallada, como los términos preferidos y alternos y, los identificadores."
+msgstr "Para las propiedades que tienen vocabularios controlados, la información de la propiedad en la columna de la derecha contendrá el nombre del vocabulario como un enlace junto a la etiqueta \"Vocabulario:\". Al hacer clic en el enlace se abrirá una página de detalles para el vocabulario, con un resumen del vocabulario en la parte superior y una tabla de los valores válidos con más información detallada, como los términos e identificadores preferidos y alternativos."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:163
@@ -623,7 +622,7 @@ msgstr ""
 #: en/modules/ROOT/pages/administration.adoc:165
 #, no-wrap
 msgid "Install extension"
-msgstr "Instalar una Extensión"
+msgstr "Instalar una extensión"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:167
@@ -634,12 +633,12 @@ msgstr "Para cualquiera de las extensiones que aún no ha sido instalada en el I
 #: en/modules/ROOT/pages/administration.adoc:168
 #, no-wrap
 msgid "Remove extension"
-msgstr "Eliminar una Extensión"
+msgstr "Eliminar una extensión"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:170
 msgid "For any extension that has already been installed in the IPT, it can be removed by clicking the button labelled \"Remove\". Extensions that are in use to map data for any resource in the IPT cannot be removed. Any attempt to do so will show an error message and a list of resources that use the extension in a mapping."
-msgstr "Cualquiera de las extensiones que ya haya sido instalada en el IPT, puede ser eliminada haciendo clic en el botón “Eliminar”. Las extensiones que estén siendo usadas para mapear los datos de algún recurso en el IPT, no pueden ser eliminadas. Cualquier intento mostrará un mensaje de error y una lista de recursos que están usando la extensión."
+msgstr "Cualquier extensión que ya esté instalada en el IPT puede eliminarse haciendo clic en el botón \"Eliminar\". Las extensiones que se utilizan para mapeae datos para cualquier recurso en el IPT no pueden eliminarse. Cualquier intento de hacerlo mostrará un mensaje de error y una lista de recursos que utilizan la extensión en una asignación."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:171
@@ -650,7 +649,7 @@ msgstr "Actualizar una extensión"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:173
 msgid "For any extension that has already been installed in the IPT, and is out-of-date, it can be updated by clicking the button labelled \"Update\". Updating an extension makes it possible to take advantage of any new terms and new vocabularies. During an update, existing mappings to deprecated terms will be removed, and existing mappings to deprecated terms that have been replaced by another term will be automatically updated. Following the update, all affected resources should be reviewed and republished."
-msgstr "Para cualquier extensión que ya se haya instalado en el IPT y esté desactualizada, se puede actualizar haciendo clic en el botón \"Actualizar\". La actualización de una extensión permite aprovechar los nuevos términos y vocabularios. Durante una actualización, las asignaciones existentes a los términos obsoletos se eliminarán y las asignaciones existentes a los términos obsoletos que han sido reemplazados por otro término se actualizarán automáticamente. Después de la actualización, todos los recursos afectados deben revisarse y volver a publicarse."
+msgstr "Para cualquier extensión que ya esté instalada en el IPT y que esté desactualizada, puede actualizarse haciendo clic en el botón \"Actualizar\". La actualización de una extensión permite aprovechar los nuevos términos y vocabularios. Durante la actualización, se eliminarán los mapeos existentes a los términos obsoletos, y se actualizarán automáticamente los mapeos existentes a los términos obsoletos que hayan sido sustituidos por otro término. Tras la actualización, todos los recursos afectados deberán ser revisados y publicados de nuevo"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:174
@@ -667,7 +666,7 @@ msgstr "Ver registros del IPT"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:178
 msgid "Messages generated from actions taken while running the IPT are logged to files for reference in the directory called \"logs\" within the IPT data directory (see the information under the \"IPT Settings\" heading in the \"Administration Menu\" section). The View IPT logs page shows messages from the file called admin.log, which contains only those log messages that have a severity of WARNING or greater (such as errors). The complete log of messages (contained in the file called debug.log) can be opened and viewed by clicking on the link labelled \"complete log file\". The contents of the complete log file may be useful when reporting an apparent bug."
-msgstr "Los mensajes generados de las acciones tomadas mientras se estaba corriendo el IPT, son registrados por referencia en archivos, en el directorio llamado logs dentro del directorio de datos del IPT (véase la información bajo el encabezado “Configuración del IPT” en la sección “Menú Administración\"). La página de la Actividad del Sistema muestra mensajes desde el archivo llamado admin.log, el cual contiene solamente aquellos mensajes que tienen una severidad mayor o igual a “ADVERTENCIA”. Los mensajes completos (contenidos en el archivo llamado debug.log) pueden ser abiertos o visualizados, haciendo clic sobre el enlace “archivo log completo”. El contenido del archivo log completo, puede ser útil cuando se reporte un aparente error."
+msgstr "Los mensajes generados por las acciones ejecutadas mientras se ejecuta el IPT se registran en archivos de referencia en el directorio denominado \"logs\" dentro del directorio de datos del IPT (ver la información en el apartado \"Configuración del IPT\" de la sección \"Menú administración\"). La página de visualización de los registros del IPT muestra los mensajes del archivo denominado admin.log, que contiene únicamente los mensajes de registro que tienen una severidad de ADVERTENCIA o superior (como los errores). El registro completo de mensajes (contenido en el archivo llamado debug.log) puede abrirse y visualizarse haciendo clic en el enlace denominado \"archivo log completo\". El contenido del archivo de registro completo puede ser útil a la hora de informar sobre un aparente error."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:179

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2021-08-20 08:35\n"
+"PO-Revision-Date: 2022-02-03 17:39\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,12 +35,12 @@ msgstr "El IPT siempre se instala con 3 clases del estándar Darwin Core cargado
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:8
 msgid "The 3 steps below explain how to"
-msgstr "Los 3 pasos siguientes explican cómo"
+msgstr "Los 3 pasos siguientes explican cómo hacerlo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:10
 msgid "create your new core,"
-msgstr "crear su nuevo núcleo,"
+msgstr "crear su nuevo core,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:11
@@ -67,23 +67,23 @@ msgstr "Instrucciones"
 #: en/modules/ROOT/pages/core.adoc:16
 #, no-wrap
 msgid "*Write Core XML Definition*\n"
-msgstr "*Escribir la definición del núcleo XML*\n"
+msgstr "*Escribir la definición del core XML*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:18
 msgid "The core XML definition has to comply with the http://rs.gbif.org/schema/extension.xsd[GBIF Extension Schema]. It is easiest to simply adapt an existing core definition, such as the {latest-dwc-occurrence}.xml[Darwin Core Occurrence Core]. Please note, the core definition must contain a property that serves as the record identifier (e.g. http://rs.tdwg.org/dwc/terms/occurrenceID for the Occurrence core, or http://rs.tdwg.org/dwc/terms/eventID for the Event Core. The process of creating a new non-core extension is exactly the same as for a core extension. The process of creating a new vocabulary (as a data type for a property within the core, or non-core extension) is different only in that the XML definition has to comply with the http://rs.gbif.org/schema/thesaurus.xsd[GBIF Thesaurus Schema]. Once again, it is easiest to adapt an existing vocabulary definition, such as the {latest-basis-of-record}[Darwin Core Type vocabulary]."
-msgstr "La definición XML del núcleo debe cumplir con el http://rs.gbif.org/schema/extension.xsd[GBIF Extension Schema]. Es más fácil simplemente adaptar una definición de núcleo existente, como {latest-dwc-occurrence}.xml[Darwin Core Occurrence Core]. Tenga en cuenta que la definición principal debe contener una propiedad que sirva como identificador de registro (por ejemplo, http://rs.tdwg.org/dwc/terms/occurrenceID para el núcleo de la ocurrencia, o http://rs.tdwg.org/dwc/terms/eventID para Event Core. El proceso de creación de una nueva extensión no principal es exactamente el mismo que para una extensión principal. El proceso de creación de un nuevo vocabulario (como un tipo de datos para una propiedad dentro del núcleo, o no -core) es diferente solo en que la definición XML tiene que cumplir con el http://rs.gbif.org/schema/thesaurus.xsd[GBIF Thesaurus Schema]. Una vez más, es más fácil adaptar una definición de vocabulario existente, como la  {latest-basis-of-record}[Vocabulario de Darwin Core Type]."
+msgstr "La definición XML del core debe cumplir con el http://rs.gbif.org/schema/extension.xsd[Esquema de extensión de GBIF]. Es más fácil simplemente adaptar una definición de núcleo existente, como la del {latest-dwc-occurrence}.xml[Core de registros biológicos Darwin Core]. Tenga en cuenta que la definición principal debe contener una propiedad que sirva como identificador de registro (p. ej., http://rs.tdwg.org/dwc/terms/occurrenceID para el core de registro biológico o http://rs.tdwg.org/dwc/terms/eventID para el core de evento. El proceso de creación de una nueva extensión no principal es exactamente el mismo que para una extensión principal. El proceso de creación de un nuevo vocabulario (como un tipo de datos para una propiedad dentro del core o no -core) es diferente solo en que la definición XML tiene que cumplir con el http://rs.gbif.org/schema/thesaurus.xsd[Esquema del tesauro de GBIF]. Una vez más, es más fácil adaptar una definición de vocabulario existente, como el latest-basis-of-record}[Vocabulario de Darwin Core Type]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:20
 #, no-wrap
 msgid "*Register Core with GBIF*\n"
-msgstr "*Registrar el núcleo con GBIF*\n"
+msgstr "*Registrar el core con GBIF*\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:22
 msgid "While the core definition is still undergoing changes, it gets registered into the GBIF Sandbox Registry. To register your core, make a pull request to the rs.gbif.org repository following https://github.com/gbif/rs.gbif.org/blob/master/versioning.md#how-to-create-a-new-version-of-an-extension-or-vocabulary-on-rsgbiforg[these instructions]. If it passes inspection, it will be merged in to https://rs.gbif.org/sandbox/core/, and included in the https://gbrdsdev.gbif.org/registry/extensions.json[Sandbox Registry's list of extensions]. When the core definition has been finalized, meaning that its set of properties has been frozen, it will be hosted at https://rs.gbif.org/core/ and included in the https://gbrds.gbif.org/registry/extensions.json[Live Registry's list of extensions] The same process applies to registering non-core extensions and vocabularies."
-msgstr "Si bien la definición del núcleo aún está experimentando cambios, se registra en GBIF Sandbox Registry. Para registrar su núcleo, realice una solicitud de extracción al repositorio rs.gbif.org siguiendo https://github.com/gbif/rs.gbif.org/blob/master/versioning.md#how-to-create-a-new-version-of-an-extension-or-vocabulary-on-rsgbiforg[estas instrucciones]. Si pasa la inspección, se fusionará con https://rs.gbif.org/sandbox/core/ y se incluirá en la https://gbrdsdev.gbif.org/registry/extensions.json[Lista de Sandbox Registry de extensiones]. Cuando se haya finalizado la definición principal, lo que significa que su conjunto de propiedades se ha congelado, se alojará en https://rs.gbif.org/core/ y se incluirá en https://gbrds.gbif.org/registry/extensions.json[Lista de extensiones de Live Registry] El mismo proceso se aplica al registro de extensiones y vocabularios secundarios."
+msgstr "Si bien la definición del core aún está experimentando cambios, se registra en GBIF Sandbox Registry. Para registrar su core, realice una solicitud de extracción al repositorio rs.gbif.org siguiendo https://github.com/gbif/rs.gbif.org/blob/master/versioning.md#how-to-create-a-new-version-of-an-extension-or-vocabulary-on-rsgbiforg[estas instrucciones]. Si pasa la inspección, se fusionará con https://rs.gbif.org/sandbox/core/ y se incluirá en la https://gbrdsdev.gbif.org/registry/extensions.json[Lista de Sandbox Registry de extensiones]. Cuando se haya finalizado la definición principal, lo que significa que su conjunto de propiedades se ha congelado, se alojará en https://rs.gbif.org/core/ y se incluirá en https://gbrds.gbif.org/registry/extensions.json[Lista de extensiones de Live Registry]. El mismo proceso se aplica al registro de extensiones y vocabularios secundarios."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:24
@@ -94,12 +94,12 @@ msgstr "*Configurar el IPT*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:27
 msgid "To configure the IPT to use the {sandbox-material-sample}[Material Sample Core] for example, add the following 2 lines to `$IPT_DATA_DIR/config/ipt.properties`."
-msgstr "Para configurar el IPT para usar el {sandbox-material-sample}[Material de ejemplo del núcleo], por ejemplo, agregue las 2 líneas siguientes a `$IPT_DATA_DIR/config/ipt.properties`."
+msgstr "Para configurar el IPT para usar el {sandbox-material-sample}[Material de ejemplo del core], por ejemplo, agregue las siguientes 2 líneas a `$IPT_DATA_DIR/config/ipt.properties`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:29
 msgid "be sure to escape any colons like above*"
-msgstr "asegúrese de escapar todos los dos puntos como antes*"
+msgstr "asegúrese de evitar los dos puntos como en el caso anterior*"
 
 #. type: delimited block -
 #: en/modules/ROOT/pages/core.adoc:33
@@ -112,5 +112,5 @@ msgstr "ipt.core_rowTypes=http\\://rs.tdwg.org/dwc/terms/MaterialSample\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/core.adoc:36
 msgid "This configures the IPT to recognize all extensions with rowType http://rs.tdwg.org/dwc/terms/MaterialSample as core types, and to use http://rs.tdwg.org/dwc/terms/materialSampleID as its identifier term. Multiple cores can be specified, delimiting them with the pipe `|` character. The first entry of ipt.core_idTerms is the ID for the first entry of core_rowTypes, and so on. Lastly, save the ipt.properties file, restart Tomcat, and then xref:administration.adoc#install-extension[install the core]. The core is now available to use in the IPT."
-msgstr "Esto configura el IPT para reconocer todas las extensiones con rowType http://rs.tdwg.org/dwc/terms/MaterialSample como tipos principales y para usar http://rs.tdwg.org/dwc/terms/materialSampleID como su identificador término. Se pueden especificar varios núcleos, delimitándolos con el carácter de barra vertical `|` (pipe). La primera entrada de ipt.core_idTerms es el ID de la primera entrada de core_rowTypes, y así sucesivamente. Por último, guarde el archivo ipt.properties, reinicie Tomcat y luego xref:Administration.adoc#install-extension[instalar el núcleo]. El núcleo ahora está disponible para su uso en el IPT."
+msgstr "Esto configura el IPT para reconocer todas las extensiones con rowType http://rs.tdwg.org/dwc/terms/MaterialSample como core principales y para usar http://rs.tdwg.org/dwc/terms/materialSampleID como su término identificador. Se pueden especificar varios núcleos, delimitándolos con el carácter de barra vertical `|` (pipe). La primera entrada de ipt.core_idTerms es el ID de la primera entrada de core_rowTypes y así sucesivamente. Por último, guarde el archivo ipt.properties, reinicie Tomcat y luego xref:Administration.adoc#install-extension[instale el core]. El core ahora está disponible para su uso en el IPT."
 

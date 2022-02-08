@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-26 08:47+0000\n"
-"PO-Revision-Date: 2021-12-20 13:50\n"
+"PO-Revision-Date: 2022-02-04 00:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -48,14 +48,14 @@ msgstr "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolk
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:22
 msgid "This TRANSLATORS_PUT_YOUR_LANGUAGE_HERE translation of the user manual is contributed by TRANSLATORS_CREDIT_YOURSELVES.  The recommended citation for this translation into YOUR_LANGUAGE_HERE is as follows:"
-msgstr "La traducción de esta versión al español es una contribución de María Alejandra Meneses Giorgi, Dairo Escobar, Ricardo Ortiz, Sara Gaviria, Camila Plata, Néstor Beltrán, Daniel Amariles y Valerie Dean del equipo Coordinador del Sistema de Información sobre la Biodiversidad de Colombia (http://www.biodiversidad.co/[SIB Colombia]), Angela Devia del Instituto de Investigación de Recursos Biológicos Alexander Von Humboldt (http://www.humboldt.org.co/es/[IAVH]) ,Anabela Plos de GBIF Argentina, Emanuel Robles y Patricia Ramos de La Comisión Nacional para el Conocimiento y Uso de la Biodiversidad (https://www.gob.mx/conabio[CONABIO]), Carmen Lujano y Miguel Vega de GBIF España y el voluntario de GBIF Victor Chocho. La citación recomendada para esta traducción al español es la siguiente:"
+msgstr "La traducción de esta versión al español es una contribución de María Alejandra Meneses Giorgi, Dairo Escobar, Ricardo Ortiz, Sara Gaviria, Camila Plata, Néstor Beltrán, Daniel Amariles y Valerie Dean del equipo Coordinador del Sistema de Información sobre la Biodiversidad de Colombia (http://www.biodiversidad.co/[SIB Colombia]), la Secretaría de GBIF(https://www.gbif.org/es/publisher/fbca90e3-8aed-48b1-84e3-369afbd000ce[GBIF Secretariat]), Angela Devia del Instituto de Investigación de Recursos Biológicos Alexander Von Humboldt (http://www.humboldt.org.co/es/[IAVH]), Anabela Plos de GBIF Argentina, Emanuel Robles y Patricia Ramos de La Comisión Nacional para el Conocimiento y Uso de la Biodiversidad (https://www.gob.mx/conabio[CONABIO]), Carmen Lujano y Miguel Vega de GBIF España y el voluntario de GBIF Victor Chocho. La citación recomendada para esta traducción al español es la siguiente:"
 
 #.  Translated user manual citation
 #.  Endif
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:27
 msgid "Wieczorek J & Braak K ({localyear}) The GBIF Integrated Publishing Toolkit User Manual, version {page-component-version}. (TRANSLATORS_CREDIT_YOURSELVES, Trans.) Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
-msgstr "Wieczorek J & Braak K ({localyear}) Manual del usuario del kit de herramientas de publicación integrado de GBIF, versión {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
+msgstr "Wieczorek J & Braak K ({localyear}) Manual del usuario del GBIF Integrated Publishing Toolkit, versión {page-component-version}. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/{language}/ipt/{page-component-version}/"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:29
@@ -66,7 +66,7 @@ msgstr "Derechos de autor"
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:32
 msgid "The GBIF Integrated Publishing Toolkit and this user manual are Copyright © 2016–{localyear} by the Global Biodiversity Information Facility Secretariat."
-msgstr "El Manual de Usuario del Kit de Herramientas de Publicación Integrado de GBIF y este manual de usuario está protegido por Derechos de autor © 2016–{localyear} por la Secretaría del Servicio Global de Información sobre Biodiversidad."
+msgstr "El GBIF Integrated Publishing Toolkit y este manual de usuario está protegido por Derechos de autor © 2016–{localyear} por la Secretaría del Servicio Global de Información sobre Biodiversidad."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/colophon.adoc:33
@@ -87,7 +87,7 @@ msgstr "Este manual de usuario es lanzado bajo la Licencia Creative Commons Attr
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:40
 msgid "you must cite the work in the manner specified on this page (but not in a way that suggests that GBIF or the GBIF Secretariat endorses you or your use of the work);"
-msgstr "usted debe citar el trabajo en la manera especificada de esta página (pero no en una forma que sugiera que GBIF o que la Secretaría de GBIF lo respalda a usted o el uso que usted le de al trabajo);"
+msgstr "usted debe citar el trabajo en la manera especificada en esta página (pero no en una forma que sugiera que GBIF o que la Secretaría de GBIF lo respalda a usted o el uso que usted le de al trabajo);"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/colophon.adoc:41

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-09-04 19:52\n"
+"PO-Revision-Date: 2022-02-02 00:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -52,7 +52,7 @@ msgstr "Citación sugerida"
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:45
 #, no-wrap
 msgid "Darwin Core Archive data files in 'star schema'"
-msgstr "Archivos de datos  de Archivo Darwin Core en  'esquema en estrella'"
+msgstr "Archivos de datos de Archivo Darwin Core en \"esquema en estrella\""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:62
@@ -84,13 +84,13 @@ msgstr "Asegúrese de reemplazar todos los saltos de línea en un campo de datos
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:71
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:64
 msgid "Encode nulls as empty strings, i.e. no characters between 2 delimiters, or `\\N` or `\\NULL`, but no other text sequence!"
-msgstr "Codifique los valores nulos como cadenas vacías, es decir, sin caracteres entre 2 delimitadores, o `\\N` o` \\NULL`, ¡pero ninguna otra secuencia de texto!"
+msgstr "Codifique los valores nulos como cadenas vacías, es decir, sin caracteres entre 2 delimitadores o `\\N` o` \\NULL`, ¡pero ninguna otra secuencia de texto!"
 
 #. type: Title =
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:1
 #, no-wrap
 msgid "Best Practices in Publishing Sampling-event data"
-msgstr "Mejores Prácticas en la Publicación de Datos de Eventos de Muestreo"
+msgstr "Buenas prácticas para la publicación de datos de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:4
@@ -115,12 +115,12 @@ msgstr "| Versión | Descripción             | Fecha de publicación | Autor(es
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:20
 msgid "GBIF (2018) Best Practices in Publishing Sampling-event data, version 2.2. Copenhagen: GBIF Secretariat. https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-sampling-event-data"
-msgstr "GBIF (2018). Mejores prácticas en la publicación de datos de eventos de muestreo. Copenhagen: GBIF Secretariat https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-sampling-event-data"
+msgstr "GBIF (2018). Buenas prácticas para la publicación de datos de eventos de muestreo. Copenhagen: Secretaría de GBIF https://ipt.gbif.org/manual/en/ipt/{page-version}/best-practices-sampling-event-data"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:24
 msgid "This guide provides details on how to utilize the Darwin Core Archive (DwC-A) format as a means to share sampling-event information in a standard way. It focuses on specific components of the Darwin Core Archive format, and some of the supporting extensions to the core event data class, and provides recommendations on how to best utilize these components to maximize the value of the shared data. This guide does not provide a detailed overview of the Darwin Core Archive format, instead please refer to the xref:darwin-core.adoc[Darwin Core Archives How-to Guide]."
-msgstr "Esta guía proporciona detalles sobre cómo utilizar el formato de Archivo Darwin Core (DwC-A) como medio para compartir información de eventos de muestreo de manera estándar. Se centra en componentes específicos del formato de Archivo Darwin Core y en algunas de las extensiones de apoyo a los principales datos de eventos, y ofrece recomendaciones sobre cómo utilizar mejor estos componentes para maximizar el valor de los datos compartidos. Esta guía no proporciona una descripción detallada del formato de Archivo Darwin Core; para ello, consulte la xref:darwin-core.adoc[Guía práctica de Archivos Darwin Core]."
+msgstr "Esta guía proporciona detalles sobre cómo utilizar el formato de Archivo Darwin Core (DwC-A) como medio para compartir información de eventos de muestreo de manera estándar. Se centra en componentes específicos del formato de Archivo Darwin Core y en algunas de las extensiones de apoyo a los principales datos de eventos de muestreo, y ofrece recomendaciones sobre cómo utilizar mejor estos componentes para maximizar el valor de los datos compartidos. Esta guía no proporciona una descripción detallada del formato de Archivo Darwin Core; para ello, consulte la xref:darwin-core.adoc[Guía práctica de Archivos Darwin Core]."
 
 #.  By providing an international standard that is relatively easy to produce and consume, and that supports many of the key elements that compose a sampling-event data resource, GBIF hopes to provide the creators and managers of sampling-event data with a standardized approach to sharing their data and promote common approaches to the subsequent citation and recognition of their work. The specific degree of coverage depends very much on the individual resource.
 #. type: Plain text
@@ -138,7 +138,7 @@ msgstr "¿Qué son los datos de eventos de muestreo?"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:32
 msgid "Sampling-event data is a type of data available from thousands of environmental, ecological, and natural resource investigations. These can be one-off studies or monitoring programs. Such data are usually quantitative, calibrated, and follow certain protocols so that changes and trends of populations can be detected. This is in contrast to opportunistic observation and collection data, which today form a significant proportion of openly accessible biodiversity data."
-msgstr "Los datos de eventos de muestreo son un tipo de datos disponible a partir de miles de estudios ambientales, biológicos y de recursos naturales. Éstos pueden ser estudios aislados o programas de monitoreo. Tales datos suelen ser cuantitativos y calibrados, y seguir ciertos protocolos de tal modo que los cambios y tendencias de las poblaciones puedan ser detectados. Esto contrasta con los datos observados y colectados, que a día de hoy forman una proporción significativa de los datos de biodiversidad abiertos y accesibles."
+msgstr "Los datos de eventos de muestreo son un tipo de datos disponible a partir de miles de estudios ambientales, biológicos y de recursos naturales. Éstos pueden ser estudios aislados o programas de monitoreo. Tales datos suelen ser cuantitativos y calibrados, y seguir ciertos protocolos de tal modo que los cambios y tendencias de las poblaciones puedan ser detectados. Esto contrasta con los datos de observación y colecta ocasionales, que a día de hoy forman una proporción significativa de los datos de biodiversidad abiertos y accesibles."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:33
@@ -174,7 +174,7 @@ msgstr "Datos de eventos de muestreo"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:44
 msgid "The Darwin Core Archive format provides the structural framework for publishing sampling-event data. Darwin Core Archives consist of a series of one or more text files, in standard comma- or tab-delimited format. The files are logically arranged in a star-like manner with one *core file*, listing the sampling events (sampling protocol, sample size, location, etc.) surrounded by a number of ‘*extensions*’, that describe related data types (such as species occurrences, measurements or facts related to the sampling event, etc). Links between core and extension records are made using an event identifier (*eventID*) data element. In this way, many extension records can exist for each single core event record. This “star-schema” provides a simple relational data model that supports many types of annotations that are common to sampling-event datasets."
-msgstr "El formato de Archivos Darwin Core proporciona el marco estructural para publicar datos de eventos de muestreo. Los Archivos Darwin Core constan de una serie de uno o más archivos de texto, en formato estándar delimitado por comas o tabulaciones. Estos archivos de texto están organizados de manera lógica en forma de estrella con un *archivo central*, que contiene los elementos básicos de los eventos de muestreo (protocolo de muestreo, tamaño de la muestra, localización, etc.) rodeados por una serie de '*extensiones*', que describen tipos de datos relacionados (como registros de especies, medidas o hechos relacionados con los eventos de muestreo, etc.). Las conexiones entre los registros centrales y los de las extensiones se realizan utilizando un elemento identificador de los datos del evento (*eventID*). De esta manera, pueden existir muchos registros de extensiones para cada registro central del evento. Este \"esquema en estrella\" proporciona un modelo de datos relacional simple que admite muchos tipos de anotaciones que son comunes a los conjuntos de datos de eventos de muestreo."
+msgstr "El formato de Archivos Darwin Core proporciona el marco estructural para publicar datos de eventos de muestreo. Los Archivos Darwin Core constan de una serie de uno o más archivos de texto, en formato estándar delimitado por comas o tabulaciones. Estos archivos de texto están organizados de manera lógica en forma de estrella con un *archivo central*, que contiene los elementos core de los eventos de muestreo (protocolo de muestreo, tamaño de la muestra, localización, etc.) rodeados por una serie de '*extensiones*', que describen tipos de datos relacionados (como registros de especies, medidas o hechos relacionados con los eventos de muestreo, etc.). Las conexiones entre los registros core y los de las extensiones se realizan utilizando un elemento identificador de los datos del evento (*eventID*). De esta manera, pueden existir muchos registros de extensiones para cada registro core del evento. Este \"esquema en estrella\" proporciona un modelo de datos relacional simple que admite muchos tipos de anotaciones que son comunes a los conjuntos de datos de eventos de muestreo."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:46
@@ -186,22 +186,22 @@ msgstr "figures/dwc-a_event.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:49
 msgid "An alternative way to encode sampling-event data is listing the species occurrence in the core file, surrounded by a number of extensions, that describe the related data types (such as measurements relating to the species occurrences, etc). Note listing sampling events in the core file is preferable if a plot or site is the main focus of the study."
-msgstr "Una vía alternativa para codificar datos de eventos de muestreo es enlistar los registros de especies en el archivo central, rodeado de un número de extensiones, que describen los tipos de datos relacionados (como medidas relacionadas con los registros de especies, etc.). Enlistar eventos de muestreo en el archivo central es lo preferible si el foco central del estudio es una parcela o un área."
+msgstr "Una forma alternativa de codificar los datos de los eventos de muestreo es enumerar los registros biológicos de la especie en el archivo core, rodeado de una serie de extensiones que describen los tipos de datos relacionados (como las mediciones relacionadas con los registros biológicos de la especie, etc.). Es preferible enumerar los eventos de muestreo en el archivo core si una parcela o un sitio es el objetivo principal del estudio."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:52
 msgid "Be aware that the current DwC-A star schema such as does have limitations. For example, it does not allow to link measurements and facts to both events and occurrences in the same dataset.  Discussion on this prototype extension are taking place on GitHub but there is no solution available yet."
-msgstr "Tenga en cuenta que el actual esquema en estrella de DwC-A tiene limitaciones. No permite, por ejemplo, conectar medidas y hechos de eventos y registros en el mismo conjunto de datos. En GitHub tienen lugar discusiones sobre este tipo de extensión prototipo pero aún no existe una solución disponible."
+msgstr "Tenga en cuenta que el actual esquema en estrella de DwC-A tiene limitaciones. Por ejemplo, no permite vincular las mediciones y los hechos tanto a los eventos de muestreo como a los registros biológicos en el mismo conjunto de datos.  Los debates sobre este prototipo de extensión se están llevando a cabo en GitHub, pero todavía no hay ninguna solución disponible."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:54
 msgid "Please check the https://www.gbif.org/data-quality-requirements-sampling-events[data quality requirements for sampling events]. Note that if you generate your Darwin Core Archive manually, you might need to add a recordID field containing unique identifiers. (This field is generated automatically if you are using an IPT.) For more information on the structure of a Darwin Core Archive, please check the https://dwc.tdwg.org/text/[TDWG Darwin Core text guide]. You can always check your archive with the https://www.gbif.org/tools/data-validator[GBIF data validator]."
-msgstr "Por favor, compruebe los https://www.gbif.org/data-quality-requirements-sampling-events[requisitos de calidad de datos para los Eventos de muestreo]. Tenga en cuenta que si genera su Archivo Darwin Core de manera manual, usted podría necesitar añadir un campo recordID que contenga identificadores únicos. (Este campo se genera de forma automática si está usando un IPT). Para más información sobre la estructura de un Archivo Darwin Core, por favor chequea la https://dwc.tdwg.org/text/[Guía de texto Darwin Core del TDWG]. Siempre puede comprobar su archivo con el https://www.gbif.org/es/tools/data-validator[validador de datos de GBIF]."
+msgstr "Por favor, compruebe los https://www.gbif.org/data-quality-requirements-sampling-events[requisitos de calidad de datos para los Eventos de muestreo]. Tenga en cuenta que si genera su Archivo Darwin Core de manera manual, usted podría necesitar añadir un campo recordID que contenga identificadores únicos. (Este campo se genera de forma automática si está usando un IPT). Para más información sobre la estructura de un Archivo Darwin Core, por favor vea la https://dwc.tdwg.org/text/[Guía de texto Darwin Core del TDWG]. Siempre puede comprobar su archivo con el https://www.gbif.org/es/tools/data-validator[validador de datos de GBIF]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:58
 msgid "For ease in understanding, we may use the terms *field* in this guide to refer to the Darwin Core set of terms in the sampling-event publishing profile to which a users data will be mapped. For example, we will refer to the use of the *dwc:scientificName field* when referring to the Darwin Core term, *scientificName*."
-msgstr "Para facilitar la comprensión, podemos utilizar los términos *campo* en esta guía para hacer referencia al conjunto de términos de Darwin Core en el perfil de publicación de eventos de muestreo al que se asignarán los datos de un usuario. Por ejemplo, nos referiremos al uso del *campo dwc:scientificName* cuando nos refiramos al término Darwin Core, *scientificName*."
+msgstr "Para facilitar la comprensión, podemos utilizar los términos *campo* en esta guía para referirnos al conjunto de términos Darwin Core en el perfil de publicación del evento de muestreo al que se mapearan los datos de un usuario. Por ejemplo, nos referiremos al uso del campo *dwc:scientificName* cuando nos refiramos al término Darwin Core, *scientificName*."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:60
@@ -218,7 +218,7 @@ msgstr "Tamaño de muestra"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:68
 msgid "The following Darwin Core fields store the sample size of a sampling event:"
-msgstr "Los siguientes ficheros Darwin Core almacenan el tamaño de muestra de un evento de muestreo:"
+msgstr "Los siguientes campos Darwin Core almacenan el tamaño de muestra de un evento de muestreo:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:70
@@ -235,18 +235,18 @@ msgstr "*sampleSizeUnit*: la unidad de medida del tamaño (duración en tiempo, 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:73
 msgid "The value of sampleSizeValue is a number and must have a corresponding sampleSizeUnit. The value of sampleSizeUnit should be restricted to use only SI units/derived units or other non-SI units accepted for use within the SI (e.g. minute, hour, day, litre) as per the {latest-unit-of-measurement}[Unit of Measurement Vocabulary]. Examples are given in Table 1 below."
-msgstr "El valor de sampleSizeValue es un número y debe tener su correspondiente sampleSizeUnit. El valor de sampleSizeUnit debe restringirse únicamente al uso de unidades del Sistema Internacional o a otras unidades aceptadas para su uso en el Sistema Internacional (ej.: minuto, hora, día, litro) de acuerdo al {latest-unit-of-measurement}[Vocabulario de Unidades de Medida]. Se proporcionan ejemplos a continuación en la tabla 1."
+msgstr "El valor de sampleSizeValue es un número y debe tener su correspondiente sampleSizeUnit. El valor de sampleSizeUnit debe restringirse únicamente al uso de unidades del Sistema Internacional u otras unidades aceptadas para su uso en el Sistema Internacional (p. ej., minuto, hora, día, litro) de acuerdo al {latest-unit-of-measurement}[Vocabulario de Unidades de medida]. Se proporcionan ejemplos a continuación en la tabla 1."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:75
 msgid "You may represent a sampling area by using an appropriate WKT shape or latitude/longitude point location. Done correctly, the direction sampling was carried out can also be derived. For example, an ocean trawl line represented using a WKT shape LINESTRING allows the direction of the trawl to be determined based on the standard notation for writing the start and end points."
-msgstr "Puede representar un área de muestreo utilizando una forma WKT apropiada o una ubicación de punto de latitud / longitud. Si se hace correctamente, también se puede derivar el muestreo de la dirección en que se llevó a cabo. Por ejemplo, una línea de arrastre oceánica representada con una forma WKT LINESTRING permite determinar la dirección de la red de arrastre basándose en la notación estándar para escribir los puntos de inicio y finalización."
+msgstr "Puede representar un área de muestreo utilizando una forma WKT apropiada o una ubicación de punto de latitud/longitud. Si se hace correctamente, también se puede derivar el muestreo de la dirección en que se llevó a cabo. Por ejemplo, una línea de arrastre oceánica representada con una forma WKT LINESTRING permite determinar la dirección de la red de arrastre basándose en la notación estándar para escribir los puntos de inicio y finalización."
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:76
 #, no-wrap
 msgid "sampleSizeValue and sampleSizeUnit must be used together, e.g., 3 square meters, or 1 litre."
-msgstr "sampleSizeValue y SampleSizeUnit deben usarse de manera conjunta, ej.: 3 metros cuadrados o 1 litro."
+msgstr "sampleSizeValue y SampleSizeUnit deben usarse de manera conjunta, p. ej., 3 metros cuadrados o 1 litro."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:84
@@ -272,7 +272,7 @@ msgstr "Cantidad y abundancia"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:89
 msgid "The following Darwin Core fields are also required to be used as a pair:"
-msgstr "Los siguientes archivos Darwin Core también deben ser usados en pareja:"
+msgstr "Los siguientes archivos Darwin Core también deben ser usados como un par:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:91
@@ -289,13 +289,13 @@ msgstr "*organismQuantityType*: el tipo de sistema de cuantificación usado para
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:94
 msgid "Table 2 lists some example values. The value of organismQuantity is a number or enumeration, e.g., “27” for an organismQuantityType “individuals”, “12.5” for an organismQuantityType “%biomass”, or “r” for an organismQuantityType “BraunBlanquetScale”. The value of organismQuantityType (i.e., the entity being measured) is expected to be drawn from a small controlled vocabulary with terms such as “Individuals”, “%Biomass”, “%Biovolume”, “%Species”, “%Coverage”, “BraunBlanquetScale”, “DominScale”. Examples when combined with organismQuantity values: “+” on DominScale; “5” on BraunBlanquetScale; “45” for %Biomass."
-msgstr "La Tabla 2 enumera algunos valores como ejemplo. El valor de organismQuantity es un número o enumeración, ej.: “27” para un organismQuantityType “individuos”, “12,5” para un organismQuantityType “%biomasa”, o “r” para un organismQuantityType “BraunBlanquetScale”. El valor de organismQuantityType (ej.: la entidad que está siendo medida) debe ser extraído de un vocabulario controlado reducido con términos como “Individuos”, “%Biomasa”, “%Biovolumen”, “%Especies”, “%Covertura”, “BraunBlanquetScale”, “DominScale”. Ejemplos cuando se combinan con valores organismQuantity: “+” en DominScale; “5” en BraunBlanquetScale; “45” para %Biomasa."
+msgstr "La Tabla 2 enumera algunos valores como ejemplo. El valor de organismQuantity es un número o una enumeración, p. ej., “27” para un organismQuantityType “individuos”, “12.5” para un organismQuantityType “%biomasa”, o “r” para un organismQuantityType “BraunBlanquetScale”. El valor de organismQuantityType (p. ej., la entidad que está siendo medida) debe ser extraído de un vocabulario controlado reducido con términos como “Individuos”, “%Biomasa”, “%Biovolumen”, “%Especies”, “%Cobertura”, “BraunBlanquetScale”, “DominScale”. Ejemplos cuando se combinan con los valores de organismQuantity: “+” en DominScale; “5” en BraunBlanquetScale; “45” para %Biomasa."
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:95
 #, no-wrap
 msgid "organismQuantity and organismQuantityType must be used together, e.g., a count of 14 individuals, or a code value “r” on the Braun Blanquet scale."
-msgstr "organismQuantity y organismQuantityType deben usarse de manera conjunta, ej.: un conteo de 14 individuos, o un valor de código \"r\" en la escala Braun Blanquet."
+msgstr "organismQuantity y organismQuantityType deben usarse de manera conjunta, p. ej., un conteo de 14 individuos o un valor de código \"r\" en la escala Braun Blanquet."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:103
@@ -308,7 +308,7 @@ msgid "| organismQuantity | organismQuantityType\n\n"
 msgstr "| organismQuantity | organismQuantityType\n\n"
 "| 14 | individuos\n"
 "| r | BraunBlanquetScale\n"
-"| 0,4 | %Especies\n"
+"| 0.4 | %Especies\n"
 "| 31 | %Biomasa\n"
 
 #. type: Title ===
@@ -321,12 +321,12 @@ msgstr "Cómo identificar de forma única los eventos de muestreo"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:109
 msgid "Each event is uniquely identified using dwc:eventID and occasionally dwc:parentEventID. Although the type and format of identifier is arbitrary we recommend that publishers choose persistent globally unique identifier.  In the absence of a GUID, publishers may reuse the original fieldNumber."
-msgstr "Cada evento se identifica de manera única utilizando dwc:eventID y ocasionalmente dwc:parentEventID. Aunque el tipo y formato del identificador es arbitrario, recomendamos que los publicadores seleccionen identificadores únicos globales y persistentes (GUID). En ausencia de GUID, los publicadores pueden rechazar el fieldNumber original. "
+msgstr "Cada evento se identifica de manera única utilizando dwc:eventID y ocasionalmente dwc:parentEventID. Aunque el tipo y formato del identificador es arbitrario, recomendamos que los publicadores seleccionen identificadores únicos globales y persistentes (GUID). En ausencia de GUID, los publicadores pueden reutilizar el fieldNumber original. "
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:111
 msgid "Make sure to reuse existing stable identifiers and do not create a new identifier for an event when one is already declared."
-msgstr "Asegúrese de reutilizar identificadores estables existentes y no cree un nuevo identificador para un evento cuando ya haya uno aceptado."
+msgstr "Asegúrese de reutilizar identificadores estables existentes y no cree un nuevo identificador para un evento cuando ya hay uno aceptado."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:112
@@ -338,17 +338,17 @@ msgstr "Cómo expresar la jerarquía de eventos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:115
 msgid "Sampling events can be related to each other (e.g., nested samples) via a common parent identifier. For example, several sub-sampling events within a Whittaker Plot each with their own eventID (e.g., “A1:1”, “A1:2”) would share a common parentEventID (e.g., “A1”) thus enabling them to be linked together easily (see Table 4 and Figure 3)."
-msgstr "Los eventos de muestreo pueden estar relacionados entre sí (ej.: muestras anidadas) mediante un identificador parental común. Por ejemplo, varios sub-eventos de muestreo en una parcela de Whittaker cada uno con sus propios eventID (ej.: \"A1:1\", \"A1:2\") compartirían un parentEventID común (ej.: \"A1\") lo que les permite vincularse entre sí fácilmente (ver Tabla 4 y Figura 3)."
+msgstr "Los eventos de muestreo pueden estar relacionados entre sí (p ej., muestras anidadas) mediante un identificador parental común. Por ejemplo, varios sub-eventos de muestreo en una parcela de Whittaker cada uno con sus propios eventID (p. ej.,: \"A1:1\", \"A1:2\") compartirían un parentEventID común (p. ej.,: \"A1\") lo que permite vincularlos entre sí fácilmente (ver Tabla 4 y Figura 3)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:117
 msgid "Further information on the nature of the relationship (e.g. part of a monitoring series) can be described in the project section of the accompanying metadata."
-msgstr "Información más detallada sobre la naturaleza de la relación (ej.: parte de una serie de monitoreo) puede ser descrita en la sección de proyectos de los metadatos adjuntos."
+msgstr "En la sección de proyecto de los metadatos adjuntos puede encontrarse más información sobre la naturaleza de la relación (p. ej., parte de una serie de monitoreo)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:119
 msgid "You may also refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
-msgstr "También puede dirigirse a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[FAQ]."
+msgstr "También puede dirigirse a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-a-hierarchy-of-events-recursive-data-type-using-parentEventID[preguntas frecuentes]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:120
@@ -360,14 +360,14 @@ msgstr "Cómo expresar datos de ausencia"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:123
 msgid "Refer to the following xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]."
-msgstr "Diríjase a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[FAQ]."
+msgstr "Diríjase a las siguientes xref:sampling-event-data.adoc#q-how-do-i-publish-absence-data[preguntas frecuentes]."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:124
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:35
 #, no-wrap
 msgid "How to include supplementary multimedia"
-msgstr "Cómo incluir multimedia complementaria"
+msgstr "Cómo incluir material multimedia complementario"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:127
@@ -377,7 +377,7 @@ msgstr "Puede elegir incluir medios complementarios para facilitar la interpreta
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:129
 msgid "The files associated have to be hosted on an external server and linked to the occurrence through the dwc:associatedMedia and dwc:associatedReferences. These files may be images, texts or a combination of both as long as the format type is specified. JPG, PNG, etc. images will be visible as thumbnails while PDFs will appear as clickable links."
-msgstr "Los ficheros asociados tienen que ser alojados en un servidor externo y enlazados la los registros a través de dwc:associatedMedia y dwc:associatedReferences. Estos ficheros pueden ser imágenes, textos o una combinación de ambos siempre que se especifique el tipo de formato. Las imágenes JPG, PNG, etc. serán visibles como miniaturas mientras que los PDFs aparecerán como enlaces clicables."
+msgstr "Los archivos asociados tienen que ser alojados en un servidor externo y enlazados la los registros a través de dwc:associatedMedia y dwc:associatedReferences. Estos archivos pueden ser imágenes, textos o una combinación de ambos siempre que se especifique el tipo de formato. Las imágenes JPG, PNG, etc. serán visibles como miniaturas mientras que los PDFs aparecerán como enlaces pulsables."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:130
@@ -391,7 +391,7 @@ msgstr "Publicar datos de eventos de muestreo"
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:40
 #, no-wrap
 msgid "Using GUIDs for identifiers"
-msgstr "Utilizar GUIDs como identificadores"
+msgstr "Utilizar GUID como identificadores"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:135
@@ -401,7 +401,7 @@ msgstr "Numerosos campos requieren el uso de identificadores únicos: dwc:occurr
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:137
 msgid "As mentioned previously, although no particular format is enforced, we advise publishers to use Global Unique IDentifiers (GUIDs). There are a few online services which can provide such identifiers. For example, it is possible to use http://www.geonames.org/ to find (or even generate new) identifiers for dwc:locationID, e.g. http://sws.geonames.org/10793757/ is a GUID for a lake in Greenland."
-msgstr "Como se ha mencionado anteriormente, aunque no se obliga a utilizar un formato concreto, aconsejamos a los publicadores a utilizar Identificadores Únicos Globales (GUIDs, por sus siglas en inglés). Existen varios servicios online que pueden prorcionar tales identificadores. Por ejemplo, es posible utilizar http://www.geonames.org/ para encontrar (o incluso generar nuevos) identificadores para dwc:locationID, ej.: http://sws.geonames.org/10793757/ es un GUID para un lago en Groenlandia."
+msgstr "Como se ha mencionado anteriormente, aunque no es obligatorio  utilizar un formato concreto, aconsejamos a los publicadores utilizar Identificadores únicos globales (GUID, por sus siglas en inglés). Existen varios servicios online que pueden prorcionar tales identificadores. Por ejemplo, es posible utilizar http://www.geonames.org/ para encontrar (o incluso generar nuevos) identificadores para dwc:locationID, p. ej., http://sws.geonames.org/10793757/ es un GUID para un lago en Groenlandia."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:138
@@ -417,7 +417,7 @@ msgstr "Si su conjunto de datos contiene especies sensibles, existen varias form
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:143
 msgid "Simply removing these species from the dataset,"
-msgstr "Elimine simplemente estas especies el conjunto de datos,"
+msgstr "Simplemente eliminar estas especies el conjunto de datos,"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:144
@@ -432,7 +432,7 @@ msgstr "Publicar las especies sensibles/protegidas en un conjunto de datos separ
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:146
 msgid "Publish obfuscated sensitive data points in the main dataset and publish non-obfuscated details in an access-limited separate dataset, both datasets including all data records."
-msgstr "Publicar puntos no precisos para los datos sensibles en el conjunto de datos principal y publicar los detalles precisos en un conjunto de datos separado de acceso limitado, incluyendo todos los registros en ambos conjuntos de datos."
+msgstr "Publicar puntos no precisos para los datos sensibles en el conjunto de datos principal y publicar los detalles precisos en un conjunto de datos separado de acceso limitado; ambos conjuntos de datos incluyen todos los registros de datos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:147
@@ -444,14 +444,14 @@ msgstr "Conservar los datos originales"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:150
 msgid "Although verbatim data and descriptions are not visible on the GBIF.org web interface, they are made available to the community through downloads. When entering verbatim description, make sure to link them to the original event or occurrence. For example, the ID or code given to the original event should be entered into dwc:fieldNumber; the ID or code given to the original occurrence observation should be entered into dwc:recordNumber."
-msgstr "Aunque los datos y descripciones originales no son visibles en la web de GBIF.org, ellos se ponen al alcance de la comunidad a través de descargas. Cuando introduzca descripciones originales, asegúrese de vincularlas con el evento o registro original. Por ejemplo, el ID o código proporcionado en el evento original debe ser introducido en dwc:fieldNumber; el ID o código proporcionado en la observación del registro original debe ser introducido en dwc:recordNumber."
+msgstr "Aunque los datos y descripciones originales no son visibles en la web de GBIF.org, se ponen al alcance de la comunidad a través de descargas. Cuando introduzca descripciones originales, asegúrese de vincularlas con el evento o registro original. Por ejemplo, el ID o código proporcionado en el evento original debe ser introducido en dwc:fieldNumber, el ID o código proporcionado en la observación del registro original debe ser introducido en dwc:recordNumber."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:151
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:56
 #, no-wrap
 msgid "Publishing project data as a single dataset"
-msgstr "Publicar datos de proyectos como un conjunto de datos simple"
+msgstr "Publicar datos de proyectos como un único conjunto de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:154
@@ -463,7 +463,7 @@ msgstr "Los datos producidos por un proyecto de muestreo grande deberían ser pu
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:60
 #, no-wrap
 msgid "Republishing occurrence data as sampling-event data"
-msgstr "Republicar datos de presencia como datos de eventos de muestreo"
+msgstr "Republicar datos de registros biológicos como datos de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:159
@@ -473,19 +473,19 @@ msgstr "Los eventos de muestreo proporcionan mejor documentación y mayor benefi
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:161
 msgid "In order to do so, you should create a new sampling-event dataset and send an email to GBIF's helpdesk (helpdesk@gbif.org). In this email, you should provide the UUIDs of both the occurrence dataset and the new dataset. We will then be able to link the first dataset to the newest one before de-indexing it thereby avoiding occurrence duplication and preserving citations."
-msgstr "Para hacerlo, debe crear un nuevo conjunto de datos de eventos de muestreo y enviar un correo electrónico al servicio de asistencia de GBIF (helpdesk@gbif.org). En este correo, debe proporcionar los GUIDs tanto del conjunto de datos de presencia como del nuevo conjunto de datos. Entonces, podremos vincular el primer conjunto de datos con el más reciente antes de des-indexarlo, evitando así las duplicación de registros y conservando las citas."
+msgstr "Para hacerlo debe crear un nuevo conjunto de datos de eventos de muestreo y enviar un correo electrónico al servicio de asistencia de GBIF (helpdesk@gbif.org). En este correo, debe proporcionar los GUID tanto del conjunto de datos deregistros biológicos como del nuevo conjunto de datos. Entonces, podremos vincular el primer conjunto de datos con el más reciente antes de des-indexarlo, evitando así las duplicación de registros y conservando las citas."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:162
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:67
 #, no-wrap
 msgid "Modelling continuous monitoring of live individuals"
-msgstr "Modelizar monitoreos continuos de individuos vivos"
+msgstr "Modelar monitoreos continuos de individuos vivos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:165
 msgid "If your dataset contains continuous monitoring of live individuals, such as bird tracking data, you can use dwc:organismID to store the ID of the individual being tracked. In addition to that, you should represent each individual being tracked as a single event."
-msgstr "Si su conjunto de datos contiene monitoreos continuos de individuos vivos, tales como datos de seguimiento de aves, puede utilizar dwc:organismID para almacenar el ID del individuo que está siendo monitoreado. Además de eso, debe representar cada individuo monitoreado como un evento único."
+msgstr "Si su conjunto de datos contiene monitoreos continuos de individuos vivos, tales como datos de monitoreo de aves, puede utilizar dwc:organismID para almacenar el ID del individuo que está siendo monitoreado. Además de eso, debe representar cada individuo monitoreado como un evento único."
 
 #.  TODO: Provide a recommendation on how to model continuous monitoring of live individuals, such as bird tracking data by using dwc:organismID to store the ID of the individual being tracked and by using a single event for representing each individual being tracked (with associated occurrences where it was recorded).
 #. type: Title ==
@@ -504,7 +504,7 @@ msgstr "Gestión de incidencias relacionadas con el conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:173
 msgid "If possible, we recommend tracking all the issues related to a given dataset using an issue management system such as the one provided by GitHub."
-msgstr "Si fuera posible, recomendamos hacer seguimiento de todas las incidencias relacionadas con un conjunto de datos en cuestión utilizando un sistema de gestión de incidencias tales como el proporcionado por GitHub."
+msgstr "Si fuera posible, recomendamos hacer seguimiento de todas las incidencias relacionadas con un conjunto de datos utilizando un sistema de gestión de incidencias tales como el proporcionado por GitHub."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:174
@@ -523,12 +523,12 @@ msgstr "Idealmente, los códigos y programas personalizados utilizados para tran
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:79
 #, no-wrap
 msgid "Describing sampling-event data in dataset metadata"
-msgstr "Describir datos de eventos de muestreo en metadatos de conjuntos de datos"
+msgstr "Describir los datos de los eventos de muestreo en los metadatos de los conjuntos de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:181
 msgid "Publishers should document their dataset as much as possible with a particular emphasis on sampling methodologies."
-msgstr "Los publicadores deberían documentar sus conjuntos de datos tanto como sea posible con especial enfásis en las metodologías de muestreo."
+msgstr "Los editores deben documentar su conjunto de datos tanto como sea posible, haciendo especial hincapié en las metodologías de muestreo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:184
@@ -545,7 +545,7 @@ msgstr "Vincular conjuntos de datos relacionados"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:188
 msgid "Some datasets may come from the same research project or may be related in certain context. The current recommendation is to link them using a project identifier."
-msgstr "Algunos conjuntos de datos pueden proceder del mismo proyecto de investigación o puede estar relacionado en ciertos contextos. La recomendación actual es vincularlos utilizando un identificador de proyectos."
+msgstr "Algunos conjuntos de datos pueden proceder del mismo proyecto de investigación o pueden estar relacionados en ciertos contextos. La recomendación actual es vincularlos utilizando un identificador de proyectos."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:189
@@ -569,7 +569,7 @@ msgstr "Ejemplos"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:196
 msgid "Following are some examples of typical sampling-event data sets. In each case, the key fields in the Event core and Occurrence extension are provided. For some examples, additional extensions such as Relevé and measurement-or-fact are also included."
-msgstr "A continuación puede encontrar algunos ejemplos de típicos conjuntos de datos de eventos de muestreo. En cada caso, se proporcionan los campos clave para el evento central y las extensiones de registros. Para algunos ejemplos, las extensiones adicionales tales como Relevé y medidas-o-hechos también se han incluido."
+msgstr "A continuación se presentan algunos ejemplos de conjuntos de datos típicos de eventos de muestreo. En cada caso, se proporcionan los campos clave para el evento core y las extensiones de registros. Para algunos ejemplos, las extensiones adicionales tales como Relevé y medidas-o-hechos también se han incluido."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:197
@@ -586,7 +586,7 @@ msgstr "Muestreo de invertebrados acuáticos"
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:351
 #, no-wrap
 msgid "*Core (Event) table*\n"
-msgstr "*Tabla (de Evento) central*\n"
+msgstr "*Tabla core (de evento)*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:206
@@ -605,7 +605,7 @@ msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventD
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:360
 #, no-wrap
 msgid "*Extension (Occurrence) table*\n"
-msgstr "*Tabla de Extensiones (de registros)*\n"
+msgstr "*Tabla de extensiones (de registros)*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:217
@@ -616,10 +616,10 @@ msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ..
 "| C_1428 | _Gyraulus albus_ | 2 | individuals |\n"
 "| B_1538 | _Serratella ignita_ | 318 | individuals |\n"
 msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
-"| C_1428 | _Baetis rhodani_ | 14 | individuals |\n"
-"| C_1428 | _Ephemera danica_ | 15 | individuals |\n"
-"| C_1428 | _Gyraulus albus_ | 2 | individuals |\n"
-"| B_1538 | _Serratella ignita_ | 318 | individuals |\n"
+"| C_1428 | _Baetis rhodani_ | 14 | individuos |\n"
+"| C_1428 | _Ephemera danica_ | 15 | individuos |\n"
+"| C_1428 | _Gyraulus albus_ | 2 | individuos |\n"
+"| B_1538 | _Serratella ignita_ | 318 | individuos |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:220
@@ -635,14 +635,14 @@ msgstr "*Explicación*\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:222
 msgid "_Ephemera danica_ : A total of 14 individuals from 1.25 square meters were obtained in this sampling event. The derived individuals per sq meter count is 11.2 (14/1.25)."
-msgstr "_Ephemera danica_ : Un total de 14 individuos de 1,25 metros cuadrados fueron obtenidos en este evento de muestreo. Los individuos derivados por m2 contabilizan como 11,2 (14/1,25)."
+msgstr "_Ephemera danica_ : Un total de 14 individuos de 1,25 metros cuadrados fueron obtenidos en este evento de muestreo. El recuento derivado de individuos por metro cuadrado es de 11,2 (14/1,25)."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:223
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:93
 #, no-wrap
 msgid "Brackish water invertebrates survey"
-msgstr "Muestreo de invertebrados de agua salobre"
+msgstr "Muestreo de invertebrados de aguas salobres"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:232
@@ -651,8 +651,8 @@ msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDa
 "| IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
 "| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
 msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n\n"
-"| IA1 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
-"| IA3 | hand operated van Veen grab | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
+"| IA1 | draga manual van Veen | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
+"| IA3 | draga manual van Veen | 0.04 | m^2 | 147 | 154 | 1995 | Gialova lagoon | 36.9564 | 21.6661 |\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:241
@@ -661,14 +661,14 @@ msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ..
 "| IA1 | _Abra ovata_ | 57 | individuals |\n"
 "| IA3 | _Bittium reticulatum_ | 113 | individuals |\n"
 msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
-"| IA1 | _Abra ovata_ | 57 | individuals |\n"
-"| IA3 | _Bittium reticulatum_ | 113 | individuals |\n"
+"| IA1 | _Abra ovata_ | 57 | individuos |\n"
+"| IA3 | _Bittium reticulatum_ | 113 | individuos |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:244
 #, no-wrap
 msgid "*Extension (Measuremenr-or-Fact) table*\n"
-msgstr "*Tabla de extensión (Medida-o-Hecho)*\n"
+msgstr "*Tabla de extensión (medida-o-hecho)*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:250
@@ -677,31 +677,31 @@ msgid "| EventID | measurementType | measurementValue | measurementUnit | measur
 "| IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | --\n"
 "| IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | --\n"
 msgstr "| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...\n\n"
-"| IA1 | Tmp (sed) | 21.5 | Degree C | temperature at the bottom surface | --\n"
-"| IA1 | Rdx (sed)0 | 170 | mv | Eh value at the bottom surface (0cm) | --\n"
+"| IA1 | Tmp (sed) | 21.5 | Degree C | temperatura en la superficie del fondo | --\n"
+"| IA1 | Rdx (sed)0 | 170 | mv | valor Eh en la superficie del fondo (0cm) | --\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:255
 #, no-wrap
 msgid "*_Abra ovata_* : A total of 57 individuals from 0.04 square meters were obtained in sampling event IA1.\n"
-msgstr "*_Abra ovata_* : Un total de 57 individuos de 0,04 metros cuadrados fueron obtenidos en el evento de muestreo IA1.\n"
+msgstr "*_Abra ovata_* : Un total de 57 individuos de 0.04 metros cuadrados fueron obtenidos en el evento de muestreo IA1.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:257
 msgid "Each event can also have measurements or facts associated with it, e.g., environmental measurements like sediment temperature and redox potential (Eh)."
-msgstr "Cada evento puede también tener medidas o hechos asociados a él, ej.: medidas ambientales como la temperatura de los sedimentos y el potencial redox (Eh)."
+msgstr "Cada evento también puede tener mediciones o hechos asociados, p. ej., mediciones ambientales como la temperatura de los sedimentos y el potencial redox (Eh)."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:258
 #: en/modules/ROOT/pages/best-practices-sampling-event-planned-additions.adoc:94
 #, no-wrap
 msgid "Macrophyte survey"
-msgstr "Muestreo de Macrófitos"
+msgstr "Muestreo de macrófitos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:261
 msgid "Note that this example is based on Dutch Vegetation Database (LVD) previous version republished as sampling-event dataset. The Relevé extension underwent significant changes following the publication of the primer. For more information about LVD and the data model for vegetation sampling-event data see: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
-msgstr "Tenga en cuenta que este ejemplo está basado en la versión anterior de la Base de Datos de Vegetación Holandesa (LVD) republicada como conjunto de datos de evento de muestreo. La extensión Relevé sufre cambios significativos respecto a la publicación del original. Para más información sobre LVD y los modelos de datos para datos de eventos de muestreo de vegetación ver: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
+msgstr "Tenga en cuenta que este ejemplo está basado en la versión anterior de la Base de datos de vegetación holandesa (LVD), republicada como conjunto de datos de evento de muestreo. La extensión Relevé sufre cambios significativos respecto a la publicación del original. Para más información sobre LVD y los modelos de datos para datos de eventos de muestreo de vegetación ver: https://gbif.blogspot.com/2016/07/probably-turbovegs-best-kept-secret.html"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:266
@@ -723,7 +723,7 @@ msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | .
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:277
 #, no-wrap
 msgid "*Extension (Relevé) table*\n"
-msgstr "*Tabla de Extensión (Relevé)*\n"
+msgstr "*Tabla de extensión (relevé)*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:282
@@ -756,7 +756,7 @@ msgstr "Muestreo de Lepidópteros I"
 msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n\n"
 "| 2320 | Jalas-model light trap with 160W ML matt lamp | 16 | day | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ...\n"
 msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startDayOfYear | endDayOfYear | year | location | decimalLatitude | decimalLongitude | ...\n\n"
-"| 2320 | Jalas-model light trap with 160W ML matt lamp | 16 | day | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ...\n"
+"| 2320 | Trampa de luz modelo Jalas con lámpara ML mate de 160W | 16 | día | 164 | 180 | 1999 | Kungsmarken | 55.72 | 13.28 | ...\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:306
@@ -764,13 +764,13 @@ msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | startD
 msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
 "| 2320 | _Opisthograptis luteolata_ | 11 | individuals |\n"
 msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
-"| 2320 | _Opisthograptis luteolata_ | 11 | individuals |\n"
+"| 2320 | _Opisthograptis luteolata_ | 11 | individuos |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:311
 #, no-wrap
 msgid "*_Opisthograptis luteolata_* : 11 individuals were observed over the sampling period of 16 days. The derived number of individuals per day is 0.68 (11/16).\n"
-msgstr "*_Opisthograptis luteolata_* : 11 individuos fueron observados en un período de muestreo de 16 días. El número derivado de individuos por días es de 0,68 (11/16).\n"
+msgstr "*_Opisthograptis luteolata_* : 11 individuos fueron observados en un período de muestreo de 16 días. El número derivado de individuos por días es de 0.68 (11/16).\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:312
@@ -785,8 +785,8 @@ msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDa
 "| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |\n"
 "| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |\n"
 msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
-"| 1014-tr023m | Pollard walks | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |\n"
-"| 1012-tr006-s5 | Pollard walks | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |\n"
+"| 1014-tr023m | caminatas de Pollard | 250 | m^2 | 2012-10-11 | Ramat Hanadiv botanik garden | 32.553191 | 34.947492 |\n"
+"| 1012-tr006-s5 | caminatas de Pollard | 250 | m^2 | 2012-05-02 | Carmel Hurshan haarbaim | 32.75789805 | 35.02697333 |\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:330
@@ -795,14 +795,14 @@ msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ..
 "|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |\n"
 "| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |\n"
 msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
-"|  1014-tr023m  | _Pieris  rapae_ | 1 | individuals |\n"
-"| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuals |\n"
+"|  1014-tr023m  | _Pieris  rapae_ | 1 | individuos |\n"
+"| 1014-tr023-s5  | _Maniola  telmessia_ | 2 | individuos |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:333
 #, no-wrap
 msgid "*Extension (Measurement-or-Fact) table*\n"
-msgstr "*Tabla de Extensiones (Medidas-o-Hechos)*\n"
+msgstr "*Tabla de extensione (medida-o-hecho)*\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:341
@@ -813,17 +813,17 @@ msgid "| EventID | measurementType | measurementValue | measurementUnit | measur
 "| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  |\n"
 "| 1014-tr023m | AvgAltitude | 10 | m | Average altitude |\n"
 msgstr "| EventID | measurementType | measurementValue | measurementUnit | measurementRemarks | ...\n\n"
-"| 1014-tr023m | Temp | 20 | Degree C |  |\n"
-"| 1014-tr023m | Wind speed | light | | |\n"
-"| 1014-tr023m | Cloudiness | 0 | Level 1 of 8 |  |\n"
-"| 1014-tr023m | AvgAltitude | 10 | m | Average altitude |\n"
+"| 1014-tr023m | Temp | 20 | Grados C |  |\n"
+"| 1014-tr023m | Velocidad del viento | luz | | |\n"
+"| 1014-tr023m | Nubosidad | 0 | nivel 1 de 8 |  |\n"
+"| 1014-tr023m | AltitudProm | 10 | m | Altitud promedio |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:347
 #, no-wrap
 msgid "*_Pieras rapae_* :  A total of 1 individual from 250 sq metres was obtained in this sampling event.\n"
 "Several environmental measurements (e.g., temperature, wind speed, cloudiness) are included in a measurement-or-facts extension.\n"
-msgstr "*_Pieras rapae_* : Un total de 1 individuo de 250 m2 fue obtenido en este evento de muestreo. Varias medidas ambientales (ej.: temperatura, velocidad del viento, nubosidad) son incluidas en una extensión de medidas-o-hechos.\n"
+msgstr "*_Pieras rapae_* : Un total de 1 individuo de 250 m2 fue obtenido en este evento de muestreo. Varias medidas ambientales (p. ej., temperatura, velocidad del viento, nubosidad) son incluidas en una extensión de medida-o-hecho.\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:348
@@ -838,8 +838,8 @@ msgid "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDa
 "| 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 |\n"
 "| 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 |\n"
 msgstr "| EventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
-"| 506003329 | Reef Life Survey methods | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 |\n"
-"| 57003326 | Reef Life Survey methods | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 |\n"
+"| 506003329 | métodos Reef Life Survey | 500 | m^2 | 2006-09-02 | Cocos Islands | 5.56187 | -87.04693 |\n"
+"| 57003326 | métodos Reef Life Survey | 500 | m^2 | 2006-12-11 | Panama Bight | 4.008553 | -81.605377 |\n"
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:368
@@ -850,10 +850,10 @@ msgid "| EventID | scientificName | organismQuantity | organismQuantityType | ..
 "| 506003329 | Aulostomus chinensis | 4 | individuals |\n"
 "| 506003329 | Axoclinus cocoensis | 1 | individuals |\n"
 msgstr "| EventID | scientificName | organismQuantity | organismQuantityType | ...\n\n"
-"| 506003329 | Acanthurus nigricans | 42 | individuals |\n"
-"| 506003329 | Acanthurus xanthopterus | 1 | individuals |\n"
-"| 506003329 | Aulostomus chinensis | 4 | individuals |\n"
-"| 506003329 | Axoclinus cocoensis | 1 | individuals |\n"
+"| 506003329 | Acanthurus nigricans | 42 | individuos |\n"
+"| 506003329 | Acanthurus xanthopterus | 1 | individuos |\n"
+"| 506003329 | Aulostomus chinensis | 4 | individuos |\n"
+"| 506003329 | Axoclinus cocoensis | 1 | individuos |\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:373
@@ -892,7 +892,7 @@ msgid "| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSi
 "| A1.12 | A1 |  | 1 | m^2 |  |  | | |\n"
 "| A1.13 | A1 |  | 1 | m^2 |  |  | | |\n"
 msgstr "| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleSizeUnit | eventDate | location | decimalLatitude | decimalLongitude | ...\n\n"
-"| A1 |  | Modified Whittaker Plot | 1000 | m^2 | 1984-03-18 | Monarch | 55.72 | 13.28 |\n"
+"| A1 |  | Parcela Whittaker modificada | 1000 | m^2 | 1984-03-18 | Monarch | 55.72 | 13.28 |\n"
 "| A1.1 | A1 |  | 100 | m^2 |  |  | | |\n"
 "| A1.2 | A1 |  | 10 | m^2 |  |  | | |\n"
 "| A1.3 | A1 |  | 10 | m^2 |  |  | | |\n"
@@ -911,7 +911,7 @@ msgstr "| EventID | parentEventID | samplingProtocol | sampleSizeValue | sampleS
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:396
 #, no-wrap
 msgid "A Schematic of a Whittaker plot consisting of 13 sub-plots of varying area."
-msgstr "Un Esquema de una parcela Whittaker que contiene 13 sub-parcelas de área variable."
+msgstr "Un esquema de una parcela Whittaker que contiene 13 sub-parcelas de área variable."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:397
@@ -928,13 +928,13 @@ msgstr "Información adicional que también podría ser incluida o fue previamen
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:402
 msgid "The Event core elements are mainly drawn from the DwC classes Event, Location and Geological Context (Table 3). The Occurrence extension elements are drawn from the Occurrence, Taxon and Identification classes. For reasons of consistency, the Occurrence extension includes all terms found in the Occurrence core. Thus Event, Location and Geological Context terms are also listed for the Occurrence extension but are actually redundant. Note the IPT hides redundant terms by default when mapping for the user’s convenience."
-msgstr "Los elementos del Evento central son obtenidos principalmente del Evento de clases DwC, la Localización y el Contexto Geológico (Tabla 3). Los elementos de la extensión de registros de presencia son obtenidos de Registros de presencia, Taxón y Clases de Identificación. Por motivos de consistencia, la extensión de Registros de presencia incluye todos los términos encontrados en el núcleo de los Registros de presencia.Por ello, los términos Evento, Localización y Contexto Geológico también son enumerados en la extensión de Registros de presencia pero son redundantes. Tenga en cuenta que el IPT esconde términos redundantes por defecto al mapear a conveniencia del usuario."
+msgstr "Los elementos del evento core son obtenidos principalmente de los eventos DwC de clases, localización y  contexto geológico (Tabla 3). Los elementos de la extensión de registros biológicos son obtenidos de registros biológicos , taxón y clases de identificación. Por motivos de consistencia, la extensión de registros biológicos incluye todos los términos encontrados en el core de los registros biológicos.Por ello, los términos evento, localización y contexto geológico también son enumerados en la extensión de registros biológicos, pero son redundantes. Tenga en cuenta que el IPT no muestra términos redundantes por defecto al mapear para conveniencia del usuario."
 
 #. type: Block title
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:403
 #, no-wrap
 msgid "Placement of the sample related terms in the Event core and Occurrence extension."
-msgstr "Colocación de los términos relacionados con la muestra en el Evento central y la extensión de Registros de presencia."
+msgstr "Ubicación de los términos relacionados con la muestra en el evento core y en la extensión de registros biológicos."
 
 #. type: Table
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:411
@@ -951,13 +951,13 @@ msgstr "| Event Core\n"
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:414
 msgid "The \"+\" symbol indicates proposed new terms not yet ratified."
-msgstr "El símbolo \"+\" indica nuevos términos propuestos que no han sido ratificados."
+msgstr "El símbolo \"+\" indica términos nuevos propuestos que no han sido ratificados."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:415
 #, no-wrap
 msgid "Planned additions and notes for revision:"
-msgstr "Adiciones y notas planificadas para revisión:"
+msgstr "Adiciones y notas programadas para la revisión:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-sampling-event-data.adoc:417

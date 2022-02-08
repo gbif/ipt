@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-09-04 19:48+0000\n"
-"PO-Revision-Date: 2021-12-02 03:17\n"
+"PO-Revision-Date: 2022-02-03 17:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,7 +25,7 @@ msgstr "Cómo traducir"
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:4
 msgid "The IPT user interface and user manual both benefit from internationalization. Internationalization is a community effort, and everyone is welcome to join."
-msgstr "Tanto la interfaz como el manual de usuario del IPT se benefician de la internacionalización. La internacionalización es un esfuerzo de la comunidad, y todos son bienvenidos a unirse."
+msgstr "Tanto la interfaz, como el manual de usuario del IPT se benefician de la internacionalización. La internacionalización es un esfuerzo de la comunidad y todos son bienvenidos a unirse."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:6
@@ -46,7 +46,7 @@ msgstr "Traduciendo la interfaz de usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:12
 msgid "Translations for the user interface are contained in the file `ApplicationResources_en.properties`.  You are welcome to ask mailto:helpdesk@gbif.org[the helpdesk] for an account on https://ipt.gbif-uat.org/[GBIF's development IPT], where new translations will be applied."
-msgstr "Las traducciones para la interfaz de usuario están contenidas en el archivo `ApplicationResources_en.properties`.  Puede pedir a mailto:helpdesk@gbif.org[el centro de ayuda] una cuenta en https://ipt.gbif-uat.org/[el desarrollo del IPT de GBIF], donde se aplicarán las nuevas traducciones."
+msgstr "Las traducciones para la interfaz de usuario están contenidas en el archivo `ApplicationResources_en.properties`.  Puede pedir al mailto:helpdesk@gbif.org[Centro de ayuda] una cuenta en https://ipt.gbif-uat.org/[el desarrollo del IPT de GBIF], donde se aplicarán las nuevas traducciones."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/translations.adoc:13
@@ -109,7 +109,7 @@ msgstr "Traducir el manual de usuario"
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:30
 msgid "Translations for the user manual are in the Crowdin folder `docs/translations`.  The user manual is written in https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], and some syntax is necessary in the translations – for example, `+++*bold*, _italic_ or `monospaced` text+++`."
-msgstr "Las traducciones del manual de usuario están en la carpeta de Crowdin `docs/translations`.  El manual de usuario está escrito en https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], y es necesaria cierta sintaxis en las traducciones - por ejemplo, `+++*negrita*, _cursiva_ o `texto monoespaciado` +++`."
+msgstr "Las traducciones del manual de usuario están en la carpeta de Crowdin `docs/translations`.  El manual de usuario está escrito en https://docs.asciidoctor.org/asciidoc/latest/[Asciidoctor], y es necesaria cierta sintaxis en las traducciones , por ejemplo, `+++*negrita*, _cursiva_ o `texto monoespaciado` +++`."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:32
@@ -119,7 +119,7 @@ msgstr "Hay que prestar especial atención a que las referencias cruzadas (enlac
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:34
 msgid "New translations added using Crowdin should appear in the https://ipt.gbif-uat.org/manual/[UAT version of this manual] around 15-60 minutes later."
-msgstr "Las nuevas traducciones añadidas mediante Crowdin deberían aparecer en https://ipt.gbif-uat.org/manual/[versión UAT de este manual] unos 15-60 minutos después."
+msgstr "Las nuevas traducciones añadidas mediante Crowdin deberían aparecer en la  https://ipt.gbif-uat.org/manual/[versión UAT de este manual] unos 15-60 minutos después."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/translations.adoc:35
@@ -153,7 +153,7 @@ msgstr "Referencias cruzadas en la misma página"
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:49
 msgid "These are links to locations within a page, and are usually made with the crossreference syntax: `\\<<Target Heading Text>>`, and sometimes the form `\\<<Target Heading Text,display text>>` when the text shown should not be the same as the heading to which the link points."
-msgstr "Se trata de enlaces a lugares dentro de una página, y suelen hacerse con la sintaxis de referencia cruzada: `\\<Titular de destino>>, y a veces con la forma `\\<Titular de destino,texto mostrado>> cuando el texto mostrado no debe ser el mismo que el del título al que apunta el enlace."
+msgstr "Se trata de enlaces a lugares dentro de una página y suelen hacerse con la sintaxis de referencia cruzada:  `\\<<Encabezado de destino>>`, y a veces con la forma `\\<<TEncabezado de destino,texto mostrado>>` cuando el texto a mostrar no debe ser el mismo que el del encabezado al que apunta el enlace."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:51
@@ -203,7 +203,7 @@ msgstr "Los enlaces a una sección específica dentro de otra página son más c
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:73
 msgid "The crossreference is then written as `\\xref:filename.adoc#link-target[display text]`, for example `\\xref:manage-resources.adoc#resource-managers[read about resource managers]` shows as xref:manage-resources.adoc#resource-managers[read about resource managers]."
-msgstr "La referencia cruzada se escribe entonces como \\xref:filename.adoc#link-target[texto a mostrar]`, por ejemplo `\\xref:manage-resources.adoc#resource-managers[leer sobre gestores de recursos]` se muestra como xref:manage-resources.adoc#resource-managers[leer sobre gestores de recursos]."
+msgstr "La referencia cruzada se escribe entonces como `\\xref:filename.adoc#link-target[texto a mostrar]`, por ejemplo `\\xref:manage-resources.adoc#resource-managers[leer sobre gestores de recursos]` se muestra como xref:manage-resources.adoc#resource-managers[leer sobre gestores de recursos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/translations.adoc:75
