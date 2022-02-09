@@ -1,6 +1,6 @@
 <!-- Represents metadata section on resource overview page -->
-<div class="my-3 p-3 bg-body rounded shadow-sm" id="metadata">
-    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 text-gbif-header fw-400">
+<div class="py-5 mx-4 border-bottom" id="metadata">
+    <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
         <#assign metadataHeaderInfo>
             <@s.text name='manage.metadata.description'/>
             <#if resource.coreType?has_content && resource.coreType==metadataType>
@@ -16,33 +16,8 @@
     </h5>
 
     <div class="row">
-        <div class="col-lg-9 order-lg-last">
-            <p class="mx-md-4 mx-2">
-                <@s.text name="manage.overview.metadata.description"/>
-            </p>
-
-            <#if missingMetadata>
-                <p class="mx-md-4 mx-2 text-gbif-warning fst-italic">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    <@s.text name="manage.overview.missing.metadata"/>
-                </p>
-            </#if>
-
-            <div class="table-responsive mx-md-4 mx-2">
-                <table class="table table-sm">
-                    <tr>
-                        <#if metadataModifiedSinceLastPublication>
-                            <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?datetime?string.medium!}
-                        <#elseif resource.lastPublished??>
-                            <@s.text name="manage.overview.notModified"/>
-                        </#if>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-lg-3 border-lg-right">
-            <div class="mx-md-4 mx-2">
+        <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
+            <div>
                 <form action='replace-eml.do' method='post' enctype="multipart/form-data">
                     <input name="r" type="hidden" value="${resource.shortname}"/>
                     <div class="row">
@@ -59,6 +34,31 @@
                     <input name="r" type="hidden" value="${resource.shortname}"/>
                     <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
                 </form>
+            </div>
+        </div>
+
+        <div class="col-lg-9 ps-lg-5">
+            <p>
+                <@s.text name="manage.overview.metadata.description"/>
+            </p>
+
+            <#if missingMetadata>
+                <p class="text-gbif-warning fst-italic">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <@s.text name="manage.overview.missing.metadata"/>
+                </p>
+            </#if>
+
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <tr>
+                        <#if metadataModifiedSinceLastPublication>
+                            <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?datetime?string.medium!}
+                        <#elseif resource.lastPublished??>
+                            <@s.text name="manage.overview.notModified"/>
+                        </#if>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

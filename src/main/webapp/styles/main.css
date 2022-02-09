@@ -1028,3 +1028,12 @@ a.doi:hover span:first-of-type {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
 }
+
+/* Utilities */
+@media (max-width: 992px) {
+    .py-lg-max-2 {
+        padding-top: .5rem !important;
+        padding-bottom: .5rem !important
+    }
+}
+

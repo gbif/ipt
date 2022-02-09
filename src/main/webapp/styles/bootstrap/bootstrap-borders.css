@@ -92,6 +92,15 @@
     }
 }
 
+@media (max-width: 992px) {
+    .border-lg-max {
+        border-top: 1px solid #e3e7eb !important;
+        border-bottom: 1px solid #e3e7eb !important;
+        border-left: 1px solid #e3e7eb !important;
+        border-right: 1px solid #e3e7eb !important;
+    }
+}
+
 @media (min-width: 992px) {
     .border-lg-top {
         border-top: 1px solid #e3e7eb !important;
