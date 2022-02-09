@@ -87,7 +87,7 @@
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <input name="validate" type="hidden" value="false"/>
 
-                        <select id="sourceType" name="sourceType" class="form-select form-select-sm">
+                        <select id="sourceType" name="sourceType" class="form-select form-select-sm my-1">
                             <option value="source-sql" selected><@s.text name='manage.source.database'/></option>
                             <option value="source-file"><@s.text name='manage.source.file'/></option>
                             <option value="source-url"><@s.text name='manage.source.url'/></option>
