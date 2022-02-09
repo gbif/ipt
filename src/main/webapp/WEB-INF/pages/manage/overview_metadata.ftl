@@ -49,16 +49,12 @@
                 </p>
             </#if>
 
-            <div class="table-responsive">
-                <table class="table table-sm">
-                    <tr>
-                        <#if metadataModifiedSinceLastPublication>
-                            <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?datetime?string.medium!}
-                        <#elseif resource.lastPublished??>
-                            <@s.text name="manage.overview.notModified"/>
-                        </#if>
-                    </tr>
-                </table>
+            <div class="details mb-3">
+                <#if metadataModifiedSinceLastPublication>
+                    <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?datetime?string.medium!}
+                <#elseif resource.lastPublished??>
+                    <@s.text name="manage.overview.notModified"/>
+                </#if>
             </div>
         </div>
     </div>

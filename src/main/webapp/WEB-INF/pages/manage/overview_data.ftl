@@ -129,7 +129,7 @@
     </h5>
 
     <div class="row">
-        <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
+        <div class="col-lg-3 border-lg-right <#if (potentialCores?size>0)>border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
             <div>
                 <#if (potentialCores?size>0)>
                     <form action='mapping.do' method='post'>

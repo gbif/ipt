@@ -924,22 +924,20 @@
                 </h5>
 
                 <div class="row">
-                    <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
-                        <#if resource.key?has_content>
-                            <#if (potentialNetworks?size>0)>
-                                <div>
-                                    <form action='resource-addNetwork.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <select name="id" class="form-select form-select-sm my-1" id="network" size="1">
-                                            <option value=""></option>
-                                            <#list potentialNetworks?sort_by("name") as n>
-                                                <option value="${n.key}">${n.name}</option>
-                                            </#list>
-                                        </select>
-                                        <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
-                                    </form>
-                                </div>
-                            </#if>
+                    <div class="col-lg-3 border-lg-right <#if resource.key?has_content && (potentialNetworks?size>0)> border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
+                        <#if resource.key?has_content && (potentialNetworks?size>0)>
+                            <div>
+                                <form action='resource-addNetwork.do' method='post'>
+                                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                                    <select name="id" class="form-select form-select-sm my-1" id="network" size="1">
+                                        <option value=""></option>
+                                        <#list potentialNetworks?sort_by("name") as n>
+                                            <option value="${n.key}">${n.name}</option>
+                                        </#list>
+                                    </select>
+                                    <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
+                                </form>
+                            </div>
                         </#if>
                     </div>
 
@@ -993,7 +991,7 @@
                 </h5>
 
                 <div class="row">
-                    <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
+                    <div class="col-lg-3 border-lg-right <#if (potentialManagers?size>0)>border-lg-max py-lg-max-2 mb-4</#if> pe-lg-5 rounded">
                         <#if (potentialManagers?size>0)>
                             <div>
                                 <!-- Warning: method name match is case sensitive therefore must be addManager -->
