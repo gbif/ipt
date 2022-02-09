@@ -874,7 +874,7 @@
                         </#if>
 
                         <div class="d-flex flex-wrap">
-                            <form class="me-1" action='resource-${actionMethod}.do' method='post'>
+                            <form class="me-1 pb-1" action='resource-${actionMethod}.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <#if resource.status=="PUBLIC">
                                     <#if !currentUser.hasRegistrationRights()>
