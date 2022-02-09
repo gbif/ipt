@@ -230,16 +230,16 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 
 /* GBIF gray colored outline button START */
 .btn-outline-secondary {
-    color: #4e565f !important;
-    border-color: #bec6ce !important;
+    color: rgb(78, 86, 95) !important;
+    border-color: rgba(78, 86, 95, 0.5) !important;
 }
 .btn-outline-secondary:hover, .btn-outline-secondary:active {
-    color: #212529 !important;
-    background-color: #eaecef !important;
-    border-color: #bec6ce !important;
+    color: rgb(78, 86, 95) !important;
+    background-color: rgba(78, 86, 95, 0.04) !important;
+    border-color: rgb(78, 86, 95) !important;
 }
 .btn-outline-secondary:focus, .btn-outline-secondary:active:focus {
-    box-shadow: 0 0 0 0.25rem rgba(190, 198, 206, 0.25); !important;
+    box-shadow: 0 0 0 0.25rem rgba(78, 86, 95, 0.25); !important;
 }
 /* GBIF gray colored outline button START */
 
@@ -678,6 +678,20 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 /* Alerts close buttons */
 .btn-close:focus {
     box-shadow: none;
+}
+
+/* Button font styles */
+.btn {
+    text-transform: uppercase !important;
+    font-size: 0.875rem !important;
+}
+
+.btn-sm {
+    font-size: 0.75rem !important;
+}
+
+#accountDropdownLink{
+    text-transform: none !important;
 }
 
 
