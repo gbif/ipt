@@ -208,16 +208,28 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 }
 
 /* Custom alerts colors START */
+.alert-green-2 {
+    color: #4caf50;
+}
+
 .alert-success {
     color: #1e4620;
     background-color: #edf7ed;
     border-color: #edf7ed;
 }
 
+.alert-orange-2 {
+    color: #ff9800;
+}
+
 .alert-warning {
     color: #663c00;
     background-color: #fff4e5;
     border-color: #fff4e5;
+}
+
+.alert-red-2 {
+    color: #ef5350;
 }
 
 .alert-danger {
@@ -715,6 +727,14 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 .fs-smaller-2 {
     font-size: 0.75rem !important;
+}
+
+.fs-bigger {
+    font-size: 1.125rem !important;
+}
+
+.fs-bigger-2 {
+    font-size: 1.25rem !important;
 }
 
 .fw-400 {
