@@ -9,6 +9,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css">
 
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-icons/font/bootstrap-icons.css" />
+
     <!-- IPT CSS -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
 
