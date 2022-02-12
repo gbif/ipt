@@ -28,6 +28,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 /**
  * Action handling account updates, such as changing username and password.
  */
@@ -121,7 +123,7 @@ public class AccountAction extends POSTAction {
         LOG.error("The new password confirmation entered is empty");
       }
       // confirm current password is correct
-      else if (!currentUser.getPassword().equals(trimmedCurrentPassword)) {
+      else if (!BCrypt.verifyer().verify(trimmedCurrentPassword.toCharArray(), currentUser.getPassword().toCharArray()).verified) {
         addFieldError("currentPassword", getText("validation.password.wrong"));
         LOG.error("The password does not match");
       }
@@ -132,7 +134,7 @@ public class AccountAction extends POSTAction {
         password2 = null;
         // otherwise, set password even if it's too short - it gets validated during save
       } else if (validator.validatePassword(this, newPassword)) {
-        currentUser.setPassword(newPassword);
+        currentUser.setPassword(BCrypt.withDefaults().hashToString(12, newPassword.toCharArray()));
         // erase data
         newPassword = null;
         currentPassword = null;

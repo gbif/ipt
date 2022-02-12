@@ -82,7 +82,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       if (user.getRole() == Role.Admin) {
         LOG.debug("Adding admin " + user.getEmail());
         if (allowSimplifiedAdminLogin) {
-          if (onlyAdminEmail == null) {
+          if (onlyAdminEmail == null || users.isEmpty()) {
             // first admin - keep its email address available for simplified login
             // without email address but keyword "admin"
             onlyAdminEmail = user.getEmail();
