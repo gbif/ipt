@@ -76,6 +76,7 @@ public class AppConfig {
   public static final String ADMIN_EMAIL = "admin.email";
   public static final String SESSION_TIMEOUT_PROPERTY = "session.timeout";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
+  private static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
   private Properties properties = new Properties();
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
   private DataDir dataDir;
@@ -358,7 +359,12 @@ public class AppConfig {
   }
 
   public String getVersion() {
-    return properties.getProperty(DEV_VERSION);
+    String version = properties.getProperty(DEV_VERSION);
+    // remove suffix if it was not filled
+    if (version != null && version.contains(BUILD_NUMBER_VARIABLE_SUFFIX)) {
+      return version.substring(0, version.indexOf(BUILD_NUMBER_VARIABLE_SUFFIX));
+    }
+    return version;
   }
 
   public boolean hasLocation() {
