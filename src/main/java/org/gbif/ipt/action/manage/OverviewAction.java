@@ -365,7 +365,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           addActionMessage(msg);
         } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
           LOG.info("Deactivating registered DOI: " + doi + "...");
-          registrationManager.getDoiService().delete(doi);
+          registrationManager.getDoiService().deactivate(doi);
           String msg = getText("manage.overview.publishing.doi.deactivate.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
