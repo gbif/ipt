@@ -97,6 +97,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
+import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING;
+import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT;
 import static org.gbif.ipt.task.GenerateDwca.CHARACTER_ENCODING;
 
 public class OverviewAction extends ManagerBaseAction implements ReportHandler {
@@ -365,7 +368,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           addActionMessage(msg);
         } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
           LOG.info("Deactivating registered DOI: " + doi + "...");
-          registrationManager.getDoiService().deactivate(doi);
+          registrationManager.getDoiService().delete(doi);
           String msg = getText("manage.overview.publishing.doi.deactivate.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
@@ -374,10 +377,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             "Not appropriate to delete DOI: " + doi + ". DOI status=" + doiData.getStatus().toString());
         }
       } else {
-        throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.delete.failed.notResolved", new String[] {doi.toString()}));
+        throw new DeletionNotAllowedException(
+            DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+            getText("manage.overview.publishing.doi.delete.failed.notResolved", new String[] {doi.toString()}));
       }
     } catch (DoiException e) {
-      throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{doi.toString(), e.getMessage()}));
+      throw new DeletionNotAllowedException(
+          DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+          getText(
+              "manage.overview.publishing.doi.delete.failed.exception",
+              new String[]{doi.toString(), e.getMessage()}));
     }
   }
 
@@ -421,12 +430,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           } else {
             Organisation retrieved = registrationManager.get(organisation.getKey());
             if (retrieved == null) {
-              throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT, getText("manage.overview.publishing.doi.undelete.failed.noOrganisation", new String[] {organisation.getKey().toString()}));
+              throw new UndeletNotAllowedException(
+                  ORGANISATION_NOT_ASSOCIATED_TO_IPT,
+                  getText(
+                      "manage.overview.publishing.doi.undelete.failed.noOrganisation",
+                      new String[] {organisation.getKey().toString()}));
             } else {
               Organisation doiAccountActivated = registrationManager.findPrimaryDoiAgencyAccount();
               if (doiAccountActivated != null && doiAccountActivated.getDoiPrefix() != null
                   && !doi.getDoiName().toLowerCase().startsWith(doiAccountActivated.getDoiPrefix().toLowerCase())) {
-                throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING, getText("manage.overview.publishing.doi.undelete.failed.badPrefix", new String[] {doi.toString(), doiAccountActivated.getDoiPrefix()}));
+                throw new UndeletNotAllowedException(
+                    DOI_PREFIX_NOT_MATCHING,
+                    getText(
+                        "manage.overview.publishing.doi.undelete.failed.badPrefix",
+                        new String[] {doi.toString(), doiAccountActivated.getDoiPrefix()}));
               }
             }
           }
@@ -524,10 +541,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         LOG.info(msg);
         addActionMessage(msg);
       } else {
-        throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_NOT_DELETED, getText("manage.overview.publishing.doi.undelete.failed.badStatus", new String[] {doi.toString(), doiData.getStatus().toString()}));
+        throw new UndeletNotAllowedException(
+            DOI_NOT_DELETED,
+            getText(
+                "manage.overview.publishing.doi.undelete.failed.badStatus",
+                new String[] {doi.toString(), doiData.getStatus().toString()}));
       }
     } catch (DoiException e) {
-      throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.undelete.failed.exception", new String[] {doi.toString(), e.getMessage()}));
+      throw new UndeletNotAllowedException(
+          UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+          getText(
+              "manage.overview.publishing.doi.undelete.failed.exception",
+              new String[] {doi.toString(), e.getMessage()}));
     }
   }
 
