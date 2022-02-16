@@ -88,7 +88,8 @@ public class AccountAction extends POSTAction {
   @Override
   public String save() {
     try {
-      if (validator.validate(this, user)) {
+      // password can't be updated here, skip password validation
+      if (validator.validate(this, user, false)) {
         currentUser.setLastname(user.getLastname());
         currentUser.setFirstname(user.getFirstname());
         addActionMessage(getText("admin.user.account.updated"));
@@ -132,7 +133,7 @@ public class AccountAction extends POSTAction {
         addFieldError("password2", getText("validation.password2.wrong"));
         LOG.error("The passwords entered do not match");
         password2 = null;
-        // otherwise, set password even if it's too short - it gets validated during save
+        // otherwise, set password if it's valid
       } else if (validator.validatePassword(this, newPassword)) {
         currentUser.setPassword(BCrypt.withDefaults().hashToString(12, newPassword.toCharArray()));
         // erase data

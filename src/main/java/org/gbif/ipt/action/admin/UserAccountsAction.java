@@ -35,6 +35,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 /**
  * The Action responsible for all user input relating to the user accounts in the IPT.
  */
@@ -158,7 +160,8 @@ public class UserAccountsAction extends POSTAction {
         addActionMessage(getText("admin.user.added"));
       } else if (resetPassword) {
         String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
-        user.setPassword(newPassword);
+        String hash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
+        user.setPassword(hash);
         userManager.save(user);
         addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));
       } else {

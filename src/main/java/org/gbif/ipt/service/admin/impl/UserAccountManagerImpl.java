@@ -121,7 +121,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
         throw new AlreadyExistingException();
       }
       // hash password before creation
-      user.setPassword(BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray()));
+      String hash = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
+      user.setPassword(hash);
       addUser(user);
       save();
     }
