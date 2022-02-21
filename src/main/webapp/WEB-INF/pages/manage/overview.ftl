@@ -340,44 +340,48 @@
                         </form>
                     <#else>
                         <#if !currentUser.hasRegistrationRights() && (resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED")>
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
-                                    <@s.text name="button.delete"/>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
-                                    <li>
-                                        <form action="resource-delete.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIptAndGbif"/>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="resource-deleteFromIpt.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIpt"/>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
+                            <#if disableRegistrationRights != "true">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <@s.text name="button.delete"/>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
+                                        <li>
+                                            <form action="resource-delete.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="resource-deleteFromIpt.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIpt"/>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </#if>
                         <#else>
                             <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" style="min-width: 100px;" data-bs-toggle="dropdown" aria-expanded="false" <#if disableRegistrationRights=="true">disabled</#if> >
-                                    <@s.text name="button.delete"/>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
-                                    <li>
-                                        <form action="resource-delete.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIptAndGbif"/>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <form action="resource-deleteFromIpt.do" method='post'>
-                                            <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIpt"/>
-                                        </form>
-                                    </li>
-                                </ul>
+                                <#if disableRegistrationRights != "true">
+                                    <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" style="min-width: 100px;" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <@s.text name="button.delete"/>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
+                                        <li>
+                                            <form action="resource-delete.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="resource-deleteFromIpt.do" method='post'>
+                                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                                <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIpt"/>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </#if>
                             </div>
                         </#if>
                     </#if>
@@ -386,18 +390,16 @@
 
                 <#if !currentUser.hasRegistrationRights()>
                     <#if resource.status == "DELETED">
-                        <div>
-                            <p class="text-gbif-warning fst-italic">
-                                <i class="bi bi-exclamation-triangle"></i>
+                        <div class="mt-2">
+                            <span class="text-gbif-danger fst-italic text-smaller">
                                 <@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                            </p>
+                            </span>
                         </div>
                     <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
-                        <div>
-                            <p class="text-gbif-warning fst-italic">
-                                <i class="bi bi-exclamation-triangle"></i>
+                        <div class="mt-2">
+                            <span class="text-gbif-danger fst-italic text-smaller">
                                 <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                            </p>
+                            </span>
                         </div>
                     </#if>
                 </#if>
