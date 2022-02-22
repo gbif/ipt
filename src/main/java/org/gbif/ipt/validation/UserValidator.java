@@ -45,6 +45,7 @@ public class UserValidator extends BaseValidator {
       if (validatePassword && !exists(user.getPassword(), 4)) {
         valid = false;
         action.addFieldError("newPassword", action.getText("validation.password.required"));
+        action.addFieldError("user.password", action.getText("validation.password.required"));
       }
 
     }
@@ -56,6 +57,7 @@ public class UserValidator extends BaseValidator {
     if (!exists(password, 4)) {
       valid = false;
       action.addFieldError("newPassword", action.getText("validation.password.required"));
+      action.addFieldError("user.password", action.getText("validation.password.required"));
     }
     return valid;
   }
