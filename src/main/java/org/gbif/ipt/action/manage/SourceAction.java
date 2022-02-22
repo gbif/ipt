@@ -63,6 +63,8 @@ public class SourceAction extends ManagerBaseAction {
   private String rdbms;
   private String problem;
   private String sqlSourcePassword;
+  // to store password internally
+  private String sqlSourcePasswordCache;
   // URL
   private String url;
   private String sourceName;
@@ -432,6 +434,14 @@ public class SourceAction extends ManagerBaseAction {
         // store original number of columns, in case they change the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
       }
+
+      // we don't display password after saving, store password internally
+      if (source instanceof SqlSource) {
+        String pw = ((SqlSource) source).getPassword();
+        if (StringUtils.isNotEmpty(pw)) {
+          sqlSourcePasswordCache = pw;
+        }
+      }
     } else if (file == null) {
       // prepare a new, empty sql source
       source = new SqlSource();
@@ -605,6 +615,12 @@ public class SourceAction extends ManagerBaseAction {
       if (source instanceof SqlSource) {
         // SQL SOURCE
         SqlSource src = (SqlSource) source;
+
+        // restore password if it was not sent from UI
+        if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
+          src.setPassword(sqlSourcePasswordCache);
+        }
+
         // pure ODBC connections need only a DSN, no server
         if (StringUtils.trimToEmpty(src.getHost()).length() == 0 && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
           addFieldError("sqlSource.host", getText("validation.required", new String[] {getText("sqlSource.host")}));
