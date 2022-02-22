@@ -877,19 +877,19 @@
                                             <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                                         </#assign>
 
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm  btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
+                                        <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                     <#elseif missingValidPublishingOrganisation?string == "true">
                                         <!-- Disable register button and show warning: user must assign valid publishing organisation -->
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
+                                        <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                     <#elseif missingRegistrationMetadata?string == "true">
                                         <!-- Disable register button and show warning: user must fill in minimum registration metadata -->
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
+                                        <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                     <#elseif !resource.isLastPublishedVersionPublic()>
                                         <!-- Disable register button and show warning: last published version must be publicly available to register -->
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
+                                        <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                     <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                         <!-- Disable register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                        <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register" disabled="true"/>
+                                        <button class="btn btn-sm btn-outline-gbif-primary" name="register" disabled><@s.text name="button.register"/></button>
                                     <#else>
                                         <@s.submit cssClass="confirmRegistration btn btn-sm btn-outline-gbif-primary" name="register" key="button.register"/>
                                     </#if>

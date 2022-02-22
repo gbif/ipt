@@ -6,11 +6,11 @@
 
         <!-- resources cannot be published if the mandatory metadata is missing -->
         <#if missingMetadata>
-                <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-gbif-primary" name="publish" key="button.publish" disabled="true"/>
+            <button class="btn btn-sm btn-outline-gbif-primary" name="publishButton" disabled><@s.text name="button.publish"/></button>
 
         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
         <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-                <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-gbif-primary" name="publish" key="button.publish" disabled="true"/>
+            <button class="btn btn-sm btn-outline-gbif-primary" name="publishButton" disabled><@s.text name="button.publish"/></button>
 
         <!-- previously published resources without a DOI, or that haven't been registered yet can be republished whenever by any manager -->
         <#elseif resource.lastPublished?? && resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">
@@ -22,13 +22,13 @@
         || resource.status == "REGISTERED">
             <!-- the user must have registration rights -->
             <#if !currentUser.hasRegistrationRights()>
-                <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-gbif-primary" name="publish" key="button.publish" disabled="true"/>
+                <button class="btn btn-sm btn-outline-gbif-primary" name="publishButton" disabled><@s.text name="button.publish"/></button>
 
             <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
             <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
             || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
             && !organisationWithPrimaryDoiAccount??>
-                <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-gbif-primary" name="publish" key="button.publish" disabled="true"/>
+                <button class="btn btn-sm btn-outline-gbif-primary" name="publishButton" disabled><@s.text name="button.publish"/></button>
 
             <!-- when a DOI is reserved.. -->
             <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
@@ -62,7 +62,7 @@
 
         <!-- otherwise prevent publication from happening just to be safe -->
         <#else>
-            <@s.submit id="publishButton" cssClass="btn btn-sm btn-outline-secondary" name="publish" key="button.publish" disabled="true"/>
+            <button class="btn btn-sm btn-outline-gbif-primary" name="publishButton" disabled><@s.text name="button.publish"/></button>
         </#if>
     </form>
 </#macro>
