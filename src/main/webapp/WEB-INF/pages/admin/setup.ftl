@@ -5,7 +5,7 @@
 <main class="container">
 
     <form action="setup.do" method="post" class="needs-validation" novalidate>
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
 
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
 
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 fw-400 border-bottom">
                 [@s.text name="admin.config.server.data.dir"/]
             </h5>

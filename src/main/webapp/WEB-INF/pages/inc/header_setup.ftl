@@ -23,7 +23,7 @@
     <script src="${baseURL}/js/global.js"></script>
 
 </head>
-<body class="bg-light d-flex flex-column h-100">
+<body class="bg-body d-flex flex-column h-100">
 
 <header>
 

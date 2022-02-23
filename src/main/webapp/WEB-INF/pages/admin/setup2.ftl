@@ -5,7 +5,7 @@
 <main class="container">
 
     <form action="setup2.do" method="post" class="needs-validation">
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
 
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
 
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="text-gbif-header pb-2 mt-2 border-bottom mx-md-4 mx-2 fw-400">
                 [@s.text name="admin.config.setup2.mode.title"/]
             </h5>
@@ -69,7 +69,7 @@
 
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom fw-400">
                 [@s.text name="admin.config.setup2.publicURL.title"/]
             </h5>
@@ -86,7 +86,7 @@
 
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom fw-400">
                 [@s.text name="admin.config.setup2.forwardProxyURL.title"/]
             </h5>

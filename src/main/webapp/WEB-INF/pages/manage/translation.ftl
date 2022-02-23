@@ -46,7 +46,7 @@
 
 <main class="container">
     <form class="topForm" action="translation.do" method="post">
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
 
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
@@ -57,7 +57,7 @@
             <p class="mx-md-4 mx-2"><@s.text name="manage.translation.intro"/></p>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
                 <@s.text name="manage.translation.property"/> <em>${property.name}</em>
             </h5>
@@ -82,7 +82,7 @@
             <@buttons/>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <input type="hidden" name="r" value="${resource.shortname}"/>
             <input type="hidden" name="rowtype" value="${property.extension.rowType}"/>
             <input type="hidden" name="mid" value="${mid}"/>

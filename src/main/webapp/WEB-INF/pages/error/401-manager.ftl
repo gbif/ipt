@@ -4,7 +4,7 @@
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
 
 <main class="container">
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="my-3 p-3 border rounded shadow-sm">
 
         [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
 

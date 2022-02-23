@@ -13,14 +13,14 @@
 <@resourcesTable shownPublicly=false numResourcesShown=10 sEmptyTable="manage.home.resources.none" columnToSortOn=6 sortOrder="desc"/>
 
 <main class="container">
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="my-3 p-3 border rounded shadow-sm">
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
             <@s.text name="manage.home.title"/>
         </h5>
         <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2"></div>
     </div>
 
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="my-3 p-3 border rounded shadow-sm">
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
             <@s.text name="manage.resource.create.title"/>
         </h5>

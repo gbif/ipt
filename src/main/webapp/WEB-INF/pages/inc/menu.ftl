@@ -1,7 +1,7 @@
 [#ftl output_format="HTML"]
 </head>
 
-<body class="bg-light d-flex flex-column h-100">
+<body class="bg-body d-flex flex-column h-100">
 
 <header>
     <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-1 [#if !auxTopNavbar]shadow-sm[/#if]">

@@ -6,7 +6,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
 <main class="container" style="max-width: 400px;">
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="my-3 p-3 border rounded shadow-sm">
 
         <#include "/WEB-INF/pages/inc/action_alerts_without_warnings.ftl">
 

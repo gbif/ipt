@@ -8,7 +8,7 @@
 <main class="container">
 	<div class="row my-2 p-3">
 		<div class="col-sm-12 mb-3">
-			<div class="card admin-card rounded shadow-sm">
+			<div class="card admin-card border rounded shadow-sm">
 				<h5 class="border-bottom pb-2 mb-0 mx-4 pt-4 text-gbif-header fw-400 text-center">
 					<@s.text name="menu.admin"/>
 				</h5>

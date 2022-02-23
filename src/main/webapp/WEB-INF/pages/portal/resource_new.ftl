@@ -233,9 +233,9 @@
 <#assign resourceDescriptionLength = resourceDescription?length>
 <#assign maxDescriptionLength = 800>
 
-<div class="container-fluid border-bottom">
+<div class="container-fluid bg-light border-bottom">
     <div class="container">
-        <div class="my-4 p-3 pt-4 bg-body rounded shadow-sm">
+        <div class="my-4 p-3 pt-4 bg-body border rounded shadow-sm">
             <div class="mx-md-4 mx-2">
                 <div class="row">
                     <div class="col-lg-8 text-smaller">
