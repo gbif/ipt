@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-01-27 23:53\n"
+"POT-Creation-Date: 2022-02-24 12:06+0000\n"
+"PO-Revision-Date: 2022-02-24 12:21\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -560,8 +560,8 @@ msgstr "Esta página permite a un usuario con el rol de Administrador habilitar 
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:145
-msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
-msgstr "Los vocabularios contienen una lista de valores válidos que puede tomar un elemento particular en un estándar o extensión. Por ejemplo, el https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Vocabulario Darwin Core] contiene todos los valores del estándar permitidos en el elemento Darwin Core http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
+msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the {latest-basis-of-record}[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:147
