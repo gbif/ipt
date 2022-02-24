@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2022-02-01 22:15\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:21\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -133,8 +133,8 @@ msgstr "Para obtener una orientación adicional puede consultar los <<Conjuntos 
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:19
-msgid "You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}.xml[list]."
-msgstr "Puede complementar su tabla incluyendo columnas DwC adicionales, pero sólo con términos DwC de esta {latest-dwc-occurrence}.xml[lista]."
+msgid "You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:24
@@ -198,8 +198,8 @@ msgstr "P. ¿Cómo puedo indicar que una especie está ausente?"
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
 #, no-wrap
-msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
-msgstr "*A.* Establecer https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. Además, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] y https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] deben ser iguales a 0.\n"
+msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
+msgstr ""
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:52
