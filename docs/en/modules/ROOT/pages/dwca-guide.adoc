@@ -49,7 +49,7 @@ GBIF currently supports the following three biodiversity data types as the basis
 image::figures/core_data_file.png[A core data file is a simple, tabular, text file]
 --
 
-. *Optional “extension” files* support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may apply only to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the http://rs.gbif.org/extension/[GBIF Extension Repository].
+. *Optional “extension” files* support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may apply only to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the https://rs.gbif.org/extensions.html[GBIF Extension Repository].
 +
 image::figures/extension_data_file.png[An extension is linked to the core file via the common taxon ID]
 
