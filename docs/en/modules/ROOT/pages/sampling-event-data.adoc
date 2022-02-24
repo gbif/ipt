@@ -35,7 +35,7 @@ Populate it and upload it to the IPT.
 
 === Recommended DwC fields
 
-* hhttps://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]
+* https://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]
 * https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - in situations where the event is part of an event series
 * https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event
 * https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier
@@ -64,18 +64,18 @@ Populate it and upload it to the IPT.
 
 ==== Q. How do I publish absence data?
 
-*A.* *Step 1*: Include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] demonstrates how this looks.
+*A.* *Step 1*: Include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] (https://www.gbif.org/occurrence/search?dataset_key=78360224-5493-45fd-a9a0-c336557f09c3[also on GBIF.org]) demonstrates how this looks.
 
 Alternatively, you can make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:
 
 Mandatory:
 
-* https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml["absent"]
+* https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[absent]
 
 Optional (provide one or both):
 
-* hhttps://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]="0"
-* https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] & https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair. "e.g. 0 individuals"
+* https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]="0"
+* https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] and https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair: "0", "individuals"
 
 *Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data being recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.
 
