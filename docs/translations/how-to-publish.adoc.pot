@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-12-14 12:55+0000\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -209,10 +209,10 @@ msgstr ""
 #: en/modules/ROOT/pages/how-to-publish.adoc:47
 msgid ""
 "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to "
-"the {latest-dwc-taxon}.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence "
-"Data] gets mapped to the {latest-dwc-occurrence}.xml[Occurrence Core], xref:"
+"the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence "
+"Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:"
 "sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-"
-"event}.xml[Event Core]."
+"event}[Event Core]."
 msgstr ""
 
 #. type: Plain text
