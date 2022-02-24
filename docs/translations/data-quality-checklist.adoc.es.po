@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
-"PO-Revision-Date: 2022-02-04 00:53\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:21\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -18,7 +18,6 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/core.adoc:13
-#: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
@@ -151,9 +150,8 @@ msgstr "Si fue un evento relacionado con registros biológicos de especies ¿cu�
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:52
 #, no-wrap
 msgid "| Check-ID | Fields | Requirements\n\n"
-"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}.xml[GBIF Occurrence Status Vocabulary].\n"
-msgstr "| Check-ID | Campos | Requisitos\n\n"
-"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | La abundancia de especies debe completarse utilizando `individualCount` y la pareja `organismQuantity` & `organismQuantityType`. Para la abundancia relativa utlice la pareja `organismQuantity` & `organismQuantityType` con valores para `organismQuantityType` procedentes del {latest-quantity-type}[Vocabulario GBIF para los tipos cuantitativos]. La abundancia cero (ausencia de especies) debe estar acompañada de `occurrenceStatus` marcada como \"ausencia\" por el {latest-occurrence-status}.xml[Vocabulario GBIF para el estado de los registros].\n"
+"| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to \"absence\" per the {latest-occurrence-status}[GBIF Occurrence Status Vocabulary].\n"
+msgstr ""
 
 #. type: Title ====
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:54
