@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-01-13 16:56+0000\n"
-"PO-Revision-Date: 2022-01-13 17:00\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -157,19 +157,19 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:46
 #, no-wrap
-msgid "*Occurrence data* — The category of information pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.). Core files of this type are used to share information about a specific instance of a taxon such as a specimen or observation. The required core ID is represented by *dwc:occurrenceID*. The definitive list of Occurrence terms can be found in the {latest-dwc-occurrence}.xml[Occurrence (Core) Extension].\n"
+msgid "*Occurrence data* — The category of information pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.). Core files of this type are used to share information about a specific instance of a taxon such as a specimen or observation. The required core ID is represented by *dwc:occurrenceID*. The definitive list of Occurrence terms can be found in the {latest-dwc-occurrence}[Occurrence (Core) Extension].\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:47
 #, no-wrap
-msgid "*Checklist data* — The category of information pertaining to taxa or taxon concepts, such as species. Core files of this type are used to share annotated species checklists, taxonomic catalogues, and other information about taxa. The required core ID is represented by *dwc:taxonID*. The definitive list of core Taxon terms can be found in the {latest-dwc-taxon}.xml[Taxon (Core) Extension].\n"
+msgid "*Checklist data* — The category of information pertaining to taxa or taxon concepts, such as species. Core files of this type are used to share annotated species checklists, taxonomic catalogues, and other information about taxa. The required core ID is represented by *dwc:taxonID*. The definitive list of core Taxon terms can be found in the {latest-dwc-taxon}[Taxon (Core) Extension].\n"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:48
 #, no-wrap
-msgid "*Sampling-event data* — The category of information pertaining to a sampling event. Core files of this type are used to share information about ecological investigations that can be one-off studies or monitoring programmes that are usually quantitative, calibrated and follow certain protocols so that changes and trends of populations can be detected. The required core ID is represented by *dwc:eventID*. The definitive list of core Event terms can be found in the {latest-dwc-event}.xml[Event (Core) Extension].\n"
+msgid "*Sampling-event data* — The category of information pertaining to a sampling event. Core files of this type are used to share information about ecological investigations that can be one-off studies or monitoring programmes that are usually quantitative, calibrated and follow certain protocols so that changes and trends of populations can be detected. The required core ID is represented by *dwc:eventID*. The definitive list of core Event terms can be found in the {latest-dwc-event}[Event (Core) Extension].\n"
 msgstr ""
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
@@ -187,7 +187,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:53
 #, no-wrap
-msgid "*Optional “extension” files* support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may apply only to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the http://rs.gbif.org/extension/[GBIF Extension Repository].\n"
+msgid "*Optional “extension” files* support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may apply only to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the https://rs.gbif.org/extensions.html[GBIF Extension Repository].\n"
 msgstr ""
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
