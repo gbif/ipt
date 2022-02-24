@@ -48,7 +48,7 @@ Compile a list of all checks that fail and report them back to the data publishe
 |===
 | Check-ID | Fields | Requirements
 
-| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to "absence" per the {latest-occurrence-status}.xml[GBIF Occurrence Status Vocabulary].
+| *what 5* | `individualCount`, `organismQuantity`, `organismQuantityType`, `occurrenceStatus` | The species abundance must be filled in using `individualCount` and the pair `organismQuantity` & `organismQuantityType`. For relative abundance use the pair `organismQuantity` & `organismQuantityType` with values for `organismQuantityType` coming from the {latest-quantity-type}[GBIF Quantity Type Vocabulary]. Zero abundance (absence of the species) must be coupled with `occurrenceStatus` set to "absence" per the {latest-occurrence-status}[GBIF Occurrence Status Vocabulary].
 |===
 
 ==== If it was a species occurrence related event - what species was it?

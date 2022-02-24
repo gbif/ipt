@@ -170,9 +170,9 @@ Lastly, you can delete old resource using the "Delete from the IPT only (orphan)
 
 The type of a resource is derived from its core mapping:
 
-* If the core mapping is to the {latest-dwc-occurrence}.xml[Occurrence extension], the type is equal to "occurrence".
-* If the core mapping is to the {latest-dwc-taxon}.xml[Taxon extension], the type is equal to "checklist".
-* If the core mapping is to the {latest-dwc-event}.xml[Event extension], the type is equal to "sampling-event".
+* If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], the type is equal to "occurrence".
+* If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type is equal to "checklist".
+* If the core mapping is to the {latest-dwc-event}[Event extension], the type is equal to "sampling-event".
 * If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to "other".
 
 Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.

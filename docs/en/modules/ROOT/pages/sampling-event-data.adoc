@@ -14,9 +14,9 @@ Try putting your data into the <<Templates,Excel template>>, which includes two 
 
 Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write two SQL tables (views) using DwC column names: one for sampling events and another for associated species occurrences.
 
-Each sampling event record should include all <<Required DwC Fields,required DwC fields>> and as many <<Recommended DwC Fields,recommended DwC fields>> as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-event}.xml[list].
+Each sampling event record should include all <<Required DwC Fields,required DwC fields>> and as many <<Recommended DwC Fields,recommended DwC fields>> as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list].
 
-Similarly each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}.xml[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise when the location of individual occurrences isn't supplied, its location gets inherited from the event.
+Similarly each species occurrence record should include all xref:occurrence-data.adoc#required-dwc-fields[required DwC fields] and as many xref:occurrence-data.adoc#recommended-dwc-fields[recommended DwC fields] as possible. You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]. Some DwC terms will be redundant meaning they are added to both sampling event and species occurrence records. As a general rule, try not to add redundant terms with the same values. It is fine if they have different values though, for example if you wanted to define a location of an event and then define more specific locations for individual occurrences. Otherwise when the location of individual occurrences isn't supplied, its location gets inherited from the event.
 
 For extra guidance, you can refer to the guide xref:best-practices-sampling-event-data.adoc[Best Practices in Publishing Sampling-event data] and look at the <<Templates,template populated with example data>> or the list of <<Exemplar datasets,exemplar datasets>>.
 
@@ -70,7 +70,7 @@ Alternatively, you can make species absences explicit by adding a species occurr
 
 Mandatory:
 
-* https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[absent]
+* https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[absent]
 
 Optional (provide one or both):
 
