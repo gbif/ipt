@@ -397,8 +397,8 @@ public class ResourceManagerImplTest {
     assertEquals(23, res.getMappings().get(0).getFields().size());
     assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
 
-    // there are no eml properties except default shortname as title since there was no eml.xml file included
-    assertEquals(RESOURCE_SHORTNAME, res.getEml().getTitle());
+    // there are no eml properties
+    assertNull(res.getEml().getTitle());
     assertTrue(res.getEml().getDescription().isEmpty());
 
     // properties that never get set on new resource creation
@@ -490,8 +490,8 @@ public class ResourceManagerImplTest {
     assertEquals(23, res.getMappings().get(0).getFields().size());
     assertEquals(0, res.getMappings().get(0).getIdColumn().intValue());
 
-    // there are no eml properties except default shortname as title since there was no eml.xml file included
-    assertEquals("res-single-gz", res.getEml().getTitle());
+    // there are no eml properties
+    assertNull(res.getEml().getTitle());
     assertTrue(res.getEml().getDescription().isEmpty());
   }
 

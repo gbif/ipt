@@ -178,7 +178,7 @@ public class EmlValidator extends BaseValidator {
           }
 
           // Title - not a short name of the resource
-          if (resource.getShortname().equals(eml.getTitle())) {
+          if (resource.getShortname() != null && resource.getShortname().equals(eml.getTitle())) {
             action.addActionWarning(action.getText("eml.title.shortname.match"));
           }
 
