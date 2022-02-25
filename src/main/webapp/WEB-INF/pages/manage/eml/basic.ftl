@@ -149,7 +149,13 @@
             </div>
 
             <div class="text-center fs-smaller">
-                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">
+                    <#if resource.title?has_content>
+                        ${resource.title}
+                    <#else>
+                        ${resource.shortname}
+                    </#if>
+                </a>
             </div>
         </div>
     </div>
@@ -172,7 +178,7 @@
 
                         <div class="row g-3">
                             <div class="col-12">
-                                <@input name="eml.title" requiredField=true />
+                                <@input name="eml.title" help="i18n" requiredField=true />
                             </div>
 
                             <div class="col-lg-4">

@@ -22,7 +22,10 @@
                     <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                 </div>
                 <div class="overflow-x-hidden pt-1">
-                    <span>${w!} [#if w?index == 2](There are more warnings, see logs for details)[/#if]</span>
+                    <span>
+                        ${w!}
+                        [#if w?index == 2 && warnings?size > 3](There are more warnings, see logs for details)[/#if]
+                    </span>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>

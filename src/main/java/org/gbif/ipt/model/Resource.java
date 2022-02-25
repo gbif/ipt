@@ -891,9 +891,6 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setShortname(String shortname) {
     this.shortname = shortname;
-    if (eml != null && eml.getTitle() == null) {
-      eml.setTitle(shortname);
-    }
   }
 
   public void setStatus(PublicationStatus status) {

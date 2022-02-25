@@ -100,7 +100,9 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * If you want form validation with the workflow interceptor, please {@link #addActionError(String)} instead.
    */
   public void addActionWarning(String anErrorMessage) {
-    warnings.add(anErrorMessage);
+    if (!warnings.contains(anErrorMessage)) {
+      warnings.add(anErrorMessage);
+    }
   }
 
   public void addActionWarning(String anErrorMessage, Exception e) {

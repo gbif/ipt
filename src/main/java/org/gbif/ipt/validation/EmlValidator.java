@@ -177,6 +177,11 @@ public class EmlValidator extends BaseValidator {
               action.getText("validation.required", new String[] {action.getText("eml.title")}));
           }
 
+          // Title - not a short name of the resource
+          if (resource.getShortname().equals(eml.getTitle())) {
+            action.addActionWarning(action.getText("eml.title.shortname.match"));
+          }
+
           // description - mandatory and greater than 5 chars
           if (eml.getDescription().isEmpty()) {
             action
