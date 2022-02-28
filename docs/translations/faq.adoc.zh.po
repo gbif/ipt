@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-01-27 14:31+0000\n"
-"PO-Revision-Date: 2022-01-27 14:43\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -446,17 +446,17 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:174
-msgid "If the core mapping is to the {latest-dwc-occurrence}.xml[Occurrence extension], the type is equal to \"occurrence\"."
+msgid "If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], the type is equal to \"occurrence\"."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:175
-msgid "If the core mapping is to the {latest-dwc-taxon}.xml[Taxon extension], the type is equal to \"checklist\"."
+msgid "If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type is equal to \"checklist\"."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:176
-msgid "If the core mapping is to the {latest-dwc-event}.xml[Event extension], the type is equal to \"sampling-event\"."
+msgid "If the core mapping is to the {latest-dwc-event}[Event extension], the type is equal to \"sampling-event\"."
 msgstr ""
 
 #. type: Plain text

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2022-01-13 12:18\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:21\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -78,7 +78,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/checklist-data.adoc:23
-msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}.xml[list]."
+msgid "Populate it and upload it to the IPT. Try to augment it with as many http://rs.tdwg.org/dwc/terms/[DwC terms] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-taxon}[list]."
 msgstr ""
 
 #. type: Title ===

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-01-13 16:56+0000\n"
-"PO-Revision-Date: 2022-02-03 23:52\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:21\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -162,20 +162,20 @@ msgstr "*Un archivo core de datos obligatorio* consta de un conjunto de http://r
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:46
 #, no-wrap
-msgid "*Occurrence data* — The category of information pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.). Core files of this type are used to share information about a specific instance of a taxon such as a specimen or observation. The required core ID is represented by *dwc:occurrenceID*. The definitive list of Occurrence terms can be found in the {latest-dwc-occurrence}.xml[Occurrence (Core) Extension].\n"
-msgstr "*Datos de registros biológicos*: categoría de información relativa a la evidencia de un registro en la naturaleza, en una colección o en un conjunto de datos (espécimen, observación, etc.). Los archivos básicos de este tipo se utilizan para compartir información sobre una instancia específica de un taxón, como un espécimen o una observación. El ID del core requerido está representado por *dwc:occurrenceID*. La lista definitiva de términos de registros biológicos puede encontrarse en el archivo {latest-dwc-occurrence}.xml[Occurrence (Core) Extension].\n"
+msgid "*Occurrence data* — The category of information pertaining to evidence of an occurrence in nature, in a collection, or in a dataset (specimen, observation, etc.). Core files of this type are used to share information about a specific instance of a taxon such as a specimen or observation. The required core ID is represented by *dwc:occurrenceID*. The definitive list of Occurrence terms can be found in the {latest-dwc-occurrence}[Occurrence (Core) Extension].\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:47
 #, no-wrap
-msgid "*Checklist data* — The category of information pertaining to taxa or taxon concepts, such as species. Core files of this type are used to share annotated species checklists, taxonomic catalogues, and other information about taxa. The required core ID is represented by *dwc:taxonID*. The definitive list of core Taxon terms can be found in the {latest-dwc-taxon}.xml[Taxon (Core) Extension].\n"
-msgstr "*Datos de listados taxonómicos*: la categoría de información relativa a los taxa o conceptos de taxa, como las especies. Los archivos centrales de este tipo se utilizan para compartir listados anotados, catálogos taxonómicos y otra información sobre los taxa. El ID del core requerido está representado por *dwc:taxonID*. La lista definitiva de términos del Core puede encontrarse en el archivo {latest-dwc-taxon}.xml[Taxon (Core) Extension].\n"
+msgid "*Checklist data* — The category of information pertaining to taxa or taxon concepts, such as species. Core files of this type are used to share annotated species checklists, taxonomic catalogues, and other information about taxa. The required core ID is represented by *dwc:taxonID*. The definitive list of core Taxon terms can be found in the {latest-dwc-taxon}[Taxon (Core) Extension].\n"
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:48
 #, no-wrap
-msgid "*Sampling-event data* — The category of information pertaining to a sampling event. Core files of this type are used to share information about ecological investigations that can be one-off studies or monitoring programmes that are usually quantitative, calibrated and follow certain protocols so that changes and trends of populations can be detected. The required core ID is represented by *dwc:eventID*. The definitive list of core Event terms can be found in the {latest-dwc-event}.xml[Event (Core) Extension].\n"
-msgstr "*Datos de eventos de muestreo*: la categoría de información perteneciente a un evento de muestreo. Los archivos core de este tipo son utilizados para compartir información sobre invetigaciones biológicas que pueden ser estudios puntuales o programas de monitoreo que normalmente son cuantitativos, calibrados y siguen ciertos protocolos para detectar cambios y tendencias de poblaciones. El ID core requerido está representado por *dwc:eventID*. La lista definitiva de términos core de Evento se puede encontrar en {latest-dwc-event}.xml[Event (Core) Extension].\n"
+msgid "*Sampling-event data* — The category of information pertaining to a sampling event. Core files of this type are used to share information about ecological investigations that can be one-off studies or monitoring programmes that are usually quantitative, calibrated and follow certain protocols so that changes and trends of populations can be detected. The required core ID is represented by *dwc:eventID*. The definitive list of core Event terms can be found in the {latest-dwc-event}[Event (Core) Extension].\n"
+msgstr ""
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/dwca-guide.adoc:49
@@ -192,8 +192,8 @@ msgstr "figures/core_data_file.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/dwca-guide.adoc:53
 #, no-wrap
-msgid "*Optional “extension” files* support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may apply only to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the http://rs.gbif.org/extension/[GBIF Extension Repository].\n"
-msgstr "*Los archivos de \"extensión\" opcionales* apoyan el intercambio de clases adicionales de datos que se relacionan con el tipo de datos core (Registro biológico o Taxón). Un registro de extensión apunta a un registro en el fichero central de datos. Las extensiones se pueden aplicar únicamente a Taxones, Registros biológico o a ambos. Por ejemplo, la extensión de Nombres comunes (ilustrada más abajo) es una extensión para la clase Taxón, mientras que la extensión Imágenes puede utilizarse en ambos clases de conjuntos de datos. Las extensiones pueden ser creadas y añadidas al Repositorio de extensiones de GBIF siguiendo un proceso de consulta y desarrollo con GBIF. La lista definitiva de Extensiones aceptadas se puede encontrar en el http://rs.gbif.org/extension/[Repositorio de extensiones GBIF].\n"
+msgid "*Optional “extension” files* support the exchange of additional, described classes of data that relate to the core data type (Occurrence or Taxon). An extension record points to a record in the core data file. Extensions may apply only to Taxa or Occurrences or may apply to both. For example, the Vernacular Names extension (illustrated below) is an extension to the Taxon class, whereas an Images extension may be used in both. Extensions can be created and added to the GBIF Extension Repository following a consultation and development process with GBIF. The definitive list of supported Extensions can be found on the https://rs.gbif.org/extensions.html[GBIF Extension Repository].\n"
+msgstr ""
 
 #. type: Positional ($1) AttributeList argument for macro 'image'
 #: en/modules/ROOT/pages/dwca-guide.adoc:54
