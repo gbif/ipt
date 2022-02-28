@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-02-28 15:43+0000\n"
-"PO-Revision-Date: 2022-02-28 15:54\n"
+"PO-Revision-Date: 2022-02-28 22:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<2-5-7-february-2022,2.5.7>>."
-msgstr ""
+msgstr "La versión estable actual es la <<2-5-7-febrero-2022,2.5.7>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
@@ -50,7 +50,7 @@ msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles
 #: en/modules/ROOT/pages/releases.adoc:18
 #, no-wrap
 msgid "*2.5.7* – February 2022"
-msgstr ""
+msgstr "*2.5.7* – Febrero 2022"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
