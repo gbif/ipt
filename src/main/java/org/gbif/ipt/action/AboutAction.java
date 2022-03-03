@@ -51,14 +51,25 @@ public class AboutAction extends BaseAction {
 
   @Override
   public void prepare() {
+    StringWriter result;
+    Template tmpl;
     try {
-      StringWriter result = new StringWriter();
-      Template tmpl = ftl.getTemplate("datadir::config/about.ftl");
+      result = new StringWriter();
+      tmpl = ftl.getTemplate("datadir::config/about.ftl");
       tmpl.process(this, result);
       content = result.toString();
     } catch (Exception e) {
-      LOG.warn("Cannot render custom about.ftl template from data dir", e);
-      content = "";
+      LOG.warn("Cannot render custom about.ftl template from data dir. Trying default template...", e);
+
+      try {
+        result = new StringWriter();
+        tmpl = ftl.getTemplate("configDefault/about.ftl");
+        tmpl.process(this, result);
+        content = result.toString();
+      } catch (Exception ex) {
+        LOG.warn("Cannot render default about.ftl template from classpath", ex);
+        content = "";
+      }
     }
   }
 
