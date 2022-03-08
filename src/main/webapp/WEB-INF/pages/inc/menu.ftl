@@ -19,29 +19,29 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <!-- Navbar -->
                 <ul class="navbar-nav me-auto mb-md-0">
-                    <li class="nav-item">
+                    <li class="nav-item nav-item-border-bottom">
                         <a class="nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
                     </li>
                     [#if managerRights]
-                        <li class="nav-item">
+                        <li class="nav-item nav-item-border-bottom">
                             <a class="nav-link [#if currentMenu=='manage']active[/#if]" href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a>
                         </li>
                     [/#if]
                     [#if adminRights]
-                        <li class="nav-item">
+                        <li class="nav-item nav-item-border-bottom">
                             <a class="nav-link [#if currentMenu=='admin']active[/#if]" href="${baseURL}/admin/">[@s.text name="menu.admin"/]</a>
                         </li>
                     [/#if]
-                    <li class="nav-item">
+                    <li class="nav-item nav-item-border-bottom">
                         <a class="nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
                     </li>
                 </ul>
 
                 <div class="d-xl-flex align-content-between">
                     <!-- Health -->
-                    <div class="navbar-nav">
+                    <div class="navbar-nav nav-item-border-bottom">
                       <a href="${baseURL}/health.do" class="nav-link" title="[@s.text name="portal.health.title"/]">
-                          <svg class="gbif-heartbeat-icon" height="24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-356 246.5 90 77.6"  xml:space="preserve">
+                          <svg class="gbif-heartbeat-icon" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-356 246.5 90 77.6"  xml:space="preserve">
                               <path d="M-277.2,286.2h-22.9l-5,11l-10.1-43.8l-10.9,32.8h-18.6c-1.8,0-3.2,1.4-3.2,3.2c0,1.8,1.4,3.2,3.2,3.2h23.3l5.2-15.5l9.2,40l11.1-24.5h18.7c1.8,0,3.2-1.4,3.2-3.2C-274,287.7-275.4,286.2-277.2,286.2z"/>
                           </svg>
                       </a>
@@ -54,7 +54,7 @@
 
                     <!-- Login, account -->
                     [#if (Session.curr_user)??]
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav show-xl-bigger">
                             <li class="nav-item dropdown d-xl-flex align-content-xl-center">
                                 <a class="btn btn-sm menu-link m-xl-auto navbar-button" id="accountDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ${Session.curr_user.email}
@@ -73,11 +73,24 @@
                                 </ul>
                             </li>
                         </ul>
+                        <div class="show-xl-smaller d-flex">
+                            <a class="nav-link ps-0 show-xl-smaller" href="${baseURL}/logout.do">
+                                [@s.text name="menu.logout"/]
+                            </a>
+                            <a href="${baseURL}/account.do" class="nav-link show-xl-smaller" style="color: #437943">
+                                ${Session.curr_user.email}
+                            </a>
+                        </div>
                     [#else]
                         <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center px-1">
-                            <button class="btn btn-sm m-xl-auto navbar-button text-capitalize" type="submit" name="login-submit">
+                            <button class="btn btn-sm m-xl-auto navbar-button text-capitalize show-xl-bigger" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>
+                            <div class="navbar-nav show-xl-smaller">
+                                <a href="javascript:{}" class="nav-link text-capitalize" onclick="this.closest('form').submit();return false;">
+                                    [@s.text name="portal.login"/]
+                                </a>
+                            </div>
                         </form>
                     [/#if]
                 </div>

@@ -52,8 +52,42 @@ header, .dropdown-menu {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-.gbif-translate-icon, .gbif-heartbeat-icon {
-    fill: white;
+@media (max-width: 1200px) {
+    .nav-item-border-bottom {
+        border-bottom: 1px solid #559a55;
+    }
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.nav-link.active {
+    color: #fff;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.gbif-heartbeat-icon, .gbif-translate-icon {
+    fill: rgba(255, 255, 255, 0.55);
+}
+
+.gbif-heartbeat-icon:hover, .gbif-translate-icon:hover {
+    fill: rgba(255, 255, 255, 0.75);
+}
+
+.gbif-heartbeat-icon:active, .gbif-translate-icon:active {
+    fill: #fff;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
 }
 /* Logo, header, menu etc. END */
 
@@ -708,6 +742,18 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 
 /* Utilities */
+@media (min-width: 1200px){
+    .show-xl-smaller {
+        display: none;
+    }
+}
+
+@media (max-width: 1200px){
+    .show-xl-bigger {
+        display: none;
+    }
+}
+
 .overflow-x-auto {
     overflow-x: auto !important;
 }
