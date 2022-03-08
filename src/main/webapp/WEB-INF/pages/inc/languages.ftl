@@ -19,7 +19,7 @@
     [/#if]
     <!-- add more languages as translations become available. -->
 
-    <li class="nav-item dropdown nav-item-border-bottom">
+    <li class="nav-item dropdown">
         <a class="nav-link" href="#" id="languageDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <svg class="gbif-translate-icon" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 0h24v24H0z" fill="none"/>

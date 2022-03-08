@@ -53,8 +53,12 @@ header, .dropdown-menu {
 }
 
 @media (max-width: 1200px) {
-    .nav-item-border-bottom {
+    .nav-item-border-bottom:not(no-border) {
         border-bottom: 1px solid #559a55;
+    }
+
+    .nav-item-border-top:not(no-border) {
+        border-top: 1px solid #559a55;
     }
 }
 
@@ -68,6 +72,10 @@ header, .dropdown-menu {
 
 .nav-link:hover {
     color: rgba(255, 255, 255, 0.75);
+}
+
+.nav-link-account {
+    color: #437943 !important;
 }
 
 .gbif-heartbeat-icon, .gbif-translate-icon {

@@ -73,20 +73,20 @@
                                 </ul>
                             </li>
                         </ul>
-                        <div class="show-xl-smaller d-flex">
+                        <div class="show-xl-smaller d-flex nav-item-border-top">
                             <a class="nav-link ps-0 show-xl-smaller" href="${baseURL}/logout.do">
                                 [@s.text name="menu.logout"/]
                             </a>
-                            <a href="${baseURL}/account.do" class="nav-link show-xl-smaller" style="color: #437943">
+                            <a href="${baseURL}/account.do" class="nav-link show-xl-smaller nav-link-account">
                                 ${Session.curr_user.email}
                             </a>
                         </div>
                     [#else]
-                        <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center px-1">
-                            <button class="btn btn-sm m-xl-auto navbar-button text-capitalize show-xl-bigger" type="submit" name="login-submit">
+                        <form action="${baseURL}/login.do" method="post" class="d-xl-flex align-content-xl-center">
+                            <button class="btn btn-sm m-xl-auto navbar-button border text-capitalize show-xl-bigger" type="submit" name="login-submit">
                                 [@s.text name="portal.login"/]
                             </button>
-                            <div class="navbar-nav show-xl-smaller">
+                            <div class="navbar-nav show-xl-smaller nav-item-border-top">
                                 <a href="javascript:{}" class="nav-link text-capitalize" onclick="this.closest('form').submit();return false;">
                                     [@s.text name="portal.login"/]
                                 </a>
