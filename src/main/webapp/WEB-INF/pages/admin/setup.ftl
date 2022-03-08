@@ -13,9 +13,6 @@
                 [@s.text name="admin.config.setup.title"/]
             </h5>
 
-            <h5 class="text-gbif-header mx-md-4 mx-2 fw-400">
-                [@s.text name="admin.config.setup.disclaimer.title"/]
-            </h5>
             <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
             <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
 
