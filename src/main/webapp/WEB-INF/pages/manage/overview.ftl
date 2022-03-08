@@ -357,7 +357,7 @@
 
                 <div class="mt-2">
                     <#if resource.status == "DELETED">
-                        <div>
+                        <div style="display: inline-block;">
                             <#if disableRegistrationRights == "false">
                                 <form action='resource-undelete.do' method='post'>
                                     <input name="r" type="hidden" value="${resource.shortname}" />
