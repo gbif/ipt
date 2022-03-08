@@ -18,11 +18,8 @@
             <input type="hidden" name="setup2" value="true" />
             <input type="hidden" name="ignoreUserValidation" value="${ignoreUserValidation}" />
 
-            <h5 class="text-gbif-header mx-md-4 mx-2 fw-400">
-                [@s.text name="admin.config.setup2.administrator"/]
-            </h5>
             <p class="mx-md-4 mx-2">
-                [@s.text name="admin.config.setup2.administrator.help"/]
+                [@s.text name="admin.config.setup2.administrator"/]. [@s.text name="admin.config.setup2.administrator.help"/]
             </p>
             <div class="row g-3 mx-md-4 mx-2 pb-3 mb-2">
                 <div class="col-12">
@@ -48,7 +45,7 @@
         </div>
 
         <div class="my-3 p-3 border rounded shadow-sm">
-            <h5 class="text-gbif-header pb-2 mt-2 border-bottom mx-md-4 mx-2 fw-400">
+            <h5 class="text-gbif-header pb-2 mt-2 border-bottom mx-md-4 mx-2 fw-400 text-center">
                 [@s.text name="admin.config.setup2.mode.title"/]
             </h5>
 
@@ -70,7 +67,7 @@
         </div>
 
         <div class="my-3 p-3 border rounded shadow-sm">
-            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom fw-400">
+            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom fw-400 text-center">
                 [@s.text name="admin.config.setup2.publicURL.title"/]
             </h5>
 
@@ -87,7 +84,7 @@
         </div>
 
         <div class="my-3 p-3 border rounded shadow-sm">
-            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom fw-400">
+            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 border-bottom fw-400 text-center">
                 [@s.text name="admin.config.setup2.forwardProxyURL.title"/]
             </h5>
 

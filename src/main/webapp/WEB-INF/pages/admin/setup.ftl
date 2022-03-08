@@ -22,7 +22,7 @@
         </div>
 
         <div class="my-3 p-3 border rounded shadow-sm">
-            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 fw-400 border-bottom">
+            <h5 class="border-bottom pb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
                 [@s.text name="admin.config.server.data.dir"/]
             </h5>
             <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.welcome"/]</p>
