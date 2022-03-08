@@ -4,7 +4,7 @@
 <body class="bg-body d-flex flex-column h-100">
 
 <header>
-    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-1 [#if !auxTopNavbar]shadow-sm[/#if]">
+    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-1 border-bottom [#if !auxTopNavbar]shadow-sm[/#if]">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="IPT" class="gbif-logo"/>
@@ -56,7 +56,7 @@
                     [#if (Session.curr_user)??]
                         <ul class="navbar-nav show-xl-bigger">
                             <li class="nav-item dropdown d-xl-flex align-content-xl-center">
-                                <a class="btn btn-sm menu-link m-xl-auto navbar-button" id="accountDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn btn-sm menu-link m-xl-auto navbar-button border" id="accountDropdownLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ${Session.curr_user.email}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="accountDropdownLink">
