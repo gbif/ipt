@@ -16,21 +16,19 @@ package org.gbif.ipt.model;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
- * Data schema definition.
+ * A single schema file of {@link DataSchema}
  */
-public class DataSchema implements Serializable {
+public class SchemaItem implements Serializable {
 
-  private static final long serialVersionUID = -3130006092545816514L;
+  private static final long serialVersionUID = 3929428113035839253L;
 
   private String identifier;
   private String title;
   private URL url;
-  private List<SchemaItem> subSchemas;
   private String description;
   private boolean isLatest;
   private Date issued;
@@ -57,14 +55,6 @@ public class DataSchema implements Serializable {
 
   public void setUrl(URL url) {
     this.url = url;
-  }
-
-  public List<SchemaItem> getSubSchemas() {
-    return subSchemas;
-  }
-
-  public void setSubSchemas(List<SchemaItem> subSchemas) {
-    this.subSchemas = subSchemas;
   }
 
   public String getDescription() {
@@ -95,28 +85,26 @@ public class DataSchema implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    DataSchema that = (DataSchema) o;
+    SchemaItem that = (SchemaItem) o;
     return isLatest == that.isLatest
         && Objects.equals(identifier, that.identifier)
         && Objects.equals(title, that.title)
         && Objects.equals(url, that.url)
-        && Objects.equals(subSchemas, that.subSchemas)
         && Objects.equals(description, that.description)
         && Objects.equals(issued, that.issued);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifier, title, url, subSchemas, description, isLatest, issued);
+    return Objects.hash(identifier, title, url, description, isLatest, issued);
   }
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", DataSchema.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", SchemaItem.class.getSimpleName() + "[", "]")
         .add("identifier='" + identifier + "'")
         .add("title='" + title + "'")
         .add("url=" + url)
-        .add("fileUrls=" + subSchemas)
         .add("description='" + description + "'")
         .add("isLatest=" + isLatest)
         .add("issued=" + issued)
