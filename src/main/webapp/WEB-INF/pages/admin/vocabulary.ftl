@@ -74,7 +74,7 @@
             </div>
         </#if>
 
-        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
+        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2">
             <div class="col-lg-3">
                 <strong><@s.text name="basic.lastModified"/></strong>
             </div>
@@ -88,7 +88,7 @@
         </h5>
 
         <#list vocabulary.concepts as c>
-            <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
+            <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
                 <div class="col-lg-3">
                     <a name="${c.identifier}"></a>
                     <div class="title">

@@ -9,8 +9,8 @@
         });
     </script>
 
-    <#macro extensionRow ext>
-        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
+    <#macro extensionRow ext currentIndex numberOfExtensions>
+        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#if currentIndex < numberOfExtensions>border-bottom</#if>">
             <div class="col-md-3">
                 <a name="${ext.rowType}"></a>
                 <div class="title">
@@ -91,11 +91,18 @@
             </p>
 
             <#assign count=0>
+            <#assign numberOfCoreExtensions=0>
+
+            <#list extensions as ext>
+                <#if ext.core>
+                    <#assign numberOfCoreExtensions=numberOfCoreExtensions+1>
+                </#if>
+            </#list>
 
             <#list extensions as ext>
                 <#if ext.core>
                     <#assign count=count+1>
-                    <@extensionRow ext/>
+                    <@extensionRow ext count numberOfCoreExtensions/>
                 </#if>
             </#list>
 
@@ -123,10 +130,18 @@
             </p>
 
             <#assign count=0>
+            <#assign numberOfExtensions=0>
+
+            <#list extensions as ext>
+                <#if !ext.core>
+                    <#assign numberOfExtensions=numberOfExtensions+1>
+                </#if>
+            </#list>
+
             <#list extensions as ext>
                 <#if !ext.core>
                     <#assign count=count+1>
-                    <@extensionRow ext/>
+                    <@extensionRow ext count numberOfExtensions/>
                 </#if>
             </#list>
             <#if count=0>
@@ -168,7 +183,7 @@
             <#assign count=0>
             <#list newExtensions as ext>
                 <#assign count=count+1>
-                <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
+                <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
                     <div class="col-md-3">
                         <div class="title">
                             <div class="head">
