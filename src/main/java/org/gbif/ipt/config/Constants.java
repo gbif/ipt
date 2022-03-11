@@ -56,6 +56,7 @@ public final class Constants {
   public static final String DWC_EVENT_ID = "http://rs.tdwg.org/dwc/terms/eventID";
   public static final String DWC_BASIS_OF_RECORD = "http://rs.tdwg.org/dwc/terms/basisOfRecord";
   public static final String DWC_DATASET_ID = "http://rs.tdwg.org/dwc/terms/datasetID";
+  public static final String DATA_SCHEMA_CAMTRAP_DP = "http://rs.gbif.org/schemas/camtrap-dp";
   public static final String VOCAB_URI_DATASET_TYPE = "http://rs.gbif.org/vocabulary/gbif/datasetType";
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-2";
   public static final String VOCAB_URI_COUNTRY = "http://iso.org/iso3166-1/alpha2";

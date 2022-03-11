@@ -15,6 +15,7 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class DataSchema implements Serializable {
   private String identifier;
   private String title;
   private URL url;
-  private List<SchemaItem> subSchemas;
+  private List<DataSchemaFile> subSchemas = new ArrayList<>();
   private String description;
   private boolean isLatest;
   private Date issued;
@@ -59,11 +60,11 @@ public class DataSchema implements Serializable {
     this.url = url;
   }
 
-  public List<SchemaItem> getSubSchemas() {
+  public List<DataSchemaFile> getSubSchemas() {
     return subSchemas;
   }
 
-  public void setSubSchemas(List<SchemaItem> subSchemas) {
+  public void setSubSchemas(List<DataSchemaFile> subSchemas) {
     this.subSchemas = subSchemas;
   }
 
@@ -89,6 +90,10 @@ public class DataSchema implements Serializable {
 
   public void setIssued(Date issued) {
     this.issued = issued;
+  }
+
+  public void addDataSchemaFile(DataSchemaFile dataSchemaFile) {
+    subSchemas.add(dataSchemaFile);
   }
 
   @Override

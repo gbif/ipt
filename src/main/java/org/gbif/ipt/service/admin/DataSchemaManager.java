@@ -14,6 +14,7 @@
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.DataSchemaManagerImpl;
 
 import java.util.List;
@@ -22,6 +23,17 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(DataSchemaManagerImpl.class)
 public interface DataSchemaManager {
+
+  /**
+   * Install base data schemas.
+   */
+  void installBaseSchemas() throws InvalidConfigException;
+
+  /**
+   * Downloads a data schema to the local cache and installs it for mapping. If the file is already locally existing
+   * overwrite the older copy.
+   */
+  void install(DataSchema schema) throws InvalidConfigException;
 
   /**
    * List all installed data schemas.

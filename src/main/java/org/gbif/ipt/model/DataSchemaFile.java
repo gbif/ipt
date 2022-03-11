@@ -15,23 +15,25 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
  * A single schema file of {@link DataSchema}
  */
-public class SchemaItem implements Serializable {
+public class DataSchemaFile implements Serializable {
 
   private static final long serialVersionUID = 3929428113035839253L;
 
   private String identifier;
-  private String title;
   private URL url;
+
+  private String name;
+  private String title;
   private String description;
-  private boolean isLatest;
-  private Date issued;
+  private List<DataSchemaField> fields = new ArrayList<>();
 
   public String getIdentifier() {
     return identifier;
@@ -39,14 +41,6 @@ public class SchemaItem implements Serializable {
 
   public void setIdentifier(String identifier) {
     this.identifier = identifier;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
   }
 
   public URL getUrl() {
@@ -57,6 +51,22 @@ public class SchemaItem implements Serializable {
     this.url = url;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
   public String getDescription() {
     return description;
   }
@@ -65,49 +75,41 @@ public class SchemaItem implements Serializable {
     this.description = description;
   }
 
-  public boolean isLatest() {
-    return isLatest;
+  public List<DataSchemaField> getFields() {
+    return fields;
   }
 
-  public void setLatest(boolean latest) {
-    isLatest = latest;
-  }
-
-  public Date getIssued() {
-    return issued;
-  }
-
-  public void setIssued(Date issued) {
-    this.issued = issued;
+  public void setFields(List<DataSchemaField> fields) {
+    this.fields = fields;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    SchemaItem that = (SchemaItem) o;
-    return isLatest == that.isLatest
-        && Objects.equals(identifier, that.identifier)
+    DataSchemaFile that = (DataSchemaFile) o;
+    return Objects.equals(identifier, that.identifier)
         && Objects.equals(title, that.title)
+        && Objects.equals(name, that.name)
         && Objects.equals(url, that.url)
         && Objects.equals(description, that.description)
-        && Objects.equals(issued, that.issued);
+        && Objects.equals(fields, that.fields);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifier, title, url, description, isLatest, issued);
+    return Objects.hash(identifier, title, name, url, description, fields);
   }
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", SchemaItem.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", DataSchemaFile.class.getSimpleName() + "[", "]")
         .add("identifier='" + identifier + "'")
         .add("title='" + title + "'")
+        .add("name='" + name + "'")
         .add("url=" + url)
         .add("description='" + description + "'")
-        .add("isLatest=" + isLatest)
-        .add("issued=" + issued)
+        .add("fields=" + fields)
         .toString();
   }
 }
