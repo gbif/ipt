@@ -84,7 +84,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       for (DataSchemaFile subSchema : dataSchema.getSubSchemas()) {
         File tmpFile = download(subSchema.getUrl());
         DataSchemaFile dataSchemaFile = loadFromFile(tmpFile);
-        finishInstall(tmpFile, dataSchema.getIdentifier(), dataSchemaFile);
+        finishInstall(tmpFile, dataSchema.getName(), dataSchemaFile);
       }
     } catch (InvalidConfigException e) {
       throw e;
@@ -190,19 +190,18 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
    * Move and rename temporary file to final version.
    *
    * @param tmpFile   downloaded data schema file (in temporary location with temporary filename)
-   * @param schemaIdentifier schema identifier
+   * @param schemaName schema name
    * @param dataSchemaFile data schema file being installed
    *
    * @throws IOException if moving file fails
    */
-  private void finishInstall(File tmpFile, String schemaIdentifier, DataSchemaFile dataSchemaFile) throws IOException {
+  private void finishInstall(File tmpFile, String schemaName, DataSchemaFile dataSchemaFile) throws IOException {
     Objects.requireNonNull(tmpFile);
     Objects.requireNonNull(dataSchemaFile);
     Objects.requireNonNull(dataSchemaFile.getName());
 
     try {
-      String schemaName = StringUtils.substringAfterLast(schemaIdentifier, "/");
-      File installedFile = getDataSchemaFile(schemaIdentifier, schemaName, dataSchemaFile.getName());
+      File installedFile = getDataSchemaFile(schemaName, schemaName, dataSchemaFile.getName());
       FileUtils.moveFile(tmpFile, installedFile);
     } catch (IOException e) {
       LOG.error("Installing data schema failed, while trying to move and rename data schema file: " + e.getMessage(), e);

@@ -30,6 +30,8 @@ public class DataSchema implements Serializable {
 
   private String identifier;
   private String title;
+  private String name;
+  private String version;
   private URL url;
   private List<DataSchemaFile> subSchemas = new ArrayList<>();
   private String description;
@@ -50,6 +52,22 @@ public class DataSchema implements Serializable {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
   }
 
   public URL getUrl() {
@@ -104,6 +122,8 @@ public class DataSchema implements Serializable {
     return isLatest == that.isLatest
         && Objects.equals(identifier, that.identifier)
         && Objects.equals(title, that.title)
+        && Objects.equals(name, that.name)
+        && Objects.equals(version, that.version)
         && Objects.equals(url, that.url)
         && Objects.equals(subSchemas, that.subSchemas)
         && Objects.equals(description, that.description)
@@ -112,7 +132,7 @@ public class DataSchema implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifier, title, url, subSchemas, description, isLatest, issued);
+    return Objects.hash(identifier, title, name, version, url, subSchemas, description, isLatest, issued);
   }
 
   @Override
@@ -120,6 +140,8 @@ public class DataSchema implements Serializable {
     return new StringJoiner(", ", DataSchema.class.getSimpleName() + "[", "]")
         .add("identifier='" + identifier + "'")
         .add("title='" + title + "'")
+        .add("name='" + name + "'")
+        .add("version='" + version + "'")
         .add("url=" + url)
         .add("fileUrls=" + subSchemas)
         .add("description='" + description + "'")
