@@ -98,7 +98,7 @@
         </h5>
 
         <#list extension.properties as p>
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
+            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
                 <div class="col-lg-3">
                     <a name="${p.qualname}"></a>
                     <div class="title">
