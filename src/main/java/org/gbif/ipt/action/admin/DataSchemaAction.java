@@ -55,4 +55,15 @@ public class DataSchemaAction extends POSTAction {
 
     return SUCCESS;
   }
+
+  public List<DataSchema> getSchemas() {
+    return schemas;
+  }
+
+  @Override
+  public void prepare() {
+    super.prepare();
+    // ensure data schemas are always loaded
+    schemaManager.load();
+  }
 }

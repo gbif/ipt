@@ -13,38 +13,42 @@
  */
 package org.gbif.ipt.model.factory;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSchemaFile;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DataSchemaFactory {
 
-  private static final Logger LOG = LogManager.getLogger(DataSchemaFactory.class);
+  /**
+   * Builds a data subschema from the supplied JSON file
+   *
+   * @param file JSON file
+   *
+   * @return data subschema
+   */
+  public DataSchemaFile buildSubschema(File file) throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    return objectMapper.readValue(file, DataSchemaFile.class);
+  }
 
   /**
    * Builds a data schema from the supplied JSON file
    *
    * @param file JSON file
    *
-   * @return data schema file
+   * @return data schema
    */
-  public DataSchemaFile build(File file) throws IOException {
-    // TODO: 11/03/2022 bean?
+  public DataSchema buildSchema(File file) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    // TODO: 11/03/2022 process possible exceptions
-    DataSchemaFile dataSchemaFile = objectMapper.readValue(file, DataSchemaFile.class);
 
-//    LOG.error("Unable to access extension definition defined at " + urlAsString, e);
-//    LOG.error("Unable to parse extension definition defined at " + urlAsString, e);
-
-    return dataSchemaFile;
+    return objectMapper.readValue(file, DataSchema.class);
   }
 }

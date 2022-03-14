@@ -41,4 +41,11 @@ public interface DataSchemaManager {
    * @return list of installed IPT data schemas
    */
   List<DataSchema> list();
+
+  /**
+   * Load all installed data schemas from the data dir.
+   *
+   * @return number of data schemas that have been loaded successfully
+   */
+  int load();
 }

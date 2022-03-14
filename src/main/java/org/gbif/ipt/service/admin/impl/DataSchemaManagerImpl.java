@@ -30,6 +30,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,9 +38,12 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.http.StatusLine;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import static org.gbif.utils.HttpUtil.success;
@@ -56,6 +60,8 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
   private final BaseAction baseAction;
+
+  private List<DataSchema> dataSchemas = new ArrayList<>();
 
   @Inject
   public DataSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
@@ -81,10 +87,20 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   public synchronized void install(DataSchema dataSchema) throws InvalidConfigException {
     Objects.requireNonNull(dataSchema);
     try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+      String filename = org.gbif.ipt.utils.FileUtils
+          .getSuffixedFileName("_" + dataSchema.getIdentifier().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
+      File tmpFileSchema = dataDir.tmpFile(filename);
+
+      objectMapper.writeValue(tmpFileSchema, dataSchema);
+      finishInstallSchema(tmpFileSchema, dataSchema.getIdentifier(), dataSchema.getName());
+
       for (DataSchemaFile subSchema : dataSchema.getSubSchemas()) {
         File tmpFile = download(subSchema.getUrl());
-        DataSchemaFile dataSchemaFile = loadFromFile(tmpFile);
-        finishInstall(tmpFile, dataSchema.getName(), dataSchemaFile);
+        DataSchemaFile dataSchemaFile = loadSubschemaFromFile( tmpFile);
+        finishInstallSubschema(tmpFile, dataSchema.getIdentifier(), dataSchema.getName(), dataSchemaFile);
       }
     } catch (InvalidConfigException e) {
       throw e;
@@ -97,7 +113,47 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
   @Override
   public List<DataSchema> list() {
-    return new ArrayList<>();
+    return dataSchemas;
+  }
+
+  @Override
+  public int load() {
+    File dataSchemasDir = dataDir.configFile(CONFIG_FOLDER);
+    int counter = 0;
+    if (dataSchemasDir.isDirectory()) {
+      String[] dataSchemaNames = dataSchemasDir.list((current, name) -> new File(current, name).isDirectory());
+      FilenameFilter filter = new SuffixFileFilter(DATA_SCHEMA_FILE_SUFFIX, IOCase.INSENSITIVE);
+      DataSchema dataSchema = null;
+      List<DataSchemaFile> dataSchemaFiles = new ArrayList<>();
+
+      try {
+        if (dataSchemaNames != null) {
+          for (String dataSchemaDirectoryName : dataSchemaNames) {
+            File dataSchemaDirectory = new File(dataSchemasDir, dataSchemaDirectoryName);
+            File[] files = dataSchemaDirectory.listFiles(filter);
+
+            if (files != null) {
+              for (File file : files) {
+                if (file.getName().startsWith("_")) {
+                  dataSchema = loadSchemaFromFile(file);
+                } else {
+                  dataSchemaFiles.add(loadSubschemaFromFile(file));
+                }
+              }
+
+              if (dataSchema != null) {
+                dataSchema.setSubSchemas(dataSchemaFiles);
+                dataSchemas.add(dataSchema);
+              }
+            }
+            counter++;
+          }
+        }
+      } catch (InvalidConfigException e) {
+        // TODO: 14/03/2022 delete corrupted files
+      }
+    }
+    return counter;
   }
 
   /**
@@ -161,6 +217,32 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   }
 
   /**
+   * Reads a data schema from file and returns it.
+   *
+   * @param localFile data schema to read from
+   *
+   * @return data schema loaded from file
+   *
+   * @throws InvalidConfigException if data schema could not be loaded successfully
+   */
+  protected DataSchema loadSchemaFromFile(File localFile) throws InvalidConfigException {
+    Objects.requireNonNull(localFile);
+    if (!localFile.exists()) {
+      throw new IllegalStateException();
+    }
+
+    try {
+      DataSchema dataSchema = factory.buildSchema(localFile);
+      LOG.info("Successfully loaded data schema file " + dataSchema.getName());
+      return dataSchema;
+    } catch (IOException e) {
+      LOG.error("Can't access local data schema file (" + localFile.getAbsolutePath() + ")", e);
+      throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_SCHEMA,
+          "Can't access local data schema file");
+    }
+  }
+
+  /**
    * Reads a data schema file from file and returns it.
    *
    * @param localFile data schema file to read from
@@ -169,14 +251,14 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
    *
    * @throws InvalidConfigException if data schema could not be loaded successfully
    */
-  protected DataSchemaFile loadFromFile(File localFile) throws InvalidConfigException {
+  protected DataSchemaFile loadSubschemaFromFile(File localFile) throws InvalidConfigException {
     Objects.requireNonNull(localFile);
     if (!localFile.exists()) {
       throw new IllegalStateException();
     }
 
     try {
-      DataSchemaFile dataSchemaFile = factory.build(localFile);
+      DataSchemaFile dataSchemaFile = factory.buildSubschema(localFile);
       LOG.info("Successfully loaded data schema file " + dataSchemaFile.getName());
       return dataSchemaFile;
     } catch (IOException e) {
@@ -189,19 +271,41 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   /**
    * Move and rename temporary file to final version.
    *
+   * @param tmpFile   downloaded data schema (in temporary location with temporary filename)
+   * @param schemaIdentifier schema identifier
+   * @param schemaName schema name
+   *
+   * @throws IOException if moving file fails
+   */
+  private void finishInstallSchema(File tmpFile, String schemaIdentifier, String schemaName) throws IOException {
+    Objects.requireNonNull(tmpFile);
+
+    try {
+      File installedFile = getDataSchema(schemaIdentifier, schemaName);
+      FileUtils.moveFile(tmpFile, installedFile);
+    } catch (IOException e) {
+      LOG.error("Installing data schema failed, while trying to move and rename data schema file: " + e.getMessage(), e);
+      throw e;
+    }
+  }
+
+  /**
+   * Move and rename temporary file to final version.
+   *
    * @param tmpFile   downloaded data schema file (in temporary location with temporary filename)
+   * @param schemaIdentifier schema identifier
    * @param schemaName schema name
    * @param dataSchemaFile data schema file being installed
    *
    * @throws IOException if moving file fails
    */
-  private void finishInstall(File tmpFile, String schemaName, DataSchemaFile dataSchemaFile) throws IOException {
+  private void finishInstallSubschema(File tmpFile, String schemaIdentifier, String schemaName, DataSchemaFile dataSchemaFile) throws IOException {
     Objects.requireNonNull(tmpFile);
     Objects.requireNonNull(dataSchemaFile);
     Objects.requireNonNull(dataSchemaFile.getName());
 
     try {
-      File installedFile = getDataSchemaFile(schemaName, schemaName, dataSchemaFile.getName());
+      File installedFile = getDataSchemaFile(schemaIdentifier, schemaName, dataSchemaFile.getName());
       FileUtils.moveFile(tmpFile, installedFile);
     } catch (IOException e) {
       LOG.error("Installing data schema failed, while trying to move and rename data schema file: " + e.getMessage(), e);
@@ -220,6 +324,19 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
    */
   private File getDataSchemaFile(String schemaIdentifier, String schemaName, String subSchemaName) {
     String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(schemaIdentifier + "_" + subSchemaName, DATA_SCHEMA_FILE_SUFFIX);
+    return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + filename);
+  }
+
+  /**
+   * Retrieve data schema file by its unique identifier.
+   *
+   * @param schemaIdentifier schema identifier
+   * @param schemaName schema name
+   *
+   * @return data schema file
+   */
+  private File getDataSchema(String schemaIdentifier, String schemaName) {
+    String filename = "_" + org.gbif.ipt.utils.FileUtils.getSuffixedFileName(schemaIdentifier, DATA_SCHEMA_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + filename);
   }
 }
