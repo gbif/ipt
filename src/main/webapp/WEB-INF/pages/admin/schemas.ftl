@@ -3,8 +3,8 @@
     <title><@s.text name="admin.home.manageSchemas"/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
-    <#macro dataSchemaRow ds>
-        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
+    <#macro dataSchemaRow ds currentIndex numberOfSchemas>
+        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#if currentIndex < numberOfSchemas>border-bottom</#if>">
             <div class="col-md-3">
                 <a name="${ds}"></a>
                 <div class="title">
@@ -52,7 +52,7 @@
                                 <tr><th class="col-3"><@s.text name="schema.subschemas"/></th><td>${ds.subSchemas?size}</td></tr>
                                 <tr><th><@s.text name="basic.name"/></th><td>${ds.name}</td></tr>
                                 <tr><th><@s.text name="schema.identifier"/></th><td>${ds.identifier}</td></tr>
-                                <tr><th><@s.text name="basic.link"/></th><td>${ds.url}</td></tr>
+                                <tr><th><@s.text name="basic.link"/></th><td><a href="${ds.url}">${ds.url}</a></td></tr>
                             </table>
                         </div>
                     </div>
@@ -72,8 +72,11 @@
                 <@s.text name="admin.schemas.title"/>
             </h5>
 
+            <#assign count=0>
+
             <#list schemas as ds>
-                <@dataSchemaRow ds/>
+                <#assign count=count+1>
+                <@dataSchemaRow ds count schemas?size/>
             </#list>
 
         </div>
