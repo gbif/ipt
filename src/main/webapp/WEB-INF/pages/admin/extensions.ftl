@@ -111,10 +111,10 @@
                     <@s.text name="admin.extension.no.coreTypes.installed"/>
                 </p>
                 <p class="mx-md-4 mx-2">
-                    <span class="badge rounded-pill bg-warning">
-                        <i class="bi bi-exclamation-triangle" style="color: black;"></i>
+                    <span class="text-gbif-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
                     </span>
-                    <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
                 </p>
             </#if>
 
