@@ -50,6 +50,7 @@ public class DataSchemaAction extends POSTAction {
   private List<DataSchema> schemas;
   private List<DataSchema> newSchemas;
   private String schemaName;
+  private DataSchema dataSchema;
 
   @Inject
   public DataSchemaAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -130,6 +131,10 @@ public class DataSchemaAction extends POSTAction {
 
     // load the latest data schema versions from Registry
     loadLatestDataSchemasVersions();
+
+    if (id != null) {
+      dataSchema = schemaManager.get(id);
+    }
   }
 
   /**
@@ -199,5 +204,9 @@ public class DataSchemaAction extends POSTAction {
 
   public void setSchemaName(String schemaName) {
     this.schemaName = schemaName;
+  }
+
+  public DataSchema getDataSchema() {
+    return dataSchema;
   }
 }

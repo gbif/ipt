@@ -89,6 +89,11 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     }
   }
 
+  @Override
+  public DataSchema get(String identifier) {
+    return dataSchemasByIdentifiers.get(identifier);
+  }
+
   /**
    * Uninstall data schema by its unique identifier.
    *

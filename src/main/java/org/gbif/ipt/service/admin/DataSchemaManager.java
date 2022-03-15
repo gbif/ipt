@@ -36,6 +36,13 @@ public interface DataSchemaManager {
   void uninstallSafely(String identifier, String name) throws DeletionNotAllowedException;
 
   /**
+   * Get a locally installed data schema by its identifier.
+   *
+   * @return data schema for that identifier or null if not installed
+   */
+  DataSchema get(String identifier);
+
+  /**
    * Install base data schemas.
    */
   void installBaseSchemas() throws InvalidConfigException;
