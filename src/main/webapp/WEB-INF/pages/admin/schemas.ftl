@@ -30,6 +30,7 @@
                         </#if>
                         <form action='schema.do' method='post'>
                             <input type='hidden' name='id' value='${ds.identifier}' />
+                            <input type='hidden' name='schemaName' value='${ds.name}' />
                             <@s.submit name="delete" cssClass="btn btn-sm btn-outline-gbif-danger mt-1" key="button.remove"/>
                         </form>
                     </div>
@@ -109,7 +110,7 @@
                                 </div>
                                 <div class="actions">
                                     <form action='schema.do' method='post'>
-                                        <input type='hidden' name='schemaIdentifier' value='${schema.identifier}' />
+                                        <input type='hidden' name='id' value='${schema.identifier}' />
                                         <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
                                     </form>
                                 </div>

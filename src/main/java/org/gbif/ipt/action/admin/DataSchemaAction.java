@@ -17,6 +17,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -48,7 +49,7 @@ public class DataSchemaAction extends POSTAction {
   private List<DataSchema> latestDataSchemasVersions;
   private List<DataSchema> schemas;
   private List<DataSchema> newSchemas;
-  private String schemaIdentifier;
+  private String schemaName;
 
   @Inject
   public DataSchemaAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -58,6 +59,18 @@ public class DataSchemaAction extends POSTAction {
     this.schemaManager = schemaManager;
     this.registryManager = registryManager;
     this.configWarnings = configWarnings;
+  }
+
+  @Override
+  public String delete() throws Exception {
+    try {
+      schemaManager.uninstallSafely(id, schemaName);
+      addActionMessage(getText("admin.extension.delete.success", new String[] {id}));
+    } catch (DeletionNotAllowedException e) {
+      addActionWarning(getText("admin.extension.delete.error", new String[] {id}));
+      addActionExceptionWarning(e);
+    }
+    return SUCCESS;
   }
 
   /**
@@ -92,19 +105,19 @@ public class DataSchemaAction extends POSTAction {
   public String save() {
     try {
       Optional<DataSchema> wrappedSchema = latestDataSchemasVersions.stream()
-          .filter(ds -> ds.getIdentifier().equals(schemaIdentifier))
+          .filter(ds -> ds.getIdentifier().equals(id))
           .findFirst();
 
       if (wrappedSchema.isPresent()) {
         schemaManager.install(wrappedSchema.get());
       } else {
-        addActionWarning(getText("admin.schemas.install.error", new String[] {schemaIdentifier}));
+        addActionWarning(getText("admin.schemas.install.error", new String[] {id}));
       }
 
-      addActionMessage(getText("admin.schemas.install.success", new String[] {schemaIdentifier}));
+      addActionMessage(getText("admin.schemas.install.success", new String[] {id}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.schemas.install.error", new String[] {schemaIdentifier}), e);
+      addActionWarning(getText("admin.schemas.install.error", new String[] {id}), e);
     }
     return SUCCESS;
   }
@@ -184,7 +197,7 @@ public class DataSchemaAction extends POSTAction {
     this.latestDataSchemasVersions = latestDataSchemasVersions;
   }
 
-  public void setSchemaIdentifier(String schemaIdentifier) {
-    this.schemaIdentifier = schemaIdentifier;
+  public void setSchemaName(String schemaName) {
+    this.schemaName = schemaName;
   }
 }

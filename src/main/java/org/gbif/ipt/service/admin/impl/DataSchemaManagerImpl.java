@@ -34,7 +34,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.io.FileUtils;
@@ -62,6 +64,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   private final BaseAction baseAction;
 
   private List<DataSchema> dataSchemas = new ArrayList<>();
+  private Map<String, DataSchema> dataSchemasByIdentifiers = new HashMap<>();
 
   @Inject
   public DataSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
@@ -73,6 +76,38 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     this.registryManager = registryManager;
     this.downloader = downloader;
     this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
+  }
+
+  @Override
+  public void uninstallSafely(String schemaIdentifier, String schemaName) {
+    if (dataSchemasByIdentifiers.containsKey(schemaIdentifier)) {
+      // check if it's used by some resources
+      // TODO: 15/03/2022 implement once mappings ready
+      uninstall(schemaIdentifier, schemaName);
+    } else {
+      LOG.warn("Data schema not installed locally, can't delete " + schemaIdentifier);
+    }
+  }
+
+  /**
+   * Uninstall data schema by its unique identifier.
+   *
+   * @param identifier identifier of data schema to uninstall
+   * @param name name of data schema to uninstall
+   */
+  private void uninstall(String identifier, String name) {
+    if (dataSchemasByIdentifiers.containsKey(identifier)) {
+      dataSchemasByIdentifiers.remove(identifier);
+
+      File f = getDataSchemaDirectory(name);
+      if (f.exists()) {
+        FileUtils.deleteQuietly(f);
+      } else {
+        LOG.warn("Data schema doesn't exist locally, can't delete " + identifier);
+      }
+    } else {
+      LOG.warn("Data schema not installed locally, can't delete " + identifier);
+    }
   }
 
   @Override
@@ -102,6 +137,9 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
         DataSchemaFile dataSchemaFile = loadSubschemaFromFile( tmpFile);
         finishInstallSubschema(tmpFile, dataSchema.getIdentifier(), dataSchema.getName(), dataSchemaFile);
       }
+
+      // keep data schemas in local lookup: allowed one installed data schema per identifier
+      dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
     } catch (InvalidConfigException e) {
       throw e;
     } catch (Exception e) {
@@ -136,6 +174,8 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
               for (File file : files) {
                 if (file.getName().startsWith("_")) {
                   dataSchema = loadSchemaFromFile(file);
+                  // keep data schema in local lookup
+                  dataSchemasByIdentifiers.put(dataSchema.getIdentifier(), dataSchema);
                 } else {
                   dataSchemaFiles.add(loadSubschemaFromFile(file));
                 }
@@ -338,5 +378,16 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   private File getDataSchema(String schemaIdentifier, String schemaName) {
     String filename = "_" + org.gbif.ipt.utils.FileUtils.getSuffixedFileName(schemaIdentifier, DATA_SCHEMA_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + filename);
+  }
+
+  /**
+   * Get data schema directory.
+   *
+   * @param schemaName schema name
+   *
+   * @return data schema directory
+   */
+  private File getDataSchemaDirectory(String schemaName) {
+    return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName);
   }
 }

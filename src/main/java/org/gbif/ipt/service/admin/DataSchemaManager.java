@@ -14,6 +14,7 @@
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.DataSchemaManagerImpl;
 
@@ -23,6 +24,16 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(DataSchemaManagerImpl.class)
 public interface DataSchemaManager {
+
+  /**
+   * Safely remove an installed data schema by its unique identifier, making sure no mappings to this data schema exist.
+   *
+   * @param identifier of installed data schema to remove
+   * @param name of installed data schema to remove
+   *
+   * @throws DeletionNotAllowedException if at least one mapping to this data schema exists preventing deletion
+   */
+  void uninstallSafely(String identifier, String name) throws DeletionNotAllowedException;
 
   /**
    * Install base data schemas.
