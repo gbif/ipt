@@ -143,7 +143,7 @@ public class DataSchema implements Serializable {
         .add("name='" + name + "'")
         .add("version='" + version + "'")
         .add("url=" + url)
-        .add("fileUrls=" + subSchemas)
+        .add("subSchemas=" + subSchemas)
         .add("description='" + description + "'")
         .add("isLatest=" + isLatest)
         .add("issued=" + issued)

@@ -28,6 +28,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,6 +48,7 @@ public class DataSchemaAction extends POSTAction {
   private List<DataSchema> latestDataSchemasVersions;
   private List<DataSchema> schemas;
   private List<DataSchema> newSchemas;
+  private String schemaIdentifier;
 
   @Inject
   public DataSchemaAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -70,9 +72,10 @@ public class DataSchemaAction extends POSTAction {
 
     // populate list of uninstalled data schemas, removing data schemas installed already, showing only latest versions
     newSchemas = getLatestDataSchemasVersions();
-    for (DataSchema e : schemas) {
-      newSchemas.remove(e);
-    }
+    List<String> installedSchemasIdentifiers = schemas.stream()
+        .map(DataSchema::getIdentifier)
+        .collect(Collectors.toList());
+    newSchemas.removeIf(ds -> installedSchemasIdentifiers.contains(ds.getIdentifier()));
 
     return SUCCESS;
   }
@@ -83,6 +86,27 @@ public class DataSchemaAction extends POSTAction {
 
   public List<DataSchema> getNewSchemas() {
     return newSchemas;
+  }
+
+  @Override
+  public String save() {
+    try {
+      Optional<DataSchema> wrappedSchema = latestDataSchemasVersions.stream()
+          .filter(ds -> ds.getIdentifier().equals(schemaIdentifier))
+          .findFirst();
+
+      if (wrappedSchema.isPresent()) {
+        schemaManager.install(wrappedSchema.get());
+      } else {
+        addActionWarning(getText("admin.schemas.install.error", new String[] {schemaIdentifier}));
+      }
+
+      addActionMessage(getText("admin.schemas.install.success", new String[] {schemaIdentifier}));
+    } catch (Exception e) {
+      LOG.error(e);
+      addActionWarning(getText("admin.schemas.install.error", new String[] {schemaIdentifier}), e);
+    }
+    return SUCCESS;
   }
 
   @Override
@@ -158,5 +182,9 @@ public class DataSchemaAction extends POSTAction {
 
   public void setLatestDataSchemasVersions(List<DataSchema> latestDataSchemasVersions) {
     this.latestDataSchemasVersions = latestDataSchemasVersions;
+  }
+
+  public void setSchemaIdentifier(String schemaIdentifier) {
+    this.schemaIdentifier = schemaIdentifier;
   }
 }

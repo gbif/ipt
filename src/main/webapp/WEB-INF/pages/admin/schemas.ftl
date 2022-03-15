@@ -92,46 +92,48 @@
             </#if>
         </div>
 
-        <div class="my-3 p-3 border rounded shadow-sm">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name="schema.further.title"/>
-            </h5>
+        <#if (newSchemas?size > 0)>
+            <div class="my-3 p-3 border rounded shadow-sm">
+                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
+                    <@s.text name="schema.further.title"/>
+                </h5>
 
-            <#assign count=0>
-            <#list newSchemas as schema>
-                <#assign count=count+1>
-                <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
-                    <div class="col-md-3">
-                        <div class="title">
-                            <div class="head">
-                                ${schema.title}
-                            </div>
-                            <div class="actions">
-                                <form action='schema.do' method='post'>
-                                    <input type='hidden' name='url' value='${schema.url}' />
-                                    <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-9">
-                        <div class="definition">
-                            <div class="body">
-                                <div>
-                                    <p class="overflow-x-auto">${schema.description!}</p>
+                <#assign count=0>
+                <#list newSchemas as schema>
+                    <#assign count=count+1>
+                    <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
+                        <div class="col-md-3">
+                            <div class="title">
+                                <div class="head">
+                                    ${schema.title}
                                 </div>
-                                <div class="details table-responsive">
-                                    <table class="table table-sm table-borderless">
-                                        <tr><th class="col-3"><@s.text name="schema.identifier"/></th><td>${schema.identifier!}</td></tr>
-                                    </table>
+                                <div class="actions">
+                                    <form action='schema.do' method='post'>
+                                        <input type='hidden' name='schemaIdentifier' value='${schema.identifier}' />
+                                        <@s.submit name="install" cssClass="btn btn-sm btn-outline-gbif-primary" key="button.install"/>
+                                    </form>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-9">
+                            <div class="definition">
+                                <div class="body">
+                                    <div>
+                                        <p class="overflow-x-auto">${schema.description!}</p>
+                                    </div>
+                                    <div class="details table-responsive">
+                                        <table class="table table-sm table-borderless">
+                                            <tr><th class="col-3"><@s.text name="schema.identifier"/></th><td>${schema.identifier!}</td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </#list>
-        </div>
+                </#list>
+            </div>
+        </#if>
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
