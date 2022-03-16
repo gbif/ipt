@@ -167,11 +167,12 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       String[] dataSchemaNames = dataSchemasDir.list((current, name) -> new File(current, name).isDirectory());
       FilenameFilter filter = new SuffixFileFilter(DATA_SCHEMA_FILE_SUFFIX, IOCase.INSENSITIVE);
       DataSchema dataSchema = null;
-      List<DataSchemaFile> dataSchemaFiles = new ArrayList<>();
+      List<DataSchemaFile> dataSchemaFiles;
 
       try {
         if (dataSchemaNames != null) {
           for (String dataSchemaDirectoryName : dataSchemaNames) {
+            dataSchemaFiles = new ArrayList<>();
             File dataSchemaDirectory = new File(dataSchemasDir, dataSchemaDirectoryName);
             File[] files = dataSchemaDirectory.listFiles(filter);
 

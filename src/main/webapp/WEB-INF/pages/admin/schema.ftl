@@ -83,6 +83,61 @@
                 <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
                     <@s.text name="schema.subschemas"/>: ${subSchema.title}
                 </h5>
+
+                <#list subSchema.fields as field>
+                    <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
+                        <div class="col-lg-3">
+                            <div class="title">
+                                <div class="head overflow-x-auto">
+                                    <strong>${field.name}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-9">
+                            <div class="definition">
+                                <div class="body">
+                                    <#if field.description?has_content>
+                                        <p class="overflow-x-auto">
+                                            ${field.description}
+                                        </p>
+                                    </#if>
+
+                                    <div class="details table-responsive">
+                                        <table>
+                                            <tr>
+                                                <th class="pe-md-4 pe-2"><@s.text name="schema.field.type"/></th>
+                                                <td>${field.type}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="pe-md-4 pe-2"><@s.text name="schema.field.format"/></th>
+                                                <td>
+                                                    <#if field.format??>
+                                                        ${field.format}
+                                                    <#else>
+                                                        -
+                                                    </#if>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="pe-md-4 pe-2"><@s.text name="schema.field.constraints"/></th>
+                                                <td>
+                                                    <#if field.constraints??>
+                                                        <#list field.constraints as constraintKey, constraintValue>
+                                                            ${constraintKey} : <code>${constraintValue?string}</code><br>
+                                                        </#list>
+                                                    <#else>
+                                                        -
+                                                    </#if>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </#list>
             </div>
         </#list>
 
