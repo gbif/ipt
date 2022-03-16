@@ -18,6 +18,7 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.DataSchemaManagerImpl;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
@@ -34,6 +35,11 @@ public interface DataSchemaManager {
    * @throws DeletionNotAllowedException if at least one mapping to this data schema exists preventing deletion
    */
   void uninstallSafely(String identifier, String name) throws DeletionNotAllowedException;
+
+  /**
+   * Update an installed data schema to the latest version.
+   */
+  void update(String identifier) throws IOException;
 
   /**
    * Get a locally installed data schema by its identifier.

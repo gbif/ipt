@@ -26,6 +26,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,7 @@ public class DataSchemaAction extends POSTAction {
   private List<DataSchema> newSchemas;
   private String schemaName;
   private DataSchema dataSchema;
+  private boolean upToDate = true;
 
   @Inject
   public DataSchemaAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -75,6 +77,27 @@ public class DataSchemaAction extends POSTAction {
   }
 
   /**
+   * Update installed data schema to the latest version.
+   * </br>
+   * This involves migrating all associated resource mappings over to the new version.
+   * </br>
+   * If there are no associated resource mappings, the new version can simply be installed.
+   *
+   * @return struts2 result
+   */
+  public String update() throws Exception {
+    try {
+      LOG.info("Updating data schema {} to the latest version...", id);
+      schemaManager.update(id);
+      addActionMessage(getText("admin.schemas.update.success", new String[] {id}));
+    } catch (Exception e) {
+      LOG.error(e);
+      addActionWarning(getText("admin.schemas.update.error", new String[] {e.getMessage()}), e);
+    }
+    return SUCCESS;
+  }
+
+  /**
    * Handles the population of installed and uninstalled schemas on the "Data schemas" page.
    * This method always tries to pick up newly registered schemas from the Registry.
    *
@@ -83,6 +106,9 @@ public class DataSchemaAction extends POSTAction {
   public String list() {
     // retrieve all data schemas that have been installed already
     schemas = schemaManager.list();
+
+    // update each installed extension indicating whether it is the latest version (for its rowType) or not
+    updateIsLatest(schemas);
 
     // populate list of uninstalled data schemas, removing data schemas installed already, showing only latest versions
     newSchemas = getLatestDataSchemasVersions();
@@ -194,6 +220,64 @@ public class DataSchemaAction extends POSTAction {
     return new ArrayList<>(dataSchemasByIdentifier.values());
   }
 
+  /**
+   * Method used for 1) updating each data schema's isLatest field, and 2) for action logging (logging if at least
+   * one data schema is not up-to-date).
+   * </br>
+   * Works by iterating through list of installed data schemas. Updates each one, indicating if it is the latest version
+   * or not. Plus, updates boolean "upToDate", set to false if there is at least one data schema that is not up-to-date.
+   */
+  protected void updateIsLatest(List<DataSchema> dataSchemas) {
+    if (!dataSchemas.isEmpty()) {
+      try {
+        // complete list of registered data schemas (latest and non-latest versions)
+        List<DataSchema> registered = registryManager.getDataSchemas();
+        for (DataSchema schema : dataSchemas) {
+          schema.setLatest(true);
+          for (DataSchema registeredSchema : registered) {
+            // check if registered extension is latest, and if it is, try to use it in comparison
+            if (registeredSchema.isLatest() && schema.getIdentifier().equalsIgnoreCase(registeredSchema.getIdentifier())) {
+              Date issuedOne = schema.getIssued();
+              Date issuedTwo = registeredSchema.getIssued();
+              if (issuedOne == null && issuedTwo != null) {
+                setUpToDate(false);
+                schema.setLatest(false);
+                LOG.debug(
+                    "Installed data schema with identifier {} has no issued date. A newer version issued {} exists.",
+                    schema.getIdentifier(), issuedTwo);
+              } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
+                setUpToDate(false);
+                schema.setLatest(false);
+                LOG.debug(
+                    "Installed data schema with identifier {} was issued {}. A newer version issued {} exists.",
+                    schema.getIdentifier(), issuedOne, issuedTwo);
+              } else {
+                LOG.debug("Installed data schema with identifier {} is the latest version", schema.getIdentifier());
+              }
+              break;
+            }
+          }
+        }
+        // warn user if updates to installed data schemas are available
+        if (isUpToDate()) {
+          addActionMessage(getText("admin.schemas.upToDate"));
+        } else {
+          addActionWarning(getText("admin.schemas.not.upToDate"));
+        }
+      } catch (RegistryException e) {
+        // add startup error message about Registry error
+        String msg = RegistryException.logRegistryException(e, this);
+        configWarnings.addStartupError(msg);
+        LOG.error(msg);
+
+        // add startup error message that explains the consequence of the Registry error
+        msg = getText("admin.schemas.couldnt.load", new String[] {cfg.getRegistryUrl()});
+        configWarnings.addStartupError(msg);
+        LOG.error(msg);
+      }
+    }
+  }
+
   public List<DataSchema> getLatestDataSchemasVersions() {
     return latestDataSchemasVersions;
   }
@@ -208,5 +292,16 @@ public class DataSchemaAction extends POSTAction {
 
   public DataSchema getDataSchema() {
     return dataSchema;
+  }
+
+  /**
+   * @return true if all installed data schemas use the latest version, false otherwise
+   */
+  public boolean isUpToDate() {
+    return upToDate;
+  }
+
+  public void setUpToDate(boolean upToDate) {
+    this.upToDate = upToDate;
   }
 }

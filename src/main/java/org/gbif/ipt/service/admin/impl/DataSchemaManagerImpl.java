@@ -35,6 +35,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,42 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       uninstall(schemaIdentifier, schemaName);
     } else {
       LOG.warn("Data schema not installed locally, can't delete " + schemaIdentifier);
+    }
+  }
+
+  @Override
+  public synchronized void update(String identifier) throws IOException, RegistryException {
+    // identify installed data schema by identifier
+    DataSchema installed = get(identifier);
+
+    if (installed != null) {
+      // verify there is a newer (latest) version
+      DataSchema latestVersion = null;
+      for (DataSchema ds : registryManager.getDataSchemas()) {
+        // match by rowType and isLatest, plus the URL cannot be null in order to be installed
+        if (ds.getIdentifier() != null && ds.getIdentifier().equalsIgnoreCase(identifier) && ds.isLatest()) {
+          latestVersion = ds;
+          break;
+        }
+      }
+
+      boolean isNewVersion = false;
+      if (latestVersion != null) {
+        Date issued = installed.getIssued();
+        Date issuedLatest = latestVersion.getIssued();
+        if (issued == null && issuedLatest != null) {
+          isNewVersion = true;
+        } else if (issued != null && issuedLatest != null) {
+          isNewVersion = (issuedLatest.compareTo(issued) > 0); // latest version must have newer issued date
+        }
+      }
+
+      // TODO: 16/03/2022 manage affected resources
+      if (isNewVersion && latestVersion.getUrl() != null) {
+        // uninstall and install new version
+        uninstall(identifier, latestVersion.getName());
+        install(latestVersion);
+      }
     }
   }
 
