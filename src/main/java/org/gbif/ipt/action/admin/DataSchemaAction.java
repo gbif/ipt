@@ -66,9 +66,9 @@ public class DataSchemaAction extends POSTAction {
   public String delete() throws Exception {
     try {
       schemaManager.uninstallSafely(id, schemaName);
-      addActionMessage(getText("admin.extension.delete.success", new String[] {id}));
+      addActionMessage(getText("admin.schemas.delete.success", new String[] {id}));
     } catch (DeletionNotAllowedException e) {
-      addActionWarning(getText("admin.extension.delete.error", new String[] {id}));
+      addActionWarning(getText("admin.schemas.delete.error", new String[] {id}));
       addActionExceptionWarning(e);
     }
     return SUCCESS;
