@@ -13,7 +13,7 @@
 					<@s.text name="menu.admin"/>
 				</h5>
 
-				<div class="card-body my-lg-3 mt-0 mb-3">
+				<div class="card-body my-xl-3 mt-0 mb-3">
 					<div class="row gx-0 text-center admin-col-listing">
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/config.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
