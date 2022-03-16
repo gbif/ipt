@@ -29,6 +29,7 @@ public class DataSchemaField implements Serializable {
   private String type;
   private String format;
   private String description;
+  private Object example;
   private Map<String, Object> constraints;
 
   public String getName() {
@@ -63,6 +64,14 @@ public class DataSchemaField implements Serializable {
     this.description = description;
   }
 
+  public Object getExample() {
+    return example;
+  }
+
+  public void setExample(Object example) {
+    this.example = example;
+  }
+
   public Map<String, Object> getConstraints() {
     return constraints;
   }
@@ -80,12 +89,13 @@ public class DataSchemaField implements Serializable {
         && Objects.equals(type, that.type)
         && Objects.equals(format, that.format)
         && Objects.equals(description, that.description)
+        && Objects.equals(example, that.example)
         && Objects.equals(constraints, that.constraints);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, type, format, description, constraints);
+    return Objects.hash(name, type, format, description, example, constraints);
   }
 
   @Override
@@ -95,6 +105,7 @@ public class DataSchemaField implements Serializable {
         .add("type='" + type + "'")
         .add("format='" + format + "'")
         .add("description='" + description + "'")
+        .add("example='" + example + "'")
         .add("constraints=" + constraints)
         .toString();
   }

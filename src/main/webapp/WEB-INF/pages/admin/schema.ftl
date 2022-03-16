@@ -103,6 +103,12 @@
                                         </p>
                                     </#if>
 
+                                    <#if field.example?has_content>
+                                        <p class="overflow-x-auto">
+                                            <em><@s.text name="basic.examples"/></em>: ${field.example}
+                                        </p>
+                                    </#if>
+
                                     <div class="details table-responsive">
                                         <table>
                                             <tr>
