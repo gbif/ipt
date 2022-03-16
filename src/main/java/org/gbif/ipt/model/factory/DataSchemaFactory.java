@@ -17,12 +17,19 @@ import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSchemaFile;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class DataSchemaFactory {
+
+  private final Gson gson;
+
+  public DataSchemaFactory() {
+    this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+  }
 
   /**
    * Builds a data subschema from the supplied JSON file
@@ -32,10 +39,11 @@ public class DataSchemaFactory {
    * @return data subschema
    */
   public DataSchemaFile buildSubschema(File file) throws IOException {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-    return objectMapper.readValue(file, DataSchemaFile.class);
+    DataSchemaFile result;
+    try (FileReader fr = new FileReader(file)) {
+      result = gson.fromJson(fr, DataSchemaFile.class);
+    }
+    return result;
   }
 
   /**
@@ -46,9 +54,10 @@ public class DataSchemaFactory {
    * @return data schema
    */
   public DataSchema buildSchema(File file) throws IOException {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-    return objectMapper.readValue(file, DataSchema.class);
+    DataSchema result;
+    try (FileReader fr = new FileReader(file)) {
+      result = gson.fromJson(fr, DataSchema.class);
+    }
+    return result;
   }
 }

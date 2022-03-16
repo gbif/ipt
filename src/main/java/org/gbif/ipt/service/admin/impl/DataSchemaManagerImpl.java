@@ -30,6 +30,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
@@ -44,9 +45,9 @@ import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.http.StatusLine;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import static org.gbif.utils.HttpUtil.success;
 
@@ -59,6 +60,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   private final DataSchemaFactory factory;
   private final RegistryManager registryManager;
   private final HttpClient downloader;
+  private final Gson gson;
 
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
   private final BaseAction baseAction;
@@ -76,6 +78,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     this.registryManager = registryManager;
     this.downloader = downloader;
     this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
+    this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
   }
 
   @Override
@@ -127,14 +130,13 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   public synchronized void install(DataSchema dataSchema) throws InvalidConfigException {
     Objects.requireNonNull(dataSchema);
     try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
       String filename = org.gbif.ipt.utils.FileUtils
           .getSuffixedFileName("_" + dataSchema.getIdentifier().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
       File tmpFileSchema = dataDir.tmpFile(filename);
 
-      objectMapper.writeValue(tmpFileSchema, dataSchema);
+      try (FileWriter fw = new FileWriter(tmpFileSchema)) {
+        gson.toJson(dataSchema, fw);
+      }
       finishInstallSchema(tmpFileSchema, dataSchema.getIdentifier(), dataSchema.getName());
 
       for (DataSchemaFile subSchema : dataSchema.getSubSchemas()) {
