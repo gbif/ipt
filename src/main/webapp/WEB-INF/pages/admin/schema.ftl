@@ -11,7 +11,7 @@
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name="admin.schemas.title"/>: ${dataSchema.title}
+                <@s.text name="admin.schema.title"/>: ${dataSchema.title}
             </h5>
 
             <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">

@@ -12,7 +12,6 @@
     <#macro extensionRow ext currentIndex numberOfExtensions>
         <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#if currentIndex < numberOfExtensions>border-bottom</#if>">
             <div class="col-md-3">
-                <a name="${ext.rowType}"></a>
                 <div class="title">
                     <div class="head">
                         <a href="extension.do?id=${ext.rowType?url}">${ext.title}</a>

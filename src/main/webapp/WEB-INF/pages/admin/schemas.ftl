@@ -6,7 +6,6 @@
     <#macro dataSchemaRow ds currentIndex numberOfSchemas>
         <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#if currentIndex < numberOfSchemas>border-bottom</#if>">
             <div class="col-md-3">
-                <a name="${ds}"></a>
                 <div class="title">
                     <div class="head">
                         <a href="schema.do?id=${ds.identifier}">${ds.title}</a>
