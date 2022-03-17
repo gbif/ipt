@@ -84,7 +84,7 @@
                                 ${subSchema.title}
                             </h4>
                             <div class="mt-3 overflow-x-auto">
-                                <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2">
+                                <div id="tableContainer" class="table-responsive text-smaller pt-2">
                                     <table class="table table-sm dataTable no-footer"  role="grid">
                                         <thead>
                                         <tr role="row">
@@ -148,7 +148,13 @@
                                                 </td>
                                                 <td>
                                                     <#if field.example??>
-                                                        ${field.example}
+                                                        <#if field.example?is_collection>
+                                                            <#list field.example as ex>
+                                                                ${ex}<#sep>, </#sep>
+                                                            </#list>
+                                                        <#else>
+                                                            ${field.example}
+                                                        </#if>
                                                     <#else>
                                                         --
                                                     </#if>
