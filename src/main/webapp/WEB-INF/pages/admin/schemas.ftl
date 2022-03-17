@@ -4,7 +4,7 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
     <#macro dataSchemaRow ds currentIndex numberOfSchemas>
-        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#if currentIndex < numberOfSchemas>border-bottom</#if>">
+        <div class="row p-2 pb-2 g-2 <#if currentIndex < numberOfSchemas>border-bottom</#if>">
             <div class="col-md-3">
                 <div class="title">
                     <div class="head">
@@ -64,13 +64,29 @@
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
-    <main class="container">
-        <div class="my-3 p-3 border rounded shadow-sm">
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container my-3 p-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-            <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name="admin.schemas.title"/>
-            </h5>
+            <div class="text-center">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <@s.text name="admin.schemas.title"/>
+                </h1>
+
+                <div class="mt-2">
+                    <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1" style="min-width: 100px">
+                        <@s.text name="button.back"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="my-3 p-3">
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                <@s.text name="admin.schemas.installed"/>
+            </h4>
 
             <#assign count=0>
 
@@ -80,10 +96,10 @@
             </#list>
 
             <#if count=0>
-                <p class="text-gbif-danger mx-md-4 mx-2 mt-3">
+                <p class="text-gbif-danger mt-3">
                     <@s.text name="admin.schemas.no.schemas.installed"/>
                 </p>
-                <p class="mx-md-4 mx-2">
+                <p>
                     <span class="text-gbif-warning">
                         <i class="bi bi-exclamation-triangle"></i>
                         <@s.text name="admin.schemas.no.schemas.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
@@ -93,15 +109,15 @@
         </div>
 
         <#if (newSchemas?size > 0)>
-            <div class="my-3 p-3 border rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
+            <div class="my-3 p-3">
+                <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                     <@s.text name="schema.further.title"/>
-                </h5>
+                </h4>
 
                 <#assign count=0>
                 <#list newSchemas as schema>
                     <#assign count=count+1>
-                    <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
+                    <div class="row p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
                         <div class="col-md-3">
                             <div class="title">
                                 <div class="head">
