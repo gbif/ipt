@@ -80,7 +80,7 @@
             </#list>
 
             <#if count=0>
-                <p class="text-gbif-danger mx-md-4 mx-2 mb-0">
+                <p class="text-gbif-danger mx-md-4 mx-2 mt-3">
                     <@s.text name="admin.schemas.no.schemas.installed"/>
                 </p>
                 <p class="mx-md-4 mx-2">
@@ -94,7 +94,7 @@
 
         <#if (newSchemas?size > 0)>
             <div class="my-3 p-3 border rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
+                <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
                     <@s.text name="schema.further.title"/>
                 </h5>
 
