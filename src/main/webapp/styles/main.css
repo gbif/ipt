@@ -238,15 +238,47 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 }
 
 .bg-gbif-primary {
-  background-color: #61a861;
+    background-color: #61a861;
 }
 
 .bg-gbif-danger {
-  background-color: #e36370;
+    background-color: #e36370;
 }
 
 .bg-gbif-header {
-  background-color: #4E565F;
+    background-color: #4E565F;
+}
+
+.bg-blue {
+    background-color: #2196f3;
+}
+
+.bg-teal {
+    background-color: #20c997;
+}
+
+.bg-cyan {
+    background-color: #0dcaf0;
+}
+
+.bg-purple {
+    background-color: #6f42c1;
+}
+
+.bg-indigo {
+    background-color: #3f51b5;
+}
+
+.bg-orange {
+    background-color: #ff9800;
+}
+
+.bg-amber {
+    background-color: #ffc107;
+}
+
+.bg-yellow {
+    background-color: #ffeb3b;
 }
 
 /* Custom alerts colors START */
@@ -293,7 +325,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     border-color: rgb(78, 86, 95) !important;
 }
 .btn-outline-secondary:focus, .btn-outline-secondary:active:focus {
-    box-shadow: 0 0 0 0.25rem rgba(78, 86, 95, 0.25); !important;
+    box-shadow: 0 0 0 0.25rem rgba(78, 86, 95, 0.25) !important;
 }
 /* GBIF gray colored outline button START */
 
@@ -309,7 +341,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     border-color: #61a861;
 }
 .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25); !important;
+    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25) !important;
 }
 .btn-check:checked + .btn-outline-gbif-primary, .btn-check:active + .btn-outline-gbif-primary, .btn-outline-gbif-primary:active, .btn-outline-gbif-primary.active, .btn-outline-gbif-primary.dropdown-toggle.show {
     color: #fff !important;

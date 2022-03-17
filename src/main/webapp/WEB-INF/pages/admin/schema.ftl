@@ -1,132 +1,142 @@
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageSchemas"/></title>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <script>
+        $(document).ready(function() {
+            // spy scroll and manage sidebar menu
+            $(window).scroll(function () {
+                var scrollPosition = $(document).scrollTop();
+
+                $('.bd-toc nav a').each(function () {
+                    var currentLink = $(this);
+                    var anchor = $(currentLink.attr("href"));
+                    var sectionId = anchor[0].id.replace("anchor-", "");
+                    var section = $("#" + sectionId);
+                    var sectionsContainer = $("#sections");
+
+                    if (sectionsContainer.position().top - 50 > scrollPosition) {
+                        var removeActiveFromThisLink = $('.bd-toc nav a.active');
+                        removeActiveFromThisLink.removeClass('active');
+                    } else if (section.position().top - 50 <= scrollPosition
+                        && section.position().top + section.height() > scrollPosition) {
+                        if (!currentLink.hasClass("active")) {
+                            var removeFromThisLink = $('.bd-toc nav a.active');
+                            removeFromThisLink.removeClass('active');
+                            $(this).addClass('active');
+                        }
+                    }
+                });
+            })
+        })
+    </script>
 
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
-    <main class="container">
-        <div class="my-3 p-3 border rounded shadow-sm">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container my-3 p-3">
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <span><@s.text name="admin.schema.title"/></span>
+            </div>
 
-            <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name="admin.schema.title"/>: ${dataSchema.title}
-            </h5>
-
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                <div class="col-lg-3">
-                    <strong><@s.text name="basic.title"/></strong>
-                </div>
-                <div class="col-lg-9 overflow-x-auto">
+            <div class="text-center">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     ${dataSchema.title}
-                </div>
-            </div>
+                </h1>
 
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                <div class="col-lg-3">
-                    <strong><@s.text name="basic.description"/></strong>
+                <div class="text-smaller text-gbif-primary">
+                    <span>
+                        <@s.text name='schema.version'/> ${dataSchema.version}
+                        <@s.text name='schema.issuedOn'/> ${dataSchema.issued?date?string.long}
+                    </span>
                 </div>
-                <div class="col-lg-9 overflow-x-auto">
-                    ${dataSchema.description}
-                </div>
-            </div>
 
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                <div class="col-lg-3">
-                    <strong><@s.text name="basic.link"/></strong>
+                <div class="mt-2">
+                    <a href="schemas.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1" style="min-width: 100px">
+                        <@s.text name="button.back"/>
+                    </a>
                 </div>
-                <div class="col-lg-9 overflow-x-auto">
-                    <a href="${dataSchema.url}">${dataSchema.url}</a>
-                </div>
-            </div>
-
-            <#if dataSchema.issued??>
-                <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                    <div class="col-lg-3">
-                        <strong><@s.text name="basic.issued"/></strong>
-                    </div>
-                    <div class="col-lg-9">${dataSchema.issued?date?string.long}</div>
-                </div>
-            </#if>
-
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                <div class="col-lg-3">
-                    <strong><@s.text name="basic.name"/></strong>
-                </div>
-                <div class="col-lg-9">${dataSchema.name}</div>
-            </div>
-
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                <div class="col-lg-3">
-                    <strong><@s.text name="schema.identifier"/></strong>
-                </div>
-                <div class="col-lg-9 overflow-x-auto">${dataSchema.identifier}</div>
-            </div>
-
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                <div class="col-lg-3">
-                    <strong><@s.text name="schema.version"/></strong>
-                </div>
-                <div class="col-lg-9 overflow-x-auto">${dataSchema.version}</div>
-            </div>
-
-            <div class="mx-md-4 mx-2 mt-2">
-                <a href="schemas.do" class="btn btn-outline-secondary">
-                    <@s.text name="button.back"/>
-                </a>
             </div>
         </div>
+    </div>
 
-        <#list dataSchema.subSchemas as subSchema>
-            <div class="my-3 p-3 border rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-0 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                    <@s.text name="schema.subschemas"/>: ${subSchema.title}
-                </h5>
+    <div id="sections" class="container-fluid bg-body">
+        <div class="container my-md-4 bd-layout">
 
-                <#list subSchema.fields as field>
-                    <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
-                        <div class="col-lg-3">
-                            <div class="title">
-                                <div class="head overflow-x-auto">
-                                    <strong>${field.name}</strong>
-                                </div>
-                            </div>
-                        </div>
+            <main class="bd-main">
+                <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                    <nav id="sidebar-content">
+                        <ul>
+                            <#list dataSchema.subSchemas as subSchema>
+                                <li>
+                                    <a href="#anchor-${subSchema.name}" class="sidebar-navigation-link">${subSchema.title}</a>
+                                </li>
+                            </#list>
+                        </ul>
+                    </nav>
+                </div>
 
-                        <div class="col-lg-9">
-                            <div class="definition">
-                                <div class="body">
-                                    <#if field.description?has_content>
-                                        <p class="overflow-x-auto">
-                                            ${field.description}
-                                        </p>
-                                    </#if>
-
-                                    <#if field.example?has_content>
-                                        <p class="overflow-x-auto">
-                                            <em><@s.text name="basic.examples"/></em>: ${field.example}
-                                        </p>
-                                    </#if>
-
-                                    <div class="details table-responsive">
-                                        <table>
-                                            <tr>
-                                                <th class="pe-md-4 pe-2"><@s.text name="schema.field.type"/></th>
-                                                <td>${field.type}</td>
-                                            </tr>
-                                            <tr>
-                                                <th class="pe-md-4 pe-2"><@s.text name="schema.field.format"/></th>
+                <div class="bd-content ps-lg-4">
+                    <#list dataSchema.subSchemas as subSchema>
+                        <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
+                        <div id="${subSchema.name}" class="mt-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                ${subSchema.title}
+                            </h4>
+                            <div class="mt-3 overflow-x-auto">
+                                <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2">
+                                    <table class="table table-sm dataTable no-footer"  role="grid">
+                                        <thead>
+                                        <tr role="row">
+                                            <th><@s.text name='basic.name'/></th>
+                                            <th><@s.text name='basic.description'/></th>
+                                            <th><@s.text name='schema.field.type'/></th>
+                                            <th><@s.text name='schema.field.format'/></th>
+                                            <th><@s.text name='schema.field.constraints'/></th>
+                                            <th><@s.text name='schema.field.examples'/></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <#list subSchema.fields as field>
+                                            <tr class="odd">
+                                                <td>
+                                                    <span class="text-gbif-header-2 fst-italic"><b>${field.name}</b></span>
+                                                </td>
+                                                <td>
+                                                    <#if field.description?has_content>
+                                                        <span class="fst-italic">${field.description}</span>
+                                                    <#else>
+                                                        --
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if field.type == "string">
+                                                        <span class="badge rounded-pill bg-blue">${field.type}</span>
+                                                    <#elseif field.type == "number">
+                                                        <span class="badge rounded-pill bg-teal">${field.type}</span>
+                                                    <#elseif field.type == "integer">
+                                                        <span class="badge rounded-pill bg-cyan">${field.type}</span>
+                                                    <#elseif field.type == "object">
+                                                        <span class="badge rounded-pill bg-purple">${field.type}</span>
+                                                    <#elseif field.type == "boolean">
+                                                        <span class="badge rounded-pill bg-indigo">${field.type}</span>
+                                                    <#elseif field.type == "datetime">
+                                                        <span class="badge rounded-pill bg-orange">${field.type}</span>
+                                                    <#elseif field.type == "date">
+                                                        <span class="badge rounded-pill bg-amber">${field.type}</span>
+                                                    <#elseif field.type == "year">
+                                                        <span class="badge rounded-pill bg-yellow">${field.type}</span>
+                                                    <#else>
+                                                        ${field.type}
+                                                    </#if>
+                                                </td>
                                                 <td>
                                                     <#if field.format??>
                                                         ${field.format}
                                                     <#else>
-                                                        -
+                                                        --
                                                     </#if>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <th class="pe-md-4 pe-2"><@s.text name="schema.field.constraints"/></th>
                                                 <td>
                                                     <#if field.constraints??>
                                                         <#list field.constraints as constraintKey, constraintValue>
@@ -136,18 +146,26 @@
                                                         -
                                                     </#if>
                                                 </td>
+                                                <td>
+                                                    <#if field.example??>
+                                                        ${field.example}
+                                                    <#else>
+                                                        --
+                                                    </#if>
+                                                </td>
                                             </tr>
-                                        </table>
-                                    </div>
+                                        </#list>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </#list>
-            </div>
-        </#list>
+                    </#list>
 
-    </main>
+                </div>
+            </main>
+        </div>
+    </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
