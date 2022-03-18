@@ -34,6 +34,10 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
     <div class="container-fluid bg-body border-bottom">
+        <div class="container">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
+
         <div class="container my-3 p-3">
             <div class="text-center text-uppercase fw-bold fs-smaller-2">
                 <span><@s.text name="admin.schema.title"/></span>
@@ -80,7 +84,7 @@
                     <#list dataSchema.subSchemas as subSchema>
                         <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
                         <div id="${subSchema.name}" class="mt-5 section">
-                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 ${subSchema.title}
                             </h4>
                             <div class="mt-3 overflow-x-auto">

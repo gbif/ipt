@@ -4,7 +4,7 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
     <#macro dataSchemaRow ds currentIndex numberOfSchemas>
-        <div class="row p-2 pb-2 g-2 <#if currentIndex < numberOfSchemas>border-bottom</#if>">
+        <div class="row py-2 g-2 <#if currentIndex < numberOfSchemas>border-bottom</#if>">
             <div class="col-md-3">
                 <div class="title">
                     <div class="head">
@@ -65,9 +65,11 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container my-3 p-3">
+        <div class="container">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
 
+        <div class="container my-3 p-3">
             <div class="text-center">
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     <@s.text name="admin.schemas.title"/>
@@ -84,7 +86,7 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                 <@s.text name="admin.schemas.installed"/>
             </h4>
 
@@ -110,14 +112,14 @@
 
         <#if (newSchemas?size > 0)>
             <div class="my-3 p-3">
-                <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                     <@s.text name="schema.further.title"/>
                 </h4>
 
                 <#assign count=0>
                 <#list newSchemas as schema>
                     <#assign count=count+1>
-                    <div class="row p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
+                    <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                         <div class="col-md-3">
                             <div class="title">
                                 <div class="head">
