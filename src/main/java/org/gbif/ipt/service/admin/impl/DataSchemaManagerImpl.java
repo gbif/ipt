@@ -195,6 +195,9 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
   @Override
   public List<DataSchema> list() {
+    if (dataSchemas.isEmpty()) {
+      load();
+    }
     return dataSchemas;
   }
 
