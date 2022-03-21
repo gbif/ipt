@@ -42,6 +42,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.UndeletNotAllowedException;
+import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -109,8 +110,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   private static final String PUBLISHING = "publishing";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
-  private final UserAccountManager userManager;
-  private final ExtensionManager extensionManager;
+
   private List<User> potentialManagers;
   private List<KeyNamePair> allNetworks;
   private List<KeyNamePair> potentialNetworks;
@@ -125,6 +125,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean metadataModifiedSinceLastPublication;
   private boolean mappingsModifiedSinceLastPublication;
   private boolean sourcesModifiedSinceLastPublication;
+  private boolean dataSchemaBased = false;
   private Map<String, String> autoPublishFrequencies;
   private StatusReport report;
   private Date now;
@@ -144,11 +145,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   private final VocabulariesManager vocabManager;
   private final RegistryManager registryManager;
+  private final UserAccountManager userManager;
+  private final ExtensionManager extensionManager;
+  private final DataSchemaManager schemaManager;
 
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    GenerateDwcaFactory dwcaFactory, VocabulariesManager vocabManager, RegistryManager registryManager) {
+    GenerateDwcaFactory dwcaFactory, VocabulariesManager vocabManager, RegistryManager registryManager,
+    DataSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
@@ -157,6 +162,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     this.doiAccount = registrationManager.findPrimaryDoiAgencyAccount();
     this.vocabManager = vocabManager;
     this.registryManager = registryManager;
+    this.schemaManager = schemaManager;
   }
 
   /**
@@ -1147,6 +1153,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         }
       }
 
+      // check resource is data schema based
+      dataSchemaBased = schemaManager.isSchemaInstalled(resource.getCoreType());
+
       // check EML
       missingMetadata = !emlValidator.isValid(resource, null);
       // check resource has been assigned a valid publishing organisation
@@ -1667,5 +1676,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public String getSummary() {
     return StringUtils.trimToNull(summary);
+  }
+
+  public boolean isDataSchemaBased() {
+    return dataSchemaBased;
   }
 }

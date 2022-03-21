@@ -244,6 +244,25 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
     return counter;
   }
 
+  @Override
+  public boolean isSchemaInstalled(String nameOrIdentifier) {
+    boolean result = false;
+
+    if (dataSchemas.isEmpty()) {
+      load();
+    }
+
+    for (DataSchema dataSchema : dataSchemas) {
+      if (dataSchema.getIdentifier().equals(nameOrIdentifier)
+          || dataSchema.getName().equals(nameOrIdentifier)) {
+        result = true;
+        break;
+      }
+    }
+
+    return result;
+  }
+
   /**
    * Download a data schema into temporary file and return it.
    *

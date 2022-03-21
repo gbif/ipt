@@ -27,6 +27,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -170,7 +171,8 @@ public class OverviewActionOtherIT {
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
         mock(VocabulariesManager.class),
-        mock(RegistryManager.class));
+        mock(RegistryManager.class),
+        mock(DataSchemaManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -242,7 +244,8 @@ public class OverviewActionOtherIT {
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
         mock(VocabulariesManager.class),
-        mock(RegistryManager.class));
+        mock(RegistryManager.class),
+        mock(DataSchemaManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -313,7 +316,8 @@ public class OverviewActionOtherIT {
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
         mock(VocabulariesManager.class),
-        mock(RegistryManager.class));
+        mock(RegistryManager.class),
+        mock(DataSchemaManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -381,7 +385,8 @@ public class OverviewActionOtherIT {
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
         mock(VocabulariesManager.class),
-        mock(RegistryManager.class));
+        mock(RegistryManager.class),
+        mock(DataSchemaManager.class));
 
     LOG.info("Testing DataCite with test Prefix...");
     action.setDeleteDoi("true");

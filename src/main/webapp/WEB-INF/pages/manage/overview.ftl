@@ -343,7 +343,9 @@
         <div class="container my-3 p-3">
             <div class="text-center">
                 <h5 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
-                    <#if resource.coreType?has_content && resource.coreType==metadataType>
+                    <#if dataSchemaBased>
+                        <@popoverPropertyInfo "manage.overview.dataSchema.description"/>
+                    <#elseif resource.coreType?has_content && resource.coreType==metadataType>
                         <@popoverPropertyInfo "manage.overview.description.metadataOnly"/>
                     <#else>
                         <@popoverPropertyInfo "manage.overview.description"/>

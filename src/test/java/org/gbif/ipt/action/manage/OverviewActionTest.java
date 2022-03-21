@@ -28,6 +28,7 @@ import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -90,7 +91,8 @@ public class OverviewActionTest {
     // mock action
     action =
       new OverviewAction(mock(SimpleTextProvider.class), mockCfg, mock(RegistrationManager.class), mockResourceManager,
-        mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class), mock(RegistryManager.class));
+        mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class),
+        mock(VocabulariesManager.class), mock(RegistryManager.class), mock(DataSchemaManager.class));
   }
 
   @Test
@@ -322,7 +324,7 @@ public class OverviewActionTest {
     // mock action
     action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
       mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class),
-            mock(VocabulariesManager.class), mock(RegistryManager.class));
+            mock(VocabulariesManager.class), mock(RegistryManager.class), mock(DataSchemaManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());
@@ -362,7 +364,7 @@ public class OverviewActionTest {
     // mock action
     action = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mockRegistrationManager,
       mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class), mock(GenerateDwcaFactory.class),
-            mock(VocabulariesManager.class), mock(RegistryManager.class));
+            mock(VocabulariesManager.class), mock(RegistryManager.class), mock(DataSchemaManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());

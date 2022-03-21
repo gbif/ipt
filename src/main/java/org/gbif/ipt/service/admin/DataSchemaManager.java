@@ -72,4 +72,9 @@ public interface DataSchemaManager {
    * @return number of data schemas that have been loaded successfully
    */
   int load();
+
+  /**
+   * Check whether schema is installed
+   */
+  boolean isSchemaInstalled(String nameOrIdentifier);
 }
