@@ -42,9 +42,9 @@ public interface DataSchemaManager {
   void update(String identifier) throws IOException;
 
   /**
-   * Get a locally installed data schema by its identifier.
+   * Get a locally installed data schema by its identifier or name.
    *
-   * @return data schema for that identifier or null if not installed
+   * @return data schema for that identifier/name or null if not installed
    */
   DataSchema get(String identifier);
 

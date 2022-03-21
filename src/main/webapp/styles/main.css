@@ -954,11 +954,14 @@ button.close {
 
 
 /* Sidebars and related (resource view, mapping, metadata) START */
+.bd-main {
+    grid-template-columns: 1fr 4fr;
+}
+
 @media (max-width: 768px) {
     .bd-main {
         grid-template-areas:
                 "toc content";
-        grid-template-columns: 1fr 4fr;
         grid-template-rows: 1fr auto;
     }
 }

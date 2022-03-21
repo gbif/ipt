@@ -137,8 +137,9 @@
         <div class="row">
             <div class="col-lg-3 border-lg-right pe-lg-5 rounded">
                 <div>
-                    <form action='mapping.do' method='post'>
+                    <form action='schemaMapping.do' method='post'>
                         <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <input name="schemaName" type="hidden" value="${resource.coreType}"/>
                         <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
                     </form>
                 </div>

@@ -131,7 +131,23 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
   @Override
   public DataSchema get(String identifier) {
-    return dataSchemasByIdentifiers.get(identifier);
+    DataSchema result = dataSchemasByIdentifiers.get(identifier);
+
+    // try name
+    if (result == null) {
+      if (dataSchemas.isEmpty()) {
+        load();
+      }
+
+      for (DataSchema ds : dataSchemas) {
+        if (identifier.equals(ds.getName())) {
+          result = ds;
+          break;
+        }
+      }
+    }
+
+    return result;
   }
 
   /**
