@@ -143,7 +143,8 @@ public class ResourceFileAction extends PortalBaseAction {
     try {
       inputStream = new FileInputStream(data);
       // Set a Last-Modified header, even on 304 Not Modified responses.
-      long lastModified = data.lastModified();
+      // Round to the nearest second, as HTTP doesn't support milliseconds.
+      long lastModified = 1000 * ((data.lastModified() + 500) / 1000);
       response.setDateHeader("Last-Modified", lastModified);
 
       // see if we have a conditional get with If-Modified-Since header
