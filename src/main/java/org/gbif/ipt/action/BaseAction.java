@@ -64,7 +64,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public static final String LOGIN = "login";
   public static final String HOME = "home";
   public static final String LOCKED = "locked";
-  public static final String NOT_AVAILABLE = "410";
+  public static final String GONE = "410";
 
   protected List<String> warnings = new ArrayList<>();
   protected Map<String, Object> session;

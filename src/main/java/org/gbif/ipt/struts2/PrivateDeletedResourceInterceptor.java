@@ -71,7 +71,7 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
             } else if (history.getPublicationStatus() == PublicationStatus.DELETED) {
               // user authorised?
               if (user == null || !isAuthorized(user, resource)) {
-                return BaseAction.NOT_AVAILABLE;
+                return BaseAction.GONE;
               }
             }
           }
@@ -90,7 +90,7 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
       } else if (PublicationStatus.DELETED == resource.getStatus()) {
         // user authorised?
         if (user == null || !isAuthorized(user, resource)) {
-          return BaseAction.NOT_AVAILABLE;
+          return BaseAction.GONE;
         }
       }
     }
