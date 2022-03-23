@@ -116,6 +116,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   // mapping configs
   private Set<Source> sources = new HashSet<>();
   private List<ExtensionMapping> mappings = new ArrayList<>();
+  private List<DataSchemaMapping> dataSchemaMappings = new ArrayList<>();
 
   private String changeSummary;
   private List<VersionHistory> versionHistory = new ArrayList<>();
@@ -201,6 +202,21 @@ public class Resource implements Serializable, Comparable<Resource> {
       }
       Integer index = getMappings(mapping.getExtension().getRowType()).size();
       this.mappings.add(mapping);
+      return index;
+    }
+    return null;
+  }
+
+  /**
+   * Adds a new data schema mapping to the resource.
+   * It returns the list index for this mapping according to getDataSchemaMapping(identifier)
+   *
+   * @return list index corresponding to getDataSchemaMapping(identifier) or null if the mapping couldn't be added
+   */
+  public Integer addDataSchemaMapping(@Nullable DataSchemaMapping mapping) {
+    if (mapping != null && mapping.getDataSchema() != null) {
+      Integer index = getDataSchemaMappings(mapping.getDataSchema().getIdentifier()).size();
+      this.dataSchemaMappings.add(mapping);
       return index;
     }
     return null;
@@ -587,6 +603,27 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (rowType != null) {
       for (ExtensionMapping m : mappings) {
         if (rowType.equals(m.getExtension().getRowType())) {
+          maps.add(m);
+        }
+      }
+    }
+    return maps;
+  }
+
+  /**
+   * Get the list of data schema mappings for the requested data schema identifier.
+   * The order of mappings in the list is guaranteed to be stable and the same as the underlying original mappings
+   * list.
+   *
+   * @param identifier identifying the data schema
+   *
+   * @return the list of mappings for the requested data schema identifier
+   */
+  public List<DataSchemaMapping> getDataSchemaMappings(String identifier) {
+    List<DataSchemaMapping> maps = new ArrayList<>();
+    if (identifier != null) {
+      for (DataSchemaMapping m : dataSchemaMappings) {
+        if (identifier.equals(m.getDataSchema().getIdentifier())) {
           maps.add(m);
         }
       }
