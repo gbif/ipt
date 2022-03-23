@@ -140,6 +140,7 @@
                     <form action='schemaMapping.do' method='post'>
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <input name="schemaName" type="hidden" value="${resource.coreType}"/>
+                        <input name="id" type="hidden" value="${resource.coreType}">
                         <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
                     </form>
                 </div>

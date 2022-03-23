@@ -140,7 +140,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
       }
 
       for (DataSchema ds : dataSchemas) {
-        if (identifier.equals(ds.getName())) {
+        if (identifier.equals(ds.getName()) || identifier.equals(ds.getIdentifier())) {
           result = ds;
           break;
         }
