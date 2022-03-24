@@ -585,6 +585,16 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
+  public DataSchemaMapping getDataSchemaMapping(String identifier, Integer index) {
+    if (identifier != null && index != null) {
+      List<DataSchemaMapping> maps = getDataSchemaMappings(identifier);
+      if (maps.size() >= index) {
+        return maps.get(index);
+      }
+    }
+    return null;
+  }
+
   public List<ExtensionMapping> getMappings() {
     return mappings;
   }
@@ -621,6 +631,11 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public List<DataSchemaMapping> getDataSchemaMappings(String identifier) {
     List<DataSchemaMapping> maps = new ArrayList<>();
+
+    if (dataSchemaMappings == null) {
+      dataSchemaMappings = new ArrayList<>();
+    }
+
     if (identifier != null) {
       for (DataSchemaMapping m : dataSchemaMappings) {
         if (identifier.equals(m.getDataSchema().getIdentifier())) {

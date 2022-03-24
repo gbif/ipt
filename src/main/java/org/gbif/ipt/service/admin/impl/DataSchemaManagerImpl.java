@@ -382,7 +382,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
     try {
       DataSchemaFile dataSchemaFile = factory.buildSubschema(localFile);
-      LOG.info("Successfully loaded data subschema file " + dataSchemaFile.getIdentifier());
+      LOG.info("Successfully loaded data subschema file " + dataSchemaFile.getName());
       return dataSchemaFile;
     } catch (IOException e) {
       LOG.error("Can't access local data schema file (" + localFile.getAbsolutePath() + ")", e);

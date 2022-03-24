@@ -80,6 +80,10 @@ public class DataSchemaField implements Serializable {
     this.constraints = constraints;
   }
 
+  public String qualifiedName(String namespace) {
+    return namespace + '/' + name;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

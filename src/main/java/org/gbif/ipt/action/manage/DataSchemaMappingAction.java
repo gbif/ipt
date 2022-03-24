@@ -15,6 +15,8 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataSchema;
+import org.gbif.ipt.model.DataSchemaField;
+import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
@@ -26,7 +28,10 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,6 +53,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private DataSchemaMapping mapping;
   private List<String> columns;
   private List<String[]> peek;
+  private List<DataSchemaFieldMapping> fields;
 
   @Inject
   public DataSchemaMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
@@ -60,7 +66,34 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
   @Override
   public String save() throws IOException {
-    dataSchema = schemaManager.get(schemaName);
+    if (dataSchema == null) {
+      dataSchema = schemaManager.get(schemaName);
+    }
+
+    // a new mapping?
+    if (resource.getDataSchemaMapping(id, mid) == null) {
+      mid = resource.addDataSchemaMapping(mapping);
+    } else {
+      // save field mappings
+      Set<DataSchemaFieldMapping> mappedFields = new TreeSet<>();
+      for (DataSchemaFieldMapping f : fields) {
+        int index = f.getIndex() != null ? f.getIndex() : -9999;
+        if (index >= 0 || StringUtils.trimToNull(f.getDefaultValue()) != null) {
+          mappedFields.add(f);
+        }
+      }
+
+      // back to mapping object
+      mapping.setFields(mappedFields);
+    }
+    // update last modified dates
+    Date lastModified = new Date();
+    mapping.setLastModified(lastModified);
+    resource.setMappingsModified(lastModified);
+
+    // save entire resource config
+    saveResource();
+
     return defaultResult;
   }
 
@@ -132,7 +165,41 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
           defaultResult = "source";
         }
       }
+
+      // TODO: 24/03/2022 something else here?
+      fields = new ArrayList<>();
+
+      // inspect source
+      readSource();
+
+      // prepare fields
+      // TODO: 24/03/2022 map rest of sub-schemas
+      for (int i = 0; i < mapping.getDataSchema().getSubSchemas().get(0).getFields().size(); i++) {
+        DataSchemaField field = mapping.getDataSchema().getSubSchemas().get(0).getFields().get(i);
+
+        DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(field);
+        fields.add(pm);
+      }
     }
+  }
+
+  /**
+   * Populate a DataSchemaFieldMapping from an DataSchemaField. If the DataSchemaField is already mapped, preserves
+   * the existing DataSchemaFieldMapping. Otherwise, creates a brand new DataSchemaFieldMapping.
+   *
+   * @param field DataSchemaField
+   *
+   * @return DataSchemaFieldMapping created
+   */
+  private DataSchemaFieldMapping populateDataSchemaFieldMapping(DataSchemaField field) {
+    // mapped already?
+    DataSchemaFieldMapping fm = mapping.getField(field.getName());
+    if (fm == null) {
+      // no, create brand new DataSchemaFieldMapping
+      fm = new DataSchemaFieldMapping();
+    }
+    fm.setField(field);
+    return fm;
   }
 
   public String getSchemaName() {

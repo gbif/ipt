@@ -36,18 +36,18 @@
 
     <#macro showField field index>
         <div class="row py-1 g-2 mappingRow border-bottom">
-            <div class="col-lg-4 pt-1">
+            <div class="col-lg-4 pt-1 fs-smaller">
                 <strong>${field.name}</strong>
             </div>
 
             <div class="col-lg-4">
-                <select id="fIdx${index}" class="fidx form-select" name="fields[${index}].index">
+                <select id="fIdx${index}" class="fidx form-select form-select-sm" name="fields[${index}].index">
                     <option value=""></option>
                 </select>
             </div>
 
             <div class="col-lg-4">
-                <input id="fVal${index}" class="fval form-control" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
+                <input id="fVal${index}" class="fval form-control form-control-sm" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
             </div>
         </div>
     </#macro>

@@ -22,6 +22,7 @@
 <#--                </#if>-->
                 <input type="hidden" name="r" value="${resource.shortname}" />
                 <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
+                <input type="hidden" name="schemaName" value="${mapping.dataSchema.name}" />
                 <input type="hidden" name="mid" value="${mid!}" />
                 <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
             </div>
