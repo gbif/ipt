@@ -31,12 +31,14 @@ import java.util.ResourceBundle;
 import javax.annotation.Nullable;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.google.inject.Inject;
@@ -49,7 +51,7 @@ import com.opensymphony.xwork2.util.ValueStack;
  * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
  * logged in user, and hosting organization information.
  */
-public class BaseAction extends ActionSupport implements SessionAware, Preparable, ServletRequestAware {
+public class BaseAction extends ActionSupport implements SessionAware, Preparable, ServletRequestAware, ServletResponseAware {
 
   // logging
   private static final Logger LOG = LogManager.getLogger(BaseAction.class);
@@ -62,11 +64,12 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public static final String LOGIN = "login";
   public static final String HOME = "home";
   public static final String LOCKED = "locked";
-  public static final String NOT_AVAILABLE = "410";
+  public static final String GONE = "410";
 
   protected List<String> warnings = new ArrayList<>();
   protected Map<String, Object> session;
   protected HttpServletRequest req;
+  protected HttpServletResponse response;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
   protected String id;
 
@@ -322,6 +325,11 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   @Override
   public void setServletRequest(HttpServletRequest req) {
     this.req = req;
+  }
+
+  @Override
+  public void setServletResponse(HttpServletResponse response) {
+    this.response = response;
   }
 
   @Override

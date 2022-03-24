@@ -13,10 +13,12 @@
     <default-interceptor-ref name="portalStack"/>
     <default-action-ref name="home"/>
     <global-results>
-      <result name="404">
+      <result name="404" type="freemarkerWithStatus">
+        <param name="status">404</param>
         <param name="location">/WEB-INF/pages/portal/404.ftl</param>
       </result>
-      <result name="410">
+      <result name="410" type="freemarkerWithStatus">
+        <param name="status">410</param>
         <param name="location">/WEB-INF/pages/portal/410.ftl</param>
       </result>
       <result name="home" type="redirect">${baseURL}/home.do</result>
