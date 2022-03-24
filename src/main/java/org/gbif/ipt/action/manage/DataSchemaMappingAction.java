@@ -13,13 +13,11 @@
  */
 package org.gbif.ipt.action.manage;
 
-import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
-import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
 import org.gbif.ipt.service.admin.DataSchemaManager;
@@ -276,5 +274,9 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
   public DataSchemaMapping getMapping() {
     return mapping;
+  }
+
+  public List<String> getColumns() {
+    return columns;
   }
 }

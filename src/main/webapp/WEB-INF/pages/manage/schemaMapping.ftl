@@ -3,30 +3,52 @@
     <title><@s.text name="manage.mapping.title"/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
-        // spy scroll and manage sidebar menu
-        $(window).scroll(function () {
-            var scrollPosition = $(document).scrollTop();
+        $(document).ready(function(){
+            function activateDeactivateAllStaticInputs() {
+                $('.fidx').each(function() {
+                    activateDeactivateStaticInput($(this));
+                });
+            }
 
-            $('.bd-toc nav a.sidebar-navigation-link').each(function () {
-                var currentLink = $(this);
-                var anchor = $(currentLink.attr("href"));
-                var sectionId = anchor[0].id.replace("anchor-", "");
-                var section = $("#" + sectionId);
-                var sectionsContainer = $("#sections");
-
-                if (sectionsContainer.position().top - 100 > scrollPosition) {
-                    var removeActiveFromThisLink = $('.bd-toc nav a.active');
-                    removeActiveFromThisLink.removeClass('active');
-                } else if (section.position().top - 100  <= scrollPosition
-                    && section.position().top + section.height() > scrollPosition) {
-                    if (!currentLink.hasClass("active")) {
-                        var removeFromThisLink = $('.bd-toc nav a.active');
-                        removeFromThisLink.removeClass('active');
-                        $(this).addClass('active');
-                    }
+            function activateDeactivateStaticInput(target) {
+                var index = target.attr('id').substring(4);
+                var input = $("#fVal"+index);
+                if (!target.val().trim()) {
+                    input.prop('disabled', false);
+                } else {
+                    // deactivate input
+                    input.val('');
+                    input.prop('disabled', true);
                 }
-            });
-        })
+            }
+
+            activateDeactivateAllStaticInputs();
+
+            // spy scroll and manage sidebar menu
+            $(window).scroll(function () {
+                var scrollPosition = $(document).scrollTop();
+
+                $('.bd-toc nav a.sidebar-navigation-link').each(function () {
+                    var currentLink = $(this);
+                    var anchor = $(currentLink.attr("href"));
+                    var sectionId = anchor[0].id.replace("anchor-", "");
+                    var section = $("#" + sectionId);
+                    var sectionsContainer = $("#sections");
+
+                    if (sectionsContainer.position().top - 100 > scrollPosition) {
+                        var removeActiveFromThisLink = $('.bd-toc nav a.active');
+                        removeActiveFromThisLink.removeClass('active');
+                    } else if (section.position().top - 100  <= scrollPosition
+                        && section.position().top + section.height() > scrollPosition) {
+                        if (!currentLink.hasClass("active")) {
+                            var removeFromThisLink = $('.bd-toc nav a.active');
+                            removeFromThisLink.removeClass('active');
+                            $(this).addClass('active');
+                        }
+                    }
+                });
+            })
+        });
     </script>
 
     <#assign currentMenu = "manage"/>
@@ -37,18 +59,53 @@
     <#macro showField field index>
         <div class="row py-1 g-2 mappingRow border-bottom">
             <div class="col-lg-4 pt-1 fs-smaller">
+                <#assign fieldPopoverInfo>
+                    <#if field.description?has_content>${field.description}</#if>
+                    <#if field.example?has_content>
+                        <br/><br/>
+                        <em><@s.text name="basic.examples"/></em>:
+                        <#if field.example?is_collection>
+                            <#list field.example as ex>
+                                <code>${ex}</code><#sep>, </#sep>
+                            </#list>
+                        <#else>
+                            <code>${field.example}</code>
+                        </#if>
+                    <#else>
+                        <@s.text name="basic.no.description"/>
+                    </#if>
+                </#assign>
+                <@popoverTextInfo fieldPopoverInfo />
+
                 <strong>${field.name}</strong>
             </div>
 
             <div class="col-lg-4">
                 <select id="fIdx${index}" class="fidx form-select form-select-sm" name="fields[${index}].index">
-                    <option value=""></option>
+                    <option value="" <#if !field.index??> selected="selected"</#if>></option>
+                    <#list columns as col>
+                        <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}:${field.index!-1}</option>
+                    </#list>
                 </select>
             </div>
 
             <div class="col-lg-4">
                 <input id="fVal${index}" class="fval form-control form-control-sm" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
             </div>
+
+            <#if field.index??>
+                <small class="text-truncate"><@sourceSample field.index fieldsIndex/></small>
+                <div id="fTIdx${fieldsIndex}" class="sample mappingText">
+                    <small class="mx-3"><@s.text name='manage.mapping.translation' />:</small>
+                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}" class="text-smaller">
+                        <#if (((field.translation?size)!0)>0)>
+                            ${(field.translation?size)!0} terms
+                        <#else>
+                            <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
+                        </#if>
+                    </a>
+                </div>
+            </#if>
         </div>
     </#macro>
 
