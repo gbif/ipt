@@ -6,7 +6,7 @@
 
 WARNING: Be sure to *backup the IPT data directory before performing an upgrade*. As per the xref:data-hosting-centres.adoc#data-hosting-centre-criteria[Data Hosting Centre Criteria] it is highly recommended to run scheduled backups of the IPT data directory in general.
 
-CAUTION: Once an IPT has been upgraded to 2.3.x or later from 2.2 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
+CAUTION: Once an IPT has been upgraded to 2.5.6 or later from 2.5.5 or earlier, it will not be possible to downgrade to an earlier version due to changes to the IPT's configuration files.
 
 Check your system meets the xref:requirements.adoc[installation requirements] for this release.  Ensure your operating system and any other installed software (such as Java, Tomcat and Apache HTTPD) is up-to-date with any security patches.
 
@@ -74,6 +74,7 @@ Additionally, the IPT administrator should update all installed cores and extens
 
 The full list of new features is documented on the xref:releases.adoc[releases page].  Please pay particular attention to these points after upgrading:
 
+* IPT 2.5.6 changes the way user passwords are stored to improve their security. Once the IPT has been upgraded to version 2.5.6 (or later), it is not possible to downgrade.
 * IPT 2.5.2 includes a bugfix for metadata editing. Use this version rather than 2.5.0 or 2.5.1.
 * IPT 2.5.1 includes a bugfix to connect to database sources, but it otherwise identical to version 2.5.0.
 * IPT 2.5.0 includes upgraded database connectors (JDBC libraries) for MySQL, PostgreSQL, MS SQL Server, Sybase and Oracle.  Please check your database configurations still work.
@@ -81,7 +82,6 @@ The full list of new features is documented on the xref:releases.adoc[releases p
 * IPT 2.5.0 can now read a data directory location from the servlet container, see xref:installation.adoc#tomcat[step 2] of the installation instructions.
 * IPT 2.5.0 no longer supports Microsoft Internet Explorer.  (Microsoft themselves https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/[no longer support MSIE] for their MS365 online services.)
 * The documentation has moved to this new location; links have been made from the old GitHub Wiki.
-* xref:customization.adoc[Customization] (styling etc) using `custom.css` is broken in this release, see this https://github.com/gbif/ipt/issues/1634[issue].
 
 If you are upgrading from a version before 2.4, please also refer to the notes from the xref:2.4@release-notes.adoc[older release].
 

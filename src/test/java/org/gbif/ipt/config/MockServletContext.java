@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,19 +35,12 @@ import javax.servlet.descriptor.JspConfigDescriptor;
 
 public class MockServletContext implements ServletContext {
 
-  /*
-   * (non-Javadoc)
-   * @see javax.servlet.ServletContext#getRealPath(java.lang.String)
-   */
   @Override
   public String getRealPath(String path) {
     // URL res = MockServletContext.class.getResource("MockServletContext.class");
     // System.out.println(res.toExternalForm());
     return new File("target/test-classes/" + path).getAbsolutePath();
   }
-
-
-
 
   @Override
   public String getContextPath() {

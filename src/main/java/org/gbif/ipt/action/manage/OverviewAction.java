@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,6 +29,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -86,7 +85,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -99,6 +97,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
+import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
+import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING;
+import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT;
 import static org.gbif.ipt.task.GenerateDwca.CHARACTER_ENCODING;
 
 public class OverviewAction extends ManagerBaseAction implements ReportHandler {
@@ -111,8 +112,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
   private List<User> potentialManagers;
-  private List<Network> allNetworks;
-  private List<Network> potentialNetworks;
+  private List<KeyNamePair> allNetworks;
+  private List<KeyNamePair> potentialNetworks;
   private List<Extension> potentialCores;
   private List<Extension> potentialExtensions;
   private List<Organisation> organisations;
@@ -167,13 +168,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
 
     try {
-      UUID networkKey = UUID.fromString(id);
-
-      registryManager.addResourceToNetwork(resource, networkKey.toString());
+      registryManager.addResourceToNetwork(resource, id);
       saveResource();
-      addActionMessage(getText("manage.overview.networks.add.success", new String[] {networkKey.toString()}));
+      Optional<KeyNamePair> keyNameNetwork = allNetworks.stream().filter(n -> n.getKey().equals(id)).findFirst();
+      if (keyNameNetwork.isPresent()) {
+        addActionMessage(getText("manage.overview.networks.add.success", new String[]{keyNameNetwork.get().getName()}));
+      } else {
+        addActionMessage(getText("manage.overview.networks.add.success", new String[]{id}));
+      }
 
-      potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), networkKey));
+      potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), id));
     } catch (IllegalArgumentException e) {
       addActionError(getText("manage.overview.networks.add.failed"));
     }
@@ -373,10 +377,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             "Not appropriate to delete DOI: " + doi + ". DOI status=" + doiData.getStatus().toString());
         }
       } else {
-        throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.delete.failed.notResolved", new String[] {doi.toString()}));
+        throw new DeletionNotAllowedException(
+            DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+            getText("manage.overview.publishing.doi.delete.failed.notResolved", new String[] {doi.toString()}));
       }
     } catch (DoiException e) {
-      throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{doi.toString(), e.getMessage()}));
+      throw new DeletionNotAllowedException(
+          DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+          getText(
+              "manage.overview.publishing.doi.delete.failed.exception",
+              new String[]{doi.toString(), e.getMessage()}));
     }
   }
 
@@ -420,12 +430,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           } else {
             Organisation retrieved = registrationManager.get(organisation.getKey());
             if (retrieved == null) {
-              throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT, getText("manage.overview.publishing.doi.undelete.failed.noOrganisation", new String[] {organisation.getKey().toString()}));
+              throw new UndeletNotAllowedException(
+                  ORGANISATION_NOT_ASSOCIATED_TO_IPT,
+                  getText(
+                      "manage.overview.publishing.doi.undelete.failed.noOrganisation",
+                      new String[] {organisation.getKey().toString()}));
             } else {
               Organisation doiAccountActivated = registrationManager.findPrimaryDoiAgencyAccount();
               if (doiAccountActivated != null && doiAccountActivated.getDoiPrefix() != null
                   && !doi.getDoiName().toLowerCase().startsWith(doiAccountActivated.getDoiPrefix().toLowerCase())) {
-                throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING, getText("manage.overview.publishing.doi.undelete.failed.badPrefix", new String[] {doi.toString(), doiAccountActivated.getDoiPrefix()}));
+                throw new UndeletNotAllowedException(
+                    DOI_PREFIX_NOT_MATCHING,
+                    getText(
+                        "manage.overview.publishing.doi.undelete.failed.badPrefix",
+                        new String[] {doi.toString(), doiAccountActivated.getDoiPrefix()}));
               }
             }
           }
@@ -523,10 +541,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         LOG.info(msg);
         addActionMessage(msg);
       } else {
-        throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_NOT_DELETED, getText("manage.overview.publishing.doi.undelete.failed.badStatus", new String[] {doi.toString(), doiData.getStatus().toString()}));
+        throw new UndeletNotAllowedException(
+            DOI_NOT_DELETED,
+            getText(
+                "manage.overview.publishing.doi.undelete.failed.badStatus",
+                new String[] {doi.toString(), doiData.getStatus().toString()}));
       }
     } catch (DoiException e) {
-      throw new UndeletNotAllowedException(UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR, getText("manage.overview.publishing.doi.undelete.failed.exception", new String[] {doi.toString(), e.getMessage()}));
+      throw new UndeletNotAllowedException(
+          UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
+          getText(
+              "manage.overview.publishing.doi.undelete.failed.exception",
+              new String[] {doi.toString(), e.getMessage()}));
     }
   }
 
@@ -538,14 +564,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       return NOT_FOUND;
     }
     try {
-      UUID networkKey = UUID.fromString(id);
-
-      registryManager.removeResourceFromNetwork(resource, networkKey.toString());
+      registryManager.removeResourceFromNetwork(resource, id);
       saveResource();
-      addActionMessage(getText("manage.overview.networks.delete.success", new String[] {networkKey.toString()}));
 
-      Optional<Network> potentialNetwork =
-          allNetworks.stream().filter(n -> Objects.equals(n.getKey(), networkKey)).findFirst();
+      Optional<KeyNamePair> keyNameNetwork = allNetworks.stream().filter(n -> n.getKey().equals(id)).findFirst();
+      if (keyNameNetwork.isPresent()) {
+        addActionMessage(getText("manage.overview.networks.delete.success", new String[]{keyNameNetwork.get().getName()}));
+      } else {
+        addActionMessage(getText("manage.overview.networks.delete.success", new String[]{id}));
+      }
+
+      Optional<KeyNamePair> potentialNetwork =
+          allNetworks.stream().filter(n -> Objects.equals(n.getKey(), id)).findFirst();
       potentialNetwork.ifPresent(potentialNetworks::add);
     } catch (IllegalArgumentException e) {
       addActionError(getText("manage.overview.networks.delete.failed"));
@@ -685,7 +715,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return potentialManagers;
   }
 
-  public List<Network> getPotentialNetworks() {
+  public List<KeyNamePair> getPotentialNetworks() {
     return potentialNetworks;
   }
 
@@ -1060,10 +1090,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       updateReport();
 
       // get potential new networks
-      allNetworks = registryManager.getNetworks();
+      allNetworks = registryManager.getNetworksBrief();
       potentialNetworks = new ArrayList<>(allNetworks);
       for (Network net : getResourceNetworks()) {
-        potentialNetworks.removeIf(n -> Objects.equals(net.getKey(), n.getKey()));
+        potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
       }
 
       // get potential new managers

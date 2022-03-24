@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,6 +34,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 /**
  * The Action responsible for all user input relating to the user accounts in the IPT.
@@ -160,7 +160,8 @@ public class UserAccountsAction extends POSTAction {
         addActionMessage(getText("admin.user.added"));
       } else if (resetPassword) {
         String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
-        user.setPassword(newPassword);
+        String hash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
+        user.setPassword(hash);
         userManager.save(user);
         addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword}));
       } else {

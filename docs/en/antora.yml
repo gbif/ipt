@@ -8,52 +8,50 @@ asciidoc:
   attributes:
     idprefix: '@'
     idseparator: '-@'
-    # EML
-    eml-location: http://web.archive.org/web/2013if_/http://knb.ecoinformatics.org/software/eml/eml-2.1.1
+    # EML — if this disappears (again), a version can be retrieved from https://eml.ecoinformatics.org/#older-versions-deprecated
+    eml-location: https://sbclter.msi.ucsb.edu/external/InformationManagement/EML_211_schema/docs/eml-2.1.1
     # Cores
-    latest-dwc-occurrence:   http://rs.gbif.org/core/dwc_occurrence_2020-07-15.xml
-    date-dwc-occurrence:     "2020-07-15"
-    latest-dwc-taxon:        http://rs.gbif.org/core/dwc_taxon_2015-04-24.xml
-    date-dwc-taxon:          "2015-04-24"
-    latest-dwc-event:        http://rs.gbif.org/core/dwc_event_2016_06_21.xml
-    date-dwc-event:          "2016_06_21"
-    sandbox-material-sample: http://rs.gbif.org/sandbox/core/dwc_material_sample.xml
+    latest-dwc-occurrence:   https://rs.gbif.org/core/dwc_occurrence_2022-02-02.xml
+    date-dwc-occurrence:     "2022-02-02"
+    latest-dwc-taxon:        https://rs.gbif.org/core/dwc_taxon_2022-02-02.xml
+    date-dwc-taxon:          "2022-02-02"
+    latest-dwc-event:        https://rs.gbif.org/core/dwc_event_2022-02-02.xml
+    date-dwc-event:          "2022-02-02"
+    sandbox-material-sample: https://rs.gbif.org/sandbox/core/dwc_material_sample.xml
     date-material-sample:    "2015-02-13"
     # Extensions
-    latest-resource-relation:    http://rs.gbif.org/extension/dwc/resource_relation_2018_01_18.xml
-    date-resource-relation:      "2018_01_18"
-    latest-description:          http://rs.gbif.org/extension/gbif/1.0/description.xml
+    latest-resource-relation:    https://rs.gbif.org/extension/dwc/resource_relation_2022-02-02.xml
+    date-resource-relation:      "2022-02-02"
+    latest-description:          https://rs.gbif.org/terms/1.0/Description
     date-description:            "2015-02-13"
-    latest-species-distribution: http://rs.gbif.org/extension/gbif/1.0/distribution.xml
-    date-species-distribution:   "2015-02-13"
-    latest-identifier:           http://rs.gbif.org/extension/gbif/1.0/identifier.xml
+    latest-species-distribution: https://rs.gbif.org/terms/1.0/Distribution
+    date-species-distribution:   "2022-02-02"
+    latest-identifier:           https://rs.gbif.org/terms/1.0/Identifier
     date-identifier:             "2015-02-13"
-    latest-references:           http://rs.gbif.org/extension/gbif/1.0/references.xml
+    latest-references:           https://rs.gbif.org/terms/1.0/Reference
     date-references:             "2015-02-13"
-    latest-typesandspecimen:     http://rs.gbif.org/extension/gbif/1.0/typesandspecimen.xml
+    latest-typesandspecimen:     https://rs.gbif.org/terms/1.0/TypesAndSpecimen
     date-typesandspecimen:       "2015-02-13"
-    latest-vernacularname:       http://rs.gbif.org/extension/gbif/1.0/vernacularname.xml
+    latest-vernacularname:       https://rs.gbif.org/terms/1.0/VernacularName
     date-vernacularname:         "2015-02-13"
     # Vocabularies
-    latest-basis-of-record:      http://rs.gbif.org/vocabulary/dwc/basis_of_record.xml
-    date-basis-of-record:        "2015-02-13"
-    latest-description-type:     http://rs.gbif.org/vocabulary/gbif/description_type.xml
+    latest-basis-of-record:      https://rs.gbif.org/vocabulary/dwc/basis_of_record_2022-02-02.xml
+    date-basis-of-record:        "2022-02-02"
+    latest-description-type:     https://rs.gbif.org/vocabulary/gbif/descriptionType
     date-description-type:       "2015-02-13"
-    latest-nomenclatural-status: https://rs.gbif.org/vocabulary/gbif/nomenclatural_status_2019-02-08.xml
+    latest-nomenclatural-status: https://rs.gbif.org/vocabulary/gbif/nomenclatural_status
     date-nomenclatural-status:   "2019-02-08"
-    latest-nomenclatural-type:   http://rs.gbif.org/vocabulary/gbif/nomenclatural_status_2019-02-08.xml
-    date-nomenclatural-type:     "2019-02-08"
-    latest-occurrence-status:    http://rs.gbif.org/vocabulary/gbif/occurrence_status_2020-07-15.xml
+    latest-occurrence-status:    https://rs.gbif.org/vocabulary/gbif/occurrence_status/
     date-occurrence-status:      "2020-07-15"
-    latest-preservation-method:  http://rs.gbif.org/vocabulary/gbif/preservation_method.xml
+    latest-preservation-method:  https://rs.gbif.org/vocabulary/gbif/preservation_method
     date-preservation-method:    "2015-02-13"
-    latest-quantity-type:        http://rs.gbif.org/vocabulary/gbif/quantity_type_2015-07-10.xml
+    latest-quantity-type:        https://rs.gbif.org/vocabulary/gbif/quantityType
     date-quantity-type:          "2015-07-10"
-    latest-rank:                 http://rs.gbif.org/vocabulary/gbif/rank_2015-04-24.xml
+    latest-rank:                 https://rs.gbif.org/vocabulary/gbif/rank
     date-rank:                   "2015-04-24"
-    latest-reference-type:       http://rs.gbif.org/vocabulary/gbif/reference_type.xml
+    latest-reference-type:       https://rs.gbif.org/vocabulary/gbif/referenceType
     date-reference-type:         "2015-02-13"
-    latest-taxonomic-status:     http://rs.gbif.org/vocabulary/gbif/taxonomic_status.xml
-    date-taxonomic-status:       "2015-02-13"
-    latest-unit-of-measurement:  http://rs.gbif.org/vocabulary/gbif/unit_of_measurement_2015-07-10.xml
+    latest-taxonomic-status:     https://rs.gbif.org/vocabulary/gbif/taxonomicStatus/
+    date-taxonomic-status:       "2022-02-22"
+    latest-unit-of-measurement:  https://rs.gbif.org/vocabulary/gbif/unitOfMeasurement
     date-unit-of-measurement:    "2015-07-10"

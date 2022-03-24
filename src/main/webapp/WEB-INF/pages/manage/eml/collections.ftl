@@ -23,7 +23,7 @@
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
             </div>
 
-            <div class="container p-3">
+            <div class="container my-3 p-3">
 
                 <div class="text-center">
                     <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">

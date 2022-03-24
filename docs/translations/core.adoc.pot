@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-19 10:37+0000\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,6 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/core.adoc:13
-#: en/modules/ROOT/pages/customization.adoc:9
 #: en/modules/ROOT/pages/data-quality-checklist.adoc:17
 #: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
 #: en/modules/ROOT/pages/how-to-publish.adoc:30
@@ -80,10 +79,10 @@ msgstr ""
 msgid ""
 "The core XML definition has to comply with the http://rs.gbif.org/schema/"
 "extension.xsd[GBIF Extension Schema]. It is easiest to simply adapt an "
-"existing core definition, such as the {latest-dwc-occurrence}.xml[Darwin "
-"Core Occurrence Core]. Please note, the core definition must contain a "
-"property that serves as the record identifier (e.g. http://rs.tdwg.org/dwc/"
-"terms/occurrenceID for the Occurrence core, or http://rs.tdwg.org/dwc/terms/"
+"existing core definition, such as the {latest-dwc-occurrence}[Darwin Core "
+"Occurrence Core]. Please note, the core definition must contain a property "
+"that serves as the record identifier (e.g. http://rs.tdwg.org/dwc/terms/"
+"occurrenceID for the Occurrence core, or http://rs.tdwg.org/dwc/terms/"
 "eventID for the Event Core. The process of creating a new non-core extension "
 "is exactly the same as for a core extension. The process of creating a new "
 "vocabulary (as a data type for a property within the core, or non-core "

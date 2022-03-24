@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-24 11:55+0000\n"
-"PO-Revision-Date: 2021-08-24 12:16\n"
+"PO-Revision-Date: 2022-02-03 18:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -35,7 +35,7 @@ msgstr "Introducción"
 #: en/modules/ROOT/pages/citation.adoc:1
 #, no-wrap
 msgid "Dataset Citation Format"
-msgstr "Formato de Citas de los Conjuntos de Datos"
+msgstr "Formato de citas de los conjuntos de datos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:4
@@ -45,17 +45,17 @@ msgstr "el formato de citas utilizado en el IPT no es el utilizado por GBIF.org.
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:8
 msgid "Since IPT v2.2 data publishers can choose to let the IPT auto-generate a citation for their dataset. Before publishers had to enter their own citation."
-msgstr "Desde la v.2.2 del IPT, los publicadores de datos pueden elegir permitir al IPT autogenerar un cita para su conjunto de datos. Antes, los publicadores eran quienes tenían que introducir su propia cita."
+msgstr "Desde la v.2.2 del IPT, los publicadores de datos pueden elegir permitir al IPT autogenerar un cita para su conjunto de datos. Antes, los publicadores eran quienes tenían que crear su propia cita."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:10
 msgid "The auto-generated citation format includes the dataset version number and DOI. Human readers can use the DOI to link to the dataset homepage, and can use the version number to locate and download the exact version. This enables reproducing scientific results based on usage of the dataset."
-msgstr "El formato de cita autogenerada incluye el número de versión y el DOI del conjunto de datos. Los lectores humanos pueden utilizar el DOI para vincular la página de portada del conjunto de datos y pueden utilizar el número de versión para localizar y descargar la versión exacta. Esto permite hacer un seguimiento de los resultados científicos basados en el uso de un conjunto de datos."
+msgstr "El formato de cita autogenerada incluye el número de versión y el DOI del conjunto de datos. Los lectores humanos pueden utilizar el DOI para vincular la página principal del conjunto de datos y pueden utilizar el número de versión para localizar y descargar la versión exacta. Esto permite hacer un seguimiento de los resultados científicos basados en el uso de un conjunto de datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/citation.adoc:12
 msgid "A detailed description of the IPT's citation format is described below. It is important to note that the format is based on DataCite’s preferred citation format, and satisfies the https://www.force11.org/datacitation[Joint Declaration of Data Citation Principles]. For more information about the DataCite format, you can refer to Section 2.2 Citation of their http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Metadata Schema]. Each part of the citation is described in the table below, with several examples given afterwards."
-msgstr "A continuación se describe en detalle el formato de citas del IPT. Es importante tener en cuenta que el formato está basado en el formato de citas preferido por DataCite y es acorde a la https://www.force11.org/datacitation[Joint Declaración de los Principios de Citado de Datos]. Para más información sobre el formato de DataCite, puede dirijirse a la Sección 2.2 Citas de su http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Esquema de Metadatos]. Cada parte de la cita se describe en la siguiente tabla, incluyendo después varios ejemplos."
+msgstr "A continuación se describe en detalle el formato de citas del IPT. Es importante tener en cuenta que el formato está basado en el formato de citas preferido por DataCite y es acorde a la https://www.force11.org/datacitation[Declaración joint de los principios de citado de datos]. Para más información sobre el formato de DataCite, puede dirijirse a la Sección 2.2 Citas de su http://schema.datacite.org/meta/kernel-3/doc/DataCite-MetadataKernel_v3.0.pdf[Esquema de metadatos]. Cada parte de la cita se describe en la siguiente tabla, incluyendo después varios ejemplos."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/citation.adoc:13
@@ -96,17 +96,17 @@ msgid "| Citation Part\n"
 msgstr "| Parte de la cita\n"
 "| Descripción\n\n"
 "| 1. Creadores\n"
-"| Uno o más individuos, grupos o instituciones responsables de la creación del conjunto de datos. Todos los contribuyentes del conjunto de datos deberían ser enumerados - ver  https://www.force11.org/datacitation#JDCP2[principio 2 de citas de datos]. Los creadores deben ser conscientes, sin embargo, de que la lista completa puede ser recortada por la Revista durante la maquetación (ej.: De acuerdo a las http://www.nature.com/sdata/for-authors/submission-guidelines#references[guías de Nature] recortarán a partir del sexto creador). Los creadores deben incluir primero el apellido, seguido de las iniciales de sus nombres. Los creadores son incluidos en función de la importancia de su rol en la creación del conjunto de datos, siendo el creador más importante el que aparezca primero. Los creadores van separados por comas.\n\n"
+"| Uno o más individuos, grupos o instituciones responsables de la creación del conjunto de datos. Todos los contribuyentes del conjunto de datos deberían ser enumerados, ver  https://www.force11.org/datacitation#JDCP2[principio 2 de citas de datos]. Los creadores deben ser conscientes, sin embargo, de que la lista completa puede ser recortada por la Revista durante la maquetación (p. ej., de acuerdo a las http://www.nature.com/sdata/for-authors/submission-guidelines#references[guías de Nature] recortarán a partir del sexto creador). Los creadores deben incluir primero el apellido, seguido de las iniciales de sus nombres. Los creadores son incluidos en función de la importancia de su rol en la creación del conjunto de datos, siendo el creador más importante el que aparezca primero. Los creadores van separados por comas.\n\n"
 "| 2. AñoPublicación\n"
 "| Año en que la versión del conjunto de datos fue publicada.\n\n"
 "| 3. Título\n"
-"| Título del conjunto de datos. Solo la primera palabra del título debería ir en mayúsculas y el título debería ser escrito tal como aparece en el citado trabajo, concluyendo con un punto final.\n\n"
+"| Título del conjunto de datos. Solo la primera palabra del título debería ir en mayúsculas y el título debería ser escrito tal como aparece en el trabajo citado, concluyendo con un punto final.\n\n"
 "| 4. Versión\n"
-"| La versión del conjunto de datos. El IPT asigna un nuevo número de versión cada vez que el conjunto de datos se publica. La versión debería estar escrita así \"Versión versión_mayor.versión_menor\". El número de versión permite la \"identificación, acceso, y verificación de los datos específicos que respaldan una solicitud\" - ver https://www.force11.org/datacitation#JDCP7[principio 7 de citas de datos].\n\n"
+"| La versión del conjunto de datos. El IPT asigna un nuevo número de versión cada vez que el conjunto de datos se publica. La versión debería estar escrita así \"Versión versión_mayor.versión_menor\". El número de versión permite la \"identificación, acceso, y verificación de los datos específicos que respaldan una solicitud\", ver https://www.force11.org/datacitation#JDCP7[principio 7 de citas de datos].\n\n"
 "| 5. Publicador\n"
 "| Institución que publica (y posee) el conjunto de datos. Para continuar dando crédito al repositorio que aloja los datos, el nombre del repositorio podría ser incluido en la sección de creadores.\n\n"
 "| 6. TipoRecurso\n"
-"| Tipo de recurso publicado. Una descripción del tipo de recurso que se forma utilizando la pareja TipoGeneralRecurso/TipoRecurso: TipoGeneralRecurso siempre será igual a \"Conjunto de datos\", y el TipoRecurso es un único término que concreta el tipo específico de conjunto de datos, ej.: \"Registros de Presencia\" o \"Listado de Especies\".\n\n"
+"| Tipo de recurso publicado. Una descripción del tipo de recurso que se forma utilizando la pareja TipoGeneralRecurso/TipoRecurso: TipoGeneralRecurso siempre será igual a \"Conjunto de datos\", y el TipoRecurso es un único término que concreta el tipo específico de conjunto de datos, p. ej., \"Registros biológicos\" o \"Listado de especies\".\n\n"
 "| 7. Identificador\n"
 "| El Identificador de Objeto Digital (DOI, por sus siglas en inglés) que dirige al conjunto de datos online. Si no existe DOI, en su lugar se debe usar un enlace a la página del conjunto de datos en el IPT. Es altamente preferible utilizar un DOI, ya que el DOI garantiza acceso persistente, sin importar si la URL del IPT cambia. Para las futuras citas, DataCite recomienda que los DOIs se muestren como URLs permanentes y clicables.\n"
 
@@ -120,7 +120,7 @@ msgstr "Citas de ejemplo"
 #: en/modules/ROOT/pages/citation.adoc:50
 #, no-wrap
 msgid "Example citation for occurrence dataset, with institutional creator, and DOI:"
-msgstr "Ejemplo de cita para un conjunto de datos de registro de presencia, con creador institucional y DOI:"
+msgstr "Ejemplo de cita para un conjunto de datos de registros biológicos, con creador institucional y DOI:"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:53
@@ -142,7 +142,7 @@ msgstr "Brouillet L, Desmet P, Coursol F, Meades SJ, Favreau M, Anions M, Bélis
 #: en/modules/ROOT/pages/citation.adoc:60
 #, no-wrap
 msgid "Example citation for occurrence dataset with 3 creators, and without DOI:"
-msgstr "Ejemplo de cita para un conjunto de datos de registro de presencia, con 3 creadores y sin DOI:"
+msgstr "Ejemplo de cita para un conjunto de datos de registro biológico, con 3 creadores y sin DOI:"
 
 #. type: delimited block *
 #: en/modules/ROOT/pages/citation.adoc:63

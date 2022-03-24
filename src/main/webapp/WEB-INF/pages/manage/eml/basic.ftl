@@ -140,7 +140,7 @@
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
-        <div class="container p-3">
+        <div class="container my-3 p-3">
 
             <div class="text-center">
                 <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
@@ -149,7 +149,13 @@
             </div>
 
             <div class="text-center fs-smaller">
-                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">
+                    <#if resource.title?has_content>
+                        ${resource.title}
+                    <#else>
+                        ${resource.shortname}
+                    </#if>
+                </a>
             </div>
         </div>
     </div>
@@ -172,7 +178,7 @@
 
                         <div class="row g-3">
                             <div class="col-12">
-                                <@input name="eml.title" requiredField=true />
+                                <@input name="eml.title" help="i18n" requiredField=true />
                             </div>
 
                             <div class="col-lg-4">
@@ -207,9 +213,20 @@
                             <div class="col-12">
                                 <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" requiredField=true/>
 
-                                <div id="intellectualRightsDiv" class="mt-3 p-3 border">
+                                <div id="intellectualRightsDiv" class="mt-3 p-3">
                                     <@licenseLogoClass eml.intellectualRights!/>
-                                    <#noescape>${eml.intellectualRights!}</#noescape>
+
+                                    <#if eml.intellectualRights?has_content>
+                                        <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                            <#noescape><@s.text name='eml.intellectualRights.licence.ccbync'/></#noescape>
+                                        <#elseif eml.intellectualRights.contains("CC-BY")>
+                                            <#noescape><@s.text name='eml.intellectualRights.licence.ccby'/></#noescape>
+                                        <#elseif eml.intellectualRights.contains("CC0")>
+                                            <#noescape><@s.text name='eml.intellectualRights.licence.cczero'/></#noescape>
+                                        <#else>
+                                            <#noescape>${eml.intellectualRights!}</#noescape>
+                                        </#if>
+                                    </#if>
                                 </div>
                                 <!-- internal parameter -->
                                 <input id="eml.intellectualRights" name="eml.intellectualRights" type="hidden" value="${eml.intellectualRights!}" />

@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -64,6 +62,9 @@ public class SourceAction extends ManagerBaseAction {
   private Source source;
   private String rdbms;
   private String problem;
+  private String sqlSourcePassword;
+  // to store password internally
+  private String sqlSourcePasswordCache;
   // URL
   private String url;
   private String sourceName;
@@ -396,6 +397,10 @@ public class SourceAction extends ManagerBaseAction {
     return rdbms;
   }
 
+  public String getSqlSourcePassword() {
+    return sqlSourcePassword;
+  }
+
   public Source getSource() {
     return source;
   }
@@ -428,6 +433,14 @@ public class SourceAction extends ManagerBaseAction {
       } else {
         // store original number of columns, in case they change the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
+      }
+
+      // we don't display password after saving, store password internally
+      if (source instanceof SqlSource) {
+        String pw = ((SqlSource) source).getPassword();
+        if (StringUtils.isNotEmpty(pw)) {
+          sqlSourcePasswordCache = pw;
+        }
       }
     } else if (file == null) {
       // prepare a new, empty sql source
@@ -544,8 +557,16 @@ public class SourceAction extends ManagerBaseAction {
 
   public void setRdbms(String jdbc) {
     this.rdbms = jdbc;
-    if (source != null && !source.isFileSource()) {
+    if (source != null && source instanceof SqlSource) {
       ((SqlSource) source).setRdbms(jdbcSupport.get(rdbms));
+    }
+  }
+
+  public void setSqlSourcePassword(String sqlSourcePassword) {
+    if (source != null && source instanceof SqlSource) {
+      ((SqlSource) source).setPassword(sqlSourcePassword);
+      // source should be re-analyzed after password update
+      this.analyze = true;
     }
   }
 
@@ -594,6 +615,12 @@ public class SourceAction extends ManagerBaseAction {
       if (source instanceof SqlSource) {
         // SQL SOURCE
         SqlSource src = (SqlSource) source;
+
+        // restore password if it was not sent from UI
+        if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
+          src.setPassword(sqlSourcePasswordCache);
+        }
+
         // pure ODBC connections need only a DSN, no server
         if (StringUtils.trimToEmpty(src.getHost()).length() == 0 && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
           addFieldError("sqlSource.host", getText("validation.required", new String[] {getText("sqlSource.host")}));

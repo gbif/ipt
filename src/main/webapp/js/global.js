@@ -22,7 +22,8 @@ function initCalendar(context) {
         $(this).find("input").datepicker({
             format: 'yyyy-mm-dd',
             autoclose: true,
-            orientation: "bottom"
+            orientation: "bottom",
+            forceParse: false
         });
     });
 }

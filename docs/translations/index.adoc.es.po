@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2021-12-14 15:51\n"
+"PO-Revision-Date: 2022-02-04 00:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -39,7 +39,7 @@ msgstr "Cómo publicar datos sobre biodiversidad a través de GBIF.org usando el
 #: en/modules/ROOT/pages/index.adoc:1
 #, no-wrap
 msgid "GBIF Integrated Publishing Toolkit (IPT) User Manual"
-msgstr "Manual del Usuario del IPT"
+msgstr "Manual del usuario del GBIF Integrated Publishing Toolkit (IPT)"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:4
@@ -59,12 +59,12 @@ msgstr "Datos primarios sobre registros biológicos"
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:9
 msgid "taxon checklists"
-msgstr "Listas de chequeo taxonómico"
+msgstr "Listados taxonómicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:10
 msgid "sampling event data"
-msgstr "Datos de Eventos de muestreo"
+msgstr "Datos de eventos de muestreo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/index.adoc:11

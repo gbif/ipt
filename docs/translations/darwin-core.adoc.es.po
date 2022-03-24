@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-08-17 15:33+0000\n"
-"PO-Revision-Date: 2021-08-18 08:07\n"
+"PO-Revision-Date: 2022-02-03 20:55\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -25,7 +25,7 @@ msgstr "Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:5
 msgid "Darwin Core is a http://www.tdwg.org/activities/darwincore/[TDWG] standard, which is based on the ideas of the popular http://dublincore.org/documents/dcmi-terms/[terms from the Dublin Core Metadata Initiative].  A fundamental principle of the Darwin Core as a library of terms is to keep the definition of terms distinct from the technology used to share them, e.g. XML or RDF."
-msgstr "Darwin Core es un estándar http://www.tdwg.org/activities/darwincore/[TDWG], el cual se basa en las ideas del popular http://dublincore.org/documents/dcmi-terms/[Dublin Core Metadata Initiative]. Un principio fundamental de el Darwin Core como una biblioteca de términos es mantener la definición de los términos separada de la tecnología usada para compartirla, p. ej. XML o RDF."
+msgstr "Darwin Core es un estándar http://www.tdwg.org/activities/darwincore/[TDWG], el cual se basa en las ideas del popular http://dublincore.org/documents/dcmi-terms/[Dublin Core Metadata Initiative]. Un principio fundamental del Darwin Core como una biblioteca de términos es mantener la definición de los términos diferenciada de la tecnología usada para compartirla, p. ej., XML o RDF."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:6
@@ -36,7 +36,7 @@ msgstr "IPT y Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:8
 msgid "The IPT has core biodiversity data types built-in, which are based on Darwin Core (DwC) terms. The dataset types are Occurrence, Checklist, and Metadata records, each of which has a fixed set of terms to describe it."
-msgstr "El IPT tiene integrados los principales tipos de datos de biodiversidad, se basa en los términos de Darwin Core. Los tipos de conjuntos de datos son registros de presencia \"Occurrence\", lista de verificación \"Checklist\" y metadatos \"Metadata\", cada uno de los cuales tiene un conjunto fijo de términos para describirlo."
+msgstr "El IPT tiene integrados los principales tipos de datos de biodiversidad, que se basan en los términos del Darwin Core (DwC). Los tipos de datos son registros biológicos\"Occurrence\", listados taxonómicos \"Checklist\" y metadatos \"Metadata\", cada uno de los cuales tiene un conjunto fijo de términos para describirlo."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:9
@@ -47,7 +47,7 @@ msgstr "Historia del Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:13
 msgid "Until the ratification of Darwin Core as a standard it was used to describe primary species occurrence data, in particular through DiGIR and XML encoding.  When we were looking for a very simple checklist data exchange format and with the rise of tagging of species on Flickr, it became apparent that simple terms for biodiversity in the tradition of Dublin Core would be very useful - and indeed very much overlapping with the Darwin Core terms in use already."
-msgstr "Hasta la ratificación de Darwin Core como estándar, fue usado para describir datos primarios de presencias de especies, en concreto a través de DiGIR y codificación XML. Cuando estuvimos buscando un formato sencillo de intercambio de datos de listados de especies, y con el aumento del etiquetado de especies en Flickr, se puso de manifiesto que los sencillos términos para biodiversidad en la tradición de Dublin Core serían muy útiles - y muy solapados, de hecho, con los términos Darwin Core ya en uso."
+msgstr "Hasta la ratificación de Darwin Core como estándar, se usaba para describir datos primarios de registros biológicos, en concreto a través de DiGIR y la codificación XML. Cuando estuvimos buscando un formato sencillo de intercambio de datos de listados taxonómicos, y con el aumento de las menciones de especies en Flickr, se hizo evidente que unos términos sencillos para la biodiversidad en la tradición de Dublin Core serían muy útiles, y de hecho se solapan en gran medida con los términos Darwin Core que ya se utilizaban."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:14
@@ -58,12 +58,12 @@ msgstr "Términos"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:16
 msgid "All Darwin Core terms are defined in http://rs.tdwg.org/dwc/terms/index.htm[Darwin Core Terms: a quick reference guide]."
-msgstr "Todos los términos Darwin Core son definidos en  http://rs.tdwg.org/dwc/terms/index.htm[Términos de Darwin Core: una guía de referencia rápida]"
+msgstr "Todos los términos Darwin Core son definidos en  http://rs.tdwg.org/dwc/terms/index.htm[Guía de referencia rápida de los términos Darwin Core]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:20
 msgid "A single DwC term, in IPT often called a property, can be used once for each record.  Generally it is free text, but the definition often recommends certain formats or vocabularies to use, e.g. the ISO 2 letter country codes for the `dwc:countryCode` term."
-msgstr "Un único término DwC, en el IPT llamado a menudo propiedad, puede ser usado una vez para cada registro. Habitualmente es de texto libre pero la definición recomienda a menudo ciertos formatos o vocabularios a utilizar, ej.: los códigos ISO de 2 letras para países para el término `dwc:countryCode`."
+msgstr "Un único término DwC, en el IPT llamado a menudo propiedad, puede ser usado una vez para cada registro. Habitualmente es de texto libre pero la definición recomienda a menudo ciertos formatos o vocabularios a utilizar, p. ej., los códigos ISO de 2 letras para países en el término `dwc:countryCode`."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:21
@@ -80,17 +80,17 @@ msgstr "Términos ID"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:26
 msgid "DwC provides many of terms for identifiers. Some can be used to define a record (such as occurrenceID for an Occurrence record; taxonID for a Taxon record), while others (such as higherGeographyID) refer to an identifier for information stored outside the record.  For example `namePublishedInID` is used to refer to an identifier (perhaps a DOI or other resolvable identifier) for the publication in which a scientificName was originally established.  Note that `taxonID` used within an occurrence dataset would function as a pointer to a taxon defined somewhere else, such as in a checklist dataset, while `taxonID` within a Taxon record would act as the identifier for that record."
-msgstr "DwC proporciona muchos de los términos para identificadores. Algunos pueden ser utilizados para definir un registro (como occurrenceID para un registro de presencia de especie; taxonID para un registro de taxón), mientras otros (como higherGeographyID) se refieren a un identificador para la información recogida fuera del registro. Por ejemplo, `namePublishedInID` se utiliza para referirse a un identificador (puede que un DOI u otro identificador resoluble) para la publicación en la que se estableció originalmente un scientificName. Tenga en cuenta que `taxonID` utilizado en un conjunto de datos de presencia de especies funcionaría como un indicador para un taxón definido en algún otro lugar, tal como un conjunto de datos de listado de especies, mientras que `taxonID` en un registro de taxón actuaría como el identificador de ese registro."
+msgstr "DwC proporciona muchos de los términos para identificadores. Algunos pueden ser utilizados para definir un registro (como occurrenceID para un registro biológico; taxonID para un registro de un taxón), mientras otros (como higherGeographyID) se refieren a un identificador para la información recogida fuera del registro. Por ejemplo, `namePublishedInID` se utiliza para referirse a un identificador (puede que un DOI u otro identificador resoluble) para la publicación en la que se estableció originalmente un scientificName. Tenga en cuenta que `taxonID` utilizado en un conjunto de datos de registros biológicos funcionaría como un indicador para un taxón definido en algún otro lugar, tal como un conjunto de datos de un listado taxonómico, mientras que `taxonID` en un registro de taxón actuaría como el identificador de ese registro."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:29
 msgid "Most ID terms have a corresponding full text term, e.g. `acceptedNameUsageID` and `acceptedNameUsage`.  These serve two purposes:"
-msgstr "La mayoría de términos tienen un término de texto completo correspondiente, ej.: `acceptedNameUsageID` y `acceptedNameUsage`. Éstos tienen dos propósitos:"
+msgstr "La mayoría de términos tienen un término de texto completo correspondiente, p. ej., `acceptedNameUsageID` y `acceptedNameUsage`. Éstos tienen dos propósitos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:31
 msgid "In the absence of an identifier they can be used to refer to another record, in this case the accepted/valid taxon."
-msgstr "En ausencia de un identificador se pueden utilizar para referirse a otro registro, en este caso el taxón aceptado/válido."
+msgstr "En ausencia de un identificador pueden utilizarse para referirse a otro registro, en este caso el taxón aceptado/válido."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:32
@@ -140,12 +140,12 @@ msgstr "Término ID >> término en texto >> término desnormalizado\n"
 #: en/modules/ROOT/pages/darwin-core.adoc:51
 #, no-wrap
 msgid "Verbatim terms"
-msgstr "Términos literales"
+msgstr "Términos originales"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:55
 msgid "Quite a few terms have a corresponding verbatim term. This is to cater the publication of the exact verbatim transcription of certain attributes as they were found in the underlying specimen label, observation fieldbook or literature. This way the `verbatimEventDate` can be used to publish the exact transcription of the collecting date, while `eventDate` can be encoded in a standard ISO date time representation."
-msgstr "Algunos términos poseen su término literal correspondiente. Esto permite incluir la publicación de la transcripción original exacta de ciertos atributos tal y como se encontraron en la etiqueta del espécimen, la observación del cuaderno de campo o la bibliografía. De esta forma el `verbatimEventDate` puede ser utilizado para publicar la transcripción exacta de la fecha de colecta, mientras `eventDate` puede ser codificado en una representación estándar ISO de tiempo y fecha."
+msgstr "Algunos términos poseen un término original correspondiente. Esto permite incluir la publicación de la transcripción original exacta de ciertos atributos tal y como se encontraron en la etiqueta del espécimen, la observación de la libreta de campo o la bibliografía. De esta forma el `verbatimEventDate` puede ser utilizado para publicar la transcripción exacta de la fecha de colecta, mientras `eventDate` puede ser codificado en una representación estándar ISO de tiempo y fecha."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:56
@@ -156,7 +156,7 @@ msgstr "Datos primarios"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:60
 msgid "All DwC terms can be used to describe an occurrence record.  It is recommended to publish at least the following terms.  Terms flagged with !!! have to be present to be recognized by the current GBIF indexing:"
-msgstr "Todos los términos DwC se pueden usar para describir registros de presencias de especies. Se recomienda publicar al menos los siguientes términos. Los términos marcados con !!! tienen que ser incluidos obligatoriamente para que el actual indexado de GBIF los reconozca:"
+msgstr "Todos los términos DwC se pueden usar para describir registros de presencias de especies. Se recomienda publicar al menos los siguientes términos. Los términos marcados con !!! tienen que estar presentes para ser reconocidos por la indexación actual de GBIF:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:62
@@ -302,17 +302,17 @@ msgstr "occurrenceID=96db9d09-596d-409c-8626-f4460078d0eb\n"
 #: en/modules/ROOT/pages/darwin-core.adoc:108
 #, no-wrap
 msgid "Checklists"
-msgstr "Listados de especies"
+msgstr "Listados taxonómicos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:110
 msgid "Checklists are confined to ± the taxonomic subset of all Darwin Core terms."
-msgstr "Los listados de especies se limitan al ± subconjunto taxonómico de todos los términos Darwin Core."
+msgstr "Los listados taxonómicos se limitan al ± subconjunto taxonómico de todos los términos Darwin Core."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:112
 msgid "See the xref:checklist-data.adoc[recommendations on how to publish species checklists]."
-msgstr "Ver las xref:checklist-data.adoc[recomendaciones sobre cómo publicar listados de especies]."
+msgstr "Ver las xref:checklist-data.adoc[recomendaciones sobre cómo publicar listados taxonómicos]."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/darwin-core.adoc:113
@@ -323,7 +323,7 @@ msgstr "El Archivo Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:116
 msgid "Darwin Core Archives (DwC-A) are the new, primary means of publishing data to the GBIF network.  They contain an _entire dataset_, are based on _simple text files_ and can be created fairly easily without the IPT with _custom software_."
-msgstr "Los Archivos Darwin Core (DwC-A) son los nuevos medios primarios de publicación de datos en la red de GBIF. Contienen un _conjunto de datos completo_ están basado en _ficheros de texto simple_ y pueden ser creados da manera bastante sencilla sin el IPT con _programas personalizados_."
+msgstr "Los Archivos Darwin Core (DwC-A) son los nuevos medios primarios de publicación de datos en la red de GBIF. Contienen un _conjunto de datos completo_ están basado en _archivos de texto simple_ y pueden ser creados da manera bastante sencilla sin el IPT usando _programas personalizados_."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:117
@@ -334,23 +334,23 @@ msgstr "Extensiones Darwin Core"
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:120
 msgid "Recognizing that DwC only covers the core biodiversity metadata, extensions to Darwin core are a common need across all communities.  The simplest way to do so is to create new terms in a new namespace and simply extend a regular dwc record with these terms."
-msgstr "Reconociendo que DwC solo cubre los metadatos básicos de la biodiversidad, las extensiones a ese núcleo Darwin son una necesidad común para todas las comunidades. La forma más sencilla de hacerlas es crear nuevos términos en un nuevo espacio de nombres y simplemente ampliar un registro corriente dwc con estos términos."
+msgstr "Reconociendo que DwC solo cubre los metadatos básicos de la biodiversidad, las extensiones a ese núcleo Darwin son una necesidad común para todas las comunidades. La forma más sencilla de hacerlas es crear nuevos términos en un nuevo espacio de nombres y simplemente ampliar un registro dwc normal con estos términos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:123
 msgid "Often multiple _subrecords_ for an extension is desired, such as many common names for a species or multiple images for a specimen.  In order to share these richer, related records the *star scheme* is used, whereby an extension consists of multiple records, each linked to a core dwc record. Any number of extension records potentially from different extensions (e.g. images & identification) for a single core record is possible."
-msgstr "A menudo, es deseable que haya múltiples _sub-registros_ para una extensión, como por ejemplo muchos nombres comunes para una especie o múltiples imágenes para un espécimen. Para compartir estos registros relacionados más enriquecidos se usa el esquema en estrella, por lo que una extensión consiste en múltiples registros, cada uno vinculado a un registro del núcleo dwc. Cualquier número de registro de extensiones potencialmente de diferentes extensiones (ej.: imágenes e identificaciones)  para un único registro del núcleo es posible."
+msgstr "A menudo, es deseable que haya múltiples _sub-registros_ para una extensión, como por ejemplo muchos nombres comunes para una especie o múltiples imágenes para un espécimen. Para compartir estos registros relacionados más enriquecidos se usa el esquema en estrella, por lo que una extensión consiste en múltiples registros, cada uno vinculado a un registro del núcleo dwc. Cualquier número de registros de extensiones, potencialmente de diferentes extensiones (ej.: imágenes e identificaciones), para un único registro core es posible."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/darwin-core.adoc:124
 #, no-wrap
 msgid "The Archive Format"
-msgstr "El Formato del Archivo"
+msgstr "El formato del Archivo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/darwin-core.adoc:130
 msgid "The Darwin Core Archive format provides a means to publish dwc records plus extensions in a relatively simple, text-based format.  A Darwin Core Archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file.  The format follows the http://rs.tdwg.org/dwc/terms/guides/text/index.htm[Darwin Core text guidelines].  A typical package is illustrated in the diagram below and consists of components described in http://code.google.com/p/gbif-ecat/wiki/DwCArchive[details here]."
-msgstr "El Archivo Darwin Core proporciona un medio para publicar registros dwc más extensiones en un formato basado en texto relativamente sencillo. Un Archivo Darwin Core consta de un conjunto de ficheros de texto que son empaquetados en un paquete común y comprimidos en un único archivo. El formato sigue la http://rs.tdwg.org/dwc/terms/guides/text/index.htm[guía de textos Darwin Core]. Un paquete típico se ilustra en el diagrama de abajo y consta de los componentes descritos en detalle http://code.google.com/p/gbif-ecat/wiki/DwCArchive[aquí]."
+msgstr "El Archivo Darwin Core proporciona un medio para publicar registros dwc más extensiones en un formato basado en texto relativamente sencillo. Un Archivo Darwin Core consta de un conjunto de archivos de texto que son empaquetados en un paquete común y comprimidos en un único archivo. El formato sigue la http://rs.tdwg.org/dwc/terms/guides/text/index.htm[guía de textos Darwin Core]. Un paquete típico se ilustra en el diagrama de abajo y consta de los componentes descritos en detalle http://code.google.com/p/gbif-ecat/wiki/DwCArchive[aquí]."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/darwin-core.adoc:131

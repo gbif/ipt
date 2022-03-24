@@ -5,7 +5,7 @@
 <main class="container">
 
     <form action="setup.do" method="post" class="needs-validation" novalidate>
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
 
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
 
@@ -13,9 +13,6 @@
                 [@s.text name="admin.config.setup.title"/]
             </h5>
 
-            <h5 class="text-gbif-header mx-md-4 mx-2 fw-400">
-                [@s.text name="admin.config.setup.disclaimer.title"/]
-            </h5>
             <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart1"/]</p>
             <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.disclaimerPart2"/]</p>
 
@@ -24,8 +21,8 @@
             </div>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <h5 class="text-gbif-header pb-2 mx-md-4 mx-2 pt-2 fw-400 border-bottom">
+        <div class="my-3 p-3 border rounded shadow-sm">
+            <h5 class="border-bottom pb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
                 [@s.text name="admin.config.server.data.dir"/]
             </h5>
             <p class="mx-md-4 mx-2">[@s.text name="admin.config.setup.welcome"/]</p>

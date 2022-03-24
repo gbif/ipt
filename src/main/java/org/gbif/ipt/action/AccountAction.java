@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,6 +27,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 /**
  * Action handling account updates, such as changing username and password.
@@ -88,7 +88,8 @@ public class AccountAction extends POSTAction {
   @Override
   public String save() {
     try {
-      if (validator.validate(this, user)) {
+      // password can't be updated here, skip password validation
+      if (validator.validate(this, user, false)) {
         currentUser.setLastname(user.getLastname());
         currentUser.setFirstname(user.getFirstname());
         addActionMessage(getText("admin.user.account.updated"));
@@ -123,7 +124,7 @@ public class AccountAction extends POSTAction {
         LOG.error("The new password confirmation entered is empty");
       }
       // confirm current password is correct
-      else if (!currentUser.getPassword().equals(trimmedCurrentPassword)) {
+      else if (!BCrypt.verifyer().verify(trimmedCurrentPassword.toCharArray(), currentUser.getPassword().toCharArray()).verified) {
         addFieldError("currentPassword", getText("validation.password.wrong"));
         LOG.error("The password does not match");
       }
@@ -132,9 +133,9 @@ public class AccountAction extends POSTAction {
         addFieldError("password2", getText("validation.password2.wrong"));
         LOG.error("The passwords entered do not match");
         password2 = null;
-        // otherwise, set password even if it's too short - it gets validated during save
+        // otherwise, set password if it's valid
       } else if (validator.validatePassword(this, newPassword)) {
-        currentUser.setPassword(newPassword);
+        currentUser.setPassword(BCrypt.withDefaults().hashToString(12, newPassword.toCharArray()));
         // erase data
         newPassword = null;
         currentPassword = null;

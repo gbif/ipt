@@ -4,7 +4,7 @@
 <main class="container">
 
     <form action="setupComplete.do">
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
 
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
 

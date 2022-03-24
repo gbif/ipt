@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -134,9 +132,8 @@ public class IPTModule extends AbstractModule {
   @Singleton
   public Configuration provideFreemarker(DataDir datadir) {
     Configuration fm = new Configuration(Configuration.VERSION_2_3_31);
-    // load templates from classpath by prefixing /templates
     List<TemplateLoader> tLoader = new ArrayList<>();
-    tLoader.add(new ClassTemplateLoader(AppConfig.class, "/templates"));
+    tLoader.add(new ClassTemplateLoader(AppConfig.class, "/"));
     try {
       TemplateLoader tlDataDir = new DataDirTemplateLoader(datadir.dataFile(""));
       tLoader.add(tlDataDir);

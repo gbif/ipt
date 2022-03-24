@@ -31,8 +31,8 @@
             });
             // end hack
             <#-- use vocabulary -->
-            <#if (vocabTerms?size>0)>
-            var vocab = [<#list vocabTerms?keys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];
+            <#if (vocabTermsSize>0)>
+            var vocab = [<#list vocabTermsKeys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];
             $("#translation input").autocomplete({
                 source: vocab
             })
@@ -46,7 +46,7 @@
 
 <main class="container">
     <form class="topForm" action="translation.do" method="post">
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
 
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
@@ -57,7 +57,7 @@
             <p class="mx-md-4 mx-2"><@s.text name="manage.translation.intro"/></p>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
                 <@s.text name="manage.translation.property"/> <em>${property.name}</em>
             </h5>
@@ -82,7 +82,7 @@
             <@buttons/>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <input type="hidden" name="r" value="${resource.shortname}"/>
             <input type="hidden" name="rowtype" value="${property.extension.rowType}"/>
             <input type="hidden" name="mid" value="${mid}"/>
@@ -93,7 +93,7 @@
                 <colgroup>
                     <col width="400">
                     <!-- do not show column if term does not relate to vocabulary -->
-                    <#if (vocabTerms?size>0)>
+                    <#if (vocabTermsSize>0)>
                         <col width="16">
                     </#if>
                     <col width="400">
@@ -101,7 +101,7 @@
                 <tr>
                     <th><@s.text name="manage.translation.source.value"/></th>
                     <!-- do not show column if term does not relate to vocabulary -->
-                    <#if (vocabTerms?size>0)>
+                    <#if (vocabTermsSize>0)>
                         <th></th>
                     </#if>
                     <th><@s.text name="manage.translation.translated.value"/></th>
@@ -110,7 +110,7 @@
                     <tr>
                         <td>${sourceValuesMap.get(k)!}</td>
                         <!-- do not show column if term does not relate to vocabulary -->
-                        <#if (vocabTerms?size>0)>
+                        <#if (vocabTermsSize>0)>
                             <td>
                                 <#if vocabTerms[tmap.get(k)!k]??>
                                     <i class="bi bi-check-circle text-gbif-primary"></i>

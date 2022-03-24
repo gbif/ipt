@@ -15,7 +15,7 @@ Alternatively if your data is stored in a xref:database-connection.adoc[supporte
 
 For extra guidance, you can look at the <<Exemplar datasets,exemplar datasets>>.
 
-You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}.xml[list].
+You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list].
 
 === Templates
 
@@ -47,7 +47,7 @@ Populate it and upload it to the IPT. Try to augment it with as many http://rs.t
 
 ==== Q. How do I indicate a species was absent?
 
-*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml["absent"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.
+*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}["absent"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.
 
 ==== Q. How can I generalize sensitive species occurrence data?
 

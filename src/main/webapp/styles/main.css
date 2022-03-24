@@ -52,8 +52,50 @@ header, .dropdown-menu {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-.gbif-translate-icon, .gbif-heartbeat-icon {
-    fill: white;
+@media (max-width: 1200px) {
+    .nav-item-border-bottom:not(no-border) {
+        border-bottom: 1px solid #559a55;
+    }
+
+    .nav-item-border-top:not(no-border) {
+        border-top: 1px solid #559a55;
+    }
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.nav-link.active {
+    color: #fff;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.nav-link-account {
+    color: #437943 !important;
+}
+
+.gbif-heartbeat-icon, .gbif-translate-icon {
+    fill: rgba(255, 255, 255, 0.55);
+}
+
+.gbif-heartbeat-icon:hover, .gbif-translate-icon:hover {
+    fill: rgba(255, 255, 255, 0.75);
+}
+
+.gbif-heartbeat-icon:active, .gbif-translate-icon:active {
+    fill: #fff;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
 }
 /* Logo, header, menu etc. END */
 
@@ -191,6 +233,10 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: #58687b;
 }
 
+.text-gbif-warning {
+    color: #663c00;
+}
+
 .bg-gbif-primary {
   background-color: #61a861;
 }
@@ -204,16 +250,28 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 }
 
 /* Custom alerts colors START */
+.alert-green-2 {
+    color: #4caf50;
+}
+
 .alert-success {
     color: #1e4620;
     background-color: #edf7ed;
     border-color: #edf7ed;
 }
 
+.alert-orange-2 {
+    color: #ff9800;
+}
+
 .alert-warning {
     color: #663c00;
     background-color: #fff4e5;
     border-color: #fff4e5;
+}
+
+.alert-red-2 {
+    color: #ef5350;
 }
 
 .alert-danger {
@@ -226,16 +284,16 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 
 /* GBIF gray colored outline button START */
 .btn-outline-secondary {
-    color: #4e565f !important;
-    border-color: #bec6ce !important;
+    color: rgb(78, 86, 95) !important;
+    border-color: rgba(78, 86, 95, 0.5) !important;
 }
 .btn-outline-secondary:hover, .btn-outline-secondary:active {
-    color: #212529 !important;
-    background-color: #eaecef !important;
-    border-color: #bec6ce !important;
+    color: rgb(78, 86, 95) !important;
+    background-color: rgba(78, 86, 95, 0.04) !important;
+    border-color: rgb(78, 86, 95) !important;
 }
 .btn-outline-secondary:focus, .btn-outline-secondary:active:focus {
-    box-shadow: 0 0 0 0.25rem rgba(190, 198, 206, 0.25); !important;
+    box-shadow: 0 0 0 0.25rem rgba(78, 86, 95, 0.25); !important;
 }
 /* GBIF gray colored outline button START */
 
@@ -388,6 +446,25 @@ td.left_padding {
 /* Custom colors for tables pagination items END */
 
 
+/* Custom styles for cross in search inputs START*/
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50em;
+    background: url(../images/icons/times-circle.svg) no-repeat 50% 50%;
+    background-size: contain;
+    opacity: 0;
+    pointer-events: none;
+}
+
+input[type="search"]:focus::-webkit-search-cancel-button {
+    opacity: .3;
+    pointer-events: all;
+}
+/* Custom styles for cross in search inputs END*/
+
+
 /* Overlay div for modal views START */
 #modalbox {
     display: none;
@@ -438,12 +515,32 @@ td.left_padding {
 
 .select2-container--bootstrap4.select2-container--focus .select2-selection {
     border-color: #92c392 !important;
-    -webkit-box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25) !important;
-    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25) !important;
+    box-shadow: none !important;
 }
 
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
     color: #212529 !important;
+}
+
+.select2-container--bootstrap4 .select2-selection:hover {
+    border-color: rgba(33, 37, 41, 0.5);
+}
+
+.select2-container--bootstrap4 .select2-selection__clear {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50em;
+    background: url(../images/icons/times-circle.svg) no-repeat 50% 50%;
+    background-size: contain;
+    opacity: 0.3;
+    pointer-events: all;
+    color: transparent !important;
+    background-color: white !important;
+}
+
+.select2-container--bootstrap4 .select2-selection__clear:hover {
+    background-color: white !important;
 }
 /* Style select2 component END */
 
@@ -637,8 +734,34 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     box-shadow: none;
 }
 
+/* Button font styles */
+.btn {
+    text-transform: uppercase !important;
+    font-size: 0.875rem !important;
+}
+
+.btn-sm {
+    font-size: 0.75rem !important;
+}
+
+#accountDropdownLink{
+    text-transform: none !important;
+}
+
 
 /* Utilities */
+@media (min-width: 1200px){
+    .show-xl-smaller {
+        display: none;
+    }
+}
+
+@media (max-width: 1200px){
+    .show-xl-bigger {
+        display: none;
+    }
+}
+
 .overflow-x-auto {
     overflow-x: auto !important;
 }
@@ -658,6 +781,14 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 .fs-smaller-2 {
     font-size: 0.75rem !important;
+}
+
+.fs-bigger {
+    font-size: 1.125rem !important;
+}
+
+.fs-bigger-2 {
+    font-size: 1.25rem !important;
 }
 
 .fw-400 {
@@ -978,3 +1109,19 @@ a.doi:hover span:first-of-type {
     content: "\EA41";
 }
 /* GBIF icons END */
+
+
+/* Citation border */
+#intellectualRightsDiv, .howtocite {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+/* Utilities */
+@media (max-width: 992px) {
+    .py-lg-max-2 {
+        padding-top: .5rem !important;
+        padding-bottom: .5rem !important
+    }
+}
+

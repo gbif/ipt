@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -102,7 +100,9 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    * If you want form validation with the workflow interceptor, please {@link #addActionError(String)} instead.
    */
   public void addActionWarning(String anErrorMessage) {
-    warnings.add(anErrorMessage);
+    if (!warnings.contains(anErrorMessage)) {
+      warnings.add(anErrorMessage);
+    }
   }
 
   public void addActionWarning(String anErrorMessage, Exception e) {

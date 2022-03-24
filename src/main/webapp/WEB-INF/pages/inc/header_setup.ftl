@@ -9,8 +9,14 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css">
 
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-icons/font/bootstrap-icons.css" />
+
     <!-- IPT CSS -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
+
+    <!-- Custom CSS for customizations -->
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
 
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
 
@@ -20,23 +26,18 @@
     <script src="${baseURL}/js/global.js"></script>
 
 </head>
-<body class="bg-light d-flex flex-column h-100">
+<body class="bg-body d-flex flex-column h-100">
 
 <header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-gbif-main-navbar py-1 shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-gbif-main-navbar py-1 shadow-sm border-bottom">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="IPT" class="gbif-logo"/>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <div class="navbar-nav me-auto mb-2 mb-lg-0"></div>
-                <div class="d-flex">
-                    [#include "/WEB-INF/pages/inc/languages.ftl"/]
-                </div>
+            <!-- Languages -->
+            <div id="navbarNavDropdown">
+                [#include "/WEB-INF/pages/inc/languages.ftl"/]
             </div>
         </div>
     </nav>

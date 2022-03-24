@@ -27,30 +27,57 @@
                 emailContent += '</@s.param></@s.text>';
                 emailContent += '<@s.text name="emails.request.organisation.association7"/>';
 
-                var url = '${registryURL}organisation/' + $('#organisation\\.key :selected').val() + ".json";
-                $.getJSON(url,function(data){
+                var organisationKey = $('#organisation\\.key :selected').val();
 
-                    $('#organisation\\.primaryContactType').val(data.primaryContactType);
-                    $('#organisation\\.primaryContactName').val(data.primaryContactName);
-                    $('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
-                    $('#organisation\\.nodeKey').val(data.nodeKey);
-                    $('#organisation\\.nodeName').val(data.nodeName);
+                if (organisationKey) {
+                    var url = '${registryURL}organisation/' + $('#organisation\\.key :selected').val() + ".json";
+                    $.getJSON(url, function (data) {
 
-                    //Create a contact link to prefill an email to request a password from an Organisation
-                    var contactLink = '<a href=\"mailto:';
-                    contactLink += data.primaryContactEmail;
-                    contactLink += '?subject=';
-                    contactLink += '<@s.text name="emails.request.organisation.association.subject"><@s.param>';
-                    contactLink += orgName;
-                    contactLink += '</@s.param></@s.text>';
-                    contactLink += '&body=';
-                    contactLink += emailContent;
-                    contactLink += '\">';
-                    contactLink += '<@s.text name="emails.request.organisation.association.footer"/>';
-                    contactLink += '</a> ';
-                    contactLink += orgName;
-                    $('#requestDetails').html(contactLink);
-                });
+                        $('#organisation\\.primaryContactType').val(data.primaryContactType);
+                        $('#organisation\\.primaryContactName').val(data.primaryContactName);
+                        $('#organisation\\.primaryContactEmail').val(data.primaryContactEmail);
+                        $('#organisation\\.nodeKey').val(data.nodeKey);
+                        $('#organisation\\.nodeName').val(data.nodeName);
+
+                        //Create a contact link to prefill an email to request a password from an Organisation
+                        var contactLink = '<div class="mt-2"><a href=\"mailto:';
+                        contactLink += data.primaryContactEmail;
+                        contactLink += '?subject=';
+                        contactLink += '<@s.text name="emails.request.organisation.association.subject"><@s.param>';
+                        contactLink += orgName;
+                        contactLink += '</@s.param></@s.text>';
+                        contactLink += '&body=';
+                        contactLink += emailContent;
+                        contactLink += '\">';
+                        contactLink += '<@s.text name="emails.request.organisation.association.footer"/>';
+                        contactLink += '</a> ';
+                        contactLink += orgName;
+                        contactLink += "</div>";
+                        $('#requestDetails').html(contactLink);
+                    });
+                } else {
+                    // remove link
+                    $("#requestDetails").empty();
+                }
+            });
+
+            var doiRegistrationAgency = $('organisation\\.doiRegistrationAgency :selected').val();
+            if (doiRegistrationAgency) {
+                $(".doiAgencyField").css("display", "");
+            }
+
+            $('#organisation\\.doiRegistrationAgency').change(function() {
+                var doiRegistrationAgency = $('#organisation\\.doiRegistrationAgency :selected').val();
+
+                if (doiRegistrationAgency) {
+                    $(".doiAgencyField").css("display", "");
+                } else {
+                    $("#organisation\\.agencyAccountUsername").val('');
+                    $("#organisation\\.agencyAccountPassword").val('');
+                    $("#organisation\\.doiPrefix").val('');
+                    $('#organisation\\.agencyAccountPrimary').attr('checked', false);
+                    $(".doiAgencyField").css("display", "none");
+                }
             });
         });
     </script>
@@ -62,7 +89,7 @@
     <#include "/WEB-INF/pages/macros/popover.ftl">
 
     <main class="container">
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
@@ -113,7 +140,7 @@
                                     <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
                                 </#assign>
                                 <label for="organisation.key" class="form-label">
-                                    <@s.text name="admin.organisation.key"/>
+                                    <@s.text name="admin.organisation.key"/> &#42;
                                 </label>
                                 <a tabindex="0" role="button"
                                    class="popover-link"
@@ -126,14 +153,13 @@
                                 <@s.select id="organisation.key" cssClass="form-select" name="organisation.key" list="organisations" listKey="key" listValue="name" value="organisation.key" disabled="false"/>
                                 <@s.fielderror id="field-error-organisation.key" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="organisation.key"/>
                             </div>
+                            <div id="requestDetails" class="mt-0"></div>
                         </div>
                     </#if>
 
                     <div class="col-lg-6">
-                        <@input name="organisation.password" i18nkey="admin.organisation.password" type="password"/>
+                        <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" requiredField=true />
                     </div>
-
-                    <div id="requestDetails"></div>
 
                     <div class="col-lg-6">
                         <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
@@ -147,38 +173,23 @@
                         </#if>
                     </div>
 
-                    <div class="col-12">
-                        <p>
-                            <@popoverPropertyInfo "admin.organisation.doiRegistrationAgency.help"/>
-                            <@s.text name="admin.organisation.doiRegistrationAgency"/>
-                        </p>
-
-                        <#list doiRegistrationAgencies as agency>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="organisation.doiRegistrationAgency" id="organisation_doiRegistrationAgency${agency}" <#if agency??>value="${agency}"</#if> <#if organisation.doiRegistrationAgency?? && agency == organisation.doiRegistrationAgency> checked </#if> >
-                                <label class="form-check-label" for="organisation_doiRegistrationAgency${agency}" >
-                                    ${agency}
-                                </label>
-                            </div>
-                        </#list>
-                        <@s.fielderror cssClass="invalid-feedback list-unstyled radio-error radio-name-organisation.doiRegistrationAgency mx-md-4 mx-2 my-1">
-                            <@s.param value="%{'organisation.doiRegistrationAgency'}" />
-                        </@s.fielderror>
+                    <div class="col-lg-6">
+                        <@select name="organisation.doiRegistrationAgency" value="${organisation.doiRegistrationAgency!''}" options=doiRegistrationAgencies help="i18n" i18nkey="admin.organisation.doiRegistrationAgency" includeEmpty=true />
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
                         <@input name="organisation.agencyAccountUsername" i18nkey="admin.organisation.doiRegistrationAgency.username" help="i18n" type="text"/>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
                         <@input name="organisation.agencyAccountPassword" i18nkey="admin.organisation.doiRegistrationAgency.password" help="i18n" type="password"/>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
                         <@input name="organisation.doiPrefix" i18nkey="admin.organisation.doiRegistrationAgency.prefix" help="i18n" type="text"/>
                     </div>
 
-                    <div class="col-12">
+                    <div class="col-12 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
                         <@checkbox name="organisation.agencyAccountPrimary" i18nkey="admin.organisation.doiAccount.activated" value="${organisation.agencyAccountPrimary?c}" help="i18n"/>
                     </div>
 

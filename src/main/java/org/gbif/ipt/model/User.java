@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +30,7 @@ public class User implements Serializable, Cloneable {
   private static final long serialVersionUID = 3832626162173359411L;
 
   private String email; // unique
-  private Password password = new Password();
+  private String password;
   private String firstname;
   private String lastname;
   private Role role = Role.User;
@@ -88,10 +86,7 @@ public class User implements Serializable, Cloneable {
   }
 
   public String getPassword() {
-    if (password != null) {
-      return password.password;
-    }
-    return null;
+    return password;
   }
 
   public Role getRole() {
@@ -148,10 +143,7 @@ public class User implements Serializable, Cloneable {
   }
 
   public void setPassword(String password) {
-    if (password == null) {
-      this.password = new Password();
-    }
-    this.password.password = password;
+    this.password = password;
   }
 
   public void setRole(Role role) {

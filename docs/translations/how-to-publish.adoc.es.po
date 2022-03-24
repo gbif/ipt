@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-12-14 12:55+0000\n"
-"PO-Revision-Date: 2021-12-14 13:22\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:21\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -43,7 +43,7 @@ msgstr "Cómo publicar datos sobre biodiversidad a través de GBIF.org"
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:4
 msgid "GBIF supports publication, discovery and use of four classes of data:"
-msgstr "GBIF admite la publicación, el descubrimiento y el uso de cuatro clases de datos:"
+msgstr "GBIF admite la publicación, la búsqueda y el uso de cuatro clases de datos:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:6
@@ -55,7 +55,7 @@ msgstr "xref:resource-metadata.adoc[Metadatos del recurso]"
 #: en/modules/ROOT/pages/how-to-publish.adoc:7
 #: en/modules/ROOT/pages/how-to-publish.adoc:39
 msgid "xref:checklist-data.adoc[Checklist Data]"
-msgstr "xref:checklist-data.adoc[Datos de listado taxonómico]"
+msgstr "xref:checklist-data.adoc[Datos de listas taxonómicas]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:8
@@ -72,7 +72,7 @@ msgstr "xref:sampling-event-data.adoc[Datos de eventos de muestreo]"
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:11
 msgid "At the simplest, GBIF enables sharing information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support an increasingly richer and wider range of information on species, their distributions and abundance."
-msgstr "En su forma más simple, GBIF permite compartir información que describe un recurso de datos de biodiversidad – incluso cuando actualmente no hay más información digital disponible del recurso. Otras clases de datos respaldan una gama de información cada vez más rica y con mayor rango de información sobre las especies, sus distribuciones y su abundancia."
+msgstr "En su forma más simple, GBIF permite compartir información que describe un recurso de datos de biodiversidad, incluso cuando actualmente no hay más información digital disponible del recurso. Otras clases de datos respaldan una gama de información cada vez más rica y con mayor rango de información sobre las especies, sus distribuciones y su abundancia."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:13
@@ -82,7 +82,7 @@ msgstr "Se recomienda a los publicadores de datos que compartan sus datos utiliz
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:15
 msgid "To give yourself an introduction to how the IPT can be used to publish biodiversity data through GBIF.org, it's highly recommended watching this concise 25 minute live demo below:"
-msgstr "Para darse una introducción a cómo se puede utilizar el IPT para publicar datos de biodiversidad a través de GBIF.org, se recomienda ver esta concisa demostración en vivo de 25 minutos a continuación:"
+msgstr "Para que usted tenga una idea de cómo se puede utilizar el IPT para publicar datos sobre la biodiversidad a través de GBIF.org, se recomienda que vea la concisa demostración en vivo de 25 minutos a continuación:"
 
 #. type: Block title
 #: en/modules/ROOT/pages/how-to-publish.adoc:17
@@ -109,22 +109,22 @@ msgstr "Sugerencia: puede instalar y mantener su propia instancia de IPT si tien
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:26
 msgid "Hint: if no data hosting centre exists in your country, and you or your organization don't have the technical skills and capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance."
-msgstr "Sugerencia: si no existe un nodo oficial de datos en su país, y usted o su organización no tienen las habilidades técnicas y la capacidad para albergar un IPT, puede comunicarse con el Servicio de Asistencia de GBIF <helpdesk@gbif.org> para obtener ayuda."
+msgstr "Sugerencia: si no existe un nodo oficial de datos en su país y usted o su organización no tienen las habilidades técnicas y la capacidad para albergar un IPT, puede comunicarse con el Centro de ayuda de GBIF <helpdesk@gbif.org> para obtener ayuda."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:27
 msgid "Assuming that you would like to register your dataset with GBIF and make it globally discoverable via https://www.gbif.org[GBIF.org], your dataset must be affiliated with an organization that is registered with GBIF."
-msgstr "Suponiendo que usted desea registrar su conjunto de datos con GBIF y hacerlo reconocible a nivel mundial a través de https://www.gbif.org/es/[GBIF.org], su conjunto de datos debe estar afiliado a una organización que esté registrada en GBIF."
+msgstr "Suponiendo que usted desea registrar su conjunto de datos con GBIF y hacerlo descubrible a nivel mundial a través de https://www.gbif.org/es/[GBIF.org], su conjunto de datos debe estar afiliado a una organización que esté registrada en GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:28
 msgid "Hint: to register your organization with GBIF, start by completing https://www.gbif.org/become-a-publisher[this online questionnaire]. The registration process can take days, so in parallel you can proceed to publish your data."
-msgstr "Sugerencia: para registrar su organización en GBIF, comience por completar https://www.gbif.org/become-a-publisher[este cuestionario en línea]. El proceso de registro puede tardar días, por lo que en paralelo puedes proceder a publicar tus datos."
+msgstr "Sugerencia: para registrar su organización en GBIF, comience por completar https://www.gbif.org/become-a-publisher[este cuestionario en línea]. El proceso de registro puede tardar días, por lo que en paralelo puede proceder a publicar sus datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:29
 msgid "Hint: if you aren't affiliated with any organization, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data."
-msgstr "Sugerencia: si usted no está afiliado a ninguna organización, puede ponerse en contacto con el Servicio de Asistencia de GBIF <helpdesk@gbif.org> para obtener ayuda. Mientras tanto, puede proceder a publicar sus datos."
+msgstr "Sugerencia: si usted no está afiliado a ninguna organización, puede ponerse en contacto con el Centro de ayuda de GBIF <helpdesk@gbif.org> para obtener ayuda. Mientras tanto, puede proceder a publicar sus datos."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:33
@@ -140,7 +140,7 @@ msgstr "ipt2/flow-all.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:37
 msgid "Select the class of biodiversity data you have from this list:"
-msgstr "Seleccione la clase de datos sobre biodiversidad que usted tiene de lista a continuación:"
+msgstr "Seleccione la clase de datos de biodiversidad que tiene de esta lista:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:42
@@ -150,7 +150,7 @@ msgstr "Transforme sus datos a una estructura de tabla, utilizando los términos
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:43
 msgid "Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended"
-msgstr "Sugerencia: intente usar una plantilla de Excel para estructurar sus datos, y para entender qué términos de DwC son requeridos y recomendados."
+msgstr "Sugerencia: intente usar una plantilla de Excel para estructurar sus datos y para entender qué términos de DwC son requeridos y recomendados."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:44
@@ -165,17 +165,17 @@ msgstr "Suba sus datos al IPT"
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:46
 msgid "Hint: refer to other sections of this manual for additional guidance, such as the xref:manage-resources.adoc[Manage Resources Menu] section."
-msgstr "Sugerencia: consulte otras secciones de este manual para obtener orientación adicional, como la sección xref:manage-resources.adoc[Manage Resources Menu]."
+msgstr "Sugerencia: consulte otras secciones de este manual para obtener orientación adicional, como la sección xref:manage-resources.adoc[Menú gestión de recursos]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:47
-msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}.xml[Event Core]."
-msgstr "Mapear los datos (por ejemplo, xref:checklist-data.adoc[Datos de listado taxonómico] se asigna al {latest-dwc-taxon}.xml[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] se asigna al {latest-dwc-occurrence}.xml[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] se asigna al {latest-dwc-event}.xml[Event Core]."
+msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}[Event Core]."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:48
 msgid "Fill in resource metadata using the IPT's metadata editor"
-msgstr "Complete los metadatos de los recursos con el editor de metadatos de IPT"
+msgstr "Complete los metadatos de los recursos con el editor de metadatos del IPT"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:49
@@ -190,5 +190,5 @@ msgstr "Registre el conjunto de datos con GBIF."
 #. type: Plain text
 #: en/modules/ROOT/pages/how-to-publish.adoc:51
 msgid "Your organization must be registered with GBIF (see prerequisite 2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT."
-msgstr "Su organización debe estar registrada en GBIF (consulte el prerrequisito 2 arriba) y el administrador de IPT debe agregarla a su IPT. De lo contrario, la organización no estará disponible para elegir en el IPT."
+msgstr "Su organización debe estar registrada en GBIF (consulte el prerrequisito 2 arriba) y el administrador del IPT debe agregarla a su IPT. De lo contrario, la organización no estará disponible para elegir en el IPT."
 

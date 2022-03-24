@@ -20,7 +20,10 @@ The following is known to run:
 export CATALINA_OPTS="-Xms512M -Xmx1024M -XX:PermSize=512M -XX:MaxPermSize=1024M"
 ----
 
+[#file-permissions]
 === I get the following error: "The data directory '/directory' is not writable. What should I do?
+
+This also applies to similar errors for creating files, like `RollingFileManager … unable to create manager for … debug.log`.
 
 Assuming you are running Tomcat, you need to ensure the user running Tomcat has permissions on the directory. To find out the user running Tomcat on Linux, open a shell and enter the following command:
 
@@ -40,16 +43,27 @@ To ensure only this user has write permission, enter the following command:
 $ chmod -R 755 directory
 ----
 
-On systems with security sandboxing, you may need to grant permissions to the directory.  For example, on Debian and Ubuntu you need to add a SystemD override:
+[IMPORTANT]
+====
+Some Linux systems use sandboxing to provide additional security.  Setting the file ownership and permissions is _not sufficient_ on these systems.  See the <<sandboxing,following question>>.
+====
+
+Note that if you are running your IPT on a Windows operating system, you will need to check that your folder didn't revert to read-only permissions.
+
+[#sandboxing]
+=== My file permissions are correct, but I still see errors about read/write permissions.
+
+Some Linux systems have additional protections, called security sandboxing.  In this case, you usually need to grant additional permissions for Tomcat to access the data directory.  For example, on Debian and Ubuntu you need to add a SystemD override:
 
 ----
 $ sudo systemctl edit tomcat9.service
+
+# Put this into the file that opens (it will usually be blank), then save it:
 [Service]
-ReadWritePaths=/path/to/directory/
+ReadWritePaths=/path/to/data/directory/
+
 $ sudo systemctl restart tomcat9
 ----
-
-Note that if you are running your IPT on a windows operating system, you will need to check that your folder didn't revert to read-only permissions.
 
 === How can I change the IPT's default language?
 
@@ -156,9 +170,9 @@ Lastly, you can delete old resource using the "Delete from the IPT only (orphan)
 
 The type of a resource is derived from its core mapping:
 
-* If the core mapping is to the {latest-dwc-occurrence}.xml[Occurrence extension], the type is equal to "occurrence".
-* If the core mapping is to the {latest-dwc-taxon}.xml[Taxon extension], the type is equal to "checklist".
-* If the core mapping is to the {latest-dwc-event}.xml[Event extension], the type is equal to "sampling-event".
+* If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], the type is equal to "occurrence".
+* If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type is equal to "checklist".
+* If the core mapping is to the {latest-dwc-event}[Event extension], the type is equal to "sampling-event".
 * If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to "other".
 
 Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.
@@ -209,7 +223,7 @@ If you have forgotten the admin password, the server administrator will need to 
 
 Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role="Admin"`), and replace the encrypted password with `VRRUXOTCtdCkQr40SrHdrnUJurTOYMW9`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed.
 
-If they prefer, a Java developer could modify the https://github.com/gbif/ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest.java[PBEEncryptTest class] to generate a hash for a different password, or decrypt the lost password (but see https://github.com/gbif/ipt/issues/1460[issue 1460]).
+If they prefer, a Java developer could modify the https://github.com/gbif/ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest.java[PBEEncryptTest class] to generate a hash for a different password).
 
 === How do I migrate a dataset from one IPT installation to another?
 This migration process must be done directly on the server following the next steps:

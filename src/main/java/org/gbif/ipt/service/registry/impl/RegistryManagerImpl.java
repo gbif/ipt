@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +14,6 @@
 package org.gbif.ipt.service.registry.impl;
 
 import org.gbif.api.model.common.DOI;
-import org.gbif.api.model.common.paging.PagingResponse;
 import org.gbif.api.model.registry.Network;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.action.BaseAction;
@@ -25,6 +22,7 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
@@ -215,9 +213,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return rs;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#deregister(org.gbif.ipt.model.Resource)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public void deregister(Resource resource) throws RegistryException {
@@ -250,9 +247,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getExtensions()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<Extension> getExtensions() throws RegistryException {
@@ -319,16 +315,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/organisation/", organisationKey + ".json");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisations()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<Organisation> getOrganisations() {
     List<Map<String, String>> organisationsTemp = new ArrayList<>();
     try {
       organisationsTemp = gson
-        .fromJson(requestHttpGetFromRegistry(getOrganisationsURL(true)).getContent(),
+        .fromJson(requestHttpGetFromRegistry(getOrganisationsURL()).getContent(),
           new TypeToken<List<Map<String, String>>>() {
           }.getType());
     } catch (RegistryException e) {
@@ -367,9 +362,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return organisations;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisation()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public Organisation getRegisteredOrganisation(String key) {
@@ -404,22 +398,22 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   /**
    * Returns the Organisations url
    */
-  private String getOrganisationsURL(boolean json) {
-    return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/organisation", json ? ".json" : "/");
+  private String getOrganisationsURL() {
+    return cfg.getRegistryUrl() + "/registry/organisation.json";
   }
 
   /**
    * Returns the Networks url
    */
   private String getListNetworksURL() {
-    return cfg.getRegistryUrl() + "/registry/network/";
+    return cfg.getRegistryUrl() + "/registry/network.json";
   }
 
   /**
    * Returns the Networks url
    */
   private String getResourceListNetworksURL(String resourceKey) {
-    return cfg.getRegistryUrl() + "/registry/dataset/" + resourceKey + "/networks";
+    return cfg.getRegistryUrl() + "/registry/resource/" + resourceKey + "/networks";
   }
 
   /**
@@ -469,9 +463,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8));
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getVocabularies()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<Vocabulary> getVocabularies() throws RegistryException {
@@ -482,9 +475,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return (jSONVocabularies.get("thesauri") == null) ? new ArrayList<>() : jSONVocabularies.get("thesauri");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.registry.RegistryManager#getOrganisationsResources
+  /**
+   * {@inheritDoc}
    */
   @Override
   public List<Resource> getOrganisationsResources(String organisationKey) throws RegistryException {
@@ -531,10 +523,18 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     List<Network> networks = new ArrayList<>();
     if (resource != null && resource.getKey() != null) {
       try {
+        ExtendedResponse response = requestHttpGetFromRegistry(getResourceListNetworksURL(resource.getKey().toString()));
+
+        if (response.getStatusCode() != 200) {
+          throw new RegistryException(
+              Type.BAD_RESPONSE,
+              getResourceListNetworksURL(resource.getKey().toString()),
+              "Wrong response code " + response.getStatusCode());
+        }
+
+        String content = response.getContent();
         networks = gson
-            .fromJson(requestHttpGetFromRegistry(getResourceListNetworksURL(resource.getKey().toString())).getContent(),
-                new TypeToken<List<Network>>() {
-                }.getType());
+            .fromJson(content, new TypeToken<List<Network>>() {}.getType());
       } catch (RegistryException e) {
         // log as specific error message as possible about why the Registry error occurred
         String msg = RegistryException.logRegistryException(e, baseAction);
@@ -553,14 +553,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   @Override
-  public List<Network> getNetworks() throws RegistryException {
-    // TODO: 24/11/2021 paging response!
-    PagingResponse<Network> networks = new PagingResponse<>();
+  public List<KeyNamePair> getNetworksBrief() throws RegistryException {
+    List<KeyNamePair> networks = new ArrayList<>();
     try {
+      ExtendedResponse response = requestHttpGetFromRegistry(getListNetworksURL());
+      if (response.getStatusCode() != 200) {
+        throw new RegistryException(
+            Type.BAD_RESPONSE,
+            getListNetworksURL(),
+            "Wrong response code " + response.getStatusCode());
+      }
+
+      String content = response.getContent();
       networks = gson
-          .fromJson(requestHttpGetFromRegistry(getListNetworksURL()).getContent(),
-              new TypeToken<PagingResponse<Network>>() {
-              }.getType());
+          .fromJson(content, new TypeToken<List<KeyNamePair>>() {}.getType());
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
       String msg = RegistryException.logRegistryException(e, baseAction);
@@ -574,7 +580,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       LOG.error(msg);
     }
 
-    return networks.getResults();
+    return networks;
   }
 
   @Override
@@ -595,9 +601,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (IOException e) {
       throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (Exception e) {
-      String msg = "Bad registry response: " + e.getMessage();
-      LOG.error(msg, e);
-      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+      if (!(e instanceof RegistryException)) {
+        String msg = "Bad registry response: " + e.getMessage();
+        LOG.error(msg, e);
+        throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+      }
     }
   }
 
@@ -619,9 +627,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } catch (IOException e) {
       throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (Exception e) {
-      String msg = "Bad registry response: " + e.getMessage();
-      LOG.error(msg, e);
-      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+      if (!(e instanceof RegistryException)) {
+        String msg = "Bad registry response: " + e.getMessage();
+        LOG.error(msg, e);
+        throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
+      }
     }
   }
 

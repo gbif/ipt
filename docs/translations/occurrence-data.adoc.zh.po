@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-11-10 10:42+0000\n"
-"PO-Revision-Date: 2021-11-10 11:50\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:21\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -133,7 +133,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:19
-msgid "You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}.xml[list]."
+msgid "You can augment your table with extra DwC columns, but only DwC terms from this {latest-dwc-occurrence}[list]."
 msgstr ""
 
 #. type: Plain text
@@ -198,7 +198,7 @@ msgstr "問：如何表示某地沒有這個物種（指出物種的缺如狀態
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:51
 #, no-wrap
-msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}.xml[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
+msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
 msgstr ""
 
 #. type: Title ====

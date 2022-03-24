@@ -1,0 +1,194 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gbif-ipt\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
+"PO-Revision-Date: 2022-02-24 12:21\n"
+"Last-Translator: \n"
+"Language-Team: Japanese\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: gbif-ipt\n"
+"X-Crowdin-Project-ID: 74786\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File: /[gbif.ipt] master/docs/translations/how-to-publish.adoc.pot\n"
+"X-Crowdin-File-ID: 132\n"
+
+#. type: Title ==
+#: en/modules/ROOT/pages/core.adoc:13
+#: en/modules/ROOT/pages/data-quality-checklist.adoc:17
+#: en/modules/ROOT/pages/gbif-metadata-profile.adoc:90
+#: en/modules/ROOT/pages/how-to-publish.adoc:30
+#: en/modules/ROOT/pages/license.adoc:25 en/modules/ROOT/pages/user-id.adoc:23
+#, no-wrap
+msgid "Instructions"
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/developer-guide.adoc:16
+#: en/modules/ROOT/pages/how-to-publish.adoc:20
+#: en/modules/ROOT/pages/tomcat-installation-windows.adoc:5
+#, no-wrap
+msgid "Prerequisites"
+msgstr ""
+
+#. type: Title =
+#: en/modules/ROOT/pages/how-to-publish.adoc:1
+#, no-wrap
+msgid "How to publish biodiversity data through GBIF.org"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:4
+msgid "GBIF supports publication, discovery and use of four classes of data:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:6
+#: en/modules/ROOT/pages/how-to-publish.adoc:38
+msgid "xref:resource-metadata.adoc[Resource metadata]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:7
+#: en/modules/ROOT/pages/how-to-publish.adoc:39
+msgid "xref:checklist-data.adoc[Checklist Data]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:8
+#: en/modules/ROOT/pages/how-to-publish.adoc:40
+msgid "xref:occurrence-data.adoc[Occurrence Data]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:9
+#: en/modules/ROOT/pages/how-to-publish.adoc:41
+msgid "xref:sampling-event-data.adoc[Sampling Event Data]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:11
+msgid "At the simplest, GBIF enables sharing information describing a biodiversity data resource – even when no further digital information is currently available from the resource. Other data classes support an increasingly richer and wider range of information on species, their distributions and abundance."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:13
+msgid "Data publishers are strongly encouraged to share their data using the richest appropriate data class. This maximizes the usefulness of the data for users."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:15
+msgid "To give yourself an introduction to how the IPT can be used to publish biodiversity data through GBIF.org, it's highly recommended watching this concise 25 minute live demo below:"
+msgstr ""
+
+#. type: Block title
+#: en/modules/ROOT/pages/how-to-publish.adoc:17
+#: en/modules/ROOT/pages/index.adoc:30
+#, no-wrap
+msgid "How to publish biodiversity data through GBIF.org using the IPT"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:23
+msgid "You require an account on a GBIF Integrated Publishing Toolkit (IPT) to publish your data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:24
+msgid "Hint: it is highly recommended that you save yourself time and money by requesting an account on a xref:data-hosting-centres.adoc[data hosting centre IPT] that is located in your country."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:25
+msgid "Hint: you could install and maintain your own IPT instance if you have technical skills and capacity to maintain it online near 100% of the time."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:26
+msgid "Hint: if no data hosting centre exists in your country, and you or your organization don't have the technical skills and capacity to host an IPT, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:27
+msgid "Assuming that you would like to register your dataset with GBIF and make it globally discoverable via https://www.gbif.org[GBIF.org], your dataset must be affiliated with an organization that is registered with GBIF."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:28
+msgid "Hint: to register your organization with GBIF, start by completing https://www.gbif.org/become-a-publisher[this online questionnaire]. The registration process can take days, so in parallel you can proceed to publish your data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:29
+msgid "Hint: if you aren't affiliated with any organization, you can contact the GBIF Helpdesk <helpdesk@gbif.org> for assistance. In the meantime, you can proceed to publish your data."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:33
+msgid "To publish your data, follow the 7 steps below."
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/how-to-publish.adoc:34
+#, no-wrap
+msgid "ipt2/flow-all.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:37
+msgid "Select the class of biodiversity data you have from this list:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:42
+msgid "Transform your data into a table structure, using Darwin Core (DwC) terms as column names"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:43
+msgid "Hint: try using an Excel template to structure your data, and understand what DwC terms are required and recommended"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:44
+msgid "Hint: it is possible to use data stored in a xref:database-connection.adoc[supported database]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:45
+msgid "Upload your data to the IPT"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:46
+msgid "Hint: refer to other sections of this manual for additional guidance, such as the xref:manage-resources.adoc[Manage Resources Menu] section."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:47
+msgid "Map the data (e.g. xref:checklist-data.adoc[Checklist Data] gets mapped to the {latest-dwc-taxon}[Taxon Core], xref:occurrence-data.adoc[Occurrence Data] gets mapped to the {latest-dwc-occurrence}[Occurrence Core], xref:sampling-event-data.adoc[Sampling Event Data] gets mapped to the {latest-dwc-event}[Event Core]."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:48
+msgid "Fill in resource metadata using the IPT's metadata editor"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:49
+msgid "Publish the dataset (make it freely and openly available worldwide)"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:50
+msgid "Register the dataset with GBIF."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/how-to-publish.adoc:51
+msgid "Your organization must be registered with GBIF (see prerequisite 2 above) and added to your IPT by the IPT administrator. Otherwise, the organization will not be available to choose from in the IPT."
+msgstr ""
+

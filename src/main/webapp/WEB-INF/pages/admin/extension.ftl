@@ -4,7 +4,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <main class="container">
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="my-3 p-3 border rounded shadow-sm">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
@@ -92,13 +92,13 @@
 
     </div>
 
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="my-3 p-3 border rounded shadow-sm">
         <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
             <@s.text name="admin.extension.properties"/>
         </h5>
 
         <#list extension.properties as p>
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
+            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
                 <div class="col-lg-3">
                     <a name="${p.qualname}"></a>
                     <div class="title">

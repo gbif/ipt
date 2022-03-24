@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2021-09-01 16:13+0000\n"
-"PO-Revision-Date: 2021-09-01 16:34\n"
+"POT-Creation-Date: 2022-02-24 12:06+0000\n"
+"PO-Revision-Date: 2022-02-24 12:22\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -339,7 +339,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:90
-msgid "If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its password must be known*. For explanations of the fields and selections on this form, refer to the information below."
+msgid "If the IPT passes the validation step above, a form showing additional information required for registration is presented. In this step, the IPT instance is associated to an organization. *The organization must already be registered in the GBIF Registry, and its shared token must be known*. For explanations of the fields and selections on this form, refer to the information below."
 msgstr ""
 
 #. type: Target for macro image
@@ -363,7 +363,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:97
 #, no-wrap
-msgid "*Organization's password* - the correct password registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's password, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Password text box after selecting an organization in the Organization select box. The password will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
+msgid "*Organization's shared token* - the shared token registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's shared token, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Shared Token text box after selecting an organization in the Organization select box. The shared token will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
 msgstr ""
 
 #. type: Plain text
@@ -485,7 +485,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:128
 #, no-wrap
-msgid "*Organization password* - the password that should be used to edit the entry for this organization in the GBIF Registry.\n"
+msgid "*Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.\n"
 msgstr ""
 
 #. type: Plain text
@@ -538,7 +538,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:138
-msgid "Organizations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labelled \"Add\" to open a page on which an additional organization can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the \"Edit Organization\" section above. After the desired organization is selected and all other data entered, including the password for the organization, click on the button labelled \"Save\" to add the selected organization to the list."
+msgid "Organizations are not available to be associated with resources until a user having the Admin role adds them. Click on the button labelled \"Add\" to open a page on which an additional organization can be selected from the GBIF Registry to be used in this instance of the IPT. For explanations of the fields and selections on this page, refer to the information under the \"Edit Organization\" section above. After the desired organization is selected and all other data entered, including the shared token for the organization, click on the button labelled \"Save\" to add the selected organization to the list."
 msgstr ""
 
 #. type: Target for macro image
@@ -560,7 +560,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:145
-msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the https://rs.gbif.org/vocabulary/dwc/basis_of_record.xml[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
+msgid "Vocabularies contain lists of valid values that a particular term in a Core Type or Extension can take. For example, the {latest-basis-of-record}[Darwin Core Type vocabulary] contains all of the standard values allowed in the Darwin Core term http://rs.tdwg.org/dwc/terms/#basisOfRecord[basisOfRecord]."
 msgstr ""
 
 #. type: Plain text

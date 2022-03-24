@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +13,6 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
-import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
@@ -54,7 +51,7 @@ import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
-import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
@@ -144,6 +141,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -169,11 +167,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, UserEmailConverter userConverter,
-    OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
-    JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
-    RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
-    PasswordConverter passwordConverter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
-    SimpleTextProvider textProvider, RegistrationManager registrationManager) {
+                             OrganisationKeyConverter orgConverter, ExtensionRowTypeConverter extensionConverter,
+                             JdbcInfoConverter jdbcInfoConverter, SourceManager sourceManager, ExtensionManager extensionManager,
+                             RegistryManager registryManager, ConceptTermConverter conceptTermConverter, GenerateDwcaFactory dwcaFactory,
+                             PasswordEncrypter passwordEncrypter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
+                             SimpleTextProvider textProvider, RegistrationManager registrationManager) {
     super(cfg, dataDir);
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
@@ -183,7 +181,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     this.vocabManager = vocabManager;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
     defineXstreamMapping(userConverter, orgConverter, extensionConverter, conceptTermConverter, jdbcInfoConverter,
-      passwordConverter);
+      passwordEncrypter);
     this.textProvider = textProvider;
     this.registrationManager = registrationManager;
   }
@@ -688,7 +686,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private void defineXstreamMapping(UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
     ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
-    JdbcInfoConverter jdbcInfoConverter, PasswordConverter passwordConverter) {
+    JdbcInfoConverter jdbcInfoConverter, PasswordEncrypter passwordEncrypter) {
     xstream.addPermission(AnyTypePermission.ANY);
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
@@ -715,7 +713,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // persist only qualified concept name
     xstream.registerConverter(conceptTermConverter);
     // encrypt passwords
-    xstream.registerConverter(passwordConverter);
+    xstream.registerConverter(passwordEncrypter);
 
     xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
     xstream.registerConverter(orgConverter);
@@ -1950,10 +1948,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return null;
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#register(org.gbif.ipt.model.Resource,
-   * org.gbif.ipt.model.Organisation)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action)
@@ -2203,9 +2199,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public synchronized void saveEml(Resource resource) throws InvalidConfigException {

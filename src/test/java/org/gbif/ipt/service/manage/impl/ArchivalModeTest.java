@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +22,7 @@ import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
-import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -48,7 +46,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -62,9 +59,9 @@ public class ArchivalModeTest {
   @BeforeEach
   public void setup() throws IOException {
     File tmpDataDir = FileUtils.createTempDir();
-    when(mockDataDir.resourceEmlFile(anyString(), anyObject())).thenReturn(tmpDataDir);
-    when(mockDataDir.resourceRtfFile(anyString(), anyObject())).thenReturn(tmpDataDir);
-    when(mockDataDir.resourceDwcaFile(anyString(), anyObject())).thenReturn(tmpDataDir);
+    when(mockDataDir.resourceEmlFile(anyString(), any())).thenReturn(tmpDataDir);
+    when(mockDataDir.resourceRtfFile(anyString(), any())).thenReturn(tmpDataDir);
+    when(mockDataDir.resourceDwcaFile(anyString(), any())).thenReturn(tmpDataDir);
   }
 
   public ResourceManagerImpl getResourceManagerImpl(AppConfig mockAppConfig) {
@@ -80,7 +77,7 @@ public class ArchivalModeTest {
       mock(RegistryManager.class),
       mock(ConceptTermConverter.class),
       mock(GenerateDwcaFactory.class),
-      mock(PasswordConverter.class),
+      mock(PasswordEncrypter.class),
       mock(Eml2Rtf.class),
       mock(VocabulariesManager.class),
       mock(SimpleTextProvider.class),

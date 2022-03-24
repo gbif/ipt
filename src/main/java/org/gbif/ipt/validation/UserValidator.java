@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -46,6 +44,7 @@ public class UserValidator extends BaseValidator {
       }
       if (validatePassword && !exists(user.getPassword(), 4)) {
         valid = false;
+        action.addFieldError("newPassword", action.getText("validation.password.required"));
         action.addFieldError("user.password", action.getText("validation.password.required"));
       }
 
@@ -57,6 +56,7 @@ public class UserValidator extends BaseValidator {
     boolean valid = true;
     if (!exists(password, 4)) {
       valid = false;
+      action.addFieldError("newPassword", action.getText("validation.password.required"));
       action.addFieldError("user.password", action.getText("validation.password.required"));
     }
     return valid;

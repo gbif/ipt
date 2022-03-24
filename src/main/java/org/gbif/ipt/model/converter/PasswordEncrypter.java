@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,14 +28,20 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
+/**
+ * Encrypts and decrypts secrets (passwords, tokens).
+ * <br>
+ * Note this is not appropriate for user passwords, which should be hashed instead.
+ */
 @Singleton
-public class PasswordConverter implements Converter {
+public class PasswordEncrypter implements Converter {
 
-  private static final Logger LOG = LogManager.getLogger(PasswordConverter.class);
+  private static final Logger LOG = LogManager.getLogger(PasswordEncrypter.class);
+
   private final PBEEncrypt encrypter;
 
   @Inject
-  public PasswordConverter(PBEEncrypt cipher) {
+  public PasswordEncrypter(PBEEncrypt cipher) {
     this.encrypter = cipher;
   }
 
@@ -54,7 +58,7 @@ public class PasswordConverter implements Converter {
         writer.setValue(encrypter.encrypt(pass.password));
       }
     } catch (EncryptionException e) {
-      LOG.error("Cannot encrypt sql source password", e);
+      LOG.error("Cannot encrypt password", e);
     }
   }
 
@@ -65,7 +69,7 @@ public class PasswordConverter implements Converter {
     try {
       pass.password = val == null ? null : encrypter.decrypt(val);
     } catch (EncryptionException e) {
-      LOG.error("Cannot decrypt sql source password", e);
+      LOG.error("Cannot decrypt password", e);
     }
     return pass;
   }

@@ -169,11 +169,9 @@
     </#if>
 
     <div class="container my-3 p-3">
-        <#if resource.coreType??>
-            <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <span>${resource.coreType}</span>
-            </div>
-        </#if>
+        <div class="text-center text-uppercase fw-bold fs-smaller-2">
+            <span>${coreType}</span>
+        </div>
 
         <div class="text-center">
             <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
@@ -235,9 +233,9 @@
 <#assign resourceDescriptionLength = resourceDescription?length>
 <#assign maxDescriptionLength = 800>
 
-<div class="container-fluid border-bottom">
+<div class="container-fluid bg-light border-bottom">
     <div class="container">
-        <div class="my-4 p-3 pt-4 bg-body rounded shadow-sm">
+        <div class="my-4 p-3 pt-4 bg-body border rounded shadow-sm">
             <div class="mx-md-4 mx-2">
                 <div class="row">
                     <div class="col-lg-8 text-smaller">
@@ -525,7 +523,7 @@
                                 </#if>
                                 <tr>
                                     <th><@s.text name='portal.resource.metadata.verbose'/></th>
-                                    <td><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
+                                    <td><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download><@s.text name='portal.resource.download'/></a>
                                         <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
                                     </td>
                                 </tr>
@@ -572,7 +570,7 @@
                                 </#if>
                                 <@s.text name='portal.resource.cite.help'/>:
                             </p>
-                            <p property="dc:bibliographicCitation" class="howtocite mt-3 p-3 border overflow-x-auto">
+                            <p property="dc:bibliographicCitation" class="howtocite mt-3 p-3 overflow-x-auto">
                                 <@textWithFormattedLink eml.citation.citation/>
                             </p>
                         </div>
@@ -592,7 +590,15 @@
                                 <#if resource.organisation?? && action.getDefaultOrganisation()?? && resource.organisation.key.toString() != action.getDefaultOrganisation().key.toString()>
                                     <@s.text name='portal.resource.rights.organisation'><@s.param>${resource.organisation.name}</@s.param></@s.text>
                                 </#if>
-                                <#noescape>${eml.intellectualRights!}</#noescape>
+                                <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                    <#noescape><@s.text name='eml.intellectualRights.licence.ccbync'/></#noescape>
+                                <#elseif eml.intellectualRights.contains("CC-BY")>
+                                    <#noescape><@s.text name='eml.intellectualRights.licence.ccby'/></#noescape>
+                                <#elseif eml.intellectualRights.contains("CC0")>
+                                    <#noescape><@s.text name='eml.intellectualRights.licence.cczero'/></#noescape>
+                                <#else>
+                                    <#noescape>${eml.intellectualRights!}</#noescape>
+                                </#if>
                             </p>
                         </div>
                     </#if>

@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -177,6 +175,11 @@ public class EmlValidator extends BaseValidator {
           if (StringUtils.isBlank(eml.getTitle())) {
             action.addFieldError("eml.title",
               action.getText("validation.required", new String[] {action.getText("eml.title")}));
+          }
+
+          // Title - not a short name of the resource
+          if (resource.getShortname() != null && resource.getShortname().equals(eml.getTitle())) {
+            action.addActionWarning(action.getText("eml.title.shortname.match"));
           }
 
           // description - mandatory and greater than 5 chars

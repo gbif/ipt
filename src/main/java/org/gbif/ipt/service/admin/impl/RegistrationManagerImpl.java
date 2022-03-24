@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +13,6 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
-import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.config.AppConfig;
@@ -24,7 +21,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Registration;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.converter.PasswordConverter;
+import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.legacy.LegacyIpt;
 import org.gbif.ipt.model.legacy.LegacyOrganisation;
 import org.gbif.ipt.model.legacy.LegacyRegistration;
@@ -64,6 +61,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 @Singleton
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
@@ -82,11 +80,11 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Inject
   public RegistrationManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    RegistryManager registryManager, PasswordConverter passwordConverter) {
+    RegistryManager registryManager, PasswordEncrypter passwordEncrypter) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     defineXstreamMappingV1();
-    defineXstreamMappingV2(passwordConverter);
+    defineXstreamMappingV2(passwordEncrypter);
     this.registryManager = registryManager;
   }
 
@@ -235,15 +233,15 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   /**
    * Define XStream used to parse encrypted registration (registration2.xml) with passwords encrypted.
    *
-   * @param passwordConverter PasswordConverter
+   * @param passwordEncrypter PasswordConverter
    */
-  private void defineXstreamMappingV2(PasswordConverter passwordConverter) {
+  private void defineXstreamMappingV2(PasswordEncrypter passwordEncrypter) {
     xstreamV2.addPermission(AnyTypePermission.ANY);
     xstreamV2.omitField(Registration.class, "associatedOrganisations");
     xstreamV2.alias("organisation", Organisation.class);
     xstreamV2.alias("registry", Registration.class);
     // encrypt passwords
-    xstreamV2.registerConverter(passwordConverter);
+    xstreamV2.registerConverter(passwordEncrypter);
   }
 
   @Override

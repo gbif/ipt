@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,9 +28,11 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +41,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
+
+import freemarker.ext.beans.SimpleMapModel;
 
 public class TranslationAction extends ManagerBaseAction {
 
@@ -118,7 +120,7 @@ public class TranslationAction extends ManagerBaseAction {
   private PropertyMapping field;
   private ExtensionProperty property;
   private ExtensionMapping mapping;
-  private Map<String, String> vocabTerms = new HashMap<>();
+  private SimpleMapModel vocabTerms;
   private Integer mid;
 
   @Inject
@@ -211,7 +213,9 @@ public class TranslationAction extends ManagerBaseAction {
         notFound = false;
         property = mapping.getExtension().getProperty(field.getTerm());
         if (property.getVocabulary() != null) {
-          vocabTerms = vocabManager.getI18nVocab(property.getVocabulary().getUriString(), getLocaleLanguage(), true);
+          Map<String, String> vocabTermsRawData =
+              vocabManager.getI18nVocab(property.getVocabulary().getUriString(), getLocaleLanguage(), true);
+          vocabTerms = new SimpleMapModel(vocabTermsRawData, null);
         }
         if (!trans.isLoaded(mapping.getExtension().getRowType(), field.getTerm())) {
           reloadSourceValues();
@@ -314,8 +318,17 @@ public class TranslationAction extends ManagerBaseAction {
     return trans.getTranslatedValues();
   }
 
-  public Map<String, String> getVocabTerms() {
+  public SimpleMapModel getVocabTerms() {
     return vocabTerms;
+  }
+
+  public int getVocabTermsSize() {
+    return vocabTerms != null ? vocabTerms.size() : 0;
+  }
+
+  public Set<String> getVocabTermsKeys() {
+    return vocabTerms != null && (vocabTerms.getWrappedObject() instanceof Map) ?
+        ((Map) vocabTerms.getWrappedObject()).keySet() : Collections.emptySet();
   }
 
   /**

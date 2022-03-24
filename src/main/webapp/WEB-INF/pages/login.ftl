@@ -6,7 +6,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
 <main class="container" style="max-width: 400px;">
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="my-3 p-3 border rounded shadow-sm">
 
         <#include "/WEB-INF/pages/inc/action_alerts_without_warnings.ftl">
 
@@ -14,7 +14,7 @@
             <@s.text name="login.title"/>
         </h5>
 
-        <p class="mx-md-4 mx-2">
+        <p class="mx-md-4 mx-2 text-center">
             <@s.text name="login.intro">
                 <@s.param>${adminEmail}</@s.param>
             </@s.text>
@@ -33,7 +33,7 @@
                 </div>
 
                 <#if email?has_content>
-                    <p>
+                    <p class="text-center">
                         <@s.text name="login.forgottenpassword"><@s.param>${adminEmail}</@s.param></@s.text>
                     </p>
                 </#if>

@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +20,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.CsrfLoginInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.PBEEncrypt;
 
 import java.io.IOException;
 
@@ -43,6 +42,7 @@ public class LoginAction extends POSTAction {
   private static final Logger LOG = LogManager.getLogger(AccountAction.class);
 
   private final UserAccountManager userManager;
+  private final PBEEncrypt encrypter;
 
   private String redirectUrl;
   private String email;
@@ -52,9 +52,10 @@ public class LoginAction extends POSTAction {
 
   @Inject
   public LoginAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    UserAccountManager userManager) {
+                     UserAccountManager userManager, PBEEncrypt encrypter) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
+    this.encrypter = encrypter;
   }
 
   @Override
@@ -88,6 +89,7 @@ public class LoginAction extends POSTAction {
             authUser.setLastLoginToNow();
             userManager.save();
             session.put(Constants.SESSION_USER, authUser);
+            req.getSession().setMaxInactiveInterval(cfg.getSessionTimeout());
             // remember previous URL to redirect back to
             setRedirectUrl();
             return SUCCESS;

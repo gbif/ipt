@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,13 +13,11 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
-import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
-import org.gbif.ipt.model.converter.PasswordConverter;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -31,13 +27,13 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.PBEEncrypt;
 
 import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,9 +44,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 /**
  * Reads user accounts from a simple XStream managed xml file.
@@ -59,20 +60,21 @@ import com.thoughtworks.xstream.XStream;
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
 
   public static final String PERSISTENCE_FILE = "users.xml";
-  private Map<String, User> users = new LinkedHashMap<>();
+  private final Map<String, User> users = new LinkedHashMap<>();
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
-  private ResourceManager resourceManager;
+  private final ResourceManager resourceManager;
+  private final PBEEncrypt encrypter;
 
   private User setupUser;
 
   @Inject
-  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-    PasswordConverter passwordConverter) {
+  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager, PBEEncrypt encrypter) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
-    defineXstreamMapping(passwordConverter);
+    this.encrypter = encrypter;
+    defineXstreamMapping();
   }
 
   private User addUser(User user) {
@@ -80,7 +82,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       if (user.getRole() == Role.Admin) {
         LOG.debug("Adding admin " + user.getEmail());
         if (allowSimplifiedAdminLogin) {
-          if (onlyAdminEmail == null) {
+          if (onlyAdminEmail == null || users.isEmpty()) {
             // first admin - keep its email address available for simplified login
             // without email address but keyword "admin"
             onlyAdminEmail = user.getEmail();
@@ -105,7 +107,8 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       email = onlyAdminEmail;
     }
     User agent = get(email);
-    if (agent != null && agent.getPassword() != null && agent.getPassword().equals(password)) {
+    if (agent != null && agent.getPassword() != null
+        && BCrypt.verifyer().verify(password.toCharArray(), agent.getPassword()).verified) {
       return agent;
     }
     return null;
@@ -117,12 +120,15 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       if (get(user.getEmail()) != null) {
         throw new AlreadyExistingException();
       }
+      // hash password before creation
+      String hash = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
+      user.setPassword(hash);
       addUser(user);
       save();
     }
   }
 
-  private void defineXstreamMapping(PasswordConverter passwordConverter) {
+  private void defineXstreamMapping() {
     xstream.addPermission(AnyTypePermission.ANY);
     xstream.alias("user", User.class);
     xstream.useAttributeFor(User.class, "email");
@@ -131,8 +137,6 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     xstream.useAttributeFor(User.class, "lastname");
     xstream.useAttributeFor(User.class, "role");
     xstream.useAttributeFor(User.class, "lastLogin");
-    // encrypt passwords
-    xstream.registerConverter(passwordConverter);
   }
 
   @Override
@@ -278,6 +282,33 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           LOG.error(e.getMessage(), e);
         }
       }
+
+      // first we have to check if there are users with old-fashioned passwords
+      boolean isOldPasswordsPresent = users.values()
+          .stream()
+          .map(User::getPassword)
+          .anyMatch(pass -> !StringUtils.startsWith(pass, "$2a$"));
+
+      // if so - update all passwords
+      if (isOldPasswordsPresent) {
+        LOG.info("There are old-fashioned encrypted passwords, start hashing them");
+        for (User user : users.values()) {
+          String pass = user.getPassword();
+          if (pass != null) {
+            String decrypted;
+            try {
+              decrypted = encrypter.decrypt(pass);
+              String hash = BCrypt.withDefaults().hashToString(12, decrypted.toCharArray());
+              user.setPassword(hash);
+            } catch (PBEEncrypt.EncryptionException e) {
+              LOG.error("Cannot decrypt password for the user [{}]", user.getEmail(), e);
+            }
+          }
+        }
+
+        save();
+      }
+
     } catch (FileNotFoundException e) {
       LOG.warn("User accounts not existing, " + PERSISTENCE_FILE
         + " file missing  (This is normal when first setting up a new datadir)");
@@ -298,10 +329,6 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.UserAccountManager#save(org.gbif.ipt.model.User)
-   */
   @Override
   public void save(User user) throws IOException {
     addUser(user);

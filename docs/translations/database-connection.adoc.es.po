@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2021-11-30 09:31+0000\n"
-"PO-Revision-Date: 2021-11-30 14:41\n"
+"PO-Revision-Date: 2022-02-03 17:09\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -99,7 +99,7 @@ msgstr "Debe copiar este JAR en la ruta de clase de su aplicación web. Lo más 
 #: en/modules/ROOT/pages/database-connection.adoc:27
 #, no-wrap
 msgid "Modify jdbc.properties"
-msgstr "Modifica jdbc.properties"
+msgstr "Modifique jdbc.properties"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:30
@@ -128,7 +128,7 @@ msgstr "Hay 4 propiedades que necesita añadir para cada controlador. Las 4 tien
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:42
 msgid "`title`: The title to be displayed in the IPT for this driver"
-msgstr "`title`: El título que se mostrará en el IPT para este controlador"
+msgstr "`title`: el título que se mostrará en el IPT para este controlador"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:43
@@ -143,7 +143,7 @@ msgstr "`url`: Una plantilla para crear la URL para conectarse. Existen 2 variab
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:45
 msgid "`limitType`: How to limit the amount of data returned. Possible values are `LIMIT`, `TOP`, `ROWNUM`. This is driver specific."
-msgstr "`limitType`: Cómo limitar la cantidad de datos devueltos. Posibles valores son `LIMIT`, `TOP`, `ROWNUM`. Esto es específico del driver."
+msgstr "`limitType`: cómo limitar la cantidad de datos retornados. Posibles valores son `LIMIT`, `TOP`, `ROWNUM`. Esto es específico del driver."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/database-connection.adoc:47

@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -227,10 +225,6 @@ public class Resource implements Serializable, Comparable<Resource> {
     sources.add(src);
   }
 
-  /*
-   * (non-Javadoc)
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
   @Override
   public int compareTo(Resource o) {
     return shortname.compareToIgnoreCase(o.shortname);
@@ -897,9 +891,6 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setShortname(String shortname) {
     this.shortname = shortname;
-    if (eml != null && eml.getTitle() == null) {
-      eml.setTitle(shortname);
-    }
   }
 
   public void setStatus(PublicationStatus status) {

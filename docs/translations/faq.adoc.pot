@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-11-30 12:44+0000\n"
+"POT-Creation-Date: 2022-02-24 12:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,8 +27,8 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:183
-#: en/modules/ROOT/pages/faq.adoc:193
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:197
+#: en/modules/ROOT/pages/faq.adoc:207
 msgid "{blank}"
 msgstr ""
 
@@ -98,13 +98,20 @@ msgid "export CATALINA_OPTS=\"-Xms512M -Xmx1024M -XX:PermSize=512M -XX:MaxPermSi
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:23
+#: en/modules/ROOT/pages/faq.adoc:24
 #, no-wrap
 msgid "I get the following error: \"The data directory '/directory' is not writable. What should I do?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:26
+#: en/modules/ROOT/pages/faq.adoc:27
+msgid ""
+"This also applies to similar errors for creating files, like "
+"`RollingFileManager … unable to create manager for … debug.log`."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:29
 msgid ""
 "Assuming you are running Tomcat, you need to ensure the user running Tomcat "
 "has permissions on the directory. To find out the user running Tomcat on "
@@ -112,13 +119,13 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:29
+#: en/modules/ROOT/pages/faq.adoc:32
 #, no-wrap
 msgid "$ ps waux | grep tomcat\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:32
+#: en/modules/ROOT/pages/faq.adoc:35
 msgid ""
 "If the user is \"tomcatuser\", and this user belongs to group \"tomcatgroup"
 "\" then change the ownership of the IPT data directory (and its child "
@@ -126,63 +133,89 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:35
+#: en/modules/ROOT/pages/faq.adoc:38
 #, no-wrap
 msgid "$ chown -R tomcatuser:tomcatgroup directory\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:38
+#: en/modules/ROOT/pages/faq.adoc:41
 msgid ""
 "To ensure only this user has write permission, enter the following command:"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:41
+#: en/modules/ROOT/pages/faq.adoc:44
 #, no-wrap
 msgid "$ chmod -R 755 directory\n"
 msgstr ""
 
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:44
+#. type: delimited block =
+#: en/modules/ROOT/pages/faq.adoc:49
 msgid ""
-"On systems with security sandboxing, you may need to grant permissions to "
-"the directory.  For example, on Debian and Ubuntu you need to add a SystemD "
-"override:"
-msgstr ""
-
-#. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:50
-#, no-wrap
-msgid ""
-"$ sudo systemctl edit tomcat9.service\n"
-"[Service]\n"
-"ReadWritePaths=/path/to/directory/\n"
-"$ sudo systemctl restart tomcat9\n"
+"Some Linux systems use sandboxing to provide additional security.  Setting "
+"the file ownership and permissions is _not sufficient_ on these systems.  "
+"See the <<sandboxing,following question>>."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:53
+#: en/modules/ROOT/pages/faq.adoc:52
 msgid ""
-"Note that if you are running your IPT on a windows operating system, you "
+"Note that if you are running your IPT on a Windows operating system, you "
 "will need to check that your folder didn't revert to read-only permissions."
 msgstr ""
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:54
 #, no-wrap
-msgid "How can I change the IPT's default language?"
+msgid "My file permissions are correct, but I still see errors about read/write permissions."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:57
+msgid ""
+"Some Linux systems have additional protections, called security sandboxing.  "
+"In this case, you usually need to grant additional permissions for Tomcat to "
+"access the data directory.  For example, on Debian and Ubuntu you need to "
+"add a SystemD override:"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/faq.adoc:60
+#, no-wrap
+msgid "$ sudo systemctl edit tomcat9.service\n"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/faq.adoc:64
+#, no-wrap
+msgid ""
+"# Put this into the file that opens (it will usually be blank), then save it:\n"
+"[Service]\n"
+"ReadWritePaths=/path/to/data/directory/\n"
+msgstr ""
+
+#. type: delimited block -
+#: en/modules/ROOT/pages/faq.adoc:66
+#, no-wrap
+msgid "$ sudo systemctl restart tomcat9\n"
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/faq.adoc:68
+#, no-wrap
+msgid "How can I change the IPT's default language?"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/faq.adoc:71
 msgid ""
 "The IPT's default language is English, and there is no way to change the "
 "default language via the user interface."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:59
+#: en/modules/ROOT/pages/faq.adoc:73
 msgid ""
 "It can be changed easily by manual configuration though. To change the "
 "default language from English to Portuguese for example, first locate the "
@@ -192,18 +225,18 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:62
+#: en/modules/ROOT/pages/faq.adoc:76
 #, no-wrap
 msgid "struts.locale=pt\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:65
+#: en/modules/ROOT/pages/faq.adoc:79
 msgid "Restart Tomcat, and the IPT will startup in Portuguese."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:67
+#: en/modules/ROOT/pages/faq.adoc:81
 msgid ""
 "Please note the two-letter language code must match the code used by the "
 "IPT. The languages currently supported are Portuguese (`pt`), Japanese "
@@ -212,20 +245,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:69
+#: en/modules/ROOT/pages/faq.adoc:83
 msgid ""
 "Please note that every time you upgrade to a new version of the IPT, you "
 "will have to apply the same change."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:70
+#: en/modules/ROOT/pages/faq.adoc:84
 #, no-wrap
 msgid "How can I switch the IPT from test mode to production mode?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:73
+#: en/modules/ROOT/pages/faq.adoc:87
 msgid ""
 "Switching the IPT from test mode to production mode cannot be done "
 "automatically. This is by design, because each mode connects to a different "
@@ -234,14 +267,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:75
+#: en/modules/ROOT/pages/faq.adoc:89
 msgid ""
 "Therefore to switch to production mode you need to setup an entirely new IPT "
 "instance in production mode."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:77
+#: en/modules/ROOT/pages/faq.adoc:91
 msgid ""
 "To save time recreating resources, you can try transferring your 'test' "
 "resources to the production IPT. To do this simply \"upload an existing IPT "
@@ -251,27 +284,27 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:78
+#: en/modules/ROOT/pages/faq.adoc:92
 #, no-wrap
 msgid "What outgoing connections does the IPT make?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:81
+#: en/modules/ROOT/pages/faq.adoc:95
 msgid ""
 "During setup, and in test mode, the IPT makes secure HTTPS outgoing "
 "connections to https://gbrds.gbif-uat.org and https://tools.gbif.org."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:83
+#: en/modules/ROOT/pages/faq.adoc:97
 msgid ""
 "If configured in production mode, the IPT makes secure HTTPS outgoing "
 "connections to https://gbrds.gbif.org."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:85
+#: en/modules/ROOT/pages/faq.adoc:99
 msgid ""
 "In both modes, the IPT makes normal HTTP outgoing connections to http://rs."
 "gbif.org.  If you install particular additional vocabularies, the IPT will "
@@ -279,14 +312,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:87
+#: en/modules/ROOT/pages/faq.adoc:101
 msgid ""
 "We recommend configuring your firewall to allow outbound access on ports 80 "
 "and 443 to all GBIF servers: `130.225.43.0/24`."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:89
+#: en/modules/ROOT/pages/faq.adoc:103
 msgid ""
 "Before version 2.3.4, connections were made using HTTP, rather than HTTPS, "
 "to http://gbrds.gbif.org and http://gbrdsdev.gbif.org.  HTTP connections use "
@@ -294,13 +327,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:90
+#: en/modules/ROOT/pages/faq.adoc:104
 #, no-wrap
 msgid "How can I configure my IPT to assign DOIs to datasets?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:93
+#: en/modules/ROOT/pages/faq.adoc:107
 msgid ""
 "In order to assign DOIs to datasets, the IPT must be configured with a "
 "DataCite account, which has itself been configured to mint DOIs under the "
@@ -308,7 +341,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:95
+#: en/modules/ROOT/pages/faq.adoc:109
 msgid ""
 "The account holding organization must already be associated to the IPT as an "
 "organization. For help associating an organization to your IPT, you can "
@@ -317,7 +350,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:97
+#: en/modules/ROOT/pages/faq.adoc:111
 msgid ""
 "All that remains, is to add the DataCite account information to the "
 "organization (e.g. the username, password, prefix, etc) and make sure the "
@@ -328,7 +361,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:99
+#: en/modules/ROOT/pages/faq.adoc:113
 msgid ""
 "If you work for a GBIF ‘country' Node, please contact the mailto:"
 "helpdesk@gbif.org[GBIF Helpdesk] to enquire about getting a free DataCite "
@@ -339,7 +372,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:101
+#: en/modules/ROOT/pages/faq.adoc:115
 msgid ""
 "The following well-maintained IPTs have all been configured with a DataCite "
 "accounts, can assign DOIs to datasets, and are thus recognized as a "
@@ -349,28 +382,28 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:103
+#: en/modules/ROOT/pages/faq.adoc:117
 msgid ""
 "http://www.gbif.es/ipt/[GBIF Spain IPT] - https://biosharing.org/"
 "biodbcore-000854[BioSharing record]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:104
+#: en/modules/ROOT/pages/faq.adoc:118
 msgid ""
 "http://data.canadensys.net/ipt/[Canadensys IPT] - https://biosharing.org/"
 "biodbcore-000855[BioSharing record]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:105
+#: en/modules/ROOT/pages/faq.adoc:119
 msgid ""
 "http://ipt.biodiversidad.co/sib/[GBIF Colombia IPT] - https://biosharing.org/"
 "biodbcore-000856[BioSharing record]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:107
+#: en/modules/ROOT/pages/faq.adoc:121
 msgid ""
 "Authors in Spain are already depositing their standardized data in the GBIF "
 "Spain IPT, e.g. the following dataset http://doi.org/10.15470/qomfu6 "
@@ -379,19 +412,19 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:108
+#: en/modules/ROOT/pages/faq.adoc:122
 #, no-wrap
 msgid "Usage"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:110
+#: en/modules/ROOT/pages/faq.adoc:124
 #, no-wrap
 msgid "Why do published files contain broken lines?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:112
+#: en/modules/ROOT/pages/faq.adoc:126
 msgid ""
 "The IPT does not support source files that have multi-line fields (fields "
 "that include a newline character (`\\n`) or carriage return (`\\r`)) even if "
@@ -400,14 +433,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:114
+#: en/modules/ROOT/pages/faq.adoc:128
 msgid ""
 "Unless these line breaking characters are removed, the IPT will publish "
 "files with broken lines (the columns will appear mixed up)."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:116
+#: en/modules/ROOT/pages/faq.adoc:130
 msgid ""
 "To solve this, you can remove these line breaking characters from the source "
 "file, replace the source file with the new one, and republish the resource. "
@@ -417,31 +450,31 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:117
+#: en/modules/ROOT/pages/faq.adoc:131
 #, no-wrap
 msgid "Why do published files not include all records?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:119
+#: en/modules/ROOT/pages/faq.adoc:133
 msgid "Check the publication log for exceptions such as:"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:122
+#: en/modules/ROOT/pages/faq.adoc:136
 #, no-wrap
 msgid "java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 65 to TIMESTAMP\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:125
+#: en/modules/ROOT/pages/faq.adoc:139
 msgid ""
 "that means you have invalid date value in your data source, which, in this "
 "case, is `0000-00-00 00:00:00`."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:128
+#: en/modules/ROOT/pages/faq.adoc:142
 msgid ""
 "To solve this, you can update the value with \"Null\" value, and update the "
 "resource.  Usually, you can rely on the log message to identify the column "
@@ -450,7 +483,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:130
+#: en/modules/ROOT/pages/faq.adoc:144
 msgid ""
 "The `0000-00-00 00:00:00` value in your SQL table could be resulted when "
 "importing, while having defined the column with \"Not Null\" and default "
@@ -458,41 +491,41 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:131
+#: en/modules/ROOT/pages/faq.adoc:145
 #, no-wrap
 msgid "What does the error \"No space left on device\" mean and how do I fix it?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:133
+#: en/modules/ROOT/pages/faq.adoc:147
 msgid "If you found an exception such as:"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:136
+#: en/modules/ROOT/pages/faq.adoc:150
 #, no-wrap
 msgid "Caused by: java.io.IOException: No space left on device\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:139
+#: en/modules/ROOT/pages/faq.adoc:153
 msgid ""
 "in your publication log file, it means there is no space left in the disk "
 "partition that contains your IPT data directory."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:141
+#: en/modules/ROOT/pages/faq.adoc:155
 msgid "To solve this, you can:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:143
+#: en/modules/ROOT/pages/faq.adoc:157
 msgid "Allocate more space to this partition."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:144
+#: en/modules/ROOT/pages/faq.adoc:158
 msgid ""
 "Move your IPT data directory to another partition where there is more space "
 "available. (Refer to the xref:installation.adoc[installation instructions] "
@@ -500,27 +533,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:145
+#: en/modules/ROOT/pages/faq.adoc:159
 msgid ""
 "Free up disk space (e.g. deleting temporary files, remove unused "
 "applications, etc)"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:146
+#: en/modules/ROOT/pages/faq.adoc:160
 #, no-wrap
 msgid "How do I change the publishing organization of my resource? The drop down on the Basic Metadata page is disabled."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:148
+#: en/modules/ROOT/pages/faq.adoc:162
 msgid ""
 "Please be aware the publishing organization cannot be changed after the "
 "resource has been either registered with GBIF or assigned a DOI."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:150
+#: en/modules/ROOT/pages/faq.adoc:164
 msgid ""
 "In order to change the publishing organization, you need to republish the "
 "resource and then reset the desired publishing organization. To simplify the "
@@ -530,7 +563,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:152
+#: en/modules/ROOT/pages/faq.adoc:166
 msgid ""
 "You should migrate the resource from the old publishing organization to the "
 "new publishing organization by following xref:manage-resources.adoc#migrate-"
@@ -539,53 +572,53 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:154
+#: en/modules/ROOT/pages/faq.adoc:168
 msgid ""
 "Lastly, you can delete old resource using the \"Delete from the IPT only "
 "(orphan)\" option on the edit resource page."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:155
+#: en/modules/ROOT/pages/faq.adoc:169
 #, no-wrap
 msgid "How do I change the type of an existing resource?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:158
+#: en/modules/ROOT/pages/faq.adoc:172
 msgid "The type of a resource is derived from its core mapping:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:160
+#: en/modules/ROOT/pages/faq.adoc:174
 msgid ""
-"If the core mapping is to the {latest-dwc-occurrence}.xml[Occurrence "
-"extension], the type is equal to \"occurrence\"."
+"If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], "
+"the type is equal to \"occurrence\"."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:161
+#: en/modules/ROOT/pages/faq.adoc:175
 msgid ""
-"If the core mapping is to the {latest-dwc-taxon}.xml[Taxon extension], the "
-"type is equal to \"checklist\"."
+"If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type "
+"is equal to \"checklist\"."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:162
+#: en/modules/ROOT/pages/faq.adoc:176
 msgid ""
-"If the core mapping is to the {latest-dwc-event}.xml[Event extension], the "
-"type is equal to \"sampling-event\"."
+"If the core mapping is to the {latest-dwc-event}[Event extension], the type "
+"is equal to \"sampling-event\"."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:163
+#: en/modules/ROOT/pages/faq.adoc:177
 msgid ""
 "If the core mapping is not equal to one of the IPT's default cores "
 "(Occurrence, Taxon, or Event) the type is equal to \"other\"."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:165
+#: en/modules/ROOT/pages/faq.adoc:179
 msgid ""
 "Therefore to change the type of a resource, you need to change its core "
 "mapping. To change an occurrence resource to type checklist, for example, "
@@ -597,13 +630,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:166
+#: en/modules/ROOT/pages/faq.adoc:180
 #, no-wrap
 msgid "What are some tricks to simplify the authoring and maintenance of metadata?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:168
+#: en/modules/ROOT/pages/faq.adoc:182
 msgid ""
 "Datasets can change over time. Keeping the dataset metadata up to date can "
 "be a burden, as inconsistencies can begin to creep in over time. Below is a "
@@ -612,7 +645,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:170
+#: en/modules/ROOT/pages/faq.adoc:184
 msgid ""
 "use a contact's ORCID instead of supplying their email and other fields "
 "which are likely change if the person changes jobs. For more information "
@@ -621,7 +654,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:171
+#: en/modules/ROOT/pages/faq.adoc:185
 msgid ""
 "for datasets that continue to change/grow (versus static datasets) avoid "
 "specifying exact counts in textual descriptions, e.g. for record or taxa "
@@ -629,14 +662,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:172
+#: en/modules/ROOT/pages/faq.adoc:186
 msgid ""
 "use the IPT's citation xref:manage-resources.adoc#citations[Auto-generation "
 "feature] instead of supplying a manually created data citation."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:173
+#: en/modules/ROOT/pages/faq.adoc:187
 msgid ""
 "use the IPT's import by xref:manage-resources.adoc#taxonomic-coverage[Taxon "
 "list feature] instead of supplying each taxon manually one at a time when "
@@ -644,20 +677,20 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:174
+#: en/modules/ROOT/pages/faq.adoc:188
 #, no-wrap
 msgid "How do I change the hosting organization of my IPT?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:177
+#: en/modules/ROOT/pages/faq.adoc:191
 msgid ""
 "the instructions below assume your IPT has already been registered and "
 "involve manual changes requiring technical competence."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:179
+#: en/modules/ROOT/pages/faq.adoc:193
 msgid ""
 "First, ensure the desired hosting organization has been added to your IPT. "
 "You can do this through the user interface. For help adding a new "
@@ -666,14 +699,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:181
+#: en/modules/ROOT/pages/faq.adoc:195
 msgid ""
 "Next, perform the following 2 manual changes to the registration2.xml file "
 "located inside the /config folder of your IPT Data Directory:"
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:190
+#: en/modules/ROOT/pages/faq.adoc:204
 #, no-wrap
 msgid ""
 "<registration>\n"
@@ -683,7 +716,7 @@ msgid ""
 msgstr ""
 
 #. type: delimited block -
-#: en/modules/ROOT/pages/faq.adoc:200
+#: en/modules/ROOT/pages/faq.adoc:214
 #, no-wrap
 msgid ""
 "<registration>\n"
@@ -693,12 +726,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:203
+#: en/modules/ROOT/pages/faq.adoc:217
 msgid "Restart Tomcat."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:205
+#: en/modules/ROOT/pages/faq.adoc:219
 msgid ""
 "Last, press the \"update registration\" button on the Edit GBIF Registration "
 "page. This will propagate the change to the GBIF Registry. For further "
@@ -707,20 +740,20 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:206
+#: en/modules/ROOT/pages/faq.adoc:220
 #, no-wrap
 msgid "How do I reset the admin password?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:209
+#: en/modules/ROOT/pages/faq.adoc:223
 msgid ""
 "If you have forgotten the admin password, the server administrator will need "
 "to reset it."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:211
+#: en/modules/ROOT/pages/faq.adoc:225
 msgid ""
 "Using a text editor, open the file `config/users.xml` contained in the IPT "
 "data directory.  Find the admin user (with `role=\"Admin\"`), and replace "
@@ -730,78 +763,76 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:213
+#: en/modules/ROOT/pages/faq.adoc:227
 msgid ""
 "If they prefer, a Java developer could modify the https://github.com/gbif/"
 "ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest."
-"java[PBEEncryptTest class] to generate a hash for a different password, or "
-"decrypt the lost password (but see https://github.com/gbif/ipt/"
-"issues/1460[issue 1460])."
+"java[PBEEncryptTest class] to generate a hash for a different password)."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:214
+#: en/modules/ROOT/pages/faq.adoc:228
 #, no-wrap
 msgid "How do I migrate a dataset from one IPT installation to another?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:216
+#: en/modules/ROOT/pages/faq.adoc:230
 msgid ""
 "This migration process must be done directly on the server following the "
 "next steps:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:218
+#: en/modules/ROOT/pages/faq.adoc:232
 msgid "Shut down the old IPT server; just to check no-one makes any changes."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:219
+#: en/modules/ROOT/pages/faq.adoc:233
 msgid ""
 "In the old IPT go to `/old-ipt-datadir/resources/[dataset_name]` and copy "
 "the whole dataset folder"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:220
+#: en/modules/ROOT/pages/faq.adoc:234
 msgid ""
 "In the new IPT go to `/new-ipt-datadir/resources/` and paste the dataset "
 "folder"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:221
+#: en/modules/ROOT/pages/faq.adoc:235
 msgid "Restart the new IPT server"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:222
+#: en/modules/ROOT/pages/faq.adoc:236
 msgid "Publish the dataset in the new IPT (updates the endpoint)."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:223
+#: en/modules/ROOT/pages/faq.adoc:237
 #, no-wrap
 msgid "Indexing by GBIF"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:225
+#: en/modules/ROOT/pages/faq.adoc:239
 #, no-wrap
 msgid "How long does it take GBIF to start (re)indexing my dataset?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:228
+#: en/modules/ROOT/pages/faq.adoc:242
 msgid ""
 "The answer depends on how long GBIF's indexing queue is, how big your "
 "dataset it and whether GBIF's indexing service is turned on."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:230
+#: en/modules/ROOT/pages/faq.adoc:244
 msgid ""
 "Normally it will take between 5-60 minutes for GBIF to start indexing your "
 "dataset. It can take several hours to finish indexing large datasets once "
@@ -812,7 +843,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:232
+#: en/modules/ROOT/pages/faq.adoc:246
 msgid ""
 "If you believe GBIF failed to index your dataset successfully, please submit "
 "feedback directly via GBIF.org, or send an email to the GBIF Helpdesk "
@@ -822,13 +853,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:233
+#: en/modules/ROOT/pages/faq.adoc:247
 #, no-wrap
 msgid "Why hasn't GBIF (re)indexed my dataset yet?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:236
+#: en/modules/ROOT/pages/faq.adoc:250
 msgid ""
 "Occasionally, GBIF turns off its indexing service for maintenance (see the "
 "links in the previous question). This is the most common reason why datasets "
@@ -836,7 +867,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:238
+#: en/modules/ROOT/pages/faq.adoc:252
 msgid ""
 "If you believe GBIF failed to index your dataset, please submit feedback "
 "directly via GBIF.org, or send an email directly to the GBIF Helpdesk "
@@ -844,13 +875,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:239
+#: en/modules/ROOT/pages/faq.adoc:253
 #, no-wrap
 msgid "How often does GBIF reindex my dataset?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:242
+#: en/modules/ROOT/pages/faq.adoc:256
 msgid ""
 "GBIF automatically attempts to reindex a registered dataset each time its "
 "registration is updated. This happens each time the dataset gets republished "
@@ -858,27 +889,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:244
+#: en/modules/ROOT/pages/faq.adoc:258
 msgid ""
 "To cater to datasets not published using the IPT, GBIF automatically "
 "attempts to reindex all registered datasets every 7 days."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:246
+#: en/modules/ROOT/pages/faq.adoc:260
 msgid ""
 "GBIF will only reindex a dataset if its last published date has changed "
 "since the last time it was indexed."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:247
+#: en/modules/ROOT/pages/faq.adoc:261
 #, no-wrap
 msgid "What type of datasets does GBIF index/support?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:250
+#: en/modules/ROOT/pages/faq.adoc:264
 msgid ""
 "GBIF supports 4 classes of datasets described xref:how-to-publish."
 "adoc[here]. GBIF currently only indexes species occurrence records, which "
@@ -889,13 +920,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:251
+#: en/modules/ROOT/pages/faq.adoc:265
 #, no-wrap
 msgid "Why is my dataset citation different on GBIF.org?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:253
+#: en/modules/ROOT/pages/faq.adoc:267
 msgid ""
 "The IPT supports free-text dataset citations, however, these get overwritten "
 "on the GBIF.org dataset page. You can find out why in the https://www.gbif."

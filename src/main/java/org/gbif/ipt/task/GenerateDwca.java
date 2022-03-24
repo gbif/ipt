@@ -1,6 +1,4 @@
 /*
- * Copyright 2021 Global Biodiversity Information Facility (GBIF)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -1106,10 +1104,6 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     addMessage(Level.INFO, "meta.xml archive descriptor written");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.task.ReportingTask#currentException()
-   */
   @Override
   protected Exception currentException() {
     return exception;

@@ -9,8 +9,8 @@
         });
     </script>
 
-    <#macro extensionRow ext>
-        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
+    <#macro extensionRow ext currentIndex numberOfExtensions>
+        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#if currentIndex < numberOfExtensions>border-bottom</#if>">
             <div class="col-md-3">
                 <a name="${ext.rowType}"></a>
                 <div class="title">
@@ -79,7 +79,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
     <main class="container">
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
@@ -91,11 +91,18 @@
             </p>
 
             <#assign count=0>
+            <#assign numberOfCoreExtensions=0>
+
+            <#list extensions as ext>
+                <#if ext.core>
+                    <#assign numberOfCoreExtensions=numberOfCoreExtensions+1>
+                </#if>
+            </#list>
 
             <#list extensions as ext>
                 <#if ext.core>
                     <#assign count=count+1>
-                    <@extensionRow ext/>
+                    <@extensionRow ext count numberOfCoreExtensions/>
                 </#if>
             </#list>
 
@@ -113,7 +120,7 @@
 
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
                 <@s.text name="admin.extension.extensions"/>
             </h5>
@@ -123,10 +130,18 @@
             </p>
 
             <#assign count=0>
+            <#assign numberOfExtensions=0>
+
+            <#list extensions as ext>
+                <#if !ext.core>
+                    <#assign numberOfExtensions=numberOfExtensions+1>
+                </#if>
+            </#list>
+
             <#list extensions as ext>
                 <#if !ext.core>
                     <#assign count=count+1>
-                    <@extensionRow ext/>
+                    <@extensionRow ext count numberOfExtensions/>
                 </#if>
             </#list>
             <#if count=0>
@@ -136,7 +151,7 @@
             </#if>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
                 <@s.text name="extension.synchronise.title"/>
             </h5>
@@ -156,7 +171,7 @@
             </form>
         </div>
 
-        <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <div class="my-3 p-3 border rounded shadow-sm">
             <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
                 <@s.text name="extension.further.title"/>
             </h5>
@@ -168,7 +183,7 @@
             <#assign count=0>
             <#list newExtensions as ext>
                 <#assign count=count+1>
-                <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 border-bottom">
+                <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
                     <div class="col-md-3">
                         <div class="title">
                             <div class="head">
