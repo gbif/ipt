@@ -13,11 +13,13 @@
  */
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
 import org.gbif.ipt.service.admin.DataSchemaManager;
@@ -32,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,6 +46,8 @@ import com.google.inject.Inject;
 public class DataSchemaMappingAction extends ManagerBaseAction {
 
   private static final long serialVersionUID = -2005597864256786458L;
+
+  private static final Pattern FIELD_FORBIDDEN_CHARACTERS_PATTERN = Pattern.compile("[\\W\\s_0-9]+");
 
   private final DataSchemaManager schemaManager;
   private final SourceManager sourceManager;
@@ -180,7 +185,62 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
         DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(field);
         fields.add(pm);
       }
+
+      // do automapping if no fields are found
+      if (mapping.getFields().isEmpty()) {
+        int automapped = automap();
+        if (automapped > 0) {
+          addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
+        }
+      }
     }
+  }
+
+  /**
+   * This method auto-maps a source's columns.
+   *
+   * @return the number of terms that have been automapped
+   */
+  private int automap() {
+    // keep track of how many fields were automapped
+    int automapped = 0;
+
+    // next, try to automap the source's remaining columns against the data schema fields
+    for (DataSchemaFieldMapping f : fields) {
+      int idx2 = 0;
+      for (String col : columns) {
+        String normCol = normalizeColumnName(col);
+        if (f.getField().getName().equalsIgnoreCase(normCol)) {
+          f.setIndex(idx2);
+          // we have automapped the field, so increment automapped counter and exit
+          automapped++;
+          break;
+        }
+        idx2++;
+      }
+    }
+
+    return automapped;
+  }
+
+  /**
+   * Normalizes an incoming column name so that it can later be compared against a schema's field name.
+   * This method converts the incoming string to lower case, and will take the substring up to, but not including the
+   * first ":".
+   *
+   * @param col column name
+   * @return the normalized column name, or null if the incoming name was null or empty
+   */
+  private String normalizeColumnName(String col) {
+    String result;
+    if (StringUtils.isNotBlank(col)) {
+      result = FIELD_FORBIDDEN_CHARACTERS_PATTERN.matcher(col.toLowerCase()).replaceAll("");
+      if (result.contains(":")) {
+        result = StringUtils.substringAfter(col, ":");
+      }
+      return result;
+    }
+    return null;
   }
 
   /**

@@ -52,14 +52,6 @@
         </div>
     </#macro>
 
-    <#macro threeButtons>
-        <div class="col-12 my-3">
-            <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-            <@s.submit cssClass="confirm btn btn-outline-gbif-danger" name="delete" key="button.delete"/>
-            <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
-        </div>
-    </#macro>
-
     <form id="mappingForm" class="needs-validation" action="schemaMapping.do" method="post">
         <div class="container-fluid bg-body border-bottom">
 
@@ -67,16 +59,22 @@
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
             </div>
 
-            <div class="container p-3">
+            <div class="container p-3 my-3">
 
                 <div class="text-center">
-                    <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                    <h1 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
                         <@popoverPropertyInfo "manage.mapping.intro"/>
                         <@s.text name='manage.mapping.title'/>
-                    </h5>
+                    </h1>
 
                     <div class="text-center fs-smaller">
                         <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    </div>
+
+                    <div class="my-2">
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary" cssStyle="min-width: 100px;" name="save" key="button.save"/>
+                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger" cssStyle="min-width: 100px;" name="delete" key="button.delete"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary" cssStyle="min-width: 100px;" name="cancel" key="button.back"/>
                     </div>
 
                 </div>
@@ -97,11 +95,21 @@
                                     </li>
                                 </#list>
                             </ul>
+
+                            <ul>
+                                <li><a id="toggleFields" class="sidebar-link"><@s.text name='manage.mapping.hideEmpty'/></a></li>
+                            </ul>
+
+                            <div class="d-flex align-content-between">
+                                <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary me-1" name="save" key="button.save"/>
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger me-1" name="delete" key="button.delete"/>
+                                <@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/>
+                            </div>
                         </nav>
                     </div>
 
                     <div class="bd-content ps-lg-4">
-                        <div id="sections">
+                        <div id="sections" class="mt-4">
                             <#list dataSchema.subSchemas as subSchema>
                                 <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
                                 <div id="${subSchema.name}" class="mt-5">
@@ -111,9 +119,6 @@
                                     <#list subSchema.fields as field>
                                         <@showField field field_index/>
                                     </#list>
-                                    <div>
-                                        <@threeButtons/>
-                                    </div>
                                 </div>
                             </#list>
                         </div>
