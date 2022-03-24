@@ -279,4 +279,12 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   public List<String> getColumns() {
     return columns;
   }
+
+  public Integer getMid() {
+    return mid;
+  }
+
+  public List<DataSchemaFieldMapping> getFields() {
+    return fields;
+  }
 }

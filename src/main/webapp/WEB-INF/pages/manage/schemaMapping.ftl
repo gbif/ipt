@@ -60,16 +60,16 @@
         <div class="row py-1 g-2 mappingRow border-bottom">
             <div class="col-lg-4 pt-1 fs-smaller">
                 <#assign fieldPopoverInfo>
-                    <#if field.description?has_content>${field.description}</#if>
-                    <#if field.example?has_content>
+                    <#if field.field.description?has_content>${field.field.description}</#if>
+                    <#if field.field.example?has_content>
                         <br/><br/>
                         <em><@s.text name="basic.examples"/></em>:
-                        <#if field.example?is_collection>
-                            <#list field.example as ex>
+                        <#if field.field.example?is_collection>
+                            <#list field.field.example as ex>
                                 <code>${ex}</code><#sep>, </#sep>
                             </#list>
                         <#else>
-                            <code>${field.example}</code>
+                            <code>${field.field.example}</code>
                         </#if>
                     <#else>
                         <@s.text name="basic.no.description"/>
@@ -77,14 +77,14 @@
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
-                <strong>${field.name}</strong>
+                <strong>${field.field.name}</strong>
             </div>
 
             <div class="col-lg-4">
                 <select id="fIdx${index}" class="fidx form-select form-select-sm" name="fields[${index}].index">
                     <option value="" <#if !field.index??> selected="selected"</#if>></option>
                     <#list columns as col>
-                        <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}:${field.index!-1}</option>
+                        <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
                     </#list>
                 </select>
             </div>
@@ -93,19 +93,19 @@
                 <input id="fVal${index}" class="fval form-control form-control-sm" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
             </div>
 
-            <#if field.index??>
-                <small class="text-truncate"><@sourceSample field.index fieldsIndex/></small>
-                <div id="fTIdx${fieldsIndex}" class="sample mappingText">
-                    <small class="mx-3"><@s.text name='manage.mapping.translation' />:</small>
-                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}" class="text-smaller">
-                        <#if (((field.translation?size)!0)>0)>
-                            ${(field.translation?size)!0} terms
-                        <#else>
-                            <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
-                        </#if>
-                    </a>
-                </div>
-            </#if>
+<#--            <#if field.index??>-->
+<#--                <small class="text-truncate"><@sourceSample field.index fieldsIndex/></small>-->
+<#--                <div id="fTIdx${fieldsIndex}" class="sample mappingText">-->
+<#--                    <small class="mx-3"><@s.text name='manage.mapping.translation' />:</small>-->
+<#--                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}" class="text-smaller">-->
+<#--                        <#if (((field.translation?size)!0)>0)>-->
+<#--                            ${(field.translation?size)!0} terms-->
+<#--                        <#else>-->
+<#--                            <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>-->
+<#--                        </#if>-->
+<#--                    </a>-->
+<#--                </div>-->
+<#--            </#if>-->
         </div>
     </#macro>
 
@@ -173,7 +173,7 @@
                                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                         ${subSchema.title}
                                     </h4>
-                                    <#list subSchema.fields as field>
+                                    <#list fields as field>
                                         <@showField field field_index/>
                                     </#list>
                                 </div>
