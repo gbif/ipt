@@ -177,17 +177,15 @@
                         </div>
 
                         <div id="sections" class="mt-4">
-                            <#list dataSchema.subSchemas as subSchema>
-                                <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
-                                <div id="${subSchema.name}" class="mt-5">
-                                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                        ${subSchema.title}
-                                    </h4>
-                                    <#list fields as field>
-                                        <@showField field field_index/>
-                                    </#list>
-                                </div>
-                            </#list>
+                            <span class="anchor anchor-home-resource-page" id="anchor-${dataSchema.subSchemas[0].name}"></span>
+                            <div id="${dataSchema.subSchemas[0].name}" class="mt-5">
+                                <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                                    ${dataSchema.subSchemas[0].title}
+                                </h4>
+                                <#list fields as field>
+                                    <@showField field field_index/>
+                                </#list>
+                            </div>
                         </div>
                     </div>
                 </main>

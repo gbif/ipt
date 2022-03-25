@@ -297,7 +297,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public boolean deleteMapping(DataSchemaMapping mapping) {
     if (mapping != null && dataSchemaMappings.contains(mapping)) {
-      dataSchemaMappings.remove(mapping);
+      return dataSchemaMappings.remove(mapping);
     } else {
       LOG.debug("Data Schema Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
     }
