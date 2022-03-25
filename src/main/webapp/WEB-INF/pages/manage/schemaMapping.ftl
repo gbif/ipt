@@ -1,3 +1,5 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataSchemaMappingAction" -->
+
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl"/>
     <title><@s.text name="manage.mapping.title"/></title>

@@ -359,6 +359,17 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
+   * @return the schema identifier of the data schema
+   */
+  @Nullable
+  public String getSchemaIdentifier() {
+    if (!dataSchemaMappings.isEmpty()) {
+      return dataSchemaMappings.get(0).getDataSchema().getIdentifier();
+    }
+    return null;
+  }
+
+  /**
    * At first the core type can be set during resource creation or on the basic metadata page. But once
    * a core mapping has been done, it is derived from the core mapping.
    *
