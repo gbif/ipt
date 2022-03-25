@@ -50,6 +50,8 @@
                     }
                 });
             })
+
+            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
         });
     </script>
 
@@ -168,6 +170,12 @@
                     </div>
 
                     <div class="bd-content ps-lg-4">
+                        <div>
+                            <input type="hidden" name="r" value="${resource.shortname}" />
+                            <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
+                            <input type="hidden" name="mid" value="${mid!}" />
+                        </div>
+
                         <div id="sections" class="mt-4">
                             <#list dataSchema.subSchemas as subSchema>
                                 <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>

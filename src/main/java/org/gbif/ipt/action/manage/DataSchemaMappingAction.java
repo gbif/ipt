@@ -156,6 +156,8 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     }
 
     if (mapping != null && mapping.getDataSchema() != null) {
+      dataSchema = mapping.getDataSchema();
+
       // is source assigned yet?
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
@@ -258,6 +260,20 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     }
     fm.setField(field);
     return fm;
+  }
+
+  @Override
+  public String delete() {
+    if (resource.deleteMapping(mapping)) {
+      addActionMessage(getText("manage.mapping.deleted", new String[] {id}));
+      // set mappings modified date
+      resource.setMappingsModified(new Date());
+      // save resource
+      saveResource();
+    } else {
+      addActionMessage(getText("manage.mapping.couldnt.delete", new String[] {id}));
+    }
+    return SUCCESS;
   }
 
   public String getSchemaName() {

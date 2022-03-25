@@ -176,7 +176,7 @@
                                     <#list resource.getDataSchemaMappings(resource.schemaIdentifier) as m>
                                         <tr <#if m_index==0>class="mapping_row"</#if>>
                                             <th class="col-4"><#if m_index==0>${m.dataSchema.title}</#if></th>
-                                            <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
+                                            <td>${m.fields?size} <@s.text name='manage.overview.mappings.fields.mapped'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
                                             <td class="d-flex justify-content-end">
                                                 <div class="btn-group" role="group">
                                                     <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">

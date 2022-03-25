@@ -288,6 +288,22 @@ public class Resource implements Serializable, Comparable<Resource> {
     return false;
   }
 
+  /**
+   * Delete a Resource's data schema mapping.
+   *
+   * @param mapping DataSchemaMapping
+   *
+   * @return if deletion was successful or not
+   */
+  public boolean deleteMapping(DataSchemaMapping mapping) {
+    if (mapping != null && dataSchemaMappings.contains(mapping)) {
+      dataSchemaMappings.remove(mapping);
+    } else {
+      LOG.debug("Data Schema Mapping was null, or resource no longer has this mapping, thus it could not be deleted!");
+    }
+    return false;
+  }
+
   public boolean deleteSource(Source src) {
     boolean result = false;
     if (src != null) {
