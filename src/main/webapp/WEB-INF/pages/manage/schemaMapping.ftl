@@ -13,8 +13,8 @@
             }
 
             function activateDeactivateStaticInput(target) {
-                var index = target.attr('id').substring(4);
-                var input = $("#fVal"+index);
+                var suffix = target.attr('id').substring(4);
+                var input = $("#fVal" + suffix);
                 if (!target.val().trim()) {
                     input.prop('disabled', false);
                 } else {
@@ -51,6 +51,40 @@
                 });
             })
 
+            function hideFields() {
+                showAll = false;
+                $("#showAllValue").val("false");
+                $("#toggleFields").text("<@s.text name="manage.mapping.showAll" />");
+                $('div.mappingRow').not('.required').each(function(index) {
+                    // always show all mapped and required fields
+                    if ($(".fidx", this).val() === "" && $(".fval", this).val() === ""){
+                        $(this).hide();
+                    }
+                });
+
+                if($('#filterComp option:selected').val() === "") {
+                    $('#filterSection').hide();
+                }
+            }
+
+            // show only required and mapped fields
+            $("#toggleFields").click(function() {
+                if(showAll) {
+                    hideFields();
+                } else {
+                    showAll = true;
+                    $("#showAllValue").val("true");
+                    $("#toggleFields").text("<@s.text name="manage.mapping.hideEmpty"/>");
+                    $('div.mappingRow').show();
+                    $(".groupmenu").show();
+                }
+            });
+
+            var showAll=${Parameters.showAll!"true"};
+            if (!showAll){
+                hideFields();
+            }
+
             $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
         });
     </script>
@@ -85,7 +119,7 @@
             </div>
 
             <div class="col-lg-4">
-                <select id="fIdx${index}" class="fidx form-select form-select-sm" name="fields['${subschema.name}'][${index}].index">
+                <select id="fIdx_${subschema.name}_${index}" class="fidx form-select form-select-sm" name="fields['${subschema.name}'][${index}].index">
                     <option value="" <#if !field.index??> selected="selected"</#if>></option>
                     <#list columns as col>
                         <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
@@ -94,7 +128,7 @@
             </div>
 
             <div class="col-lg-4">
-                <input id="fVal${index}" class="fval form-control form-control-sm" name="fields['${subschema.name}'][${index}].defaultValue" value="${field.defaultValue!}"/>
+                <input id="fVal_${subschema.name}_${index}" class="fval form-control form-control-sm" name="fields['${subschema.name}'][${index}].defaultValue" value="${field.defaultValue!}"/>
             </div>
 
 <#--            <#if field.index??>-->
