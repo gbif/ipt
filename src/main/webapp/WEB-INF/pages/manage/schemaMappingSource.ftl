@@ -5,50 +5,53 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-    <main class="container">
         <form class="topForm" action="schemaMapping.do" method="post">
-            <div class="my-3 p-3 border rounded shadow-sm">
+            <div class="container-fluid bg-body border-bottom">
 
-                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                    ${mapping.dataSchema.title}
-                </h5>
-
-
-                <p class="mx-md-4 mx-2">${mapping.dataSchema.description}</p>
-<#--                <#if mapping.extension.link?has_content>-->
-<#--                    <p class="mx-md-4 mx-2"><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>-->
-<#--                </#if>-->
-                <input type="hidden" name="r" value="${resource.shortname}" />
-                <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
-                <input type="hidden" name="schemaName" value="${mapping.dataSchema.name}" />
-                <input type="hidden" name="mid" value="${mid!}" />
-                <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
-            </div>
-
-            <div class="my-3 p-3 border rounded shadow-sm">
-                <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                    <@s.text name='manage.mapping.source'/>
-                </h5>
-
-                <p class="mx-md-4 mx-2"><@s.text name='manage.mapping.source.help'/></p>
-
-                <div class="row mx-md-3 mx-1">
-                    <div class="col-sm-6">
-                        <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
-                    </div>
+                <div class="container pt-2">
+                    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
                 </div>
 
-                <div class="row mt-3 mx-md-3 mx-1">
-                    <div class="col-12">
-                        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                        <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.cancel" method="cancel"/>
+                <div class="container p-3 my-3">
+
+                    <div class="text-center">
+                        <h1 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                            <@s.text name="manage.mapping.title"/>
+                        </h1>
+
+                        <div class="text-center fs-smaller">
+                            <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                        </div>
+
+                        <div class="my-2">
+                            <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary" cssStyle="min-width: 100px;" name="save" key="button.save"/>
+                            <@s.submit cssClass="button btn btn-sm btn-outline-secondary" cssStyle="min-width: 100px;" name="cancel" key="button.cancel" method="cancel"/>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid bg-body">
+                <div class="container pt-4">
+                    <p>${mapping.dataSchema.description}</p>
+
+                    <input type="hidden" name="r" value="${resource.shortname}" />
+                    <input type="hidden" name="id" value="${mapping.dataSchema.identifier}" />
+                    <input type="hidden" name="schemaName" value="${mapping.dataSchema.name}" />
+                    <input type="hidden" name="mid" value="${mid!}" />
+                    <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
+
+                    <p><@s.text name='manage.mapping.source.help'/></p>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
+                        </div>
                     </div>
                 </div>
             </div>
         </form>
-    </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>
