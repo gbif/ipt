@@ -94,7 +94,27 @@
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
+    <#macro sourceSample index subschemaName fieldsIndex>
+        <div id="fSIdx_${subschemaName}_${fieldsIndex}" class="sample mappingText mx-3 overflow-x-auto">
+            <@s.text name='manage.mapping.sourceSample' />:
+            <em>
+                <#list peek as row>
+                    <#if row??>
+                        <#if row[index]?has_content && row[index]!=" ">
+                            ${row[index]}
+                        <#else>
+                            &nbsp;
+                        </#if>
+                        <#if row_has_next> | </#if>
+                    </#if>
+                </#list>
+            </em>
+        </div>
+    </#macro>
+
     <#macro showField subschema field index>
+        <#assign fieldsIndex = action.getFieldsSchemaIndices().get(subschema.name).get(field.field.name)/>
+
         <div class="row py-1 g-2 mappingRow border-bottom">
             <div class="col-lg-4 pt-1 fs-smaller">
                 <#assign fieldPopoverInfo>
@@ -131,19 +151,9 @@
                 <input id="fVal_${subschema.name}_${index}" class="fval form-control form-control-sm" name="fields['${subschema.name}'][${index}].defaultValue" value="${field.defaultValue!}"/>
             </div>
 
-<#--            <#if field.index??>-->
-<#--                <small class="text-truncate"><@sourceSample field.index fieldsIndex/></small>-->
-<#--                <div id="fTIdx${fieldsIndex}" class="sample mappingText">-->
-<#--                    <small class="mx-3"><@s.text name='manage.mapping.translation' />:</small>-->
-<#--                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}" class="text-smaller">-->
-<#--                        <#if (((field.translation?size)!0)>0)>-->
-<#--                            ${(field.translation?size)!0} terms-->
-<#--                        <#else>-->
-<#--                            <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>-->
-<#--                        </#if>-->
-<#--                    </a>-->
-<#--                </div>-->
-<#--            </#if>-->
+            <#if field.index??>
+                <small class="text-truncate"><@sourceSample field.index subschema.name fieldsIndex/></small>
+            </#if>
         </div>
     </#macro>
 

@@ -61,6 +61,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private List<String> columns;
   private List<String[]> peek;
   private Map<String, List<DataSchemaFieldMapping>> fields;
+  private Map<String, Map<String, Integer>> fieldsSchemaIndices;
 
   @Inject
   public DataSchemaMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
@@ -182,6 +183,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       }
 
       fields = new HashMap<>();
+      fieldsSchemaIndices = new HashMap<>();
 
       // inspect source
       readSource();
@@ -189,11 +191,15 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       // prepare fields
       for (DataSchemaFile dataSubschema : mapping.getDataSchema().getSubSchemas()) {
         List<DataSchemaFieldMapping> fieldMappings = new ArrayList<>();
+        Map<String, Integer> indicesMap = new HashMap<>();
+        int index = 0;
         for (DataSchemaField field : dataSubschema.getFields()) {
           DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(dataSubschema.getName(), field);
           fieldMappings.add(pm);
+          indicesMap.put(field.getName(), index++);
         }
         fields.put(dataSubschema.getName(), fieldMappings);
+        fieldsSchemaIndices.put(dataSubschema.getName(), indicesMap);
       }
 
       // do automapping if no fields are found
@@ -328,5 +334,13 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
   public void setFields(Map<String, List<DataSchemaFieldMapping>> fields) {
     this.fields = fields;
+  }
+
+  public Map<String, Map<String, Integer>> getFieldsSchemaIndices() {
+    return fieldsSchemaIndices;
+  }
+
+  public List<String[]> getPeek() {
+    return peek;
   }
 }
