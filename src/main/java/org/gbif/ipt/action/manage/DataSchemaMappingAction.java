@@ -17,6 +17,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
+import org.gbif.ipt.model.DataSchemaFile;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
@@ -28,9 +29,12 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
@@ -56,7 +60,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private DataSchemaMapping mapping;
   private List<String> columns;
   private List<String[]> peek;
-  private List<DataSchemaFieldMapping> fields;
+  private Map<String, List<DataSchemaFieldMapping>> fields;
 
   @Inject
   public DataSchemaMappingAction(SimpleTextProvider textProvider, AppConfig cfg,
@@ -78,11 +82,17 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       mid = resource.addDataSchemaMapping(mapping);
     } else {
       // save field mappings
-      Set<DataSchemaFieldMapping> mappedFields = new TreeSet<>();
-      for (DataSchemaFieldMapping f : fields) {
-        int index = f.getIndex() != null ? f.getIndex() : -9999;
-        if (index >= 0 || StringUtils.trimToNull(f.getDefaultValue()) != null) {
-          mappedFields.add(f);
+      Map<String, TreeSet<DataSchemaFieldMapping>> mappedFields = new TreeMap<>();
+
+      for (String key : fields.keySet()) {
+        List<DataSchemaFieldMapping> mps = fields.get(key);
+        for (DataSchemaFieldMapping f : mps) {
+          int index = f.getIndex() != null ? f.getIndex() : -9999;
+          TreeSet<DataSchemaFieldMapping> mappedFieldsList = new TreeSet<>();
+          if (index >= 0 || StringUtils.trimToNull(f.getDefaultValue()) != null) {
+            mappedFieldsList.add(f);
+          }
+          mappedFields.put(key, mappedFieldsList);
         }
       }
 
@@ -171,23 +181,32 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
         }
       }
 
-      // TODO: 24/03/2022 something else here?
-      fields = new ArrayList<>();
+      fields = new HashMap<>();
 
       // inspect source
       readSource();
 
       // prepare fields
-      // TODO: 24/03/2022 map rest of sub-schemas
-      for (int i = 0; i < mapping.getDataSchema().getSubSchemas().get(0).getFields().size(); i++) {
-        DataSchemaField field = mapping.getDataSchema().getSubSchemas().get(0).getFields().get(i);
-
-        DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(field);
-        fields.add(pm);
+      for (DataSchemaFile dataSubschema : mapping.getDataSchema().getSubSchemas()) {
+        List<DataSchemaFieldMapping> fieldMappings = new ArrayList<>();
+        for (DataSchemaField field : dataSubschema.getFields()) {
+          DataSchemaFieldMapping pm = populateDataSchemaFieldMapping(dataSubschema.getName(), field);
+          fieldMappings.add(pm);
+        }
+        fields.put(dataSubschema.getName(), fieldMappings);
       }
 
       // do automapping if no fields are found
-      if (mapping.getFields().isEmpty()) {
+      Collection<TreeSet<DataSchemaFieldMapping>> fieldsBySchema = mapping.getFields().values();
+      boolean mappingEmpty = fieldsBySchema.isEmpty();
+      for (TreeSet<DataSchemaFieldMapping> schemaFields : fieldsBySchema) {
+        if (schemaFields.isEmpty()) {
+          mappingEmpty = true;
+          break;
+        }
+      }
+
+      if (mappingEmpty) {
         int automapped = automap();
         if (automapped > 0) {
           addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
@@ -206,17 +225,19 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     int automapped = 0;
 
     // next, try to automap the source's remaining columns against the data schema fields
-    for (DataSchemaFieldMapping f : fields) {
-      int idx2 = 0;
-      for (String col : columns) {
-        String normCol = normalizeColumnName(col);
-        if (f.getField().getName().equalsIgnoreCase(normCol)) {
-          f.setIndex(idx2);
-          // we have automapped the field, so increment automapped counter and exit
-          automapped++;
-          break;
+    for (String subschemaName : fields.keySet()) {
+      for (DataSchemaFieldMapping f : fields.get(subschemaName)) {
+        int idx2 = 0;
+        for (String col : columns) {
+          String normCol = normalizeColumnName(col);
+          if (f.getField().getName().equalsIgnoreCase(normCol)) {
+            f.setIndex(idx2);
+            // we have automapped the field, so increment automapped counter and exit
+            automapped++;
+            break;
+          }
+          idx2++;
         }
-        idx2++;
       }
     }
 
@@ -247,13 +268,14 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
    * Populate a DataSchemaFieldMapping from an DataSchemaField. If the DataSchemaField is already mapped, preserves
    * the existing DataSchemaFieldMapping. Otherwise, creates a brand new DataSchemaFieldMapping.
    *
+   * @param subschemaName name of the subschema
    * @param field DataSchemaField
    *
    * @return DataSchemaFieldMapping created
    */
-  private DataSchemaFieldMapping populateDataSchemaFieldMapping(DataSchemaField field) {
+  private DataSchemaFieldMapping populateDataSchemaFieldMapping(String subschemaName, DataSchemaField field) {
     // mapped already?
-    DataSchemaFieldMapping fm = mapping.getField(field.getName());
+    DataSchemaFieldMapping fm = mapping.getField(subschemaName, field.getName());
     if (fm == null) {
       // no, create brand new DataSchemaFieldMapping
       fm = new DataSchemaFieldMapping();
@@ -300,7 +322,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return mid;
   }
 
-  public List<DataSchemaFieldMapping> getFields() {
+  public Map<String, List<DataSchemaFieldMapping>> getFields() {
     return fields;
+  }
+
+  public void setFields(Map<String, List<DataSchemaFieldMapping>> fields) {
+    this.fields = fields;
   }
 }

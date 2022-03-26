@@ -60,7 +60,7 @@
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
-    <#macro showField field index>
+    <#macro showField subschema field index>
         <div class="row py-1 g-2 mappingRow border-bottom">
             <div class="col-lg-4 pt-1 fs-smaller">
                 <#assign fieldPopoverInfo>
@@ -85,7 +85,7 @@
             </div>
 
             <div class="col-lg-4">
-                <select id="fIdx${index}" class="fidx form-select form-select-sm" name="fields[${index}].index">
+                <select id="fIdx${index}" class="fidx form-select form-select-sm" name="fields['${subschema.name}'][${index}].index">
                     <option value="" <#if !field.index??> selected="selected"</#if>></option>
                     <#list columns as col>
                         <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
@@ -94,7 +94,7 @@
             </div>
 
             <div class="col-lg-4">
-                <input id="fVal${index}" class="fval form-control form-control-sm" name="fields[${index}].defaultValue" value="${field.defaultValue!}"/>
+                <input id="fVal${index}" class="fval form-control form-control-sm" name="fields['${subschema.name}'][${index}].defaultValue" value="${field.defaultValue!}"/>
             </div>
 
 <#--            <#if field.index??>-->
@@ -177,15 +177,17 @@
                         </div>
 
                         <div id="sections" class="mt-4">
-                            <span class="anchor anchor-home-resource-page" id="anchor-${dataSchema.subSchemas[0].name}"></span>
-                            <div id="${dataSchema.subSchemas[0].name}" class="mt-5">
-                                <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                    ${dataSchema.subSchemas[0].title}
-                                </h4>
-                                <#list fields as field>
-                                    <@showField field field_index/>
-                                </#list>
-                            </div>
+                            <#list dataSchema.subSchemas as subSchema>
+                                <span class="anchor anchor-home-resource-page" id="anchor-${subSchema.name}"></span>
+                                <div id="${subSchema.name}" class="mt-5">
+                                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                                        ${subSchema.title}
+                                    </h4>
+                                    <#list fields[subSchema.name] as field>
+                                        <@showField subSchema field field_index/>
+                                    </#list>
+                                </div>
+                            </#list>
                         </div>
                     </div>
                 </main>
