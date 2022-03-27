@@ -14,7 +14,6 @@
 package org.gbif.ipt.model;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -30,7 +29,7 @@ public class DataSchemaField implements Serializable {
   private String format;
   private String description;
   private Object example;
-  private Map<String, Object> constraints;
+  private DataSchemaFieldConstraints constraints;
 
   public String getName() {
     return name;
@@ -72,11 +71,11 @@ public class DataSchemaField implements Serializable {
     this.example = example;
   }
 
-  public Map<String, Object> getConstraints() {
+  public DataSchemaFieldConstraints getConstraints() {
     return constraints;
   }
 
-  public void setConstraints(Map<String, Object> constraints) {
+  public void setConstraints(DataSchemaFieldConstraints constraints) {
     this.constraints = constraints;
   }
 

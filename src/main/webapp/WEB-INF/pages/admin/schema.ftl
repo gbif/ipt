@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.admin.DataSchemaAction" -->
 <#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageSchemas"/></title>
@@ -104,7 +105,7 @@
                                         <#list subSchema.fields as field>
                                             <tr class="odd">
                                                 <td>
-                                                    <span class="text-gbif-header-2 fst-italic"><b>${field.name}</b></span>
+                                                    <span class="fst-italic"><b>${field.name}</b></span>
                                                 </td>
                                                 <td>
                                                     <#if field.description?has_content>
@@ -143,11 +144,26 @@
                                                 </td>
                                                 <td>
                                                     <#if field.constraints??>
-                                                        <#list field.constraints as constraintKey, constraintValue>
-                                                            ${constraintKey} <code>${constraintValue?string}</code><br>
-                                                        </#list>
+                                                        <#if field.constraints.required??>
+                                                            required <code>${field.constraints.required?string}</code><br>
+                                                        </#if>
+                                                        <#if field.constraints.unique??>
+                                                            unique <code>${field.constraints.unique?string}</code><br>
+                                                        </#if>
+                                                        <#if field.constraints.maximum??>
+                                                            maximum <code>${field.constraints.maximum}</code><br>
+                                                        </#if>
+                                                        <#if field.constraints.minimum??>
+                                                            minimum <code>${field.constraints.minimum}</code><br>
+                                                        </#if>
+                                                        <#if field.constraints.pattern??>
+                                                            pattern <code>${field.constraints.pattern}</code><br>
+                                                        </#if>
+                                                        <#if field.constraints.vocabulary??>
+                                                            enum <code>${field.constraints.vocabulary}</code><br>
+                                                        </#if>
                                                     <#else>
-                                                        -
+                                                        --
                                                     </#if>
                                                 </td>
                                                 <td>

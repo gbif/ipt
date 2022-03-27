@@ -31,6 +31,7 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.DataSchemaFieldConstraints;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.ExcelFileSource;
@@ -700,6 +701,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("field", PropertyMapping.class);
     xstream.alias("dataSchemaMapping", DataSchemaMapping.class);
     xstream.alias("field", DataSchemaFieldMapping.class);
+    xstream.alias("constraints", DataSchemaFieldConstraints.class);
     xstream.alias("versionhistory", VersionHistory.class);
     xstream.alias("doi", DOI.class);
 
