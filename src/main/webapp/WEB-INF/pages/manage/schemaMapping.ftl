@@ -136,6 +136,28 @@
                     <#else>
                         <@s.text name="basic.no.description"/>
                     </#if>
+                    <#if field.field.constraints?has_content>
+                        <br/><br/>
+                        <em><@s.text name="schema.field.constraints"/></em>:
+                        <#if field.field.constraints.required??>
+                            required <code>${field.field.constraints.required?string}</code><br>
+                        </#if>
+                        <#if field.field.constraints.unique??>
+                            unique <code>${field.field.constraints.unique?string}</code><br>
+                        </#if>
+                        <#if field.field.constraints.maximum??>
+                            maximum <code>${field.field.constraints.maximum}</code><br>
+                        </#if>
+                        <#if field.field.constraints.minimum??>
+                            minimum <code>${field.field.constraints.minimum}</code><br>
+                        </#if>
+                        <#if field.field.constraints.pattern??>
+                            pattern <code>${field.field.constraints.pattern}</code><br>
+                        </#if>
+                        <#if field.field.constraints.vocabulary??>
+                            enum <code>${field.field.constraints.vocabulary}</code><br>
+                        </#if>
+                    </#if>
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
@@ -152,7 +174,21 @@
             </div>
 
             <div class="col-lg-4">
-                <input id="fVal_${subschema.name}_${index}" class="fval form-control form-control-sm" name="fields['${subschema.name}'][${index}].defaultValue" value="${field.defaultValue!}"/>
+                <#if field.field.constraints?? && field.field.constraints.vocabulary??>
+                    <div class="input-group input-group-sm">
+                        <label class="input-group-text" for="fVal_${subschema.name}_${index}">
+                            <i class="bi bi-book"></i>
+                        </label>
+                        <select id="fVal_${subschema.name}_${index}" class="fval form-select form-select-sm" name="fields['${subschema.name}'][${index}].defaultValue">
+                            <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
+                            <#list field.field.constraints.vocabulary as code>
+                                <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${code}</option>
+                            </#list>
+                        </select>
+                    </div>
+                <#else>
+                    <input id="fVal_${subschema.name}_${index}" class="fval form-control form-control-sm" name="fields['${subschema.name}'][${index}].defaultValue" value="${field.defaultValue!}"/>
+                </#if>
             </div>
 
             <#if field.index??>
