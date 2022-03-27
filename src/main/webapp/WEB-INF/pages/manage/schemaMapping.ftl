@@ -80,6 +80,10 @@
                 }
             });
 
+            $(".fidx").change(function() {
+                activateDeactivateStaticInput($(this));
+            });
+
             var showAll=${Parameters.showAll!"true"};
             if (!showAll){
                 hideFields();
