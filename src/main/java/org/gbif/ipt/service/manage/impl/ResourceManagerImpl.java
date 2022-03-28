@@ -700,7 +700,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
     xstream.alias("dataSchemaMapping", DataSchemaMapping.class);
-    xstream.alias("field", DataSchemaFieldMapping.class);
+    xstream.alias("dataSchemaField", DataSchemaFieldMapping.class);
     xstream.alias("constraints", DataSchemaFieldConstraints.class);
     xstream.alias("versionhistory", VersionHistory.class);
     xstream.alias("doi", DOI.class);
