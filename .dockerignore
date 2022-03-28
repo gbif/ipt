@@ -1,0 +1,15 @@
+.git*
+/*.TXT
+/*.adoc
+/*.iml
+/*.log
+/*.log.*
+/*.md
+/*.py
+/*.rtf
+/*.txt
+/amphibians
+/docs
+/eml*.xml
+/res1
+/target
