@@ -1160,3 +1160,7 @@ a.doi:hover span:first-of-type {
     }
 }
 
+.top-button {
+    min-width: 100px;
+}
+

@@ -217,9 +217,9 @@
                     </div>
 
                     <div class="my-2">
-                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary" cssStyle="min-width: 100px;" name="save" key="button.save"/>
-                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger" cssStyle="min-width: 100px;" name="delete" key="button.delete"/>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary" cssStyle="min-width: 100px;" name="cancel" key="button.back"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
+                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
                     </div>
 
                 </div>

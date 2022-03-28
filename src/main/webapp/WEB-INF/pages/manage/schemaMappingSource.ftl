@@ -24,8 +24,8 @@
                         </div>
 
                         <div class="my-2">
-                            <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary" cssStyle="min-width: 100px;" name="save" key="button.save"/>
-                            <@s.submit cssClass="button btn btn-sm btn-outline-secondary" cssStyle="min-width: 100px;" name="cancel" key="button.cancel" method="cancel"/>
+                            <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                            <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel" method="cancel"/>
                         </div>
 
                     </div>

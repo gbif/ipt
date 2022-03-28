@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="mt-2">
-                    <a href="schemas.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1" style="min-width: 100px">
+                    <a href="schemas.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
                         <@s.text name="button.back"/>
                     </a>
                 </div>

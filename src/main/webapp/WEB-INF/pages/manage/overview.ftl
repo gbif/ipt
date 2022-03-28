@@ -363,39 +363,39 @@
                             <#if disableRegistrationRights == "false">
                                 <form action='resource-undelete.do' method='post'>
                                     <input name="r" type="hidden" value="${resource.shortname}" />
-                                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion" cssStyle="min-width: 100px;" name="undelete" key="button.undelete"/>
+                                    <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion top-button" name="undelete" key="button.undelete"/>
                                 </form>
                             <#else>
-                                <button class="btn btn-sm btn-outline-gbif-primary" style="min-width: 100px;" name="undelete" disabled><@s.text name="button.undelete"/></button>
+                                <button class="btn btn-sm btn-outline-gbif-primary top-button" name="undelete" disabled><@s.text name="button.undelete"/></button>
                             </#if>
                         </div>
                     <#else>
                         <#if disableRegistrationRights == "false">
                             <div class="btn-group btn-group-sm" role="group">
-                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start" style="min-width: 100px;" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button id="btnGroupDelete" type="button" class="btn btn-sm btn-outline-gbif-danger dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <@s.text name="button.delete"/>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDelete">
                                     <li>
                                         <form action="resource-delete.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIptAndGbif"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 top-button" name="delete" key="button.delete.fromIptAndGbif"/>
                                         </form>
                                     </li>
                                     <li>
                                         <form action="resource-deleteFromIpt.do" method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}" />
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100" cssStyle="min-width: 100px;" name="delete" key="button.delete.fromIpt"/>
+                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 top-button" name="delete" key="button.delete.fromIpt"/>
                                         </form>
                                     </li>
                                 </ul>
                             </div>
                         <#else>
-                            <button class="btn btn-sm btn-outline-gbif-danger" style="min-width: 100px;" name="delete" disabled><@s.text name="button.delete"/></button>
+                            <button class="btn btn-sm btn-outline-gbif-danger top-button" name="delete" disabled><@s.text name="button.delete"/></button>
                         </#if>
                     </#if>
 
-                    <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary" style="min-width: 100px;"><@s.text name="button.cancel"/></a>
+                    <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
                 </div>
 
                 <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>

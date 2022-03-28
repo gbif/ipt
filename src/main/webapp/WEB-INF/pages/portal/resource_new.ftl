@@ -208,7 +208,7 @@
                 <div class="mt-2">
 
                     <#if managerRights>
-                        <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1" style="min-width: 100px">
+                        <a href="${baseURL}/manage/resource.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
                             <@s.text name='button.edit'/>
                         </a>
                     </#if>
