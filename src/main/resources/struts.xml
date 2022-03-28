@@ -32,6 +32,7 @@
   <package name="ipt-default" extends="struts-default" namespace="/">
     <result-types>
       <result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult" default="true"/>
+      <result-type name="freemarkerWithStatus" class="org.gbif.ipt.struts2.FreemarkerWithStatusResult"/>
     </result-types>
     <interceptors>
       <!-- interceptors enforcing user roles and login -->
@@ -103,19 +104,23 @@
     <default-class-ref class="org.gbif.ipt.action.BaseAction"/>
 
     <global-results>
-      <result name="404">
+      <result name="404" type="freemarkerWithStatus">
+        <param name="status">404</param>
         <param name="location">/WEB-INF/pages/error/404.ftl</param>
       </result>
-      <result name="401">
+      <result name="401" type="freemarkerWithStatus">
+        <param name="status">401</param>
         <param name="location">/WEB-INF/pages/error/401.ftl</param>
       </result>
-      <result name="401-manager">
+      <result name="401-manager" type="freemarkerWithStatus">
+        <param name="status">401</param>
         <param name="location">/WEB-INF/pages/error/401-manager.ftl</param>
       </result>
       <result name="304" type="httpheader">
         <param name="status">304</param>
       </result>
-      <result name="error">
+      <result name="error" type="freemarkerWithStatus">
+        <param name="status">500</param>
         <param name="location">/WEB-INF/pages/error/error.ftl</param>
       </result>
       <result name="setupIncomplete" type="redirect">/setup.do</result>
@@ -126,7 +131,7 @@
 
     <global-exception-mappings>
       <exception-mapping result="error" exception="java.lang.RuntimeException"/>
-      <exception-mapping result="error" exception="org.gbif.ipt.service.admin.InvalidConfigException"/>
+      <exception-mapping result="error" exception="org.gbif.ipt.service.InvalidConfigException"/>
     </global-exception-mappings>
 
     <action name="setup" class="org.gbif.ipt.config.SetupAction" method="setup">

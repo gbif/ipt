@@ -17,10 +17,12 @@
     <default-action-ref name="home"/>
 
     <global-results>
-      <result name="404">
+      <result name="404" type="freemarkerWithStatus">
+        <param name="status">404</param>
         <param name="location">/WEB-INF/pages/manage/404.ftl</param>
       </result>
-      <result name="401">
+      <result name="401" type="freemarkerWithStatus">
+        <param name="status">401</param>
         <param name="location">/WEB-INF/pages/manage/401.ftl</param>
       </result>
       <result name="cancel" type="redirect">${baseURL}/manage/resource.do</result>

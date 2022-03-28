@@ -57,29 +57,18 @@ public class ResourceFileAction extends PortalBaseAction {
   }
 
   /**
-   * Handles DwC-A file download request. The method checks if the request is a conditional get with If-Modified-Since
-   * header. If the If-Modified-Since date is greater than the last published date, the NOT_MODIFIED string is returned.
+   * Handles DwC-A file download request.
+   *
    * Specific versions can also be resolved depending on the optional parameter version "v". If no specific version is
    * requested the latest published version is used.
+   *
+   * Conditional (If-Modified-Since) requests are handled in execute().
    *
    * @return Struts2 result string
    */
   public String dwca() {
     if (resource == null) {
       return NOT_FOUND;
-    }
-    // see if we have a conditional get with If-Modified-Since header
-    try {
-      long since = req.getDateHeader("If-Modified-Since");
-      if (since > 0 && resource.getLastPublished() != null) {
-        long last = resource.getLastPublished().getTime();
-        if (last < since) {
-          return NOT_MODIFIED;
-        }
-      }
-    } catch (IllegalArgumentException e) {
-      // headers might not be formed correctly, swallow
-      LOG.warn("Conditional get with If-Modified-Since header couldnt be interpreted", e);
     }
 
     // if no specific version is requested, use the latest published version
@@ -153,6 +142,21 @@ public class ResourceFileAction extends PortalBaseAction {
     }
     try {
       inputStream = new FileInputStream(data);
+      // Set a Last-Modified header, even on 304 Not Modified responses.
+      // Round to the nearest second, as HTTP doesn't support milliseconds.
+      long lastModified = 1000 * ((data.lastModified() + 500) / 1000);
+      response.setDateHeader("Last-Modified", lastModified);
+
+      // see if we have a conditional get with If-Modified-Since header
+      try {
+        long since = req.getDateHeader("If-Modified-Since");
+        if (since >= lastModified) {
+          return NOT_MODIFIED;
+        }
+      } catch (IllegalArgumentException e) {
+        // headers might not be formed correctly, swallow
+        LOG.warn("Conditional get with If-Modified-Since header couldn't be interpreted", e);
+      }
     } catch (FileNotFoundException e) {
       LOG.warn("Data dir file not found", e);
       return NOT_FOUND;
@@ -245,16 +249,6 @@ public class ResourceFileAction extends PortalBaseAction {
   public String rtf() {
     if (resource == null) {
       return NOT_FOUND;
-    }
-
-    // if no specific version is requested, use the latest published version
-    if (version == null) {
-      BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
-      if (latestVersion == null) {
-        return NOT_FOUND;
-      } else {
-        version = latestVersion;
-      }
     }
 
     data = dataDir.resourceRtfFile(resource.getShortname(), version);

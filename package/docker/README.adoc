@@ -14,14 +14,18 @@ Refer to https://ipt.gbif.org/manual/en/ipt/2.5/installation#installation-using-
 
 Note that, for better consistency with the https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard[Filesystem Hierarchy Standard], from version 2.4.0 the IPT's default data directory is `/srv/ipt`, *not* `/usr/local/ipt`.  This can be overridden, see the manual.
 
-== To build and deploy the Docker image
+== To build the Docker image
 
-(This process is for GBIF developers.)
 
-. `docker build --pull --build-arg IPT_VERSION=2.5.0 -t gbif/ipt:2.5.0 .`
+. `docker build --pull --build-arg GIT_REVISION=$(git rev-parse --verify --short=7 HEAD) -t gbif/ipt:master -f package/docker/Dockerfile .`
 . *Test the resulting image!*
 +
-`docker run --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt:2.5.0`
+`docker run --volume /full/path/to/data-directory:/srv/ipt --publish 8080:8080 gbif/ipt:master`
 
-. `docker push gbif/ipt:2.5.0` (stop here for a pre-release)
+== Releasing the Docker image
+
+(For GBIF developers.)
+
+. `docker push gbif/ipt:master` (stop here for a development build)
+. `docker tag gbif/ipt:master gbif/ipt:2.5.0 && docker push gbif/ipt:2.5.0` (stop here for a pre-release)
 . `docker tag gbif/ipt:2.5.0 gbif/ipt:latest && docker push gbif/ipt:latest`

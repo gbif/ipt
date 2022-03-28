@@ -4,7 +4,12 @@
 <form action="setupComplete.do">
     <div class="container-fluid bg-body border-bottom">
         <div class="container">
-            [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
+            [#if warnings?size == 0 && actionErrors?size == 0]
+                [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
+            [#else]
+                [#include "/WEB-INF/pages/inc/action_alerts_warnings.ftl"]
+                [#include "/WEB-INF/pages/inc/action_alerts_errors.ftl"]
+            [/#if]
         </div>
 
         <div class="container my-3 p-3">
@@ -29,11 +34,11 @@
 
     <main class="container">
         <div class="my-3 p-3">
-[#--            <h5 class="pb-2 mb-2 pt-2 text-gbif-header fw-400 text-center">--]
-[#--                [@s.text name="admin.config.setup3.title"/]--]
-[#--            </h5>--]
-
-            <p class="text-center">[@s.text name="admin.config.setup3.welcome"/]</p>
+            [#if warnings?size == 0 && actionErrors?size == 0]
+                <p class="text-center">[@s.text name="admin.config.setup3.welcome"/]</p>
+            [#else]
+                <p class="text-center">[@s.text name="admin.config.setup3.welcomeWithIssues"/]</p>
+            [/#if]
         </div>
     </main>
 </form>
