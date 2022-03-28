@@ -370,7 +370,7 @@ public class SetupAction extends BaseAction {
       addActionWarning(msg, e);
     } catch (RegistryException e) {
       String msg = RegistryException.logRegistryException(e, this);
-      LOG.warn("Failed to contact the GBIF Registry ("+msg+"): " + e.getMessage(), e);
+      LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
       addActionError(msg);
       addActionExceptionWarning(e);
     }

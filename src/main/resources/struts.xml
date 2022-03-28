@@ -131,7 +131,7 @@
 
     <global-exception-mappings>
       <exception-mapping result="error" exception="java.lang.RuntimeException"/>
-      <exception-mapping result="error" exception="org.gbif.ipt.service.admin.InvalidConfigException"/>
+      <exception-mapping result="error" exception="org.gbif.ipt.service.InvalidConfigException"/>
     </global-exception-mappings>
 
     <action name="setup" class="org.gbif.ipt.config.SetupAction" method="setup">
