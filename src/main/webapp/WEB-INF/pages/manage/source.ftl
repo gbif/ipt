@@ -44,30 +44,41 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
-    <div class="container-fluid bg-body border-bottom">
-        <div class="container">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-        </div>
+    <form class="topForm needs-validation" action="source.do" method="post" novalidate>
+        <div class="container-fluid bg-body border-bottom">
+            <div class="container">
+                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+            </div>
 
-        <div class="container my-3 p-3">
-            <div class="text-center">
-                <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
-                    <@popoverPropertyInfo "manage.source.intro"/>
-                    <@s.text name='manage.source.title'/>
-                </h5>
+            <div class="container my-3 p-3">
+                <div class="text-center">
+                    <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
+                        <@popoverPropertyInfo "manage.source.intro"/>
+                        <@s.text name='manage.source.title'/>
+                    </h5>
 
-                <div class="text-smaller">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    <div class="text-smaller">
+                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    </div>
+
+                    <div class="mt-2">
+                        <#if source??>
+                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                            <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
+                            <#if id?has_content>
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete.source"/>
+                            </#if>
+                        <#else>
+                            <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                        </#if>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="container-fluid bg-body">
-        <main class="container">
-            <div class="my-3 p-3">
-
-                <form class="topForm needs-validation" action="source.do" method="post" novalidate>
+        <div class="container-fluid bg-body">
+            <main class="container">
+                <div class="my-3 p-3">
                     <div class="row g-3 mx-lg-4 mx-2">
                         <input type="hidden" name="r" value="${resource.shortname}" />
                         <input type="hidden" name="id" value="${id!}" />
@@ -255,24 +266,12 @@
                                     <@dateFormat/>
                                 </div>
                             </#if>
-
-                            <div class="col-12">
-                                <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                                <@s.submit cssClass="btn btn-outline-secondary my-1" name="cancel" key="button.cancel"/>
-                                <#if id?has_content>
-                                    <@s.submit cssClass="confirm btn btn-outline-gbif-danger my-1" name="delete" key="button.delete.source"/>
-                                </#if>
-                            </div>
-                        <#else>
-                            <div class="col-12">
-                                <@s.submit cssClass="btn btn-outline-secondary" name="cancel" key="button.back"/>
-                            </div>
                         </#if>
                     </div>
-                </form>
-            </div>
-        </main>
-    </div>
+                </div>
+            </main>
+        </div>
+    </form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

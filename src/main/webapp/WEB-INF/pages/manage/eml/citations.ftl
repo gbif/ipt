@@ -64,6 +64,11 @@
                 <div class="text-center fs-smaller">
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </div>
+
+                <div class="text-center mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save" />
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back" />
+                </div>
             </div>
         </div>
 
@@ -125,11 +130,6 @@
 
                             <div class="addNew col-12 mt-1">
                                 <a id="plus" href="">${addLink?lower_case?cap_first}</a>
-                            </div>
-
-                            <div class="buttons col-12 mt-3">
-                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
-                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back" />
                             </div>
 
                             <!-- internal parameter -->

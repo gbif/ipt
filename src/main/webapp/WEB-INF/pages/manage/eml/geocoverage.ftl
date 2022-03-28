@@ -200,6 +200,11 @@
             <div class="text-center fs-smaller">
                 <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
             </div>
+
+            <div class="text-center mt-2">
+                <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save" />
+                <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back" />
+            </div>
         </div>
     </div>
 
@@ -246,11 +251,6 @@
                         <div class="row g-3 mt-2">
                             <div class="col-12">
                                 <@text name="eml.geospatialCoverages[0].description" value="${(eml.geospatialCoverages[0].description)!}" i18nkey="eml.geospatialCoverages.description" requiredField=true minlength=2 />
-                            </div>
-
-                            <div class="col-12">
-                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save" />
-                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back" />
                             </div>
                         </div>
 
