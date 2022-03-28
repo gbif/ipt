@@ -124,7 +124,7 @@
     <alternative>
     </alternative>
   </concept>
-  <concept dc:identifier="unkown" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/unkown"
+  <concept dc:identifier="unknown" dc:URI="http://rs.gbif.org/vocabulary/eml/updateFrequency/unknown"
            dc:relation=""
            dc:description="Further updates may still happen, but it is not known for sure.">
     <preferred>
