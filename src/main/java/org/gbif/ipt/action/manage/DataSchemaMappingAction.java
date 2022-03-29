@@ -17,7 +17,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSchemaField;
 import org.gbif.ipt.model.DataSchemaFieldMapping;
-import org.gbif.ipt.model.DataSchemaFile;
+import org.gbif.ipt.model.DataSubschema;
 import org.gbif.ipt.model.DataSchemaMapping;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
@@ -189,7 +189,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       readSource();
 
       // prepare fields
-      for (DataSchemaFile dataSubschema : mapping.getDataSchema().getSubSchemas()) {
+      for (DataSubschema dataSubschema : mapping.getDataSchema().getSubSchemas()) {
         List<DataSchemaFieldMapping> fieldMappings = new ArrayList<>();
         Map<String, Integer> indicesMap = new HashMap<>();
         int index = 0;

@@ -23,7 +23,7 @@ import java.util.StringJoiner;
 /**
  * A single schema file of {@link DataSchema}
  */
-public class DataSchemaFile implements Serializable {
+public class DataSubschema implements Serializable {
 
   private static final long serialVersionUID = 3929428113035839253L;
 
@@ -34,6 +34,8 @@ public class DataSchemaFile implements Serializable {
   private String title;
   private String description;
   private List<DataSchemaField> fields = new ArrayList<>();
+  private String primaryKey;
+  private List<DataSubschemaForeignKey> foreignKeys = new ArrayList<>();
 
   public String getIdentifier() {
     return identifier;
@@ -83,33 +85,53 @@ public class DataSchemaFile implements Serializable {
     this.fields = fields;
   }
 
+  public String getPrimaryKey() {
+    return primaryKey;
+  }
+
+  public void setPrimaryKey(String primaryKey) {
+    this.primaryKey = primaryKey;
+  }
+
+  public List<DataSubschemaForeignKey> getForeignKeys() {
+    return foreignKeys;
+  }
+
+  public void setForeignKeys(List<DataSubschemaForeignKey> foreignKeys) {
+    this.foreignKeys = foreignKeys;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    DataSchemaFile that = (DataSchemaFile) o;
+    DataSubschema that = (DataSubschema) o;
     return Objects.equals(identifier, that.identifier)
         && Objects.equals(title, that.title)
         && Objects.equals(name, that.name)
         && Objects.equals(url, that.url)
         && Objects.equals(description, that.description)
-        && Objects.equals(fields, that.fields);
+        && Objects.equals(fields, that.fields)
+        && Objects.equals(primaryKey, that.primaryKey)
+        && Objects.equals(foreignKeys, that.foreignKeys);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(identifier, title, name, url, description, fields);
+    return Objects.hash(identifier, title, name, url, description, fields, primaryKey, foreignKeys);
   }
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", DataSchemaFile.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", DataSubschema.class.getSimpleName() + "[", "]")
         .add("identifier='" + identifier + "'")
         .add("title='" + title + "'")
         .add("name='" + name + "'")
         .add("url=" + url)
         .add("description='" + description + "'")
         .add("fields=" + fields)
+        .add("fields=" + primaryKey)
+        .add("fields=" + foreignKeys)
         .toString();
   }
 }

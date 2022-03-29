@@ -98,12 +98,13 @@
                                             <th><@s.text name='schema.field.type'/></th>
                                             <th><@s.text name='schema.field.format'/></th>
                                             <th><@s.text name='schema.field.constraints'/></th>
+                                            <th><@s.text name='schema.field.foreignKeys'/></th>
                                             <th><@s.text name='schema.field.examples'/></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <#list subSchema.fields as field>
-                                            <tr class="odd">
+                                            <tr>
                                                 <td>
                                                     <span class="fst-italic"><b>${field.name}</b></span>
                                                 </td>
@@ -143,6 +144,9 @@
                                                     </#if>
                                                 </td>
                                                 <td>
+                                                    <#if subSchema.primaryKey?? && subSchema.primaryKey == field.name>
+                                                        primary key <code>true</code><br>
+                                                    </#if>
                                                     <#if field.constraints??>
                                                         <#if field.constraints.required??>
                                                             required <code>${field.constraints.required?string}</code><br>
@@ -162,6 +166,17 @@
                                                         <#if field.constraints.vocabulary??>
                                                             enum <code>${field.constraints.vocabulary}</code><br>
                                                         </#if>
+                                                    <#else>
+                                                        --
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if subSchema.foreignKeys?has_content>
+                                                        <#list subSchema.foreignKeys as foreignKey>
+                                                            <#if foreignKey.fields == field.name>
+                                                                <a href="#anchor-${foreignKey.reference.resource}">${foreignKey.reference.resource}#${foreignKey.reference.fields}</a>
+                                                            </#if>
+                                                        </#list>
                                                     <#else>
                                                         --
                                                     </#if>

@@ -33,7 +33,7 @@ public class DataSchema implements Serializable {
   private String name;
   private String version;
   private URL url;
-  private List<DataSchemaFile> subSchemas = new ArrayList<>();
+  private List<DataSubschema> subSchemas = new ArrayList<>();
   private String description;
   private boolean isLatest;
   private Date issued;
@@ -78,11 +78,11 @@ public class DataSchema implements Serializable {
     this.url = url;
   }
 
-  public List<DataSchemaFile> getSubSchemas() {
+  public List<DataSubschema> getSubSchemas() {
     return subSchemas;
   }
 
-  public void setSubSchemas(List<DataSchemaFile> subSchemas) {
+  public void setSubSchemas(List<DataSubschema> subSchemas) {
     this.subSchemas = subSchemas;
   }
 
@@ -110,8 +110,8 @@ public class DataSchema implements Serializable {
     this.issued = issued;
   }
 
-  public void addDataSchemaFile(DataSchemaFile dataSchemaFile) {
-    subSchemas.add(dataSchemaFile);
+  public void addDataSchemaFile(DataSubschema dataSubschema) {
+    subSchemas.add(dataSubschema);
   }
 
   @Override
