@@ -1,7 +1,8 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 
 <!-- Represents source data and mapping data sections on resource overview page -->
-<div class="py-5 mx-4 border-bottom" id="sources">
+<span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
+<div class="py-5 mx-4 border-bottom section" id="sources">
     <div class="titleOverview">
         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
             <#assign sourcesInfo>
@@ -125,7 +126,8 @@
 
 </div>
 
-<div class="py-5 mx-4 border-bottom" id="mappings">
+<span class="anchor anchor-home-resource-page" id="anchor-mappings"></span>
+<div class="py-5 mx-4 border-bottom section" id="mappings">
     <#if dataSchemaBased>
         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
             <#assign mappingsInfo>
