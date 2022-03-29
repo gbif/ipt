@@ -566,7 +566,7 @@
 
                     <#if (nonMapped?size>0)>
                         <span class="anchor anchor-base" id="anchor-nonmapped"></span>
-                        <div class="mt-5">
+                        <div class="mt-5" <#if (action.getRedundantGroups()?size==0)>style="height: 100vh; min-height: 200px;"</#if> >
                             <h4 id="nonmapped" class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 <@s.text name="manage.mapping.no.mapped.title"/>
                             </h4>
@@ -582,7 +582,7 @@
 
                     <#if (action.getRedundantGroups()?size>0)>
                         <span class="anchor anchor-base" id="anchor-redundant"></span>
-                        <div class="mt-5">
+                        <div class="mt-5" style="height: 100vh; min-height: 200px;">
                             <h4 id="redundant" class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 <@s.text name="manage.mapping.redundant.classes.title"/>
                             </h4>

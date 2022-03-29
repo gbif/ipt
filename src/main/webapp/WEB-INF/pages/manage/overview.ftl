@@ -1042,7 +1042,7 @@
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-managers"></span>
-                    <div class="py-5 mx-4" style="height: 100vh; min-height: 200px;" id="managers">
+                    <div class="py-5 mx-4" id="managers">
                         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
                             <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                             <@s.text name="manage.overview.resource.managers"/>

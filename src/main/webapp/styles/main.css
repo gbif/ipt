@@ -1053,7 +1053,7 @@ button.close {
     border-left: 2px solid #09c;
 }
 
-#additional {
+#additional, #managers {
     height: 100vh;
     min-height: 200px;
 }
