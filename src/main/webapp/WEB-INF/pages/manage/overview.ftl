@@ -134,9 +134,7 @@
 
             $('.bd-toc nav a').each(function () {
                 var currentLink = $(this);
-                console.log(currentLink)
                 var anchor = $(currentLink.attr("href"));
-                console.log(anchor[0])
                 var sectionId = anchor[0].id.replace("anchor-", "");
                 var section = $("#" + sectionId);
 

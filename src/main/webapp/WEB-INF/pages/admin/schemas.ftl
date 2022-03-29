@@ -71,6 +71,10 @@
 
         <div class="container my-3 p-3">
             <div class="text-center">
+                <div class="text-uppercase fw-bold fs-smaller-2">
+                    <span><@s.text name="menu.admin"/></span>
+                </div>
+
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     <@s.text name="admin.schemas.title"/>
                 </h1>
