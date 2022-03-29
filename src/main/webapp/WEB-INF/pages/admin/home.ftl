@@ -5,15 +5,25 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
-<main class="container">
-	<div class="row my-2 p-3">
-		<div class="col-sm-12 mb-3">
-			<div class="card admin-card border rounded shadow-sm">
-				<h5 class="border-bottom pb-2 mb-0 mx-4 pt-4 text-gbif-header fw-400 text-center">
-					<@s.text name="menu.admin"/>
-				</h5>
+<div class="container-fluid bg-body border-bottom">
+	<div class="container">
+		<#include "/WEB-INF/pages/inc/action_alerts.ftl">
+	</div>
 
-				<div class="card-body my-xl-3 mt-0 mb-3">
+	<div class="container my-3 p-3">
+		<div class="text-center">
+			<h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
+				<@s.text name="menu.admin"/>
+			</h1>
+		</div>
+	</div>
+</div>
+
+<main class="container">
+	<div class="row mt-xl-5">
+		<div class="col-sm-12 p-0 border-xl shadow-sm">
+			<div class="card admin-card">
+				<div class="card-body m-0 p-0">
 					<div class="row gx-0 text-center admin-col-listing">
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/config.do" title="" class="admin-col-listing-item border-xl-right border-bottom">

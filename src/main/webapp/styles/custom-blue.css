@@ -38,7 +38,7 @@
 }
 
 /* Nav borders */
-@media (max-width: 1200px) {
+@media (max-width: 1199px) {
     .nav-item-border-bottom:not(no-border) {
         border-bottom: 1px solid #4F82BB;
     }

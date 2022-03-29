@@ -52,7 +52,7 @@ header, .dropdown-menu {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1199px) {
     .nav-item-border-bottom:not(no-border) {
         border-bottom: 1px solid #559a55;
     }
