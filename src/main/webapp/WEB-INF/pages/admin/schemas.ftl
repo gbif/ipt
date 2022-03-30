@@ -64,6 +64,11 @@
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
+    <#assign schemasCount=0>
+    <#list schemas as ds>
+        <#assign schemasCount=schemasCount+1>
+    </#list>
+
     <div class="container-fluid bg-body border-bottom">
         <div class="container">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -78,6 +83,20 @@
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     <@s.text name="admin.schemas.title"/>
                 </h1>
+
+                <div class="text-smaller">
+                    <#if schemasCount=0>
+                        <span class="text-gbif-danger mt-3">
+                            <@s.text name="admin.schemas.no.schemas.installed"/>
+                        </span>
+                    <#else>
+                        <#if action.isUpToDate()>
+                            <span class="text-gbif-primary"><@s.text name="admin.schemas.upToDate"/></span>
+                        <#else>
+                            <span class="text-gbif-danger"><@s.text name="admin.schemas.not.upToDate"/></span>
+                        </#if>
+                    </#if>
+                </div>
 
                 <div class="mt-2">
                     <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
@@ -94,17 +113,12 @@
                 <@s.text name="admin.schemas.installed"/>
             </h4>
 
-            <#assign count=0>
-
             <#list schemas as ds>
-                <#assign count=count+1>
-                <@dataSchemaRow ds count schemas?size/>
+                <#assign schemasCount=schemasCount+1>
+                <@dataSchemaRow ds schemasCount schemas?size/>
             </#list>
 
-            <#if count=0>
-                <p class="text-gbif-danger mt-3">
-                    <@s.text name="admin.schemas.no.schemas.installed"/>
-                </p>
+            <#if schemasCount=0>
                 <p>
                     <span class="text-gbif-warning">
                         <i class="bi bi-exclamation-triangle"></i>
@@ -120,9 +134,9 @@
                     <@s.text name="schema.further.title"/>
                 </h4>
 
-                <#assign count=0>
+                <#assign newSchemasCount=0>
                 <#list newSchemas as schema>
-                    <#assign count=count+1>
+                    <#assign newSchemasCount=newSchemasCount+1>
                     <div class="row py-2 g-2 <#sep>border-bottom</#sep>">
                         <div class="col-md-3">
                             <div class="title">

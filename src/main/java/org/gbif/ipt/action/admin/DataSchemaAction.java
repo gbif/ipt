@@ -258,12 +258,6 @@ public class DataSchemaAction extends POSTAction {
             }
           }
         }
-        // warn user if updates to installed data schemas are available
-        if (isUpToDate()) {
-          addActionMessage(getText("admin.schemas.upToDate"));
-        } else {
-          addActionWarning(getText("admin.schemas.not.upToDate"));
-        }
       } catch (RegistryException e) {
         // add startup error message about Registry error
         String msg = RegistryException.logRegistryException(e, this);
