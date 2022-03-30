@@ -33,6 +33,7 @@
 
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
+    <#include "/WEB-INF/pages/macros/data_bage.ftl">
 
     <div class="container-fluid bg-body border-bottom">
         <div class="container">
@@ -99,7 +100,7 @@
                                             <th><@s.text name='schema.field.format'/></th>
                                             <th><@s.text name='schema.field.constraints'/></th>
                                             <th><@s.text name='schema.field.foreignKeys'/></th>
-                                            <th><@s.text name='schema.field.examples'/></th>
+                                            <th><@s.text name='basic.examples'/></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -116,25 +117,7 @@
                                                     </#if>
                                                 </td>
                                                 <td>
-                                                    <#if field.type == "string">
-                                                        <span class="badge rounded-pill bg-blue">${field.type}</span>
-                                                    <#elseif field.type == "number">
-                                                        <span class="badge rounded-pill bg-teal">${field.type}</span>
-                                                    <#elseif field.type == "integer">
-                                                        <span class="badge rounded-pill bg-cyan">${field.type}</span>
-                                                    <#elseif field.type == "object">
-                                                        <span class="badge rounded-pill bg-purple">${field.type}</span>
-                                                    <#elseif field.type == "boolean">
-                                                        <span class="badge rounded-pill bg-indigo">${field.type}</span>
-                                                    <#elseif field.type == "datetime">
-                                                        <span class="badge rounded-pill bg-orange">${field.type}</span>
-                                                    <#elseif field.type == "date">
-                                                        <span class="badge rounded-pill bg-amber">${field.type}</span>
-                                                    <#elseif field.type == "year">
-                                                        <span class="badge rounded-pill bg-yellow">${field.type}</span>
-                                                    <#else>
-                                                        ${field.type}
-                                                    </#if>
+                                                    <@dataBage field.type/>
                                                 </td>
                                                 <td>
                                                     <#if field.format??>
