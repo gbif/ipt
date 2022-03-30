@@ -5,17 +5,9 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
-<div class="container-fluid bg-body border-bottom">
+<div class="container-fluid bg-body">
 	<div class="container">
 		<#include "/WEB-INF/pages/inc/action_alerts.ftl">
-	</div>
-
-	<div class="container my-3 p-3">
-		<div class="text-center">
-			<h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
-				<@s.text name="menu.admin"/>
-			</h1>
-		</div>
 	</div>
 </div>
 
