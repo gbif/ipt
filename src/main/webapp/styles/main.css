@@ -253,12 +253,20 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     background-color: #2196f3;
 }
 
+.bg-light-blue {
+    background-color: #4fc3f7;
+}
+
+.bg-red {
+    background-color: #ef5350;
+}
+
 .bg-teal {
-    background-color: #20c997;
+    background-color: #009688;
 }
 
 .bg-cyan {
-    background-color: #0dcaf0;
+    background-color: #00bcd4;
 }
 
 .bg-purple {

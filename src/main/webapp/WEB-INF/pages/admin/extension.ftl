@@ -2,150 +2,149 @@
 <title><@s.text name="admin.extension.title"/></title>
 <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/data_bage.ftl">
 
-<main class="container">
-    <div class="my-3 p-3 border rounded shadow-sm">
+<div class="container-fluid bg-body border-bottom">
+    <div class="container">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
 
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-            <@s.text name="admin.extension.title"/> ${extension.title}
-        </h5>
-
-        <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-            <div class="col-lg-3">
-                <strong><@s.text name="basic.title"/></strong>
+    <div class="container my-3 p-3">
+        <div class="text-center">
+            <div class="text-uppercase fw-bold fs-smaller-2">
+                <span><@s.text name="admin.extension.title"/></span>
             </div>
-            <div class="col-lg-9 overflow-x-auto">
+
+            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                 ${extension.title}
-            </div>
-        </div>
+            </h1>
 
-        <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-            <div class="col-lg-3">
-                <strong><@s.text name="basic.description"/></strong>
-            </div>
-            <div class="col-lg-9 overflow-x-auto">
-                ${extension.description}
-            </div>
-        </div>
-
-        <#if extension.link?has_content>
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                <div class="col-lg-3">
-                    <strong><@s.text name="basic.link"/></strong>
-                </div>
-                <div class="col-lg-9 overflow-x-auto">
+            <#if extension.link?has_content>
+                <div class="text-smaller mb-2">
                     <a href="${extension.link}">${extension.link}</a>
                 </div>
-            </div>
-        </#if>
+            </#if>
 
-        <#if extension.issued??>
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
-                <div class="col-lg-3">
-                    <strong><@s.text name="basic.issued"/></strong>
+            <#if extension.issued??>
+                <div class="text-smaller text-gbif-primary">
+                    <span>
+                        <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${extension.issued?date?string.long}
+                    </span>
                 </div>
-                <div class="col-lg-9">${extension.issued?date?string.long}</div>
-            </div>
-        </#if>
+            </#if>
 
-        <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
+            <div class="mt-2">
+                <a href="extensions.do" class="btn btn-sm btn-outline-secondary top-button">
+                    <@s.text name="button.back"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="container">
+    <div class="my-3 p-3">
+        <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+            <@s.text name="basic.description"/>
+        </h5>
+
+        <div class="mb-3">
+            ${extension.description}
+        </div>
+
+        <div class="row pb-2 text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="extension.properties"/></strong>
             </div>
             <div class="col-lg-9">${extension.properties?size}</div>
         </div>
 
-        <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
+        <div class="row pb-2 text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="basic.name"/></strong>
             </div>
             <div class="col-lg-9">${extension.name}</div>
         </div>
 
-        <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
+        <div class="row pb-2 text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="basic.namespace"/></strong>
             </div>
             <div class="col-lg-9 overflow-x-auto">${extension.namespace}</div>
         </div>
 
-        <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
+        <div class="row pb-2 text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="extension.rowtype"/></strong>
             </div>
             <div class="col-lg-9 overflow-x-auto">${extension.rowType}</div>
         </div>
 
-        <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 border-bottom">
+        <div class="row pb-2 text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="basic.lastModified"/></strong>
             </div>
             <div class="col-lg-9">${extension.modified?datetime?string.long_short}</div>
         </div>
-
-        <div class="mx-md-4 mx-2 mt-2">
-            <a href="extensions.do" class="btn btn-outline-secondary">
-                <@s.text name="button.back"/>
-            </a>
-        </div>
-
     </div>
 
-    <div class="my-3 p-3 border rounded shadow-sm">
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
+    <div class="my-3 p-3">
+        <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
             <@s.text name="admin.extension.properties"/>
         </h5>
 
-        <#list extension.properties as p>
-            <div class="row mx-md-4 mx-2 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
-                <div class="col-lg-3">
-                    <a name="${p.qualname}"></a>
-                    <div class="title">
-                        <div class="head overflow-x-auto">
-                            <strong>${p.name}</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-9">
-                    <div class="definition">
-                        <div class="body">
-                            <#if p.description?has_content>
-                                <p class="overflow-x-auto">
-                                    ${p.description}
-                                </p>
-                            </#if>
-                            <#if p.link?has_content>
-                                <p class="overflow-x-auto">
-                                    <@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a>
-                                </p>
-                            </#if>
-                            <#if p.examples?has_content>
-                                <p class="overflow-x-auto">
-                                    <em><@s.text name="basic.examples"/></em>: ${p.examples}
-                                </p>
-                            </#if>
-                            <#if p.vocabulary??>
-                                <p class="overflow-x-auto">
-                                    <em><@s.text name="extension.vocabulary"/></em>:
-                                    <a href="vocabulary.do?id=${p.vocabulary.uriString}">${p.vocabulary.title}</a>
-                                </p>
-                            </#if>
-                            <div class="details table-responsive">
-                                <table>
-                                    <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.qname"/></th><td>${p.qualname}</td></tr>
-                                    <tr><th class="pe-md-4 pe-2"><@s.text name="basic.namespace"/></th><td>${p.namespace()}</td></tr>
-                                    <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.group"/></th><td>${p.group!}</td></tr>
-                                    <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.type"/></th><td>${p.type}</td></tr>
-                                    <tr><th class="pe-md-4 pe-2"><@s.text name="extension.prop.required"/></th><td>${p.required?string}</td></tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="mt-3 overflow-x-auto">
+            <div id="tableContainer" class="table-responsive text-smaller pt-2">
+                <table class="table table-sm dataTable no-footer"  role="grid">
+                    <thead>
+                    <tr role="row">
+                        <th><@s.text name='basic.name'/></th>
+                        <th><@s.text name='basic.description'/></th>
+                        <th><@s.text name='extension.prop.group'/></th>
+                        <th><@s.text name='extension.prop.type'/></th>
+                        <th><@s.text name='extension.prop.required'/></th>
+                        <th><@s.text name='extension.vocabulary'/></th>
+                        <th><@s.text name='basic.examples'/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <#list extension.properties as p>
+                        <tr>
+                            <td>
+                                <#if p.link?has_content>
+                                    <a href="${p.link}" style="color:#4e565f !important;" class="fst-italic" target="_blank"><b>${p.name}</b></a>
+                                <#else>
+                                    <span class="fst-italic"><b>${p.name}</b></span>
+                                </#if>
+                            </td>
+                            <td>
+                                <#if p.description?has_content>
+                                    <span class="fst-italic">${p.description}</span>
+                                <#else>
+                                    --
+                                </#if>
+                            </td>
+                            <td>${p.group!"--"}</td>
+                            <td><@dataBage p.type/></td>
+                            <td>${p.required?string}</td>
+                            <td>
+                                <#if p.vocabulary??>
+                                    <a href="vocabulary.do?id=${p.vocabulary.uriString}" target="_blank">${p.vocabulary.title}</a>
+                                <#else>
+                                    --
+                                </#if>
+                            </td>
+                            <td>
+                                <#if p.examples?has_content>
+                                    ${p.examples}
+                                </#if>
+                            </td>
+                        </tr>
+                    </#list>
+                    </tbody>
+                </table>
             </div>
-        </#list>
+        </div>
     </div>
 </main>
 
