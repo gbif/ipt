@@ -4,13 +4,26 @@
 <#assign currentMenu = "health"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
+<div class="container-fluid bg-body border-bottom">
+  <div class="container my-3 p-3">
+    <div class="text-center">
+      <div class="text-center text-uppercase fw-bold fs-smaller-2">
+        <span>IPT</span>
+      </div>
+
+      <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+        <@s.text name='portal.health.title'/>
+      </h1>
+
+      <#assign aDateTime = .now>
+      <div class="text-smaller text-gbif-primary mb-2">
+        ${aDateTime?date?string.long}
+      </div>
+    </div>
+  </div>
+</div>
+
 <main class="container">
-
-  <div class="my-3 p-3 border rounded shadow-sm">
-    <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-      <@s.text name="portal.health.title"/>
-    </h5>
-
     <div class="row g-3 mt-1 mx-md-3 mx-1">
       <div class="col-lg-6">
         <div class="card">
@@ -227,8 +240,6 @@
         </div>
       </div>
     </div>
-  </div>
-
 </main>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

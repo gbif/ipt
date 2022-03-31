@@ -72,17 +72,38 @@
 
     </script>
 
-    <main class="container">
-        <div class="my-3 p-3 border rounded shadow-sm">
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name='manage.autopublish.title'/>
-            </h5>
+        <div class="container my-3 p-3">
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <@s.text name='basic.resource'/>
+            </div>
 
+            <div class="text-center">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <@s.text name="manage.autopublish.title"/>
+                </h1>
+
+                <div class="text-smaller">
+                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                </div>
+
+                <div class="mt-2">
+                    <@s.submit form="autopublish" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit form="autopublish" cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel"  key="button.cancel"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="my-3 p-3">
             <p class="mx-md-4 mx-2"><@s.text name='manage.autopublish.intro'/></p>
 
-            <form class="topForm" action="auto-publish.do" method="post">
+            <form id="autopublish" class="topForm" action="auto-publish.do" method="post">
                 <#if resource.isDeprecatedAutoPublishingConfiguration()>
                     <ul class="fielderror">
                         <li><span><@s.text name='manage.overview.autopublish.deprecated.warning.description'/></span></li>
@@ -258,14 +279,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row mt-3">
-                    <div class="col-12 mx-md-3 px-3">
-                        <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                        <@s.submit cssClass="btn btn-outline-secondary" name="cancel"  key="button.cancel"/>
-                    </div>
-                </div>
-
             </form>
 
         </div>
