@@ -368,7 +368,7 @@
 
         <div class="container my-3 p-3">
             <div class="text-center text-uppercase fw-bold fs-smaller-2">
-                <span><@s.text name="resource"/></span>
+                <span><@s.text name="basic.resource"/></span>
             </div>
 
             <div class="text-center">

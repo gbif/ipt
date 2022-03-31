@@ -16,7 +16,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<@s.form cssClass="topForm mx-md-4 mx-2" action="publishAll.do" method="post" namespace="" includeContext="false">
+<@s.form cssClass="topForm" action="publishAll.do" method="post" namespace="" includeContext="false">
     <div class="container-fluid bg-body border-bottom">
         <div class="container">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
