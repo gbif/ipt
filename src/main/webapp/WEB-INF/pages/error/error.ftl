@@ -3,12 +3,26 @@
 <title>[@s.text name="error.header.title"/]</title>
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
 
-<main class="container">
-    <div class="my-3 p-3 border rounded shadow-sm">
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-            [@s.text name="error.title"/]
-        </h5>
+<div class="container-fluid bg-body border-bottom">
+    <div class="container">
+        [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
+    </div>
 
+    <div class="container my-3 p-3">
+        <div class="text-center text-uppercase fw-bold fs-smaller-2">
+            [@s.text name="basic.error"/]
+        </div>
+
+        <div class="text-center">
+            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                [@s.text name="error.title"/]
+            </h1>
+        </div>
+    </div>
+</div>
+
+<main class="container">
+    <div class="my-3 p-3">
         <p class="mx-md-4 mx-2">
             [@s.text name="error.body"/]
         </p>
@@ -32,8 +46,8 @@
         </p>
     </div>
 
-    <div class="my-3 p-3 border rounded shadow-sm">
-        <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
+    <div class="my-3 p-3">
+        <h5 class="pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header-2 fw-400">
             [@s.text name="error.details.title"/]
         </h5>
 
