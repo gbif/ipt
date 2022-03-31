@@ -44,21 +44,36 @@
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/manage/translation_buttons.ftl"/>
 
+<div class="container-fluid bg-body border-bottom">
+    <div class="container">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
+
+    <div class="container my-3 p-3">
+        <div class="text-center text-uppercase fw-bold fs-smaller-2">
+            <@s.text name="basic.resource"/>
+        </div>
+
+        <div class="text-center">
+            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <@s.text name="manage.translation.title"/>
+            </h1>
+        </div>
+
+        <div class="mt-2 text-center">
+            <@buttons/>
+        </div>
+    </div>
+</div>
+
 <main class="container">
     <form class="topForm" action="translation.do" method="post">
-        <div class="my-3 p-3 border rounded shadow-sm">
-
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name="manage.translation.title"/>
-            </h5>
-
+        <div class="my-3 p-3">
             <p class="mx-md-4 mx-2"><@s.text name="manage.translation.intro"/></p>
         </div>
 
-        <div class="my-3 p-3 border rounded shadow-sm">
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400">
+        <div class="my-3 p-3">
+            <h5 class="pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="manage.translation.property"/> <em>${property.name}</em>
             </h5>
 
@@ -77,18 +92,15 @@
                     &quot;${property.vocabulary.description!}&quot;
                 </p>
             </#if>
-
-            <!-- buttons loaded from macro -->
-            <@buttons/>
         </div>
 
-        <div class="my-3 p-3 border rounded shadow-sm">
+        <div class="my-3 p-3">
             <input type="hidden" name="r" value="${resource.shortname}"/>
             <input type="hidden" name="rowtype" value="${property.extension.rowType}"/>
             <input type="hidden" name="mid" value="${mid}"/>
             <input type="hidden" name="term" value="${property.qualname}"/>
 
-            <div class="mx-md-4 mx-2 table-responsive">
+            <div class="mx-md-4 mx-2 table-responsive text-smaller">
                 <table id="translation" class="simple table">
                 <colgroup>
                     <col width="400">
@@ -120,15 +132,12 @@
                             </td>
                         </#if>
                         <td>
-                            <input type="text" class="form-control" name="tmap['${k}']" value="${tmap.get(k)!}"/>
+                            <input type="text" class="form-control form-control-sm" name="tmap['${k}']" value="${tmap.get(k)!}"/>
                         </td>
                     </tr>
                 </#list>
             </table>
             </div>
-
-            <!-- buttons loaded from macro -->
-            <@buttons />
         </div>
     </form>
 
