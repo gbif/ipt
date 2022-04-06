@@ -35,6 +35,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.metadata.eml.Agent;
@@ -170,6 +171,7 @@ public class OverviewActionOtherIT {
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
+        mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataSchemaManager.class));
@@ -243,6 +245,7 @@ public class OverviewActionOtherIT {
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
+        mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataSchemaManager.class));
@@ -315,6 +318,7 @@ public class OverviewActionOtherIT {
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
+        mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataSchemaManager.class));
@@ -384,6 +388,7 @@ public class OverviewActionOtherIT {
         mock(UserAccountManager.class),
         mock(ExtensionManager.class),
         mock(GenerateDwcaFactory.class),
+        mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataSchemaManager.class));

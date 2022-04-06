@@ -35,6 +35,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.metadata.eml.Agent;
@@ -138,9 +139,17 @@ public class OverviewActionIT {
 
     // mock action for DataCite
     OverviewAction actionDataCite =
-        new OverviewAction(mock(SimpleTextProvider.class), mockAppConfig, mockRegistrationManagerDataCite,
-            mock(ResourceManager.class), mock(UserAccountManager.class), mock(ExtensionManager.class),
-            mock(GenerateDwcaFactory.class), mock(VocabulariesManager.class), mock(RegistryManager.class),
+        new OverviewAction(
+            mock(SimpleTextProvider.class),
+            mockAppConfig,
+            mockRegistrationManagerDataCite,
+            mock(ResourceManager.class),
+            mock(UserAccountManager.class),
+            mock(ExtensionManager.class),
+            mock(GenerateDwcaFactory.class),
+            mock(GenerateDataPackageFactory.class),
+            mock(VocabulariesManager.class),
+            mock(RegistryManager.class),
             mock(DataSchemaManager.class));
 
     return Stream.of(Arguments.of(actionDataCite, DOIRegistrationAgency.DATACITE));
