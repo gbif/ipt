@@ -146,6 +146,10 @@
       <id>gbif-thirdparty</id>
       <url>https://repository.gbif.org/content/repositories/thirdparty</url>
     </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
 
   <build>
@@ -489,6 +493,13 @@
       <artifactId>ojdbc8</artifactId>
       <version>${ojdbc.version}</version>
       <scope>runtime</scope>
+    </dependency>
+
+    <!-- Frictionless Data -->
+    <dependency>
+      <groupId>io.frictionlessdata</groupId>
+      <artifactId>datapackage-java</artifactId>
+      <version>0.1.7-gbif-SNAPSHOT</version>
     </dependency>
 
     <!-- excel parsing -->

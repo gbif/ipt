@@ -117,6 +117,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Set<Source> sources = new HashSet<>();
   private List<ExtensionMapping> mappings = new ArrayList<>();
   private List<DataSchemaMapping> dataSchemaMappings = new ArrayList<>();
+  private String schemaIdentifier;
 
   private String changeSummary;
   private List<VersionHistory> versionHistory = new ArrayList<>();
@@ -215,7 +216,7 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public Integer addDataSchemaMapping(@Nullable DataSchemaMapping mapping) {
     if (mapping != null && mapping.getDataSchema() != null) {
-      Integer index = getDataSchemaMappings(mapping.getDataSchema().getIdentifier()).size();
+      Integer index = getDataSchemaMappings().size();
       this.dataSchemaMappings.add(mapping);
       return index;
     }
@@ -379,10 +380,11 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   @Nullable
   public String getSchemaIdentifier() {
-    if (!dataSchemaMappings.isEmpty()) {
-      return dataSchemaMappings.get(0).getDataSchema().getIdentifier();
-    }
-    return null;
+    return schemaIdentifier;
+  }
+
+  public void setSchemaIdentifier(String schemaIdentifier) {
+    this.schemaIdentifier = schemaIdentifier;
   }
 
   /**
@@ -612,9 +614,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     return null;
   }
 
-  public DataSchemaMapping getDataSchemaMapping(String identifier, Integer index) {
-    if (identifier != null && index != null) {
-      List<DataSchemaMapping> maps = getDataSchemaMappings(identifier);
+  public DataSchemaMapping getDataSchemaMapping(Integer index) {
+    if (index != null) {
+      List<DataSchemaMapping> maps = getDataSchemaMappings();
       if (maps.size() >= index) {
         return maps.get(index);
       }
@@ -648,24 +650,22 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
-   * Get the list of data schema mappings for the requested data schema identifier.
+   * Get the list of data schema mappings for its data schema identifier.
    * The order of mappings in the list is guaranteed to be stable and the same as the underlying original mappings
    * list.
    *
-   * @param identifier identifying the data schema
-   *
    * @return the list of mappings for the requested data schema identifier
    */
-  public List<DataSchemaMapping> getDataSchemaMappings(String identifier) {
+  public List<DataSchemaMapping> getDataSchemaMappings() {
     List<DataSchemaMapping> maps = new ArrayList<>();
 
     if (dataSchemaMappings == null) {
       dataSchemaMappings = new ArrayList<>();
     }
 
-    if (identifier != null) {
+    if (schemaIdentifier != null) {
       for (DataSchemaMapping m : dataSchemaMappings) {
-        if (identifier.equals(m.getDataSchema().getIdentifier())) {
+        if (schemaIdentifier.equals(m.getDataSchema().getIdentifier())) {
           maps.add(m);
         }
       }
@@ -856,6 +856,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     for (ExtensionMapping cm : getCoreMappings()) {
       // test each core mapping if there is at least one field mapped
       if (!cm.getFields().isEmpty()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean hasSchemaMappedData() {
+    for (DataSchemaMapping dsm : getDataSchemaMappings()) {
+      if (!dsm.getFields().isEmpty()) {
         return true;
       }
     }

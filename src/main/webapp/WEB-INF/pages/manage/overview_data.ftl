@@ -175,7 +175,7 @@
                         <div class="details">
                             <div class="table-responsive">
                                 <table class="table table-sm table-borderless text-smaller">
-                                    <#list resource.getDataSchemaMappings(resource.schemaIdentifier) as m>
+                                    <#list resource.getDataSchemaMappings() as m>
                                         <tr <#if m_index==0>class="mapping_row"</#if>>
                                             <th class="col-4"><#if m_index==0>${m.dataSchema.title}</#if></th>
                                             <td>${m.fields?size} <@s.text name='manage.overview.mappings.fields.mapped'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>

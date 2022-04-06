@@ -50,6 +50,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
@@ -90,6 +91,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
@@ -138,6 +140,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
+  private GenerateDataPackageFactory dataPackageFactory;
   private List<String> columns;
   private List<String[]> peek;
   private Integer mid;
@@ -152,13 +155,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   @Inject
   public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
     ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    GenerateDwcaFactory dwcaFactory, VocabulariesManager vocabManager, RegistryManager registryManager,
-    DataSchemaManager schemaManager) {
+    GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory, VocabulariesManager vocabManager,
+    RegistryManager registryManager, DataSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.dwcaFactory = dwcaFactory;
+    this.dataPackageFactory = dataPackageFactory;
     this.doiAccount = registrationManager.findPrimaryDoiAgencyAccount();
     this.vocabManager = vocabManager;
     this.registryManager = registryManager;
@@ -1279,10 +1283,16 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           return PUBLISHING;
         } else {
           // show action warning there is no source data and mapping, as long as resource isn't metadata-only
-          if (resource.getCoreType() != null &&
-              !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
+          if (resource.getCoreType() != null
+              && resource.getSchemaIdentifier() == null // not a data schema base resource
+              && !resource.getCoreType().equalsIgnoreCase(Constants.DATASET_TYPE_METADATA_IDENTIFIER)) {
             addActionWarning(getText("manage.overview.data.missing"));
           }
+
+          if (resource.getSchemaIdentifier() != null && CollectionUtils.isEmpty(resource.getDataSchemaMappings())) {
+            addActionWarning(getText("manage.overview.data.missing"));
+          }
+
           missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
           metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
           mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
@@ -1577,49 +1587,53 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       rowType = TERM_FACTORY.findTerm(id);
     }
 
-    if (rowType != null && mid != null) {
-      ExtensionMapping mapping = resource.getMappings(id).get(mid);
-      if (mapping != null) {
-        try {
-          GenerateDwca worker = dwcaFactory.create(resource, this);
-          worker.report();
-          File tmpDir = FileUtils.createTempDir();
-          worker.setDwcaFolder(tmpDir);
-          Archive archive = new Archive();
-          worker.setArchive(archive);
-          // create the data file inside the temp directory
-          List<ExtensionMapping> mappings = new ArrayList<>();
-          mappings.add(mapping);
-          worker.addDataFile(mappings, PEEK_ROWS);
-          // preview the data file, by writing header and rows
-          File[] files = tmpDir.listFiles();
-          if (files != null && files.length > 0) {
-            // file either represents a core file or an extension
-            ArchiveFile core = archive.getCore();
-            ArchiveFile ext = archive.getExtension(rowType);
-            String delimiter = (core == null) ? ext.getFieldsTerminatedBy() : core.getFieldsTerminatedBy();
-            Character quotes = (core == null) ? ext.getFieldsEnclosedBy() : core.getFieldsEnclosedBy();
-            int headerRows = (core == null) ? ext.getIgnoreHeaderLines() : core.getIgnoreHeaderLines();
+    if (resource.getSchemaIdentifier() != null) {
+      // TODO: 06/04/2022 implement for schema resources
+    } else {
+      if (rowType != null && mid != null) {
+        ExtensionMapping mapping = resource.getMappings(id).get(mid);
+        if (mapping != null) {
+          try {
+            GenerateDwca worker = dwcaFactory.create(resource, this);
+            worker.report();
+            File tmpDir = FileUtils.createTempDir();
+            worker.setDwcaFolder(tmpDir);
+            Archive archive = new Archive();
+            worker.setArchive(archive);
+            // create the data file inside the temp directory
+            List<ExtensionMapping> mappings = new ArrayList<>();
+            mappings.add(mapping);
+            worker.addDataFile(mappings, PEEK_ROWS);
+            // preview the data file, by writing header and rows
+            File[] files = tmpDir.listFiles();
+            if (files != null && files.length > 0) {
+              // file either represents a core file or an extension
+              ArchiveFile core = archive.getCore();
+              ArchiveFile ext = archive.getExtension(rowType);
+              String delimiter = (core == null) ? ext.getFieldsTerminatedBy() : core.getFieldsTerminatedBy();
+              Character quotes = (core == null) ? ext.getFieldsEnclosedBy() : core.getFieldsEnclosedBy();
+              int headerRows = (core == null) ? ext.getIgnoreHeaderLines() : core.getIgnoreHeaderLines();
 
-            CSVReader reader = CSVReaderFactory.build(files[0], CHARACTER_ENCODING, delimiter, quotes, headerRows);
-            while (reader.hasNext()) {
-              peek.add(reader.next());
-              if (columns.isEmpty()) {
-                columns = Arrays.asList(reader.header);
+              CSVReader reader = CSVReaderFactory.build(files[0], CHARACTER_ENCODING, delimiter, quotes, headerRows);
+              while (reader.hasNext()) {
+                peek.add(reader.next());
+                if (columns.isEmpty()) {
+                  columns = Arrays.asList(reader.header);
+                }
               }
+            } else {
+              messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.not.found")));
             }
-          } else {
-            messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.not.found")));
+          } catch (Exception e) {
+            exception = e;
+            messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.error", new String[]{e.getMessage()})));
           }
-        } catch (Exception e) {
-          exception = e;
-          messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.error", new String[] {e.getMessage()})));
+        } else {
+          messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[]{id, String.valueOf(mid)})));
         }
       } else {
-        messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[] {id, String.valueOf(mid)})));
+        messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
       }
-    } else {
-      messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
     }
 
     // add messages to those collected while generating preview

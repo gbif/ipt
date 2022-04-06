@@ -60,7 +60,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private DataSchemaMapping mapping;
   private List<String> columns;
   private List<String[]> peek;
-  private Map<String, List<DataSchemaFieldMapping>> fields;
+  private Map<String, TreeSet<DataSchemaFieldMapping>> fields;
   private Map<String, Map<String, Integer>> fieldsSchemaIndices;
 
   @Inject
@@ -79,26 +79,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     }
 
     // a new mapping?
-    if (resource.getDataSchemaMapping(id, mid) == null) {
+    if (resource.getDataSchemaMapping(mid) == null) {
       mid = resource.addDataSchemaMapping(mapping);
     } else {
       // save field mappings
-      Map<String, TreeSet<DataSchemaFieldMapping>> mappedFields = new TreeMap<>();
-
-      for (String key : fields.keySet()) {
-        List<DataSchemaFieldMapping> mps = fields.get(key);
-        for (DataSchemaFieldMapping f : mps) {
-          int index = f.getIndex() != null ? f.getIndex() : -9999;
-          TreeSet<DataSchemaFieldMapping> mappedFieldsList = new TreeSet<>();
-          if (index >= 0 || StringUtils.trimToNull(f.getDefaultValue()) != null) {
-            mappedFieldsList.add(f);
-          }
-          mappedFields.put(key, mappedFieldsList);
-        }
-      }
-
-      // back to mapping object
-      mapping.setFields(mappedFields);
+      mapping.setFields(fields);
     }
     // update last modified dates
     Date lastModified = new Date();
@@ -158,7 +143,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
           defaultResult = "error";
         }
       } else {
-        List<DataSchemaMapping> maps = resource.getDataSchemaMappings(id);
+        List<DataSchemaMapping> maps = resource.getDataSchemaMappings();
         mapping = maps.get(mid);
       }
     } else {
@@ -190,7 +175,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
       // prepare fields
       for (DataSubschema dataSubschema : mapping.getDataSchema().getSubSchemas()) {
-        List<DataSchemaFieldMapping> fieldMappings = new ArrayList<>();
+        TreeSet<DataSchemaFieldMapping> fieldMappings = new TreeSet<>();
         Map<String, Integer> indicesMap = new HashMap<>();
         int index = 0;
         for (DataSchemaField field : dataSubschema.getFields()) {
@@ -328,11 +313,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return mid;
   }
 
-  public Map<String, List<DataSchemaFieldMapping>> getFields() {
+  public Map<String, TreeSet<DataSchemaFieldMapping>> getFields() {
     return fields;
   }
 
-  public void setFields(Map<String, List<DataSchemaFieldMapping>> fields) {
+  public void setFields(Map<String, TreeSet<DataSchemaFieldMapping>> fields) {
     this.fields = fields;
   }
 

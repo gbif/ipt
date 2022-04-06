@@ -77,4 +77,14 @@ public interface DataSchemaManager {
    * Check whether schema is installed
    */
   boolean isSchemaInstalled(String nameOrIdentifier);
+
+  /**
+   * Check whether identifier/name is schema identifier/name or not
+   */
+  boolean isSchemaType(String nameOrIdentifier);
+
+  /**
+   * Returns schema identifier by schema name
+   */
+  String getSchemaIdentifier(String schemaName);
 }

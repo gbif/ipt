@@ -278,6 +278,36 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
 
     return result;
   }
+  @Override
+  public boolean isSchemaType(String nameOrIdentifier) {
+    boolean result = false;
+
+    List<DataSchema> dataSchemas = registryManager.getDataSchemas();
+    for (DataSchema dataSchema : dataSchemas) {
+      if (dataSchema.getIdentifier().equals(nameOrIdentifier)
+          || dataSchema.getName().equals(nameOrIdentifier)) {
+        result = true;
+        break;
+      }
+    }
+
+    return result;
+  }
+
+  @Override
+  public String getSchemaIdentifier(String schemaName) {
+    String result = null;
+
+    List<DataSchema> dataSchemas = registryManager.getDataSchemas();
+    for (DataSchema dataSchema : dataSchemas) {
+      if (dataSchema.getName().equals(schemaName)) {
+        result = dataSchema.getIdentifier();
+        break;
+      }
+    }
+
+    return result;
+  }
 
   /**
    * Download a data schema into temporary file and return it.
