@@ -44,17 +44,17 @@
         <h5 class="text-gbif-header-2 fw-400">
             <@s.text name='manage.report.logMessage'/>
         </h5>
-        <ul class="simple">
+        <ul class="list-unstyled">
             <#list report.messages as msg>
-                <li class="${msg.level}">${msg.message} <span class="small">${msg.date?time?string}</span></li>
+                <li class="${msg.level}"><span class="small">${msg.date?time?string}</span> ${msg.message}</li>
             </#list>
         </ul>
 
         <#if cfg.debug() && report.hasException()>
             <br/>
-            <h6 class="text-gbif-header">
+            <h5 class="text-gbif-header-2 fw-400">
                 <@s.text name='manage.report.exception'/>
-            </h6>
+            </h5>
             <ul class="simple">
                 <#list report.exceptionStacktrace as msg>
                     <li>${msg}</li>
