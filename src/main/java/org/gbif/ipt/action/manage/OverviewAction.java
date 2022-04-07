@@ -127,7 +127,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean metadataModifiedSinceLastPublication;
   private boolean mappingsModifiedSinceLastPublication;
   private boolean sourcesModifiedSinceLastPublication;
-  private boolean dataSchemaBased = false;
   private Map<String, String> autoPublishFrequencies;
   private StatusReport report;
   private Date now;
@@ -1157,9 +1156,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         }
       }
 
-      // check resource is data schema based
-      dataSchemaBased = schemaManager.isSchemaInstalled(resource.getCoreType());
-
       // check EML
       missingMetadata = !emlValidator.isValid(resource, null);
       // check resource has been assigned a valid publishing organisation
@@ -1693,6 +1689,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   public boolean isDataSchemaBased() {
-    return dataSchemaBased;
+    return resource.getSchemaIdentifier() != null;
   }
 }

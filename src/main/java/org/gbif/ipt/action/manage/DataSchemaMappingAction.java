@@ -32,12 +32,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
@@ -54,13 +54,12 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private final DataSchemaManager schemaManager;
   private final SourceManager sourceManager;
 
-  private String schemaName;
   private DataSchema dataSchema;
   private Integer mid;
   private DataSchemaMapping mapping;
   private List<String> columns;
   private List<String[]> peek;
-  private Map<String, TreeSet<DataSchemaFieldMapping>> fields;
+  private Map<String, LinkedHashSet<DataSchemaFieldMapping>> fields;
   private Map<String, Map<String, Integer>> fieldsSchemaIndices;
 
   @Inject
@@ -75,7 +74,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   @Override
   public String save() throws IOException {
     if (dataSchema == null) {
-      dataSchema = schemaManager.get(schemaName);
+      dataSchema = schemaManager.get(id);
     }
 
     // a new mapping?
@@ -154,6 +153,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     if (mapping != null && mapping.getDataSchema() != null) {
       dataSchema = mapping.getDataSchema();
 
+      // reload schema if sub-schemas are empty
+      if (dataSchema == null || CollectionUtils.isEmpty(dataSchema.getSubSchemas())) {
+        dataSchema = schemaManager.get(id);
+      }
+
       // is source assigned yet?
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
@@ -175,7 +179,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
       // prepare fields
       for (DataSubschema dataSubschema : mapping.getDataSchema().getSubSchemas()) {
-        TreeSet<DataSchemaFieldMapping> fieldMappings = new TreeSet<>();
+        LinkedHashSet<DataSchemaFieldMapping> fieldMappings = new LinkedHashSet<>();
         Map<String, Integer> indicesMap = new HashMap<>();
         int index = 0;
         for (DataSchemaField field : dataSubschema.getFields()) {
@@ -188,9 +192,9 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       }
 
       // do automapping if no fields are found
-      Collection<TreeSet<DataSchemaFieldMapping>> fieldsBySchema = mapping.getFields().values();
+      Collection<LinkedHashSet<DataSchemaFieldMapping>> fieldsBySchema = mapping.getFields().values();
       boolean mappingEmpty = fieldsBySchema.isEmpty();
-      for (TreeSet<DataSchemaFieldMapping> schemaFields : fieldsBySchema) {
+      for (LinkedHashSet<DataSchemaFieldMapping> schemaFields : fieldsBySchema) {
         if (schemaFields.isEmpty()) {
           mappingEmpty = true;
           break;
@@ -289,14 +293,6 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  public String getSchemaName() {
-    return schemaName;
-  }
-
-  public void setSchemaName(String schemaName) {
-    this.schemaName = schemaName;
-  }
-
   public DataSchema getDataSchema() {
     return dataSchema;
   }
@@ -313,11 +309,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return mid;
   }
 
-  public Map<String, TreeSet<DataSchemaFieldMapping>> getFields() {
+  public Map<String, LinkedHashSet<DataSchemaFieldMapping>> getFields() {
     return fields;
   }
 
-  public void setFields(Map<String, TreeSet<DataSchemaFieldMapping>> fields) {
+  public void setFields(Map<String, LinkedHashSet<DataSchemaFieldMapping>> fields) {
     this.fields = fields;
   }
 

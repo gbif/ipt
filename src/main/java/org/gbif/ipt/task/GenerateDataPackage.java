@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.task;
 
-import org.apache.commons.io.FileUtils;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataSchema;
@@ -36,16 +35,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
@@ -55,6 +55,8 @@ import com.google.inject.assistedinject.Assisted;
 import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
+import io.frictionlessdata.tableschema.exception.ConstraintsException;
+import io.frictionlessdata.tableschema.schema.Schema;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -73,6 +75,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private Package dataPackage;
   private int currRecords = 0;
   private int currRecordsSkipped = 0;
+  private String currSchema;
   private String currSubschema;
 
   @Inject
@@ -95,7 +98,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       // create a temp dir to copy all dwca files to
       dataPackageFolder = dataDir.tmpDir();
-      dataPackage = new Package(Collections.emptyList());
 
       // create data files
       createDataFiles();
@@ -130,7 +132,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         writeFailureToPublicationLog(e);
       } else {
         log.error(
-            "Exception occurred trying to generate Darwin Core Archive for resource " + resource.getTitleAndShortname()
+            "Exception occurred trying to generate data package for resource " + resource.getTitleAndShortname()
                 + ": " + e.getMessage(), e);
       }
 
@@ -297,6 +299,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
     List<DataSchemaMapping> allMappings = resource.getDataSchemaMappings();
     DataSchema dataSchema = resource.getDataSchemaMappings().get(0).getDataSchema();
+    currSchema = dataSchema.getName();
 
     for (DataSubschema subSchema : dataSchema.getSubSchemas()) {
       report();
@@ -330,7 +333,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // update reporting
     currRecords = 0;
     currRecordsSkipped = 0;
-    currSubschema = subschema.getTitle();
+    currSubschema = subschema.getName();
 
     List<DataSchemaField> fields = subschema.getFields();
 
@@ -353,7 +356,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       for (DataSchemaMapping dataSchemaMapping : allMappings) {
         // TODO: 05/04/2022 check not null
-        TreeSet<DataSchemaFieldMapping> subschemaFieldMappings = dataSchemaMapping.getFields().get(subschema.getName());
+        LinkedHashSet<DataSchemaFieldMapping> subschemaFieldMappings = dataSchemaMapping.getFields().get(subschema.getName());
 
         // write header line 1 time only to file
         if (!headerWritten) {
@@ -372,6 +375,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     // create resource from file
+    @SuppressWarnings({"rawtypes", "unchecked"})
     io.frictionlessdata.datapackage.resource.Resource packageResource =
         new FilebasedResource(
             subschema.getName(),
@@ -379,14 +383,26 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             dataPackageFolder);
     packageResource.setProfile(Profile.PROFILE_TABULAR_DATA_RESOURCE);
 
-    // TODO: 06/04/2022 add schema!
     // set schema
-//    Schema schema = Schema.fromJson(
-//        new File("/Users/rvl320/IdeaProjects/ipt/src/main/resources/fixtures", "/schema/deployments.json"), true);
-//    packageResource.setSchema(schema);
+    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(resource.getSchemaIdentifier() + "_" + currSubschema, ".json");
+    File schemaFile = dataDir.configFile(".dataSchemas" + "/" + currSchema + "/" + filename);
+
+    try {
+      Schema schema = Schema.fromJson(schemaFile, true);
+      packageResource.setSchema(schema);
+    } catch (Exception e) {
+      log.error("Fatal Package Generator Error encountered while adding schema data", e);
+      // set last error report!
+      setState(e);
+      throw new GeneratorException("Error adding schema file", e);
+    }
 
     // add resource to package
-    dataPackage.addResource(packageResource);
+    if (dataPackage == null) {
+      dataPackage = new Package(Collections.singleton(packageResource));
+    } else {
+      dataPackage.addResource(packageResource);
+    }
 
     // final reporting
     addMessage(Level.INFO, "Data file written for " + currSubschema + " with " + currRecords + " records and "
@@ -409,7 +425,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, DataSchemaMapping schemaMapping,
-                        TreeSet<DataSchemaFieldMapping> subschemaFieldMappings, int dataFileRowSize)
+                        LinkedHashSet<DataSchemaFieldMapping> subschemaFieldMappings, int dataFileRowSize)
       throws GeneratorException, InterruptedException {
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
@@ -529,7 +545,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    *
    * @return the comma delimited String, {@code null} if provided array only contained null values
    */
-  protected String commaRow(String[] columns, TreeSet<DataSchemaFieldMapping> subschemaFieldMappings) {
+  protected String commaRow(String[] columns, LinkedHashSet<DataSchemaFieldMapping> subschemaFieldMappings) {
     Objects.requireNonNull(columns);
     StringBuilder sb = new StringBuilder();
     Iterator<DataSchemaFieldMapping> iter = subschemaFieldMappings.iterator();

@@ -14,6 +14,8 @@
 package org.gbif.ipt.model;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.StringJoiner;
 
 public class DataSchemaFieldMapping implements Serializable, Comparable<DataSchemaFieldMapping> {
 
@@ -21,7 +23,6 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
 
   private Integer index;
   private String defaultValue;
-  private String namespace;
   private DataSchemaField field;
 
   public Integer getIndex() {
@@ -40,14 +41,6 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
     this.defaultValue = defaultValue;
   }
 
-  public String getNamespace() {
-    return namespace;
-  }
-
-  public void setNamespace(String namespace) {
-    this.namespace = namespace;
-  }
-
   public DataSchemaField getField() {
     return field;
   }
@@ -56,10 +49,8 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
     this.field = field;
   }
 
-  // TODO: 24/03/2022 it doesn't really make sense to have namespace here
   /**
-   * Compares two DataSchemaFieldMapping lexicographically based on their normalized names,
-   * e.g. "col-dp/name/scientificName"
+   * Compares two DataSchemaFieldMapping lexicographically based on their names,
    *
    * @param fieldMapping DataSchemaFieldMapping
    *
@@ -67,6 +58,28 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
    */
   @Override
   public int compareTo(DataSchemaFieldMapping fieldMapping) {
-    return field.qualifiedName(namespace).compareTo(fieldMapping.getField().qualifiedName(namespace));
+    return field.getName().compareTo(fieldMapping.getField().getName());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DataSchemaFieldMapping that = (DataSchemaFieldMapping) o;
+    return Objects.equals(index, that.index) && Objects.equals(defaultValue, that.defaultValue) && Objects.equals(field, that.field);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(index, defaultValue, field);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", DataSchemaFieldMapping.class.getSimpleName() + "[", "]")
+        .add("index=" + index)
+        .add("defaultValue='" + defaultValue + "'")
+        .add("field='" + field + "'")
+        .toString();
   }
 }

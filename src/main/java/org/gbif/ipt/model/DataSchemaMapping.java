@@ -16,11 +16,11 @@ package org.gbif.ipt.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class DataSchemaMapping implements Serializable {
 
@@ -29,7 +29,7 @@ public class DataSchemaMapping implements Serializable {
   private Source source;
   private DataSchema dataSchema;
   // TreeSet will ensure set of PropertyMappings remain ordered
-  private Map<String, TreeSet<DataSchemaFieldMapping>> fields = new TreeMap<>();
+  private Map<String, LinkedHashSet<DataSchemaFieldMapping>> fields = new TreeMap<>();
   private Date lastModified;
 
   /**
@@ -90,11 +90,11 @@ public class DataSchemaMapping implements Serializable {
     this.dataSchema = dataSchema;
   }
 
-  public Map<String, TreeSet<DataSchemaFieldMapping>> getFields() {
+  public Map<String, LinkedHashSet<DataSchemaFieldMapping>> getFields() {
     return fields;
   }
 
-  public void setFields(Map<String, TreeSet<DataSchemaFieldMapping>> fields) {
+  public void setFields(Map<String, LinkedHashSet<DataSchemaFieldMapping>> fields) {
     this.fields = fields;
   }
 

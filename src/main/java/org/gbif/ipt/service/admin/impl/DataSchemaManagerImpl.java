@@ -255,6 +255,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
         }
       } catch (InvalidConfigException e) {
         // TODO: 14/03/2022 delete corrupted files
+        LOG.error("Failed to load data schemas", e);
       }
     }
     return counter;
