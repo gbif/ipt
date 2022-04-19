@@ -30,12 +30,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -356,7 +356,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       for (DataSchemaMapping dataSchemaMapping : allMappings) {
         // TODO: 05/04/2022 check not null
-        LinkedHashSet<DataSchemaFieldMapping> subschemaFieldMappings = dataSchemaMapping.getFields().get(subschema.getName());
+        ArrayList<DataSchemaFieldMapping> subschemaFieldMappings = dataSchemaMapping.getFields().get(subschema.getName());
 
         // write header line 1 time only to file
         if (!headerWritten) {
@@ -425,7 +425,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, DataSchemaMapping schemaMapping,
-                        LinkedHashSet<DataSchemaFieldMapping> subschemaFieldMappings, int dataFileRowSize)
+                        ArrayList<DataSchemaFieldMapping> subschemaFieldMappings, int dataFileRowSize)
       throws GeneratorException, InterruptedException {
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
@@ -545,7 +545,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    *
    * @return the comma delimited String, {@code null} if provided array only contained null values
    */
-  protected String commaRow(String[] columns, LinkedHashSet<DataSchemaFieldMapping> subschemaFieldMappings) {
+  protected String commaRow(String[] columns, ArrayList<DataSchemaFieldMapping> subschemaFieldMappings) {
     Objects.requireNonNull(columns);
     StringBuilder sb = new StringBuilder();
     Iterator<DataSchemaFieldMapping> iter = subschemaFieldMappings.iterator();

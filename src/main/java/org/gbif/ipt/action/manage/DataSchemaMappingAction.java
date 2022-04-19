@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -59,7 +59,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
   private DataSchemaMapping mapping;
   private List<String> columns;
   private List<String[]> peek;
-  private Map<String, LinkedHashSet<DataSchemaFieldMapping>> fields;
+  private Map<String, ArrayList<DataSchemaFieldMapping>> fields;
   private Map<String, Map<String, Integer>> fieldsSchemaIndices;
 
   @Inject
@@ -171,7 +171,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
         }
       }
 
-      fields = new HashMap<>();
+      fields = new LinkedHashMap<>();
       fieldsSchemaIndices = new HashMap<>();
 
       // inspect source
@@ -179,7 +179,7 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
 
       // prepare fields
       for (DataSubschema dataSubschema : mapping.getDataSchema().getSubSchemas()) {
-        LinkedHashSet<DataSchemaFieldMapping> fieldMappings = new LinkedHashSet<>();
+        ArrayList<DataSchemaFieldMapping> fieldMappings = new ArrayList<>();
         Map<String, Integer> indicesMap = new HashMap<>();
         int index = 0;
         for (DataSchemaField field : dataSubschema.getFields()) {
@@ -192,9 +192,9 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
       }
 
       // do automapping if no fields are found
-      Collection<LinkedHashSet<DataSchemaFieldMapping>> fieldsBySchema = mapping.getFields().values();
+      Collection<ArrayList<DataSchemaFieldMapping>> fieldsBySchema = mapping.getFields().values();
       boolean mappingEmpty = fieldsBySchema.isEmpty();
-      for (LinkedHashSet<DataSchemaFieldMapping> schemaFields : fieldsBySchema) {
+      for (ArrayList<DataSchemaFieldMapping> schemaFields : fieldsBySchema) {
         if (schemaFields.isEmpty()) {
           mappingEmpty = true;
           break;
@@ -309,11 +309,11 @@ public class DataSchemaMappingAction extends ManagerBaseAction {
     return mid;
   }
 
-  public Map<String, LinkedHashSet<DataSchemaFieldMapping>> getFields() {
+  public Map<String, ArrayList<DataSchemaFieldMapping>> getFields() {
     return fields;
   }
 
-  public void setFields(Map<String, LinkedHashSet<DataSchemaFieldMapping>> fields) {
+  public void setFields(Map<String, ArrayList<DataSchemaFieldMapping>> fields) {
     this.fields = fields;
   }
 

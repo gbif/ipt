@@ -16,10 +16,8 @@ package org.gbif.ipt.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 public class DataSchemaMapping implements Serializable {
@@ -29,7 +27,7 @@ public class DataSchemaMapping implements Serializable {
   private Source source;
   private DataSchema dataSchema;
   // TreeSet will ensure set of PropertyMappings remain ordered
-  private Map<String, LinkedHashSet<DataSchemaFieldMapping>> fields = new TreeMap<>();
+  private Map<String, ArrayList<DataSchemaFieldMapping>> fields = new TreeMap<>();
   private Date lastModified;
 
   /**
@@ -63,7 +61,7 @@ public class DataSchemaMapping implements Serializable {
   }
 
   public DataSchemaFieldMapping getField(String subschemaName, String name) {
-    Set<DataSchemaFieldMapping> mappingsList = fields.get(subschemaName);
+    List<DataSchemaFieldMapping> mappingsList = fields.get(subschemaName);
     if (mappingsList != null) {
       for (DataSchemaFieldMapping dsfm : mappingsList) {
         if (dsfm.getField().getName().equals(name)) {
@@ -90,11 +88,11 @@ public class DataSchemaMapping implements Serializable {
     this.dataSchema = dataSchema;
   }
 
-  public Map<String, LinkedHashSet<DataSchemaFieldMapping>> getFields() {
+  public Map<String, ArrayList<DataSchemaFieldMapping>> getFields() {
     return fields;
   }
 
-  public void setFields(Map<String, LinkedHashSet<DataSchemaFieldMapping>> fields) {
+  public void setFields(Map<String, ArrayList<DataSchemaFieldMapping>> fields) {
     this.fields = fields;
   }
 
