@@ -104,7 +104,7 @@ public class DataSubschema implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof DataSubschema)) return false;
     DataSubschema that = (DataSubschema) o;
     return Objects.equals(identifier, that.identifier)
         && Objects.equals(title, that.title)

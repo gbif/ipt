@@ -117,7 +117,7 @@ public class DataSchema implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof DataSchema)) return false;
     DataSchema that = (DataSchema) o;
     return isLatest == that.isLatest
         && Objects.equals(identifier, that.identifier)

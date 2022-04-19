@@ -64,7 +64,7 @@ public class DataSchemaFieldMapping implements Serializable, Comparable<DataSche
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof DataSchemaFieldMapping)) return false;
     DataSchemaFieldMapping that = (DataSchemaFieldMapping) o;
     return Objects.equals(index, that.index) && Objects.equals(defaultValue, that.defaultValue) && Objects.equals(field, that.field);
   }

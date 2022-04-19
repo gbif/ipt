@@ -86,7 +86,7 @@ public class DataSchemaField implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof DataSchemaField)) return false;
     DataSchemaField that = (DataSchemaField) o;
     return Objects.equals(name, that.name)
         && Objects.equals(type, that.type)

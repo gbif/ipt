@@ -43,7 +43,7 @@ public class DataSubschemaForeignKey implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof DataSubschemaForeignKey)) return false;
     DataSubschemaForeignKey that = (DataSubschemaForeignKey) o;
     return Objects.equals(fields, that.fields) && Objects.equals(reference, that.reference);
   }

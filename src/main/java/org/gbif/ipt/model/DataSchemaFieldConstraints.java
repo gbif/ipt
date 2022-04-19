@@ -86,7 +86,7 @@ public class DataSchemaFieldConstraints implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof DataSchemaFieldConstraints)) return false;
     DataSchemaFieldConstraints that = (DataSchemaFieldConstraints) o;
     return Objects.equals(required, that.required)
         && Objects.equals(unique, that.unique)
