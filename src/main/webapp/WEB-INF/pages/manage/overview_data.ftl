@@ -139,17 +139,7 @@
         </h5>
 
         <div class="row">
-            <div class="col-lg-3 border-lg-right pe-lg-5 rounded">
-                <div>
-                    <form action='schemaMapping.do' method='post'>
-                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                        <input name="id" type="hidden" value="${resource.schemaIdentifier}">
-                        <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-lg-9 ps-lg-5">
+            <div class="col-lg-9 ps-lg-5 order-lg-last">
                 <div>
                     <p>
                         <@s.text name='manage.overview.mappings.description'/>
@@ -191,6 +181,16 @@
                             </div>
                         </div>
                     </#if>
+                </div>
+            </div>
+
+            <div class="col-lg-3 border-lg-right pe-lg-5 rounded">
+                <div>
+                    <form action='schemaMapping.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <input name="id" type="hidden" value="${resource.schemaIdentifier}">
+                        <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
+                    </form>
                 </div>
             </div>
         </div>
