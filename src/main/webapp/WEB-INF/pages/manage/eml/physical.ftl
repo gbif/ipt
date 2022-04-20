@@ -72,7 +72,7 @@
                                     <#list eml.physicalData as item>
                                         <div id="item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-1 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                                <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
                                             </div>
                                             <div class="col-lg-6">
                                                 <@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" requiredField=true />
@@ -94,7 +94,7 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-1">
-                                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                    <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></a>
                                 </div>
                             </div>
 
@@ -103,7 +103,7 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="mt-1 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></a>
                                 </div>
                                 <div class="col-lg-6">
                                     <@input name="name" i18nkey="eml.physicalData.name" requiredField=true />

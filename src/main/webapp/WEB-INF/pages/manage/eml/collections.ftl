@@ -74,7 +74,7 @@
                                     <#list eml.collections as item>
                                         <div id="collection-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-1 d-flex justify-content-end">
-                                                <a id="collection-removeLink-${item_index}" class="removeCollectionLink" href="">${removeCollectionLink?lower_case?cap_first}</a>
+                                                <a id="collection-removeLink-${item_index}" class="removeCollectionLink text-smaller" href="">${removeCollectionLink?lower_case?cap_first}</a>
                                             </div>
                                             <div>
                                                 <@input name="eml.collections[${item_index}].collectionName" help="i18n" i18nkey="eml.collectionName" requiredField=true/>
@@ -89,7 +89,7 @@
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-1">
-                                    <a id="plus-collection" href="">${addCollectionLink?lower_case?cap_first}</a>
+                                    <a id="plus-collection" href="" class="text-smaller">${addCollectionLink?lower_case?cap_first}</a>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                     <#list eml.specimenPreservationMethods as item>
                                         <div id="specimenPreservationMethod-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="columnLinks mt-1 d-flex justify-content-end">
-                                                <a id="specimenPreservationMethod-removeLink-${item_index}" class="removeSpecimenPreservationMethodLink" href="">${removeSpecimenPreservationMethodLink?lower_case?cap_first}</a>
+                                                <a id="specimenPreservationMethod-removeLink-${item_index}" class="removeSpecimenPreservationMethodLink text-smaller" href="">${removeSpecimenPreservationMethodLink?lower_case?cap_first}</a>
                                             </div>
                                             <div class="col-lg-6">
                                                 <@select name="eml.specimenPreservationMethods[${item_index}]" i18nkey="eml.specimenPreservationMethod" help="i18n" options=preservationMethods value="${eml.specimenPreservationMethods[item_index]!}" />
@@ -111,7 +111,7 @@
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-1">
-                                    <a id="plus-specimenPreservationMethod" href="">${addSpecimenPreservationMethodLink?lower_case?cap_first}</a>
+                                    <a id="plus-specimenPreservationMethod" href="" class="text-smaller">${addSpecimenPreservationMethodLink?lower_case?cap_first}</a>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                                         <#assign type="${eml.jgtiCuratorialUnits[item_index].type}"/>
                                         <div id="item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-1 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
+                                                <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
                                             </div>
 
                                             <div class="col-lg-6">
@@ -164,7 +164,7 @@
                                     </#list>
                                 </div>
                                 <div class="addNew col-12 mt-1">
-                                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
+                                    <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
                                 </div>
                             </div>
 
@@ -173,7 +173,7 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="mt-1 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></a>
                                 </div>
 
                                 <div class="col-lg-6">
@@ -204,7 +204,7 @@
 
                             <div id="baseItem-collection" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="columnLinks mt-1 d-flex justify-content-end">
-                                    <a id="collection-removeLink" class="removeCollectionLink" href="">${removeCollectionLink?lower_case?cap_first}</a>
+                                    <a id="collection-removeLink" class="removeCollectionLink text-smaller" href="">${removeCollectionLink?lower_case?cap_first}</a>
                                 </div>
                                 <div class="col-12">
                                     <@input name="collectionName" help="i18n" i18nkey="eml.collectionName" requiredField=true/>
@@ -219,7 +219,7 @@
 
                             <div id="baseItem-specimenPreservationMethod" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="columnLinks mt-1 d-flex justify-content-end">
-                                    <a id="specimenPreservationMethod-removeLink" class="removeSpecimenPreservationLink" href="">${removeSpecimenPreservationMethodLink?lower_case?cap_first}</a>
+                                    <a id="specimenPreservationMethod-removeLink" class="removeSpecimenPreservationLink text-smaller" href="">${removeSpecimenPreservationMethodLink?lower_case?cap_first}</a>
                                 </div>
                                 <div class="col-lg-6">
                                     <@select name="specimenPreservationMethods" i18nkey="eml.specimenPreservationMethod" help="i18n" options=preservationMethods />

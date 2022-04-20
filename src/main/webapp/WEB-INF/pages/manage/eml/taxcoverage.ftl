@@ -76,7 +76,7 @@
                                 <#list eml.taxonomicCoverages as item>
                                     <div id='item-${item_index}' class="item border-bottom">
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></a>
+                                            <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></a>
                                         </div>
 
                                         <@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
@@ -128,7 +128,7 @@
                                             </#if>
                                         </div>
                                         <div class="pb-1 mt-3">
-                                            <a id="plus-subItem-${item_index}" href="" >
+                                            <a id="plus-subItem-${item_index}" href="" class="text-smaller">
                                                 <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' />
                                             </a>
                                         </div>
@@ -137,7 +137,7 @@
                             </div>
 
                             <div class="addNew mt-2">
-                                <a id="plus" class="plus" href="">
+                                <a id="plus" class="plus text-smaller" href="">
                                     <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' />
                                 </a>
                             </div>
@@ -149,7 +149,7 @@
                             <!-- The next divs are hidden. -->
                             <div id="baseItem" class="item clearfix" style="display:none">
                                 <div class="d-flex justify-content-end mt-2">
-                                    <a id="removeLink" class="removeLink" href="">
+                                    <a id="removeLink" class="removeLink text-smaller" href="">
                                         <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/>
                                     </a>
                                 </div>
@@ -158,7 +158,7 @@
 
                                 <!-- Taxon list-->
                                 <div class="addNew mt-1">
-                                    <a id="taxonsLink" class="show-taxonList" href="" >
+                                    <a id="taxonsLink" class="show-taxonList text-smaller" href="" >
                                         <@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' />
                                     </a>
                                 </div>
@@ -170,7 +170,7 @@
                                 </div>
                                 <div id="subItems" class="my-2"></div>
                                 <div class="addNew border-bottom pb-1 mt-1">
-                                    <a id="plus-subItem" href="" >
+                                    <a id="plus-subItem" href="" class="text-smaller">
                                         <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' />
                                     </a>
                                 </div>

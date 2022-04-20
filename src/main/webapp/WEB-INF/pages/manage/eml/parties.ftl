@@ -74,10 +74,10 @@
                                     <div id="associatedParty-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                         <div class="columnLinks mt-3 d-flex justify-content-between">
                                             <div>
-                                                <a id="associatedParty-copyDetails-${item_index}" href="">${copyLink?lower_case?cap_first}</a>
+                                                <a id="associatedParty-copyDetails-${item_index}" href="" class="text-smaller">${copyLink?lower_case?cap_first}</a>
                                             </div>
                                             <div>
-                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink" href="">${removeLink?lower_case?cap_first}</a>
+                                                <a id="associatedParty-removeLink-${item_index}" class="removeAssociatedPartyLink text-smaller" href="">${removeLink?lower_case?cap_first}</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -138,7 +138,7 @@
                             </div>
 
                             <div class="addNew col-12 mt-1">
-                                <a id="plus-associatedParty" href="">${addLink?lower_case?cap_first}</a>
+                                <a id="plus-associatedParty" href="" class="text-smaller">${addLink?lower_case?cap_first}</a>
                             </div>
 
                             <!-- internal parameter -->
@@ -148,10 +148,10 @@
                             <div id="baseItem-associatedParty" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="columnLinks mt-3 d-flex justify-content-between">
                                     <div>
-                                        <a id="associatedParty-copyDetails" href="">${copyLink}</a>
+                                        <a id="associatedParty-copyDetails" href="" class="text-smaller">${copyLink}</a>
                                     </div>
                                     <div>
-                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink" href="">${removeLink?lower_case?cap_first}</a>
+                                        <a id="associatedParty-removeLink" class="removeAssociatedPartyLink text-smaller" href="">${removeLink?lower_case?cap_first}</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

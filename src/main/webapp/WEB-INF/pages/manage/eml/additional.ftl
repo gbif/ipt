@@ -169,7 +169,7 @@
                                     <#list eml.alternateIdentifiers as item>
                                         <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-1 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                                <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                             </div>
                                             <@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
                                         </div>
@@ -177,7 +177,7 @@
                                 </div>
 
                                 <div class="addNew col-12 mt-1">
-                                    <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                    <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                 </div>
                             </div>
 
@@ -187,7 +187,7 @@
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="mt-1 d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></a>
                                 </div>
                                 <@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
                             </div>

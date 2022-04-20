@@ -259,7 +259,7 @@
                                 <#list eml.temporalCoverages as temporalCoverage>
                                     <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
+                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
                                         </div>
 
                                         <div class="col-lg-6">
@@ -308,7 +308,7 @@
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->
                             <div class="addNew col-12 mt-1">
-                                <a id="plus" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.tempcoverage.item' /></a>
+                                <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.tempcoverage.item' /></a>
                             </div>
 
                             <!-- internal parameter -->
@@ -318,7 +318,7 @@
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
                             <div id="temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
                                 <div class="d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
                                 </div>
                                 <div class="col-lg-6">
                                     <@select i18nkey="eml.temporalCoverages.type"  name="tempTypes" options=tempTypes />

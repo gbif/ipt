@@ -83,7 +83,7 @@
                                     <#list eml.methodSteps as item>
                                         <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                             <div class="mt-3 d-flex justify-content-end">
-                                                <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/></a>
+                                                <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/></a>
                                             </div>
                                             <div class="col-lg-12">
                                                 <@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n" requiredField=true/>
@@ -94,7 +94,7 @@
                             </div>
 
                             <div class="addNew col-12 mt-1">
-                                <a id="plus" href=""><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.methods.item'/></a>
+                                <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.methods.item'/></a>
                             </div>
 
                             <!-- internal parameter -->
@@ -102,7 +102,7 @@
 
                             <div id="baseItem" class="item row g-3 border-bottom pb-3 mt-1" style="display:none">
                                 <div class="d-flex justify-content-end mt-1">
-                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.methods.item'/></a>
                                 </div>
                                 <div class="col-lg-12">
                                     <@text name="" i18nkey="eml.methodSteps" help="i18n" requiredField=true />
