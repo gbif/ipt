@@ -75,14 +75,34 @@
                                                 <td>
                                                     ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
                                                     ${(src.lastModified?datetime?string.medium)!}<br>
-                                                    <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
+                                                    <div>
+                                                        <@s.text name='manage.source.readable'/>&nbsp;
+                                                        <#if src.readable>
+                                                            <svg class="icon-button-svg icon-material-check text-gbif-primary pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                                                            </svg>
+                                                        <#else>
+                                                            <svg class="icon-button-svg icon-material-close text-gbif-danger pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                                            </svg>
+                                                        </#if>
+                                                    </div>
                                                 </td>
                                             <#elseif src.isExcelSource()>
                                                 <th class="col-4">${src.name} <@s.text name='manage.overview.source.excel'/></th>
                                                 <td>
                                                     ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
                                                     ${(src.lastModified?datetime?string.medium)!}<br>
-                                                    <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
+                                                    <@s.text name='manage.source.readable'/>&nbsp;
+                                                    <#if src.readable>
+                                                        <svg class="icon-button-svg icon-material-check text-gbif-primary pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                                                        </svg>
+                                                    <#else>
+                                                        <svg class="icon-button-svg icon-material-close text-gbif-danger pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                                        </svg>
+                                                    </#if>
                                                 </td>
                                             <#elseif src.isUrlSource()>
                                                 <th class="col-4">${src.name} <@s.text name='manage.overview.source.url'/></th>
@@ -90,25 +110,47 @@
                                                     ${src.url!"..."}<br>
                                                     ${src.fileSizeFormatted},&nbsp;${src.rows}&nbsp;<@s.text name='manage.overview.source.rows'/>,&nbsp;${src.getColumns()}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
                                                     ${(src.lastModified?datetime?string.medium)!}<br>
-                                                    <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
+                                                    <@s.text name='manage.source.readable'/>&nbsp;
+                                                    <#if src.readable>
+                                                        <svg class="icon-button-svg icon-material-check text-gbif-primary pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                                                        </svg>
+                                                    <#else>
+                                                        <svg class="icon-button-svg icon-material-close text-gbif-danger pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                                        </svg>
+                                                    </#if>
                                                 </td>
                                             <#else>
                                                 <th class="col-4">${src.name} <@s.text name='manage.overview.source.sql'/></th>
                                                 <td>
                                                     ${src.database!"..."}<br>
                                                     ${src.columns}&nbsp;<@s.text name='manage.overview.source.columns'/><br>
-                                                    <@s.text name='manage.source.readable'/>&nbsp;<#if src.readable><i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i></#if>
+                                                    <@s.text name='manage.source.readable'/>&nbsp;
+                                                    <#if src.readable>
+                                                        <svg class="icon-button-svg icon-material-check text-gbif-primary pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                                                        </svg>
+                                                    <#else>
+                                                        <svg class="icon-button-svg icon-material-close text-gbif-danger pb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                                        </svg>
+                                                    </#if>
                                                 </td>
                                             </#if>
-                                            <td class="d-flex justify-content-end">
-                                                <div class="btn-group" role="group">
+                                            <td class="d-flex justify-content-end py-0">
+                                                <div>
                                                     <#if src.isFileSource() || src.isExcelSource()>
-                                                        <a class="btn btn-sm btn-outline-secondary" role="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank" title="<@s.text name='manage.overview.source.download'/>">
-                                                            <i class="bi bi-download"></i>
+                                                        <a class="icon-button icon-button-sm" type="button" href="raw-source.do?r=${resource.shortname}&id=${src.name}" target="_blank">
+                                                            <svg class="icon-button-svg icon-material-download" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
+                                                            </svg>
                                                         </a>
                                                     </#if>
-                                                    <a class="btn btn-sm btn-outline-secondary" role="button" href="source.do?r=${resource.shortname}&id=${src.name}">
-                                                        <@s.text name='button.edit'/>
+                                                    <a class="icon-button icon-button-sm" type="button" href="source.do?r=${resource.shortname}&id=${src.name}">
+                                                        <svg class="icon-button-svg icon-material-edit" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                        </svg>
                                                     </a>
                                                 </div>
                                             </td>
@@ -168,10 +210,12 @@
                                         <tr <#if m_index==0>class="mapping_row"</#if>>
                                             <th class="col-4"><#if m_index==0>${m.dataSchema.title}</#if></th>
                                             <td>${m.fields?size} <@s.text name='manage.overview.mappings.fields.mapped'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
-                                            <td class="d-flex justify-content-end">
-                                                <div class="btn-group" role="group">
-                                                    <a class="btn btn-sm btn-outline-secondary" role="button" href="schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
-                                                        <@s.text name='button.edit'/>
+                                            <td class="d-flex justify-content-end py-0">
+                                                <div>
+                                                    <a class="icon-button icon-button-sm" type="button" href="schemaMapping.do?r=${resource.shortname}&id=${m.dataSchema.identifier?url}&mid=${m_index}">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="EditIcon" aria-label="fontSize large">
+                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                        </svg>
                                                     </a>
                                                 </div>
                                             </td>
@@ -264,13 +308,17 @@
                                         <tr <#if m_index==0>class="mapping_row"</#if>>
                                             <th class="col-4"><#if m_index==0>${m.extension.title}</#if></th>
                                             <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
-                                            <td class="d-flex justify-content-end">
-                                                <div class="btn-group" role="group">
-                                                    <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                                        <i class="bi bi-eye"></i>
+                                            <td class="d-flex justify-content-end pt-0">
+                                                <div>
+                                                    <a class="icon-button icon-button-sm peekBtn me-1" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                        </svg>
                                                     </a>
-                                                    <a class="btn btn-sm btn-outline-secondary" role="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
-                                                        <@s.text name='button.edit'/>
+                                                    <a class="icon-button icon-button-sm" type="button" href="mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                        </svg>
                                                     </a>
                                                 </div>
                                             </td>
@@ -289,12 +337,16 @@
                                                         <th class="col-4"><#if m_index==0>${ext.title}</#if></th>
                                                         <td>${m.fields?size} <@s.text name='manage.overview.DwC.Mappings.terms'/> ${(m.source.name)!}.&nbsp;${(m.lastModified?datetime?string.medium)!}</td>
                                                         <td class="d-flex justify-content-end">
-                                                            <div class="btn-group" role="group">
-                                                                <a class="btn btn-sm btn-outline-secondary peekBtn" role="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                                    <i class="bi bi-eye"></i>
+                                                            <div>
+                                                                <a class="icon-button icon-button-sm peekBtn me-1" type="button" href="mappingPeek.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                    </svg>
                                                                 </a>
-                                                                <a class="btn btn-sm btn-outline-secondary" role="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
-                                                                    <@s.text name='button.edit'/>
+                                                                <a class="icon-button icon-button-sm" type="button" href="mapping.do?r=${resource.shortname}&id=${ext.rowType?url}&mid=${m_index}">
+                                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                                    </svg>
                                                                 </a>
                                                             </div>
                                                         </td>

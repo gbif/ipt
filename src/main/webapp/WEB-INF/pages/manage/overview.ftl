@@ -592,19 +592,37 @@
                                             <tr>
                                                 <th class="col-4">${versionTitle?cap_first}</th>
                                                 <#if resource.lastPublished??>
-                                                    <td class="separator text-gbif-primary">
+                                                    <td class="separator text-gbif-primary py-0">
                                                         ${resource.emlVersion.toPlainString()}&nbsp;
-                                                        <a class="btn btn-sm btn-outline-gbif-primary" role="button" href="${baseURL}/resource?r=${resource.shortname}">${viewTitle?cap_first}</a>
+                                                        <a class="icon-button icon-button-sm" type="button" href="${baseURL}/resource?r=${resource.shortname}">
+                                                            <svg class="icon-button-svg icon-material-eye mb-1 text-gbif-primary" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                            </svg>
+                                                        </a>
+
                                                         <@dwcaValidator/>
                                                     </td>
-                                                    <td class="left_padding">
+                                                    <td class="left_padding py-0">
                                                         ${resource.getNextVersion().toPlainString()}&nbsp;
-                                                        <a class="btn btn-sm <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
+                                                        <#if !missingMetadata>
+                                                            <a class="icon-button icon-button-sm" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
+                                                                <svg class="icon-button-svg icon-material-eye mb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </#if>
                                                     </td>
                                                 <#else>
-                                                    <td>
+                                                    <td class="py-0">
                                                         ${resource.getNextVersion().toPlainString()}&nbsp;
-                                                        <a class="btn btn-sm <#if missingMetadata>btn-outline-secondary disabled<#else>btn-outline-gbif-primary</#if> " role="button" href="${baseURL}/resource/preview?r=${resource.shortname}">${previewTitle?cap_first}</a>
+                                                        <#if !missingMetadata>
+                                                            <a class="icon-button icon-button-sm" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
+                                                                <svg class="icon-button-svg icon-material-eye mb-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </#if>
                                                     </td>
                                                 </#if>
                                             </tr>
@@ -699,8 +717,8 @@
                                                 <tr>
                                                     <th>${pubLogTitle?cap_first}</th>
                                                     <td class="separator">
-                                                        <a class="button" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
-                                                            <input class="button btn btn-sm btn-outline-gbif-primary" type="button" value='${downloadTitle?cap_first}'/>
+                                                        <a target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
+                                                            ${downloadTitle?cap_first}
                                                         </a>
                                                     </td>
                                                     <td class="left_padding">${emptyCell}</td>
@@ -1014,9 +1032,11 @@
                                                             <td>
                                                                 <a href="${cfg.portalUrl}/network/${n.key}" target="_blank">${n.key}</a>&nbsp;
                                                             </td>
-                                                            <td class="d-flex justify-content-end">
-                                                                <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key}">
-                                                                    <@s.text name='button.delete'/>
+                                                            <td class="d-flex justify-content-end py-0">
+                                                                <a class="icon-button icon-button-sm icon-material-delete" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key}">
+                                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                    </svg>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -1085,9 +1105,11 @@
                                                         <td>
                                                             ${u.name}, ${u.email}&nbsp;
                                                         </td>
-                                                        <td class="d-flex justify-content-end">
-                                                            <a class="button btn btn-sm btn-outline-gbif-danger" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
-                                                                <@s.text name='button.delete'/>
+                                                        <td class="d-flex justify-content-end p-0">
+                                                            <a class="icon-button icon-button-sm icon-material-delete" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                </svg>
                                                             </a>
                                                         </td>
                                                     </tr>
