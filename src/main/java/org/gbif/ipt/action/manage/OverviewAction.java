@@ -1584,7 +1584,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
 
     if (resource.getSchemaIdentifier() != null) {
-      // TODO: 06/04/2022 implement for schema resources
+      // TODO: 06/04/2022 implement for schema resources?
+      // There are many files inside, how to display that?
     } else {
       if (rowType != null && mid != null) {
         ExtensionMapping mapping = resource.getMappings(id).get(mid);

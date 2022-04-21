@@ -1427,7 +1427,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // set number of records published
         resource.setRecordsPublished(0);
         // finish publication now
-        // TODO: 06/04/2022 check publishEnd works correctly
+        // TODO: 06/04/2022 check publishEnd works correctly (we can't register schema resources yet)
         publishEnd(resource, action, version);
       }
       return dataPackage;

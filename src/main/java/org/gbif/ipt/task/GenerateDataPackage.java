@@ -55,7 +55,6 @@ import com.google.inject.assistedinject.Assisted;
 import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
-import io.frictionlessdata.tableschema.exception.ConstraintsException;
 import io.frictionlessdata.tableschema.schema.Schema;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
@@ -102,11 +101,12 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // create data files
       createDataFiles();
 
-      // TODO: 06/04/2022 EML!
+      // TODO: 06/04/2022 EML. Unclear how to put an eml file inside archive
       // copy eml file
 //      addEmlFile();
 
-      // TODO: 06/04/2022 validation!
+      // TODO: 06/04/2022 validation. Data is validated internally by frictionless data package,
+      //  but validation quality is questionable. Validation messages are too broad, and does not provide valuable information
       // perform some validation, e.g. ensure all core record identifiers are present and unique
 //      validate();
 
@@ -119,7 +119,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // set final state
       setState(STATE.COMPLETED);
 
-      // TODO: 06/04/2022 what is supposed to be returned?
       Map<String, Integer> result = new HashMap<>();
       result.put(resource.getSchemaIdentifier(), 0);
       return result;
@@ -346,7 +345,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     int totalColumns = fields.size();
 
     String fn = subschema.getName() + ".csv";
-    // TODO: 05/04/2022 file name collision? what if already exists?
     File dataFile = new File(dataPackageFolder, fn);
 
     // ready to go through each mapping and dump the data
@@ -355,7 +353,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       boolean headerWritten = false;
 
       for (DataSchemaMapping dataSchemaMapping : allMappings) {
-        // TODO: 05/04/2022 check not null
         ArrayList<DataSchemaFieldMapping> subschemaFieldMappings = dataSchemaMapping.getFields().get(subschema.getName());
 
         // write header line 1 time only to file
