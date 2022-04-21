@@ -19,12 +19,15 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataSchema;
 import org.gbif.ipt.model.DataSubschema;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.factory.DataSchemaFactory;
 import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
@@ -60,6 +63,7 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   private final ConfigWarnings warnings;
   private final DataSchemaFactory factory;
   private final RegistryManager registryManager;
+  private final ResourceManager resourceManager;
   private final HttpClient downloader;
   private final Gson gson;
 
@@ -72,21 +76,29 @@ public class DataSchemaManagerImpl extends BaseManager implements DataSchemaMana
   @Inject
   public DataSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
                                SimpleTextProvider textProvider, RegistrationManager registrationManager,
-                               RegistryManager registryManager, HttpClient downloader) {
+                               RegistryManager registryManager, ResourceManager resourceManager, HttpClient downloader) {
     super(cfg, dataDir);
     this.warnings = warnings;
     this.factory = factory;
     this.registryManager = registryManager;
+    this.resourceManager = resourceManager;
     this.downloader = downloader;
     this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
     this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
   }
 
   @Override
-  public void uninstallSafely(String schemaIdentifier, String schemaName) {
+  public void uninstallSafely(String schemaIdentifier, String schemaName) throws DeletionNotAllowedException {
     if (dataSchemasByIdentifiers.containsKey(schemaIdentifier)) {
       // check if it's used by some resources
-      // TODO: 15/03/2022 implement once mappings ready
+      for (Resource r : resourceManager.list()) {
+        if (r.getSchemaIdentifier() != null
+            && r.getSchemaIdentifier().equals(schemaIdentifier) && !r.getDataSchemaMappings().isEmpty()) {
+          LOG.warn("Schema mapped in resource " + r.getShortname());
+          String msg = baseAction.getText("admin.schemas.delete.error.mapped", new String[] {r.getShortname()});
+          throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DATA_SCHEMA_MAPPED, msg);
+        }
+      }
       uninstall(schemaIdentifier, schemaName);
     } else {
       LOG.warn("Data schema not installed locally, can't delete " + schemaIdentifier);
