@@ -143,8 +143,8 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       // check if its used by some resources
       for (Resource r : resourceManager.list()) {
         if (!r.getMappings(rowType).isEmpty()) {
-          String msg = "Extension mapped in resource " + r.getShortname();
-          LOG.warn(msg);
+          LOG.warn("Extension mapped in resource " + r.getShortname());
+          String msg = baseAction.getText("admin.extension.delete.error.mapped", new String[] {r.getShortname()});
           throw new DeletionNotAllowedException(Reason.EXTENSION_MAPPED, msg);
         }
       }
