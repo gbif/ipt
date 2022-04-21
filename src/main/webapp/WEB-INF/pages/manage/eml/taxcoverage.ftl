@@ -82,7 +82,7 @@
                                         <@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
 
                                         <!-- Taxon list-->
-                                        <div class="my-2">
+                                        <div class="my-2 text-smaller">
                                             <@link name="taxonsLink-${item_index}" class="show-taxonList mt-1" value="manage.metadata.taxcoverage.addSeveralTaxa" help="i18n" i18nkey="manage.metadata.taxcoverage.addSeveralTaxa"/>
                                         </div>
 
@@ -96,6 +96,9 @@
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
                                                     <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
+                                                        <div class="d-flex justify-content-end">
+                                                            <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></a>
+                                                        </div>
                                                         <div class="col-lg-4 d-flex align-items-end">
                                                             <div class="w-100">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
@@ -111,14 +114,6 @@
                                                         <div class="col-lg-5 d-flex align-items-end">
                                                             <div class="w-100 me-2">
                                                                 <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
-                                                            </div>
-
-                                                            <div>
-                                                                <#if (item.taxonKeywords ? size == 1) >
-                                                                    <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-gbif-danger" style="display: none;" role="button"><@s.text name='button.delete'/></button>
-                                                                <#else>
-                                                                    <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-gbif-danger" role="button"><@s.text name='button.delete'/></button>
-                                                                </#if>
                                                             </div>
                                                         </div>
 
@@ -177,6 +172,11 @@
                             </div>
 
                             <div id="subItem-9999" class="sub-item row g-3 pt-3" style="display:none">
+                                <div class="d-flex justify-content-end">
+                                    <a id="trash" class="text-smaller" href="">
+                                        <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/>
+                                    </a>
+                                </div>
                                 <div class="col-lg-4 d-flex align-items-end">
                                     <div class="w-100">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
@@ -192,10 +192,6 @@
                                 <div class="col-lg-5 d-flex align-items-end">
                                     <div class="w-100 me-2">
                                         <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
-                                    </div>
-
-                                    <div>
-                                        <button id="trash" class="btn btn-outline-gbif-danger" role="button"><@s.text name='button.delete'/></button>
                                     </div>
                                 </div>
                             </div>
