@@ -81,7 +81,6 @@ public class IPTModule extends AbstractModule {
     // assisted inject factories
     install(
       new FactoryModuleBuilder().implement(ReportingTask.class, GenerateDwca.class).build(GenerateDwcaFactory.class));
-    // TODO: 04/04/2022 data package factory
     install(
         new FactoryModuleBuilder().implement(ReportingTask.class, GenerateDataPackage.class).build(GenerateDataPackageFactory.class));
 
