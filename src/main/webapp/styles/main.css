@@ -18,6 +18,13 @@ table {
     color: #4e565f !important;
 }
 
+/* Login container */
+.login-container {
+    max-width: 450px;
+    display: flex;
+    align-items: center;
+}
+
 
 /* Logo, header, menu etc. START */
 .gbif-logo {
