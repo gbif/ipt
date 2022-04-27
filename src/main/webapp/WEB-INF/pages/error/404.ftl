@@ -4,7 +4,7 @@
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
     </div>
 
@@ -23,7 +23,7 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <p class="text-center mx-md-4 mx-2">[@s.text name="404.body"/]</p>
+        <p class="text-center">[@s.text name="404.body"/]</p>
     </div>
 </main>
 
