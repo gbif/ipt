@@ -6,7 +6,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
 <main class="container login-container">
-    <div class="my-3 px-4 px-sm-5 pb-3 pb-sm-4 pt-4 pt-sm-5 border rounded shadow-sm">
+    <div class="my-3 px-4 px-sm-5 pb-3 pb-sm-4 pt-4 pt-sm-36p border rounded shadow-sm">
         <div class="text-smaller">
             <#include "/WEB-INF/pages/inc/action_alerts_messages.ftl">
             <#include "/WEB-INF/pages/inc/action_alerts_errors.ftl">

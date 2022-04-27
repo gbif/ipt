@@ -25,6 +25,12 @@ table {
     align-items: center;
 }
 
+@media (min-width: 576px) {
+    .pt-sm-36p {
+        padding-top: 36px !important;
+    }
+}
+
 
 /* Logo, header, menu etc. START */
 .gbif-logo {
