@@ -12,7 +12,7 @@
     <#include "/WEB-INF/pages/macros/forms.ftl">
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -40,15 +40,15 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <p class="mx-md-4 mx-2 mb-0">
+            <p class="mb-0">
                 <@s.text name="admin.user.intro"/>
             </p>
-            <p class="mx-md-4 mx-2 mb-0">
+            <p class="mb-0">
                 <@s.text name="admin.user.intro2"/>
             </p>
 
             <form id="newuser" class="needs-validation" action="user.do" method="post">
-                <div class="row g-3 mx-md-3 mx-1 mt-2">
+                <div class="row g-3 mt-2">
                     <@s.hidden name="id" value="${user.email!}" required="true"/>
 
                     <div class="col-md-6">

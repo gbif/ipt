@@ -5,7 +5,7 @@
 <form action="setup2.do" method="post" class="needs-validation">
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
         </div>
 

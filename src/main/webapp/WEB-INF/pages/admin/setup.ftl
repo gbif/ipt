@@ -4,7 +4,7 @@
 
 <form action="setup.do" method="post" class="needs-validation" novalidate>
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
         </div>
 

@@ -30,7 +30,7 @@
     <script src="${baseURL}/js/jquery/dataTables.bootstrap5-1.10.23.min.js"></script>
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -55,7 +55,7 @@
     <main class="container">
         <div class="my-3 p-3">
             <@organisationsTable numOrganisationsShown=20 sEmptyTable="dataTables.sEmptyTable.organisations" columnToSortOn=0 sortOrder="asc" />
-            <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2"></div>
+            <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
         </div>
     </main>
 

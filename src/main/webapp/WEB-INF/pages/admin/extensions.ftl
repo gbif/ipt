@@ -10,7 +10,7 @@
     </script>
 
     <#macro extensionRow ext currentIndex numberOfExtensions>
-        <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#if currentIndex < numberOfExtensions>border-bottom</#if>">
+        <div class="row py-2 pb-2 g-2 <#if currentIndex < numberOfExtensions>border-bottom</#if>">
             <div class="col-md-3">
                 <div class="title">
                     <div class="head">
@@ -78,7 +78,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -103,11 +103,11 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <h5 class="pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header-2 fw-400">
+            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="admin.extension.coreTypes"/>
             </h5>
 
-            <p class="mx-md-4 mx-2">
+            <p>
                 <@s.text name="admin.extension.no.coreTypes.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
             </p>
 
@@ -128,10 +128,10 @@
             </#list>
 
             <#if count=0>
-                <p class="text-gbif-danger mx-md-4 mx-2 mb-0">
+                <p class="text-gbif-danger mb-0">
                     <@s.text name="admin.extension.no.coreTypes.installed"/>
                 </p>
-                <p class="mx-md-4 mx-2">
+                <p>
                     <span class="text-gbif-warning">
                         <i class="bi bi-exclamation-triangle"></i>
                         <@s.text name="admin.extension.no.coreTypes.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
@@ -142,11 +142,11 @@
         </div>
 
         <div class="my-3 p-3">
-            <h5 class="pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header-2 fw-400">
+            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="admin.extension.extensions"/>
             </h5>
 
-            <p class="mx-md-4 mx-2 mb-0">
+            <p class="mb-0">
                 <@s.text name="admin.extension.no.extensions.installed.help"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
             </p>
 
@@ -166,18 +166,18 @@
                 </#if>
             </#list>
             <#if count=0>
-                <p class="text-gbif-danger mx-md-4 mx-2">
+                <p class="text-gbif-danger">
                     <@s.text name="admin.extension.no.extensions.installed"/>
                 </p>
             </#if>
         </div>
 
         <div class="my-3 p-3">
-            <h5 class="pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header-2 fw-400">
+            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="extension.synchronise.title"/>
             </h5>
 
-            <p class="mx-md-4 mx-2 mb-0">
+            <p class="mb-0">
                 <@s.text name="admin.extensions.synchronise.help"/>
             </p>
 
@@ -186,25 +186,25 @@
             </#if>
 
             <form action='extensions.do' method='post'>
-                <div class="col-12 mt-2 mx-md-4 mx-2">
+                <div class="col-12 mt-2">
                     <@s.submit name="synchronise" cssClass="btn btn-outline-gbif-primary" key="button.synchronise"/>
                 </div>
             </form>
         </div>
 
         <div class="my-3 p-3">
-            <h5 class="pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header-2 fw-400">
+            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="extension.further.title"/>
             </h5>
 
-            <p class="mx-md-4 mx-2 mb-0">
+            <p class="mb-0">
                 <@s.text name="extension.further.title.help"/>
             </p>
 
             <#assign count=0>
             <#list newExtensions as ext>
                 <#assign count=count+1>
-                <div class="row mx-md-3 mx-1 p-2 pb-2 g-2 <#sep>border-bottom</#sep>">
+                <div class="row py-2 pb-2 g-2 <#sep>border-bottom</#sep>">
                     <div class="col-md-3">
                         <div class="title">
                             <div class="head">
@@ -238,7 +238,7 @@
             </#list>
 
             <#if count=0>
-                <p class="text-gbif-primary mx-md-4 mx-2 mt-2">
+                <p class="text-gbif-primary mt-2">
                     <@s.text name="extension.already.installed"/>
                 </p>
             </#if>

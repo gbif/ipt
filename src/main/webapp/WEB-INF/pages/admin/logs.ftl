@@ -11,7 +11,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
@@ -36,14 +36,14 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <p class="mx-md-4 mx-2">
+        <p>
             <strong><@s.text name="admin.logs.warn"/></strong>
         </p>
-        <p class="mx-md-4 mx-2">
+        <p>
             <@s.text name="admin.logs.download"><@s.param>logfile.do?log=debug</@s.param></@s.text>
         </p>
 
-        <pre id="logs" class="mx-md-4 mx-2"></pre>
+        <pre id="logs"></pre>
     </div>
 </main>
 

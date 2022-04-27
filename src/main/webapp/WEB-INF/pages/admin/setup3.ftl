@@ -3,7 +3,7 @@
 
 <form action="setupComplete.do">
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             [#if warnings?size == 0 && actionErrors?size == 0]
                 [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
             [#else]

@@ -98,7 +98,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -131,24 +131,24 @@
         <div class="my-3 p-3">
             <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
             <#if hostingOrganisation?has_content>
-                <p class="mx-md-4 mx-2">
+                <p>
                     <@s.text name="admin.registration.registered1"/><br />
                     <@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text>
                 </p>
 
                 <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
                 <form id="registration" class="topForm half" action="updateRegistration" method="post">
-                    <p class="mx-md-4 mx-2 mb-2">
+                    <p class="mb-2">
                         <@s.text name="admin.registration.links"/>
                     </p>
 
-                    <ul class="mx-md-4 mx-2">
+                    <ul>
                         <li><a href="${cfg.portalUrl}/installation/${registeredIpt.key}" target="_blank">${registeredIpt.name!"IPT"}</a></li>
                         <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
                         <li><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></li>
                     </ul>
 
-                    <div class="row g-3 mx-md-3 mx-1">
+                    <div class="row g-3">
                         <div class="col-lg-6">
                             <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
                         </div>
@@ -174,9 +174,9 @@
             <#else>
                 <#-- BASE URL has not been validated, disable the form -->
                 <#if !validatedBaseURL>
-                    <p class="mx-md-4 mx-2"><@s.text name="admin.registration.test1"/></p>
+                    <p><@s.text name="admin.registration.test1"/></p>
 
-                    <div class="row g-3 mx-md-3 mx-1">
+                    <div class="row g-3">
                         <div class="col-12">
                             <@input name="registration.baseURL" i18nkey="admin.registration.baseURL" type="text" value="${baseURL}" size=70 disabled=true requiredField=true/>
                         </div>
@@ -205,7 +205,7 @@
                         </div>
                     </div>
                 </#if>
-                <div id="registrationFormDiv" class="mx-md-4 mx-2 mt-4" style="display: none;" >
+                <div id="registrationFormDiv" class="mt-4" style="display: none;" >
 
                     <form id="registrationForm" class="needs-validation" action="registration.do" method="post" novalidate>
                         <div class="row g-3">

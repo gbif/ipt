@@ -18,7 +18,7 @@
 
 <@s.form cssClass="topForm" action="publishAll.do" method="post" namespace="" includeContext="false">
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -42,7 +42,7 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <p class="mx-md-4 mx-2">
+            <p>
                 <@s.text name="admin.config.publishResources.details"/>
             </p>
         </div>

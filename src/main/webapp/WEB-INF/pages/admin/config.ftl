@@ -25,7 +25,7 @@
 
 <form class="topForm half needs-validation" action="config.do" method="post" >
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -49,7 +49,7 @@
 
     <main class="container">
         <div class="my-3 p-3 ">
-            <div class="row g-3 mx-md-3 mx-1">
+            <div class="row g-3">
                 <div class="col-lg-6">
                     <@readonly name="dataDir" i18nkey="admin.config.server.data.dir" value="${dataDir}" help="i18n"/>
                 </div>
@@ -97,7 +97,7 @@
 
             </div>
 
-            <div id="location" class="row g-3 mx-md-3 mx-1 mb-3 mt-2">
+            <div id="location" class="row g-3 mb-3 mt-2">
                 <label for="latitude"><@s.text name="admin.config.server.location"/></label>
                 <div class="col-lg-6">
                     <@input name="latitude" i18nkey="admin.config.server.latitude" help="i18n" />
@@ -109,9 +109,9 @@
 
             <#if latitude?? && longitude??>
                 <#-- the map -->
-                <div id="locationMap" class="mx-md-4 mx-2 mt-0"></div>
+                <div id="locationMap" class="mt-0"></div>
             <#else>
-                <div class="mx-md-4 mx-2 mt-0" >
+                <div class="mt-0" >
                     <img src="${baseURL}/images/ipt_no_location_map.gif"/>
                 </div>
             </#if>

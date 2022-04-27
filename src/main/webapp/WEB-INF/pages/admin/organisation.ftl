@@ -89,7 +89,7 @@
     <#include "/WEB-INF/pages/macros/popover.ftl">
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -121,7 +121,7 @@
     <main class="container">
         <div class="my-3 p-3">
             <form id="organisationsForm" class="needs-validation" action="organisation.do" method="post" novalidate>
-                <div class="row g-3 mx-md-3 mx-1">
+                <div class="row g-3">
                     <#if id?has_content>
                         <div class="col-lg-6">
                             <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true/>

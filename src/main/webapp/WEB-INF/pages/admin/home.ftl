@@ -6,7 +6,7 @@
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
 <div class="container-fluid bg-body">
-	<div class="container">
+	<div class="container my-3">
 		<#include "/WEB-INF/pages/inc/action_alerts.ftl">
 	</div>
 </div>
