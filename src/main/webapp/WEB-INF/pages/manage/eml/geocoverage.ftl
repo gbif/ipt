@@ -82,9 +82,11 @@
                 }
             });
 
+            var skipMapAdjustment = false;
+
             /** This function updates the coordinate input fields to mirror bounding box coordinates, after each map change event  */
             locationFilter.on("change", function (e) {
-                setTimeout(function(){
+                if (!skipMapAdjustment) {
                     var minLatVal = locationFilter.getBounds()._southWest.lat
                     var minLngVal = locationFilter.getBounds()._southWest.lng
                     var maxLatVal = locationFilter.getBounds()._northEast.lat
@@ -94,7 +96,9 @@
                     $("#" + minLngId).val(minLngVal);
                     $("#" + maxLatId).val(maxLatVal);
                     $("#" + maxLngId).val(maxLngVal);
-                }, 2000);
+                } else {
+                    skipMapAdjustment = false;
+                }
             });
 
             // lock map on disable
@@ -104,6 +108,8 @@
 
             /** This function adjusts the map each time the user enters data */
             $("#bbox input").keyup(function() {
+                skipMapAdjustment = true;
+
                 var minLngStr = $("#" + minLngId).val();
                 var maxLngStr = $("#" + maxLngId).val();
                 var minLatStr = $("#" + minLatId).val();
@@ -134,7 +140,7 @@
                 if (isNaN(maxLatVal)) {
                     maxLatVal = MAX_LAT_VAL_LIMIT;
                 }
-                locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)))
+                locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)));
             });
 
             $('#metadata-section').change(function () {
