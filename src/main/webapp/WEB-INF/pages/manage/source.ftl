@@ -46,7 +46,7 @@
 
     <form class="topForm needs-validation" action="source.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
-            <div class="container">
+            <div class="container my-3">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
             </div>
 
@@ -80,7 +80,7 @@
         <div class="container-fluid bg-body">
             <main class="container">
                 <div class="my-3 p-3">
-                    <div class="row g-3 mx-lg-4 mx-2">
+                    <div class="row g-3">
                         <input type="hidden" name="r" value="${resource.shortname}" />
                         <input type="hidden" name="id" value="${id!}" />
 

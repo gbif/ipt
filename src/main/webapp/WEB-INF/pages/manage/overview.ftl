@@ -338,12 +338,12 @@
 </#if>
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
             <#if !currentUser.hasRegistrationRights()>
                 <#if resource.status == "DELETED">
-                    <div class="alert alert-warning mx-md-4 mx-2 mt-2 alert-dismissible fade show d-flex" role="alert">
+                    <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
                         <div class="me-3">
                             <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                         </div>
@@ -353,7 +353,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
-                    <div class="alert alert-warning mx-md-4 mx-2 mt-2 alert-dismissible fade show d-flex" role="alert">
+                    <div class="alert alert-warning mt-2 alert-dismissible fade show d-flex" role="alert">
                         <div class="me-3">
                             <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
                         </div>
@@ -470,7 +470,7 @@
                     </#if>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-publish"></span>
-                    <div class="py-5 mx-4 border-bottom section" id="publish">
+                    <div class="py-5 border-bottom section" id="publish">
                         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
                             <#assign overviewTitleInfo>
                                 <#if resource.coreType?has_content && resource.coreType==metadataType>
@@ -774,7 +774,7 @@
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-autopublish"></span>
-                    <div class="py-5 mx-4 border-bottom section" id="autopublish">
+                    <div class="py-5 border-bottom section" id="autopublish">
                         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
                             <@popoverPropertyInfo "manage.overview.autopublish.description"/>
                             <@s.text name="manage.overview.autopublish.title"/>
@@ -827,7 +827,7 @@
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-visibility"></span>
-                    <div class="py-5 mx-4 border-bottom section" id="visibility">
+                    <div class="py-5 border-bottom section" id="visibility">
                         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
                             <#assign visibilityTitleInfo>
                                 <@s.text name='manage.overview.visibility.description'/>
@@ -990,7 +990,7 @@
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-networks"></span>
-                    <div class="py-5 mx-4 border-bottom section" id="networks">
+                    <div class="py-5 border-bottom section" id="networks">
                         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
                             <@popoverPropertyInfo "manage.overview.networks.description"/>
                             <@s.text name="manage.overview.networks.title"/>
@@ -1060,7 +1060,7 @@
                     </div>
 
                     <span class="anchor anchor-home-resource-page" id="anchor-managers"></span>
-                    <div class="py-5 mx-4" id="managers">
+                    <div class="py-5" id="managers">
                         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
                             <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
                             <@s.text name="manage.overview.resource.managers"/>

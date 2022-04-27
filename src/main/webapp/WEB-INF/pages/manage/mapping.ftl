@@ -346,7 +346,7 @@
 <form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
 <div class="container-fluid bg-body border-bottom">
 
-    <div class="container pt-2">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 

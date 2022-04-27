@@ -7,7 +7,7 @@
 
 <form id="create" class="needs-validation" action="create.do" method="post" enctype="multipart/form-data" novalidate>
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -41,7 +41,7 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <p class="mx-md-4 mx-2 pt-2"><@s.text name="manage.resource.create.intro"/></p>
+            <p class="pt-2"><@s.text name="manage.resource.create.intro"/></p>
 
             <script>
                 $(document).ready(function() {
@@ -58,7 +58,7 @@
                 });
             </script>
 
-            <div class="row g-3 mx-md-4 mx-2 mt-0 mb-2">
+            <div class="row g-3 mt-0 mb-2">
                 <div class="col-sm-6">
                     <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" size=40/>
                 </div>

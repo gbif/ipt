@@ -45,7 +45,7 @@
     <#include "/WEB-INF/pages/macros/manage/translation_buttons.ftl"/>
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
@@ -69,22 +69,22 @@
 <main class="container">
     <form class="topForm" action="translation.do" method="post">
         <div class="my-3 p-3">
-            <p class="mx-md-4 mx-2"><@s.text name="manage.translation.intro"/></p>
+            <p><@s.text name="manage.translation.intro"/></p>
         </div>
 
         <div class="my-3 p-3">
-            <h5 class="pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header-2 fw-400">
+            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="manage.translation.property"/> <em>${property.name}</em>
             </h5>
 
-            <p class="mx-md-4 mx-2">&quot;${property.description!}&quot;</p>
+            <p>&quot;${property.description!}&quot;</p>
 
             <#if property.vocabulary?has_content>
-                <p class="mx-md-4 mx-2">
+                <p>
                     <strong><@s.text name="manage.translation.vocabulary.required"/></strong>:
                     <@s.text name="manage.translation.vocabulary.required.intro"/>
                 </p>
-                <p class="mx-md-4 mx-2">
+                <p>
                     <em>${property.vocabulary.title!property.vocabulary.uriString}</em>:
                     <a href="vocabulary.do?id=${property.vocabulary.uriString}" class="no-text-decoration" target="_blank">
                         <i class="bi bi-book"></i>
@@ -100,7 +100,7 @@
             <input type="hidden" name="mid" value="${mid}"/>
             <input type="hidden" name="term" value="${property.qualname}"/>
 
-            <div class="mx-md-4 mx-2 table-responsive text-smaller">
+            <div class="table-responsive text-smaller">
                 <table id="translation" class="simple table">
                 <colgroup>
                     <col width="400">

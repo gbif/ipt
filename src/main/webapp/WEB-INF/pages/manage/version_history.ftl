@@ -40,7 +40,7 @@
                 <input type="hidden" name="r" value="${resource.shortname}" />
                 <input type="hidden" name="v" value="${version.toPlainString()}" />
 
-                <p class="mx-md-4 mx-2">
+                <p>
                     <@s.text name="manage.history.intro"><@s.param>${version.toPlainString()}</@s.param><@s.param>${resource.title!resource.shortname}</@s.param></@s.text>
                 </p>
 
@@ -53,7 +53,7 @@
                 <#assign none><@s.text name="basic.none"/></#assign>
                 <#assign emptyPlaceholder="-"/>
 
-                <div class="mx-md-4 mx-2">
+                <div>
                     <#list resource.versionHistory as history>
                         <#if history.version == version.toPlainString()>
                             <table id="${history.version}" class="table table-sm table-borderless">

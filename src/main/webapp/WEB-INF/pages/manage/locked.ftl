@@ -19,7 +19,7 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
@@ -42,7 +42,7 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <div id="report" class="mx-md-4 mx-2"></div>
+        <div id="report"></div>
     </div>
 </main>
 

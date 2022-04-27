@@ -73,7 +73,7 @@
     </script>
 
     <div class="container-fluid bg-body border-bottom">
-        <div class="container">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
         </div>
 
@@ -101,7 +101,7 @@
 
     <main class="container">
         <div class="my-3 p-3">
-            <p class="mx-md-4 mx-2"><@s.text name='manage.autopublish.intro'/></p>
+            <p><@s.text name='manage.autopublish.intro'/></p>
 
             <form id="autopublish" class="topForm" action="auto-publish.do" method="post">
                 <#if resource.isDeprecatedAutoPublishingConfiguration()>
@@ -148,7 +148,7 @@
                     <#assign updateFrequencyMinute=resource.updateFrequencyMinute>
                 </#if>
 
-                <div class="row mx-md-3 mx-1">
+                <div class="row px-2">
                     <div class="form-group col-md-6 col-lg-4 px-1">
                         <label for="updateFrequency" class="form-label">
                             <@s.text name="manage.autopublish.frequency"/>
@@ -163,27 +163,27 @@
                     </div>
                 </div>
 
-                <p id="introAnnually" class="mx-md-4 mx-2">
+                <p id="introAnnually">
                     <br/>
                     <@s.text name="manage.autopublish.intro.annually"/>
                 </p>
-                <p id="introDaily" class="mx-md-4 mx-2">
+                <p id="introDaily">
                     <br/>
                     <@s.text name="manage.autopublish.intro.daily"/>
                 </p>
-                <p id="introBiAnnually" class="mx-md-4 mx-2">
+                <p id="introBiAnnually">
                     <br/>
                     <@s.text name="manage.autopublish.intro.biannually"/>
                 </p>
-                <p id="introMonthly" class="mx-md-4 mx-2">
+                <p id="introMonthly">
                     <br/>
                     <@s.text name="manage.autopublish.intro.monthly"/>
                 </p>
-                <p id="introWeekly" class="mx-md-4 mx-2">
+                <p id="introWeekly">
                     <br/>
                     <@s.text name="manage.autopublish.intro.weekly"/>
                 </p>
-                <p id="introOff" class="mx-md-4 mx-2">
+                <p id="introOff">
                     <br/>
                     <@s.text name="manage.autopublish.intro.off"/>
                 </p>
@@ -191,23 +191,23 @@
 
                 <div id="frequencyDetails" class="mt-2">
                     <div id="frequencyDetailsEvery">
-                        <div id="helpWeekly" class="mx-md-4 mx-2 mb-2">
+                        <div id="helpWeekly" class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.weekly"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpMonthly" class="mx-md-4 mx-2 mb-2">
+                        <div id="helpMonthly" class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.monthly"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpBiAnnually" class="mx-md-4 mx-2 mb-2">
+                        <div id="helpBiAnnually" class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.biannually"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpAnnually" class="mx-md-4 mx-2 mb-2">
+                        <div id="helpAnnually" class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.annually"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div class="row mx-md-3 mx-1">
+                        <div class="row px-2">
                             <div id="updateFrequencyDayOfWeekWrapper" class="col-md-2 px-1">
                                 <select id="updateFrequencyDayOfWeek" class="form-select" name="updateFrequencyDayOfWeek" size="1">
                                     <#list daysOfWeek?keys as val>
@@ -254,10 +254,10 @@
                     </div>
 
                     <div id="frequencyDetailsAt" class="mt-2">
-                        <div class="mx-md-4 mx-2 mb-2">
+                        <div class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.hour"/> <@s.text name="manage.autopublish.at"/>
                         </div>
-                        <div class="row mx-md-3 mx-1">
+                        <div class="row px-2">
                             <div class="col-6 col-sm-6 col-md-3 col-lg-2 px-1">
                                 <select id="updateFrequencyHour" class="form-select" name="updateFrequencyHour" size="1">
                                     <#list hours?keys as val>

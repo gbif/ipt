@@ -6,7 +6,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
@@ -40,15 +40,15 @@
         <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
         <div class="my-3 p-3">
-            <p class="mx-md-4 mx-2">${mapping.extension.description}</p>
+            <p>${mapping.extension.description}</p>
 
             <#if mapping.extension.link?has_content>
-                <p class="mx-md-4 mx-2"><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
+                <p><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
             </#if>
 
-            <p class="mx-md-4 mx-2"><@s.text name='manage.mapping.source.help'/></p>
+            <p><@s.text name='manage.mapping.source.help'/></p>
 
-            <div class="row mx-md-3 mx-1">
+            <div class="row">
                 <div class="col-sm-6">
                     <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
                 </div>

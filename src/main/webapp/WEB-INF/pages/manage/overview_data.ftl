@@ -2,7 +2,7 @@
 
 <!-- Represents source data and mapping data sections on resource overview page -->
 <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
-<div class="py-5 mx-4 border-bottom section" id="sources">
+<div class="py-5 border-bottom section" id="sources">
     <div class="titleOverview">
         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
             <#assign sourcesInfo>
@@ -169,7 +169,7 @@
 </div>
 
 <span class="anchor anchor-home-resource-page" id="anchor-mappings"></span>
-<div class="py-5 mx-4 border-bottom section" id="mappings">
+<div class="py-5 border-bottom section" id="mappings">
     <#if dataSchemaBased>
         <h5 class="pb-2 mb-4 text-gbif-header-2 fw-400">
             <#assign mappingsInfo>
