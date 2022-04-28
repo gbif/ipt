@@ -15,13 +15,14 @@
 
         <div class="row">
             <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
-                <div class="">
+                <div>
                     <form action='addsource.do' method='post' enctype="multipart/form-data">
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <input name="validate" type="hidden" value="false"/>
 
                         <select id="sourceType" name="sourceType" class="form-select form-select-sm my-1">
-                            <option value="source-sql" selected><@s.text name='manage.source.database'/></option>
+                            <option value="" disabled selected><@s.text name='manage.source.select.type'/></option>
+                            <option value="source-sql"><@s.text name='manage.source.database'/></option>
                             <option value="source-file"><@s.text name='manage.source.file'/></option>
                             <option value="source-url"><@s.text name='manage.source.url'/></option>
                         </select>
@@ -33,7 +34,7 @@
                                 <input type="url" id="url" name="url" class="form-control form-control-sm my-1" placeholder="URL" style="display: none">
                             </div>
                             <div class="col-12">
-                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.connect"/>
+                                <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" cssStyle="display: none" key="button.connect"/>
                                 <@s.submit name="clear" cssClass="btn btn-sm btn-outline-secondary my-1" cssStyle="display: none" key="button.clear"/>
                             </div>
                         </div>

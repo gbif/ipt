@@ -218,7 +218,7 @@
                 $("#url").hide();
                 $("#url").prop("value", "");
                 $("#clear").hide();
-                $("#add").attr("value", '<@s.text name="button.connectDB"/>');
+                $("#add").attr("value", '<@s.text name="button.connect"/>');
                 $("#add").show();
             }
         })
