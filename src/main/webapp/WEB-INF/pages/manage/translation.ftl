@@ -1,73 +1,90 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.TranslationAction" -->
 <#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><@s.text name="manage.translation.title"/></title>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<#include "/WEB-INF/pages/inc/header.ftl">
+<title><@s.text name="manage.translation.title"/></title>
+<script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
-    <script>
-        $(document).ready(function(){
-            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
-            $("table input").focus(function() {
-                $(this).parent().parent().addClass("highlight");
-            });
-            $("table input").blur(function() {
-                $(this).parent().parent().removeClass("highlight")
-            });
-            //Hack needed for Internet Explorer X.*x
-            $('.reload').each(function() {
-                $(this).click(function() {
-                    window.location = $(this).parent('a').attr('href');
-                });
-            });
-            $('.automap').each(function() {
-                $(this).click(function() {
-                    window.location = $(this).parent('a').attr('href');
-                });
-            });
-            $('.cancel').each(function() {
-                $(this).click(function() {
-                    window.location = $(this).parent('a').attr('href');
-                });
-            });
-            // end hack
-            <#-- use vocabulary -->
-            <#if (vocabTermsSize>0)>
-            var vocab = [<#list vocabTermsKeys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];
-            $("#translation input").autocomplete({
-                source: vocab
-            })
-            </#if>
+<script>
+    $(document).ready(function(){
+        $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
+        $("table input").focus(function() {
+            $(this).parent().parent().addClass("highlight");
         });
-    </script>
-    <#assign currentMenu = "manage"/>
-    <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/forms.ftl"/>
-    <#include "/WEB-INF/pages/macros/manage/translation_buttons.ftl"/>
+        $("table input").blur(function() {
+            $(this).parent().parent().removeClass("highlight")
+        });
+        //Hack needed for Internet Explorer X.*x
+        $('.reload').each(function() {
+            $(this).click(function() {
+                window.location = $(this).parent('a').attr('href');
+            });
+        });
+        $('.automap').each(function() {
+            $(this).click(function() {
+                window.location = $(this).parent('a').attr('href');
+            });
+        });
+        $('.cancel').each(function() {
+            $(this).click(function() {
+                window.location = $(this).parent('a').attr('href');
+            });
+        });
+        // end hack
+        <#-- use vocabulary -->
+        <#if (vocabTermsSize>0)>
+        var vocab = [<#list vocabTermsKeys as code>{"value":"${code?replace('"','\"')}","label":"${vocabTerms[code]}"},</#list>];
+        $("#translation input").autocomplete({
+            source: vocab
+        })
+        </#if>
+    });
+</script>
+<#assign currentMenu = "manage"/>
+<#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-<div class="container-fluid bg-body border-bottom">
-    <div class="container my-3">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+<form class="translation-form" action="translation.do" method="post">
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container my-3">
+            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
+
+        <div class="container my-3 p-3">
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <@s.text name="basic.resource"/>
+            </div>
+
+            <div class="text-center">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <@s.text name="manage.translation.title"/>
+                </h1>
+            </div>
+
+            <div class="mt-2 text-center">
+                <div class="mx-md-4 mx-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
+
+                    <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button mt-1" name="delete" key="button.delete"/>
+
+                    <a class="button btn btn-sm btn-outline-secondary top-button mt-1" role="button" href="mapping.do?r=${resource.shortname}&id=${property.extension.rowType?url}&mid=${mid}">
+                        <@s.text name='button.cancel'/>
+                    </a>
+
+                    <a class="button btn btn-sm btn-outline-secondary top-button mt-1" href='translationReload.do?r=${resource.shortname}&mapping=${property.extension.rowType?url}&term=${property.qualname?url}&mid=${mid}&rowtype=${property.extension.rowType?url}'>
+                        <@s.text name="button.reload"/>
+                    </a>
+
+                    <#if property.vocabulary?has_content>
+                        <a class="button btn btn-sm btn-outline-secondary top-button mt-1" role="button" href='translationAutomap.do?r=${resource.shortname}&mapping=${property.extension.rowType?url}&rowtype=${property.extension.rowType?url}&term=${property.qualname?url}&mid=${mid}'>
+                            <@s.text name="button.automap"/>
+                        </a>
+                    </#if>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="container my-3 p-3">
-        <div class="text-center text-uppercase fw-bold fs-smaller-2">
-            <@s.text name="basic.resource"/>
-        </div>
-
-        <div class="text-center">
-            <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                <@s.text name="manage.translation.title"/>
-            </h1>
-        </div>
-
-        <div class="mt-2 text-center">
-            <@buttons/>
-        </div>
-    </div>
-</div>
-
-<main class="container">
-    <form class="topForm" action="translation.do" method="post">
+    <main class="container">
         <div class="my-3 p-3">
             <p><@s.text name="manage.translation.intro"/></p>
         </div>
@@ -139,9 +156,8 @@
             </table>
             </div>
         </div>
-    </form>
+    </main>
+</form>
 
-</main>
-
-    <#include "/WEB-INF/pages/inc/footer.ftl">
+<#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

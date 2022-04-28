@@ -315,13 +315,15 @@
                 <small class="text-truncate"><@sourceSample field.index fieldsIndex/></small>
                 <div id="fTIdx${fieldsIndex}" class="sample mappingText">
                     <small class="mx-3"><@s.text name='manage.mapping.translation' />:</small>
-                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}" class="text-smaller">
-                        <#if (((field.translation?size)!0)>0)>
-                            ${(field.translation?size)!0} terms
-                        <#else>
-                            <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
-                        </#if>
-                    </a>
+                    <small>
+                        <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
+                            <#if (((field.translation?size)!0)>0)>
+                                ${(field.translation?size)!0} terms
+                            <#else>
+                                <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
+                            </#if>
+                        </a>
+                    </small>
                 </div>
             </#if>
 
