@@ -43,6 +43,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.POIXMLException;
 
 /**
  * Uses apache POI to parse excel spreadsheets.
@@ -105,6 +106,8 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       return WorkbookFactory.create(fis);
     } catch (InvalidFormatException e) {
       throw new IOException("Cannot open invalid excel spreadsheet", e);
+    } catch (POIXMLException e) {
+      throw new IOException(e);
     }
   }
 
@@ -223,12 +226,16 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   /**
    * @return list of available sheets, keyed on sheet index
    */
-  public Map<Integer, String> sheets() throws IOException {
-    Workbook book = openBook();
-    int cnt = book.getNumberOfSheets();
+  public Map<Integer, String> sheets() {
     Map<Integer, String> sheets = new HashMap<>();
-    for (int x = 0; x < cnt; x++) {
-      sheets.put(x, book.getSheetName(x));
+    try {
+      Workbook book = openBook();
+      int cnt = book.getNumberOfSheets();
+      for (int x = 0; x < cnt; x++) {
+        sheets.put(x, book.getSheetName(x));
+      }
+    } catch (Exception e) {
+      LOG.error("Exception while reading excel source " + name, e);
     }
     return sheets;
   }
