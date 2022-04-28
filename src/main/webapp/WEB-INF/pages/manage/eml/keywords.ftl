@@ -50,7 +50,7 @@
                         <#include "eml_sidebar.ftl"/>
                     </div>
 
-                    <div class="bd-content ps-lg-4">
+                    <div class="bd-content">
                         <div class="my-md-3 p-3">
 
                             <p class="mb-0">

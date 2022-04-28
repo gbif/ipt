@@ -50,7 +50,7 @@
                         <#include "eml_sidebar.ftl"/>
                     </div>
 
-                    <div class="bd-content ps-lg-4">
+                    <div class="bd-content">
                         <div class="my-md-3 p-3">
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.project.intro'/>
@@ -75,7 +75,7 @@
                         <div class="my-md-3 p-3">
                             <!-- List of personnel -->
                             <div class="listBlock">
-                                <@textinline name="eml.project.personnel" help="i18n" requiredField=true/>
+                                <@textinline name="eml.project.personnel" help="i18n"/>
 
                                 <div id="personnel-items">
                                     <#list eml.project.personnel as item>
@@ -118,7 +118,6 @@
 
                             <!-- internal parameter -->
                             <input name="r" type="hidden" value="${resource.shortname}" />
-
 
                             <div id="baseItem-personnel" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="columnLinks mt-3 d-flex justify-content-between">
