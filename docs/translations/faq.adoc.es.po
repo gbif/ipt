@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-04-28 13:27+0000\n"
-"PO-Revision-Date: 2022-04-28 13:40\n"
+"PO-Revision-Date: 2022-04-28 15:23\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -710,12 +710,12 @@ msgstr ""
 #: en/modules/ROOT/pages/faq.adoc:271
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
-msgstr ""
+msgstr "¿Cómo puedo exportar una lista de recursos publicados en mi IPT?"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:274
 msgid "Some organizations need to index their own IPT, often to include records of each resource in a public open data system or similar.  The IPT supports DCAT (Data Catalog Vocabulary) to allow this.  The DCAT export is available at `/dcat`, for example https://ipt.gbif.org/dcat."
-msgstr ""
+msgstr "Algunas organizaciones necesitan indexar su propio IPT, a menudo para incluir registros de cada recurso en un sistema público de datos abiertos o similar. El IPT es compatible con DCAT (Vocabulario de catálogo de datos) para permitir esto. La exportación al DCAT está disponible en `/dcat`, por ejemplo, https://ipt.gbif.org/dcat."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:275
