@@ -154,16 +154,16 @@
             });
         })
 
-        var showReport=false;
-        $("#toggleReport").click(function() {
-            if(showReport){
-                showReport=false;
+        var showReport = false;
+        $("#toggleReport").click(function () {
+            if (showReport) {
+                showReport = false;
                 $("#toggleReport").text("<@s.text name='basic.show'/>");
-                $('#dwcaReport').hide();
-            }else{
-                showReport=true;
+                $('#dwcaReport').fadeOut();
+            } else {
+                showReport = true;
                 $("#toggleReport").text("<@s.text name='basic.hide'/>");
-                $('#dwcaReport').show();
+                $('#dwcaReport').fadeIn();
             }
         });
         //Hack needed for Internet Explorer X.*x
@@ -731,7 +731,7 @@
                                                         <#if report?? && (report.state?contains('cancelled') || report.exception?has_content) >
                                                             <em>${report.state}</em>&nbsp;
                                                         </#if>
-                                                        <a id="toggleReport" href="#">${showTitle?cap_first}</a>
+                                                        <a id="toggleReport" href="#anchor-publish">${showTitle?cap_first}</a>
                                                     </td>
                                                     <td class="left_padding">${emptyCell}</td>
                                                 </tr>
@@ -742,10 +742,10 @@
                                         <table>
                                             <tr id="dwcaReport" style="display: none;">
                                                 <td colspan="2">
-                                                    <div class="report">
-                                                        <ul class="simple">
+                                                    <div class="report text-smaller">
+                                                        <ul class="simple list-unstyled">
                                                             <#list report.messages as msg>
-                                                                <li class="${msg.level}">${msg.message} <span class="small">${msg.date?time?string}</span></li>
+                                                                <li class="${msg.level}"><span class="small">${msg.date?time?string}</span> ${msg.message}</li>
                                                             </#list>
                                                         </ul>
                                                         <#if cfg.debug() && report.hasException()>
