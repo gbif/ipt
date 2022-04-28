@@ -120,10 +120,10 @@
                 </tr>
                 <#list sourceValuesMap?keys as k>
                     <tr>
-                        <td>${sourceValuesMap.get(k)!}</td>
+                        <td class="align-middle py-1">${sourceValuesMap.get(k)!}</td>
                         <!-- do not show column if term does not relate to vocabulary -->
                         <#if (vocabTermsSize>0)>
-                            <td>
+                            <td class="align-middle py-1">
                                 <#if vocabTerms[tmap.get(k)!k]??>
                                     <i class="bi bi-check-circle text-gbif-primary"></i>
                                 <#else>
@@ -131,7 +131,7 @@
                                 </#if>
                             </td>
                         </#if>
-                        <td>
+                        <td class="py-1">
                             <input type="text" class="form-control form-control-sm" name="tmap['${k}']" value="${tmap.get(k)!}"/>
                         </td>
                     </tr>
