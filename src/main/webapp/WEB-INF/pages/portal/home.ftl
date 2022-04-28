@@ -9,7 +9,7 @@
 <@resourcesTable shownPublicly=true numResourcesShown=20 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
@@ -38,11 +38,11 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <div id="tableContainer" class="table-responsive text-smaller mx-md-4 mx-2 pt-2"></div>
+        <div id="tableContainer" class="table-responsive text-smaller pt-2"></div>
 
         <!-- RSS Feed shown if there are resources -->
         <#if (resources?size>0)>
-            <p class="mx-md-4 mx-2 pt-2">
+            <p class="pt-2">
                 <i class="bi bi-rss"></i>
                 <@s.text name="portal.home.feed"><@s.param>${baseURL}/rss.do</@s.param></@s.text>
             </p>

@@ -157,7 +157,7 @@
 </script>
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
@@ -236,7 +236,7 @@
 <div class="container-fluid bg-light border-bottom">
     <div class="container">
         <div class="my-4 p-3 pt-4 bg-body border rounded shadow-sm">
-            <div class="mx-md-4 mx-2">
+            <div>
                 <div class="row">
                     <div class="col-lg-8 text-smaller">
                         <#if (eml.description?size>0)>
