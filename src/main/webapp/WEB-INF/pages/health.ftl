@@ -24,7 +24,7 @@
 </div>
 
 <main class="container">
-    <div class="row g-3 mt-1 mx-md-3 mx-1">
+    <div class="row g-3 mt-1">
       <div class="col-lg-6">
         <div class="card">
           <div class="card-header">
@@ -120,7 +120,7 @@
       </div>
     </div>
 
-    <div class="row g-3 mt-1 mb-3 mx-md-3 mx-1">
+    <div class="row g-3 mt-1 mb-3">
       <div class="col-lg-6">
         <div class="card">
           <div class="card-header">

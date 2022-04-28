@@ -5,7 +5,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 

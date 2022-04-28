@@ -61,7 +61,7 @@
             </div>
 
             <div class="mt-2 text-center">
-                <div class="mx-md-4 mx-2">
+                <div>
                     <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
 
                     <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button mt-1" name="delete" key="button.delete"/>

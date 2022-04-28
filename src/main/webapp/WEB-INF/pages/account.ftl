@@ -5,7 +5,7 @@
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
 <div class="container-fluid bg-body border-bottom">
-    <div class="container">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
@@ -20,9 +20,9 @@
             </h1>
 
             <div class="mt-2">
-                <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                <@s.submit form="changePassword" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="change-password" key="button.changePassword"/>
-                <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
+                <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
+                <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-secondary top-button mt-1" name="cancel" key="button.cancel"/>
+                <@s.submit form="changePassword" cssClass="btn btn-sm btn-outline-gbif-primary top-button mt-1" name="change-password" key="button.changePassword"/>
             </div>
         </div>
     </div>

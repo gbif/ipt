@@ -26,7 +26,7 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <div class="mx-md-4 mx-2">
+        <div>
             <@content?interpret />
         </div>
     </div>
