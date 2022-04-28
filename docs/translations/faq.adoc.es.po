@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-04-28 13:27+0000\n"
-"PO-Revision-Date: 2022-04-28 15:23\n"
+"PO-Revision-Date: 2022-04-28 15:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -704,7 +704,7 @@ msgstr "El IPT acepta citas de los conjuntos de datos en texto libre, sin embarg
 #: en/modules/ROOT/pages/faq.adoc:269
 #, no-wrap
 msgid "Indexing by others"
-msgstr ""
+msgstr "Indexación por otros"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:271
@@ -720,5 +720,5 @@ msgstr "Algunas organizaciones necesitan indexar su propio IPT, a menudo para in
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:275
 msgid "An alternative is the https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], though this will only include datasets published to GBIF."
-msgstr ""
+msgstr "Una alternativa es https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], aunque esto solo incluirá conjuntos de datos publicados en GBIF."
 
