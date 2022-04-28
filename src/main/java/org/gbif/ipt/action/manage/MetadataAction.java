@@ -603,6 +603,9 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   public Map<String, String> getUserIdDirectories() {
+    if (userIdDirectories == null) {
+      loadDirectories(getText("eml.contact.noDirectory"));
+    }
     return userIdDirectories;
   }
 
