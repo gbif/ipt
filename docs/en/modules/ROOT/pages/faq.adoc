@@ -265,3 +265,11 @@ GBIF supports 4 classes of datasets described xref:how-to-publish.adoc[here]. GB
 === Why is my dataset citation different on GBIF.org?
 
 The IPT supports free-text dataset citations, however, these get overwritten on the GBIF.org dataset page. You can find out why in the https://www.gbif.org/faq?q=citation[GBIF.org FAQ].
+
+== Indexing by others
+
+=== How can I export a list of resources published in my IPT?
+
+Some organizations need to index their own IPT, often to include records of each resource in a public open data system or similar.  The IPT supports DCAT (Data Catalog Vocabulary) to allow this.  The DCAT export is available at `/dcat`, for example https://ipt.gbif.org/dcat.
+
+An alternative is the https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], though this will only include datasets published to GBIF.
