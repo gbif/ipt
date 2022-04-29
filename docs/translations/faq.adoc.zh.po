@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2022-04-28 13:27+0000\n"
-"PO-Revision-Date: 2022-04-28 13:40\n"
+"POT-Creation-Date: 2022-04-29 08:24+0000\n"
+"PO-Revision-Date: 2022-04-29 08:35\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -562,155 +562,150 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:225
-msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `VRRUXOTCtdCkQr40SrHdrnUJurTOYMW9`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:227
-msgid "If they prefer, a Java developer could modify the https://github.com/gbif/ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest.java[PBEEncryptTest class] to generate a hash for a different password)."
+msgid "Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role=\"Admin\"`), and replace the encrypted password with `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:228
+#: en/modules/ROOT/pages/faq.adoc:226
 #, no-wrap
 msgid "How do I migrate a dataset from one IPT installation to another?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:230
+#: en/modules/ROOT/pages/faq.adoc:228
 msgid "This migration process must be done directly on the server following the next steps:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:232
+#: en/modules/ROOT/pages/faq.adoc:230
 msgid "Shut down the old IPT server; just to check no-one makes any changes."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:233
+#: en/modules/ROOT/pages/faq.adoc:231
 msgid "In the old IPT go to `/old-ipt-datadir/resources/[dataset_name]` and copy the whole dataset folder"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:234
+#: en/modules/ROOT/pages/faq.adoc:232
 msgid "In the new IPT go to `/new-ipt-datadir/resources/` and paste the dataset folder"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:235
+#: en/modules/ROOT/pages/faq.adoc:233
 msgid "Restart the new IPT server"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:236
+#: en/modules/ROOT/pages/faq.adoc:234
 msgid "Publish the dataset in the new IPT (updates the endpoint)."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:237
+#: en/modules/ROOT/pages/faq.adoc:235
 #, no-wrap
 msgid "Indexing by GBIF"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:239
+#: en/modules/ROOT/pages/faq.adoc:237
 #, no-wrap
 msgid "How long does it take GBIF to start (re)indexing my dataset?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:242
+#: en/modules/ROOT/pages/faq.adoc:240
 msgid "The answer depends on how long GBIF's indexing queue is, how big your dataset it and whether GBIF's indexing service is turned on."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:244
+#: en/modules/ROOT/pages/faq.adoc:242
 msgid "Normally it will take between 5-60 minutes for GBIF to start indexing your dataset. It can take several hours to finish indexing large datasets once started (those with several million records) so please be patient. At the bottom of the https://www.gbif.org/health[GBIF health page] the length of the indexing queue is shown, and the full queue can be seen on the https://registry.gbif.org/monitoring/running-crawls[Crawl Monitor]."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:246
+#: en/modules/ROOT/pages/faq.adoc:244
 msgid "If you believe GBIF failed to index your dataset successfully, please submit feedback directly via GBIF.org, or send an email to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened. If you are interested in finding out why GBIF may not have (re)indexed your dataset, please see 2 below."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:247
+#: en/modules/ROOT/pages/faq.adoc:245
 #, no-wrap
 msgid "Why hasn't GBIF (re)indexed my dataset yet?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:250
+#: en/modules/ROOT/pages/faq.adoc:248
 msgid "Occasionally, GBIF turns off its indexing service for maintenance (see the links in the previous question). This is the most common reason why datasets aren't indexed as quickly as expected."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:252
+#: en/modules/ROOT/pages/faq.adoc:250
 msgid "If you believe GBIF failed to index your dataset, please submit feedback directly via GBIF.org, or send an email directly to the GBIF Helpdesk <helpdesk@gbif.org> to investigate what happened."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:253
+#: en/modules/ROOT/pages/faq.adoc:251
 #, no-wrap
 msgid "How often does GBIF reindex my dataset?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:256
+#: en/modules/ROOT/pages/faq.adoc:254
 msgid "GBIF automatically attempts to reindex a registered dataset each time its registration is updated. This happens each time the dataset gets republished via the IPT."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:258
+#: en/modules/ROOT/pages/faq.adoc:256
 msgid "To cater to datasets not published using the IPT, GBIF automatically attempts to reindex all registered datasets every 7 days."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:260
+#: en/modules/ROOT/pages/faq.adoc:258
 msgid "GBIF will only reindex a dataset if its last published date has changed since the last time it was indexed."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:261
+#: en/modules/ROOT/pages/faq.adoc:259
 #, no-wrap
 msgid "What type of datasets does GBIF index/support?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:264
+#: en/modules/ROOT/pages/faq.adoc:262
 msgid "GBIF supports 4 classes of datasets described xref:how-to-publish.adoc[here]. GBIF currently only indexes species occurrence records, which can be provided as either core records or as extension records. In the case of sampling-event datasets, species occurrences in extension records will be augmented with information coming from its core event record wherever possible."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:265
+#: en/modules/ROOT/pages/faq.adoc:263
 #, no-wrap
 msgid "Why is my dataset citation different on GBIF.org?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:268
+#: en/modules/ROOT/pages/faq.adoc:266
 msgid "The IPT supports free-text dataset citations, however, these get overwritten on the GBIF.org dataset page. You can find out why in the https://www.gbif.org/faq?q=citation[GBIF.org FAQ]."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/faq.adoc:269
+#: en/modules/ROOT/pages/faq.adoc:267
 #, no-wrap
 msgid "Indexing by others"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/faq.adoc:271
+#: en/modules/ROOT/pages/faq.adoc:269
 #, no-wrap
 msgid "How can I export a list of resources published in my IPT?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:274
+#: en/modules/ROOT/pages/faq.adoc:272
 msgid "Some organizations need to index their own IPT, often to include records of each resource in a public open data system or similar.  The IPT supports DCAT (Data Catalog Vocabulary) to allow this.  The DCAT export is available at `/dcat`, for example https://ipt.gbif.org/dcat."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/faq.adoc:275
+#: en/modules/ROOT/pages/faq.adoc:273
 msgid "An alternative is the https://www.gbif.org/developer/registry#installations[GBIF Registry Installations API], though this will only include datasets published to GBIF."
 msgstr ""
 
