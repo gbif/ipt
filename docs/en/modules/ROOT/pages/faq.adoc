@@ -221,9 +221,7 @@ Last, press the "update registration" button on the Edit GBIF Registration page.
 
 If you have forgotten the admin password, the server administrator will need to reset it.
 
-Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role="Admin"`), and replace the encrypted password with `VRRUXOTCtdCkQr40SrHdrnUJurTOYMW9`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed.
-
-If they prefer, a Java developer could modify the https://github.com/gbif/ipt/blob/master/src/test/java/org/gbif/ipt/utils/PBEEncryptTest.java[PBEEncryptTest class] to generate a hash for a different password).
+Using a text editor, open the file `config/users.xml` contained in the IPT data directory.  Find the admin user (with `role="Admin"`), and replace the encrypted password with `$2a$12$sI48l9ZdW8pvxbxE8GygZe5CXU/dFFj1UrCSP0vEh7rkk8csMPTt6`.  Restart the IPT.  You can then log in as the admin user with the password `Ga_1bxiedrvNHSyK` — of course, this password should then be changed.
 
 === How do I migrate a dataset from one IPT installation to another?
 This migration process must be done directly on the server following the next steps:
