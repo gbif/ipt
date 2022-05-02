@@ -148,7 +148,7 @@
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1199px) {
     .border-xl-max-top {
         border-top: 1px solid #e3e7eb !important;
     }

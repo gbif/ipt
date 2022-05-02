@@ -5,15 +5,17 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
-<main class="container">
-	<div class="row my-2 p-3">
-		<div class="col-sm-12 mb-3">
-			<div class="card admin-card border rounded shadow-sm">
-				<h5 class="border-bottom pb-2 mb-0 mx-4 pt-4 text-gbif-header fw-400 text-center">
-					<@s.text name="menu.admin"/>
-				</h5>
+<div class="container-fluid bg-body">
+	<div class="container my-3">
+		<#include "/WEB-INF/pages/inc/action_alerts.ftl">
+	</div>
+</div>
 
-				<div class="card-body my-lg-3 mt-0 mb-3">
+<main class="container">
+	<div class="row mt-xl-5">
+		<div class="col-sm-12 p-0 border-xl shadow-sm">
+			<div class="card admin-card">
+				<div class="card-body m-0 p-0">
 					<div class="row gx-0 text-center admin-col-listing">
 						<div class="col-xl-3 col-12">
 							<a href="${baseURL}/admin/config.do" title="" class="admin-col-listing-item border-xl-right border-bottom">
@@ -93,7 +95,17 @@
 							</a>
 						</div>
 						<div class="col-xl-3 col-12">
-							<a href="${baseURL}/admin/logs.do" title="" class="admin-col-listing-item border-xl-right">
+							<a href="${baseURL}/admin/schemas.do" title="" class="admin-col-listing-item border-xl-right border-xl-max-bottom">
+								<div class="admin-icon-wrapper">
+									<i class="bi bi-columns-gap admin-icon"></i>
+								</div>
+								<h5 class="admin-card-title fw-400">
+									<@s.text name="admin.home.manageSchemas"/>
+								</h5>
+							</a>
+						</div>
+						<div class="col-xl-3 col-12">
+							<a href="${baseURL}/admin/logs.do" title="" class="admin-col-listing-item">
 								<div class="admin-icon-wrapper">
 									<i class="bi bi-journal-text admin-icon"></i>
 								</div>

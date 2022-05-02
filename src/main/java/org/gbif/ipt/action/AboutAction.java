@@ -36,6 +36,7 @@ public class AboutAction extends BaseAction {
   private static final Logger LOG = LogManager.getLogger(AboutAction.class);
 
   private final Configuration ftl;
+  private String title;
   private String content;
 
   @Inject
@@ -49,25 +50,36 @@ public class AboutAction extends BaseAction {
     return content;
   }
 
+  public String getTitle() {
+    return title;
+  }
+
   @Override
   public void prepare() {
     StringWriter result;
     Template tmpl;
+
+    // get title from ipt.properties, otherwise use default one
+    title = cfg.getProperty("about.title");
+    if (title == null) {
+      title = getText("about.title");
+    }
+
     try {
       result = new StringWriter();
-      tmpl = ftl.getTemplate("datadir::config/about.ftl");
+      tmpl = ftl.getTemplate("datadir::config/about2.ftl");
       tmpl.process(this, result);
       content = result.toString();
     } catch (Exception e) {
-      LOG.warn("Cannot render custom about.ftl template from data dir. Trying default template...", e);
+      LOG.warn("Cannot render custom about2.ftl template from data dir. Trying default template...");
 
       try {
         result = new StringWriter();
-        tmpl = ftl.getTemplate("configDefault/about.ftl");
+        tmpl = ftl.getTemplate("configDefault/about2.ftl");
         tmpl.process(this, result);
         content = result.toString();
       } catch (Exception ex) {
-        LOG.warn("Cannot render default about.ftl template from classpath", ex);
+        LOG.warn("Cannot render default about2.ftl template from classpath", ex);
         content = "";
       }
     }

@@ -49,13 +49,17 @@ public class InvalidConfigException extends RuntimeException {
      */
     USER_CONFIG,
     /**
-     * Extension is invalid for some reason. For example it has XML breaking characters and can't be parsed.
+     * Extension is invalid for some reason. For example, it has XML breaking characters and can't be parsed.
      */
     INVALID_EXTENSION,
     /**
-     * Vocabulary is invalid for some reason. For example it has XML breaking characters and can't be parsed.
+     * Vocabulary is invalid for some reason. For example, it has XML breaking characters and can't be parsed.
      */
     INVALID_VOCABULARY,
+    /**
+     * Data schema is invalid for some reason. For example, it JSON can't be parsed.
+     */
+    INVALID_DATA_SCHEMA,
     /**
      * The IPT mode (test or production) has been set, and this cannot change.
      */

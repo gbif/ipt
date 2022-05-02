@@ -44,6 +44,11 @@
                 <div class="text-center fs-smaller">
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </div>
+
+                <div class="text-center mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                </div>
             </div>
         </div>
 
@@ -57,7 +62,7 @@
                         <#include "eml_sidebar.ftl"/>
                     </div>
 
-                    <div class="bd-content ps-lg-4">
+                    <div class="bd-content">
 
                         <div class="my-md-3 p-3">
 
@@ -71,13 +76,13 @@
                                 <#list eml.taxonomicCoverages as item>
                                     <div id='item-${item_index}' class="item border-bottom">
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${item_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></a>
+                                            <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></a>
                                         </div>
 
                                         <@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
 
                                         <!-- Taxon list-->
-                                        <div class="my-2">
+                                        <div class="my-2 text-smaller">
                                             <@link name="taxonsLink-${item_index}" class="show-taxonList mt-1" value="manage.metadata.taxcoverage.addSeveralTaxa" help="i18n" i18nkey="manage.metadata.taxcoverage.addSeveralTaxa"/>
                                         </div>
 
@@ -91,6 +96,9 @@
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
                                                     <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
+                                                        <div class="d-flex justify-content-end">
+                                                            <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></a>
+                                                        </div>
                                                         <div class="col-lg-4 d-flex align-items-end">
                                                             <div class="w-100">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
@@ -107,14 +115,6 @@
                                                             <div class="w-100 me-2">
                                                                 <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
                                                             </div>
-
-                                                            <div>
-                                                                <#if (item.taxonKeywords ? size == 1) >
-                                                                    <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-gbif-danger" style="display: none;" role="button"><@s.text name='button.delete'/></button>
-                                                                <#else>
-                                                                    <button id="trash-${item_index}-${subItem_index}" class="btn btn-outline-gbif-danger" role="button"><@s.text name='button.delete'/></button>
-                                                                </#if>
-                                                            </div>
                                                         </div>
 
 
@@ -123,7 +123,7 @@
                                             </#if>
                                         </div>
                                         <div class="pb-1 mt-3">
-                                            <a id="plus-subItem-${item_index}" href="" >
+                                            <a id="plus-subItem-${item_index}" href="" class="text-smaller">
                                                 <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' />
                                             </a>
                                         </div>
@@ -132,16 +132,9 @@
                             </div>
 
                             <div class="addNew mt-2">
-                                <a id="plus" class="plus" href="">
+                                <a id="plus" class="plus text-smaller" href="">
                                     <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' />
                                 </a>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                                    <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
-                                </div>
                             </div>
 
                             <!-- internal parameter -->
@@ -151,7 +144,7 @@
                             <!-- The next divs are hidden. -->
                             <div id="baseItem" class="item clearfix" style="display:none">
                                 <div class="d-flex justify-content-end mt-2">
-                                    <a id="removeLink" class="removeLink" href="">
+                                    <a id="removeLink" class="removeLink text-smaller" href="">
                                         <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/>
                                     </a>
                                 </div>
@@ -160,7 +153,7 @@
 
                                 <!-- Taxon list-->
                                 <div class="addNew mt-1">
-                                    <a id="taxonsLink" class="show-taxonList" href="" >
+                                    <a id="taxonsLink" class="show-taxonList text-smaller" href="" >
                                         <@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' />
                                     </a>
                                 </div>
@@ -172,13 +165,18 @@
                                 </div>
                                 <div id="subItems" class="my-2"></div>
                                 <div class="addNew border-bottom pb-1 mt-1">
-                                    <a id="plus-subItem" href="" >
+                                    <a id="plus-subItem" href="" class="text-smaller">
                                         <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' />
                                     </a>
                                 </div>
                             </div>
 
                             <div id="subItem-9999" class="sub-item row g-3 pt-3" style="display:none">
+                                <div class="d-flex justify-content-end">
+                                    <a id="trash" class="text-smaller" href="">
+                                        <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/>
+                                    </a>
+                                </div>
                                 <div class="col-lg-4 d-flex align-items-end">
                                     <div class="w-100">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
@@ -194,10 +192,6 @@
                                 <div class="col-lg-5 d-flex align-items-end">
                                     <div class="w-100 me-2">
                                         <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
-                                    </div>
-
-                                    <div>
-                                        <button id="trash" class="btn btn-outline-gbif-danger" role="button"><@s.text name='button.delete'/></button>
                                     </div>
                                 </div>
                             </div>

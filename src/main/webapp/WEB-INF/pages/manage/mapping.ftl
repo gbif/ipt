@@ -257,7 +257,7 @@
     <#assign p=field.term/>
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
-    <div class="row py-1 g-2 mappingRow border-bottom">
+    <div class="row py-1 g-2 mappingRow border-bottom text-smaller">
             <div class="col-lg-4 pt-1">
                 <#assign fieldPopoverInfo>
                     <#if p.description?has_content>${p.description}<br/><br/></#if>
@@ -281,7 +281,7 @@
             </div>
 
             <div class="col-lg-4">
-                <select id="fIdx${fieldsIndex}" class="fidx form-select" name="fields[${fieldsIndex}].index">
+                <select id="fIdx${fieldsIndex}" class="fidx form-select form-select-sm" name="fields[${fieldsIndex}].index">
                     <option value="" <#if !field.index??> selected="selected"</#if>></option>
                     <#list columns as col>
                         <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
@@ -293,13 +293,13 @@
                 <#if p.vocabulary??>
                     <#assign vocab=vocabTerms[p.vocabulary.uriString] />
 
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                         <label class="input-group-text" for="fVal${fieldsIndex}">
                             <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">
                                 <i class="bi bi-book"></i>
                             </a>
                         </label>
-                        <select id="fVal${fieldsIndex}" class="fval form-select" name="fields[${fieldsIndex}].defaultValue">
+                        <select id="fVal${fieldsIndex}" class="fval form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
                             <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
                             <#list vocab?keys as code>
                                 <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>
@@ -307,7 +307,7 @@
                         </select>
                     </div>
                 <#else>
-                    <input id="fVal${fieldsIndex}" class="fval form-control" name="fields[${fieldsIndex}].defaultValue" value="${field.defaultValue!}"/>
+                    <input id="fVal${fieldsIndex}" class="fval form-control form-control-sm" name="fields[${fieldsIndex}].defaultValue" value="${field.defaultValue!}"/>
                 </#if>
             </div>
 
@@ -315,13 +315,15 @@
                 <small class="text-truncate"><@sourceSample field.index fieldsIndex/></small>
                 <div id="fTIdx${fieldsIndex}" class="sample mappingText">
                     <small class="mx-3"><@s.text name='manage.mapping.translation' />:</small>
-                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}" class="text-smaller">
-                        <#if (((field.translation?size)!0)>0)>
-                            ${(field.translation?size)!0} terms
-                        <#else>
-                            <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
-                        </#if>
-                    </a>
+                    <small>
+                        <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
+                            <#if (((field.translation?size)!0)>0)>
+                                ${(field.translation?size)!0} terms
+                            <#else>
+                                <button type="button" class="add btn btn-sm btn-outline-gbif-primary" onclick="window.location.href"><@s.text name="button.add"/></button>
+                            </#if>
+                        </a>
+                    </small>
                 </div>
             </#if>
 
@@ -346,14 +348,18 @@
 <form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
 <div class="container-fluid bg-body border-bottom">
 
-    <div class="container pt-2">
+    <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
     <div class="container p-3">
 
         <div class="text-center">
-            <h5 property="dc:title" class="rtitle pt-2 text-gbif-header fs-4 fw-400 text-center">
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <@s.text name="basic.resource"/>
+            </div>
+
+            <h5 property="dc:title" class="rtitle pt-2 text-gbif-header fs-2 fw-400 text-center">
                 <@popoverPropertyInfo "manage.mapping.intro"/>
                 <@s.text name='manage.mapping.title'/>
             </h5>
@@ -368,7 +374,13 @@
                 <#assign extensionType><@s.text name='extension'/></#assign>
             </#if>
 
-            <p class="mt-3">
+            <div class="mt-2">
+                <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
+                <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+            </div>
+
+            <p class="mt-3 text-smaller">
                 <@s.text name='manage.mapping.intro1'><@s.param><a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></@s.param><@s.param>${extensionType?lower_case}:</@s.param><@linkOrNameParam mapping.extension/></@s.text>
             </p>
         </div>
@@ -436,7 +448,7 @@
                 </div>
 
                 <#-- Filter and required mapping -->
-                <div class="border-bottom mb-2">
+                <div class="border-bottom mb-2 text-smaller">
                     <div class="row pt-3 pb-2 g-2 requiredMapping">
                         <div class="col-lg-4 pt-1" id="coreID">
                             <#if coreid??>
@@ -456,7 +468,7 @@
                         </div>
 
                         <div class="col-lg-4">
-                            <select name="mapping.idColumn" id="idColumn" class="form-select">
+                            <select name="mapping.idColumn" id="idColumn" class="form-select form-select-sm">
                                 <#if action.isCoreMapping()>
                                     <option value="" <#if !mapping.idColumn??> selected="selected"<#elseif (mapping.idColumn!-99)==-3> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
                                 </#if>
@@ -472,7 +484,7 @@
                         </div>
 
                         <div class="col-lg-4">
-                            <input type="text" name="mapping.idSuffix" value="${mapping.idSuffix!}" class="form-control" />
+                            <input type="text" name="mapping.idSuffix" value="${mapping.idSuffix!}" class="form-control form-control-sm" />
                         </div>
 
                         <#if ((mapping.idColumn!-99)>=0)>
@@ -489,7 +501,7 @@
                             </div>
 
                             <div class="col-lg-3">
-                                <select name="mapping.filter.filterTime" id="mapping.filter.filterTime" class="form-select">
+                                <select name="mapping.filter.filterTime" id="mapping.filter.filterTime" class="form-select form-select-sm">
                                     <#list mapping.filter.filterTimes?keys as filterTime>
                                         <option value="${filterTime}" <#if (mapping.filter.filterTime!"")==filterTime> selected="selected"</#if>>${filterTime}</option>
                                     </#list>
@@ -497,7 +509,7 @@
                             </div>
 
                             <div class="col-lg-4">
-                                <select id="filterName" name="mapping.filter.column" class="form-select">
+                                <select id="filterName" name="mapping.filter.column" class="form-select form-select-sm">
                                     <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
                                     <#list columns as c>
                                         <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
@@ -506,7 +518,7 @@
                             </div>
 
                             <div class="col-lg-2">
-                                <select id="filterComp" name="mapping.filter.comparator" class="form-select">
+                                <select id="filterComp" name="mapping.filter.comparator" class="form-select form-select-sm">
                                     <option value="" <#if !mapping.filter.comparator??> selected="selected"</#if>></option>
                                     <#list comparators as c>
                                         <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
@@ -515,7 +527,7 @@
                             </div>
 
                             <div class="col-lg-2">
-                                <input id="filterParam" name="mapping.filter.param" class="form-control" value="${mapping.filter.param!}" />
+                                <input id="filterParam" name="mapping.filter.param" class="form-control form-control-sm" value="${mapping.filter.param!}" />
                             </div>
                         </div>
 
@@ -535,9 +547,6 @@
                                         <#list groupsFields as field>
                                             <@showField field field_index/>
                                         </#list>
-                                        <div>
-                                            <@threeButtons/>
-                                        </div>
                                     </div>
                                 </div>
                             </#if>
@@ -550,9 +559,6 @@
                             <#list fields as field>
                                 <@showField field field_index/>
                             </#list>
-                            <div>
-                                <@threeButtons/>
-                            </div>
                         </div>
                     </#if>
 
@@ -566,7 +572,7 @@
 
                     <#if (nonMapped?size>0)>
                         <span class="anchor anchor-base" id="anchor-nonmapped"></span>
-                        <div class="mt-5">
+                        <div class="mt-5" <#if (action.getRedundantGroups()?size==0)>style="height: 100vh; min-height: 200px;"</#if> >
                             <h4 id="nonmapped" class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 <@s.text name="manage.mapping.no.mapped.title"/>
                             </h4>
@@ -582,7 +588,7 @@
 
                     <#if (action.getRedundantGroups()?size>0)>
                         <span class="anchor anchor-base" id="anchor-redundant"></span>
-                        <div class="mt-5">
+                        <div class="mt-5" style="height: 100vh; min-height: 200px;">
                             <h4 id="redundant" class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 <@s.text name="manage.mapping.redundant.classes.title"/>
                             </h4>

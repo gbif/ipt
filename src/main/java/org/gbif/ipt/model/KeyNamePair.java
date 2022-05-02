@@ -45,7 +45,7 @@ public class KeyNamePair {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof KeyNamePair)) return false;
     KeyNamePair that = (KeyNamePair) o;
     return Objects.equals(key, that.key) && Objects.equals(name, that.name);
   }

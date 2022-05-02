@@ -44,31 +44,43 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
-    <div class="container-fluid bg-body border-bottom">
-        <div class="container">
-            <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-        </div>
+    <form class="topForm needs-validation" action="source.do" method="post" novalidate>
+        <div class="container-fluid bg-body border-bottom">
+            <div class="container my-3">
+                <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+            </div>
 
-        <div class="container my-3 p-3">
-            <div class="text-center">
-                <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
-                    <@popoverPropertyInfo "manage.source.intro"/>
-                    <@s.text name='manage.source.title'/>
-                </h5>
+            <div class="container my-3 p-3">
+                <div class="text-center">
+                    <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
+                        <@popoverPropertyInfo "manage.source.intro"/>
+                        <@s.text name='manage.source.title'/>
+                    </h5>
 
-                <div class="text-smaller">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    <div class="text-smaller">
+                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    </div>
+
+                    <div class="mt-2">
+                        <#if source??>
+                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="analyze" key="button.analyze"/>
+                            <#if id?has_content>
+                                <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete.source"/>
+                            </#if>
+                            <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>
+                        <#else>
+                            <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                        </#if>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="container-fluid bg-body">
-        <main class="container">
-            <div class="my-3 p-3">
-
-                <form class="topForm needs-validation" action="source.do" method="post" novalidate>
-                    <div class="row g-3 mx-lg-4 mx-2">
+        <div class="container-fluid bg-body">
+            <main class="container">
+                <div class="my-3 p-3">
+                    <div class="row g-3">
                         <input type="hidden" name="r" value="${resource.shortname}" />
                         <input type="hidden" name="id" value="${id!}" />
 
@@ -96,8 +108,18 @@
                                     <table id="source-properties" class="table table-sm table-borderless text-smaller">
                                         <tr>
                                             <th><@s.text name='manage.source.readable'/></th>
-                                            <td>
-                                                <#if source.readable> <i class="bi bi-circle-fill text-gbif-primary"></i><#else><i class="bi bi-circle-fill text-gbif-danger"></i> ${problem!}</#if>
+                                            <td class="pt-0">
+                                                <div class="p-1">
+                                                <#if source.readable>
+                                                    <svg class="icon-button-svg icon-material-check text-gbif-primary ms-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                                                    </svg>
+                                                <#else>
+                                                    <svg class="icon-button-svg icon-material-close text-gbif-danger ms-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                                    </svg> ${problem!}
+                                                </#if>
+                                                </div>
                                             </td>
                                         </tr>
 
@@ -154,18 +176,19 @@
                                                 </tr>
                                             </#if>
                                         </#if>
+
+                                        <tr>
+                                            <th><@s.text name="button.preview"/></th>
+                                            <td class="pt-0">
+                                                <a id="peekBtn" href="#" class="icon-button icon-button-sm" type="button">
+                                                    <svg class="icon-button-svg icon-material-eye" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
                                     </table>
                                 </div>
-                                <table class="bottomButtons table table-borderless">
-                                    <tr>
-                                        <th>
-                                            <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="analyze" key="button.analyze"/>
-                                            <a href="#" id="peekBtn" class="btn btn-sm btn-outline-secondary my-1">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                        </th>
-                                    </tr>
-                                </table>
                             </div>
 
                             <#-- only for sql sources -->
@@ -255,24 +278,12 @@
                                     <@dateFormat/>
                                 </div>
                             </#if>
-
-                            <div class="col-12">
-                                <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                                <@s.submit cssClass="btn btn-outline-secondary my-1" name="cancel" key="button.cancel"/>
-                                <#if id?has_content>
-                                    <@s.submit cssClass="confirm btn btn-outline-gbif-danger my-1" name="delete" key="button.delete.source"/>
-                                </#if>
-                            </div>
-                        <#else>
-                            <div class="col-12">
-                                <@s.submit cssClass="btn btn-outline-secondary" name="cancel" key="button.back"/>
-                            </div>
                         </#if>
                     </div>
-                </form>
-            </div>
-        </main>
-    </div>
+                </div>
+            </main>
+        </div>
+    </form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 </#escape>

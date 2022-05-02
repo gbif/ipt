@@ -29,6 +29,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
+import org.gbif.ipt.model.converter.DataSchemaIdentifierConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -37,6 +38,7 @@ import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.admin.DataSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -45,6 +47,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
@@ -106,6 +109,7 @@ public class ResourceManagerImplIT {
     UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
     ExtensionRowTypeConverter mockExtensionRowTypeConverter = mock(ExtensionRowTypeConverter.class);
     ExtensionManager mockExtensionManager = mock(ExtensionManager.class);
+    DataSchemaManager mockSchemaManager = mock(DataSchemaManager.class);
     JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
     SourceManager mockSourceManager = mock(SourceManager.class);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
@@ -150,10 +154,25 @@ public class ResourceManagerImplIT {
     when(mockRegistrationManagerDataCite.getDoiService()).thenReturn(dataCiteService);
 
     // mock ResourceManagerImpl for DataCite
-    ResourceManagerImpl managerDataCite = new ResourceManagerImpl(mockAppConfig, MOCK_DATA_DIR, mockEmailConverter,
-        new OrganisationKeyConverter(mockRegistrationManagerDataCite), mockExtensionRowTypeConverter, mockJdbcConverter,
-        mockSourceManager, mockExtensionManager, mockRegistryManager, mockConceptTermConverter, mockDwcaFactory,
-        mockPasswordEncrypter, mockEml2Rtf, mockVocabulariesManager, mockSimpleTextProvider,
+    ResourceManagerImpl managerDataCite = new ResourceManagerImpl(
+        mockAppConfig,
+        MOCK_DATA_DIR,
+        mockEmailConverter,
+        new OrganisationKeyConverter(mockRegistrationManagerDataCite),
+        mockExtensionRowTypeConverter,
+        mock(DataSchemaIdentifierConverter.class),
+        mockJdbcConverter,
+        mockSourceManager,
+        mockExtensionManager,
+        mockSchemaManager,
+        mockRegistryManager,
+        mockConceptTermConverter,
+        mockDwcaFactory,
+        mock(GenerateDataPackageFactory.class),
+        mockPasswordEncrypter,
+        mockEml2Rtf,
+        mockVocabulariesManager,
+        mockSimpleTextProvider,
         mockRegistrationManagerDataCite);
 
     return Stream.of(

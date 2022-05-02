@@ -152,6 +152,13 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
     </action>
 
+    <action name="schemaMapping" class="org.gbif.ipt.action.manage.DataSchemaMappingAction">
+      <result name="input">/WEB-INF/pages/manage/schemaMapping.ftl</result>
+      <result name="source">/WEB-INF/pages/manage/schemaMappingSource.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <action name="history" class="org.gbif.ipt.action.manage.VersionHistoryAction">
       <result name="input">/WEB-INF/pages/manage/version_history.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}&amp;v=${versionString}</result>

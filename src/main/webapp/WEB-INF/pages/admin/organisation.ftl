@@ -88,20 +88,40 @@
     <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/macros/popover.ftl">
 
-    <main class="container">
-        <div class="my-3 p-3 border rounded shadow-sm">
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <#if id?has_content>
-                    <@s.text name="admin.organisation.title"/>
-                <#else>
-                    <@s.text name="admin.organisation.add.title"/>
-                </#if>
-            </h5>
+        <div class="container my-3 p-3">
+            <div class="text-center">
+                <div class="text-uppercase fw-bold fs-smaller-2">
+                    <span><@s.text name="menu.admin"/></span>
+                </div>
 
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <#if id?has_content>
+                        <@s.text name="admin.organisation.title"/>
+                    <#else>
+                        <@s.text name="admin.organisation.add.title"/>
+                    </#if>
+                </h1>
+
+                <div class="mt-2">
+                    <@s.submit name="save" form="organisationsForm" key="button.save" cssClass="button btn btn-sm btn-outline-gbif-primary top-button"/>
+                    <#if id?has_content>
+                        <@s.submit name="delete" form="organisationsForm" key="button.delete" cssClass="button confirm btn btn-sm btn-outline-gbif-danger top-button"/>
+                    </#if>
+                    <@s.submit name="cancel" form="organisationsForm" key="button.cancel" cssClass="button btn btn-sm btn-outline-secondary top-button"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="my-3 p-3">
             <form id="organisationsForm" class="needs-validation" action="organisation.do" method="post" novalidate>
-                <div class="row g-3 mx-md-3 mx-1">
+                <div class="row g-3">
                     <#if id?has_content>
                         <div class="col-lg-6">
                             <@input name="organisation.name" i18nkey="admin.organisation.name" type="text" disabled=true/>
@@ -191,14 +211,6 @@
 
                     <div class="col-12 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
                         <@checkbox name="organisation.agencyAccountPrimary" i18nkey="admin.organisation.doiAccount.activated" value="${organisation.agencyAccountPrimary?c}" help="i18n"/>
-                    </div>
-
-                    <div class="col-12">
-                        <@s.submit name="save" key="button.save" cssClass="button btn btn-outline-gbif-primary"/>
-                        <#if id?has_content>
-                            <@s.submit name="delete" key="button.delete" cssClass="button confirm btn btn-outline-gbif-danger"/>
-                        </#if>
-                        <@s.submit name="cancel" key="button.cancel" cssClass="button btn btn-outline-secondary"/>
                     </div>
                 </div>
             </form>

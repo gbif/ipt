@@ -72,17 +72,38 @@
 
     </script>
 
-    <main class="container">
-        <div class="my-3 p-3 border rounded shadow-sm">
+    <div class="container-fluid bg-body border-bottom">
+        <div class="container my-3">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+        </div>
 
-            <h5 class="border-bottom pb-2 mb-2 mx-md-4 mx-2 pt-2 text-gbif-header fw-400 text-center">
-                <@s.text name='manage.autopublish.title'/>
-            </h5>
+        <div class="container my-3 p-3">
+            <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                <@s.text name='basic.resource'/>
+            </div>
 
-            <p class="mx-md-4 mx-2"><@s.text name='manage.autopublish.intro'/></p>
+            <div class="text-center">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <@s.text name="manage.autopublish.title"/>
+                </h1>
 
-            <form class="topForm" action="auto-publish.do" method="post">
+                <div class="text-smaller">
+                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                </div>
+
+                <div class="mt-2">
+                    <@s.submit form="autopublish" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit form="autopublish" cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel"  key="button.cancel"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="my-3 p-3">
+            <p><@s.text name='manage.autopublish.intro'/></p>
+
+            <form id="autopublish" class="topForm" action="auto-publish.do" method="post">
                 <#if resource.isDeprecatedAutoPublishingConfiguration()>
                     <ul class="fielderror">
                         <li><span><@s.text name='manage.overview.autopublish.deprecated.warning.description'/></span></li>
@@ -127,7 +148,7 @@
                     <#assign updateFrequencyMinute=resource.updateFrequencyMinute>
                 </#if>
 
-                <div class="row mx-md-3 mx-1">
+                <div class="row px-2">
                     <div class="form-group col-md-6 col-lg-4 px-1">
                         <label for="updateFrequency" class="form-label">
                             <@s.text name="manage.autopublish.frequency"/>
@@ -142,27 +163,27 @@
                     </div>
                 </div>
 
-                <p id="introAnnually" class="mx-md-4 mx-2">
+                <p id="introAnnually">
                     <br/>
                     <@s.text name="manage.autopublish.intro.annually"/>
                 </p>
-                <p id="introDaily" class="mx-md-4 mx-2">
+                <p id="introDaily">
                     <br/>
                     <@s.text name="manage.autopublish.intro.daily"/>
                 </p>
-                <p id="introBiAnnually" class="mx-md-4 mx-2">
+                <p id="introBiAnnually">
                     <br/>
                     <@s.text name="manage.autopublish.intro.biannually"/>
                 </p>
-                <p id="introMonthly" class="mx-md-4 mx-2">
+                <p id="introMonthly">
                     <br/>
                     <@s.text name="manage.autopublish.intro.monthly"/>
                 </p>
-                <p id="introWeekly" class="mx-md-4 mx-2">
+                <p id="introWeekly">
                     <br/>
                     <@s.text name="manage.autopublish.intro.weekly"/>
                 </p>
-                <p id="introOff" class="mx-md-4 mx-2">
+                <p id="introOff">
                     <br/>
                     <@s.text name="manage.autopublish.intro.off"/>
                 </p>
@@ -170,23 +191,23 @@
 
                 <div id="frequencyDetails" class="mt-2">
                     <div id="frequencyDetailsEvery">
-                        <div id="helpWeekly" class="mx-md-4 mx-2 mb-2">
+                        <div id="helpWeekly" class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.weekly"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpMonthly" class="mx-md-4 mx-2 mb-2">
+                        <div id="helpMonthly" class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.monthly"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpBiAnnually" class="mx-md-4 mx-2 mb-2">
+                        <div id="helpBiAnnually" class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.biannually"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div id="helpAnnually" class="mx-md-4 mx-2 mb-2">
+                        <div id="helpAnnually" class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.annually"/> <@s.text name="manage.autopublish.every"/>
                         </div>
 
-                        <div class="row mx-md-3 mx-1">
+                        <div class="row px-2">
                             <div id="updateFrequencyDayOfWeekWrapper" class="col-md-2 px-1">
                                 <select id="updateFrequencyDayOfWeek" class="form-select" name="updateFrequencyDayOfWeek" size="1">
                                     <#list daysOfWeek?keys as val>
@@ -233,10 +254,10 @@
                     </div>
 
                     <div id="frequencyDetailsAt" class="mt-2">
-                        <div class="mx-md-4 mx-2 mb-2">
+                        <div class="mb-2">
                             <@popoverPropertyInfo "manage.autopublish.help.hour"/> <@s.text name="manage.autopublish.at"/>
                         </div>
-                        <div class="row mx-md-3 mx-1">
+                        <div class="row px-2">
                             <div class="col-6 col-sm-6 col-md-3 col-lg-2 px-1">
                                 <select id="updateFrequencyHour" class="form-select" name="updateFrequencyHour" size="1">
                                     <#list hours?keys as val>
@@ -258,14 +279,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row mt-3">
-                    <div class="col-12 mx-md-3 px-3">
-                        <@s.submit cssClass="btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                        <@s.submit cssClass="btn btn-outline-secondary" name="cancel"  key="button.cancel"/>
-                    </div>
-                </div>
-
             </form>
 
         </div>

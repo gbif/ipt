@@ -63,6 +63,18 @@
       <result>/WEB-INF/pages/admin/vocabulary.ftl</result>
     </action>
 
+    <!-- DATA SCHEMA MANAGEMENT -->
+    <action name="schemas" class="org.gbif.ipt.action.admin.DataSchemaAction" method="list">
+      <result>/WEB-INF/pages/admin/schemas.ftl</result>
+    </action>
+    <action name="updateSchema" class="org.gbif.ipt.action.admin.DataSchemaAction" method="update">
+      <result type="redirect">${baseURL}/admin/schemas.do</result>
+    </action>
+    <action name="schema" class="org.gbif.ipt.action.admin.DataSchemaAction">
+      <result name="input">/WEB-INF/pages/admin/schema.ftl</result>
+      <result type="redirect">${baseURL}/admin/schemas.do</result>
+    </action>
+
     <!-- LOGS -->
     <action name="logs" class="org.gbif.ipt.action.admin.LogsAction">
       <result>/WEB-INF/pages/admin/logs.ftl</result>

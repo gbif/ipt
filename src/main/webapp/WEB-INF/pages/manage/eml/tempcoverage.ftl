@@ -228,6 +228,11 @@
                 <div class="text-center fs-smaller">
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </div>
+
+                <div class="text-center mt-2">
+                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                </div>
             </div>
         </div>
 
@@ -241,7 +246,7 @@
                         <#include "eml_sidebar.ftl"/>
                     </div>
 
-                    <div class="bd-content ps-lg-4">
+                    <div class="bd-content">
                         <div class="my-md-3 p-3">
 
                             <p class="mb-0 mb-1">
@@ -254,7 +259,7 @@
                                 <#list eml.temporalCoverages as temporalCoverage>
                                     <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
+                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
                                         </div>
 
                                         <div class="col-lg-6">
@@ -303,12 +308,9 @@
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->
                             <div class="addNew col-12 mt-1">
-                                <a id="plus" href="" ><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.tempcoverage.item' /></a>
+                                <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.tempcoverage.item' /></a>
                             </div>
-                            <div class="buttons col-12 mt-3">
-                                <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-                                <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
-                            </div>
+
                             <!-- internal parameter -->
                             <input name="r" type="hidden" value="${resource.shortname}" />
 
@@ -316,7 +318,7 @@
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
                             <div id="temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
                                 <div class="d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
                                 </div>
                                 <div class="col-lg-6">
                                     <@select i18nkey="eml.temporalCoverages.type"  name="tempTypes" options=tempTypes />
