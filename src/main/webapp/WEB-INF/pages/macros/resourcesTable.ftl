@@ -61,7 +61,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             var urlParams = new URLSearchParams(window.location.search);
             var searchParam = urlParams.get(SEARCH_PARAM) ? urlParams.get(SEARCH_PARAM) : "";
 
-            $('#tableContainer').html( '<table  class="table table-sm" id="rtable"></table>' );
+            $('#tableContainer').html( '<table  class="table table-sm align-middle" id="rtable"></table>' );
             var dt = $('#rtable').DataTable( {
                 "aaData": aDataSet,
                 "iDisplayLength": ${numResourcesShown},
