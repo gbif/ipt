@@ -95,11 +95,11 @@ header, .dropdown-menu {
     fill: rgba(255, 255, 255, 0.55);
 }
 
-.gbif-heartbeat-icon:hover, .gbif-translate-icon:hover {
+.gbif-heartbeat-icon:hover:not(.gbif-heartbeat-icon.active), .gbif-translate-icon:hover:not(.gbif-translate-icon.active) {
     fill: rgba(255, 255, 255, 0.75);
 }
 
-.gbif-heartbeat-icon:active, .gbif-translate-icon:active {
+.gbif-heartbeat-icon.active, .gbif-translate-icon.active {
     fill: #fff;
 }
 
@@ -110,6 +110,26 @@ header, .dropdown-menu {
 .navbar-toggler:focus {
     box-shadow: none;
 }
+
+/* Health logo with red circle */
+/*.health-link::after {*/
+/*    content: ' ';*/
+/*    display: block;*/
+/*    position: absolute;*/
+/*    width: 10px;*/
+/*    height: 10px;*/
+/*    background: tomato;*/
+/*    border-radius: 50%;*/
+/*    top: 5px;*/
+/*    right: 5px;*/
+/*    pointer-events: none;*/
+/*}*/
+
+/*@media (max-width: 1200px) {*/
+/*    .health-link::after {*/
+/*        left: 15px;*/
+/*    }*/
+/*}*/
 /* Logo, header, menu etc. END */
 
 /* Material UI icons */
