@@ -5,7 +5,8 @@
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container my-3">
-        [#include "/WEB-INF/pages/inc/action_alerts.ftl"]
+        [#include "/WEB-INF/pages/inc/action_alerts_warnings.ftl"]
+        [#include "/WEB-INF/pages/inc/action_alerts_errors.ftl"]
     </div>
 
     <div class="container my-3 p-3">
