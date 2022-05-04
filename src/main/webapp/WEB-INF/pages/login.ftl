@@ -23,7 +23,7 @@
                     Integrated Publishing Toolkit
                 </div>
                 <div class="text-smaller" style="opacity: 0.75;">
-                    free and open access to biodiversity data
+                    <@s.text name="admin.config.setup.common.tagline"/>
                 </div>
             </div>
         </div>
