@@ -223,6 +223,26 @@
             }
         })
 
+        $("#manager").change(function (e) {
+            var manager = this.options[e.target.selectedIndex].value;
+
+            if (manager) {
+                $("#add-manager").show();
+            } else {
+                $("#add-manager").hide();
+            }
+        });
+
+        $("#network").change(function (e) {
+            var network = this.options[e.target.selectedIndex].value;
+
+            if (network) {
+                $("#add-network").show();
+            } else {
+                $("#add-network").hide();
+            }
+        });
+
         $("#file").change(function() {
             var usedFileName = $("#file").prop("value");
             if (usedFileName !== "") {
@@ -1003,12 +1023,12 @@
                                         <form action='resource-addNetwork.do' method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}"/>
                                             <select name="id" class="form-select form-select-sm my-1" id="network" size="1">
-                                                <option value=""></option>
+                                                <option value="" disabled selected><@s.text name='manage.overview.networks.select'/></option>
                                                 <#list potentialNetworks?sort_by("name") as n>
                                                     <option value="${n.key}">${n.name}</option>
                                                 </#list>
                                             </select>
-                                            <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
+                                            <@s.submit id="add-network" name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add" cssStyle="display: none"/>
                                         </form>
                                     </div>
                                 </#if>
@@ -1074,12 +1094,12 @@
                                         <form action='resource-addManager.do' method='post'>
                                             <input name="r" type="hidden" value="${resource.shortname}"/>
                                             <select name="id" class="form-select form-select-sm my-1" id="manager" size="1">
-                                                <option value=""></option>
+                                                <option value="" disabled selected><@s.text name='manage.overview.resource.managers.select'/></option>
                                                 <#list potentialManagers?sort_by("name") as u>
                                                     <option value="${u.email}">${u.name}</option>
                                                 </#list>
                                             </select>
-                                            <@s.submit name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add"/>
+                                            <@s.submit id="add-manager" name="add" cssClass="btn btn-sm btn-outline-gbif-primary my-1" key="button.add" cssStyle="display: none"/>
                                         </form>
                                     </div>
                                 </#if>
