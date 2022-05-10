@@ -393,13 +393,6 @@
 
             <div class="text-center">
                 <h5 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <#if dataSchemaBased>
-                        <@popoverPropertyInfo "manage.overview.dataSchema.description"/>
-                    <#elseif resource.coreType?has_content && resource.coreType==metadataType>
-                        <@popoverPropertyInfo "manage.overview.description.metadataOnly"/>
-                    <#else>
-                        <@popoverPropertyInfo "manage.overview.description"/>
-                    </#if>
                     <@s.text name="manage.overview.title"/>
                 </h5>
 
@@ -447,6 +440,16 @@
 
                     <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
                 </div>
+
+                <p class="mt-3 mb-0 text-smaller">
+                    <#if dataSchemaBased>
+                        <@s.text name="manage.overview.dataSchema.description"/>
+                    <#elseif resource.coreType?has_content && resource.coreType==metadataType>
+                        <@s.text name="manage.overview.description.metadataOnly"/>
+                    <#else>
+                        <@s.text name="manage.overview.description"/>
+                    </#if>
+                </p>
 
                 <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
             </div>
