@@ -441,7 +441,7 @@
                     <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
                 </div>
 
-                <p class="mt-3 mb-0 text-smaller">
+                <p class="mt-3 mb-0 text-smaller fst-italic">
                     <#if dataSchemaBased>
                         <@s.text name="manage.overview.dataSchema.description"/>
                     <#elseif resource.coreType?has_content && resource.coreType==metadataType>
