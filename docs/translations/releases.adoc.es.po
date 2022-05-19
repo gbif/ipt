@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2022-05-19 06:31+0000\n"
-"PO-Revision-Date: 2022-05-19 06:39\n"
+"PO-Revision-Date: 2022-05-19 15:53\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<2-5-8-may-2022,2.5.8>>."
-msgstr ""
+msgstr "La versión actual y estable es <<2-5-8-may-2022,2.5.8>>"
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:9
@@ -50,17 +50,17 @@ msgstr "Tenga en cuenta que no todas las versiones del manual están disponibles
 #: en/modules/ROOT/pages/releases.adoc:18
 #, no-wrap
 msgid "*2.5.8* – May 2022"
-msgstr ""
+msgstr "*2.5.8* - Mayo de 2022"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.8/ipt-2.5.8.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.8/ipt-2.5.8.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[paquetes Linux] or xref:installation.adoc#installation-from-docker[uso de Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:22
 msgid "xref:2.5@release-notes.adoc[IPT v2.5.8 Release Notes]"
-msgstr ""
+msgstr "xref:2.5@release-notes.adoc[Notas de la versión IPT v2.5.8]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
@@ -78,7 +78,7 @@ msgstr "xref:2.5@index.adoc[Manual del usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:24
 msgid "Addressed https://github.com/gbif/ipt/milestone/35?closed=1[1 issue]."
-msgstr ""
+msgstr "Dirijase a https://github.com/gbif/ipt/milestone/35?closed=1[1 incidencia]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:25
@@ -113,7 +113,7 @@ msgstr "Los usuarios actuales pueden actualizar a esta versión siguiendo las in
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:29
 msgid "This release includes a bug fix for publishing resources with DOI."
-msgstr ""
+msgstr "Esta versión incluye la corrección de  un error asociado a la publicación de recursos con DOI."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:31
