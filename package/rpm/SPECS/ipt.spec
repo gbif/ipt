@@ -72,7 +72,7 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 
 %changelog
 * Wed May 18 2022 Mikhail Podolskiy <mpodolskiy@gbif.org> - 2.5.8-1
-- Publish IPT 2.5.7 release.
+- Publish IPT 2.5.8 release.
 * Mon Feb 28 2022 Matthew Blissett <mblissett@gbif.org> - 2.5.7-1
 - Publish IPT 2.5.7 release.
 * Fri Feb 11 2022 Matthew Blissett <mblissett@gbif.org> - 2.5.6-1
