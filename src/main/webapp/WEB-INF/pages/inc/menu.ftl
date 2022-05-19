@@ -4,7 +4,7 @@
 <body class="bg-body d-flex flex-column h-100">
 
 <header>
-    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-1 border-bottom [#if !auxTopNavbar]shadow-sm[/#if]">
+    <nav class="navbar navbar-expand-xl navbar-dark bg-gbif-main-navbar fixed-top py-1 border-bottom shadow-sm">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <img src="${baseURL}/images/gbif-logo-L.svg" alt="IPT" class="gbif-logo"/>
