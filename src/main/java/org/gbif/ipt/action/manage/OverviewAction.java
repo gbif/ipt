@@ -38,6 +38,7 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
@@ -66,6 +67,7 @@ import org.gbif.metadata.eml.Citation;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.registry.metadata.InvalidEmlException;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 
@@ -97,6 +99,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 
@@ -130,12 +133,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private Map<String, String> autoPublishFrequencies;
   private StatusReport report;
   private Date now;
+  private File emlFile;
   private boolean unpublish = false;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
   private boolean undelete = false;
   private boolean publish = false;
-  private boolean validateEml = true;
+  private boolean validateEml = false;
   private String summary;
 
   // preview
@@ -1510,6 +1514,34 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public void setValidateEml(boolean validateEml) {
     this.validateEml = validateEml;
+  }
+
+  public void setEmlFile(File emlFile) {
+    this.emlFile = emlFile;
+  }
+
+  public String replaceEml() {
+    try {
+      resourceManager.replaceEml(resource, emlFile, validateEml);
+      addActionMessage(getText("manage.overview.success.replace.eml"));
+      return SUCCESS;
+    } catch (ImportException e) {
+      LOG.error("Failed to replace EML", e);
+      addActionError(getText("manage.overview.failed.replace.eml"));
+      return ERROR;
+    } catch (SAXException e) {
+      LOG.error("Failed to create EML validator", e);
+      addActionError(getText("manage.overview.failed.replace.eml.validator"));
+      return ERROR;
+    } catch (IOException e) {
+      LOG.error("Failed to read EML from file", e);
+      addActionError(getText("manage.overview.failed.replace.eml.read"));
+      return ERROR;
+    } catch (InvalidEmlException e) {
+      LOG.error("Validation failed for EML document", e);
+      addActionError(getText("manage.overview.failed.replace.eml.validation") + " " + e.getMessage());
+      return ERROR;
+    }
   }
 
   /**

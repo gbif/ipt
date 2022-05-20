@@ -140,7 +140,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
-import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -656,11 +655,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Replace the EML file in a resource by the provided file
+   * Replace the EML file in a resource by the provided file.
+   * Validation is optional.
    */
   @Override
-  public void replaceEml(Resource resource, File emlFile) throws SAXException, IOException, InvalidEmlException, ImportException {
-    validateEmlFile(emlFile);
+  public void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException {
+    if (validate) {
+      validateEmlFile(emlFile);
+    }
     // copy eml file to data directory (with name eml.xml) and populate Eml instance
     Eml eml = copyMetadata(resource.getShortname(), emlFile);
     resource.setEml(eml);

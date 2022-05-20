@@ -373,6 +373,7 @@ public interface ResourceManager {
    *
    * @param resource
    * @param emlFile
+   * @param validate
    */
-  void replaceEml(Resource resource, File emlFile) throws SAXException, IOException, InvalidEmlException, ImportException;
+  void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
 }
