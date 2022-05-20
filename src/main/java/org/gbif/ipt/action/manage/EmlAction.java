@@ -18,18 +18,30 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.registry.metadata.InvalidEmlException;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
 
-public class EmlAction extends ManagerBaseAction  {
+public class EmlAction extends ManagerBaseAction {
+
+  private static final long serialVersionUID = -7578480978597816722L;
+
+  // logging
+  private static final Logger LOG = LogManager.getLogger(EmlAction.class);
 
   private File emlFile;
+  private boolean validateEml = true;
 
   @Inject
   public EmlAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                        ResourceManager resourceManager) {
+                   ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
   }
 
@@ -37,14 +49,34 @@ public class EmlAction extends ManagerBaseAction  {
     this.emlFile = emlFile;
   }
 
+  public boolean isValidateEml() {
+    return validateEml;
+  }
+
+  public void setValidateEml(boolean validateEml) {
+    this.validateEml = validateEml;
+  }
+
   public String replaceEml() {
     try {
       resourceManager.replaceEml(resource, emlFile);
       addActionMessage(getText("manage.overview.success.replace.eml"));
       return SUCCESS;
-    }
-    catch(ImportException e) {
+    } catch (ImportException e) {
+      LOG.error("Failed to replace EML", e);
       addActionError(getText("manage.overview.failed.replace.eml"));
+      return ERROR;
+    } catch (SAXException e) {
+      LOG.error("Failed to create EML validator", e);
+      addActionError(getText("manage.overview.failed.replace.eml.validator"));
+      return ERROR;
+    } catch (IOException e) {
+      LOG.error("Failed to read EML from file", e);
+      addActionError(getText("manage.overview.failed.replace.eml.read"));
+      return ERROR;
+    } catch (InvalidEmlException e) {
+      LOG.error("Validation failed for EML document", e);
+      addActionError(getText("manage.overview.failed.replace.eml.validation") + " " + e.getMessage());
       return ERROR;
     }
   }

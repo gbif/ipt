@@ -100,6 +100,9 @@ import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.registry.metadata.EMLProfileVersion;
+import org.gbif.registry.metadata.EmlValidator;
+import org.gbif.registry.metadata.InvalidEmlException;
 import org.gbif.registry.metadata.parse.DatasetParser;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
@@ -137,6 +140,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
+import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -153,6 +157,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+import org.xml.sax.SAXException;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -280,6 +285,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     return eml;
+  }
+
+  /**
+   * Validates EML file
+   *
+   * @param emlFile EML file
+   * @throws SAXException if failed to create validator
+   * @throws IOException if failed to read EML file
+   * @throws InvalidEmlException if EML is invalid
+   */
+  private void validateEmlFile(File emlFile) throws SAXException, IOException, InvalidEmlException {
+      EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_1);
+      String emlString = FileUtils.readFileToString(emlFile, StandardCharsets.UTF_8);
+      emlValidator.validate(emlString);
   }
 
   /**
@@ -640,10 +659,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Replace the EML file in a resource by the provided file
    */
   @Override
-  public void replaceEml(Resource resource, File emlFile) throws ImportException {
-    Eml eml;
+  public void replaceEml(Resource resource, File emlFile) throws SAXException, IOException, InvalidEmlException, ImportException {
+    validateEmlFile(emlFile);
     // copy eml file to data directory (with name eml.xml) and populate Eml instance
-    eml = copyMetadata(resource.getShortname(), emlFile);
+    Eml eml = copyMetadata(resource.getShortname(), emlFile);
     resource.setEml(eml);
     resource.setMetadataModified(new Date());
     save(resource);

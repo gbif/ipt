@@ -180,16 +180,33 @@
 
         $("#emlFile").change(function() {
             var usedFileName = $("#emlFile").prop("value");
-            if(usedFileName != "") {
+            if(usedFileName !== "") {
                 $("#emlReplace").show();
                 $("#emlCancel").show();
+                $("#eml-validate").show();
             }
         });
+
         $("#emlCancel").click(function(event) {
             event.preventDefault();
             $("#emlFile").prop("value", "");
             $("#emlReplace").hide();
             $("#emlCancel").hide();
+            $("#eml-validate").hide();
+        });
+
+        $("#edit-metadata-radio").change(function () {
+            if($('#edit-metadata-radio').is(':checked')) {
+                $('#upload-metadata-form').hide();
+                $('#edit-metadata-form').show();
+            }
+        });
+
+        $("#upload-metadata-radio").change(function () {
+            if($('#upload-metadata-radio').is(':checked')) {
+                $('#edit-metadata-form').hide();
+                $('#upload-metadata-form').show();
+            }
         });
 
         $("#sourceType").change(function (e) {

@@ -19,11 +19,29 @@
     <div class="row">
         <div class="col-lg-3 border-lg-right border-lg-max py-lg-max-2 pe-lg-5 mb-4 rounded">
             <div>
-                <form action='replace-eml.do' method='post' enctype="multipart/form-data">
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="metadata-radio" id="edit-metadata-radio" value="edit">
+                        <label class="form-check-label" for="edit-metadata-radio"><@s.text name="button.edit"/></label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="metadata-radio" id="upload-metadata-radio" value="upload">
+                        <label class="form-check-label" for="upload-metadata-radio"><@s.text name="button.upload"/></label>
+                    </div>
+                </div>
+
+                <form id="upload-metadata-form" action='replace-eml.do?validateEml=${validateEml?c}' method='post' enctype="multipart/form-data" style="display: none;">
                     <input name="r" type="hidden" value="${resource.shortname}"/>
+<#--                    <input name="validateEml" type="hidden" value="${validateEml?c}"/>-->
                     <div class="row">
                         <div class="col-12">
                             <@s.file name="emlFile" cssClass="form-control form-control-sm my-1"/>
+                        </div>
+                        <div class="col-12 text-smaller">
+                            <div id="eml-validate" class="form-check form-check-inline" style="display: none;">
+                                <input class="form-check-input" type="checkbox" id="eml-validate" checked>
+                                <label class="form-check-label" for="eml-validate"><@s.text name="button.validate"/></label>
+                            </div>
                         </div>
                         <div class="col-12">
                             <@s.submit name="emlReplace" cssClass="btn btn-sm btn-outline-gbif-primary my-1 confirmEmlReplace" cssStyle="display: none" key="button.replace"/>
@@ -31,7 +49,8 @@
                         </div>
                     </div>
                 </form>
-                <form action='metadata-basic.do' method='get' class="my-1">
+
+                <form id="edit-metadata-form" action='metadata-basic.do' method='get' class="my-1" style="display: none;">
                     <input name="r" type="hidden" value="${resource.shortname}"/>
                     <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
                 </form>

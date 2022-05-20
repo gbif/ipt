@@ -135,6 +135,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean deleteDoi = false;
   private boolean undelete = false;
   private boolean publish = false;
+  private boolean validateEml = true;
   private String summary;
 
   // preview
@@ -1501,6 +1502,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public void setPublish(String publish) {
     this.publish = StringUtils.trimToNull(publish) != null;
+  }
+
+  public boolean isValidateEml() {
+    return validateEml;
+  }
+
+  public void setValidateEml(boolean validateEml) {
+    this.validateEml = validateEml;
   }
 
   /**
