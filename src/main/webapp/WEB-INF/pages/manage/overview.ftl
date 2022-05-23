@@ -409,9 +409,9 @@
             </div>
 
             <div class="text-center">
-                <h5 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     <@s.text name="manage.overview.title"/>
-                </h5>
+                </h1>
 
                 <div class="text-smaller">
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>

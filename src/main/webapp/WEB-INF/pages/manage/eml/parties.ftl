@@ -30,11 +30,14 @@
             </div>
 
             <div class="container my-3 p-3">
+                <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                    <@s.text name="manage.overview.metadata"/>
+                </div>
 
                 <div class="text-center">
-                    <h5 class="pt-2 text-gbif-header fs-4 fw-400 text-center">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                         <@s.text name='manage.metadata.parties.title'/>
-                    </h5>
+                    </h1>
                 </div>
 
                 <div class="text-center fs-smaller">
