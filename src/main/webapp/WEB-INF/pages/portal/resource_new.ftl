@@ -225,37 +225,69 @@
     </div>
 </div>
 
-<#if (eml.description?size>0)>
-    <#assign resourceDescription = eml.description[0]>
-<#else>
-    <#assign resourceDescription><@s.text name='portal.resource.no.description'/></#assign>
-</#if>
-<#assign resourceDescriptionLength = resourceDescription?length>
-<#assign maxDescriptionLength = 800>
-
 <div class="container-fluid bg-light border-bottom">
     <div class="container">
         <div class="my-4 p-3 pt-4 bg-body border rounded shadow-sm">
             <div class="mx-md-4 mx-2">
                 <div class="row">
-                    <div class="col-lg-8 text-smaller">
-                        <#if (eml.description?size>0)>
-                            <div property="dc:abstract" class="overflow-x-auto">
-                                <#if (resourceDescriptionLength>maxDescriptionLength)>
-                                    ${resourceDescription?substring(0, maxDescriptionLength)}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
-                                <#elseif (eml.description?size>1)>
-                                    ${resourceDescription}... <a href="#anchor-description"> <@s.text name='basic.showMore'/></a>
-                                <#else>
-                                    ${resourceDescription}
-                                </#if>
-                            </div>
+                    <div class="col-lg-8 text-smaller border-lg-right border-lg-max-bottom">
+                        <#if metadataOnly == true>
+                            <p class="mb-1"><@s.text name='portal.resource.downloads.metadataOnly.verbose'/></p>
+                        <#elseif resource.schemaIdentifier??>
+                            <p class="mb-1"><@s.text name='portal.resource.downloads.dataSchema.verbose'/></p>
                         <#else>
-                            <div class="mt-3">
-                                <p><@s.text name='portal.resource.no.description'/></p>
-                            </div>
+                            <p class="mb-1"><@s.text name='portal.resource.downloads.verbose'/></p>
                         </#if>
+
+                        <div class="table-responsive">
+                            <table class="downloads text-smaller table table-sm table-borderless">
+                                <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
+                                <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
+                                <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
+                                <#if metadataOnly == false>
+                                    <tr>
+                                        <th class="col-4 p-0">
+                                            <#if resource.schemaIdentifier??>
+                                                <@s.text name='portal.resource.dataPackage.verbose'/>
+                                            <#else>
+                                                <@s.text name='portal.resource.dwca.verbose'/>
+                                            </#if>
+                                        </th>
+                                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
+                                            <td class="p-0">
+                                                <a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion!0?c} ]);">
+                                                    <@s.text name='portal.resource.download'/>
+                                                </a>
+                                                <#if !resource.schemaIdentifier??>${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                            </td>
+                                        <#else>
+                                            <td class="p-0">
+                                                <a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished!0?c} ]);">
+                                                    <@s.text name='portal.resource.download'/>
+                                                </a>
+                                                <#if !resource.schemaIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                            </td>
+                                        </#if>
+                                    </tr>
+                                </#if>
+                                <tr>
+                                    <th class="p-0"><@s.text name='portal.resource.metadata.verbose'/></th>
+                                    <td class="p-0"><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download><@s.text name='portal.resource.download'/></a>
+                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="p-0"><@s.text name='portal.resource.rtf.verbose'/></th>
+                                    <td class="p-0"><a href="${download_rtf_url}" onClick="_gaq.push(['_trackEvent', 'RTF', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
+                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${rtfSizeForVersion})
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <div class="col-lg-4 text-smaller">
+
+                    <div class="col-lg-4 text-smaller mt-lg-max-3 ps-lg-4">
                         <#if eml.logoUrl?has_content>
                             <div class="logoImg">
                                 <img src="${eml.logoUrl}"/>
@@ -347,16 +379,10 @@
             <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">
                     <ul>
-                        <#if (resourceDescriptionLength>maxDescriptionLength) || (eml.description?size>1)>
-                            <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
-                        </#if>
+                        <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
                         <#if resource.lastPublished??>
                             <#if metadataOnly != true>
                                 <li><a href="#anchor-dataRecords" class="sidebar-navigation-link"><@s.text name='portal.resource.dataRecords'/></a></li>
-                            </#if>
-                            <li><a href="#anchor-downloads" class="sidebar-navigation-link"><@s.text name='portal.resource.downloads'/></a></li>
-                            <#if resource.versionHistory??>
-                                <li><a href="#anchor-versions" class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a></li>
                             </#if>
                             <#if eml.citation?? && (eml.citation.citation?has_content || eml.citation.identifier?has_content)>
                                 <li><a href="#anchor-citation" class="sidebar-navigation-link"><@s.text name='portal.resource.cite.howTo'/></a></li>
@@ -402,27 +428,25 @@
             </div>
 
             <div class="bd-content ps-lg-4">
-                <#if (resourceDescriptionLength>maxDescriptionLength) || (eml.description?size>1)>
-                    <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
-                    <div id="description" class="mt-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.description'/>
-                        </h4>
-                        <div property="dc:abstract" class="mt-3 overflow-x-auto">
-                            <#if (eml.description?size>0)>
-                                <#list eml.description as para>
-                                    <#if para?has_content>
-                                        <p>
-                                            <@para?interpret />
-                                        </p>
-                                    </#if>
-                                </#list>
-                            <#else>
-                                <p><@s.text name='portal.resource.no.description'/></p>
-                            </#if>
-                        </div>
+                <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
+                <div id="description" class="mt-5 section">
+                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                        <@s.text name='portal.resource.description'/>
+                    </h4>
+                    <div property="dc:abstract" class="mt-3 overflow-x-auto">
+                        <#if (eml.description?size>0)>
+                            <#list eml.description as para>
+                                <#if para?has_content>
+                                    <p>
+                                        <@para?interpret />
+                                    </p>
+                                </#if>
+                            </#list>
+                        <#else>
+                            <p><@s.text name='portal.resource.no.description'/></p>
+                        </#if>
                     </div>
-                </#if>
+                </div>
 
 
                 <!-- Dataset must have been published for versions, downloads, and how to cite sections to show -->
@@ -492,69 +516,6 @@
                             </p>
                         </div>
                     </#if>
-
-                    <!-- downloads section -->
-                    <span class="anchor anchor-home-resource-page" id="anchor-downloads"></span>
-                    <div id="downloads" class="mt-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.downloads'/>
-                        </h4>
-
-                        <#if metadataOnly == true>
-                            <p><@s.text name='portal.resource.downloads.metadataOnly.verbose'/></p>
-                        <#elseif resource.schemaIdentifier??>
-                            <p><@s.text name='portal.resource.downloads.dataSchema.verbose'/></p>
-                        <#else>
-                            <p><@s.text name='portal.resource.downloads.verbose'/></p>
-                        </#if>
-
-                        <div class="table-responsive">
-                            <table class="downloads text-smaller table table-sm table-borderless">
-                                <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
-                                <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
-                                <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
-                                <#if metadataOnly == false>
-                                    <tr>
-                                        <th class="col-4">
-                                            <#if resource.schemaIdentifier??>
-                                                <@s.text name='portal.resource.dataPackage.verbose'/>
-                                            <#else>
-                                                <@s.text name='portal.resource.dwca.verbose'/>
-                                            </#if>
-                                        </th>
-                                        <#if version?? && version.toPlainString() != resource.emlVersion.toPlainString() && recordsPublishedForVersion??>
-                                            <td>
-                                                <a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${recordsPublishedForVersion!0?c} ]);">
-                                                    <@s.text name='portal.resource.download'/>
-                                                </a>
-                                                <#if !resource.schemaIdentifier??>${recordsPublishedForVersion!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!}) <#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
-                                            </td>
-                                        <#else>
-                                            <td>
-                                                <a href="${download_dwca_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}', ${resource.recordsPublished!0?c} ]);">
-                                                    <@s.text name='portal.resource.download'/>
-                                                </a>
-                                                <#if !resource.schemaIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
-                                            </td>
-                                        </#if>
-                                    </tr>
-                                </#if>
-                                <tr>
-                                    <th><@s.text name='portal.resource.metadata.verbose'/></th>
-                                    <td><a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download><@s.text name='portal.resource.download'/></a>
-                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${emlSizeForVersion})
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th><@s.text name='portal.resource.rtf.verbose'/></th>
-                                    <td><a href="${download_rtf_url}" onClick="_gaq.push(['_trackEvent', 'RTF', 'Download', '${resource.shortname}']);"><@s.text name='portal.resource.download'/></a>
-                                        <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]?cap_first!}</@s.param></@s.text></#if> (${rtfSizeForVersion})
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
 
                     <!-- versions section -->
                     <#if resource.versionHistory??>

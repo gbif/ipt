@@ -1256,6 +1256,10 @@ a.doi:hover span:first-of-type {
         padding-top: .5rem !important;
         padding-bottom: .5rem !important
     }
+
+    .mt-lg-max-3 {
+        margin-top: 1rem !important;
+    }
 }
 
 .top-button {

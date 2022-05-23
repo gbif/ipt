@@ -99,6 +99,10 @@
         border-left: 1px solid #e3e7eb !important;
         border-right: 1px solid #e3e7eb !important;
     }
+
+    .border-lg-max-bottom {
+        border-bottom: 1px solid #e3e7eb !important;
+    }
 }
 
 @media (min-width: 992px) {
