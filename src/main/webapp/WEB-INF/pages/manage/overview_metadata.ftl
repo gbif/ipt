@@ -21,7 +21,7 @@
             <div>
                 <div class="mb-lg-3 text-smaller">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="metadata-radio" id="edit-metadata-radio" value="edit">
+                        <input class="form-check-input" type="radio" name="metadata-radio" id="edit-metadata-radio" value="edit" checked>
                         <label class="form-check-label" for="edit-metadata-radio"><@s.text name="button.edit"/></label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -46,7 +46,7 @@
                     </div>
                 </form>
 
-                <form id="edit-metadata-form" action='metadata-basic.do' method='get' class="my-1" style="display: none;">
+                <form id="edit-metadata-form" action='metadata-basic.do' method='get' class="my-1">
                     <input name="r" type="hidden" value="${resource.shortname}"/>
                     <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary" name="edit" key="button.edit"/>
                 </form>
