@@ -322,7 +322,7 @@
                         </#if>
 
                         <div class="table-responsive">
-                            <table class="downloads text-smaller table table-sm table-borderless">
+                            <table class="downloads text-smaller table table-sm table-borderless mb-0">
                                 <#-- Archive, EML, and RTF download links include Google Analytics event tracking -->
                                 <#-- e.g. Archive event tracking includes components: _trackEvent method, category, action, label, (int) value -->
                                 <#-- EML and RTF versions can always be retrieved by version number but DWCA versions are only stored if IPT Archive Mode is on -->
