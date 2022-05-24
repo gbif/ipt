@@ -1,14 +1,21 @@
 <#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <#include "/WEB-INF/pages/macros/metadata.ftl"/>
+<#--    <#include "/WEB-INF/pages/macros/metadata.ftl"/>-->
     <script src="${baseURL}/js/ajaxfileupload.js"></script>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script>
         $(document).ready(function () {
-            $("#buttonUpload").click(function () {
+            $("#buttonUpload").click(function (event) {
+                event.preventDefault()
                 return ajaxFileUpload();
+            });
+
+            $("#buttonRemove").click(function () {
+                $("#resourcelogo").remove();
+                $("#eml\\.logoUrl").val('');
+                $("#file").val('');
             });
 
             function ajaxFileUpload() {
@@ -128,12 +135,15 @@
                                     </#if>
                                 </div>
 
-                                <div class="col-lg-9">
+                                <div class="col-lg-6">
                                     <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n" type="url" />
                                     <@s.file cssClass="form-control my-1" name="file"/>
-                                    <button class="button btn btn-outline-gbif-primary" id="buttonUpload">
+                                    <a href="#" class="button btn btn-outline-gbif-primary" id="buttonUpload">
                                         <@s.text name="button.upload"/>
-                                    </button>
+                                    </a>
+                                    <a href="#" class="button btn btn-outline-gbif-danger" id="buttonRemove">
+                                        <@s.text name="button.remove"/>
+                                    </a>
                                 </div>
 
                                 <div class="col-lg-3 d-flex justify-content-start align-items-center">
