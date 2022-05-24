@@ -1162,7 +1162,7 @@ button.close {
 }
 
 .logoImg>img {
-    max-height: 135px;
+    max-height: 100px;
 }
 
 @media (max-width: 1199px) {
