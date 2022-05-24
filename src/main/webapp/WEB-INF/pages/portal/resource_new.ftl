@@ -719,33 +719,33 @@
                             </h4>
 
                             <#list organizedCoverages as item>
-                                    <p><@textWithFormattedLink item.description!no_description/></p>
+                                <p><@textWithFormattedLink item.description!no_description/></p>
 
-                                    <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
-                                            <#list item.keywords as k>
-                                                <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
-                                                    <tr>
-                                                        <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
-                                                        <#if k.rank?lower_case == "class">
-                                                            <th class="col-4">Class</th>
-                                                        <#else>
-                                                            <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
-                                                        </#if>
-                                                        <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
-                                                        <td>
-                                                            <#list k.displayNames as name>
-                                                                &nbsp;${name}<#if name_has_next>,</#if>
-                                                            </#list>
-                                                        </td>
-                                                    </tr>
-                                                </#if>
-                                            </#list>
-                                        </table>
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="text-smaller table table-sm table-borderless">
+                                        <#list item.keywords as k>
+                                            <#if k.rank?has_content && ranks[k.rank?string]?has_content && (k.displayNames?size > 0) >
+                                                <tr>
+                                                    <#-- 1st col, write rank name once. Avoid problem accessing "class" from map - it displays "java.util.LinkedHashMap" -->
+                                                    <#if k.rank?lower_case == "class">
+                                                        <th class="col-4">Class</th>
+                                                    <#else>
+                                                        <th class="col-4">${ranks[k.rank?html]?cap_first!}</th>
+                                                    </#if>
+                                                    <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
+                                                    <td>
+                                                        <#list k.displayNames as name>
+                                                            &nbsp;${name}<#if name_has_next>,</#if>
+                                                        </#list>
+                                                    </td>
+                                                </tr>
+                                            </#if>
+                                        </#list>
+                                    </table>
+                                </div>
                                 <#-- give some space between taxonomic coverages -->
-                                    <#if item_has_next><br></#if>
-                                </#list>
+                                <#if item_has_next><br></#if>
+                            </#list>
                         </div>
                     </#if>
 
@@ -758,32 +758,32 @@
                             </h4>
 
                             <#list eml.temporalCoverages as item>
-                                    <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
-                                            <#if ("${item.type}" == "DATE_RANGE") && eml.temporalCoverages[item_index].startDate?? && eml.temporalCoverages[item_index].endDate?? >
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                                                    <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date} / ${eml.temporalCoverages[item_index].endDate?date}</td>
-                                                </tr>
-                                            <#elseif "${item.type}" == "SINGLE_DATE" && eml.temporalCoverages[item_index].startDate?? >
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/></th>
-                                                    <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date}</td>
-                                                </tr>
-                                            <#elseif "${item.type}" == "FORMATION_PERIOD" && eml.temporalCoverages[item_index].formationPeriod?? >
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.temporalCoverages.formationPeriod'/></th>
-                                                    <td property="dc:temporal">${eml.temporalCoverages[item_index].formationPeriod}</td>
-                                                </tr>
-                                            <#elseif eml.temporalCoverages[item_index].livingTimePeriod??> <!-- LIVING_TIME_PERIOD -->
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th>
-                                                    <td property="dc:temporal">${eml.temporalCoverages[item_index].livingTimePeriod!}</td>
-                                                </tr>
-                                            </#if>
-                                        </table>
-                                    </div>
-                                </#list>
+                                <div class="table-responsive">
+                                    <table class="text-smaller table table-sm table-borderless">
+                                        <#if ("${item.type}" == "DATE_RANGE") && eml.temporalCoverages[item_index].startDate?? && eml.temporalCoverages[item_index].endDate?? >
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
+                                                <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date} / ${eml.temporalCoverages[item_index].endDate?date}</td>
+                                            </tr>
+                                        <#elseif "${item.type}" == "SINGLE_DATE" && eml.temporalCoverages[item_index].startDate?? >
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/></th>
+                                                <td property="dc:temporal">${eml.temporalCoverages[item_index].startDate?date}</td>
+                                            </tr>
+                                        <#elseif "${item.type}" == "FORMATION_PERIOD" && eml.temporalCoverages[item_index].formationPeriod?? >
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.formationPeriod'/></th>
+                                                <td property="dc:temporal">${eml.temporalCoverages[item_index].formationPeriod}</td>
+                                            </tr>
+                                        <#elseif eml.temporalCoverages[item_index].livingTimePeriod??> <!-- LIVING_TIME_PERIOD -->
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.temporalCoverages.livingTimePeriod'/></th>
+                                                <td property="dc:temporal">${eml.temporalCoverages[item_index].livingTimePeriod!}</td>
+                                            </tr>
+                                        </#if>
+                                    </table>
+                                </div>
+                            </#list>
                         </div>
                     </#if>
 
@@ -900,32 +900,32 @@
 
                             <#list eml.collections as item>
                                 <div class="table-responsive">
-                                        <table class="table table-sm table-borderless">
-                                            <#if item.collectionName?has_content>
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.collectionName'/></th>
-                                                    <td>${item.collectionName!}</td>
-                                                </tr>
-                                            </#if>
-                                            <#if item.collectionId?has_content>
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.collectionId'/></th>
-                                                    <td>${item.collectionId!}</td>
-                                                </tr>
-                                            </#if>
-                                            <#if item.parentCollectionId?has_content>
-                                                <tr>
-                                                    <th class="col-4"><@s.text name='eml.parentCollectionId'/></th>
-                                                    <td>${item.parentCollectionId!}</td>
-                                                </tr>
-                                            </#if>
-                                        </table>
-                                    </div>
+                                    <table class="text-smaller table table-sm table-borderless">
+                                        <#if item.collectionName?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.collectionName'/></th>
+                                                <td>${item.collectionName!}</td>
+                                            </tr>
+                                        </#if>
+                                        <#if item.collectionId?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.collectionId'/></th>
+                                                <td>${item.collectionId!}</td>
+                                            </tr>
+                                        </#if>
+                                        <#if item.parentCollectionId?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name='eml.parentCollectionId'/></th>
+                                                <td>${item.parentCollectionId!}</td>
+                                            </tr>
+                                        </#if>
+                                    </table>
+                                </div>
                             </#list>
 
                             <#if eml.specimenPreservationMethods?? && (eml.specimenPreservationMethods?size>0) && eml.specimenPreservationMethods[0]?has_content >
                                 <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
+                                    <table class="text-smaller table table-sm table-borderless">
                                             <tr>
                                                 <th class="col-4"><@s.text name='eml.specimenPreservationMethod.plural'/></th>
                                                 <td>
@@ -935,12 +935,12 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                    </div>
+                                </div>
                             </#if>
 
                             <#if eml.jgtiCuratorialUnits?? && (eml.jgtiCuratorialUnits?size>0) && eml.jgtiCuratorialUnits[0]?has_content>
                                 <div class="table-responsive">
-                                        <table class="text-smaller table table-sm table-borderless">
+                                    <table class="text-smaller table table-sm table-borderless">
                                             <tr>
                                                 <th class="col-4"><@s.text name='manage.metadata.collections.curatorialUnits.title'/></th>
                                                 <td>
@@ -959,7 +959,7 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                    </div>
+                                </div>
                             </#if>
                         </div>
                     </#if>
@@ -996,34 +996,34 @@
                         </h4>
 
                         <div>
-                                <#if eml.additionalInfo?has_content>
-                                    <p class="overflow-x-auto"><@textWithFormattedLink eml.additionalInfo/></p>
-                                </#if>
-                                <div class="table-responsive">
-                                    <table class="text-smaller table table-sm table-borderless">
-                                        <#if eml.purpose?has_content>
+                            <#if eml.additionalInfo?has_content>
+                                <p class="overflow-x-auto"><@textWithFormattedLink eml.additionalInfo/></p>
+                            </#if>
+                            <div class="table-responsive">
+                                <table class="text-smaller table table-sm table-borderless">
+                                    <#if eml.purpose?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.purpose'/></th>
+                                            <td><@textWithFormattedLink eml.purpose/></td>
+                                        </tr>
+                                    </#if>
+                                    <#if eml.updateFrequencyDescription?has_content>
+                                        <tr>
+                                            <th class="col-4"><@s.text name='eml.updateFrequencyDescription'/></th>
+                                            <td><@textWithFormattedLink eml.updateFrequencyDescription/></td>
+                                        </tr>
+                                    </#if>
+                                    <#if (eml.alternateIdentifiers?size > 0)>
+                                        <#list eml.alternateIdentifiers as item>
                                             <tr>
-                                                <th class="col-4"><@s.text name='eml.purpose'/></th>
-                                                <td><@textWithFormattedLink eml.purpose/></td>
+                                                <th class="col-4"><#if item_index ==0><@s.text name='manage.metadata.alternateIdentifiers.title'/></#if></th>
+                                                <td><@textWithFormattedLink eml.alternateIdentifiers[item_index]!/></td>
                                             </tr>
-                                        </#if>
-                                        <#if eml.updateFrequencyDescription?has_content>
-                                            <tr>
-                                                <th class="col-4"><@s.text name='eml.updateFrequencyDescription'/></th>
-                                                <td><@textWithFormattedLink eml.updateFrequencyDescription/></td>
-                                            </tr>
-                                        </#if>
-                                        <#if (eml.alternateIdentifiers?size > 0)>
-                                            <#list eml.alternateIdentifiers as item>
-                                                <tr>
-                                                    <th class="col-4"><#if item_index ==0><@s.text name='manage.metadata.alternateIdentifiers.title'/></#if></th>
-                                                    <td><@textWithFormattedLink eml.alternateIdentifiers[item_index]!/></td>
-                                                </tr>
-                                            </#list>
-                                        </#if>
-                                    </table>
-                                </div>
+                                        </#list>
+                                    </#if>
+                                </table>
                             </div>
+                        </div>
                     </div>
                 </#if>
 
