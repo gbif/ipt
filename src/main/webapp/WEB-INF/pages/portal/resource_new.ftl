@@ -489,7 +489,7 @@
                                     <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
                                 </p>
 
-                                <div id="record_graph" class="mb-3 ps-5">
+                                <div id="record_graph" class="mb-3 ps-sm-5 ps-3">
                                     <div class="record_graph_inner">
                                         <!-- at top, show bar for core record count to enable comparison against extensions -->
                                         <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
