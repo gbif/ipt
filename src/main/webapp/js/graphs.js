@@ -1,8 +1,8 @@
 /*
  * To draw data record line chart on resource homepage.
  */
-function drawRecordBars(ob, scale) {
-  jQuery("#record_graph_inner .row", ob).each(function() {
+function drawRecordBars(scale) {
+  $(".record_graph_row").each(function() {
     var bar = $(this).find("div.color-bar");
     var value = bar.html();
     $(this).append("<div class='col-lg-1 ps-0 ms-lg-2 value_label'>" + value + "</div>");
@@ -13,5 +13,5 @@ function drawRecordBars(ob, scale) {
 }
 
 $.fn.bindRecordBars = function(scale) {
-  drawRecordBars($(this), scale);
+  drawRecordBars(scale);
 }
