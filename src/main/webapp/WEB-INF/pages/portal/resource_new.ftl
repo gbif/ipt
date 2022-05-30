@@ -98,9 +98,9 @@
     <#if ext?? && ext.name?has_content>
         <#if ext.description?has_content>
             <#assign coreText><@s.text name='manage.overview.DwC.Mappings.cores.select'/></#assign>
-            <span class="ext-tooltip" title="${ext.description}">${ext.name}&nbsp;<#if isCore>&#40;${coreText?lower_case}&#41;</#if></span>
+            <div class="col-lg-3 ps-0 ext-tooltip" title="${ext.description}">${ext.name}&nbsp;<#if isCore>&#40;${coreText?lower_case}&#41;</#if></div>
         <#else>
-            <span>${ext.name}</span>
+            <div class="col-lg-3 ps-0">${ext.name}</div>
         </#if>
     </#if>
 </#macro>
@@ -489,16 +489,16 @@
                                     <@s.text name='portal.resource.dataRecords.extensions'><@s.param>${recordsByExtensionOrderedNumber}</@s.param></@s.text>&nbsp;<@s.text name='portal.resource.dataRecords.extensions.coverage'/>
                                 </p>
 
-                                <div id="record_graph" class="mb-3 overflow-x-auto">
-                                    <ul class="no_bullets horizontal_graph">
+                                <div id="record_graph" class="mb-3 ps-5">
+                                    <div class="record_graph_inner">
                                         <!-- at top, show bar for core record count to enable comparison against extensions -->
                                         <#if coreExt?? && coreExt.name?has_content && coreCount?has_content>
-                                            <li>
+                                            <div class="row">
                                                 <@extensionLink coreExt true/>
-                                                <div class="grey_bar">
+                                                <div class="col-lg-8 color-bar">
                                                     ${coreCount?c}
                                                 </div>
-                                            </li>
+                                            </div>
                                         </#if>
 
                                         <!-- below bar for core record count, show bars for extension record counts -->
@@ -506,17 +506,46 @@
                                             <#assign ext = action.getExtensionManager().get(k)!/>
                                             <#assign extCount = recordsByExtensionOrdered.get(k)!/>
                                             <#if coreRowType?has_content && k != coreRowType && ext?? && ext.name?has_content && extCount?has_content>
-                                                <li>
+                                                <div class="row">
                                                     <@extensionLink ext/>
-                                                    <div class="grey_bar">
+                                                    <div class="col-lg-8 color-bar">
                                                         ${extCount?c}
                                                     </div>
-                                                </li>
+                                                </div>
                                             </#if>
                                         </#list>
-                                    </ul>
+                                    </div>
                                 </div>
                             </#if>
+
+                            <div id="record_graph" class="mb-3 ps-5">
+                                <div id="record_graph_inner">
+                                    <!-- at top, show bar for core record count to enable comparison against extensions -->
+                                    <div class="row">
+                                        <div class="col-lg-3 ps-0 ext-tooltip" title="" data-bs-original-title="The category of information pertaining to an action that occurs at some location during some time.">Event&nbsp;(core)</div>
+                                        <div class="col-lg-8 color-bar" style="width: 2.92683px;"></div>
+                                        <div class="col-lg-1 ps-0 ms-lg-2 value_label">
+                                            168
+                                        </div>
+                                    </div>
+
+                                    <!-- below bar for core record count, show bars for extension record counts -->
+                                    <div class="row">
+                                        <div class="col-lg-3 ps-0 ext-tooltip" title="" data-bs-original-title="The category of information pertaining to the existence of an Organism (sensu http://rs.tdwg.org/dwc/terms/Organism) at a particular place at a particular time.">Occurrence&nbsp;</div>
+                                        <div class="col-lg-8 color-bar" style="width: 300px;"></div>
+                                        <div class="col-lg-1 ps-0 ms-lg-2 value_label">
+                                            17220
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 ps-0 ext-tooltip" title="" data-bs-original-title="Support for measurements or facts, allowing links to any type of Core.">MeasurementOrFacts&nbsp;</div>
+                                        <div class="col-lg-8 color-bar" style="width: 8.78049px;"></div>
+                                        <div class="col-lg-1 ps-0 ms-lg-2 value_label">
+                                            504
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <p>
                                 <@s.text name='portal.resource.dataRecords.repository'/>
@@ -1062,7 +1091,7 @@
         var graph = $("#record_graph");
         var maxRecords = ${action.getMaxRecordsInExtension()?c!5000};
         // max 350px
-        graph.bindGreyBars( (350-((maxRecords+"").length)*10) / maxRecords);
+        graph.bindRecordBars( (350-((maxRecords+"").length)*10) / maxRecords);
         </#if>
     });
 
