@@ -336,15 +336,6 @@
         </div>
 </#macro>
 
-<#-- return struts param: an HTML anchor to the extension link, or the extension title if no link exists -->
-<#macro linkOrNameParam ext>
-    <#if ext.link?has_content>
-        <@s.param><a href="${ext.link}">${ext.title!}</a></@s.param>
-    <#else>
-        <@s.param>${ext.title!}</@s.param>
-    </#if>
-</#macro>
-
 <form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
 <div class="container-fluid bg-body border-bottom">
 
@@ -381,7 +372,15 @@
             </div>
 
             <p class="mt-3 text-smaller fst-italic">
-                <@s.text name='manage.mapping.intro1'><@s.param><a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">${mapping.source.name}</a></@s.param><@s.param>${extensionType?lower_case}:</@s.param><@linkOrNameParam mapping.extension/></@s.text>
+                <@s.text name='manage.mapping.intro1'>
+                    <@s.param>
+                        <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">
+                            ${mapping.source.name}
+                        </a>
+                    </@s.param>
+                    <@s.param>${extensionType?lower_case}:</@s.param>
+                    <@s.param><a href="${baseURL}/admin/extension.do?id=${mapping.extension.rowType!}" target="_blank">${mapping.extension.title!}</a></@s.param>
+                </@s.text>
             </p>
         </div>
     </div>
@@ -398,7 +397,15 @@
                     <ul>
                         <#if (groups?size>0)>
                             <#list groups as g>
-                                <li <#if redundants?seq_contains(g)> class="redundant" </#if> ><a class="sidebar-navigation-link" href="#anchor-group_${g}">${g}</a></li>
+                                <li <#if redundants?seq_contains(g)> class="redundant" </#if> >
+                                    <a class="sidebar-navigation-link" href="#anchor-group_${g?replace(' ', '_')}">
+                                        <#if g?has_content>
+                                            ${g}
+                                        <#else>
+                                            <@s.text name="manage.mapping.noClass"/>
+                                        </#if>
+                                    </a>
+                                </li>
                             </#list>
                         </#if>
 
@@ -540,10 +547,16 @@
                         <#list fieldsByGroup?keys as g>
                             <#assign groupsFields = fieldsByGroup.get(g)/>
                             <#if (groupsFields?size>0)>
-                                <span class="anchor anchor-base" id="anchor-group_${g}"></span>
+                                <span class="anchor anchor-base" id="anchor-group_${g?replace(' ', '_')}"></span>
                                 <div class="mt-5 <#if redundants?seq_contains(g)>redundant</#if>">
-                                    <div id="group_${g}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
-                                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">${g}</h4>
+                                    <div id="group_${g?replace(' ', '_')}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
+                                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                                            <#if g?has_content>
+                                                ${g}
+                                            <#else>
+                                                <@s.text name="manage.mapping.noClass"/>
+                                            </#if>
+                                        </h4>
                                         <#list groupsFields as field>
                                             <@showField field field_index/>
                                         </#list>
@@ -577,27 +590,28 @@
                                 <@s.text name="manage.mapping.no.mapped.title"/>
                             </h4>
                             <p><@s.text name="manage.mapping.no.mapped.columns"/>:</p>
-                            <ul>
-                                <#list nonMapped as col>
-                                    <li>${col}</li>
-                                </#list>
-                            </ul>
 
+                            <div class="text-smaller">
+                                <#list nonMapped as col>
+                                    <code>${col}<#sep>;</#sep></code>
+                                </#list>
+                            </div>
                         </div>
                     </#if>
 
-                    <#if (action.getRedundantGroups()?size>0)>
+                    <#if (redundants?size>0)>
                         <span class="anchor anchor-base" id="anchor-redundant"></span>
                         <div class="mt-5" style="height: 100vh; min-height: 200px;">
                             <h4 id="redundant" class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                                 <@s.text name="manage.mapping.redundant.classes.title"/>
                             </h4>
                             <p><@s.text name="manage.mapping.redundant.classes.intro"/>:</p>
-                            <ul>
-                                <#list action.getRedundantGroups() as gr>
-                                    <li>${gr}</li>
+
+                            <div class="text-smaller">
+                                <#list redundants as gr>
+                                    <code>${gr}<#sep>;</#sep></code>
                                 </#list>
-                            </ul>
+                            </div>
                         </div>
                     </#if>
                 </div>
