@@ -13,7 +13,7 @@
         <span class="badge rounded-pill bg-light-blue">${fieldType}</span>
     <#elseif fieldType == "object">
         <span class="badge rounded-pill bg-purple">${fieldType}</span>
-    <#elseif fieldType == "boolean">
+    <#elseif fieldType == "boolean" || fieldType == "bool">
         <span class="badge rounded-pill bg-indigo">${fieldType}</span>
     <#elseif fieldType == "datetime">
         <span class="badge rounded-pill bg-orange">${fieldType}</span>
