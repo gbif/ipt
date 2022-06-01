@@ -179,6 +179,15 @@
                 });
             });
 
+            // Collapse/uncollapse source examples
+            $(".sample").click(function() {
+                if ($(this).hasClass("text-uncollapse")) {
+                    $(this).removeClass("text-uncollapse")
+                } else {
+                    $(this).addClass("text-uncollapse")
+                }
+            });
+
             // spy scroll and manage sidebar menu
             $(window).scroll(function () {
                 var scrollPosition = $(document).scrollTop();
@@ -223,7 +232,7 @@
 </#macro>
 
 <#macro sourceSample index fieldsIndex>
-    <div id="fSIdx${fieldsIndex}" class="sample mappingText mx-3 overflow-x-auto">
+    <div id="fSIdx${fieldsIndex}" class="text-collapse sample mappingText mx-lg-3">
         <@s.text name='manage.mapping.sourceSample' />:
         <em>
             <#list peek as row>
@@ -313,9 +322,9 @@
             </div>
 
             <#if field.index??>
-                <small class="text-truncate"><@sourceSample field.index fieldsIndex/></small>
+                <small><@sourceSample field.index fieldsIndex/></small>
                 <div id="fTIdx${fieldsIndex}" class="sample mappingText">
-                    <small class="mx-3"><@s.text name='manage.mapping.translation' />:</small>
+                    <small class="mx-lg-3"><@s.text name='manage.mapping.translation' />:</small>
                     <small>
                         <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
                             <#if (((field.translation?size)!0)>0)>

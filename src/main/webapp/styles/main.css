@@ -1286,6 +1286,18 @@ a.doi:hover span:first-of-type {
     }
 }
 
+.text-collapse {
+    cursor: pointer;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.text-uncollapse {
+    -webkit-line-clamp: unset;
+}
+
 .top-button {
     min-width: 100px;
 }
