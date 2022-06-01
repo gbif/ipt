@@ -52,7 +52,11 @@
 
             <div class="container my-3 p-3">
                 <div class="text-center">
-                    <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
+                    <div class="text-center text-uppercase fw-bold fs-smaller-2">
+                        <@s.text name="basic.resource"/>
+                    </div>
+
+                    <h5 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-400">
                         <@popoverPropertyInfo "manage.source.intro"/>
                         <@s.text name='manage.source.title'/>
                     </h5>
