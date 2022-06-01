@@ -68,7 +68,14 @@ public class MappingAction extends ManagerBaseAction {
   // logging
   private static final Logger LOG = LogManager.getLogger(MappingAction.class);
 
-  private static final Pattern NORM_TERM = Pattern.compile("[\\W\\s_0-9]+");
+  private static final Pattern NORM_TERM = Pattern.compile("[^a-zA-Z0-9:]+");
+
+  public static final String DC_NAMESPACE = "http://purl.org/dc/elements/1.1";
+  public static final String DC_TERMS_NAMESPACE = "http://purl.org/dc/terms";
+  public static final String DWC_NAMESPACE = "https://dwc.tdwg.org/terms";
+  public static final String DC_PREFIX = "dc:";
+  public static final String DC_TERMS_PREFIX = "dcterms:";
+  public static final String DWC_PREFIX = "dwc:";
 
   private final ExtensionManager extensionManager;
   private final SourceManager sourceManager;
@@ -139,8 +146,10 @@ public class MappingAction extends ManagerBaseAction {
     int idx1 = 0;
     for (String col : columns) {
       String normCol = normalizeColumnName(col);
-      if (normCol != null && TermFactory.normaliseTerm(mappingCoreid.getTerm().simpleName())
-        .equalsIgnoreCase(normCol)) {
+      if (normCol != null && (
+          termNormalizedPrefixedName(mappingCoreid.getTerm()).equalsIgnoreCase(normCol) ||
+              TermFactory.normaliseTerm(mappingCoreid.getTerm().simpleName()).equalsIgnoreCase(normCol)
+      )) {
         // mappingCoreId and mapping id column must both be set (and have the same index) to automap successfully.
         mappingCoreid.setIndex(idx1);
         mapping.setIdColumn(idx1);
@@ -156,7 +165,10 @@ public class MappingAction extends ManagerBaseAction {
       int idx2 = 0;
       for (String col : columns) {
         String normCol = normalizeColumnName(col);
-        if (normCol != null && TermFactory.normaliseTerm(f.getTerm().simpleName()).equalsIgnoreCase(normCol)) {
+        if (normCol != null && (
+            termNormalizedPrefixedName(f.getTerm()).equalsIgnoreCase(normCol) ||
+                TermFactory.normaliseTerm(f.getTerm().simpleName()).equalsIgnoreCase(normCol)
+        )) {
           f.setIndex(idx2);
           // we have automapped the term, so increment automapped counter and exit
           automapped++;
@@ -281,8 +293,7 @@ public class MappingAction extends ManagerBaseAction {
 
   /**
    * Normalizes an incoming column name so that it can later be compared against a ConceptTerm's simpleName.
-   * This method converts the incoming string to lower case, and will take the substring up to, but not including the
-   * first ":".
+   * This method converts the incoming string to lower case.
    *
    * @param col column name
    * @return the normalized column name, or null if the incoming name was null or empty
@@ -290,12 +301,30 @@ public class MappingAction extends ManagerBaseAction {
   String normalizeColumnName(String col) {
     if (StringUtils.isNotBlank(col)) {
       col = NORM_TERM.matcher(col.toLowerCase()).replaceAll("");
-      if (col.contains(":")) {
-        col = StringUtils.substringAfter(col, ":");
-      }
       return col;
     }
     return null;
+  }
+
+  /**
+   * Return term's prefixed with namespace name.
+   * If namespace does not match any then simple name is returned.
+   *
+   * @param term term
+   * @return term's normalized prefixed name
+   */
+  String termNormalizedPrefixedName(Term term) {
+    String termNamespace = term.namespace().toString();
+
+    if (termNamespace.startsWith(DC_NAMESPACE)) {
+      return DC_PREFIX + TermFactory.normaliseTerm(term.simpleName());
+    } else if (termNamespace.startsWith(DC_TERMS_NAMESPACE)) {
+      return DC_TERMS_PREFIX + TermFactory.normaliseTerm(term.simpleName());
+    } else if (termNamespace.startsWith(DWC_NAMESPACE)) {
+      return DWC_PREFIX + TermFactory.normaliseTerm(term.simpleName());
+    } else {
+      return TermFactory.normaliseTerm(term.simpleName());
+    }
   }
 
   @Override
