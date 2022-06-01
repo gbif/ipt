@@ -269,7 +269,7 @@
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
-                <strong class="<#if p.required>text-gbif-danger</#if>" >
+                <strong>
                     <#if !p.namespace()?starts_with("http://purl.org/dc/")>
                         ${p.name}
                     <#elseif p.namespace()?starts_with("http://purl.org/dc/terms")>
@@ -277,6 +277,7 @@
                     <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>
                         dc:${p.name}
                     </#if>
+                    <#if p.required>&#42;</#if>
                 </strong>
             </div>
 
@@ -593,7 +594,9 @@
 
                             <div class="text-smaller">
                                 <#list nonMapped as col>
-                                    <code>${col}<#sep>;</#sep></code>
+                                    <#if col?has_content>
+                                        <code>${col}<#sep>;</#sep></code>
+                                    </#if>
                                 </#list>
                             </div>
                         </div>
