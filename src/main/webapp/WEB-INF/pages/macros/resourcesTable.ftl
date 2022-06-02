@@ -49,7 +49,8 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                 '${(r.nextPublished?date?string("yyyy-MM-dd HH:mm"))!'${emptyString}'}',
                 <#if r.status=='PRIVATE'>'<@s.text name="manage.home.visible.private"/>'<#elseif r.status=='DELETED'>'${deletedString}'<#else>'<@s.text name="manage.home.visible.public"/>'</#if>,
                 <#if r.creator??>'${r.creator.firstname?replace("\'", "\\'")?replace("\"", '\\"')!} ${r.creator.lastname?replace("\'", "\\'")?replace("\"", '\\"')!}'<#else>'${emptyString}'</#if>,
-                '${r.shortname}'
+                '${r.shortname}',
+                '${r.eml.subject!}'
             ]
             <#if r_has_next>,</#if>
             </#list>
@@ -92,7 +93,8 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     { "sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false},
                     { "sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "bVisible": <#if shownPublicly>false<#else>true</#if>},
                     { "sTitle": "<@s.text name="portal.home.author"/>", "bVisible": <#if shownPublicly>false<#else>true</#if>},
-                    { "sTitle": "<@s.text name="resource.shortname"/>", "bVisible": false}
+                    { "sTitle": "<@s.text name="resource.shortname"/>", "bVisible": false},
+                    { "sTitle": "<@s.text name="portal.resource.summary.keywords"/>", "bVisible": false}
                 ],
                 "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
                 "aoColumnDefs": [
