@@ -238,7 +238,7 @@
             <#list peek as row>
                 <#if row??>
                     <#if row[index]?has_content && row[index]!=" ">
-                        ${row[index]}
+                        <code>${row[index]}</code>
                     <#else>
                         &nbsp;
                     </#if>
@@ -476,7 +476,7 @@
                                     <@s.text name='manage.mapping.info.linenumbers'/>
                                 </span>
                                     <#if coreid.examples?has_content>
-                                        <em><@s.text name="basic.examples"/></em>: ${coreid.examples}
+                                        <em><@s.text name="basic.examples"/></em>: <code>${coreid.examples}</code>
                                     </#if>
                                 </#assign>
                                 <@popoverTextInfo text1/>
