@@ -52,35 +52,35 @@
             ${extension.description}
         </div>
 
-        <div class="row pb-2 text-smaller">
+        <div class="row text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="extension.properties"/></strong>
             </div>
             <div class="col-lg-9">${extension.properties?size}</div>
         </div>
 
-        <div class="row pb-2 text-smaller">
+        <div class="row text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="basic.name"/></strong>
             </div>
             <div class="col-lg-9">${extension.name}</div>
         </div>
 
-        <div class="row pb-2 text-smaller">
+        <div class="row text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="basic.namespace"/></strong>
             </div>
             <div class="col-lg-9 overflow-x-auto">${extension.namespace}</div>
         </div>
 
-        <div class="row pb-2 text-smaller">
+        <div class="row text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="extension.rowtype"/></strong>
             </div>
             <div class="col-lg-9 overflow-x-auto">${extension.rowType}</div>
         </div>
 
-        <div class="row pb-2 text-smaller">
+        <div class="row text-smaller">
             <div class="col-lg-3">
                 <strong><@s.text name="basic.lastModified"/></strong>
             </div>

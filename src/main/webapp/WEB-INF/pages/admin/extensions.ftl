@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9">
+            <div class="col-md-9 text-smaller">
                 <div class="definition">
                     <div class="body">
                         <div>
@@ -57,14 +57,14 @@
                         <div class="details table-responsive">
                             <table class="table table-sm table-borderless">
                                 <#if ext.issued??>
-                                    <tr><th class="col-3"><@s.text name="basic.issued"/></th><td>${ext.issued?date?string.long}</td></tr>
+                                    <tr><th class="col-3 py-0"><@s.text name="basic.issued"/></th><td class="py-0">${ext.issued?date?string.long}</td></tr>
                                 </#if>
-                                <tr><th class="col-3"><@s.text name="extension.properties"/></th><td>${ext.properties?size}</td></tr>
-                                <tr><th><@s.text name="basic.name"/></th><td>${ext.name}</td></tr>
-                                <tr><th><@s.text name="basic.namespace"/></th><td>${ext.namespace}</td></tr>
-                                <tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType}</td></tr>
+                                <tr><th class="col-3 py-0"><@s.text name="extension.properties"/></th><td class="py-0">${ext.properties?size}</td></tr>
+                                <tr><th class="py-0"><@s.text name="basic.name"/></th><td class="py-0">${ext.name}</td></tr>
+                                <tr><th class="py-0"><@s.text name="basic.namespace"/></th><td class="py-0">${ext.namespace}</td></tr>
+                                <tr><th class="py-0"><@s.text name="extension.rowtype"/></th><td class="py-0">${ext.rowType}</td></tr>
                                 <#if ext.subject?has_content>
-                                    <tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
+                                    <tr><th class="py-0"><@s.text name="basic.keywords"/></th><td class="py-0">${ext.subject!}</td></tr>
                                 </#if>
                             </table>
                         </div>
@@ -219,7 +219,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-9">
+                    <div class="col-md-9 text-smaller">
                         <div class="definition">
                             <div class="body">
                                 <div>
@@ -227,8 +227,8 @@
                                 </div>
                                 <div class="details table-responsive">
                                     <table class="table table-sm table-borderless">
-                                        <tr><th class="col-3"><@s.text name="extension.rowtype"/></th><td>${ext.rowType!}</td></tr>
-                                        <tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
+                                        <tr><th class="col-3 py-0"><@s.text name="extension.rowtype"/></th><td class="py-0">${ext.rowType!}</td></tr>
+                                        <tr><th class="py-0"><@s.text name="basic.keywords"/></th><td class="py-0">${ext.subject!}</td></tr>
                                     </table>
                                 </div>
                             </div>
