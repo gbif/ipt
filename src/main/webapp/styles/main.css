@@ -1076,13 +1076,6 @@ button.close {
         grid-template-rows: auto auto 1fr;
     }
 
-    .bd-main-right {
-        grid-template-areas:
-                    "content toc";
-        grid-template-columns: 1fr auto;
-    }
-
-
     #metadata-selector-container {
         display: none;
     }
