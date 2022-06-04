@@ -327,6 +327,10 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: #663c00;
 }
 
+.text-discreet {
+    color: #666666;
+}
+
 .bg-gbif-primary {
     background-color: #61a861;
 }

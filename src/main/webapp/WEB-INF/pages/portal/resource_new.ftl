@@ -29,7 +29,7 @@
             </#if>
         </div>
         <#-- we use this div to toggle the grouped information -->
-        <div class="text-smaller">
+        <div class="text-smaller text-discreet">
             <#if con.position?has_content>
                 <div class="contactPosition">
                     ${con.position!}
