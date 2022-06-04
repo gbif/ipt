@@ -18,7 +18,7 @@
 
             <div class="text-smaller text-gbif-primary mb-2">
                 <#if (ipt.key)??>
-                    <a href="${portalUrl}/installation/${ipt.key}" target="_blank">${portalUrl}/installation/${ipt.key}</a>
+                    <a href="${portalUrl}/installation/${ipt.key}" target="_blank">${portalUrl}/installation</a>
                 </#if>
             </div>
         </div>
@@ -29,8 +29,12 @@
     <div class="my-3 p-3">
         <p class="text-center">
             <span class="text-start d-inline-block">
-                <#if (ipt.description)??>
-                    <@ipt.description?interpret />
+                <#if hostingOrganisation?? && hostingOrganisation.name??>
+                    <#if (ipt.description)??>
+                        <@ipt.description?interpret />
+                    <#else>
+                        <@s.text name="about.installation"/> ${hostingOrganisation.name}
+                    </#if>
                 <#else>
                     <@s.text name="about.notRegistered"/>
                 </#if>

@@ -15,6 +15,7 @@ package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
@@ -55,6 +56,17 @@ public class AboutAction extends BaseAction {
     } else {
       title = getText("about.title");
     }
+  }
+
+  /**
+   * This method is called from about.ftl.
+   *
+   * @return the organisation hosting this IPT instance, or null if the IPT hasn't been registered yet.
+   */
+  public Organisation getHostingOrganisation() {
+    Organisation org = registrationManager.getHostingOrganisation();
+    org.setPassword(null);
+    return org;
   }
 
   /**
