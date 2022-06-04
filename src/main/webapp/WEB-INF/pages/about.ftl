@@ -16,9 +16,10 @@
                 ${title}
             </h1>
 
-            <#assign aDateTime = .now>
             <div class="text-smaller text-gbif-primary mb-2">
-                ${aDateTime?date?string.long}
+                <#if (ipt.key)??>
+                    <a href="${portalUrl}/installation/${ipt.key}" target="_blank">${portalUrl}/installation/${ipt.key}</a>
+                </#if>
             </div>
         </div>
     </div>
@@ -26,9 +27,15 @@
 
 <main class="container">
     <div class="my-3 p-3">
-        <div>
-            <@content?interpret />
-        </div>
+        <p class="text-center">
+            <span class="text-start d-inline-block">
+                <#if (ipt.description)??>
+                    <@ipt.description?interpret />
+                <#else>
+                    <@s.text name="about.notRegistered"/>
+                </#if>
+            </span>
+        </p>
     </div>
 </main>
 

@@ -14,83 +14,58 @@
 package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import java.io.StringWriter;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.inject.Inject;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 
 public class AboutAction extends BaseAction {
 
   private static final long serialVersionUID = -471175839075190159L;
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(AboutAction.class);
-
-  private final Configuration ftl;
+  private final AppConfig cfg;
   private String title;
-  private String content;
 
   @Inject
-  public AboutAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    Configuration ftl) {
+  public AboutAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
     super(textProvider, cfg, registrationManager);
-    this.ftl = ftl;
-  }
-
-  public String getContent() {
-    return content;
+    this.cfg = cfg;
   }
 
   public String getTitle() {
     return title;
   }
 
+  public String getPortalUrl() {
+    return cfg.getPortalUrl();
+  }
+
   @Override
   public void prepare() {
-    StringWriter result;
-    Template tmpl;
+    Ipt ipt = getIpt();
 
-    // get title from ipt.properties, otherwise use default one
-    title = cfg.getProperty("about.title");
-    if (title == null) {
+    // if registered - get title from registration data
+    // if not - try to get title form ipt.properties
+    // otherwise, just use default value
+    if (ipt != null && ipt.getName() != null) {
+      title = ipt.getName();
+    } else if (cfg.getProperty("about.title") != null) {
+      title = cfg.getProperty("about.title");
+    } else {
       title = getText("about.title");
-    }
-
-    try {
-      result = new StringWriter();
-      tmpl = ftl.getTemplate("datadir::config/about2.ftl");
-      tmpl.process(this, result);
-      content = result.toString();
-    } catch (Exception e) {
-      LOG.warn("Cannot render custom about2.ftl template from data dir. Trying default template...");
-
-      try {
-        result = new StringWriter();
-        tmpl = ftl.getTemplate("configDefault/about2.ftl");
-        tmpl.process(this, result);
-        content = result.toString();
-      } catch (Exception ex) {
-        LOG.warn("Cannot render default about2.ftl template from classpath", ex);
-        content = "";
-      }
     }
   }
 
   /**
    * This method is called from about.ftl.
    *
-   * @return the organisation hosting this IPT instance, or null if the IPT hasn't been registered yet.
+   * @return the IPT instance information, or null if the IPT hasn't been registered yet.
    */
-  public Organisation getHostingOrganisation() {
-    return registrationManager.getHostingOrganisation();
+  public Ipt getIpt() {
+    Ipt ipt = registrationManager.getIpt();
+    // remove password from IPT data
+    ipt.setWsPassword(null);
+    return ipt;
   }
 }
