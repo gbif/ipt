@@ -65,7 +65,9 @@ public class AboutAction extends BaseAction {
    */
   public Organisation getHostingOrganisation() {
     Organisation org = registrationManager.getHostingOrganisation();
-    org.setPassword(null);
+    if (org != null) {
+      org.setPassword(null);
+    }
     return org;
   }
 
@@ -77,7 +79,9 @@ public class AboutAction extends BaseAction {
   public Ipt getIpt() {
     Ipt ipt = registrationManager.getIpt();
     // remove password from IPT data
-    ipt.setWsPassword(null);
+    if (ipt != null) {
+      ipt.setWsPassword(null);
+    }
     return ipt;
   }
 }

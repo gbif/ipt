@@ -29,7 +29,7 @@
     <div class="my-3 p-3">
         <p class="text-center">
             <span class="text-start d-inline-block">
-                <#if hostingOrganisation?? && hostingOrganisation.name??>
+                <#if (hostingOrganisation.name)??>
                     <#if (ipt.description)??>
                         <@ipt.description?interpret />
                     <#else>
