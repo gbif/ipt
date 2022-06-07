@@ -19,6 +19,9 @@
             <div class="text-smaller text-gbif-primary mb-2">
                 <#if (ipt.key)??>
                     <a href="${portalUrl}/installation/${ipt.key}" target="_blank"><@s.text name="about.link"/></a>
+                <#else>
+                    <#assign aDateTime = .now>
+                    ${aDateTime?date?string.long}
                 </#if>
             </div>
         </div>
