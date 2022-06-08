@@ -1,5 +1,8 @@
-GBIF-IPT(7) - Share biodiversity data
-=====================================
+% GBIF-IPT(7)
+
+# IPT
+
+GBIF IPT - Share biodiversity data
 
 ## DESCRIPTION
 

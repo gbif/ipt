@@ -1,28 +1,46 @@
 #!/bin/bash -e
 
+gitTag=$(git describe --tags --abbrev=0)
+nr_ver=$(echo $gitTag | sed s/ipt-//)
+
+echo "Building version $nr_ver"
+
 CURRENT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
-mkdir -p $CURRENT_DIR/{RPMS,SRPMS}
-chmod 777 $CURRENT_DIR/{RPMS,SOURCES,SRPMS}
+mkdir -p $CURRENT_DIR/RPMS
+chmod 777 $CURRENT_DIR/{RPMS,SOURCES}
 
-docker pull jc21/rpmbuild-centos7
-
-echo "EL 7 build"
+echo
+echo "CentOS 7 build"
+docker pull quay.io/centos/centos:centos7
 docker run --rm \
-       -v $CURRENT_DIR/RPMS:/home/rpmbuilder/rpmbuild/RPMS/ \
-       -v $CURRENT_DIR/SOURCES:/home/rpmbuilder/rpmbuild/SOURCES/ \
-       -v $CURRENT_DIR/SPECS:/home/rpmbuilder/rpmbuild/SPECS/ \
-       -v $CURRENT_DIR/SRPMS:/home/rpmbuilder/rpmbuild/SRPMS/ \
-       jc21/rpmbuild-centos7 \
-       /bin/build-spec -u jc21-yum -m /home/rpmbuilder/rpmbuild/SPECS/ipt.spec
+       -e nr_ver=$nr_ver \
+       -v $CURRENT_DIR/RPMS:/root/rpmbuild/RPMS/ \
+       -v $CURRENT_DIR/SOURCES:/root/rpmbuild/SOURCES/ \
+       -v $CURRENT_DIR/SPECS:/root/rpmbuild/SPECS/ \
+       quay.io/centos/centos:centos7 \
+       "/root/rpmbuild/SPECS/rpm-build.sh"
 
-echo "EL 8 build"
+echo
+echo "CentOS Stream8 build"
+docker pull quay.io/centos/centos:stream8
 docker run --rm \
-       -v $CURRENT_DIR/RPMS:/home/rpmbuilder/rpmbuild/RPMS/ \
-       -v $CURRENT_DIR/SOURCES:/home/rpmbuilder/rpmbuild/SOURCES/ \
-       -v $CURRENT_DIR/SPECS:/home/rpmbuilder/rpmbuild/SPECS/ \
-       -v $CURRENT_DIR/SRPMS:/home/rpmbuilder/rpmbuild/SRPMS/ \
-       jc21/rpmbuild-centos8 \
-       /bin/build-spec -u jc21-yum -m /home/rpmbuilder/rpmbuild/SPECS/ipt.spec
+       -e nr_ver=$nr_ver \
+       -v $CURRENT_DIR/RPMS:/root/rpmbuild/RPMS/ \
+       -v $CURRENT_DIR/SOURCES:/root/rpmbuild/SOURCES/ \
+       -v $CURRENT_DIR/SPECS:/root/rpmbuild/SPECS/ \
+       quay.io/centos/centos:stream8 \
+       "/root/rpmbuild/SPECS/rpm-build.sh"
 
-chmod 755 $CURRENT_DIR/{RPMS,SOURCES,SRPMS}
+echo
+echo "CentOS Stream9 build"
+docker pull quay.io/centos/centos:stream9
+docker run --rm \
+       -e nr_ver=$nr_ver \
+       -v $CURRENT_DIR/RPMS:/root/rpmbuild/RPMS/ \
+       -v $CURRENT_DIR/SOURCES:/root/rpmbuild/SOURCES/ \
+       -v $CURRENT_DIR/SPECS:/root/rpmbuild/SPECS/ \
+       quay.io/centos/centos:stream9 \
+       "/root/rpmbuild/SPECS/rpm-build.sh"
+
+chmod 755 $CURRENT_DIR/{RPMS,SOURCES}

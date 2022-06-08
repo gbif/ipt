@@ -1,29 +1,24 @@
 #!/bin/bash -ex
 
-spec_file='rpmbuild/SPECS/ipt.spec'
+yum install -y rpmdevtools yum-utils
 
-if [ $(stat -c %U $spec_file) = "UNKNOWN" ]; then
-  echo "fixing ownership to avoid rpmbuild errors."
-  echo "Someday this will not be necessary when this update sees wider distribution: https://github.com/rpm-software-management/rpm/issues/2 "
-  original_uid=$(stat -c %u $spec_file)
-  original_gid=$(stat -c %g $spec_file)
-  sudo chown -R rpmbuilder:rpmbuilder rpmbuild
-fi
+cd /root
+
+spec_file='rpmbuild/SPECS/ipt.spec'
+uid=$(stat -c %u $spec_file)
+gid=$(stat -c %g $spec_file)
 
 function finish {
-  # reset uid:gid if we had to fix it up during the build
-  if [ "$original_uid" ]; then
-	  echo "resetting ownership."
-	  sudo chown -R $original_uid:$original_gid rpmbuild
-  fi
+	echo "Setting ownership."
+	chown -R $uid:$gid rpmbuild
 }
 trap finish EXIT
 
 # download and install all RPMs listed as BuildRequires
-sudo yum-builddep -y ${spec_file}
+yum-builddep -y ${spec_file}
 
 # download all source and patch files
-spectool -g -R ${spec_file}
+spectool -g -R --define "nr_ver $nr_ver" ${spec_file}
 
 # build it
-rpmbuild -ba ${spec_file}
+rpmbuild -bb --define="nr_ver $nr_ver" ${spec_file}

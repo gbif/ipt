@@ -33,7 +33,7 @@ Minor issues and security issues will be addressed in patch releases.
 
 == *2.6.1* – September 2022
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.1/ipt-2.6.1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.1/ipt-2.6.1.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-using-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.6.1 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/39?closed=1[1 issue].
@@ -46,7 +46,6 @@ This release includes a bug fix for empty resource tables.
 
 == *2.6.0* – September 2022
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.6.0/ipt-2.6.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.6.0 Release Notes]
 * xref:2.5@index.adoc[User Manual]
 * Addressed https://github.com/gbif/ipt/milestone/37?closed=1[42 issues].
@@ -59,15 +58,14 @@ This release brings many new features, bug fixes and improvements. Namely, admin
 
 == *2.5.8* – May 2022
 
-* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/2.5.8/ipt-2.5.8.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
 * xref:2.5@release-notes.adoc[IPT v2.5.8 Release Notes]
 * xref:2.5@index.adoc[User Manual]
-* Addressed https://github.com/gbif/ipt/milestone/35?closed=1[1 issue].
+* Addressed https://github.com/gbif/ipt/milestone/35?closed=1[9 issues].
 * Translated into 7 languages
 
 Existing users may upgrade to this version following the instructions in the xref:2.5@release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
 
-This release includes a bug fix for publishing resources with DOI.
+This release includes a bug fix for publishing resources with DOI and other minor fixes (see https://github.com/gbif/ipt/milestone/35?closed=1[issues]).
 
 
 == *2.5.7* – February 2022

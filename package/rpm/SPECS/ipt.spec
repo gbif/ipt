@@ -1,6 +1,3 @@
-%define nr_ver 2.6.2
-# Set to -RC1 etc for release candidates, and <percent>nil for releases
-%define nr_ver_extra %nil
 # Set to 0.1 etc for release candidates, and 1 etc for releases
 %define release_number 1
 
@@ -9,7 +6,7 @@ Version: %{nr_ver}
 Release: %{release_number}%{dist}
 License: ASL 2.0
 URL: https://www.gbif.org/ipt
-Source0: https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}%{nr_ver_extra}/ipt-%{nr_ver}%{nr_ver_extra}.war
+Source0: https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
 Source1: ipt.service
 Source2: ipt.sysconfig
 Source3: ipt-vhost.conf
@@ -69,45 +66,3 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/ipt
 
 %postun
 %systemd_postun_with_restart ipt.service
-
-%changelog
-* Thu Oct 06 2022 Mikhail Podolskiy <mpodolskiy@gbif.org> - 2.6.2-1
-- Publish IPT 2.6.2 release.
-* Fri Sep 30 2022 Mikhail Podolskiy <mpodolskiy@gbif.org> - 2.6.1-1
-- Publish IPT 2.6.1 release.
-* Wed Sep 28 2022 Mikhail Podolskiy <mpodolskiy@gbif.org> - 2.6.0-1
-- Publish IPT 2.6.0 release.
-* Wed May 18 2022 Mikhail Podolskiy <mpodolskiy@gbif.org> - 2.5.8-1
-- Publish IPT 2.5.8 release.
-* Mon Feb 28 2022 Matthew Blissett <mblissett@gbif.org> - 2.5.7-1
-- Publish IPT 2.5.7 release.
-* Fri Feb 11 2022 Matthew Blissett <mblissett@gbif.org> - 2.5.6-1
-- Publish IPT 2.5.6 release.
-* Mon Dec 20 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.5-1
-- Publish IPT 2.5.5 release.
-* Fri Dec 10 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.4-1
-- Publish IPT 2.5.4 release.
-* Mon Dec 06 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.3-1
-- Publish IPT 2.5.3 release.
-* Fri Nov 20 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.2-1
-- Publish IPT 2.5.2 release.
-* Mon Sep 06 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.1-1
-- Publish IPT 2.5.1 release.
-* Mon Aug 23 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0-1
-- Publish IPT 2.5.0 release.
-* Fri Jun 25 2021 Matthew Blissett <mblissett@gbif.org> - 2.5.0RC1-0.1
-- Publish IPT 2.5.0-RC1 pre-release.
-* Tue Sep 08 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.2-1
-- Publish IPT 2.4.2 release.
-* Wed Sep 02 2020 Matthew Blissett <mblissett@gbif.org> - 2.4.1-1
-- Publish IPT 2.4.1 release.
-* Wed Jul 24 2019 Matthew Blissett <mblissett@gbif.org> - 2.4.0-1
-- Publish IPT 2.4.0 release.
-* Tue Nov 06 2018 Matthew Blissett <mblissett@gbif.org> - 2.3.6-1
-- Publish IPT 2.3.6 release.
-* Tue Nov 06 2018 Matthew Blissett <mblissett@gbif.org> - 2.3.5-1
-- Publish IPT 2.3.5 release.
-* Tue Nov 06 2018 Matthew Blissett <mblissett@gbif.org> - 2.3.4-1
-- Publish IPT 2.3.4 release.
-* Thu Nov 17 2016 Matthew Blissett <mblissett@gbif.org> - 2.3.2-0.1
-- First GBIF IPT release.
