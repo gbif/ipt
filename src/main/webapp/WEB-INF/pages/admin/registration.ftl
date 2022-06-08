@@ -132,22 +132,13 @@
             <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
             <#if hostingOrganisation?has_content>
                 <p>
-                    <@s.text name="admin.registration.registered1"/><br />
-                    <@s.text name="admin.registration.registered2"><@s.param>${hostingOrganisation.name!"???"}</@s.param></@s.text>
+                    <@s.text name="admin.registration.registered1"><@s.param><a href="${cfg.portalUrl}/installation/${registeredIpt.key}" target="_blank">IPT</a></@s.param></@s.text>
+                    <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
+                    <@s.text name="admin.registration.registered2"><@s.param><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></@s.param></@s.text>
                 </p>
 
                 <#-- If the hosting institution already exists, this IP has been registered. Don't present the register form -->
                 <form id="registration" class="topForm half" action="updateRegistration" method="post">
-                    <p class="mb-2">
-                        <@s.text name="admin.registration.links"/>
-                    </p>
-
-                    <ul>
-                        <li><a href="${cfg.portalUrl}/installation/${registeredIpt.key}" target="_blank">${registeredIpt.name!"IPT"}</a></li>
-                        <#-- in prod mode link goes to /publisher (GBIF Portal), in dev mode link goes to /publisher (GBIF UAT Portal) -->
-                        <li><a href="${cfg.portalUrl}/publisher/${hostingOrganisation.key}" target="_blank">${hostingOrganisation.name!"Organisation"}</a></li>
-                    </ul>
-
                     <div class="row g-3">
                         <div class="col-lg-6">
                             <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
