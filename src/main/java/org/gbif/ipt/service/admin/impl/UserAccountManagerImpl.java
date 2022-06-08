@@ -287,14 +287,14 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       boolean isOldPasswordsPresent = users.values()
           .stream()
           .map(User::getPassword)
-          .anyMatch(pass -> !StringUtils.startsWith(pass, "$2a$"));
+          .anyMatch(this::isOldEncryptedPassword);
 
       // if so - update all passwords
       if (isOldPasswordsPresent) {
         LOG.info("There are old-fashioned encrypted passwords, start hashing them");
         for (User user : users.values()) {
           String pass = user.getPassword();
-          if (pass != null) {
+          if (pass != null && isOldEncryptedPassword(pass)) {
             String decrypted;
             try {
               decrypted = encrypter.decrypt(pass);
@@ -316,6 +316,10 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       LOG.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());
     }
+  }
+
+  private boolean isOldEncryptedPassword(String pass) {
+    return !StringUtils.startsWith(pass, "$2a$");
   }
 
   @Override
