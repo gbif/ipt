@@ -52,6 +52,14 @@ header, .dropdown-menu {
     background-color: #61a861 !important;
 }
 
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color: rgba(0,0,0,.04) !important;
+}
+
+.dropdown-item-active {
+    background-color: #00000014;
+}
+
 .bg-gbif-main-navbar {
     background: linear-gradient(#78b578, #71b171);
 }
