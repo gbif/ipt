@@ -102,8 +102,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   private Workbook openBook() throws IOException {
     LOG.info("Opening excel workbook [" + file.getName() + "]");
     try {
-      FileInputStream fis = new FileInputStream(file);
-      return WorkbookFactory.create(fis);
+      return WorkbookFactory.create(file);
     } catch (InvalidFormatException e) {
       throw new IOException("Cannot open invalid excel spreadsheet", e);
     } catch (POIXMLException e) {
