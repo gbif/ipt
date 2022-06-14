@@ -262,7 +262,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Write the header column line to file.
-   * 
+   *
    * @param propertyList ordered list of all ExtensionProperty that have been mapped across all mappings for a single
    *        Extension
    * @param totalColumns total number of columns in header
@@ -289,7 +289,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Adds EML file to DwC-A folder.
-   * 
+   *
    * @throws GeneratorException if EML file could not be copied to DwC-A folder
    * @throws InterruptedException if executing thread was interrupted
    */
@@ -312,7 +312,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * </br>
    * Since all default values ​​will be written in the data file, they won't be expressed in the archive file (meta.xml).
    * That's why the default value is always set to null.
-   * 
+   *
    * @param term ConceptTerm
    * @param delimitedBy multi-value delimiter
    *
@@ -334,7 +334,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   /**
    * Zips the DwC-A folder. A temp version is created first, and when successful, it it moved into the resource's
    * data directory.
-   * 
+   *
    * @throws GeneratorException if DwC-A could not be zipped or moved
    * @throws InterruptedException if executing thread was interrupted
    */
@@ -374,7 +374,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * Validate the DwC-A:
    * -ensure that if the core record identifier is mapped (e.g. occurrenceID, taxonID, etc) it is present on all
    * rows, and is unique
-   * 
+   *
    * @throws GeneratorException if DwC-A could not be validated
    * @throws InterruptedException if executing thread was interrupted
    */
@@ -406,7 +406,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Sort the data file of a Darwin Core Archive by a column. Sorting is case sensitive.
-   * 
+   *
    * @param file unsorted file
    * @param column column to sort by file by
    *
@@ -954,7 +954,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Method responsible for all stages of DwC-A file generation.
-   * 
+   *
    * @return number of records published in core file
    * @throws GeneratorException if DwC-A generation fails for any reason
    */
@@ -1028,7 +1028,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Checks if the executing thread has been interrupted, i.e. DwC-A generation was cancelled.
-   * 
+   *
    * @throws InterruptedException if the thread was found to be interrupted
    */
   private void checkForInterruption() throws InterruptedException {
@@ -1042,7 +1042,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Checks if the executing thread has been interrupted, i.e. DwC-A generation was cancelled.
-   * 
+   *
    * @param line number of lines currently processed at the time of the check
    * @throws InterruptedException if the thread was found to be interrupted
    */
@@ -1062,7 +1062,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Create data files.
-   * 
+   *
    * @throws GeneratorException if the resource had no core file that was mapped
    * @throws InterruptedException if the thread was interrupted
    */
@@ -1088,7 +1088,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Create meta.xml file.
-   * 
+   *
    * @throws GeneratorException if meta.xml file creation failed
    * @throws InterruptedException if the thread was interrupted
    */
@@ -1168,6 +1168,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     ClosableReportingIterator<String[]> iter = null;
     int line = 0;
     try {
+      DynamicPropertiesGenerator dynamicPropertiesGenerator = new DynamicPropertiesGenerator();
+      if (mapping.isGenerateJsonDynamicProperties()) {
+        List<String> sourceColumns = sourceManager.columns(mapping.getSource());
+        dynamicPropertiesGenerator.init(sourceColumns, mapping.getFields());
+      }
+
       // get the source iterator
       iter = sourceManager.rowIterator(mapping.getSource());
 
@@ -1215,7 +1221,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
             && filter.getParam() != null) {
             boolean matchesFilter;
             if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
-              applyTranslations(inCols, in, record, mapping.isDoiUsedForDatasetId(), doi);
+              applyTranslations(inCols, in, record, mapping.isDoiUsedForDatasetId(), doi, mapping.isGenerateJsonDynamicProperties(), dynamicPropertiesGenerator);
               matchesFilter = filter.matches(in);
               alreadyTranslated = true;
             } else {
@@ -1243,8 +1249,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
           // go through all archive fields
           if (!alreadyTranslated) {
-            applyTranslations(inCols, in, record, mapping.isDoiUsedForDatasetId(), doi);
+            applyTranslations(inCols, in, record, mapping.isDoiUsedForDatasetId(), doi, mapping.isGenerateJsonDynamicProperties(), dynamicPropertiesGenerator);
           }
+
           String newRow = tabRow(record);
           if (newRow != null) {
             writer.write(newRow);
@@ -1316,7 +1323,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Sets an exception and state of the worker to FAILED. The final StatusReport is generated at the end.
-   * 
+   *
    * @param e exception
    */
   private void setState(Exception e) {
@@ -1327,7 +1334,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Sets only the state of the worker. The final StatusReport is generated at the end.
-   * 
+   *
    * @param s STATE of worker
    */
   private void setState(STATE s) {
@@ -1374,7 +1381,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @param doi DOI assigned to resource
    */
   private void applyTranslations(PropertyMapping[] inCols, String[] in, String[] record, boolean doiUsedForDatasetId,
-    DOI doi) {
+    DOI doi, boolean generateJsonDynamicProperties, DynamicPropertiesGenerator dynamicPropertiesGenerator) {
     for (int i = 1; i < inCols.length; i++) {
       PropertyMapping pm = inCols[i];
       String val = null;
@@ -1397,6 +1404,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
             && doi != null) {
           val = doi.getDoiString();
         }
+        // generate JSON for dynamicProperties field?
+        if (pm.getTerm().qualifiedName().equalsIgnoreCase(Constants.DWC_DYNAMIC_PROPERTIES) && generateJsonDynamicProperties) {
+          val = dynamicPropertiesGenerator.generateJson(in);
+        }
       }
       // add value to data file record
       record[i] = val;
@@ -1405,7 +1416,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Print a line representation of a string array used for logging.
-   * 
+   *
    * @param in String array
    * @return line
    */
@@ -1424,7 +1435,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Write message from exception to publication log file as a new line but suffocate any exception thrown.
-   * 
+   *
    * @param e exception to write message from
    */
   private void writeFailureToPublicationLog(Throwable e) {
@@ -1444,7 +1455,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * First we need to find the union of all terms mapped (in all files) for a single Extension. Then make each mapped
    * term a field in the final archive. Static/default mappings are not stored for a field, since they are not
    * expressed in meta.xml but instead get written to the data file.
-   * 
+   *
    * @param mappings list of ExtensionMapping
    * @param af ArchiveFile
    *
@@ -1497,6 +1508,20 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
         // include datasetID in set of all terms mapped for Extension
         mappedConceptTerms.add(DwcTerm.datasetID);
       }
+      // if Extension has dynamicProperties concept term, check if generateJsonDynamicProperties should be used as value for mapping
+      ExtensionProperty epd = m.getExtension().getProperty(DwcTerm.dynamicProperties.qualifiedName());
+      if (epd != null && m.isGenerateJsonDynamicProperties()) {
+        log.debug("Detected that dynamicProperties should be generated..");
+        // include dynamicProperties field in ArchiveFile
+        ArchiveField f = buildField(DwcTerm.dynamicProperties, null);
+        af.addField(f);
+        // include dynamicProperties field mapping in ExtensionMapping
+        PropertyMapping pm = new PropertyMapping(f);
+        pm.setTerm(epd);
+        m.getFields().add(pm);
+        // include dynamicProperties in set of all terms mapped for Extension
+        mappedConceptTerms.add(DwcTerm.dynamicProperties);
+      }
     }
     return mappedConceptTerms;
   }
@@ -1505,7 +1530,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * Iterate through ordered list of those ExtensionProperty that have been mapped, and reassign the ArchiveFile
    * ArchiveField indexes, based on the order of their appearance in the ordered list be careful to reserve index 0 for
    * the ID column
-   * 
+   *
    * @param propertyList ordered list of those ExtensionProperty that have been mapped
    * @param af ArchiveFile
    */
@@ -1530,7 +1555,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
   /**
    * Retrieve the ordered list of all Extension's mapped ExtensionProperty. Ordering is done according to Extension.
-   * 
+   *
    * @param ext Extension
    * @param mappedConceptTerms set of all mapped ConceptTerm
    * @return ordered list of mapped ExtensionProperty

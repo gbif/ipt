@@ -39,6 +39,7 @@ public class ExtensionMapping implements Serializable {
   private String idSuffix;
   private RecordFilter filter;
   private boolean doiUsedForDatasetId;
+  private boolean generateJsonDynamicProperties;
   private Date lastModified;
 
   /**
@@ -129,6 +130,10 @@ public class ExtensionMapping implements Serializable {
     return doiUsedForDatasetId;
   }
 
+  public boolean isGenerateJsonDynamicProperties() {
+    return generateJsonDynamicProperties;
+  }
+
   /**
    * @return date extension mapping was last modified
    */
@@ -162,6 +167,10 @@ public class ExtensionMapping implements Serializable {
 
   public void setDoiUsedForDatasetId(boolean doiUsedForDatasetId) {
     this.doiUsedForDatasetId = doiUsedForDatasetId;
+  }
+
+  public void setGenerateJsonDynamicProperties(boolean generateJsonDynamicProperties) {
+    this.generateJsonDynamicProperties = generateJsonDynamicProperties;
   }
 
   public void setLastModified(Date lastModified) {

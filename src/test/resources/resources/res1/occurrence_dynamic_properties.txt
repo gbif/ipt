@@ -1,0 +1,3 @@
+id	scientificName	basisOfRecord	kingdom	datasetID	customValue
+1	puma concolor	occurrence	animalia	ds_77	val1
+2	pumm:concolor	occurrence	animalia	ds_77	val2

@@ -240,7 +240,7 @@
     </div>
 </#macro>
 
-<#macro datasetDoiCheckbox idAttr name i18nkey classAttr requiredField value="-99999" errorfield="">
+<#macro mappingCheckbox idAttr name i18nkey classAttr requiredField value="-99999" errorfield="">
     <div class="checkbox form-check">
         <#-- use name if value was not supplied -->
         <#if value == "-99999">
@@ -328,8 +328,15 @@
             <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
                 <div class="sample mappingText">
                     <#-- option to use DOI as datasetID -->
-                    <@datasetDoiCheckbox idAttr="cVal${fieldsIndex}" name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" classAttr="cval datasetDoiCheckbox form-check-input" requiredField=false value="${doiUsedForDatasetId?string}" errorfield="" />
+                    <@mappingCheckbox idAttr="cVal${fieldsIndex}" name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" classAttr="cval datasetDoiCheckbox form-check-input" requiredField=false value="${doiUsedForDatasetId?string}" errorfield="" />
                 </div>
+            </#if>
+
+            <#if dynamicProperties?? && p.qualifiedName()?lower_case == dynamicProperties.qualname?lower_case>
+              <div class="sample mappingText">
+                <#-- option to generate JSON with all unmapped fields for dynamicProperties -->
+                <@mappingCheckbox idAttr="cVal${fieldsIndex}" name="generateJsonDynamicProperties" i18nkey="manage.mapping.dynamic.all.unmapped.fields" classAttr="cval datasetDoiCheckbox form-check-input" requiredField=false value="${generateJsonDynamicProperties?string}" errorfield="" />
+              </div>
             </#if>
         </div>
 </#macro>
