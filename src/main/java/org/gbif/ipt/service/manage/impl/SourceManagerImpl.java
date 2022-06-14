@@ -402,7 +402,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       }
 
       // analyze file
-//      analyze(src);
+      analyze(src);
       return src;
     } else {
       throw new InvalidFilenameException("Filename contains illegal characters");
