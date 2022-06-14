@@ -71,8 +71,8 @@
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>5.8.2</junit.version>
-    <log4j.version>2.17.1</log4j.version>
-    <mockito.version>4.3.1</mockito.version>
+    <log4j.version>2.17.2</log4j.version>
+    <mockito.version>4.6.1</mockito.version>
     <owasp-java-html-sanitizer.version>20211018.2</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <struts2.version>2.5.30</struts2.version>
@@ -86,13 +86,14 @@
     <!-- JDBC drivers -->
     <jtds.version>1.3.1</jtds.version>
     <mssql-jdbc.version>9.2.1.jre8</mssql-jdbc.version>
-    <mysql-connector-java.version>8.0.25</mysql-connector-java.version>
-    <ojdbc.version>21.1.0.0</ojdbc.version>
-    <postgresql.version>42.3.3</postgresql.version>
+    <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
+    <ojdbc.version>21.5.0.0</ojdbc.version>
+    <postgresql.version>42.4.0</postgresql.version>
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.2</buildnumber-maven-plugin.version>
     <native2ascii-maven-plugin.version>2.0.1</native2ascii-maven-plugin.version>
+    <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
   </properties>
 
   <developers>
@@ -696,6 +697,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
+            <version>${maven-war-plugin.version}</version>
             <configuration>
               <!-- don't bundle local datadir.location file with generated war -->
               <packagingExcludes>**/datadir.location</packagingExcludes>
@@ -713,6 +715,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
+            <version>${maven-war-plugin.version}</version>
             <configuration>
               <!-- don't bundle local datadir.location file with generated war -->
               <packagingExcludes>**/datadir.location</packagingExcludes>
