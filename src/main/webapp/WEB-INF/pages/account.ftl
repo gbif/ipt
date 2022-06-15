@@ -60,17 +60,17 @@
 </div>
 
 <main class="container">
-    <div class="my-3 p-3">
+    <div class="mt-3 p-3">
         <p>
             <@s.text name="account.intro"/>
         </p>
 
-        <p>
+        <p class="mb-0">
             <@s.text name="account.email.cantChange"/>
         </p>
     </div>
 
-    <div class="mb-lg-3 p-3">
+    <div class="p-3">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="metadata-radio" id="edit-profile-radio" value="edit" checked>
             <label class="form-check-label" for="edit-profile-radio"><@s.text name="account.profile.title"/></label>
@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <div id="edit-profile-block" class="my-3 p-3">
+    <div id="edit-profile-block" class="p-3">
         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
             <@s.text name="account.profile.title"/>
         </h4>
@@ -110,7 +110,7 @@
         </form>
     </div>
 
-    <div id="change-password-block" class="my-3 p-3" style="display: none;">
+    <div id="change-password-block" class="p-3" style="display: none;">
         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
             <@s.text name="account.passwordChange.title"/>
         </h4>
