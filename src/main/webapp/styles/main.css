@@ -48,8 +48,13 @@ header, .dropdown-menu {
     font-size: 0.875rem !important;
 }
 
+.dropdown-item {
+    color: #4e565f;
+}
+
 .dropdown-item:active {
     background-color: #61a861 !important;
+    color: #4e565f;
 }
 
 .dropdown-item:focus, .dropdown-item:hover {
