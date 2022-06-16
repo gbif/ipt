@@ -776,13 +776,12 @@
                                             <#if report??>
                                                 <tr>
                                                     <th>${pubRepTitle?cap_first}</th>
-                                                    <td class="separator">
+                                                    <td>
                                                         <#if report?? && (report.state?contains('cancelled') || report.exception?has_content) >
                                                             <em>${report.state}</em>&nbsp;
                                                         </#if>
                                                         <a id="toggleReport" href="#anchor-publish">${showTitle?cap_first}</a>
                                                     </td>
-                                                    <td class="left_padding">${emptyCell}</td>
                                                 </tr>
                                             </#if>
                                         </table>
