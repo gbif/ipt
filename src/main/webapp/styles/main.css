@@ -292,6 +292,19 @@ a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin
     text-decoration: underline !important;
 }
 
+.button-link {
+    text-decoration: none;
+    background-color: #fff;
+    font-weight: 400;
+    font-size: 0.875rem;
+    border: 0;
+    padding: 0;
+}
+
+.button-link:hover {
+    text-decoration: underline;
+}
+
 a.leaflet-control-zoom-in:focus, a.leaflet-control-zoom-in:hover,
 a.leaflet-control-zoom-out:focus, a.leaflet-control-zoom-out:hover,
 a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
