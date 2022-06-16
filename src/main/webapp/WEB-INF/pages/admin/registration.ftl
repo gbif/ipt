@@ -182,15 +182,15 @@
                         </div>
 
                         <div class="col-12">
-                            <div id="validation-success" class="text-gbif-primary" style="display: none">
+                            <div id="validation-success" class="callout callout-info" style="display: none;">
                                 <@s.text name="admin.registration.validate.success"/>
                             </div>
 
-                            <div id="validation-failed-development" class="text-gbif-danger" style="display: none">
+                            <div id="validation-failed-development" class="callout callout-danger" style="display: none;">
                                 <@s.text name="admin.registration.validate.failed.development"/>
                             </div>
 
-                            <div id="validation-failed" class="text-gbif-danger" style="display: none">
+                            <div id="validation-failed" class="callout callout-danger" style="display: none;">
                                 <@s.text name="admin.registration.validate.failed"/>
                             </div>
                         </div>

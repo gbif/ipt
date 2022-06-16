@@ -497,17 +497,15 @@
 
                                 <!-- resources cannot be published if the mandatory metadata is missing -->
                                 <#if missingMetadata>
-                                    <p class="text-gbif-warning fst-italic">
-                                        <i class="bi bi-exclamation-triangle"></i>
+                                    <div class="callout callout-warning text-smaller">
                                         <@s.text name="manage.overview.published.missing.metadata"/>
-                                    </p>
+                                    </div>
 
                                     <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
                                 <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-                                    <p class="text-gbif-warning fst-italic">
-                                        <i class="bi bi-exclamation-triangle"></i>
+                                    <div class="callout callout-warning text-smaller">
                                         <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
-                                    </p>
+                                    </div>
 
                                     <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
                                 <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
@@ -515,21 +513,18 @@
                                 || resource.status == "REGISTERED">
                                     <!-- the user must have registration rights -->
                                     <#if !currentUser.hasRegistrationRights()>
-                                        <p class="text-gbif-warning fst-italic">
-                                            <i class="bi bi-exclamation-triangle"></i>
+                                        <div class="callout callout-warning text-smaller">
                                             <@s.text name="manage.resource.status.publication.forbidden"/>
                                             &nbsp;<@s.text name="manage.resource.role.change"/>
-                                        </p>
+                                        </div>
 
                                         <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
                                     <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
                                     || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
                                     && !organisationWithPrimaryDoiAccount??>
-
-                                        <p class="text-gbif-warning fst-italic">
-                                            <i class="bi bi-exclamation-triangle"></i>
+                                        <div class="callout callout-warning text-smaller">
                                             <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
-                                        </p>
+                                        </div>
 
                                         <!-- when a DOI is reserved.. -->
                                     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
@@ -537,23 +532,23 @@
                                         <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
                                             <!-- and the resource has never been published before, the first publication is a new major version -->
                                             <#if !resource.lastPublished??>
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
-                                                </p>
+                                                </div>
 
                                                 <!-- and the resource has been published before, the next publication is a new minor version -->
                                             <#else>
-                                                <p class="text-gbif-primary fst-italic">
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
-                                                </p>
+                                                </div>
                                             </#if>
 
                                             <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
                                         <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
-                                            <p class="text-gbif-primary fst-italic">
+                                            <div class="callout callout-info text-smaller">
                                                 <@s.text name="manage.overview.publishing.doi.register.help"/>
-                                            </p>
+                                            </div>
+
                                         </#if>
                                     </#if>
                                 </#if>
@@ -840,10 +835,9 @@
                                     </p>
 
                                     <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                                        <p class="text-gbif-warning fst-italic">
-                                            <i class="bi bi-exclamation-triangle"></i>
+                                        <div class="callout callout-warning text-smaller">
                                             <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
-                                        </p>
+                                        </div>
                                     </#if>
 
                                     <#if resource.usesAutoPublishing()>
@@ -906,10 +900,9 @@
                                         </p>
 
                                         <#if cfg.devMode() && cfg.getRegistryType()!='PRODUCTION'>
-                                            <p class="text-gbif-danger">
-                                                <i class="bi bi-exclamation-triangle"></i>
-                                                <em><@s.text name="manage.overview.published.testmode.warning"/></em>
-                                            </p>
+                                            <div class="callout callout-warning text-smaller">
+                                                <@s.text name="manage.overview.published.testmode.warning"/>
+                                            </div>
                                         </#if>
 
                                         <#if resource.status=="REGISTERED" && resource.key??>
@@ -953,34 +946,29 @@
                                         <#if resource.status=="PUBLIC">
                                             <#if !currentUser.hasRegistrationRights()>
                                                 <!-- Show warning: user must have registration rights -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                                                </p>
+                                                </div>
                                             <#elseif missingValidPublishingOrganisation?string == "true">
                                                 <!-- Show warning: user must assign valid publishing organisation -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.visibility.missing.organisation"/>
-                                                </p>
+                                                </div>
                                             <#elseif missingRegistrationMetadata?string == "true">
                                                 <!-- Show warning: user must fill in minimum registration metadata -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.visibility.missing.metadata" />
-                                                </p>
+                                                </div>
                                             <#elseif !resource.isLastPublishedVersionPublic()>
                                                 <!-- Show warning: last published version must be publicly available to register -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
-                                                </p>
+                                                </div>
                                             <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                                                 <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                                <p class="text-gbif-warning fst-italic">
-                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                <div class="callout callout-warning text-smaller">
                                                     <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
-                                                </p>
+                                                </div>
                                             </#if>
                                         </#if>
                                     </div>
@@ -1097,10 +1085,9 @@
                                             </p>
                                         </#if>
                                     <#else>
-                                        <p class="text-gbif-warning">
-                                            <i class="bi bi-exclamation-triangle"></i>
-                                            <em><@s.text name="manage.overview.networks.not.registered"/></em>
-                                        </p>
+                                        <div class="callout callout-warning text-smaller">
+                                            <@s.text name="manage.overview.networks.not.registered"/>
+                                        </div>
                                     </#if>
                                 </div>
                             </div>

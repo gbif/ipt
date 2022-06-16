@@ -185,10 +185,9 @@
                     </p>
 
                     <#if !(potentialCores?size>0)>
-                        <p class="text-gbif-warning fst-italic">
-                            <i class="bi bi-exclamation-triangle"></i>
+                        <div class="callout callout-warning text-smaller">
                             <@s.text name="manage.overview.mappings.cantdo"/>
-                        </p>
+                        </div>
                     </#if>
 
                     <div class="details mb-3">
@@ -280,10 +279,9 @@
                     </p>
 
                     <#if !(potentialCores?size>0)>
-                        <p class="text-gbif-warning fst-italic">
-                            <i class="bi bi-exclamation-triangle"></i>
+                        <div class="callout callout-warning text-smaller">
                             <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
-                        </p>
+                        </div>
                     </#if>
 
                     <div class="details mb-3">

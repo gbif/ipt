@@ -59,10 +59,9 @@
             </p>
 
             <#if missingMetadata>
-                <p class="text-gbif-warning fst-italic">
-                    <i class="bi bi-exclamation-triangle"></i>
+                <div class="callout callout-warning text-smaller">
                     <@s.text name="manage.overview.missing.metadata"/>
-                </p>
+                </div>
             </#if>
 
             <div class="details mb-3">

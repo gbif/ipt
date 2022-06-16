@@ -313,6 +313,28 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 /* Links color with exception for some classes END */
 
 
+/* Callouts START */
+.callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #e9ecef;
+    border-left-width: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.callout-info {
+    border-left-color: #61a861;
+}
+.callout-warning {
+    border-left-color: #ffc107;
+}
+.callout-danger {
+    border-left-color: #e36370;
+}
+/* Callouts END */
+
+
 /* Datepicker styles START */
 .datepicker table tr td span.active, .datepicker table tr td span.active.disabled, .datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active:hover {
     background-image: linear-gradient(to bottom, #61a861, #61a861) !important;

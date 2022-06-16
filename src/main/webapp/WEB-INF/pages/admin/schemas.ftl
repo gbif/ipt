@@ -119,12 +119,9 @@
             </#list>
 
             <#if schemasCount=0>
-                <p>
-                    <span class="text-gbif-warning">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        <@s.text name="admin.schemas.no.schemas.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
-                    </span>
-                </p>
+                <div class="callout callout-warning">
+                    <@s.text name="admin.schemas.no.schemas.installed.debug"><@s.param>${cfg.registryUrl}</@s.param></@s.text>
+                </div>
             </#if>
         </div>
 
