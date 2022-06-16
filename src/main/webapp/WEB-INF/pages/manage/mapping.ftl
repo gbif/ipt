@@ -435,7 +435,7 @@
                         </#if>
                     </ul>
 
-                    <div class="d-flex align-content-between">
+                    <div class="d-flex align-content-between" style="margin-left: -10px;">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary me-1" name="save" key="button.save"/>
                         <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger me-1" name="delete" key="button.delete"/>
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/>
