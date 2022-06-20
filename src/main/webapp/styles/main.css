@@ -1360,3 +1360,9 @@ a.doi:hover span:first-of-type {
     background-color: rgba(175, 184, 193, 0.2);
     border-radius: 6px;
 }
+
+code {
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 2px;
+}
