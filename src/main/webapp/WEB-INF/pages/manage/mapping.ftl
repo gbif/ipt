@@ -262,6 +262,12 @@
     </div>
 </#macro>
 
+<#macro processSurroundedWithBackticksAsCode examples>
+    <#noescape>
+        ${p.examples?replace("`(.*?)`", "<code>$1</code>", "r")}
+    </#noescape>
+</#macro>
+
 <#macro showField field index>
     <#assign p=field.term/>
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
@@ -273,7 +279,8 @@
                     <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
                     <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><br/><br/></#if>
                     <#if p.examples?has_content>
-                        <em><@s.text name="basic.examples"/></em>: <code>${p.examples}</code>
+                        <em><@s.text name="basic.examples"/></em>:
+                        <@processSurroundedWithBackticksAsCode p.examples />
                     </#if>
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />

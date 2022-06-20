@@ -168,10 +168,10 @@
                                                     <#if field.example??>
                                                         <#if field.example?is_collection>
                                                             <#list field.example as ex>
-                                                                ${ex}<#sep>, </#sep>
+                                                                <code>${ex}</code><#sep>, </#sep>
                                                             </#list>
                                                         <#else>
-                                                            ${field.example}
+                                                            <code>${field.example}</code>
                                                         </#if>
                                                     <#else>
                                                         --
