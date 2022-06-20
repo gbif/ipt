@@ -264,7 +264,7 @@
 
 <#macro processSurroundedWithBackticksAsCode examples>
     <#noescape>
-        ${p.examples?replace("`(.*?)`", "<code>$1</code>", "r")}
+        ${examples?replace("`(.*?)`", "<code>$1</code>", "r")}
     </#noescape>
 </#macro>
 

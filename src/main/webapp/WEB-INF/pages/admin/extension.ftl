@@ -4,6 +4,10 @@
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/data_bage.ftl">
 
+<#macro processSurroundedWithBackticksAsCode examples>
+    ${examples?replace("`(.*?)`", "<code>$1</code>", "r")}
+</#macro>
+
 <div class="container-fluid bg-body border-bottom">
     <div class="container my-3">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -136,7 +140,7 @@
                             </td>
                             <td>
                                 <#if p.examples?has_content>
-                                    ${p.examples}
+                                    <@processSurroundedWithBackticksAsCode p.examples />
                                 </#if>
                             </td>
                         </tr>
