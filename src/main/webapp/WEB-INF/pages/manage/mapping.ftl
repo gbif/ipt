@@ -604,7 +604,7 @@
                             <div class="text-smaller">
                                 <#list nonMapped as col>
                                     <#if col?has_content>
-                                        <code>${col}<#sep>;</#sep></code>
+                                        <span class="unmapped-field"><strong>${col}</strong></span><#sep>;</#sep>
                                     </#if>
                                 </#list>
                             </div>
