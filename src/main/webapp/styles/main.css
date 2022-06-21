@@ -917,7 +917,7 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     }
 }
 
-@media (max-width: 1200px){
+@media (max-width: 1199px){
     .show-xl-bigger {
         display: none;
     }
