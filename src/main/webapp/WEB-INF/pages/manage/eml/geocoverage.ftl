@@ -266,7 +266,7 @@
 
                         <div id="map"></div>
 
-                        <div id="bbox" class="row g-3">
+                        <div id="bbox" class="g-3">
                             <div class="col-12">
                                 <@checkbox name="globalCoverage" help="i18n" i18nkey="eml.geospatialCoverages.globalCoverage"/>
                             </div>
