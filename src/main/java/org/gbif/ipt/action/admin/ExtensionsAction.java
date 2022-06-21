@@ -17,6 +17,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -54,9 +55,10 @@ public class ExtensionsAction extends POSTAction {
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;
   private final RegistryManager registryManager;
-  // list of latest registered extension versions
+  // list of the latest registered extension versions
   private List<Extension> latestExtensionVersions;
   private List<Extension> extensions;
+  private Map<String, List<ExtensionProperty>> propertiesByGroup = new HashMap<>();
   private Extension extension;
   private String url;
   private Boolean synchronise = false;
@@ -89,7 +91,7 @@ public class ExtensionsAction extends POSTAction {
   }
 
   /**
-   * Update installed extension to latest version.
+   * Update installed extension to the latest version.
    * </br>
    * This involves migrating all associated resource mappings over to the new version.
    * </br>
@@ -125,7 +127,7 @@ public class ExtensionsAction extends POSTAction {
    * Handles the population of installed and uninstalled extensions on the "Core Types and Extensions" page.
    * This method always tries to pick up newly registered extensions from the Registry.
    * </br>
-   * Optionally, the user may have triggered synchronise action, which updates default vocabularies to use latest
+   * Optionally, the user may have triggered synchronise action, which updates default vocabularies to use the latest
    * versions, and synchronises all installed extensions and vocabularies with the registry to ensure their content
    * is up-to-date.
    *
@@ -172,7 +174,7 @@ public class ExtensionsAction extends POSTAction {
   public void prepare() {
     super.prepare();
 
-    // load latest extension versions from Registry
+    // load the latest extension versions from Registry
     loadLatestExtensionVersions();
 
     // ensure mandatory vocabs are always loaded
@@ -183,8 +185,15 @@ public class ExtensionsAction extends POSTAction {
       if (extension == null) {
         // set notFound flag to true so POSTAction will return a NOT_FOUND 404 result name
         notFound = true;
+      } else {
+        propertiesByGroup = extension.getProperties().stream()
+            .collect(Collectors.groupingBy(prop -> StringUtils.trimToEmpty(prop.getGroup())));
       }
     }
+  }
+
+  public Map<String, List<ExtensionProperty>> getPropertiesByGroup() {
+    return propertiesByGroup;
   }
 
   /**
@@ -355,7 +364,7 @@ public class ExtensionsAction extends POSTAction {
   }
 
   /**
-   * @return list of latest registered extensions
+   * @return list of the latest registered extensions
    */
   public List<Extension> getLatestExtensionVersions() {
     return latestExtensionVersions;
