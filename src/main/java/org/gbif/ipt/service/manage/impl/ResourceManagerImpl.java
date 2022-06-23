@@ -15,6 +15,9 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
+import org.gbif.common.parsers.core.OccurrenceParseResult;
+import org.gbif.common.parsers.geospatial.CoordinateParseUtils;
+import org.gbif.common.parsers.geospatial.LatLng;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
@@ -96,14 +99,18 @@ import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.KeywordSet;
 import org.gbif.metadata.eml.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.Point;
 import org.gbif.registry.metadata.EMLProfileVersion;
 import org.gbif.registry.metadata.EmlValidator;
 import org.gbif.registry.metadata.InvalidEmlException;
 import org.gbif.registry.metadata.parse.DatasetParser;
+import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -157,6 +164,9 @@ import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.xml.sax.SAXException;
+
+import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
+import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -1921,6 +1931,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String citation = resource.generateResourceCitation(version, homepage);
       resource.getEml().getCitation().setCitation(citation);
     }
+    // update eml geocoverage with inferred data (if infer automatically is turned on)
+    if (resource.isInferGeocoverageAutomatically()) {
+      updateGeocoverageWithInferredFromSourceData(resource);
+    }
 
     // save all changes to Eml
     saveEml(resource);
@@ -1934,6 +1948,100 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new PublicationException(PublicationException.TYPE.EML,
         "Can't publish eml file for resource " + resource.getShortname(), e);
     }
+  }
+
+  @Override
+  public Resource updateGeocoverageWithInferredFromSourceData(Resource resource) {
+    if (!resource.getMappings().isEmpty()) {
+      BBox inferredGeocoverage = inferGeocoverageFromSourceData(resource);
+      if (resource.getEml().getGeospatialCoverages().isEmpty()) {
+        GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
+        geospatialCoverage.setDescription("Automatically inferred data");
+        geospatialCoverage.setBoundingCoordinates(inferredGeocoverage);
+        resource.getEml().addGeospatialCoverage(geospatialCoverage);
+      } else {
+        resource.getEml().getGeospatialCoverages().get(0).setBoundingCoordinates(inferredGeocoverage);
+      }
+    }
+
+    return resource;
+  }
+
+  @Override
+  public BBox inferGeocoverageFromSourceData(Resource resource) {
+    int decimalLongitudeSourceColumnIndex = -1;
+    int decimalLatitudeSourceColumnIndex = -1;
+    Double minDecimalLongitude = -180.0D;
+    Double maxDecimalLongitude = 180.0D;
+    Double minDecimalLatitude = -90.0D;
+    Double maxDecimalLatitude = 90.0D;
+
+    if (!resource.getMappings().isEmpty()) {
+      for (ExtensionMapping mapping : resource.getMappings()) {
+        for (PropertyMapping field : mapping.getFields()) {
+          if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
+            decimalLongitudeSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
+            decimalLatitudeSourceColumnIndex = field.getIndex();
+          }
+        }
+
+        ClosableReportingIterator<String[]> iter = null;
+        try {
+          // get the source iterator
+          iter = sourceManager.rowIterator(mapping.getSource());
+          int line = 0;
+
+          while (iter.hasNext()) {
+            line++;
+            String[] in = iter.next();
+            if (in == null || in.length == 0) {
+              continue;
+            }
+
+            if (decimalLongitudeSourceColumnIndex != -1 && decimalLatitudeSourceColumnIndex != -1) {
+              OccurrenceParseResult<LatLng> latLngParseResult =
+                  CoordinateParseUtils.parseLatLng(in[decimalLatitudeSourceColumnIndex], in[decimalLongitudeSourceColumnIndex]);
+              LatLng latLng = latLngParseResult.getPayload();
+
+              // initialize min and max values
+              if (line == 1) {
+                minDecimalLatitude = latLng.getLat();
+                maxDecimalLatitude = latLng.getLat();
+                minDecimalLongitude = latLng.getLng();
+                maxDecimalLongitude = latLng.getLng();
+              }
+
+              if (latLng.getLat() > maxDecimalLatitude) {
+                maxDecimalLatitude = latLng.getLat();
+              }
+              if (latLng.getLat() < minDecimalLatitude) {
+                minDecimalLatitude = latLng.getLat();
+              }
+
+              if (latLng.getLng() > maxDecimalLongitude) {
+                maxDecimalLongitude = latLng.getLng();
+              }
+              if (latLng.getLng() < minDecimalLongitude) {
+                minDecimalLongitude = latLng.getLng();
+              }
+            }
+          }
+        } catch (Exception e) {
+          LOG.error("Error while trying to infer geocoverage from source data", e);
+        } finally {
+          if (iter != null) {
+            try {
+              iter.close();
+            } catch (Exception e) {
+              LOG.error("Error while closing iterator", e);
+            }
+          }
+        }
+      }
+    }
+
+    return new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude));
   }
 
   /**

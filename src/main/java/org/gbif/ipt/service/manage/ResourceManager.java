@@ -27,6 +27,8 @@ import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
+import org.gbif.metadata.eml.BBox;
+import org.gbif.registry.metadata.InvalidEmlException;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,10 +42,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
 
 import org.apache.commons.collections4.ListValuedMap;
+import org.xml.sax.SAXException;
 
 import com.google.inject.ImplementedBy;
-import org.gbif.registry.metadata.InvalidEmlException;
-import org.xml.sax.SAXException;
 
 /**
  * This interface details ALL methods associated with the main resource entity.
@@ -376,4 +377,22 @@ public interface ResourceManager {
    * @param validate
    */
   void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, IOException, InvalidEmlException, ImportException;
+
+  /**
+   * Update resource's metadata geocoverage with inferred from source data
+   *
+   * @param resource resource
+   *
+   * @return resource with updated geocoverage metadata from source
+   */
+  Resource updateGeocoverageWithInferredFromSourceData(Resource resource);
+
+  /**
+   * Infer geographical coverage from source data for the resource
+   *
+   * @param resource resource
+   *
+   * @return bounding box with coordinates
+   */
+  BBox inferGeocoverageFromSourceData(Resource resource);
 }

@@ -35,7 +35,9 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.metadata.eml.Agent;
+import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.TemporalCoverageType;
 import org.gbif.metadata.eml.UserId;
@@ -89,6 +91,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
+  private BBox inferredGeocoverage;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
@@ -118,6 +121,14 @@ public class MetadataAction extends ManagerBaseAction {
 
   public Eml getEml() {
     return resource.getEml();
+  }
+
+  public boolean isInferGeocoverageAutomatically() {
+    return resource.isInferGeocoverageAutomatically();
+  }
+
+  public void setInferGeocoverageAutomatically(boolean inferGeocoverageAutomatically) {
+    resource.setInferGeocoverageAutomatically(inferGeocoverageAutomatically);
   }
 
   public Map<String, String> getJGTICuratorialUnitTypeOptions() {
@@ -330,6 +341,22 @@ public class MetadataAction extends ManagerBaseAction {
       case GEOGRAPHIC_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getGeospatialCoverages().clear();
+        }
+
+        inferredGeocoverage = resourceManager.inferGeocoverageFromSourceData(resource);
+
+        // set inferred data if 'infer automatically' is checked
+        if (resource.isInferGeocoverageAutomatically()) {
+          if (!resource.getMappings().isEmpty()) {
+            if (resource.getEml().getGeospatialCoverages().isEmpty()) {
+              GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
+              geospatialCoverage.setDescription("Automatically inferred data");
+              geospatialCoverage.setBoundingCoordinates(inferredGeocoverage);
+              resource.getEml().addGeospatialCoverage(geospatialCoverage);
+            } else {
+              resource.getEml().getGeospatialCoverages().get(0).setBoundingCoordinates(inferredGeocoverage);
+            }
+          }
         }
         break;
 
@@ -891,5 +918,9 @@ public class MetadataAction extends ManagerBaseAction {
       s = s.replaceAll("\\r\\n|\\r|\\n", " ");
     }
     return s;
+  }
+
+  public BBox getInferredGeocoverage() {
+    return inferredGeocoverage;
   }
 }

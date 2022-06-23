@@ -57,8 +57,39 @@
                 map.fitWorld();
             }
 
+            $("#preview-inferred").click(function (e) {
+                e.preventDefault();
+                setInferredCoordinates();
+            });
+
+            if ($("#inferGeocoverageAutomatically").is(':checked')) {
+                setInferredCoordinates();
+            }
+
+            $("#inferGeocoverageAutomatically").click(function() {
+                if ($("#inferGeocoverageAutomatically").is(':checked')) {
+                    setInferredCoordinates();
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").prop("disabled", true);
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").prop("disabled", true);
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").prop("disabled", true);
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").prop("disabled", true);
+                } else {
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").prop("disabled", false);
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").prop("disabled", false);
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").prop("disabled", false);
+                    $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").prop("disabled", false);
+                }
+            });
+
+            function setInferredCoordinates() {
+                $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").val(${inferredGeocoverage.min.longitude});
+                $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").val(${inferredGeocoverage.max.longitude});
+                $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").val(${inferredGeocoverage.min.latitude});
+                $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").val(${inferredGeocoverage.max.latitude});
+            }
+
             /** This function updates the map each time the global coverage checkbox is checked or unchecked  */
-            $(":checkbox").click(function() {
+            $("#globalCoverage").click(function() {
                 if($("#globalCoverage").is(":checked")) {
                     $("#" + minLngId).val(MIN_LNG_VAL_LIMIT);
                     $("#" + maxLngId).val(MAX_LNG_VAL_LIMIT);
@@ -275,6 +306,9 @@
                                     <strong><@s.text name='manage.metadata.geocoverage.warning'/></strong>
                                 </p>
 
+                                <div class="col-12 d-flex justify-content-end">
+                                    <a id="preview-inferred" class="text-smaller" href=""><@s.text name="eml.geospatialCoverages.previewInferred" /></a>
+                                </div>
                                 <div class="col-md-6">
                                     <@input name="eml.geospatialCoverages[0].boundingCoordinates.min.longitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.min.longitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.min.longitude" requiredField=true />
                                 </div>
@@ -286,6 +320,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <@input name="eml.geospatialCoverages[0].boundingCoordinates.max.latitude" value="${(eml.geospatialCoverages[0].boundingCoordinates.max.latitude?c)!}" i18nkey="eml.geospatialCoverages.boundingCoordinates.max.latitude" requiredField=true />
+                                </div>
+                                <div class="col-12">
+                                    <@checkbox name="inferGeocoverageAutomatically" value="${inferGeocoverageAutomatically?c}" help="i18n" i18nkey="eml.geospatialCoverages.inferAutomatically"/>
                                 </div>
                             </div>
                         </div>

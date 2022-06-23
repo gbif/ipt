@@ -66,6 +66,8 @@ public final class Constants {
   public static final String VOCAB_URI_PRESERVATION_METHOD = "http://rs.gbif.org/vocabulary/gbif/preservation_method";
   public static final String VOCAB_URI_DATASET_SUBTYPES = "http://rs.gbif.org/vocabulary/gbif/datasetSubtype";
   public static final String VOCAB_URI_BASIS_OF_RECORDS = "http://rs.tdwg.org/dwc/dwctype/";
+  public static final String VOCAB_DECIMAL_LONGITUDE = "http://rs.tdwg.org/dwc/terms/decimalLongitude";
+  public static final String VOCAB_DECIMAL_LATITUDE = "http://rs.tdwg.org/dwc/terms/decimalLatitude";
   public static final String[] IMAGE_TYPES = {"jpeg", "gif", "png"};
   public static final String GBIF_HOME_PAGE_URL = "https://www.gbif.org";
   public static final String THESAURUS_DATASET_TYPE =
