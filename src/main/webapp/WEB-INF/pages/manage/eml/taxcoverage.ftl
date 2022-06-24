@@ -79,7 +79,14 @@
                                 <#list eml.taxonomicCoverages as item>
                                     <div id='item-${item_index}' class="item border-bottom">
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></a>
+                                            <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></span>
+                                            </a>
                                         </div>
 
                                         <@text  i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
@@ -100,7 +107,14 @@
                                                 <#list item.taxonKeywords as subItem>
                                                     <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
                                                         <div class="d-flex justify-content-end">
-                                                            <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></a>
+                                                            <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href="">
+                                                                <span>
+                                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
+                                                            </a>
                                                         </div>
                                                         <div class="col-lg-4 d-flex align-items-end">
                                                             <div class="w-100">
@@ -127,7 +141,12 @@
                                         </div>
                                         <div class="pb-1 mt-3">
                                             <a id="plus-subItem-${item_index}" href="" class="text-smaller">
-                                                <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' />
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></span>
                                             </a>
                                         </div>
                                     </div>
@@ -136,7 +155,12 @@
 
                             <div class="addNew mt-2">
                                 <a id="plus" class="plus text-smaller" href="">
-                                    <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' />
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
+                                    <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' /></span>
                                 </a>
                             </div>
 
@@ -148,7 +172,12 @@
                             <div id="baseItem" class="item clearfix" style="display:none">
                                 <div class="d-flex justify-content-end mt-2">
                                     <a id="removeLink" class="removeLink text-smaller" href="">
-                                        <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/>
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            </svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></span>
                                     </a>
                                 </div>
 
@@ -156,8 +185,13 @@
 
                                 <!-- Taxon list-->
                                 <div class="addNew mt-1">
-                                    <a id="taxonsLink" class="show-taxonList text-smaller" href="" >
-                                        <@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' />
+                                    <a id="taxonsLink" class="show-taxonList text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' /></span>
                                     </a>
                                 </div>
                                 <div id="list" class="mt-2" style="display:none">
@@ -169,7 +203,12 @@
                                 <div id="subItems" class="my-2"></div>
                                 <div class="addNew border-bottom pb-1 mt-1">
                                     <a id="plus-subItem" href="" class="text-smaller">
-                                        <@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' />
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></span>
                                     </a>
                                 </div>
                             </div>
@@ -177,7 +216,12 @@
                             <div id="subItem-9999" class="sub-item row g-3 pt-3" style="display:none">
                                 <div class="d-flex justify-content-end">
                                     <a id="trash" class="text-smaller" href="">
-                                        <@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/>
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            </svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
                                     </a>
                                 </div>
                                 <div class="col-lg-4 d-flex align-items-end">

@@ -162,6 +162,9 @@
 
             function removeTemporal(event) {
                 var $target = $(event.target);
+                if (!$target.is('a')) {
+                    $target = $(event.target).closest('a');
+                }
                 var index = $target.attr("id").split("-")[1];
                 // removing the form in the html.
                 $('#temporal-' + index).slideUp("slow", function () {
@@ -262,7 +265,14 @@
                                 <#list eml.temporalCoverages as temporalCoverage>
                                     <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
+                                            <a id="removeLink-${temporalCoverage_index}" class="removeLink text-smaller" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></span>
+                                            </a>
                                         </div>
 
                                         <div class="col-lg-6">
@@ -311,7 +321,14 @@
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->
                             <div class="addNew col-12 mt-1">
-                                <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.tempcoverage.item' /></a>
+                                <a id="plus" href="" class="text-smaller">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
+                                    <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.tempcoverage.item' /></span>
+                                </a>
                             </div>
 
                             <!-- internal parameter -->
@@ -321,7 +338,14 @@
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
                             <div id="temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
                                 <div class="d-flex justify-content-end">
-                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            </svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></span>
+                                    </a>
                                 </div>
                                 <div class="col-lg-6">
                                     <@select i18nkey="eml.temporalCoverages.type"  name="tempTypes" options=tempTypes />

@@ -66,7 +66,14 @@
                                     <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
                                         <div class="newline"></div>
                                         <div class="d-flex justify-content-end">
-                                            <a id="removeLink-${item_index}" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></a>
+                                            <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></span>
+                                            </a>
                                         </div>
                                         <@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
                                         <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
@@ -82,7 +89,14 @@
                             </div>
 
                             <div class="addNew col-12 mt-1">
-                                <a id="plus" href="" class="text-smaller"><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.keywords.item'/></a>
+                                <a id="plus" href="" class="text-smaller">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
+                                    <span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.keywords.item'/></span>
+                                </a>
                             </div>
 
                             <!-- internal parameter -->
@@ -91,7 +105,14 @@
 
                             <div id="baseItem" class="item row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="d-flex justify-content-end mt-0">
-                                    <a id="removeLink" class="removeLink text-smaller" href=""><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></a>
+                                    <a id="removeLink" class="removeLink text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            </svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></span>
+                                    </a>
                                 </div>
                                 <@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true/>
                                 <@text name="keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>

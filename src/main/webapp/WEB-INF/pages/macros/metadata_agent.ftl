@@ -14,7 +14,7 @@
 
         function calcNumberOfContactItems() {
             var lastItem = $("#contact-items .item:last-child").attr("id");
-            if (lastItem != undefined)
+            if (lastItem !== undefined)
                 contactItems = parseInt(lastItem.split("-")[2]);
             else
                 contactItems = -1;
@@ -22,7 +22,7 @@
 
         function calcNumberOfCreatorItems() {
             var lastItem = $("#creator-items .item:last-child").attr("id");
-            if (lastItem != undefined)
+            if (lastItem !== undefined)
                 creatorItems = parseInt(lastItem.split("-")[2]);
             else
                 creatorItems = -1;
@@ -30,7 +30,7 @@
 
         function calcNumberOfMetadataProviderItems() {
             var lastItem = $("#metadataProvider-items .item:last-child").attr("id");
-            if (lastItem != undefined)
+            if (lastItem !== undefined)
                 metadataProviderItems = parseInt(lastItem.split("-")[2]);
             else
                 metadataProviderItems = -1;
@@ -38,7 +38,7 @@
 
         function calcNumberOfAssociatedPartyItems() {
             var lastItem = $("#associatedParty-items .item:last-child").attr("id");
-            if (lastItem != undefined)
+            if (lastItem !== undefined)
                 associatedPartyItemsCount = parseInt(lastItem.split("-")[2]);
             else
                 associatedPartyItemsCount = -1;
@@ -46,7 +46,7 @@
 
         function calcNumberOfPersonnelItems() {
             var lastItem = $("#personnel-items .item:last-child").attr("id");
-            if (lastItem != undefined)
+            if (lastItem !== undefined)
                 personnelItemsCount = parseInt(lastItem.split("-")[2]);
             else
                 personnelItemsCount = -1;
@@ -195,6 +195,9 @@
         function removeContactItem(event) {
             event.preventDefault();
             var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
             $('#contact-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
                 $(this).remove();
                 $("#contact-items .item").each(function(index) {
@@ -207,6 +210,9 @@
         function removeCreatorItem(event) {
             event.preventDefault();
             var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
             $('#creator-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
                 $(this).remove();
                 $("#creator-items .item").each(function (index) {
@@ -219,6 +225,9 @@
         function removeMetadataProviderItem(event){
             event.preventDefault();
             var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
             $('#metadataProvider-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
                 $(this).remove();
                 $("#metadataProvider-items .item").each(function(index) {
@@ -231,6 +240,9 @@
         function removeAssociatedPartyItem(event) {
             event.preventDefault();
             var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
             $('#associatedParty-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
                 $(this).remove();
                 $("#associatedParty-items .item").each(function(index) {
@@ -243,6 +255,9 @@
         function removePersonnelItem(event) {
             event.preventDefault();
             var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
             $('#personnel-item-'+$target.attr("id").split("-")[2]).slideUp('slow', function() {
                 $(this).remove();
                 $("#personnel-items .item").each(function(index) {
@@ -255,6 +270,10 @@
         function copyDetails(event, idPrefix) {
             event.preventDefault();
             var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
+
             var index = $target.attr("id").split("-")[2];
             $("#" + idPrefix + index + " [id$='firstName']").val($("#eml\\.contacts\\[0\\]\\.firstName").val());
             $("#" + idPrefix + index + " [id$='lastName']").val($("#eml\\.contacts\\[0\\]\\.lastName").val());
@@ -275,6 +294,10 @@
         function copyPrimaryContactDetails(event, idPrefix) {
             event.preventDefault();
             var $target = $(event.target);
+            if (!$target.is('a')) {
+                $target = $(event.target).closest('a');
+            }
+
             var index = $target.attr("id").split("-")[2];
             // replace " with &quot; to prevent JS from failing
             $("#" + idPrefix + index + " [id$='firstName']").val("${primaryContact.firstName!?replace("\"", "&quot;")}");
