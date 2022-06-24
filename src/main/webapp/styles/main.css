@@ -1366,3 +1366,9 @@ code {
     background-color: #f9f2f4;
     border-radius: 2px;
 }
+
+.link-icon {
+    fill: #4BA2CE;
+    height: 1em;
+    vertical-align: -0.125em !important;
+}
