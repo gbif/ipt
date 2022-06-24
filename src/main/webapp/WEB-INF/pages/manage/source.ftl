@@ -115,11 +115,11 @@
                                             <td class="pt-0">
                                                 <div class="p-1">
                                                 <#if source.readable>
-                                                    <svg class="icon-button-svg icon-material-check text-gbif-primary ms-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <svg class="icon-button-svg icon-material-check inline-icon text-gbif-primary ms-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                         <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
                                                     </svg>
                                                 <#else>
-                                                    <svg class="icon-button-svg icon-material-close text-gbif-danger ms-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <svg class="icon-button-svg icon-material-close inline-icon text-gbif-danger ms-1" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                         <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                                                     </svg> ${problem!}
                                                 </#if>
