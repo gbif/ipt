@@ -1,7 +1,7 @@
 <#setting url_escaping_charset="UTF-8">
 
 <#if report??>
-    <div id="preview-report">
+    <div id="preview-report" class="fs-smaller-2">
         <#if report.completed>
             <#if !report.hasException() >
                 <div class="alert alert-success" role="alert">
@@ -38,7 +38,7 @@
 </#if>
 
 <div class="table-responsive">
-    <table class="simple table table-sm table-borderless text-smaller">
+    <table class="simple table table-sm table-borderless fs-smaller-2">
         <tr>
             <#list columns as col><th>${col}</th></#list>
         </tr>
