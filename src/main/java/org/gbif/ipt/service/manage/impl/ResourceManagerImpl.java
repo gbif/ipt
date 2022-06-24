@@ -2002,13 +2002,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               String rawLatitudeValue = in[decimalLatitudeSourceColumnIndex];
               String rawLongitudeValue = in[decimalLongitudeSourceColumnIndex];
 
-              if (StringUtils.isEmpty(rawLongitudeValue) || StringUtils.isEmpty(rawLatitudeValue)) {
-                continue;
-              }
-
               OccurrenceParseResult<LatLng> latLngParseResult =
                   CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
               LatLng latLng = latLngParseResult.getPayload();
+
+              // skip erratic records
+              if (!latLngParseResult.isSuccessful() && latLng == null) {
+                continue;
+              }
 
               // initialize min and max values
               if (initializeExtremeValues) {
