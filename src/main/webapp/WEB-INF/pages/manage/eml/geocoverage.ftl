@@ -117,6 +117,13 @@
 
             /** This function updates the coordinate input fields to mirror bounding box coordinates, after each map change event  */
             locationFilter.on("change", function (e) {
+                // manual adjustments - stop inferring automatically
+                $("#inferGeocoverageAutomatically").prop("checked", false);
+                $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.longitude").prop("disabled", false);
+                $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.longitude").prop("disabled", false);
+                $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.min\\.latitude").prop("disabled", false);
+                $("#eml\\.geospatialCoverages\\[0\\]\\.boundingCoordinates\\.max\\.latitude").prop("disabled", false);
+
                 if (!skipMapAdjustment) {
                     var minLatVal = locationFilter.getBounds()._southWest.lat
                     var minLngVal = locationFilter.getBounds()._southWest.lng
