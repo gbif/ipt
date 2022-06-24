@@ -1990,26 +1990,33 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         try {
           // get the source iterator
           iter = sourceManager.rowIterator(mapping.getSource());
-          int line = 0;
+          boolean initializeExtremeValues = true;
 
           while (iter.hasNext()) {
-            line++;
             String[] in = iter.next();
             if (in == null || in.length == 0) {
               continue;
             }
 
             if (decimalLongitudeSourceColumnIndex != -1 && decimalLatitudeSourceColumnIndex != -1) {
+              String rawLatitudeValue = in[decimalLatitudeSourceColumnIndex];
+              String rawLongitudeValue = in[decimalLongitudeSourceColumnIndex];
+
+              if (StringUtils.isEmpty(rawLongitudeValue) || StringUtils.isEmpty(rawLatitudeValue)) {
+                continue;
+              }
+
               OccurrenceParseResult<LatLng> latLngParseResult =
-                  CoordinateParseUtils.parseLatLng(in[decimalLatitudeSourceColumnIndex], in[decimalLongitudeSourceColumnIndex]);
+                  CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
               LatLng latLng = latLngParseResult.getPayload();
 
               // initialize min and max values
-              if (line == 1) {
+              if (initializeExtremeValues) {
                 minDecimalLatitude = latLng.getLat();
                 maxDecimalLatitude = latLng.getLat();
                 minDecimalLongitude = latLng.getLng();
                 maxDecimalLongitude = latLng.getLng();
+                initializeExtremeValues = false;
               }
 
               if (latLng.getLat() > maxDecimalLatitude) {
