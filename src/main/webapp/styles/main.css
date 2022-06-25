@@ -1087,7 +1087,7 @@ button.close {
     grid-template-columns: 1fr 4fr;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .bd-main {
         grid-template-areas:
                 "toc content";
@@ -1107,7 +1107,7 @@ button.close {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .bd-toc {
         display: none;
     }
