@@ -78,7 +78,7 @@
 
     <#macro textinline name value="-99999" i18nkey="" errorfield="" help="" requiredField=false>
         <div class="textinline">
-            <h5 class="pb-2 mb-0 pt-2 text-gbif-header fw-400">
+            <h5 class="py-2 mb-0 text-gbif-header fw-400">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
                 <span><@s.text name="${name}"/><#if requiredField>&#42;</#if></span>
             </h5>

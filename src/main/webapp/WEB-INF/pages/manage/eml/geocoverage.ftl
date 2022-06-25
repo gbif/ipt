@@ -272,7 +272,7 @@
             </div>
 
             <div class="text-center">
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
                     <@s.text name='manage.metadata.geocoverage.title'/>
                 </h1>
             </div>

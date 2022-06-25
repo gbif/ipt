@@ -226,7 +226,7 @@
                 </div>
 
                 <div class="text-center">
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
                         <@s.text name='manage.metadata.tempcoverage.title'/>
                     </h1>
                 </div>
@@ -264,11 +264,11 @@
                                 <#assign next_agent_index=0 />
                                 <#list eml.temporalCoverages as temporalCoverage>
                                     <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
-                                        <div class="d-flex justify-content-end">
+                                        <div class="d-flex justify-content-end mt-4">
                                             <a id="removeLink-${temporalCoverage_index}" class="removeLink text-smaller" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                     </svg>
                                                 </span>
                                                 <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></span>
@@ -320,7 +320,7 @@
                             </div>
 
                             <!-- The add link and the buttons should be first. The next div is hidden. -->
-                            <div class="addNew col-12 mt-1">
+                            <div class="addNew col-12 mt-2">
                                 <a id="plus" href="" class="text-smaller">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
@@ -337,11 +337,11 @@
 
                             <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
                             <div id="temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-end mt-4">
                                     <a id="removeLink" class="removeLink text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
                                         <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></span>
