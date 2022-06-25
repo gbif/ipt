@@ -146,7 +146,7 @@
             </div>
 
             <div class="text-center">
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
                     <@s.text name='manage.metadata.basic.title'/>
                 </h1>
             </div>
@@ -259,11 +259,11 @@
                         <div id="items">
                             <#list eml.description as item>
                                 <div id="item-${item_index}" class="item paragraphk pb-4 border-bottom">
-                                    <div class="mt-2 d-flex justify-content-end">
+                                    <div class="my-2 d-flex justify-content-end">
                                         <a id="removeLink-${item_index}" class="removeLink text-smaller mt-1" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                 </svg>
                                             </span>
                                             <span><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/></span>
@@ -273,10 +273,7 @@
                                 </div>
                             </#list>
                         </div>
-                        <div class="addNew mt-2">
-<#--                            <a id="plus" href="" class="text-smaller">-->
-<#--                                <@s.text name='manage.metadata.addnew'/> <@s.text name='eml.description.item'/>-->
-<#--                            </a>-->
+                        <div class="addNew my-2">
                             <a id="plus" href="" class="text-smaller">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -288,11 +285,11 @@
                         </div>
 
                         <div id="baseItem" class="item pb-4 border-bottom" style="display:none;">
-                            <div class="mt-1">
+                            <div class="my-2 d-flex justify-content-end">
                                 <a id="removeLink" class="removeLink text-smaller" href="">
                                     <span>
                                         <svg viewBox="0 0 24 24" class="link-icon">
-                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                         </svg>
                                     </span>
                                     <span><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.description.item'/></span>
@@ -317,16 +314,16 @@
                         <div id="contact-items">
                             <#list eml.contacts as contact>
                                 <div id="contact-item-${contact_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks mt-3 d-flex justify-content-between">
-                                        <!-- Do not show copy-from-resource-contact link for for first contact -->
+                                    <div class="columnLinks mt-4 d-flex justify-content-between">
+                                        <!-- Do not show copy-from-resource-contact link for the first contact -->
                                         <div>&nbsp;</div>
                                         <div>
-                                            <a id="creator-removeLink-${contact_index}" class="removeCreatorLink text-smaller" href="">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
+                                            <a id="contact-removeLink-${contact_index}" class="removeContactLink text-smaller" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                    </svg>
+                                                </span>
                                                 <span>${removeContactLink?lower_case?cap_first}</span>
                                             </a>
                                         </div>
@@ -385,7 +382,7 @@
                             </#list>
                         </div>
 
-                        <div class="addNew mt-2">
+                        <div class="addNew my-2">
                             <a id="plus-contact" href="" class="text-smaller">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -397,7 +394,7 @@
                         </div>
 
                         <div id="baseItem-contact" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks mt-3 d-flex justify-content-between">
+                            <div class="columnLinks mt-4 d-flex justify-content-between">
                                 <div>
                                     <a id="contact-copyDetails" href="" class="text-smaller">
                                         <span>
@@ -408,13 +405,13 @@
                                         <span>${copyLink?lower_case?cap_first}</span>
                                     </a>
                                 </div>
-                                <div>
+                                <div class="text-end">
                                     <a id="contact-removeLink" class="removeContactLink text-smaller" href="">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                            </svg>
+                                        </span>
                                         <span>${removeContactLink?lower_case?cap_first}</span>
                                     </a>
                                 </div>
@@ -470,7 +467,7 @@
                         <div id="creator-items">
                             <#list eml.creators as creator>
                                 <div id="creator-item-${creator_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks mt-3 d-flex justify-content-between">
+                                    <div class="columnLinks mt-4 d-flex justify-content-between">
                                         <div>
                                             <a id="creator-copyDetails-${creator_index}" href="" class="text-smaller">
                                                 <span>
@@ -481,13 +478,13 @@
                                                 <span>${copyLink?lower_case?cap_first}</span>
                                             </a>
                                         </div>
-                                        <div>
+                                        <div class="text-end">
                                             <a id="creator-removeLink-${creator_index}" class="removeCreatorLink text-smaller" href="">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                                    </svg>
+                                                </span>
                                                 <span>${removeCreatorLink?lower_case?cap_first}</span>
                                             </a>
                                         </div>
@@ -546,7 +543,7 @@
                             </#list>
                         </div>
 
-                        <div class="addNew mt-2">
+                        <div class="addNew my-2">
                             <a id="plus-creator" href="" class="text-smaller">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -558,7 +555,7 @@
                         </div>
 
                         <div id="baseItem-creator" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks mt-3 d-flex justify-content-between">
+                            <div class="columnLinks mt-4 d-flex justify-content-between">
                                 <div>
                                     <a id="creator-copyDetails" href="" class="text-smaller">
                                         <span>
@@ -569,11 +566,11 @@
                                         <span>${copyLink?lower_case?cap_first}</span>
                                     </a>
                                 </div>
-                                <div>
+                                <div class="text-end">
                                     <a id="creator-removeLink" class="removeCreatorLink text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
                                         <span>${removeCreatorLink?lower_case?cap_first}</span>
@@ -631,7 +628,7 @@
                         <div id="metadataProvider-items">
                             <#list eml.metadataProviders as metadataProvider>
                                 <div id="metadataProvider-item-${metadataProvider_index}" class="item row g-3 pb-4 border-bottom">
-                                    <div class="columnLinks d-flex justify-content-between">
+                                    <div class="columnLinks mt-4 d-flex justify-content-between">
                                         <div>
                                             <a id="metadataProvider-copyDetails-${metadataProvider_index}" href="" class="text-smaller">
                                                 <span>
@@ -642,11 +639,11 @@
                                                 <span><@s.text name="eml.resourceCreator.copyLink" /></span>
                                             </a>
                                         </div>
-                                        <div>
+                                        <div class="text-end">
                                             <a id="metadataProvider-removeLink-${metadataProvider_index}" class="removeMetadataProviderLink text-smaller" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                                     </svg>
                                                 </span>
                                                 <span>${removeMetadataProviderLink?lower_case?cap_first}</span>
@@ -707,7 +704,7 @@
                             </#list>
                         </div>
 
-                        <div class="addNew mt-2">
+                        <div class="addNew my-2">
                             <a id="plus-metadataProvider" href="" class="text-smaller">
                                 <span>
                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -719,7 +716,7 @@
                         </div>
 
                         <div id="baseItem-metadataProvider" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                            <div class="columnLinks d-flex justify-content-between">
+                            <div class="columnLinks mt-4 d-flex justify-content-between">
                                 <div>
                                     <a id="metadataProvider-copyDetails" href="" class="text-smaller">
                                         <span>
@@ -730,11 +727,11 @@
                                         <span>${copyLink?lower_case?cap_first}</span>
                                     </a>
                                 </div>
-                                <div>
+                                <div class="text-end">
                                     <a id="metadataProvider-removeLink" class="removeMetadataProviderLink text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                                             </svg>
                                         </span>
                                         <span>${removeMetadataProviderLink?lower_case?cap_first}</span>
