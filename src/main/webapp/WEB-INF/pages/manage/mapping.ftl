@@ -71,10 +71,15 @@
                 showAllGroups=false;
                 $("#showAllGroupsValue").val("false");
                 $("#toggleGroups").text("<@s.text name="manage.mapping.showAllGroups" />");
+                // hide redundant sections
                 $('div.redundant').each(function(index) {
                     $(this).hide();
                 });
-                // hide sidebar links too
+                // hide anchors
+                $('span.redundant').each(function(index) {
+                    $(this).hide();
+                });
+                // hide sidebar links
                 $('li.redundant').each(function(index) {
                     $(this).hide();
                 });
@@ -118,8 +123,12 @@
                     showAllGroups=true;
                     $("#showAllGroupsValue").val("true");
                     $("#toggleGroups").text("<@s.text name="manage.mapping.hideGroups"/>");
-                    // show sidebar links too
+                    // show sidebar links
                     $('li.redundant').each(function(index) {
+                        $(this).show();
+                    });
+                    // show anchors
+                    $('span.redundant').each(function(index) {
                         $(this).show();
                     });
                     // show redundant sections
@@ -564,7 +573,7 @@
                         <#list fieldsByGroup?keys as g>
                             <#assign groupsFields = fieldsByGroup.get(g)/>
                             <#if (groupsFields?size>0)>
-                                <span class="anchor anchor-base" id="anchor-group_${g?replace(' ', '_')}"></span>
+                                <span class="anchor anchor-base <#if redundants?seq_contains(g)>redundant</#if> " id="anchor-group_${g?replace(' ', '_')}"></span>
                                 <div class="mt-5 <#if redundants?seq_contains(g)>redundant</#if>">
                                     <div id="group_${g?replace(' ', '_')}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
                                         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
