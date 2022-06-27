@@ -1354,7 +1354,7 @@ a.doi:hover span:first-of-type {
     }
 }
 
-.unmapped-field {
+.unmapped-field, .redundant-section {
     padding: 0.2em 0.4em;
     margin: 0;
     background-color: rgba(175, 184, 193, 0.2);

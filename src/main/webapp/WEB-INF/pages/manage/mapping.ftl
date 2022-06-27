@@ -637,7 +637,7 @@
 
                             <div class="text-smaller">
                                 <#list redundants as gr>
-                                    <code>${gr}<#sep>;</#sep></code>
+                                    <span class="redundant-section"><strong>${gr}</strong></span><#sep> </#sep>
                                 </#list>
                             </div>
                         </div>
