@@ -199,7 +199,7 @@
                                             </#if>
                                         </td>
                                         <td><@dataBage p.type/></td>
-                                        <td>${p.required?string}</td>
+                                        <td><#if p.required><@s.text name="basic.yes"/><#else><@s.text name="basic.no"/></#if></td>
                                         <td>
                                             <#if p.vocabulary??>
                                                 <a href="vocabulary.do?id=${p.vocabulary.uriString}" target="_blank">${p.vocabulary.title}</a>
