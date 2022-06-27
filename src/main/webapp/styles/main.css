@@ -1345,6 +1345,7 @@ a.doi:hover span:first-of-type {
 
 .top-button {
     min-width: 100px;
+    margin-top: 4px;
 }
 
 @keyframes ripple {
