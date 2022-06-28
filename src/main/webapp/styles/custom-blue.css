@@ -53,7 +53,7 @@
     color: #4E565F !important;
 }
 
-.navbar-button:hover {
+.navbar-button:hover, .navbar-button:focus {
     box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important;
 }
 
@@ -81,7 +81,7 @@
     border-color: #1D86C8;
 }
 .btn-check:focus + .btn-outline-gbif-primary, .btn-outline-gbif-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgba(29, 134, 200, 0.25); !important;
+    box-shadow: none !important;
 }
 .btn-check:checked + .btn-outline-gbif-primary, .btn-check:active + .btn-outline-gbif-primary, .btn-outline-gbif-primary:active, .btn-outline-gbif-primary.active, .btn-outline-gbif-primary.dropdown-toggle.show {
     color: #fff !important;
@@ -89,7 +89,7 @@
     border-color: #1D86C8 !important;
 }
 .btn-check:checked + .btn-outline-gbif-primary:focus, .btn-check:active + .btn-outline-gbif-primary:focus, .btn-outline-gbif-primary:active:focus, .btn-outline-gbif-primary.active:focus, .btn-outline-gbif-primary.dropdown-toggle.show:focus {
-    box-shadow: 0 0 0 0.25rem rgba(29, 134, 200, 0.25) !important;
+    box-shadow: none !important;
 }
 .btn-outline-gbif-primary:disabled, .btn-outline-gbif-primary.disabled {
     color: #1D86C8 !important;
@@ -113,7 +113,7 @@
 .form-check-input:not(.is-invalid):focus {
     border-color: #1D86C8;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(29, 134, 200, 0.25);
+    box-shadow: none;
 }
 
 .form-check-input:not(.is-invalid):checked {
@@ -206,4 +206,9 @@ div#record_graph .color-bar {
     color: #014361;
     background-color: #e5f6fd;
     border-color: #e5f6fd;
+}
+
+/* Callouts */
+.callout-info {
+    border-left-color: #1D86C8;
 }

@@ -563,7 +563,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 .form-check-input:not(.is-invalid):focus {
     border-color: #92c392;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(113, 177, 113, 0.25);
+    box-shadow: none;
 }
 
 .form-check-input:not(.is-invalid):checked {
