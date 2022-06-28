@@ -79,7 +79,7 @@
                                 <#assign next_agent_index=0 />
                                 <#list eml.taxonomicCoverages as item>
                                     <div id='item-${item_index}' class="item border-bottom">
-                                        <div class="d-flex justify-content-end">
+                                        <div class="d-flex justify-content-end mt-2">
                                             <a id="removeLink-${item_index}" class="removeLink text-smaller" href="">
                                                 <span>
                                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -117,7 +117,7 @@
                                             <#if (item.taxonKeywords)??>
                                                 <#list item.taxonKeywords as subItem>
                                                     <div id="subItem-${subItem_index}" class="sub-item row g-3 pt-3" >
-                                                        <div class="d-flex justify-content-end">
+                                                        <div class="d-flex justify-content-end mt-2">
                                                             <a id="trash-${item_index}-${subItem_index}" class="text-smaller" href="">
                                                                 <span>
                                                                     <svg viewBox="0 0 24 24" class="link-icon">
@@ -127,19 +127,19 @@
                                                                 <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
                                                             </a>
                                                         </div>
-                                                        <div class="col-lg-4 d-flex align-items-end">
+                                                        <div class="col-lg-4">
                                                             <div class="w-100">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true />
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-lg-3 d-flex align-items-end">
+                                                        <div class="col-lg-3">
                                                             <div class="w-100">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-lg-5 d-flex align-items-end">
+                                                        <div class="col-lg-5">
                                                             <div class="w-100 me-2">
                                                                 <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
                                                             </div>
@@ -225,7 +225,7 @@
                             </div>
 
                             <div id="subItem-9999" class="sub-item row g-3 pt-3" style="display:none">
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-end mt-2">
                                     <a id="trash" class="text-smaller" href="">
                                         <span>
                                             <svg viewBox="0 0 24 24" class="link-icon">
@@ -235,19 +235,19 @@
                                         <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.taxon.item'/></span>
                                     </a>
                                 </div>
-                                <div class="col-lg-4 d-flex align-items-end">
+                                <div class="col-lg-4">
                                     <div class="w-100">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true />
                                     </div>
                                 </div>
 
-                                <div class="col-lg-3 d-flex align-items-end">
+                                <div class="col-lg-3">
                                     <div class="w-100">
                                         <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" />
                                     </div>
                                 </div>
 
-                                <div class="col-lg-5 d-flex align-items-end">
+                                <div class="col-lg-5">
                                     <div class="w-100 me-2">
                                         <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks />
                                     </div>
