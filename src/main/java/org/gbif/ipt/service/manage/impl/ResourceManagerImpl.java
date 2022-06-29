@@ -2056,6 +2056,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public BBox inferGeocoverageFromSourceData(Resource resource) {
     int decimalLongitudeSourceColumnIndex = -1;
     int decimalLatitudeSourceColumnIndex = -1;
+    boolean noValidData = true;
     Double minDecimalLongitude = -180.0D;
     Double maxDecimalLongitude = 180.0D;
     Double minDecimalLatitude = -90.0D;
@@ -2094,6 +2095,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               // skip erratic records
               if (!latLngParseResult.isSuccessful() && latLng == null) {
                 continue;
+              } else {
+                noValidData = false;
               }
 
               // initialize min and max values
@@ -2134,7 +2137,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
 
-    return new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude));
+    return noValidData ? null : new BBox(new Point(minDecimalLatitude, minDecimalLongitude), new Point(maxDecimalLatitude, maxDecimalLongitude));
   }
 
   /**
