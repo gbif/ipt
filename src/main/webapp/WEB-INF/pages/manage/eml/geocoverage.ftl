@@ -264,6 +264,16 @@
     <div class="container-fluid bg-body border-bottom">
         <div class="container pt-2">
             <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+            <div id="geocoverage-no-source-data-alert" class="alert alert-danger mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
+                <div class="me-3">
+                    <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                </div>
+                <div class="overflow-x-hidden pt-1">
+                    <span><@s.text name="eml.noSourceData"/></span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
 
         <div class="container my-3 p-3">
