@@ -15,6 +15,7 @@ package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -36,6 +37,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -395,4 +397,13 @@ public interface ResourceManager {
    * @return bounding box with coordinates
    */
   BBox inferGeocoverageFromSourceData(Resource resource);
+
+  /**
+   * Infer taxonomic coverage from source data for the resource
+   *
+   * @param resource resource
+   *
+   * @return taxonomic coverage data grouped by kingdoms
+   */
+  Map<String, Set<KeyNamePair>> inferTaxonomicCoverageFromSourceData(Resource resource);
 }

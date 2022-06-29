@@ -1,6 +1,6 @@
 <script>
 $(document).ready(function(){
-    var	itemsCount=-1;
+    var itemsCount = -1;
     var personnelItemsCount = -1;
     var collectionItemsCount = -1;
     var specimenPreservationMethodItemsCount = -1;
@@ -9,17 +9,17 @@ $(document).ready(function(){
     calcNumberOfCollectionItems();
     calcNumberOfSpecimenPreservationMethodItems();
 
-    function calcNumberOfItems(){
+    function calcNumberOfItems() {
         var lastItem = $("#items .item:last-child").attr("id");
-        if(lastItem != undefined)
-            itemsCount=parseInt(lastItem.split("-")[1]);
+        if (lastItem !== undefined)
+            itemsCount = parseInt(lastItem.split("-")[1]);
         else
-            itemsCount=-1;
+            itemsCount = -1;
     }
 
     function calcNumberOfCollectionItems() {
         var lastItem = $("#collection-items .item:last-child").attr("id");
-        if (lastItem != undefined)
+        if (lastItem !== undefined)
             collectionItemsCount = parseInt(lastItem.split("-")[2]);
         else
             collectionItemsCount = -1;
@@ -27,11 +27,45 @@ $(document).ready(function(){
 
     function calcNumberOfSpecimenPreservationMethodItems() {
         var lastItem = $("#specimenPreservationMethod-items .item:last-child").attr("id");
-        if (lastItem != undefined)
+        if (lastItem !== undefined)
             specimenPreservationMethodItemsCount = parseInt(lastItem.split("-")[2]);
         else
             specimenPreservationMethodItemsCount = -1;
     }
+
+    $("#preview-inferred-taxonomic").click(function(event) {
+        event.preventDefault();
+
+        <#if inferredTaxonomicCoverage?has_content>
+            // remove all current items
+            $("[id^=item-]").remove();
+
+            var subItemIndex = 0;
+
+            <#list inferredTaxonomicCoverage?keys as kingdom>
+                addNewItem(true);
+
+                // add kingdom if present
+                <#if kingdom?has_content>
+                    $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[0\\]\\.scientificName').val("${kingdom}");
+                    $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[0\\]\\.rank').val("kingdom");
+                    subItemIndex++;
+                </#if>
+
+                // add rest of the taxonomy
+                <#list inferredTaxonomicCoverage.get(kingdom) as taxon>
+                    addNewSubItemByIndex(itemsCount, true);
+                    $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.scientificName').val("${taxon.name}");
+                    $('#eml\\.taxonomicCoverages\\[' + itemsCount + '\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.rank').val("${taxon.key}");
+                    subItemIndex++;
+                </#list>
+
+                subItemIndex = 1;
+            </#list>
+        <#else>
+            $("#taxcoverage-no-source-data-alert").show();
+        </#if>
+    });
 
     $("#plus").click(function(event) {
         event.preventDefault();
@@ -82,7 +116,11 @@ $(document).ready(function(){
         if (!$target.is('a')) {
             $target = $(event.target).closest('a');
         }
-        var baseItem = $("#item-" + $target.attr("id").split("-")[2]);
+        addNewSubItemByIndex($target.attr("id").split("-")[2],text);
+    }
+
+    function addNewSubItemByIndex(itemIndex, text) {
+        var baseItem = $("#item-" + itemIndex);
         // calculating the last taxon index.
         var idBaseItem = baseItem.attr("id");
         var lastIndex = $("#" + idBaseItem + " .sub-item:last-child").attr("id");
@@ -108,22 +146,30 @@ $(document).ready(function(){
 	function setSubItemIndex(baseItem, subItem, subBaseIndex) {
 		<#switch "${section}">
   			<#case "taxcoverage">
-				subItem.attr("id", "subItem-"+subBaseIndex);
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='scientificName']").attr("id", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].scientificName").attr("name", function() {return $(this).attr("id");});
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='scientificName']").attr("for", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].scientificName");
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='commonName']").attr("id", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].commonName").attr("name", function() {return $(this).attr("id");});
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='commonName']").attr("for", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].commonName");
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id$='rank']").attr("id", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].rank").attr("name", function() {return $(this).attr("id");});
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[for$='rank']").attr("for", "eml.taxonomicCoverages["+baseItem.attr("id").split("-")[1]+"].taxonKeywords["+subBaseIndex+"].rank");
-				$("#"+baseItem.attr("id")+" #"+subItem.attr("id")).find("[id^='trash']").attr("id", "trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).attr("name", function() {return $(this).attr("id");});
-				$("#trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).click(function(event) {
-					removeSubItem(event);
-				});
-				if(subBaseIndex != 0) {
-					$("#trash-"+baseItem.attr("id").split("-")[1]+"-0").show();
-				} else {
-					$("#trash-"+baseItem.attr("id").split("-")[1]+"-"+subBaseIndex).hide();
-				}				
+                subItem.attr("id", "subItem-" + subBaseIndex);
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id$='scientificName']").attr("id", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].scientificName").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[for$='scientificName']").attr("for", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].scientificName");
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id$='commonName']").attr("id", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].commonName").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[for$='commonName']").attr("for", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].commonName");
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id$='rank']").attr("id", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].rank").attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[for$='rank']").attr("for", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].rank");
+                $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id^='trash']").attr("id", "trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).attr("name", function () {
+                    return $(this).attr("id");
+                });
+                $("#trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).click(function (event) {
+                    removeSubItem(event);
+                });
+                if (subBaseIndex !== 0) {
+                    $("#trash-" + baseItem.attr("id").split("-")[1] + "-0").show();
+                } else {
+                    $("#trash-" + baseItem.attr("id").split("-")[1] + "-" + subBaseIndex).hide();
+                }
 				<#break>
 			<#default>
 		</#switch>		

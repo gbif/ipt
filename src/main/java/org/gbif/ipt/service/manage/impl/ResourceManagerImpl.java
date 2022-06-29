@@ -47,6 +47,7 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
@@ -165,8 +166,13 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.xml.sax.SAXException;
 
+import static org.gbif.ipt.config.Constants.VOCAB_CLASS;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LATITUDE;
 import static org.gbif.ipt.config.Constants.VOCAB_DECIMAL_LONGITUDE;
+import static org.gbif.ipt.config.Constants.VOCAB_FAMILY;
+import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
+import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
+import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -1965,6 +1971,85 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     return resource;
+  }
+
+  @Override
+  public Map<String, Set<KeyNamePair>> inferTaxonomicCoverageFromSourceData(Resource resource) {
+    Map<String, Set<KeyNamePair>> result = new HashMap<>();
+    int kingdomSourceColumnIndex = -1;
+    int phylumSourceColumnIndex = -1;
+    int classSourceColumnIndex = -1;
+    int orderSourceColumnIndex = -1;
+    int familySourceColumnIndex = -1;
+
+    if (!resource.getMappings().isEmpty()) {
+      for (ExtensionMapping mapping : resource.getMappings()) {
+        for (PropertyMapping field : mapping.getFields()) {
+          if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
+            kingdomSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_PHYLUM.equals(field.getTerm().qualifiedName())) {
+            phylumSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_CLASS.equals(field.getTerm().qualifiedName())) {
+            classSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_ORDER.equals(field.getTerm().qualifiedName())) {
+            orderSourceColumnIndex = field.getIndex();
+          } else if (VOCAB_FAMILY.equals(field.getTerm().qualifiedName())) {
+            familySourceColumnIndex = field.getIndex();
+          }
+        }
+
+        ClosableReportingIterator<String[]> sourceRowIterator = null;
+        try {
+          // get the source iterator
+          sourceRowIterator = sourceManager.rowIterator(mapping.getSource());
+
+          while (sourceRowIterator.hasNext()) {
+            String[] in = sourceRowIterator.next();
+            if (in == null || in.length == 0) {
+              continue;
+            }
+
+            Set<KeyNamePair> subResult = new HashSet<>();
+            if (phylumSourceColumnIndex != -1 && StringUtils.isNotEmpty(in[phylumSourceColumnIndex])) {
+              subResult.add(new KeyNamePair("phylum", in[phylumSourceColumnIndex]));
+            }
+            if (classSourceColumnIndex != -1 && StringUtils.isNotEmpty(in[classSourceColumnIndex])) {
+              subResult.add(new KeyNamePair("class", in[classSourceColumnIndex]));
+            }
+            if (orderSourceColumnIndex != -1 && StringUtils.isNotEmpty(in[orderSourceColumnIndex])) {
+              subResult.add(new KeyNamePair("order", in[orderSourceColumnIndex]));
+            }
+            if (familySourceColumnIndex != -1 && StringUtils.isNotEmpty(in[familySourceColumnIndex])) {
+              subResult.add(new KeyNamePair("family", in[familySourceColumnIndex]));
+            }
+
+            String kingdom = kingdomSourceColumnIndex != -1 ? in[kingdomSourceColumnIndex] : "";
+
+            if (StringUtils.isEmpty(kingdom) && subResult.isEmpty()) {
+              continue;
+            }
+
+            if (!result.containsKey(kingdom)) {
+              result.put(kingdom, subResult);
+            } else {
+              result.get(kingdom).addAll(subResult);
+            }
+          }
+        } catch (Exception e) {
+          LOG.error("Error while trying to infer taxonomic coverage from source data", e);
+        } finally {
+          if (sourceRowIterator != null) {
+            try {
+              sourceRowIterator.close();
+            } catch (Exception e) {
+              LOG.error("Error while closing iterator", e);
+            }
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   @Override

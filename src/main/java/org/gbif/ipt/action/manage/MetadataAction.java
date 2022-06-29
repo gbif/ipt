@@ -20,6 +20,7 @@ import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
@@ -50,6 +51,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -92,6 +94,7 @@ public class MetadataAction extends ManagerBaseAction {
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
   private BBox inferredGeocoverage;
+  private Map<String, Set<KeyNamePair>> inferredTaxonomicCoverage;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
@@ -129,6 +132,14 @@ public class MetadataAction extends ManagerBaseAction {
 
   public void setInferGeocoverageAutomatically(boolean inferGeocoverageAutomatically) {
     resource.setInferGeocoverageAutomatically(inferGeocoverageAutomatically);
+  }
+
+  public boolean isInferTaxonomicCoverageAutomatically() {
+    return resource.isInferTaxonomicCoverageAutomatically();
+  }
+
+  public void setInferTaxonomicCoverageAutomatically(boolean inferTaxonomicCoverageAutomatically) {
+    resource.setInferTaxonomicCoverageAutomatically(inferTaxonomicCoverageAutomatically);
   }
 
   public Map<String, String> getJGTICuratorialUnitTypeOptions() {
@@ -368,6 +379,7 @@ public class MetadataAction extends ManagerBaseAction {
         if (isHttpPost()) {
           resource.getEml().getTaxonomicCoverages().clear();
         }
+        inferredTaxonomicCoverage = resourceManager.inferTaxonomicCoverageFromSourceData(resource);
         break;
 
       case TEMPORAL_COVERAGE_SECTION:
@@ -922,5 +934,9 @@ public class MetadataAction extends ManagerBaseAction {
 
   public BBox getInferredGeocoverage() {
     return inferredGeocoverage;
+  }
+
+  public Map<String, Set<KeyNamePair>> getInferredTaxonomicCoverage() {
+    return inferredTaxonomicCoverage;
   }
 }

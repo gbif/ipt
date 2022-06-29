@@ -35,6 +35,16 @@
         <div class="container-fluid bg-body border-bottom">
             <div class="container pt-2">
                 <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+                <div id="taxcoverage-no-source-data-alert" class="alert alert-danger mt-2 alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
+                    <div class="me-3">
+                        <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                    </div>
+                    <div class="overflow-x-hidden pt-1">
+                        <span><@s.text name="eml.noSourceData"/></span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
 
             <div class="container my-3 p-3">
@@ -76,6 +86,23 @@
                             <p class="mb-0">
                                 <@s.text name='manage.metadata.taxcoverage.intro'/>
                             </p>
+
+                            <div class="row g-2 mt-0">
+                                <div class="col-md-6">
+                                    <@checkbox name="inferTaxonomicCoverageAutomatically" value="${inferTaxonomicCoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
+                                </div>
+
+                                <div class="col-md-6 d-md-flex justify-content-md-end">
+                                    <a id="preview-inferred-taxonomic" class="text-smaller" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon">
+                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                            </svg>
+                                        </span>
+                                        <span><@s.text name="eml.previewInferred"/></span>
+                                    </a>
+                                </div>
+                            </div>
 
                             <div id="items">
                                 <!-- Adding the taxonomic coverages that already exists on the file -->
