@@ -60,7 +60,7 @@ $(document).ready(function(){
                     subItemIndex++;
                 </#list>
 
-                subItemIndex = 1;
+                subItemIndex = 0;
             </#list>
         <#else>
             $("#taxcoverage-no-source-data-alert").show();
