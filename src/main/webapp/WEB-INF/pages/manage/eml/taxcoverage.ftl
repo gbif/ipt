@@ -5,6 +5,17 @@
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
     <script>
         $(document).ready(function(){
+            // make labels size the same (issue for ru locale)
+            $(window).on("load resize",function(){
+                var lb = $("label");
+                lb.height('');
+                var heights = lb.map(function() {
+                    return $(this).height();
+                }).get();
+                maxHeight = Math.max.apply(null, heights);
+                lb.css("height", maxHeight);
+            });
+
             $('#plus').click(function () {
                 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
                 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
