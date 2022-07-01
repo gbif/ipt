@@ -3,7 +3,7 @@
 [#if actionMessages?size>0]
     [#list actionMessages as message]
         <div class="alert alert-success mt-2 alert-dismissible fade show d-flex" role="alert">
-            <div class="me-3">
+            <div class="me-3 pt-1">
                 <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
             </div>
             <div class="overflow-x-hidden pt-1">

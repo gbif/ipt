@@ -3,7 +3,7 @@
 [#if actionErrors?size>0]
     [#list actionErrors as error]
         <div class="alert alert-danger mt-2 alert-dismissible fade show d-flex" role="alert">
-            <div class="me-3">
+            <div class="me-3 pt-1">
                 <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
             </div>
             <div class="overflow-x-hidden pt-1">
