@@ -15,7 +15,8 @@ $(document).ready(function () {
         $parentTarget.next("#hiddenContent").html(showMore);
     });
 
-    document.querySelectorAll('.btn').forEach(setRippleElement);
+    // TODO ripple does not work for inputs
+    // document.querySelectorAll('.btn').forEach(setRippleElement);
 });
 
 function initCalendar(context) {
