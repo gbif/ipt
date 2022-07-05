@@ -161,16 +161,19 @@ public class GenerateDCAT {
       String publisher = publisherBaselink + org.getKey() + "#Organization";
       String organisation =
         encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\"";
-      if (StringUtils.isNotBlank(org.getHomepageURL())) {
+      if (org.getHomepageURL() != null) {
         String homepagesStrWithoutBrackets = StringUtils.substringBetween(org.getHomepageURL(), "[", "]");
-        String[] homepages = homepagesStrWithoutBrackets.split(",");
 
-        String homepagesStr = Arrays.stream(homepages)
-            .map(String::trim)
-            .map(h -> encapsulateObject(h, ObjectTypes.RESOURCE))
-            .collect(Collectors.joining(" , "));
+        if (StringUtils.isNotBlank(homepagesStrWithoutBrackets)) {
+          String[] homepages = homepagesStrWithoutBrackets.split(",");
 
-        organisation += " ; foaf:homepage " + homepagesStr;
+          String homepagesStr = Arrays.stream(homepages)
+              .map(String::trim)
+              .map(h -> encapsulateObject(h, ObjectTypes.RESOURCE))
+              .collect(Collectors.joining(" , "));
+
+          organisation += " ; foaf:homepage " + homepagesStr;
+        }
       }
       organisation += " .";
       organisations.add(organisation);
@@ -211,17 +214,20 @@ public class GenerateDCAT {
             String organisation =
               encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + publishedPublicVersion
                 .getOrganisation().getName() + "\"";
-            if (StringUtils.isNotBlank(publishedPublicVersion.getOrganisation().getHomepageURL())) {
+            if (publishedPublicVersion.getOrganisation().getHomepageURL() != null) {
               String homepagesStrWithoutBrackets = StringUtils.substringBetween(
                   publishedPublicVersion.getOrganisation().getHomepageURL(), "[", "]");
-              String[] homepages = homepagesStrWithoutBrackets.split(",");
 
-              String homepagesStr = Arrays.stream(homepages)
-                  .map(String::trim)
-                  .map(h -> encapsulateObject(h, ObjectTypes.RESOURCE))
-                  .collect(Collectors.joining(" , "));
+              if (StringUtils.isNotBlank(homepagesStrWithoutBrackets)) {
+                String[] homepages = homepagesStrWithoutBrackets.split(",");
 
-              organisation += " ; foaf:homepage " + homepagesStr;
+                String homepagesStr = Arrays.stream(homepages)
+                    .map(String::trim)
+                    .map(h -> encapsulateObject(h, ObjectTypes.RESOURCE))
+                    .collect(Collectors.joining(" , "));
+
+                organisation += " ; foaf:homepage " + homepagesStr;
+              }
             }
 
             organisation += " .";
