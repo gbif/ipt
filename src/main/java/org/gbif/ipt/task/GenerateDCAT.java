@@ -211,11 +211,19 @@ public class GenerateDCAT {
             String organisation =
               encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + publishedPublicVersion
                 .getOrganisation().getName() + "\"";
-            if (publishedPublicVersion.getOrganisation().getHomepageURL() != null) {
-              organisation +=
-                " ; foaf:homepage " + encapsulateObject(publishedPublicVersion.getOrganisation().getHomepageURL(),
-                  ObjectTypes.RESOURCE);
+            if (StringUtils.isNotBlank(publishedPublicVersion.getOrganisation().getHomepageURL())) {
+              String homepagesStrWithoutBrackets = StringUtils.substringBetween(
+                  publishedPublicVersion.getOrganisation().getHomepageURL(), "[", "]");
+              String[] homepages = homepagesStrWithoutBrackets.split(",");
+
+              String homepagesStr = Arrays.stream(homepages)
+                  .map(String::trim)
+                  .map(h -> encapsulateObject(h, ObjectTypes.RESOURCE))
+                  .collect(Collectors.joining(" , "));
+
+              organisation += " ; foaf:homepage " + homepagesStr;
             }
+
             organisation += " .";
             organisations.add(organisation);
           }
