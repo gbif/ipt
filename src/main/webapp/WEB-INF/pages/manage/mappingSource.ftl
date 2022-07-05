@@ -39,7 +39,7 @@
         <input type="hidden" name="mid" value="${mid!}" />
         <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
-        <div class="my-3 p-3">
+        <div class="my-3 p-3 text-center">
             <p>${mapping.extension.description}</p>
 
             <#if mapping.extension.link?has_content>
@@ -48,7 +48,7 @@
 
             <p><@s.text name='manage.mapping.source.help'/></p>
 
-            <div class="row">
+            <div class="row d-flex justify-content-center">
                 <div class="col-sm-6">
                     <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
                 </div>
