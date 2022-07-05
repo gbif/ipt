@@ -823,7 +823,7 @@ img.latestVersionHidden {
 
 /* Data records chars styling START */
 div#record_graph .color-bar {
-    background-color: #a9e4ba;
+    background-image: linear-gradient(to right, rgba(97, 168, 97, .25), rgba(97, 168, 97, .5));
     border-radius: 1px;
     display: inline-block;
     height: 3px;
