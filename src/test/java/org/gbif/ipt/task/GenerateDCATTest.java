@@ -116,7 +116,7 @@ public class GenerateDCATTest {
     orgStub.setName("test organisation");
     orgStub.setHomepageURL("[www.gbif.org]");
     when(mockRegistrationManager.getHostingOrganisation()).thenReturn(orgStub);
-    String expectedFeed = "<https://www.gbif.org/publisher/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c#Organization> a foaf:Agent ; foaf:name \"test organisation\" ; foaf:homepage <[www.gbif.org]> .";
+    String expectedFeed = "<https://www.gbif.org/publisher/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c#Organization> a foaf:Agent ; foaf:name \"test organisation\" ; foaf:homepage <www.gbif.org> .";
 
     String actualFeed = mockGenerateDCAT.getFeed();
 
