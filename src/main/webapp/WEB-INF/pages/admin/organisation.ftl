@@ -13,21 +13,19 @@
 
             $('#organisation\\.key').change(function() {
 
-                var orgName = $('#organisation\\.key :selected').text();
+                var organisationSelected = $('#organisation\\.key :selected');
+                var orgName = organisationSelected.text();
+                var organisationKey = organisationSelected.val();
                 $('#organisation\\.name').val(orgName);
                 $('#organisation\\.alias').val(orgName);
 
-                var emailContent = '<@s.text name="emails.request.organisation.association1"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association2"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association3"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association4"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association5"/>';
-                emailContent += '<@s.text name="emails.request.organisation.association6"><@s.param>';
-                emailContent += $("#organisation\\.key :selected").val();
-                emailContent += '</@s.param></@s.text>';
-                emailContent += '<@s.text name="emails.request.organisation.association7"/>';
-
-                var organisationKey = $('#organisation\\.key :selected').val();
+                var emailContent = 'Dear sir/madam,%0d%0d';
+                emailContent += 'I am installing an Integrated Publishing Toolkit (IPT).%0d';
+                emailContent += 'This tool allows me to create resources and assign these resources to organizations. %0d';
+                emailContent += 'I would like to link your organization with my IPT, but for this I will need you to provide me with your organization\'s shared token%0d';
+                emailContent += 'In case you don\'t know this information, you can open the following link in your browser to receive this information%0d%0d';
+                emailContent += 'https://gbrds.gbif.org/registry/organisation/' + organisationKey + '?op=password%0d%0d';
+                emailContent += 'Thank you for your attention.';
 
                 if (organisationKey) {
                     var url = '${registryURL}organisation/' + $('#organisation\\.key :selected').val() + ".json";
@@ -43,13 +41,12 @@
                         var contactLink = '<div class="mt-2"><a href=\"mailto:';
                         contactLink += data.primaryContactEmail;
                         contactLink += '?subject=';
-                        contactLink += '<@s.text name="emails.request.organisation.association.subject"><@s.param>';
+                        contactLink += 'Shared token request for ';
                         contactLink += orgName;
-                        contactLink += '</@s.param></@s.text>';
                         contactLink += '&body=';
                         contactLink += emailContent;
                         contactLink += '\">';
-                        contactLink += '<@s.text name="emails.request.organisation.association.footer"/>';
+                        contactLink += 'Click here to contact';
                         contactLink += '</a> ';
                         contactLink += orgName;
                         contactLink += "</div>";
