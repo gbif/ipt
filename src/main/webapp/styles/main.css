@@ -23,6 +23,8 @@ table {
     max-width: 450px;
     display: flex;
     align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 @media (min-width: 576px) {
@@ -898,11 +900,12 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     text-transform: uppercase !important;
     font-weight: 500 !important;
     font-size: 0.875rem !important;
-    padding: 5px 15px !important;
+    padding: 0.375rem 0.75rem;
 }
 
 .btn-sm {
     font-size: 0.75rem !important;
+    padding: 0.25rem 0.5rem;
 }
 
 #accountDropdownLink{
