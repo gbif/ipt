@@ -112,12 +112,14 @@
         </div>
     </#macro>
 
-    <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false requiredField=false>
+    <#macro selectList name options objValue objTitle value="" i18nkey="" errorfield="" size=1 disabled=false help="" includeEmpty=false requiredField=false withLabel=true>
         <div>
-            <div class="d-flex">
-                <#include "/WEB-INF/pages/macros/form_field_label.ftl">
-                <#include "/WEB-INF/pages/macros/help_icon.ftl">
-            </div>
+            <#if withLabel>
+                <div class="d-flex">
+                    <#include "/WEB-INF/pages/macros/form_field_label.ftl">
+                    <#include "/WEB-INF/pages/macros/help_icon.ftl">
+                </div>
+            </#if>
             <@s.select id=name class="form-select" name=name list=options listKey=objValue listValue=objTitle value=value size=size disabled=disabled emptyOption=includeEmpty/>
             <#include "/WEB-INF/pages/macros/form_field_error.ftl">
         </div>

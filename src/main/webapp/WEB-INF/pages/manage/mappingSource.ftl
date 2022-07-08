@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<main class="container">
+<main class="container" style="max-width: 600px;">
     <form id="mapping" class="topForm" action="mapping.do" method="post">
         <input type="hidden" name="r" value="${resource.shortname}" />
         <input type="hidden" name="id" value="${mapping.extension.rowType}" />
@@ -40,7 +40,7 @@
         <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
 
         <div class="my-3 p-3 text-center">
-            <p>${mapping.extension.description}</p>
+            <p class="fst-italic">${mapping.extension.description}</p>
 
             <#if mapping.extension.link?has_content>
                 <p><@s.text name="basic.link"/>: <a href="${mapping.extension.link}">${mapping.extension.link}</a></p>
@@ -48,9 +48,9 @@
 
             <p><@s.text name='manage.mapping.source.help'/></p>
 
-            <div class="row d-flex justify-content-center">
-                <div class="col-sm-6">
-                    <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" />
+            <div class="row">
+                <div class="col-sm-12">
+                    <@selectList name="source" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" withLabel=false />
                 </div>
             </div>
         </div>
