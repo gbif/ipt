@@ -40,6 +40,8 @@ import org.gbif.metadata.eml.BBox;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.GeospatialCoverage;
 import org.gbif.metadata.eml.JGTICuratorialUnitType;
+import org.gbif.metadata.eml.TaxonKeyword;
+import org.gbif.metadata.eml.TaxonomicCoverage;
 import org.gbif.metadata.eml.TemporalCoverageType;
 import org.gbif.metadata.eml.UserId;
 
@@ -352,20 +354,20 @@ public class MetadataAction extends ManagerBaseAction {
       case GEOGRAPHIC_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getGeospatialCoverages().clear();
-        }
+        } else {
+          inferredGeocoverage = resourceManager.inferGeocoverageFromSourceData(resource);
 
-        inferredGeocoverage = resourceManager.inferGeocoverageFromSourceData(resource);
-
-        // set inferred data if 'infer automatically' is checked
-        if (resource.isInferGeocoverageAutomatically()) {
-          if (!resource.getMappings().isEmpty()) {
-            if (resource.getEml().getGeospatialCoverages().isEmpty()) {
-              GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
-              geospatialCoverage.setDescription("Automatically inferred data");
-              geospatialCoverage.setBoundingCoordinates(inferredGeocoverage);
-              resource.getEml().addGeospatialCoverage(geospatialCoverage);
-            } else {
-              resource.getEml().getGeospatialCoverages().get(0).setBoundingCoordinates(inferredGeocoverage);
+          // set inferred data if 'infer automatically' is checked
+          if (resource.isInferGeocoverageAutomatically()) {
+            if (!resource.getMappings().isEmpty()) {
+              if (resource.getEml().getGeospatialCoverages().isEmpty()) {
+                GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
+                geospatialCoverage.setDescription("Automatically inferred data");
+                geospatialCoverage.setBoundingCoordinates(inferredGeocoverage);
+                resource.getEml().addGeospatialCoverage(geospatialCoverage);
+              } else {
+                resource.getEml().getGeospatialCoverages().get(0).setBoundingCoordinates(inferredGeocoverage);
+              }
             }
           }
         }
@@ -378,8 +380,33 @@ public class MetadataAction extends ManagerBaseAction {
         ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
         if (isHttpPost()) {
           resource.getEml().getTaxonomicCoverages().clear();
+        } else {
+          inferredTaxonomicCoverage = resourceManager.inferTaxonomicCoverageFromSourceData(resource);
+
+          // set inferred data if 'infer automatically' is checked
+          if (resource.isInferTaxonomicCoverageAutomatically()) {
+            resource.getEml().getTaxonomicCoverages().clear();
+            for (Map.Entry<String, Set<KeyNamePair>> inferredCoverage : inferredTaxonomicCoverage.entrySet()) {
+              TaxonomicCoverage taxonomicCoverage = new TaxonomicCoverage();
+
+              // set kingdom if present
+              if (StringUtils.isNotEmpty(inferredCoverage.getKey())) {
+                TaxonKeyword kingdom = new TaxonKeyword();
+                kingdom.setRank("kingdom");
+                kingdom.setScientificName(inferredCoverage.getKey());
+                taxonomicCoverage.addTaxonKeyword(kingdom);
+              }
+
+              // set rest of taxa
+              for (KeyNamePair pair : inferredCoverage.getValue()) {
+                TaxonKeyword taxonItem = new TaxonKeyword();
+                taxonItem.setRank(pair.getKey());
+                taxonItem.setScientificName(pair.getName());
+                taxonomicCoverage.addTaxonKeyword(taxonItem);
+              }
+            }
+          }
         }
-        inferredTaxonomicCoverage = resourceManager.inferTaxonomicCoverageFromSourceData(resource);
         break;
 
       case TEMPORAL_COVERAGE_SECTION:

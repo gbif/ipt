@@ -1960,6 +1960,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public Resource updateGeocoverageWithInferredFromSourceData(Resource resource) {
     if (!resource.getMappings().isEmpty()) {
       BBox inferredGeocoverage = inferGeocoverageFromSourceData(resource);
+      // check object to preserve description
       if (resource.getEml().getGeospatialCoverages().isEmpty()) {
         GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
         geospatialCoverage.setDescription("Automatically inferred data");
@@ -1981,6 +1982,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     int classSourceColumnIndex = -1;
     int orderSourceColumnIndex = -1;
     int familySourceColumnIndex = -1;
+    int itemsAdded = 0;
+    // maximum 200 items
+    final int maxNumberOfItems = 200;
 
     if (!resource.getMappings().isEmpty()) {
       for (ExtensionMapping mapping : resource.getMappings()) {
@@ -2010,17 +2014,29 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
 
             Set<KeyNamePair> subResult = new HashSet<>();
-            if (phylumSourceColumnIndex != -1 && StringUtils.isNotEmpty(in[phylumSourceColumnIndex])) {
+            if (itemsAdded < maxNumberOfItems
+                && phylumSourceColumnIndex != -1
+                && StringUtils.isNotEmpty(in[phylumSourceColumnIndex])) {
               subResult.add(new KeyNamePair("phylum", in[phylumSourceColumnIndex]));
+              itemsAdded++;
             }
-            if (classSourceColumnIndex != -1 && StringUtils.isNotEmpty(in[classSourceColumnIndex])) {
+            if (itemsAdded < maxNumberOfItems
+                && classSourceColumnIndex != -1
+                && StringUtils.isNotEmpty(in[classSourceColumnIndex])) {
               subResult.add(new KeyNamePair("class", in[classSourceColumnIndex]));
+              itemsAdded++;
             }
-            if (orderSourceColumnIndex != -1 && StringUtils.isNotEmpty(in[orderSourceColumnIndex])) {
+            if (itemsAdded < maxNumberOfItems
+                && orderSourceColumnIndex != -1
+                && StringUtils.isNotEmpty(in[orderSourceColumnIndex])) {
               subResult.add(new KeyNamePair("order", in[orderSourceColumnIndex]));
+              itemsAdded++;
             }
-            if (familySourceColumnIndex != -1 && StringUtils.isNotEmpty(in[familySourceColumnIndex])) {
+            if (itemsAdded < maxNumberOfItems
+                && familySourceColumnIndex != -1
+                && StringUtils.isNotEmpty(in[familySourceColumnIndex])) {
               subResult.add(new KeyNamePair("family", in[familySourceColumnIndex]));
+              itemsAdded++;
             }
 
             String kingdom = kingdomSourceColumnIndex != -1 ? in[kingdomSourceColumnIndex] : "";
@@ -2033,6 +2049,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               result.put(kingdom, subResult);
             } else {
               result.get(kingdom).addAll(subResult);
+            }
+
+            // stop analyzing if it's too much data
+            if (itemsAdded >= maxNumberOfItems) {
+              break;
             }
           }
         } catch (Exception e) {
