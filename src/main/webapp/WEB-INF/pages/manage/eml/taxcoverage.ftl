@@ -7,7 +7,7 @@
         $(document).ready(function(){
             // make labels size the same (issue for ru locale)
             $(window).on("load resize",function(){
-                var lb = $("label");
+                var lb = $("label.form-label");
                 lb.height('');
                 var heights = lb.map(function() {
                     return $(this).height();
@@ -174,13 +174,13 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-lg-3">
+                                                        <div class="col-lg-4">
                                                             <div class="w-100">
                                                                 <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" />
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-4">
                                                             <div class="w-100 me-2">
                                                                 <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks value="${eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank!?lower_case}"/>
                                                             </div>
